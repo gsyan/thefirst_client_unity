@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2776884cfa27aa94aadff138fd8f6734, type: 3}
+  m_Name: DataTableConfig
+  m_EditorClassIdentifier: 
+  gameSettings:
+    version: 0.9.1
+    maxLives: 3
+    maxShipsPerFleet: 10
+    shipAddMoneyCost: 1000
+    shipAddMineralCost: 500
+    enemyFleetSpawnInterval: 5
+    explorationInterval: 15
+    enemySpawnRate: 2
+    linearFormationSpacing: 3
+    gridFormationSpacing: 5
+    circleFormationSpacing: 8
+    diamondFormationSpacing: 6
+    wedgeFormationSpacing: 3
+  exportedJson: "{\r\n  \"version\": \"0.9.1\",\r\n  \"maxLives\": 3,\r\n  \"maxShipsPerFleet\":
+    10,\r\n  \"shipAddMoneyCost\": 1000,\r\n  \"shipAddMineralCost\": 500,\r\n  \"enemyFleetSpawnInterval\":
+    5.0,\r\n  \"explorationInterval\": 15.0,\r\n  \"enemySpawnRate\": 2.0,\r\n  \"linearFormationSpacing\":
+    2.0,\r\n  \"gridFormationSpacing\": 5.0,\r\n  \"circleFormationSpacing\": 8.0,\r\n 
+    \"diamondFormationSpacing\": 6.0,\r\n  \"wedgeFormationSpacing\": 3.0\r\n}"
