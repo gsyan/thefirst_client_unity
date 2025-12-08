@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "527468162306",
+    "project_id": "thefirst-fd116",
+    "storage_bucket": "thefirst-fd116.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527468162306:android:fdd9d29003b29326e2261b",
+        "android_client_info": {
+          "package_name": "com.fidforge.thefirst"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527468162306-19pib84bbo4fh3i0a59kv92e86d94p4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fidforge.thefirst",
+            "certificate_hash": "15723d48749e415d52fe73f5a0b59a332044898f"
+          }
+        },
+        {
+          "client_id": "527468162306-m77vtlkevpa42hf41arcodjmcio5fs85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlyyd9RmWU1zSD0-Mq9vrJ7-kfBozEgUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527468162306-m77vtlkevpa42hf41arcodjmcio5fs85.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

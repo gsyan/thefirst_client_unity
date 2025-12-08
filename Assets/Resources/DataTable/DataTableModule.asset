@@ -1,0 +1,2756 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a3c077bacc840a4fb101e0ac3fdd056, type: 3}
+  m_Name: DataTableModule
+  m_EditorClassIdentifier: Assembly-CSharp::DataTableModule
+  bodyGroups:
+  - subType: 1
+    modules:
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.1
+      m_subType: 1
+      m_style: 1
+      m_level: 1
+      m_health: 150
+      m_cargoCapacity: 75
+      m_upgradeMoneyCost: 100
+      m_upgradeMineralCost: 50
+      m_description: Battle-class hull module level 1
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.2
+      m_subType: 1
+      m_style: 1
+      m_level: 2
+      m_health: 200
+      m_cargoCapacity: 100
+      m_upgradeMoneyCost: 200
+      m_upgradeMineralCost: 100
+      m_description: Battle-class hull module level 2
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.3
+      m_subType: 1
+      m_style: 1
+      m_level: 3
+      m_health: 250
+      m_cargoCapacity: 125
+      m_upgradeMoneyCost: 300
+      m_upgradeMineralCost: 150
+      m_description: Battle-class hull module level 3
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.4
+      m_subType: 1
+      m_style: 1
+      m_level: 4
+      m_health: 300
+      m_cargoCapacity: 150
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Battle-class hull module level 4
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.5
+      m_subType: 1
+      m_style: 1
+      m_level: 5
+      m_health: 350
+      m_cargoCapacity: 175
+      m_upgradeMoneyCost: 500
+      m_upgradeMineralCost: 250
+      m_description: Battle-class hull module level 5
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.6
+      m_subType: 1
+      m_style: 1
+      m_level: 6
+      m_health: 400
+      m_cargoCapacity: 200
+      m_upgradeMoneyCost: 600
+      m_upgradeMineralCost: 300
+      m_description: Battle-class hull module level 6
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.7
+      m_subType: 1
+      m_style: 1
+      m_level: 7
+      m_health: 450
+      m_cargoCapacity: 225
+      m_upgradeMoneyCost: 700
+      m_upgradeMineralCost: 350
+      m_description: Battle-class hull module level 7
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.8
+      m_subType: 1
+      m_style: 1
+      m_level: 8
+      m_health: 500
+      m_cargoCapacity: 250
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Battle-class hull module level 8
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.9
+      m_subType: 1
+      m_style: 1
+      m_level: 9
+      m_health: 550
+      m_cargoCapacity: 275
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Battle-class hull module level 9
+    - m_moduleType: 0
+      m_name: Battle Hull Lv.10
+      m_subType: 1
+      m_style: 1
+      m_level: 10
+      m_health: 600
+      m_cargoCapacity: 300
+      m_upgradeMoneyCost: 1000
+      m_upgradeMineralCost: 500
+      m_description: Battle-class hull module level 10
+  - subType: 2
+    modules:
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.1
+      m_subType: 2
+      m_style: 1
+      m_level: 1
+      m_health: 150
+      m_cargoCapacity: 75
+      m_upgradeMoneyCost: 100
+      m_upgradeMineralCost: 50
+      m_description: Aircraft-class hull module level 1
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.2
+      m_subType: 2
+      m_style: 1
+      m_level: 2
+      m_health: 200
+      m_cargoCapacity: 100
+      m_upgradeMoneyCost: 200
+      m_upgradeMineralCost: 100
+      m_description: Aircraft-class hull module level 2
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.3
+      m_subType: 2
+      m_style: 1
+      m_level: 3
+      m_health: 250
+      m_cargoCapacity: 125
+      m_upgradeMoneyCost: 300
+      m_upgradeMineralCost: 150
+      m_description: Aircraft-class hull module level 3
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.4
+      m_subType: 2
+      m_style: 1
+      m_level: 4
+      m_health: 300
+      m_cargoCapacity: 150
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Aircraft-class hull module level 4
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.5
+      m_subType: 2
+      m_style: 1
+      m_level: 5
+      m_health: 350
+      m_cargoCapacity: 175
+      m_upgradeMoneyCost: 500
+      m_upgradeMineralCost: 250
+      m_description: Aircraft-class hull module level 5
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.6
+      m_subType: 2
+      m_style: 1
+      m_level: 6
+      m_health: 400
+      m_cargoCapacity: 200
+      m_upgradeMoneyCost: 600
+      m_upgradeMineralCost: 300
+      m_description: Aircraft-class hull module level 6
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.7
+      m_subType: 2
+      m_style: 1
+      m_level: 7
+      m_health: 450
+      m_cargoCapacity: 225
+      m_upgradeMoneyCost: 700
+      m_upgradeMineralCost: 350
+      m_description: Aircraft-class hull module level 7
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.8
+      m_subType: 2
+      m_style: 1
+      m_level: 8
+      m_health: 500
+      m_cargoCapacity: 250
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Aircraft-class hull module level 8
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.9
+      m_subType: 2
+      m_style: 1
+      m_level: 9
+      m_health: 550
+      m_cargoCapacity: 275
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Aircraft-class hull module level 9
+    - m_moduleType: 0
+      m_name: Aircraft Hull Lv.10
+      m_subType: 2
+      m_style: 1
+      m_level: 10
+      m_health: 600
+      m_cargoCapacity: 300
+      m_upgradeMoneyCost: 1000
+      m_upgradeMineralCost: 500
+      m_description: Aircraft-class hull module level 10
+  - subType: 3
+    modules:
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.1
+      m_subType: 3
+      m_style: 1
+      m_level: 1
+      m_health: 150
+      m_cargoCapacity: 75
+      m_upgradeMoneyCost: 100
+      m_upgradeMineralCost: 50
+      m_description: Scout-class hull module level 1
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.2
+      m_subType: 3
+      m_style: 1
+      m_level: 2
+      m_health: 200
+      m_cargoCapacity: 100
+      m_upgradeMoneyCost: 200
+      m_upgradeMineralCost: 100
+      m_description: Scout-class hull module level 2
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.3
+      m_subType: 3
+      m_style: 1
+      m_level: 3
+      m_health: 250
+      m_cargoCapacity: 125
+      m_upgradeMoneyCost: 300
+      m_upgradeMineralCost: 150
+      m_description: Scout-class hull module level 3
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.4
+      m_subType: 3
+      m_style: 1
+      m_level: 4
+      m_health: 300
+      m_cargoCapacity: 150
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Scout-class hull module level 4
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.5
+      m_subType: 3
+      m_style: 1
+      m_level: 5
+      m_health: 350
+      m_cargoCapacity: 175
+      m_upgradeMoneyCost: 500
+      m_upgradeMineralCost: 250
+      m_description: Scout-class hull module level 5
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.6
+      m_subType: 3
+      m_style: 1
+      m_level: 6
+      m_health: 400
+      m_cargoCapacity: 200
+      m_upgradeMoneyCost: 600
+      m_upgradeMineralCost: 300
+      m_description: Scout-class hull module level 6
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.7
+      m_subType: 3
+      m_style: 1
+      m_level: 7
+      m_health: 450
+      m_cargoCapacity: 225
+      m_upgradeMoneyCost: 700
+      m_upgradeMineralCost: 350
+      m_description: Scout-class hull module level 7
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.8
+      m_subType: 3
+      m_style: 1
+      m_level: 8
+      m_health: 500
+      m_cargoCapacity: 250
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Scout-class hull module level 8
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.9
+      m_subType: 3
+      m_style: 1
+      m_level: 9
+      m_health: 550
+      m_cargoCapacity: 275
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Scout-class hull module level 9
+    - m_moduleType: 0
+      m_name: Scout Hull Lv.10
+      m_subType: 3
+      m_style: 1
+      m_level: 10
+      m_health: 600
+      m_cargoCapacity: 300
+      m_upgradeMoneyCost: 1000
+      m_upgradeMineralCost: 500
+      m_description: Scout-class hull module level 10
+  - subType: 4
+    modules:
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.1
+      m_subType: 4
+      m_style: 1
+      m_level: 1
+      m_health: 150
+      m_cargoCapacity: 75
+      m_upgradeMoneyCost: 100
+      m_upgradeMineralCost: 50
+      m_description: Repair-class hull module level 1
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.2
+      m_subType: 4
+      m_style: 1
+      m_level: 2
+      m_health: 200
+      m_cargoCapacity: 100
+      m_upgradeMoneyCost: 200
+      m_upgradeMineralCost: 100
+      m_description: Repair-class hull module level 2
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.3
+      m_subType: 4
+      m_style: 1
+      m_level: 3
+      m_health: 250
+      m_cargoCapacity: 125
+      m_upgradeMoneyCost: 300
+      m_upgradeMineralCost: 150
+      m_description: Repair-class hull module level 3
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.4
+      m_subType: 4
+      m_style: 1
+      m_level: 4
+      m_health: 300
+      m_cargoCapacity: 150
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Repair-class hull module level 4
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.5
+      m_subType: 4
+      m_style: 1
+      m_level: 5
+      m_health: 350
+      m_cargoCapacity: 175
+      m_upgradeMoneyCost: 500
+      m_upgradeMineralCost: 250
+      m_description: Repair-class hull module level 5
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.6
+      m_subType: 4
+      m_style: 1
+      m_level: 6
+      m_health: 400
+      m_cargoCapacity: 200
+      m_upgradeMoneyCost: 600
+      m_upgradeMineralCost: 300
+      m_description: Repair-class hull module level 6
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.7
+      m_subType: 4
+      m_style: 1
+      m_level: 7
+      m_health: 450
+      m_cargoCapacity: 225
+      m_upgradeMoneyCost: 700
+      m_upgradeMineralCost: 350
+      m_description: Repair-class hull module level 7
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.8
+      m_subType: 4
+      m_style: 1
+      m_level: 8
+      m_health: 500
+      m_cargoCapacity: 250
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Repair-class hull module level 8
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.9
+      m_subType: 4
+      m_style: 1
+      m_level: 9
+      m_health: 550
+      m_cargoCapacity: 275
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Repair-class hull module level 9
+    - m_moduleType: 0
+      m_name: Repair Hull Lv.10
+      m_subType: 4
+      m_style: 1
+      m_level: 10
+      m_health: 600
+      m_cargoCapacity: 300
+      m_upgradeMoneyCost: 1000
+      m_upgradeMineralCost: 500
+      m_description: Repair-class hull module level 10
+  engineGroups:
+  - subType: 1
+    modules:
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.1
+      m_subType: 1
+      m_style: 1
+      m_level: 1
+      m_health: 40
+      m_movementSpeed: 3.5
+      m_rotationSpeed: 2.3
+      m_upgradeMoneyCost: 90
+      m_upgradeMineralCost: 45
+      m_description: Standard propulsion system level 1
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.2
+      m_subType: 1
+      m_style: 1
+      m_level: 2
+      m_health: 50
+      m_movementSpeed: 4
+      m_rotationSpeed: 2.6
+      m_upgradeMoneyCost: 180
+      m_upgradeMineralCost: 90
+      m_description: Standard propulsion system level 2
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.3
+      m_subType: 1
+      m_style: 1
+      m_level: 3
+      m_health: 60
+      m_movementSpeed: 4.5
+      m_rotationSpeed: 2.9
+      m_upgradeMoneyCost: 270
+      m_upgradeMineralCost: 135
+      m_description: Standard propulsion system level 3
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.4
+      m_subType: 1
+      m_style: 1
+      m_level: 4
+      m_health: 70
+      m_movementSpeed: 5
+      m_rotationSpeed: 3.2
+      m_upgradeMoneyCost: 360
+      m_upgradeMineralCost: 180
+      m_description: Standard propulsion system level 4
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.5
+      m_subType: 1
+      m_style: 1
+      m_level: 5
+      m_health: 80
+      m_movementSpeed: 5.5
+      m_rotationSpeed: 3.5
+      m_upgradeMoneyCost: 450
+      m_upgradeMineralCost: 225
+      m_description: Standard propulsion system level 5
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.6
+      m_subType: 1
+      m_style: 1
+      m_level: 6
+      m_health: 90
+      m_movementSpeed: 6
+      m_rotationSpeed: 3.8000002
+      m_upgradeMoneyCost: 540
+      m_upgradeMineralCost: 270
+      m_description: Standard propulsion system level 6
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.7
+      m_subType: 1
+      m_style: 1
+      m_level: 7
+      m_health: 100
+      m_movementSpeed: 6.5
+      m_rotationSpeed: 4.1
+      m_upgradeMoneyCost: 630
+      m_upgradeMineralCost: 315
+      m_description: Standard propulsion system level 7
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.8
+      m_subType: 1
+      m_style: 1
+      m_level: 8
+      m_health: 110
+      m_movementSpeed: 7
+      m_rotationSpeed: 4.4
+      m_upgradeMoneyCost: 720
+      m_upgradeMineralCost: 360
+      m_description: Standard propulsion system level 8
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.9
+      m_subType: 1
+      m_style: 1
+      m_level: 9
+      m_health: 120
+      m_movementSpeed: 7.5
+      m_rotationSpeed: 4.7000003
+      m_upgradeMoneyCost: 810
+      m_upgradeMineralCost: 405
+      m_description: Standard propulsion system level 9
+    - m_moduleType: 0
+      m_name: Standard Engine Lv.10
+      m_subType: 1
+      m_style: 1
+      m_level: 10
+      m_health: 130
+      m_movementSpeed: 8
+      m_rotationSpeed: 5
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Standard propulsion system level 10
+  - subType: 2
+    modules:
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.1
+      m_subType: 2
+      m_style: 1
+      m_level: 1
+      m_health: 40
+      m_movementSpeed: 3.5
+      m_rotationSpeed: 2.3
+      m_upgradeMoneyCost: 90
+      m_upgradeMineralCost: 45
+      m_description: Booster propulsion system level 1
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.2
+      m_subType: 2
+      m_style: 1
+      m_level: 2
+      m_health: 50
+      m_movementSpeed: 4
+      m_rotationSpeed: 2.6
+      m_upgradeMoneyCost: 180
+      m_upgradeMineralCost: 90
+      m_description: Booster propulsion system level 2
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.3
+      m_subType: 2
+      m_style: 1
+      m_level: 3
+      m_health: 60
+      m_movementSpeed: 4.5
+      m_rotationSpeed: 2.9
+      m_upgradeMoneyCost: 270
+      m_upgradeMineralCost: 135
+      m_description: Booster propulsion system level 3
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.4
+      m_subType: 2
+      m_style: 1
+      m_level: 4
+      m_health: 70
+      m_movementSpeed: 5
+      m_rotationSpeed: 3.2
+      m_upgradeMoneyCost: 360
+      m_upgradeMineralCost: 180
+      m_description: Booster propulsion system level 4
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.5
+      m_subType: 2
+      m_style: 1
+      m_level: 5
+      m_health: 80
+      m_movementSpeed: 5.5
+      m_rotationSpeed: 3.5
+      m_upgradeMoneyCost: 450
+      m_upgradeMineralCost: 225
+      m_description: Booster propulsion system level 5
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.6
+      m_subType: 2
+      m_style: 1
+      m_level: 6
+      m_health: 90
+      m_movementSpeed: 6
+      m_rotationSpeed: 3.8000002
+      m_upgradeMoneyCost: 540
+      m_upgradeMineralCost: 270
+      m_description: Booster propulsion system level 6
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.7
+      m_subType: 2
+      m_style: 1
+      m_level: 7
+      m_health: 100
+      m_movementSpeed: 6.5
+      m_rotationSpeed: 4.1
+      m_upgradeMoneyCost: 630
+      m_upgradeMineralCost: 315
+      m_description: Booster propulsion system level 7
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.8
+      m_subType: 2
+      m_style: 1
+      m_level: 8
+      m_health: 110
+      m_movementSpeed: 7
+      m_rotationSpeed: 4.4
+      m_upgradeMoneyCost: 720
+      m_upgradeMineralCost: 360
+      m_description: Booster propulsion system level 8
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.9
+      m_subType: 2
+      m_style: 1
+      m_level: 9
+      m_health: 120
+      m_movementSpeed: 7.5
+      m_rotationSpeed: 4.7000003
+      m_upgradeMoneyCost: 810
+      m_upgradeMineralCost: 405
+      m_description: Booster propulsion system level 9
+    - m_moduleType: 0
+      m_name: Booster Engine Lv.10
+      m_subType: 2
+      m_style: 1
+      m_level: 10
+      m_health: 130
+      m_movementSpeed: 8
+      m_rotationSpeed: 5
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Booster propulsion system level 10
+  - subType: 3
+    modules:
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.1
+      m_subType: 3
+      m_style: 1
+      m_level: 1
+      m_health: 40
+      m_movementSpeed: 3.5
+      m_rotationSpeed: 2.3
+      m_upgradeMoneyCost: 90
+      m_upgradeMineralCost: 45
+      m_description: Warp propulsion system level 1
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.2
+      m_subType: 3
+      m_style: 1
+      m_level: 2
+      m_health: 50
+      m_movementSpeed: 4
+      m_rotationSpeed: 2.6
+      m_upgradeMoneyCost: 180
+      m_upgradeMineralCost: 90
+      m_description: Warp propulsion system level 2
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.3
+      m_subType: 3
+      m_style: 1
+      m_level: 3
+      m_health: 60
+      m_movementSpeed: 4.5
+      m_rotationSpeed: 2.9
+      m_upgradeMoneyCost: 270
+      m_upgradeMineralCost: 135
+      m_description: Warp propulsion system level 3
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.4
+      m_subType: 3
+      m_style: 1
+      m_level: 4
+      m_health: 70
+      m_movementSpeed: 5
+      m_rotationSpeed: 3.2
+      m_upgradeMoneyCost: 360
+      m_upgradeMineralCost: 180
+      m_description: Warp propulsion system level 4
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.5
+      m_subType: 3
+      m_style: 1
+      m_level: 5
+      m_health: 80
+      m_movementSpeed: 5.5
+      m_rotationSpeed: 3.5
+      m_upgradeMoneyCost: 450
+      m_upgradeMineralCost: 225
+      m_description: Warp propulsion system level 5
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.6
+      m_subType: 3
+      m_style: 1
+      m_level: 6
+      m_health: 90
+      m_movementSpeed: 6
+      m_rotationSpeed: 3.8000002
+      m_upgradeMoneyCost: 540
+      m_upgradeMineralCost: 270
+      m_description: Warp propulsion system level 6
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.7
+      m_subType: 3
+      m_style: 1
+      m_level: 7
+      m_health: 100
+      m_movementSpeed: 6.5
+      m_rotationSpeed: 4.1
+      m_upgradeMoneyCost: 630
+      m_upgradeMineralCost: 315
+      m_description: Warp propulsion system level 7
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.8
+      m_subType: 3
+      m_style: 1
+      m_level: 8
+      m_health: 110
+      m_movementSpeed: 7
+      m_rotationSpeed: 4.4
+      m_upgradeMoneyCost: 720
+      m_upgradeMineralCost: 360
+      m_description: Warp propulsion system level 8
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.9
+      m_subType: 3
+      m_style: 1
+      m_level: 9
+      m_health: 120
+      m_movementSpeed: 7.5
+      m_rotationSpeed: 4.7000003
+      m_upgradeMoneyCost: 810
+      m_upgradeMineralCost: 405
+      m_description: Warp propulsion system level 9
+    - m_moduleType: 0
+      m_name: Warp Engine Lv.10
+      m_subType: 3
+      m_style: 1
+      m_level: 10
+      m_health: 130
+      m_movementSpeed: 8
+      m_rotationSpeed: 5
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Warp propulsion system level 10
+  weaponGroups:
+  - subType: 1
+    modules:
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.1
+      m_subType: 1
+      m_style: 1
+      m_level: 1
+      m_health: 40
+      m_attackFireCount: 1
+      m_attackPower: 15
+      m_attackCoolTime: 1.95
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 80
+      m_upgradeMineralCost: 40
+      m_description: Beam weapon system level 1
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.2
+      m_subType: 1
+      m_style: 1
+      m_level: 2
+      m_health: 50
+      m_attackFireCount: 1
+      m_attackPower: 20
+      m_attackCoolTime: 1.9
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 160
+      m_upgradeMineralCost: 80
+      m_description: Beam weapon system level 2
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.3
+      m_subType: 1
+      m_style: 1
+      m_level: 3
+      m_health: 60
+      m_attackFireCount: 1
+      m_attackPower: 25
+      m_attackCoolTime: 1.85
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 240
+      m_upgradeMineralCost: 120
+      m_description: Beam weapon system level 3
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.4
+      m_subType: 1
+      m_style: 1
+      m_level: 4
+      m_health: 70
+      m_attackFireCount: 1
+      m_attackPower: 30
+      m_attackCoolTime: 1.8
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 320
+      m_upgradeMineralCost: 160
+      m_description: Beam weapon system level 4
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.5
+      m_subType: 1
+      m_style: 1
+      m_level: 5
+      m_health: 80
+      m_attackFireCount: 2
+      m_attackPower: 35
+      m_attackCoolTime: 1.75
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Beam weapon system level 5
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.6
+      m_subType: 1
+      m_style: 1
+      m_level: 6
+      m_health: 90
+      m_attackFireCount: 2
+      m_attackPower: 40
+      m_attackCoolTime: 1.7
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 480
+      m_upgradeMineralCost: 240
+      m_description: Beam weapon system level 6
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.7
+      m_subType: 1
+      m_style: 1
+      m_level: 7
+      m_health: 100
+      m_attackFireCount: 2
+      m_attackPower: 45
+      m_attackCoolTime: 1.65
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 560
+      m_upgradeMineralCost: 280
+      m_description: Beam weapon system level 7
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.8
+      m_subType: 1
+      m_style: 1
+      m_level: 8
+      m_health: 110
+      m_attackFireCount: 2
+      m_attackPower: 50
+      m_attackCoolTime: 1.6
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 640
+      m_upgradeMineralCost: 320
+      m_description: Beam weapon system level 8
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.9
+      m_subType: 1
+      m_style: 1
+      m_level: 9
+      m_health: 120
+      m_attackFireCount: 2
+      m_attackPower: 55
+      m_attackCoolTime: 1.55
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 720
+      m_upgradeMineralCost: 360
+      m_description: Beam weapon system level 9
+    - m_moduleType: 0
+      m_name: Beam Weapon Lv.10
+      m_subType: 1
+      m_style: 1
+      m_level: 10
+      m_health: 130
+      m_attackFireCount: 3
+      m_attackPower: 60
+      m_attackCoolTime: 1.5
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Beam weapon system level 10
+  - subType: 2
+    modules:
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.1
+      m_subType: 2
+      m_style: 1
+      m_level: 1
+      m_health: 40
+      m_attackFireCount: 1
+      m_attackPower: 15
+      m_attackCoolTime: 1.95
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 80
+      m_upgradeMineralCost: 40
+      m_description: Missile weapon system level 1
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.2
+      m_subType: 2
+      m_style: 1
+      m_level: 2
+      m_health: 50
+      m_attackFireCount: 1
+      m_attackPower: 20
+      m_attackCoolTime: 1.9
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 160
+      m_upgradeMineralCost: 80
+      m_description: Missile weapon system level 2
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.3
+      m_subType: 2
+      m_style: 1
+      m_level: 3
+      m_health: 60
+      m_attackFireCount: 1
+      m_attackPower: 25
+      m_attackCoolTime: 1.85
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 240
+      m_upgradeMineralCost: 120
+      m_description: Missile weapon system level 3
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.4
+      m_subType: 2
+      m_style: 1
+      m_level: 4
+      m_health: 70
+      m_attackFireCount: 1
+      m_attackPower: 30
+      m_attackCoolTime: 1.8
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 320
+      m_upgradeMineralCost: 160
+      m_description: Missile weapon system level 4
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.5
+      m_subType: 2
+      m_style: 1
+      m_level: 5
+      m_health: 80
+      m_attackFireCount: 2
+      m_attackPower: 35
+      m_attackCoolTime: 1.75
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Missile weapon system level 5
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.6
+      m_subType: 2
+      m_style: 1
+      m_level: 6
+      m_health: 90
+      m_attackFireCount: 2
+      m_attackPower: 40
+      m_attackCoolTime: 1.7
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 480
+      m_upgradeMineralCost: 240
+      m_description: Missile weapon system level 6
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.7
+      m_subType: 2
+      m_style: 1
+      m_level: 7
+      m_health: 100
+      m_attackFireCount: 2
+      m_attackPower: 45
+      m_attackCoolTime: 1.65
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 560
+      m_upgradeMineralCost: 280
+      m_description: Missile weapon system level 7
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.8
+      m_subType: 2
+      m_style: 1
+      m_level: 8
+      m_health: 110
+      m_attackFireCount: 2
+      m_attackPower: 50
+      m_attackCoolTime: 1.6
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 640
+      m_upgradeMineralCost: 320
+      m_description: Missile weapon system level 8
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.9
+      m_subType: 2
+      m_style: 1
+      m_level: 9
+      m_health: 120
+      m_attackFireCount: 2
+      m_attackPower: 55
+      m_attackCoolTime: 1.55
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 720
+      m_upgradeMineralCost: 360
+      m_description: Missile weapon system level 9
+    - m_moduleType: 0
+      m_name: Missile Weapon Lv.10
+      m_subType: 2
+      m_style: 1
+      m_level: 10
+      m_health: 130
+      m_attackFireCount: 3
+      m_attackPower: 60
+      m_attackCoolTime: 1.5
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Missile weapon system level 10
+  - subType: 3
+    modules:
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.1
+      m_subType: 3
+      m_style: 1
+      m_level: 1
+      m_health: 40
+      m_attackFireCount: 1
+      m_attackPower: 15
+      m_attackCoolTime: 1.95
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 80
+      m_upgradeMineralCost: 40
+      m_description: Cannon weapon system level 1
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.2
+      m_subType: 3
+      m_style: 1
+      m_level: 2
+      m_health: 50
+      m_attackFireCount: 1
+      m_attackPower: 20
+      m_attackCoolTime: 1.9
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 160
+      m_upgradeMineralCost: 80
+      m_description: Cannon weapon system level 2
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.3
+      m_subType: 3
+      m_style: 1
+      m_level: 3
+      m_health: 60
+      m_attackFireCount: 1
+      m_attackPower: 25
+      m_attackCoolTime: 1.85
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 240
+      m_upgradeMineralCost: 120
+      m_description: Cannon weapon system level 3
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.4
+      m_subType: 3
+      m_style: 1
+      m_level: 4
+      m_health: 70
+      m_attackFireCount: 1
+      m_attackPower: 30
+      m_attackCoolTime: 1.8
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 320
+      m_upgradeMineralCost: 160
+      m_description: Cannon weapon system level 4
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.5
+      m_subType: 3
+      m_style: 1
+      m_level: 5
+      m_health: 80
+      m_attackFireCount: 2
+      m_attackPower: 35
+      m_attackCoolTime: 1.75
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Cannon weapon system level 5
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.6
+      m_subType: 3
+      m_style: 1
+      m_level: 6
+      m_health: 90
+      m_attackFireCount: 2
+      m_attackPower: 40
+      m_attackCoolTime: 1.7
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 480
+      m_upgradeMineralCost: 240
+      m_description: Cannon weapon system level 6
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.7
+      m_subType: 3
+      m_style: 1
+      m_level: 7
+      m_health: 100
+      m_attackFireCount: 2
+      m_attackPower: 45
+      m_attackCoolTime: 1.65
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 560
+      m_upgradeMineralCost: 280
+      m_description: Cannon weapon system level 7
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.8
+      m_subType: 3
+      m_style: 1
+      m_level: 8
+      m_health: 110
+      m_attackFireCount: 2
+      m_attackPower: 50
+      m_attackCoolTime: 1.6
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 640
+      m_upgradeMineralCost: 320
+      m_description: Cannon weapon system level 8
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.9
+      m_subType: 3
+      m_style: 1
+      m_level: 9
+      m_health: 120
+      m_attackFireCount: 2
+      m_attackPower: 55
+      m_attackCoolTime: 1.55
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 720
+      m_upgradeMineralCost: 360
+      m_description: Cannon weapon system level 9
+    - m_moduleType: 0
+      m_name: Cannon Weapon Lv.10
+      m_subType: 3
+      m_style: 1
+      m_level: 10
+      m_health: 130
+      m_attackFireCount: 3
+      m_attackPower: 60
+      m_attackCoolTime: 1.5
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Cannon weapon system level 10
+  - subType: 4
+    modules:
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.1
+      m_subType: 4
+      m_style: 1
+      m_level: 1
+      m_health: 40
+      m_attackFireCount: 1
+      m_attackPower: 15
+      m_attackCoolTime: 1.95
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 80
+      m_upgradeMineralCost: 40
+      m_description: Torpedo weapon system level 1
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.2
+      m_subType: 4
+      m_style: 1
+      m_level: 2
+      m_health: 50
+      m_attackFireCount: 1
+      m_attackPower: 20
+      m_attackCoolTime: 1.9
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 160
+      m_upgradeMineralCost: 80
+      m_description: Torpedo weapon system level 2
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.3
+      m_subType: 4
+      m_style: 1
+      m_level: 3
+      m_health: 60
+      m_attackFireCount: 1
+      m_attackPower: 25
+      m_attackCoolTime: 1.85
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 240
+      m_upgradeMineralCost: 120
+      m_description: Torpedo weapon system level 3
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.4
+      m_subType: 4
+      m_style: 1
+      m_level: 4
+      m_health: 70
+      m_attackFireCount: 1
+      m_attackPower: 30
+      m_attackCoolTime: 1.8
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 320
+      m_upgradeMineralCost: 160
+      m_description: Torpedo weapon system level 4
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.5
+      m_subType: 4
+      m_style: 1
+      m_level: 5
+      m_health: 80
+      m_attackFireCount: 2
+      m_attackPower: 35
+      m_attackCoolTime: 1.75
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Torpedo weapon system level 5
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.6
+      m_subType: 4
+      m_style: 1
+      m_level: 6
+      m_health: 90
+      m_attackFireCount: 2
+      m_attackPower: 40
+      m_attackCoolTime: 1.7
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 480
+      m_upgradeMineralCost: 240
+      m_description: Torpedo weapon system level 6
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.7
+      m_subType: 4
+      m_style: 1
+      m_level: 7
+      m_health: 100
+      m_attackFireCount: 2
+      m_attackPower: 45
+      m_attackCoolTime: 1.65
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 560
+      m_upgradeMineralCost: 280
+      m_description: Torpedo weapon system level 7
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.8
+      m_subType: 4
+      m_style: 1
+      m_level: 8
+      m_health: 110
+      m_attackFireCount: 2
+      m_attackPower: 50
+      m_attackCoolTime: 1.6
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 640
+      m_upgradeMineralCost: 320
+      m_description: Torpedo weapon system level 8
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.9
+      m_subType: 4
+      m_style: 1
+      m_level: 9
+      m_health: 120
+      m_attackFireCount: 2
+      m_attackPower: 55
+      m_attackCoolTime: 1.55
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 720
+      m_upgradeMineralCost: 360
+      m_description: Torpedo weapon system level 9
+    - m_moduleType: 0
+      m_name: Torpedo Weapon Lv.10
+      m_subType: 4
+      m_style: 1
+      m_level: 10
+      m_health: 130
+      m_attackFireCount: 3
+      m_attackPower: 60
+      m_attackCoolTime: 1.5
+      m_projectileLength: 5
+      m_projectileWidth: 0.1
+      m_projectileSpeed: 20
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Torpedo weapon system level 10
+  hangerGroups:
+  - subType: 1
+    modules:
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.1
+      m_subType: 1
+      m_style: 1
+      m_level: 1
+      m_health: 55
+      m_hangarCapability: 5
+      m_scoutCapability: 3
+      m_launchCool: 2.85
+      m_launchCount: 1
+      m_maintenanceTime: 14.5
+      m_aircraftHealth: 40
+      m_aircraftAttackPower: 8
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 100
+      m_upgradeMineralCost: 50
+      m_description: Standard hanger bay level 1
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.2
+      m_subType: 1
+      m_style: 1
+      m_level: 2
+      m_health: 70
+      m_hangarCapability: 8
+      m_scoutCapability: 5
+      m_launchCool: 2.7
+      m_launchCount: 1
+      m_maintenanceTime: 14
+      m_aircraftHealth: 50
+      m_aircraftAttackPower: 11
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 200
+      m_upgradeMineralCost: 100
+      m_description: Standard hanger bay level 2
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.3
+      m_subType: 1
+      m_style: 1
+      m_level: 3
+      m_health: 85
+      m_hangarCapability: 11
+      m_scoutCapability: 7
+      m_launchCool: 2.55
+      m_launchCount: 1
+      m_maintenanceTime: 13.5
+      m_aircraftHealth: 60
+      m_aircraftAttackPower: 14
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 300
+      m_upgradeMineralCost: 150
+      m_description: Standard hanger bay level 3
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.4
+      m_subType: 1
+      m_style: 1
+      m_level: 4
+      m_health: 100
+      m_hangarCapability: 14
+      m_scoutCapability: 9
+      m_launchCool: 2.4
+      m_launchCount: 2
+      m_maintenanceTime: 13
+      m_aircraftHealth: 70
+      m_aircraftAttackPower: 17
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Standard hanger bay level 4
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.5
+      m_subType: 1
+      m_style: 1
+      m_level: 5
+      m_health: 115
+      m_hangarCapability: 17
+      m_scoutCapability: 11
+      m_launchCool: 2.25
+      m_launchCount: 2
+      m_maintenanceTime: 12.5
+      m_aircraftHealth: 80
+      m_aircraftAttackPower: 20
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 500
+      m_upgradeMineralCost: 250
+      m_description: Standard hanger bay level 5
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.6
+      m_subType: 1
+      m_style: 1
+      m_level: 6
+      m_health: 130
+      m_hangarCapability: 20
+      m_scoutCapability: 13
+      m_launchCool: 2.1
+      m_launchCount: 2
+      m_maintenanceTime: 12
+      m_aircraftHealth: 90
+      m_aircraftAttackPower: 23
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 600
+      m_upgradeMineralCost: 300
+      m_description: Standard hanger bay level 6
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.7
+      m_subType: 1
+      m_style: 1
+      m_level: 7
+      m_health: 145
+      m_hangarCapability: 23
+      m_scoutCapability: 15
+      m_launchCool: 1.9499999
+      m_launchCount: 2
+      m_maintenanceTime: 11.5
+      m_aircraftHealth: 100
+      m_aircraftAttackPower: 26
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 700
+      m_upgradeMineralCost: 350
+      m_description: Standard hanger bay level 7
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.8
+      m_subType: 1
+      m_style: 1
+      m_level: 8
+      m_health: 160
+      m_hangarCapability: 26
+      m_scoutCapability: 17
+      m_launchCool: 1.8
+      m_launchCount: 3
+      m_maintenanceTime: 11
+      m_aircraftHealth: 110
+      m_aircraftAttackPower: 29
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Standard hanger bay level 8
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.9
+      m_subType: 1
+      m_style: 1
+      m_level: 9
+      m_health: 175
+      m_hangarCapability: 29
+      m_scoutCapability: 19
+      m_launchCool: 1.65
+      m_launchCount: 3
+      m_maintenanceTime: 10.5
+      m_aircraftHealth: 120
+      m_aircraftAttackPower: 32
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Standard hanger bay level 9
+    - m_moduleType: 0
+      m_name: Standard Hanger Lv.10
+      m_subType: 1
+      m_style: 1
+      m_level: 10
+      m_health: 190
+      m_hangarCapability: 32
+      m_scoutCapability: 21
+      m_launchCool: 1.5
+      m_launchCount: 3
+      m_maintenanceTime: 10
+      m_aircraftHealth: 130
+      m_aircraftAttackPower: 35
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 1000
+      m_upgradeMineralCost: 500
+      m_description: Standard hanger bay level 10
+  - subType: 2
+    modules:
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.1
+      m_subType: 2
+      m_style: 1
+      m_level: 1
+      m_health: 55
+      m_hangarCapability: 5
+      m_scoutCapability: 3
+      m_launchCool: 2.85
+      m_launchCount: 1
+      m_maintenanceTime: 14.5
+      m_aircraftHealth: 40
+      m_aircraftAttackPower: 8
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 100
+      m_upgradeMineralCost: 50
+      m_description: Advanced hanger bay level 1
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.2
+      m_subType: 2
+      m_style: 1
+      m_level: 2
+      m_health: 70
+      m_hangarCapability: 8
+      m_scoutCapability: 5
+      m_launchCool: 2.7
+      m_launchCount: 1
+      m_maintenanceTime: 14
+      m_aircraftHealth: 50
+      m_aircraftAttackPower: 11
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 200
+      m_upgradeMineralCost: 100
+      m_description: Advanced hanger bay level 2
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.3
+      m_subType: 2
+      m_style: 1
+      m_level: 3
+      m_health: 85
+      m_hangarCapability: 11
+      m_scoutCapability: 7
+      m_launchCool: 2.55
+      m_launchCount: 1
+      m_maintenanceTime: 13.5
+      m_aircraftHealth: 60
+      m_aircraftAttackPower: 14
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 300
+      m_upgradeMineralCost: 150
+      m_description: Advanced hanger bay level 3
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.4
+      m_subType: 2
+      m_style: 1
+      m_level: 4
+      m_health: 100
+      m_hangarCapability: 14
+      m_scoutCapability: 9
+      m_launchCool: 2.4
+      m_launchCount: 2
+      m_maintenanceTime: 13
+      m_aircraftHealth: 70
+      m_aircraftAttackPower: 17
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Advanced hanger bay level 4
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.5
+      m_subType: 2
+      m_style: 1
+      m_level: 5
+      m_health: 115
+      m_hangarCapability: 17
+      m_scoutCapability: 11
+      m_launchCool: 2.25
+      m_launchCount: 2
+      m_maintenanceTime: 12.5
+      m_aircraftHealth: 80
+      m_aircraftAttackPower: 20
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 500
+      m_upgradeMineralCost: 250
+      m_description: Advanced hanger bay level 5
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.6
+      m_subType: 2
+      m_style: 1
+      m_level: 6
+      m_health: 130
+      m_hangarCapability: 20
+      m_scoutCapability: 13
+      m_launchCool: 2.1
+      m_launchCount: 2
+      m_maintenanceTime: 12
+      m_aircraftHealth: 90
+      m_aircraftAttackPower: 23
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 600
+      m_upgradeMineralCost: 300
+      m_description: Advanced hanger bay level 6
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.7
+      m_subType: 2
+      m_style: 1
+      m_level: 7
+      m_health: 145
+      m_hangarCapability: 23
+      m_scoutCapability: 15
+      m_launchCool: 1.9499999
+      m_launchCount: 2
+      m_maintenanceTime: 11.5
+      m_aircraftHealth: 100
+      m_aircraftAttackPower: 26
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 700
+      m_upgradeMineralCost: 350
+      m_description: Advanced hanger bay level 7
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.8
+      m_subType: 2
+      m_style: 1
+      m_level: 8
+      m_health: 160
+      m_hangarCapability: 26
+      m_scoutCapability: 17
+      m_launchCool: 1.8
+      m_launchCount: 3
+      m_maintenanceTime: 11
+      m_aircraftHealth: 110
+      m_aircraftAttackPower: 29
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Advanced hanger bay level 8
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.9
+      m_subType: 2
+      m_style: 1
+      m_level: 9
+      m_health: 175
+      m_hangarCapability: 29
+      m_scoutCapability: 19
+      m_launchCool: 1.65
+      m_launchCount: 3
+      m_maintenanceTime: 10.5
+      m_aircraftHealth: 120
+      m_aircraftAttackPower: 32
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Advanced hanger bay level 9
+    - m_moduleType: 0
+      m_name: Advanced Hanger Lv.10
+      m_subType: 2
+      m_style: 1
+      m_level: 10
+      m_health: 190
+      m_hangarCapability: 32
+      m_scoutCapability: 21
+      m_launchCool: 1.5
+      m_launchCount: 3
+      m_maintenanceTime: 10
+      m_aircraftHealth: 130
+      m_aircraftAttackPower: 35
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 1000
+      m_upgradeMineralCost: 500
+      m_description: Advanced hanger bay level 10
+  - subType: 3
+    modules:
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.1
+      m_subType: 3
+      m_style: 1
+      m_level: 1
+      m_health: 55
+      m_hangarCapability: 5
+      m_scoutCapability: 3
+      m_launchCool: 2.85
+      m_launchCount: 1
+      m_maintenanceTime: 14.5
+      m_aircraftHealth: 40
+      m_aircraftAttackPower: 8
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 100
+      m_upgradeMineralCost: 50
+      m_description: Military hanger bay level 1
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.2
+      m_subType: 3
+      m_style: 1
+      m_level: 2
+      m_health: 70
+      m_hangarCapability: 8
+      m_scoutCapability: 5
+      m_launchCool: 2.7
+      m_launchCount: 1
+      m_maintenanceTime: 14
+      m_aircraftHealth: 50
+      m_aircraftAttackPower: 11
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 200
+      m_upgradeMineralCost: 100
+      m_description: Military hanger bay level 2
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.3
+      m_subType: 3
+      m_style: 1
+      m_level: 3
+      m_health: 85
+      m_hangarCapability: 11
+      m_scoutCapability: 7
+      m_launchCool: 2.55
+      m_launchCount: 1
+      m_maintenanceTime: 13.5
+      m_aircraftHealth: 60
+      m_aircraftAttackPower: 14
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 300
+      m_upgradeMineralCost: 150
+      m_description: Military hanger bay level 3
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.4
+      m_subType: 3
+      m_style: 1
+      m_level: 4
+      m_health: 100
+      m_hangarCapability: 14
+      m_scoutCapability: 9
+      m_launchCool: 2.4
+      m_launchCount: 2
+      m_maintenanceTime: 13
+      m_aircraftHealth: 70
+      m_aircraftAttackPower: 17
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 400
+      m_upgradeMineralCost: 200
+      m_description: Military hanger bay level 4
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.5
+      m_subType: 3
+      m_style: 1
+      m_level: 5
+      m_health: 115
+      m_hangarCapability: 17
+      m_scoutCapability: 11
+      m_launchCool: 2.25
+      m_launchCount: 2
+      m_maintenanceTime: 12.5
+      m_aircraftHealth: 80
+      m_aircraftAttackPower: 20
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 500
+      m_upgradeMineralCost: 250
+      m_description: Military hanger bay level 5
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.6
+      m_subType: 3
+      m_style: 1
+      m_level: 6
+      m_health: 130
+      m_hangarCapability: 20
+      m_scoutCapability: 13
+      m_launchCool: 2.1
+      m_launchCount: 2
+      m_maintenanceTime: 12
+      m_aircraftHealth: 90
+      m_aircraftAttackPower: 23
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 600
+      m_upgradeMineralCost: 300
+      m_description: Military hanger bay level 6
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.7
+      m_subType: 3
+      m_style: 1
+      m_level: 7
+      m_health: 145
+      m_hangarCapability: 23
+      m_scoutCapability: 15
+      m_launchCool: 1.9499999
+      m_launchCount: 2
+      m_maintenanceTime: 11.5
+      m_aircraftHealth: 100
+      m_aircraftAttackPower: 26
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 700
+      m_upgradeMineralCost: 350
+      m_description: Military hanger bay level 7
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.8
+      m_subType: 3
+      m_style: 1
+      m_level: 8
+      m_health: 160
+      m_hangarCapability: 26
+      m_scoutCapability: 17
+      m_launchCool: 1.8
+      m_launchCount: 3
+      m_maintenanceTime: 11
+      m_aircraftHealth: 110
+      m_aircraftAttackPower: 29
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 800
+      m_upgradeMineralCost: 400
+      m_description: Military hanger bay level 8
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.9
+      m_subType: 3
+      m_style: 1
+      m_level: 9
+      m_health: 175
+      m_hangarCapability: 29
+      m_scoutCapability: 19
+      m_launchCool: 1.65
+      m_launchCount: 3
+      m_maintenanceTime: 10.5
+      m_aircraftHealth: 120
+      m_aircraftAttackPower: 32
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 900
+      m_upgradeMineralCost: 450
+      m_description: Military hanger bay level 9
+    - m_moduleType: 0
+      m_name: Military Hanger Lv.10
+      m_subType: 3
+      m_style: 1
+      m_level: 10
+      m_health: 190
+      m_hangarCapability: 32
+      m_scoutCapability: 21
+      m_launchCool: 1.5
+      m_launchCount: 3
+      m_maintenanceTime: 10
+      m_aircraftHealth: 130
+      m_aircraftAttackPower: 35
+      m_aircraftAmmo: 10
+      m_upgradeMoneyCost: 1000
+      m_upgradeMineralCost: 500
+      m_description: Military hanger bay level 10
+  exportedJson: "{\r\n  \"modules\": {\r\n    \"1\": [\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Battle Hull Lv.1\",\r\n        \"m_subType\": 1,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n       
+    \"m_cargoCapacity\": 75.0,\r\n        \"m_upgradeMoneyCost\": 100,\r\n       
+    \"m_upgradeMineralCost\": 50,\r\n        \"m_description\": \"Battle-class hull
+    module level 1\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Battle Hull Lv.2\",\r\n        \"m_subType\": 1,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 2,\r\n        \"m_health\": 200.0,\r\n        \"m_cargoCapacity\":
+    100.0,\r\n        \"m_upgradeMoneyCost\": 200,\r\n        \"m_upgradeMineralCost\":
+    100,\r\n        \"m_description\": \"Battle-class hull module level 2\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Battle
+    Hull Lv.3\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 3,\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\":
+    125.0,\r\n        \"m_upgradeMoneyCost\": 300,\r\n        \"m_upgradeMineralCost\":
+    150,\r\n        \"m_description\": \"Battle-class hull module level 3\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Battle
+    Hull Lv.4\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 4,\r\n        \"m_health\": 300.0,\r\n        \"m_cargoCapacity\":
+    150.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n        \"m_upgradeMineralCost\":
+    200,\r\n        \"m_description\": \"Battle-class hull module level 4\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Battle
+    Hull Lv.5\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 5,\r\n        \"m_health\": 350.0,\r\n        \"m_cargoCapacity\":
+    175.0,\r\n        \"m_upgradeMoneyCost\": 500,\r\n        \"m_upgradeMineralCost\":
+    250,\r\n        \"m_description\": \"Battle-class hull module level 5\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Battle
+    Hull Lv.6\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\":
+    200.0,\r\n        \"m_upgradeMoneyCost\": 600,\r\n        \"m_upgradeMineralCost\":
+    300,\r\n        \"m_description\": \"Battle-class hull module level 6\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Battle
+    Hull Lv.7\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n        \"m_cargoCapacity\":
+    225.0,\r\n        \"m_upgradeMoneyCost\": 700,\r\n        \"m_upgradeMineralCost\":
+    350,\r\n        \"m_description\": \"Battle-class hull module level 7\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Battle
+    Hull Lv.8\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 8,\r\n        \"m_health\": 500.0,\r\n        \"m_cargoCapacity\":
+    250.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n        \"m_upgradeMineralCost\":
+    400,\r\n        \"m_description\": \"Battle-class hull module level 8\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Battle
+    Hull Lv.9\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 9,\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\":
+    275.0,\r\n        \"m_upgradeMoneyCost\": 900,\r\n        \"m_upgradeMineralCost\":
+    450,\r\n        \"m_description\": \"Battle-class hull module level 9\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Battle
+    Hull Lv.10\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 10,\r\n        \"m_health\": 600.0,\r\n        \"m_cargoCapacity\":
+    300.0,\r\n        \"m_upgradeMoneyCost\": 1000,\r\n        \"m_upgradeMineralCost\":
+    500,\r\n        \"m_description\": \"Battle-class hull module level 10\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.1\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n        \"m_cargoCapacity\":
+    75.0,\r\n        \"m_upgradeMoneyCost\": 100,\r\n        \"m_upgradeMineralCost\":
+    50,\r\n        \"m_description\": \"Aircraft-class hull module level 1\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.2\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 2,\r\n        \"m_health\": 200.0,\r\n        \"m_cargoCapacity\":
+    100.0,\r\n        \"m_upgradeMoneyCost\": 200,\r\n        \"m_upgradeMineralCost\":
+    100,\r\n        \"m_description\": \"Aircraft-class hull module level 2\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.3\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 3,\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\":
+    125.0,\r\n        \"m_upgradeMoneyCost\": 300,\r\n        \"m_upgradeMineralCost\":
+    150,\r\n        \"m_description\": \"Aircraft-class hull module level 3\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.4\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 4,\r\n        \"m_health\": 300.0,\r\n        \"m_cargoCapacity\":
+    150.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n        \"m_upgradeMineralCost\":
+    200,\r\n        \"m_description\": \"Aircraft-class hull module level 4\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.5\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 5,\r\n        \"m_health\": 350.0,\r\n        \"m_cargoCapacity\":
+    175.0,\r\n        \"m_upgradeMoneyCost\": 500,\r\n        \"m_upgradeMineralCost\":
+    250,\r\n        \"m_description\": \"Aircraft-class hull module level 5\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\":
+    200.0,\r\n        \"m_upgradeMoneyCost\": 600,\r\n        \"m_upgradeMineralCost\":
+    300,\r\n        \"m_description\": \"Aircraft-class hull module level 6\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.7\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n        \"m_cargoCapacity\":
+    225.0,\r\n        \"m_upgradeMoneyCost\": 700,\r\n        \"m_upgradeMineralCost\":
+    350,\r\n        \"m_description\": \"Aircraft-class hull module level 7\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.8\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 8,\r\n        \"m_health\": 500.0,\r\n        \"m_cargoCapacity\":
+    250.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n        \"m_upgradeMineralCost\":
+    400,\r\n        \"m_description\": \"Aircraft-class hull module level 8\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.9\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 9,\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\":
+    275.0,\r\n        \"m_upgradeMoneyCost\": 900,\r\n        \"m_upgradeMineralCost\":
+    450,\r\n        \"m_description\": \"Aircraft-class hull module level 9\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Aircraft
+    Hull Lv.10\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 10,\r\n        \"m_health\": 600.0,\r\n        \"m_cargoCapacity\":
+    300.0,\r\n        \"m_upgradeMoneyCost\": 1000,\r\n        \"m_upgradeMineralCost\":
+    500,\r\n        \"m_description\": \"Aircraft-class hull module level 10\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.1\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n        \"m_cargoCapacity\":
+    75.0,\r\n        \"m_upgradeMoneyCost\": 100,\r\n        \"m_upgradeMineralCost\":
+    50,\r\n        \"m_description\": \"Scout-class hull module level 1\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.2\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 2,\r\n        \"m_health\": 200.0,\r\n        \"m_cargoCapacity\":
+    100.0,\r\n        \"m_upgradeMoneyCost\": 200,\r\n        \"m_upgradeMineralCost\":
+    100,\r\n        \"m_description\": \"Scout-class hull module level 2\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.3\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 3,\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\":
+    125.0,\r\n        \"m_upgradeMoneyCost\": 300,\r\n        \"m_upgradeMineralCost\":
+    150,\r\n        \"m_description\": \"Scout-class hull module level 3\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.4\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 4,\r\n        \"m_health\": 300.0,\r\n        \"m_cargoCapacity\":
+    150.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n        \"m_upgradeMineralCost\":
+    200,\r\n        \"m_description\": \"Scout-class hull module level 4\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.5\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 5,\r\n        \"m_health\": 350.0,\r\n        \"m_cargoCapacity\":
+    175.0,\r\n        \"m_upgradeMoneyCost\": 500,\r\n        \"m_upgradeMineralCost\":
+    250,\r\n        \"m_description\": \"Scout-class hull module level 5\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\":
+    200.0,\r\n        \"m_upgradeMoneyCost\": 600,\r\n        \"m_upgradeMineralCost\":
+    300,\r\n        \"m_description\": \"Scout-class hull module level 6\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.7\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n        \"m_cargoCapacity\":
+    225.0,\r\n        \"m_upgradeMoneyCost\": 700,\r\n        \"m_upgradeMineralCost\":
+    350,\r\n        \"m_description\": \"Scout-class hull module level 7\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.8\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 8,\r\n        \"m_health\": 500.0,\r\n        \"m_cargoCapacity\":
+    250.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n        \"m_upgradeMineralCost\":
+    400,\r\n        \"m_description\": \"Scout-class hull module level 8\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.9\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 9,\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\":
+    275.0,\r\n        \"m_upgradeMoneyCost\": 900,\r\n        \"m_upgradeMineralCost\":
+    450,\r\n        \"m_description\": \"Scout-class hull module level 9\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Scout
+    Hull Lv.10\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 10,\r\n        \"m_health\": 600.0,\r\n        \"m_cargoCapacity\":
+    300.0,\r\n        \"m_upgradeMoneyCost\": 1000,\r\n        \"m_upgradeMineralCost\":
+    500,\r\n        \"m_description\": \"Scout-class hull module level 10\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.1\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n        \"m_cargoCapacity\":
+    75.0,\r\n        \"m_upgradeMoneyCost\": 100,\r\n        \"m_upgradeMineralCost\":
+    50,\r\n        \"m_description\": \"Repair-class hull module level 1\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.2\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 2,\r\n        \"m_health\": 200.0,\r\n        \"m_cargoCapacity\":
+    100.0,\r\n        \"m_upgradeMoneyCost\": 200,\r\n        \"m_upgradeMineralCost\":
+    100,\r\n        \"m_description\": \"Repair-class hull module level 2\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.3\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 3,\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\":
+    125.0,\r\n        \"m_upgradeMoneyCost\": 300,\r\n        \"m_upgradeMineralCost\":
+    150,\r\n        \"m_description\": \"Repair-class hull module level 3\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.4\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 4,\r\n        \"m_health\": 300.0,\r\n        \"m_cargoCapacity\":
+    150.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n        \"m_upgradeMineralCost\":
+    200,\r\n        \"m_description\": \"Repair-class hull module level 4\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.5\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 5,\r\n        \"m_health\": 350.0,\r\n        \"m_cargoCapacity\":
+    175.0,\r\n        \"m_upgradeMoneyCost\": 500,\r\n        \"m_upgradeMineralCost\":
+    250,\r\n        \"m_description\": \"Repair-class hull module level 5\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.6\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\":
+    200.0,\r\n        \"m_upgradeMoneyCost\": 600,\r\n        \"m_upgradeMineralCost\":
+    300,\r\n        \"m_description\": \"Repair-class hull module level 6\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.7\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n        \"m_cargoCapacity\":
+    225.0,\r\n        \"m_upgradeMoneyCost\": 700,\r\n        \"m_upgradeMineralCost\":
+    350,\r\n        \"m_description\": \"Repair-class hull module level 7\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.8\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 8,\r\n        \"m_health\": 500.0,\r\n        \"m_cargoCapacity\":
+    250.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n        \"m_upgradeMineralCost\":
+    400,\r\n        \"m_description\": \"Repair-class hull module level 8\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.9\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 9,\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\":
+    275.0,\r\n        \"m_upgradeMoneyCost\": 900,\r\n        \"m_upgradeMineralCost\":
+    450,\r\n        \"m_description\": \"Repair-class hull module level 9\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Repair
+    Hull Lv.10\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 10,\r\n        \"m_health\": 600.0,\r\n        \"m_cargoCapacity\":
+    300.0,\r\n        \"m_upgradeMoneyCost\": 1000,\r\n        \"m_upgradeMineralCost\":
+    500,\r\n        \"m_description\": \"Repair-class hull module level 10\"\r\n     
+    }\r\n    ],\r\n    \"2\": [\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Standard Engine Lv.1\",\r\n        \"m_subType\": 1,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n       
+    \"m_movementSpeed\": 3.5,\r\n        \"m_rotationSpeed\": 2.3,\r\n        \"m_upgradeMoneyCost\":
+    90,\r\n        \"m_upgradeMineralCost\": 45,\r\n        \"m_description\": \"Standard
+    propulsion system level 1\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Standard Engine Lv.2\",\r\n        \"m_subType\":
+    1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n        \"m_health\":
+    50.0,\r\n        \"m_movementSpeed\": 4.0,\r\n        \"m_rotationSpeed\": 2.6,\r\n       
+    \"m_upgradeMoneyCost\": 180,\r\n        \"m_upgradeMineralCost\": 90,\r\n       
+    \"m_description\": \"Standard propulsion system level 2\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard Engine Lv.3\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 3,\r\n       
+    \"m_health\": 60.0,\r\n        \"m_movementSpeed\": 4.5,\r\n        \"m_rotationSpeed\":
+    2.9,\r\n        \"m_upgradeMoneyCost\": 270,\r\n        \"m_upgradeMineralCost\":
+    135,\r\n        \"m_description\": \"Standard propulsion system level 3\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard
+    Engine Lv.4\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 4,\r\n        \"m_health\": 70.0,\r\n        \"m_movementSpeed\":
+    5.0,\r\n        \"m_rotationSpeed\": 3.2,\r\n        \"m_upgradeMoneyCost\":
+    360,\r\n        \"m_upgradeMineralCost\": 180,\r\n        \"m_description\":
+    \"Standard propulsion system level 4\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Standard Engine Lv.5\",\r\n        \"m_subType\":
+    1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\":
+    80.0,\r\n        \"m_movementSpeed\": 5.5,\r\n        \"m_rotationSpeed\": 3.5,\r\n       
+    \"m_upgradeMoneyCost\": 450,\r\n        \"m_upgradeMineralCost\": 225,\r\n       
+    \"m_description\": \"Standard propulsion system level 5\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard Engine Lv.6\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 6,\r\n       
+    \"m_health\": 90.0,\r\n        \"m_movementSpeed\": 6.0,\r\n        \"m_rotationSpeed\":
+    3.80000019,\r\n        \"m_upgradeMoneyCost\": 540,\r\n        \"m_upgradeMineralCost\":
+    270,\r\n        \"m_description\": \"Standard propulsion system level 6\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard
+    Engine Lv.7\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n        \"m_movementSpeed\":
+    6.5,\r\n        \"m_rotationSpeed\": 4.1,\r\n        \"m_upgradeMoneyCost\":
+    630,\r\n        \"m_upgradeMineralCost\": 315,\r\n        \"m_description\":
+    \"Standard propulsion system level 7\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Standard Engine Lv.8\",\r\n        \"m_subType\":
+    1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 8,\r\n        \"m_health\":
+    110.0,\r\n        \"m_movementSpeed\": 7.0,\r\n        \"m_rotationSpeed\": 4.4,\r\n       
+    \"m_upgradeMoneyCost\": 720,\r\n        \"m_upgradeMineralCost\": 360,\r\n       
+    \"m_description\": \"Standard propulsion system level 8\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard Engine Lv.9\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 9,\r\n       
+    \"m_health\": 120.0,\r\n        \"m_movementSpeed\": 7.5,\r\n        \"m_rotationSpeed\":
+    4.70000029,\r\n        \"m_upgradeMoneyCost\": 810,\r\n        \"m_upgradeMineralCost\":
+    405,\r\n        \"m_description\": \"Standard propulsion system level 9\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard
+    Engine Lv.10\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 10,\r\n        \"m_health\": 130.0,\r\n        \"m_movementSpeed\":
+    8.0,\r\n        \"m_rotationSpeed\": 5.0,\r\n        \"m_upgradeMoneyCost\":
+    900,\r\n        \"m_upgradeMineralCost\": 450,\r\n        \"m_description\":
+    \"Standard propulsion system level 10\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Booster Engine Lv.1\",\r\n        \"m_subType\":
+    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\":
+    40.0,\r\n        \"m_movementSpeed\": 3.5,\r\n        \"m_rotationSpeed\": 2.3,\r\n       
+    \"m_upgradeMoneyCost\": 90,\r\n        \"m_upgradeMineralCost\": 45,\r\n       
+    \"m_description\": \"Booster propulsion system level 1\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Booster Engine Lv.2\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_health\": 50.0,\r\n        \"m_movementSpeed\": 4.0,\r\n        \"m_rotationSpeed\":
+    2.6,\r\n        \"m_upgradeMoneyCost\": 180,\r\n        \"m_upgradeMineralCost\":
+    90,\r\n        \"m_description\": \"Booster propulsion system level 2\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Booster
+    Engine Lv.3\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n        \"m_movementSpeed\":
+    4.5,\r\n        \"m_rotationSpeed\": 2.9,\r\n        \"m_upgradeMoneyCost\":
+    270,\r\n        \"m_upgradeMineralCost\": 135,\r\n        \"m_description\":
+    \"Booster propulsion system level 3\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Booster Engine Lv.4\",\r\n        \"m_subType\":
+    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n        \"m_health\":
+    70.0,\r\n        \"m_movementSpeed\": 5.0,\r\n        \"m_rotationSpeed\": 3.2,\r\n       
+    \"m_upgradeMoneyCost\": 360,\r\n        \"m_upgradeMineralCost\": 180,\r\n       
+    \"m_description\": \"Booster propulsion system level 4\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Booster Engine Lv.5\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 5,\r\n       
+    \"m_health\": 80.0,\r\n        \"m_movementSpeed\": 5.5,\r\n        \"m_rotationSpeed\":
+    3.5,\r\n        \"m_upgradeMoneyCost\": 450,\r\n        \"m_upgradeMineralCost\":
+    225,\r\n        \"m_description\": \"Booster propulsion system level 5\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Booster
+    Engine Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 6,\r\n        \"m_health\": 90.0,\r\n        \"m_movementSpeed\":
+    6.0,\r\n        \"m_rotationSpeed\": 3.80000019,\r\n        \"m_upgradeMoneyCost\":
+    540,\r\n        \"m_upgradeMineralCost\": 270,\r\n        \"m_description\":
+    \"Booster propulsion system level 6\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Booster Engine Lv.7\",\r\n        \"m_subType\":
+    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\":
+    100.0,\r\n        \"m_movementSpeed\": 6.5,\r\n        \"m_rotationSpeed\": 4.1,\r\n       
+    \"m_upgradeMoneyCost\": 630,\r\n        \"m_upgradeMineralCost\": 315,\r\n       
+    \"m_description\": \"Booster propulsion system level 7\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Booster Engine Lv.8\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 8,\r\n       
+    \"m_health\": 110.0,\r\n        \"m_movementSpeed\": 7.0,\r\n        \"m_rotationSpeed\":
+    4.4,\r\n        \"m_upgradeMoneyCost\": 720,\r\n        \"m_upgradeMineralCost\":
+    360,\r\n        \"m_description\": \"Booster propulsion system level 8\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Booster
+    Engine Lv.9\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n        \"m_movementSpeed\":
+    7.5,\r\n        \"m_rotationSpeed\": 4.70000029,\r\n        \"m_upgradeMoneyCost\":
+    810,\r\n        \"m_upgradeMineralCost\": 405,\r\n        \"m_description\":
+    \"Booster propulsion system level 9\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Booster Engine Lv.10\",\r\n        \"m_subType\":
+    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 10,\r\n        \"m_health\":
+    130.0,\r\n        \"m_movementSpeed\": 8.0,\r\n        \"m_rotationSpeed\": 5.0,\r\n       
+    \"m_upgradeMoneyCost\": 900,\r\n        \"m_upgradeMineralCost\": 450,\r\n       
+    \"m_description\": \"Booster propulsion system level 10\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Warp Engine Lv.1\",\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 1,\r\n       
+    \"m_health\": 40.0,\r\n        \"m_movementSpeed\": 3.5,\r\n        \"m_rotationSpeed\":
+    2.3,\r\n        \"m_upgradeMoneyCost\": 90,\r\n        \"m_upgradeMineralCost\":
+    45,\r\n        \"m_description\": \"Warp propulsion system level 1\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Warp Engine
+    Lv.2\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    2,\r\n        \"m_health\": 50.0,\r\n        \"m_movementSpeed\": 4.0,\r\n       
+    \"m_rotationSpeed\": 2.6,\r\n        \"m_upgradeMoneyCost\": 180,\r\n       
+    \"m_upgradeMineralCost\": 90,\r\n        \"m_description\": \"Warp propulsion
+    system level 2\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Warp Engine Lv.3\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n        \"m_movementSpeed\":
+    4.5,\r\n        \"m_rotationSpeed\": 2.9,\r\n        \"m_upgradeMoneyCost\":
+    270,\r\n        \"m_upgradeMineralCost\": 135,\r\n        \"m_description\":
+    \"Warp propulsion system level 3\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Warp Engine Lv.4\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 4,\r\n        \"m_health\": 70.0,\r\n       
+    \"m_movementSpeed\": 5.0,\r\n        \"m_rotationSpeed\": 3.2,\r\n        \"m_upgradeMoneyCost\":
+    360,\r\n        \"m_upgradeMineralCost\": 180,\r\n        \"m_description\":
+    \"Warp propulsion system level 4\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Warp Engine Lv.5\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n       
+    \"m_movementSpeed\": 5.5,\r\n        \"m_rotationSpeed\": 3.5,\r\n        \"m_upgradeMoneyCost\":
+    450,\r\n        \"m_upgradeMineralCost\": 225,\r\n        \"m_description\":
+    \"Warp propulsion system level 5\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Warp Engine Lv.6\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 6,\r\n        \"m_health\": 90.0,\r\n       
+    \"m_movementSpeed\": 6.0,\r\n        \"m_rotationSpeed\": 3.80000019,\r\n       
+    \"m_upgradeMoneyCost\": 540,\r\n        \"m_upgradeMineralCost\": 270,\r\n       
+    \"m_description\": \"Warp propulsion system level 6\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Warp Engine Lv.7\",\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 7,\r\n       
+    \"m_health\": 100.0,\r\n        \"m_movementSpeed\": 6.5,\r\n        \"m_rotationSpeed\":
+    4.1,\r\n        \"m_upgradeMoneyCost\": 630,\r\n        \"m_upgradeMineralCost\":
+    315,\r\n        \"m_description\": \"Warp propulsion system level 7\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Warp Engine
+    Lv.8\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    8,\r\n        \"m_health\": 110.0,\r\n        \"m_movementSpeed\": 7.0,\r\n       
+    \"m_rotationSpeed\": 4.4,\r\n        \"m_upgradeMoneyCost\": 720,\r\n       
+    \"m_upgradeMineralCost\": 360,\r\n        \"m_description\": \"Warp propulsion
+    system level 8\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Warp Engine Lv.9\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n        \"m_movementSpeed\":
+    7.5,\r\n        \"m_rotationSpeed\": 4.70000029,\r\n        \"m_upgradeMoneyCost\":
+    810,\r\n        \"m_upgradeMineralCost\": 405,\r\n        \"m_description\":
+    \"Warp propulsion system level 9\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Warp Engine Lv.10\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 10,\r\n        \"m_health\": 130.0,\r\n       
+    \"m_movementSpeed\": 8.0,\r\n        \"m_rotationSpeed\": 5.0,\r\n        \"m_upgradeMoneyCost\":
+    900,\r\n        \"m_upgradeMineralCost\": 450,\r\n        \"m_description\":
+    \"Warp propulsion system level 10\"\r\n      }\r\n    ],\r\n    \"3\": [\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.1\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 1,\r\n       
+    \"m_health\": 40.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\":
+    15.0,\r\n        \"m_attackCoolTime\": 1.95,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 80,\r\n        \"m_upgradeMineralCost\":
+    40,\r\n        \"m_description\": \"Beam weapon system level 1\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.2\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_health\": 50.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\":
+    20.0,\r\n        \"m_attackCoolTime\": 1.9,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 160,\r\n        \"m_upgradeMineralCost\":
+    80,\r\n        \"m_description\": \"Beam weapon system level 2\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.3\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 3,\r\n       
+    \"m_health\": 60.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\":
+    25.0,\r\n        \"m_attackCoolTime\": 1.85,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 240,\r\n        \"m_upgradeMineralCost\":
+    120,\r\n        \"m_description\": \"Beam weapon system level 3\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.4\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n       
+    \"m_health\": 70.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\":
+    30.0,\r\n        \"m_attackCoolTime\": 1.8,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 320,\r\n        \"m_upgradeMineralCost\":
+    160,\r\n        \"m_description\": \"Beam weapon system level 4\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.5\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 5,\r\n       
+    \"m_health\": 80.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\":
+    35.0,\r\n        \"m_attackCoolTime\": 1.75,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n        \"m_upgradeMineralCost\":
+    200,\r\n        \"m_description\": \"Beam weapon system level 5\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.6\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 6,\r\n       
+    \"m_health\": 90.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\":
+    40.0,\r\n        \"m_attackCoolTime\": 1.7,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 480,\r\n        \"m_upgradeMineralCost\":
+    240,\r\n        \"m_description\": \"Beam weapon system level 6\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.7\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 7,\r\n       
+    \"m_health\": 100.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\":
+    45.0,\r\n        \"m_attackCoolTime\": 1.65,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 560,\r\n        \"m_upgradeMineralCost\":
+    280,\r\n        \"m_description\": \"Beam weapon system level 7\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.8\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 8,\r\n       
+    \"m_health\": 110.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\":
+    50.0,\r\n        \"m_attackCoolTime\": 1.6,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 640,\r\n        \"m_upgradeMineralCost\":
+    320,\r\n        \"m_description\": \"Beam weapon system level 8\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.9\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 9,\r\n       
+    \"m_health\": 120.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\":
+    55.0,\r\n        \"m_attackCoolTime\": 1.55,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 720,\r\n        \"m_upgradeMineralCost\":
+    360,\r\n        \"m_description\": \"Beam weapon system level 9\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.10\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 10,\r\n       
+    \"m_health\": 130.0,\r\n        \"m_attackFireCount\": 3,\r\n        \"m_attackPower\":
+    60.0,\r\n        \"m_attackCoolTime\": 1.5,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n        \"m_upgradeMineralCost\":
+    400,\r\n        \"m_description\": \"Beam weapon system level 10\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Missile Weapon Lv.1\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 1,\r\n       
+    \"m_health\": 40.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\":
+    15.0,\r\n        \"m_attackCoolTime\": 1.95,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 80,\r\n        \"m_upgradeMineralCost\":
+    40,\r\n        \"m_description\": \"Missile weapon system level 1\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Missile
+    Weapon Lv.2\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 2,\r\n        \"m_health\": 50.0,\r\n        \"m_attackFireCount\":
+    1,\r\n        \"m_attackPower\": 20.0,\r\n        \"m_attackCoolTime\": 1.9,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 160,\r\n       
+    \"m_upgradeMineralCost\": 80,\r\n        \"m_description\": \"Missile weapon
+    system level 2\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Missile Weapon Lv.3\",\r\n        \"m_subType\": 2,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n       
+    \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 25.0,\r\n        \"m_attackCoolTime\":
+    1.85,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
+    0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\":
+    240,\r\n        \"m_upgradeMineralCost\": 120,\r\n        \"m_description\":
+    \"Missile weapon system level 3\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Missile Weapon Lv.4\",\r\n        \"m_subType\":
+    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n        \"m_health\":
+    70.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 30.0,\r\n       
+    \"m_attackCoolTime\": 1.8,\r\n        \"m_projectileLength\": 5.0,\r\n       
+    \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
+    \"m_upgradeMoneyCost\": 320,\r\n        \"m_upgradeMineralCost\": 160,\r\n       
+    \"m_description\": \"Missile weapon system level 4\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Missile Weapon Lv.5\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 5,\r\n       
+    \"m_health\": 80.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\":
+    35.0,\r\n        \"m_attackCoolTime\": 1.75,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n        \"m_upgradeMineralCost\":
+    200,\r\n        \"m_description\": \"Missile weapon system level 5\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Missile
+    Weapon Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 6,\r\n        \"m_health\": 90.0,\r\n        \"m_attackFireCount\":
+    2,\r\n        \"m_attackPower\": 40.0,\r\n        \"m_attackCoolTime\": 1.7,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 480,\r\n       
+    \"m_upgradeMineralCost\": 240,\r\n        \"m_description\": \"Missile weapon
+    system level 6\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Missile Weapon Lv.7\",\r\n        \"m_subType\": 2,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n       
+    \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 45.0,\r\n        \"m_attackCoolTime\":
+    1.65,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
+    0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\":
+    560,\r\n        \"m_upgradeMineralCost\": 280,\r\n        \"m_description\":
+    \"Missile weapon system level 7\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Missile Weapon Lv.8\",\r\n        \"m_subType\":
+    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 8,\r\n        \"m_health\":
+    110.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 50.0,\r\n       
+    \"m_attackCoolTime\": 1.6,\r\n        \"m_projectileLength\": 5.0,\r\n       
+    \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
+    \"m_upgradeMoneyCost\": 640,\r\n        \"m_upgradeMineralCost\": 320,\r\n       
+    \"m_description\": \"Missile weapon system level 8\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Missile Weapon Lv.9\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 9,\r\n       
+    \"m_health\": 120.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\":
+    55.0,\r\n        \"m_attackCoolTime\": 1.55,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 720,\r\n        \"m_upgradeMineralCost\":
+    360,\r\n        \"m_description\": \"Missile weapon system level 9\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Missile
+    Weapon Lv.10\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 10,\r\n        \"m_health\": 130.0,\r\n        \"m_attackFireCount\":
+    3,\r\n        \"m_attackPower\": 60.0,\r\n        \"m_attackCoolTime\": 1.5,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n       
+    \"m_upgradeMineralCost\": 400,\r\n        \"m_description\": \"Missile weapon
+    system level 10\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Cannon Weapon Lv.1\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_attackFireCount\":
+    1,\r\n        \"m_attackPower\": 15.0,\r\n        \"m_attackCoolTime\": 1.95,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 80,\r\n       
+    \"m_upgradeMineralCost\": 40,\r\n        \"m_description\": \"Cannon weapon system
+    level 1\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\":
+    \"Cannon Weapon Lv.2\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 2,\r\n        \"m_health\": 50.0,\r\n        \"m_attackFireCount\":
+    1,\r\n        \"m_attackPower\": 20.0,\r\n        \"m_attackCoolTime\": 1.9,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 160,\r\n       
+    \"m_upgradeMineralCost\": 80,\r\n        \"m_description\": \"Cannon weapon system
+    level 2\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\":
+    \"Cannon Weapon Lv.3\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n        \"m_attackFireCount\":
+    1,\r\n        \"m_attackPower\": 25.0,\r\n        \"m_attackCoolTime\": 1.85,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 240,\r\n       
+    \"m_upgradeMineralCost\": 120,\r\n        \"m_description\": \"Cannon weapon
+    system level 3\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Cannon Weapon Lv.4\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 4,\r\n        \"m_health\": 70.0,\r\n        \"m_attackFireCount\":
+    1,\r\n        \"m_attackPower\": 30.0,\r\n        \"m_attackCoolTime\": 1.8,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 320,\r\n       
+    \"m_upgradeMineralCost\": 160,\r\n        \"m_description\": \"Cannon weapon
+    system level 4\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Cannon Weapon Lv.5\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n        \"m_attackFireCount\":
+    2,\r\n        \"m_attackPower\": 35.0,\r\n        \"m_attackCoolTime\": 1.75,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n       
+    \"m_upgradeMineralCost\": 200,\r\n        \"m_description\": \"Cannon weapon
+    system level 5\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Cannon Weapon Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 6,\r\n        \"m_health\": 90.0,\r\n        \"m_attackFireCount\":
+    2,\r\n        \"m_attackPower\": 40.0,\r\n        \"m_attackCoolTime\": 1.7,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 480,\r\n       
+    \"m_upgradeMineralCost\": 240,\r\n        \"m_description\": \"Cannon weapon
+    system level 6\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Cannon Weapon Lv.7\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n        \"m_attackFireCount\":
+    2,\r\n        \"m_attackPower\": 45.0,\r\n        \"m_attackCoolTime\": 1.65,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 560,\r\n       
+    \"m_upgradeMineralCost\": 280,\r\n        \"m_description\": \"Cannon weapon
+    system level 7\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Cannon Weapon Lv.8\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 8,\r\n        \"m_health\": 110.0,\r\n        \"m_attackFireCount\":
+    2,\r\n        \"m_attackPower\": 50.0,\r\n        \"m_attackCoolTime\": 1.6,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 640,\r\n       
+    \"m_upgradeMineralCost\": 320,\r\n        \"m_description\": \"Cannon weapon
+    system level 8\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Cannon Weapon Lv.9\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
+    1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n        \"m_attackFireCount\":
+    2,\r\n        \"m_attackPower\": 55.0,\r\n        \"m_attackCoolTime\": 1.55,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 720,\r\n       
+    \"m_upgradeMineralCost\": 360,\r\n        \"m_description\": \"Cannon weapon
+    system level 9\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Cannon Weapon Lv.10\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 10,\r\n        \"m_health\": 130.0,\r\n       
+    \"m_attackFireCount\": 3,\r\n        \"m_attackPower\": 60.0,\r\n        \"m_attackCoolTime\":
+    1.5,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
+    0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\":
+    800,\r\n        \"m_upgradeMineralCost\": 400,\r\n        \"m_description\":
+    \"Cannon weapon system level 10\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Torpedo Weapon Lv.1\",\r\n        \"m_subType\":
+    4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\":
+    40.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 15.0,\r\n       
+    \"m_attackCoolTime\": 1.95,\r\n        \"m_projectileLength\": 5.0,\r\n       
+    \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
+    \"m_upgradeMoneyCost\": 80,\r\n        \"m_upgradeMineralCost\": 40,\r\n       
+    \"m_description\": \"Torpedo weapon system level 1\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Torpedo Weapon Lv.2\",\r\n       
+    \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_health\": 50.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\":
+    20.0,\r\n        \"m_attackCoolTime\": 1.9,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 160,\r\n        \"m_upgradeMineralCost\":
+    80,\r\n        \"m_description\": \"Torpedo weapon system level 2\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Torpedo
+    Weapon Lv.3\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n        \"m_attackFireCount\":
+    1,\r\n        \"m_attackPower\": 25.0,\r\n        \"m_attackCoolTime\": 1.85,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 240,\r\n       
+    \"m_upgradeMineralCost\": 120,\r\n        \"m_description\": \"Torpedo weapon
+    system level 3\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Torpedo Weapon Lv.4\",\r\n        \"m_subType\": 4,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 4,\r\n        \"m_health\": 70.0,\r\n       
+    \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 30.0,\r\n        \"m_attackCoolTime\":
+    1.8,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
+    0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\":
+    320,\r\n        \"m_upgradeMineralCost\": 160,\r\n        \"m_description\":
+    \"Torpedo weapon system level 4\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Torpedo Weapon Lv.5\",\r\n        \"m_subType\":
+    4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\":
+    80.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 35.0,\r\n       
+    \"m_attackCoolTime\": 1.75,\r\n        \"m_projectileLength\": 5.0,\r\n       
+    \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
+    \"m_upgradeMoneyCost\": 400,\r\n        \"m_upgradeMineralCost\": 200,\r\n       
+    \"m_description\": \"Torpedo weapon system level 5\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Torpedo Weapon Lv.6\",\r\n       
+    \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 6,\r\n       
+    \"m_health\": 90.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\":
+    40.0,\r\n        \"m_attackCoolTime\": 1.7,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 480,\r\n        \"m_upgradeMineralCost\":
+    240,\r\n        \"m_description\": \"Torpedo weapon system level 6\"\r\n     
+    },\r\n      {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Torpedo
+    Weapon Lv.7\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n       
+    \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n        \"m_attackFireCount\":
+    2,\r\n        \"m_attackPower\": 45.0,\r\n        \"m_attackCoolTime\": 1.65,\r\n       
+    \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
+    \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\": 560,\r\n       
+    \"m_upgradeMineralCost\": 280,\r\n        \"m_description\": \"Torpedo weapon
+    system level 7\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Torpedo Weapon Lv.8\",\r\n        \"m_subType\": 4,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 8,\r\n        \"m_health\": 110.0,\r\n       
+    \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 50.0,\r\n        \"m_attackCoolTime\":
+    1.6,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
+    0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeMoneyCost\":
+    640,\r\n        \"m_upgradeMineralCost\": 320,\r\n        \"m_description\":
+    \"Torpedo weapon system level 8\"\r\n      },\r\n      {\r\n        \"m_moduleType\":
+    0,\r\n        \"m_name\": \"Torpedo Weapon Lv.9\",\r\n        \"m_subType\":
+    4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\":
+    120.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 55.0,\r\n       
+    \"m_attackCoolTime\": 1.55,\r\n        \"m_projectileLength\": 5.0,\r\n       
+    \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
+    \"m_upgradeMoneyCost\": 720,\r\n        \"m_upgradeMineralCost\": 360,\r\n       
+    \"m_description\": \"Torpedo weapon system level 9\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Torpedo Weapon Lv.10\",\r\n       
+    \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 10,\r\n       
+    \"m_health\": 130.0,\r\n        \"m_attackFireCount\": 3,\r\n        \"m_attackPower\":
+    60.0,\r\n        \"m_attackCoolTime\": 1.5,\r\n        \"m_projectileLength\":
+    5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n        \"m_upgradeMineralCost\":
+    400,\r\n        \"m_description\": \"Torpedo weapon system level 10\"\r\n     
+    }\r\n    ],\r\n    \"4\": [\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Standard Hanger Lv.1\",\r\n        \"m_subType\": 1,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 55.0,\r\n       
+    \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 3,\r\n        \"m_launchCool\":
+    2.85,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 14.5,\r\n       
+    \"m_aircraftHealth\": 40.0,\r\n        \"m_aircraftAttackPower\": 8.0,\r\n       
+    \"m_upgradeMoneyCost\": 100,\r\n        \"m_upgradeMineralCost\": 50,\r\n       
+    \"m_description\": \"Standard hanger bay level 1\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard Hanger Lv.2\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_health\": 70.0,\r\n        \"m_hangarCapability\": 8,\r\n        \"m_scoutCapability\":
+    5,\r\n        \"m_launchCool\": 2.7,\r\n        \"m_launchCount\": 1,\r\n       
+    \"m_maintenanceTime\": 14.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n       
+    \"m_aircraftAttackPower\": 11.0,\r\n        \"m_upgradeMoneyCost\": 200,\r\n       
+    \"m_upgradeMineralCost\": 100,\r\n        \"m_description\": \"Standard hanger
+    bay level 2\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Standard Hanger Lv.3\",\r\n        \"m_subType\": 1,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 85.0,\r\n       
+    \"m_hangarCapability\": 11,\r\n        \"m_scoutCapability\": 7,\r\n        \"m_launchCool\":
+    2.55,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 13.5,\r\n       
+    \"m_aircraftHealth\": 60.0,\r\n        \"m_aircraftAttackPower\": 14.0,\r\n       
+    \"m_upgradeMoneyCost\": 300,\r\n        \"m_upgradeMineralCost\": 150,\r\n       
+    \"m_description\": \"Standard hanger bay level 3\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard Hanger Lv.4\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n       
+    \"m_health\": 100.0,\r\n        \"m_hangarCapability\": 14,\r\n        \"m_scoutCapability\":
+    9,\r\n        \"m_launchCool\": 2.4,\r\n        \"m_launchCount\": 2,\r\n       
+    \"m_maintenanceTime\": 13.0,\r\n        \"m_aircraftHealth\": 70.0,\r\n       
+    \"m_aircraftAttackPower\": 17.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n       
+    \"m_upgradeMineralCost\": 200,\r\n        \"m_description\": \"Standard hanger
+    bay level 4\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Standard Hanger Lv.5\",\r\n        \"m_subType\": 1,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 115.0,\r\n       
+    \"m_hangarCapability\": 17,\r\n        \"m_scoutCapability\": 11,\r\n       
+    \"m_launchCool\": 2.25,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
+    12.5,\r\n        \"m_aircraftHealth\": 80.0,\r\n        \"m_aircraftAttackPower\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 500,\r\n        \"m_upgradeMineralCost\":
+    250,\r\n        \"m_description\": \"Standard hanger bay level 5\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard Hanger Lv.6\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 6,\r\n       
+    \"m_health\": 130.0,\r\n        \"m_hangarCapability\": 20,\r\n        \"m_scoutCapability\":
+    13,\r\n        \"m_launchCool\": 2.1,\r\n        \"m_launchCount\": 2,\r\n       
+    \"m_maintenanceTime\": 12.0,\r\n        \"m_aircraftHealth\": 90.0,\r\n       
+    \"m_aircraftAttackPower\": 23.0,\r\n        \"m_upgradeMoneyCost\": 600,\r\n       
+    \"m_upgradeMineralCost\": 300,\r\n        \"m_description\": \"Standard hanger
+    bay level 6\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Standard Hanger Lv.7\",\r\n        \"m_subType\": 1,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 145.0,\r\n       
+    \"m_hangarCapability\": 23,\r\n        \"m_scoutCapability\": 15,\r\n       
+    \"m_launchCool\": 1.94999993,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
+    11.5,\r\n        \"m_aircraftHealth\": 100.0,\r\n        \"m_aircraftAttackPower\":
+    26.0,\r\n        \"m_upgradeMoneyCost\": 700,\r\n        \"m_upgradeMineralCost\":
+    350,\r\n        \"m_description\": \"Standard hanger bay level 7\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard Hanger Lv.8\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 8,\r\n       
+    \"m_health\": 160.0,\r\n        \"m_hangarCapability\": 26,\r\n        \"m_scoutCapability\":
+    17,\r\n        \"m_launchCool\": 1.8,\r\n        \"m_launchCount\": 3,\r\n       
+    \"m_maintenanceTime\": 11.0,\r\n        \"m_aircraftHealth\": 110.0,\r\n       
+    \"m_aircraftAttackPower\": 29.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n       
+    \"m_upgradeMineralCost\": 400,\r\n        \"m_description\": \"Standard hanger
+    bay level 8\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Standard Hanger Lv.9\",\r\n        \"m_subType\": 1,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 175.0,\r\n       
+    \"m_hangarCapability\": 29,\r\n        \"m_scoutCapability\": 19,\r\n       
+    \"m_launchCool\": 1.65,\r\n        \"m_launchCount\": 3,\r\n        \"m_maintenanceTime\":
+    10.5,\r\n        \"m_aircraftHealth\": 120.0,\r\n        \"m_aircraftAttackPower\":
+    32.0,\r\n        \"m_upgradeMoneyCost\": 900,\r\n        \"m_upgradeMineralCost\":
+    450,\r\n        \"m_description\": \"Standard hanger bay level 9\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Standard Hanger Lv.10\",\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 10,\r\n       
+    \"m_health\": 190.0,\r\n        \"m_hangarCapability\": 32,\r\n        \"m_scoutCapability\":
+    21,\r\n        \"m_launchCool\": 1.5,\r\n        \"m_launchCount\": 3,\r\n       
+    \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftHealth\": 130.0,\r\n       
+    \"m_aircraftAttackPower\": 35.0,\r\n        \"m_upgradeMoneyCost\": 1000,\r\n       
+    \"m_upgradeMineralCost\": 500,\r\n        \"m_description\": \"Standard hanger
+    bay level 10\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Advanced Hanger Lv.1\",\r\n        \"m_subType\": 2,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 55.0,\r\n       
+    \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 3,\r\n        \"m_launchCool\":
+    2.85,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 14.5,\r\n       
+    \"m_aircraftHealth\": 40.0,\r\n        \"m_aircraftAttackPower\": 8.0,\r\n       
+    \"m_upgradeMoneyCost\": 100,\r\n        \"m_upgradeMineralCost\": 50,\r\n       
+    \"m_description\": \"Advanced hanger bay level 1\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Advanced Hanger Lv.2\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_health\": 70.0,\r\n        \"m_hangarCapability\": 8,\r\n        \"m_scoutCapability\":
+    5,\r\n        \"m_launchCool\": 2.7,\r\n        \"m_launchCount\": 1,\r\n       
+    \"m_maintenanceTime\": 14.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n       
+    \"m_aircraftAttackPower\": 11.0,\r\n        \"m_upgradeMoneyCost\": 200,\r\n       
+    \"m_upgradeMineralCost\": 100,\r\n        \"m_description\": \"Advanced hanger
+    bay level 2\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Advanced Hanger Lv.3\",\r\n        \"m_subType\": 2,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 85.0,\r\n       
+    \"m_hangarCapability\": 11,\r\n        \"m_scoutCapability\": 7,\r\n        \"m_launchCool\":
+    2.55,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 13.5,\r\n       
+    \"m_aircraftHealth\": 60.0,\r\n        \"m_aircraftAttackPower\": 14.0,\r\n       
+    \"m_upgradeMoneyCost\": 300,\r\n        \"m_upgradeMineralCost\": 150,\r\n       
+    \"m_description\": \"Advanced hanger bay level 3\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Advanced Hanger Lv.4\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n       
+    \"m_health\": 100.0,\r\n        \"m_hangarCapability\": 14,\r\n        \"m_scoutCapability\":
+    9,\r\n        \"m_launchCool\": 2.4,\r\n        \"m_launchCount\": 2,\r\n       
+    \"m_maintenanceTime\": 13.0,\r\n        \"m_aircraftHealth\": 70.0,\r\n       
+    \"m_aircraftAttackPower\": 17.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n       
+    \"m_upgradeMineralCost\": 200,\r\n        \"m_description\": \"Advanced hanger
+    bay level 4\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Advanced Hanger Lv.5\",\r\n        \"m_subType\": 2,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 115.0,\r\n       
+    \"m_hangarCapability\": 17,\r\n        \"m_scoutCapability\": 11,\r\n       
+    \"m_launchCool\": 2.25,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
+    12.5,\r\n        \"m_aircraftHealth\": 80.0,\r\n        \"m_aircraftAttackPower\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 500,\r\n        \"m_upgradeMineralCost\":
+    250,\r\n        \"m_description\": \"Advanced hanger bay level 5\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Advanced Hanger Lv.6\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 6,\r\n       
+    \"m_health\": 130.0,\r\n        \"m_hangarCapability\": 20,\r\n        \"m_scoutCapability\":
+    13,\r\n        \"m_launchCool\": 2.1,\r\n        \"m_launchCount\": 2,\r\n       
+    \"m_maintenanceTime\": 12.0,\r\n        \"m_aircraftHealth\": 90.0,\r\n       
+    \"m_aircraftAttackPower\": 23.0,\r\n        \"m_upgradeMoneyCost\": 600,\r\n       
+    \"m_upgradeMineralCost\": 300,\r\n        \"m_description\": \"Advanced hanger
+    bay level 6\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Advanced Hanger Lv.7\",\r\n        \"m_subType\": 2,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 145.0,\r\n       
+    \"m_hangarCapability\": 23,\r\n        \"m_scoutCapability\": 15,\r\n       
+    \"m_launchCool\": 1.94999993,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
+    11.5,\r\n        \"m_aircraftHealth\": 100.0,\r\n        \"m_aircraftAttackPower\":
+    26.0,\r\n        \"m_upgradeMoneyCost\": 700,\r\n        \"m_upgradeMineralCost\":
+    350,\r\n        \"m_description\": \"Advanced hanger bay level 7\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Advanced Hanger Lv.8\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 8,\r\n       
+    \"m_health\": 160.0,\r\n        \"m_hangarCapability\": 26,\r\n        \"m_scoutCapability\":
+    17,\r\n        \"m_launchCool\": 1.8,\r\n        \"m_launchCount\": 3,\r\n       
+    \"m_maintenanceTime\": 11.0,\r\n        \"m_aircraftHealth\": 110.0,\r\n       
+    \"m_aircraftAttackPower\": 29.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n       
+    \"m_upgradeMineralCost\": 400,\r\n        \"m_description\": \"Advanced hanger
+    bay level 8\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Advanced Hanger Lv.9\",\r\n        \"m_subType\": 2,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 175.0,\r\n       
+    \"m_hangarCapability\": 29,\r\n        \"m_scoutCapability\": 19,\r\n       
+    \"m_launchCool\": 1.65,\r\n        \"m_launchCount\": 3,\r\n        \"m_maintenanceTime\":
+    10.5,\r\n        \"m_aircraftHealth\": 120.0,\r\n        \"m_aircraftAttackPower\":
+    32.0,\r\n        \"m_upgradeMoneyCost\": 900,\r\n        \"m_upgradeMineralCost\":
+    450,\r\n        \"m_description\": \"Advanced hanger bay level 9\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Advanced Hanger Lv.10\",\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 10,\r\n       
+    \"m_health\": 190.0,\r\n        \"m_hangarCapability\": 32,\r\n        \"m_scoutCapability\":
+    21,\r\n        \"m_launchCool\": 1.5,\r\n        \"m_launchCount\": 3,\r\n       
+    \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftHealth\": 130.0,\r\n       
+    \"m_aircraftAttackPower\": 35.0,\r\n        \"m_upgradeMoneyCost\": 1000,\r\n       
+    \"m_upgradeMineralCost\": 500,\r\n        \"m_description\": \"Advanced hanger
+    bay level 10\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Military Hanger Lv.1\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 55.0,\r\n       
+    \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 3,\r\n        \"m_launchCool\":
+    2.85,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 14.5,\r\n       
+    \"m_aircraftHealth\": 40.0,\r\n        \"m_aircraftAttackPower\": 8.0,\r\n       
+    \"m_upgradeMoneyCost\": 100,\r\n        \"m_upgradeMineralCost\": 50,\r\n       
+    \"m_description\": \"Military hanger bay level 1\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Military Hanger Lv.2\",\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_health\": 70.0,\r\n        \"m_hangarCapability\": 8,\r\n        \"m_scoutCapability\":
+    5,\r\n        \"m_launchCool\": 2.7,\r\n        \"m_launchCount\": 1,\r\n       
+    \"m_maintenanceTime\": 14.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n       
+    \"m_aircraftAttackPower\": 11.0,\r\n        \"m_upgradeMoneyCost\": 200,\r\n       
+    \"m_upgradeMineralCost\": 100,\r\n        \"m_description\": \"Military hanger
+    bay level 2\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Military Hanger Lv.3\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 85.0,\r\n       
+    \"m_hangarCapability\": 11,\r\n        \"m_scoutCapability\": 7,\r\n        \"m_launchCool\":
+    2.55,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 13.5,\r\n       
+    \"m_aircraftHealth\": 60.0,\r\n        \"m_aircraftAttackPower\": 14.0,\r\n       
+    \"m_upgradeMoneyCost\": 300,\r\n        \"m_upgradeMineralCost\": 150,\r\n       
+    \"m_description\": \"Military hanger bay level 3\"\r\n      },\r\n      {\r\n       
+    \"m_moduleType\": 0,\r\n        \"m_name\": \"Military Hanger Lv.4\",\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n       
+    \"m_health\": 100.0,\r\n        \"m_hangarCapability\": 14,\r\n        \"m_scoutCapability\":
+    9,\r\n        \"m_launchCool\": 2.4,\r\n        \"m_launchCount\": 2,\r\n       
+    \"m_maintenanceTime\": 13.0,\r\n        \"m_aircraftHealth\": 70.0,\r\n       
+    \"m_aircraftAttackPower\": 17.0,\r\n        \"m_upgradeMoneyCost\": 400,\r\n       
+    \"m_upgradeMineralCost\": 200,\r\n        \"m_description\": \"Military hanger
+    bay level 4\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Military Hanger Lv.5\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 115.0,\r\n       
+    \"m_hangarCapability\": 17,\r\n        \"m_scoutCapability\": 11,\r\n       
+    \"m_launchCool\": 2.25,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
+    12.5,\r\n        \"m_aircraftHealth\": 80.0,\r\n        \"m_aircraftAttackPower\":
+    20.0,\r\n        \"m_upgradeMoneyCost\": 500,\r\n        \"m_upgradeMineralCost\":
+    250,\r\n        \"m_description\": \"Military hanger bay level 5\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Military Hanger Lv.6\",\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 6,\r\n       
+    \"m_health\": 130.0,\r\n        \"m_hangarCapability\": 20,\r\n        \"m_scoutCapability\":
+    13,\r\n        \"m_launchCool\": 2.1,\r\n        \"m_launchCount\": 2,\r\n       
+    \"m_maintenanceTime\": 12.0,\r\n        \"m_aircraftHealth\": 90.0,\r\n       
+    \"m_aircraftAttackPower\": 23.0,\r\n        \"m_upgradeMoneyCost\": 600,\r\n       
+    \"m_upgradeMineralCost\": 300,\r\n        \"m_description\": \"Military hanger
+    bay level 6\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Military Hanger Lv.7\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 145.0,\r\n       
+    \"m_hangarCapability\": 23,\r\n        \"m_scoutCapability\": 15,\r\n       
+    \"m_launchCool\": 1.94999993,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
+    11.5,\r\n        \"m_aircraftHealth\": 100.0,\r\n        \"m_aircraftAttackPower\":
+    26.0,\r\n        \"m_upgradeMoneyCost\": 700,\r\n        \"m_upgradeMineralCost\":
+    350,\r\n        \"m_description\": \"Military hanger bay level 7\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Military Hanger Lv.8\",\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 8,\r\n       
+    \"m_health\": 160.0,\r\n        \"m_hangarCapability\": 26,\r\n        \"m_scoutCapability\":
+    17,\r\n        \"m_launchCool\": 1.8,\r\n        \"m_launchCount\": 3,\r\n       
+    \"m_maintenanceTime\": 11.0,\r\n        \"m_aircraftHealth\": 110.0,\r\n       
+    \"m_aircraftAttackPower\": 29.0,\r\n        \"m_upgradeMoneyCost\": 800,\r\n       
+    \"m_upgradeMineralCost\": 400,\r\n        \"m_description\": \"Military hanger
+    bay level 8\"\r\n      },\r\n      {\r\n        \"m_moduleType\": 0,\r\n       
+    \"m_name\": \"Military Hanger Lv.9\",\r\n        \"m_subType\": 3,\r\n       
+    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 175.0,\r\n       
+    \"m_hangarCapability\": 29,\r\n        \"m_scoutCapability\": 19,\r\n       
+    \"m_launchCool\": 1.65,\r\n        \"m_launchCount\": 3,\r\n        \"m_maintenanceTime\":
+    10.5,\r\n        \"m_aircraftHealth\": 120.0,\r\n        \"m_aircraftAttackPower\":
+    32.0,\r\n        \"m_upgradeMoneyCost\": 900,\r\n        \"m_upgradeMineralCost\":
+    450,\r\n        \"m_description\": \"Military hanger bay level 9\"\r\n      },\r\n     
+    {\r\n        \"m_moduleType\": 0,\r\n        \"m_name\": \"Military Hanger Lv.10\",\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 10,\r\n       
+    \"m_health\": 190.0,\r\n        \"m_hangarCapability\": 32,\r\n        \"m_scoutCapability\":
+    21,\r\n        \"m_launchCool\": 1.5,\r\n        \"m_launchCount\": 3,\r\n       
+    \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftHealth\": 130.0,\r\n       
+    \"m_aircraftAttackPower\": 35.0,\r\n        \"m_upgradeMoneyCost\": 1000,\r\n       
+    \"m_upgradeMineralCost\": 500,\r\n        \"m_description\": \"Military hanger
+    bay level 10\"\r\n      }\r\n    ]\r\n  }\r\n}"

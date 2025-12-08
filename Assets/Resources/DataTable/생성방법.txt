@@ -1,0 +1,29 @@
+1. DataTableModule + DataTableModuleEditor
+
+- 역할: 모듈 데이터 (Body, Weapon, Engine) 관리
+- 생성: Create > Custom > DataTableModule
+- 기능: 모듈 데이터 편집, JSON export/import
+
+2. DataTableConfig + DataTableConfigEditor
+
+- 역할: 게임 설정 (Fleet Settings, Enemy Settings 등) 관리
+- 생성: Create > Custom > DataTableConfig
+- 기능: 게임 설정 편집, JSON export/import
+- 포함 설정:
+- version, maxLives
+- maxShipsPerFleet, shipAddMoneyCost, shipAddMineralCost
+- enemyFleetSpawnInterval, explorationInterval, enemySpawnRate
+
+3. DataTableTotalEditor (EditorWindow)
+
+- 역할: 통합 export 전용
+- 접근: Tools > DataTable Total Manager
+- 기능: DataTableModule + DataTableConfig를 합쳐서 서버용 GameConfig.json 생성
+
+🎯 사용 방법
+
+1. DataTableModule.asset 생성 → 모듈 데이터 설정
+2. DataTableConfig.asset 생성 → 게임 설정 값 설정
+3. Tools > DataTable Total Manager → 통합 export
+
+각각 독립적으로 편집/export 가능하고, 통합 export도 가능한 구조가 완성되었습니다!

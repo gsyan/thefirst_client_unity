@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa8771c20f06776458d59c72dc61a8e9, type: 3}
+  m_Name: EnemyFleetPresets
+  m_EditorClassIdentifier: 
+  shipCountPresets:
+  - minShips: 1
+    maxShips: 1
+    enemyShipCount: 1
+  - minShips: 2
+    maxShips: 3
+    enemyShipCount: 1
+  - minShips: 4
+    maxShips: 5
+    enemyShipCount: 2
+  - minShips: 6
+    maxShips: 7
+    enemyShipCount: 3
+  - minShips: 8
+    maxShips: 9
+    enemyShipCount: 5
+  levelPresets:
+  - minAverageLevel: 1
+    maxAverageLevel: 1
+    enemyAverageLevel: 1
+  - minAverageLevel: 2
+    maxAverageLevel: 3
+    enemyAverageLevel: 1
+  - minAverageLevel: 4
+    maxAverageLevel: 5
+    enemyAverageLevel: 1
+  - minAverageLevel: 6
+    maxAverageLevel: 7
+    enemyAverageLevel: 1
+  - minAverageLevel: 8
+    maxAverageLevel: 10
+    enemyAverageLevel: 1
