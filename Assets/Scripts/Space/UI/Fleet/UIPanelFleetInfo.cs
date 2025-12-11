@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class UIPanelFleetInfo : MonoBehaviour
 {
     [HideInInspector] public SpaceFleet m_myFleet;
@@ -11,7 +12,10 @@ public class UIPanelFleetInfo : MonoBehaviour
     public TextMeshProUGUI m_textTop;
     public TextMeshProUGUI m_textFleetStats;
 
-    public Button m_addShipButton;
+    public RectTransform scrollViewShipsContent;
+    public GameObject scrollViewShipsItem;
+
+    private GameObject m_addButtonItem; // Add 버튼 아이템 참조
 
     public void InitializeUIPanelFleetInfo()
     {
@@ -23,7 +27,20 @@ public class UIPanelFleetInfo : MonoBehaviour
         }
         m_myFleet = character.GetOwnedFleet();
 
-        m_addShipButton.onClick.AddListener(AddShip);
+        if( scrollViewShipsItem != null)
+        {
+            for(int i = 0; i < m_myFleet.m_ships.Count; i++)
+            {
+                GameObject item = Instantiate(scrollViewShipsItem, scrollViewShipsContent);
+                if( item != null)
+                {
+                    int index = i; // 클로저 문제 방지
+                    SpaceShip ship = m_myFleet.m_ships[index];
+                    item.GetComponent<ScrollViewShipsItem>().InitializeScrollViewShipsItem_SelectButton(ship.m_shipInfo.shipName, () => FocusCameraOnShip(ship));
+                }                    
+            }
+            MakeAddShipButtonItem();
+        }
     }
 
     public void OnTabActivated()
@@ -58,6 +75,7 @@ public class UIPanelFleetInfo : MonoBehaviour
     private void OnFleetChanged()
     {
         UpdateFleetStatsDisplay();
+        UpdateScrollViewShips();        
     }
 
     private void UpdateFleetStatsDisplay()
@@ -84,6 +102,59 @@ public class UIPanelFleetInfo : MonoBehaviour
                               $"Cargo: {statsCur.totalCargoCapacity:F0} / {statsOrg.totalCargoCapacity:F0}\n" +
                               $"Weapons: {statsCur.totalWeapons}\n" +
                               $"Engines: {statsCur.totalEngines}";
+    }
+    private void UpdateScrollViewShips()
+    {
+        // 함선이 추가되었는지 확인
+        if (m_myFleet != null && m_addButtonItem != null && scrollViewShipsContent != null)
+        {
+            // 현재 UI에 표시된 함선 수 (Add 버튼 제외)
+            int currentShipItemCount = scrollViewShipsContent.childCount - 1;
+
+            // 실제 함선 수와 비교
+            if (m_myFleet.m_ships.Count > currentShipItemCount)
+            {
+                // 새 함선이 추가됨 - 기존 Add 버튼을 Select 버튼으로 변경
+                SpaceShip newShip = m_myFleet.m_ships[^1]; // 마지막 함선
+
+                // 기존 Add 버튼 아이템을 Select 버튼으로 재초기화
+                if (m_addButtonItem.TryGetComponent<ScrollViewShipsItem>(out var scrollViewItem))
+                {
+                    scrollViewItem.InitializeScrollViewShipsItem_SelectButton(
+                        newShip.m_shipInfo.shipName,
+                        () => FocusCameraOnShip(newShip)
+                    );
+
+                    MakeAddShipButtonItem();
+                }
+            }
+        }
+    }
+    private void MakeAddShipButtonItem()
+    {
+        if(m_myFleet.m_ships.Count >= DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet)
+            return;
+        // 새로운 Add 버튼 생성
+        m_addButtonItem = Instantiate(scrollViewShipsItem, scrollViewShipsContent);
+        if (m_addButtonItem != null)
+        {
+            var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
+            m_addButtonItem.GetComponent<ScrollViewShipsItem>().InitializeScrollViewShipsItem_AddButton(
+                $"Add Ship cost, money: {gameSettings.shipAddMoneyCost}, mineral: {gameSettings.shipAddMineralCost} ",
+                AddShip
+            );
+        }
+    }
+
+    private void FocusCameraOnShip(SpaceShip ship)
+    {
+        if (ship == null) return;
+        
+        // 카메라를 해당 함선으로 이동
+        CameraController.Instance.SwitchCameraMode(CameraControllerMode.Select_Ship, ship.transform);
+        
+        // 선택 상태 업데이트 (필요한 경우)
+        //SelectShip(ship);
     }
 
     private void AddShip()

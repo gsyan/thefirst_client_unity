@@ -7,8 +7,8 @@ public class UIPanelFleetUpgrade : MonoBehaviour
 {
     [Header("Tab System")]
     [SerializeField] private TabSystem m_tabSystem;    
-    public UIPanelFleetInfo panelFleetInfo;
-    public UIPanelShipInfo panelShipInfo;
+    public UIPanelFleetInfo m_panelFleetInfo;
+    public UIPanelShipInfo m_panelShipInfo;
 
 
 
@@ -46,12 +46,12 @@ public class UIPanelFleetUpgrade : MonoBehaviour
         if (m_myFleet == null) return;
         m_myFleet.m_panelFleetUpgrade = this;
         
-        panelFleetInfo.InitializeUIPanelFleetInfo();
-        m_tabSystem.tabs[0].onActivate = panelFleetInfo.OnTabActivated;
-        m_tabSystem.tabs[0].onDeactivate = panelFleetInfo.OnTabDeactivated;
-        panelShipInfo.InitializeUIPanelShipInfo();
-        m_tabSystem.tabs[1].onActivate = panelShipInfo.OnTabActivated;
-        m_tabSystem.tabs[1].onDeactivate = panelShipInfo.OnTabDeactivated;
+        m_panelFleetInfo.InitializeUIPanelFleetInfo();
+        m_tabSystem.tabs[0].onActivate = m_panelFleetInfo.OnTabActivated;
+        m_tabSystem.tabs[0].onDeactivate = m_panelFleetInfo.OnTabDeactivated;
+        m_panelShipInfo.InitializeUIPanelShipInfo();
+        m_tabSystem.tabs[1].onActivate = m_panelShipInfo.OnTabActivated;
+        m_tabSystem.tabs[1].onDeactivate = m_panelShipInfo.OnTabDeactivated;
 
     }
 
@@ -106,7 +106,7 @@ public class UIPanelFleetUpgrade : MonoBehaviour
 
     private void UpdatePanelShipInfo()
     {
-        if (panelShipInfo == null || m_selectedShip == null) return;
+        if (m_panelShipInfo == null || m_selectedShip == null) return;
 
         // panelShipInfo.SetActive(true);
 
