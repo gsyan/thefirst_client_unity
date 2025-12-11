@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public enum CameraControllerMode
 {
     Normal                  // 일반 게임 모드
+    , Select_Ship
     , Upgrade_Fleet         // 함대 보기 모드
     , Upgrade_Ship          // 함대 보기 모드
 }
@@ -83,6 +84,9 @@ public class CameraController : MonoSingleton<CameraController>
                 RestoreOriginalState();
                 SetSpaceSceneGaugesVisible(true);
                 break;
+            case CameraControllerMode.Select_Ship:
+                FocusOnTarget(viewTarget, 1.0f);
+                break;
             case CameraControllerMode.Upgrade_Fleet:
             case CameraControllerMode.Upgrade_Ship:
                 if (viewTarget != null)
@@ -115,9 +119,11 @@ public class CameraController : MonoSingleton<CameraController>
     public void UpdateFleetViewPosition()
     {
         if (m_targetCamera == null || m_currentTarget == null) return;
-
+        
+        // 1. 회전 각도를 라디안으로 변환
         float radiansY = m_currentRotationY * Mathf.Deg2Rad;
         float radiansX = m_currentRotationX * Mathf.Deg2Rad;
+        // 2. 구면 좌표계(Spherical Coordinates)로 카메라 위치 계산
         float horizontalDistance = m_currentZoom * Mathf.Cos(radiansX);
         Vector3 rotatedOffset = new Vector3(
             Mathf.Sin(radiansY) * horizontalDistance,
@@ -125,6 +131,7 @@ public class CameraController : MonoSingleton<CameraController>
             Mathf.Cos(radiansY) * horizontalDistance
         );
 
+         // 3. 타겟 위치 + 오프셋 = 카메라 위치
         Vector3 targetPosition = m_currentTarget.position;
         m_targetCamera.transform.position = targetPosition + rotatedOffset;
         m_targetCamera.transform.LookAt(targetPosition);
@@ -345,4 +352,57 @@ public class CameraController : MonoSingleton<CameraController>
         else
             return Physics.Raycast(ray, out hit, maxDistance, layerMask);
     }
+
+
+    public void FocusOnTarget(Transform target, float transitionTime = 0.5f)
+    {
+        if (target == null) return;
+
+        // 부드러운 전환 시작
+        StartCoroutine(SmoothTransitionToTarget(target, transitionTime));
+    }
+
+    private System.Collections.IEnumerator SmoothTransitionToTarget(Transform target, float duration)
+    {
+        if (m_targetCamera == null || target == null) yield break;
+
+        // 시작 타겟 위치 (현재 m_currentTarget이 있다면 그 위치, 없으면 현재 카메라가 보는 위치)
+        Vector3 startTargetPosition = m_currentTarget != null ? m_currentTarget.position : target.position;
+        Vector3 endTargetPosition = target.position;
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            // SmoothStep을 사용한 부드러운 보간
+            float smoothT = t * t * (3f - 2f * t);
+
+            // 타겟 위치를 부드럽게 보간
+            Vector3 interpolatedTargetPosition = Vector3.Lerp(startTargetPosition, endTargetPosition, smoothT);
+
+            // 현재 회전/줌 설정을 유지하면서 타겟만 이동
+            // UpdateFleetViewPosition과 동일한 방식으로 카메라 위치 계산
+            float radiansY = m_currentRotationY * Mathf.Deg2Rad;
+            float radiansX = m_currentRotationX * Mathf.Deg2Rad;
+            float horizontalDistance = m_currentZoom * Mathf.Cos(radiansX);
+            Vector3 rotatedOffset = new(
+                Mathf.Sin(radiansY) * horizontalDistance,
+                m_currentZoom * Mathf.Sin(radiansX),
+                Mathf.Cos(radiansY) * horizontalDistance
+            );
+
+            m_targetCamera.transform.position = interpolatedTargetPosition + rotatedOffset;
+            m_targetCamera.transform.LookAt(interpolatedTargetPosition);
+
+            yield return null;
+        }
+
+        // 최종 타겟 설정
+        m_currentTarget = target;
+        UpdateFleetViewPosition();
+    }
+
 }
