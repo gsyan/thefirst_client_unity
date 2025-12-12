@@ -108,10 +108,7 @@ public class ModuleGaugeDisplay : MonoBehaviour
         multiGaugeBar.AddGauge(gaugeColor);
         m_moduleGaugeBars[module] = multiGaugeBar;
 
-        if (CameraController.Instance != null &&
-            (CameraController.Instance.m_currentMode == CameraControllerMode.Upgrade_Fleet
-             || CameraController.Instance.m_currentMode == CameraControllerMode.Upgrade_Ship)            
-            )
+        if (CameraController.Instance != null && CameraController.Instance.m_currentMode != ECameraControllerMode.Normal)
             multiGaugeBar.gameObject.SetActive(false);
     }
 
