@@ -163,6 +163,10 @@ public class CameraController : MonoSingleton<CameraController>
     private float m_lastPinchDistance = 0f;
     private Vector2 m_lastTwoTouchCenter = Vector2.zero;
 
+    // 이전 프레임 터치 위치 저장 (방향 벡터 계산용)
+    private Vector2 m_prevTouch0Position;
+    private Vector2 m_prevTouch1Position;
+
     private void Update()
     {
         HandleInput();
@@ -278,36 +282,47 @@ public class CameraController : MonoSingleton<CameraController>
             {
                 m_lastPinchDistance = currentPinchDistance;
                 m_lastTwoTouchCenter = currentTouchCenter;
+                m_prevTouch0Position = touch0.position;
+                m_prevTouch1Position = touch1.position;
                 m_isPanning = false;
             }
             else if (touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved)
             {
-                float deltaPinch = currentPinchDistance - m_lastPinchDistance;
-                float pinchChangeRatio = Mathf.Abs(deltaPinch) / m_lastPinchDistance;
+                // 각 터치의 이동 방향 벡터 계산
+                Vector2 moveVector0 = touch0.position - m_prevTouch0Position;
+                Vector2 moveVector1 = touch1.position - m_prevTouch1Position;
 
-                // 핀치 변화가 작으면 팬으로 간주 (5% 미만)
-                if (pinchChangeRatio < 0.05f)
+                // 최소 이동량 체크 (노이즈 방지)
+                if (moveVector0.magnitude > 1f && moveVector1.magnitude > 1f)
                 {
-                    // 두 터치의 중심점 이동량으로 팬 처리
-                    Vector2 touchCenterDelta = currentTouchCenter - m_lastTwoTouchCenter;
-                    if (touchCenterDelta.magnitude > 1f) // 최소 이동량 체크
+                    // 방향 벡터 정규화 후 내적 계산
+                    float dotProduct = Vector2.Dot(moveVector0.normalized, moveVector1.normalized);
+
+                    // dot < -0.5: 반대 방향 → 핀치 줌
+                    if (dotProduct < -0.5f)
+                    {
+                        m_isPanning = false;
+                        float deltaPinch = currentPinchDistance - m_lastPinchDistance;
+
+                        if (m_currentTarget != null)
+                            ZoomCamera(-deltaPinch * 0.01f);
+                        else
+                            CameraMove_FrontBack(deltaPinch * 0.01f);
+                    }
+                    // dot > 0.8: 같은 방향 → 팬 이동
+                    else if (dotProduct > 0.8f)
                     {
                         m_isPanning = true;
+                        Vector2 touchCenterDelta = currentTouchCenter - m_lastTwoTouchCenter;
                         CameraMove_LeftRightUpDown(touchCenterDelta);
                     }
-                }
-                else
-                {
-                    // 핀치 줌
-                    m_isPanning = false;
-                    if (m_currentTarget != null)
-                        ZoomCamera(-deltaPinch * 0.01f);
-                    else
-                        CameraMove_FrontBack(deltaPinch * 0.01f);
+                    // 그 외: 애매한 경우 → 이전 상태 유지 (아무것도 안 함)
                 }
 
                 m_lastPinchDistance = currentPinchDistance;
                 m_lastTwoTouchCenter = currentTouchCenter;
+                m_prevTouch0Position = touch0.position;
+                m_prevTouch1Position = touch1.position;
             }
             else if (touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
             {
