@@ -240,7 +240,7 @@ public class SpaceShip : MonoBehaviour
 
         if (m_health <= 0.0f)
         {
-            Debug.Log($"{gameObject.name} SpaceShip destroyed!");
+            //Debug.Log($"{gameObject.name} SpaceShip destroyed!");
             OnSpaceShipDestroyed();
         }
     }
