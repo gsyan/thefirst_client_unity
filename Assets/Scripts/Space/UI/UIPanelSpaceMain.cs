@@ -24,7 +24,7 @@ public class UIPanelSpaceMain : MonoBehaviour
 
     private void OnEnable()
     {
-        CameraController.Instance.SwitchCameraMode(CameraControllerMode.Normal, null);
+        CameraController.Instance.SwitchCameraMode(ECameraControllerMode.Normal, null);
     }
 
 

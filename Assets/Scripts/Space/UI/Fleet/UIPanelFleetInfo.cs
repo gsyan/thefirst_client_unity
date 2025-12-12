@@ -17,6 +17,8 @@ public class UIPanelFleetInfo : MonoBehaviour
 
     private GameObject m_addButtonItem; // Add 버튼 아이템 참조
 
+    public UIPanelShipInfo m_panelShipInfo;
+
     public void InitializeUIPanelFleetInfo()
     {
         var character = DataManager.Instance.m_currentCharacter;
@@ -151,10 +153,15 @@ public class UIPanelFleetInfo : MonoBehaviour
         if (ship == null) return;
         
         // 카메라를 해당 함선으로 이동
-        CameraController.Instance.SwitchCameraMode(CameraControllerMode.Select_Ship, ship.transform);
+        CameraController.Instance.SwitchCameraMode(ECameraControllerMode.Select_Ship, ship.transform);
         
         // 선택 상태 업데이트 (필요한 경우)
-        //SelectShip(ship);
+        SelectShip(ship);
+    }
+
+    private void SelectShip(SpaceShip ship)
+    {
+        m_panelShipInfo.m_selectedShip = ship;
     }
 
     private void AddShip()

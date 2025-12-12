@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class UIPanelShipInfo : MonoBehaviour
 {
     [HideInInspector] public SpaceFleet m_myFleet;
-    private SpaceShip m_selectedShip;
+    [HideInInspector] public SpaceShip m_selectedShip;
     private ModuleBase m_selectedModule;
 
     public TextMeshProUGUI m_textTop;
@@ -34,7 +34,7 @@ public class UIPanelShipInfo : MonoBehaviour
 
     public void OnTabDeactivated()
     {
-        InitializeUI();        
+        InitializeUI();
         EventManager.Unsubscribe_ShipChange(OnShipChanged);
     }
 

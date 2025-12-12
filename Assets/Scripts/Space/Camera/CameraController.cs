@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [System.Serializable]
-public enum CameraControllerMode
+public enum ECameraControllerMode
 {
     Normal                  // 일반 게임 모드
     , Select_Ship
     , Upgrade_Fleet         // 함대 보기 모드
-    , Upgrade_Ship          // 함대 보기 모드
+    , Manage_Ship          // 함선 보기 모드
 }
 
 public class CameraController : MonoSingleton<CameraController>
@@ -31,7 +31,7 @@ public class CameraController : MonoSingleton<CameraController>
     private float m_currentZoom;
     private float m_currentRotationY = 0f;
     private float m_currentRotationX = 0f;
-    public CameraControllerMode m_currentMode = CameraControllerMode.Normal;
+    public ECameraControllerMode m_currentMode = ECameraControllerMode.Normal;
 
     // LayerMask
     private LayerMask m_layerDefault = default;
@@ -75,7 +75,7 @@ public class CameraController : MonoSingleton<CameraController>
         m_currentTarget = m_originalTarget;
     }
 
-    public void SwitchCameraMode(CameraControllerMode mode, Transform viewTarget = null)
+    public void SwitchCameraMode(ECameraControllerMode mode, Transform viewTarget = null)
     {
         if (m_targetCamera == null) return;
 
@@ -83,16 +83,13 @@ public class CameraController : MonoSingleton<CameraController>
 
         switch (mode)
         {
-            case CameraControllerMode.Normal:
+            case ECameraControllerMode.Normal:
                 RestoreOriginalState();
                 SetSpaceSceneGaugesVisible(true);
                 break;
-            case CameraControllerMode.Select_Ship:
-                if (viewTarget != null)
-                    SetTargetTransform(viewTarget);
-                break;
-            case CameraControllerMode.Upgrade_Fleet:
-            case CameraControllerMode.Upgrade_Ship:
+            case ECameraControllerMode.Select_Ship:
+            case ECameraControllerMode.Upgrade_Fleet:
+            case ECameraControllerMode.Manage_Ship:
                 if (viewTarget != null)
                     SetTargetTransform(viewTarget);
                 SetSpaceSceneGaugesVisible(false);
@@ -384,6 +381,9 @@ public class CameraController : MonoSingleton<CameraController>
 
     private void HandleModuleSelection(Vector3? screenPosition = null)
     {
+        if(m_currentMode != ECameraControllerMode.Manage_Ship)
+            return;
+
         if (GetCameraRaycast(out RaycastHit hit, m_layerDefault, 1000f, screenPosition))
         {
             SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
@@ -411,6 +411,10 @@ public class CameraController : MonoSingleton<CameraController>
     public void CameraMove_LeftRightUpDown(Vector2 screenDelta)
     {
         if (m_targetCamera == null) return;
+
+        // Normal 모드가 아니면 자유 이동 불가
+        if (m_currentMode != ECameraControllerMode.Normal)
+            return;
 
         // Transform 추적 중이면 해제 (팬 이동 시 고정 위치로 전환)
         m_currentTarget = null;
