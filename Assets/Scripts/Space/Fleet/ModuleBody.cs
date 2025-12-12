@@ -320,7 +320,7 @@ public class ModuleBody : ModuleBase
         // 바디가 파괴되면 장착된 모든 모듈도 비활성화
         if (m_health <= 0)
         {
-            Debug.Log($"[{GetFleetName()}] ModuleBody[{m_moduleBodyInfo.bodyIndex}] destroyed!");
+            //Debug.Log($"[{GetFleetName()}] ModuleBody[{m_moduleBodyInfo.bodyIndex}] destroyed!");
 
             // 엔진들 비활성화
             foreach (var engine in m_engines)
