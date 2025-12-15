@@ -46,6 +46,7 @@ public class UIPanelFleet : UIPanelBase
     {
         m_tabSystem.ForceActivateTab();
 
+        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
         // 카메라를 조정하여 함대/함선이 화면 세로 1/4 지점에 위치하도록 함
         // 0.25 = 위에서 1/4 지점 (화면을 4등분했을 때 1과 2 사이)
         CameraController.Instance.ApplyVerticalScreenOffset(0.25f);
@@ -55,6 +56,7 @@ public class UIPanelFleet : UIPanelBase
     {
         m_tabSystem.ForceDeactivateTab();
 
+        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
         // 카메라를 원래 위치로 복구 (부드럽게 이동)
         CameraController.Instance.ResetVerticalScreenOffset();
     }

@@ -151,6 +151,8 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         if (ship == null) return;
         
         m_panelShipInfo.m_selectedShip = ship;
+
+        CameraController.Instance.SetTargetOfCameraController(ship.transform);
     }
 
     private void AddShip()
