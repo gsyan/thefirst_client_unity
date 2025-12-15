@@ -66,7 +66,13 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     protected virtual void OnDestroy()
     {
         if (_instance == this)
-            _isShuttingDown = true;
+        {
+            _instance = null;
+            // DontDestroyOnLoad 싱글톤만 shutdown 처리
+            if (ShouldDontDestroyOnLoad)
+                _isShuttingDown = true;
+        }
+            
     }
 
     private void InitializeIfNeeded()
