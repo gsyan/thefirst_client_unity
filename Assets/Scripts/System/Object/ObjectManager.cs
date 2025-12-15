@@ -90,6 +90,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         DataManager.Instance.RestoreCurrentFleetInfo();
 
         SpawnFleet();
+
+        // 카메라가 함대를 타겟으로 설정
+        if (CameraController.Instance != null)
+            CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+
         StartCoroutine(SpawnEnemies());
         //StartCoroutine(SpawnMineral());
 
@@ -109,7 +114,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         GameObject fleetObj = new GameObject("MyFleet");
         m_myFleet = fleetObj.AddComponent<SpaceFleet>();
         m_myFleet.InitializeSpaceFleet(DataManager.Instance.m_currentFleetInfo);
-        
+
         if (DataManager.Instance.m_currentCharacter != null)
             DataManager.Instance.m_currentCharacter.SetOwnedFleet(m_myFleet);
 

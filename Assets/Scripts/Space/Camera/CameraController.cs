@@ -77,7 +77,7 @@ public class CameraController : MonoSingleton<CameraController>
             case ECameraControllerMode.Upgrade_Fleet:
             case ECameraControllerMode.Manage_Ship:
                 if (viewTarget != null)
-                    SetTargetTransform(viewTarget);
+                    SetTargetOfCameraController(viewTarget);
                 SetSpaceSceneGaugesVisible(false);
                 break;
         }
@@ -96,10 +96,11 @@ public class CameraController : MonoSingleton<CameraController>
     public void UpdateFleetViewPosition()
     {
         if (m_targetCamera == null) return;
-
+        
         // Transform이 설정되어 있으면 해당 위치를 따라감 (움직이는 타겟)
         if (m_currentTarget != null)
             m_targetPosition = m_currentTarget.position;
+        
 
         // 타겟 위치를 부드럽게 보간 (Lerp 속도 조절 가능)
         float lerpSpeed = 5f * Time.deltaTime; // 속도 조절 파라미터
@@ -470,7 +471,7 @@ public class CameraController : MonoSingleton<CameraController>
     }
 
     // Transform을 타겟으로 설정 (움직이는 오브젝트 추적용)
-    public void SetTargetTransform(Transform target)
+    public void SetTargetOfCameraController(Transform target)
     {
         if (target == null) return;
 
