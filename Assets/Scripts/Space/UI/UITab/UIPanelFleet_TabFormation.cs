@@ -4,24 +4,20 @@ using UnityEngine.UI;
 using TMPro;
 using System.Data;
 
-public class UIPanelFleetFormation : MonoBehaviour
+public class UIPanelFleet_TabFormation : UITabBase
 {
     public TextMeshProUGUI m_formationNameText;
-    public Button m_prevButton;
-    public Button m_nextButton;
-
+    
     private SpaceFleet m_myFleet;
     private EFormationType m_currentFormationType;
+    private Button m_prevButton;
+    private Button m_nextButton;
 
-    void Awake()
+    public override void InitializeUITab()
     {
-        if (m_prevButton != null)
-            m_prevButton.onClick.AddListener(() => ChangeFormation(-1));
-        if (m_nextButton != null)
-            m_nextButton.onClick.AddListener(() => ChangeFormation(1));
+        InitializeUIPanelFleetFormation();
     }
-
-    public void InitializeUIPanelFleetFormation()
+    private void InitializeUIPanelFleetFormation()
     {
         if (m_myFleet == null)
         {
@@ -29,21 +25,24 @@ public class UIPanelFleetFormation : MonoBehaviour
             if (panelFleet != null)
                 m_myFleet = panelFleet.m_myFleet;
         }
+
+        if (m_prevButton != null)
+            m_prevButton.onClick.AddListener(() => ChangeFormation(-1));
+        if (m_nextButton != null)
+            m_nextButton.onClick.AddListener(() => ChangeFormation(1));
     }
 
-    public void OnTabActivated()
+    public override void OnTabActivated()
     {
         InitializeUI();
-
-        //CameraController.Instance.SwitchCameraMode(CameraControllerMode.DisplayFleet);
-
+        
         EventManager.Subscribe_FleetChange(OnFleetChanged);
     }
 
-    public void OnTabDeactivated()
+    public override void OnTabDeactivated()
     {
         InitializeUI();
-
+        
         EventManager.Unsubscribe_FleetChange(OnFleetChanged);
     }
 

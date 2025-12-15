@@ -18,9 +18,8 @@ public class UILoading : UIManager
         "Tip: Explore different areas to find new items."
     };
     
-    protected override void Start()
+    private void Start()
     {
-        //base.Start();
         // Display random tip
         if (tipText != null && loadingTips.Length > 0)
         {

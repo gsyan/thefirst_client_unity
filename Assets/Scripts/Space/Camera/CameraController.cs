@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 [System.Serializable]
 public enum ECameraControllerMode
@@ -9,6 +10,7 @@ public enum ECameraControllerMode
     , Upgrade_Fleet         // 함대 보기 모드
     , Manage_Ship          // 함선 보기 모드
 }
+
 
 public class CameraController : MonoSingleton<CameraController>
 {
@@ -21,13 +23,13 @@ public class CameraController : MonoSingleton<CameraController>
     private float m_maxZoom = 50f;
 
     // Camera state management
-    private Transform m_originalTarget;
     private Vector3 m_offset;
-    
+
     // Current camera state
     private Transform m_currentTarget; // (Optional) 움직이는 타겟을 따라가기 위한 Transform
     private Vector3 m_targetPosition; // 카메라가 바라보는 목표 위치
     private Vector3 m_interpolatedTargetPosition; // 부드럽게 보간된 타겟 위치
+    private float m_verticalScreenOffsetRatio = 0f; // 세로 화면 오프셋 비율 (0.0 = 중앙, 0.25 = 위쪽 1/4)
     private float m_currentZoom;
     private float m_currentRotationY = 0f;
     private float m_currentRotationX = 0f;
@@ -60,21 +62,6 @@ public class CameraController : MonoSingleton<CameraController>
         m_currentZoom = (m_minZoom + m_maxZoom) / 2f;
     }
 
-    public void SaveOriginalState()
-    {
-        if (m_targetCamera == null) return;
-
-        // 기존 타겟 설정 (전투용 함대나 다른 타겟)
-        GameObject myFleet = GameObject.Find("MyFleet");
-        if (myFleet == null) return;
-        m_originalTarget = myFleet.transform;
-
-        if (m_originalTarget == null) return;
-        m_offset = m_targetCamera.transform.position - m_originalTarget.position;
-
-        m_currentTarget = m_originalTarget;
-    }
-
     public void SwitchCameraMode(ECameraControllerMode mode, Transform viewTarget = null)
     {
         if (m_targetCamera == null) return;
@@ -84,7 +71,6 @@ public class CameraController : MonoSingleton<CameraController>
         switch (mode)
         {
             case ECameraControllerMode.Normal:
-                RestoreOriginalState();
                 SetSpaceSceneGaugesVisible(true);
                 break;
             case ECameraControllerMode.Select_Ship:
@@ -95,15 +81,6 @@ public class CameraController : MonoSingleton<CameraController>
                 SetSpaceSceneGaugesVisible(false);
                 break;
         }
-    }
-
-    public void RestoreOriginalState()
-    {
-        if (m_targetCamera == null) return;
-        m_currentTarget = m_originalTarget;
-        
-        if (m_targetCamera == null || m_currentTarget == null) return;
-        m_targetCamera.transform.position = m_currentTarget.position + m_offset;
     }
 
     private void SetSpaceSceneGaugesVisible(bool visible)
@@ -139,9 +116,24 @@ public class CameraController : MonoSingleton<CameraController>
             Mathf.Cos(radiansY) * horizontalDistance
         );
 
-         // 3. 보간된 타겟 위치 + 오프셋 = 카메라 위치
-        m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset;
-        m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
+        // 3. 세로 화면 오프셋 계산 (매 프레임 카메라 방향 기준으로 계산)
+        Vector3 verticalOffset = Vector3.zero;
+        if (m_verticalScreenOffsetRatio != 0f)
+        {
+            // 카메라의 위쪽 방향 벡터 (회전 후 기준)
+            Vector3 cameraUp = m_targetCamera.transform.up;
+
+            // 줌 레벨과 화면 비율을 고려한 오프셋 계산
+            float verticalFOV = m_targetCamera.fieldOfView * Mathf.Deg2Rad;
+            float screenHeight = 2f * m_currentZoom * Mathf.Tan(verticalFOV / 2f);
+            float offset = screenHeight * m_verticalScreenOffsetRatio;
+
+            verticalOffset = -cameraUp * offset;
+        }
+
+        // 4. 보간된 타겟 위치 + 회전 오프셋 + 세로 오프셋 = 카메라 위치
+        m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset + verticalOffset;
+        m_targetCamera.transform.LookAt(m_interpolatedTargetPosition + verticalOffset);
     }
 
     private bool m_inputEnabled = true;
@@ -413,7 +405,7 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_targetCamera == null) return;
 
         // Normal 모드가 아니면 자유 이동 불가
-        if (m_currentMode != ECameraControllerMode.Normal)
+        if( UIManager.Instance.CanCameraMove() == false)
             return;
 
         // Transform 추적 중이면 해제 (팬 이동 시 고정 위치로 전환)
@@ -508,6 +500,18 @@ public class CameraController : MonoSingleton<CameraController>
     public Vector3 GetTargetPosition()
     {
         return m_targetPosition;
+    }
+
+    // 화면 세로 오프셋 적용 (0.0 = 중앙, 0.25 = 위쪽 1/4, -0.25 = 아래쪽 1/4)
+    public void ApplyVerticalScreenOffset(float screenOffsetRatio)
+    {
+        m_verticalScreenOffsetRatio = screenOffsetRatio;
+    }
+
+    // 원래 타겟 위치로 복구
+    public void ResetVerticalScreenOffset()
+    {
+        m_verticalScreenOffsetRatio = 0f;
     }
 
 }

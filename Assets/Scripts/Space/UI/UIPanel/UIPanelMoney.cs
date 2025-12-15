@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class UIPanelMoney : MonoBehaviour
+public class UIPanelMoney : UIPanelBase
 {
     public TextMeshProUGUI m_moneyText;
     public TextMeshProUGUI m_mineralText;

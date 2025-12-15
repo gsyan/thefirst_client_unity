@@ -10,10 +10,8 @@ using UnityEngine.UI;
 //     Upgrade
 // }
 
-public class UIPanelExploration : MonoBehaviour
+public class UIPanelExploration : UIPanelBase
 {
-    public UIManager m_UIManager;
-
     [Header("Tab System")]
     public TabSystem tabSystem;
 
@@ -35,7 +33,7 @@ public class UIPanelExploration : MonoBehaviour
         else
             SetupManualTabs();
 
-        closeButton?.onClick.AddListener(() => m_UIManager?.ShowMainPanel());
+        closeButton?.onClick.AddListener(() => UIManager.Instance.ShowMainPanel());
     }
 
     private void SetupTabSystem()

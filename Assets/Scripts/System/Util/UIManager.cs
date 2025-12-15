@@ -3,13 +3,12 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class UIPanel
+public enum EUIMode
 {
-    public string panelName;
-    public GameObject panelObject;
-    public bool isMainPanel = false;
-    public bool hideMainWhenActive = true; // 이 패널이 활성화될 때 메인 패널을 숨길지 여부
+    Main
+    , Fleet_Upgrade
+    , Fleet_Formation
+    , Fleet_Admiral
 }
 
 public class UIManager : MonoSingleton<UIManager>
@@ -21,82 +20,77 @@ public class UIManager : MonoSingleton<UIManager>
     {
 
     }
-    #endregion
+    #endregion MonoSingleton ---------------------------------------------------------------
 
     public TMP_Text m_resultText;
-    
-
-    [Header("Panel Configuration")]
-    public List<UIPanel> panels = new List<UIPanel>();
+    public EUIMode m_uiMode = EUIMode.Main;
 
     [Header("Animation Settings")]
-    public bool useAnimation = true;
-    public float animationDuration = 0.3f;
+    protected bool useAnimation = true;
+    protected float animationDuration = 0.3f;
 
-    public UIPanelMoney m_uiPanelMoney;
-    
-    
+    protected UIPanelMoney m_uiPanelMoney;
+
+
     // Private fields
-    private UIPanel currentActivePanel;
-    private UIPanel mainPanel;
-    private Dictionary<string, UIPanel> panelDictionary = new Dictionary<string, UIPanel>();
+    private UIPanelBase currentActivePanel;
+    private UIPanelBase mainPanel;
+    private Dictionary<string, UIPanelBase> panelDictionary = new Dictionary<string, UIPanelBase>();
+    private Stack<UIPanelBase> panelStack = new Stack<UIPanelBase>();
 
     protected override void  Awake()
     {
         base.Awake();
     }
 
-    public void InitializePanels()
+    public virtual void InitializeUIManager()
     {
-        // 패널 딕셔너리 구성
-        panelDictionary.Clear();
-        
-        foreach (var panel in panels)
-        {
-            if (panel.panelObject != null)
-            {
-                if (string.IsNullOrEmpty(panel.panelName))
-                    panel.panelName = panel.panelObject.name;
-                panelDictionary[panel.panelName] = panel;
-                
-                if (panel.isMainPanel)
-                    mainPanel = panel;
+    }
 
-                panel.panelObject.SetActive(false);
-            }
-        }
-        
-        if (mainPanel == null && panels.Count > 0)
+    protected void InitializePanels()
+    {
+        // 모든 패널을 비활성화하고 메인 패널 찾기
+        foreach (var panel in panelDictionary.Values)
         {
-            mainPanel = panels[0];
-            mainPanel.isMainPanel = true;
+            if (panel.gameObject != null)
+            {
+                if (panel.bMainPanel)
+                {
+                    if( mainPanel != null)
+                        Debug.LogError("main UIPanel is Two more!!");
+                    else
+                        mainPanel = panel;
+                }
+                panel.gameObject.SetActive(false);
+            }
         }
     }
     
-    protected virtual void Start()
-    {
-    }
-
     public void ShowDefaultPanel()
     {
         if (mainPanel != null)
             ShowPanel(mainPanel.panelName);
-    }    
+    }
+
     public void ShowPanel(string panelName)
     {
         if (!panelDictionary.ContainsKey(panelName)) return;
-        var targetPanel = panelDictionary[panelName];        
-        if (currentActivePanel == targetPanel && targetPanel.panelObject.activeInHierarchy) return;
+        var targetPanel = panelDictionary[panelName];
+        if (currentActivePanel == targetPanel && targetPanel.gameObject.activeInHierarchy) return;
 
-        if (currentActivePanel != null)
-            HidePanel(currentActivePanel);
-        
-        // 메인 패널이 아닌 패널을 표시할 때 메인 패널 숨김
-        if (!targetPanel.isMainPanel && targetPanel.hideMainWhenActive && mainPanel != null)
-            HidePanel(mainPanel);
-        
+        if(targetPanel.bHideCurWhenActive == true)
+        {
+            // 현재 활성 패널이 있으면 숨기고 스택에 추가
+            if (currentActivePanel != null)
+            {
+                HidePanel(currentActivePanel);
+                panelStack.Push(currentActivePanel);
+            }
+
+            currentActivePanel = targetPanel;
+        }
+
         ShowPanel(targetPanel);
-        currentActivePanel = targetPanel;
     }
     
     public void ShowMainPanel()
@@ -107,11 +101,22 @@ public class UIManager : MonoSingleton<UIManager>
     
     public void HideCurrentPanel()
     {
-        if (currentActivePanel != null && !currentActivePanel.isMainPanel)
+        if (currentActivePanel != null && !currentActivePanel.bMainPanel)
         {
             HidePanel(currentActivePanel);
-            currentActivePanel = null;
-            ShowMainPanel();
+
+            // 스택에서 이전 패널을 꺼내서 보여줌
+            if (panelStack.Count > 0)
+            {
+                UIPanelBase previousPanel = panelStack.Pop();
+                currentActivePanel = previousPanel;
+                ShowPanel(previousPanel);
+            }
+            else
+            {
+                currentActivePanel = null;
+                ShowMainPanel();
+            }
         }
     }
     
@@ -120,30 +125,34 @@ public class UIManager : MonoSingleton<UIManager>
         if (!panelDictionary.ContainsKey(panelName)) return;
         var targetPanel = panelDictionary[panelName];
         
-        if (currentActivePanel == targetPanel && targetPanel.panelObject.activeInHierarchy)
+        if (currentActivePanel == targetPanel && targetPanel.gameObject.activeInHierarchy)
             ShowMainPanel();
         else
             ShowPanel(panelName);
     }
     
-    private void ShowPanel(UIPanel panel)
+    private void ShowPanel(UIPanelBase panel)
     {
-        if (panel.panelObject == null) return;
+        if (panel.gameObject == null) return;
         
         if (useAnimation == true)
-            StartCoroutine(AnimatePanel(panel.panelObject, true));
+            StartCoroutine(AnimatePanel(panel.gameObject, true));
         else
-            panel.panelObject.SetActive(true);
+            panel.gameObject.SetActive(true);
+        
+        panel.OnShowUIPanel();
     }
     
-    private void HidePanel(UIPanel panel)
+    private void HidePanel(UIPanelBase panel)
     {
-        if (panel.panelObject == null) return;
+        if (panel == null || panel.gameObject == null) return;
         
         if (useAnimation == true)
-            StartCoroutine(AnimatePanel(panel.panelObject, false));
+            StartCoroutine(AnimatePanel(panel.gameObject, false));
         else
-            panel.panelObject.SetActive(false);
+            panel.gameObject.SetActive(false);
+        
+        panel.OnHideUIPanel();
     }
     
     private System.Collections.IEnumerator AnimatePanel(GameObject panel, bool show)
@@ -189,21 +198,10 @@ public class UIManager : MonoSingleton<UIManager>
     }
     
     // 새로운 패널을 동적으로 추가하는 메서드, 외부에서 사용할 수 있는 유틸리티 메서드들
-    public void AddPanel(string panelName, GameObject panelObject, bool hideMainWhenActive = true)
+    public void AddPanel(UIPanelBase panelBase)
     {
-        var newPanel = new UIPanel
-        {
-            panelName = panelName,
-            panelObject = panelObject,
-            isMainPanel = false,
-            hideMainWhenActive = hideMainWhenActive
-        };
-        
-        panels.Add(newPanel);
-        panelDictionary[panelName] = newPanel;
-        panelObject.SetActive(false);
-        
-        Debug.Log($"Added new panel: {panelName}");
+        panelDictionary[panelBase.panelName] = panelBase;
+        panelBase.gameObject.SetActive(false);
     }
     
     public void RemovePanel(string panelName)
@@ -211,14 +209,13 @@ public class UIManager : MonoSingleton<UIManager>
         if (panelDictionary.ContainsKey(panelName))
         {
             var panel = panelDictionary[panelName];
-            
+
             // 현재 활성 패널이면 메인으로 전환
             if (currentActivePanel == panel)
                 ShowMainPanel();
-            
-            panels.Remove(panel);
+
             panelDictionary.Remove(panelName);
-            
+
             Debug.Log($"Removed panel: {panelName}");
         }
     }
@@ -226,7 +223,7 @@ public class UIManager : MonoSingleton<UIManager>
     public bool IsPanelActive(string panelName)
     {
         if (panelDictionary.ContainsKey(panelName))
-            return panelDictionary[panelName].panelObject.activeInHierarchy;
+            return panelDictionary[panelName].gameObject.activeInHierarchy;
         return false;
     }
     
@@ -237,7 +234,14 @@ public class UIManager : MonoSingleton<UIManager>
     
     public bool IsMainPanelActive()
     {
-        return mainPanel != null && mainPanel.panelObject.activeInHierarchy;
+        return mainPanel != null && mainPanel.gameObject.activeInHierarchy;
     }
-    
+
+    public bool CanCameraMove()
+    {
+        if(currentActivePanel == null) return false;
+        return currentActivePanel.bCameraMove;
+    }
+
+
 }

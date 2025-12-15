@@ -1,15 +1,14 @@
 using UnityEngine;
 
-public class UIPanelFleetAdmiral : MonoBehaviour
+public class UIPanelFleet_TabAdmiral : UITabBase
 {
     private SpaceFleet m_myFleet;
-
-    void Awake()
+    
+    public override void InitializeUITab()
     {
-        
+        InitializeUIPanelFleetAdmiral();
     }
-
-    public void InitializeUIPanelFleetAdmiral()
+    private void InitializeUIPanelFleetAdmiral()
     {
         if (m_myFleet == null)
         {
@@ -19,15 +18,19 @@ public class UIPanelFleetAdmiral : MonoBehaviour
         }
     }
 
-    public void OnTabActivated()
+    public override void OnTabActivated()
     {
+        //base.OnShowUIPanel();
         InitializeUI();
-
-        //CameraController.Instance.SwitchCameraMode(CameraControllerMode.DisplayFleet);
+        
     }
 
-    public void OnTabDeactivated()
+    public override void OnTabDeactivated()
     {
+        //base.OnHideUIPanel();
+        InitializeUI();
+
+        
     }
 
     private void InitializeUI()

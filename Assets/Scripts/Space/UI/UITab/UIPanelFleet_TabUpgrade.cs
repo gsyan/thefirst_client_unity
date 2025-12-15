@@ -3,75 +3,59 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIPanelFleetUpgrade : MonoBehaviour
+
+public class UIPanelFleet_TabUpgrade : UITabBase
 {
     [Header("Tab System")]
     [SerializeField] private TabSystem m_tabSystem;    
-    public UIPanelFleetInfo m_panelFleetInfo;
-    public UIPanelShipInfo m_panelShipInfo;
-
-
-
-
-
-    //[Header("Selected Module Info")]
-    //public TextMeshProUGUI selectedModuleText;
     
-    //public TextMeshProUGUI textFleetStats;
-
-
-
-    //[Header("Ship Information Panel")]        
-    //public TextMeshProUGUI moduleNameText;
-    //public TextMeshProUGUI moduleStatsText;
-    //public Button addNewShipButton;
-    //public Button upgradeButton;
-    
-
     // Private fields
     [HideInInspector] public SpaceFleet m_myFleet;
     private SpaceShip m_selectedShip;
     private ModuleBase m_selectedModule;
 
-    
-    public void InitializeUIPanelFleetUpgrade()
+
+    public override void InitializeUITab()
+    {
+        InitializeUIPanelFleetUpgrade();
+    }
+    private void InitializeUIPanelFleetUpgrade()
     {
         if (m_myFleet == null)
-        {
-            UIPanelFleet panelFleet = GetComponentInParent<UIPanelFleet>();
-            if (panelFleet != null)
-                m_myFleet = panelFleet.m_myFleet;
-        }
+            m_myFleet = DataManager.Instance.m_currentCharacter.GetOwnedFleet();
 
         if (m_myFleet == null) return;
-        m_myFleet.m_panelFleetUpgrade = this;
+        m_myFleet.m_panelFleet_TabUpgrade = this;
         
-        m_panelFleetInfo.InitializeUIPanelFleetInfo();
-        m_tabSystem.tabs[0].onActivate = m_panelFleetInfo.OnTabActivated;
-        m_tabSystem.tabs[0].onDeactivate = m_panelFleetInfo.OnTabDeactivated;
-        m_panelShipInfo.InitializeUIPanelShipInfo();
-        m_tabSystem.tabs[1].onActivate = m_panelShipInfo.OnTabActivated;
-        m_tabSystem.tabs[1].onDeactivate = m_panelShipInfo.OnTabDeactivated;
+        for (int i = 0; i < m_tabSystem.tabs.Count; i++)
+        {
+            var tabData = m_tabSystem.tabs[i];
+            if (tabData.tabPanel != null)
+            {
+                UITabBase tabBase = tabData.tabPanel.GetComponent<UITabBase>();
+                if (tabBase == null) continue;
+                tabBase.InitializeUITab();
+                tabData.onActivate = tabBase.OnTabActivated;
+                tabData.onDeactivate = tabBase.OnTabDeactivated;
+            }
+        }
 
     }
 
 
-    public void OnTabActivated()
+    public override void OnTabActivated()
     {
         InitializeUI();
 
-        //EventManager.Subscribe_ResourceChanged(OnResourceChanged);
-        //EventManager.Subscribe_FleetChange(OnFleetChanged);
+        m_tabSystem.ForceActivateTab();
     }
 
-    public void OnTabDeactivated()
+    public override void OnTabDeactivated()
     {
         InitializeUI();
-        
-        //EventManager.Unsubscribe_ResourceChanged(OnResourceChanged);
-        //EventManager.Unsubscribe_FleetChange(OnFleetChanged);
-    }
 
+        m_tabSystem.ForceDeactivateTab();
+    }
 
     private void InitializeUI()
     {
@@ -106,7 +90,7 @@ public class UIPanelFleetUpgrade : MonoBehaviour
 
     private void UpdatePanelShipInfo()
     {
-        if (m_panelShipInfo == null || m_selectedShip == null) return;
+        //if (m_tabShipInfo == null || m_selectedShip == null) return;
 
         // panelShipInfo.SetActive(true);
 

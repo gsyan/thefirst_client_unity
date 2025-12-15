@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPanelShipInfo : MonoBehaviour
+public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 {
     [HideInInspector] public SpaceFleet m_myFleet;
     [HideInInspector] public SpaceShip m_selectedShip;
@@ -13,7 +13,7 @@ public class UIPanelShipInfo : MonoBehaviour
 
     public Button m_upgradeModuleButton;
 
-    public void InitializeUIPanelShipInfo()
+    public override void InitializeUITab()
     {
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null || character.GetOwnedFleet() == null)
@@ -26,15 +26,23 @@ public class UIPanelShipInfo : MonoBehaviour
         m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
     }
 
-    public void OnTabActivated()
+    public override void OnTabActivated()
     {
         InitializeUI();
+
+        // 함선 관리 모드로 전환
+        CameraController.Instance.m_currentMode = ECameraControllerMode.Manage_Ship;
+
         EventManager.Subscribe_ShipChange(OnShipChanged);
     }
 
-    public void OnTabDeactivated()
+    public override void OnTabDeactivated()
     {
         InitializeUI();
+
+        // 평소 카메라 모드로 전환
+        CameraController.Instance.m_currentMode = ECameraControllerMode.Normal;
+
         EventManager.Unsubscribe_ShipChange(OnShipChanged);
     }
 
