@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 1075624920480821156}
   - component: {fileID: 7534680563783340793}
   m_Layer: 5
-  m_Name: PanelFleetInfo
+  m_Name: TabFleetInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -729,7 +729,7 @@ GameObject:
   - component: {fileID: 5975845796520794626}
   - component: {fileID: 318945038680788062}
   m_Layer: 5
-  m_Name: PanelShipInfo
+  m_Name: TabShipInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1602,7 +1602,7 @@ GameObject:
   - component: {fileID: 4883328260332575992}
   - component: {fileID: 8294625144142245584}
   m_Layer: 5
-  m_Name: PanelFleet
+  m_Name: UIPanelFleet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1684,11 +1684,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dcf33d81fecd6e4886c59e2b128c51d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UIManager: {fileID: 0}
+  panelName: 
+  bMainPanel: 0
+  bHideCurWhenActive: 1
+  bCameraMove: 0
   m_tabSystem: {fileID: 8294625144142245584}
-  upgradePanel: {fileID: 5677185514691408977}
-  formationPanel: {fileID: 415799697486814008}
-  admiralPanel: {fileID: 1648722136093841024}
   closeButton: {fileID: 479422201146475699}
   m_myFleet: {fileID: 0}
 --- !u!114 &8294625144142245584
@@ -2016,7 +2016,7 @@ GameObject:
   - component: {fileID: 3046358731110331642}
   - component: {fileID: 1648722136093841024}
   m_Layer: 5
-  m_Name: PanelFleetAdmiral
+  m_Name: TabFleetAdmiral
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2104,7 +2104,7 @@ GameObject:
   - component: {fileID: 1873569333461301264}
   - component: {fileID: 415799697486814008}
   m_Layer: 5
-  m_Name: PanelFleetFormation
+  m_Name: TabFleetFormation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2183,8 +2183,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_formationNameText: {fileID: 7427710899288071603}
-  m_prevButton: {fileID: 581123559249895347}
-  m_nextButton: {fileID: 2070691586038854686}
 --- !u!1 &4453904022772365875
 GameObject:
   m_ObjectHideFlags: 0
@@ -2335,7 +2333,7 @@ GameObject:
   - component: {fileID: 5677185514691408977}
   - component: {fileID: 1641040280571031344}
   m_Layer: 5
-  m_Name: PanelFleetUpgrade
+  m_Name: TabFleetUpgrade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2415,8 +2413,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_tabSystem: {fileID: 1641040280571031344}
-  m_panelFleetInfo: {fileID: 7534680563783340793}
-  m_panelShipInfo: {fileID: 318945038680788062}
+  m_tabFleetInfo: {fileID: 7534680563783340793}
+  m_tabShipInfo: {fileID: 318945038680788062}
   m_myFleet: {fileID: 0}
 --- !u!114 &1641040280571031344
 MonoBehaviour:
@@ -4147,7 +4145,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00004569316}
+  m_AnchoredPosition: {x: 0, y: 0.00020149651}
   m_SizeDelta: {x: 0, y: 351.9103}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &4295333355785520783

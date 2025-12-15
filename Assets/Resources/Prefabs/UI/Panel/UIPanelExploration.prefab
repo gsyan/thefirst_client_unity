@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 3332871525935613496}
   - component: {fileID: 1619763934016748872}
   m_Layer: 5
-  m_Name: PanelExploration
+  m_Name: UIPanelExploration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,7 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 639d7ecd9c257fd4ca194ba08d977925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UIManager: {fileID: 0}
+  bMainPanel: 0
+  bHideCurWhenActive: 1
   tabSystem: {fileID: 0}
   admiralTabButton: {fileID: 0}
   formationTabButton: {fileID: 0}

@@ -24,9 +24,8 @@ public class UIMain : UIManager
 
     private List<CharacterResponse> m_characterList = new List<CharacterResponse>();
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         registerButton.onClick.AddListener(() => Register());
         loginButton.onClick.AddListener(() => Login(null, null));
         if (googleLoginButton != null)

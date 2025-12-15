@@ -575,10 +575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_resultText: {fileID: 0}
-  panels: []
-  useAnimation: 1
-  animationDuration: 0.3
-  m_uiPanelMoney: {fileID: 0}
+  m_uiMode: 0
 --- !u!1 &2008579210
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,8 +627,8 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 2008579212}
   - {fileID: 52467355}
   - {fileID: 593177358}
   - {fileID: 1963102159}
   - {fileID: 451708795}
-  - {fileID: 2008579212}

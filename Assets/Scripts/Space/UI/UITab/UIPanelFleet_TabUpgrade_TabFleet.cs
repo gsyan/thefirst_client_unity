@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class UIPanelFleetInfo : MonoBehaviour
+public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 {
     [HideInInspector] public SpaceFleet m_myFleet;
     private SpaceShip m_selectedShip;
@@ -17,9 +17,9 @@ public class UIPanelFleetInfo : MonoBehaviour
 
     private GameObject m_addButtonItem; // Add 버튼 아이템 참조
 
-    public UIPanelShipInfo m_panelShipInfo;
+    public UIPanelFleet_TabUpgrade_TabShip m_panelShipInfo;
 
-    public void InitializeUIPanelFleetInfo()
+    public override void InitializeUITab()
     {
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null || character.GetOwnedFleet() == null)
@@ -45,21 +45,19 @@ public class UIPanelFleetInfo : MonoBehaviour
         }
     }
 
-    public void OnTabActivated()
+    public override void OnTabActivated()
     {
         InitializeUI();
 
         EventManager.Subscribe_FleetChange(OnFleetChanged);
     }
 
-    public void OnTabDeactivated()
+    public override void OnTabDeactivated()
     {
         InitializeUI();
-        
+
         EventManager.Unsubscribe_FleetChange(OnFleetChanged);
     }
-
-
 
     private void InitializeUI()
     {
@@ -152,15 +150,6 @@ public class UIPanelFleetInfo : MonoBehaviour
     {
         if (ship == null) return;
         
-        // 카메라를 해당 함선으로 이동
-        CameraController.Instance.SwitchCameraMode(ECameraControllerMode.Select_Ship, ship.transform);
-        
-        // 선택 상태 업데이트 (필요한 경우)
-        SelectShip(ship);
-    }
-
-    private void SelectShip(SpaceShip ship)
-    {
         m_panelShipInfo.m_selectedShip = ship;
     }
 

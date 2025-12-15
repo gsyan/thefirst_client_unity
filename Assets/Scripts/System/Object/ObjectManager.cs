@@ -83,6 +83,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     private bool m_isFirstEnemySpawned = false;
     private float m_lastEnemyDestroyTime = 0f;
 
+    // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
     {
         DataManager.Instance.RestoreCurrentCharacterData();
@@ -92,77 +93,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         StartCoroutine(SpawnEnemies());
         //StartCoroutine(SpawnMineral());
 
-        SpawnUIPanels();
-    }
-
-    private void SpawnUIPanels()
-    {
-        GameObject uiCanvas = GameObject.Find("UICanvas");
-        if (uiCanvas == null) return;
-
-        UIManager uiManager = uiCanvas.GetComponent<UIManager>();
-        if (uiManager == null) return;
-
-        GameObject panelMoneyPrefab = Resources.Load<GameObject>("Prefabs/UI/Panel/PanelMoney");
-        if (panelMoneyPrefab != null)
-        {
-            GameObject panelMoney = Instantiate(panelMoneyPrefab, uiCanvas.transform);
-            panelMoney.name = "panelMoney";
-            uiManager.m_uiPanelMoney = panelMoney.GetComponent<UIPanelMoney>();
-        }
-
-        GameObject panelMainPrefab = Resources.Load<GameObject>("Prefabs/UI/Panel/PanelMain");
-        if (panelMainPrefab != null)
-        {
-            GameObject panelMain = Instantiate(panelMainPrefab, uiCanvas.transform);
-            panelMain.name = "PanelMain";
-            panelMain.GetComponent<UIPanelSpaceMain>().m_UIManager = uiManager;
-            UIPanel mainPanel = new UIPanel
-            {
-                panelName = "PanelMain",
-                panelObject = panelMain,
-                isMainPanel = true,
-                hideMainWhenActive = false
-            };
-            uiManager.panels.Add(mainPanel);
-        }
-
-        GameObject panelFleetPrefab = Resources.Load<GameObject>("Prefabs/UI/Panel/PanelFleet");
-        if (panelFleetPrefab != null)
-        {
-            GameObject panelFleetObj = Instantiate(panelFleetPrefab, uiCanvas.transform);
-            panelFleetObj.name = "PanelFleet";
-            UIPanelFleet panelFleet = panelFleetObj.GetComponent<UIPanelFleet>();
-            panelFleet.m_UIManager = uiManager;
-            panelFleet.InitializeUIPanelFleet();
-            UIPanel fleetPanel = new UIPanel
-            {
-                panelName = "PanelFleet",
-                panelObject = panelFleetObj,
-                isMainPanel = false,
-                hideMainWhenActive = true
-            };
-            uiManager.panels.Add(fleetPanel);
-        }
-
-        GameObject panelExplorationPrefab = Resources.Load<GameObject>("Prefabs/UI/Panel/PanelExploration");
-        if (panelExplorationPrefab != null)
-        {
-            GameObject panelExploration = Instantiate(panelExplorationPrefab, uiCanvas.transform);
-            panelExploration.name = "PanelExploration";
-            panelExploration.GetComponent<UIPanelExploration>().m_UIManager = uiManager;
-            UIPanel explorationPanel = new UIPanel
-            {
-                panelName = "PanelExploration",
-                panelObject = panelExploration,
-                isMainPanel = false,
-                hideMainWhenActive = true
-            };
-            uiManager.panels.Add(explorationPanel);
-        }
-
-        uiManager.InitializePanels();
-        uiManager.ShowDefaultPanel();
+        UIManager.Instance.InitializeUIManager();
     }
 
     public void RemoveEnemyFleet(SpaceFleet fleet)
@@ -181,8 +112,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         
         if (DataManager.Instance.m_currentCharacter != null)
             DataManager.Instance.m_currentCharacter.SetOwnedFleet(m_myFleet);
-
-        CameraController.Instance.SaveOriginalState();
 
         // 임시로 배틀로 초기화, 최종적으로는 none으로 하고 중간에 함대 상태 바꾸는 기능이 있어야 함
         m_myFleet.SetFleetState(EFleetState.Battle);

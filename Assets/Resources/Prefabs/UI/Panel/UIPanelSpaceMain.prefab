@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 3878115373562031869}
   - component: {fileID: 4397370085269037531}
   m_Layer: 5
-  m_Name: PanelMain
+  m_Name: UIPanelSpaceMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -604,6 +604,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5f6d02928acb14ba199c0b696d9d44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UIManager: {fileID: 0}
+  panelName: 
+  bMainPanel: 1
+  bHideCurWhenActive: 1
+  bCameraMove: 1
   fleetButton: {fileID: 1642473677749810138}
   explorationButton: {fileID: 6751367069036418338}

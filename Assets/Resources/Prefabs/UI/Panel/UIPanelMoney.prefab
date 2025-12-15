@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3502012010287837997}
   - component: {fileID: 2246383245775797270}
   m_Layer: 5
-  m_Name: PanelMoney
+  m_Name: UIPanelMoney
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

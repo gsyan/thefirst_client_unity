@@ -266,6 +266,22 @@ public class TabSystem : MonoBehaviour
         
         tabs.RemoveAt(tabIndex);
     }
+
+    public void ForceActivateTab()
+    {
+        if( currentActiveTab == -1) return;
+        // 강제로 onActivate 호출
+        var tab = tabs[currentActiveTab];
+        tab.onActivate?.Invoke();
+    }
+
+    public void ForceDeactivateTab()
+    {
+        if( currentActiveTab == -1) return;
+        // 강제로 onDeactivate 호출
+        var tab = tabs[currentActiveTab];
+        tab.onDeactivate?.Invoke();
+    }
 }
 
 // 에디터에서 쉽게 설정할 수 있도록 도우미 컴포넌트

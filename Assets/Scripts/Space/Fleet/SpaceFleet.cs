@@ -287,7 +287,7 @@ public class SpaceFleet : MonoBehaviour
 
     public const int LAYER_DISPLAY_FLEET = 30;
     private static readonly Vector3 DISPLAY_FLEET_OFFSET = new(10000, 0, 0);
-    [HideInInspector] public UIPanelFleetUpgrade m_panelFleetUpgrade;
+    [HideInInspector] public UIPanelFleet_TabUpgrade m_panelFleet_TabUpgrade;
     public bool m_enableModuleSelection = false;
 
 
@@ -311,8 +311,8 @@ public class SpaceFleet : MonoBehaviour
         
         Debug.Log($"Module clicked: Ship {ship.name}, {moduleTypeString} {moduleInfoString}");
 
-        if (m_panelFleetUpgrade != null)
-            m_panelFleetUpgrade.OnModuleSelected(ship, moduleBase);
+        if (m_panelFleet_TabUpgrade != null)
+            m_panelFleet_TabUpgrade.OnModuleSelected(ship, moduleBase);
     }
 
     public void ClearAllSelections()
