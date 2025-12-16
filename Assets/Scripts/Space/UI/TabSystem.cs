@@ -77,7 +77,7 @@ public class TabSystem : MonoBehaviour
         ActivateTab(tabIndex);
         currentActiveTab = tabIndex;
         
-        Debug.Log($"Switched to tab: {tabs[tabIndex].tabName}");
+        //Debug.Log($"Switched to tab: {tabs[tabIndex].tabName}");
     }
     
     private void ActivateTab(int tabIndex)
