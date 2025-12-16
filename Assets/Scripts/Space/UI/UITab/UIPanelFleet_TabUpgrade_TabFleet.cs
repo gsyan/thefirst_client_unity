@@ -8,6 +8,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
     [HideInInspector] public SpaceFleet m_myFleet;
     private SpaceShip m_selectedShip;
     private ModuleBase m_selectedModule;
+    private SpaceShip m_previouslyFocusedShip;
 
     public TextMeshProUGUI m_textTop;
     public TextMeshProUGUI m_textFleetStats;
@@ -149,7 +150,21 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
     private void FocusCameraOnShip(SpaceShip ship)
     {
         if (ship == null) return;
-        
+
+        // 이전에 포커스된 함선의 아웃라인 비활성화
+        if (m_previouslyFocusedShip != null && m_previouslyFocusedShip != ship)
+        {
+            Outline prevOutline = m_previouslyFocusedShip.GetComponent<Outline>();
+            if (prevOutline != null)
+                prevOutline.enabled = false;
+        }
+
+        // 새로운 함선의 아웃라인 활성화
+        Outline outline = ship.GetComponent<Outline>();
+        if (outline != null)
+            outline.enabled = true;
+
+        m_previouslyFocusedShip = ship;
         m_panelShipInfo.m_selectedShip = ship;
 
         CameraController.Instance.SetTargetOfCameraController(ship.transform);
