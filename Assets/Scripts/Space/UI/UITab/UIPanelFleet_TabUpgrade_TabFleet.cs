@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,17 +9,22 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
     [HideInInspector] public SpaceFleet m_myFleet;
     private SpaceShip m_selectedShip;
     private ModuleBase m_selectedModule;
-    private SpaceShip m_previouslyFocusedShip;
+    private SpaceShip m_focusedShip;
 
     public TextMeshProUGUI m_textTop;
     public TextMeshProUGUI m_textFleetStats;
 
     public RectTransform scrollViewShipsContent;
-    public GameObject scrollViewShipsItem;
+    public GameObject scrollViewShipItem;
+    public GameObject scrollViewShipItemAdd;
 
     private GameObject m_addButtonItem; // Add 버튼 아이템 참조
+    private ScrollViewShipItem m_selectedShipItem; // 현재 선택된 아이템
 
     public UIPanelFleet_TabUpgrade_TabShip m_panelShipInfo;
+
+    // 부모 탭 시스템 참조
+    [HideInInspector] public TabSystem m_tabSystemParent;
 
     public override void InitializeUITab()
     {
@@ -30,16 +36,21 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         }
         m_myFleet = character.GetOwnedFleet();
 
-        if( scrollViewShipsItem != null)
+        if(scrollViewShipItem != null)
         {
             for(int i = 0; i < m_myFleet.m_ships.Count; i++)
             {
-                GameObject item = Instantiate(scrollViewShipsItem, scrollViewShipsContent);
+                GameObject item = Instantiate(scrollViewShipItem, scrollViewShipsContent);
                 if( item != null)
                 {
                     int index = i; // 클로저 문제 방지
                     SpaceShip ship = m_myFleet.m_ships[index];
-                    item.GetComponent<ScrollViewShipsItem>().InitializeScrollViewShipsItem_SelectButton(ship.m_shipInfo.shipName, () => FocusCameraOnShip(ship));
+                    ScrollViewShipItem scrollViewItem = item.GetComponent<ScrollViewShipItem>();
+                    scrollViewItem.InitializeScrollViewShipItem(
+                        ship.m_shipInfo.shipName,
+                        () => OnShipItemSelected(scrollViewItem, ship),
+                        () => OnManageShipClicked(ship)
+                    );
                 }                    
             }
             MakeAddShipButtonItem();
@@ -51,6 +62,12 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         InitializeUI();
 
         EventManager.Subscribe_FleetChange(OnFleetChanged);
+
+        if (m_focusedShip != null)
+        {
+            m_focusedShip.m_shipOutline.enabled = true;
+            CameraController.Instance.SetTargetOfCameraController(m_focusedShip.transform);
+        }
     }
 
     public override void OnTabDeactivated()
@@ -58,6 +75,9 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         InitializeUI();
 
         EventManager.Unsubscribe_FleetChange(OnFleetChanged);
+
+        if (m_focusedShip != null)
+            m_focusedShip.m_shipOutline.enabled = false;
     }
 
     private void InitializeUI()
@@ -115,19 +135,30 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
             // 실제 함선 수와 비교
             if (m_myFleet.m_ships.Count > currentShipItemCount)
             {
-                // 새 함선이 추가됨 - 기존 Add 버튼을 Select 버튼으로 변경
+                // 새 함선이 추가됨
                 SpaceShip newShip = m_myFleet.m_ships[^1]; // 마지막 함선
 
-                // 기존 Add 버튼 아이템을 Select 버튼으로 재초기화
-                if (m_addButtonItem.TryGetComponent<ScrollViewShipsItem>(out var scrollViewItem))
+                // 1. 기존 Add 버튼 삭제
+                if (m_addButtonItem != null)
                 {
-                    scrollViewItem.InitializeScrollViewShipsItem_SelectButton(
-                        newShip.m_shipInfo.shipName,
-                        () => FocusCameraOnShip(newShip)
-                    );
-
-                    MakeAddShipButtonItem();
+                    Destroy(m_addButtonItem);
+                    m_addButtonItem = null;
                 }
+
+                // 2. 새로운 함선 아이템 추가
+                GameObject shipItem = Instantiate(scrollViewShipItem, scrollViewShipsContent);
+                if (shipItem != null)
+                {
+                    ScrollViewShipItem scrollViewItem = shipItem.GetComponent<ScrollViewShipItem>();
+                    scrollViewItem.InitializeScrollViewShipItem(
+                        newShip.m_shipInfo.shipName,
+                        () => OnShipItemSelected(scrollViewItem, newShip),
+                        () => OnManageShipClicked(newShip)
+                    );
+                }
+
+                // 3. 새로운 Add 버튼 추가
+                MakeAddShipButtonItem();
             }
         }
     }
@@ -136,37 +167,46 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         if(m_myFleet.m_ships.Count >= DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet)
             return;
         // 새로운 Add 버튼 생성
-        m_addButtonItem = Instantiate(scrollViewShipsItem, scrollViewShipsContent);
+        m_addButtonItem = Instantiate(scrollViewShipItemAdd, scrollViewShipsContent);
         if (m_addButtonItem != null)
         {
             var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
-            m_addButtonItem.GetComponent<ScrollViewShipsItem>().InitializeScrollViewShipsItem_AddButton(
-                $"Add Ship cost, money: {gameSettings.shipAddMoneyCost}, mineral: {gameSettings.shipAddMineralCost} ",
-                AddShip
+            m_addButtonItem.GetComponent<ScrollViewShipItemAdd>().InitializeScrollViewShipItemAdd(
+                $"Add Ship cost, money: {gameSettings.shipAddMoneyCost}, mineral: {gameSettings.shipAddMineralCost} "
+                , AddShip
             );
         }
     }
 
-    private void FocusCameraOnShip(SpaceShip ship)
+    private void OnManageShipClicked(SpaceShip ship)
     {
-        if (ship == null) return;
+        if (m_tabSystemParent != null)
+            m_tabSystemParent.SwitchToTab(1);
+    }
+
+    private void OnShipItemSelected(ScrollViewShipItem selectedItem, SpaceShip ship)
+    {
+        if (selectedItem == null || ship == null) return;
+        if (selectedItem == m_selectedShipItem) return;
+        if (m_focusedShip == ship) return;
+
+        // 이전에 선택된 아이템의 관리 버튼 숨김
+        if (m_selectedShipItem != null && m_selectedShipItem != selectedItem)
+            m_selectedShipItem.SetSelected_ScrollViewShipItem(false);            
+        // 현재 선택된 아이템 업데이트
+        m_selectedShipItem = selectedItem;
 
         // 이전에 포커스된 함선의 아웃라인 비활성화
-        if (m_previouslyFocusedShip != null && m_previouslyFocusedShip != ship)
-        {
-            Outline prevOutline = m_previouslyFocusedShip.GetComponent<Outline>();
-            if (prevOutline != null)
-                prevOutline.enabled = false;
-        }
+        if (m_focusedShip != null)
+            m_focusedShip.m_shipOutline.enabled = false;
+        m_focusedShip = ship;
 
         // 새로운 함선의 아웃라인 활성화
-        Outline outline = ship.GetComponent<Outline>();
-        if (outline != null)
-            outline.enabled = true;
+        ship.m_shipOutline.enabled = true;
 
-        m_previouslyFocusedShip = ship;
         m_panelShipInfo.m_selectedShip = ship;
 
+        // 카메라 포커스
         CameraController.Instance.SetTargetOfCameraController(ship.transform);
     }
 

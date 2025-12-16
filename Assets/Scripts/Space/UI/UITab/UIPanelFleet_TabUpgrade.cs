@@ -7,12 +7,16 @@ using TMPro;
 public class UIPanelFleet_TabUpgrade : UITabBase
 {
     [Header("Tab System")]
-    [SerializeField] private TabSystem m_tabSystem;    
-    
+    [SerializeField] private TabSystem m_tabSystem;
+
     // Private fields
     [HideInInspector] public SpaceFleet m_myFleet;
     private SpaceShip m_selectedShip;
     private ModuleBase m_selectedModule;
+
+    // Tab references
+    private UIPanelFleet_TabUpgrade_TabFleet m_tabFleet;
+    private UIPanelFleet_TabUpgrade_TabShip m_tabShip;
 
 
     public override void InitializeUITab()
@@ -37,11 +41,26 @@ public class UIPanelFleet_TabUpgrade : UITabBase
                 tabBase.InitializeUITab();
                 tabData.onActivate = tabBase.OnTabActivated;
                 tabData.onDeactivate = tabBase.OnTabDeactivated;
+
+                // 탭 참조 저장 및 부모 패널 설정
+                if (tabBase is UIPanelFleet_TabUpgrade_TabFleet fleetTab)
+                {
+                    m_tabFleet = fleetTab;
+                    m_tabFleet.m_tabSystemParent = m_tabSystem;
+                }
+                else if (tabBase is UIPanelFleet_TabUpgrade_TabShip shipTab)
+                {
+                    m_tabShip = shipTab;
+                    m_tabShip.m_tabSystemParent = m_tabSystem;
+                }
+
+                // 탭 버튼 숨기기
+                if (tabData.tabButton != null)
+                    tabData.tabButton.gameObject.SetActive(false);
             }
         }
 
     }
-
 
     public override void OnTabActivated()
     {

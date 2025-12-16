@@ -380,7 +380,7 @@ public class CameraController : MonoSingleton<CameraController>
         if (GetCameraRaycast(out RaycastHit hit, m_layerDefault, 1000f, screenPosition))
         {
             SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
-            if (ship != null)
+            if (ship != null && ship.gameObject == m_currentTarget.gameObject)
                 ship.OnClicked(hit.point, hit.collider);
         }
     }

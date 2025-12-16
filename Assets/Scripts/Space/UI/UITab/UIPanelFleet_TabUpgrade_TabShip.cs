@@ -12,6 +12,10 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     public TextMeshProUGUI m_textShipStats;
 
     public Button m_upgradeModuleButton;
+    public Button m_backButton;
+
+    // 부모 탭 시스템 참조
+    [HideInInspector] public TabSystem m_tabSystemParent;
 
     public override void InitializeUITab()
     {
@@ -24,6 +28,15 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         m_myFleet = character.GetOwnedFleet();
 
         m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
+
+        if (m_backButton != null)
+            m_backButton.onClick.AddListener(OnBackButtonClicked);
+    }
+
+    private void OnBackButtonClicked()
+    {
+        if (m_tabSystemParent != null)
+            m_tabSystemParent.SwitchToTab(0);
     }
 
     public override void OnTabActivated()
@@ -34,6 +47,12 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         CameraController.Instance.m_currentMode = ECameraControllerMode.Manage_Ship;
 
         EventManager.Subscribe_ShipChange(OnShipChanged);
+
+        if (m_selectedShip != null)
+        {
+            m_selectedShip.m_shipOutline.enabled = true;
+            CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
+        }
     }
 
     public override void OnTabDeactivated()
@@ -44,6 +63,9 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         CameraController.Instance.m_currentMode = ECameraControllerMode.Normal;
 
         EventManager.Unsubscribe_ShipChange(OnShipChanged);
+
+        if (m_selectedShip != null)
+            m_selectedShip.m_shipOutline.enabled = false;
     }
 
     private void InitializeUI()
