@@ -75,7 +75,12 @@ public class SpaceShip : MonoBehaviour
         //m_outlineScanner.Check();
         //m_outlineScanner.BuildAdjacency();
         
-        
+        // Outline 미리 설정
+        Outline outline = gameObject.AddComponent<Outline>();
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        outline.OutlineColor = Color.cyan;
+        outline.OutlineWidth = 5f;
+        outline.enabled = false; // 기본은 꺼둠
 
     }
 
