@@ -40,7 +40,7 @@ public class SpaceShip : MonoBehaviour
     public EShipState m_shipState;
 
     private ModuleGaugeDisplay m_gaugeDisplay;
-    public OutlineScanner m_outlineScanner;
+    public AirCraftPathGrid m_airCraftPathGrid;
 
     virtual protected void Start()
     {
@@ -71,7 +71,7 @@ public class SpaceShip : MonoBehaviour
         SetupModuleHighlighting();
         
         // 지금은 바디가 오직 하나...
-        m_outlineScanner = m_moduleBodyList[0].GetComponent<OutlineScanner>();
+        m_airCraftPathGrid = m_moduleBodyList[0].GetComponent<AirCraftPathGrid>();
         //m_outlineScanner.Check();
         //m_outlineScanner.BuildAdjacency();
         

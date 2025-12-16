@@ -335,15 +335,15 @@ public abstract class AircraftBase : MonoBehaviour
         SpaceShip targetShip = m_targetModule.GetSpaceShip();
         if (targetShip == null) { m_state = EAircraftState.ReturnToCarrier; yield break; }
         
-        OutlineScanner targetShipOutlineScanner = targetShip.m_outlineScanner;
-        if (targetShipOutlineScanner == null || targetShipOutlineScanner.m_outlinePointInfos == null || targetShipOutlineScanner.m_outlinePointInfos.Count == 0)
+        AirCraftPathGrid targetShipAirCraftPathGrid = targetShip.m_airCraftPathGrid;
+        if (targetShipAirCraftPathGrid == null || targetShipAirCraftPathGrid.m_outlinePointInfos == null || targetShipAirCraftPathGrid.m_outlinePointInfos.Count == 0)
         {
             Debug.LogWarning("No outlineInfos on target ship!");
             //m_state = EAircraftState.ReturnToCarrier; yield break;
             yield break;
         }
 
-        List<ModuleOutlinePointInfo> points = targetShipOutlineScanner.m_outlinePointInfos;
+        List<ModuleOutlinePointInfo> points = targetShipAirCraftPathGrid.m_outlinePointInfos;
         // 시작 시, 가장 가까운 포인트 찾기
         int currentIndex = FindClosestOutlineIndex(points, transform.position);
         m_currentDirection = transform.forward.normalized;
