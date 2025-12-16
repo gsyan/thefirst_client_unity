@@ -72,9 +72,11 @@ public class SpaceShip : MonoBehaviour
         
         // 지금은 바디가 오직 하나...
         m_outlineScanner = m_moduleBodyList[0].GetComponent<OutlineScanner>();
-        m_outlineScanner.Check();
-        m_outlineScanner.BuildAdjacency();
+        //m_outlineScanner.Check();
+        //m_outlineScanner.BuildAdjacency();
         
+        
+
     }
 
     public int GetAverageModuleLevel()
