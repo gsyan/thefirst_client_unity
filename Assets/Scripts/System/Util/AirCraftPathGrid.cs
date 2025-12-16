@@ -3,13 +3,11 @@ using UnityEngine;
 using UnityEditor;
 
 
-public enum EOutLineBoundStyle
+public enum EAirCraftPathGridBoundStyle
 {
-    EOutLineBoundStyle_Sphere = 0,
-    EOutLineBoundStyle_Box = 1
-
+    Sphere = 0,
+    Box = 1
 }
-
 
 [System.Serializable]
 public struct BoundingBox
@@ -30,9 +28,9 @@ public struct BoundingBox
     }
 }
 
-public class OutlineScanner : MonoBehaviour
+public class AirCraftPathGrid : MonoBehaviour
 {
-    public EOutLineBoundStyle boundStyle = EOutLineBoundStyle.EOutLineBoundStyle_Box;
+    public EAirCraftPathGridBoundStyle boundStyle = EAirCraftPathGridBoundStyle.Box;
 
     public float pushBackDistance = 1.0f;
 
