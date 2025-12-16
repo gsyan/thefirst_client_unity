@@ -38,6 +38,7 @@ public class SpaceShip : MonoBehaviour
 
     public SpaceFleet m_myFleet;
     public EShipState m_shipState;
+    [HideInInspector] public Outline m_shipOutline;
 
     private ModuleGaugeDisplay m_gaugeDisplay;
     public AirCraftPathGrid m_airCraftPathGrid;
@@ -76,11 +77,11 @@ public class SpaceShip : MonoBehaviour
         //m_outlineScanner.BuildAdjacency();
         
         // Outline 미리 설정
-        Outline outline = gameObject.AddComponent<Outline>();
-        outline.OutlineMode = Outline.Mode.OutlineAll;
-        outline.OutlineColor = Color.cyan;
-        outline.OutlineWidth = 5f;
-        outline.enabled = false; // 기본은 꺼둠
+        m_shipOutline = gameObject.AddComponent<Outline>();
+        m_shipOutline.OutlineMode = Outline.Mode.OutlineAll;
+        m_shipOutline.OutlineColor = Color.cyan;
+        m_shipOutline.OutlineWidth = 5f;
+        m_shipOutline.enabled = false; // 기본은 꺼둠
 
     }
 
