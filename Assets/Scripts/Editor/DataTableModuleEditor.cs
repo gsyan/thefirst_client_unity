@@ -160,8 +160,11 @@ public class DataTableModuleEditor : Editor
         module.m_cargoCapacity = EditorGUILayout.Slider("Cargo", module.m_cargoCapacity, 0f, 1000f);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeMoneyCost = EditorGUILayout.IntSlider("Money", module.m_upgradeMoneyCost, 1, 10000);
-        module.m_upgradeMineralCost = EditorGUILayout.IntSlider("Mineral", module.m_upgradeMineralCost, 1, 1000);
+        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
+        module.m_upgradeCost.mineral = EditorGUILayout.IntField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.IntField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.IntField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.IntField("MineralDark", module.m_upgradeCost.mineralDark);
 
         module.m_description = EditorGUILayout.TextField("Description", module.m_description);
     }
@@ -260,8 +263,11 @@ public class DataTableModuleEditor : Editor
         module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 500f);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeMoneyCost = EditorGUILayout.IntSlider("Money", module.m_upgradeMoneyCost, 1, 10000);
-        module.m_upgradeMineralCost = EditorGUILayout.IntSlider("Mineral", module.m_upgradeMineralCost, 1, 1000);
+        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
+        module.m_upgradeCost.mineral = EditorGUILayout.IntField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.IntField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.IntField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.IntField("MineralDark", module.m_upgradeCost.mineralDark);
 
         module.m_description = EditorGUILayout.TextField("Description", module.m_description);
     }
@@ -353,8 +359,11 @@ public class DataTableModuleEditor : Editor
         module.m_rotationSpeed = EditorGUILayout.Slider("Rotation Speed", module.m_rotationSpeed, 0f, 10f);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeMoneyCost = EditorGUILayout.IntSlider("Money", module.m_upgradeMoneyCost, 1, 10000);
-        module.m_upgradeMineralCost = EditorGUILayout.IntSlider("Mineral", module.m_upgradeMineralCost, 1, 1000);
+        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
+        module.m_upgradeCost.mineral = EditorGUILayout.IntField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.IntField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.IntField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.IntField("MineralDark", module.m_upgradeCost.mineralDark);
 
         module.m_description = EditorGUILayout.TextField("Description", module.m_description);
     }
@@ -459,8 +468,11 @@ public class DataTableModuleEditor : Editor
         module.m_aircraftAmmo = EditorGUILayout.IntSlider("Aircraft Ammo", module.m_aircraftAmmo, 1, 100);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeMoneyCost = EditorGUILayout.IntSlider("Money", module.m_upgradeMoneyCost, 1, 10000);
-        module.m_upgradeMineralCost = EditorGUILayout.IntSlider("Mineral", module.m_upgradeMineralCost, 1, 1000);
+        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
+        module.m_upgradeCost.mineral = EditorGUILayout.IntField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.IntField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.IntField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.IntField("MineralDark", module.m_upgradeCost.mineralDark);
 
         module.m_description = EditorGUILayout.TextField("Description", module.m_description);
     }
@@ -485,11 +497,6 @@ public class DataTableModuleEditor : Editor
                     dataTableModule.GenerateLevel1to10Data();
                     EditorUtility.DisplayDialog("Complete", "Level 1~10 data generated successfully!", "OK");
                 }
-            }
-
-            if (GUILayout.Button("Create Default Modules"))
-            {
-                dataTableModule.CreateDefaultModules();
             }
 
             if (GUILayout.Button("Validate Data"))

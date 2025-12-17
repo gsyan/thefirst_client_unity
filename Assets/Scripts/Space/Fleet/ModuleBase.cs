@@ -13,9 +13,8 @@ public class ModuleBase : MonoBehaviour
     [HideInInspector] public float m_healthMax;
     [HideInInspector] public float m_attackPower;
 
-    [HideInInspector] public int m_upgradeMoneyCost = 10;
-    [HideInInspector] public int m_upgradeMineralCost = 5;
-
+    [HideInInspector] public CostStruct m_upgradeCost;
+    
     // 함대 정보
     protected SpaceFleet m_myFleet;
     protected SpaceShip m_myShip;

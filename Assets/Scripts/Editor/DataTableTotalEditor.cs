@@ -43,9 +43,9 @@ public class DataTableTotalEditor : EditorWindow
 
         GUI.enabled = IsValid();
 
-        if (GUILayout.Button("Export All DataTable.json", GUILayout.Height(40)))
+        if (GUILayout.Button("Export All", GUILayout.Height(40)))
         {
-            ExportTotalGameConfig();
+            ExportAll();
         }
 
         EditorGUILayout.Space(5);
@@ -86,7 +86,21 @@ public class DataTableTotalEditor : EditorWindow
             var settings = dataTableConfig.gameSettings;
             EditorGUILayout.LabelField($"Version: {settings.version}");
             EditorGUILayout.LabelField($"Max Ships Per Fleet: {settings.maxShipsPerFleet}");
-            EditorGUILayout.LabelField($"Ship Add Cost: {settings.shipAddMoneyCost} money, {settings.shipAddMineralCost} mineral");
+
+            // 함선 추가 비용 배열 표시
+            if (settings.addShipCosts != null && settings.addShipCosts.Length > 0)
+            {
+                EditorGUILayout.LabelField("Ship Add Costs:");
+                for (int i = 0; i < settings.addShipCosts.Length; i++)
+                {
+                    var cost = settings.addShipCosts[i];
+                    string costText = $"  Ship {i}: M:{cost.mineral}";
+                    if (cost.mineralRare > 0) costText += $", R:{cost.mineralRare}";
+                    if (cost.mineralExotic > 0) costText += $", E:{cost.mineralExotic}";
+                    if (cost.mineralDark > 0) costText += $", D:{cost.mineralDark}";
+                    EditorGUILayout.LabelField(costText);
+                }
+            }
 
             EditorGUILayout.EndVertical();
         }
@@ -122,7 +136,7 @@ public class DataTableTotalEditor : EditorWindow
         return dataTableModule != null && dataTableConfig != null;
     }
 
-    private void ExportTotalGameConfig()
+    private void ExportAll()
     {
         if (!IsValid())
         {
@@ -156,7 +170,9 @@ public class DataTableTotalEditor : EditorWindow
             return;
         }
 
-        string serverDataPath = Path.Combine(Application.dataPath, "..", "..", "..", "server", "src", "main", "resources", "data");
+        // Application.dataPath = D:\BK\thefirst\thefirst_client_unity\Assets
+        // 목표: D:\BK\thefirst\thefirst_server\src\main\resources\data
+        string serverDataPath = Path.Combine(Application.dataPath, "..", "..", "thefirst_server", "src", "main", "resources", "data");
         serverDataPath = Path.GetFullPath(serverDataPath);
 
         try

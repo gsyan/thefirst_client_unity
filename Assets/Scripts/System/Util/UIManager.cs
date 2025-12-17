@@ -29,7 +29,7 @@ public class UIManager : MonoSingleton<UIManager>
     protected bool useAnimation = true;
     protected float animationDuration = 0.3f;
 
-    protected UIPanelMoney m_uiPanelMoney;
+    //protected UIPanelMineral m_uiPanelMineral;
 
 
     // Private fields
