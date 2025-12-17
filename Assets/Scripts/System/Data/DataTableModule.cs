@@ -33,10 +33,9 @@ public class ModuleBodyData
     public float m_cargoCapacity = 100f;    
     
     [Header("Upgrade Costs")]
-    [Range(1, 10000)]
-    public int m_upgradeMoneyCost = 50;
-    [Range(1, 1000)]
-    public int m_upgradeMineralCost = 20;
+    public CostStruct m_upgradeCost = new CostStruct();
+
+
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -70,10 +69,7 @@ public class ModuleEngineData
     public float m_rotationSpeed = 3f;
 
     [Header("Upgrade Costs")]
-    [Range(1, 10000)]
-    public int m_upgradeMoneyCost = 70;
-    [Range(1, 1000)]
-    public int m_upgradeMineralCost = 30;
+    public CostStruct m_upgradeCost = new CostStruct();
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -117,10 +113,7 @@ public class ModuleWeaponData
     public float m_projectileSpeed = 20f;
 
     [Header("Upgrade Costs")]
-    [Range(1, 10000)]
-    public int m_upgradeMoneyCost = 60;
-    [Range(1, 1000)]
-    public int m_upgradeMineralCost = 25;
+    public CostStruct m_upgradeCost = new CostStruct();
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -171,10 +164,7 @@ public class ModuleHangerData
     public int m_aircraftAmmo = 10; // 함재기 탄약
 
     [Header("Upgrade Costs")]
-    [Range(1, 10000)]
-    public int m_upgradeMoneyCost = 80;
-    [Range(1, 1000)]
-    public int m_upgradeMineralCost = 35;
+    public CostStruct m_upgradeCost = new CostStruct();
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -593,80 +583,6 @@ public class DataTableModule : ScriptableObject
         return isValid;
     }
 
-    public void CreateDefaultModules()
-    {
-        InitializeSubTypeGroups();
-
-        if (BodyModules.Count == 0)
-        {
-            for (int i = 1; i <= 3; i++)
-            {
-                var bodyModule = new ModuleBodyData
-                {
-                    m_name = $"Hull Type {i}",
-                    m_subType = EModuleBodySubType.Battle,
-                    m_style = EModuleStyle.StyleA,
-                    m_level = i,
-                    m_health = 100f * i,
-                    m_cargoCapacity = 50f * i,
-                    m_upgradeMoneyCost = 50 + (i * 10),
-                    m_upgradeMineralCost = 20 + (i * 5),
-                    m_description = "Basic ship hull"
-                };
-                AddBodyModule(bodyModule, bodyModule.m_subType);
-            }
-        }
-
-        if (WeaponModules.Count == 0)
-        {
-            string[] weaponNames = { "Pulse Laser", "Plasma Cannon", "Missile Launcher" };
-            for (int i = 0; i < weaponNames.Length; i++)
-            {
-                var weaponModule = new ModuleWeaponData
-                {
-                    m_name = weaponNames[i],
-                    m_subType = EModuleWeaponSubType.Beam,
-                    m_style = EModuleStyle.StyleA,
-                    m_level = i + 1,
-                    m_health = 50f,
-                    m_attackPower = 20f + (i * 10f),
-                    m_attackFireCount = i + 1,
-                    m_attackCoolTime = 2f,
-                    m_upgradeMoneyCost = 60 + (i * 10),
-                    m_upgradeMineralCost = 25 + (i * 5),
-                    m_description = "Standard weapon system"
-                };
-                AddWeaponModule(weaponModule, weaponModule.m_subType);
-            }
-        }
-
-        if (EngineModules.Count == 0)
-        {
-            string[] engineNames = { "Chemical Thruster", "Ion Drive", "Fusion Engine" };
-            for (int i = 0; i < engineNames.Length; i++)
-            {
-                var engineModule = new ModuleEngineData
-                {
-                    m_name = engineNames[i],
-                    m_subType = EModuleEngineSubType.Standard,
-                    m_style = EModuleStyle.StyleA,
-                    m_level = i + 1,
-                    m_health = 50f,
-                    m_movementSpeed = 3f + (i * 2f),
-                    m_rotationSpeed = 2f + i,
-                    m_upgradeMoneyCost = 70 + (i * 10),
-                    m_upgradeMineralCost = 30 + (i * 5),
-                    m_description = "Propulsion system"
-                };
-                AddEngineModule(engineModule, engineModule.m_subType);
-            }
-        }
-
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(this);
-#endif
-    }
-
     public void GenerateLevel1to10Data()
     {
         InitializeSubTypeGroups();
@@ -691,8 +607,7 @@ public class DataTableModule : ScriptableObject
                     m_level = i,
                     m_health = 100f + (i * 50f),
                     m_cargoCapacity = 50f + (i * 25f),
-                    m_upgradeMoneyCost = 100 * i,
-                    m_upgradeMineralCost = 50 * i,
+                    m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
                     m_description = $"{subType}-class hull module level {i}"
                 };
                 AddBodyModule(bodyModule, bodyModule.m_subType);
@@ -715,8 +630,7 @@ public class DataTableModule : ScriptableObject
                     m_attackPower = 10f + (i * 5f),
                     m_attackFireCount = 1 + (i / 5),
                     m_attackCoolTime = 2.0f - (i * 0.05f),
-                    m_upgradeMoneyCost = 80 * i,
-                    m_upgradeMineralCost = 40 * i,
+                    m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
                     m_description = $"{subType} weapon system level {i}"
                 };
                 AddWeaponModule(weaponModule, weaponModule.m_subType);
@@ -738,8 +652,7 @@ public class DataTableModule : ScriptableObject
                     m_health = 30f + (i * 10f),
                     m_movementSpeed = 3f + (i * 0.5f),
                     m_rotationSpeed = 2f + (i * 0.3f),
-                    m_upgradeMoneyCost = 90 * i,
-                    m_upgradeMineralCost = 45 * i,
+                    m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
                     m_description = $"{subType} propulsion system level {i}"
                 };
                 AddEngineModule(engineModule, engineModule.m_subType);
@@ -767,8 +680,7 @@ public class DataTableModule : ScriptableObject
                     m_aircraftHealth = 30f + (i * 10f),
                     m_aircraftAttackPower = 5f + (i * 3f),
                     m_aircraftAmmo = 10 + (i * 2),
-                    m_upgradeMoneyCost = 100 * i,
-                    m_upgradeMineralCost = 50 * i,
+                    m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
                     m_description = $"{subType} hanger bay level {i}"
                 };
                 AddHangerModule(hangerModule, hangerModule.m_subType);

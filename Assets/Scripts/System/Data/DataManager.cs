@@ -46,10 +46,12 @@ public class DataManager : Singleton<DataManager>
             {
                 var defaultCharacterInfo = new CharacterInfo
                 {
-                    characterName = "DefaultCharacter",
-                    money = 10000,
-                    mineral = 5000,
-                    techLevel = 1
+                    characterName = "DefaultCharacter"
+                    , techLevel = 1
+                    , mineral = 0
+                    , mineralRare = 0
+                    , mineralExotic = 0
+                    , mineralDark = 0                                        
                 };
                 m_currentCharacter = new Character(defaultCharacterInfo);
                 SaveCharacterDataToPlayerPrefs();
@@ -239,21 +241,6 @@ public class DataManager : Singleton<DataManager>
         // 게임 설정 적용 로직
     }
 
-    public int GetMaxShipsPerFleet()
-    {
-        return m_dataTableConfig?.gameSettings?.maxShipsPerFleet ?? 10;
-    }
-
-    public int GetShipAddMoneyCost()
-    {
-        return m_dataTableConfig?.gameSettings?.shipAddMoneyCost ?? 1000;
-    }
-
-    public int GetShipAddMineralCost()
-    {
-        return m_dataTableConfig?.gameSettings?.shipAddMineralCost ?? 500;
-    }
-
     public string GetGameVersion()
     {
         return m_dataTableConfig?.gameSettings?.version ?? "1.0.0";
@@ -322,34 +309,33 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    public int GetModuleUpgradeCost(int moduleType, int moduleLevel, out int moneyCost, out int mineralCost)
+    public bool GetModuleUpgradeCost(int moduleType, int moduleLevel, out CostStruct cost)
     {
-        moneyCost = 0;
-        mineralCost = 0;
-
         object moduleData = RestoreModuleDataByType(moduleType, moduleLevel);
-        if (moduleData == null) return -1;
+        if (moduleData == null)
+        {
+            cost = new CostStruct();
+            return false;
+        }
 
         EModuleType type = CommonUtility.GetModuleType(moduleType);
         switch (type)
         {
             case EModuleType.Body:
                 var bodyData = (ModuleBodyData)moduleData;
-                moneyCost = bodyData.m_upgradeMoneyCost;
-                mineralCost = bodyData.m_upgradeMineralCost;
-                return 0;
+                cost = bodyData.m_upgradeCost;
+                return true;
             case EModuleType.Weapon:
                 var weaponData = (ModuleWeaponData)moduleData;
-                moneyCost = weaponData.m_upgradeMoneyCost;
-                mineralCost = weaponData.m_upgradeMineralCost;
-                return 0;
+                cost = weaponData.m_upgradeCost;
+                return true;
             case EModuleType.Engine:
                 var engineData = (ModuleEngineData)moduleData;
-                moneyCost = engineData.m_upgradeMoneyCost;
-                mineralCost = engineData.m_upgradeMineralCost;
-                return 0;
+                cost = engineData.m_upgradeCost;
+                return true;
             default:
-                return -1;
+                cost = new CostStruct();
+                return false;
         }
     }
     #endregion

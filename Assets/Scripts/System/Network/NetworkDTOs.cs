@@ -111,9 +111,11 @@ public class ModuleHangerInfo
 public class CharacterInfo
 {
     public string characterName;
-    public long money;
-    public long mineral;
     public int techLevel;
+    public long mineral;
+    public long mineralRare;
+    public long mineralExotic;
+    public long mineralDark;    
 }
 #endregion
 
@@ -191,9 +193,7 @@ public class AddShipResponse
     public bool success;
     public string message;
     public ShipInfo newShipInfo;
-    public CostInfo totalCost;
-    public long remainMoney;
-    public long remainMineral;
+    public CostRemainInfo costRemainInfo;
     public FleetInfo updatedFleetInfo;
 }
 
@@ -228,7 +228,7 @@ public class ModuleUpgradeResponse
     public bool success;
     public int newLevel;
     public ModuleStats newStats;
-    public CostInfo totalCost;
+    public CostRemainInfo costRemainInfo;
     public string message;
 }
 
@@ -243,12 +243,17 @@ public class ModuleStats
 }
 
 [System.Serializable]
-public class CostInfo
+public class CostRemainInfo
 {
-    public int moneyCost;
-    public int mineralCost;
-    public int remainMoney;
-    public int remainMineral;
+    public long mineralCost;
+    public long mineralRareCost;
+    public long mineralExoticCost;
+    public long mineralDarkCost;
+
+    public long remainMineral;
+    public long remainMineralRare;
+    public long remainMineralExotic;
+    public long remainMineralDark;
 }
 
 [System.Serializable]

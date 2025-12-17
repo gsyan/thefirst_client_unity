@@ -22,6 +22,10 @@ using System.Collections.Generic;
     INSUFFICIENT_MINERAL = 4009,
     ACTIVE_FLEET_NOT_FOUND = 4010,
     FLEET_MAX_SHIPS_REACHED = 4011,
+    INSUFFICIENT_TECH_LEVEL = 4012,
+    INSUFFICIENT_MINERAL_RARE = 4013,
+    INSUFFICIENT_MINERAL_EXOTIC = 4014,
+    INSUFFICIENT_MINERAL_DARK = 4015,
     INVALID_DATA_TABLE = 5001,
     UNKNOWN_ERROR = int.MaxValue,
 }
@@ -50,6 +54,10 @@ public static class ErrorCodeMapping
         { ServerErrorCode.INSUFFICIENT_MINERAL, "Insufficient mineral for upgrade" },
         { ServerErrorCode.ACTIVE_FLEET_NOT_FOUND, "Active fleet not found" },
         { ServerErrorCode.FLEET_MAX_SHIPS_REACHED, "Maximum ships per fleet reached" },
+        { ServerErrorCode.INSUFFICIENT_TECH_LEVEL, "Insufficient tech level for upgrade" },
+        { ServerErrorCode.INSUFFICIENT_MINERAL_RARE, "Insufficient rare mineral for upgrade" },
+        { ServerErrorCode.INSUFFICIENT_MINERAL_EXOTIC, "Insufficient exotic mineral for upgrade" },
+        { ServerErrorCode.INSUFFICIENT_MINERAL_DARK, "Insufficient dark mineral for upgrade" },
         { ServerErrorCode.INVALID_DATA_TABLE, "Invalid data table provided" },
         { ServerErrorCode.UNKNOWN_ERROR, "Unknown error" },
     };

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+
+
 public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 {
     [HideInInspector] public SpaceFleet m_myFleet;
@@ -171,9 +173,39 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         if (m_addButtonItem != null)
         {
             var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
+            CostStruct cost = gameSettings.GetAddShipCost(m_myFleet.m_ships.Count);
+
+            // 비용 문자열 생성 (0이 아닌 광물만 표시)
+            string costText = "Add Ship (";
+            bool firstItem = true;
+
+            if (cost.mineral > 0)
+            {
+                costText += $"Mineral: {cost.mineral}";
+                firstItem = false;
+            }
+            if (cost.mineralRare > 0)
+            {
+                if (!firstItem) costText += ", ";
+                costText += $"Rare: {cost.mineralRare}";
+                firstItem = false;
+            }
+            if (cost.mineralExotic > 0)
+            {
+                if (!firstItem) costText += ", ";
+                costText += $"Exotic: {cost.mineralExotic}";
+                firstItem = false;
+            }
+            if (cost.mineralDark > 0)
+            {
+                if (!firstItem) costText += ", ";
+                costText += $"Dark: {cost.mineralDark}";
+            }
+            costText += ")";
+
             m_addButtonItem.GetComponent<ScrollViewShipItemAdd>().InitializeScrollViewShipItemAdd(
-                $"Add Ship cost, money: {gameSettings.shipAddMoneyCost}, mineral: {gameSettings.shipAddMineralCost} "
-                , AddShip
+                costText,
+                AddShip
             );
         }
     }
@@ -213,47 +245,71 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
     private void AddShip()
     {
         var character = DataManager.Instance.m_currentCharacter;
-        if (character == null)
+        if (character == null) return;
+        
+        if (CanAddShip() != ServerErrorCode.SUCCESS)
         {
-            // if (selectedModuleText != null)
-            //     selectedModuleText.text = "No character data available";
+            // selectedModuleText.text = "Failed to add ship";
             return;
         }
 
-        if (character.CanAddShip() == false)
+        // Request ship addition to server
+        var request = new AddShipRequest
         {
-            var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
-            string reason = "";
+            fleetId = null // Add to current active fleet
+        };
 
-            if (character.GetOwnedFleet() == null)
-                reason = "No fleet";
-            else if (character.GetOwnedFleet().m_ships.Count >= gameSettings.maxShipsPerFleet)
-                reason = $"Max ships reached ({gameSettings.maxShipsPerFleet})";
-            else if (character.GetMoney() < gameSettings.shipAddMoneyCost)
-                reason = $"Need {gameSettings.shipAddMoneyCost} money (have {character.GetMoney()})";
-            else if (character.GetMineral() < gameSettings.shipAddMineralCost)
-                reason = $"Need {gameSettings.shipAddMineralCost} mineral (have {character.GetMineral()})";
-
-            // if (selectedModuleText != null)
-            //      selectedModuleText.text = $"Cannot add ship: {reason}";
-            return;
-        }
-
-        character.AddNewShip((success) =>
+        NetworkManager.Instance.AddShip(request, (response) =>
         {
-            if (success)
+            if (response.errorCode == 0 && response.data.success)
             {
-                //if (selectedModuleText != null)
-                //     selectedModuleText.text = "New ship added to fleet!";
+                character.UpdateMineral(response.data.costRemainInfo.remainMineral);
+                character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
+                character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
+                character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
+                DataManager.Instance.SetCharacterData(character.m_characterInfo);
+
+                if (response.data.updatedFleetInfo != null)
+                    DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
+
+                if (response.data.newShipInfo != null && character.m_ownedFleet != null)
+                {
+                    ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(response.data.newShipInfo);
+                    ObjectManager.Instance.m_myFleet.UpdateShipFormation(ObjectManager.Instance.m_myFleet.m_currentFormationType, false);
+                }
+
+                EventManager.TriggerFleetChange();
+
+                // selectedModuleText.text = "Success add ship";
             }
             else
             {
-                // if (selectedModuleText != null)
-                //     selectedModuleText.text = "Failed to add ship";
+                // selectedModuleText.text = "Failed to add ship";
             }
         });
     }
-    
+        
+    private ServerErrorCode CanAddShip()
+    {
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return ServerErrorCode.CHARACTER_NOT_FOUND;
+
+        var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
+        if (character.m_ownedFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;
+        int currentShipCount = character.m_ownedFleet.m_ships.Count;
+        if (currentShipCount >= gameSettings.maxShipsPerFleet) return ServerErrorCode.FLEET_MAX_SHIPS_REACHED;
+
+        CostStruct cost = gameSettings.GetAddShipCost(currentShipCount);
+        // tech 레벨 체크
+        if( character.m_characterInfo.techLevel < cost.techLevel) return ServerErrorCode.INSUFFICIENT_TECH_LEVEL;
+        // 모든 광물 타입 체크
+        if (character.m_characterInfo.mineral < cost.mineral) return ServerErrorCode.INSUFFICIENT_MINERAL;
+        if (character.m_characterInfo.mineralRare < cost.mineralRare) return ServerErrorCode.INSUFFICIENT_MINERAL_RARE;
+        if (character.m_characterInfo.mineralExotic < cost.mineralExotic) return ServerErrorCode.INSUFFICIENT_MINERAL_EXOTIC;
+        if (character.m_characterInfo.mineralDark < cost.mineralDark) return ServerErrorCode.INSUFFICIENT_MINERAL_DARK;
+
+        return ServerErrorCode.SUCCESS;
+    }
 
 
 }

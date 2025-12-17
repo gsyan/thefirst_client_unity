@@ -92,8 +92,7 @@ public class ModuleEngine : ModuleBase
         m_rotationSpeed = moduleData.m_rotationSpeed;
 
         // 업그레이드 비용 설정
-        m_upgradeMoneyCost = moduleData.m_upgradeMoneyCost;
-        m_upgradeMineralCost = moduleData.m_upgradeMineralCost;
+        m_upgradeCost = moduleData.m_upgradeCost;
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
@@ -162,7 +161,16 @@ public class ModuleEngine : ModuleBase
         comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
         comparison += $"Speed: {currentStats.m_movementSpeed:F1} -> {upgradeStats.m_movementSpeed:F1}\n";
         comparison += $"Rotation: {currentStats.m_rotationSpeed:F1} -> {upgradeStats.m_rotationSpeed:F1}\n";
-        comparison += $"Cost: Money {currentStats.m_upgradeMoneyCost}, Mineral {currentStats.m_upgradeMineralCost}";
+        string costString = $"Cost: Tech Level {currentStats.m_upgradeCost.techLevel}";
+        if (currentStats.m_upgradeCost.mineral > 0)
+            costString += $", Mineral {currentStats.m_upgradeCost.mineral}";
+        if (currentStats.m_upgradeCost.mineralRare > 0)
+            costString += $", MineralRare {currentStats.m_upgradeCost.mineral}";
+        if (currentStats.m_upgradeCost.mineralExotic > 0)
+            costString += $", MineralExotic {currentStats.m_upgradeCost.mineral}";
+        if (currentStats.m_upgradeCost.mineralDark > 0)
+            costString += $", MineralDark {currentStats.m_upgradeCost.mineral}";
+        comparison += costString;
 
         return comparison;
     }

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Character
 {
-    private CharacterInfo m_characterInfo;
-    private SpaceFleet m_ownedFleet;
+    public CharacterInfo m_characterInfo;
+    public SpaceFleet m_ownedFleet;
 
     public Character(CharacterInfo characterInfo)
     {
@@ -16,17 +16,27 @@ public class Character
         return m_characterInfo?.characterName ?? "";
     }
 
-    public long GetMoney()
-    {
-        return m_characterInfo?.money ?? 0;
-    }
-
     public long GetMineral()
     {
         return m_characterInfo?.mineral ?? 0;
     }
 
-    public int GetTechnologyLevel()
+    public long GetMineralRare()
+    {
+        return m_characterInfo?.mineralRare ?? 0;
+    }
+
+    public long GetMineralExotic()
+    {
+        return m_characterInfo?.mineralExotic ?? 0;
+    }
+
+    public long GetMineralDark()
+    {
+        return m_characterInfo?.mineralDark ?? 0;
+    }
+
+    public int GetTechLevel()
     {
         return m_characterInfo?.techLevel ?? 1;
     }
@@ -39,16 +49,18 @@ public class Character
     public void UpdateCharacterInfo(CharacterInfo characterInfo)
     {
         m_characterInfo = characterInfo;
-        EventManager.TriggerMoneyChange(m_characterInfo.money);
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
         EventManager.TriggerTechLevelChange(m_characterInfo.techLevel);
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
+        EventManager.TriggerMineralRareChange(m_characterInfo.mineralRare);
+        EventManager.TriggerMineralExoticChange(m_characterInfo.mineralExotic);
+        EventManager.TriggerMineralDarkChange(m_characterInfo.mineralDark);
     }
 
-    public void UpdateMoney(long money)
+    public void UpdateTechLevel(int techLevel)
     {
         if (m_characterInfo == null) return;
-        m_characterInfo.money = money;
-        EventManager.TriggerMoneyChange(money);
+        m_characterInfo.techLevel = techLevel;
+        EventManager.TriggerTechLevelChange(techLevel);
     }
 
     public void UpdateMineral(long mineral)
@@ -58,12 +70,28 @@ public class Character
         EventManager.TriggerMineralChange(mineral);
     }
 
-    public void UpdateTechLevel(int techLevel)
+    public void UpdateMineralRare(long mineralRare)
     {
         if (m_characterInfo == null) return;
-        m_characterInfo.techLevel = techLevel;
-        EventManager.TriggerTechLevelChange(techLevel);
+        m_characterInfo.mineralRare = mineralRare;
+        EventManager.TriggerMineralRareChange(mineralRare);
     }
+
+    public void UpdateMineralExotic(long mineralExotic)
+    {
+        if (m_characterInfo == null) return;
+        m_characterInfo.mineralExotic = mineralExotic;
+        EventManager.TriggerMineralExoticChange(mineralExotic);
+    }
+
+    public void UpdateMineralDark(long mineralDark)
+    {
+        if (m_characterInfo == null) return;
+        m_characterInfo.mineralDark = mineralDark;
+        EventManager.TriggerMineralDarkChange(mineralDark);
+    }
+
+    
 
 
     public void SetOwnedFleet(SpaceFleet fleet)
@@ -91,59 +119,6 @@ public class Character
     {
         if (m_ownedFleet == null) return false;
         return m_ownedFleet.IsFleetAlive();
-    }
-
-    public bool CanAddShip()
-    {
-        var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
-
-        if (m_ownedFleet == null) return false;
-        if (m_ownedFleet.m_ships.Count >= gameSettings.maxShipsPerFleet) return false;
-        if (GetMoney() < gameSettings.shipAddMoneyCost) return false;
-        if (GetMineral() < gameSettings.shipAddMineralCost) return false;
-
-        return true;
-    }
-
-    public void AddNewShip(System.Action<bool> onComplete)
-    {
-        if (!CanAddShip())
-        {
-            onComplete?.Invoke(false);
-            return;
-        }
-
-        // Request ship addition to server
-        var request = new AddShipRequest
-        {
-            fleetId = null // Add to current active fleet
-        };
-
-        NetworkManager.Instance.AddShip(request, (response) =>
-        {
-            if (response.errorCode == 0 && response.data.success)
-            {
-                UpdateMoney(response.data.remainMoney);
-                UpdateMineral(response.data.remainMineral);
-
-                if (response.data.updatedFleetInfo != null)
-                    DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
-
-                if (response.data.newShipInfo != null && m_ownedFleet != null)
-                {
-                    ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(response.data.newShipInfo);
-                    ObjectManager.Instance.m_myFleet.UpdateShipFormation(ObjectManager.Instance.m_myFleet.m_currentFormationType, false);
-                }
-
-                EventManager.TriggerFleetChange();
-
-                onComplete?.Invoke(true);
-            }
-            else
-            {
-                onComplete?.Invoke(false);
-            }
-        });
     }
 
 }

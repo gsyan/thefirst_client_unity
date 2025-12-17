@@ -538,17 +538,25 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
 
         switch (key.ToLower())
         {
-            case "money":
-                if (long.TryParse(value, out long money))
-                    DataManager.Instance.m_currentCharacter.UpdateMoney(money);
+            case "tech":
+                if (int.TryParse(value, out int tech))
+                    DataManager.Instance.m_currentCharacter.UpdateTechLevel(tech);
                 break;
             case "mineral":
                 if (long.TryParse(value, out long mineral))
                     DataManager.Instance.m_currentCharacter.UpdateMineral(mineral);
                 break;
-            case "tech":
-                if (int.TryParse(value, out int tech))
-                    DataManager.Instance.m_currentCharacter.UpdateTechLevel(tech);
+            case "mineralRare":
+                if (long.TryParse(value, out long mineralRare))
+                    DataManager.Instance.m_currentCharacter.UpdateMineralRare(mineralRare);
+                break;
+            case "mineralExotic":
+                if (long.TryParse(value, out long mineralExotic))
+                    DataManager.Instance.m_currentCharacter.UpdateMineralExotic(mineralExotic);
+                break;
+            case "mineralDark":
+                if (long.TryParse(value, out long mineralDark))
+                    DataManager.Instance.m_currentCharacter.UpdateMineralDark(mineralDark);
                 break;
         }
     }

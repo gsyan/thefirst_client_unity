@@ -159,16 +159,18 @@ public class UIPanelFleet_TabUpgrade : UITabBase
     
     private void OnUpgradeResponse(ApiResponse<ModuleUpgradeResponse> response)
     {
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+        
         if (response.errorCode == 0 && response.data.success)
         {
-            Debug.Log($"Upgrade successful! New level: {response.data.newLevel}");
-            
-            // Update character resources from server response
-            if (response.data.totalCost != null && DataManager.Instance.m_currentCharacter != null)
+            if (response.data.costRemainInfo != null)
             {
                 var characterInfo = DataManager.Instance.m_currentCharacter.GetInfo();
-                characterInfo.money = response.data.totalCost.remainMoney;
-                characterInfo.mineral = response.data.totalCost.remainMineral;
+                character.UpdateMineral(response.data.costRemainInfo.remainMineral);
+                character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
+                character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
+                character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
                 DataManager.Instance.SetCharacterData(characterInfo);
             }
 
@@ -268,25 +270,42 @@ public class UIPanelFleet_TabUpgrade : UITabBase
             return false;
         }
 
-        int moneyCost, mineralCost;
-        if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetPackedModuleType(), m_selectedModule.GetModuleLevel(), out moneyCost, out mineralCost) != 0)
+        CostStruct cost;
+        if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetPackedModuleType(), m_selectedModule.GetModuleLevel(), out cost) == false)
         {
             validationMessage = "Failed to get upgrade cost";
             return false;
         }
 
-        long playerMoney = character.GetMoney();
+        int playerTechLevel = character.GetTechLevel();
         long playerMineral = character.GetMineral();
-
-        if (playerMoney < moneyCost)
+        long playerMineralRare = character.GetMineralRare();
+        long playerMineralExotic = character.GetMineralExotic();
+        long playerMineralDark = character.GetMineralDark();
+    
+        if (playerTechLevel < cost.techLevel)
         {
-            validationMessage = $"Insufficient money (need {moneyCost}, have {playerMoney})";
+            validationMessage = $"Insufficient tech level (need {cost.techLevel} tech level, current {playerTechLevel})";
             return false;
         }
-
-        if (playerMineral < mineralCost)
+        if (playerMineral < cost.mineral)
         {
-            validationMessage = $"Insufficient mineral (need {mineralCost}, have {playerMineral})";
+            validationMessage = $"Insufficient mineral (need {cost.mineral}, have {playerMineral})";
+            return false;
+        }
+        if (playerMineralRare < cost.mineralRare)
+        {
+            validationMessage = $"Insufficient mineralRare (need {cost.mineralRare}, have {playerMineralRare})";
+            return false;
+        }
+        if (playerMineralExotic < cost.mineralExotic)
+        {
+            validationMessage = $"Insufficient mineralExotic (need {cost.mineralExotic}, have {playerMineralExotic})";
+            return false;
+        }
+        if (playerMineralDark < cost.mineralDark)
+        {
+            validationMessage = $"Insufficient mineralDark (need {cost.mineralDark}, have {playerMineralDark})";
             return false;
         }
 

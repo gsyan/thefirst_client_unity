@@ -34,6 +34,6 @@ public class UISpace : UIManager
         InitializePanels();
         ShowDefaultPanel();
 
-        ShowPanel("UIPanelMoney");
+        ShowPanel("UIPanelMineral");
     }
 }
