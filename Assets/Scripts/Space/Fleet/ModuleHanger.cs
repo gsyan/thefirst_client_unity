@@ -297,11 +297,11 @@ public class ModuleHanger : ModuleBase
         if (currentStats.m_upgradeCost.mineral > 0)
             costString += $", Mineral {currentStats.m_upgradeCost.mineral}";
         if (currentStats.m_upgradeCost.mineralRare > 0)
-            costString += $", MineralRare {currentStats.m_upgradeCost.mineral}";
+            costString += $", MineralRare {currentStats.m_upgradeCost.mineralRare}";
         if (currentStats.m_upgradeCost.mineralExotic > 0)
-            costString += $", MineralExotic {currentStats.m_upgradeCost.mineral}";
+            costString += $", MineralExotic {currentStats.m_upgradeCost.mineralExotic}";
         if (currentStats.m_upgradeCost.mineralDark > 0)
-            costString += $", MineralDark {currentStats.m_upgradeCost.mineral}";
+            costString += $", MineralDark {currentStats.m_upgradeCost.mineralDark}";
         comparison += costString;
 
         return comparison;

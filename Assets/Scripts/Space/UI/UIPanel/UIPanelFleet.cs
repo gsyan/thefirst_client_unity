@@ -24,7 +24,7 @@ public class UIPanelFleet : UIPanelBase
         if (m_myFleet == null)
             m_myFleet = DataManager.Instance.m_currentCharacter.GetOwnedFleet();
 
-        // TabSystem의 각 탭에 연결된 Panel GameObject에서 UITabBase 컴포넌트 자동 매칭
+        // TabSystem의 각 탭
         for (int i = 0; i < m_tabSystem.tabs.Count; i++)
         {
             var tabData = m_tabSystem.tabs[i];

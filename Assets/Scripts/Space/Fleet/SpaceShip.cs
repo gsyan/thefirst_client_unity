@@ -71,10 +71,8 @@ public class SpaceShip : MonoBehaviour
 
         SetupModuleHighlighting();
         
-        // 지금은 바디가 오직 하나...
+        // AirCraftPathGrid, 지금은 바디가 오직 하나...
         m_airCraftPathGrid = m_moduleBodyList[0].GetComponent<AirCraftPathGrid>();
-        //m_outlineScanner.Check();
-        //m_outlineScanner.BuildAdjacency();
         
         // Outline 미리 설정
         m_shipOutline = gameObject.AddComponent<Outline>();
@@ -392,7 +390,7 @@ public class SpaceShip : MonoBehaviour
 
     // Private fields
     private List<ModuleHighlight> m_moduleHighlights = new List<ModuleHighlight>();
-    private ModuleBase m_currentSelectedModule = null;
+    private ModuleBase m_selectedModule = null;
 
     private void SetupModuleHighlighting()
     {
@@ -462,38 +460,19 @@ public class SpaceShip : MonoBehaviour
         return bounds;
     }
 
-    public void OnClicked(Vector3 hitPoint, Collider hitCollider = null)
-    {
-        ModuleBase clickedParts = null;
-        if (hitCollider != null)
-        {
-            clickedParts = hitCollider.GetComponent<ModuleBase>();
-            if (clickedParts == null)
-                clickedParts = hitCollider.GetComponentInParent<ModuleBase>();
-        }
-
-        if (clickedParts != null)
-            SelectParts(clickedParts);        
-    }
-
-    public void SelectParts(ModuleBase partsBase)
+    public void SetSelectedModule_SpaceShip(SpaceShip ship, ModuleBase module)
     {
         if (m_myFleet == null) return;
-        //if (m_myFleet.m_enableModuleSelection == false) return;
-        
+        if (this != ship) return;
+        //m_myFleet.SetSelectedModule_SpaceFleet(this, m_selectedModule);
         m_myFleet.ClearAllSelections();
-            
-
-        m_currentSelectedModule = partsBase;
+        m_selectedModule = module;
         UpdateHighlighting();
-
-        if (m_myFleet != null)
-            m_myFleet.OnModuleClicked(this, partsBase);
     }
 
     public void ClearSelection()
     {
-        m_currentSelectedModule = null;
+        m_selectedModule = null;
         UpdateHighlighting();
     }
 
@@ -503,7 +482,7 @@ public class SpaceShip : MonoBehaviour
         {
             if (highlight != null)
             {
-                bool isSelected = (highlight.ModuleBase == m_currentSelectedModule);
+                bool isSelected = (highlight.ModuleBase == m_selectedModule);
                 highlight.SetHighlighted(isSelected);
             }
         }
@@ -511,7 +490,6 @@ public class SpaceShip : MonoBehaviour
 
     public void OnModuleHover(ModuleBase partsBase, bool isHovering)
     {
-        //if (m_myFleet.m_enableModuleSelection == false) return;
         // Find the highlight component for this parts
         var highlight = m_moduleHighlights.Find(h => h != null && h.ModuleBase == partsBase);
         if (highlight != null)
