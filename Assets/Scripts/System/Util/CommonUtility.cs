@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class CommonUtility
 {
-    #region Fleet Utility
+    #region Fleet Utility begin -----------------------------------------------------------------------------------
     public static Vector3 CalculateFleetCenter(Vector3[] shipPositions)
     {
         if (shipPositions == null || shipPositions.Length == 0)
@@ -32,9 +32,9 @@ public static class CommonUtility
         
         return bounds;
     }
-    #endregion
+    #endregion Fleet Utility end -----------------------------------------------------------------------------------
 
-    #region Module Type Packing
+    #region Module Type Packing begin -----------------------------------------------------------------------------------
     private const int TYPE_SHIFT = 24;
     private const int SUBTYPE_SHIFT = 16;
     private const int STYLE_SHIFT = 8;
@@ -79,5 +79,12 @@ public static class CommonUtility
 
         return GetModuleTypeOnly(moduleType1) == GetModuleTypeOnly(moduleType2);
     }
-    #endregion
+    #endregion Module Type Packing end -----------------------------------------------------------------------------------
+
+
+
+
+    #region  begin -----------------------------------------------------------------------------------
+    
+    #endregion  end -----------------------------------------------------------------------------------
 }

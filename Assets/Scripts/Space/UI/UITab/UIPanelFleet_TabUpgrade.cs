@@ -46,12 +46,12 @@ public class UIPanelFleet_TabUpgrade : UITabBase
                 if (tabBase is UIPanelFleet_TabUpgrade_TabFleet fleetTab)
                 {
                     m_tabFleet = fleetTab;
-                    m_tabFleet.m_tabSystemParent = m_tabSystem;
+                    m_tabFleet.m_tabSystem_TabUpgrade = m_tabSystem;
                 }
                 else if (tabBase is UIPanelFleet_TabUpgrade_TabShip shipTab)
                 {
                     m_tabShip = shipTab;
-                    m_tabShip.m_tabSystemParent = m_tabSystem;
+                    m_tabShip.m_tabSystem_TabUpgrade = m_tabSystem;
                 }
 
                 // 탭 버튼 숨기기

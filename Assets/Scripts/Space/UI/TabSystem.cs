@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+//using UnityEngine.UIElements;
 
 [System.Serializable]
 public class TabData
@@ -19,6 +20,8 @@ public class TabData
 
 public class TabSystem : MonoBehaviour
 {
+    private bool m_bInitialized = false;
+
     [Header("Tab Configuration")]
     public List<TabData> tabs = new List<TabData>();
     public int defaultActiveTab = 0;
@@ -52,10 +55,14 @@ public class TabSystem : MonoBehaviour
                 tabs[i].tabPanel.SetActive(false);
             }
         }
+
+        m_bInitialized = true;
     }
     
     public void SwitchToTab(int tabIndex)
     {
+        if (m_bInitialized == false) return;
+
         if (tabIndex < 0 || tabIndex >= tabs.Count)
         {
             Debug.LogWarning($"Invalid tab index: {tabIndex}");
@@ -90,6 +97,7 @@ public class TabSystem : MonoBehaviour
             if (useAnimation)
             {
                 StartCoroutine(AnimatePanel(tab.tabPanel, true));
+                tab.tabPanel.SetActive(true);
             }
             else
             {

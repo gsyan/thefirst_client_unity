@@ -10,8 +10,7 @@ public class SpaceFleet : MonoBehaviour
     public EFleetState m_fleetState = EFleetState.None;
     public EFormationType m_currentFormationType = EFormationType.LinearHorizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
-
-    
+    [HideInInspector] public UIPanelFleet_TabUpgrade m_panelFleet_TabUpgrade;
 
 
     private void Start()
@@ -282,38 +281,33 @@ public class SpaceFleet : MonoBehaviour
 
 
 
+    
+    
+    // public void SetSelectedModule_SpaceFleet(SpaceShip ship, ModuleBase moduleBase)
+    // {
+    //     ClearAllSelections();
 
-    #region Display migration ============================================================
+    //     string moduleTypeString = moduleBase?.GetType().Name ?? "null";
+    //     string moduleInfoString = "";
 
-    public const int LAYER_DISPLAY_FLEET = 30;
-    private static readonly Vector3 DISPLAY_FLEET_OFFSET = new(10000, 0, 0);
-    [HideInInspector] public UIPanelFleet_TabUpgrade m_panelFleet_TabUpgrade;
-    public bool m_enableModuleSelection = false;
-
-
-    public void OnModuleClicked(SpaceShip ship, ModuleBase moduleBase)
-    {
-        string moduleTypeString = moduleBase?.GetType().Name ?? "null";
-        string moduleInfoString = "";
-
-        if (moduleBase is ModuleBody body)
-        {
-            moduleInfoString = $"ModuleBody[{body.m_moduleBodyInfo.bodyIndex}]";
-        }
-        else if (moduleBase is ModuleWeapon weapon)
-        {
-            moduleInfoString = $"ModuleWeapon[{weapon.m_classId}]";
-        }
-        else if (moduleBase is ModuleEngine engine)
-        {
-            moduleInfoString = $"ModuleEngine[{engine.m_classId}]";
-        }
+    //     if (moduleBase is ModuleBody body)
+    //     {
+    //         moduleInfoString = $"ModuleBody[{body.m_moduleBodyInfo.bodyIndex}]";
+    //     }
+    //     else if (moduleBase is ModuleWeapon weapon)
+    //     {
+    //         moduleInfoString = $"ModuleWeapon[{weapon.m_classId}]";
+    //     }
+    //     else if (moduleBase is ModuleEngine engine)
+    //     {
+    //         moduleInfoString = $"ModuleEngine[{engine.m_classId}]";
+    //     }
         
-        Debug.Log($"Module clicked: Ship {ship.name}, {moduleTypeString} {moduleInfoString}");
+    //     Debug.Log($"Module clicked: Ship {ship.name}, {moduleTypeString} {moduleInfoString}");
 
-        if (m_panelFleet_TabUpgrade != null)
-            m_panelFleet_TabUpgrade.OnModuleSelected(ship, moduleBase);
-    }
+    //     if (m_panelFleet_TabUpgrade != null)
+    //         m_panelFleet_TabUpgrade.OnModuleSelected(ship, moduleBase);
+    // }
 
     public void ClearAllSelections()
     {
@@ -324,6 +318,6 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
-    #endregion
+    
 
 }

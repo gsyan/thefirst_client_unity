@@ -10,23 +10,15 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 {
     [HideInInspector] public SpaceFleet m_myFleet;
     private SpaceShip m_selectedShip;
-    private ModuleBase m_selectedModule;
-    private SpaceShip m_focusedShip;
-
     public TextMeshProUGUI m_textTop;
     public TextMeshProUGUI m_textFleetStats;
-
     public RectTransform scrollViewShipsContent;
-    public GameObject scrollViewShipItem;
-    public GameObject scrollViewShipItemAdd;
-
-    private GameObject m_addButtonItem; // Add 버튼 아이템 참조
-    private ScrollViewShipItem m_selectedShipItem; // 현재 선택된 아이템
-
+    public GameObject scrollViewShipItem;       // 프리팹
+    public GameObject scrollViewShipItemAdd;    // 프리팹
+    private GameObject m_addButtonItem;         // Add 버튼 아이템 참조
+    private ScrollViewShipItem m_selectedScrollViewShipItem;    // 현재 선택된 스크롤 뷰 아이템
     public UIPanelFleet_TabUpgrade_TabShip m_panelShipInfo;
-
-    // 부모 탭 시스템 참조
-    [HideInInspector] public TabSystem m_tabSystemParent;
+    [HideInInspector] public TabSystem m_tabSystem_TabUpgrade;       // 부모 탭 시스템 참조
 
     public override void InitializeUITab()
     {
@@ -65,10 +57,10 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
         EventManager.Subscribe_FleetChange(OnFleetChanged);
 
-        if (m_focusedShip != null)
+        if (m_selectedShip != null)
         {
-            m_focusedShip.m_shipOutline.enabled = true;
-            CameraController.Instance.SetTargetOfCameraController(m_focusedShip.transform);
+            m_selectedShip.m_shipOutline.enabled = true;
+            CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
         }
     }
 
@@ -78,8 +70,8 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
         EventManager.Unsubscribe_FleetChange(OnFleetChanged);
 
-        if (m_focusedShip != null)
-            m_focusedShip.m_shipOutline.enabled = false;
+        if (m_selectedShip != null)
+            m_selectedShip.m_shipOutline.enabled = false;
     }
 
     private void InitializeUI()
@@ -212,34 +204,34 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
     private void OnManageShipClicked(SpaceShip ship)
     {
-        if (m_tabSystemParent != null)
-            m_tabSystemParent.SwitchToTab(1);
+        if (m_tabSystem_TabUpgrade != null)
+            m_tabSystem_TabUpgrade.SwitchToTab(1);
     }
 
     private void OnShipItemSelected(ScrollViewShipItem selectedItem, SpaceShip ship)
     {
         if (selectedItem == null || ship == null) return;
-        if (selectedItem == m_selectedShipItem) return;
-        if (m_focusedShip == ship) return;
+        if (selectedItem == m_selectedScrollViewShipItem) return;
+        if (m_selectedShip == ship) return;
 
         // 이전에 선택된 아이템의 관리 버튼 숨김
-        if (m_selectedShipItem != null && m_selectedShipItem != selectedItem)
-            m_selectedShipItem.SetSelected_ScrollViewShipItem(false);            
-        // 현재 선택된 아이템 업데이트
-        m_selectedShipItem = selectedItem;
-
+        if (m_selectedScrollViewShipItem != null && m_selectedScrollViewShipItem != selectedItem)
+            m_selectedScrollViewShipItem.SetSelected_ScrollViewShipItem(false);        
+        
         // 이전에 포커스된 함선의 아웃라인 비활성화
-        if (m_focusedShip != null)
-            m_focusedShip.m_shipOutline.enabled = false;
-        m_focusedShip = ship;
+        if (m_selectedShip != null)
+            m_selectedShip.m_shipOutline.enabled = false;        
+        
+        // 선택 함선 업데이트
+        m_selectedShip = ship;
+        EventManager.TriggerSpaceShipSelected_TabUpgrade(m_selectedShip);
 
-        // 새로운 함선의 아웃라인 활성화
-        ship.m_shipOutline.enabled = true;
-
-        m_panelShipInfo.m_selectedShip = ship;
-
+        // 선택 스크롤 뷰 아이템 업데이트
+        m_selectedScrollViewShipItem = selectedItem;
+        // 선택 함선의 아웃라인 활성화
+        m_selectedShip.m_shipOutline.enabled = true;        
         // 카메라 포커스
-        CameraController.Instance.SetTargetOfCameraController(ship.transform);
+        CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
     }
 
     private void AddShip()

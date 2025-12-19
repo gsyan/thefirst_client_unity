@@ -3,16 +3,8 @@ using UnityEngine;
 
 public static class EventManager
 {
-    public static event Action<int> OnTechLevelChanged;
-    public static event Action<long> OnMineralChanged;
-    public static event Action<long> OnMineralRareChanged;
-    public static event Action<long> OnMineralExoticChanged;
-    public static event Action<long> OnMineralDarkChanged;
-
-    public static event Action OnFleetChanged;
-    public static event Action OnShipChanged;
-
     // TechLevel
+    public static event Action<int> OnTechLevelChanged;
     public static void TriggerTechLevelChange(int techLevel)
     {
         OnTechLevelChanged?.Invoke(techLevel);
@@ -25,7 +17,9 @@ public static class EventManager
     {
         OnTechLevelChanged -= callback;
     }
+
     // mineral
+    public static event Action<long> OnMineralChanged;
     public static void TriggerMineralChange(long money)
     {
         OnMineralChanged?.Invoke(money);
@@ -38,7 +32,9 @@ public static class EventManager
     {
         OnMineralChanged -= callback;
     }
+
     // mineral rare
+    public static event Action<long> OnMineralRareChanged;
     public static void TriggerMineralRareChange(long mineral)
     {
         OnMineralRareChanged?.Invoke(mineral);
@@ -51,7 +47,9 @@ public static class EventManager
     {
         OnMineralRareChanged -= callback;
     }
+    
     // mineral Exotic
+    public static event Action<long> OnMineralExoticChanged;
     public static void TriggerMineralExoticChange(long mineral)
     {
         OnMineralExoticChanged?.Invoke(mineral);
@@ -64,7 +62,9 @@ public static class EventManager
     {
         OnMineralExoticChanged -= callback;
     }
+
     // mineral Dark
+    public static event Action<long> OnMineralDarkChanged;
     public static void TriggerMineralDarkChange(long mineral)
     {
         OnMineralDarkChanged?.Invoke(mineral);
@@ -78,10 +78,8 @@ public static class EventManager
         OnMineralDarkChanged -= callback;
     }
 
-    
-    
-
     // Fleet
+    public static event Action OnFleetChanged;
     public static void TriggerFleetChange()
     {
         OnFleetChanged?.Invoke();
@@ -95,7 +93,8 @@ public static class EventManager
         OnFleetChanged -= callback;
     }
 
-    // Ship
+    // SpaceShip Stat Changed
+    public static event Action OnShipChanged;
     public static void TriggerShipChange()
     {
         OnShipChanged?.Invoke();
@@ -109,5 +108,35 @@ public static class EventManager
         OnShipChanged -= callback;
     }
 
-    
+    // SpaceShip Selection
+    public static event Action<SpaceShip> OnSpaceShipSelected_TabUpgrade;
+    public static void TriggerSpaceShipSelected_TabUpgrade(SpaceShip ship)
+    {
+        OnSpaceShipSelected_TabUpgrade?.Invoke(ship);
+    }
+    public static void Subscribe_SpaceShipSelected_TabUpgrade(Action<SpaceShip> callback)
+    {
+        OnSpaceShipSelected_TabUpgrade += callback;
+    }
+    public static void Unsubscribe_SpaceShipSelected_TabUpgrade(Action<SpaceShip> callback)
+    {
+        OnSpaceShipSelected_TabUpgrade -= callback;
+    }
+
+    // SpaceShip Module Selection
+    public static event Action<SpaceShip, ModuleBase> OnSpaceShipModuleSelected;
+    public static void TriggerSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
+    {
+        OnSpaceShipModuleSelected?.Invoke(ship, module);
+    }
+    public static void Subscribe_SpaceShipModuleSelected(Action<SpaceShip, ModuleBase> callback)
+    {
+        OnSpaceShipModuleSelected += callback;
+    }
+    public static void Unsubscribe_SpaceShipModuleSelected(Action<SpaceShip, ModuleBase> callback)
+    {
+        OnSpaceShipModuleSelected -= callback;
+    }
+
+
 }
