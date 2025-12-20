@@ -14,11 +14,6 @@ public class UIPanelFleet_TabUpgrade : UITabBase
     private SpaceShip m_selectedShip;
     private ModuleBase m_selectedModule;
 
-    // Tab references
-    private UIPanelFleet_TabUpgrade_TabFleet m_tabFleet;
-    private UIPanelFleet_TabUpgrade_TabShip m_tabShip;
-
-
     public override void InitializeUITab()
     {
         InitializeUIPanelFleetUpgrade();
@@ -44,15 +39,13 @@ public class UIPanelFleet_TabUpgrade : UITabBase
 
                 // 탭 참조 저장 및 부모 패널 설정
                 if (tabBase is UIPanelFleet_TabUpgrade_TabFleet fleetTab)
-                {
-                    m_tabFleet = fleetTab;
-                    m_tabFleet.m_tabSystem_TabUpgrade = m_tabSystem;
-                }
+                    fleetTab.m_tabSystem_TabUpgrade = m_tabSystem;
                 else if (tabBase is UIPanelFleet_TabUpgrade_TabShip shipTab)
-                {
-                    m_tabShip = shipTab;
-                    m_tabShip.m_tabSystem_TabUpgrade = m_tabSystem;
-                }
+                    shipTab.m_tabSystem_TabUpgrade = m_tabSystem;
+                else if (tabBase is UIPanelFleet_TabUpgrade_TabUpgradeModule upgradeModuleTab)
+                    upgradeModuleTab.m_tabSystem_TabUpgrade = m_tabSystem;
+                else if (tabBase is UIPanelFleet_TabUpgrade_TabChangeModule changeModuleTab)
+                    changeModuleTab.m_tabSystem_TabUpgrade = m_tabSystem;
 
                 // 탭 버튼 숨기기
                 if (tabData.tabButton != null)
@@ -64,16 +57,16 @@ public class UIPanelFleet_TabUpgrade : UITabBase
 
     public override void OnTabActivated()
     {
-        InitializeUI();
-
         m_tabSystem.ForceActivateTab();
+        
+        InitializeUI();
     }
 
     public override void OnTabDeactivated()
     {
-        InitializeUI();
-
         m_tabSystem.ForceDeactivateTab();
+        
+        InitializeUI();
     }
 
     private void InitializeUI()
@@ -85,7 +78,7 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         //     selectedModuleText.text = "Click on a module to select it";
 
         if (m_myFleet != null)
-            m_myFleet.ClearAllSelections();
+            m_myFleet.ClearAllSelectedModule();
         
         //UpdateFleetStatsDisplay();
     }

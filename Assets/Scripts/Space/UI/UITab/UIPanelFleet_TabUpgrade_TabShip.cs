@@ -13,91 +13,66 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
     public Button m_backButton;
 
-    [SerializeField] private TabSystem m_tabSystem;
-    // [SerializeField] private UIPanelFleet_TabUpgrade_TabShip_TabUpgradeModule m_tabUpgradeModule;
-    // [SerializeField] private UIPanelFleet_TabUpgrade_TabShip_TabChangeModule m_tabChangeModule;
-
     // 부모 탭 시스템 참조
     [HideInInspector] public TabSystem m_tabSystem_TabUpgrade;
 
     public override void InitializeUITab()
     {
         var character = DataManager.Instance.m_currentCharacter;
-        if (character == null || character.GetOwnedFleet() == null)
-        {
-            m_textShipStats.text = "No character or No Fleet";
-            return;
-        }
+        if (character == null) return;
+        
         m_myFleet = character.GetOwnedFleet();
+        if (m_myFleet == null) return;
 
-        // TabSystem의 각 탭
-        for (int i = 0; i < m_tabSystem.tabs.Count; i++)
-        {
-            var tabData = m_tabSystem.tabs[i];
-            if (tabData.tabPanel != null)
-            {
-                UITabBase tabBase = tabData.tabPanel.GetComponent<UITabBase>();
-                if (tabBase == null) continue;
-                tabBase.InitializeUITab();
-                tabData.onActivate = tabBase.OnTabActivated;
-                tabData.onDeactivate = tabBase.OnTabDeactivated;
-            }
-        }
-
-        if (m_backButton != null)
-            m_backButton.onClick.AddListener(OnBackButtonClicked);
-
+        m_backButton.onClick.AddListener(() => m_tabSystem_TabUpgrade.SwitchToTab(0));
+        
         EventManager.Subscribe_SpaceShipSelected_TabUpgrade(OnSpaceShipSelected);
     }
-
-    private void OnBackButtonClicked()
+    private void OnSpaceShipSelected(SpaceShip ship)
     {
-        if (m_tabSystem_TabUpgrade != null)
-            m_tabSystem_TabUpgrade.SwitchToTab(0);
+        m_selectedShip = ship;
     }
 
     public override void OnTabActivated()
     {
-        InitializeUI();
+        EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelected);
+        EventManager.Subscribe_ShipChange(OnShipChanged);
 
         // 함선 관리 모드로 전환
         CameraController.Instance.m_currentMode = ECameraControllerMode.Manage_Ship;
-
-        EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelected);
-        EventManager.Subscribe_ShipChange(OnShipChanged);
 
         if (m_selectedShip != null)
         {
             m_selectedShip.m_shipOutline.enabled = true;
             CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
         }
+
+        InitializeUI();
     }
 
     public override void OnTabDeactivated()
     {
-        InitializeUI();
-
+        EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelected);
+        EventManager.Unsubscribe_ShipChange(OnShipChanged);
+        
         // 평소 카메라 모드로 전환
         CameraController.Instance.m_currentMode = ECameraControllerMode.Normal;
 
-        EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelected);
-        EventManager.Unsubscribe_ShipChange(OnShipChanged);
-
         if (m_selectedShip != null)
             m_selectedShip.m_shipOutline.enabled = false;
+
+        InitializeUI();
     }
 
     private void InitializeUI()
     {
         if (m_myFleet != null)
-            m_myFleet.ClearAllSelections();
+            m_myFleet.ClearAllSelectedModule();
         
         if( m_selectedShip == null)
             m_selectedShip = m_myFleet.m_ships[0];
         
         m_selectedModule = null;
-
-        m_tabSystem.SwitchToTab(0);
 
         if (m_textTop != null)
             m_textTop.text = "Ship Management";
@@ -106,10 +81,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         
     }
 
-    private void OnSpaceShipSelected(SpaceShip ship)
-    {
-        m_selectedShip = ship;
-    }
+    
 
     private void OnModuleSelected(SpaceShip ship, ModuleBase module)
     {
@@ -122,7 +94,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
         UpdateShipStatsDisplay();
 
-        m_tabSystem.SwitchToTab(1);
+        //m_tabSystem_TabUpgrade.SwitchToTab(2);
     }
 
     private void OnShipChanged()
@@ -151,7 +123,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (m_selectedModule == null) return;
         string moduleStatsCompareText = m_selectedModule.GetUpgradeComparisonText();
         m_textShipStats.text += "\n\n" + moduleStatsCompareText;
-
     }
 
 }
