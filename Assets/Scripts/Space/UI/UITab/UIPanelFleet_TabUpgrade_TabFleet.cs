@@ -77,7 +77,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
     private void InitializeUI()
     {
         if (m_myFleet != null)
-            m_myFleet.ClearAllSelections();
+            m_myFleet.ClearAllSelectedModule();
         
 
         if (m_textTop != null)

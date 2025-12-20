@@ -366,14 +366,26 @@ public class SpaceShip : MonoBehaviour
                 stats.totalRotationSpeed += body.GetTotalRotationSpeed();
                 stats.totalCargoCapacity += body.GetTotalCargoCapacity();
 
-                foreach (ModuleWeapon weapon in body.m_weapons)
+                // Count modules and calculate attack power
+                foreach (ModuleSlot slot in body.m_moduleSlots)
                 {
-                    if (weapon != null && weapon.m_health > 0)
-                        stats.totalAttackPower += weapon.m_attackPower;
-                }
+                    if (slot != null && slot.transform.childCount > 0)
+                    {
+                        ModuleWeapon weapon = slot.GetComponentInChildren<ModuleWeapon>();
+                        if (weapon != null && weapon.m_health > 0)
+                        {
+                            stats.totalAttackPower += weapon.m_attackPower;
+                            stats.totalWeapons++;
+                            continue;
+                        }
 
-                stats.totalWeapons += body.m_weapons.Count;
-                stats.totalEngines += body.m_engines.Count;
+                        ModuleEngine engine = slot.GetComponentInChildren<ModuleEngine>();
+                        if (engine != null)
+                        {
+                            stats.totalEngines++;
+                        }
+                    }
+                }
             }
         }
 
@@ -401,18 +413,15 @@ public class SpaceShip : MonoBehaviour
             {
                 SetupModuleHighlight(body);
 
-                // Setup highlighting for weapons
-                foreach (ModuleWeapon weapon in body.m_weapons)
+                // Setup highlighting for all modules in slots
+                foreach (ModuleSlot slot in body.m_moduleSlots)
                 {
-                    if (weapon != null)
-                        SetupModuleHighlight(weapon);
-                }
-
-                // Setup highlighting for engines
-                foreach (ModuleEngine engine in body.m_engines)
-                {
-                    if (engine != null)
-                        SetupModuleHighlight(engine);
+                    if (slot != null && slot.transform.childCount > 0)
+                    {
+                        ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
+                        if (module != null)
+                            SetupModuleHighlight(module);
+                    }
                 }
             }
         }
@@ -464,13 +473,12 @@ public class SpaceShip : MonoBehaviour
     {
         if (m_myFleet == null) return;
         if (this != ship) return;
-        //m_myFleet.SetSelectedModule_SpaceFleet(this, m_selectedModule);
-        m_myFleet.ClearAllSelections();
+        m_myFleet.ClearAllSelectedModule();
         m_selectedModule = module;
         UpdateHighlighting();
     }
 
-    public void ClearSelection()
+    public void ClearSelectedModule()
     {
         m_selectedModule = null;
         UpdateHighlighting();

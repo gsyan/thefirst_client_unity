@@ -279,42 +279,12 @@ public class SpaceFleet : MonoBehaviour
         return totalLevel / m_ships.Count;
     }
 
-
-
-    
-    
-    // public void SetSelectedModule_SpaceFleet(SpaceShip ship, ModuleBase moduleBase)
-    // {
-    //     ClearAllSelections();
-
-    //     string moduleTypeString = moduleBase?.GetType().Name ?? "null";
-    //     string moduleInfoString = "";
-
-    //     if (moduleBase is ModuleBody body)
-    //     {
-    //         moduleInfoString = $"ModuleBody[{body.m_moduleBodyInfo.bodyIndex}]";
-    //     }
-    //     else if (moduleBase is ModuleWeapon weapon)
-    //     {
-    //         moduleInfoString = $"ModuleWeapon[{weapon.m_classId}]";
-    //     }
-    //     else if (moduleBase is ModuleEngine engine)
-    //     {
-    //         moduleInfoString = $"ModuleEngine[{engine.m_classId}]";
-    //     }
-        
-    //     Debug.Log($"Module clicked: Ship {ship.name}, {moduleTypeString} {moduleInfoString}");
-
-    //     if (m_panelFleet_TabUpgrade != null)
-    //         m_panelFleet_TabUpgrade.OnModuleSelected(ship, moduleBase);
-    // }
-
-    public void ClearAllSelections()
+    public void ClearAllSelectedModule()
     {
         foreach (SpaceShip ship in m_ships)
         {
             if (ship != null)
-                ship.ClearSelection();
+                ship.ClearSelectedModule();
         }
     }
 

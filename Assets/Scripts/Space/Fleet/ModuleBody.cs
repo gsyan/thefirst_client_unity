@@ -21,23 +21,16 @@ public class ModuleBody : ModuleBase
     public override void ApplyShipStateToModule()
     {
         base.ApplyShipStateToModule();
-        
-        for (int i = 0; i < m_engines.Count; i++)
-        {
-            if (m_engines[i] != null)
-                m_engines[i].ApplyShipStateToModule();
-        }
-        
-        for (int i = 0; i < m_weapons.Count; i++)
-        {
-            if (m_weapons[i] != null)
-                m_weapons[i].ApplyShipStateToModule();
-        }
 
-        for (int i = 0; i < m_hangers.Count; i++)
+        // Apply ship state to all modules in slots
+        foreach (ModuleSlot slot in m_moduleSlots)
         {
-            if (m_hangers[i] != null)
-                m_hangers[i].ApplyShipStateToModule();
+            if (slot != null && slot.transform.childCount > 0)
+            {
+                ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
+                if (module != null)
+                    module.ApplyShipStateToModule();
+            }
         }
     }
     
@@ -112,6 +105,9 @@ public class ModuleBody : ModuleBase
             foreach (ModuleHangerInfo hangerInfo in moduleBodyInfo.hangers)
                 InitializeHanger(hangerInfo);
         }
+
+        // 빈 슬롯에 ModulePlaceholder 배치
+        FillEmptySlotsWithPlaceholders();
     }
 
     private void InitializeEngine(ModuleEngineInfo engineInfo)
@@ -229,6 +225,34 @@ public class ModuleBody : ModuleBase
 
     }
 
+    private void FillEmptySlotsWithPlaceholders()
+    {
+        GameObject placeholderPrefab = ObjectManager.Instance.LoadModulePlaceholderPrefab();
+        if (placeholderPrefab == null)
+        {
+            Debug.LogWarning("ModulePlaceholder prefab not found. Skipping empty slot filling.");
+            return;
+        }
+
+        foreach (ModuleSlot slot in m_moduleSlots)
+        {
+            // 이미 모듈이 배치된 슬롯은 건너뜀
+            if (slot.transform.childCount > 0)
+                continue;
+
+            // ModulePlaceholder 생성 및 배치
+            GameObject placeholderObj = Instantiate(placeholderPrefab, slot.transform.position, slot.transform.rotation);
+            placeholderObj.transform.SetParent(slot.transform);
+
+            // ModulePlaceholder 컴포넌트 추가 및 초기화
+            ModulePlaceholder modulePlaceholder = placeholderObj.GetComponent<ModulePlaceholder>();
+            if (modulePlaceholder == null)
+                modulePlaceholder = placeholderObj.AddComponent<ModulePlaceholder>();
+
+            modulePlaceholder.InitializeModulePlaceholder(slot);
+        }
+    }
+
     // 엔진 추가
     public void AddEngine(ModuleEngine engine)
     {
@@ -298,18 +322,24 @@ public class ModuleBody : ModuleBase
 
     public void SetTarget(ModuleBody target)
     {
-        foreach (ModuleWeapon weapon in m_weapons)
+        foreach (ModuleSlot slot in m_moduleSlots)
         {
-            if (weapon != null && weapon.m_health > 0)
-                weapon.SetTarget(target);
-        }
+            if (slot != null && slot.transform.childCount > 0)
+            {
+                ModuleWeapon weapon = slot.GetComponentInChildren<ModuleWeapon>();
+                if (weapon != null && weapon.m_health > 0)
+                {
+                    weapon.SetTarget(target);
+                    continue;
+                }
 
-        foreach (ModuleHanger hanger in m_hangers)
-        {
-            if (hanger != null && hanger.m_health > 0)
-                hanger.SetTarget(target);
+                ModuleHanger hanger = slot.GetComponentInChildren<ModuleHanger>();
+                if (hanger != null && hanger.m_health > 0)
+                {
+                    hanger.SetTarget(target);
+                }
+            }
         }
-
     }
 
     public override void TakeDamage(float damage)
@@ -321,25 +351,15 @@ public class ModuleBody : ModuleBase
         {
             //Debug.Log($"[{GetFleetName()}] ModuleBody[{m_moduleBodyInfo.bodyIndex}] destroyed!");
 
-            // 엔진들 비활성화
-            foreach (var engine in m_engines)
+            // 모든 슬롯의 모듈 비활성화
+            foreach (ModuleSlot slot in m_moduleSlots)
             {
-                if (engine != null)
-                    engine.gameObject.SetActive(false);
-            }
-
-            // 무기들 비활성화
-            foreach (var weapon in m_weapons)
-            {
-                if (weapon != null)
-                    weapon.gameObject.SetActive(false);
-            }
-
-            // 행거들 비활성화
-            foreach (var hanger in m_hangers)
-            {
-                if (hanger != null)
-                    hanger.gameObject.SetActive(false);
+                if (slot != null && slot.transform.childCount > 0)
+                {
+                    ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
+                    if (module != null)
+                        module.gameObject.SetActive(false);
+                }
             }
 
             // 상위 SpaceShip에 자신의 파괴를 알림
@@ -353,11 +373,15 @@ public class ModuleBody : ModuleBase
     public float GetTotalMovementSpeed()
     {
         float totalSpeed = 0f;
-        foreach (var engine in m_engines)
+        foreach (ModuleSlot slot in m_moduleSlots)
         {
-            if (engine != null && engine.m_health > 0)
+            if (slot != null && slot.transform.childCount > 0)
             {
-                totalSpeed += engine.GetMovementSpeed();
+                ModuleEngine engine = slot.GetComponentInChildren<ModuleEngine>();
+                if (engine != null && engine.m_health > 0)
+                {
+                    totalSpeed += engine.GetMovementSpeed();
+                }
             }
         }
         return totalSpeed;
@@ -367,11 +391,15 @@ public class ModuleBody : ModuleBase
     public float GetTotalRotationSpeed()
     {
         float totalSpeed = 0f;
-        foreach (var engine in m_engines)
+        foreach (ModuleSlot slot in m_moduleSlots)
         {
-            if (engine != null && engine.m_health > 0)
+            if (slot != null && slot.transform.childCount > 0)
             {
-                totalSpeed += engine.GetRotationSpeed();
+                ModuleEngine engine = slot.GetComponentInChildren<ModuleEngine>();
+                if (engine != null && engine.m_health > 0)
+                {
+                    totalSpeed += engine.GetRotationSpeed();
+                }
             }
         }
         return totalSpeed;

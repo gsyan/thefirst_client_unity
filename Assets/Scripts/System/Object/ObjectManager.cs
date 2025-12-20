@@ -228,6 +228,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         public string weaponPrefabPath = "Prefabs/ShipModule/Weapon/";
         public string enginePrefabPath = "Prefabs/ShipModule/Engine/";
         public string hangerPrefabPath = "Prefabs/ShipModule/Hanger/";
+        public string commonModulePrefabPath = "Prefabs/ShipModule/Common/";
         
         [Header("Space Resource Prefabs")]
         public string mineralPrefabPath = "Prefabs/SpaceResource/Mineral";
@@ -318,6 +319,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                     case "weapon": return prefabPaths.weaponPrefabPath;
                     case "engine": return prefabPaths.enginePrefabPath;
                     case "hanger": return prefabPaths.hangerPrefabPath;
+                    case "common": return prefabPaths.commonModulePrefabPath;
                 }
                 break;
 
@@ -369,6 +371,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public GameObject LoadShipModulePrefab(string moduleType, string moduleSubType = "", int moduleLevel = 1)
     {
         return LoadPrefab("ShipModule", moduleType, moduleSubType, moduleLevel);
+    }
+
+    public GameObject LoadModulePlaceholderPrefab()
+    {
+        return LoadPrefab("ShipModule", "Common", "ModulePlaceholder", 0);
     }
     
     /// <summary>

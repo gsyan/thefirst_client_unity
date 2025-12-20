@@ -9,7 +9,7 @@ public class ModuleSlot : MonoBehaviour
     public EModuleType m_type = EModuleType.None;
     public EModuleBodySubType m_bodySubType = EModuleBodySubType.None;
     public EModuleEngineSubType m_engineSubType = EModuleEngineSubType.None;
-    public EModuleWeaponSubType m_weaponSubType = EModuleWeaponSubType.None;    
+    public EModuleWeaponSubType m_weaponSubType = EModuleWeaponSubType.None;
     public EModuleHangerSubType m_hangerSubType = EModuleHangerSubType.None;
     
 #if UNITY_EDITOR
