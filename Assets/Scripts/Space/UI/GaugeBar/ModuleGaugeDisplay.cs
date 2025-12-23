@@ -40,7 +40,7 @@ public class ModuleGaugeDisplay : MonoBehaviour
         switch (m_displayMode)
         {
             case EGaugeDisplayMode.Body:
-                foreach (ModuleBody body in m_spaceShip.m_moduleBodyList)
+                foreach (ModuleBody body in m_spaceShip.m_moduleBodys)
                 {
                     if (body != null)
                         CreateGaugeBarForModule(body);
@@ -64,7 +64,7 @@ public class ModuleGaugeDisplay : MonoBehaviour
             //     break;
 
             case EGaugeDisplayMode.All:
-                foreach (ModuleBody body in m_spaceShip.m_moduleBodyList)
+                foreach (ModuleBody body in m_spaceShip.m_moduleBodys)
                 {
                     if (body != null)
                         CreateGaugeBarForModule(body);

@@ -11,7 +11,7 @@ using UnityEditor;
 [System.Serializable]
 public class ModuleBodyData
 {
-    public int m_moduleType;
+    public int m_moduleTypePacked;
 
     [Header("Basic Info")]
     public string m_name = "New Body";
@@ -22,7 +22,7 @@ public class ModuleBodyData
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        m_moduleType = CommonUtility.CreateModuleType(EModuleType.Body, (int)m_subType, m_style);
+        m_moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, (int)m_subType, m_style);
     }
 #endif
 
@@ -45,7 +45,7 @@ public class ModuleBodyData
 [System.Serializable]
 public class ModuleEngineData
 {
-    public int m_moduleType;
+    public int m_moduleTypePacked;
 
     [Header("Basic Info")]
     public string m_name = "New Engine";
@@ -56,7 +56,7 @@ public class ModuleEngineData
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        m_moduleType = CommonUtility.CreateModuleType(EModuleType.Engine, (int)m_subType, m_style);
+        m_moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, (int)m_subType, m_style);
     }
 #endif
 
@@ -79,7 +79,7 @@ public class ModuleEngineData
 [System.Serializable]
 public class ModuleWeaponData
 {
-    public int m_moduleType;
+    public int m_moduleTypePacked;
 
     [Header("Basic Info")]
     public string m_name = "New Weapon";
@@ -90,7 +90,7 @@ public class ModuleWeaponData
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        m_moduleType = CommonUtility.CreateModuleType(EModuleType.Weapon, (int)m_subType, m_style);
+        m_moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, (int)m_subType, m_style);
     }
 #endif
 
@@ -125,7 +125,7 @@ public class ModuleWeaponData
 [System.Serializable]
 public class ModuleHangerData
 {
-    public int m_moduleType;
+    public int m_moduleTypePacked;
 
     [Header("Basic Info")]
     public string m_name = "New Hanger";
@@ -136,7 +136,7 @@ public class ModuleHangerData
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        m_moduleType = CommonUtility.CreateModuleType(EModuleType.Hanger, (int)m_subType, m_style);
+        m_moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Hanger, (int)m_subType, m_style);
     }
 #endif
 
@@ -630,7 +630,8 @@ public class DataTableModule : ScriptableObject
                     m_attackPower = 10f + (i * 5f),
                     m_attackFireCount = 1 + (i / 5),
                     m_attackCoolTime = 2.0f - (i * 0.05f),
-                    m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
+                    //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
+                    m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
                     m_description = $"{subType} weapon system level {i}"
                 };
                 AddWeaponModule(weaponModule, weaponModule.m_subType);

@@ -1,14 +1,17 @@
 //------------------------------------------------------------------------------
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Character
 {
     public CharacterInfo m_characterInfo;
     public SpaceFleet m_ownedFleet;
+    private List<int> m_researchedModules;
 
     public Character(CharacterInfo characterInfo)
     {
         m_characterInfo = characterInfo;
+        m_researchedModules = new List<int>();
     }
 
     public string GetName()
@@ -119,6 +122,44 @@ public class Character
     {
         if (m_ownedFleet == null) return false;
         return m_ownedFleet.IsFleetAlive();
+    }
+
+    // 개발된 모듈 목록 설정
+    public void SetResearchedModules(int[] researchedModules)
+    {
+        if (researchedModules == null)
+        {
+            m_researchedModules.Clear();
+            return;
+        }
+
+        m_researchedModules = new List<int>(researchedModules);
+    }
+
+    // 개발된 모듈 목록 조회
+    public List<int> GetResearchedModules()
+    {
+        return m_researchedModules;
+    }
+
+    // 특정 모듈이 개발되었는지 확인
+    public bool IsModuleResearched(int moduleTypePacked)
+    {
+        if (m_researchedModules == null) return false;
+
+        return m_researchedModules.Contains(moduleTypePacked);
+    }
+
+    // 모듈 개발 추가
+    public void AddResearchedModule(int moduleTypePacked)
+    {
+        if (m_researchedModules == null)
+            m_researchedModules = new List<int>();
+
+        if (!IsModuleResearched(moduleTypePacked))
+        {
+            m_researchedModules.Add(moduleTypePacked);
+        }
     }
 
 }

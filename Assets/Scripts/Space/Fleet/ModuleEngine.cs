@@ -10,20 +10,20 @@ public class ModuleEngine : ModuleBase
     [SerializeField] private float m_movementSpeed;
     [SerializeField] private float m_rotationSpeed;
 
-    override public void Start()
+    public override void Start()
     {
         // 추가 초기화가 필요하면 여기에
     }
 
     
 
-    override public void Attack(SpaceShip target)
+    public override void Attack(SpaceShip target)
     {
         // 엔진은 공격하지 않음
         // base.Attack 호출하지 않음
     }
     
-    override public void TakeDamage(float damage)
+    public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
         
@@ -46,23 +46,23 @@ public class ModuleEngine : ModuleBase
     {
         return EModuleType.Engine;
     }
-    public override int GetPackedModuleType()
+    public override int GetModuleTypePacked()
     {
-        return m_moduleEngineInfo.moduleType;
+        return m_moduleEngineInfo.moduleTypePacked;
     }
     public override int GetModuleLevel()
     {
         return m_moduleEngineInfo.moduleLevel;
     }
-    override public void SetModuleLevel(int level)
+    public override void SetModuleLevel(int level)
     {
         m_moduleEngineInfo.moduleLevel = level;
     }
-    override public int GetModuleBodyIndex()
+    public override int GetModuleBodyIndex()
     {
         return m_moduleEngineInfo.bodyIndex;
     }
-    override public void SetModuleBodyIndex(int bodyIndex)
+    public override void SetModuleBodyIndex(int bodyIndex)
     {
         m_moduleEngineInfo.bodyIndex = bodyIndex;
     }
@@ -145,7 +145,7 @@ public class ModuleEngine : ModuleBase
         }
     }
 
-    override public string GetUpgradeComparisonText()
+    public override string GetUpgradeComparisonText()
     {
         var currentStats = DataManager.Instance.RestoreEngineModuleData(m_moduleEngineInfo.ModuleSubType, m_moduleEngineInfo.moduleLevel);
         var upgradeStats = DataManager.Instance.RestoreEngineModuleData(m_moduleEngineInfo.ModuleSubType, m_moduleEngineInfo.moduleLevel + 1);

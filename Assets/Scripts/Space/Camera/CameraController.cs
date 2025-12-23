@@ -146,7 +146,7 @@ public class CameraController : MonoSingleton<CameraController>
 
     // Input handling
     private bool m_isDragging = false;
-    private bool m_isPanning = false;
+    //private bool m_isPanning = false;
     private Vector3 m_startTouchPosition;
     private float m_startRotationY;
     private float m_startRotationX;
@@ -225,13 +225,13 @@ public class CameraController : MonoSingleton<CameraController>
         // 좌클릭: 팬 이동
         if (Input.GetMouseButtonDown(0) == true)
         {
-            m_isPanning = true;
+            //m_isPanning = true;
             m_startTouchPosition = Input.mousePosition;
             HandleModuleSelection(m_startTouchPosition); // 카메라 모드에 따라 처리 필요
         }
         else if (Input.GetMouseButtonUp(0) == true)
         {
-            m_isPanning = false;
+            //m_isPanning = false;
         }
         else if (Input.GetMouseButton(0) == true)
         {
@@ -274,7 +274,7 @@ public class CameraController : MonoSingleton<CameraController>
                 m_lastTwoTouchCenter = currentTouchCenter;
                 m_prevTouch0Position = touch0.position;
                 m_prevTouch1Position = touch1.position;
-                m_isPanning = false;
+                //m_isPanning = false;
             }
             else if (touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved)
             {
@@ -291,7 +291,7 @@ public class CameraController : MonoSingleton<CameraController>
                     // dot < -0.5: 반대 방향 → 핀치 줌
                     if (dotProduct < -0.5f)
                     {
-                        m_isPanning = false;
+                        //m_isPanning = false;
                         float deltaPinch = currentPinchDistance - m_lastPinchDistance;
 
                         if (m_currentTarget != null)
@@ -302,7 +302,7 @@ public class CameraController : MonoSingleton<CameraController>
                     // dot > 0.8: 같은 방향 → 팬 이동
                     else if (dotProduct > 0.8f)
                     {
-                        m_isPanning = true;
+                        //m_isPanning = true;
                         Vector2 touchCenterDelta = currentTouchCenter - m_lastTwoTouchCenter;
                         CameraMove_LeftRightUpDown(touchCenterDelta);
                     }
@@ -316,7 +316,7 @@ public class CameraController : MonoSingleton<CameraController>
             }
             else if (touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
             {
-                m_isPanning = false;
+                //m_isPanning = false;
             }
         }
         else if (Input.touchCount == 1)
@@ -382,7 +382,7 @@ public class CameraController : MonoSingleton<CameraController>
             SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
             ModuleBase module = hit.collider.GetComponentInParent<ModuleBase>();
             if (ship != null && ship.gameObject == m_currentTarget.gameObject && module != null)
-                EventManager.TriggerSpaceShipModuleSelected(ship, module);
+                EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(ship, module);
         }
     }
 

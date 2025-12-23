@@ -162,7 +162,7 @@ public class SpaceFleet : MonoBehaviour
         if (aliveShip == null) return null;
 
         List<ModuleBody> aliveBodies = new List<ModuleBody>();
-        foreach (ModuleBody body in aliveShip.m_moduleBodyList)
+        foreach (ModuleBody body in aliveShip.m_moduleBodys)
         {
             if (body != null && body.m_health > 0)
                 aliveBodies.Add(body);
@@ -219,11 +219,11 @@ public class SpaceFleet : MonoBehaviour
             {
                 if (ship == null || ship.IsAlive() == false) continue;
 
-                foreach (ModuleBody body in ship.m_moduleBodyList)
+                foreach (ModuleBody body in ship.m_moduleBodys)
                 {
                     if (body == null || body.m_health >= body.m_healthMax) continue;
 
-                    float repairAmount = repairPerShip / ship.m_moduleBodyList.Count;
+                    float repairAmount = repairPerShip / ship.m_moduleBodys.Count;
                     body.m_health = Mathf.Min(body.m_health + repairAmount, body.m_healthMax);
                 }
 

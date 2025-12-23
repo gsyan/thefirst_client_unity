@@ -2270,10 +2270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_resultText: {fileID: 0}
-  panels: []
-  useAnimation: 1
-  animationDuration: 0.3
-  m_uiPanelMoney: {fileID: 0}
+  m_uiMode: 0
   emailInput: {fileID: 452511346}
   passwordInput: {fileID: 1989385370}
   characterNameInput: {fileID: 0}

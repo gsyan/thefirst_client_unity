@@ -30,7 +30,7 @@ public struct SpaceShipStats
 public class SpaceShip : MonoBehaviour
 {
     [SerializeField] public ShipInfo m_shipInfo;
-    [SerializeField] public List<ModuleBody> m_moduleBodyList = new List<ModuleBody>();
+    [SerializeField] public List<ModuleBody> m_moduleBodys = new List<ModuleBody>();
     [SerializeField] public float m_health;
     [SerializeField] public SpaceShip m_targetShip;
     [SerializeField] public SpaceShipStats m_spaceShipStatsOrg;
@@ -72,7 +72,7 @@ public class SpaceShip : MonoBehaviour
         SetupModuleHighlighting();
         
         // AirCraftPathGrid, 지금은 바디가 오직 하나...
-        m_airCraftPathGrid = m_moduleBodyList[0].GetComponent<AirCraftPathGrid>();
+        m_airCraftPathGrid = m_moduleBodys[0].GetComponent<AirCraftPathGrid>();
         
         // Outline 미리 설정
         m_shipOutline = gameObject.AddComponent<Outline>();
@@ -134,14 +134,14 @@ public class SpaceShip : MonoBehaviour
             moduleBody = bodyObj.AddComponent<ModuleBody>();
 
         moduleBody.InitializeModuleBody(bodyInfo);
-        m_moduleBodyList.Add(moduleBody);
+        m_moduleBodys.Add(moduleBody);
     }
 
     // 전체 함선 체력 계산
     private void CalculateTotalHealth()
     {
         float totalHealth = 0f;
-        foreach (ModuleBody body in m_moduleBodyList)
+        foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null)
             {
@@ -178,7 +178,7 @@ public class SpaceShip : MonoBehaviour
                 break;
         }
         
-        foreach (ModuleBody body in m_moduleBodyList)
+        foreach (ModuleBody body in m_moduleBodys)
             body.ApplyShipStateToModule();
     }
 
@@ -222,7 +222,7 @@ public class SpaceShip : MonoBehaviour
                 }
             }
 
-            foreach (ModuleBody body in m_moduleBodyList)
+            foreach (ModuleBody body in m_moduleBodys)
             {
                 if (body != null && body.m_health > 0)
                     body.SetTarget(m_currentTargetBody);
@@ -260,7 +260,7 @@ public class SpaceShip : MonoBehaviour
     // 살아있는 바디가 있는지 확인
     private bool HasAliveBodies()
     {
-        foreach (ModuleBody body in m_moduleBodyList)
+        foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null && body.m_health > 0)
             {
@@ -274,7 +274,7 @@ public class SpaceShip : MonoBehaviour
     private ModuleBody GetRandomAliveBody()
     {
         List<ModuleBody> aliveBodies = new List<ModuleBody>();
-        foreach (ModuleBody body in m_moduleBodyList)
+        foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null && body.m_health > 0)
             {
@@ -294,7 +294,7 @@ public class SpaceShip : MonoBehaviour
     public void RecalculateHealth()
     {
         float totalHealth = 0f;
-        foreach (ModuleBody body in m_moduleBodyList)
+        foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null)
                 totalHealth += Mathf.Max(0f, body.m_health);
@@ -343,7 +343,7 @@ public class SpaceShip : MonoBehaviour
     // 인덱스로 바디 찾기
     public ModuleBody FindModuleBodyByIndex(int bodyIndex)
     {
-        foreach (ModuleBody body in m_moduleBodyList)
+        foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null && body.m_moduleBodyInfo.bodyIndex == bodyIndex)
             {
@@ -357,7 +357,7 @@ public class SpaceShip : MonoBehaviour
     {
         SpaceShipStats stats = new SpaceShipStats();
 
-        foreach (ModuleBody body in m_moduleBodyList)
+        foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null && body.m_health > 0)
             {
@@ -407,7 +407,7 @@ public class SpaceShip : MonoBehaviour
     private void SetupModuleHighlighting()
     {
         // Setup highlighting for parts bodies
-        foreach (ModuleBody body in m_moduleBodyList)
+        foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null)
             {
@@ -469,7 +469,7 @@ public class SpaceShip : MonoBehaviour
         return bounds;
     }
 
-    public void SetSelectedModule_SpaceShip(SpaceShip ship, ModuleBase module)
+    public void SetSelectedModule(SpaceShip ship, ModuleBase module)
     {
         if (m_myFleet == null) return;
         if (this != ship) return;
@@ -812,6 +812,106 @@ public class SpaceShip : MonoBehaviour
 
         return bounds;
     }
+
+    // 서버 응답으로부터 함선 정보 업데이트 (모듈 교체 시)
+    public void UpdateShipFromServerResponse(ShipInfo updatedShipInfo)
+    {
+        if (updatedShipInfo == null)
+        {
+            Debug.LogError("UpdateShipFromServerResponse: updatedShipInfo is null");
+            return;
+        }
+
+        // 함선 기본 정보 업데이트
+        m_shipInfo = updatedShipInfo;
+
+        // 각 바디의 모듈 정보 업데이트
+        if (updatedShipInfo.bodies != null)
+        {
+            foreach (ModuleBodyInfo updatedBodyInfo in updatedShipInfo.bodies)
+            {
+                ModuleBody body = FindModuleBodyByIndex(updatedBodyInfo.bodyIndex);
+                if (body == null)
+                {
+                    Debug.LogWarning($"UpdateShipFromServerResponse: Body {updatedBodyInfo.bodyIndex} not found");
+                    continue;
+                }
+
+                // 바디의 정보 업데이트
+                body.m_moduleBodyInfo = updatedBodyInfo;
+
+                // // 엔진 모듈 업데이트
+                // if (updatedBodyInfo.engines != null)
+                //     UpdateModulesFromInfo(body, updatedBodyInfo.engines);
+
+                // // 무기 모듈 업데이트
+                // if (updatedBodyInfo.weapons != null)
+                //     UpdateModulesFromInfo(body, updatedBodyInfo.weapons);
+
+                
+
+                // // 행거 모듈 업데이트
+                // if (updatedBodyInfo.hangers != null)
+                //     UpdateModulesFromInfo(body, updatedBodyInfo.hangers);
+            }
+        }
+
+        // 함선 통계 재계산
+        RecalculateHealth();
+        m_spaceShipStatsOrg = GetTotalStats();
+        m_spaceShipStatsCur = GetTotalStats();
+
+        Debug.Log($"Ship updated from server: {m_shipInfo.shipName}");
+    }
+
+    // private void UpdateModulesFromInfo<T>(ModuleBody body, T[] moduleInfos) where T : ModuleInfo
+    // {
+    //     foreach (T moduleInfo in moduleInfos)
+    //     {
+    //         // 현재 슬롯의 모듈 확인
+    //         ModuleSlot slot = body.FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
+    //         if (slot == null)
+    //         {
+    //             Debug.LogWarning($"UpdateModulesFromInfo: Slot not found - moduleTypePacked: {moduleInfo.moduleTypePacked}, slotIndex: {moduleInfo.slotIndex}");
+    //             continue;
+    //         }
+
+    //         // 현재 슬롯에 있는 모듈 확인
+    //         ModuleBase existingModule = null;
+    //         if (slot.transform.childCount > 0)
+    //         {
+    //             existingModule = slot.GetComponentInChildren<ModuleBase>();
+    //         }
+
+    //         // 모듈 정보가 달라졌는지 확인 (타입 또는 레벨)
+    //         bool needsReplacement = false;
+    //         if (existingModule == null)
+    //         {
+    //             needsReplacement = true;
+    //         }
+    //         else if (existingModule.GetModuleTypePacked() != moduleInfo.moduleTypePacked ||
+    //                  existingModule.GetModuleLevel() != moduleInfo.moduleLevel)
+    //         {
+    //             needsReplacement = true;
+    //         }
+
+    //         // 모듈 교체가 필요한 경우
+    //         if (needsReplacement)
+    //         {
+    //             EModuleType moduleType = CommonUtility.GetModuleType(moduleInfo.moduleTypePacked);
+    //             bool success = body.ReplaceModuleInSlot(moduleInfo.slotIndex, moduleInfo.moduleTypePacked, moduleType, moduleInfo.moduleLevel);
+
+    //             if (success)
+    //             {
+    //                 Debug.Log($"Module replaced: Type={moduleType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
+    //             }
+    //             else
+    //             {
+    //                 Debug.LogError($"Failed to replace module: Type={moduleType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
+    //             }
+    //         }
+    //     }
+    // }
 
     private void OnDrawGizmos()
     {

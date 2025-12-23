@@ -85,7 +85,7 @@ public class ModuleWeapon : ModuleBase
     }
 
 
-    override public void Start()
+    public override void Start()
     {
         m_autoAttackCoroutine = StartCoroutine(AutoAttack());
     }
@@ -124,7 +124,7 @@ public class ModuleWeapon : ModuleBase
         }
     }
 
-    override public void TakeDamage(float damage)
+    public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
         
@@ -143,27 +143,27 @@ public class ModuleWeapon : ModuleBase
         }
     }
 
-    override public EModuleType GetModuleType()
+    public override EModuleType GetModuleType()
     {
         return EModuleType.Weapon;
     }
-    public override int GetPackedModuleType()
+    public override int GetModuleTypePacked()
     {
-        return m_moduleWeaponInfo.moduleType;
+        return m_moduleWeaponInfo.moduleTypePacked;
     }
-    override public int GetModuleLevel()
+    public override int GetModuleLevel()
     {
         return m_moduleWeaponInfo.moduleLevel;
     }
-    override public void SetModuleLevel(int level)
+    public override void SetModuleLevel(int level)
     {
         m_moduleWeaponInfo.moduleLevel = level;
     }
-    override public int GetModuleBodyIndex()
+    public override int GetModuleBodyIndex()
     {
         return m_moduleWeaponInfo.bodyIndex;
     }
-    override public void SetModuleBodyIndex(int bodyIndex)
+    public override void SetModuleBodyIndex(int bodyIndex)
     {
         m_moduleWeaponInfo.bodyIndex = bodyIndex;
     }
@@ -213,7 +213,7 @@ public class ModuleWeapon : ModuleBase
         }
     }
 
-    override public string GetUpgradeComparisonText()
+    public override string GetUpgradeComparisonText()
     {
         var currentStats = DataManager.Instance.RestoreWeaponModuleData(m_moduleWeaponInfo.ModuleSubType, m_moduleWeaponInfo.moduleLevel);
         var upgradeStats = DataManager.Instance.RestoreWeaponModuleData(m_moduleWeaponInfo.ModuleSubType, m_moduleWeaponInfo.moduleLevel + 1);

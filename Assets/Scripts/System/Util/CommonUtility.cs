@@ -40,7 +40,7 @@ public static class CommonUtility
     private const int STYLE_SHIFT = 8;
     private const int MASK = 0xFF;
 
-    public static int CreateModuleType(EModuleType type, int subType, EModuleStyle style)
+    public static int CreateModuleTypePacked(EModuleType type, int subType, EModuleStyle style)
     {
         return ((int)type << TYPE_SHIFT) | (subType << SUBTYPE_SHIFT) | ((int)style << STYLE_SHIFT);
     }

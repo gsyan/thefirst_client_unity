@@ -125,7 +125,7 @@ public class ModuleHanger : ModuleBase
         }
     }
 
-    override public void Start()
+    public override void Start()
     {
         m_autoAttackCoroutine = StartCoroutine(AutoAttack());
         m_maintenanceCoroutine = StartCoroutine(MaintenanceProcess());
@@ -218,7 +218,7 @@ public class ModuleHanger : ModuleBase
         return count;
     }
 
-    override public void TakeDamage(float damage)
+    public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
 
@@ -233,32 +233,32 @@ public class ModuleHanger : ModuleBase
         }
     }
 
-    override public EModuleType GetModuleType()
+    public override EModuleType GetModuleType()
     {
         return EModuleType.Hanger;
     }
 
-    public override int GetPackedModuleType()
+    public override int GetModuleTypePacked()
     {
-        return m_moduleHangerInfo.moduleType;
+        return m_moduleHangerInfo.moduleTypePacked;
     }
 
-    override public int GetModuleLevel()
+    public override int GetModuleLevel()
     {
         return m_moduleHangerInfo.moduleLevel;
     }
 
-    override public void SetModuleLevel(int level)
+    public override void SetModuleLevel(int level)
     {
         m_moduleHangerInfo.moduleLevel = level;
     }
 
-    override public int GetModuleBodyIndex()
+    public override int GetModuleBodyIndex()
     {
         return m_moduleHangerInfo.bodyIndex;
     }
 
-    override public void SetModuleBodyIndex(int bodyIndex)
+    public override void SetModuleBodyIndex(int bodyIndex)
     {
         m_moduleHangerInfo.bodyIndex = bodyIndex;
     }

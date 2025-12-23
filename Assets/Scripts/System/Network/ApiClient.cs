@@ -287,6 +287,46 @@ public class ApiClient
         return response;
     }
 
+    public async Task<ApiResponse<ModuleChangeResponse>> ChangeModuleAsync(ModuleChangeRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"Module Change Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/change-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleChangeResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Module Change Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
+    public async Task<ApiResponse<ModuleResearchResponse>> ResearchModuleAsync(ModuleResearchRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"Module Research Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/research-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleResearchResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Module Research Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
     public async Task<ApiResponse<ShipInfo>> AddModuleBodyAsync(ModuleBodyAddRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");

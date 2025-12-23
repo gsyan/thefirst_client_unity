@@ -22,10 +22,10 @@ public class UIPanelSpaceMain : UIPanelBase
         explorationButton?.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelExploration"));
     }
 
-    override public void OnShowUIPanel()
+    public override void OnShowUIPanel()
     {        
     }
-    override public void OnHideUIPanel()
+    public override void OnHideUIPanel()
     {        
     }
     

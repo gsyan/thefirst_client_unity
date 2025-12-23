@@ -14,7 +14,7 @@ public class UIPanelFleet : UIPanelBase
     [HideInInspector] public SpaceFleet m_myFleet;
     
 
-    override public void InitializeUIPanel()
+    public override void InitializeUIPanel()
     {
         InitializeUIPanelFleet();
     }
