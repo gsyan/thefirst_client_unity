@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 124.5, y: 0}
+  m_AnchoredPosition: {x: 196.57, y: 0}
   m_SizeDelta: {x: 114.77, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1358803395195381968
@@ -444,8 +444,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 125.48555, y: 0}
-  m_SizeDelta: {x: -250.9613, y: 0}
+  m_AnchoredPosition: {x: 196.57, y: 0}
+  m_SizeDelta: {x: -393.13, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4451990502362716635
 CanvasRenderer:
@@ -542,7 +542,7 @@ GameObject:
   - component: {fileID: 1306050752511376941}
   - component: {fileID: 1226997078326999291}
   m_Layer: 5
-  m_Name: SelectModuleButton
+  m_Name: SelectButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -661,7 +661,7 @@ GameObject:
   - component: {fileID: 6185359332086954808}
   - component: {fileID: 8595388917927237078}
   - component: {fileID: 6100378786224766713}
-  - component: {fileID: 3680284648978467478}
+  - component: {fileID: 4878066787163913636}
   m_Layer: 5
   m_Name: ScrollViewModuleItem
   m_TagString: Untagged
@@ -682,8 +682,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6454348914706133188}
-  - {fileID: 8591302579867942049}
   - {fileID: 3173320382568485701}
+  - {fileID: 8591302579867942049}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -729,7 +729,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3680284648978467478
+--- !u!114 &4878066787163913636
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -738,9 +738,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8782438621624659527}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79fe68623196a8f4c83a7ea2f76b3633, type: 3}
+  m_Script: {fileID: 11500000, guid: 21acfa9c52ea85647a28b8fc5ff4e012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_selectButton: {fileID: 1226997078326999291}
   m_selectButtonText: {fileID: 8857938998179338330}
-  m_manageButton: {fileID: 8155791726592368226}
+  m_developmentButton: {fileID: 8155791726592368226}

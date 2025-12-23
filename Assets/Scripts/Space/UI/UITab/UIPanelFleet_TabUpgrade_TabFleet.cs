@@ -10,16 +10,15 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 {
     [HideInInspector] public SpaceFleet m_myFleet;
     private SpaceShip m_selectedShip;
-    public TextMeshProUGUI m_textTop;
-    public TextMeshProUGUI m_textFleetStats;
-    public RectTransform scrollViewShipsContent;
-    public GameObject scrollViewShipItem;       // 프리팹
-    public GameObject scrollViewShipItemAdd;    // 프리팹
+    [SerializeField] private TextMeshProUGUI m_textTop;
+    [SerializeField] private TextMeshProUGUI m_textFleetStats;
+    [SerializeField] private RectTransform m_scrollViewShipsContent;
+    [SerializeField] private GameObject m_scrollViewShipItem;       // 프리팹
+    [SerializeField] private GameObject m_scrollViewShipItemAdd;    // 프리팹
     private GameObject m_addButtonItem;         // Add 버튼 아이템 참조
     private ScrollViewShipItem m_selectedScrollViewShipItem;    // 현재 선택된 스크롤 뷰 아이템
-    public UIPanelFleet_TabUpgrade_TabShip m_panelShipInfo;
-    [HideInInspector] public TabSystem m_tabSystem_TabUpgrade;       // 부모 탭 시스템 참조
-
+    [SerializeField] private UIPanelFleet_TabUpgrade_TabShip m_panelShipInfo;
+    
     public override void InitializeUITab()
     {
         var character = DataManager.Instance.m_currentCharacter;
@@ -30,11 +29,11 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         }
         m_myFleet = character.GetOwnedFleet();
 
-        if(scrollViewShipItem != null)
+        if(m_scrollViewShipsContent != null && m_scrollViewShipItem != null)
         {
             for(int i = 0; i < m_myFleet.m_ships.Count; i++)
             {
-                GameObject item = Instantiate(scrollViewShipItem, scrollViewShipsContent);
+                GameObject item = Instantiate(m_scrollViewShipItem, m_scrollViewShipsContent);
                 if( item != null)
                 {
                     int index = i; // 클로저 문제 방지
@@ -121,10 +120,10 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
     private void UpdateScrollViewShips()
     {
         // 함선이 추가되었는지 확인
-        if (m_myFleet != null && m_addButtonItem != null && scrollViewShipsContent != null)
+        if (m_myFleet != null && m_addButtonItem != null && m_scrollViewShipsContent != null)
         {
             // 현재 UI에 표시된 함선 수 (Add 버튼 제외)
-            int currentShipItemCount = scrollViewShipsContent.childCount - 1;
+            int currentShipItemCount = m_scrollViewShipsContent.childCount - 1;
 
             // 실제 함선 수와 비교
             if (m_myFleet.m_ships.Count > currentShipItemCount)
@@ -140,7 +139,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
                 }
 
                 // 2. 새로운 함선 아이템 추가
-                GameObject shipItem = Instantiate(scrollViewShipItem, scrollViewShipsContent);
+                GameObject shipItem = Instantiate(m_scrollViewShipItem, m_scrollViewShipsContent);
                 if (shipItem != null)
                 {
                     ScrollViewShipItem scrollViewItem = shipItem.GetComponent<ScrollViewShipItem>();
@@ -161,7 +160,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         if(m_myFleet.m_ships.Count >= DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet)
             return;
         // 새로운 Add 버튼 생성
-        m_addButtonItem = Instantiate(scrollViewShipItemAdd, scrollViewShipsContent);
+        m_addButtonItem = Instantiate(m_scrollViewShipItemAdd, m_scrollViewShipsContent);
         if (m_addButtonItem != null)
         {
             var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
@@ -204,8 +203,8 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
     private void OnManageShipClicked(SpaceShip ship)
     {
-        if (m_tabSystem_TabUpgrade != null)
-            m_tabSystem_TabUpgrade.SwitchToTab(1);
+        if (m_tabSystemParent != null)
+            m_tabSystemParent.SwitchToTab(1);
     }
 
     private void OnShipItemSelected(ScrollViewShipItem selectedItem, SpaceShip ship)

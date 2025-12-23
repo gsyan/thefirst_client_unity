@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ModuleSlot : MonoBehaviour
 {
-    public int m_moduleType;
+    public int m_moduleTypePacked;
     public int m_slotIndex = 0;
 
     [Header("Module Type Settings")]
@@ -26,7 +26,7 @@ public class ModuleSlot : MonoBehaviour
         else if (m_type == EModuleType.Hanger)
             subType = (int)m_hangerSubType;
 
-        m_moduleType = CommonUtility.CreateModuleType(m_type, subType, EModuleStyle.None);
+        m_moduleTypePacked = CommonUtility.CreateModuleTypePacked(m_type, subType, EModuleStyle.None);
     }
 #endif
 }

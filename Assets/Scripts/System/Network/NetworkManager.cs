@@ -684,6 +684,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsyncWithCallback(() => m_apiClient.UpgradeModuleAsync(request), onComplete));
     }
 
+    public void ChangeModule(ModuleChangeRequest request, System.Action<ApiResponse<ModuleChangeResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.ChangeModuleAsync(request), onComplete));
+    }
+
+    public void ResearchModule(ModuleResearchRequest request, System.Action<ApiResponse<ModuleResearchResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.ResearchModuleAsync(request), onComplete));
+    }
+
     public void AddModuleBody(ModuleBodyAddRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
     {
         if (m_bConnected == false) return;

@@ -270,6 +270,13 @@ public class UIMain : UIManager
                     if (response.data.characterInfo != null)
                     {
                         DataManager.Instance.SetCharacterData(response.data.characterInfo);
+
+                        // Set researched modules to Character
+                        if (response.data.researchedModuleTypePacked != null)
+                        {
+                            DataManager.Instance.m_currentCharacter.SetResearchedModules(response.data.researchedModuleTypePacked);
+                            Debug.Log($"Researched modules loaded: {response.data.researchedModuleTypePacked.Length} modules");
+                        }
                     }
                     else
                     {
@@ -277,7 +284,7 @@ public class UIMain : UIManager
                         DataManager.Instance.ClearCharacterData();
                     }
                 }
-                
+
                 LoadingManager.LoadSceneWithLoading("SpaceScene");
             }
             else

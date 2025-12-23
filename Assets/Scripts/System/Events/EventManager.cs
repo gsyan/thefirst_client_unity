@@ -124,18 +124,18 @@ public static class EventManager
     }
 
     // SpaceShip Module Selection
-    public static event Action<SpaceShip, ModuleBase> OnSpaceShipModuleSelected;
-    public static void TriggerSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
+    public static event Action<SpaceShip, ModuleBase> OnSpaceShipModuleSelected_TabUpgrade;
+    public static void TriggerSpaceShipModuleSelected_TabUpgrade(SpaceShip ship, ModuleBase module)
     {
-        OnSpaceShipModuleSelected?.Invoke(ship, module);
+        OnSpaceShipModuleSelected_TabUpgrade?.Invoke(ship, module);
     }
-    public static void Subscribe_SpaceShipModuleSelected(Action<SpaceShip, ModuleBase> callback)
+    public static void Subscribe_SpaceShipModuleSelected_TabUpgrade(Action<SpaceShip, ModuleBase> callback)
     {
-        OnSpaceShipModuleSelected += callback;
+        OnSpaceShipModuleSelected_TabUpgrade += callback;
     }
-    public static void Unsubscribe_SpaceShipModuleSelected(Action<SpaceShip, ModuleBase> callback)
+    public static void Unsubscribe_SpaceShipModuleSelected_TabUpgrade(Action<SpaceShip, ModuleBase> callback)
     {
-        OnSpaceShipModuleSelected -= callback;
+        OnSpaceShipModuleSelected_TabUpgrade -= callback;
     }
 
 

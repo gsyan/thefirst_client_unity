@@ -38,14 +38,7 @@ public class UIPanelFleet_TabUpgrade : UITabBase
                 tabData.onDeactivate = tabBase.OnTabDeactivated;
 
                 // 탭 참조 저장 및 부모 패널 설정
-                if (tabBase is UIPanelFleet_TabUpgrade_TabFleet fleetTab)
-                    fleetTab.m_tabSystem_TabUpgrade = m_tabSystem;
-                else if (tabBase is UIPanelFleet_TabUpgrade_TabShip shipTab)
-                    shipTab.m_tabSystem_TabUpgrade = m_tabSystem;
-                else if (tabBase is UIPanelFleet_TabUpgrade_TabUpgradeModule upgradeModuleTab)
-                    upgradeModuleTab.m_tabSystem_TabUpgrade = m_tabSystem;
-                else if (tabBase is UIPanelFleet_TabUpgrade_TabChangeModule changeModuleTab)
-                    changeModuleTab.m_tabSystem_TabUpgrade = m_tabSystem;
+                tabBase.m_tabSystemParent = m_tabSystem;
 
                 // 탭 버튼 숨기기
                 if (tabData.tabButton != null)
@@ -249,7 +242,7 @@ public class UIPanelFleet_TabUpgrade : UITabBase
             return false;
         }
 
-        var upgradeStats = DataManager.Instance.RestoreModuleDataByType(m_selectedModule.GetPackedModuleType(), m_selectedModule.GetModuleLevel() + 1);
+        var upgradeStats = DataManager.Instance.RestoreModuleDataByType(m_selectedModule.GetModuleTypePacked(), m_selectedModule.GetModuleLevel() + 1);
         if (upgradeStats == null)
         {
             validationMessage = "Max level reached";
@@ -264,7 +257,7 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         }
 
         CostStruct cost;
-        if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetPackedModuleType(), m_selectedModule.GetModuleLevel(), out cost) == false)
+        if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleTypePacked(), m_selectedModule.GetModuleLevel(), out cost) == false)
         {
             validationMessage = "Failed to get upgrade cost";
             return false;

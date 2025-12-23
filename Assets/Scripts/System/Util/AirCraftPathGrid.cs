@@ -42,7 +42,7 @@ public class AirCraftPathGrid : MonoBehaviour
 
     public List<ModuleOutlinePointInfo> m_outlinePointInfos = new List<ModuleOutlinePointInfo>();
 
-    
+    public Transform m_PointParent;
 
 
     public void GenerateOutline_Sphere()
@@ -151,6 +151,9 @@ public class AirCraftPathGrid : MonoBehaviour
     public void GenerateOutline_ByBox()
     {
         DestroyAllPoints();
+
+        if (m_PointParent == null)
+            return;
 
         Transform gameObjectTransform = transform;
         BoundingBox box = ComputeBoundingBox(gameObjectTransform);
@@ -346,7 +349,7 @@ public class AirCraftPathGrid : MonoBehaviour
         return rot * direction;
     }
     
-    public Transform m_PointParent;
+    
     private void CreatePoint(Vector3 inPosition)
     {
         GameObject newObj = new GameObject($"OutlinePoint_{m_outlinePointInfos.Count}");
@@ -358,7 +361,7 @@ public class AirCraftPathGrid : MonoBehaviour
 
         newObj.transform.SetParent(m_PointParent);
     }
-    public void Check()
+    public void Check111()
     {
         if (m_PointParent == null)
             return;

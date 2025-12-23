@@ -58,7 +58,7 @@ public class ModuleBase : MonoBehaviour
     {
         return EModuleType.None;
     }
-    public virtual int GetPackedModuleType()
+    public virtual int GetModuleTypePacked()
     {
         return 0;
     }

@@ -52,7 +52,7 @@ public class ShipInfo
 [System.Serializable]
 public class ModuleBodyInfo
 {
-    public int moduleType;
+    public int moduleTypePacked;
     public int moduleLevel;
     public int bodyIndex;
     public string dateTime;
@@ -60,51 +60,65 @@ public class ModuleBodyInfo
     public ModuleWeaponInfo[] weapons;
     public ModuleHangerInfo[] hangers;
 
-    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleType);
-    public EModuleBodySubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleBodySubType>(moduleType);
-    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleType);
+    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
+    public EModuleBodySubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleBodySubType>(moduleTypePacked);
+    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
 }
+
+// [System.Serializable]
+// public class ModuleInfo
+// {
+//     public int moduleTypePacked;
+//     public int moduleLevel;
+//     public int bodyIndex;
+//     public int slotIndex;
+//     public string dateTime;
+
+//     public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
+//     public EModuleEngineSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleEngineSubType>(moduleTypePacked);
+//     public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
+// }
 
 [System.Serializable]
 public class ModuleEngineInfo
 {
-    public int moduleType;
+    public int moduleTypePacked;
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
     public string dateTime;
 
-    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleType);
-    public EModuleEngineSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleEngineSubType>(moduleType);
-    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleType);
+    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
+    public EModuleEngineSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleEngineSubType>(moduleTypePacked);
+    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
 }
 
 [System.Serializable]
 public class ModuleWeaponInfo
 {
-    public int moduleType;
+    public int moduleTypePacked;
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
     public string dateTime;
 
-    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleType);
-    public EModuleWeaponSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleWeaponSubType>(moduleType);
-    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleType);
+    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
+    public EModuleWeaponSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleWeaponSubType>(moduleTypePacked);
+    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
 }
 
 [System.Serializable]
 public class ModuleHangerInfo
 {
-    public int moduleType;
+    public int moduleTypePacked;
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
     public string dateTime;
 
-    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleType);
-    public EModuleHangerSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleHangerSubType>(moduleType);
-    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleType);
+    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
+    public EModuleHangerSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleHangerSubType>(moduleTypePacked);
+    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
 }
 
 [System.Serializable]
@@ -153,6 +167,7 @@ public class AuthResponse
     public string refreshToken;
     public FleetInfo activeFleetInfo;
     public CharacterInfo characterInfo;
+    public int[] researchedModuleTypePacked;
 }
 
 [System.Serializable]
@@ -240,6 +255,42 @@ public class ModuleStats
     public float movementSpeed;
     public float rotationSpeed;
     public float cargoCapacity;
+}
+
+[System.Serializable]
+public class ModuleChangeRequest
+{
+    public long shipId;
+    public int bodyIndex;
+    public int slotIndex;
+    public string currentModuleType;
+    public string newModuleType;
+    public int newModuleLevel;
+}
+
+[System.Serializable]
+public class ModuleChangeResponse
+{
+    public bool success;
+    public ShipInfo updatedShipInfo;
+    public CostRemainInfo costRemainInfo;
+    public string message;
+}
+
+[System.Serializable]
+public class ModuleResearchRequest
+{
+    public int moduleTypePacked;
+}
+
+[System.Serializable]
+public class ModuleResearchResponse
+{
+    public bool success;
+    public int moduleTypePacked;
+    public CostRemainInfo costRemainInfo;
+    public int[] researchedModuleTypePacked;
+    public string message;
 }
 
 [System.Serializable]
