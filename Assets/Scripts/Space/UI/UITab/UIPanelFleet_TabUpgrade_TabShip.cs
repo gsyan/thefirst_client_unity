@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,15 +9,24 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     [HideInInspector] public SpaceFleet m_myFleet;
     private SpaceShip m_selectedShip;
     private ModuleBase m_selectedModule;
-    
+
     [SerializeField] private TextMeshProUGUI m_textTop;
     [SerializeField] private TextMeshProUGUI m_textStat;
     [SerializeField] private TextMeshProUGUI m_textResult;
     private Coroutine m_textResultCoroutine;
-    
+
     [SerializeField] private Button m_backButton;
+    [SerializeField] private Button m_unlockModuleButton;
+    [SerializeField] private TMP_Text m_unlockModuleButtonText;
+    [SerializeField] private RectTransform m_scrollViewModuleContent;
+    [SerializeField] private GameObject m_scrollViewModuleItem;       // 프리팹
+    [SerializeField] private Button m_selectModuleButton;
     [SerializeField] private Button m_upgradeModuleButton;
-    [SerializeField] private Button m_changeModuleButton;
+
+    // 생성된 모든 ScrollViewModuleItem 추적
+    private List<ScrollViewModuleItem> m_moduleItems = new List<ScrollViewModuleItem>();
+
+    private bool bShow = false;
     
     public override void InitializeUITab()
     {
@@ -30,8 +40,10 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (m_myFleet == null) return;
 
         m_backButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(0));
+        m_unlockModuleButton.onClick.AddListener(UnlockModule);
+        m_selectModuleButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(2));
         m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
-        m_changeModuleButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(2));
+        
         
         EventManager.Subscribe_SpaceShipSelected_TabUpgrade(OnSpaceShipSelected);
         EventManager.Subscribe_SpaceShipModuleSelected_TabUpgrade(OnSpaceShipModuleSelected);
@@ -54,6 +66,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         m_selectedShip.SetSelectedModule(ship, module);
 
         UpdateShipStatsDisplay();
+        UpdateUIFrame();
+        UpdateScrollView();
     }
 
     public override void OnTabActivated()
@@ -67,7 +81,10 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
         EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(m_selectedShip, m_selectedModule);
 
-        InitializeUI();
+        bShow = true;
+        UpdateShipStatsDisplay();
+        UpdateUIFrame();
+        UpdateScrollView();
     }
 
     public override void OnTabDeactivated()
@@ -79,36 +96,43 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
         m_selectedShip.m_shipOutline.enabled = false;
 
-        InitializeUI();
+        bShow = false;
     }
-
-    private void InitializeUI()
-    {
-        // if (m_myFleet != null)
-        //     m_myFleet.ClearAllSelectedModule();
-        
-        // if( m_selectedShip == null)
-        //     m_selectedShip = m_myFleet.m_ships[0];
-        
-        //m_selectedModule = null;
-
-        
-
-        UpdateShipStatsDisplay();
-        
-    }
-
-    
-
-    
 
     private void OnShipChanged()
     {
+        if (bShow != true) return;
+
         UpdateShipStatsDisplay();
     }
-    
+
+
+    private void UpdateUIFrame()
+    {
+        if (bShow != true) return;
+
+        int moduleTypePacked = m_selectedModule.GetModuleTypePacked();
+        if( moduleTypePacked == 0)
+        {
+            m_unlockModuleButton.gameObject.SetActive(true);
+
+            m_scrollViewModuleContent.gameObject.SetActive(false);
+            m_selectModuleButton.gameObject.SetActive(false);
+            m_upgradeModuleButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_unlockModuleButton.gameObject.SetActive(false);
+            
+            m_scrollViewModuleContent.gameObject.SetActive(true);
+            m_selectModuleButton.gameObject.SetActive(true);
+            m_upgradeModuleButton.gameObject.SetActive(true);
+        }
+    }
+
     private void UpdateShipStatsDisplay()
     {
+        if (bShow != true) return;
         if (m_textStat == null) return;
 
         SpaceShipStats statsOrg = m_selectedShip.m_spaceShipStatsOrg;
@@ -137,6 +161,94 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         
     }
 
+    private void UnlockModule()
+    {
+        if (m_selectedShip == null || m_selectedModule == null)
+        {
+            ShowResultMessage("No ship or module selected", 3f);
+            return;
+        }
+
+        if ((m_selectedModule is ModulePlaceholder) == false )
+        {
+            ShowResultMessage("Selected module is not a placeholder", 3f);
+            return;
+        }
+
+        // 해금 비용 확인
+        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleReleasePrice;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null)
+        {
+            ShowResultMessage("Character data not available", 3f);
+            return;
+        }
+
+        long playerMineral = character.GetMineral();
+        if (playerMineral < unlockPrice)
+        {
+            ShowResultMessage($"Insufficient mineral (need {unlockPrice}, have {playerMineral})", 3f);
+            return;
+        }
+
+        int moduleSubTypeValue = CommonUtility.GetModuleSubType(m_selectedModule.m_moduleSlot.m_moduleTypePacked);
+        // 모듈 해금 요청 생성
+        var unlockRequest = new ModuleUnlockRequest
+        {
+            shipId = m_selectedShip.m_shipInfo.id,
+            bodyIndex = m_selectedModule.GetModuleBodyIndex(),
+            moduleType = (int)m_selectedModule.m_moduleSlot.m_type,
+            moduleSubTypeValue = moduleSubTypeValue,
+            slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex
+        };
+
+        // 서버에 모듈 해금 요청 전송
+        NetworkManager.Instance.UnlockModule(unlockRequest, OnUnlockModuleResponse);
+    }
+
+    private void OnUnlockModuleResponse(ApiResponse<ModuleUnlockResponse> response)
+    {
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        if (response.errorCode == 0 && response.data.success)
+        {
+            // 자원 업데이트
+            if (response.data.costRemainInfo != null)
+            {
+                character.UpdateMineral(response.data.costRemainInfo.remainMineral);
+                character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
+                character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
+                character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
+
+                var characterInfo = character.GetInfo();
+                DataManager.Instance.SetCharacterData(characterInfo);
+            }
+
+            // 함선 정보 업데이트
+            if (response.data.updatedShipInfo != null && m_selectedShip != null)
+            {
+                m_selectedShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
+                Debug.Log("Module unlocked successfully");
+            }
+
+            // UI 갱신
+            UpdateShipStatsDisplay();
+            UpdateUIFrame();
+            UpdateScrollView();
+
+            // 성공 메시지 표시
+            ShowResultMessage($"Module unlock successful! {response.data.message}", 3f);
+        }
+        else
+        {
+            string errorMessage = response.data?.message ?? response.errorMessage ?? "Module unlock failed";
+            Debug.LogError($"Module unlock failed: {errorMessage}");
+
+            // 실패 메시지 표시
+            ShowResultMessage($"Module unlock failed: {errorMessage}", 3f);
+        }
+    }
 
     private void UpgradeModule()
     {
@@ -278,7 +390,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             
             // Refresh UI
             UpdateShipStatsDisplay();
-            //UpdateFleetStatsDisplay();
 
             // Show success message
             ShowResultMessage($"Upgrade successful! {response.data.message}", 3f);
@@ -292,6 +403,298 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             ShowResultMessage($"Upgrade failed: {errorMessage}", 3f);
         }
     }
+
+
+
+
+
+    private void UpdateScrollView()
+    {
+        if (bShow != true) return;
+        if (m_scrollViewModuleContent == null || m_scrollViewModuleItem == null) return;
+        if (m_selectedModule == null) return;
+        int moduleTypePacked = m_selectedModule.GetModuleTypePacked();
+        if (moduleTypePacked == 0) return;
+
+        // 기존 아이템 모두 제거
+        m_moduleItems.Clear();
+        foreach(Transform child in m_scrollViewModuleContent)
+            Destroy(child.gameObject);
+
+        // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
+        EModuleType moduleType = m_selectedModule.GetModuleType();
+
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        switch (moduleType)
+        {
+            case EModuleType.Body:
+                CreateBodyModuleItems(moduleTypePacked, character);
+                break;
+            case EModuleType.Weapon:
+                CreateWeaponModuleItems(moduleTypePacked, character);
+                break;
+            case EModuleType.Engine:
+                CreateEngineModuleItems(moduleTypePacked, character);
+                break;
+            case EModuleType.Hanger:
+                CreateHangerModuleItems(moduleTypePacked, character);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void CreateBodyModuleItems(int currentModuleTypePacked, Character character)
+    {
+        foreach(EModuleBodySubType subType in System.Enum.GetValues(typeof(EModuleBodySubType)))
+        {
+            if (subType == EModuleBodySubType.None) continue;
+            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, (int)subType, EModuleStyle.None);
+            string moduleName = $"Body - {subType}";
+            bool isResearched = character.IsModuleResearched(moduleTypePacked);
+            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
+
+            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
+        }
+    }
+
+    private void CreateWeaponModuleItems(int currentModuleTypePacked, Character character)
+    {
+        foreach(EModuleWeaponSubType subType in System.Enum.GetValues(typeof(EModuleWeaponSubType)))
+        {
+            if (subType == EModuleWeaponSubType.None) continue;
+
+            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, (int)subType, EModuleStyle.None);
+            string moduleName = $"Weapon - {subType}";
+            bool isResearched = character.IsModuleResearched(moduleTypePacked);
+            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
+
+            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
+        }
+    }
+
+    private void CreateEngineModuleItems(int currentModuleTypePacked, Character character)
+    {
+        foreach(EModuleEngineSubType subType in System.Enum.GetValues(typeof(EModuleEngineSubType)))
+        {
+            if (subType == EModuleEngineSubType.None) continue;
+
+            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, (int)subType, EModuleStyle.None);
+            string moduleName = $"Engine - {subType}";
+            bool isResearched = character.IsModuleResearched(moduleTypePacked);
+            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
+
+            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
+        }
+    }
+
+    private void CreateHangerModuleItems(int currentModuleTypePacked, Character character)
+    {
+        foreach(EModuleHangerSubType subType in System.Enum.GetValues(typeof(EModuleHangerSubType)))
+        {
+            if (subType == EModuleHangerSubType.None) continue;
+
+            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Hanger, (int)subType, EModuleStyle.None);
+            string moduleName = $"Hanger - {subType}";
+            bool isResearched = character.IsModuleResearched(moduleTypePacked);
+            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
+
+            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
+        }
+    }
+
+    private void CreateModuleItem(string moduleName, int moduleTypePacked, bool isResearched, bool isCurrentModule)
+    {
+        GameObject item = Instantiate(m_scrollViewModuleItem, m_scrollViewModuleContent);
+        if(item != null)
+        {
+            ScrollViewModuleItem scrollViewItem = item.GetComponent<ScrollViewModuleItem>();
+            if(scrollViewItem != null)
+            {
+                scrollViewItem.InitializeScrollViewModuleItem(
+                    moduleName,
+                    () => OnModuleTypeSelected(scrollViewItem, moduleTypePacked),
+                    () => OnDevelopModuleClicked(moduleTypePacked)
+                );
+
+                // 개발 여부에 따라 Dev 버튼 활성화/비활성화
+                scrollViewItem.SetDevelopmentButtonEnabled(isResearched);
+
+                // 현재 선택된 모듈 표시
+                scrollViewItem.SetSelected_ScrollViewModuleItem(isCurrentModule);
+
+                // 리스트에 추가
+                m_moduleItems.Add(scrollViewItem);
+            }
+        }
+    }
+
+    private void OnModuleTypeSelected(ScrollViewModuleItem selectedItem, int moduleTypePacked)
+    {
+        // 사용자가 스크롤뷰에서 모듈 타입을 선택했을 때
+        Debug.Log($"Module type selected: {moduleTypePacked}");
+
+        // 다른 모든 아이템의 선택 해제
+        foreach (var item in m_moduleItems)
+        {
+            if (item != selectedItem)
+                item.SetSelected_ScrollViewModuleItem(false);
+        }
+
+        int slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex;
+        int newModuleType = m_selectedModule.GetModuleTypePacked();
+        int newModuleLevel = m_selectedModule.GetModuleLevel();
+        if( newModuleLevel < 1) return;
+
+        // 모듈 교체 요청 생성
+        var changeRequest = new ModuleChangeRequest
+        {
+            shipId = m_selectedShip.m_shipInfo.id
+            , bodyIndex = m_selectedModule.GetModuleBodyIndex()
+            , slotIndex = slotIndex
+            , currentModuleType = m_selectedModule.GetModuleType().ToString()
+            , newModuleType = CommonUtility.GetModuleType(newModuleType).ToString()
+            , newModuleLevel = newModuleLevel
+        };
+
+        Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
+
+        // 서버에 모듈 교체 요청 전송
+        NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
+
+    }
+
+    private void OnDevelopModuleClicked(int moduleTypePacked)
+    {
+        // 개발 버튼 클릭 시
+        EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
+        int subTypeValue = (moduleTypePacked >> 16) & 0xFF; // SUBTYPE_SHIFT = 16
+
+        Debug.Log($"Development requested for: Type={moduleType}, SubType={subTypeValue}");
+
+        // TODO: 모듈 개발 UI나 로직 연결
+        ShowResultMessage($"Module development not implemented yet: {moduleType}", 3f);
+    }
+
+    private void ChangeModule()
+    {
+        if (m_selectedShip == null || m_selectedModule == null)
+        {
+            ShowResultMessage("No ship or module selected", 3f);
+            return;
+        }
+
+        if (m_selectedModule is ModulePlaceholder)
+        {
+            ShowResultMessage("Cannot change placeholder module", 3f);
+            return;
+        }
+
+        // TODO: 사용자가 교체할 새 모듈을 선택하도록 UI 구현 필요
+        // 현재는 임시로 같은 타입의 레벨 1 모듈로 교체하는 예시
+        int newModuleType = m_selectedModule.GetModuleTypePacked();
+        int newModuleLevel = 1;
+
+        // 슬롯 인덱스 가져오기
+        int slotIndex = -1;
+        if (m_selectedModule is ModuleWeapon weapon)
+            slotIndex = weapon.m_moduleSlot?.m_slotIndex ?? -1;
+        else if (m_selectedModule is ModuleEngine engine)
+            slotIndex = engine.m_moduleSlot?.m_slotIndex ?? -1;
+        else if (m_selectedModule is ModuleHanger hanger)
+            slotIndex = hanger.m_moduleSlot?.m_slotIndex ?? -1;
+
+        if (slotIndex < 0)
+        {
+            ShowResultMessage("Invalid slot index", 3f);
+            return;
+        }
+
+        // 모듈 교체 요청 생성
+        var changeRequest = new ModuleChangeRequest
+        {
+            shipId = m_selectedShip.m_shipInfo.id,
+            bodyIndex = m_selectedModule.GetModuleBodyIndex(),
+            slotIndex = slotIndex,
+            currentModuleType = m_selectedModule.GetModuleType().ToString(),
+            newModuleType = CommonUtility.GetModuleType(newModuleType).ToString(),
+            newModuleLevel = newModuleLevel
+        };
+
+        Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
+
+        // 서버에 모듈 교체 요청 전송
+        NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
+    }
+
+    private void OnChangeModuleResponse(ApiResponse<ModuleChangeResponse> response)
+    {
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        if (response.errorCode == 0 && response.data.success)
+        {
+            // 자원 업데이트
+            if (response.data.costRemainInfo != null)
+            {
+                character.UpdateMineral(response.data.costRemainInfo.remainMineral);
+                character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
+                character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
+                character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
+
+                var characterInfo = character.GetInfo();
+                DataManager.Instance.SetCharacterData(characterInfo);
+            }
+
+            // 함선 정보 업데이트
+            if (response.data.updatedShipInfo != null && m_selectedShip != null)
+            {
+                m_selectedShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
+                Debug.Log("Ship module changed successfully");
+            }
+
+            // UI 갱신
+            UpdateShipStatsDisplay();
+
+            // 성공 메시지 표시
+            ShowResultMessage($"Module change successful! {response.data.message}", 3f);
+        }
+        else
+        {
+            string errorMessage = response.data?.message ?? response.errorMessage ?? "Module change failed";
+            Debug.LogError($"Module change failed: {errorMessage}");
+
+            // 실패 메시지 표시
+            ShowResultMessage($"Module change failed: {errorMessage}", 3f);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // m_textResult에 텍스트를 표시하고 n초 후 자동으로 사라지게 합니다.
     public void ShowResultMessage(string message, float displayDuration = 3f)

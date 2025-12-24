@@ -50,9 +50,13 @@ public static class CommonUtility
         return (EModuleType)((moduleType >> TYPE_SHIFT) & MASK);
     }
 
-    public static T GetModuleSubType<T>(int moduleType) where T : System.Enum
+    public static T GetModuleSubType<T>(int moduleTypePacked) where T : System.Enum
     {
-        return (T)(object)((moduleType >> SUBTYPE_SHIFT) & MASK);
+        return (T)(object)((moduleTypePacked >> SUBTYPE_SHIFT) & MASK);
+    }
+    public static int GetModuleSubType(int moduleTypePacked)
+    {
+        return moduleTypePacked >> SUBTYPE_SHIFT & MASK;
     }
 
     public static EModuleStyle GetModuleStyle(int moduleType)

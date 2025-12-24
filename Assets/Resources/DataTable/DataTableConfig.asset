@@ -72,6 +72,7 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
+    moduleReleasePrice: 1000
     enemyFleetSpawnInterval: 5
     explorationInterval: 15
     enemySpawnRate: 2

@@ -64,8 +64,6 @@ public class GameSettings
         new CostStruct(1, 51200, 0, 0, 0)
     };
 
-
-    
     // 현재 함선 개수에 따른 다음 함선 추가 비용 반환
     public CostStruct GetAddShipCost(int currentShipCount)
     {
@@ -83,6 +81,9 @@ public class GameSettings
         // 배열 범위를 초과하면 마지막 값 사용
         return addShipCosts[^1];
     }
+
+    [Header("Ship Module Settings")]
+    public int moduleReleasePrice = 1000;
 
     [Header("Enemy Settings")]
     public float enemyFleetSpawnInterval = 5.0f;

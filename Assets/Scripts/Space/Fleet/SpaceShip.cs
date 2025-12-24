@@ -844,7 +844,7 @@ public class SpaceShip : MonoBehaviour
                 // if (updatedBodyInfo.engines != null)
                 //     UpdateModulesFromInfo(body, updatedBodyInfo.engines);
 
-                // // 무기 모듈 업데이트
+                // 무기 모듈 업데이트
                 // if (updatedBodyInfo.weapons != null)
                 //     UpdateModulesFromInfo(body, updatedBodyInfo.weapons);
 

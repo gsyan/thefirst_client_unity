@@ -690,6 +690,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsyncWithCallback(() => m_apiClient.ChangeModuleAsync(request), onComplete));
     }
 
+    public void UnlockModule(ModuleUnlockRequest request, System.Action<ApiResponse<ModuleUnlockResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.UnlockModuleAsync(request), onComplete));
+    }
+
     public void ResearchModule(ModuleResearchRequest request, System.Action<ApiResponse<ModuleResearchResponse>> onComplete)
     {
         if (m_bConnected == false) return;
