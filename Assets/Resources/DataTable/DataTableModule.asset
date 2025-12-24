@@ -18,7 +18,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.1
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 150
       m_cargoCapacity: 75
@@ -32,7 +32,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.2
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 200
       m_cargoCapacity: 100
@@ -46,7 +46,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.3
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 250
       m_cargoCapacity: 125
@@ -60,7 +60,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.4
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 300
       m_cargoCapacity: 150
@@ -74,7 +74,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.5
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 350
       m_cargoCapacity: 175
@@ -88,7 +88,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.6
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 400
       m_cargoCapacity: 200
@@ -102,7 +102,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.7
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 450
       m_cargoCapacity: 225
@@ -116,7 +116,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.8
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 500
       m_cargoCapacity: 250
@@ -130,7 +130,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.9
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 550
       m_cargoCapacity: 275
@@ -144,7 +144,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Battle Hull Lv.10
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 600
       m_cargoCapacity: 300
@@ -160,7 +160,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.1
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 150
       m_cargoCapacity: 75
@@ -174,7 +174,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.2
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 200
       m_cargoCapacity: 100
@@ -188,7 +188,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.3
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 250
       m_cargoCapacity: 125
@@ -202,7 +202,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.4
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 300
       m_cargoCapacity: 150
@@ -216,7 +216,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.5
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 350
       m_cargoCapacity: 175
@@ -230,7 +230,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.6
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 400
       m_cargoCapacity: 200
@@ -244,7 +244,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.7
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 450
       m_cargoCapacity: 225
@@ -258,7 +258,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.8
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 500
       m_cargoCapacity: 250
@@ -272,7 +272,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.9
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 550
       m_cargoCapacity: 275
@@ -286,7 +286,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Aircraft Hull Lv.10
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 600
       m_cargoCapacity: 300
@@ -302,7 +302,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.1
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 150
       m_cargoCapacity: 75
@@ -316,7 +316,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.2
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 200
       m_cargoCapacity: 100
@@ -330,7 +330,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.3
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 250
       m_cargoCapacity: 125
@@ -344,7 +344,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.4
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 300
       m_cargoCapacity: 150
@@ -358,7 +358,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.5
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 350
       m_cargoCapacity: 175
@@ -372,7 +372,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.6
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 400
       m_cargoCapacity: 200
@@ -386,7 +386,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.7
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 450
       m_cargoCapacity: 225
@@ -400,7 +400,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.8
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 500
       m_cargoCapacity: 250
@@ -414,7 +414,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.9
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 550
       m_cargoCapacity: 275
@@ -428,7 +428,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Scout Hull Lv.10
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 600
       m_cargoCapacity: 300
@@ -444,7 +444,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.1
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 150
       m_cargoCapacity: 75
@@ -458,7 +458,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.2
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 200
       m_cargoCapacity: 100
@@ -472,7 +472,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.3
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 250
       m_cargoCapacity: 125
@@ -486,7 +486,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.4
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 300
       m_cargoCapacity: 150
@@ -500,7 +500,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.5
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 350
       m_cargoCapacity: 175
@@ -514,7 +514,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.6
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 400
       m_cargoCapacity: 200
@@ -528,7 +528,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.7
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 450
       m_cargoCapacity: 225
@@ -542,7 +542,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.8
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 500
       m_cargoCapacity: 250
@@ -556,7 +556,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.9
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 550
       m_cargoCapacity: 275
@@ -570,7 +570,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Repair Hull Lv.10
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 600
       m_cargoCapacity: 300
@@ -587,7 +587,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.1
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 40
       m_movementSpeed: 3.5
@@ -602,7 +602,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.2
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 50
       m_movementSpeed: 4
@@ -617,7 +617,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.3
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 60
       m_movementSpeed: 4.5
@@ -632,7 +632,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.4
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 70
       m_movementSpeed: 5
@@ -647,7 +647,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.5
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 80
       m_movementSpeed: 5.5
@@ -662,7 +662,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.6
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 90
       m_movementSpeed: 6
@@ -677,7 +677,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.7
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 100
       m_movementSpeed: 6.5
@@ -692,7 +692,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.8
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 110
       m_movementSpeed: 7
@@ -707,7 +707,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.9
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 120
       m_movementSpeed: 7.5
@@ -722,7 +722,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Engine Lv.10
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 130
       m_movementSpeed: 8
@@ -739,7 +739,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.1
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 40
       m_movementSpeed: 3.5
@@ -754,7 +754,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.2
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 50
       m_movementSpeed: 4
@@ -769,7 +769,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.3
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 60
       m_movementSpeed: 4.5
@@ -784,7 +784,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.4
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 70
       m_movementSpeed: 5
@@ -799,7 +799,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.5
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 80
       m_movementSpeed: 5.5
@@ -814,7 +814,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.6
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 90
       m_movementSpeed: 6
@@ -829,7 +829,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.7
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 100
       m_movementSpeed: 6.5
@@ -844,7 +844,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.8
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 110
       m_movementSpeed: 7
@@ -859,7 +859,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.9
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 120
       m_movementSpeed: 7.5
@@ -874,7 +874,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Booster Engine Lv.10
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 130
       m_movementSpeed: 8
@@ -891,7 +891,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.1
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 40
       m_movementSpeed: 3.5
@@ -906,7 +906,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.2
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 50
       m_movementSpeed: 4
@@ -921,7 +921,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.3
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 60
       m_movementSpeed: 4.5
@@ -936,7 +936,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.4
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 70
       m_movementSpeed: 5
@@ -951,7 +951,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.5
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 80
       m_movementSpeed: 5.5
@@ -966,7 +966,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.6
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 90
       m_movementSpeed: 6
@@ -981,7 +981,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.7
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 100
       m_movementSpeed: 6.5
@@ -996,7 +996,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.8
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 110
       m_movementSpeed: 7
@@ -1011,7 +1011,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.9
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 120
       m_movementSpeed: 7.5
@@ -1026,7 +1026,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Warp Engine Lv.10
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 130
       m_movementSpeed: 8
@@ -1044,7 +1044,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.1
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 40
       m_attackFireCount: 1
@@ -1063,7 +1063,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.2
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 50
       m_attackFireCount: 1
@@ -1082,7 +1082,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.3
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 60
       m_attackFireCount: 1
@@ -1101,7 +1101,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.4
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 70
       m_attackFireCount: 1
@@ -1120,7 +1120,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.5
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 80
       m_attackFireCount: 2
@@ -1139,7 +1139,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.6
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 90
       m_attackFireCount: 2
@@ -1158,7 +1158,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.7
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 100
       m_attackFireCount: 2
@@ -1177,7 +1177,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.8
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 110
       m_attackFireCount: 2
@@ -1196,7 +1196,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.9
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 120
       m_attackFireCount: 2
@@ -1215,7 +1215,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Beam Weapon Lv.10
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 130
       m_attackFireCount: 3
@@ -1236,7 +1236,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.1
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 40
       m_attackFireCount: 1
@@ -1255,7 +1255,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.2
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 50
       m_attackFireCount: 1
@@ -1274,7 +1274,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.3
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 60
       m_attackFireCount: 1
@@ -1293,7 +1293,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.4
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 70
       m_attackFireCount: 1
@@ -1312,7 +1312,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.5
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 80
       m_attackFireCount: 2
@@ -1331,7 +1331,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.6
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 90
       m_attackFireCount: 2
@@ -1350,7 +1350,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.7
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 100
       m_attackFireCount: 2
@@ -1369,7 +1369,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.8
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 110
       m_attackFireCount: 2
@@ -1388,7 +1388,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.9
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 120
       m_attackFireCount: 2
@@ -1407,7 +1407,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Missile Weapon Lv.10
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 130
       m_attackFireCount: 3
@@ -1428,7 +1428,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.1
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 40
       m_attackFireCount: 1
@@ -1447,7 +1447,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.2
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 50
       m_attackFireCount: 1
@@ -1466,7 +1466,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.3
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 60
       m_attackFireCount: 1
@@ -1485,7 +1485,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.4
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 70
       m_attackFireCount: 1
@@ -1504,7 +1504,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.5
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 80
       m_attackFireCount: 2
@@ -1523,7 +1523,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.6
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 90
       m_attackFireCount: 2
@@ -1542,7 +1542,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.7
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 100
       m_attackFireCount: 2
@@ -1561,7 +1561,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.8
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 110
       m_attackFireCount: 2
@@ -1580,7 +1580,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.9
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 120
       m_attackFireCount: 2
@@ -1599,7 +1599,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Cannon Weapon Lv.10
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 130
       m_attackFireCount: 3
@@ -1620,7 +1620,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.1
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 40
       m_attackFireCount: 1
@@ -1639,7 +1639,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.2
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 50
       m_attackFireCount: 1
@@ -1658,7 +1658,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.3
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 60
       m_attackFireCount: 1
@@ -1677,7 +1677,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.4
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 70
       m_attackFireCount: 1
@@ -1696,7 +1696,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.5
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 80
       m_attackFireCount: 2
@@ -1715,7 +1715,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.6
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 90
       m_attackFireCount: 2
@@ -1734,7 +1734,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.7
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 100
       m_attackFireCount: 2
@@ -1753,7 +1753,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.8
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 110
       m_attackFireCount: 2
@@ -1772,7 +1772,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.9
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 120
       m_attackFireCount: 2
@@ -1791,7 +1791,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Torpedo Weapon Lv.10
       m_subType: 4
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 130
       m_attackFireCount: 3
@@ -1813,7 +1813,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.1
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 55
       m_hangarCapability: 5
@@ -1834,7 +1834,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.2
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 70
       m_hangarCapability: 8
@@ -1855,7 +1855,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.3
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 85
       m_hangarCapability: 11
@@ -1876,7 +1876,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.4
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 100
       m_hangarCapability: 14
@@ -1897,7 +1897,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.5
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 115
       m_hangarCapability: 17
@@ -1918,7 +1918,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.6
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 130
       m_hangarCapability: 20
@@ -1939,7 +1939,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.7
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 145
       m_hangarCapability: 23
@@ -1960,7 +1960,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.8
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 160
       m_hangarCapability: 26
@@ -1981,7 +1981,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.9
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 175
       m_hangarCapability: 29
@@ -2002,7 +2002,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Standard Hanger Lv.10
       m_subType: 1
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 190
       m_hangarCapability: 32
@@ -2025,7 +2025,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.1
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 55
       m_hangarCapability: 5
@@ -2046,7 +2046,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.2
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 70
       m_hangarCapability: 8
@@ -2067,7 +2067,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.3
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 85
       m_hangarCapability: 11
@@ -2088,7 +2088,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.4
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 100
       m_hangarCapability: 14
@@ -2109,7 +2109,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.5
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 115
       m_hangarCapability: 17
@@ -2130,7 +2130,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.6
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 130
       m_hangarCapability: 20
@@ -2151,7 +2151,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.7
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 145
       m_hangarCapability: 23
@@ -2172,7 +2172,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.8
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 160
       m_hangarCapability: 26
@@ -2193,7 +2193,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.9
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 175
       m_hangarCapability: 29
@@ -2214,7 +2214,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Advanced Hanger Lv.10
       m_subType: 2
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 190
       m_hangarCapability: 32
@@ -2237,7 +2237,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.1
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 1
       m_health: 55
       m_hangarCapability: 5
@@ -2258,7 +2258,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.2
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 2
       m_health: 70
       m_hangarCapability: 8
@@ -2279,7 +2279,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.3
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 3
       m_health: 85
       m_hangarCapability: 11
@@ -2300,7 +2300,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.4
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 4
       m_health: 100
       m_hangarCapability: 14
@@ -2321,7 +2321,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.5
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 5
       m_health: 115
       m_hangarCapability: 17
@@ -2342,7 +2342,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.6
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 6
       m_health: 130
       m_hangarCapability: 20
@@ -2363,7 +2363,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.7
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 7
       m_health: 145
       m_hangarCapability: 23
@@ -2384,7 +2384,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.8
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 8
       m_health: 160
       m_hangarCapability: 26
@@ -2405,7 +2405,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.9
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 9
       m_health: 175
       m_hangarCapability: 29
@@ -2426,7 +2426,7 @@ MonoBehaviour:
     - m_moduleTypePacked: 0
       m_name: Military Hanger Lv.10
       m_subType: 3
-      m_style: 1
+      m_style: 0
       m_level: 10
       m_health: 190
       m_hangarCapability: 32
@@ -2446,300 +2446,300 @@ MonoBehaviour:
       m_description: Military hanger bay level 10
   exportedJson: "{\r\n  \"modules\": {\r\n    \"1\": [\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Battle Hull Lv.1\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n       
     \"m_cargoCapacity\": 75.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     1,\r\n          \"mineral\": 50,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Battle-class hull module level 1\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Battle Hull
-    Lv.2\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.2\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     2,\r\n        \"m_health\": 200.0,\r\n        \"m_cargoCapacity\": 100.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 2,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Battle-class
     hull module level 2\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Battle Hull Lv.3\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 250.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 3,\r\n        \"m_health\": 250.0,\r\n       
     \"m_cargoCapacity\": 125.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     3,\r\n          \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Battle-class hull module level 3\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Battle Hull
-    Lv.4\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.4\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     4,\r\n        \"m_health\": 300.0,\r\n        \"m_cargoCapacity\": 150.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 4,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Battle-class
     hull module level 4\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Battle Hull Lv.5\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 350.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 5,\r\n        \"m_health\": 350.0,\r\n       
     \"m_cargoCapacity\": 175.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     5,\r\n          \"mineral\": 250,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Battle-class hull module level 5\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Battle Hull
-    Lv.6\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.6\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\": 200.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 6,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Battle-class
     hull module level 6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Battle Hull Lv.7\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n       
     \"m_cargoCapacity\": 225.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     7,\r\n          \"mineral\": 350,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Battle-class hull module level 7\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Battle Hull
-    Lv.8\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.8\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     8,\r\n        \"m_health\": 500.0,\r\n        \"m_cargoCapacity\": 250.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 8,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Battle-class
     hull module level 8\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Battle Hull Lv.9\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 550.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 9,\r\n        \"m_health\": 550.0,\r\n       
     \"m_cargoCapacity\": 275.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     9,\r\n          \"mineral\": 450,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Battle-class hull module level 9\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Battle Hull
-    Lv.10\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.10\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     10,\r\n        \"m_health\": 600.0,\r\n        \"m_cargoCapacity\": 300.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 10,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Battle-class
     hull module level 10\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Aircraft Hull Lv.1\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n       
     \"m_cargoCapacity\": 75.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     1,\r\n          \"mineral\": 50,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Aircraft-class hull module level 1\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Aircraft Hull
-    Lv.2\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.2\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     2,\r\n        \"m_health\": 200.0,\r\n        \"m_cargoCapacity\": 100.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 2,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Aircraft-class
     hull module level 2\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Aircraft Hull Lv.3\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 250.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 3,\r\n        \"m_health\": 250.0,\r\n       
     \"m_cargoCapacity\": 125.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     3,\r\n          \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Aircraft-class hull module level 3\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Aircraft Hull
-    Lv.4\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.4\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     4,\r\n        \"m_health\": 300.0,\r\n        \"m_cargoCapacity\": 150.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 4,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Aircraft-class
     hull module level 4\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Aircraft Hull Lv.5\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 350.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 5,\r\n        \"m_health\": 350.0,\r\n       
     \"m_cargoCapacity\": 175.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     5,\r\n          \"mineral\": 250,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Aircraft-class hull module level 5\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Aircraft Hull
-    Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\": 200.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 6,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Aircraft-class
     hull module level 6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Aircraft Hull Lv.7\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n       
     \"m_cargoCapacity\": 225.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     7,\r\n          \"mineral\": 350,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Aircraft-class hull module level 7\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Aircraft Hull
-    Lv.8\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.8\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     8,\r\n        \"m_health\": 500.0,\r\n        \"m_cargoCapacity\": 250.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 8,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Aircraft-class
     hull module level 8\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Aircraft Hull Lv.9\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 550.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 9,\r\n        \"m_health\": 550.0,\r\n       
     \"m_cargoCapacity\": 275.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     9,\r\n          \"mineral\": 450,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Aircraft-class hull module level 9\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Aircraft Hull
-    Lv.10\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.10\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     10,\r\n        \"m_health\": 600.0,\r\n        \"m_cargoCapacity\": 300.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 10,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Aircraft-class
     hull module level 10\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Scout Hull Lv.1\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 1,\r\n        \"m_health\": 150.0,\r\n       
     \"m_cargoCapacity\": 75.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     1,\r\n          \"mineral\": 50,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Scout-class hull module level 1\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Scout Hull Lv.2\",\r\n       
-    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\": 2,\r\n       
     \"m_health\": 200.0,\r\n        \"m_cargoCapacity\": 100.0,\r\n        \"m_upgradeCost\":
     {\r\n          \"techLevel\": 2,\r\n          \"mineral\": 100,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"m_description\": \"Scout-class hull module level
     2\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
-    \"Scout Hull Lv.3\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"Scout Hull Lv.3\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 3,\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\":
     125.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 3,\r\n         
     \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Scout-class hull module level 3\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Scout Hull Lv.4\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 4,\r\n        \"m_health\": 300.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 4,\r\n        \"m_health\": 300.0,\r\n       
     \"m_cargoCapacity\": 150.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     4,\r\n          \"mineral\": 200,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Scout-class hull module level 4\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Scout Hull Lv.5\",\r\n       
-    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 5,\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\": 5,\r\n       
     \"m_health\": 350.0,\r\n        \"m_cargoCapacity\": 175.0,\r\n        \"m_upgradeCost\":
     {\r\n          \"techLevel\": 5,\r\n          \"mineral\": 250,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"m_description\": \"Scout-class hull module level
     5\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
-    \"Scout Hull Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"Scout Hull Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\":
     200.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 6,\r\n         
     \"mineral\": 300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Scout-class hull module level 6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Scout Hull Lv.7\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 7,\r\n        \"m_health\": 450.0,\r\n       
     \"m_cargoCapacity\": 225.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     7,\r\n          \"mineral\": 350,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Scout-class hull module level 7\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Scout Hull Lv.8\",\r\n       
-    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 8,\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\": 8,\r\n       
     \"m_health\": 500.0,\r\n        \"m_cargoCapacity\": 250.0,\r\n        \"m_upgradeCost\":
     {\r\n          \"techLevel\": 8,\r\n          \"mineral\": 400,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"m_description\": \"Scout-class hull module level
     8\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
-    \"Scout Hull Lv.9\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"Scout Hull Lv.9\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 9,\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\":
     275.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 9,\r\n         
     \"mineral\": 450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Scout-class hull module level 9\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Scout Hull Lv.10\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 10,\r\n        \"m_health\": 600.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 10,\r\n        \"m_health\": 600.0,\r\n       
     \"m_cargoCapacity\": 300.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     10,\r\n          \"mineral\": 500,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Scout-class hull module level 10\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Repair Hull
-    Lv.1\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.1\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     1,\r\n        \"m_health\": 150.0,\r\n        \"m_cargoCapacity\": 75.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Repair-class
     hull module level 1\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Repair Hull Lv.2\",\r\n        \"m_subType\": 4,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 2,\r\n        \"m_health\": 200.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 2,\r\n        \"m_health\": 200.0,\r\n       
     \"m_cargoCapacity\": 100.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     2,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Repair-class hull module level 2\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Repair Hull
-    Lv.3\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.3\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     3,\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\": 125.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 3,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Repair-class
     hull module level 3\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Repair Hull Lv.4\",\r\n        \"m_subType\": 4,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 4,\r\n        \"m_health\": 300.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 4,\r\n        \"m_health\": 300.0,\r\n       
     \"m_cargoCapacity\": 150.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     4,\r\n          \"mineral\": 200,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Repair-class hull module level 4\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Repair Hull
-    Lv.5\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.5\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     5,\r\n        \"m_health\": 350.0,\r\n        \"m_cargoCapacity\": 175.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 5,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Repair-class
     hull module level 5\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Repair Hull Lv.6\",\r\n        \"m_subType\": 4,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 6,\r\n        \"m_health\": 400.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 6,\r\n        \"m_health\": 400.0,\r\n       
     \"m_cargoCapacity\": 200.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     6,\r\n          \"mineral\": 300,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Repair-class hull module level 6\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Repair Hull
-    Lv.7\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.7\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     7,\r\n        \"m_health\": 450.0,\r\n        \"m_cargoCapacity\": 225.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 7,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Repair-class
     hull module level 7\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Repair Hull Lv.8\",\r\n        \"m_subType\": 4,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 8,\r\n        \"m_health\": 500.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 8,\r\n        \"m_health\": 500.0,\r\n       
     \"m_cargoCapacity\": 250.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     8,\r\n          \"mineral\": 400,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Repair-class hull module level 8\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Repair Hull
-    Lv.9\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.9\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     9,\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\": 275.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 9,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Repair-class
     hull module level 9\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Repair Hull Lv.10\",\r\n        \"m_subType\": 4,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 10,\r\n        \"m_health\": 600.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 10,\r\n        \"m_health\": 600.0,\r\n       
     \"m_cargoCapacity\": 300.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
     10,\r\n          \"mineral\": 500,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Repair-class hull module level 10\"\r\n      }\r\n    ],\r\n   
     \"2\": [\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
     \"Standard Engine Lv.1\",\r\n        \"m_subType\": 1,\r\n        \"m_style\":
-    1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_movementSpeed\":
+    0,\r\n        \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_movementSpeed\":
     3.5,\r\n        \"m_rotationSpeed\": 2.3,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 50,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard propulsion system level 1\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard
-    Engine Lv.2\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.2\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 2,\r\n        \"m_health\": 50.0,\r\n        \"m_movementSpeed\":
     4.0,\r\n        \"m_rotationSpeed\": 2.6,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 2,\r\n          \"mineral\": 100,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard propulsion system level 2\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard
-    Engine Lv.3\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.3\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n        \"m_movementSpeed\":
     4.5,\r\n        \"m_rotationSpeed\": 2.9,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 3,\r\n          \"mineral\": 150,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard propulsion system level 3\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard
-    Engine Lv.4\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.4\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 4,\r\n        \"m_health\": 70.0,\r\n        \"m_movementSpeed\":
     5.0,\r\n        \"m_rotationSpeed\": 3.2,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 4,\r\n          \"mineral\": 200,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard propulsion system level 4\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard
-    Engine Lv.5\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.5\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n        \"m_movementSpeed\":
     5.5,\r\n        \"m_rotationSpeed\": 3.5,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 5,\r\n          \"mineral\": 250,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard propulsion system level 5\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard
-    Engine Lv.6\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.6\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 6,\r\n        \"m_health\": 90.0,\r\n        \"m_movementSpeed\":
     6.0,\r\n        \"m_rotationSpeed\": 3.80000019,\r\n        \"m_upgradeCost\":
     {\r\n          \"techLevel\": 6,\r\n          \"mineral\": 300,\r\n         
@@ -2747,20 +2747,20 @@ MonoBehaviour:
     0\r\n        },\r\n        \"m_description\": \"Standard propulsion system level
     6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
     \"Standard Engine Lv.7\",\r\n        \"m_subType\": 1,\r\n        \"m_style\":
-    1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n        \"m_movementSpeed\":
+    0,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n        \"m_movementSpeed\":
     6.5,\r\n        \"m_rotationSpeed\": 4.1,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 7,\r\n          \"mineral\": 350,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard propulsion system level 7\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard
-    Engine Lv.8\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.8\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 8,\r\n        \"m_health\": 110.0,\r\n        \"m_movementSpeed\":
     7.0,\r\n        \"m_rotationSpeed\": 4.4,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 8,\r\n          \"mineral\": 400,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard propulsion system level 8\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard
-    Engine Lv.9\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.9\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n        \"m_movementSpeed\":
     7.5,\r\n        \"m_rotationSpeed\": 4.70000029,\r\n        \"m_upgradeCost\":
     {\r\n          \"techLevel\": 9,\r\n          \"mineral\": 450,\r\n         
@@ -2768,48 +2768,48 @@ MonoBehaviour:
     0\r\n        },\r\n        \"m_description\": \"Standard propulsion system level
     9\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
     \"Standard Engine Lv.10\",\r\n        \"m_subType\": 1,\r\n        \"m_style\":
-    1,\r\n        \"m_level\": 10,\r\n        \"m_health\": 130.0,\r\n        \"m_movementSpeed\":
+    0,\r\n        \"m_level\": 10,\r\n        \"m_health\": 130.0,\r\n        \"m_movementSpeed\":
     8.0,\r\n        \"m_rotationSpeed\": 5.0,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 10,\r\n          \"mineral\": 500,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard propulsion system level 10\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Booster
-    Engine Lv.1\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.1\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_movementSpeed\":
     3.5,\r\n        \"m_rotationSpeed\": 2.3,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 50,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Booster propulsion system level 1\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Booster
-    Engine Lv.2\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.2\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 2,\r\n        \"m_health\": 50.0,\r\n        \"m_movementSpeed\":
     4.0,\r\n        \"m_rotationSpeed\": 2.6,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 2,\r\n          \"mineral\": 100,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Booster propulsion system level 2\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Booster
-    Engine Lv.3\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.3\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n        \"m_movementSpeed\":
     4.5,\r\n        \"m_rotationSpeed\": 2.9,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 3,\r\n          \"mineral\": 150,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Booster propulsion system level 3\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Booster
-    Engine Lv.4\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.4\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 4,\r\n        \"m_health\": 70.0,\r\n        \"m_movementSpeed\":
     5.0,\r\n        \"m_rotationSpeed\": 3.2,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 4,\r\n          \"mineral\": 200,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Booster propulsion system level 4\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Booster
-    Engine Lv.5\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.5\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n        \"m_movementSpeed\":
     5.5,\r\n        \"m_rotationSpeed\": 3.5,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 5,\r\n          \"mineral\": 250,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Booster propulsion system level 5\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Booster
-    Engine Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 6,\r\n        \"m_health\": 90.0,\r\n        \"m_movementSpeed\":
     6.0,\r\n        \"m_rotationSpeed\": 3.80000019,\r\n        \"m_upgradeCost\":
     {\r\n          \"techLevel\": 6,\r\n          \"mineral\": 300,\r\n         
@@ -2817,20 +2817,20 @@ MonoBehaviour:
     0\r\n        },\r\n        \"m_description\": \"Booster propulsion system level
     6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
     \"Booster Engine Lv.7\",\r\n        \"m_subType\": 2,\r\n        \"m_style\":
-    1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n        \"m_movementSpeed\":
+    0,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n        \"m_movementSpeed\":
     6.5,\r\n        \"m_rotationSpeed\": 4.1,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 7,\r\n          \"mineral\": 350,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Booster propulsion system level 7\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Booster
-    Engine Lv.8\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.8\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 8,\r\n        \"m_health\": 110.0,\r\n        \"m_movementSpeed\":
     7.0,\r\n        \"m_rotationSpeed\": 4.4,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 8,\r\n          \"mineral\": 400,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Booster propulsion system level 8\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Booster
-    Engine Lv.9\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.9\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n        \"m_movementSpeed\":
     7.5,\r\n        \"m_rotationSpeed\": 4.70000029,\r\n        \"m_upgradeCost\":
     {\r\n          \"techLevel\": 9,\r\n          \"mineral\": 450,\r\n         
@@ -2838,76 +2838,76 @@ MonoBehaviour:
     0\r\n        },\r\n        \"m_description\": \"Booster propulsion system level
     9\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
     \"Booster Engine Lv.10\",\r\n        \"m_subType\": 2,\r\n        \"m_style\":
-    1,\r\n        \"m_level\": 10,\r\n        \"m_health\": 130.0,\r\n        \"m_movementSpeed\":
+    0,\r\n        \"m_level\": 10,\r\n        \"m_health\": 130.0,\r\n        \"m_movementSpeed\":
     8.0,\r\n        \"m_rotationSpeed\": 5.0,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 10,\r\n          \"mineral\": 500,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Booster propulsion system level 10\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Warp
-    Engine Lv.1\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.1\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_movementSpeed\":
     3.5,\r\n        \"m_rotationSpeed\": 2.3,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 50,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Warp propulsion system level 1\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Warp
-    Engine Lv.2\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.2\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 2,\r\n        \"m_health\": 50.0,\r\n        \"m_movementSpeed\":
     4.0,\r\n        \"m_rotationSpeed\": 2.6,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 2,\r\n          \"mineral\": 100,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Warp propulsion system level 2\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Warp
-    Engine Lv.3\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.3\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n        \"m_movementSpeed\":
     4.5,\r\n        \"m_rotationSpeed\": 2.9,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 3,\r\n          \"mineral\": 150,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Warp propulsion system level 3\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Warp
-    Engine Lv.4\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.4\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 4,\r\n        \"m_health\": 70.0,\r\n        \"m_movementSpeed\":
     5.0,\r\n        \"m_rotationSpeed\": 3.2,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 4,\r\n          \"mineral\": 200,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Warp propulsion system level 4\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Warp
-    Engine Lv.5\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.5\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n        \"m_movementSpeed\":
     5.5,\r\n        \"m_rotationSpeed\": 3.5,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 5,\r\n          \"mineral\": 250,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Warp propulsion system level 5\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Warp
-    Engine Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 6,\r\n        \"m_health\": 90.0,\r\n        \"m_movementSpeed\":
     6.0,\r\n        \"m_rotationSpeed\": 3.80000019,\r\n        \"m_upgradeCost\":
     {\r\n          \"techLevel\": 6,\r\n          \"mineral\": 300,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"m_description\": \"Warp propulsion system level
     6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
-    \"Warp Engine Lv.7\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"Warp Engine Lv.7\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n        \"m_movementSpeed\":
     6.5,\r\n        \"m_rotationSpeed\": 4.1,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 7,\r\n          \"mineral\": 350,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Warp propulsion system level 7\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Warp
-    Engine Lv.8\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.8\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 8,\r\n        \"m_health\": 110.0,\r\n        \"m_movementSpeed\":
     7.0,\r\n        \"m_rotationSpeed\": 4.4,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 8,\r\n          \"mineral\": 400,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Warp propulsion system level 8\"\r\n     
     },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Warp
-    Engine Lv.9\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    Engine Lv.9\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n        \"m_movementSpeed\":
     7.5,\r\n        \"m_rotationSpeed\": 4.70000029,\r\n        \"m_upgradeCost\":
     {\r\n          \"techLevel\": 9,\r\n          \"mineral\": 450,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"m_description\": \"Warp propulsion system level
     9\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\":
-    \"Warp Engine Lv.10\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n       
+    \"Warp Engine Lv.10\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n       
     \"m_level\": 10,\r\n        \"m_health\": 130.0,\r\n        \"m_movementSpeed\":
     8.0,\r\n        \"m_rotationSpeed\": 5.0,\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 10,\r\n          \"mineral\": 500,\r\n          \"mineralRare\":
@@ -2915,7 +2915,7 @@ MonoBehaviour:
     },\r\n        \"m_description\": \"Warp propulsion system level 10\"\r\n     
     }\r\n    ],\r\n    \"3\": [\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Beam Weapon Lv.1\",\r\n        \"m_subType\": 1,\r\n        \"m_style\":
-    1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_attackFireCount\":
+    0,\r\n        \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_attackFireCount\":
     1,\r\n        \"m_attackPower\": 15.0,\r\n        \"m_attackCoolTime\": 1.95,\r\n       
     \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
     \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
@@ -2923,7 +2923,7 @@ MonoBehaviour:
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Beam weapon system level 1\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Beam Weapon Lv.2\",\r\n       
-    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\": 2,\r\n       
     \"m_health\": 50.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\":
     20.0,\r\n        \"m_attackCoolTime\": 1.9,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -2932,7 +2932,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Beam weapon system level 2\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Beam Weapon Lv.3\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n       
     \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 25.0,\r\n        \"m_attackCoolTime\":
     1.85,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -2940,7 +2940,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Beam weapon system level 3\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Beam Weapon
-    Lv.4\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.4\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     4,\r\n        \"m_health\": 70.0,\r\n        \"m_attackFireCount\": 1,\r\n       
     \"m_attackPower\": 30.0,\r\n        \"m_attackCoolTime\": 1.8,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -2949,7 +2949,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Beam weapon system level 4\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Beam Weapon Lv.5\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 35.0,\r\n        \"m_attackCoolTime\":
     1.75,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -2957,7 +2957,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Beam weapon system level 5\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Beam Weapon
-    Lv.6\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.6\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     6,\r\n        \"m_health\": 90.0,\r\n        \"m_attackFireCount\": 2,\r\n       
     \"m_attackPower\": 40.0,\r\n        \"m_attackCoolTime\": 1.7,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -2966,7 +2966,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Beam weapon system level 6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Beam Weapon Lv.7\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 45.0,\r\n        \"m_attackCoolTime\":
     1.65,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -2974,7 +2974,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Beam weapon system level 7\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Beam Weapon
-    Lv.8\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.8\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     8,\r\n        \"m_health\": 110.0,\r\n        \"m_attackFireCount\": 2,\r\n       
     \"m_attackPower\": 50.0,\r\n        \"m_attackCoolTime\": 1.6,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -2983,7 +2983,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Beam weapon system level 8\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Beam Weapon Lv.9\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 55.0,\r\n        \"m_attackCoolTime\":
     1.55,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -2991,7 +2991,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Beam weapon system level 9\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Beam Weapon
-    Lv.10\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.10\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     10,\r\n        \"m_health\": 130.0,\r\n        \"m_attackFireCount\": 3,\r\n       
     \"m_attackPower\": 60.0,\r\n        \"m_attackCoolTime\": 1.5,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3000,7 +3000,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Beam weapon system level 10\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Missile Weapon Lv.1\",\r\n        \"m_subType\":
-    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\":
+    2,\r\n        \"m_style\": 0,\r\n        \"m_level\": 1,\r\n        \"m_health\":
     40.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 15.0,\r\n       
     \"m_attackCoolTime\": 1.95,\r\n        \"m_projectileLength\": 5.0,\r\n       
     \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
@@ -3009,7 +3009,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Missile weapon
     system level 1\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Missile Weapon Lv.2\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 2,\r\n        \"m_health\": 50.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 2,\r\n        \"m_health\": 50.0,\r\n       
     \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 20.0,\r\n        \"m_attackCoolTime\":
     1.9,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3017,7 +3017,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Missile weapon system level 2\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Missile Weapon
-    Lv.3\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.3\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     3,\r\n        \"m_health\": 60.0,\r\n        \"m_attackFireCount\": 1,\r\n       
     \"m_attackPower\": 25.0,\r\n        \"m_attackCoolTime\": 1.85,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3026,7 +3026,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Missile weapon system level 3\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Missile Weapon Lv.4\",\r\n        \"m_subType\":
-    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n        \"m_health\":
+    2,\r\n        \"m_style\": 0,\r\n        \"m_level\": 4,\r\n        \"m_health\":
     70.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 30.0,\r\n       
     \"m_attackCoolTime\": 1.8,\r\n        \"m_projectileLength\": 5.0,\r\n       
     \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
@@ -3035,7 +3035,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Missile weapon
     system level 4\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Missile Weapon Lv.5\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 35.0,\r\n        \"m_attackCoolTime\":
     1.75,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3043,7 +3043,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Missile weapon system level 5\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Missile Weapon
-    Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     6,\r\n        \"m_health\": 90.0,\r\n        \"m_attackFireCount\": 2,\r\n       
     \"m_attackPower\": 40.0,\r\n        \"m_attackCoolTime\": 1.7,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3052,7 +3052,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Missile weapon system level 6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Missile Weapon Lv.7\",\r\n        \"m_subType\":
-    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\":
+    2,\r\n        \"m_style\": 0,\r\n        \"m_level\": 7,\r\n        \"m_health\":
     100.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 45.0,\r\n       
     \"m_attackCoolTime\": 1.65,\r\n        \"m_projectileLength\": 5.0,\r\n       
     \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
@@ -3061,7 +3061,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Missile weapon
     system level 7\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Missile Weapon Lv.8\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 8,\r\n        \"m_health\": 110.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 8,\r\n        \"m_health\": 110.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 50.0,\r\n        \"m_attackCoolTime\":
     1.6,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3069,7 +3069,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Missile weapon system level 8\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Missile Weapon
-    Lv.9\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.9\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     9,\r\n        \"m_health\": 120.0,\r\n        \"m_attackFireCount\": 2,\r\n       
     \"m_attackPower\": 55.0,\r\n        \"m_attackCoolTime\": 1.55,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3078,7 +3078,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Missile weapon system level 9\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Missile Weapon Lv.10\",\r\n        \"m_subType\":
-    2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 10,\r\n        \"m_health\":
+    2,\r\n        \"m_style\": 0,\r\n        \"m_level\": 10,\r\n        \"m_health\":
     130.0,\r\n        \"m_attackFireCount\": 3,\r\n        \"m_attackPower\": 60.0,\r\n       
     \"m_attackCoolTime\": 1.5,\r\n        \"m_projectileLength\": 5.0,\r\n       
     \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
@@ -3087,7 +3087,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Missile weapon
     system level 10\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Cannon Weapon Lv.1\",\r\n        \"m_subType\": 3,\r\n        \"m_style\":
-    1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_attackFireCount\":
+    0,\r\n        \"m_level\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_attackFireCount\":
     1,\r\n        \"m_attackPower\": 15.0,\r\n        \"m_attackCoolTime\": 1.95,\r\n       
     \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n       
     \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
@@ -3095,7 +3095,7 @@ MonoBehaviour:
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Cannon weapon system level 1\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Cannon Weapon Lv.2\",\r\n       
-    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\": 2,\r\n       
     \"m_health\": 50.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\":
     20.0,\r\n        \"m_attackCoolTime\": 1.9,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3104,7 +3104,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Cannon weapon system level 2\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Cannon Weapon Lv.3\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 3,\r\n        \"m_health\": 60.0,\r\n       
     \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 25.0,\r\n        \"m_attackCoolTime\":
     1.85,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3112,7 +3112,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Cannon weapon system level 3\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Cannon Weapon
-    Lv.4\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.4\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     4,\r\n        \"m_health\": 70.0,\r\n        \"m_attackFireCount\": 1,\r\n       
     \"m_attackPower\": 30.0,\r\n        \"m_attackCoolTime\": 1.8,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3121,7 +3121,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Cannon weapon system level 4\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Cannon Weapon Lv.5\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 35.0,\r\n        \"m_attackCoolTime\":
     1.75,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3129,7 +3129,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Cannon weapon system level 5\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Cannon Weapon
-    Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     6,\r\n        \"m_health\": 90.0,\r\n        \"m_attackFireCount\": 2,\r\n       
     \"m_attackPower\": 40.0,\r\n        \"m_attackCoolTime\": 1.7,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3138,7 +3138,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Cannon weapon system level 6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Cannon Weapon Lv.7\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 7,\r\n        \"m_health\": 100.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 45.0,\r\n        \"m_attackCoolTime\":
     1.65,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3146,7 +3146,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Cannon weapon system level 7\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Cannon Weapon
-    Lv.8\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.8\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     8,\r\n        \"m_health\": 110.0,\r\n        \"m_attackFireCount\": 2,\r\n       
     \"m_attackPower\": 50.0,\r\n        \"m_attackCoolTime\": 1.6,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3155,7 +3155,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Cannon weapon system level 8\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Cannon Weapon Lv.9\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 9,\r\n        \"m_health\": 120.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 55.0,\r\n        \"m_attackCoolTime\":
     1.55,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3163,7 +3163,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Cannon weapon system level 9\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Cannon Weapon
-    Lv.10\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.10\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     10,\r\n        \"m_health\": 130.0,\r\n        \"m_attackFireCount\": 3,\r\n       
     \"m_attackPower\": 60.0,\r\n        \"m_attackCoolTime\": 1.5,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3172,7 +3172,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Cannon weapon system level 10\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Torpedo Weapon Lv.1\",\r\n        \"m_subType\":
-    4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\":
+    4,\r\n        \"m_style\": 0,\r\n        \"m_level\": 1,\r\n        \"m_health\":
     40.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 15.0,\r\n       
     \"m_attackCoolTime\": 1.95,\r\n        \"m_projectileLength\": 5.0,\r\n       
     \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
@@ -3181,7 +3181,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Torpedo weapon
     system level 1\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Torpedo Weapon Lv.2\",\r\n        \"m_subType\": 4,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 2,\r\n        \"m_health\": 50.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 2,\r\n        \"m_health\": 50.0,\r\n       
     \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 20.0,\r\n        \"m_attackCoolTime\":
     1.9,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3189,7 +3189,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Torpedo weapon system level 2\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Torpedo Weapon
-    Lv.3\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.3\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     3,\r\n        \"m_health\": 60.0,\r\n        \"m_attackFireCount\": 1,\r\n       
     \"m_attackPower\": 25.0,\r\n        \"m_attackCoolTime\": 1.85,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3198,7 +3198,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Torpedo weapon system level 3\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Torpedo Weapon Lv.4\",\r\n        \"m_subType\":
-    4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n        \"m_health\":
+    4,\r\n        \"m_style\": 0,\r\n        \"m_level\": 4,\r\n        \"m_health\":
     70.0,\r\n        \"m_attackFireCount\": 1,\r\n        \"m_attackPower\": 30.0,\r\n       
     \"m_attackCoolTime\": 1.8,\r\n        \"m_projectileLength\": 5.0,\r\n       
     \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
@@ -3207,7 +3207,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Torpedo weapon
     system level 4\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Torpedo Weapon Lv.5\",\r\n        \"m_subType\": 4,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 5,\r\n        \"m_health\": 80.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 35.0,\r\n        \"m_attackCoolTime\":
     1.75,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3215,7 +3215,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Torpedo weapon system level 5\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Torpedo Weapon
-    Lv.6\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.6\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     6,\r\n        \"m_health\": 90.0,\r\n        \"m_attackFireCount\": 2,\r\n       
     \"m_attackPower\": 40.0,\r\n        \"m_attackCoolTime\": 1.7,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3224,7 +3224,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Torpedo weapon system level 6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Torpedo Weapon Lv.7\",\r\n        \"m_subType\":
-    4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\":
+    4,\r\n        \"m_style\": 0,\r\n        \"m_level\": 7,\r\n        \"m_health\":
     100.0,\r\n        \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 45.0,\r\n       
     \"m_attackCoolTime\": 1.65,\r\n        \"m_projectileLength\": 5.0,\r\n       
     \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
@@ -3233,7 +3233,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Torpedo weapon
     system level 7\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Torpedo Weapon Lv.8\",\r\n        \"m_subType\": 4,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 8,\r\n        \"m_health\": 110.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 8,\r\n        \"m_health\": 110.0,\r\n       
     \"m_attackFireCount\": 2,\r\n        \"m_attackPower\": 50.0,\r\n        \"m_attackCoolTime\":
     1.6,\r\n        \"m_projectileLength\": 5.0,\r\n        \"m_projectileWidth\":
     0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n        \"m_upgradeCost\": {\r\n         
@@ -3241,7 +3241,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Torpedo weapon system level 8\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Torpedo Weapon
-    Lv.9\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.9\",\r\n        \"m_subType\": 4,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     9,\r\n        \"m_health\": 120.0,\r\n        \"m_attackFireCount\": 2,\r\n       
     \"m_attackPower\": 55.0,\r\n        \"m_attackCoolTime\": 1.55,\r\n        \"m_projectileLength\":
     5.0,\r\n        \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\":
@@ -3250,7 +3250,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Torpedo weapon system level 9\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Torpedo Weapon Lv.10\",\r\n        \"m_subType\":
-    4,\r\n        \"m_style\": 1,\r\n        \"m_level\": 10,\r\n        \"m_health\":
+    4,\r\n        \"m_style\": 0,\r\n        \"m_level\": 10,\r\n        \"m_health\":
     130.0,\r\n        \"m_attackFireCount\": 3,\r\n        \"m_attackPower\": 60.0,\r\n       
     \"m_attackCoolTime\": 1.5,\r\n        \"m_projectileLength\": 5.0,\r\n       
     \"m_projectileWidth\": 0.1,\r\n        \"m_projectileSpeed\": 20.0,\r\n       
@@ -3259,7 +3259,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Torpedo weapon
     system level 10\"\r\n      }\r\n    ],\r\n    \"4\": [\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard Hanger Lv.1\",\r\n       
-    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 1,\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\": 1,\r\n       
     \"m_health\": 55.0,\r\n        \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\":
     3,\r\n        \"m_launchCool\": 2.85,\r\n        \"m_launchCount\": 1,\r\n       
     \"m_maintenanceTime\": 14.5,\r\n        \"m_aircraftHealth\": 40.0,\r\n       
@@ -3269,7 +3269,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Standard hanger
     bay level 1\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Standard Hanger Lv.2\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 2,\r\n        \"m_health\": 70.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 2,\r\n        \"m_health\": 70.0,\r\n       
     \"m_hangarCapability\": 8,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\":
     2.7,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 14.0,\r\n       
     \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\": 11.0,\r\n       
@@ -3278,7 +3278,7 @@ MonoBehaviour:
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Standard hanger bay level 2\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard Hanger Lv.3\",\r\n       
-    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 3,\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\": 3,\r\n       
     \"m_health\": 85.0,\r\n        \"m_hangarCapability\": 11,\r\n        \"m_scoutCapability\":
     7,\r\n        \"m_launchCool\": 2.55,\r\n        \"m_launchCount\": 1,\r\n       
     \"m_maintenanceTime\": 13.5,\r\n        \"m_aircraftHealth\": 60.0,\r\n       
@@ -3288,7 +3288,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Standard hanger
     bay level 3\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Standard Hanger Lv.4\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 4,\r\n        \"m_health\": 100.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 4,\r\n        \"m_health\": 100.0,\r\n       
     \"m_hangarCapability\": 14,\r\n        \"m_scoutCapability\": 9,\r\n        \"m_launchCool\":
     2.4,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\": 13.0,\r\n       
     \"m_aircraftHealth\": 70.0,\r\n        \"m_aircraftAttackPower\": 17.0,\r\n       
@@ -3297,7 +3297,7 @@ MonoBehaviour:
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Standard hanger bay level 4\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard Hanger Lv.5\",\r\n       
-    \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 5,\r\n       
+    \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\": 5,\r\n       
     \"m_health\": 115.0,\r\n        \"m_hangarCapability\": 17,\r\n        \"m_scoutCapability\":
     11,\r\n        \"m_launchCool\": 2.25,\r\n        \"m_launchCount\": 2,\r\n       
     \"m_maintenanceTime\": 12.5,\r\n        \"m_aircraftHealth\": 80.0,\r\n       
@@ -3307,7 +3307,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Standard hanger
     bay level 5\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Standard Hanger Lv.6\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 6,\r\n        \"m_health\": 130.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 6,\r\n        \"m_health\": 130.0,\r\n       
     \"m_hangarCapability\": 20,\r\n        \"m_scoutCapability\": 13,\r\n       
     \"m_launchCool\": 2.1,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
     12.0,\r\n        \"m_aircraftHealth\": 90.0,\r\n        \"m_aircraftAttackPower\":
@@ -3316,7 +3316,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard hanger bay level 6\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard Hanger
-    Lv.7\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.7\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     7,\r\n        \"m_health\": 145.0,\r\n        \"m_hangarCapability\": 23,\r\n       
     \"m_scoutCapability\": 15,\r\n        \"m_launchCool\": 1.94999993,\r\n       
     \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\": 11.5,\r\n        \"m_aircraftHealth\":
@@ -3326,7 +3326,7 @@ MonoBehaviour:
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"Standard hanger bay level 7\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_name\": \"Standard Hanger Lv.8\",\r\n        \"m_subType\":
-    1,\r\n        \"m_style\": 1,\r\n        \"m_level\": 8,\r\n        \"m_health\":
+    1,\r\n        \"m_style\": 0,\r\n        \"m_level\": 8,\r\n        \"m_health\":
     160.0,\r\n        \"m_hangarCapability\": 26,\r\n        \"m_scoutCapability\":
     17,\r\n        \"m_launchCool\": 1.8,\r\n        \"m_launchCount\": 3,\r\n       
     \"m_maintenanceTime\": 11.0,\r\n        \"m_aircraftHealth\": 110.0,\r\n       
@@ -3336,7 +3336,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Standard hanger
     bay level 8\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Standard Hanger Lv.9\",\r\n        \"m_subType\": 1,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 175.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 9,\r\n        \"m_health\": 175.0,\r\n       
     \"m_hangarCapability\": 29,\r\n        \"m_scoutCapability\": 19,\r\n       
     \"m_launchCool\": 1.65,\r\n        \"m_launchCount\": 3,\r\n        \"m_maintenanceTime\":
     10.5,\r\n        \"m_aircraftHealth\": 120.0,\r\n        \"m_aircraftAttackPower\":
@@ -3345,7 +3345,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Standard hanger bay level 9\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Standard Hanger
-    Lv.10\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.10\",\r\n        \"m_subType\": 1,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     10,\r\n        \"m_health\": 190.0,\r\n        \"m_hangarCapability\": 32,\r\n       
     \"m_scoutCapability\": 21,\r\n        \"m_launchCool\": 1.5,\r\n        \"m_launchCount\":
     3,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftHealth\": 130.0,\r\n       
@@ -3355,7 +3355,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Standard hanger
     bay level 10\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Advanced Hanger Lv.1\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 55.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 1,\r\n        \"m_health\": 55.0,\r\n       
     \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 3,\r\n        \"m_launchCool\":
     2.85,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 14.5,\r\n       
     \"m_aircraftHealth\": 40.0,\r\n        \"m_aircraftAttackPower\": 8.0,\r\n       
@@ -3364,7 +3364,7 @@ MonoBehaviour:
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Advanced hanger bay level 1\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Advanced Hanger Lv.2\",\r\n       
-    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\": 2,\r\n       
     \"m_health\": 70.0,\r\n        \"m_hangarCapability\": 8,\r\n        \"m_scoutCapability\":
     5,\r\n        \"m_launchCool\": 2.7,\r\n        \"m_launchCount\": 1,\r\n       
     \"m_maintenanceTime\": 14.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n       
@@ -3374,7 +3374,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Advanced hanger
     bay level 2\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Advanced Hanger Lv.3\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 85.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 3,\r\n        \"m_health\": 85.0,\r\n       
     \"m_hangarCapability\": 11,\r\n        \"m_scoutCapability\": 7,\r\n        \"m_launchCool\":
     2.55,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 13.5,\r\n       
     \"m_aircraftHealth\": 60.0,\r\n        \"m_aircraftAttackPower\": 14.0,\r\n       
@@ -3383,7 +3383,7 @@ MonoBehaviour:
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Advanced hanger bay level 3\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Advanced Hanger Lv.4\",\r\n       
-    \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n       
+    \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\": 4,\r\n       
     \"m_health\": 100.0,\r\n        \"m_hangarCapability\": 14,\r\n        \"m_scoutCapability\":
     9,\r\n        \"m_launchCool\": 2.4,\r\n        \"m_launchCount\": 2,\r\n       
     \"m_maintenanceTime\": 13.0,\r\n        \"m_aircraftHealth\": 70.0,\r\n       
@@ -3393,7 +3393,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Advanced hanger
     bay level 4\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Advanced Hanger Lv.5\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 115.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 5,\r\n        \"m_health\": 115.0,\r\n       
     \"m_hangarCapability\": 17,\r\n        \"m_scoutCapability\": 11,\r\n       
     \"m_launchCool\": 2.25,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
     12.5,\r\n        \"m_aircraftHealth\": 80.0,\r\n        \"m_aircraftAttackPower\":
@@ -3402,7 +3402,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Advanced hanger bay level 5\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Advanced Hanger
-    Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.6\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     6,\r\n        \"m_health\": 130.0,\r\n        \"m_hangarCapability\": 20,\r\n       
     \"m_scoutCapability\": 13,\r\n        \"m_launchCool\": 2.1,\r\n        \"m_launchCount\":
     2,\r\n        \"m_maintenanceTime\": 12.0,\r\n        \"m_aircraftHealth\": 90.0,\r\n       
@@ -3412,7 +3412,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Advanced hanger
     bay level 6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Advanced Hanger Lv.7\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 145.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 7,\r\n        \"m_health\": 145.0,\r\n       
     \"m_hangarCapability\": 23,\r\n        \"m_scoutCapability\": 15,\r\n       
     \"m_launchCool\": 1.94999993,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
     11.5,\r\n        \"m_aircraftHealth\": 100.0,\r\n        \"m_aircraftAttackPower\":
@@ -3421,7 +3421,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Advanced hanger bay level 7\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Advanced Hanger
-    Lv.8\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.8\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     8,\r\n        \"m_health\": 160.0,\r\n        \"m_hangarCapability\": 26,\r\n       
     \"m_scoutCapability\": 17,\r\n        \"m_launchCool\": 1.8,\r\n        \"m_launchCount\":
     3,\r\n        \"m_maintenanceTime\": 11.0,\r\n        \"m_aircraftHealth\": 110.0,\r\n       
@@ -3431,7 +3431,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Advanced hanger
     bay level 8\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Advanced Hanger Lv.9\",\r\n        \"m_subType\": 2,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 175.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 9,\r\n        \"m_health\": 175.0,\r\n       
     \"m_hangarCapability\": 29,\r\n        \"m_scoutCapability\": 19,\r\n       
     \"m_launchCool\": 1.65,\r\n        \"m_launchCount\": 3,\r\n        \"m_maintenanceTime\":
     10.5,\r\n        \"m_aircraftHealth\": 120.0,\r\n        \"m_aircraftAttackPower\":
@@ -3440,7 +3440,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Advanced hanger bay level 9\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Advanced Hanger
-    Lv.10\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.10\",\r\n        \"m_subType\": 2,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     10,\r\n        \"m_health\": 190.0,\r\n        \"m_hangarCapability\": 32,\r\n       
     \"m_scoutCapability\": 21,\r\n        \"m_launchCool\": 1.5,\r\n        \"m_launchCount\":
     3,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftHealth\": 130.0,\r\n       
@@ -3450,7 +3450,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Advanced hanger
     bay level 10\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Military Hanger Lv.1\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 1,\r\n        \"m_health\": 55.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 1,\r\n        \"m_health\": 55.0,\r\n       
     \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 3,\r\n        \"m_launchCool\":
     2.85,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 14.5,\r\n       
     \"m_aircraftHealth\": 40.0,\r\n        \"m_aircraftAttackPower\": 8.0,\r\n       
@@ -3459,7 +3459,7 @@ MonoBehaviour:
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Military hanger bay level 1\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Military Hanger Lv.2\",\r\n       
-    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 2,\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\": 2,\r\n       
     \"m_health\": 70.0,\r\n        \"m_hangarCapability\": 8,\r\n        \"m_scoutCapability\":
     5,\r\n        \"m_launchCool\": 2.7,\r\n        \"m_launchCount\": 1,\r\n       
     \"m_maintenanceTime\": 14.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n       
@@ -3469,7 +3469,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Military hanger
     bay level 2\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Military Hanger Lv.3\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 3,\r\n        \"m_health\": 85.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 3,\r\n        \"m_health\": 85.0,\r\n       
     \"m_hangarCapability\": 11,\r\n        \"m_scoutCapability\": 7,\r\n        \"m_launchCool\":
     2.55,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 13.5,\r\n       
     \"m_aircraftHealth\": 60.0,\r\n        \"m_aircraftAttackPower\": 14.0,\r\n       
@@ -3478,7 +3478,7 @@ MonoBehaviour:
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
     \"m_description\": \"Military hanger bay level 3\"\r\n      },\r\n      {\r\n       
     \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Military Hanger Lv.4\",\r\n       
-    \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\": 4,\r\n       
+    \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\": 4,\r\n       
     \"m_health\": 100.0,\r\n        \"m_hangarCapability\": 14,\r\n        \"m_scoutCapability\":
     9,\r\n        \"m_launchCool\": 2.4,\r\n        \"m_launchCount\": 2,\r\n       
     \"m_maintenanceTime\": 13.0,\r\n        \"m_aircraftHealth\": 70.0,\r\n       
@@ -3488,7 +3488,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Military hanger
     bay level 4\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Military Hanger Lv.5\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 5,\r\n        \"m_health\": 115.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 5,\r\n        \"m_health\": 115.0,\r\n       
     \"m_hangarCapability\": 17,\r\n        \"m_scoutCapability\": 11,\r\n       
     \"m_launchCool\": 2.25,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
     12.5,\r\n        \"m_aircraftHealth\": 80.0,\r\n        \"m_aircraftAttackPower\":
@@ -3497,7 +3497,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Military hanger bay level 5\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Military Hanger
-    Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.6\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     6,\r\n        \"m_health\": 130.0,\r\n        \"m_hangarCapability\": 20,\r\n       
     \"m_scoutCapability\": 13,\r\n        \"m_launchCool\": 2.1,\r\n        \"m_launchCount\":
     2,\r\n        \"m_maintenanceTime\": 12.0,\r\n        \"m_aircraftHealth\": 90.0,\r\n       
@@ -3507,7 +3507,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Military hanger
     bay level 6\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Military Hanger Lv.7\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 7,\r\n        \"m_health\": 145.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 7,\r\n        \"m_health\": 145.0,\r\n       
     \"m_hangarCapability\": 23,\r\n        \"m_scoutCapability\": 15,\r\n       
     \"m_launchCool\": 1.94999993,\r\n        \"m_launchCount\": 2,\r\n        \"m_maintenanceTime\":
     11.5,\r\n        \"m_aircraftHealth\": 100.0,\r\n        \"m_aircraftAttackPower\":
@@ -3516,7 +3516,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Military hanger bay level 7\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Military Hanger
-    Lv.8\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.8\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     8,\r\n        \"m_health\": 160.0,\r\n        \"m_hangarCapability\": 26,\r\n       
     \"m_scoutCapability\": 17,\r\n        \"m_launchCool\": 1.8,\r\n        \"m_launchCount\":
     3,\r\n        \"m_maintenanceTime\": 11.0,\r\n        \"m_aircraftHealth\": 110.0,\r\n       
@@ -3526,7 +3526,7 @@ MonoBehaviour:
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Military hanger
     bay level 8\"\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_name\": \"Military Hanger Lv.9\",\r\n        \"m_subType\": 3,\r\n       
-    \"m_style\": 1,\r\n        \"m_level\": 9,\r\n        \"m_health\": 175.0,\r\n       
+    \"m_style\": 0,\r\n        \"m_level\": 9,\r\n        \"m_health\": 175.0,\r\n       
     \"m_hangarCapability\": 29,\r\n        \"m_scoutCapability\": 19,\r\n       
     \"m_launchCool\": 1.65,\r\n        \"m_launchCount\": 3,\r\n        \"m_maintenanceTime\":
     10.5,\r\n        \"m_aircraftHealth\": 120.0,\r\n        \"m_aircraftAttackPower\":
@@ -3535,7 +3535,7 @@ MonoBehaviour:
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"Military hanger bay level 9\"\r\n      },\r\n     
     {\r\n        \"m_moduleTypePacked\": 0,\r\n        \"m_name\": \"Military Hanger
-    Lv.10\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 1,\r\n        \"m_level\":
+    Lv.10\",\r\n        \"m_subType\": 3,\r\n        \"m_style\": 0,\r\n        \"m_level\":
     10,\r\n        \"m_health\": 190.0,\r\n        \"m_hangarCapability\": 32,\r\n       
     \"m_scoutCapability\": 21,\r\n        \"m_launchCool\": 1.5,\r\n        \"m_launchCount\":
     3,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftHealth\": 130.0,\r\n       

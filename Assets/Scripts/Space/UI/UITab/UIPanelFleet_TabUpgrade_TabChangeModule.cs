@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,11 @@ public class UIPanelFleet_TabUpgrade_TabChangeModule : UITabBase
 
     [SerializeField] private Button m_backButton;
     [SerializeField] private Button m_changeModuleButton;
+
+    // 생성된 모든 ScrollViewModuleItem 추적
+    private List<ScrollViewModuleItem> m_moduleItems = new List<ScrollViewModuleItem>();
+
+    private bool bShowed = false;
 
     public override void InitializeUITab()
     {
@@ -70,6 +76,9 @@ public class UIPanelFleet_TabUpgrade_TabChangeModule : UITabBase
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
      
         InitializeUI();
+
+        bShowed = true;
+        UpdateScrollView();
     }
 
     public override void OnTabDeactivated()
@@ -82,6 +91,8 @@ public class UIPanelFleet_TabUpgrade_TabChangeModule : UITabBase
         m_selectedShip.m_shipOutline.enabled = false;
         
         InitializeUI();
+
+        bShowed = false;
     }
 
     private void InitializeUI()
@@ -127,6 +138,8 @@ public class UIPanelFleet_TabUpgrade_TabChangeModule : UITabBase
 
     private void UpdateScrollView()
     {
+        if( bShowed == false) return;
+
         if(m_scrollViewModuleContent == null || m_scrollViewModuleItem == null)
             return;
 
@@ -134,6 +147,7 @@ public class UIPanelFleet_TabUpgrade_TabChangeModule : UITabBase
             return;
 
         // 기존 아이템 모두 제거
+        m_moduleItems.Clear();
         foreach(Transform child in m_scrollViewModuleContent)
         {
             Destroy(child.gameObject);
@@ -234,7 +248,7 @@ public class UIPanelFleet_TabUpgrade_TabChangeModule : UITabBase
             {
                 scrollViewItem.InitializeScrollViewModuleItem(
                     moduleName,
-                    () => OnModuleTypeSelected(moduleTypePacked),
+                    () => OnModuleTypeSelected(scrollViewItem, moduleTypePacked),
                     () => OnDevelopModuleClicked(moduleTypePacked)
                 );
 
@@ -243,17 +257,46 @@ public class UIPanelFleet_TabUpgrade_TabChangeModule : UITabBase
 
                 // 현재 선택된 모듈 표시
                 scrollViewItem.SetSelected_ScrollViewModuleItem(isCurrentModule);
+
+                // 리스트에 추가
+                m_moduleItems.Add(scrollViewItem);
             }
         }
     }
 
-    private void OnModuleTypeSelected(int moduleTypePacked)
+    private void OnModuleTypeSelected(ScrollViewModuleItem selectedItem, int moduleTypePacked)
     {
         // 사용자가 스크롤뷰에서 모듈 타입을 선택했을 때
         Debug.Log($"Module type selected: {moduleTypePacked}");
 
-        // TODO: 선택된 모듈 타입 저장하고, 교체 시 사용
-        // 현재는 로그만 출력
+        // 다른 모든 아이템의 선택 해제
+        foreach (var item in m_moduleItems)
+        {
+            if (item != selectedItem)
+                item.SetSelected_ScrollViewModuleItem(false);
+        }
+
+        int slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex;
+        int newModuleType = m_selectedModule.GetModuleTypePacked();
+        int newModuleLevel = m_selectedModule.GetModuleLevel();
+        if( newModuleLevel < 1) return;
+
+        // 모듈 교체 요청 생성
+        var changeRequest = new ModuleChangeRequest
+        {
+            shipId = m_selectedShip.m_shipInfo.id
+            , bodyIndex = m_selectedModule.GetModuleBodyIndex()
+            , slotIndex = slotIndex
+            , currentModuleType = m_selectedModule.GetModuleType().ToString()
+            , newModuleType = CommonUtility.GetModuleType(newModuleType).ToString()
+            , newModuleLevel = newModuleLevel
+        };
+
+        Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
+
+        // 서버에 모듈 교체 요청 전송
+        NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
+
     }
 
     private void OnDevelopModuleClicked(int moduleTypePacked)

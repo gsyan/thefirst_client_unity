@@ -136,16 +136,16 @@ public class DataManager : Singleton<DataManager>
                     {
                         new ModuleBodyInfo
                         {
-                            moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, (int)EModuleBodySubType.Battle, EModuleStyle.StyleA),
+                            moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, (int)EModuleBodySubType.Battle, EModuleStyle.None),
                             moduleLevel = 1,
                             bodyIndex = 0,
                             weapons = new ModuleWeaponInfo[]
                             {
-                                new ModuleWeaponInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, (int)EModuleWeaponSubType.Beam, EModuleStyle.StyleA), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                                new ModuleWeaponInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, (int)EModuleWeaponSubType.Beam, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
                             },
                             engines = new ModuleEngineInfo[]
                             {
-                                new ModuleEngineInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, (int)EModuleEngineSubType.Standard, EModuleStyle.StyleA), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                                new ModuleEngineInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, (int)EModuleEngineSubType.Standard, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
                             }
                         }
                     }

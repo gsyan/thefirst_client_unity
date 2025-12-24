@@ -167,7 +167,7 @@ public class AuthResponse
     public string refreshToken;
     public FleetInfo activeFleetInfo;
     public CharacterInfo characterInfo;
-    public int[] researchedModuleTypePacked;
+    public int[] researchedModuleTypePackeds;
 }
 
 [System.Serializable]
