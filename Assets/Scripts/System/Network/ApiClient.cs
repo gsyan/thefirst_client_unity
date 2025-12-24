@@ -307,6 +307,26 @@ public class ApiClient
         return response;
     }
 
+    public async Task<ApiResponse<ModuleUnlockResponse>> UnlockModuleAsync(ModuleUnlockRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"Module Unlock Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/unlock-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleUnlockResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Module Unlock Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
     public async Task<ApiResponse<ModuleResearchResponse>> ResearchModuleAsync(ModuleResearchRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");

@@ -31,7 +31,7 @@ public class FleetInfo
     public string description;
     public bool isActive;
     public string formation;
-    public string dateTime;
+    public string dateTime; 
     public string lastModified;
     public ShipInfo[] ships;
 }
@@ -270,6 +270,25 @@ public class ModuleChangeRequest
 
 [System.Serializable]
 public class ModuleChangeResponse
+{
+    public bool success;
+    public ShipInfo updatedShipInfo;
+    public CostRemainInfo costRemainInfo;
+    public string message;
+}
+
+[System.Serializable]
+public class ModuleUnlockRequest
+{
+    public long shipId;
+    public int bodyIndex;
+    public int moduleType;
+    public int moduleSubTypeValue;
+    public int slotIndex;
+}
+
+[System.Serializable]
+public class ModuleUnlockResponse
 {
     public bool success;
     public ShipInfo updatedShipInfo;

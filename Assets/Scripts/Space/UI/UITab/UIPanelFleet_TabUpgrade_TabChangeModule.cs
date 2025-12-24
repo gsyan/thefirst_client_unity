@@ -149,34 +149,39 @@ public class UIPanelFleet_TabUpgrade_TabChangeModule : UITabBase
         // 기존 아이템 모두 제거
         m_moduleItems.Clear();
         foreach(Transform child in m_scrollViewModuleContent)
-        {
             Destroy(child.gameObject);
-        }
 
         // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
         int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
-        EModuleType moduleType = m_selectedModule.GetModuleType();
-
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
-        switch (moduleType)
+        if(currentModuleTypePacked == 0)
         {
-            case EModuleType.Body:
-                CreateBodyModuleItems(currentModuleTypePacked, character);
-                break;
-            case EModuleType.Weapon:
-                CreateWeaponModuleItems(currentModuleTypePacked, character);
-                break;
-            case EModuleType.Engine:
-                CreateEngineModuleItems(currentModuleTypePacked, character);
-                break;
-            case EModuleType.Hanger:
-                CreateHangerModuleItems(currentModuleTypePacked, character);
-                break;
-            default:
-                break;
+            // ModulePlaceHolder 의 경우
         }
+        else
+        {
+            EModuleType moduleType = m_selectedModule.GetModuleType();
+
+            Character character = DataManager.Instance.m_currentCharacter;
+            if (character == null) return;
+
+            switch (moduleType)
+            {
+                case EModuleType.Body:
+                    CreateBodyModuleItems(currentModuleTypePacked, character);
+                    break;
+                case EModuleType.Weapon:
+                    CreateWeaponModuleItems(currentModuleTypePacked, character);
+                    break;
+                case EModuleType.Engine:
+                    CreateEngineModuleItems(currentModuleTypePacked, character);
+                    break;
+                case EModuleType.Hanger:
+                    CreateHangerModuleItems(currentModuleTypePacked, character);
+                    break;
+                default:
+                    break;
+            }
+        }        
     }
 
     private void CreateBodyModuleItems(int currentModuleTypePacked, Character character)
