@@ -272,10 +272,10 @@ public class UIMain : UIManager
                         DataManager.Instance.SetCharacterData(response.data.characterInfo);
 
                         // Set researched modules to Character
-                        if (response.data.researchedModuleTypePacked != null)
+                        if (response.data.researchedModuleTypePackeds != null)
                         {
-                            DataManager.Instance.m_currentCharacter.SetResearchedModules(response.data.researchedModuleTypePacked);
-                            Debug.Log($"Researched modules loaded: {response.data.researchedModuleTypePacked.Length} modules");
+                            DataManager.Instance.m_currentCharacter.SetResearchedModules(response.data.researchedModuleTypePackeds);
+                            Debug.Log($"Researched modules loaded: {response.data.researchedModuleTypePackeds.Length} modules");
                         }
                     }
                     else

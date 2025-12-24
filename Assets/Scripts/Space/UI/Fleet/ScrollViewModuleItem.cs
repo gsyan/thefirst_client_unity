@@ -7,13 +7,14 @@ public class ScrollViewModuleItem : MonoBehaviour
     [SerializeField] private Button m_selectButton;
     [SerializeField] private TMP_Text m_selectButtonText;
     [SerializeField] private Button m_developmentButton;
+    [SerializeField] private GameObject m_selectedIndicator; // 선택 표시 오브젝트 (Image, Border 등)
     
     public void InitializeScrollViewModuleItem(string text, UnityEngine.Events.UnityAction actionSelect, UnityEngine.Events.UnityAction actionManage)
     {       
         m_selectButton.gameObject.SetActive(true);
         m_selectButton.onClick.RemoveAllListeners();
         m_selectButton.onClick.AddListener(actionSelect);
-        m_selectButton.onClick.AddListener(() => OnSelectButtonClicked());
+        m_selectButton.onClick.AddListener(() => SetSelected_ScrollViewModuleItem(true));
         m_selectButtonText.text = text;
 
         m_developmentButton.onClick.AddListener(actionManage);
@@ -22,35 +23,17 @@ public class ScrollViewModuleItem : MonoBehaviour
         SetSelected_ScrollViewModuleItem(false);
     }
 
-    private void OnSelectButtonClicked()
-    {
-        SetSelected_ScrollViewModuleItem(true);
-    }
-
     public void SetSelected_ScrollViewModuleItem(bool selected)
     {
-        if (m_selectButton == null) return;
-
-        ColorBlock colors = m_selectButton.colors;
-        if (selected)
+        // 선택 표시 오브젝트 활성화/비활성화
+        if (m_selectedIndicator != null)
         {
-            // 선택된 상태: 노란색 계열로 표시
-            colors.normalColor = new Color(1f, 0.9f, 0.5f);
-            colors.highlightedColor = new Color(1f, 0.95f, 0.7f);
+            m_selectedIndicator.SetActive(selected);
         }
-        else
-        {
-            // 선택 안 된 상태: 기본 색상
-            colors.normalColor = Color.white;
-            colors.highlightedColor = new Color(0.95f, 0.95f, 0.95f);
-        }
-        m_selectButton.colors = colors;
     }
 
     public void SetDevelopmentButtonEnabled(bool isResearched)
     {
-        // 개발되지 않은 모듈은 Dev 버튼 활성화
-        // 개발된 모듈은 Dev 버튼 비활성화
-        m_developmentButton.interactable = !isResearched;
+        m_developmentButton.gameObject.SetActive(!isResearched);
     }
 }

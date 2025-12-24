@@ -16,7 +16,7 @@ public class ModuleBodyData
     [Header("Basic Info")]
     public string m_name = "New Body";
     public EModuleBodySubType m_subType = EModuleBodySubType.Battle;
-    public EModuleStyle m_style = EModuleStyle.StyleA;
+    public EModuleStyle m_style = EModuleStyle.None;
     public int m_level = 1;
 
 #if UNITY_EDITOR
@@ -50,7 +50,7 @@ public class ModuleEngineData
     [Header("Basic Info")]
     public string m_name = "New Engine";
     public EModuleEngineSubType m_subType = EModuleEngineSubType.Standard;
-    public EModuleStyle m_style = EModuleStyle.StyleA;
+    public EModuleStyle m_style = EModuleStyle.None;
     public int m_level = 1;
 
 #if UNITY_EDITOR
@@ -84,7 +84,7 @@ public class ModuleWeaponData
     [Header("Basic Info")]
     public string m_name = "New Weapon";
     public EModuleWeaponSubType m_subType = EModuleWeaponSubType.Beam;
-    public EModuleStyle m_style = EModuleStyle.StyleA;
+    public EModuleStyle m_style = EModuleStyle.None;
     public int m_level = 1;
 
 #if UNITY_EDITOR
@@ -130,7 +130,7 @@ public class ModuleHangerData
     [Header("Basic Info")]
     public string m_name = "New Hanger";
     public EModuleHangerSubType m_subType = EModuleHangerSubType.Standard;
-    public EModuleStyle m_style = EModuleStyle.StyleA;
+    public EModuleStyle m_style = EModuleStyle.None;
     public int m_level = 1;
 
 #if UNITY_EDITOR
@@ -603,7 +603,7 @@ public class DataTableModule : ScriptableObject
                 {
                     m_name = $"{subType} Hull Lv.{i}",
                     m_subType = subType,
-                    m_style = EModuleStyle.StyleA,
+                    m_style = EModuleStyle.None,
                     m_level = i,
                     m_health = 100f + (i * 50f),
                     m_cargoCapacity = 50f + (i * 25f),
@@ -624,7 +624,7 @@ public class DataTableModule : ScriptableObject
                 {
                     m_name = $"{subType} Weapon Lv.{i}",
                     m_subType = subType,
-                    m_style = EModuleStyle.StyleA,
+                    m_style = EModuleStyle.None,
                     m_level = i,
                     m_health = 30f + (i * 10f),
                     m_attackPower = 10f + (i * 5f),
@@ -648,7 +648,7 @@ public class DataTableModule : ScriptableObject
                 {
                     m_name = $"{subType} Engine Lv.{i}",
                     m_subType = subType,
-                    m_style = EModuleStyle.StyleA,
+                    m_style = EModuleStyle.None,
                     m_level = i,
                     m_health = 30f + (i * 10f),
                     m_movementSpeed = 3f + (i * 0.5f),
@@ -670,7 +670,7 @@ public class DataTableModule : ScriptableObject
                 {
                     m_name = $"{subType} Hanger Lv.{i}",
                     m_subType = subType,
-                    m_style = EModuleStyle.StyleA,
+                    m_style = EModuleStyle.None,
                     m_level = i,
                     m_health = 40f + (i * 15f),
                     m_hangarCapability = 2 + (i * 3),

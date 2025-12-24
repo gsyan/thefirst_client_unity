@@ -113,7 +113,7 @@ public class DataTableModuleEditor : Editor
             {
                 m_name = $"New {group.subType}",
                 m_subType = group.subType,
-                m_style = EModuleStyle.StyleA,
+                m_style = EModuleStyle.None,
                 m_level = group.modules.Count + 1,
                 m_health = 200f,
                 m_cargoCapacity = 100f,
@@ -207,7 +207,7 @@ public class DataTableModuleEditor : Editor
             {
                 m_name = $"New {group.subType}",
                 m_subType = group.subType,
-                m_style = EModuleStyle.StyleA,
+                m_style = EModuleStyle.None,
                 m_level = group.modules.Count + 1,
                 m_health = 50f,
                 m_attackPower = 25f,
@@ -310,7 +310,7 @@ public class DataTableModuleEditor : Editor
             {
                 m_name = $"New {group.subType}",
                 m_subType = group.subType,
-                m_style = EModuleStyle.StyleA,
+                m_style = EModuleStyle.None,
                 m_level = group.modules.Count + 1,
                 m_health = 50f,
                 m_movementSpeed = 5f,
@@ -406,7 +406,7 @@ public class DataTableModuleEditor : Editor
             {
                 m_name = $"New {group.subType}",
                 m_subType = group.subType,
-                m_style = EModuleStyle.StyleA,
+                m_style = EModuleStyle.None,
                 m_level = group.modules.Count + 1,
                 m_health = 50f,
                 m_hangarCapability = 5,
