@@ -214,23 +214,28 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (response.errorCode == 0 && response.data.success)
         {
             // 자원 업데이트
-            if (response.data.costRemainInfo != null)
-            {
-                character.UpdateMineral(response.data.costRemainInfo.remainMineral);
-                character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
-                character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
-                character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
+            if (response.data.costRemainInfo == null) return;
+            character.UpdateMineral(response.data.costRemainInfo.remainMineral);
+            character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
+            character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
+            character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
 
-                var characterInfo = character.GetInfo();
-                DataManager.Instance.SetCharacterData(characterInfo);
-            }
+            var characterInfo = character.GetInfo();
+            DataManager.Instance.SetCharacterData(characterInfo);
 
-            // 함선 정보 업데이트
-            if (response.data.updatedShipInfo != null && m_selectedShip != null)
-            {
-                m_selectedShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
-                Debug.Log("Module unlocked successfully");
-            }
+            // 함선 정보, 오브젝트 업데이트
+            if (response.data.updatedShipInfo == null || m_selectedShip == null) return;
+
+            // 기존 선택된 모듈의 슬롯 정보 저장 (UpdateShipFromServerResponse 전에)
+            int bodyIndex = m_selectedModule.GetModuleBodyIndex();
+            int slotIndex = m_selectedModule.m_moduleSlot?.m_slotIndex ?? -1;
+            int moduleTypePacked = m_selectedModule.m_moduleSlot.m_moduleTypePacked;
+
+            m_selectedShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
+            Debug.Log("Module unlocked successfully");
+
+            // UpdateShipFromServerResponse 후 새로 생성된 모듈을 다시 선택
+            ReselectReplacedModule(bodyIndex, slotIndex, moduleTypePacked);
 
             // UI 갱신
             UpdateShipStatsDisplay();
@@ -418,9 +423,10 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
         // 기존 아이템 모두 제거
         m_moduleItems.Clear();
+        
         foreach(Transform child in m_scrollViewModuleContent)
             Destroy(child.gameObject);
-
+        
         // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
         EModuleType moduleType = m_selectedModule.GetModuleType();
 
@@ -432,11 +438,11 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             case EModuleType.Body:
                 CreateBodyModuleItems(moduleTypePacked, character);
                 break;
-            case EModuleType.Weapon:
-                CreateWeaponModuleItems(moduleTypePacked, character);
-                break;
             case EModuleType.Engine:
                 CreateEngineModuleItems(moduleTypePacked, character);
+                break;
+            case EModuleType.Weapon:
+                CreateWeaponModuleItems(moduleTypePacked, character);
                 break;
             case EModuleType.Hanger:
                 CreateHangerModuleItems(moduleTypePacked, character);
@@ -460,21 +466,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
     }
 
-    private void CreateWeaponModuleItems(int currentModuleTypePacked, Character character)
-    {
-        foreach(EModuleWeaponSubType subType in System.Enum.GetValues(typeof(EModuleWeaponSubType)))
-        {
-            if (subType == EModuleWeaponSubType.None) continue;
-
-            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, (int)subType, EModuleStyle.None);
-            string moduleName = $"Weapon - {subType}";
-            bool isResearched = character.IsModuleResearched(moduleTypePacked);
-            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
-
-            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
-        }
-    }
-
     private void CreateEngineModuleItems(int currentModuleTypePacked, Character character)
     {
         foreach(EModuleEngineSubType subType in System.Enum.GetValues(typeof(EModuleEngineSubType)))
@@ -483,6 +474,21 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
             int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, (int)subType, EModuleStyle.None);
             string moduleName = $"Engine - {subType}";
+            bool isResearched = character.IsModuleResearched(moduleTypePacked);
+            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
+
+            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
+        }
+    }
+
+    private void CreateWeaponModuleItems(int currentModuleTypePacked, Character character)
+    {
+        foreach(EModuleWeaponSubType subType in System.Enum.GetValues(typeof(EModuleWeaponSubType)))
+        {
+            if (subType == EModuleWeaponSubType.None) continue;
+
+            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, (int)subType, EModuleStyle.None);
+            string moduleName = $"Weapon - {subType}";
             bool isResearched = character.IsModuleResearched(moduleTypePacked);
             bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
 
@@ -648,11 +654,35 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
                 DataManager.Instance.SetCharacterData(characterInfo);
             }
 
+            // 기존 선택된 모듈의 슬롯 정보 저장
+            int bodyIndex = m_selectedModule.GetModuleBodyIndex();
+            int slotIndex = -1;
+            int moduleTypePacked = 0;
+
+            if (m_selectedModule is ModuleWeapon weapon)
+            {
+                slotIndex = weapon.m_moduleSlot?.m_slotIndex ?? -1;
+                moduleTypePacked = weapon.GetModuleTypePacked();
+            }
+            else if (m_selectedModule is ModuleEngine engine)
+            {
+                slotIndex = engine.m_moduleSlot?.m_slotIndex ?? -1;
+                moduleTypePacked = engine.GetModuleTypePacked();
+            }
+            else if (m_selectedModule is ModuleHanger hanger)
+            {
+                slotIndex = hanger.m_moduleSlot?.m_slotIndex ?? -1;
+                moduleTypePacked = hanger.GetModuleTypePacked();
+            }
+
             // 함선 정보 업데이트
             if (response.data.updatedShipInfo != null && m_selectedShip != null)
             {
                 m_selectedShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
                 Debug.Log("Ship module changed successfully");
+
+                // UpdateShipFromServerResponse 후 새로 생성된 모듈을 m_selectedModule로 설정
+                ReselectReplacedModule(bodyIndex, slotIndex, moduleTypePacked);
             }
 
             // UI 갱신
@@ -668,6 +698,30 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
             // 실패 메시지 표시
             ShowResultMessage($"Module change failed: {errorMessage}", 3f);
+        }
+    }
+
+    // 모듈 교체 후 새로 생성된 모듈을 다시 선택하여 하이라이트 적용
+    private void ReselectReplacedModule(int bodyIndex, int slotIndex, int moduleTypePacked)
+    {
+        if (slotIndex < 0 || m_selectedShip == null) return;
+
+        ModuleBody body = m_selectedShip.FindModuleBodyByIndex(bodyIndex);
+        if (body != null)
+        {
+            ModuleSlot slot = body.FindModuleSlot(moduleTypePacked, slotIndex);
+            if (slot != null && slot.transform.childCount > 0)
+            {
+                ModuleBase newModule = slot.GetComponentInChildren<ModuleBase>();
+                if (newModule != null)
+                {
+                    m_selectedModule = newModule;
+                    Debug.Log($"Reselected replaced module: {newModule.GetType().Name}");
+
+                    // 새로 생성된 모듈을 선택 상태로 설정 (하이라이트 적용)
+                    EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(m_selectedShip, m_selectedModule);
+                }
+            }
         }
     }
 
