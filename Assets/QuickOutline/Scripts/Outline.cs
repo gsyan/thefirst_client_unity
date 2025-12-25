@@ -101,7 +101,8 @@ public class Outline : MonoBehaviour {
 
   void OnEnable() {
     foreach (var renderer in renderers) {
-
+      // DestroyImmediate로 파괴된 renderer인지 체크
+      if (renderer == null) continue;
       // Append outline shaders
       var materials = renderer.sharedMaterials.ToList();
 
@@ -139,6 +140,8 @@ public class Outline : MonoBehaviour {
 
   void OnDisable() {
     foreach (var renderer in renderers) {
+      // DestroyImmediate로 파괴된 renderer인지 체크
+      if (renderer == null) continue;
 
       // Remove outline shaders
       var materials = renderer.sharedMaterials.ToList();
@@ -304,6 +307,40 @@ public class Outline : MonoBehaviour {
         outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Greater);
         outlineFillMaterial.SetFloat("_OutlineWidth", 0f);
         break;
+    }
+  }
+
+  // 새로 생성된 자식 오브젝트를 포함하여 Outline 갱신
+  public void RefreshOutline() {
+    // 1. 기존 renderer들의 outline material 제거
+    foreach (var renderer in renderers) {
+      if (renderer == null)
+        continue;
+
+      var materials = renderer.sharedMaterials.ToList();
+      materials.Remove(outlineMaskMaterial);
+      materials.Remove(outlineFillMaterial);
+      renderer.materials = materials.ToArray();
+    }
+
+    // 2. renderers 배열 다시 가져오기 (새로 생성된 자식 포함)
+    renderers = GetComponentsInChildren<Renderer>();
+
+    // 3. registeredMeshes 초기화하여 새로운 mesh들을 다시 등록
+    registeredMeshes.Clear();
+
+    // 4. 새로운 자식들을 포함하여 다시 로드
+    LoadSmoothNormals();
+
+    // 5. 새로운 renderer들에 outline material 추가
+    foreach (var renderer in renderers) {
+      if (renderer == null)
+        continue;
+
+      var materials = renderer.sharedMaterials.ToList();
+      materials.Add(outlineMaskMaterial);
+      materials.Add(outlineFillMaterial);
+      renderer.materials = materials.ToArray();
     }
   }
 }

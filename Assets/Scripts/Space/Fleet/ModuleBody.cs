@@ -477,8 +477,8 @@ public class ModuleBody : ModuleBase
                 else if (existingModule is ModuleHanger hanger)
                     RemoveHanger(hanger);
 
-                // 게임 오브젝트 삭제
-                Destroy(existingModule.gameObject);
+                // 게임 오브젝트 즉시 삭제 (같은 프레임 내에서 새 모듈을 생성하므로 DestroyImmediate 사용)
+                DestroyImmediate(existingModule.gameObject);
             }
         }
 
