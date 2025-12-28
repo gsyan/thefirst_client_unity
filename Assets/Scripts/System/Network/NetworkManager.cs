@@ -9,6 +9,8 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using static ApiClient;
 
+
+
 public static class TaskExtensions
 {
     public static IEnumerator WrapToCoroutine(this Task task)
@@ -702,11 +704,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsyncWithCallback(() => m_apiClient.ResearchModuleAsync(request), onComplete));
     }
 
-    public void AddModuleBody(ModuleBodyAddRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.AddModuleBodyAsync(request), onComplete));
-    }
+    // public void AddModuleBody(ModuleBodyAddRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
+    // {
+    //     if (m_bConnected == false) return;
+    //     StartCoroutine(RunAsyncWithCallback(() => m_apiClient.AddModuleBodyAsync(request), onComplete));
+    // }
 
     public void RemoveModuleBody(ModuleBodyRemoveRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
     {
@@ -720,11 +722,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsyncWithCallback(() => m_apiClient.InstallModuleAsync(request), onComplete));
     }
 
-    public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.GetFleetStatsAsync(request), onComplete));
-    }
+    // public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)
+    // {
+    //     if (m_bConnected == false) return;
+    //     StartCoroutine(RunAsyncWithCallback(() => m_apiClient.GetFleetStatsAsync(request), onComplete));
+    // }
 
     public void ExecuteDevCommand(string command, string[] parameters, System.Action<ApiResponse<string>> onComplete = null)
     {

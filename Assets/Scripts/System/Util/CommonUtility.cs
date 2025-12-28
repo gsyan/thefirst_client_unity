@@ -40,23 +40,33 @@ public static class CommonUtility
     private const int STYLE_SHIFT = 8;
     private const int MASK = 0xFF;
 
-    public static int CreateModuleTypePacked(EModuleType type, int subType, EModuleStyle style)
+    public static int CreateModuleTypePacked(EModuleType type, EModuleSubType subType, EModuleStyle style)
     {
-        return ((int)type << TYPE_SHIFT) | (subType << SUBTYPE_SHIFT) | ((int)style << STYLE_SHIFT);
+        // SubType에서 순수한 서브타입 값만 추출 (1001 -> 1, 2002 -> 2)
+        int pureSubType = (int)subType % 1000;
+        return ((int)type << TYPE_SHIFT) | (pureSubType << SUBTYPE_SHIFT) | ((int)style << STYLE_SHIFT);
     }
 
-    public static EModuleType GetModuleType(int moduleType)
+    public static EModuleType GetModuleType(int moduleTypePacked)
     {
-        return (EModuleType)((moduleType >> TYPE_SHIFT) & MASK);
+        return (EModuleType)((moduleTypePacked >> TYPE_SHIFT) & MASK);
     }
 
-    public static T GetModuleSubType<T>(int moduleTypePacked) where T : System.Enum
+    public static EModuleSubType GetModuleSubType(int moduleTypePacked)
     {
-        return (T)(object)((moduleTypePacked >> SUBTYPE_SHIFT) & MASK);
+        int pureSubType = (moduleTypePacked >> SUBTYPE_SHIFT) & MASK;
+        if (pureSubType == 0)
+            return EModuleSubType.None;
+
+        // Type 정보를 가져와서 완전한 SubType 값으로 복원 (Type=1, SubType=1 -> 1001)
+        EModuleType type = GetModuleType(moduleTypePacked);
+        int fullSubType = (int)type * 1000 + pureSubType;
+        return (EModuleSubType)fullSubType;
     }
-    public static int GetModuleSubType(int moduleTypePacked)
+
+    public static int GetModuleSubTypeValue(int moduleTypePacked)
     {
-        return moduleTypePacked >> SUBTYPE_SHIFT & MASK;
+        return (moduleTypePacked >> SUBTYPE_SHIFT) & MASK;
     }
 
     public static EModuleStyle GetModuleStyle(int moduleType)
@@ -83,6 +93,14 @@ public static class CommonUtility
 
         return GetModuleTypeOnly(moduleType1) == GetModuleTypeOnly(moduleType2);
     }
+
+    public static EModuleType GetModuleTypeFromSubType(EModuleSubType subType)
+    {
+        if (subType == EModuleSubType.None) return EModuleType.None;        
+        int typeValue = (int)subType / 1000;
+        return (EModuleType)typeValue;
+    }
+
     #endregion Module Type Packing end -----------------------------------------------------------------------------------
 
 
@@ -90,5 +108,7 @@ public static class CommonUtility
 
     #region  begin -----------------------------------------------------------------------------------
     
+    
+
     #endregion  end -----------------------------------------------------------------------------------
 }

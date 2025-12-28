@@ -30,9 +30,7 @@ public class FleetInfo
     public string fleetName;
     public string description;
     public bool isActive;
-    public string formation;
-    public string dateTime; 
-    public string lastModified;
+    public EFormationType formation;    
     public ShipInfo[] ships;
 }
 
@@ -44,8 +42,6 @@ public class ShipInfo
     public string shipName;
     public int positionIndex;
     public string description;
-    public string dateTime;
-    public string lastModified;
     public ModuleBodyInfo[] bodies;
 }
 
@@ -55,70 +51,53 @@ public class ModuleBodyInfo
     public int moduleTypePacked;
     public int moduleLevel;
     public int bodyIndex;
-    public string dateTime;
-    public ModuleEngineInfo[] engines;
-    public ModuleWeaponInfo[] weapons;
-    public ModuleHangerInfo[] hangers;
+    public ModuleInfo[] engines;
+    public ModuleInfo[] weapons;
+    public ModuleInfo[] hangers;
 
     public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
-    public EModuleBodySubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleBodySubType>(moduleTypePacked);
+    public EModuleSubType ModuleSubType => CommonUtility.GetModuleSubType(moduleTypePacked);
     public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
 }
 
-// [System.Serializable]
-// public class ModuleInfo
-// {
-//     public int moduleTypePacked;
-//     public int moduleLevel;
-//     public int bodyIndex;
-//     public int slotIndex;
-//     public string dateTime;
-
-//     public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
-//     public EModuleEngineSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleEngineSubType>(moduleTypePacked);
-//     public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
-// }
-
 [System.Serializable]
-public class ModuleEngineInfo
+public class ModuleInfo
 {
     public int moduleTypePacked;
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
-    public string dateTime;
-
+    
     public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
-    public EModuleEngineSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleEngineSubType>(moduleTypePacked);
+    public EModuleSubType ModuleSubType => CommonUtility.GetModuleSubType(moduleTypePacked);
     public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
 }
 
 [System.Serializable]
-public class ModuleWeaponInfo
+public class CostStruct
 {
-    public int moduleTypePacked;
-    public int moduleLevel;
-    public int bodyIndex;
-    public int slotIndex;
-    public string dateTime;
+    public int techLevel;
+    public long mineral;
+    public long mineralRare;
+    public long mineralExotic;
+    public long mineralDark;
 
-    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
-    public EModuleWeaponSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleWeaponSubType>(moduleTypePacked);
-    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
-}
-
-[System.Serializable]
-public class ModuleHangerInfo
-{
-    public int moduleTypePacked;
-    public int moduleLevel;
-    public int bodyIndex;
-    public int slotIndex;
-    public string dateTime;
-
-    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
-    public EModuleHangerSubType ModuleSubType => CommonUtility.GetModuleSubType<EModuleHangerSubType>(moduleTypePacked);
-    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
+    public CostStruct()
+    {
+        this.techLevel = 0;
+        this.mineral = 0;
+        this.mineralRare = 0;
+        this.mineralExotic = 0;
+        this.mineralDark = 0;
+    }
+    public CostStruct(int techLevel, long mineral, long mineralRare, long mineralExotic, long mineralDark)
+    {
+        this.techLevel = techLevel;
+        this.mineral = mineral;
+        this.mineralRare = mineralRare;
+        this.mineralExotic = mineralExotic;
+        this.mineralDark = mineralDark;
+    }
 }
 
 [System.Serializable]
@@ -131,6 +110,9 @@ public class CharacterInfo
     public long mineralExotic;
     public long mineralDark;    
 }
+
+
+
 #endregion
 
 #region Authentication Data Classes ###########################################################################
@@ -179,10 +161,8 @@ public class CharacterCreateRequest
 [System.Serializable]
 public class CharacterResponse
 {
-    public long id;
     public long characterId;
     public string characterName;
-    public string dateTime;
 }
 #endregion
 
@@ -216,7 +196,7 @@ public class AddShipResponse
 public class ChangeFormationRequest
 {
     public long fleetId;
-    public string formationType;
+    public EFormationType formationType;
 }
 
 [System.Serializable]
@@ -232,7 +212,8 @@ public class ModuleUpgradeRequest
 {
     public long shipId;
     public int bodyIndex;
-    public string moduleType;
+    public int moduleTypePacked;
+    public int slotIndex;
     public int currentLevel;
     public int targetLevel;
 }
@@ -262,10 +243,10 @@ public class ModuleChangeRequest
 {
     public long shipId;
     public int bodyIndex;
-    public int slotIndex;
-    public string currentModuleType;
-    public string newModuleType;
+    public int currentModuleTypePacked;
+    public int newModuleTypePacked;    
     public int newModuleLevel;
+    public int slotIndex;
 }
 
 [System.Serializable]
@@ -282,8 +263,8 @@ public class ModuleUnlockRequest
 {
     public long shipId;
     public int bodyIndex;
-    public int moduleType;
-    public int moduleSubTypeValue;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
     public int slotIndex;
 }
 
@@ -326,14 +307,14 @@ public class CostRemainInfo
     public long remainMineralDark;
 }
 
-[System.Serializable]
-public class ModuleBodyAddRequest
-{
-    public long shipId;
-    public string bodyType;
-    public int bodyLevel;
-    public Vector3 position;
-}
+// [System.Serializable]
+// public class ModuleBodyAddRequest
+// {
+//     public long shipId;
+//     public string bodyType;
+//     public int bodyLevel;
+//     public Vector3 position;
+// }
 
 [System.Serializable]
 public class ModuleBodyRemoveRequest
@@ -347,25 +328,25 @@ public class ModuleInstallRequest
 {
     public long shipId;
     public int bodyIndex;
-    public string moduleType;
+    public EModuleType moduleType;
     public int moduleLevel;
     public int slotIndex;
 }
 
-[System.Serializable]
-public class FleetStatsRequest
-{
-    public long fleetId;
-}
+// [System.Serializable]
+// public class FleetStatsRequest
+// {
+//     public long fleetId;
+// }
 
-[System.Serializable]
-public class FleetStatsResponse
-{
-    public long fleetId;
-    public string fleetName;
-    public ShipStatsInfo[] ships;
-    public FleetTotalStats totalStats;
-}
+// [System.Serializable]
+// public class FleetStatsResponse
+// {
+//     public long fleetId;
+//     public string fleetName;
+//     public ShipStatsInfo[] ships;
+//     public FleetTotalStats totalStats;
+// }
 
 [System.Serializable]
 public class ShipStatsInfo
@@ -387,24 +368,24 @@ public class PartsBodyInfo
     public ModuleInfo[] engines;
 }
 
-[System.Serializable]
-public class ModuleInfo
-{
-    public string moduleType;
-    public int level;
-    public int slotIndex;
-    public ModuleStats stats;
-}
+// [System.Serializable]
+// public class ModuleInfo
+// {
+//     public EModuleType moduleType;
+//     public int level;
+//     public int slotIndex;
+//     public ModuleStats stats;
+// }
 
-[System.Serializable]
-public class FleetTotalStats
-{
-    public float totalHealth;
-    public float totalAttackPower;
-    public float averageMovementSpeed;
-    public float totalCargoCapacity;
-    public int totalShips;
-    public int totalWeapons;
-    public int totalEngines;
-}
+// [System.Serializable]
+// public class FleetTotalStats
+// {
+//     public float totalHealth;
+//     public float totalAttackPower;
+//     public float averageMovementSpeed;
+//     public float totalCargoCapacity;
+//     public int totalShips;
+//     public int totalWeapons;
+//     public int totalEngines;
+// }
 #endregion

@@ -29,7 +29,7 @@ public class AircraftInfo
 public class ModuleHanger : ModuleBase
 {
     [SerializeField] private ModuleBody m_parentBody;
-    public ModuleHangerInfo m_moduleHangerInfo; 
+    public ModuleInfo m_moduleInfo; 
 
     [SerializeField] private int m_hangarCapability;
     [SerializeField] private int m_scoutCapability;
@@ -47,13 +47,13 @@ public class ModuleHanger : ModuleBase
     private Coroutine m_autoAttackCoroutine;
     private Coroutine m_maintenanceCoroutine;
 
-    public void InitializeModuleHanger(ModuleHangerInfo moduleHangerInfo, ModuleBody parentBody, ModuleSlot slot)
+    public void InitializeModuleHanger(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
     {
-        m_moduleHangerInfo = moduleHangerInfo;
+        m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
-        m_moduleSlot = slot;
+        m_moduleSlot = moduleSlot;
 
-        ModuleHangerData moduleData = DataManager.Instance.RestoreHangerModuleData(m_moduleHangerInfo.ModuleSubType, m_moduleHangerInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
         if (moduleData == null)
         {
             Debug.LogError("Failed to restore module data for ModuleHanger");
@@ -99,11 +99,11 @@ public class ModuleHanger : ModuleBase
             m_parentBody.AddHanger(this);
     }
 
-    private void InitializeHangerSubType(ModuleHangerData moduleData)
+    private void InitializeHangerSubType(ModuleData moduleData)
     {
-        switch (m_moduleHangerInfo.ModuleSubType)
+        switch (m_moduleInfo.ModuleSubType)
         {
-            case EModuleHangerSubType.Standard:
+            case EModuleSubType.Hanger_Standard:
                 for(int i=0; i< moduleData.m_launchCount; i++)
                 {
                     LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
@@ -111,14 +111,11 @@ public class ModuleHanger : ModuleBase
                     m_launchers.Add(launcher);
                 }
                 break;
-            case EModuleHangerSubType.Advanced:
+            case EModuleSubType.Hanger_Advanced:
                 for(int i=0; i< moduleData.m_launchCount; i++)
                 {
 
                 }
-                break;
-            case EModuleHangerSubType.Military:
-
                 break;
             default:
                 break;
@@ -224,7 +221,7 @@ public class ModuleHanger : ModuleBase
 
         if (m_health <= 0)
         {
-            Debug.Log($"[{GetFleetName()}] ModuleHanger[Body{m_moduleHangerInfo.bodyIndex}-Slot{m_moduleSlot.m_slotIndex}] destroyed!");
+            Debug.Log($"[{GetFleetName()}] ModuleHanger[Body{m_moduleInfo.bodyIndex}-Slot{m_moduleSlot.m_slotIndex}] destroyed!");
 
             if (m_parentBody != null)
                 m_parentBody.RemoveHanger(this);
@@ -235,32 +232,38 @@ public class ModuleHanger : ModuleBase
 
     public override EModuleType GetModuleType()
     {
-        return EModuleType.Hanger;
+        return m_moduleInfo.ModuleType;
     }
-
+    public override EModuleSubType GetModuleSubType()
+    {
+        return m_moduleInfo.ModuleSubType;
+    }
+    public override EModuleStyle GetModuleStyle()
+    {
+        return m_moduleInfo.ModuleStyle;
+    }
     public override int GetModuleTypePacked()
     {
-        return m_moduleHangerInfo.moduleTypePacked;
+        return m_moduleInfo.moduleTypePacked;
     }
-
     public override int GetModuleLevel()
     {
-        return m_moduleHangerInfo.moduleLevel;
+        return m_moduleInfo.moduleLevel;
     }
 
     public override void SetModuleLevel(int level)
     {
-        m_moduleHangerInfo.moduleLevel = level;
+        m_moduleInfo.moduleLevel = level;
     }
 
     public override int GetModuleBodyIndex()
     {
-        return m_moduleHangerInfo.bodyIndex;
+        return m_moduleInfo.bodyIndex;
     }
 
     public override void SetModuleBodyIndex(int bodyIndex)
     {
-        m_moduleHangerInfo.bodyIndex = bodyIndex;
+        m_moduleInfo.bodyIndex = bodyIndex;
     }
 
     
@@ -279,8 +282,8 @@ public class ModuleHanger : ModuleBase
 
     public override string GetUpgradeComparisonText()
     {
-        var currentStats = DataManager.Instance.RestoreHangerModuleData(m_moduleHangerInfo.ModuleSubType, m_moduleHangerInfo.moduleLevel);
-        var upgradeStats = DataManager.Instance.RestoreHangerModuleData(m_moduleHangerInfo.ModuleSubType, m_moduleHangerInfo.moduleLevel + 1);
+        ModuleData currentStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
+        ModuleData upgradeStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel + 1);
 
         if (currentStats == null)
             return "Current module data not found.";
@@ -289,7 +292,7 @@ public class ModuleHanger : ModuleBase
             return "Upgrade not available (max level reached).";
 
         string comparison = $"=== UPGRADE COMPARISON ===\n";
-        comparison += $"Level: {currentStats.m_level} -> {upgradeStats.m_level}\n";
+        comparison += $"Level: {currentStats.m_moduleLevel} -> {upgradeStats.m_moduleLevel}\n";
         comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
         comparison += $"Hangar: {currentStats.m_hangarCapability:F0} -> {upgradeStats.m_hangarCapability:F0}\n";
         comparison += $"Scout: {currentStats.m_scoutCapability:F0} -> {upgradeStats.m_scoutCapability:F0}\n";

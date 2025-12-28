@@ -5,24 +5,24 @@ using Newtonsoft.Json;
 using UnityEditor;
 #endif
 
-[System.Serializable]
-public struct CostStruct
-{
-    public int techLevel;
-    public int mineral;
-    public int mineralRare;
-    public int mineralExotic;
-    public int mineralDark;
+// [System.Serializable]
+// public struct CostStruct
+// {
+//     public int techLevel;
+//     public int mineral;
+//     public int mineralRare;
+//     public int mineralExotic;
+//     public int mineralDark;
 
-    public CostStruct(int techLevel, int mineral, int mineralRare, int mineralExotic, int mineralDark)
-    {
-        this.techLevel = techLevel;
-        this.mineral = mineral;
-        this.mineralRare = mineralRare;
-        this.mineralExotic = mineralExotic;
-        this.mineralDark = mineralDark;
-    }
-}
+//     public CostStruct(int techLevel, int mineral, int mineralRare, int mineralExotic, int mineralDark)
+//     {
+//         this.techLevel = techLevel;
+//         this.mineral = mineral;
+//         this.mineralRare = mineralRare;
+//         this.mineralExotic = mineralExotic;
+//         this.mineralDark = mineralDark;
+//     }
+// }
 
 [System.Serializable]
 public class GameSettings

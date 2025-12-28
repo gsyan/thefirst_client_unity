@@ -107,9 +107,6 @@ public class ModuleGaugeDisplay : MonoBehaviour
         Color gaugeColor = GetModuleColor(module);
         multiGaugeBar.AddGauge(gaugeColor);
         m_moduleGaugeBars[module] = multiGaugeBar;
-
-        if (CameraController.Instance != null && CameraController.Instance.m_currentMode != ECameraControllerMode.Normal)
-            multiGaugeBar.gameObject.SetActive(false);
     }
 
     private Color GetModuleColor(ModuleBase module)

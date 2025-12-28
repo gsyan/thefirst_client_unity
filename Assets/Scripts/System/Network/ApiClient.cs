@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
+
+
 public class ApiClient
 {
 #if UNITY_EDITOR
@@ -347,24 +349,24 @@ public class ApiClient
         return response;
     }
 
-    public async Task<ApiResponse<ShipInfo>> AddModuleBodyAsync(ModuleBodyAddRequest request)
-    {
-        if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");
+    // public async Task<ApiResponse<ShipInfo>> AddModuleBodyAsync(ModuleBodyAddRequest request)
+    // {
+    //     if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");
 
-        string json = JsonConvert.SerializeObject(request);
-        Debug.Log($"Add ModuleBody Request: {json}");
+    //     string json = JsonConvert.SerializeObject(request);
+    //     Debug.Log($"Add ModuleBody Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/add-modulebody", "POST");
-        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.SetRequestHeader("Content-Type", "application/json");
-        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+    //     using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/add-modulebody", "POST");
+    //     webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+    //     webRequest.downloadHandler = new DownloadHandlerBuffer();
+    //     webRequest.SetRequestHeader("Content-Type", "application/json");
+    //     webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
-        await SendRequestAsync(webRequest);
+    //     await SendRequestAsync(webRequest);
 
-        var response = JsonConvert.DeserializeObject<ApiResponse<ShipInfo>>(webRequest.downloadHandler.text);
-        return response;
-    }
+    //     var response = JsonConvert.DeserializeObject<ApiResponse<ShipInfo>>(webRequest.downloadHandler.text);
+    //     return response;
+    // }
 
     public async Task<ApiResponse<ShipInfo>> RemoveModuleBodyAsync(ModuleBodyRemoveRequest request)
     {
@@ -402,20 +404,20 @@ public class ApiClient
         return response;
     }
 
-    public async Task<ApiResponse<FleetStatsResponse>> GetFleetStatsAsync(FleetStatsRequest request)
-    {
-        if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");
+    // public async Task<ApiResponse<FleetStatsResponse>> GetFleetStatsAsync(FleetStatsRequest request)
+    // {
+    //     if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");
 
-        string queryParam = $"?fleetId={request.fleetId}";
+    //     string queryParam = $"?fleetId={request.fleetId}";
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/stats{queryParam}", "GET");
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+    //     using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/stats{queryParam}", "GET");
+    //     webRequest.downloadHandler = new DownloadHandlerBuffer();
+    //     webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
-        await SendRequestAsync(webRequest);
+    //     await SendRequestAsync(webRequest);
 
-        var response = JsonConvert.DeserializeObject<ApiResponse<FleetStatsResponse>>(webRequest.downloadHandler.text);
-        return response;
-    }
+    //     var response = JsonConvert.DeserializeObject<ApiResponse<FleetStatsResponse>>(webRequest.downloadHandler.text);
+    //     return response;
+    // }
     #endregion
 }

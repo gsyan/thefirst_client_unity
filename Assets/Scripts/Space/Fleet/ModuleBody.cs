@@ -36,7 +36,15 @@ public class ModuleBody : ModuleBase
     
     public override EModuleType GetModuleType()
     {
-        return EModuleType.Body;
+        return m_moduleBodyInfo.ModuleType;
+    }
+    public override EModuleSubType GetModuleSubType()
+    {
+        return m_moduleBodyInfo.ModuleSubType;
+    }
+    public override EModuleStyle GetModuleStyle()
+    {
+        return m_moduleBodyInfo.ModuleStyle;
     }
     public override int GetModuleTypePacked()
     {
@@ -65,13 +73,9 @@ public class ModuleBody : ModuleBase
         m_moduleSlot = null;
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
-        ModuleBodyData moduleData = DataManager.Instance.RestoreBodyModuleData(moduleBodyInfo.ModuleSubType, moduleBodyInfo.moduleLevel);
-        if (moduleData == null)
-        {
-            Debug.LogError("Failed to restore module data for ModuleBody");
-            return;
-        }
-
+        ModuleData moduleData = DataManager.Instance.RestoreModuleData(moduleBodyInfo.ModuleSubType, moduleBodyInfo.moduleLevel);
+        if (moduleData == null) return;
+        
         // 복원된 데이터로 초기화
         m_health = moduleData.m_health;
         m_healthMax = moduleData.m_health;
@@ -90,19 +94,19 @@ public class ModuleBody : ModuleBase
 
         if (moduleBodyInfo.engines != null)
         {
-            foreach (ModuleEngineInfo engineInfo in moduleBodyInfo.engines)
+            foreach (ModuleInfo engineInfo in moduleBodyInfo.engines)
                 InitializeEngine(engineInfo);
         }
 
         if (moduleBodyInfo.weapons != null)
         {
-            foreach (ModuleWeaponInfo weaponInfo in moduleBodyInfo.weapons)
+            foreach (ModuleInfo weaponInfo in moduleBodyInfo.weapons)
                 InitializeWeapon(weaponInfo);
         }
 
         if (moduleBodyInfo.hangers != null)
         {
-            foreach (ModuleHangerInfo hangerInfo in moduleBodyInfo.hangers)
+            foreach (ModuleInfo hangerInfo in moduleBodyInfo.hangers)
                 InitializeHanger(hangerInfo);
         }
 
@@ -110,9 +114,9 @@ public class ModuleBody : ModuleBase
         FillEmptySlotsWithPlaceholders();
     }
 
-    private void InitializeEngine(ModuleEngineInfo engineInfo)
+    private void InitializeEngine(ModuleInfo engineInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(engineInfo.ModuleType.ToString(), engineInfo.ModuleSubType.ToString(), engineInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(engineInfo.ModuleSubType.ToString(), engineInfo.moduleLevel);
         if (modulePrefab == null)
         {
             Debug.LogWarning($"InitializeEngine: Cannot find module prefab - Level: {engineInfo.moduleLevel}");
@@ -142,25 +146,25 @@ public class ModuleBody : ModuleBase
         moduleEngine.InitializeModuleEngine(engineInfo, this, targetSlot);
     }
 
-    private void InitializeWeapon(ModuleWeaponInfo weaponInfo)
+    private void InitializeWeapon(ModuleInfo moduleInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(weaponInfo.ModuleType.ToString(), weaponInfo.ModuleSubType.ToString(), weaponInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.ModuleSubType.ToString(), moduleInfo.moduleLevel);
         if (modulePrefab == null)
         {
-            Debug.LogWarning($"InitializeWeapon: Cannot find module prefab - ModuleType: {weaponInfo.ModuleType},  ModuleSubType: {weaponInfo.ModuleSubType},  Level: {weaponInfo.moduleLevel}");
+            Debug.LogWarning($"InitializeWeapon: Cannot find module prefab - ModuleType: {moduleInfo.ModuleType},  ModuleSubType: {moduleInfo.ModuleSubType},  Level: {moduleInfo.moduleLevel}");
             return;
         }
 
-        ModuleSlot targetSlot = FindModuleSlot(weaponInfo.moduleTypePacked, weaponInfo.slotIndex);
+        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
         if (targetSlot == null)
         {
-            Debug.LogWarning($"InitializeWeapon: Cannot find weapon slot {weaponInfo.slotIndex}");
+            Debug.LogWarning($"InitializeWeapon: Cannot find weapon slot {moduleInfo.slotIndex}");
             return;
         }
 
         if (targetSlot.transform.childCount > 0)
         {
-            Debug.LogWarning($"InitializeWeapon: Weapon slot {weaponInfo.slotIndex} is already occupied");
+            Debug.LogWarning($"InitializeWeapon: Weapon slot {moduleInfo.slotIndex} is already occupied");
             return;
         }
 
@@ -171,28 +175,28 @@ public class ModuleBody : ModuleBase
         if (moduleWeapon == null)
             moduleWeapon = weaponObj.AddComponent<ModuleWeapon>();
 
-        moduleWeapon.InitializeModuleWeapon(weaponInfo, this, targetSlot);
+        moduleWeapon.InitializeModuleWeapon(moduleInfo, this, targetSlot);
     }
 
-    private void InitializeHanger(ModuleHangerInfo hangerInfo)
+    private void InitializeHanger(ModuleInfo moduleInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(hangerInfo.ModuleType.ToString(), hangerInfo.ModuleSubType.ToString(), hangerInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.ModuleSubType.ToString(), moduleInfo.moduleLevel);
         if (modulePrefab == null)
         {
-            Debug.LogWarning($"InitializeHanger: Cannot find module prefab - Level: {hangerInfo.moduleLevel}");
+            Debug.LogWarning($"InitializeHanger: Cannot find module prefab - Level: {moduleInfo.moduleLevel}");
             return;
         }
 
-        ModuleSlot targetSlot = FindModuleSlot(hangerInfo.moduleTypePacked, hangerInfo.slotIndex);
+        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
         if (targetSlot == null)
         {
-            Debug.LogWarning($"InitializeHanger: Cannot find hanger slot {hangerInfo.slotIndex}");
+            Debug.LogWarning($"InitializeHanger: Cannot find hanger slot {moduleInfo.slotIndex}");
             return;
         }
 
         if (targetSlot.transform.childCount > 0)
         {
-            Debug.LogWarning($"InitializeHanger: Hanger slot {hangerInfo.slotIndex} is already occupied");
+            Debug.LogWarning($"InitializeHanger: Hanger slot {moduleInfo.slotIndex} is already occupied");
             return;
         }
 
@@ -203,7 +207,7 @@ public class ModuleBody : ModuleBase
         if (moduleHanger == null)
             moduleHanger = hangerObj.AddComponent<ModuleHanger>();
 
-        moduleHanger.InitializeModuleHanger(hangerInfo, this, targetSlot);
+        moduleHanger.InitializeModuleHanger(moduleInfo, this, targetSlot);
     }
 
     public void CollectAndSortModuleSlots()
@@ -425,8 +429,8 @@ public class ModuleBody : ModuleBase
 
     public override string GetUpgradeComparisonText()
     {
-        var currentStats = DataManager.Instance.RestoreBodyModuleData(m_moduleBodyInfo.ModuleSubType, m_moduleBodyInfo.moduleLevel);
-        var upgradeStats = DataManager.Instance.RestoreBodyModuleData(m_moduleBodyInfo.ModuleSubType, m_moduleBodyInfo.moduleLevel + 1);
+        ModuleData currentStats = DataManager.Instance.RestoreModuleData(m_moduleBodyInfo.ModuleSubType, m_moduleBodyInfo.moduleLevel);
+        ModuleData upgradeStats = DataManager.Instance.RestoreModuleData(m_moduleBodyInfo.ModuleSubType, m_moduleBodyInfo.moduleLevel + 1);
 
         if (currentStats == null)
             return "Current module data not found.";
@@ -435,7 +439,7 @@ public class ModuleBody : ModuleBase
             return "Upgrade not available (max level reached).";
 
         string comparison = $"=== UPGRADE COMPARISON ===\n";
-        comparison += $"Level: {currentStats.m_level} -> {upgradeStats.m_level}\n";
+        comparison += $"Level: {currentStats.m_moduleLevel} -> {upgradeStats.m_moduleLevel}\n";
         comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
         comparison += $"Cargo: {currentStats.m_cargoCapacity:F0} -> {upgradeStats.m_cargoCapacity:F0}\n";
         string costString = $"Cost: Tech Level {currentStats.m_upgradeCost.techLevel}";
@@ -485,10 +489,10 @@ public class ModuleBody : ModuleBase
         // 새 모듈 생성
         switch (moduleType)
         {
-            case EModuleType.Weapon:
-                return CreateAndPlaceWeapon(targetSlot, moduleTypePacked, moduleLevel);
             case EModuleType.Engine:
                 return CreateAndPlaceEngine(targetSlot, moduleTypePacked, moduleLevel);
+            case EModuleType.Weapon:
+                return CreateAndPlaceWeapon(targetSlot, moduleTypePacked, moduleLevel);            
             case EModuleType.Hanger:
                 return CreateAndPlaceHanger(targetSlot, moduleTypePacked, moduleLevel);
             default:
@@ -497,10 +501,35 @@ public class ModuleBody : ModuleBase
         }
     }
 
+    private bool CreateAndPlaceEngine(ModuleSlot targetSlot, int moduleTypePacked, int moduleLevel)
+    {
+        EModuleSubType subType = CommonUtility.GetModuleSubType(moduleTypePacked);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(subType.ToString(), moduleLevel);
+        if (modulePrefab == null) return false;
+        
+        GameObject engineObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
+        engineObj.transform.SetParent(targetSlot.transform);
+
+        ModuleEngine moduleEngine = engineObj.GetComponent<ModuleEngine>();
+        if (moduleEngine == null)
+            moduleEngine = engineObj.AddComponent<ModuleEngine>();
+
+        // ModuleEngineInfo 생성
+        ModuleInfo moduleInfo = new ModuleInfo
+        {
+            moduleTypePacked = moduleTypePacked,
+            moduleLevel = moduleLevel,
+            slotIndex = targetSlot.m_slotIndex
+        };
+
+        moduleEngine.InitializeModuleEngine(moduleInfo, this, targetSlot);
+        return true;
+    }
+
     private bool CreateAndPlaceWeapon(ModuleSlot targetSlot, int moduleTypePacked, int moduleLevel)
     {
-        EModuleWeaponSubType subType = CommonUtility.GetModuleSubType<EModuleWeaponSubType>(moduleTypePacked);
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab("Weapon", subType.ToString(), moduleLevel);
+        EModuleSubType subType = CommonUtility.GetModuleSubType(moduleTypePacked);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(subType.ToString(), moduleLevel);
         if (modulePrefab == null)
         {
             Debug.LogError($"CreateAndPlaceWeapon: Cannot find prefab - SubType: {subType}, Level: {moduleLevel}");
@@ -514,51 +543,24 @@ public class ModuleBody : ModuleBase
         if (moduleWeapon == null)
             moduleWeapon = weaponObj.AddComponent<ModuleWeapon>();
 
-        // ModuleWeaponInfo 생성
-        ModuleWeaponInfo weaponInfo = new ModuleWeaponInfo
+        // ModulemoduleInfo 생성
+        ModuleInfo moduleInfo = new ModuleInfo
         {
             moduleTypePacked = moduleTypePacked,
             moduleLevel = moduleLevel,
             slotIndex = targetSlot.m_slotIndex
         };
 
-        moduleWeapon.InitializeModuleWeapon(weaponInfo, this, targetSlot);
+        moduleWeapon.InitializeModuleWeapon(moduleInfo, this, targetSlot);
         return true;
     }
 
-    private bool CreateAndPlaceEngine(ModuleSlot targetSlot, int moduleTypePacked, int moduleLevel)
-    {
-        EModuleEngineSubType subType = CommonUtility.GetModuleSubType<EModuleEngineSubType>(moduleTypePacked);
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab("Engine", subType.ToString(), moduleLevel);
-        if (modulePrefab == null)
-        {
-            Debug.LogError($"CreateAndPlaceEngine: Cannot find prefab - SubType: {subType}, Level: {moduleLevel}");
-            return false;
-        }
-
-        GameObject engineObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
-        engineObj.transform.SetParent(targetSlot.transform);
-
-        ModuleEngine moduleEngine = engineObj.GetComponent<ModuleEngine>();
-        if (moduleEngine == null)
-            moduleEngine = engineObj.AddComponent<ModuleEngine>();
-
-        // ModuleEngineInfo 생성
-        ModuleEngineInfo engineInfo = new ModuleEngineInfo
-        {
-            moduleTypePacked = moduleTypePacked,
-            moduleLevel = moduleLevel,
-            slotIndex = targetSlot.m_slotIndex
-        };
-
-        moduleEngine.InitializeModuleEngine(engineInfo, this, targetSlot);
-        return true;
-    }
+    
 
     private bool CreateAndPlaceHanger(ModuleSlot targetSlot, int moduleTypePacked, int moduleLevel)
     {
-        EModuleHangerSubType subType = CommonUtility.GetModuleSubType<EModuleHangerSubType>(moduleTypePacked);
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab("Hanger", subType.ToString(), moduleLevel);
+        EModuleSubType subType = CommonUtility.GetModuleSubType(moduleTypePacked);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(subType.ToString(), moduleLevel);
         if (modulePrefab == null)
         {
             Debug.LogError($"CreateAndPlaceHanger: Cannot find prefab - SubType: {subType}, Level: {moduleLevel}");
@@ -573,7 +575,7 @@ public class ModuleBody : ModuleBase
             moduleHanger = hangerObj.AddComponent<ModuleHanger>();
 
         // ModuleHangerInfo 생성
-        ModuleHangerInfo hangerInfo = new ModuleHangerInfo
+        ModuleInfo hangerInfo = new ModuleInfo
         {
             moduleTypePacked = moduleTypePacked,
             moduleLevel = moduleLevel,

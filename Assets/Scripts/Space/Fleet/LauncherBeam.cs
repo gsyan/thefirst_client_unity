@@ -5,11 +5,11 @@ using Unity.VisualScripting;
 
 public class LauncherBeam : LauncherBase
 {
-    private ModuleWeaponData m_moduleWeaponData;
+    private ModuleData m_moduleData;
 
     [SerializeField] private Color m_beamColor = Color.cyan;
 
-    public void InitializeLauncherBeam(ModuleWeaponData moduleData)
+    public void InitializeLauncherBeam(ModuleData moduleData)
     {
         if (m_isInitialized == true) return;
 
@@ -26,7 +26,7 @@ public class LauncherBeam : LauncherBase
             }
         }
 
-        m_moduleWeaponData = moduleData;
+        m_moduleData = moduleData;
 
         m_isInitialized = true;
     }
@@ -53,7 +53,7 @@ public class LauncherBeam : LauncherBase
         if (beam == null) yield break;
         beam.transform.position = m_firePoint.position;
 
-        beam.InitializeProjectile(m_firePoint, target, damage, m_moduleWeaponData, m_beamColor, sourceModuleBase);
+        beam.InitializeProjectile(m_firePoint, target, damage, m_moduleData, m_beamColor, sourceModuleBase);
     }
 
 }

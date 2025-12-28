@@ -94,20 +94,29 @@ public class SpaceShip : MonoBehaviour
             totalLevel += body.moduleLevel;
             moduleCount++;
 
+            if (body.engines != null)
+            {
+                foreach (ModuleInfo engine in body.engines)
+                {
+                    totalLevel += engine.moduleLevel;
+                    moduleCount++;
+                }
+            }
+
             if (body.weapons != null)
             {
-                foreach (ModuleWeaponInfo weapon in body.weapons)
+                foreach (ModuleInfo weapon in body.weapons)
                 {
                     totalLevel += weapon.moduleLevel;
                     moduleCount++;
                 }
             }
 
-            if (body.engines != null)
+            if (body.hangers != null)
             {
-                foreach (ModuleEngineInfo engine in body.engines)
+                foreach (ModuleInfo hanger in body.hangers)
                 {
-                    totalLevel += engine.moduleLevel;
+                    totalLevel += hanger.moduleLevel;
                     moduleCount++;
                 }
             }
@@ -119,13 +128,9 @@ public class SpaceShip : MonoBehaviour
 
     private void InitSpaceShipBody(ModuleBodyInfo bodyInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.ModuleType.ToString(), bodyInfo.ModuleSubType.ToString(), bodyInfo.moduleLevel);
-        if (modulePrefab == null)
-        {
-            Debug.LogWarning($"InitSpaceShipBody: Cannot find module prefab - Level: {bodyInfo.moduleLevel}");
-            return;
-        }
-
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.ModuleSubType.ToString(), bodyInfo.moduleLevel);
+        if (modulePrefab == null) return;
+        
         GameObject bodyObj = Instantiate(modulePrefab, transform.position, transform.rotation);
         bodyObj.transform.SetParent(transform);
 
@@ -868,15 +873,15 @@ public class SpaceShip : MonoBehaviour
 
                 // 엔진 모듈 업데이트
                 if (updatedBodyInfo.engines != null)
-                    UpdateEngineModulesFromInfo(body, updatedBodyInfo.engines);
+                    UpdateModulesFromInfo(body, updatedBodyInfo.engines);
 
                 // 무기 모듈 업데이트
                 if (updatedBodyInfo.weapons != null)
-                    UpdateWeaponModulesFromInfo(body, updatedBodyInfo.weapons);
+                    UpdateModulesFromInfo(body, updatedBodyInfo.weapons);
 
                 // 행거 모듈 업데이트
                 if (updatedBodyInfo.hangers != null)
-                    UpdateHangerModulesFromInfo(body, updatedBodyInfo.hangers);
+                    UpdateModulesFromInfo(body, updatedBodyInfo.hangers);
 
                 // 바디의 정보 업데이트
                 body.m_moduleBodyInfo = updatedBodyInfo;
@@ -901,66 +906,13 @@ public class SpaceShip : MonoBehaviour
         Debug.Log($"Ship updated from server: {m_shipInfo.shipName}");
     }
 
-    // private void UpdateModulesFromInfo<T>(ModuleBody body, T[] moduleInfos) where T : ModuleInfo
-    // {
-    //     foreach (T moduleInfo in moduleInfos)
-    //     {
-    //         // 현재 슬롯의 모듈 확인
-    //         ModuleSlot slot = body.FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
-    //         if (slot == null)
-    //         {
-    //             Debug.LogWarning($"UpdateModulesFromInfo: Slot not found - moduleTypePacked: {moduleInfo.moduleTypePacked}, slotIndex: {moduleInfo.slotIndex}");
-    //             continue;
-    //         }
-
-    //         // 현재 슬롯에 있는 모듈 확인
-    //         ModuleBase existingModule = null;
-    //         if (slot.transform.childCount > 0)
-    //         {
-    //             existingModule = slot.GetComponentInChildren<ModuleBase>();
-    //         }
-
-    //         // 모듈 정보가 달라졌는지 확인 (타입 또는 레벨)
-    //         bool needsReplacement = false;
-    //         if (existingModule == null)
-    //         {
-    //             needsReplacement = true;
-    //         }
-    //         else if (existingModule.GetModuleTypePacked() != moduleInfo.moduleTypePacked ||
-    //                  existingModule.GetModuleLevel() != moduleInfo.moduleLevel)
-    //         {
-    //             needsReplacement = true;
-    //         }
-
-    //         // 모듈 교체가 필요한 경우
-    //         if (needsReplacement)
-    //         {
-    //             EModuleType moduleType = CommonUtility.GetModuleType(moduleInfo.moduleTypePacked);
-    //             bool success = body.ReplaceModuleInSlot(moduleInfo.slotIndex, moduleInfo.moduleTypePacked, moduleType, moduleInfo.moduleLevel);
-
-    //             if (success)
-    //             {
-    //                 Debug.Log($"Module replaced: Type={moduleType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
-    //             }
-    //             else
-    //             {
-    //                 Debug.LogError($"Failed to replace module: Type={moduleType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
-    //             }
-    //         }
-    //     }
-    // }
-
-    private void UpdateEngineModulesFromInfo(ModuleBody body, ModuleEngineInfo[] engineInfos)
+    private void UpdateModulesFromInfo(ModuleBody body, ModuleInfo[] moduleInfos)
     {
-        foreach (ModuleEngineInfo engineInfo in engineInfos)
+        foreach (ModuleInfo moduleInfo in moduleInfos)
         {
-            ModuleSlot slot = body.FindModuleSlot(engineInfo.moduleTypePacked, engineInfo.slotIndex);
-            if (slot == null)
-            {
-                Debug.LogWarning($"UpdateEngineModulesFromInfo: Slot not found - moduleTypePacked: {engineInfo.moduleTypePacked}, slotIndex: {engineInfo.slotIndex}");
-                continue;
-            }
-
+            ModuleSlot slot = body.FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
+            if (slot == null) continue;
+            
             ModuleBase existingModule = null;
             if (slot.transform.childCount > 0)
                 existingModule = slot.GetComponentInChildren<ModuleBase>();
@@ -968,89 +920,23 @@ public class SpaceShip : MonoBehaviour
             bool needsReplacement = false;
             if (existingModule == null || existingModule is ModulePlaceholder)
                 needsReplacement = true;
-            else if (existingModule.GetModuleTypePacked() != engineInfo.moduleTypePacked ||
-                     existingModule.GetModuleLevel() != engineInfo.moduleLevel)
+            else if (existingModule.GetModuleTypePacked() != moduleInfo.moduleTypePacked ||
+                     existingModule.GetModuleLevel() != moduleInfo.moduleLevel)
                 needsReplacement = true;
 
             if (needsReplacement)
             {
-                EModuleType moduleType = CommonUtility.GetModuleType(engineInfo.moduleTypePacked);
-                bool success = body.ReplaceModuleInSlot(engineInfo.slotIndex, engineInfo.moduleTypePacked, moduleType, engineInfo.moduleLevel);
+                EModuleType moduleType = CommonUtility.GetModuleType(moduleInfo.moduleTypePacked);
+                bool success = body.ReplaceModuleInSlot(moduleInfo.slotIndex, moduleInfo.moduleTypePacked, moduleType, moduleInfo.moduleLevel);
                 if (success)
-                    Debug.Log($"Engine module replaced: Type={engineInfo.ModuleSubType}, Level={engineInfo.moduleLevel}, Slot={engineInfo.slotIndex}");
+                    Debug.Log($"module replaced: Type={moduleInfo.ModuleSubType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
                 else
-                    Debug.LogError($"Failed to replace engine module: Type={engineInfo.ModuleSubType}, Level={engineInfo.moduleLevel}, Slot={engineInfo.slotIndex}");
+                    Debug.LogError($"Failed to replace module: Type={moduleInfo.ModuleSubType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
             }
         }
     }
 
-    private void UpdateWeaponModulesFromInfo(ModuleBody body, ModuleWeaponInfo[] weaponInfos)
-    {
-        foreach (ModuleWeaponInfo weaponInfo in weaponInfos)
-        {
-            ModuleSlot slot = body.FindModuleSlot(weaponInfo.moduleTypePacked, weaponInfo.slotIndex);
-            if (slot == null)
-            {
-                Debug.LogWarning($"UpdateWeaponModulesFromInfo: Slot not found - moduleTypePacked: {weaponInfo.moduleTypePacked}, slotIndex: {weaponInfo.slotIndex}");
-                continue;
-            }
-
-            ModuleBase existingModule = null;
-            if (slot.transform.childCount > 0)
-                existingModule = slot.GetComponentInChildren<ModuleBase>();
-
-            bool needsReplacement = false;
-            if (existingModule == null || existingModule is ModulePlaceholder)
-                needsReplacement = true;
-            else if (existingModule.GetModuleTypePacked() != weaponInfo.moduleTypePacked ||
-                     existingModule.GetModuleLevel() != weaponInfo.moduleLevel)
-                needsReplacement = true;
-
-            if (needsReplacement)
-            {
-                EModuleType moduleType = CommonUtility.GetModuleType(weaponInfo.moduleTypePacked);
-                bool success = body.ReplaceModuleInSlot(weaponInfo.slotIndex, weaponInfo.moduleTypePacked, moduleType, weaponInfo.moduleLevel);
-                if (success)
-                    Debug.Log($"Weapon module replaced: Type={weaponInfo.ModuleSubType}, Level={weaponInfo.moduleLevel}, Slot={weaponInfo.slotIndex}");
-                else
-                    Debug.LogError($"Failed to replace weapon module: Type={weaponInfo.ModuleSubType}, Level={weaponInfo.moduleLevel}, Slot={weaponInfo.slotIndex}");
-            }
-        }
-    }
-
-    private void UpdateHangerModulesFromInfo(ModuleBody body, ModuleHangerInfo[] hangerInfos)
-    {
-        foreach (ModuleHangerInfo hangerInfo in hangerInfos)
-        {
-            ModuleSlot slot = body.FindModuleSlot(hangerInfo.moduleTypePacked, hangerInfo.slotIndex);
-            if (slot == null)
-            {
-                Debug.LogWarning($"UpdateHangerModulesFromInfo: Slot not found - moduleTypePacked: {hangerInfo.moduleTypePacked}, slotIndex: {hangerInfo.slotIndex}");
-                continue;
-            }
-
-            ModuleBase existingModule = null;
-            if (slot.transform.childCount > 0)
-                existingModule = slot.GetComponentInChildren<ModuleBase>();
-
-            bool needsReplacement = false;
-            if (existingModule == null || existingModule is ModulePlaceholder)
-                needsReplacement = true;
-            else if (existingModule.GetModuleTypePacked() != hangerInfo.moduleTypePacked ||
-                     existingModule.GetModuleLevel() != hangerInfo.moduleLevel)
-                needsReplacement = true;
-
-            if (needsReplacement)
-            {
-                EModuleType moduleType = CommonUtility.GetModuleType(hangerInfo.moduleTypePacked);
-                bool success = body.ReplaceModuleInSlot(hangerInfo.slotIndex, hangerInfo.moduleTypePacked, moduleType, hangerInfo.moduleLevel);
-                if (success)
-                    Debug.Log($"Hanger module replaced: Type={hangerInfo.ModuleSubType}, Level={hangerInfo.moduleLevel}, Slot={hangerInfo.slotIndex}");
-                else
-                    Debug.LogError($"Failed to replace hanger module: Type={hangerInfo.ModuleSubType}, Level={hangerInfo.moduleLevel}, Slot={hangerInfo.slotIndex}");
-            }
-        }
-    }
+    
 
     private void OnDrawGizmos()
     {
