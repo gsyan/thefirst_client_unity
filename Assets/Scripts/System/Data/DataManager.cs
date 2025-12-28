@@ -122,7 +122,7 @@ public class DataManager : Singleton<DataManager>
             fleetName = "DefaultFleet",
             description = "Default Fleet",
             isActive = true,
-            formation = "Linear",
+            formation = EFormationType.LinearHorizontal,
             ships = new ShipInfo[]
             {
                 new ShipInfo
@@ -136,16 +136,16 @@ public class DataManager : Singleton<DataManager>
                     {
                         new ModuleBodyInfo
                         {
-                            moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, (int)EModuleBodySubType.Battle, EModuleStyle.None),
+                            moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, EModuleSubType.Body_Battle, EModuleStyle.None),
                             moduleLevel = 1,
                             bodyIndex = 0,
-                            weapons = new ModuleWeaponInfo[]
+                            engines = new ModuleInfo[]
                             {
-                                new ModuleWeaponInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, (int)EModuleWeaponSubType.Beam, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                                new ModuleInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, EModuleSubType.Engine_Standard, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
                             },
-                            engines = new ModuleEngineInfo[]
+                            weapons = new ModuleInfo[]
                             {
-                                new ModuleEngineInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, (int)EModuleEngineSubType.Standard, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                                new ModuleInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, EModuleSubType.Weapon_Beam, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
                             }
                         }
                     }
@@ -266,77 +266,30 @@ public class DataManager : Singleton<DataManager>
     }
 
     // 서버 데이터를 기반으로 완전한 모듈 데이터 복원
-    public ModuleBodyData RestoreBodyModuleData(EModuleBodySubType subType, int moduleLevel)
+    public ModuleData RestoreModuleData(EModuleSubType subType, int moduleLevel)
     {
         if (m_dataTableModule == null) return null;
-        return m_dataTableModule.GetBodyModule(subType, moduleLevel);
+        return m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
     }
-
-    public ModuleWeaponData RestoreWeaponModuleData(EModuleWeaponSubType subType, int moduleLevel)
+    
+    public ModuleData RestoreModuleData(int moduleTypePacked, int moduleLevel)
     {
         if (m_dataTableModule == null) return null;
-        return m_dataTableModule.GetWeaponModule(subType, moduleLevel);
+
+        EModuleSubType subType = CommonUtility.GetModuleSubType(moduleTypePacked);
+        if (subType == EModuleSubType.None) return null;
+
+        return RestoreModuleData(subType, moduleLevel);
     }
 
-    public ModuleEngineData RestoreEngineModuleData(EModuleEngineSubType subType, int moduleLevel)
+    public bool GetModuleUpgradeCost(int moduleTypePacked, int moduleLevel, out CostStruct cost)
     {
-        if (m_dataTableModule == null) return null;
-        return m_dataTableModule.GetEngineModule(subType, moduleLevel);
-    }
-
-    public ModuleHangerData RestoreHangerModuleData(EModuleHangerSubType subType, int moduleLevel)
-    {
-        if (m_dataTableModule == null) return null;
-        return m_dataTableModule.GetHangerModule(subType, moduleLevel);
-    }
-
-    public object RestoreModuleDataByType(int moduleType, int moduleLevel)
-    {
-        EModuleType type = CommonUtility.GetModuleType(moduleType);
-        switch (type)
-        {
-            case EModuleType.Body:
-                EModuleBodySubType bodySubType = CommonUtility.GetModuleSubType<EModuleBodySubType>(moduleType);
-                return RestoreBodyModuleData(bodySubType, moduleLevel);
-            case EModuleType.Weapon:
-                EModuleWeaponSubType weaponSubType = CommonUtility.GetModuleSubType<EModuleWeaponSubType>(moduleType);
-                return RestoreWeaponModuleData(weaponSubType, moduleLevel);
-            case EModuleType.Engine:
-                EModuleEngineSubType engineSubType = CommonUtility.GetModuleSubType<EModuleEngineSubType>(moduleType);
-                return RestoreEngineModuleData(engineSubType, moduleLevel);
-            default:
-                return null;
-        }
-    }
-
-    public bool GetModuleUpgradeCost(int moduleType, int moduleLevel, out CostStruct cost)
-    {
-        object moduleData = RestoreModuleDataByType(moduleType, moduleLevel);
-        if (moduleData == null)
-        {
-            cost = new CostStruct();
-            return false;
-        }
-
-        EModuleType type = CommonUtility.GetModuleType(moduleType);
-        switch (type)
-        {
-            case EModuleType.Body:
-                var bodyData = (ModuleBodyData)moduleData;
-                cost = bodyData.m_upgradeCost;
-                return true;
-            case EModuleType.Weapon:
-                var weaponData = (ModuleWeaponData)moduleData;
-                cost = weaponData.m_upgradeCost;
-                return true;
-            case EModuleType.Engine:
-                var engineData = (ModuleEngineData)moduleData;
-                cost = engineData.m_upgradeCost;
-                return true;
-            default:
-                cost = new CostStruct();
-                return false;
-        }
+        cost = new CostStruct();
+        ModuleData moduleData = RestoreModuleData(moduleTypePacked, moduleLevel);
+        if (moduleData == null) return false;
+        
+        cost = moduleData.m_upgradeCost;
+        return true;
     }
     #endregion
 

@@ -8,7 +8,7 @@ public abstract class ProjectileBase : MonoBehaviour
     protected float m_damage;
     protected ModuleBase m_sourceModuleBase = null;
 
-    public virtual void InitializeProjectile(Transform firePointTransform, ModuleBase targetTransform, float damage, ModuleWeaponData moduleWeaponData,
+    public virtual void InitializeProjectile(Transform firePointTransform, ModuleBase targetTransform, float damage, ModuleData moduleData,
                           Color color, ModuleBase sourceModuleBase)
     {
         m_firePointTransform = firePointTransform;

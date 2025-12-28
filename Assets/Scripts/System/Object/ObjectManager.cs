@@ -182,16 +182,16 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 {
                     new ModuleBodyInfo
                     {
-                        moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, (int)EModuleBodySubType.Battle, EModuleStyle.None),
+                        moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, EModuleSubType.Body_Battle, EModuleStyle.None),
                         moduleLevel = enemyLevel,
                         bodyIndex = 0,
-                        weapons = new[]
-                        {
-                            new ModuleWeaponInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, (int)EModuleWeaponSubType.Beam, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
-                        },
                         engines = new[]
                         {
-                            new ModuleEngineInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, (int)EModuleEngineSubType.Standard, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                            new ModuleInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, EModuleSubType.Engine_Standard, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                        },
+                        weapons = new[]
+                        {
+                            new ModuleInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, EModuleSubType.Weapon_Beam, EModuleStyle.None), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
                         }
                     }
                 }
@@ -202,7 +202,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         FleetInfo enemyFleetInfo = new FleetInfo
         {
             fleetName = $"EnemyFleet",
-            formation = "LinearHorizontal",
+            formation = EFormationType.LinearHorizontal,
             ships = enemyShips.ToArray()
         };
 
@@ -224,11 +224,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public class PrefabPaths
     {
         [Header("Module Prefabs")]
-        public string bodyPrefabPath = "Prefabs/ShipModule/Body/";
-        public string weaponPrefabPath = "Prefabs/ShipModule/Weapon/";
-        public string enginePrefabPath = "Prefabs/ShipModule/Engine/";
-        public string hangerPrefabPath = "Prefabs/ShipModule/Hanger/";
-        public string commonModulePrefabPath = "Prefabs/ShipModule/Common/";
+        public string shipModulePrefabPath = "Prefabs/ShipModule/";
         
         [Header("Space Resource Prefabs")]
         public string mineralPrefabPath = "Prefabs/SpaceResource/Mineral";
@@ -254,15 +250,15 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     private PrefabPaths prefabPaths = new PrefabPaths();
     private Dictionary<string, GameObject> cachedPrefabs = new Dictionary<string, GameObject>();
 
-    public GameObject LoadPrefab(string prefabSort, string prefabType, string moduleSubType, int level = 0, string variant = "")
+    public GameObject LoadPrefab(string prefabSort, string prefabName, int level = 0, string variant = "")
     {
-        string cacheKey = CreateCacheKey(prefabSort, prefabType, moduleSubType, level, variant);
+        string cacheKey = CreateCacheKey(prefabSort, prefabName, level, variant);
 
         // Return immediately if in cache
         if (cachedPrefabs.ContainsKey(cacheKey))
             return cachedPrefabs[cacheKey];
 
-        string resourcePath = GetPrefabPath(prefabSort, prefabType, moduleSubType, level, variant);        
+        string resourcePath = GetPrefabPath(prefabSort, prefabName, level, variant);        
         GameObject prefab = Resources.Load<GameObject>(resourcePath);
         if (prefab == null)
             return null;
@@ -274,28 +270,26 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         return prefab;
     }
     
-    private string CreateCacheKey(string prefabSort, string prefabType, string moduleSubType, int level, string variant)
+    private string CreateCacheKey(string prefabSort, string prefabName, int level, string variant)
     {
-        string key = $"{prefabSort}_{prefabType}";
-        if (string.IsNullOrEmpty(moduleSubType) == false) key += $"_{moduleSubType}";
-        if (level > 0) key += $"_Level{level}";
+        string key = $"{prefabSort}_{prefabName}";
+        if (level > 0) key += $"_{level}";
         if (string.IsNullOrEmpty(variant) == false) key += $"_{variant}";
         return key;
     }
     
-    private string GetPrefabPath(string prefabSort, string prefabType, string prefabSubType, int level, string variant)
+    private string GetPrefabPath(string prefabSort, string prefabName, int level, string variant)
     {
-        string basePath = GetBasePrefabPath(prefabSort, prefabType);
+        string basePath = GetBasePrefabPath(prefabSort, prefabName);
         if (string.IsNullOrEmpty(basePath))
-            return $"Prefabs/{prefabSort}/{prefabType}";
+            return $"Prefabs/{prefabSort}/{prefabName}";
 
         string fullPath = basePath;
         
         if (prefabSort == "ShipModule")
         {
-            fullPath += $"{prefabType}";
-            if (string.IsNullOrEmpty(prefabSubType) == false) fullPath += $"_{prefabSubType}";
-            if (level > 0) fullPath += $"_Level{level}";
+            fullPath += $"{prefabName}";
+            if (level > 0) fullPath += $"_{level}";
         }
         
         if (string.IsNullOrEmpty(variant) == false) fullPath += $"_{variant}";
@@ -307,25 +301,17 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     /// <summary>
     /// Return base path by prefab type
     /// </summary>
-    private string GetBasePrefabPath(string prefabSort, string prefabType)
+    private string GetBasePrefabPath(string prefabSort, string prefabName)
     {
         switch (prefabSort.ToLower())
         {
             // Module Prefabs
             case "shipmodule":
-                switch (prefabType.ToLower())
-                {
-                    case "body": return prefabPaths.bodyPrefabPath;
-                    case "weapon": return prefabPaths.weaponPrefabPath;
-                    case "engine": return prefabPaths.enginePrefabPath;
-                    case "hanger": return prefabPaths.hangerPrefabPath;
-                    case "common": return prefabPaths.commonModulePrefabPath;
-                }
-                break;
+                return prefabPaths.shipModulePrefabPath;
 
             // Space Resource Prefabs  
             case "spaceresource":
-                switch (prefabType.ToLower())
+                switch (prefabName.ToLower())
                 {
                     case "mineral": return prefabPaths.mineralPrefabPath;
                     case "asteroid": return prefabPaths.asteroidPrefabPath;
@@ -335,7 +321,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
             // Effect Prefabs
             case "effect":
-                switch (prefabType.ToLower())
+                switch (prefabName.ToLower())
                 {
                     case "explosion": return prefabPaths.explosionPrefabPath;
                     case "laser": return prefabPaths.laserPrefabPath;
@@ -345,7 +331,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
             // UI Prefabs
             case "ui":
-                switch (prefabType.ToLower())
+                switch (prefabName.ToLower())
                 {
                     case "damagetext": return prefabPaths.damageTextPrefabPath;
                     case "healthbar": return prefabPaths.healthBarPrefabPath;
@@ -355,7 +341,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
             // Projectile Prefabs
             case "projectile":
-                switch (prefabType.ToLower())
+                switch (prefabName.ToLower())
                 {
                     case "bullet": return prefabPaths.bulletPrefabPath;
                     case "missile": return prefabPaths.missilePrefabPath;
@@ -368,14 +354,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
     
     
-    public GameObject LoadShipModulePrefab(string moduleType, string moduleSubType = "", int moduleLevel = 1)
+    public GameObject LoadShipModulePrefab(string modulePrefabName, int moduleLevel = 1)
     {
-        return LoadPrefab("ShipModule", moduleType, moduleSubType, moduleLevel);
+        return LoadPrefab("ShipModule", modulePrefabName, moduleLevel);
     }
 
     public GameObject LoadModulePlaceholderPrefab()
     {
-        return LoadPrefab("ShipModule", "Common", "ModulePlaceholder", 0);
+        return LoadPrefab("ShipModule", "Placeholder", 0);
     }
     
     /// <summary>
@@ -383,22 +369,22 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     /// </summary>
     public GameObject LoadSpaceResourcePrefab(string resourceType = "Mineral", string variant = "") 
     {
-        return LoadPrefab("SpaceResource", resourceType, "", 1, variant);
+        return LoadPrefab("SpaceResource", resourceType, 1, variant);
     }
     
     public GameObject LoadEffectPrefab(string effectType, string variant = "") 
     {
-        return LoadPrefab("Effect", effectType, "", 1, variant);
+        return LoadPrefab("Effect", effectType, 1, variant);
     }
     
     public GameObject LoadProjectilePrefab(string projectileType, string variant = "") 
     {
-        return LoadPrefab("Projectile", projectileType, "", 1, variant);
+        return LoadPrefab("Projectile", projectileType, 1, variant);
     }
     
     public GameObject LoadUIPrefab(string uiType, string variant = "") 
     {
-        return LoadPrefab("UI", uiType, "", 1, variant);
+        return LoadPrefab("UI", uiType, 1, variant);
     }
     #endregion Prefabs ---------------------------------------------------------------
     

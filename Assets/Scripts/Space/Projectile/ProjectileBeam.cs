@@ -28,16 +28,16 @@ public class ProjectileBeam : ProjectileBase
     private const float MAX_LIFE_TIME = 5f;
     private float m_hitEffectTime;
 
-    public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleWeaponData moduleWeaponData,
+    public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
                           Color color, ModuleBase sourceModuleBase)
     {
-        base.InitializeProjectile(firePointTransform, target, damage, moduleWeaponData, color, sourceModuleBase);
+        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase);
         
         m_beamHeadPos = m_firePointTransform.position;
         m_beamTailPos = m_firePointTransform.position;
-        m_maxBeamLength = moduleWeaponData.m_projectileLength;
-        m_beamWidth = moduleWeaponData.m_projectileWidth;
-        m_beamSpeed = moduleWeaponData.m_projectileSpeed;        
+        m_maxBeamLength = moduleData.m_projectileLength;
+        m_beamWidth = moduleData.m_projectileWidth;
+        m_beamSpeed = moduleData.m_projectileSpeed;        
         m_beamColor = color;        
         
 

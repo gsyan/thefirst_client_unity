@@ -71,26 +71,17 @@ public class CameraController : MonoSingleton<CameraController>
         switch (mode)
         {
             case ECameraControllerMode.Normal:
-                SetSpaceSceneGaugesVisible(true);
                 break;
             case ECameraControllerMode.Select_Ship:
             case ECameraControllerMode.Upgrade_Fleet:
             case ECameraControllerMode.Manage_Ship:
                 if (viewTarget != null)
                     SetTargetOfCameraController(viewTarget);
-                SetSpaceSceneGaugesVisible(false);
                 break;
         }
-    }
 
-    private void SetSpaceSceneGaugesVisible(bool visible)
-    {
-        ModuleGaugeDisplay[] allGauges = FindObjectsByType<ModuleGaugeDisplay>(FindObjectsSortMode.None);
-        foreach (ModuleGaugeDisplay gauge in allGauges)
-        {
-            if (gauge != null )
-                gauge.SetGaugeVisible(visible);
-        }
+        // 카메라 모드 변경 이벤트 발생
+        EventManager.TriggerCameraModeChanged(mode);
     }
 
     public void UpdateFleetViewPosition()

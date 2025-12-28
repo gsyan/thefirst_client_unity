@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class ModuleWeapon : ModuleBase
 {
     [SerializeField] private ModuleBody m_parentBody;
-    public ModuleWeaponInfo m_moduleWeaponInfo;
+    public ModuleInfo m_moduleInfo;
 
     // 무기 전용 스탯
     [SerializeField] private int m_attackFireCount;
@@ -20,14 +20,14 @@ public class ModuleWeapon : ModuleBase
     private ModuleBody m_currentTarget;
     private Coroutine m_autoAttackCoroutine;
 
-    public void InitializeModuleWeapon(ModuleWeaponInfo moduleWeaponInfo, ModuleBody parentBody, ModuleSlot slot)
+    public void InitializeModuleWeapon(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
     {
-        m_moduleWeaponInfo = moduleWeaponInfo;
+        m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
-        m_moduleSlot = slot;
+        m_moduleSlot = moduleSlot;
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
-        ModuleWeaponData moduleData = DataManager.Instance.RestoreWeaponModuleData(m_moduleWeaponInfo.ModuleSubType, m_moduleWeaponInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
         if (moduleData == null)
         {
             Debug.LogError("Failed to restore module data for ModuleWeapon");
@@ -57,11 +57,11 @@ public class ModuleWeapon : ModuleBase
             m_parentBody.AddWeapon(this);
     }
 
-    private void InitializeWeaponSubType(ModuleWeaponData moduleData)
+    private void InitializeWeaponSubType(ModuleData moduleData)
     {
-        switch (m_moduleWeaponInfo.ModuleSubType)
+        switch (m_moduleInfo.ModuleSubType)
         {
-            case EModuleWeaponSubType.Beam:
+            case EModuleSubType.Weapon_Beam:
                 for(int i=0; i< moduleData.m_attackFireCount; i++)
                 {
                     LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
@@ -69,15 +69,13 @@ public class ModuleWeapon : ModuleBase
                     m_launchers.Add(launcher);
                 }
                 break;
-            case EModuleWeaponSubType.Missile:
+            case EModuleSubType.Weapon_Missile:
                 for(int i=0; i< moduleData.m_attackFireCount; i++)
                 {
                     LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
                     launcher.InitializeLauncherMissile(moduleData);
                     m_launchers.Add(launcher);
                 }
-                break;
-            case EModuleWeaponSubType.Cannon:
                 break;
             default:
                 break;
@@ -130,7 +128,7 @@ public class ModuleWeapon : ModuleBase
         
         if (m_health <= 0)
         {
-            Debug.Log($"[{GetFleetName()}] ModuleWeapon[Body{m_moduleWeaponInfo.bodyIndex}-Slot{m_moduleSlot.m_slotIndex}] destroyed!");
+            Debug.Log($"[{GetFleetName()}] ModuleWeapon[Body{m_moduleInfo.bodyIndex}-Slot{m_moduleSlot.m_slotIndex}] destroyed!");
             
             // 부모 바디에서 이 무기 제거
             if (m_parentBody != null)
@@ -145,27 +143,35 @@ public class ModuleWeapon : ModuleBase
 
     public override EModuleType GetModuleType()
     {
-        return EModuleType.Weapon;
+        return m_moduleInfo.ModuleType;
+    }
+    public override EModuleSubType GetModuleSubType()
+    {
+        return m_moduleInfo.ModuleSubType;
+    }
+    public override EModuleStyle GetModuleStyle()
+    {
+        return m_moduleInfo.ModuleStyle;
     }
     public override int GetModuleTypePacked()
     {
-        return m_moduleWeaponInfo.moduleTypePacked;
+        return m_moduleInfo.moduleTypePacked;
     }
     public override int GetModuleLevel()
     {
-        return m_moduleWeaponInfo.moduleLevel;
+        return m_moduleInfo.moduleLevel;
     }
     public override void SetModuleLevel(int level)
     {
-        m_moduleWeaponInfo.moduleLevel = level;
+        m_moduleInfo.moduleLevel = level;
     }
     public override int GetModuleBodyIndex()
     {
-        return m_moduleWeaponInfo.bodyIndex;
+        return m_moduleInfo.bodyIndex;
     }
     public override void SetModuleBodyIndex(int bodyIndex)
     {
-        m_moduleWeaponInfo.bodyIndex = bodyIndex;
+        m_moduleInfo.bodyIndex = bodyIndex;
     }
 
     
@@ -215,8 +221,8 @@ public class ModuleWeapon : ModuleBase
 
     public override string GetUpgradeComparisonText()
     {
-        var currentStats = DataManager.Instance.RestoreWeaponModuleData(m_moduleWeaponInfo.ModuleSubType, m_moduleWeaponInfo.moduleLevel);
-        var upgradeStats = DataManager.Instance.RestoreWeaponModuleData(m_moduleWeaponInfo.ModuleSubType, m_moduleWeaponInfo.moduleLevel + 1);
+        ModuleData currentStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
+        ModuleData upgradeStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel + 1);
 
         if (currentStats == null)
             return "Current module data not found.";
@@ -225,7 +231,7 @@ public class ModuleWeapon : ModuleBase
             return "Upgrade not available (max level reached).";
 
         string comparison = $"=== UPGRADE COMPARISON ===\n";
-        comparison += $"Level: {currentStats.m_level} -> {upgradeStats.m_level}\n";
+        comparison += $"Level: {currentStats.m_moduleLevel} -> {upgradeStats.m_moduleLevel}\n";
         comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
         comparison += $"Attack Power: {currentStats.m_attackPower:F1} -> {upgradeStats.m_attackPower:F1}\n";
         string costString = $"Cost: Tech Level {currentStats.m_upgradeCost.techLevel}";

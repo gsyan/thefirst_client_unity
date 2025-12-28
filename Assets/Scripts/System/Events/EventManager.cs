@@ -138,5 +138,19 @@ public static class EventManager
         OnSpaceShipModuleSelected_TabUpgrade -= callback;
     }
 
+    // Camera Mode Change
+    public static event Action<ECameraControllerMode> OnCameraModeChanged;
+    public static void TriggerCameraModeChanged(ECameraControllerMode mode)
+    {
+        OnCameraModeChanged?.Invoke(mode);
+    }
+    public static void Subscribe_CameraModeChanged(Action<ECameraControllerMode> callback)
+    {
+        OnCameraModeChanged += callback;
+    }
+    public static void Unsubscribe_CameraModeChanged(Action<ECameraControllerMode> callback)
+    {
+        OnCameraModeChanged -= callback;
+    }
 
 }

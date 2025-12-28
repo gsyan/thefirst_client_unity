@@ -4,9 +4,9 @@ using System.Collections;
 
 public class LauncherMissile : LauncherBase
 {
-    private ModuleWeaponData m_moduleWeaponData;
+    private ModuleData m_moduleData;
     
-    public void InitializeLauncherMissile(ModuleWeaponData moduleData)
+    public void InitializeLauncherMissile(ModuleData moduleData)
     {
         if (m_isInitialized == true) return;
 
@@ -23,7 +23,7 @@ public class LauncherMissile : LauncherBase
             }
         }
 
-        m_moduleWeaponData = moduleData;
+        m_moduleData = moduleData;
 
         m_isInitialized = true;
     }
@@ -49,7 +49,7 @@ public class LauncherMissile : LauncherBase
         missile.transform.position = m_firePoint.position;
         missile.transform.rotation = m_firePoint.rotation;
 
-        missile.InitializeProjectile(m_firePoint, target, damage, m_moduleWeaponData, Color.black, sourceModuleBase);
+        missile.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.black, sourceModuleBase);
     }
 
 }

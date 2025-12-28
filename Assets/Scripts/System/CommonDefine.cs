@@ -19,47 +19,31 @@ public enum ESpaceMineralState
 [System.Serializable]
 public enum EModuleType
 {
-    None = 0,
-    Body = 1,
-    Engine = 2,
-    Weapon = 3,
-    Hanger = 4,
-
-    Max = 5
+    None        = 0,
+    Body        = 1,
+    Engine      = 2,
+    Weapon      = 3,
+    Hanger      = 4,
+    Max         = 5
 }
 [System.Serializable]
-public enum EModuleBodySubType
+public enum EModuleSubType
 {
-    None = 0,
-    Battle = 1,
-    Aircraft = 2,
-    Scout = 3,
-    Repair = 4,
-}
-[System.Serializable]
-public enum EModuleEngineSubType
-{
-    None = 0,
-    Standard = 1,
-    Booster = 2,
-    Warp = 3
-}
-[System.Serializable]
-public enum EModuleWeaponSubType
-{
-    None = 0,
-    Beam = 1,
-    Missile = 2,
-    Cannon = 3,
-    Torpedo = 4,
-}
-[System.Serializable]
-public enum EModuleHangerSubType
-{
-    None = 0,
-    Standard = 1,
-    Advanced = 2,
-    Military = 3
+    None            = 0,
+    // BodySubType
+    Body_Battle     = 1001,
+    Body_Aircraft   = 1002,
+    Body_Repair     = 1003,
+    // EngineSubType
+    Engine_Standard = 2001,
+    Engine_Booster  = 2002,
+    Engine_Warp     = 2003,
+    // WeaponSubType
+    Weapon_Beam     = 3001,
+    Weapon_Missile  = 3002,
+    // HangerSubType
+    Hanger_Standard = 4001,
+    Hanger_Advanced = 4002
 }
 [System.Serializable]
 public enum EModuleStyle

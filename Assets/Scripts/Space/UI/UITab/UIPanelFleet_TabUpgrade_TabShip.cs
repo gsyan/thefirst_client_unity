@@ -18,6 +18,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     [SerializeField] private Button m_backButton;
     [SerializeField] private Button m_unlockModuleButton;
     [SerializeField] private TMP_Text m_unlockModuleButtonText;
+    [SerializeField] private GameObject m_scrollViewModule;
     [SerializeField] private RectTransform m_scrollViewModuleContent;
     [SerializeField] private GameObject m_scrollViewModuleItem;       // 프리팹
     [SerializeField] private Button m_selectModuleButton;
@@ -116,7 +117,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         {
             m_unlockModuleButton.gameObject.SetActive(true);
 
-            m_scrollViewModuleContent.gameObject.SetActive(false);
+            m_scrollViewModule.gameObject.SetActive(false);
             m_selectModuleButton.gameObject.SetActive(false);
             m_upgradeModuleButton.gameObject.SetActive(false);
         }
@@ -124,7 +125,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         {
             m_unlockModuleButton.gameObject.SetActive(false);
             
-            m_scrollViewModuleContent.gameObject.SetActive(true);
+            m_scrollViewModule.gameObject.SetActive(true);
             m_selectModuleButton.gameObject.SetActive(true);
             m_upgradeModuleButton.gameObject.SetActive(true);
         }
@@ -191,14 +192,13 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             return;
         }
 
-        int moduleSubTypeValue = CommonUtility.GetModuleSubType(m_selectedModule.m_moduleSlot.m_moduleTypePacked);
         // 모듈 해금 요청 생성
         var unlockRequest = new ModuleUnlockRequest
         {
             shipId = m_selectedShip.m_shipInfo.id,
             bodyIndex = m_selectedModule.GetModuleBodyIndex(),
-            moduleType = (int)m_selectedModule.m_moduleSlot.m_type,
-            moduleSubTypeValue = moduleSubTypeValue,
+            moduleType = m_selectedModule.m_moduleSlot.m_moduleType,
+            moduleSubType = m_selectedModule.m_moduleSlot.m_moduleSubType,
             slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex
         };
 
@@ -275,10 +275,11 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         var upgradeRequest = new ModuleUpgradeRequest
         {
             shipId = m_selectedShip.m_shipInfo.id
+            ,bodyIndex = m_selectedModule.GetModuleBodyIndex()
+            ,moduleTypePacked = m_selectedModule.GetModuleTypePacked()
+            ,slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex
             ,currentLevel = m_selectedModule.GetModuleLevel()
             ,targetLevel = m_selectedModule.GetModuleLevel() + 1
-            ,bodyIndex = m_selectedModule.GetModuleBodyIndex()
-            ,moduleType = m_selectedModule.GetModuleType().ToString()
         };
 
         // Send upgrade request to server
@@ -295,7 +296,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             return false;
         }
 
-        var upgradeStats = DataManager.Instance.RestoreModuleDataByType(m_selectedModule.GetModuleTypePacked(), m_selectedModule.GetModuleLevel() + 1);
+        ModuleData upgradeStats = DataManager.Instance.RestoreModuleData(m_selectedModule.GetModuleTypePacked(), m_selectedModule.GetModuleLevel() + 1);
         if (upgradeStats == null)
         {
             validationMessage = "Max level reached";
@@ -409,104 +410,40 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
     }
 
-
-
-
-
     private void UpdateScrollView()
     {
         if (bShow != true) return;
         if (m_scrollViewModuleContent == null || m_scrollViewModuleItem == null) return;
         if (m_selectedModule == null) return;
-        int moduleTypePacked = m_selectedModule.GetModuleTypePacked();
-        if (moduleTypePacked == 0) return;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
+        if (currentModuleTypePacked == 0) return;
 
         // 기존 아이템 모두 제거
-        m_moduleItems.Clear();
-        
+        m_moduleItems.Clear();        
         foreach(Transform child in m_scrollViewModuleContent)
             Destroy(child.gameObject);
         
+        EModuleType targetModuleType = m_selectedModule.GetModuleType();
+        EModuleSubType targetModuleSubType = EModuleSubType.None;
+        if( targetModuleType == EModuleType.Weapon)
+            targetModuleSubType = m_selectedModule.GetModuleSubType();
+        
         // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
-        EModuleType moduleType = m_selectedModule.GetModuleType();
-
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
-        switch (moduleType)
+        foreach(EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
-            case EModuleType.Body:
-                CreateBodyModuleItems(moduleTypePacked, character);
-                break;
-            case EModuleType.Engine:
-                CreateEngineModuleItems(moduleTypePacked, character);
-                break;
-            case EModuleType.Weapon:
-                CreateWeaponModuleItems(moduleTypePacked, character);
-                break;
-            case EModuleType.Hanger:
-                CreateHangerModuleItems(moduleTypePacked, character);
-                break;
-            default:
-                break;
-        }
-    }
+            if (subType == EModuleSubType.None) continue;
+            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
+            // targetModuleType 에 속하는 서브 타입만 순회
+            if (moduleType != targetModuleType) continue;
+            // targetModuleSubType 이 EModuleSubType.None 이면 통과, 아니라면 같아야 통과
+            if (targetModuleSubType != EModuleSubType.None && subType != targetModuleSubType) continue;
 
-    private void CreateBodyModuleItems(int currentModuleTypePacked, Character character)
-    {
-        foreach(EModuleBodySubType subType in System.Enum.GetValues(typeof(EModuleBodySubType)))
-        {
-            if (subType == EModuleBodySubType.None) continue;
-            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, (int)subType, EModuleStyle.None);
-            string moduleName = $"Body - {subType}";
+            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(moduleType, subType, EModuleStyle.None);
+            string moduleName = $"{subType}";
             bool isResearched = character.IsModuleResearched(moduleTypePacked);
             bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
-
-            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
-        }
-    }
-
-    private void CreateEngineModuleItems(int currentModuleTypePacked, Character character)
-    {
-        foreach(EModuleEngineSubType subType in System.Enum.GetValues(typeof(EModuleEngineSubType)))
-        {
-            if (subType == EModuleEngineSubType.None) continue;
-
-            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, (int)subType, EModuleStyle.None);
-            string moduleName = $"Engine - {subType}";
-            bool isResearched = character.IsModuleResearched(moduleTypePacked);
-            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
-
-            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
-        }
-    }
-
-    private void CreateWeaponModuleItems(int currentModuleTypePacked, Character character)
-    {
-        foreach(EModuleWeaponSubType subType in System.Enum.GetValues(typeof(EModuleWeaponSubType)))
-        {
-            if (subType == EModuleWeaponSubType.None) continue;
-
-            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, (int)subType, EModuleStyle.None);
-            string moduleName = $"Weapon - {subType}";
-            bool isResearched = character.IsModuleResearched(moduleTypePacked);
-            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
-
-            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
-        }
-    }
-
-    private void CreateHangerModuleItems(int currentModuleTypePacked, Character character)
-    {
-        foreach(EModuleHangerSubType subType in System.Enum.GetValues(typeof(EModuleHangerSubType)))
-        {
-            if (subType == EModuleHangerSubType.None) continue;
-
-            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Hanger, (int)subType, EModuleStyle.None);
-            string moduleName = $"Hanger - {subType}";
-            bool isResearched = character.IsModuleResearched(moduleTypePacked);
-            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
-
             CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
         }
     }
@@ -550,8 +487,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
 
         int slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex;
-        int newModuleType = m_selectedModule.GetModuleTypePacked();
-        int newModuleLevel = m_selectedModule.GetModuleLevel();
+        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
+        int newModuleLevel = m_selectedModule.GetModuleLevel(); // 현재 모듈의 레벨 유지
         if( newModuleLevel < 1) return;
 
         // 모듈 교체 요청 생성
@@ -560,8 +497,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             shipId = m_selectedShip.m_shipInfo.id
             , bodyIndex = m_selectedModule.GetModuleBodyIndex()
             , slotIndex = slotIndex
-            , currentModuleType = m_selectedModule.GetModuleType().ToString()
-            , newModuleType = CommonUtility.GetModuleType(newModuleType).ToString()
+            , currentModuleTypePacked = currentModuleTypePacked
+            , newModuleTypePacked = moduleTypePacked
             , newModuleLevel = newModuleLevel
         };
 
@@ -599,9 +536,10 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
 
         // TODO: 사용자가 교체할 새 모듈을 선택하도록 UI 구현 필요
-        // 현재는 임시로 같은 타입의 레벨 1 모듈로 교체하는 예시
-        int newModuleType = m_selectedModule.GetModuleTypePacked();
-        int newModuleLevel = 1;
+        // 현재는 임시로 같은 타입의 모듈로 교체하는 예시
+        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
+        int newModuleTypePacked = m_selectedModule.GetModuleTypePacked();
+        int newModuleLevel = m_selectedModule.GetModuleLevel();
 
         // 슬롯 인덱스 가져오기
         int slotIndex = -1;
@@ -624,8 +562,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             shipId = m_selectedShip.m_shipInfo.id,
             bodyIndex = m_selectedModule.GetModuleBodyIndex(),
             slotIndex = slotIndex,
-            currentModuleType = m_selectedModule.GetModuleType().ToString(),
-            newModuleType = CommonUtility.GetModuleType(newModuleType).ToString(),
+            currentModuleTypePacked = currentModuleTypePacked,
+            newModuleTypePacked = newModuleTypePacked,
             newModuleLevel = newModuleLevel
         };
 

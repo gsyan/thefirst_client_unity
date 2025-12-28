@@ -72,7 +72,7 @@ public class UIPanelFleet_TabFormation : UITabBase
         var request = new ChangeFormationRequest
         {
             fleetId = fleet.m_fleetInfo.id,
-            formationType = newFormationType.ToString()
+            formationType = newFormationType
         };
 
         NetworkManager.Instance.ChangeFormation(request, OnChangeFormationResponse);
@@ -84,12 +84,13 @@ public class UIPanelFleet_TabFormation : UITabBase
         {
             DataManager.Instance.m_currentFleetInfo = response.data.updatedFleetInfo;
 
-            if (System.Enum.TryParse<EFormationType>(response.data.updatedFleetInfo.formation, true, out var newFormationType))
-            {
-                m_currentFormationType = newFormationType;
-                m_myFleet.UpdateShipFormation(m_currentFormationType, true);
-                UpdateFormationDisplay();
-            }
+            // if (System.Enum.TryParse<EFormationType>(response.data.updatedFleetInfo.formation, true, out var newFormationType))
+            // {
+                
+            // }
+            m_currentFormationType = response.data.updatedFleetInfo.formation;
+            m_myFleet.UpdateShipFormation(m_currentFormationType, true);
+            UpdateFormationDisplay();
         }
     }
 

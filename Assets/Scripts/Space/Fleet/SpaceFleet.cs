@@ -33,14 +33,8 @@ public class SpaceFleet : MonoBehaviour
             for (int i = 0; i < m_fleetInfo.ships.Length; i++)
                 CreateSpaceShipFromData(fleetInfo.ships[i]);
 
-            if (string.IsNullOrEmpty(m_fleetInfo.formation) == false)
-            {
-                if (System.Enum.TryParse<EFormationType>(m_fleetInfo.formation, out var formationType))
-                    UpdateShipFormation(formationType, false);
-            }
+            UpdateShipFormation(m_fleetInfo.formation, false);
         }
-
-
     }
     public void CreateSpaceShipFromData(ShipInfo shipInfo)
     {
@@ -102,7 +96,7 @@ public class SpaceFleet : MonoBehaviour
         var request = new ChangeFormationRequest
         {
             fleetId = m_fleetInfo.id,
-            formationType = newFormationType.ToString()
+            formationType = newFormationType
         };
 
         NetworkManager.Instance.ChangeFormation(request, (response) =>

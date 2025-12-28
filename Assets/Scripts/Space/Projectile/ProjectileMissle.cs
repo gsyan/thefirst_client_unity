@@ -8,19 +8,19 @@ public class ProjectileMissile : ProjectileBase
     private float m_lifeTime;
     private const float MAX_LIFE_TIME = 10f;
     private const float ROTATION_SPEED = 90f;
-    private ModuleWeaponData m_moduleWeaponData;
+    private ModuleData m_moduleData;
     private float m_currentSpeed;
     private float m_acceleration;
     private float m_initialFlightDuration;
     private Vector3 m_initialDirection;
 
-    public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleWeaponData moduleWeaponData, Color color, ModuleBase sourceModuleBase)
+    public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData, Color color, ModuleBase sourceModuleBase)
     {
-        base.InitializeProjectile(firePointTransform, target, damage, moduleWeaponData, color, sourceModuleBase);
-        m_moduleWeaponData = moduleWeaponData;
+        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase);
+        m_moduleData = moduleData;
         m_lifeTime = 0.0f;
         m_currentSpeed = 0.0f;
-        m_acceleration = m_moduleWeaponData.m_projectileSpeed * 0.1f;
+        m_acceleration = m_moduleData.m_projectileSpeed * 0.1f;
         m_initialFlightDuration = Random.Range(0.1f, 0.5f);
         m_initialDirection = transform.forward;
         if (m_lifeCycleCoroutine != null) StopCoroutine(m_lifeCycleCoroutine);
@@ -44,7 +44,7 @@ public class ProjectileMissile : ProjectileBase
             Vector3 targetDirection = (m_saveTargetPosition - transform.position).normalized;
             float dotProduct = Vector3.Dot(transform.forward, targetDirection);
             float applyDot = dotProduct * dotProduct;
-            m_currentSpeed = m_moduleWeaponData.m_projectileSpeed * Mathf.Max(0.1f, applyDot);
+            m_currentSpeed = m_moduleData.m_projectileSpeed * Mathf.Max(0.1f, applyDot);
             
             if (m_lifeTime < m_initialFlightDuration)
             {

@@ -10,10 +10,10 @@ public class DataTableModuleEditor : Editor
     private DataTableModule dataTableModule;
     private Vector2 scrollPosition;
 
-    private Dictionary<EModuleBodySubType, bool> bodySubTypeFoldouts = new Dictionary<EModuleBodySubType, bool>();
-    private Dictionary<EModuleEngineSubType, bool> engineSubTypeFoldouts = new Dictionary<EModuleEngineSubType, bool>();
-    private Dictionary<EModuleWeaponSubType, bool> weaponSubTypeFoldouts = new Dictionary<EModuleWeaponSubType, bool>();
-    private Dictionary<EModuleHangerSubType, bool> hangerSubTypeFoldouts = new Dictionary<EModuleHangerSubType, bool>();
+    private Dictionary<EModuleSubType, bool> bodySubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<EModuleSubType, bool> engineSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<EModuleSubType, bool> weaponSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<EModuleSubType, bool> hangerSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
 
     private bool showBodyModules = false;
     private bool showEngineModules = false;
@@ -30,7 +30,10 @@ public class DataTableModuleEditor : Editor
     private void OnEnable()
     {
         dataTableModule = (DataTableModule)target;
-        dataTableModule.InitializeSubTypeGroups();
+        // InitializeSubTypeGroups()를 여기서 호출하면 안됨!
+        // OnEnable은 Inspector에서 asset 선택할 때마다 호출되어
+        // 빈 그룹이 계속 추가됨
+        // Generate 버튼에서만 호출해야 함
     }
 
     public override void OnInspectorGUI()
@@ -97,7 +100,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawBodySubTypeGroup(ModuleBodySubTypeGroup group)
+    private void DrawBodySubTypeGroup(ModuleSubTypeGroup group)
     {
         if (!bodySubTypeFoldouts.ContainsKey(group.subType))
             bodySubTypeFoldouts[group.subType] = false;
@@ -109,17 +112,19 @@ public class DataTableModuleEditor : Editor
 
         if (GUILayout.Button("Add", GUILayout.Width(50)))
         {
-            var newModule = new ModuleBodyData
+            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
+            var moduleData = new ModuleData
             {
-                m_name = $"New {group.subType}",
-                m_subType = group.subType,
-                m_style = EModuleStyle.None,
-                m_level = group.modules.Count + 1,
+                m_moduleName = $"{group.subType} LV.{group.modules.Count + 1}",
+                m_moduleType = moduleType,
+                m_moduleSubType = group.subType,
+                m_moduleStyle = EModuleStyle.None,
+                m_moduleLevel = group.modules.Count + 1,
                 m_health = 200f,
                 m_cargoCapacity = 100f,
-                m_description = $"{group.subType} module"
+                m_description = $"{group.subType} LV.{group.modules.Count + 1}"
             };
-            group.modules.Add(newModule);
+            group.modules.Add(moduleData);
             EditorUtility.SetDirty(dataTableModule);
         }
 
@@ -138,10 +143,10 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawBodyModuleDetails(ModuleBodyData module, ModuleBodySubTypeGroup group, int index)
+    private void DrawBodyModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_level}", EditorStyles.boldLabel, GUILayout.Width(80));
+        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
 
         if (GUILayout.Button("Remove", GUILayout.Width(70)))
         {
@@ -151,9 +156,9 @@ public class DataTableModuleEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        module.m_name = EditorGUILayout.TextField("Name", module.m_name);
-        module.m_style = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_style);
-        module.m_level = EditorGUILayout.IntSlider("Level", module.m_level, 1, 10);
+        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
+        module.m_moduleStyle = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_moduleStyle);
+        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
@@ -161,10 +166,10 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.IntField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.IntField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.IntField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.IntField("MineralDark", module.m_upgradeCost.mineralDark);
+        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
 
         module.m_description = EditorGUILayout.TextField("Description", module.m_description);
     }
@@ -191,7 +196,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawWeaponSubTypeGroup(ModuleWeaponSubTypeGroup group)
+    private void DrawWeaponSubTypeGroup(ModuleSubTypeGroup group)
     {
         if (!weaponSubTypeFoldouts.ContainsKey(group.subType))
             weaponSubTypeFoldouts[group.subType] = false;
@@ -203,19 +208,21 @@ public class DataTableModuleEditor : Editor
 
         if (GUILayout.Button("Add", GUILayout.Width(50)))
         {
-            var newModule = new ModuleWeaponData
+            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
+            var module = new ModuleData
             {
-                m_name = $"New {group.subType}",
-                m_subType = group.subType,
-                m_style = EModuleStyle.None,
-                m_level = group.modules.Count + 1,
+                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
+                m_moduleType = moduleType,
+                m_moduleSubType = group.subType,
+                m_moduleStyle = EModuleStyle.None,
+                m_moduleLevel = group.modules.Count + 1,
                 m_health = 50f,
                 m_attackPower = 25f,
                 m_attackFireCount = 1,
                 m_attackCoolTime = 2f,
-                m_description = $"{group.subType} weapon"
+                m_description = $"{group.subType} LV{group.modules.Count + 1}"
             };
-            group.modules.Add(newModule);
+            group.modules.Add(module);
             EditorUtility.SetDirty(dataTableModule);
         }
 
@@ -234,10 +241,10 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawWeaponModuleDetails(ModuleWeaponData module, ModuleWeaponSubTypeGroup group, int index)
+    private void DrawWeaponModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_level}", EditorStyles.boldLabel, GUILayout.Width(80));
+        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
 
         if (GUILayout.Button("Remove", GUILayout.Width(70)))
         {
@@ -247,9 +254,9 @@ public class DataTableModuleEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        module.m_name = EditorGUILayout.TextField("Name", module.m_name);
-        module.m_style = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_style);
-        module.m_level = EditorGUILayout.IntSlider("Level", module.m_level, 1, 10);
+        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
+        module.m_moduleStyle = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_moduleStyle);
+        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
@@ -264,10 +271,10 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.IntField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.IntField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.IntField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.IntField("MineralDark", module.m_upgradeCost.mineralDark);
+        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
 
         module.m_description = EditorGUILayout.TextField("Description", module.m_description);
     }
@@ -294,7 +301,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawEngineSubTypeGroup(ModuleEngineSubTypeGroup group)
+    private void DrawEngineSubTypeGroup(ModuleSubTypeGroup group)
     {
         if (!engineSubTypeFoldouts.ContainsKey(group.subType))
             engineSubTypeFoldouts[group.subType] = false;
@@ -306,18 +313,20 @@ public class DataTableModuleEditor : Editor
 
         if (GUILayout.Button("Add", GUILayout.Width(50)))
         {
-            var newModule = new ModuleEngineData
+            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
+            var module = new ModuleData
             {
-                m_name = $"New {group.subType}",
-                m_subType = group.subType,
-                m_style = EModuleStyle.None,
-                m_level = group.modules.Count + 1,
+                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
+                m_moduleType = moduleType,
+                m_moduleSubType = group.subType,
+                m_moduleStyle = EModuleStyle.None,
+                m_moduleLevel = group.modules.Count + 1,
                 m_health = 50f,
                 m_movementSpeed = 5f,
                 m_rotationSpeed = 3f,
-                m_description = $"{group.subType} engine"
+                m_description = $"{group.subType} LV{group.modules.Count + 1}"
             };
-            group.modules.Add(newModule);
+            group.modules.Add(module);
             EditorUtility.SetDirty(dataTableModule);
         }
 
@@ -336,10 +345,10 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawEngineModuleDetails(ModuleEngineData module, ModuleEngineSubTypeGroup group, int index)
+    private void DrawEngineModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_level}", EditorStyles.boldLabel, GUILayout.Width(80));
+        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
 
         if (GUILayout.Button("Remove", GUILayout.Width(70)))
         {
@@ -349,9 +358,9 @@ public class DataTableModuleEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        module.m_name = EditorGUILayout.TextField("Name", module.m_name);
-        module.m_style = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_style);
-        module.m_level = EditorGUILayout.IntSlider("Level", module.m_level, 1, 10);
+        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
+        module.m_moduleStyle = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_moduleStyle);
+        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
@@ -360,10 +369,10 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.IntField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.IntField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.IntField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.IntField("MineralDark", module.m_upgradeCost.mineralDark);
+        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
 
         module.m_description = EditorGUILayout.TextField("Description", module.m_description);
     }
@@ -390,7 +399,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawHangerSubTypeGroup(ModuleHangerSubTypeGroup group)
+    private void DrawHangerSubTypeGroup(ModuleSubTypeGroup group)
     {
         if (!hangerSubTypeFoldouts.ContainsKey(group.subType))
             hangerSubTypeFoldouts[group.subType] = false;
@@ -402,12 +411,14 @@ public class DataTableModuleEditor : Editor
 
         if (GUILayout.Button("Add", GUILayout.Width(50)))
         {
-            var newModule = new ModuleHangerData
+            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
+            var module = new ModuleData
             {
-                m_name = $"New {group.subType}",
-                m_subType = group.subType,
-                m_style = EModuleStyle.None,
-                m_level = group.modules.Count + 1,
+                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
+                m_moduleType = moduleType,
+                m_moduleSubType = group.subType,
+                m_moduleStyle = EModuleStyle.None,
+                m_moduleLevel = group.modules.Count + 1,
                 m_health = 50f,
                 m_hangarCapability = 5,
                 m_scoutCapability = 5,
@@ -416,9 +427,9 @@ public class DataTableModuleEditor : Editor
                 m_maintenanceTime = 10f,
                 m_aircraftHealth = 50f,
                 m_aircraftAttackPower = 10f,
-                m_description = $"{group.subType} hanger"
+                m_description = $"{group.subType} LV{group.modules.Count + 1}"
             };
-            group.modules.Add(newModule);
+            group.modules.Add(module);
             EditorUtility.SetDirty(dataTableModule);
         }
 
@@ -437,10 +448,10 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawHangerModuleDetails(ModuleHangerData module, ModuleHangerSubTypeGroup group, int index)
+    private void DrawHangerModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_level}", EditorStyles.boldLabel, GUILayout.Width(80));
+        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
 
         if (GUILayout.Button("Remove", GUILayout.Width(70)))
         {
@@ -450,9 +461,9 @@ public class DataTableModuleEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        module.m_name = EditorGUILayout.TextField("Name", module.m_name);
-        module.m_style = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_style);
-        module.m_level = EditorGUILayout.IntSlider("Level", module.m_level, 1, 10);
+        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
+        module.m_moduleStyle = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_moduleStyle);
+        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
@@ -469,10 +480,10 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.IntField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.IntField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.IntField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.IntField("MineralDark", module.m_upgradeCost.mineralDark);
+        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
 
         module.m_description = EditorGUILayout.TextField("Description", module.m_description);
     }

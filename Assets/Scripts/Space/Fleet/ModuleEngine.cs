@@ -4,7 +4,7 @@ using UnityEngine;
 public class ModuleEngine : ModuleBase
 {
     [SerializeField] private ModuleBody m_parentBody;
-    public ModuleEngineInfo m_moduleEngineInfo;
+    public ModuleInfo m_moduleInfo;
 
     // 엔진 전용 스탯
     [SerializeField] private float m_movementSpeed;
@@ -29,13 +29,9 @@ public class ModuleEngine : ModuleBase
         
         if (m_health <= 0)
         {
-            Debug.Log($"[{GetFleetName()}] ModuleEngine[Body{m_moduleEngineInfo.bodyIndex}-Slot{m_moduleSlot.m_slotIndex}] destroyed!");
-            
             // 부모 바디에서 이 엔진 제거
             if (m_parentBody != null)
-            {
                 m_parentBody.RemoveEngine(this);
-            }
             
             // 비활성화
             gameObject.SetActive(false);
@@ -44,38 +40,46 @@ public class ModuleEngine : ModuleBase
 
     public override EModuleType GetModuleType()
     {
-        return EModuleType.Engine;
+        return m_moduleInfo.ModuleType;
+    }
+    public override EModuleSubType GetModuleSubType()
+    {
+        return m_moduleInfo.ModuleSubType;
+    }
+    public override EModuleStyle GetModuleStyle()
+    {
+        return m_moduleInfo.ModuleStyle;
     }
     public override int GetModuleTypePacked()
     {
-        return m_moduleEngineInfo.moduleTypePacked;
+        return m_moduleInfo.moduleTypePacked;
     }
     public override int GetModuleLevel()
     {
-        return m_moduleEngineInfo.moduleLevel;
+        return m_moduleInfo.moduleLevel;
     }
     public override void SetModuleLevel(int level)
     {
-        m_moduleEngineInfo.moduleLevel = level;
+        m_moduleInfo.moduleLevel = level;
     }
     public override int GetModuleBodyIndex()
     {
-        return m_moduleEngineInfo.bodyIndex;
+        return m_moduleInfo.bodyIndex;
     }
     public override void SetModuleBodyIndex(int bodyIndex)
     {
-        m_moduleEngineInfo.bodyIndex = bodyIndex;
+        m_moduleInfo.bodyIndex = bodyIndex;
     }
 
-    public void InitializeModuleEngine(ModuleEngineInfo moduleEngineInfo, ModuleBody parentBody, ModuleSlot slot)
+    public void InitializeModuleEngine(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
     {
-        m_moduleEngineInfo = moduleEngineInfo;
-        m_moduleSlot = slot;
+        m_moduleInfo = moduleInfo;
+        m_moduleSlot = moduleSlot;
 
         m_parentBody = parentBody;
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
-        var moduleData = DataManager.Instance.RestoreEngineModuleData(m_moduleEngineInfo.ModuleSubType, m_moduleEngineInfo.moduleLevel);
+        var moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
         if (moduleData == null)
         {
             Debug.LogError("Failed to restore module data for ModuleEngine");
@@ -147,8 +151,8 @@ public class ModuleEngine : ModuleBase
 
     public override string GetUpgradeComparisonText()
     {
-        var currentStats = DataManager.Instance.RestoreEngineModuleData(m_moduleEngineInfo.ModuleSubType, m_moduleEngineInfo.moduleLevel);
-        var upgradeStats = DataManager.Instance.RestoreEngineModuleData(m_moduleEngineInfo.ModuleSubType, m_moduleEngineInfo.moduleLevel + 1);
+        ModuleData currentStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
+        ModuleData upgradeStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel + 1);
 
         if (currentStats == null)
             return "Current module data not found.";
@@ -157,7 +161,7 @@ public class ModuleEngine : ModuleBase
             return "Upgrade not available (max level reached).";
 
         string comparison = $"=== UPGRADE COMPARISON ===\n";
-        comparison += $"Level: {currentStats.m_level} -> {upgradeStats.m_level}\n";
+        comparison += $"Level: {currentStats.m_moduleLevel} -> {upgradeStats.m_moduleLevel}\n";
         comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
         comparison += $"Speed: {currentStats.m_movementSpeed:F1} -> {upgradeStats.m_movementSpeed:F1}\n";
         comparison += $"Rotation: {currentStats.m_rotationSpeed:F1} -> {upgradeStats.m_rotationSpeed:F1}\n";
