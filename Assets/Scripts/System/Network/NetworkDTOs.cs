@@ -185,8 +185,6 @@ public class AddShipRequest
 [System.Serializable]
 public class AddShipResponse
 {
-    public bool success;
-    public string message;
     public ShipInfo newShipInfo;
     public CostRemainInfo costRemainInfo;
     public FleetInfo updatedFleetInfo;
@@ -202,8 +200,6 @@ public class ChangeFormationRequest
 [System.Serializable]
 public class ChangeFormationResponse
 {
-    public bool success;
-    public string message;
     public FleetInfo updatedFleetInfo;
 }
 
@@ -221,11 +217,9 @@ public class ModuleUpgradeRequest
 [System.Serializable]
 public class ModuleUpgradeResponse
 {
-    public bool success;
     public int newLevel;
     public ModuleStats newStats;
     public CostRemainInfo costRemainInfo;
-    public string message;
 }
 
 [System.Serializable]
@@ -252,10 +246,7 @@ public class ModuleChangeRequest
 [System.Serializable]
 public class ModuleChangeResponse
 {
-    public bool success;
     public ShipInfo updatedShipInfo;
-    public CostRemainInfo costRemainInfo;
-    public string message;
 }
 
 [System.Serializable]
@@ -271,10 +262,8 @@ public class ModuleUnlockRequest
 [System.Serializable]
 public class ModuleUnlockResponse
 {
-    public bool success;
     public ShipInfo updatedShipInfo;
     public CostRemainInfo costRemainInfo;
-    public string message;
 }
 
 [System.Serializable]
@@ -286,11 +275,9 @@ public class ModuleResearchRequest
 [System.Serializable]
 public class ModuleResearchResponse
 {
-    public bool success;
     public int moduleTypePacked;
     public CostRemainInfo costRemainInfo;
-    public int[] researchedModuleTypePacked;
-    public string message;
+    public int[] researchedModuleTypePacked;    
 }
 
 [System.Serializable]
@@ -348,25 +335,25 @@ public class ModuleInstallRequest
 //     public FleetTotalStats totalStats;
 // }
 
-[System.Serializable]
-public class ShipStatsInfo
-{
-    public long shipId;
-    public string shipName;
-    public int positionIndex;
-    public ModuleStats totalStats;
-    public PartsBodyInfo[] partsBodies;
-}
+// [System.Serializable]
+// public class ShipStatsInfo
+// {
+//     public long shipId;
+//     public string shipName;
+//     public int positionIndex;
+//     public ModuleStats totalStats;
+//     //public PartsBodyInfo[] partsBodies;
+// }
 
-[System.Serializable]
-public class PartsBodyInfo
-{
-    public int bodyIndex;
-    public int level;
-    public ModuleStats stats;
-    public ModuleInfo[] weapons;
-    public ModuleInfo[] engines;
-}
+// [System.Serializable]
+// public class PartsBodyInfo
+// {
+//     public int bodyIndex;
+//     public int level;
+//     public ModuleStats stats;
+//     public ModuleInfo[] weapons;
+//     public ModuleInfo[] engines;
+// }
 
 // [System.Serializable]
 // public class ModuleInfo

@@ -101,7 +101,7 @@ public class SpaceFleet : MonoBehaviour
 
         NetworkManager.Instance.ChangeFormation(request, (response) =>
         {
-            if (response.errorCode == 0 && response.data.success)
+            if (response.errorCode == 0)
             {
                 UpdateShipFormation(newFormationType);
                 if (response.data.updatedFleetInfo != null)

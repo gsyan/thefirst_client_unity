@@ -211,7 +211,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
-        if (response.errorCode == 0 && response.data.success)
+        if (response.errorCode == 0)
         {
             // 자원 업데이트
             if (response.data.costRemainInfo == null) return;
@@ -243,15 +243,14 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             UpdateScrollView();
 
             // 성공 메시지 표시
-            ShowResultMessage($"Module unlock successful! {response.data.message}", 3f);
+            ShowResultMessage($"Module unlock successful! {response.errorMessage}", 3f);
         }
         else
         {
-            string errorMessage = response.data?.message ?? response.errorMessage ?? "Module unlock failed";
-            Debug.LogError($"Module unlock failed: {errorMessage}");
+            Debug.LogError($"Module unlock failed: {response.errorMessage}");
 
             // 실패 메시지 표시
-            ShowResultMessage($"Module unlock failed: {errorMessage}", 3f);
+            ShowResultMessage($"Module unlock failed: {response.errorMessage}", 3f);
         }
     }
 
@@ -371,7 +370,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
         
-        if (response.errorCode == 0 && response.data.success)
+        if (response.errorCode == 0)
         {
             if (response.data.costRemainInfo != null)
             {
@@ -398,15 +397,14 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             UpdateShipStatsDisplay();
 
             // Show success message
-            ShowResultMessage($"Upgrade successful! {response.data.message}", 3f);
+            ShowResultMessage($"Upgrade successful! {response.errorMessage}", 3f);
         }
         else
         {
-            string errorMessage = response.data?.message ?? response.errorMessage ?? "Upgrade failed";
-            Debug.LogError($"Upgrade failed: {errorMessage}");
+            Debug.LogError($"Upgrade failed: {response.errorMessage}");
 
             // Show error message
-            ShowResultMessage($"Upgrade failed: {errorMessage}", 3f);
+            ShowResultMessage($"Upgrade failed: {response.errorMessage}", 3f);
         }
     }
 
@@ -578,20 +576,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
-        if (response.errorCode == 0 && response.data.success)
+        if (response.errorCode == 0)
         {
-            // 자원 업데이트
-            if (response.data.costRemainInfo != null)
-            {
-                character.UpdateMineral(response.data.costRemainInfo.remainMineral);
-                character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
-                character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
-                character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
-
-                var characterInfo = character.GetInfo();
-                DataManager.Instance.SetCharacterData(characterInfo);
-            }
-
             // 기존 선택된 모듈의 슬롯 정보 저장
             int bodyIndex = m_selectedModule.GetModuleBodyIndex();
             int slotIndex = -1;
@@ -627,15 +613,14 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             UpdateShipStatsDisplay();
 
             // 성공 메시지 표시
-            ShowResultMessage($"Module change successful! {response.data.message}", 3f);
+            ShowResultMessage($"Module change successful! {response.errorMessage}", 3f);
         }
         else
         {
-            string errorMessage = response.data?.message ?? response.errorMessage ?? "Module change failed";
-            Debug.LogError($"Module change failed: {errorMessage}");
+            Debug.LogError($"Module change failed: {response.errorMessage}");
 
             // 실패 메시지 표시
-            ShowResultMessage($"Module change failed: {errorMessage}", 3f);
+            ShowResultMessage($"Module change failed: {response.errorMessage}", 3f);
         }
     }
 

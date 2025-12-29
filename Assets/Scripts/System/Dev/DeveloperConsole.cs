@@ -502,7 +502,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                     try
                     {
                         var addShipResponse = JsonUtility.FromJson<AddShipResponse>(response.data);
-                        if (addShipResponse != null && addShipResponse.success)
+                        if (addShipResponse != null)
                         {
                              if (DataManager.Instance != null && addShipResponse.updatedFleetInfo != null)
                                 DataManager.Instance.SetFleetData(addShipResponse.updatedFleetInfo);

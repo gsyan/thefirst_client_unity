@@ -231,34 +231,24 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         public string asteroidPrefabPath = "Prefabs/SpaceResource/Asteroid";
         public string crystalPrefabPath = "Prefabs/SpaceResource/Crystal";
         
-        [Header("Effect Prefabs")]
-        public string explosionPrefabPath = "Prefabs/Effect/Explosion";
-        public string laserPrefabPath = "Prefabs/Effect/Laser";
-        public string shieldPrefabPath = "Prefabs/Effect/Shield";
-        
-        [Header("UI Prefabs")]
-        public string damageTextPrefabPath = "Prefabs/UI/DamageText";
-        public string healthBarPrefabPath = "Prefabs/UI/HealthBar";
-        public string minimapIconPrefabPath = "Prefabs/UI/MinimapIcon";
-        
-        [Header("Projectile Prefabs")]
-        public string bulletPrefabPath = "Prefabs/Projectile/Bullet";
-        public string missilePrefabPath = "Prefabs/Projectile/Missile";
-        public string torpedoPrefabPath = "Prefabs/Projectile/Torpedo";
+        // [Header("UI Prefabs")]
+        // public string damageTextPrefabPath = "Prefabs/UI/DamageText";
+        // public string healthBarPrefabPath = "Prefabs/UI/HealthBar";
+        // public string minimapIconPrefabPath = "Prefabs/UI/MinimapIcon";
     }
 
     private PrefabPaths prefabPaths = new PrefabPaths();
     private Dictionary<string, GameObject> cachedPrefabs = new Dictionary<string, GameObject>();
 
-    public GameObject LoadPrefab(string prefabSort, string prefabName, int level = 0, string variant = "")
+    public GameObject LoadPrefab(string prefabSort, string typeName, string prefabName, int level = 0, string variant = "")
     {
-        string cacheKey = CreateCacheKey(prefabSort, prefabName, level, variant);
+        string cacheKey = CreateCacheKey(prefabSort, typeName, prefabName, level, variant);
 
         // Return immediately if in cache
         if (cachedPrefabs.ContainsKey(cacheKey))
             return cachedPrefabs[cacheKey];
 
-        string resourcePath = GetPrefabPath(prefabSort, prefabName, level, variant);        
+        string resourcePath = GetPrefabPath(prefabSort, typeName, prefabName, level, variant);        
         GameObject prefab = Resources.Load<GameObject>(resourcePath);
         if (prefab == null)
             return null;
@@ -270,19 +260,20 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         return prefab;
     }
     
-    private string CreateCacheKey(string prefabSort, string prefabName, int level, string variant)
+    private string CreateCacheKey(string prefabSort, string typeName, string prefabName, int level, string variant)
     {
         string key = $"{prefabSort}_{prefabName}";
+        if (string.IsNullOrEmpty(typeName) == false) key += $"_{typeName}";
         if (level > 0) key += $"_{level}";
         if (string.IsNullOrEmpty(variant) == false) key += $"_{variant}";
         return key;
     }
     
-    private string GetPrefabPath(string prefabSort, string prefabName, int level, string variant)
+    private string GetPrefabPath(string prefabSort, string typeName, string prefabName, int level, string variant)
     {
-        string basePath = GetBasePrefabPath(prefabSort, prefabName);
+        string basePath = GetBasePrefabPath(prefabSort, typeName, prefabName);
         if (string.IsNullOrEmpty(basePath))
-            return $"Prefabs/{prefabSort}/{prefabName}";
+            return $"Prefabs/{prefabSort}/{typeName}/{prefabName}";
 
         string fullPath = basePath;
         
@@ -298,17 +289,19 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         return fullPath;
     }
 
-    /// <summary>
-    /// Return base path by prefab type
-    /// </summary>
-    private string GetBasePrefabPath(string prefabSort, string prefabName)
+    private string GetBasePrefabPath(string prefabSort, string typeName, string prefabName)
     {
         switch (prefabSort.ToLower())
         {
             // Module Prefabs
             case "shipmodule":
-                return prefabPaths.shipModulePrefabPath;
-
+                {
+                    if (string.IsNullOrEmpty(typeName) == false)
+                        return prefabPaths.shipModulePrefabPath + $"{typeName}/";
+                    else
+                        return prefabPaths.shipModulePrefabPath;
+                }
+                
             // Space Resource Prefabs  
             case "spaceresource":
                 switch (prefabName.ToLower())
@@ -319,73 +312,42 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 }
                 break;
 
-            // Effect Prefabs
-            case "effect":
-                switch (prefabName.ToLower())
-                {
-                    case "explosion": return prefabPaths.explosionPrefabPath;
-                    case "laser": return prefabPaths.laserPrefabPath;
-                    case "shield": return prefabPaths.shieldPrefabPath;
-                }
-                break;
-
             // UI Prefabs
-            case "ui":
-                switch (prefabName.ToLower())
-                {
-                    case "damagetext": return prefabPaths.damageTextPrefabPath;
-                    case "healthbar": return prefabPaths.healthBarPrefabPath;
-                    case "minimapicon": return prefabPaths.minimapIconPrefabPath;
-                }
-                break;
-
-            // Projectile Prefabs
-            case "projectile":
-                switch (prefabName.ToLower())
-                {
-                    case "bullet": return prefabPaths.bulletPrefabPath;
-                    case "missile": return prefabPaths.missilePrefabPath;
-                    case "torpedo": return prefabPaths.torpedoPrefabPath;
-                }
-                break;
+            // case "ui":
+            //     switch (prefabName.ToLower())
+            //     {
+            //         case "damagetext": return prefabPaths.damageTextPrefabPath;
+            //         case "healthbar": return prefabPaths.healthBarPrefabPath;
+            //         case "minimapicon": return prefabPaths.minimapIconPrefabPath;
+            //     }
+            //     break;
         }
 
         return null; // Use user-defined path
     }
     
     
-    public GameObject LoadShipModulePrefab(string modulePrefabName, int moduleLevel = 1)
+    public GameObject LoadShipModulePrefab(string moduleTypeName, string modulePrefabName, int moduleLevel = 1)
     {
-        return LoadPrefab("ShipModule", modulePrefabName, moduleLevel);
+        return LoadPrefab("ShipModule", moduleTypeName, modulePrefabName, moduleLevel);
     }
 
     public GameObject LoadModulePlaceholderPrefab()
     {
-        return LoadPrefab("ShipModule", "Placeholder", 0);
+        return LoadPrefab("ShipModule", "", "Placeholder", 0);
     }
     
-    /// <summary>
-    /// Convenience methods for frequently used prefabs
-    /// </summary>
-    public GameObject LoadSpaceResourcePrefab(string resourceType = "Mineral", string variant = "") 
+    
+    // Convenience methods for frequently used prefabs
+    public GameObject LoadSpaceResourcePrefab(string moduleTypeName, string modulePrefabName, string variant = "") 
     {
-        return LoadPrefab("SpaceResource", resourceType, 1, variant);
+        return LoadPrefab("SpaceResource", moduleTypeName, modulePrefabName, 1, variant);
     }
     
-    public GameObject LoadEffectPrefab(string effectType, string variant = "") 
-    {
-        return LoadPrefab("Effect", effectType, 1, variant);
-    }
-    
-    public GameObject LoadProjectilePrefab(string projectileType, string variant = "") 
-    {
-        return LoadPrefab("Projectile", projectileType, 1, variant);
-    }
-    
-    public GameObject LoadUIPrefab(string uiType, string variant = "") 
-    {
-        return LoadPrefab("UI", uiType, 1, variant);
-    }
+    // public GameObject LoadUIPrefab(string uiType, string variant = "") 
+    // {
+    //     return LoadPrefab("UI", uiType, 1, variant);
+    // }
     #endregion Prefabs ---------------------------------------------------------------
     
     
@@ -403,7 +365,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             yield return new WaitForSeconds(DataManager.Instance.m_dataTableConfig.gameSettings.explorationInterval);
             
             // Dynamic space resource prefab loading
-            GameObject mineralPrefab = LoadSpaceResourcePrefab("Mineral");
+            GameObject mineralPrefab = LoadSpaceResourcePrefab("", "Mineral");
                 
             if (mineralPrefab != null)
             {
