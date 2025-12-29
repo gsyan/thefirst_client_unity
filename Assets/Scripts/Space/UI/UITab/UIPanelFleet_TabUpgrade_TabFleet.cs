@@ -252,7 +252,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
         NetworkManager.Instance.AddShip(request, (response) =>
         {
-            if (response.errorCode == 0 && response.data.success)
+            if (response.errorCode == 0)
             {
                 character.UpdateMineral(response.data.costRemainInfo.remainMineral);
                 character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);

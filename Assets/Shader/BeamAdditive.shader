@@ -77,9 +77,9 @@ Shader "SpaceFleet/BeamAdditive"
                 
                 float edgeFadeX = 1.0;
                 if (distFromStart < _EdgeFadeArea)
-                    edgeFadeX = pow(distFromStart / _EdgeFadeArea, _EdgeFadeXPower);
+                    edgeFadeX = pow(abs(distFromStart / _EdgeFadeArea), _EdgeFadeXPower);
                 if (distFromEnd < _EdgeFadeArea)
-                    edgeFadeX = min(edgeFadeX, pow(distFromEnd / _EdgeFadeArea, _EdgeFadeXPower));
+                    edgeFadeX = min(edgeFadeX, pow(abs(distFromEnd / _EdgeFadeArea), _EdgeFadeXPower));
                 
                 float edgeFadeY = 1.0;
                 float distFromCenterY = abs(input.uv.y - 0.5) * 2.0;

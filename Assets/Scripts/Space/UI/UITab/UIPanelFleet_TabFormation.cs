@@ -80,7 +80,7 @@ public class UIPanelFleet_TabFormation : UITabBase
 
     private void OnChangeFormationResponse(ApiResponse<ChangeFormationResponse> response)
     {
-        if (response.errorCode == 0 && response.data.success)
+        if (response.errorCode == 0)
         {
             DataManager.Instance.m_currentFleetInfo = response.data.updatedFleetInfo;
 
