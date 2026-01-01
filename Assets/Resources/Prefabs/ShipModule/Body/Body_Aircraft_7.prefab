@@ -1016,10 +1016,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50331648
+  m_moduleTypePacked: 50397184
   m_slotIndex: 0
   m_moduleType: 3
-  m_moduleSubType: 0
+  m_moduleSubType: 3001
 --- !u!1 &3778433635942933593
 GameObject:
   m_ObjectHideFlags: 0
