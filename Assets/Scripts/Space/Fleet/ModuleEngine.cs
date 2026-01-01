@@ -15,6 +15,12 @@ public class ModuleEngine : ModuleBase
         // 추가 초기화가 필요하면 여기에
     }
 
+    public override void RestartCoroutines()
+    {
+        // 엔진은 현재 코루틴을 사용하지 않음
+        // 향후 코루틴 추가 시 여기에 구현
+    }
+
     
 
     public override void Attack(SpaceShip target)

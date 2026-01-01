@@ -28,7 +28,7 @@ public class ModuleBody : ModuleBase
             if (slot != null && slot.transform.childCount > 0)
             {
                 ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
-                if (module != null)
+                if (module != null && (module is ModulePlaceholder) == false)
                     module.ApplyShipStateToModule();
             }
         }
@@ -67,7 +67,8 @@ public class ModuleBody : ModuleBase
         m_moduleBodyInfo.bodyIndex = bodyIndex;
     }
 
-    public void InitializeModuleBody(ModuleBodyInfo moduleBodyInfo)
+    // Body 초기화 (기존 모듈 재사용 가능)
+    public void InitializeModuleBody(ModuleBodyInfo moduleBodyInfo, List<ModuleBase> savedModules)
     {
         m_moduleBodyInfo = moduleBodyInfo;
         m_moduleSlot = null;
@@ -75,7 +76,7 @@ public class ModuleBody : ModuleBase
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.RestoreModuleData(moduleBodyInfo.ModuleSubType, moduleBodyInfo.moduleLevel);
         if (moduleData == null) return;
-        
+
         // 복원된 데이터로 초기화
         m_health = moduleData.m_health;
         m_healthMax = moduleData.m_health;
@@ -92,25 +93,94 @@ public class ModuleBody : ModuleBase
 
         CollectAndSortModuleSlots();
 
-        if (moduleBodyInfo.engines != null)
+        // savedModules가 있으면 먼저 재배치
+        if (savedModules != null && savedModules.Count > 0)
+            RestoreSavedModules(savedModules);
+
+        // 빈 슬롯에 서버 정보대로 모듈 생성 (savedModules 유무와 관계없이)
+        CreateMissingModules(moduleBodyInfo);
+    }
+
+    // 저장된 모듈을 슬롯에 재배치
+    private void RestoreSavedModules(List<ModuleBase> savedModules)
+    {
+        SpaceShip myShip = GetSpaceShip();
+        SpaceFleet myFleet = myShip != null ? myShip.m_myFleet : null;
+
+        foreach (var module in savedModules)
         {
-            foreach (ModuleInfo engineInfo in moduleBodyInfo.engines)
-                InitializeEngine(engineInfo);
+            int moduleTypePacked = module.GetModuleTypePacked();
+            int oldSlotIndex = module.m_moduleSlot != null ? module.m_moduleSlot.m_slotIndex : 0;
+
+            // 새 body에서 같은 타입과 인덱스의 슬롯 찾기
+            ModuleSlot targetSlot = FindModuleSlot(moduleTypePacked, oldSlotIndex);
+
+            if (targetSlot != null && targetSlot.transform.childCount == 0)
+            {
+                // 슬롯 찾음 - 모듈 배치
+                module.transform.SetParent(targetSlot.transform);
+                module.transform.localPosition = Vector3.zero;
+                module.transform.localRotation = Quaternion.identity;
+                module.gameObject.SetActive(true);
+
+                // 모듈의 슬롯 참조 업데이트
+                module.m_moduleSlot = targetSlot;
+
+                // 모듈의 함대 정보 재설정 (부모가 바뀌었으므로)
+                if (myShip != null && myFleet != null)
+                    module.SetFleetInfo(myFleet, myShip);
+
+                // 코루틴 재시작 (각 모듈에서 필요시 override)
+                module.RestartCoroutines();
+
+                Debug.Log($"Module preserved: {module.GetType().Name} at slot {oldSlotIndex}");
+            }
+            else
+            {
+                // 슬롯을 찾을 수 없음 - 모듈 파괴
+                Debug.LogWarning($"Cannot find compatible slot for {module.GetType().Name} (type={moduleTypePacked}, slot={oldSlotIndex}). Module destroyed.");
+                Destroy(module.gameObject);
+            }
+        }
+    }
+
+    // 서버 정보에 있지만 재배치되지 못한 모듈들을 생성
+    private void CreateMissingModules(ModuleBodyInfo bodyInfo)
+    {
+        // 엔진 생성
+        if (bodyInfo.engines != null)
+        {
+            foreach (var engineInfo in bodyInfo.engines)
+            {
+                ModuleSlot slot = FindModuleSlot(engineInfo.moduleTypePacked, engineInfo.slotIndex);
+                if (slot != null && slot.transform.childCount == 0)
+                    InitializeEngine(engineInfo);
+            }
         }
 
-        if (moduleBodyInfo.weapons != null)
+        // 무기 생성
+        if (bodyInfo.weapons != null)
         {
-            foreach (ModuleInfo weaponInfo in moduleBodyInfo.weapons)
-                InitializeWeapon(weaponInfo);
+            foreach (var weaponInfo in bodyInfo.weapons)
+            {
+                ModuleSlot slot = FindModuleSlot(weaponInfo.moduleTypePacked, weaponInfo.slotIndex);
+                if (slot != null && slot.transform.childCount == 0)
+                    InitializeWeapon(weaponInfo);
+            }
         }
 
-        if (moduleBodyInfo.hangers != null)
+        // 행거 생성
+        if (bodyInfo.hangers != null)
         {
-            foreach (ModuleInfo hangerInfo in moduleBodyInfo.hangers)
-                InitializeHanger(hangerInfo);
+            foreach (var hangerInfo in bodyInfo.hangers)
+            {
+                ModuleSlot slot = FindModuleSlot(hangerInfo.moduleTypePacked, hangerInfo.slotIndex);
+                if (slot != null && slot.transform.childCount == 0)
+                    InitializeHanger(hangerInfo);
+            }
         }
 
-        // 빈 슬롯에 ModulePlaceholder 배치
+        // 빈 슬롯에 Placeholder 배치
         FillEmptySlotsWithPlaceholders();
     }
 

@@ -63,7 +63,7 @@ public class SpaceShip : MonoBehaviour
         m_shipInfo = shipInfo;
         if (shipInfo.bodies == null || shipInfo.bodies.Length == 0) return;
         foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
-            InitSpaceShipBody(bodyInfo);
+            InitSpaceShipBody(bodyInfo, null);
 
         CalculateTotalHealth();
         m_spaceShipStatsOrg = GetTotalStats();
@@ -126,11 +126,12 @@ public class SpaceShip : MonoBehaviour
         return totalLevel / moduleCount;
     }
 
-    private void InitSpaceShipBody(ModuleBodyInfo bodyInfo)
+   // Body 초기화 (기존 모듈 재사용 가능)
+    private void InitSpaceShipBody(ModuleBodyInfo bodyInfo, List<ModuleBase> savedModules)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.ModuleType.ToString(), bodyInfo.ModuleSubType.ToString(), bodyInfo.moduleLevel);
         if (modulePrefab == null) return;
-        
+
         GameObject bodyObj = Instantiate(modulePrefab, transform.position, transform.rotation);
         bodyObj.transform.SetParent(transform);
 
@@ -138,8 +139,9 @@ public class SpaceShip : MonoBehaviour
         if (moduleBody == null)
             moduleBody = bodyObj.AddComponent<ModuleBody>();
 
-        moduleBody.InitializeModuleBody(bodyInfo);
+        moduleBody.InitializeModuleBody(bodyInfo, savedModules);
         m_moduleBodys.Add(moduleBody);
+        moduleBody.ApplyShipStateToModule(); // 모듈 변경시를 위해 필요
     }
 
     // 전체 함선 체력 계산
@@ -853,36 +855,35 @@ public class SpaceShip : MonoBehaviour
     // 서버 응답으로부터 함선 정보 업데이트 (모듈 교체 시)
     public void UpdateShipFromServerResponse(ShipInfo updatedShipInfo)
     {
-        if (updatedShipInfo == null)
-        {
-            Debug.LogError("UpdateShipFromServerResponse: updatedShipInfo is null");
-            return;
-        }
-
+        if (updatedShipInfo == null) return;
+        
         // 각 바디의 모듈 정보 업데이트 (m_shipInfo 교체 전에 먼저 처리)
         if (updatedShipInfo.bodies != null)
         {
             foreach (ModuleBodyInfo updatedBodyInfo in updatedShipInfo.bodies)
             {
                 ModuleBody body = FindModuleBodyByIndex(updatedBodyInfo.bodyIndex);
-                if (body == null)
+                if (body == null) continue;
+                if (body.m_moduleBodyInfo == null) continue;
+                if (updatedBodyInfo.moduleTypePacked == 0) continue;
+
+                // Body 모듈 자체가 변경되었는지 확인
+                if (body.m_moduleBodyInfo.moduleTypePacked != updatedBodyInfo.moduleTypePacked)
                 {
-                    Debug.LogWarning($"UpdateShipFromServerResponse: Body {updatedBodyInfo.bodyIndex} not found");
+                    ReplaceBodyWhilePreservingModules(body, updatedBodyInfo);
+                    // 주의: 새로 생성된 body는 이미 모듈 복원이 완료되었으므로 아래 업데이트는 스킵 (continue)
                     continue;
                 }
 
                 // 엔진 모듈 업데이트
                 if (updatedBodyInfo.engines != null)
                     UpdateModulesFromInfo(body, updatedBodyInfo.engines);
-
                 // 무기 모듈 업데이트
                 if (updatedBodyInfo.weapons != null)
                     UpdateModulesFromInfo(body, updatedBodyInfo.weapons);
-
                 // 행거 모듈 업데이트
                 if (updatedBodyInfo.hangers != null)
                     UpdateModulesFromInfo(body, updatedBodyInfo.hangers);
-
                 // 바디의 정보 업데이트
                 body.m_moduleBodyInfo = updatedBodyInfo;
             }
@@ -902,8 +903,6 @@ public class SpaceShip : MonoBehaviour
 
         // 모듈 하이라이트 갱신 (새로 생성된 모듈들을 포함하도록)
         RefreshModuleHighlights();
-
-        Debug.Log($"Ship updated from server: {m_shipInfo.shipName}");
     }
 
     private void UpdateModulesFromInfo(ModuleBody body, ModuleInfo[] moduleInfos)
@@ -912,7 +911,7 @@ public class SpaceShip : MonoBehaviour
         {
             ModuleSlot slot = body.FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
             if (slot == null) continue;
-            
+
             ModuleBase existingModule = null;
             if (slot.transform.childCount > 0)
                 existingModule = slot.GetComponentInChildren<ModuleBase>();
@@ -936,7 +935,30 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
-    
+    // Body 교체 시 기존 모듈을 보존하는 메서드
+    private void ReplaceBodyWhilePreservingModules(ModuleBody oldBody, ModuleBodyInfo newBodyInfo)
+    {
+        // 1. 기존 body의 모든 모듈 수집 (ModulePlaceholder 제외)
+        List<ModuleBase> savedModules = new List<ModuleBase>();
+        foreach (var slot in oldBody.m_moduleSlots)
+        {
+            ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
+            if (module != null && (module is ModulePlaceholder) == false)
+            {
+                // 슬롯에서 모듈 분리 (파괴 방지)
+                module.transform.SetParent(null);
+                module.gameObject.SetActive(false); // 임시로 비활성화
+                savedModules.Add(module);
+            }
+        }
+
+        // 2. 기존 body 제거
+        m_moduleBodys.Remove(oldBody);
+        Destroy(oldBody.gameObject);
+
+        // 3. 새 body 생성 (저장된 모듈 재배치)
+        InitSpaceShipBody(newBodyInfo, savedModules);
+    }
 
     private void OnDrawGizmos()
     {

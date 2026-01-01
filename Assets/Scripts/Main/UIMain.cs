@@ -92,8 +92,6 @@ public class UIMain : UIManager
             {
                 message = ErrorCodeMapping.Messages[errorCode];
                 Debug.Log($"Login successful: {message}");
-                Debug.Log($"Access Token received: {response.data?.accessToken}");
-
                 GetCharacters();
             }
             else

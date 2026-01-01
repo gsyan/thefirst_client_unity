@@ -55,7 +55,15 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
         if (m_myFleet != null)
             m_myFleet.ClearAllSelectedModule();
-        m_selectedModule = ship.m_moduleBodys[0].m_weapons[0];
+        
+        if (m_selectedModule == null)
+        {
+            if (ship.m_moduleBodys[0].m_weapons.Count > 0)
+                m_selectedModule = ship.m_moduleBodys[0].m_weapons[0];
+            else
+                m_selectedModule = ship.m_moduleBodys[0];
+        }
+            
     }
     private void OnSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
     {
@@ -208,11 +216,11 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
     private void OnUnlockModuleResponse(ApiResponse<ModuleUnlockResponse> response)
     {
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
         if (response.errorCode == 0)
         {
+            Character character = DataManager.Instance.m_currentCharacter;
+            if (character == null) return;
+
             // 자원 업데이트
             if (response.data.costRemainInfo == null) return;
             character.UpdateMineral(response.data.costRemainInfo.remainMineral);
@@ -223,32 +231,56 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             var characterInfo = character.GetInfo();
             DataManager.Instance.SetCharacterData(characterInfo);
 
-            // 함선 정보, 오브젝트 업데이트
-            if (response.data.updatedShipInfo == null || m_selectedShip == null) return;
+            // 응답 데이터로부터 업데이트할 함선 찾기
+            if (response.data.updatedShipInfo == null)
+            {
+                Debug.LogError("updatedShipInfo is null");
+                ShowResultMessage("Module unlock failed: Invalid server response", 3f);
+                return;
+            }
 
-            // 기존 선택된 모듈의 슬롯 정보 저장 (UpdateShipFromServerResponse 전에)
-            int bodyIndex = m_selectedModule.GetModuleBodyIndex();
-            int slotIndex = m_selectedModule.m_moduleSlot?.m_slotIndex ?? -1;
+            // Character -> SpaceFleet -> SpaceShip 경로로 업데이트할 함선 찾기
+            SpaceFleet fleet = character.GetOwnedFleet();
+            if (fleet == null)
+            {
+                Debug.LogError("Owned fleet is null");
+                return;
+            }
+
+            // updatedShipInfo의 id로 함선 찾기
+            SpaceShip targetShip = null;
+            foreach (SpaceShip ship in fleet.m_ships)
+            {
+                if (ship != null && ship.m_shipInfo.id == response.data.updatedShipInfo.id)
+                {
+                    targetShip = ship;
+                    break;
+                }
+            }
+
+            if (targetShip == null)
+            {
+                Debug.LogError($"Ship with id {response.data.updatedShipInfo.id} not found in fleet");
+                return;
+            }
+
+            // unlock 의 대상은 body 를 제외한 ship module
             int moduleTypePacked = m_selectedModule.m_moduleSlot.m_moduleTypePacked;
+            int  bodyIndex = m_selectedModule.GetModuleBodyIndex();
+            int slotIndex = m_selectedModule.m_moduleSlot?.m_slotIndex ?? -1;
 
-            m_selectedShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
-            Debug.Log("Module unlocked successfully");
-
-            // UpdateShipFromServerResponse 후 새로 생성된 모듈을 다시 선택
-            ReselectReplacedModule(bodyIndex, slotIndex, moduleTypePacked);
-
-            // UI 갱신
-            UpdateShipStatsDisplay();
-            UpdateUIFrame();
-            UpdateScrollView();
-
+            // 함선 정보 업데이트
+            targetShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
             // 성공 메시지 표시
             ShowResultMessage($"Module unlock successful! {response.errorMessage}", 3f);
+
+            // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
+            if (m_selectedShip == null || m_selectedShip.m_shipInfo.id != response.data.updatedShipInfo.id) return;
+            // 새로 생성된 모듈을 다시 선택
+            ReselectReplacedModule(targetShip, bodyIndex, slotIndex, moduleTypePacked);
         }
         else
         {
-            Debug.LogError($"Module unlock failed: {response.errorMessage}");
-
             // 실패 메시지 표시
             ShowResultMessage($"Module unlock failed: {response.errorMessage}", 3f);
         }
@@ -484,10 +516,11 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
                 item.SetSelected_ScrollViewModuleItem(false);
         }
 
-        int slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex;
-        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
         int newModuleLevel = m_selectedModule.GetModuleLevel(); // 현재 모듈의 레벨 유지
-        if( newModuleLevel < 1) return;
+        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
+        int slotIndex = 0;
+        if( EModuleType.Body != m_selectedModule.GetModuleType())
+            slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex;
 
         // 모듈 교체 요청 생성
         var changeRequest = new ModuleChangeRequest
@@ -519,101 +552,122 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         ShowResultMessage($"Module development not implemented yet: {moduleType}", 3f);
     }
 
-    private void ChangeModule()
-    {
-        if (m_selectedShip == null || m_selectedModule == null)
-        {
-            ShowResultMessage("No ship or module selected", 3f);
-            return;
-        }
+    // private void ChangeModule()
+    // {
+    //     if (m_selectedShip == null || m_selectedModule == null)
+    //     {
+    //         ShowResultMessage("No ship or module selected", 3f);
+    //         return;
+    //     }
 
-        if (m_selectedModule is ModulePlaceholder)
-        {
-            ShowResultMessage("Cannot change placeholder module", 3f);
-            return;
-        }
+    //     if (m_selectedModule is ModulePlaceholder)
+    //     {
+    //         ShowResultMessage("Cannot change placeholder module", 3f);
+    //         return;
+    //     }
 
-        // TODO: 사용자가 교체할 새 모듈을 선택하도록 UI 구현 필요
-        // 현재는 임시로 같은 타입의 모듈로 교체하는 예시
-        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
-        int newModuleTypePacked = m_selectedModule.GetModuleTypePacked();
-        int newModuleLevel = m_selectedModule.GetModuleLevel();
+    //     // TODO: 사용자가 교체할 새 모듈을 선택하도록 UI 구현 필요
+    //     // 현재는 임시로 같은 타입의 모듈로 교체하는 예시
+    //     int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
+    //     int newModuleTypePacked = m_selectedModule.GetModuleTypePacked();
+    //     int newModuleLevel = m_selectedModule.GetModuleLevel();
 
-        // 슬롯 인덱스 가져오기
-        int slotIndex = -1;
-        if (m_selectedModule is ModuleWeapon weapon)
-            slotIndex = weapon.m_moduleSlot?.m_slotIndex ?? -1;
-        else if (m_selectedModule is ModuleEngine engine)
-            slotIndex = engine.m_moduleSlot?.m_slotIndex ?? -1;
-        else if (m_selectedModule is ModuleHanger hanger)
-            slotIndex = hanger.m_moduleSlot?.m_slotIndex ?? -1;
+    //     // 슬롯 인덱스 가져오기
+    //     int slotIndex = -1;
+    //     if (m_selectedModule is ModuleWeapon weapon)
+    //         slotIndex = weapon.m_moduleSlot?.m_slotIndex ?? -1;
+    //     else if (m_selectedModule is ModuleEngine engine)
+    //         slotIndex = engine.m_moduleSlot?.m_slotIndex ?? -1;
+    //     else if (m_selectedModule is ModuleHanger hanger)
+    //         slotIndex = hanger.m_moduleSlot?.m_slotIndex ?? -1;
 
-        if (slotIndex < 0)
-        {
-            ShowResultMessage("Invalid slot index", 3f);
-            return;
-        }
+    //     if (slotIndex < 0)
+    //     {
+    //         ShowResultMessage("Invalid slot index", 3f);
+    //         return;
+    //     }
 
-        // 모듈 교체 요청 생성
-        var changeRequest = new ModuleChangeRequest
-        {
-            shipId = m_selectedShip.m_shipInfo.id,
-            bodyIndex = m_selectedModule.GetModuleBodyIndex(),
-            slotIndex = slotIndex,
-            currentModuleTypePacked = currentModuleTypePacked,
-            newModuleTypePacked = newModuleTypePacked,
-            newModuleLevel = newModuleLevel
-        };
+    //     // 모듈 교체 요청 생성
+    //     var changeRequest = new ModuleChangeRequest
+    //     {
+    //         shipId = m_selectedShip.m_shipInfo.id,
+    //         bodyIndex = m_selectedModule.GetModuleBodyIndex(),
+    //         slotIndex = slotIndex,
+    //         currentModuleTypePacked = currentModuleTypePacked,
+    //         newModuleTypePacked = newModuleTypePacked,
+    //         newModuleLevel = newModuleLevel
+    //     };
 
-        Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
+    //     Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
 
-        // 서버에 모듈 교체 요청 전송
-        NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
-    }
+    //     // 서버에 모듈 교체 요청 전송
+    //     NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
+    // }
 
     private void OnChangeModuleResponse(ApiResponse<ModuleChangeResponse> response)
     {
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
         if (response.errorCode == 0)
         {
-            // 기존 선택된 모듈의 슬롯 정보 저장
-            int bodyIndex = m_selectedModule.GetModuleBodyIndex();
+            // 응답 데이터로부터 업데이트할 함선 찾기
+            if (response.data.updatedShipInfo == null)
+            {
+                Debug.LogError("updatedShipInfo is null");
+                ShowResultMessage("Module change failed: Invalid server response", 3f);
+                return;
+            }
+
+            // Character -> SpaceFleet -> SpaceShip 경로로 업데이트할 함선 찾기
+            Character character = DataManager.Instance.m_currentCharacter;
+            if (character == null)
+            {
+                Debug.LogError("Current character is null");
+                return;
+            }
+
+            SpaceFleet fleet = character.GetOwnedFleet();
+            if (fleet == null)
+            {
+                Debug.LogError("Owned fleet is null");
+                return;
+            }
+
+            // updatedShipInfo의 id로 함선 찾기
+            SpaceShip targetShip = null;
+            foreach (SpaceShip ship in fleet.m_ships)
+            {
+                if (ship != null && ship.m_shipInfo.id == response.data.updatedShipInfo.id)
+                {
+                    targetShip = ship;
+                    break;
+                }
+            }
+
+            if (targetShip == null)
+            {
+                Debug.LogError($"Ship with id {response.data.updatedShipInfo.id} not found in fleet");
+                return;
+            }
+
+            // change 의 대상은 ship module 전체
+            int moduleTypePacked = m_selectedModule.GetModuleTypePacked();
+            int  bodyIndex = m_selectedModule.GetModuleBodyIndex();
             int slotIndex = -1;
-            int moduleTypePacked = 0;
-
-            if (m_selectedModule is ModuleWeapon weapon)
-            {
-                slotIndex = weapon.m_moduleSlot?.m_slotIndex ?? -1;
-                moduleTypePacked = weapon.GetModuleTypePacked();
-            }
-            else if (m_selectedModule is ModuleEngine engine)
-            {
-                slotIndex = engine.m_moduleSlot?.m_slotIndex ?? -1;
-                moduleTypePacked = engine.GetModuleTypePacked();
-            }
-            else if (m_selectedModule is ModuleHanger hanger)
-            {
-                slotIndex = hanger.m_moduleSlot?.m_slotIndex ?? -1;
-                moduleTypePacked = hanger.GetModuleTypePacked();
-            }
-
+            EModuleType moduleType = m_selectedModule.GetModuleType();
+            if (moduleType == EModuleType.Body)
+                slotIndex = 0;
+            else
+                slotIndex = m_selectedModule.m_moduleSlot?.m_slotIndex ?? -1;
+            
             // 함선 정보 업데이트
-            if (response.data.updatedShipInfo != null && m_selectedShip != null)
-            {
-                m_selectedShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
-                Debug.Log("Ship module changed successfully");
-
-                // UpdateShipFromServerResponse 후 새로 생성된 모듈을 m_selectedModule로 설정
-                ReselectReplacedModule(bodyIndex, slotIndex, moduleTypePacked);
-            }
-
-            // UI 갱신
-            UpdateShipStatsDisplay();
-
+            targetShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
             // 성공 메시지 표시
             ShowResultMessage($"Module change successful! {response.errorMessage}", 3f);
+
+            // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
+            if (m_selectedShip == null || m_selectedShip.m_shipInfo.id != response.data.updatedShipInfo.id) return;
+            // 새로 생성된 모듈을 다시 선택
+            ReselectReplacedModule(targetShip, bodyIndex, slotIndex, moduleTypePacked);
+
         }
         else
         {
@@ -624,29 +678,37 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
     }
 
-    // 모듈 교체 후 새로 생성된 모듈을 다시 선택하여 하이라이트 적용
-    private void ReselectReplacedModule(int bodyIndex, int slotIndex, int moduleTypePacked)
+    // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택하여 하이라이트 적용
+    private void ReselectReplacedModule(SpaceShip targetShip, int bodyIndex, int slotIndex, int moduleTypePacked)
     {
-        if (slotIndex < 0 || m_selectedShip == null) return;
+        if (targetShip == null) return;
 
-        ModuleBody body = m_selectedShip.FindModuleBodyByIndex(bodyIndex);
-        if (body != null)
+        ModuleBody body = targetShip.FindModuleBodyByIndex(bodyIndex);
+        if (body == null) return;
+
+        // Body 자체가 교체된 경우 (slotIndex == -1)
+        EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
+        if (moduleType == EModuleType.Body || slotIndex < 0)
         {
-            ModuleSlot slot = body.FindModuleSlot(moduleTypePacked, slotIndex);
-            if (slot != null && slot.transform.childCount > 0)
-            {
-                ModuleBase newModule = slot.GetComponentInChildren<ModuleBase>();
-                if (newModule != null)
-                {
-                    m_selectedModule = newModule;
-                    Debug.Log($"Reselected replaced module: {newModule.GetType().Name}");
+            m_selectedModule = body;
+            EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(targetShip, m_selectedModule);
+            return;
+        }
 
-                    // 새로 생성된 모듈을 선택 상태로 설정 (하이라이트 적용)
-                    EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(m_selectedShip, m_selectedModule);
-                }
+        // 일반 모듈 (Weapon, Engine, Hanger 등)이 교체된 경우
+        ModuleSlot slot = body.FindModuleSlot(moduleTypePacked, slotIndex);
+        if (slot != null && slot.transform.childCount > 0)
+        {
+            ModuleBase newModule = slot.GetComponentInChildren<ModuleBase>();
+            if (newModule != null)
+            {
+                m_selectedModule = newModule;
+                // 새로 생성된 모듈을 선택 상태로 설정 (하이라이트 적용)
+                EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(targetShip, m_selectedModule);
             }
         }
     }
+
 
 
 

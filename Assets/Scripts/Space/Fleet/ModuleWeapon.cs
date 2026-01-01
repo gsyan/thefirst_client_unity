@@ -88,6 +88,15 @@ public class ModuleWeapon : ModuleBase
         m_autoAttackCoroutine = StartCoroutine(AutoAttack());
     }
 
+    public override void RestartCoroutines()
+    {
+        if (m_autoAttackCoroutine != null)
+        {
+            StopCoroutine(m_autoAttackCoroutine);
+        }
+        m_autoAttackCoroutine = StartCoroutine(AutoAttack());
+    }
+
     private IEnumerator AutoAttack()
     {
         while (true)
