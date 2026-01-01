@@ -99,7 +99,8 @@ public class ProjectileBeam : ProjectileBase
 
             float thisFrameBeamMoveLength = m_beamSpeed * Time.deltaTime;
             m_toalBeamLength += thisFrameBeamMoveLength;
-            if (m_toalBeamLength >= m_maxBeamLength)
+            // 모듈 오브젝트 교체시 m_firePointTransform 가 null 이 됨
+            if (m_toalBeamLength >= m_maxBeamLength || m_firePointTransform == null)
             {
                 m_toalBeamLength = m_maxBeamLength;
                 m_beamHeadPos += m_direction * thisFrameBeamMoveLength;
@@ -119,13 +120,13 @@ public class ProjectileBeam : ProjectileBase
             float checkDistance = Vector3.Distance(m_beamHeadPos, m_beamTailPos);
             if (Physics.Raycast(m_beamTailPos, m_direction, out hit, checkDistance))
             {
-                SpaceShip hitTarget = hit.collider.GetComponent<SpaceShip>();
-                if (hitTarget == null)
-                    hitTarget = hit.collider.GetComponentInParent<SpaceShip>();
-
-                if (hitTarget != null && m_sourceModuleBase != null)
+                // SpaceShip hitTarget = hit.collider.GetComponent<SpaceShip>();
+                // if (hitTarget == null)
+                //     hitTarget = hit.collider.GetComponentInParent<SpaceShip>();
+                SpaceShip hitTarget = hit.collider.GetComponentInParent<SpaceShip>();
+                if (hitTarget != null && m_sourceShip != null)
                 {
-                    SpaceFleet myFleet = m_sourceModuleBase.GetComponentInParent<SpaceFleet>();
+                    SpaceFleet myFleet = m_sourceShip.GetComponentInParent<SpaceFleet>();
                     SpaceFleet targetFleet = hitTarget.GetComponentInParent<SpaceFleet>();
                     if (myFleet != null && targetFleet != null && myFleet == targetFleet)
                     {

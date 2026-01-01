@@ -22,6 +22,11 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected ModuleHanger m_moduleHanger;
     [SerializeField] protected AircraftInfo m_aircraftInfo;
 
+    // Body 교체 시 새 hanger를 찾기 위한 정보
+    [SerializeField] protected SpaceShip m_carrierShip;
+    [SerializeField] protected int m_hangerSlotIndex;
+    [SerializeField] protected int m_hangerModuleTypePacked;
+
     [SerializeField] protected float m_moveSpeed = 10f;
     [SerializeField] protected float m_rotationSpeed = 240f; // 120
     [SerializeField] protected float m_launchStraightDistance = 5f;
@@ -60,6 +65,17 @@ public abstract class AircraftBase : MonoBehaviour
         m_aircraftInfo = aircraftInfo;
         m_moduleHanger = moduleHanger;
         m_sourceModule = sourceModuleBase;
+
+        // Body 교체 시 새 hanger를 찾기 위한 정보 저장
+        if (moduleHanger != null)
+        {
+            m_carrierShip = moduleHanger.GetSpaceShip();
+            if (moduleHanger.m_moduleSlot != null)
+            {
+                m_hangerSlotIndex = moduleHanger.m_moduleSlot.m_slotIndex;
+                m_hangerModuleTypePacked = moduleHanger.m_moduleSlot.m_moduleTypePacked;
+            }
+        }
 
         m_lastAttackTime = 0f;
 
@@ -476,10 +492,61 @@ public abstract class AircraftBase : MonoBehaviour
             }
 
             yield return null;
+
+            // 다음 프레임에서 귀환 중 모함의 body가 교체되어 m_firePoint가 파괴되었는지 체크
+            if (m_firePoint == null)
+            {
+                // 저장된 SpaceShip과 슬롯 정보로 새로운 ModuleHanger와 firePoint 찾기 시도
+                if (TryFindNewHangerAndFirePoint())
+                {
+                    Debug.Log("[AircraftBase] Found new hanger after body replacement. Continuing return.");
+                    continue;
+                }
+                else
+                {
+                    Debug.LogWarning("[AircraftBase] Carrier firePoint destroyed and cannot find new hanger. Returning to pool.");
+                    ReturnToPool();
+                    yield break;
+                }
+            }
         }
 
-        m_moduleHanger.ReturnAircraft(m_aircraftInfo);
+        // 최종 귀환 시에도 한 번 더 체크
+        if (m_moduleHanger != null)
+            m_moduleHanger.ReturnAircraft(m_aircraftInfo);
+
         ReturnToPool();
+    }
+
+    // Body 교체 후 새로운 ModuleHanger와 firePoint를 찾는 메서드
+    private bool TryFindNewHangerAndFirePoint()
+    {
+        // 저장된 SpaceShip과 슬롯 정보로 새 hanger 찾기
+        if (m_carrierShip == null) return false;
+
+        // SpaceShip의 모든 body를 순회하며 같은 슬롯의 ModuleHanger 찾기
+        foreach (var body in m_carrierShip.m_moduleBodys)
+        {
+            ModuleSlot newSlot = body.FindModuleSlot(m_hangerModuleTypePacked, m_hangerSlotIndex);
+            if (newSlot != null && newSlot.transform.childCount > 0)
+            {
+                ModuleHanger newHanger = newSlot.GetComponentInChildren<ModuleHanger>();
+                if (newHanger != null)
+                {
+                    // 새로운 hanger의 launcher 찾기
+                    LauncherAircraft launcher = newHanger.GetComponentInChildren<LauncherAircraft>();
+                    if (launcher != null)
+                    {
+                        m_moduleHanger = newHanger;
+                        m_sourceModule = newHanger;
+                        m_firePoint = launcher.GetFirePoint();
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     protected Vector3 CalculateAvoidance()

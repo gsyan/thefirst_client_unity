@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-using static ApiClient;
-
 
 
 public static class TaskExtensions
@@ -44,8 +42,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     private UIManager m_uIManager;
 
     private string m_refreshToken;
-    private int m_characterCreateRetryCount = 0;
-    private const int m_characterCreateMaxRetries = 2;
 
     private NetworkReachability m_networkStatus;
     private bool m_bConnected = false;
@@ -131,58 +127,53 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         }
     }
 
-
-    private IEnumerator RunAsync<T>(Func<Task<ApiResponse<T>>> taskFunc)
+    private IEnumerator RunAsync<T>(Func<Task<ApiResponse<T>>> taskFunc, System.Action<ApiResponse<T>> onComplete, int maxRetries = 2)
     {
-        if (m_uIManager?.m_resultText != null)
-            m_uIManager.m_resultText.text = "Processing...";
-        Task<ApiResponse<T>> task = taskFunc();
-        while (!task.IsCompleted)
+        int retryCount = 0;
+        Task<ApiResponse<T>> task = null;
+        ApiResponse<T> response = null;
+
+        while (retryCount <= maxRetries)
         {
-            yield return null;
-        }
-        if (task.IsFaulted)
-        {
-            string errorMessage = task.Exception?.InnerException?.Message ?? "Unknown error";
-            Debug.LogError($"Task failed: {errorMessage} - StackTrace: {task.Exception?.StackTrace}");
-            if (m_uIManager?.m_resultText != null)
-                m_uIManager.m_resultText.text = $"Error: {errorMessage}";
-            yield break; // End coroutine on error
-        }
-        var response = task.Result;
-        if (response != null)
-        {
-            if (response.errorCode == 0)
+            task = taskFunc();
+            while (!task.IsCompleted)
+                yield return null;
+
+            if (task.IsFaulted)
             {
-                Debug.Log($"Operation succeeded: {typeof(T).Name} retrieved");
-                if (m_uIManager?.m_resultText != null)
-                    m_uIManager.m_resultText.text = $"Operation succeeded: {typeof(T).Name} retrieved";
+                string errorMessage = task.Exception?.InnerException?.Message ?? "Unknown error";
+
+                // 401 에러이고 재시도 가능한 경우
+                if (errorMessage.Contains("401") && retryCount < maxRetries)
+                {
+                    retryCount++;
+                    Debug.Log($"Token expired, refreshing... (Attempt {retryCount}/{maxRetries})");
+
+                    // RefreshToken 호출
+                    Task<ApiResponse<AuthResponse>> refreshTask = RefreshAccessTokenAsync();
+                    while (!refreshTask.IsCompleted)
+                        yield return null;
+
+                    if (refreshTask.IsFaulted || refreshTask.Result.errorCode != 0)
+                    {
+                        Debug.LogError("Token refresh failed");
+                        response = ApiResponse<T>.error((int)ServerErrorCode.INVALID_TOKEN, "Token refresh failed");
+                        break;
+                    }
+
+                    Debug.Log("Token refreshed successfully, retrying original request...");
+                    continue; // 재시도
+                }
+
+                // 401이 아니거나 재시도 횟수 초과
+                response = ApiResponse<T>.error((int)ServerErrorCode.UNKNOWN_ERROR, errorMessage);
+                break;
             }
             else
             {
-                Debug.LogError($"Operation failed: {response.errorMessage} (Code: {response.errorCode})");
-                if (m_uIManager?.m_resultText != null)
-                    m_uIManager.m_resultText.text = $"Operation failed: {response.errorMessage} (Code: {response.errorCode})";
+                response = task.Result ?? ApiResponse<T>.error((int)ServerErrorCode.UNKNOWN_ERROR, "Invalid server response");
+                break;
             }
-        }
-    }
-
-    private IEnumerator RunAsyncWithCallback<T>(Func<Task<ApiResponse<T>>> taskFunc, System.Action<ApiResponse<T>> onComplete)
-    {
-        Task<ApiResponse<T>> task = taskFunc();
-        while (!task.IsCompleted)
-            yield return null;
-
-        ApiResponse<T> response;
-
-        if (task.IsFaulted)
-        {
-            string errorMessage = task.Exception?.InnerException?.Message ?? "Unknown error";
-            response = ApiResponse<T>.error((int)ServerErrorCode.UNKNOWN_ERROR, errorMessage);
-        }
-        else
-        {
-            response = task.Result ?? ApiResponse<T>.error((int)ServerErrorCode.UNKNOWN_ERROR, "Invalid server response");
         }
 
         // Execute callback
@@ -192,43 +183,23 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void Register(string email, string password, System.Action<ApiResponse<string>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(async () => {
-            try
-            {
-                var response = await m_apiClient.SignUpAsync(email, password);
-                if (response.errorCode == 0)
-                {
-                    Debug.Log($"Signed up: {response.data}");
-                }
-                else
-                {
-                    Debug.LogError($"SignUp failed: {response.errorMessage} (Code: {response.errorCode})");
-                    throw new Exception(response.errorMessage);
-                }
-                return response;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"SignUp failed: {e.Message}");
-                throw;
-            }
-        }, onComplete));
+        StartCoroutine(RunAsync(() =>  m_apiClient.SignUpAsync(email, password), onComplete));
     }
 
     public void Login(string email, string password, System.Action<ApiResponse<AuthResponse>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(async () => {
+        StartCoroutine(RunAsync(async () => {
             try
             {
                 var response = await m_apiClient.LoginAsync(email, password);
                 if (response.errorCode == 0)
                 {
                     m_apiClient.SetAccessToken(response.data.accessToken);
-                    m_refreshToken = response.data.refreshToken;
+                    Debug.Log($"Access Token received: {response.data?.accessToken}");
+                    m_refreshToken = response.data.refreshToken;                    
                     PlayerPrefs.SetString("RefreshToken", m_refreshToken);
                     PlayerPrefs.Save();
-                    Debug.Log($"=== Login Success === Email: {email}");
                 }
                 else
                 {
@@ -264,7 +235,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         // FirebaseAuthManager.Instance.SignInWithGPGS(
         //     (firebaseIdToken) =>
         //     {
-        //         StartCoroutine(RunAsyncWithCallback(async () => {
+        //         StartCoroutine(RunAsync(async () => {
         //             try
         //             {
         //                 var response = await m_apiClient.GoogleLoginAsync(firebaseIdToken);
@@ -558,76 +529,20 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void CreateCharacter(string name, System.Action<ApiResponse<CharacterResponse>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(async () => {
-            try
-            {
-                var response = await m_apiClient.CreateCharacterAsync(name);
-                if (response == null)
-                {
-                    Debug.LogError("Response is null");
-                    return ApiResponse<CharacterResponse>.error((int)ServerErrorCode.CHARACTER_CREATE_FAIL_REASON1, "Invalid server response");
-                }
-                if (response.errorCode == 0)
-                {
-                    Debug.Log($"Character created: {response.data.characterName}, ID: {response.data.characterId}");
-                }
-                else
-                {
-                    Debug.LogError($"Character creation failed: {response.errorMessage} (Code: {response.errorCode})");
-                }
-                return response;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Character creation failed: {e.Message}");
-                if (e.Message.Contains("401") && m_characterCreateRetryCount < m_characterCreateMaxRetries)
-                {
-                    m_characterCreateRetryCount++;
-                    await RefreshAccessTokenAsync();
-                    return await m_apiClient.CreateCharacterAsync(name);
-                }
-                m_characterCreateRetryCount = 0;
-                return ApiResponse<CharacterResponse>.error((int)ServerErrorCode.UNKNOWN_ERROR, e.Message);
-            }
-        }, onComplete));
+        StartCoroutine(RunAsync(() =>  m_apiClient.CreateCharacterAsync(name), onComplete));
     }
 
     public void GetCharacters(System.Action<ApiResponse<System.Collections.Generic.List<CharacterResponse>>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(async () => {
-            try
-            {
-                var response = await m_apiClient.GetAllCharactersAsync();
-                if (response == null)
-                    return ApiResponse<List<CharacterResponse>>.error((int)ServerErrorCode.UNKNOWN_ERROR, "Invalid server response");
-                if (response.errorCode == 0)
-                {
-                    Debug.Log("Characters retrieved successfully");
-                    foreach (var character in response.data)
-                    {
-                        Debug.Log($"Character: {character.characterName}, ID: {character.characterId}");
-                    }
-                }
-                else
-                {
-                    Debug.LogError($"GetAllCharacters failed: {response.errorMessage} (Code: {response.errorCode})");
-                    throw new Exception(response.errorMessage);
-                }
-                return response;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"GetAllCharacters failed: {e.Message}");
-                throw;
-            }
-        }, onComplete));
+        StartCoroutine(RunAsync(() =>  m_apiClient.GetAllCharactersAsync(), onComplete));        
     }
 
     public void SelectCharacter(long characterId, System.Action<ApiResponse<AuthResponse>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(async () => {
+        // SelectCharacter는 단순히 선택만 하는 게 아니라, characterId가 포함된 새로운 토큰을 받기 위한 API
+        StartCoroutine(RunAsync(async () => {
             try
             {
                 var response = await m_apiClient.SelectCharacterAsync(characterId);
@@ -639,19 +554,15 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 if (response.errorCode == 0)
                 {
                     m_apiClient.SetAccessToken(response.data.accessToken);
+                    Debug.Log($"Select Character - Access Token: {response.data.accessToken}");
                     m_refreshToken = response.data.refreshToken;
                     PlayerPrefs.SetString("RefreshToken", m_refreshToken);
                     PlayerPrefs.Save();
-
-                    Debug.Log($"Select Character - Access Token: {response.data.accessToken}");
+                    
                     if (response.data.activeFleetInfo != null)
-                    {
                         Debug.Log($"Active Fleet: {response.data.activeFleetInfo.fleetName} with {response.data.activeFleetInfo.ships?.Length ?? 0} ships");
-                    }
                     else
-                    {
                         Debug.Log("No active fleet found for this character");
-                    }
                 }
                 else
                 {
@@ -671,67 +582,67 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void AddShip(AddShipRequest request, System.Action<ApiResponse<AddShipResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.AddShipAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.AddShipAsync(request), onComplete));
     }
 
     public void ChangeFormation(ChangeFormationRequest request, System.Action<ApiResponse<ChangeFormationResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.ChangeFormationAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ChangeFormationAsync(request), onComplete));
     }
 
     public void UpgradeModule(ModuleUpgradeRequest request, System.Action<ApiResponse<ModuleUpgradeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.UpgradeModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.UpgradeModuleAsync(request), onComplete));
     }
 
     public void ChangeModule(ModuleChangeRequest request, System.Action<ApiResponse<ModuleChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.ChangeModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ChangeModuleAsync(request), onComplete));
     }
 
     public void UnlockModule(ModuleUnlockRequest request, System.Action<ApiResponse<ModuleUnlockResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.UnlockModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.UnlockModuleAsync(request), onComplete));
     }
 
     public void ResearchModule(ModuleResearchRequest request, System.Action<ApiResponse<ModuleResearchResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.ResearchModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ResearchModuleAsync(request), onComplete));
     }
 
     // public void AddModuleBody(ModuleBodyAddRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
     // {
     //     if (m_bConnected == false) return;
-    //     StartCoroutine(RunAsyncWithCallback(() => m_apiClient.AddModuleBodyAsync(request), onComplete));
+    //     StartCoroutine(RunAsync(() => m_apiClient.AddModuleBodyAsync(request), onComplete));
     // }
 
     public void RemoveModuleBody(ModuleBodyRemoveRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.RemoveModuleBodyAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.RemoveModuleBodyAsync(request), onComplete));
     }
 
     public void InstallModule(ModuleInstallRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.InstallModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.InstallModuleAsync(request), onComplete));
     }
 
     // public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)
     // {
     //     if (m_bConnected == false) return;
-    //     StartCoroutine(RunAsyncWithCallback(() => m_apiClient.GetFleetStatsAsync(request), onComplete));
+    //     StartCoroutine(RunAsync(() => m_apiClient.GetFleetStatsAsync(request), onComplete));
     // }
 
     public void ExecuteDevCommand(string command, string[] parameters, System.Action<ApiResponse<string>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(() => m_apiClient.ExecuteDevCommandAsync(command, parameters), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ExecuteDevCommandAsync(command, parameters), onComplete));
     }
 
     public async Task<ApiResponse<AuthResponse>> RefreshAccessTokenAsync()
@@ -775,7 +686,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         }
 
         m_autoLoginAttempted = true;
-        StartCoroutine(RunAsyncWithCallback(async () => {
+        StartCoroutine(RunAsync(async () => {
             try
             {
                 var response = await RefreshAccessTokenAsync();
@@ -806,7 +717,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void DeleteAccount(System.Action<ApiResponse<string>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsyncWithCallback(async () => {
+        StartCoroutine(RunAsync(async () => {
             try
             {
                 var response = await m_apiClient.DeleteAccountAsync();

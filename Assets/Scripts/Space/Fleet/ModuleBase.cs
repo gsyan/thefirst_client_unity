@@ -123,6 +123,12 @@ public class ModuleBase : MonoBehaviour
         return "";
     }
 
+    // 코루틴 재시작 (Body 교체 등으로 모듈이 재활성화될 때 호출)
+    public virtual void RestartCoroutines()
+    {
+        // 기본 구현 없음 - 각 모듈에서 필요시 override
+    }
+
     public SpaceShip GetSpaceShip()
     {
         // SpaceShip targetShip = GetComponent<SpaceShip>();

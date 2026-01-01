@@ -114,7 +114,9 @@ public class ModuleHanger : ModuleBase
             case EModuleSubType.Hanger_Advanced:
                 for(int i=0; i< moduleData.m_launchCount; i++)
                 {
-
+                    LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
+                    launcher.InitializeLauncherAircraft(this);
+                    m_launchers.Add(launcher);
                 }
                 break;
             default:
@@ -124,6 +126,20 @@ public class ModuleHanger : ModuleBase
 
     public override void Start()
     {
+        m_autoAttackCoroutine = StartCoroutine(AutoAttack());
+        m_maintenanceCoroutine = StartCoroutine(MaintenanceProcess());
+    }
+
+    public override void RestartCoroutines()
+    {
+        if (m_autoAttackCoroutine != null)
+        {
+            StopCoroutine(m_autoAttackCoroutine);
+        }
+        if (m_maintenanceCoroutine != null)
+        {
+            StopCoroutine(m_maintenanceCoroutine);
+        }
         m_autoAttackCoroutine = StartCoroutine(AutoAttack());
         m_maintenanceCoroutine = StartCoroutine(MaintenanceProcess());
     }

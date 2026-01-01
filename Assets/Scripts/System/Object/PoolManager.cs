@@ -126,6 +126,13 @@ public class PoolManager
     private IEnumerator AutoReturnParticle(EPoolName poolName, ParticleSystem ps)
     {
         yield return new WaitForSeconds(ps.main.duration);
+
+        if (ps == null || ps.gameObject == null)
+        {
+            Debug.LogWarning($"[PoolManager] ParticleSystem was destroyed during playback for pool: {poolName}");
+            yield break;
+        }
+
         ps.Stop();
         Return(poolName, ps);
     }
@@ -146,6 +153,13 @@ public class PoolManager
     private IEnumerator AutoReturnParticleWithParent(EPoolName poolName, ParticleSystem ps, Transform originalParent)
     {
         yield return new WaitForSeconds(ps.main.duration);
+
+        if (ps == null || ps.gameObject == null)
+        {
+            Debug.LogWarning($"[PoolManager] ParticleSystem was destroyed during playback for pool: {poolName}");
+            yield break;
+        }
+
         ps.Stop();
         ps.transform.SetParent(originalParent);
         Return(poolName, ps);
@@ -165,6 +179,13 @@ public class PoolManager
     {
         float ddd = effect.GetParticleSystem().main.duration;
         yield return new WaitForSeconds(effect.GetParticleSystem().main.duration);
+
+        if (effect == null || effect.gameObject == null)
+        {
+            Debug.LogWarning($"[PoolManager] EffectBase was destroyed during playback for pool: {poolName}");
+            yield break;
+        }
+
         effect.Stop();
         Return(poolName, effect);
     }
@@ -185,6 +206,13 @@ public class PoolManager
     private IEnumerator AutoReturnEffectWithParent(EPoolName poolName, EffectBase effect, Transform originalParent)
     {
         yield return new WaitForSeconds(effect.GetParticleSystem().main.duration);
+
+        if (effect == null || effect.gameObject == null)
+        {
+            Debug.LogWarning($"[PoolManager] EffectBase was destroyed during playback for pool: {poolName}");
+            yield break;
+        }
+
         effect.Stop();
         effect.transform.SetParent(originalParent);
         Return(poolName, effect);
