@@ -42,11 +42,6 @@ public class CameraController : MonoSingleton<CameraController>
     private const int m_layerShipModule = 31;
     private LayerMask m_layerMaskShipModule = 1 << m_layerShipModule;
 
-
-    // Hover tracking
-    private ModuleBase m_hoveredModule = null;
-    //private DisplayShip m_currentDisplayShip = null;
-
     protected override bool ShouldDontDestroyOnLoad => false;
 
     protected override void OnInitialize()
@@ -190,9 +185,6 @@ public class CameraController : MonoSingleton<CameraController>
             m_currentRotationY = m_startRotationY + touchDelta.x;
             m_currentRotationX = Mathf.Clamp(m_startRotationX - touchDelta.y, -80f, 80f);
         }
-
-        if (m_isDragging == false)
-            HandleModuleHover();
     }
     
     private void HandleInput_Mouse(ref bool inputDown, ref bool inputUp, ref bool inputHeld, ref Vector3 inputPosition)
@@ -331,37 +323,6 @@ public class CameraController : MonoSingleton<CameraController>
         }
     }
     
-
-
-    private void HandleModuleHover()
-    {
-        if (GetCameraRaycast(out RaycastHit hit))
-        {
-            ModuleBase module = hit.collider.GetComponentInParent<ModuleBase>();
-            //DisplayShip displayShip = hit.collider.GetComponentInParent<DisplayShip>();
-
-            if (module != m_hoveredModule)
-            {
-                // if (m_hoveredModule != null && m_currentDisplayShip != null)
-                //     m_currentDisplayShip.OnModuleHover(m_hoveredModule, false);
-
-                // m_hoveredModule = module;
-                // m_currentDisplayShip = displayShip;
-
-                // if (module != null && displayShip != null)
-                //     displayShip.OnModuleHover(module, true);
-            }
-        }
-        else
-        {
-            // if (m_hoveredModule != null && m_currentDisplayShip != null)
-            // {
-            //     m_currentDisplayShip.OnModuleHover(m_hoveredModule, false);
-            //     m_hoveredModule = null;
-            //     m_currentDisplayShip = null;
-            // }
-        }
-    }
 
     private void HandleModuleSelection(Vector3? screenPosition = null)
     {

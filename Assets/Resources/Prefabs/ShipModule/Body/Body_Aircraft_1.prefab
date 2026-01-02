@@ -855,6 +855,7 @@ GameObject:
   - component: {fileID: 992329172262420132}
   - component: {fileID: 8466269383077563509}
   - component: {fileID: 7541507933529252238}
+  - component: {fileID: 179248296612302443}
   m_Layer: 0
   m_Name: Body_Aircraft_1
   m_TagString: Untagged
@@ -972,6 +973,20 @@ MonoBehaviour:
   - {fileID: 1203390615134275286}
   - {fileID: 7154477884230777434}
   m_PointParent: {fileID: 4093633681696387084}
+  bShowPathGrid: 0
+--- !u!114 &179248296612302443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3300205784538342367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51d51c84274a1364cbef2dd9499455d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isSelected: 0
 --- !u!1 &3422797853348065600
 GameObject:
   m_ObjectHideFlags: 0

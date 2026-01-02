@@ -26,9 +26,10 @@ public class AirCraftPathGridEditor : Editor
         }
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("m_PointParent"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("bShowPathGrid"));
 
         serializedObject.ApplyModifiedProperties();
-
+        
         EditorGUILayout.Space();
 
         if (GUILayout.Button("Generate Outline Points"))
