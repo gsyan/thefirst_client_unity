@@ -640,6 +640,7 @@ MonoBehaviour:
   - {fileID: 3495581307944156825}
   - {fileID: 2453635033051965858}
   m_PointParent: {fileID: 3925928330725103218}
+  bShowPathGrid: 0
 --- !u!1 &3422797853348065600
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,15 +16,11 @@ Shader "SpaceFleet/Metal"
         _EmissionColor ("Emission Color", Color) = (0,0,0)
         _EmissionMap ("Emission", 2D) = "white" {}
 
-        [Header(Highlight)]
-        _HighlightColor ("Highlight Color", Color) = (0,0,0,0)
-        _HighlightIntensity ("Highlight Intensity", Range(0,2)) = 0
-
         [Header(Selection Grid)]
         _GridColor ("Grid Color", Color) = (0,1,1,1)
         _GridIntensity ("Grid Intensity", Range(0,2)) = 0
         _GridThickness ("Grid Thickness", Range(0.001, 0.1)) = 0.02
-        _GridSpacing ("Grid Spacing", Range(0.1, 2)) = 0.5
+        _GridSpacing ("Grid Spacing", Range(0.1, 10)) = 3.0
         _GridAnimationSpeed ("Grid Animation Speed", Range(0, 5)) = 2
     }
 
@@ -91,8 +87,6 @@ Shader "SpaceFleet/Metal"
                 float4 _BumpMap_ST;
                 float _BumpScale;
                 float4 _EmissionColor;
-                float4 _HighlightColor;
-                float _HighlightIntensity;
                 float4 _GridColor;
                 float _GridIntensity;
                 float _GridThickness;
@@ -100,20 +94,19 @@ Shader "SpaceFleet/Metal"
                 float _GridAnimationSpeed;
             CBUFFER_END
 
-            // Improved grid calculation function
+            // Grid calculation function with proper UV handling
             float calculateGrid(float2 uv, float spacing, float thickness)
             {
+                // Simple approach: just use spacing directly on UV
+                // spacing controls grid density (smaller = more grids)
                 float2 gridUV = uv / spacing;
 
-                // Create sharper grid lines
-                float2 grid = abs(frac(gridUV - 0.5) - 0.5) / (fwidth(gridUV) * thickness);
+                // Create grid lines at integer positions
+                float2 grid = abs(frac(gridUV - 0.5) - 0.5) / fwidth(gridUV);
                 float gridLine = min(grid.x, grid.y);
 
-                // Make lines more visible with exponential falloff
-                float gridMask = 1.0 - saturate(gridLine);
-                gridMask = pow(gridMask, 0.5); // Makes lines more prominent
-
-                return gridMask;
+                // Convert to mask (0 = grid line, 1 = no line)
+                return 1.0 - saturate(gridLine / thickness);
             }
 
             Varyings vert(Attributes input)
@@ -182,21 +175,20 @@ Shader "SpaceFleet/Metal"
                 // Ambient
                 float3 ambient = SampleSH(normalWS) * albedo * 0.3;
 
-                // Highlight effect
-                float3 highlight = _HighlightColor.rgb * _HighlightIntensity;
-
                 // Grid effect
                 float3 gridEffect = float3(0, 0, 0);
                 if (_GridIntensity > 0)
                 {
+                    // Use UV coordinates with spacing adjustment
                     float gridMask = calculateGrid(input.uv, _GridSpacing, _GridThickness);
 
-                    // Animation pulse (more subtle)
-                    float time = _Time.y * _GridAnimationSpeed;
-                    float pulse = sin(time) * 0.2 + 0.9; // Less variation, more steady
+                    // Animation pulse (sawtooth wave for sharp transitions)
+                    float time = _Time.y * _GridAnimationSpeed * 5;
+                    float pulse = frac(time / 6.28318); // Linear sawtooth 0.0 ~ 1.0, resets sharply
+                    pulse = 1.0 - abs(pulse * 2.0 - 1.0); // Triangle wave 0->1->0 for smooth but faster transitions
 
                     // Enhanced grid visibility
-                    float3 gridColor = _GridColor.rgb * _GridIntensity * 2.0; // Double intensity
+                    float3 gridColor = _GridColor.rgb * _GridIntensity * 1.0;
                     gridEffect = gridColor * gridMask * pulse;
 
                     // Add glow effect around grid lines
@@ -204,7 +196,7 @@ Shader "SpaceFleet/Metal"
                     gridEffect += gridColor * glowMask * 0.3 * pulse;
                 }
 
-                float3 finalColor = diffuse + specular + ambient + emission + highlight + gridEffect;
+                float3 finalColor = diffuse + specular + ambient + emission + gridEffect;
 
                 return float4(finalColor, 1.0);
             }

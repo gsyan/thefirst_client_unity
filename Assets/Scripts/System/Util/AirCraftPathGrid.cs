@@ -392,8 +392,10 @@ public class AirCraftPathGrid : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    [SerializeField] private bool bShowPathGrid = false;
     private void OnDrawGizmos()
     {
+        if (bShowPathGrid == false) return;
         if (m_outlinePointInfos == null) return;
 
         // Vector3 viewNormal = Camera.current.transform.forward;

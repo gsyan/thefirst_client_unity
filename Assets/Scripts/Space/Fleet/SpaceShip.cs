@@ -69,7 +69,7 @@ public class SpaceShip : MonoBehaviour
         m_spaceShipStatsOrg = GetTotalStats();
         m_spaceShipStatsCur = GetTotalStats();
 
-        SetupModuleHighlighting();
+        SetupSelectedModuleVisualing();
         
         // AirCraftPathGrid, 지금은 바디가 오직 하나...
         m_airCraftPathGrid = m_moduleBodys[0].GetComponent<AirCraftPathGrid>();
@@ -401,61 +401,55 @@ public class SpaceShip : MonoBehaviour
 
 
     #region Display migration ============================================================
-
-    [Header("Visualization")]
-    public Material highlightMaterial;
-    public Color selectedColor = Color.yellow;
-    public Color hoverColor = Color.cyan;
-
     // Private fields
-    private List<ModuleHighlight> m_moduleHighlights = new List<ModuleHighlight>();
+    private List<SelectedModuleVisual> m_selectedModuleVisuals = new List<SelectedModuleVisual>();
     private ModuleBase m_selectedModule = null;
 
-    private void SetupModuleHighlighting()
+    private void SetupSelectedModuleVisualing()
     {
-        // Setup highlighting for parts bodies
+        // Setup SelectedModuleVisual for parts bodies
         foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null)
             {
-                SetupModuleHighlight(body);
+                SetupSelectedModuleVisual(body);
 
-                // Setup highlighting for all modules in slots
+                // Setup SelectedModuleVisual for all modules in slots
                 foreach (ModuleSlot slot in body.m_moduleSlots)
                 {
                     if (slot != null && slot.transform.childCount > 0)
                     {
                         ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
                         if (module != null)
-                            SetupModuleHighlight(module);
+                            SetupSelectedModuleVisual(module);
                     }
                 }
             }
         }
     }
 
-    private void SetupModuleHighlight(ModuleBase partsBase)
+    private void SetupSelectedModuleVisual(ModuleBase moduleBase)
     {
-        // Add highlighting component
-        ModuleHighlight highlight = partsBase.gameObject.AddComponent<ModuleHighlight>();
-        highlight.InitializeModuleHighlight(this, partsBase);
-        m_moduleHighlights.Add(highlight);
+        // Add SelectedModuleVisual component
+        SelectedModuleVisual selectedModuleVisual = moduleBase.gameObject.AddComponent<SelectedModuleVisual>();
+        selectedModuleVisual.InitializeSelectedModuleVisual(this, moduleBase);
+        m_selectedModuleVisuals.Add(selectedModuleVisual);
     }
 
     // 모듈 교체 후 하이라이트 갱신 (효율적으로)
-    public void RefreshModuleHighlights()
+    public void RefreshSelectedModuleVisuals()
     {
         // 1. 파괴된 모듈의 하이라이트만 리스트에서 제거
-        m_moduleHighlights.RemoveAll(h => h == null || h.ModuleBase == null);
+        m_selectedModuleVisuals.RemoveAll(h => h == null || h.ModuleBase == null);
 
         // 2. Body 모듈 확인 및 추가
         foreach (ModuleBody body in m_moduleBodys)
         {
             if (body == null) continue;
 
-            // Body에 ModuleHighlight가 없으면 추가 (새로 생성된 Body)
-            if (body.GetComponent<ModuleHighlight>() == null)
-                SetupModuleHighlight(body);
+            // Body에 SelectedModuleVisual가 없으면 추가 (새로 생성된 Body)
+            if (body.GetComponent<SelectedModuleVisual>() == null)
+                SetupSelectedModuleVisual(body);
 
             // 3. 각 슬롯의 모듈 확인
             foreach (ModuleSlot slot in body.m_moduleSlots)
@@ -464,11 +458,11 @@ public class SpaceShip : MonoBehaviour
 
                 ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
 
-                // 이미 하이라이트가 있는지 확인 (ModuleHighlight 컴포넌트로 체크)
-                if (module != null && module.GetComponent<ModuleHighlight>() == null)
+                // 이미 하이라이트가 있는지 확인 (SelectedModuleVisual 컴포넌트로 체크)
+                if (module != null && module.GetComponent<SelectedModuleVisual>() == null)
                 {
                     // 새로 생성된 모듈이므로 하이라이트 추가
-                    SetupModuleHighlight(module);
+                    SetupSelectedModuleVisual(module);
                 }
             }
         }
@@ -514,35 +508,26 @@ public class SpaceShip : MonoBehaviour
         if (this != ship) return;
         m_myFleet.ClearAllSelectedModule();
         m_selectedModule = module;
-        UpdateHighlighting();
+        UpdateSelectedModuleVisual();
     }
 
     public void ClearSelectedModule()
     {
         m_selectedModule = null;
-        UpdateHighlighting();
+        UpdateSelectedModuleVisual();
     }
 
-    private void UpdateHighlighting()
+    private void UpdateSelectedModuleVisual()
     {
-        foreach (var highlight in m_moduleHighlights)
+        foreach (var selectedModuleVisual in m_selectedModuleVisuals)
         {
-            if (highlight != null)
+            if (selectedModuleVisual != null)
             {
-                bool isSelected = (highlight.ModuleBase == m_selectedModule);
-                highlight.SetHighlighted(isSelected);
+                bool isSelected = (selectedModuleVisual.ModuleBase == m_selectedModule);
+                selectedModuleVisual.SetSelected(isSelected);
             }
         }
     }
-
-    public void OnModuleHover(ModuleBase partsBase, bool isHovering)
-    {
-        // Find the highlight component for this parts
-        var highlight = m_moduleHighlights.Find(h => h != null && h.ModuleBase == partsBase);
-        if (highlight != null)
-            highlight.SetHovered(isHovering);
-    }
-
     #endregion
 
 
@@ -902,7 +887,7 @@ public class SpaceShip : MonoBehaviour
             m_shipOutline.RefreshOutline();
 
         // 모듈 하이라이트 갱신 (새로 생성된 모듈들을 포함하도록)
-        RefreshModuleHighlights();
+        RefreshSelectedModuleVisuals();
     }
 
     private void UpdateModulesFromInfo(ModuleBody body, ModuleInfo[] moduleInfos)
