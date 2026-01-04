@@ -61,7 +61,7 @@ public class UIMain : UIManager
             }
             else
             {
-                message = ErrorCodeMapping.Messages.ContainsKey(errorCode) ? ErrorCodeMapping.Messages[errorCode] : response.errorMessage;
+                message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Registration failed - ErrorCode: {errorCode}, Message: {message}");
             }
             if (m_resultText != null)
@@ -96,7 +96,7 @@ public class UIMain : UIManager
             }
             else
             {
-                message = ErrorCodeMapping.Messages.ContainsKey(errorCode) ? ErrorCodeMapping.Messages[errorCode] : response.errorMessage;
+                message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Login failed - ErrorCode: {errorCode}, Message: {message}");
             }
             if (m_resultText != null)
@@ -122,7 +122,7 @@ public class UIMain : UIManager
             }
             else
             {
-                message = ErrorCodeMapping.Messages.ContainsKey(errorCode) ? ErrorCodeMapping.Messages[errorCode] : response.errorMessage;
+                message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Google Login failed - ErrorCode: {errorCode}, Message: {message}");
             }
             if (m_resultText != null)
@@ -169,7 +169,7 @@ public class UIMain : UIManager
             }
             else
             {
-                message = ErrorCodeMapping.Messages.ContainsKey(errorCode) ? ErrorCodeMapping.Messages[errorCode] : response.errorMessage;
+                message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Get characters failed - ErrorCode: {errorCode}, Message: {message}");
             }
             if (m_resultText != null)
@@ -209,7 +209,7 @@ public class UIMain : UIManager
             }
             else
             {
-                message = ErrorCodeMapping.Messages.ContainsKey(errorCode) ? ErrorCodeMapping.Messages[errorCode] : response.errorMessage;
+                message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Character creation failed - ErrorCode: {errorCode}, Message: {message}");
             }
             if (m_resultText != null)
@@ -287,7 +287,7 @@ public class UIMain : UIManager
             }
             else
             {
-                message = ErrorCodeMapping.Messages.ContainsKey(errorCode) ? ErrorCodeMapping.Messages[errorCode] : response.errorMessage;
+                message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Character selection failed - ErrorCode: {errorCode}, Message: {message}");
             }
             if (m_resultText != null)

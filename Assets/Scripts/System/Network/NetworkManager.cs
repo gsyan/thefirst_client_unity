@@ -7,19 +7,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-
-
-public static class TaskExtensions
-{
-    public static IEnumerator WrapToCoroutine(this Task task)
-    {
-        while (!task.IsCompleted)
-            yield return null;
-        if (task.IsFaulted)
-            Debug.LogError($"Task failed: {task.Exception}");
-    }
-}
-
 public class NetworkManager : MonoSingleton<NetworkManager>
 {
     #region MonoSingleton ---------------------------------------------------------------
@@ -45,9 +32,8 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     private NetworkReachability m_networkStatus;
     private bool m_bConnected = false;
-    private Queue<Action> m_pendingRequests = new Queue<Action>();
 
-    private bool m_useFirebaseAuth = true;
+    private bool m_useFirebaseAuth = false;
     private bool m_autoLoginAttempted = false;
 
     void Start()
@@ -85,7 +71,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 if (m_bConnected == false)
                 {
                     m_bConnected = true;
-                    yield return StartCoroutine(ProcessPendingRequestsAsync().WrapToCoroutine());
 
                     if (m_autoLoginAttempted == false && string.IsNullOrEmpty(m_refreshToken) == false)
                     {
@@ -111,21 +96,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     }
     
 
-    private async Task ProcessPendingRequestsAsync()
-    {
-        while (m_pendingRequests.Count > 0)
-        {
-            try
-            {
-                var action = m_pendingRequests.Dequeue();
-                await Task.Run(action); // Asynchronous execution
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Failed to process queued request: {e.Message}");
-            }
-        }
-    }
 
     private IEnumerator RunAsync<T>(Func<Task<ApiResponse<T>>> taskFunc, System.Action<ApiResponse<T>> onComplete, int maxRetries = 2)
     {
@@ -141,10 +111,15 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
             if (task.IsFaulted)
             {
-                string errorMessage = task.Exception?.InnerException?.Message ?? "Unknown error";
+                // CustomException에서 ErrorCode 추출
+                var innerException = task.Exception?.InnerException;
+                ServerErrorCode errorCode = ServerErrorCode.UNKNOWN_ERROR;
 
-                // 401 에러이고 재시도 가능한 경우
-                if (errorMessage.Contains("401") && retryCount < maxRetries)
+                if (innerException is CustomException customEx)
+                    errorCode = customEx.ErrorCode;
+
+                // HTTP 401 에러이고 재시도 가능한 경우
+                if (errorCode == ServerErrorCode.HTTP_UNAUTHORIZED_401 && retryCount < maxRetries)
                 {
                     retryCount++;
                     Debug.Log($"Token expired, refreshing... (Attempt {retryCount}/{maxRetries})");
@@ -157,7 +132,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                     if (refreshTask.IsFaulted || refreshTask.Result.errorCode != 0)
                     {
                         Debug.LogError("Token refresh failed");
-                        response = ApiResponse<T>.error((int)ServerErrorCode.INVALID_TOKEN, "Token refresh failed");
+                        response = ApiResponse<T>.error((int)ServerErrorCode.CLIENT_INVALID_TOKEN_401);
                         break;
                     }
 
@@ -166,12 +141,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 }
 
                 // 401이 아니거나 재시도 횟수 초과
-                response = ApiResponse<T>.error((int)ServerErrorCode.UNKNOWN_ERROR, errorMessage);
+                response = ApiResponse<T>.error((int)errorCode);
                 break;
             }
             else
             {
-                response = task.Result ?? ApiResponse<T>.error((int)ServerErrorCode.UNKNOWN_ERROR, "Invalid server response");
+                response = task.Result ?? ApiResponse<T>.error((int)ServerErrorCode.CLIENT_RUNASYNC_FAIL_UNKONW);
                 break;
             }
         }
@@ -203,8 +178,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 }
                 else
                 {
-                    Debug.LogError($"Login failed: {response.errorMessage} (Code: {response.errorCode})");
-                    throw new Exception(response.errorMessage);
+                    string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+                    Debug.LogError($"Login failed: {errorMessage} (Code: {response.errorCode})");
+                    throw new Exception(errorMessage);
                 }
                 return response;
             }
@@ -289,7 +265,8 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         //             }
         //             else
         //             {
-        //                 Debug.LogError($"Google Login failed on game server: {response.errorMessage} (Code: {response.errorCode})");
+        //                 string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+        //                 Debug.LogError($"Google Login failed on game server: {errorMessage} (Code: {response.errorCode})");
         //             }
 
         //             // 콜백 실행
@@ -298,7 +275,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         //         catch (Exception e)
         //         {
         //             Debug.LogError($"Google login failed: {e.Message}");
-        //             onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.UNKNOWN_ERROR, e.Message));
+        //             onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.UNKNOWN_ERROR));
         //         }
         //     },
         //     () =>
@@ -412,55 +389,44 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (redirectDetected == false)
         {
             Debug.LogError("[Google OAuth] Timeout - no redirect detected");
-            onComplete?.Invoke(ApiResponse<AuthResponse>.error(
-                (int)ServerErrorCode.UNKNOWN_ERROR,
-                "Authentication timeout"
-            ));
+            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT));
             yield break;
         }
 
         if (string.IsNullOrEmpty(authToken))
         {
             Debug.LogError("[Google OAuth] No token extracted from redirect");
-            onComplete?.Invoke(ApiResponse<AuthResponse>.error(
-                (int)ServerErrorCode.UNKNOWN_ERROR,
-                "Failed to extract authentication token"
-            ));
+            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION));
             yield break;
         }
 
         // 6) 서버로 Google 로그인 요청
         Debug.Log("[Google OAuth] Sending token to backend...");
-        var task = m_apiClient.GoogleLoginAsync(authToken);
-        yield return task.WrapToCoroutine();
-
-        if (task.Exception == null)
+        yield return StartCoroutine(RunAsync(async () =>
         {
-            var res = task.Result;
-
-            if (res != null && res.errorCode == 0)
+            try
             {
-                Debug.Log("=== Google Login Success ===");
-                m_apiClient.SetAccessToken(res.data.accessToken);
-                m_refreshToken = res.data.refreshToken;
-                PlayerPrefs.SetString("RefreshToken", m_refreshToken);
-                PlayerPrefs.Save();
-                onComplete?.Invoke(res);
+                var response = await m_apiClient.GoogleLoginAsync(authToken);
+                if (response.errorCode == 0)
+                {
+                    m_apiClient.SetAccessToken(response.data.accessToken);
+                    m_refreshToken = response.data.refreshToken;
+                    PlayerPrefs.SetString("RefreshToken", m_refreshToken);
+                    PlayerPrefs.Save();
+                }
+                else
+                {
+                    string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+                    Debug.LogError($"Google Login Failed: {errorMessage}");
+                }
+                return response;
             }
-            else
+            catch (Exception e)
             {
-                Debug.LogError($"Google Login Failed: {res?.errorMessage}");
-                onComplete?.Invoke(res);
+                Debug.LogError($"GoogleLoginAsync Exception: {e.Message}");
+                return ApiResponse<AuthResponse>.error((int)ServerErrorCode.UNKNOWN_ERROR);
             }
-        }
-        else
-        {
-            Debug.LogError("GoogleLoginAsync Exception: " + task.Exception);
-            onComplete?.Invoke(ApiResponse<AuthResponse>.error(
-                (int)ServerErrorCode.UNKNOWN_ERROR,
-                task.Exception.Message
-            ));
-        }
+        }, onComplete));
     }
 
     private string ExtractToken(string url)
@@ -546,11 +512,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             try
             {
                 var response = await m_apiClient.SelectCharacterAsync(characterId);
-                if (response == null)
-                {
-                    Debug.LogError("Response is null");
-                    return ApiResponse<AuthResponse>.error((int)ServerErrorCode.UNKNOWN_ERROR, "Invalid server response");
-                }
                 if (response.errorCode == 0)
                 {
                     m_apiClient.SetAccessToken(response.data.accessToken);
@@ -566,8 +527,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 }
                 else
                 {
-                    Debug.LogError($"Select Character failed: {response.errorMessage} (Code: {response.errorCode})");
-                    throw new Exception(response.errorMessage);
+                    string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+                    Debug.LogError($"Select Character failed: {errorMessage} (Code: {response.errorCode})");
+                    throw new Exception(errorMessage);
                 }
                 return response;
             }
@@ -664,8 +626,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             }
             else
             {
-                Debug.LogError($"Token refresh failed: {response.errorMessage} (Code: {response.errorCode})");
-                throw new Exception(response.errorMessage);
+                string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+                Debug.LogError($"Token refresh failed: {errorMessage} (Code: {response.errorCode})");
+                throw new Exception(errorMessage);
             }
             return response;
         }
@@ -681,7 +644,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (m_autoLoginAttempted) return;
         if (string.IsNullOrEmpty(m_refreshToken))
         {
-            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.INVALID_TOKEN, "No saved login"));
+            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_AUTO_LOGIN_REFRESH_TOKEN_NOT_FOUND));
             return;
         }
 
@@ -695,7 +658,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             catch (Exception e)
             {
                 ClearLoginData();
-                return ApiResponse<AuthResponse>.error((int)ServerErrorCode.INVALID_TOKEN, e.Message);
+                return ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_AUTO_LOGIN_REFRESH_TOKEN_TRY_FAIL);
             }
         }, onComplete));
     }
@@ -729,7 +692,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             }
             catch (Exception e)
             {
-                return ApiResponse<string>.error((int)ServerErrorCode.UNKNOWN_ERROR, e.Message);
+                return ApiResponse<string>.error((int)ServerErrorCode.CLIENT_DELETE_ACCOUNT_FAIL);
             }
         }, onComplete));
     }
