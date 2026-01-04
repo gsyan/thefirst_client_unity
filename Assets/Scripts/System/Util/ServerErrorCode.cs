@@ -1,12 +1,23 @@
+// This file is auto-generated from ServerErrorCode.java
+// Do not edit manually - changes will be overwritten
+// To regenerate, run: python tools/generator/generate_server_error_enum.py
+
 using System.Collections.Generic;
 
  public enum ServerErrorCode
 {
     SUCCESS = 0,
+    HTTP_BAD_REQUEST_400 = 400,
+    HTTP_UNAUTHORIZED_401 = 401,
+    HTTP_FORBIDDEN_403 = 403,
+    HTTP_NOT_FOUND_404 = 404,
+    HTTP_SERVER_ERROR_500 = 500,
     ACCOUNT_REGISTER_FAIL_REASON1 = 1001,
-    ACCOUNT_NOT_FOUND = 1002,
-    LOGIN_FAIL_REASON1 = 2001,
-    INVALID_TOKEN = 2002,
+    LOGIN_FAIL_REASON1 = 1002,
+    ACCOUNT_NOT_FOUND = 1003,
+    LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT = 1101,
+    LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION = 1102,
+    INVALID_TOKEN = 2001,
     CHARACTER_CREATE_FAIL_REASON1 = 3001,
     CHARACTER_NAME_DUPLICATE = 3002,
     CHARACTER_SELECTION_REQUIRED = 3003,
@@ -26,6 +37,24 @@ using System.Collections.Generic;
     INSUFFICIENT_MINERAL_RARE = 4013,
     INSUFFICIENT_MINERAL_EXOTIC = 4014,
     INSUFFICIENT_MINERAL_DARK = 4015,
+    MODULE_TYPE_MISMATCH = 4016,
+    MODULE_TYPE_CHANGE_NOT_ALLOWED = 4017,
+    INVALID_MODULE_TYPE = 4018,
+    MODULE_ALREADY_RESEARCHED = 4019,
+    FLEET_CONTROLLER_FAIL_INVALID_TOKEN = 103001,
+    FLEET_CONTROLLER_FAIL_JWT_HAS_CHARACTERID = 103002,
+    FLEET_CONTROLLER_FAIL_JWT_GET_CHARACTERID = 103003,
+    UNLOCK_MODULE_FAIL_SHIP_NOT_FOUND = 110001,
+    UNLOCK_MODULE_FAIL_FLEET_ACCESS_DENIED = 110002,
+    UNLOCK_MODULE_FAIL_ALREADY_UNLOCKED = 110003,
+    UNLOCK_MODULE_FAIL_CHARACTER_NOT_FOUND = 110004,
+    UNLOCK_MODULE_FAIL_INSUFFICIENT_MINERAL = 110005,
+    CLIENT_INVALID_TOKEN_401 = 500001,
+    CLIENT_INVALID_TOKEN_NOT401_RETRY_COUNT_OVER = 500002,
+    CLIENT_RUNASYNC_FAIL_UNKONW = 500003,
+    CLIENT_AUTO_LOGIN_REFRESH_TOKEN_NOT_FOUND = 500004,
+    CLIENT_AUTO_LOGIN_REFRESH_TOKEN_TRY_FAIL = 500005,
+    CLIENT_DELETE_ACCOUNT_FAIL = 500006,
     INVALID_DATA_TABLE = 5001,
     UNKNOWN_ERROR = int.MaxValue,
 }
@@ -35,9 +64,16 @@ public static class ErrorCodeMapping
     public static readonly Dictionary<ServerErrorCode, string> Messages = new Dictionary<ServerErrorCode, string>
     {
         { ServerErrorCode.SUCCESS, "Success" },
+        { ServerErrorCode.HTTP_BAD_REQUEST_400, "HTTP_BAD_REQUEST_400" },
+        { ServerErrorCode.HTTP_UNAUTHORIZED_401, "HTTP_UNAUTHORIZED_401" },
+        { ServerErrorCode.HTTP_FORBIDDEN_403, "HTTP_FORBIDDEN_403" },
+        { ServerErrorCode.HTTP_NOT_FOUND_404, "HTTP_NOT_FOUND_404" },
+        { ServerErrorCode.HTTP_SERVER_ERROR_500, "HTTP_SERVER_ERROR_500" },
         { ServerErrorCode.ACCOUNT_REGISTER_FAIL_REASON1, "Account registration failed due to duplicate email" },
-        { ServerErrorCode.ACCOUNT_NOT_FOUND, "Account not found" },
         { ServerErrorCode.LOGIN_FAIL_REASON1, "Invalid email or password" },
+        { ServerErrorCode.ACCOUNT_NOT_FOUND, "Account not found" },
+        { ServerErrorCode.LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT, "LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT" },
+        { ServerErrorCode.LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION, "LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION" },
         { ServerErrorCode.INVALID_TOKEN, "Invalid token" },
         { ServerErrorCode.CHARACTER_CREATE_FAIL_REASON1, "Character creation failed" },
         { ServerErrorCode.CHARACTER_NAME_DUPLICATE, "Character name already exists" },
@@ -58,7 +94,31 @@ public static class ErrorCodeMapping
         { ServerErrorCode.INSUFFICIENT_MINERAL_RARE, "Insufficient rare mineral for upgrade" },
         { ServerErrorCode.INSUFFICIENT_MINERAL_EXOTIC, "Insufficient exotic mineral for upgrade" },
         { ServerErrorCode.INSUFFICIENT_MINERAL_DARK, "Insufficient dark mineral for upgrade" },
+        { ServerErrorCode.MODULE_TYPE_MISMATCH, "Module type mismatch" },
+        { ServerErrorCode.MODULE_TYPE_CHANGE_NOT_ALLOWED, "Module type change not allowed" },
+        { ServerErrorCode.INVALID_MODULE_TYPE, "Invalid module type" },
+        { ServerErrorCode.MODULE_ALREADY_RESEARCHED, "Module already researched" },
+        { ServerErrorCode.FLEET_CONTROLLER_FAIL_INVALID_TOKEN, "FLEET_CONTROLLER_FAIL_INVALID_TOKEN" },
+        { ServerErrorCode.FLEET_CONTROLLER_FAIL_JWT_HAS_CHARACTERID, "FLEET_CONTROLLER_FAIL_JWT_HAS_CHARACTERID" },
+        { ServerErrorCode.FLEET_CONTROLLER_FAIL_JWT_GET_CHARACTERID, "FLEET_CONTROLLER_FAIL_JWT_GET_CHARACTERID" },
+        { ServerErrorCode.UNLOCK_MODULE_FAIL_SHIP_NOT_FOUND, "UNLOCK_MODULE_FAIL_SHIP_NOT_FOUND" },
+        { ServerErrorCode.UNLOCK_MODULE_FAIL_FLEET_ACCESS_DENIED, "UNLOCK_MODULE_FAIL_FLEET_ACCESS_DENIED" },
+        { ServerErrorCode.UNLOCK_MODULE_FAIL_ALREADY_UNLOCKED, "UNLOCK_MODULE_FAIL_ALREADY_UNLOCKED" },
+        { ServerErrorCode.UNLOCK_MODULE_FAIL_CHARACTER_NOT_FOUND, "UNLOCK_MODULE_FAIL_CHARACTER_NOT_FOUND" },
+        { ServerErrorCode.UNLOCK_MODULE_FAIL_INSUFFICIENT_MINERAL, "UNLOCK_MODULE_FAIL_INSUFFICIENT_MINERAL" },
+        { ServerErrorCode.CLIENT_INVALID_TOKEN_401, "CLIENT_INVALID_TOKEN_401" },
+        { ServerErrorCode.CLIENT_INVALID_TOKEN_NOT401_RETRY_COUNT_OVER, "CLIENT_INVALID_TOKEN_NOT401_RETRY_COUNT_OVER" },
+        { ServerErrorCode.CLIENT_RUNASYNC_FAIL_UNKONW, "CLIENT_RUNASYNC_FAIL_UNKONW" },
+        { ServerErrorCode.CLIENT_AUTO_LOGIN_REFRESH_TOKEN_NOT_FOUND, "CLIENT_AUTO_LOGIN_REFRESH_TOKEN_NOT_FOUND" },
+        { ServerErrorCode.CLIENT_AUTO_LOGIN_REFRESH_TOKEN_TRY_FAIL, "CLIENT_AUTO_LOGIN_REFRESH_TOKEN_TRY_FAIL" },
+        { ServerErrorCode.CLIENT_DELETE_ACCOUNT_FAIL, "CLIENT_AUTO_LOGIN_REFRESH_TOKEN_TRY_FAIL" },
         { ServerErrorCode.INVALID_DATA_TABLE, "Invalid data table provided" },
         { ServerErrorCode.UNKNOWN_ERROR, "Unknown error" },
     };
+
+    public static string GetMessage(int errorCode)
+    {
+        ServerErrorCode code = (ServerErrorCode)errorCode;
+        return Messages.ContainsKey(code) ? Messages[code] : Messages[ServerErrorCode.UNKNOWN_ERROR];
+    }
 }

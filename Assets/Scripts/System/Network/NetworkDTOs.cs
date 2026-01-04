@@ -8,17 +8,16 @@ using UnityEngine;
 public class ApiResponse<T>
 {
     public int errorCode;
-    public string errorMessage;
     public T data;
 
     public static ApiResponse<T> success(T data)
     {
-        return new ApiResponse<T> { errorCode = 0, errorMessage = "Success", data = data };
+        return new ApiResponse<T> { errorCode = 0, data = data };
     }
 
-    public static ApiResponse<T> error(int code, string message)
+    public static ApiResponse<T> error(int code)
     {
-        return new ApiResponse<T> { errorCode = code, errorMessage = message, data = default };
+        return new ApiResponse<T> { errorCode = code, data = default };
     }
 }
 

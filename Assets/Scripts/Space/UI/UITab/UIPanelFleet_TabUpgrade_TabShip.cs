@@ -272,7 +272,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             // 함선 정보 업데이트
             targetShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
             // 성공 메시지 표시
-            ShowResultMessage($"Module unlock successful! {response.errorMessage}", 3f);
+            ShowResultMessage("Module unlock successful!", 3f);
 
             // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
             if (m_selectedShip == null || m_selectedShip.m_shipInfo.id != response.data.updatedShipInfo.id) return;
@@ -282,7 +282,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         else
         {
             // 실패 메시지 표시
-            ShowResultMessage($"Module unlock failed: {response.errorMessage}", 3f);
+            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+            ShowResultMessage($"Module unlock failed: {errorMessage}", 3f);
         }
     }
 
@@ -429,14 +430,15 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             UpdateShipStatsDisplay();
 
             // Show success message
-            ShowResultMessage($"Upgrade successful! {response.errorMessage}", 3f);
+            ShowResultMessage("Upgrade successful!", 3f);
         }
         else
         {
-            Debug.LogError($"Upgrade failed: {response.errorMessage}");
+            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+            Debug.LogError($"Upgrade failed: {errorMessage}");
 
             // Show error message
-            ShowResultMessage($"Upgrade failed: {response.errorMessage}", 3f);
+            ShowResultMessage($"Upgrade failed: {errorMessage}", 3f);
         }
     }
 
@@ -657,11 +659,11 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
                 slotIndex = 0;
             else
                 slotIndex = m_selectedModule.m_moduleSlot?.m_slotIndex ?? -1;
-            
+
             // 함선 정보 업데이트
             targetShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
             // 성공 메시지 표시
-            ShowResultMessage($"Module change successful! {response.errorMessage}", 3f);
+            ShowResultMessage("Module change successful!", 3f);
 
             // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
             if (m_selectedShip == null || m_selectedShip.m_shipInfo.id != response.data.updatedShipInfo.id) return;
@@ -671,10 +673,11 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
         else
         {
-            Debug.LogError($"Module change failed: {response.errorMessage}");
+            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+            Debug.LogError($"Module change failed: {errorMessage}");
 
             // 실패 메시지 표시
-            ShowResultMessage($"Module change failed: {response.errorMessage}", 3f);
+            ShowResultMessage($"Module change failed: {errorMessage}", 3f);
         }
     }
 
