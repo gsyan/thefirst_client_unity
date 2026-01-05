@@ -16,6 +16,7 @@ public class CameraController : MonoSingleton<CameraController>
 {
     [Header("Camera Settings")]
     public Camera m_targetCamera;
+    private Camera m_backgroundCamera; // 하단 영역을 Clear하기 위한 배경 카메라
     private float m_rotationSpeed = 0.1f;
     private float m_zoomSpeed = 2f;
     private float m_panSpeed = 0.001f;
@@ -29,7 +30,6 @@ public class CameraController : MonoSingleton<CameraController>
     private Transform m_currentTarget; // (Optional) 움직이는 타겟을 따라가기 위한 Transform
     private Vector3 m_targetPosition; // 카메라가 바라보는 목표 위치
     private Vector3 m_interpolatedTargetPosition; // 부드럽게 보간된 타겟 위치
-    private float m_verticalScreenOffsetRatio = 0f; // 세로 화면 오프셋 비율 (0.0 = 중앙, 0.25 = 위쪽 1/4)
     private float m_currentZoom;
     private float m_currentRotationY = 0f;
     private float m_currentRotationX = 0f;
@@ -66,10 +66,14 @@ public class CameraController : MonoSingleton<CameraController>
         switch (mode)
         {
             case ECameraControllerMode.Normal:
+                // 전체 화면 사용
+                m_targetCamera.rect = new Rect(0, 0, 1, 1);
                 break;
             case ECameraControllerMode.Select_Ship:
             case ECameraControllerMode.Upgrade_Fleet:
             case ECameraControllerMode.Manage_Ship:
+                // 화면 위쪽 절반만 사용 (x: 0, y: 0.5, width: 1, height: 0.5)
+                m_targetCamera.rect = new Rect(0, 0.5f, 1, 0.5f);
                 if (viewTarget != null)
                     SetTargetOfCameraController(viewTarget);
                 break;
@@ -103,24 +107,9 @@ public class CameraController : MonoSingleton<CameraController>
             Mathf.Cos(radiansY) * horizontalDistance
         );
 
-        // 3. 세로 화면 오프셋 계산 (매 프레임 카메라 방향 기준으로 계산)
-        Vector3 verticalOffset = Vector3.zero;
-        if (m_verticalScreenOffsetRatio != 0f)
-        {
-            // 카메라의 위쪽 방향 벡터 (회전 후 기준)
-            Vector3 cameraUp = m_targetCamera.transform.up;
-
-            // 줌 레벨과 화면 비율을 고려한 오프셋 계산
-            float verticalFOV = m_targetCamera.fieldOfView * Mathf.Deg2Rad;
-            float screenHeight = 2f * m_currentZoom * Mathf.Tan(verticalFOV / 2f);
-            float offset = screenHeight * m_verticalScreenOffsetRatio;
-
-            verticalOffset = -cameraUp * offset;
-        }
-
-        // 4. 보간된 타겟 위치 + 회전 오프셋 + 세로 오프셋 = 카메라 위치
-        m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset + verticalOffset;
-        m_targetCamera.transform.LookAt(m_interpolatedTargetPosition + verticalOffset);
+        // 3. 보간된 타겟 위치 + 회전 오프셋 + 세로 오프셋 = 카메라 위치
+        m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset;
+        m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
     }
 
     private bool m_inputEnabled = true;
@@ -456,16 +445,40 @@ public class CameraController : MonoSingleton<CameraController>
         return m_targetPosition;
     }
 
-    // 화면 세로 오프셋 적용 (0.0 = 중앙, 0.25 = 위쪽 1/4, -0.25 = 아래쪽 1/4)
-    public void ApplyVerticalScreenOffset(float screenOffsetRatio)
+    // 카메라 뷰포트를 화면 위쪽 절반으로 설정
+    public void SetCameraViewportToUpperHalf()
     {
-        m_verticalScreenOffsetRatio = screenOffsetRatio;
+        if (m_targetCamera != null)
+        {
+            m_targetCamera.rect = new Rect(0, 0.5f, 1, 0.5f);
+
+            // 하단 영역을 Clear하기 위한 배경 카메라 생성
+            if (m_backgroundCamera == null)
+            {
+                GameObject bgCamObj = new GameObject("BackgroundCamera");
+                bgCamObj.transform.SetParent(m_targetCamera.transform.parent);
+                m_backgroundCamera = bgCamObj.AddComponent<Camera>();
+                m_backgroundCamera.clearFlags = CameraClearFlags.SolidColor;
+                m_backgroundCamera.backgroundColor = Color.black;
+                m_backgroundCamera.cullingMask = 0; // 아무것도 렌더링하지 않음
+                m_backgroundCamera.depth = m_targetCamera.depth - 1; // 메인 카메라보다 먼저 렌더링
+                m_backgroundCamera.rect = new Rect(0, 0, 1, 0.5f); // 하단 절반만
+            }
+            m_backgroundCamera.enabled = true;
+        }
     }
 
-    // 원래 타겟 위치로 복구
-    public void ResetVerticalScreenOffset()
+    // 카메라 뷰포트를 전체 화면으로 복구
+    public void ResetCameraViewport()
     {
-        m_verticalScreenOffsetRatio = 0f;
+        if (m_targetCamera != null)
+        {
+            m_targetCamera.rect = new Rect(0, 0, 1, 1);
+
+            // 배경 카메라 비활성화
+            if (m_backgroundCamera != null)
+                m_backgroundCamera.enabled = false;
+        }
     }
 
 }
