@@ -443,8 +443,8 @@ public class ModuleBody : ModuleBase
         }
     }
 
-    // 총 이동 속도 계산 (모든 엔진의 합)
-    public float GetTotalMovementSpeed()
+    // 총 엔진 속도 계산 (모든 엔진의 합)
+    public float GetTotalEngineSpeed()
     {
         float totalSpeed = 0f;
         foreach (ModuleSlot slot in m_moduleSlots)
@@ -454,25 +454,7 @@ public class ModuleBody : ModuleBase
                 ModuleEngine engine = slot.GetComponentInChildren<ModuleEngine>();
                 if (engine != null && engine.m_health > 0)
                 {
-                    totalSpeed += engine.GetMovementSpeed();
-                }
-            }
-        }
-        return totalSpeed;
-    }
-
-    // 총 회전 속도 계산 (모든 엔진의 합)
-    public float GetTotalRotationSpeed()
-    {
-        float totalSpeed = 0f;
-        foreach (ModuleSlot slot in m_moduleSlots)
-        {
-            if (slot != null && slot.transform.childCount > 0)
-            {
-                ModuleEngine engine = slot.GetComponentInChildren<ModuleEngine>();
-                if (engine != null && engine.m_health > 0)
-                {
-                    totalSpeed += engine.GetRotationSpeed();
+                    totalSpeed += engine.GetEngineSpeed();
                 }
             }
         }
@@ -484,13 +466,44 @@ public class ModuleBody : ModuleBase
     {
         return m_cargoCapacity;
     }
-    
+
+    // Body의 능력치 프로파일 계산
+    public override CapabilityProfile GetCapabilityProfile()
+    {
+        CapabilityProfile stats = new CapabilityProfile();
+
+        if (m_health <= 0) return stats;
+
+        // Body 자체의 능력치
+        stats.hp = m_health;
+        stats.cargoCapacity = m_cargoCapacity;
+
+        // 모든 슬롯의 모듈들을 순회하며 능력치 합산
+        foreach (ModuleSlot slot in m_moduleSlots)
+        {
+            if (slot != null && slot.transform.childCount > 0)
+            {
+                ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
+                if (module != null && module.m_health > 0)
+                {
+                    CapabilityProfile moduleStats = module.GetCapabilityProfile();
+                    stats.engineSpeed += moduleStats.engineSpeed;
+                    stats.attackDps += moduleStats.attackDps;
+                    stats.totalWeapons += moduleStats.totalWeapons;
+                    stats.totalEngines += moduleStats.totalEngines;
+                }
+            }
+        }
+
+        return stats;
+    }
+
     // 체력 비율 반환
     public float GetHealthRatio()
     {
         return m_healthMax > 0 ? m_health / m_healthMax : 0f;
     }
-    
+
     // 바디가 사용 가능한 상태인지 체크
     public bool IsOperational()
     {

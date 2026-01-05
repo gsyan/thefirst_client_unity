@@ -6,24 +6,35 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-// 함선 통계 구조체
+// 능력치 프로파일 구조체 (함선/함대의 전투 및 작전 능력)
 [System.Serializable]
-public struct SpaceShipStats
+public struct CapabilityProfile
 {
-    public float totalHealth;
-    public float totalMovementSpeed;
-    public float totalRotationSpeed;
-    public float totalCargoCapacity;
-    public float totalAttackPower;
+    // 기존 능력치 (하위 호환성 유지 - deprecated)
     public int totalWeapons;
     public int totalEngines;
 
+    // 세부 전투 능력치
+    public float attackDps;        // 초당 공격력 (DPS)
+    public float hp;               // 체력
+    public float engineSpeed;      // 엔진 속도 (이동+회전 통합)
+    public float cargoCapacity;    // 화물 용량
+
+    // 육각형 차트용 포괄적 능력치
+    public float firepower;        // 화력
+    public float survivability;    // 생존력
+    public float mobility;         // 기동력
+    public float logistics;        // 군수
+    public float sustainment;      // 지속력
+    public float detection;        // 탐지력
+
     public override string ToString()
     {
-        return $"Health: {totalHealth:F1}, Speed: {totalMovementSpeed:F1}, " +
-                $"Rotation: {totalRotationSpeed:F1}, Cargo: {totalCargoCapacity:F1}, " +
-                $"AttackPower: {totalAttackPower:F1}, " +
-                $"Weapons: {totalWeapons}, Engines: {totalEngines}";
+        return $"AttackDPS: {attackDps:F1}, HP: {hp:F1}, " +
+                $"EngineSpeed: {engineSpeed:F1}, Cargo: {cargoCapacity:F1}, " +
+                $"Weapons: {totalWeapons}, Engines: {totalEngines}\n" +
+                $"Firepower: {firepower:F1}, Survivability: {survivability:F1}, " +
+                $"Mobility: {mobility:F1}, Logistics: {logistics:F1}";
     }
 }
 
@@ -33,8 +44,8 @@ public class SpaceShip : MonoBehaviour
     [SerializeField] public List<ModuleBody> m_moduleBodys = new List<ModuleBody>();
     [SerializeField] public float m_health;
     [SerializeField] public SpaceShip m_targetShip;
-    [SerializeField] public SpaceShipStats m_spaceShipStatsOrg;
-    [SerializeField] public SpaceShipStats m_spaceShipStatsCur;
+    [SerializeField] public CapabilityProfile m_spaceShipStatsOrg;
+    [SerializeField] public CapabilityProfile m_spaceShipStatsCur;
 
     public SpaceFleet m_myFleet;
     public EShipState m_shipState;
@@ -360,41 +371,38 @@ public class SpaceShip : MonoBehaviour
         return null;
     }
 
-    public SpaceShipStats GetTotalStats()
+    // GetTotalStats는 하위 호환성을 위해 GetCapabilityProfile을 호출
+    public CapabilityProfile GetTotalStats()
     {
-        SpaceShipStats stats = new SpaceShipStats();
+        return GetCapabilityProfile();
+    }
+
+    // 함선의 능력치 프로파일 계산
+    public CapabilityProfile GetCapabilityProfile()
+    {
+        CapabilityProfile stats = new CapabilityProfile();
 
         foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null && body.m_health > 0)
             {
-                stats.totalHealth += body.m_health;
-                stats.totalMovementSpeed += body.GetTotalMovementSpeed();
-                stats.totalRotationSpeed += body.GetTotalRotationSpeed();
-                stats.totalCargoCapacity += body.GetTotalCargoCapacity();
-
-                // Count modules and calculate attack power
-                foreach (ModuleSlot slot in body.m_moduleSlots)
-                {
-                    if (slot != null && slot.transform.childCount > 0)
-                    {
-                        ModuleWeapon weapon = slot.GetComponentInChildren<ModuleWeapon>();
-                        if (weapon != null && weapon.m_health > 0)
-                        {
-                            stats.totalAttackPower += weapon.m_attackPower;
-                            stats.totalWeapons++;
-                            continue;
-                        }
-
-                        ModuleEngine engine = slot.GetComponentInChildren<ModuleEngine>();
-                        if (engine != null)
-                        {
-                            stats.totalEngines++;
-                        }
-                    }
-                }
+                CapabilityProfile bodyStats = body.GetCapabilityProfile();
+                stats.hp += bodyStats.hp;
+                stats.engineSpeed += bodyStats.engineSpeed;
+                stats.cargoCapacity += bodyStats.cargoCapacity;
+                stats.attackDps += bodyStats.attackDps;
+                stats.totalWeapons += bodyStats.totalWeapons;
+                stats.totalEngines += bodyStats.totalEngines;
             }
         }
+
+        // 육각형 능력치 자동 계산
+        stats.firepower = stats.attackDps;
+        stats.survivability = stats.hp;
+        stats.mobility = stats.engineSpeed;
+        stats.logistics = stats.cargoCapacity;
+        stats.sustainment = 0; // 향후 확장
+        stats.detection = 0;   // 향후 확장
 
         return stats;
     }
@@ -728,7 +736,7 @@ public class SpaceShip : MonoBehaviour
              else
                  finalDirection = directionToTarget;
 
-            float moveSpeed = m_spaceShipStatsCur.totalMovementSpeed;
+            float moveSpeed = m_spaceShipStatsCur.engineSpeed;
             Vector3 newPosition = currentPos + finalDirection * moveSpeed * Time.deltaTime;
             transform.localPosition = newPosition;
 

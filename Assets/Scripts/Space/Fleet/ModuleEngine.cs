@@ -8,7 +8,6 @@ public class ModuleEngine : ModuleBase
 
     // 엔진 전용 스탯
     [SerializeField] private float m_movementSpeed;
-    [SerializeField] private float m_rotationSpeed;
 
     public override void Start()
     {
@@ -42,6 +41,18 @@ public class ModuleEngine : ModuleBase
             // 비활성화
             gameObject.SetActive(false);
         }
+    }
+
+    public override CapabilityProfile GetCapabilityProfile()
+    {
+        CapabilityProfile stats = new CapabilityProfile();
+
+        if (m_health <= 0) return stats;
+
+        stats.engineSpeed = GetEngineSpeed();
+        stats.totalEngines = 1;
+
+        return stats;
     }
 
     public override EModuleType GetModuleType()
@@ -99,7 +110,6 @@ public class ModuleEngine : ModuleBase
 
         // 엔진 전용 스탯 설정
         m_movementSpeed = moduleData.m_movementSpeed;
-        m_rotationSpeed = moduleData.m_rotationSpeed;
 
         // 업그레이드 비용 설정
         m_upgradeCost = moduleData.m_upgradeCost;
@@ -122,8 +132,8 @@ public class ModuleEngine : ModuleBase
         return m_health > 0;
     }
     
-    // 현재 제공하는 이동 속도 (체력에 따라 감소 가능)
-    public float GetMovementSpeed()
+    // 현재 제공하는 엔진 속도 (체력에 따라 감소 가능)
+    public float GetEngineSpeed()
     {
         if (m_health <= 0) return 0f;
 
@@ -132,19 +142,8 @@ public class ModuleEngine : ModuleBase
         return m_movementSpeed * healthRatio;
     }
 
-    // 현재 제공하는 회전 속도 (체력에 따라 감소 가능)
-    public float GetRotationSpeed()
-    {
-        if (m_health <= 0) return 0f;
-
-        // 체력 비율에 따른 성능 감소 (선택적)
-        float healthRatio = m_health / m_healthMax;
-        return m_rotationSpeed * healthRatio;
-    }
-    
-    // 엔진 스탯 Getter들 (원본 값)
-    public float GetBaseMovementSpeed() { return m_movementSpeed; }
-    public float GetBaseRotationSpeed() { return m_rotationSpeed; }
+    // 엔진 스탯 Getter (원본 값)
+    public float GetBaseEngineSpeed() { return m_movementSpeed; }
 
     // 파괴 시 정리
     private void OnDestroy()
@@ -169,8 +168,7 @@ public class ModuleEngine : ModuleBase
         string comparison = $"=== UPGRADE COMPARISON ===\n";
         comparison += $"Level: {currentStats.m_moduleLevel} -> {upgradeStats.m_moduleLevel}\n";
         comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
-        comparison += $"Speed: {currentStats.m_movementSpeed:F1} -> {upgradeStats.m_movementSpeed:F1}\n";
-        comparison += $"Rotation: {currentStats.m_rotationSpeed:F1} -> {upgradeStats.m_rotationSpeed:F1}\n";
+        comparison += $"Engine Speed: {currentStats.m_movementSpeed:F1} -> {upgradeStats.m_movementSpeed:F1}\n";
         string costString = $"Cost: Tech Level {currentStats.m_upgradeCost.techLevel}";
         if (currentStats.m_upgradeCost.mineral > 0)
             costString += $", Mineral {currentStats.m_upgradeCost.mineral}";
