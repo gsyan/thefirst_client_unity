@@ -202,7 +202,7 @@ public class SpaceFleet : MonoBehaviour
         {
             yield return new WaitForSeconds(1.0f);
 
-            SpaceShipStats fleetStats = GetTotalStats(true);
+            CapabilityProfile fleetStats = GetTotalStats(true);
             float repairPerSecond = 10;//fleetStats.totalMaintenanceCapability;
 
             if (repairPerSecond <= 0) continue;
@@ -238,24 +238,38 @@ public class SpaceFleet : MonoBehaviour
         // gameObject.SetActive(false);
     }
 
-    public SpaceShipStats GetTotalStats(bool useCurrent = true)
+    // GetTotalStats는 하위 호환성을 위해 GetCapabilityProfile을 호출
+    public CapabilityProfile GetTotalStats(bool useCurrent = true)
     {
-        SpaceShipStats totalStats = new SpaceShipStats();
+        return GetCapabilityProfile(useCurrent);
+    }
+
+    // 함대의 능력치 프로파일 계산
+    public CapabilityProfile GetCapabilityProfile(bool useCurrent = true)
+    {
+        CapabilityProfile totalStats = new CapabilityProfile();
 
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
 
-            SpaceShipStats shipStats = useCurrent ? ship.m_spaceShipStatsCur : ship.m_spaceShipStatsOrg;
+            CapabilityProfile shipStats = useCurrent ? ship.m_spaceShipStatsCur : ship.m_spaceShipStatsOrg;
 
-            totalStats.totalHealth += shipStats.totalHealth;
-            totalStats.totalMovementSpeed += shipStats.totalMovementSpeed;
-            totalStats.totalRotationSpeed += shipStats.totalRotationSpeed;
-            totalStats.totalCargoCapacity += shipStats.totalCargoCapacity;
-            totalStats.totalAttackPower += shipStats.totalAttackPower;
+            totalStats.hp += shipStats.hp;
+            totalStats.engineSpeed += shipStats.engineSpeed;
+            totalStats.cargoCapacity += shipStats.cargoCapacity;
+            totalStats.attackDps += shipStats.attackDps;
             totalStats.totalWeapons += shipStats.totalWeapons;
             totalStats.totalEngines += shipStats.totalEngines;
         }
+
+        // 육각형 능력치 자동 계산
+        totalStats.firepower = totalStats.attackDps;
+        totalStats.survivability = totalStats.hp;
+        totalStats.mobility = totalStats.engineSpeed;
+        totalStats.logistics = totalStats.cargoCapacity;
+        totalStats.sustainment = 0; // 향후 확장
+        totalStats.detection = 0;   // 향후 확장
 
         return totalStats;
     }

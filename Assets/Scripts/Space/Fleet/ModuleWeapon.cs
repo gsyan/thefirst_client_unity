@@ -150,6 +150,21 @@ public class ModuleWeapon : ModuleBase
         }
     }
 
+    public override CapabilityProfile GetCapabilityProfile()
+    {
+        CapabilityProfile stats = new CapabilityProfile();
+
+        if (m_health <= 0) return stats;
+
+        stats.totalWeapons = 1;
+
+        // DPS 계산: 공격력 × 발사 개수 / 쿨타임
+        if (m_attackCoolTime > 0)
+            stats.attackDps = m_attackPower * m_attackFireCount / m_attackCoolTime;
+
+        return stats;
+    }
+
     public override EModuleType GetModuleType()
     {
         return m_moduleInfo.ModuleType;

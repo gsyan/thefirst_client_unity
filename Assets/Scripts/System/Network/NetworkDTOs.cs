@@ -216,19 +216,12 @@ public class ModuleUpgradeRequest
 [System.Serializable]
 public class ModuleUpgradeResponse
 {
+    public long shipId;
+    public int bodyIndex;
+    public int moduleTypePacked;
+    public int slotIndex;
     public int newLevel;
-    public ModuleStats newStats;
     public CostRemainInfo costRemainInfo;
-}
-
-[System.Serializable]
-public class ModuleStats
-{
-    public float health;
-    public float attackPower;
-    public float movementSpeed;
-    public float rotationSpeed;
-    public float cargoCapacity;
 }
 
 [System.Serializable]

@@ -323,7 +323,6 @@ public class DataTableModuleEditor : Editor
                 m_moduleLevel = group.modules.Count + 1,
                 m_health = 50f,
                 m_movementSpeed = 5f,
-                m_rotationSpeed = 3f,
                 m_description = $"{group.subType} LV{group.modules.Count + 1}"
             };
             group.modules.Add(module);
@@ -365,8 +364,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
         module.m_movementSpeed = EditorGUILayout.Slider("Movement Speed", module.m_movementSpeed, 0f, 20f);
-        module.m_rotationSpeed = EditorGUILayout.Slider("Rotation Speed", module.m_rotationSpeed, 0f, 10f);
-
+        
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
         module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);

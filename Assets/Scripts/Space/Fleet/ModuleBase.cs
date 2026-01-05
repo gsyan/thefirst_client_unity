@@ -123,6 +123,12 @@ public class ModuleBase : MonoBehaviour
         return "";
     }
 
+    // 모듈의 능력치 프로파일 반환 (하위 클래스에서 override)
+    public virtual CapabilityProfile GetCapabilityProfile()
+    {
+        return new CapabilityProfile();
+    }
+
     // 코루틴 재시작 (Body 교체 등으로 모듈이 재활성화될 때 호출)
     public virtual void RestartCoroutines()
     {

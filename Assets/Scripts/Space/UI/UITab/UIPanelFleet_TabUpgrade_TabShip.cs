@@ -144,18 +144,19 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (bShow != true) return;
         if (m_textStat == null) return;
 
-        SpaceShipStats statsOrg = m_selectedShip.m_spaceShipStatsOrg;
-        SpaceShipStats statsCur = m_selectedShip.m_spaceShipStatsCur;
+        CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
+        CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
         
         string shipStatsText = $"=== SHIP STATS ===\n" +
-                            $"Health: {statsCur.totalHealth:F0} / {statsOrg.totalHealth:F0}\n" +
-                            $"Attack: {statsCur.totalAttackPower:F1} / {statsOrg.totalAttackPower:F1}\n" +
-                            $"Speed: {statsCur.totalMovementSpeed:F1} / {statsOrg.totalMovementSpeed:F1}\n" +
-                            $"Rotation: {statsCur.totalRotationSpeed:F1} / {statsOrg.totalRotationSpeed:F1}\n" +
-                            $"Cargo: {statsCur.totalCargoCapacity:F0} / {statsOrg.totalCargoCapacity:F0}\n" +
-                            $"Weapons: {statsCur.totalWeapons}\n" +
-                            $"Engines: {statsCur.totalEngines}";
-        
+                              $"Att(dps): {statsCur.attackDps:F1} / {statsOrg.attackDps:F1}\n" +
+                              $"HP: {statsCur.hp:F0} / {statsOrg.hp:F0}\n" +                              
+                              $"Sp: {statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}\n" +
+                              $"Car: {statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}\n" +
+                              $"Weapons: {statsCur.totalWeapons}\n" +
+                              $"Engines: {statsCur.totalEngines}";
+
+
+
         m_textStat.text = shipStatsText;
 
         if (m_selectedModule != null)
@@ -415,16 +416,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
                 DataManager.Instance.SetCharacterData(characterInfo);
             }
 
-            // Update local data
-            if (m_selectedModule != null)
-            {
-                m_selectedModule.SetModuleLevel(response.data.newLevel);
-                // Update stats if provided
-                if (response.data.newStats != null)
-                {
-                    m_selectedModule.m_health = response.data.newStats.health;
-                }
-            }
+            // Update local data - shipId, bodyIndex, moduleTypePacked, slotIndex로 특정 모듈 찾아서 업데이트
+            UpdateModuleAfterUpgrade(response.data);
             
             // Refresh UI
             UpdateShipStatsDisplay();
@@ -439,6 +432,98 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
             // Show error message
             ShowResultMessage($"Upgrade failed: {errorMessage}", 3f);
+        }
+    }
+
+    private void UpdateModuleAfterUpgrade(ModuleUpgradeResponse upgradeData)
+    {
+        if (upgradeData == null) return;
+        if (m_myFleet == null) return;
+
+        // shipId로 해당 함선 찾기
+        SpaceShip targetShip = null;
+        foreach (SpaceShip ship in m_myFleet.m_ships)
+        {
+            if (ship != null && ship.m_shipInfo.id == upgradeData.shipId)
+            {
+                targetShip = ship;
+                break;
+            }
+        }
+
+        if (targetShip == null)
+        {
+            Debug.LogError($"Ship not found: shipId={upgradeData.shipId}");
+            return;
+        }
+
+        // bodyIndex로 해당 body 찾기
+        ModuleBody targetBody = targetShip.FindModuleBodyByIndex(upgradeData.bodyIndex);
+        if (targetBody == null)
+        {
+            Debug.LogError($"Body not found: shipId={upgradeData.shipId}, bodyIndex={upgradeData.bodyIndex}");
+            return;
+        }
+
+        // moduleTypePacked와 slotIndex로 해당 모듈의 slot 찾기
+        ModuleSlot targetSlot = targetBody.FindModuleSlot(upgradeData.moduleTypePacked, upgradeData.slotIndex);
+        if (targetSlot == null)
+        {
+            Debug.LogError($"Slot not found: moduleTypePacked={upgradeData.moduleTypePacked}, slotIndex={upgradeData.slotIndex}");
+            return;
+        }
+
+        // slot에서 모듈 찾기
+        ModuleBase targetModule = null;
+        if (targetSlot.transform.childCount > 0)
+            targetModule = targetSlot.GetComponentInChildren<ModuleBase>();
+
+        if (targetModule == null)
+        {
+            Debug.LogError($"Module not found in slot: slotIndex={upgradeData.slotIndex}");
+            return;
+        }
+
+        // 모듈 레벨 업데이트
+        targetModule.SetModuleLevel(upgradeData.newLevel);
+
+        // ShipInfo도 업데이트 (서버와 동기화)
+        UpdateShipInfoModuleLevel(targetShip, upgradeData.bodyIndex, upgradeData.moduleTypePacked, upgradeData.slotIndex, upgradeData.newLevel);
+
+        Debug.Log($"Module upgraded successfully: Ship={upgradeData.shipId}, Body={upgradeData.bodyIndex}, Slot={upgradeData.slotIndex}, NewLevel={upgradeData.newLevel}");
+    }
+
+    private void UpdateShipInfoModuleLevel(SpaceShip ship, int bodyIndex, int moduleTypePacked, int slotIndex, int newLevel)
+    {
+        if (ship == null || ship.m_shipInfo == null || ship.m_shipInfo.bodies == null) return;
+
+        // bodyIndex로 ModuleBodyInfo 찾기
+        foreach (ModuleBodyInfo bodyInfo in ship.m_shipInfo.bodies)
+        {
+            if (bodyInfo.bodyIndex != bodyIndex) continue;
+
+            // 모듈 타입에 따라 적절한 배열에서 찾기
+            EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
+            ModuleInfo[] targetModules = null;
+
+            if (moduleType == EModuleType.Weapon)
+                targetModules = bodyInfo.weapons;
+            else if (moduleType == EModuleType.Engine)
+                targetModules = bodyInfo.engines;
+            else if (moduleType == EModuleType.Hanger)
+                targetModules = bodyInfo.hangers;
+
+            if (targetModules == null) continue;
+
+            // slotIndex와 moduleTypePacked로 정확한 모듈 찾기
+            foreach (ModuleInfo moduleInfo in targetModules)
+            {
+                if (moduleInfo.slotIndex == slotIndex && moduleInfo.moduleTypePacked == moduleTypePacked)
+                {
+                    moduleInfo.moduleLevel = newLevel;
+                    return;
+                }
+            }
         }
     }
 

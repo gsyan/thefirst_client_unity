@@ -45,9 +45,7 @@ public class ModuleData
     [Header("Engine Stats")]
     [Range(0, 20)]
     public float m_movementSpeed = 0f;
-    [Range(0, 10)]
-    public float m_rotationSpeed = 0f;
-
+    
     // Weapon ---------------------------------------------------------------------------
     [Header("Weapon Stats")]
     [Range(0, 100)]
@@ -570,7 +568,6 @@ public class DataTableModule : ScriptableObject
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
                         m_movementSpeed = 3f + (i * 0.5f),
-                        m_rotationSpeed = 2f + (i * 0.3f),
                         m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
                         m_description = $"{subType} LV.{i}"
                     };

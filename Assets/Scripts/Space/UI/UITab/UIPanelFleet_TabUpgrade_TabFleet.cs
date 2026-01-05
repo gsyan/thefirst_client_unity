@@ -104,18 +104,19 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         }
 
         SpaceFleet fleet = character.GetOwnedFleet();
-        SpaceShipStats statsOrg = fleet.GetTotalStats(false);
-        SpaceShipStats statsCur = fleet.GetTotalStats(true);
+        CapabilityProfile statsOrg = fleet.GetTotalStats(false);
+        CapabilityProfile statsCur = fleet.GetTotalStats(true);
 
         m_textFleetStats.text = $"=== FLEET STATS ===\n" +
                               $"Ships: {fleet.m_ships.Count}\n" +
-                              $"Health: {statsCur.totalHealth:F0} / {statsOrg.totalHealth:F0}\n" +
-                              $"Attack: {statsCur.totalAttackPower:F1} / {statsOrg.totalAttackPower:F1}\n" +
-                              $"Speed: {statsCur.totalMovementSpeed:F1} / {statsOrg.totalMovementSpeed:F1}\n" +
-                              $"Rotation: {statsCur.totalRotationSpeed:F1} / {statsOrg.totalRotationSpeed:F1}\n" +
-                              $"Cargo: {statsCur.totalCargoCapacity:F0} / {statsOrg.totalCargoCapacity:F0}\n" +
+                              $"Att(dps): {statsCur.attackDps:F1} / {statsOrg.attackDps:F1}\n" +
+                              $"HP: {statsCur.hp:F0} / {statsOrg.hp:F0}\n" +                              
+                              $"Sp: {statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}\n" +
+                              $"Car: {statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}\n" +
                               $"Weapons: {statsCur.totalWeapons}\n" +
                               $"Engines: {statsCur.totalEngines}";
+
+                              
     }
     private void UpdateScrollViewShips()
     {
