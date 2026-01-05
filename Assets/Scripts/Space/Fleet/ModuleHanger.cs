@@ -63,7 +63,7 @@ public class ModuleHanger : ModuleBase
         // 복원된 데이터로 스탯 설정
         m_health = moduleData.m_health;
         m_healthMax = moduleData.m_health;
-        m_attackPower = moduleData.m_aircraftAttackPower;
+        
 
         m_hangarCapability = moduleData.m_hangarCapability;
         //m_hangarCapability = 1; // test
@@ -71,7 +71,7 @@ public class ModuleHanger : ModuleBase
         m_launchCool = moduleData.m_launchCool;
         m_launchCount = moduleData.m_launchCount;
         m_maintenanceTime = moduleData.m_maintenanceTime;
-        m_maintenanceTime = 1; // test
+        //m_maintenanceTime = 1; // test
 
         // 업그레이드 비용 설정
         m_upgradeCost = moduleData.m_upgradeCost;
@@ -215,6 +215,17 @@ public class ModuleHanger : ModuleBase
 
     public void ReturnAircraft(AircraftInfo aircraftInfo)
     {
+        // 복귀 시 현재 격납고의 최신 스펙으로 재정비
+        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.moduleTypePacked, m_moduleInfo.moduleLevel);
+        if (moduleData != null)
+        {
+            aircraftInfo.healthMax = moduleData.m_aircraftHealth;
+            aircraftInfo.health = aircraftInfo.healthMax; // 복귀 시 체력 전체 회복
+            aircraftInfo.attackPower = moduleData.m_aircraftAttackPower;
+            aircraftInfo.ammoMax = moduleData.m_aircraftAmmo;
+            aircraftInfo.ammo = aircraftInfo.ammoMax; // 복귀 시 탄약 전체 보급
+        }
+
         aircraftInfo.lastReturnTime = Time.time;
         aircraftInfo.isReady = false;
         m_aircraftPool.Add(aircraftInfo);
@@ -270,6 +281,83 @@ public class ModuleHanger : ModuleBase
     public override void SetModuleLevel(int level)
     {
         m_moduleInfo.moduleLevel = level;
+    }
+
+    public override void ApplyModuleLevelUp(int newLevel)
+    {
+        // 레벨 설정
+        SetModuleLevel(newLevel);
+
+        // 새 레벨의 ModuleData 가져오기
+        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.moduleTypePacked, newLevel);
+        if (moduleData == null) return;
+        
+        // 스탯 갱신
+        m_healthMax = moduleData.m_health;
+        m_health = Mathf.Min(m_health, m_healthMax);
+        m_attackPower = moduleData.m_aircraftAttackPower;
+
+        // 함재기 관련 스탯 (레벨업 전 용량 저장)
+        int oldCapacity = m_hangarCapability; // 이전 레벨의 총 함재기 수
+
+        m_hangarCapability = moduleData.m_hangarCapability; // 새 레벨의 총 함재기 수
+        m_scoutCapability = moduleData.m_scoutCapability;
+        m_launchCool = moduleData.m_launchCool;
+        m_launchCount = moduleData.m_launchCount;
+        m_maintenanceTime = moduleData.m_maintenanceTime;
+
+        m_upgradeCost = moduleData.m_upgradeCost;
+
+        // 함재기 풀 재조정 (데이터상 총 함재기 수 비교)
+        int newCapacity = m_hangarCapability;
+
+        int capacityDiff = newCapacity - oldCapacity;
+
+        if (capacityDiff > 0)
+        {
+            // 용량 증가: 새 함재기를 격납고에 추가
+            for (int i = 0; i < capacityDiff; i++)
+            {
+                AircraftInfo aircraftInfo = new AircraftInfo(
+                    moduleData.m_aircraftHealth,
+                    moduleData.m_aircraftAttackPower,
+                    moduleData.m_aircraftAmmo
+                );
+                m_aircraftPool.Add(aircraftInfo);
+            }
+        }
+        else if (capacityDiff < 0)
+        {
+            // 용량 감소: 격납고에서 함재기 제거 (정비 중인 것 우선)
+            int toRemove = -capacityDiff;
+            // 정비 중인 함재기부터 제거
+            for (int i = m_aircraftPool.Count - 1; i >= 0 && toRemove > 0; i--)
+            {
+                if (!m_aircraftPool[i].isReady)
+                {
+                    m_aircraftPool.RemoveAt(i);
+                    toRemove--;
+                }
+            }
+            // 아직 제거할 게 남았다면 준비된 함재기도 제거
+            for (int i = m_aircraftPool.Count - 1; i >= 0 && toRemove > 0; i--)
+            {
+                m_aircraftPool.RemoveAt(i);
+                toRemove--;
+            }
+        }
+
+        // 격납고에 있는 함재기들의 스펙 업데이트 (출격 중인 함재기는 복귀 시 자동 업데이트)
+        foreach (var aircraft in m_aircraftPool)
+        {
+            aircraft.healthMax = moduleData.m_aircraftHealth;
+            aircraft.health = Mathf.Min(aircraft.health, aircraft.healthMax);
+            aircraft.attackPower = moduleData.m_aircraftAttackPower;
+            aircraft.ammoMax = moduleData.m_aircraftAmmo;
+            aircraft.ammo = Mathf.Min(aircraft.ammo, aircraft.ammoMax);
+        }
+
+        Debug.Log($"ModuleHanger leveled up to {newLevel}: HP={m_healthMax}, HangarCap={oldCapacity}->{newCapacity}, InHangar={m_aircraftPool.Count}, AircraftAttack={m_attackPower}");
     }
 
     public override int GetModuleBodyIndex()

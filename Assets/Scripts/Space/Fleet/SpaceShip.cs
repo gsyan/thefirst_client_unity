@@ -371,6 +371,15 @@ public class SpaceShip : MonoBehaviour
         return null;
     }
 
+    // bodyIndex, moduleTypePacked, slotIndex로 특정 모듈 찾기
+    public ModuleBase FindModule(int bodyIndex, int moduleTypePacked, int slotIndex)
+    {
+        ModuleBody body = FindModuleBodyByIndex(bodyIndex);
+        if (body == null) return null;
+
+        return body.FindModule(moduleTypePacked, slotIndex);
+    }
+
     // GetTotalStats는 하위 호환성을 위해 GetCapabilityProfile을 호출
     public CapabilityProfile GetTotalStats()
     {
