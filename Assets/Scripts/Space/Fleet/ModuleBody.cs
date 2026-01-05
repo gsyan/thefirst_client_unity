@@ -58,6 +58,29 @@ public class ModuleBody : ModuleBase
     {
         m_moduleBodyInfo.moduleLevel = level;
     }
+
+    public override void ApplyModuleLevelUp(int newLevel)
+    {
+        // 레벨 설정
+        SetModuleLevel(newLevel);
+
+        // 새 레벨의 ModuleData 가져오기
+        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleBodyInfo.moduleTypePacked, newLevel);
+        if (moduleData == null)
+        {
+            Debug.LogError($"Failed to restore module data for level {newLevel}");
+            return;
+        }
+
+        // 스탯 갱신
+        m_healthMax = moduleData.m_health;
+        m_health = Mathf.Min(m_health, m_healthMax);
+        m_cargoCapacity = moduleData.m_cargoCapacity;
+        m_upgradeCost = moduleData.m_upgradeCost;
+
+        Debug.Log($"ModuleBody leveled up to {newLevel}: HP={m_healthMax}, CargoCapacity={m_cargoCapacity}");
+    }
+
     public override int GetModuleBodyIndex()
     {
         return m_moduleBodyInfo.bodyIndex;
@@ -384,6 +407,18 @@ public class ModuleBody : ModuleBase
         return m_moduleSlots.FirstOrDefault(slot =>
             CommonUtility.CompareModuleTypeForSlot(slot.m_moduleTypePacked, moduleTypePacked)
             && slot.m_slotIndex == slotIndex);
+    }
+
+    // moduleTypePacked와 slotIndex로 특정 모듈 찾기
+    public ModuleBase FindModule(int moduleTypePacked, int slotIndex)
+    {
+        ModuleSlot slot = FindModuleSlot(moduleTypePacked, slotIndex);
+        if (slot == null) return null;
+
+        if (slot.transform.childCount > 0)
+            return slot.GetComponentInChildren<ModuleBase>();
+
+        return null;
     }
 
     // 사용 가능한 슬롯 찾기 (빈 슬롯), 자동으로 관리해주는 기능 개발시 쓸 가능성 있음. 그러나 사용자가 직접 moduleSlot 을 골라서 할는 것만 허용될 때는 쓸 일이 없음

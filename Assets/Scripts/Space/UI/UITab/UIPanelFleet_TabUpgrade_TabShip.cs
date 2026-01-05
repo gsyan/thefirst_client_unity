@@ -440,91 +440,18 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (upgradeData == null) return;
         if (m_myFleet == null) return;
 
-        // shipId로 해당 함선 찾기
-        SpaceShip targetShip = null;
-        foreach (SpaceShip ship in m_myFleet.m_ships)
-        {
-            if (ship != null && ship.m_shipInfo.id == upgradeData.shipId)
-            {
-                targetShip = ship;
-                break;
-            }
-        }
-
-        if (targetShip == null)
-        {
-            Debug.LogError($"Ship not found: shipId={upgradeData.shipId}");
-            return;
-        }
-
-        // bodyIndex로 해당 body 찾기
-        ModuleBody targetBody = targetShip.FindModuleBodyByIndex(upgradeData.bodyIndex);
-        if (targetBody == null)
-        {
-            Debug.LogError($"Body not found: shipId={upgradeData.shipId}, bodyIndex={upgradeData.bodyIndex}");
-            return;
-        }
-
-        // moduleTypePacked와 slotIndex로 해당 모듈의 slot 찾기
-        ModuleSlot targetSlot = targetBody.FindModuleSlot(upgradeData.moduleTypePacked, upgradeData.slotIndex);
-        if (targetSlot == null)
-        {
-            Debug.LogError($"Slot not found: moduleTypePacked={upgradeData.moduleTypePacked}, slotIndex={upgradeData.slotIndex}");
-            return;
-        }
-
-        // slot에서 모듈 찾기
-        ModuleBase targetModule = null;
-        if (targetSlot.transform.childCount > 0)
-            targetModule = targetSlot.GetComponentInChildren<ModuleBase>();
-
+        // Fleet의 계층적 FindModule 사용: shipId → bodyIndex → moduleTypePacked, slotIndex
+        ModuleBase targetModule = m_myFleet.FindModule(upgradeData.shipId, upgradeData.bodyIndex, upgradeData.moduleTypePacked, upgradeData.slotIndex);
         if (targetModule == null)
         {
-            Debug.LogError($"Module not found in slot: slotIndex={upgradeData.slotIndex}");
+            Debug.LogError($"Module not found: shipId={upgradeData.shipId}, bodyIndex={upgradeData.bodyIndex}, moduleTypePacked={upgradeData.moduleTypePacked}, slotIndex={upgradeData.slotIndex}");
             return;
         }
 
-        // 모듈 레벨 업데이트
-        targetModule.SetModuleLevel(upgradeData.newLevel);
-
-        // ShipInfo도 업데이트 (서버와 동기화)
-        UpdateShipInfoModuleLevel(targetShip, upgradeData.bodyIndex, upgradeData.moduleTypePacked, upgradeData.slotIndex, upgradeData.newLevel);
+        // 모듈 레벨업 적용 (레벨 + 모든 스탯 갱신)
+        targetModule.ApplyModuleLevelUp(upgradeData.newLevel);
 
         Debug.Log($"Module upgraded successfully: Ship={upgradeData.shipId}, Body={upgradeData.bodyIndex}, Slot={upgradeData.slotIndex}, NewLevel={upgradeData.newLevel}");
-    }
-
-    private void UpdateShipInfoModuleLevel(SpaceShip ship, int bodyIndex, int moduleTypePacked, int slotIndex, int newLevel)
-    {
-        if (ship == null || ship.m_shipInfo == null || ship.m_shipInfo.bodies == null) return;
-
-        // bodyIndex로 ModuleBodyInfo 찾기
-        foreach (ModuleBodyInfo bodyInfo in ship.m_shipInfo.bodies)
-        {
-            if (bodyInfo.bodyIndex != bodyIndex) continue;
-
-            // 모듈 타입에 따라 적절한 배열에서 찾기
-            EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
-            ModuleInfo[] targetModules = null;
-
-            if (moduleType == EModuleType.Weapon)
-                targetModules = bodyInfo.weapons;
-            else if (moduleType == EModuleType.Engine)
-                targetModules = bodyInfo.engines;
-            else if (moduleType == EModuleType.Hanger)
-                targetModules = bodyInfo.hangers;
-
-            if (targetModules == null) continue;
-
-            // slotIndex와 moduleTypePacked로 정확한 모듈 찾기
-            foreach (ModuleInfo moduleInfo in targetModules)
-            {
-                if (moduleInfo.slotIndex == slotIndex && moduleInfo.moduleTypePacked == moduleTypePacked)
-                {
-                    moduleInfo.moduleLevel = newLevel;
-                    return;
-                }
-            }
-        }
     }
 
     private void UpdateScrollView()

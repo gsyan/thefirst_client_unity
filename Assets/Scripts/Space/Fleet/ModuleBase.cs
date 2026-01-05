@@ -77,6 +77,13 @@ public class ModuleBase : MonoBehaviour
     public virtual void SetModuleLevel(int level)
     {
     }
+
+    // 모듈 레벨업 시 스탯 갱신 (각 모듈에서 override)
+    public virtual void ApplyModuleLevelUp(int newLevel)
+    {
+        // 기본 구현: 레벨만 설정
+        SetModuleLevel(newLevel);
+    }
     public virtual int GetModuleBodyIndex()
     {
         return 0;

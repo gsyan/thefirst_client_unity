@@ -79,6 +79,29 @@ public class ModuleEngine : ModuleBase
     {
         m_moduleInfo.moduleLevel = level;
     }
+
+    public override void ApplyModuleLevelUp(int newLevel)
+    {
+        // 레벨 설정
+        SetModuleLevel(newLevel);
+
+        // 새 레벨의 ModuleData 가져오기
+        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.moduleTypePacked, newLevel);
+        if (moduleData == null)
+        {
+            Debug.LogError($"Failed to restore module data for level {newLevel}");
+            return;
+        }
+
+        // 스탯 갱신
+        m_healthMax = moduleData.m_health;
+        m_health = Mathf.Min(m_health, m_healthMax);
+        m_movementSpeed = moduleData.m_movementSpeed;
+        m_upgradeCost = moduleData.m_upgradeCost;
+
+        Debug.Log($"ModuleEngine leveled up to {newLevel}: HP={m_healthMax}, MovementSpeed={m_movementSpeed}");
+    }
+
     public override int GetModuleBodyIndex()
     {
         return m_moduleInfo.bodyIndex;

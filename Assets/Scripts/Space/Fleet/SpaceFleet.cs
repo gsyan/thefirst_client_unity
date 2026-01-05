@@ -51,8 +51,25 @@ public class SpaceFleet : MonoBehaviour
         ship.transform.localRotation = Quaternion.identity;
     }
 
-    
-    
+    // shipId로 함선 찾기
+    public SpaceShip FindShip(long shipId)
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship != null && ship.m_shipInfo.id == shipId)
+                return ship;
+        }
+        return null;
+    }
+
+    // shipId, bodyIndex, moduleTypePacked, slotIndex로 특정 모듈 찾기
+    public ModuleBase FindModule(long shipId, int bodyIndex, int moduleTypePacked, int slotIndex)
+    {
+        SpaceShip ship = FindShip(shipId);
+        if (ship == null) return null;
+
+        return ship.FindModule(bodyIndex, moduleTypePacked, slotIndex);
+    }
 
     public void UpdateShipFormation(EFormationType formationType = EFormationType.LinearHorizontal, bool smooth = true)
     {
