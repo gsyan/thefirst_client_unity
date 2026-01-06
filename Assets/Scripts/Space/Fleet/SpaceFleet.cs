@@ -238,7 +238,7 @@ public class SpaceFleet : MonoBehaviour
                     body.m_health = Mathf.Min(body.m_health + repairAmount, body.m_healthMax);
                 }
 
-                ship.RecalculateHealth();
+                ship.UpdateShipStatCur();
             }
         }
     }

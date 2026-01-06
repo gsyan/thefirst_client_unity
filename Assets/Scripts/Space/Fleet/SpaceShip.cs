@@ -42,7 +42,6 @@ public class SpaceShip : MonoBehaviour
 {
     [SerializeField] public ShipInfo m_shipInfo;
     [SerializeField] public List<ModuleBody> m_moduleBodys = new List<ModuleBody>();
-    [SerializeField] public float m_health;
     [SerializeField] public SpaceShip m_targetShip;
     [SerializeField] public CapabilityProfile m_spaceShipStatsOrg;
     [SerializeField] public CapabilityProfile m_spaceShipStatsCur;
@@ -76,9 +75,8 @@ public class SpaceShip : MonoBehaviour
         foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
             InitSpaceShipBody(bodyInfo, null);
 
-        CalculateTotalHealth();
-        m_spaceShipStatsOrg = GetTotalStats();
-        m_spaceShipStatsCur = GetTotalStats();
+        m_spaceShipStatsOrg = CommonUtility.GetCapabilityProfile(shipInfo);
+        m_spaceShipStatsCur = GetCapabilityProfile();
 
         SetupSelectedModuleVisualing();
         
@@ -154,21 +152,6 @@ public class SpaceShip : MonoBehaviour
         m_moduleBodys.Add(moduleBody);
         moduleBody.ApplyShipStateToModule(); // 모듈 변경시를 위해 필요
     }
-
-    // 전체 함선 체력 계산
-    private void CalculateTotalHealth()
-    {
-        float totalHealth = 0f;
-        foreach (ModuleBody body in m_moduleBodys)
-        {
-            if (body != null)
-            {
-                totalHealth += body.m_health;
-            }
-        }
-        m_health = totalHealth;
-    }
-
 
     private ModuleBody m_currentTargetBody;
     private Coroutine m_findTargetModuleBodyCoroutine;
@@ -260,19 +243,16 @@ public class SpaceShip : MonoBehaviour
         }
 
         // 전체 함선 체력 재계산
-        RecalculateHealth();
+        m_spaceShipStatsCur = GetCapabilityProfile();
 
-        if (m_health <= 0.0f)
-        {
-            //Debug.Log($"{gameObject.name} SpaceShip destroyed!");
+        if (m_spaceShipStatsCur.hp <= 0.0f)
             OnSpaceShipDestroyed();
-        }
     }
 
     // 함선이 살아있는지 확인
     public bool IsAlive()
     {
-        return m_health > 0 && HasAliveBodies();
+        return m_spaceShipStatsOrg.hp > 0 && HasAliveBodies();
     }
 
     // 살아있는 바디가 있는지 확인
@@ -309,16 +289,15 @@ public class SpaceShip : MonoBehaviour
         return null;
     }
 
-    public void RecalculateHealth()
+    public void UpdateShipStatCur()
     {
-        float totalHealth = 0f;
-        foreach (ModuleBody body in m_moduleBodys)
-        {
-            if (body != null)
-                totalHealth += Mathf.Max(0f, body.m_health);
-        }
-        m_health = totalHealth;
-        m_spaceShipStatsCur = GetTotalStats();
+        m_spaceShipStatsCur = GetCapabilityProfile();
+    }
+
+    public void UpdateShipStats()
+    {
+        m_spaceShipStatsOrg = CommonUtility.GetCapabilityProfile(m_shipInfo);
+        m_spaceShipStatsCur = GetCapabilityProfile();
     }
 
     // ModuleBody에서 호출되는 파괴 체크 메서드
@@ -377,13 +356,11 @@ public class SpaceShip : MonoBehaviour
         ModuleBody body = FindModuleBodyByIndex(bodyIndex);
         if (body == null) return null;
 
-        return body.FindModule(moduleTypePacked, slotIndex);
-    }
+        EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
+        if (moduleType == EModuleType.Body)
+            return body;
 
-    // GetTotalStats는 하위 호환성을 위해 GetCapabilityProfile을 호출
-    public CapabilityProfile GetTotalStats()
-    {
-        return GetCapabilityProfile();
+        return body.FindModule(moduleTypePacked, slotIndex);
     }
 
     // 함선의 능력치 프로파일 계산
@@ -453,37 +430,7 @@ public class SpaceShip : MonoBehaviour
         m_selectedModuleVisuals.Add(selectedModuleVisual);
     }
 
-    // 모듈 교체 후 하이라이트 갱신 (효율적으로)
-    public void RefreshSelectedModuleVisuals()
-    {
-        // 1. 파괴된 모듈의 하이라이트만 리스트에서 제거
-        m_selectedModuleVisuals.RemoveAll(h => h == null || h.ModuleBase == null);
-
-        // 2. Body 모듈 확인 및 추가
-        foreach (ModuleBody body in m_moduleBodys)
-        {
-            if (body == null) continue;
-
-            // Body에 SelectedModuleVisual가 없으면 추가 (새로 생성된 Body)
-            if (body.GetComponent<SelectedModuleVisual>() == null)
-                SetupSelectedModuleVisual(body);
-
-            // 3. 각 슬롯의 모듈 확인
-            foreach (ModuleSlot slot in body.m_moduleSlots)
-            {
-                if (slot == null || slot.transform.childCount == 0) continue;
-
-                ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
-
-                // 이미 하이라이트가 있는지 확인 (SelectedModuleVisual 컴포넌트로 체크)
-                if (module != null && module.GetComponent<SelectedModuleVisual>() == null)
-                {
-                    // 새로 생성된 모듈이므로 하이라이트 추가
-                    SetupSelectedModuleVisual(module);
-                }
-            }
-        }
-    }
+    
 
     private Bounds CalculatePartsBounds(ModuleBase partsBase)
     {
@@ -854,6 +801,38 @@ public class SpaceShip : MonoBehaviour
         return bounds;
     }
 
+    // 모듈 교체 후 ModuleVisual 갱신 (효율적으로)
+    public void RefreshSelectedModuleVisuals()
+    {
+        // 1. 파괴된 모듈의 하이라이트만 리스트에서 제거
+        m_selectedModuleVisuals.RemoveAll(h => h == null || h.ModuleBase == null);
+
+        // 2. Body 모듈 확인 및 추가
+        foreach (ModuleBody body in m_moduleBodys)
+        {
+            if (body == null) continue;
+
+            // Body에 SelectedModuleVisual가 없으면 추가 (새로 생성된 Body)
+            if (body.GetComponent<SelectedModuleVisual>() == null)
+                SetupSelectedModuleVisual(body);
+
+            // 3. 각 슬롯의 모듈 확인
+            foreach (ModuleSlot slot in body.m_moduleSlots)
+            {
+                if (slot == null || slot.transform.childCount == 0) continue;
+
+                ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
+
+                // 이미 하이라이트가 있는지 확인 (SelectedModuleVisual 컴포넌트로 체크)
+                if (module != null && module.GetComponent<SelectedModuleVisual>() == null)
+                {
+                    // 새로 생성된 모듈이므로 하이라이트 추가
+                    SetupSelectedModuleVisual(module);
+                }
+            }
+        }
+    }
+
     // 서버 응답으로부터 함선 정보 업데이트 (모듈 교체 시)
     public void UpdateShipFromServerResponse(ShipInfo updatedShipInfo)
     {
@@ -894,10 +873,9 @@ public class SpaceShip : MonoBehaviour
         // 함선 기본 정보 업데이트 (가장 마지막에)
         m_shipInfo = updatedShipInfo;
 
-        // 함선 통계 재계산
-        RecalculateHealth();
-        m_spaceShipStatsOrg = GetTotalStats();
-        m_spaceShipStatsCur = GetTotalStats();
+        
+        m_spaceShipStatsOrg = CommonUtility.GetCapabilityProfile(updatedShipInfo);
+        m_spaceShipStatsCur = GetCapabilityProfile();
 
         // Outline 갱신 (새로 생성된 모듈들을 포함하도록)
         if (m_shipOutline != null)
@@ -937,6 +915,61 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
+    // Body 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
+    public void ChangeModule(int bodyIndex, int oldModuleTypePacked, int newModuleTypePacked, int slotIndex)
+    {
+        EModuleType moduleType = CommonUtility.GetModuleType(newModuleTypePacked);
+        ModuleBase oldModule = FindModule(bodyIndex, oldModuleTypePacked, slotIndex);
+        if (oldModule == null)
+        {
+            Debug.LogError($"Old module not found: shipId={m_shipInfo.id}, bodyIndex={bodyIndex}, oldModuleTypePacked={oldModuleTypePacked}, slotIndex={slotIndex}");
+            return;
+        }
+        int moduleLevel = oldModule.GetModuleLevel();
+
+        if (moduleType == EModuleType.Body)
+        {
+            // Body 교체 처리
+            ChangeModuleBody(bodyIndex, newModuleTypePacked, moduleLevel);
+        }
+        else
+        {
+            // 일반 모듈 교체
+            ModuleBody body = FindModuleBodyByIndex(bodyIndex);
+            if (body == null) return;
+            bool success = body.ReplaceModuleInSlot(slotIndex, newModuleTypePacked, moduleType, moduleLevel);
+            if (success == false)
+            {
+                Debug.LogError($"Failed to replace module: moduleTypePacked={newModuleTypePacked}");
+                return;
+            }
+        }
+
+        // Outline 갱신 (새로 생성된 모듈들을 포함하도록)
+        if (m_shipOutline != null)
+            m_shipOutline.RefreshOutline();
+
+        // 모듈 하이라이트 갱신 (새로 생성된 모듈들을 포함하도록)
+        RefreshSelectedModuleVisuals();
+    }
+    private void ChangeModuleBody(int bodyIndex, int newModuleTypePacked, int moduleLevel)
+    {
+        ModuleBody oldBody = FindModuleBodyByIndex(bodyIndex);
+        if (oldBody == null) return;
+        
+        ModuleBodyInfo newBodyInfo = new ModuleBodyInfo
+        {
+            moduleTypePacked = newModuleTypePacked,
+            moduleLevel = moduleLevel,
+            bodyIndex = bodyIndex,
+            engines = oldBody.m_moduleBodyInfo.engines,
+            weapons = oldBody.m_moduleBodyInfo.weapons,
+            hangers = oldBody.m_moduleBodyInfo.hangers
+        };
+
+        ReplaceBodyWhilePreservingModules(oldBody, newBodyInfo);
+    }
+
     // Body 교체 시 기존 모듈을 보존하는 메서드
     private void ReplaceBodyWhilePreservingModules(ModuleBody oldBody, ModuleBodyInfo newBodyInfo)
     {
@@ -956,7 +989,8 @@ public class SpaceShip : MonoBehaviour
 
         // 2. 기존 body 제거
         m_moduleBodys.Remove(oldBody);
-        Destroy(oldBody.gameObject);
+        //Destroy(oldBody.gameObject);
+        DestroyImmediate(oldBody.gameObject);
 
         // 3. 새 body 생성 (저장된 모듈 재배치)
         InitSpaceShipBody(newBodyInfo, savedModules);

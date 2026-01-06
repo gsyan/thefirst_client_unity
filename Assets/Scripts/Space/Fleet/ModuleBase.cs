@@ -92,6 +92,12 @@ public class ModuleBase : MonoBehaviour
     {
     }
 
+    public virtual int GetSlotIndex()
+    {
+        if (m_moduleSlot == null) return 0;
+        return m_moduleSlot.m_slotIndex;
+    }
+
     // 함대 정보 설정
     public virtual void SetFleetInfo(SpaceFleet fleet, SpaceShip ship)
     {

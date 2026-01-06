@@ -310,10 +310,11 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             shipId = m_selectedShip.m_shipInfo.id
             ,bodyIndex = m_selectedModule.GetModuleBodyIndex()
             ,moduleTypePacked = m_selectedModule.GetModuleTypePacked()
-            ,slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex
+            ,slotIndex = m_selectedModule.GetSlotIndex()
             ,currentLevel = m_selectedModule.GetModuleLevel()
             ,targetLevel = m_selectedModule.GetModuleLevel() + 1
         };
+        
 
         // Send upgrade request to server
         NetworkManager.Instance.UpgradeModule(upgradeRequest, OnUpgradeResponse);
@@ -451,6 +452,11 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         // 모듈 레벨업 적용 (레벨 + 모든 스탯 갱신)
         targetModule.ApplyModuleLevelUp(upgradeData.newLevel);
 
+        // SpaceShip 통계 업데이트
+        SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
+        if (ship != null)
+            ship.UpdateShipStats();
+
         Debug.Log($"Module upgraded successfully: Ship={upgradeData.shipId}, Body={upgradeData.bodyIndex}, Slot={upgradeData.slotIndex}, NewLevel={upgradeData.newLevel}");
     }
 
@@ -530,7 +536,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
                 item.SetSelected_ScrollViewModuleItem(false);
         }
 
-        int newModuleLevel = m_selectedModule.GetModuleLevel(); // 현재 모듈의 레벨 유지
         int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
         int slotIndex = 0;
         if( EModuleType.Body != m_selectedModule.GetModuleType())
@@ -544,7 +549,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             , slotIndex = slotIndex
             , currentModuleTypePacked = currentModuleTypePacked
             , newModuleTypePacked = moduleTypePacked
-            , newModuleLevel = newModuleLevel
         };
 
         Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
@@ -622,75 +626,42 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     {
         if (response.errorCode == 0)
         {
-            // 응답 데이터로부터 업데이트할 함선 찾기
-            if (response.data.updatedShipInfo == null)
-            {
-                Debug.LogError("updatedShipInfo is null");
-                ShowResultMessage("Module change failed: Invalid server response", 3f);
-                return;
-            }
-
-            // Character -> SpaceFleet -> SpaceShip 경로로 업데이트할 함선 찾기
-            Character character = DataManager.Instance.m_currentCharacter;
-            if (character == null)
-            {
-                Debug.LogError("Current character is null");
-                return;
-            }
-
-            SpaceFleet fleet = character.GetOwnedFleet();
-            if (fleet == null)
-            {
-                Debug.LogError("Owned fleet is null");
-                return;
-            }
-
-            // updatedShipInfo의 id로 함선 찾기
-            SpaceShip targetShip = null;
-            foreach (SpaceShip ship in fleet.m_ships)
-            {
-                if (ship != null && ship.m_shipInfo.id == response.data.updatedShipInfo.id)
-                {
-                    targetShip = ship;
-                    break;
-                }
-            }
-
-            if (targetShip == null)
-            {
-                Debug.LogError($"Ship with id {response.data.updatedShipInfo.id} not found in fleet");
-                return;
-            }
-
-            // change 의 대상은 ship module 전체
-            int moduleTypePacked = m_selectedModule.GetModuleTypePacked();
-            int  bodyIndex = m_selectedModule.GetModuleBodyIndex();
-            int slotIndex = -1;
-            EModuleType moduleType = m_selectedModule.GetModuleType();
-            if (moduleType == EModuleType.Body)
-                slotIndex = 0;
-            else
-                slotIndex = m_selectedModule.m_moduleSlot?.m_slotIndex ?? -1;
-
-            // 함선 정보 업데이트
-            targetShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
-            // 성공 메시지 표시
-            ShowResultMessage("Module change successful!", 3f);
-
-            // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
-            if (m_selectedShip == null || m_selectedShip.m_shipInfo.id != response.data.updatedShipInfo.id) return;
-            // 새로 생성된 모듈을 다시 선택
-            ReselectReplacedModule(targetShip, bodyIndex, slotIndex, moduleTypePacked);
-
+            UpdateModuleAfterChange(response.data);
         }
         else
         {
             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
             Debug.LogError($"Module change failed: {errorMessage}");
-
-            // 실패 메시지 표시
             ShowResultMessage($"Module change failed: {errorMessage}", 3f);
         }
+    }
+
+    private void UpdateModuleAfterChange(ModuleChangeResponse changeData)
+    {
+        if (changeData == null) return;
+        if (m_myFleet == null) return;
+
+        // 이전 모듈 찾기
+        ModuleBase oldModule = m_myFleet.FindModule(changeData.shipId, changeData.bodyIndex, changeData.oldModuleTypePacked, changeData.slotIndex);
+        if (oldModule == null)
+        {
+            Debug.LogError($"Old module not found: shipId={changeData.shipId}, bodyIndex={changeData.bodyIndex}, oldModuleTypePacked={changeData.oldModuleTypePacked}, slotIndex={changeData.slotIndex}");
+            ShowResultMessage("Module change failed: Old module not found", 3f);
+            return;
+        }
+        SpaceShip ship = m_myFleet.FindShip(changeData.shipId);
+        if (ship == null) return;
+
+        ship.ChangeModule(changeData.bodyIndex, changeData.oldModuleTypePacked, changeData.newModuleTypePacked, changeData.slotIndex);
+
+        // SpaceShip 통계 업데이트
+        ship.UpdateShipStats();
+
+        ShowResultMessage("Module change successful!", 3f);
+
+        // 새로 생성된 모듈 재선택
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
+            ReselectReplacedModule(ship, changeData.bodyIndex, changeData.slotIndex, changeData.newModuleTypePacked);
     }
 
     // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택하여 하이라이트 적용
