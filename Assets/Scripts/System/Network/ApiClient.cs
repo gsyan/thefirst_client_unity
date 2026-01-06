@@ -33,31 +33,54 @@ public class ApiClient
 #endif
 
     private string accessToken;
+    private string refreshToken;
 
     #region Core Methods ------------------------------------------------------------------------------------------
     public void SetAccessToken(string token)
     {
         accessToken = token;
-        Debug.Log($"SetAccessToken: {accessToken}");
+    }
+
+    public void SetTokens(string access, string refresh)
+    {
+        accessToken = access;
+        refreshToken = refresh;
+        PlayerPrefs.SetString("RefreshToken", refreshToken);
+        PlayerPrefs.Save();
+    }
+
+    public string GetRefreshToken()
+    {
+        return refreshToken;
+    }
+
+    public void LoadRefreshToken()
+    {
+        refreshToken = PlayerPrefs.GetString("RefreshToken", "");
+    }
+
+    public void ClearTokens()
+    {
+        accessToken = "";
+        refreshToken = "";
+        PlayerPrefs.DeleteKey("RefreshToken");
+        PlayerPrefs.Save();
     }
 
     private async Task SendRequestAsync(UnityWebRequest request)
     {
         var operation = request.SendWebRequest();
         while (!operation.isDone)
-        {
             await Task.Yield();
-        }
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            string errorText = request.downloadHandler?.text ?? request.error;
+            //string errorText = request.downloadHandler?.text ?? request.error;
+            //Debug.LogError($"Request failed: {request.error} - {errorText} (HTTP {request.responseCode})");
             ServerErrorCode errorCode = GetHttpErrorCode(request.responseCode);
-            Debug.LogError($"Request failed: {request.error} - {errorText} (HTTP {request.responseCode})");
             throw new CustomException(errorCode);
         }
     }
-
     private ServerErrorCode GetHttpErrorCode(long responseCode) => responseCode switch
     {
         400 => ServerErrorCode.HTTP_BAD_REQUEST_400,
@@ -100,11 +123,12 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<AuthResponse>> RefreshTokenAsync(string refreshToken)
+    public async Task<ApiResponse<AuthResponse>> RefreshAccessTokenAsync()
     {
+        if (string.IsNullOrEmpty(refreshToken) == true) return ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
         var requestDto = new RefreshTokenRequest { refreshToken = refreshToken };
         string json = JsonConvert.SerializeObject(requestDto);
-        Debug.Log($"RefreshToken JSON: {json}");
 
         using var request = new UnityWebRequest($"{baseUrl}/account/refresh", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
@@ -112,7 +136,14 @@ public class ApiClient
         request.SetRequestHeader("Content-Type", "application/json");
 
         await SendRequestAsync(request);
-        return JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+        var response = JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+
+        if (response.errorCode == 0)
+            SetTokens(response.data.accessToken, response.data.refreshToken);
+        else
+            ClearTokens();
+
+        return response;
     }
 
     public async Task<ApiResponse<AuthResponse>> GoogleLoginAsync(string idToken)
@@ -132,7 +163,7 @@ public class ApiClient
 
     public async Task<ApiResponse<string>> DeleteAccountAsync()
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(refreshToken) == true) return ApiResponse<string>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         using var request = new UnityWebRequest($"{baseUrl}/account/delete", "DELETE");
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -145,7 +176,7 @@ public class ApiClient
 
     public async Task<ApiResponse<CharacterResponse>> CreateCharacterAsync(string characterName)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<CharacterResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         var requestDto = new CharacterCreateRequest { characterName = characterName };
         string json = JsonConvert.SerializeObject(requestDto);
@@ -163,7 +194,7 @@ public class ApiClient
 
     public async Task<ApiResponse<List<CharacterResponse>>> GetAllCharactersAsync()
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<List<CharacterResponse>>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         using var request = new UnityWebRequest($"{baseUrl}/character/characters", "GET");
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -176,7 +207,7 @@ public class ApiClient
 
     public async Task<ApiResponse<AuthResponse>> SelectCharacterAsync(long characterId)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         using var request = new UnityWebRequest($"{baseUrl}/character/select-character/{characterId}", "POST");
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -191,7 +222,7 @@ public class ApiClient
     #region Development API Methods -------------------------------------------------------------------------------
     public async Task<ApiResponse<string>> ExecuteDevCommandAsync(string command, string[] parameters)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<string>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         var requestDto = new DevCommandRequest { command = command, @params = parameters };
         string json = JsonConvert.SerializeObject(requestDto);
@@ -210,7 +241,7 @@ public class ApiClient
     #region Fleet Upgrade API Methods -----------------------------------------------------------------------------
     public async Task<ApiResponse<AddShipResponse>> AddShipAsync(AddShipRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<AddShipResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Add Ship Request: {json}");
@@ -227,7 +258,7 @@ public class ApiClient
 
     public async Task<ApiResponse<ChangeFormationResponse>> ChangeFormationAsync(ChangeFormationRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ChangeFormationResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Change Formation Request: {json}");
@@ -244,7 +275,7 @@ public class ApiClient
 
     public async Task<ApiResponse<ModuleUpgradeResponse>> UpgradeModuleAsync(ModuleUpgradeRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleUpgradeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module Upgrade Request: {json}");
@@ -264,7 +295,7 @@ public class ApiClient
 
     public async Task<ApiResponse<ModuleChangeResponse>> ChangeModuleAsync(ModuleChangeRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module Change Request: {json}");
@@ -284,7 +315,7 @@ public class ApiClient
 
     public async Task<ApiResponse<ModuleUnlockResponse>> UnlockModuleAsync(ModuleUnlockRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleUnlockResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module Unlock Request: {json}");
@@ -304,7 +335,7 @@ public class ApiClient
 
     public async Task<ApiResponse<ModuleResearchResponse>> ResearchModuleAsync(ModuleResearchRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleResearchResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module Research Request: {json}");
@@ -324,7 +355,7 @@ public class ApiClient
 
     // public async Task<ApiResponse<ShipInfo>> AddModuleBodyAsync(ModuleBodyAddRequest request)
     // {
-    //     if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");
+    //     if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ShipInfo>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
     //     string json = JsonConvert.SerializeObject(request);
     //     Debug.Log($"Add ModuleBody Request: {json}");
@@ -343,7 +374,7 @@ public class ApiClient
 
     public async Task<ApiResponse<ShipInfo>> RemoveModuleBodyAsync(ModuleBodyRemoveRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ShipInfo>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
 
@@ -361,7 +392,7 @@ public class ApiClient
 
     public async Task<ApiResponse<ShipInfo>> InstallModuleAsync(ModuleInstallRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) throw new CustomException(ServerErrorCode.INVALID_TOKEN);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ShipInfo>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
 
@@ -379,7 +410,7 @@ public class ApiClient
 
     // public async Task<ApiResponse<FleetStatsResponse>> GetFleetStatsAsync(FleetStatsRequest request)
     // {
-    //     if (string.IsNullOrEmpty(accessToken)) throw new Exception("AccessToken is not set");
+    //     if (string.IsNullOrEmpty(accessToken)) return ApiResponse<FleetStatsResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
     //     string queryParam = $"?fleetId={request.fleetId}";
 

@@ -13,8 +13,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     protected override void OnInitialize()
     {
         m_apiClient = new ApiClient();
-
-        m_refreshToken = PlayerPrefs.GetString("RefreshToken", "");
+        m_apiClient.LoadRefreshToken();
 
         if (SceneManager.GetActiveScene().name == "MainScene")
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
@@ -27,8 +26,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     private ApiClient m_apiClient;
     private UIManager m_uIManager;
-
-    private string m_refreshToken;
 
     private NetworkReachability m_networkStatus;
     private bool m_bConnected = false;
@@ -72,23 +69,20 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 {
                     m_bConnected = true;
 
-                    if (m_autoLoginAttempted == false && string.IsNullOrEmpty(m_refreshToken) == false)
+                    if (SceneManager.GetActiveScene().name == "MainScene")
                     {
-                        if (SceneManager.GetActiveScene().name == "MainScene")
-                        {
-                            AutoLogin((response) => {
-                                if (response.errorCode == 0 && m_uIManager != null)
-                                {
-                                    UIMain uiMain = m_uIManager as UIMain;
-                                    if (uiMain != null)
-                                        uiMain.GetCharacters();
-                                }
-                            });
-                        }
-                        else
-                        {
-                            AutoLogin(null);
-                        }
+                        AutoLogin((response) => {
+                            if (response.errorCode == 0 && m_uIManager != null)
+                            {
+                                UIMain uiMain = m_uIManager as UIMain;
+                                if (uiMain != null)
+                                    uiMain.GetCharacters();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        AutoLogin(null);
                     }
                 }
             }
@@ -106,33 +100,41 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         while (retryCount <= maxRetries)
         {
             task = taskFunc();
-            while (!task.IsCompleted)
+            while (task.IsCompleted == false)
                 yield return null;
 
-            if (task.IsFaulted)
+            if (task.IsFaulted == true)
             {
                 // CustomException에서 ErrorCode 추출
-                var innerException = task.Exception?.InnerException;
+                var taskException = task.Exception?.InnerException;
                 ServerErrorCode errorCode = ServerErrorCode.UNKNOWN_ERROR;
-
-                if (innerException is CustomException customEx)
+                if (taskException is CustomException customEx)
                     errorCode = customEx.ErrorCode;
 
                 // HTTP 401 에러이고 재시도 가능한 경우
                 if (errorCode == ServerErrorCode.HTTP_UNAUTHORIZED_401 && retryCount < maxRetries)
                 {
                     retryCount++;
-                    Debug.Log($"Token expired, refreshing... (Attempt {retryCount}/{maxRetries})");
-
                     // RefreshToken 호출
-                    Task<ApiResponse<AuthResponse>> refreshTask = RefreshAccessTokenAsync();
-                    while (!refreshTask.IsCompleted)
+                    Task<ApiResponse<AuthResponse>> refreshTask = m_apiClient.RefreshAccessTokenAsync();
+                    while (refreshTask.IsCompleted == false)
                         yield return null;
 
-                    if (refreshTask.IsFaulted || refreshTask.Result.errorCode != 0)
+                    if (refreshTask.IsFaulted == true)
                     {
-                        Debug.LogError("Token refresh failed");
-                        response = ApiResponse<T>.error((int)ServerErrorCode.CLIENT_INVALID_TOKEN_401);
+                        Debug.LogError("refreshTask.IsFaulted == true)");
+                        var refreshException = refreshTask.Exception?.InnerException;
+                        ServerErrorCode refreshErrorCode = ServerErrorCode.UNKNOWN_ERROR;
+                        if (refreshException is CustomException refreshCustomEx)
+                            refreshErrorCode = refreshCustomEx.ErrorCode;
+                        response = ApiResponse<T>.error((int)refreshErrorCode);
+                        break;
+                    }
+
+                    if (refreshTask.Result.errorCode != 0)
+                    {
+                        Debug.LogError("refreshTask.Result.errorCode != 0");
+                        response = ApiResponse<T>.error(refreshTask.Result.errorCode);
                         break;
                     }
 
@@ -170,11 +172,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 var response = await m_apiClient.LoginAsync(email, password);
                 if (response.errorCode == 0)
                 {
-                    m_apiClient.SetAccessToken(response.data.accessToken);
-                    Debug.Log($"Access Token received: {response.data?.accessToken}");
-                    m_refreshToken = response.data.refreshToken;                    
-                    PlayerPrefs.SetString("RefreshToken", m_refreshToken);
-                    PlayerPrefs.Save();
+                    m_apiClient.SetTokens(response.data.accessToken, response.data.refreshToken);
                 }
                 else
                 {
@@ -256,12 +254,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         //             // 3) 성공 시 Access/Refresh Token 저장
         //             if (response.errorCode == 0)
         //             {
-        //                 m_apiClient.SetAccessToken(response.data.accessToken);
-        //                 m_refreshToken = response.data.refreshToken;
-        //                 PlayerPrefs.SetString("RefreshToken", m_refreshToken);
-        //                 PlayerPrefs.Save();
-
-        //                 Debug.Log($"=== Google Login Success === User: {firebaseUser.DisplayName}");
+        //                 m_apiClient.SetTokens(response.data.accessToken, response.data.refreshToken);
         //             }
         //             else
         //             {
@@ -409,10 +402,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 var response = await m_apiClient.GoogleLoginAsync(authToken);
                 if (response.errorCode == 0)
                 {
-                    m_apiClient.SetAccessToken(response.data.accessToken);
-                    m_refreshToken = response.data.refreshToken;
-                    PlayerPrefs.SetString("RefreshToken", m_refreshToken);
-                    PlayerPrefs.Save();
+                    m_apiClient.SetTokens(response.data.accessToken, response.data.refreshToken);
                 }
                 else
                 {
@@ -514,12 +504,8 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 var response = await m_apiClient.SelectCharacterAsync(characterId);
                 if (response.errorCode == 0)
                 {
-                    m_apiClient.SetAccessToken(response.data.accessToken);
-                    Debug.Log($"Select Character - Access Token: {response.data.accessToken}");
-                    m_refreshToken = response.data.refreshToken;
-                    PlayerPrefs.SetString("RefreshToken", m_refreshToken);
-                    PlayerPrefs.Save();
-                    
+                    m_apiClient.SetTokens(response.data.accessToken, response.data.refreshToken);
+
                     if (response.data.activeFleetInfo != null)
                         Debug.Log($"Active Fleet: {response.data.activeFleetInfo.fleetName} with {response.data.activeFleetInfo.ships?.Length ?? 0} ships");
                     else
@@ -607,73 +593,17 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ExecuteDevCommandAsync(command, parameters), onComplete));
     }
 
-    public async Task<ApiResponse<AuthResponse>> RefreshAccessTokenAsync()
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(m_refreshToken))
-            {
-                throw new Exception("No refresh token available");
-            }
-            var response = await m_apiClient.RefreshTokenAsync(m_refreshToken);
-            if (response.errorCode == 0)
-            {
-                m_apiClient.SetAccessToken(response.data.accessToken);
-                m_refreshToken = response.data.refreshToken;
-                PlayerPrefs.SetString("RefreshToken", m_refreshToken);
-                PlayerPrefs.Save();
-                Debug.Log($"Token refreshed: New Access Token: {response.data.accessToken}");
-            }
-            else
-            {
-                string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-                Debug.LogError($"Token refresh failed: {errorMessage} (Code: {response.errorCode})");
-                throw new Exception(errorMessage);
-            }
-            return response;
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Token refresh failed: {e.Message}");
-            throw;
-        }
-    }
 
     public void AutoLogin(System.Action<ApiResponse<AuthResponse>> onComplete = null)
     {
-        if (m_autoLoginAttempted) return;
-        if (string.IsNullOrEmpty(m_refreshToken))
-        {
-            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_AUTO_LOGIN_REFRESH_TOKEN_NOT_FOUND));
-            return;
-        }
-
+        if (m_autoLoginAttempted == true) return;
         m_autoLoginAttempted = true;
-        StartCoroutine(RunAsync(async () => {
-            try
-            {
-                var response = await RefreshAccessTokenAsync();
-                return response;
-            }
-            catch (Exception e)
-            {
-                ClearLoginData();
-                return ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_AUTO_LOGIN_REFRESH_TOKEN_TRY_FAIL);
-            }
-        }, onComplete));
-    }
-
-    private void ClearLoginData()
-    {
-        m_refreshToken = "";
-        PlayerPrefs.DeleteKey("RefreshToken");
-        PlayerPrefs.Save();
-        m_apiClient.SetAccessToken(null);
+        StartCoroutine(RunAsync(() => m_apiClient.RefreshAccessTokenAsync(), onComplete));
     }
 
     public void Logout()
     {
-        ClearLoginData();
+        m_apiClient.ClearTokens();
         m_autoLoginAttempted = false;
     }
 
@@ -685,9 +615,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             {
                 var response = await m_apiClient.DeleteAccountAsync();
                 if (response.errorCode == 0)
-                {
-                    ClearLoginData();
-                }
+                    m_apiClient.ClearTokens();
                 return response;
             }
             catch (Exception e)
