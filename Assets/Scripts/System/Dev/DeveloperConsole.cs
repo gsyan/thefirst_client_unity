@@ -294,6 +294,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             {
                 m_commands[commandName].Execute(args);
             }
+            // bk: checked)
             catch (Exception e)
             {
                 Debug.LogError($"ExecuteCommandInternal error : {e.Message}");

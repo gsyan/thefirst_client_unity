@@ -369,19 +369,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
         // 6) 서버로 Google 로그인 요청
         Debug.Log("[Google OAuth] Sending token to backend...");
-        yield return StartCoroutine(RunAsync(async () =>
-        {
-            try
-            {
-                var response = await m_apiClient.GoogleLoginAsync(authToken);
-                return response;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"GoogleLoginAsync Exception: {e.Message}");
-                return ApiResponse<AuthResponse>.error((int)ServerErrorCode.UNKNOWN_ERROR);
-            }
-        }, onComplete));
+        yield return StartCoroutine(RunAsync(() => m_apiClient.GoogleLoginAsync(authToken), onComplete));
     }
 
     private string ExtractToken(string url)

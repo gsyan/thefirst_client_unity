@@ -84,6 +84,7 @@ public class DataManager : Singleton<DataManager>
                 var characterInfo = JsonConvert.DeserializeObject<CharacterInfo>(json);
                 m_currentCharacter = new Character(characterInfo);
             }
+            // bk: checked)
             catch (Exception e)
             {
                 Debug.LogError($"Failed to load character data from PlayerPrefs: {e.Message}");
@@ -181,8 +182,8 @@ public class DataManager : Singleton<DataManager>
             try
             {
                 m_currentFleetInfo = JsonConvert.DeserializeObject<FleetInfo>(json);
-                Debug.Log($"Fleet data loaded from PlayerPrefs: {m_currentFleetInfo?.fleetName}");
             }
+            // bk: checked)
             catch (Exception e)
             {
                 Debug.LogError($"Failed to load fleet data from PlayerPrefs: {e.Message}");
