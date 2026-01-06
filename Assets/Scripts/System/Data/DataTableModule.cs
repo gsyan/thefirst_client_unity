@@ -549,7 +549,8 @@ public class DataTableModule : ScriptableObject
                         m_moduleLevel = i,
                         m_health = 100f + (i * 50f),
                         m_cargoCapacity = 50f + (i * 25f),
-                        m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
+                        //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
                         m_description = $"{subType}-class hull module level {i}"
                     };
                     AddModuleDataToTable(module);
@@ -568,7 +569,8 @@ public class DataTableModule : ScriptableObject
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
                         m_movementSpeed = 3f + (i * 0.5f),
-                        m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
+                        //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
                         m_description = $"{subType} LV.{i}"
                     };
                     AddModuleDataToTable(module);
@@ -619,7 +621,8 @@ public class DataTableModule : ScriptableObject
                         m_aircraftHealth = 30f + (i * 10f),
                         m_aircraftAttackPower = 5f + (i * 3f),
                         m_aircraftAmmo = 10 + (i * 2),
-                        m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
+                        //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
                         m_description = $"{subType} hanger bay level {i}"
                     };
                     AddModuleDataToTable(module);

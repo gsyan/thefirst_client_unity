@@ -230,15 +230,18 @@ public class ModuleChangeRequest
     public long shipId;
     public int bodyIndex;
     public int currentModuleTypePacked;
-    public int newModuleTypePacked;    
-    public int newModuleLevel;
+    public int newModuleTypePacked;
     public int slotIndex;
 }
 
 [System.Serializable]
 public class ModuleChangeResponse
 {
-    public ShipInfo updatedShipInfo;
+    public long shipId;
+    public int bodyIndex;
+    public int oldModuleTypePacked;
+    public int newModuleTypePacked;
+    public int slotIndex;
 }
 
 [System.Serializable]
