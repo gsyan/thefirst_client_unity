@@ -166,42 +166,16 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void Login(string email, string password, System.Action<ApiResponse<AuthResponse>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(async () => {
-            try
-            {
-                var response = await m_apiClient.LoginAsync(email, password);
-                if (response.errorCode == 0)
-                {
-                    m_apiClient.SetTokens(response.data.accessToken, response.data.refreshToken);
-                }
-                else
-                {
-                    string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-                    Debug.LogError($"Login failed: {errorMessage} (Code: {response.errorCode})");
-                    throw new Exception(errorMessage);
-                }
-                return response;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Login failed: {e.Message}");
-                throw;
-            }
-        }, onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.LoginAsync(email, password), onComplete));
     }
 
     public void GoogleLogin(System.Action<ApiResponse<AuthResponse>> onComplete = null)
     {
         if (m_bConnected == false) return;
-
         if (m_useFirebaseAuth == true)
-        {
             GoogleLoginFirebase(onComplete);
-        }
         else
-        {
             StartCoroutine(GoogleLoginCoroutine(onComplete));
-        }
     }
 
     private void GoogleLoginFirebase(System.Action<ApiResponse<AuthResponse>> onComplete = null)
@@ -400,15 +374,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             try
             {
                 var response = await m_apiClient.GoogleLoginAsync(authToken);
-                if (response.errorCode == 0)
-                {
-                    m_apiClient.SetTokens(response.data.accessToken, response.data.refreshToken);
-                }
-                else
-                {
-                    string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-                    Debug.LogError($"Google Login Failed: {errorMessage}");
-                }
                 return response;
             }
             catch (Exception e)
@@ -498,33 +463,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         // SelectCharacter는 단순히 선택만 하는 게 아니라, characterId가 포함된 새로운 토큰을 받기 위한 API
-        StartCoroutine(RunAsync(async () => {
-            try
-            {
-                var response = await m_apiClient.SelectCharacterAsync(characterId);
-                if (response.errorCode == 0)
-                {
-                    m_apiClient.SetTokens(response.data.accessToken, response.data.refreshToken);
-
-                    if (response.data.activeFleetInfo != null)
-                        Debug.Log($"Active Fleet: {response.data.activeFleetInfo.fleetName} with {response.data.activeFleetInfo.ships?.Length ?? 0} ships");
-                    else
-                        Debug.Log("No active fleet found for this character");
-                }
-                else
-                {
-                    string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-                    Debug.LogError($"Select Character failed: {errorMessage} (Code: {response.errorCode})");
-                    throw new Exception(errorMessage);
-                }
-                return response;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Select Character failed: {e.Message}");
-                throw;
-            }
-        }, onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.SelectCharacterAsync(characterId), onComplete));
     }
 
     public void AddShip(AddShipRequest request, System.Action<ApiResponse<AddShipResponse>> onComplete)
@@ -610,19 +549,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void DeleteAccount(System.Action<ApiResponse<string>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(async () => {
-            try
-            {
-                var response = await m_apiClient.DeleteAccountAsync();
-                if (response.errorCode == 0)
-                    m_apiClient.ClearTokens();
-                return response;
-            }
-            catch (Exception e)
-            {
-                return ApiResponse<string>.error((int)ServerErrorCode.CLIENT_DELETE_ACCOUNT_FAIL);
-            }
-        }, onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.DeleteAccountAsync(), onComplete));
     }
 
     public ApiClient GetApiClient()

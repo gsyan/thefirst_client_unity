@@ -120,7 +120,12 @@ public class ApiClient
         request.SetRequestHeader("Content-Type", "application/json");
 
         await SendRequestAsync(request);
-        return JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+        var response = JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+
+        if (response.errorCode == 0)
+            SetTokens(response.data.accessToken, response.data.refreshToken);
+
+        return response;
     }
 
     public async Task<ApiResponse<AuthResponse>> RefreshAccessTokenAsync()
@@ -158,7 +163,12 @@ public class ApiClient
         request.SetRequestHeader("Content-Type", "application/json");
 
         await SendRequestAsync(request);
-        return JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+        var response = JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+
+        if (response.errorCode == 0)
+            SetTokens(response.data.accessToken, response.data.refreshToken);
+
+        return response;
     }
 
     public async Task<ApiResponse<string>> DeleteAccountAsync()
@@ -171,7 +181,12 @@ public class ApiClient
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(request);
-        return JsonConvert.DeserializeObject<ApiResponse<string>>(request.downloadHandler.text);
+        var response = JsonConvert.DeserializeObject<ApiResponse<string>>(request.downloadHandler.text);
+
+        if (response.errorCode == 0)
+            ClearTokens();
+
+        return response;
     }
 
     public async Task<ApiResponse<CharacterResponse>> CreateCharacterAsync(string characterName)
@@ -215,7 +230,12 @@ public class ApiClient
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(request);
-        return JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+        var response = JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+
+        if (response.errorCode == 0)
+            SetTokens(response.data.accessToken, response.data.refreshToken);
+
+        return response;
     }
     #endregion
 
