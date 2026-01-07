@@ -21,8 +21,9 @@ public class AirCraftPathGridEditor : Editor
         }
         else
         {
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("boundXScale"));            
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("pointScale"));            
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spacing"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("jitter"));
         }
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("m_PointParent"));
@@ -35,9 +36,9 @@ public class AirCraftPathGridEditor : Editor
         if (GUILayout.Button("Generate Outline Points"))
         {
             if (pathGrid.boundStyle == EAirCraftPathGridBoundStyle.Sphere)
-                pathGrid.GenerateOutline_Sphere();
+                pathGrid.GenerateAircraftPathGrid_Sphere();
             else
-                pathGrid.GenerateOutline_ByBox();
+                pathGrid.GenerateAircraftPathGrid_Box();
 
             EditorUtility.SetDirty(pathGrid);
         }

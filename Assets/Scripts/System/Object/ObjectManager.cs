@@ -487,8 +487,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 시야각 45도 (반각 22.5도)를 라디안으로 변환
         float halfAngle = 22.5f * Mathf.Deg2Rad;
         
-        // 적절한 거리 설정 (10~30 유닛)
-        float spawnDistance = UnityEngine.Random.Range(15.0f, 30.0f);
+        // 적절한 거리 설정 (400~500 유닛)
+        float spawnDistance = UnityEngine.Random.Range(400.0f, 500.0f);
         
         // -22.5도 ~ +22.5도 사이의 랜덤 각도
         float randomAngle = UnityEngine.Random.Range(-halfAngle, halfAngle);

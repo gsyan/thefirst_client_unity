@@ -58,7 +58,7 @@ public class ProjectileMissile : ProjectileBase
             }
 
             float distanceToTarget = Vector3.Distance(transform.position, m_saveTargetPosition);
-            if (distanceToTarget < 1f)
+            if (distanceToTarget < 50f)
             {
                 if (m_target != null)
                 {
