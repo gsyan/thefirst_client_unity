@@ -18,10 +18,10 @@ public class CameraController : MonoSingleton<CameraController>
     public Camera m_targetCamera;
     private Camera m_backgroundCamera; // 하단 영역을 Clear하기 위한 배경 카메라
     private float m_rotationSpeed = 0.1f;
-    private float m_zoomSpeed = 2f;
+    private float m_zoomSpeed = 50f;
     private float m_panSpeed = 0.001f;
-    private float m_minZoom = 10f;
-    private float m_maxZoom = 50f;
+    private float m_minZoom = 100f;
+    private float m_maxZoom = 1000f;
 
     // Camera state management
     private Vector3 m_offset;
@@ -66,16 +66,10 @@ public class CameraController : MonoSingleton<CameraController>
         switch (mode)
         {
             case ECameraControllerMode.Normal:
-                // 전체 화면 사용
-                m_targetCamera.rect = new Rect(0, 0, 1, 1);
                 break;
             case ECameraControllerMode.Select_Ship:
             case ECameraControllerMode.Upgrade_Fleet:
             case ECameraControllerMode.Manage_Ship:
-                // 화면 위쪽 절반만 사용 (x: 0, y: 0.5, width: 1, height: 0.5)
-                m_targetCamera.rect = new Rect(0, 0.5f, 1, 0.5f);
-                if (viewTarget != null)
-                    SetTargetOfCameraController(viewTarget);
                 break;
         }
 

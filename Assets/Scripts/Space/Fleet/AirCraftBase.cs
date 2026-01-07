@@ -352,14 +352,14 @@ public abstract class AircraftBase : MonoBehaviour
         if (targetShip == null) { m_state = EAircraftState.ReturnToCarrier; yield break; }
         
         AirCraftPathGrid targetShipAirCraftPathGrid = targetShip.m_airCraftPathGrid;
-        if (targetShipAirCraftPathGrid == null || targetShipAirCraftPathGrid.m_outlinePointInfos == null || targetShipAirCraftPathGrid.m_outlinePointInfos.Count == 0)
+        if (targetShipAirCraftPathGrid == null || targetShipAirCraftPathGrid.m_aircraftPathPoints == null || targetShipAirCraftPathGrid.m_aircraftPathPoints.Count == 0)
         {
             Debug.LogWarning("No outlineInfos on target ship!");
             //m_state = EAircraftState.ReturnToCarrier; yield break;
             yield break;
         }
 
-        List<ModuleOutlinePointInfo> points = targetShipAirCraftPathGrid.m_outlinePointInfos;
+        List<AirCraftPathPoint> points = targetShipAirCraftPathGrid.m_aircraftPathPoints;
         // 시작 시, 가장 가까운 포인트 찾기
         int currentIndex = FindClosestOutlineIndex(points, transform.position);
         m_currentDirection = transform.forward.normalized;
@@ -399,7 +399,7 @@ public abstract class AircraftBase : MonoBehaviour
             yield return null;
         }
     }
-    int FindClosestOutlineIndex(List<ModuleOutlinePointInfo> points, Vector3 pos)
+    int FindClosestOutlineIndex(List<AirCraftPathPoint> points, Vector3 pos)
     {
         int bestIndex = 0;
         float bestDist = float.MaxValue;
@@ -416,7 +416,7 @@ public abstract class AircraftBase : MonoBehaviour
         return bestIndex;
     }
 
-    int GetNextIndexByAlignment(List<ModuleOutlinePointInfo> points, int current, Vector3 forward)
+    int GetNextIndexByAlignment(List<AirCraftPathPoint> points, int current, Vector3 forward)
     {
         float savedDot = -1f;
         int savedNeighbor = 0;

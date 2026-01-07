@@ -1848,9 +1848,9 @@ MonoBehaviour:
       m_attackFireCount: 1
       m_attackPower: 15
       m_attackCoolTime: 1.95
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -1878,9 +1878,9 @@ MonoBehaviour:
       m_attackFireCount: 1
       m_attackPower: 20
       m_attackCoolTime: 1.9
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -1908,9 +1908,9 @@ MonoBehaviour:
       m_attackFireCount: 1
       m_attackPower: 25
       m_attackCoolTime: 1.85
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -1938,9 +1938,9 @@ MonoBehaviour:
       m_attackFireCount: 1
       m_attackPower: 30
       m_attackCoolTime: 1.8
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -1968,9 +1968,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 35
       m_attackCoolTime: 1.75
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -1998,9 +1998,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 40
       m_attackCoolTime: 1.7
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2028,9 +2028,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 45
       m_attackCoolTime: 1.65
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2058,9 +2058,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 50
       m_attackCoolTime: 1.6
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2088,9 +2088,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 55
       m_attackCoolTime: 1.55
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2118,9 +2118,9 @@ MonoBehaviour:
       m_attackFireCount: 3
       m_attackPower: 60
       m_attackCoolTime: 1.5
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2150,9 +2150,9 @@ MonoBehaviour:
       m_attackFireCount: 1
       m_attackPower: 15
       m_attackCoolTime: 1.95
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2180,9 +2180,9 @@ MonoBehaviour:
       m_attackFireCount: 1
       m_attackPower: 20
       m_attackCoolTime: 1.9
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2210,9 +2210,9 @@ MonoBehaviour:
       m_attackFireCount: 1
       m_attackPower: 25
       m_attackCoolTime: 1.85
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2240,9 +2240,9 @@ MonoBehaviour:
       m_attackFireCount: 1
       m_attackPower: 30
       m_attackCoolTime: 1.8
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2270,9 +2270,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 35
       m_attackCoolTime: 1.75
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2300,9 +2300,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 40
       m_attackCoolTime: 1.7
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2330,9 +2330,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 45
       m_attackCoolTime: 1.65
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2360,9 +2360,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 50
       m_attackCoolTime: 1.6
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2390,9 +2390,9 @@ MonoBehaviour:
       m_attackFireCount: 2
       m_attackPower: 55
       m_attackCoolTime: 1.55
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1
@@ -2420,9 +2420,9 @@ MonoBehaviour:
       m_attackFireCount: 3
       m_attackPower: 60
       m_attackCoolTime: 1.5
-      m_projectileLength: 5
-      m_projectileWidth: 0.1
-      m_projectileSpeed: 20
+      m_projectileLength: 50
+      m_projectileWidth: 5
+      m_projectileSpeed: 200
       m_hangarCapability: 5
       m_scoutCapability: 5
       m_launchCool: 1

@@ -591,9 +591,9 @@ public class DataTableModule : ScriptableObject
                         m_attackFireCount = 1 + (i / 5),
                         m_attackPower = 10f + (i * 5f),                        
                         m_attackCoolTime = 2.0f - (i * 0.05f),
-                        m_projectileLength = 5f/* + (i * 0.5f)*/,
-                        m_projectileWidth = 0.1f/* + (i * 0.05f)*/,
-                        m_projectileSpeed = 20f/* + (i * 0.5f)*/,
+                        m_projectileLength = 50f/* + (i * 5.0f)*/,
+                        m_projectileWidth = 5f/* + (i * 0.5f)*/,
+                        m_projectileSpeed = 200f/* + (i * 5.0f)*/,
                         //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
                         m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
                         m_description = $"{subType} Lv.{i}"

@@ -13,8 +13,10 @@ public class LauncherBeam : LauncherBase
     {
         if (m_isInitialized == true) return;
 
+        m_firePoint = transform.Find("FirePoint");
         if (m_firePoint == null)
             m_firePoint = transform;
+            
 
         if (m_audioSource == null)
         {
@@ -46,7 +48,7 @@ public class LauncherBeam : LauncherBase
         if (m_audioSource != null && m_audioSource.clip != null)
             m_audioSource.Play();
 
-        yield return new WaitForSeconds(muzzleEffect.main.duration * 0.5f);
+        yield return new WaitForSeconds(muzzleEffect.main.duration);
         if (target == null) yield break;
 
         ProjectileBeam beam = ObjectManager.Instance.m_poolManager.Get<ProjectileBeam>(EPoolName.PROJECTILE_BEAM);
