@@ -31,17 +31,17 @@ public class LauncherMissile : LauncherBase
     public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
     {
         if (m_isInitialized == false) return;
-        StartCoroutine(FireMissileCoroutine(target, damage, sourceModuleBase));
+        //StartCoroutine(FireMissileCoroutine(target, damage, sourceModuleBase));
     }
 
     private IEnumerator FireMissileCoroutine(ModuleBase target, float damage, ModuleBase sourceModuleBase)
     {
-        ParticleSystem muzzleEffect = ObjectManager.Instance.m_poolManager.GetParticleSystem_Play_AutoReturn(EPoolName.EFFECT_BEAM_MUZZLE, m_firePoint);
+        //ParticleSystem muzzleEffect = ObjectManager.Instance.m_poolManager.GetParticleSystem_Play_AutoReturn(EPoolName.EFFECT_BEAM_MUZZLE, m_firePoint);
 
         if (m_audioSource != null && m_audioSource.clip != null)
             m_audioSource.Play();
 
-        yield return new WaitForSeconds(muzzleEffect.main.duration * 0.5f);
+        //yield return new WaitForSeconds(muzzleEffect.main.duration * 0.5f);
         if (target == null) yield break;
 
         ProjectileMissile missile = ObjectManager.Instance.m_poolManager.Get<ProjectileMissile>(EPoolName.PROJECTILE_MISSILE);

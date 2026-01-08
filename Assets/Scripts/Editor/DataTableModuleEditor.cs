@@ -423,8 +423,13 @@ public class DataTableModuleEditor : Editor
                 m_launchCool = 1f,
                 m_launchCount = 1,
                 m_maintenanceTime = 10f,
+                m_aircraftLaunchStraightDistance = 100f,
                 m_aircraftHealth = 50f,
                 m_aircraftAttackPower = 10f,
+                m_aircraftAttackRange = 100f,
+                m_aircraftAttackCooldown = 10f,
+                m_aircraftDetectionRadius = 200f,
+                m_aircraftAvoidanceRadius = 200f,
                 m_description = $"{group.subType} LV{group.modules.Count + 1}"
             };
             group.modules.Add(module);
@@ -472,9 +477,15 @@ public class DataTableModuleEditor : Editor
         module.m_maintenanceTime = EditorGUILayout.Slider("Maintenance Time", module.m_maintenanceTime, 0f, 1000f);
 
         EditorGUILayout.LabelField("Aircraft Stats", EditorStyles.boldLabel);
+        module.m_aircraftLaunchStraightDistance = EditorGUILayout.Slider("Aircraft Launch Straight Distance", module.m_aircraftLaunchStraightDistance, 1f, 1000f);
         module.m_aircraftHealth = EditorGUILayout.Slider("Aircraft Health", module.m_aircraftHealth, 1f, 1000f);
         module.m_aircraftAttackPower = EditorGUILayout.Slider("Aircraft Attack Power", module.m_aircraftAttackPower, 1f, 1000f);
+        module.m_aircraftAttackRange = EditorGUILayout.Slider("Aircraft Attack Range", module.m_aircraftAttackRange, 1f, 1000f);
+        module.m_aircraftAttackCooldown = EditorGUILayout.Slider("Aircraft Attack Cooldown", module.m_aircraftAttackCooldown, 1f, 1000f);
+        module.m_aircraftSpeed = EditorGUILayout.Slider("Aircraft Speed", module.m_aircraftSpeed, 1f, 1000f);
         module.m_aircraftAmmo = EditorGUILayout.IntSlider("Aircraft Ammo", module.m_aircraftAmmo, 1, 100);
+        module.m_aircraftDetectionRadius = EditorGUILayout.Slider("Aircraft Detection Radius", module.m_aircraftDetectionRadius, 1f, 1000f);
+        module.m_aircraftAvoidanceRadius = EditorGUILayout.Slider("Aircraft Avoidance Radius", module.m_aircraftAvoidanceRadius, 1f, 1000f);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);

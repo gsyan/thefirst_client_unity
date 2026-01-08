@@ -50,7 +50,7 @@ public class SpaceShip : MonoBehaviour
     public EShipState m_shipState;
     [HideInInspector] public Outline m_shipOutline;
 
-    private ModuleGaugeDisplay m_gaugeDisplay;
+    private GaugeBars m_gaugeBars;
     public AirCraftPathGrid m_airCraftPathGrid;
 
     virtual protected void Start()
@@ -60,9 +60,9 @@ public class SpaceShip : MonoBehaviour
 
     private void InitializeGaugeDisplay()
     {
-        m_gaugeDisplay = GetComponent<ModuleGaugeDisplay>();
-        if (m_gaugeDisplay == null)
-            m_gaugeDisplay = gameObject.AddComponent<ModuleGaugeDisplay>();
+        m_gaugeBars = GetComponent<GaugeBars>();
+        if (m_gaugeBars == null)
+            m_gaugeBars = gameObject.AddComponent<GaugeBars>();
     }
 
     public void InitializeSpaceShip(SpaceFleet fleet, ShipInfo shipInfo)

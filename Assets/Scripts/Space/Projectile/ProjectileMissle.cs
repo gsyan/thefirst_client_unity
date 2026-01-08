@@ -10,7 +10,6 @@ public class ProjectileMissile : ProjectileBase
     private const float ROTATION_SPEED = 90f;
     private ModuleData m_moduleData;
     private float m_currentSpeed;
-    private float m_acceleration;
     private float m_initialFlightDuration;
     private Vector3 m_initialDirection;
 
@@ -20,7 +19,6 @@ public class ProjectileMissile : ProjectileBase
         m_moduleData = moduleData;
         m_lifeTime = 0.0f;
         m_currentSpeed = 0.0f;
-        m_acceleration = m_moduleData.m_projectileSpeed * 0.1f;
         m_initialFlightDuration = Random.Range(0.1f, 0.5f);
         m_initialDirection = transform.forward;
         if (m_lifeCycleCoroutine != null) StopCoroutine(m_lifeCycleCoroutine);

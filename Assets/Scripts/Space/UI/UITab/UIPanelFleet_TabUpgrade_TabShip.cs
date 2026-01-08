@@ -664,7 +664,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             ReselectReplacedModule(ship, changeData.bodyIndex, changeData.slotIndex, changeData.newModuleTypePacked);
     }
 
-    // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택하여 하이라이트 적용
+    // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택하여 selectedModuleVisual 적용
     private void ReselectReplacedModule(SpaceShip targetShip, int bodyIndex, int slotIndex, int moduleTypePacked)
     {
         if (targetShip == null) return;
@@ -689,7 +689,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             if (newModule != null)
             {
                 m_selectedModule = newModule;
-                // 새로 생성된 모듈을 선택 상태로 설정 (하이라이트 적용)
+                // 새로 생성된 모듈을 선택 상태로 설정 (selectedModuleVisual 적용)
                 EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(targetShip, m_selectedModule);
             }
         }
