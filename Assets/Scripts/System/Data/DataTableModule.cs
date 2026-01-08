@@ -419,7 +419,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleStyle = EModuleStyle.None,
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
-                        m_movementSpeed = 3f + (i * 0.5f),
+                        m_movementSpeed = 50f + (i * 5f),
                         //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
                         m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
                         m_description = $"{subType} LV.{i}"

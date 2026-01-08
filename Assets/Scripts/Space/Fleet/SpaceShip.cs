@@ -500,37 +500,55 @@ public class SpaceShip : MonoBehaviour
     private bool m_isMovingToFormation = false;
     private float m_detectionDistanceLimit = 6f;
 
+    private float CalculateShipSize()
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0)
+            return 1f; // 기본값
+
+        Bounds combinedBounds = renderers[0].bounds;
+        for (int i = 1; i < renderers.Length; i++)
+            combinedBounds.Encapsulate(renderers[i].bounds);
+
+        // 가장 큰 축을 기준으로 크기 결정
+        return Mathf.Max(combinedBounds.size.x, combinedBounds.size.y, combinedBounds.size.z);
+    }
+
     public Vector3 CalculateShipPosition(EFormationType formationType, float spacing = 0f)
     {
         var gameSettings = DataManager.Instance?.m_dataTableConfig?.gameSettings;
         int positionIndex = (int)m_shipInfo.positionIndex;
 
+        // 함선 크기를 계산하여 spacing에 반영
+        float shipSize = CalculateShipSize();
+        float sizeAdjustment = shipSize * 1.0f; // 함선 크기의 절반을 추가 간격으로 사용
+
         switch (formationType)
         {
             case EFormationType.LinearHorizontal:
                 float linearHSpacing = spacing > 0f ? spacing : (gameSettings?.linearFormationSpacing ?? 2f);
-                return CalculateLinearHorizontalPosition(positionIndex, linearHSpacing);
+                return CalculateLinearHorizontalPosition(positionIndex, linearHSpacing + sizeAdjustment);
             case EFormationType.LinearVertical:
                 float linearVSpacing = spacing > 0f ? spacing : (gameSettings?.linearFormationSpacing ?? 2f);
-                return CalculateLinearVerticalPosition(positionIndex, linearVSpacing);
+                return CalculateLinearVerticalPosition(positionIndex, linearVSpacing + sizeAdjustment);
             case EFormationType.LinearDepth:
                 float linearDSpacing = spacing > 0f ? spacing : (gameSettings?.linearFormationSpacing ?? 2f);
-                return CalculateLinearDepthPosition(positionIndex, linearDSpacing);
+                return CalculateLinearDepthPosition(positionIndex, linearDSpacing + sizeAdjustment);
             case EFormationType.Grid:
                 float gridSpacing = spacing > 0f ? spacing : (gameSettings?.gridFormationSpacing ?? 5f);
-                return CalculateGridPosition(positionIndex, gridSpacing);
+                return CalculateGridPosition(positionIndex, gridSpacing + sizeAdjustment);
             case EFormationType.Circle:
                 float circleSpacing = spacing > 0f ? spacing : gameSettings?.circleFormationSpacing ?? 8f;
-                return CalculateCirclePosition(positionIndex, circleSpacing);
+                return CalculateCirclePosition(positionIndex, circleSpacing + sizeAdjustment);
             case EFormationType.Cross:
                 float crossSpacing = spacing > 0f ? spacing : (gameSettings?.diamondFormationSpacing ?? 6f);
-                return CalculateCrossPosition(positionIndex, crossSpacing);
+                return CalculateCrossPosition(positionIndex, crossSpacing + sizeAdjustment);
             case EFormationType.X:
                 float xSpacing = spacing > 0f ? spacing : (gameSettings?.wedgeFormationSpacing ?? 7f);
-                return CalculateXPosition(positionIndex, xSpacing);
+                return CalculateXPosition(positionIndex, xSpacing + sizeAdjustment);
             default:
                 float defaultSpacing = spacing > 0f ? spacing : (gameSettings?.linearFormationSpacing ?? 2f);
-                return CalculateLinearHorizontalPosition(positionIndex, defaultSpacing);
+                return CalculateLinearHorizontalPosition(positionIndex, defaultSpacing + sizeAdjustment);
         }
     }
 
@@ -804,7 +822,7 @@ public class SpaceShip : MonoBehaviour
     // 모듈 교체 후 ModuleVisual 갱신 (효율적으로)
     public void RefreshSelectedModuleVisuals()
     {
-        // 1. 파괴된 모듈의 하이라이트만 리스트에서 제거
+        // 1. 파괴된 모듈의 selectedModuleVisual 만 리스트에서 제거
         m_selectedModuleVisuals.RemoveAll(h => h == null || h.ModuleBase == null);
 
         // 2. Body 모듈 확인 및 추가
@@ -823,10 +841,10 @@ public class SpaceShip : MonoBehaviour
 
                 ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
 
-                // 이미 하이라이트가 있는지 확인 (SelectedModuleVisual 컴포넌트로 체크)
+                // 이미 selectedModuleVisual 가 있는지 확인 (SelectedModuleVisual 컴포넌트로 체크)
                 if (module != null && module.GetComponent<SelectedModuleVisual>() == null)
                 {
-                    // 새로 생성된 모듈이므로 하이라이트 추가
+                    // 새로 생성된 모듈이므로 selectedModuleVisual 추가
                     SetupSelectedModuleVisual(module);
                 }
             }
@@ -881,7 +899,7 @@ public class SpaceShip : MonoBehaviour
         if (m_shipOutline != null)
             m_shipOutline.RefreshOutline();
 
-        // 모듈 하이라이트 갱신 (새로 생성된 모듈들을 포함하도록)
+        // 모듈 selectedModuleVisual 갱신 (새로 생성된 모듈들을 포함하도록)
         RefreshSelectedModuleVisuals();
     }
 
@@ -949,7 +967,7 @@ public class SpaceShip : MonoBehaviour
         if (m_shipOutline != null)
             m_shipOutline.RefreshOutline();
 
-        // 모듈 하이라이트 갱신 (새로 생성된 모듈들을 포함하도록)
+        // 모듈 selectedModuleVisual 갱신 (새로 생성된 모듈들을 포함하도록)
         RefreshSelectedModuleVisuals();
     }
     private void ChangeModuleBody(int bodyIndex, int newModuleTypePacked, int moduleLevel)
