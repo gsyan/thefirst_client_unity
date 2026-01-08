@@ -27,13 +27,6 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected int m_hangerSlotIndex;
     [SerializeField] protected int m_hangerModuleTypePacked;
 
-    [SerializeField] protected float m_moveSpeed = 10f;
-    [SerializeField] protected float m_rotationSpeed = 240f; // 120
-    [SerializeField] protected float m_launchStraightDistance = 5f;
-    [SerializeField] protected float m_detectionRadius = 3f;
-    [SerializeField] protected float m_avoidanceRadius = 0.5f;
-    [SerializeField] protected float m_attackRange = 2f;
-    [SerializeField] protected float m_attackCooldown = 1f;
     [SerializeField] protected float m_repositionMinDistanceMultiplier = 1.5f;
     [SerializeField] protected float m_repositionMaxDistanceMultiplier = 2.5f;
 
@@ -44,20 +37,8 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected Vector3 m_randomOffset;
     [SerializeField] protected Coroutine m_lifeCycleCoroutine;
 
-    [SerializeField] protected float m_orbitAngle;
-    [SerializeField] protected float m_targetOrbitAngle;
-    [SerializeField] protected float m_orbitRadius = 2f;
-    [SerializeField] protected float m_orbitSpeed = 90f;
-    [SerializeField] protected float m_orbitAngleLerpSpeed = 2f;
-    // 선회 방향 플래그: true -> 시계 방향, false -> 반시계 방향
-    [SerializeField] protected bool m_clockwise = false;
-
-    [SerializeField] protected float m_sphereRadius = 1.0f;        // 함재기 안전 반경 (충돌 예측 크기), 2~4 (클수록 안전/넓게 돔)
-    [SerializeField] protected float m_lookaheadTime = 1.0f;       // 예측 시간 (초) → 더 길면 부드러움↑, 짧으면 민첩↑, 0.8~1.5 (짧음=민첩, 길음=부드러움)
-    [SerializeField] protected float m_directionLerpSpeed = 4f;    // 방향 변화 스무스 속도 (높을수록 빠름), 2~5 (낮음=안정, 높음=빠른 반응)
     [SerializeField] protected Vector3 m_currentDirection;         // ★ 현재 진행 방향 (normalized, velocity처럼 사용)
     
-
     public virtual void InitializeAirCraft(Transform firePointTransform, ModuleBase target, AircraftInfo aircraftInfo, ModuleHanger moduleHanger, Color color, ModuleBase sourceModuleBase)
     {
         m_firePoint = firePointTransform;
@@ -65,6 +46,9 @@ public abstract class AircraftBase : MonoBehaviour
         m_aircraftInfo = aircraftInfo;
         m_moduleHanger = moduleHanger;
         m_sourceModule = sourceModuleBase;
+
+        //m_aircraftInfo.attackPower = 0f; // test
+        //m_aircraftInfo.moveSpeed = 100f; // test
 
         // Body 교체 시 새 hanger를 찾기 위한 정보 저장
         if (moduleHanger != null)
@@ -125,7 +109,7 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual IEnumerator LaunchStraightPhase()
     {
-        Vector3 targetPos = m_launchStartPos + transform.forward * m_launchStraightDistance + m_randomOffset;
+        Vector3 targetPos = m_launchStartPos + transform.forward * m_aircraftInfo.launchStraightDistance + m_randomOffset;
         while (true)
         {
             Vector3 toTarget = (targetPos - transform.position).normalized;
@@ -136,11 +120,11 @@ public abstract class AircraftBase : MonoBehaviour
             Vector3 avoidanceDir = CalculateAvoidance();
             Vector3 moveDir = toTarget + avoidanceDir;
             moveDir.Normalize();
-            transform.position += moveDir * m_moveSpeed * Time.deltaTime;
+            transform.position += moveDir * m_aircraftInfo.moveSpeed * Time.deltaTime;
             if (moveDir != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_rotationSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.moveSpeed * Time.deltaTime);
             }
 
             
@@ -154,9 +138,7 @@ public abstract class AircraftBase : MonoBehaviour
     {
         Vector3 attackApproachPoint = Vector3.zero;
         if (m_targetModule != null)
-        {
-            attackApproachPoint = GetRelativeVirticalDonutPoint(m_targetModule.transform, m_attackRange * 0.8f, m_attackRange * 1.2f);
-        }
+            attackApproachPoint = GetRelativeVirticalDonutPoint(m_targetModule.transform, m_aircraftInfo.attackRange * 0.8f, m_aircraftInfo.attackRange * 1.2f);
 
         while (true)
         {
@@ -190,10 +172,10 @@ public abstract class AircraftBase : MonoBehaviour
             if (avoidanceDir.sqrMagnitude > 0.01f)
                 finalMoveDir = (targetDir + avoidanceDir).normalized;
 
-            transform.position += transform.forward * m_moveSpeed * Time.deltaTime;
+            transform.position += transform.forward * m_aircraftInfo.moveSpeed * Time.deltaTime;
 
             Quaternion targetRotation = Quaternion.LookRotation(finalMoveDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.moveSpeed * Time.deltaTime);
 
             yield return null;
         }
@@ -254,15 +236,15 @@ public abstract class AircraftBase : MonoBehaviour
 
             Vector3 moveDir = (currentDogfightTarget.transform.position - transform.position).normalized;
 
-            transform.position += moveDir * m_moveSpeed * Time.deltaTime;
+            transform.position += moveDir * m_aircraftInfo.moveSpeed * Time.deltaTime;
             if (moveDir != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_rotationSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.moveSpeed * Time.deltaTime);
             }
 
             float distance = Vector3.Distance(transform.position, currentDogfightTarget.transform.position);
-            if (distance <= m_attackRange && Time.time >= m_lastAttackTime + m_attackCooldown)
+            if (distance <= m_aircraftInfo.attackRange && Time.time >= m_lastAttackTime + m_aircraftInfo.attackCooldown)
             {
                 currentDogfightTarget.TakeDamage(m_aircraftInfo.attackPower);
                 m_lastAttackTime = Time.time;
@@ -272,77 +254,20 @@ public abstract class AircraftBase : MonoBehaviour
         }
     }
 
-
-    protected float m_safeDistance = 1.5f;        // 이 거리 안으로 들어오면 피함
-    protected float m_idealDistance = 2.0f;       // 이 거리 정도 유지하려고 함
-    protected float m_attractionStrength = 1.2f;
-    protected float m_repulsionStrength = 3.5f;
-
-    protected virtual IEnumerator AttackShipPhase_OnlyShpere()
+    // 공통 SmoothRotate 함수 - 방향 업데이트와 회전을 함께 처리
+    private void SmoothRotate(Vector3 targetDirection)
     {
-        if (m_targetModule == null) yield break;
+        if (targetDirection.sqrMagnitude < 0.001f) return;
 
-        m_currentDirection = transform.forward.normalized;
+        // moveSpeed를 각속도로 변환 (moveSpeed * 0.5 = 초당 회전 각도)
+        float angularSpeed = m_aircraftInfo.moveSpeed * 1.0f;
 
-        while (true)
-        {
-            // 종료 조건
-            if (m_targetModule == null || !m_targetModule.gameObject.activeSelf || m_aircraftInfo.ammo <= 0)
-            {
-                m_state = EAircraftState.ReturnToCarrier;
-                yield break;
-            }
+        // 목표 방향으로 회전 (한 번만)
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, angularSpeed * Time.deltaTime);
 
-            Vector3 toShip = m_targetModule.transform.position - transform.position;
-            float distance = toShip.magnitude;
-            Vector3 desiredDirection = m_currentDirection;
-
-            if (distance < m_safeDistance)  // 너무 가까움 → 강하게 피하기
-            {
-                // 함선에서 멀어지는 방향 + 접선 방향으로 틀어서 원운동 유도
-                Vector3 repulsion = -toShip.normalized;
-                Vector3 tangent = Vector3.Cross(toShip, m_currentDirection + Vector3.up).normalized;
-                
-                // 현재 방향과 접선 방향이 반대면 뒤집기
-                if (Vector3.Dot(tangent, m_currentDirection) < 0) tangent = -tangent;
-
-                desiredDirection = Vector3.Lerp(repulsion, tangent, 0.7f).normalized;
-            }
-            else if (distance < m_safeDistance * 1.4f)  // 적당히 가까움 → 선회 유지
-            {
-                // 접선 방향으로 살짝 틀어서 원운동 만들기
-                Vector3 tangent = Vector3.Cross(toShip, Vector3.up).normalized;
-                if (Vector3.Dot(tangent, m_currentDirection) < 0) tangent = -tangent;
-
-                desiredDirection = tangent;
-            }
-            else  // 멀면 → 함선 쪽으로 끌려가기
-            {
-                Vector3 attraction = toShip.normalized;
-                desiredDirection = attraction;
-            }
-
-            // 최종 방향 부드럽게 적용
-            m_currentDirection = Vector3.Lerp(m_currentDirection, desiredDirection.normalized, 
-                                            m_directionLerpSpeed * Time.deltaTime).normalized;
-
-            transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime;
-            SmoothRotate(m_currentDirection);
-
-            if (Time.time >= m_lastAttackTime + m_attackCooldown)
-                PerformAttack();
-
-            yield return null;
-        }
-    }
-    // 공통 SmoothRotate 함수 (반드시 클래스 안에 있어야 함!)
-    private void SmoothRotate(Vector3 desiredForward)
-    {
-        if (desiredForward.sqrMagnitude < 0.001f) return;
-
-        Quaternion targetRotation = Quaternion.LookRotation(desiredForward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_rotationSpeed * Time.deltaTime * 0.1f);
-        // 0.1f → 조정 가능: 0.05f = 느긋, 0.2f = 민첩
+        // 이동 방향은 실제 선체 방향과 동일하게
+        m_currentDirection = transform.forward;
     }
 
     protected virtual IEnumerator AttackShipPhase()
@@ -383,17 +308,14 @@ public abstract class AircraftBase : MonoBehaviour
                 currentIndex = GetNextIndexByAlignment(points, currentIndex, m_currentDirection);
             }
 
-            // 방향 스무싱
-            m_currentDirection = Vector3.Lerp(m_currentDirection, toTarget, m_directionLerpSpeed * Time.deltaTime).normalized;
+            // 방향 업데이트 및 회전 (SmoothRotate에서 처리)
+            SmoothRotate(toTarget);
 
             // 이동
-            transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime * 0.5f;
-
-            // 회전
-            SmoothRotate(m_currentDirection);
+            transform.position += m_currentDirection * m_aircraftInfo.moveSpeed * Time.deltaTime * 0.5f;
 
             // 공격 처리
-            if (Time.time >= m_lastAttackTime + m_attackCooldown)
+            if (Time.time >= m_lastAttackTime + m_aircraftInfo.attackCooldown)
                 PerformAttack();
 
             yield return null;
@@ -437,7 +359,7 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual IEnumerator RepositionPhase()
     {
-        float repositionDistance = Random.Range(m_attackRange * m_repositionMinDistanceMultiplier, m_attackRange * m_repositionMaxDistanceMultiplier);
+        float repositionDistance = Random.Range(m_aircraftInfo.attackRange * m_repositionMinDistanceMultiplier, m_aircraftInfo.attackRange * m_repositionMaxDistanceMultiplier);
         Vector3 repositionDir = transform.forward;
 
         if (m_targetModule != null)
@@ -463,9 +385,9 @@ public abstract class AircraftBase : MonoBehaviour
 
         while (Vector3.Distance(transform.position, startPosition) < repositionDistance)
         {
-            transform.position += repositionDir * m_moveSpeed * Time.deltaTime;
+            transform.position += repositionDir * m_aircraftInfo.moveSpeed * Time.deltaTime;
             Quaternion targetRotation = Quaternion.LookRotation(repositionDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.moveSpeed * Time.deltaTime);
             yield return null;
         }
 
@@ -480,16 +402,20 @@ public abstract class AircraftBase : MonoBehaviour
             yield break;
         }
 
-        while (Vector3.Distance(transform.position, m_firePoint.position) > 0.5f)
+        while (true)
         {
-            Vector3 moveDir = (m_firePoint.position - transform.position).normalized;
+            Vector3 toCarrier = (m_firePoint.position - transform.position).normalized;
+            float dotValue = Vector3.Dot(transform.forward, toCarrier);
 
-            transform.position += moveDir * m_moveSpeed * Time.deltaTime;
-            if (moveDir != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_rotationSpeed * Time.deltaTime);
-            }
+            // 목표를 지나쳤으면 도착으로 판정
+            if (dotValue < 0.0f && Vector3.Distance(transform.position, m_firePoint.position) < m_aircraftInfo.attackRange)
+                break;
+
+            // 자연스러운 방향 전환 및 회전
+            SmoothRotate(toCarrier);
+
+            // 이동
+            transform.position += m_currentDirection * m_aircraftInfo.moveSpeed * Time.deltaTime;
 
             yield return null;
 
@@ -552,7 +478,7 @@ public abstract class AircraftBase : MonoBehaviour
     protected Vector3 CalculateAvoidance()
     {
         Vector3 avoidanceDir = Vector3.zero;
-        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, m_avoidanceRadius);
+        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, m_aircraftInfo.avoidanceRadius);
 
         foreach (Collider col in nearbyObjects)
         {
@@ -573,7 +499,7 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected AircraftBase DetectEnemyAircraft()
     {
-        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, m_detectionRadius);
+        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, m_aircraftInfo.detectionRadius);
 
         foreach (Collider col in nearbyObjects)
         {
@@ -615,75 +541,75 @@ public abstract class AircraftBase : MonoBehaviour
 
 
 #if UNITY_EDITOR
-    // private void OnDrawGizmos()
-    // {
-    //     if (m_targetModule == null)
-    //         return;
+    private void OnDrawGizmos()
+    {
+        if (m_targetModule == null)
+            return;
 
-    //     float minRadius = m_attackRange * 0.8f;
-    //     float maxRadius = m_attackRange * 1.2f;
+        float minRadius = m_aircraftInfo.attackRange * 0.8f;
+        float maxRadius = m_aircraftInfo.attackRange * 1.2f;
 
-    //     if(m_state == EAircraftState.MoveToTarget)
-    //         DrawDonut(m_targetModule.transform, minRadius, maxRadius);
-    //     else if (m_state == EAircraftState.AttackShip)
-    //     {
-    //         DrawAttackPhase();
-    //         //DrawAttackPhase_Sphere();
-    //     }
-    // }
+        if(m_state == EAircraftState.MoveToTarget)
+            DrawDonut(m_targetModule.transform, minRadius, maxRadius);
+        else if (m_state == EAircraftState.AttackShip)
+        {
+            DrawAttackPhase();
+            //DrawAttackPhase_Sphere();
+        }
+    }
 
-    // private void DrawDonut(Transform target, float minRadius, float maxRadius)
-    // {
-    //     // 1. 지금 이 함재기 → 타겟 방향 기준 로컬 좌표계 생성
-    //     Vector3 forward = (target.position - transform.position).normalized;
+    private void DrawDonut(Transform target, float minRadius, float maxRadius)
+    {
+        // 1. 지금 이 함재기 → 타겟 방향 기준 로컬 좌표계 생성
+        Vector3 forward = (target.position - transform.position).normalized;
 
-    //     Vector3 worldUp = Vector3.up;
-    //     if (Mathf.Abs(Vector3.Dot(forward, worldUp)) > 0.9f)
-    //         worldUp = Vector3.right;
+        Vector3 worldUp = Vector3.up;
+        if (Mathf.Abs(Vector3.Dot(forward, worldUp)) > 0.9f)
+            worldUp = Vector3.right;
 
-    //     Vector3 right = Vector3.Normalize(Vector3.Cross(worldUp, forward));
-    //     Vector3 up = Vector3.Normalize(Vector3.Cross(forward, right));
+        Vector3 right = Vector3.Normalize(Vector3.Cross(worldUp, forward));
+        Vector3 up = Vector3.Normalize(Vector3.Cross(forward, right));
 
-    //     // 2. 도넛의 두 반경 중간값을 사용해서 기본 원을 그림
-    //     float radius = (minRadius + maxRadius) * 0.5f;
+        // 2. 도넛의 두 반경 중간값을 사용해서 기본 원을 그림
+        float radius = (minRadius + maxRadius) * 0.5f;
 
-    //     // 3. 세그먼트 수
-    //     int segments = 64;
+        // 3. 세그먼트 수
+        int segments = 64;
 
-    //     Vector3 prevPoint = Vector3.zero;
+        Vector3 prevPoint = Vector3.zero;
 
-    //     Gizmos.color = Color.cyan;
+        Gizmos.color = Color.cyan;
 
-    //     for (int i = 0; i <= segments; i++)
-    //     {
-    //         float angle = (float)i / segments * Mathf.PI * 2f;
+        for (int i = 0; i <= segments; i++)
+        {
+            float angle = (float)i / segments * Mathf.PI * 2f;
 
-    //         // Local donut offset
-    //         Vector3 localOffset = new Vector3(
-    //             Mathf.Cos(angle),
-    //             Mathf.Sin(angle),
-    //             0f
-    //         ) * radius;
+            // Local donut offset
+            Vector3 localOffset = new Vector3(
+                Mathf.Cos(angle),
+                Mathf.Sin(angle),
+                0f
+            ) * radius;
 
-    //         // Convert to world
-    //         Vector3 worldOffset =
-    //             right * localOffset.x +
-    //             up * localOffset.y +
-    //             forward * localOffset.z;
+            // Convert to world
+            Vector3 worldOffset =
+                right * localOffset.x +
+                up * localOffset.y +
+                forward * localOffset.z;
 
-    //         Vector3 worldPos = target.position + worldOffset;
+            Vector3 worldPos = target.position + worldOffset;
 
-    //         if (i > 0)
-    //             Gizmos.DrawLine(prevPoint, worldPos);
+            if (i > 0)
+                Gizmos.DrawLine(prevPoint, worldPos);
 
-    //         prevPoint = worldPos;
-    //     }
-    // }
+            prevPoint = worldPos;
+        }
+    }
 
-    // private void DrawAttackPhase()
-    // {
+    private void DrawAttackPhase()
+    {
         
-    // }
+    }
     // private void DrawAttackPhase_Sphere()
     // {
     //     if (m_state != EAircraftState.AttackShip || m_targetModule == null) return;

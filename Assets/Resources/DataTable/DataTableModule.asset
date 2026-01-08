@@ -44,6 +44,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Battle Lv.2
@@ -74,6 +75,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Battle Lv.3
@@ -104,6 +106,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Battle Lv.4
@@ -134,6 +137,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Battle Lv.5
@@ -164,6 +168,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Battle Lv.6
@@ -194,6 +199,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Battle Lv.7
@@ -224,6 +230,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Battle Lv.8
@@ -254,6 +261,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Battle Lv.9
@@ -284,6 +292,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Battle Lv.10
@@ -314,6 +323,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
   - subType: 1002
     modules:
@@ -346,6 +356,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Aircraft Lv.2
@@ -376,6 +387,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Aircraft Lv.3
@@ -406,6 +418,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Aircraft Lv.4
@@ -436,6 +449,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Aircraft Lv.5
@@ -466,6 +480,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Aircraft Lv.6
@@ -496,6 +511,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Aircraft Lv.7
@@ -526,6 +542,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Aircraft Lv.8
@@ -556,6 +573,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Aircraft Lv.9
@@ -586,6 +604,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Aircraft Lv.10
@@ -616,6 +635,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
   - subType: 1003
     modules:
@@ -648,6 +668,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Repair Lv.2
@@ -678,6 +699,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Repair Lv.3
@@ -708,6 +730,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Repair Lv.4
@@ -738,6 +761,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Repair Lv.5
@@ -768,6 +792,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Repair Lv.6
@@ -798,6 +823,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Repair Lv.7
@@ -828,6 +854,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Repair Lv.8
@@ -858,6 +885,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Repair Lv.9
@@ -888,6 +916,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Body_Repair Lv.10
@@ -918,6 +947,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
   engineGroups:
   - subType: 2001
@@ -951,6 +981,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Standard Lv.2
@@ -981,6 +1012,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Standard Lv.3
@@ -1011,6 +1043,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Standard Lv.4
@@ -1041,6 +1074,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Standard Lv.5
@@ -1071,6 +1105,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Standard Lv.6
@@ -1101,6 +1136,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Standard Lv.7
@@ -1131,6 +1167,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Standard Lv.8
@@ -1161,6 +1198,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Standard Lv.9
@@ -1191,6 +1229,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Standard Lv.10
@@ -1221,6 +1260,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
   - subType: 2002
     modules:
@@ -1253,6 +1293,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Booster Lv.2
@@ -1283,6 +1324,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Booster Lv.3
@@ -1313,6 +1355,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Booster Lv.4
@@ -1343,6 +1386,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Booster Lv.5
@@ -1373,6 +1417,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Booster Lv.6
@@ -1403,6 +1448,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Booster Lv.7
@@ -1433,6 +1479,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Booster Lv.8
@@ -1463,6 +1510,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Booster Lv.9
@@ -1493,6 +1541,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Booster Lv.10
@@ -1523,6 +1572,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
   - subType: 2003
     modules:
@@ -1555,6 +1605,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Warp Lv.2
@@ -1585,6 +1636,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Warp Lv.3
@@ -1615,6 +1667,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Warp Lv.4
@@ -1645,6 +1698,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Warp Lv.5
@@ -1675,6 +1729,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Warp Lv.6
@@ -1705,6 +1760,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Warp Lv.7
@@ -1735,6 +1791,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Warp Lv.8
@@ -1765,6 +1822,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Warp Lv.9
@@ -1795,6 +1853,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Engine_Warp Lv.10
@@ -1825,6 +1884,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
   weaponGroups:
   - subType: 3001
@@ -1858,6 +1918,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Beam Lv.2
@@ -1888,6 +1949,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Beam Lv.3
@@ -1918,6 +1980,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Beam Lv.4
@@ -1948,6 +2011,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Beam Lv.5
@@ -1978,6 +2042,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Beam Lv.6
@@ -2008,6 +2073,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Beam Lv.7
@@ -2038,6 +2104,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Beam Lv.8
@@ -2068,6 +2135,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Beam Lv.9
@@ -2098,6 +2166,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Beam Lv.10
@@ -2128,6 +2197,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
   - subType: 3002
     modules:
@@ -2160,6 +2230,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Missile Lv.2
@@ -2190,6 +2261,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Missile Lv.3
@@ -2220,6 +2292,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Missile Lv.4
@@ -2250,6 +2323,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Missile Lv.5
@@ -2280,6 +2354,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Missile Lv.6
@@ -2310,6 +2385,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Missile Lv.7
@@ -2340,6 +2416,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Missile Lv.8
@@ -2370,6 +2447,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Missile Lv.9
@@ -2400,6 +2478,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
     - m_moduleTypePacked: 0
       m_moduleName: Weapon_Missile Lv.10
@@ -2430,6 +2509,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 50
       m_aircraftAttackPower: 10
+      m_aircraftSpeed: 200
       m_aircraftAmmo: 10
   hangerGroups:
   - subType: 4001
@@ -2463,6 +2543,7 @@ MonoBehaviour:
       m_maintenanceTime: 14.5
       m_aircraftHealth: 40
       m_aircraftAttackPower: 8
+      m_aircraftSpeed: 205
       m_aircraftAmmo: 12
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Standard Lv.2
@@ -2493,6 +2574,7 @@ MonoBehaviour:
       m_maintenanceTime: 14
       m_aircraftHealth: 50
       m_aircraftAttackPower: 11
+      m_aircraftSpeed: 210
       m_aircraftAmmo: 14
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Standard Lv.3
@@ -2523,6 +2605,7 @@ MonoBehaviour:
       m_maintenanceTime: 13.5
       m_aircraftHealth: 60
       m_aircraftAttackPower: 14
+      m_aircraftSpeed: 215
       m_aircraftAmmo: 16
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Standard Lv.4
@@ -2553,6 +2636,7 @@ MonoBehaviour:
       m_maintenanceTime: 13
       m_aircraftHealth: 70
       m_aircraftAttackPower: 17
+      m_aircraftSpeed: 220
       m_aircraftAmmo: 18
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Standard Lv.5
@@ -2583,6 +2667,7 @@ MonoBehaviour:
       m_maintenanceTime: 12.5
       m_aircraftHealth: 80
       m_aircraftAttackPower: 20
+      m_aircraftSpeed: 225
       m_aircraftAmmo: 20
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Standard Lv.6
@@ -2613,6 +2698,7 @@ MonoBehaviour:
       m_maintenanceTime: 12
       m_aircraftHealth: 90
       m_aircraftAttackPower: 23
+      m_aircraftSpeed: 230
       m_aircraftAmmo: 22
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Standard Lv.7
@@ -2643,6 +2729,7 @@ MonoBehaviour:
       m_maintenanceTime: 11.5
       m_aircraftHealth: 100
       m_aircraftAttackPower: 26
+      m_aircraftSpeed: 235
       m_aircraftAmmo: 24
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Standard Lv.8
@@ -2673,6 +2760,7 @@ MonoBehaviour:
       m_maintenanceTime: 11
       m_aircraftHealth: 110
       m_aircraftAttackPower: 29
+      m_aircraftSpeed: 240
       m_aircraftAmmo: 26
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Standard Lv.9
@@ -2703,6 +2791,7 @@ MonoBehaviour:
       m_maintenanceTime: 10.5
       m_aircraftHealth: 120
       m_aircraftAttackPower: 32
+      m_aircraftSpeed: 245
       m_aircraftAmmo: 28
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Standard Lv.10
@@ -2733,6 +2822,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 130
       m_aircraftAttackPower: 35
+      m_aircraftSpeed: 250
       m_aircraftAmmo: 30
   - subType: 4002
     modules:
@@ -2765,6 +2855,7 @@ MonoBehaviour:
       m_maintenanceTime: 14.5
       m_aircraftHealth: 40
       m_aircraftAttackPower: 8
+      m_aircraftSpeed: 205
       m_aircraftAmmo: 12
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Advanced Lv.2
@@ -2795,6 +2886,7 @@ MonoBehaviour:
       m_maintenanceTime: 14
       m_aircraftHealth: 50
       m_aircraftAttackPower: 11
+      m_aircraftSpeed: 210
       m_aircraftAmmo: 14
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Advanced Lv.3
@@ -2825,6 +2917,7 @@ MonoBehaviour:
       m_maintenanceTime: 13.5
       m_aircraftHealth: 60
       m_aircraftAttackPower: 14
+      m_aircraftSpeed: 215
       m_aircraftAmmo: 16
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Advanced Lv.4
@@ -2855,6 +2948,7 @@ MonoBehaviour:
       m_maintenanceTime: 13
       m_aircraftHealth: 70
       m_aircraftAttackPower: 17
+      m_aircraftSpeed: 220
       m_aircraftAmmo: 18
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Advanced Lv.5
@@ -2885,6 +2979,7 @@ MonoBehaviour:
       m_maintenanceTime: 12.5
       m_aircraftHealth: 80
       m_aircraftAttackPower: 20
+      m_aircraftSpeed: 225
       m_aircraftAmmo: 20
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Advanced Lv.6
@@ -2915,6 +3010,7 @@ MonoBehaviour:
       m_maintenanceTime: 12
       m_aircraftHealth: 90
       m_aircraftAttackPower: 23
+      m_aircraftSpeed: 230
       m_aircraftAmmo: 22
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Advanced Lv.7
@@ -2945,6 +3041,7 @@ MonoBehaviour:
       m_maintenanceTime: 11.5
       m_aircraftHealth: 100
       m_aircraftAttackPower: 26
+      m_aircraftSpeed: 235
       m_aircraftAmmo: 24
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Advanced Lv.8
@@ -2975,6 +3072,7 @@ MonoBehaviour:
       m_maintenanceTime: 11
       m_aircraftHealth: 110
       m_aircraftAttackPower: 29
+      m_aircraftSpeed: 240
       m_aircraftAmmo: 26
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Advanced Lv.9
@@ -3005,6 +3103,7 @@ MonoBehaviour:
       m_maintenanceTime: 10.5
       m_aircraftHealth: 120
       m_aircraftAttackPower: 32
+      m_aircraftSpeed: 245
       m_aircraftAmmo: 28
     - m_moduleTypePacked: 0
       m_moduleName: Hanger_Advanced Lv.10
@@ -3035,6 +3134,7 @@ MonoBehaviour:
       m_maintenanceTime: 10
       m_aircraftHealth: 130
       m_aircraftAttackPower: 35
+      m_aircraftSpeed: 250
       m_aircraftAmmo: 30
   exportedJson: "{\r\n  \"modules\": {\r\n    \"1\": [\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_moduleName\": \"Body_Battle Lv.1\",\r\n        \"m_moduleType\":

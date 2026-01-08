@@ -1,23 +1,27 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum EGaugeDisplayMode
+public enum EGaugeBarMode
 {
     Body,
     Weapon,
     Engine,
+    Hanger,
     All
 }
 
-public class ModuleGaugeDisplay : MonoBehaviour
+public class GaugeBars : MonoBehaviour
 {
     [SerializeField] private GameObject m_multiGaugeBarPrefab;
     [SerializeField] private Canvas m_targetCanvas;
-    [HideInInspector] public EGaugeDisplayMode m_displayMode = EGaugeDisplayMode.Body;
+    [HideInInspector] public EGaugeBarMode m_displayMode = EGaugeBarMode.Body;
 
     private SpaceShip m_spaceShip;
-    private Dictionary<ModuleBase, MultiGaugeBar> m_moduleGaugeBars = new Dictionary<ModuleBase, MultiGaugeBar>();
+    private Dictionary<ModuleBase, GaugeBar> m_moduleGaugeBars = new Dictionary<ModuleBase, GaugeBar>();
     
+    [SerializeField] private Vector3 m_offsetFromTarget = new Vector3(0, 2f, 0);
+    [SerializeField] private float m_smoothSpeed = 5f;
+
     void Awake()
     {
         m_spaceShip = GetComponent<SpaceShip>();
@@ -34,12 +38,10 @@ public class ModuleGaugeDisplay : MonoBehaviour
     private void InitializeGaugeBars()
     {
         ClearAllGaugeBars();
-
         if (m_spaceShip == null) return;
-
         switch (m_displayMode)
         {
-            case EGaugeDisplayMode.Body:
+            case EGaugeBarMode.Body:
                 foreach (ModuleBody body in m_spaceShip.m_moduleBodys)
                 {
                     if (body != null)
@@ -47,7 +49,7 @@ public class ModuleGaugeDisplay : MonoBehaviour
                 }
                 break;
 
-            // case EGaugeDisplayMode.Weapon:
+            // case EGaugeBarMode.Weapon:
             //     foreach (ModuleWeapon weapon in m_spaceShip.m_moduleWeaponList)
             //     {
             //         if (weapon != null)
@@ -55,7 +57,7 @@ public class ModuleGaugeDisplay : MonoBehaviour
             //     }
             //     break;
 
-            // case EGaugeDisplayMode.Engine:
+            // case EGaugeBarMode.Engine:
             //     foreach (ModuleEngine engine in m_spaceShip.m_moduleEngineList)
             //     {
             //         if (engine != null)
@@ -63,7 +65,7 @@ public class ModuleGaugeDisplay : MonoBehaviour
             //     }
             //     break;
 
-            case EGaugeDisplayMode.All:
+            case EGaugeBarMode.All:
                 foreach (ModuleBody body in m_spaceShip.m_moduleBodys)
                 {
                     if (body != null)
@@ -83,6 +85,8 @@ public class ModuleGaugeDisplay : MonoBehaviour
         }
     }
 
+    
+
     public void SetGaugeVisible(bool visible)
     {
         if (visible == false)
@@ -96,17 +100,28 @@ public class ModuleGaugeDisplay : MonoBehaviour
         if (m_moduleGaugeBars.ContainsKey(module) == true) return;
         if (m_targetCanvas == null) return;
 
-        if (m_multiGaugeBarPrefab == null)
-            m_multiGaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/MultiGaugeBar");
-        if (m_multiGaugeBarPrefab == null) return;
+        // if (m_multiGaugeBarPrefab == null)
+        //     m_multiGaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/MultiGaugeBar");
+        // if (m_multiGaugeBarPrefab == null) return;
 
-        GameObject multiGaugeBarObj = Instantiate(m_multiGaugeBarPrefab, m_targetCanvas.transform);
-        MultiGaugeBar multiGaugeBar = multiGaugeBarObj.GetComponent<MultiGaugeBar>();
-        if (multiGaugeBar == null) return;
-        multiGaugeBar.SetMultiGaugeTarget(module.transform);
+        // GameObject multiGaugeBarObj = Instantiate(m_multiGaugeBarPrefab, m_targetCanvas.transform);
+        // MultiGaugeBar multiGaugeBar = multiGaugeBarObj.GetComponent<MultiGaugeBar>();
+        // if (multiGaugeBar == null) return;
+        // multiGaugeBar.SetMultiGaugeTarget(module.transform);
+        // Color gaugeColor = GetModuleColor(module);
+        // multiGaugeBar.AddGauge(gaugeColor);
+        // m_moduleGaugeBars[module] = multiGaugeBar;
+
+        GameObject gaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/GaugeBar");
+        if (gaugeBarPrefab == null) return;
+
+        GameObject gaugeBarObj = Instantiate(gaugeBarPrefab, m_targetCanvas.transform);
+        GaugeBar gaugeBar = gaugeBarObj.GetComponent<GaugeBar>();
+        if (gaugeBar == null) return;
         Color gaugeColor = GetModuleColor(module);
-        multiGaugeBar.AddGauge(gaugeColor);
-        m_moduleGaugeBars[module] = multiGaugeBar;
+        gaugeBar.InitializeGaugeBar(module.transform, m_offsetFromTarget, gaugeColor, m_smoothSpeed);
+        m_moduleGaugeBars.Add(module, gaugeBar);
+
     }
 
     private Color GetModuleColor(ModuleBase module)
@@ -131,9 +146,9 @@ public class ModuleGaugeDisplay : MonoBehaviour
         foreach (var kvp in m_moduleGaugeBars)
         {
             ModuleBase module = kvp.Key;
-            MultiGaugeBar multiGaugeBar = kvp.Value;
+            GaugeBar gaugeBar = kvp.Value;
 
-            if (module == null || multiGaugeBar == null) continue;
+            if (module == null || gaugeBar == null) continue;
 
             float currentHealth = 0f;
             float maxHealth = 100f;
@@ -154,7 +169,25 @@ public class ModuleGaugeDisplay : MonoBehaviour
                 maxHealth = engine.m_healthMax;
             }
 
-            multiGaugeBar.UpdateGauge(0, currentHealth, maxHealth);
+            gaugeBar.UpdateValue(currentHealth, maxHealth);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        foreach (var kvp in m_moduleGaugeBars)
+        {
+            GaugeBar gaugeBar = kvp.Value;
+            if (gaugeBar == null) continue;
+
+            bool isInBounds = gaugeBar.IsInScreenBounds();
+
+            if (isInBounds == true
+                && gaugeBar.gameObject.activeSelf == false)
+                gaugeBar.gameObject.SetActive(true);
+            else if (isInBounds == false
+                && gaugeBar.gameObject.activeSelf == true)
+                gaugeBar.gameObject.SetActive(false);
         }
     }
 
