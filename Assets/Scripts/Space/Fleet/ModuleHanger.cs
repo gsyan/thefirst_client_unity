@@ -85,12 +85,12 @@ public class ModuleHanger : ModuleBase
         
 
         m_hangarCapability = moduleData.m_hangarCapability;
-        m_hangarCapability = 1; // test
+        //m_hangarCapability = 1; // test
         m_scoutCapability = moduleData.m_scoutCapability;
         m_launchCool = moduleData.m_launchCool;
         m_launchCount = moduleData.m_launchCount;
         m_maintenanceTime = moduleData.m_maintenanceTime;
-        m_maintenanceTime = 1; // test
+        //m_maintenanceTime = 1; // test
 
         // 업그레이드 비용 설정
         m_upgradeCost = moduleData.m_upgradeCost;

@@ -80,7 +80,7 @@ public class CameraController : MonoSingleton<CameraController>
     public void UpdateFleetViewPosition()
     {
         if (m_targetCamera == null) return;
-        
+	
         // Transform이 설정되어 있으면 해당 위치를 따라감 (움직이는 타겟)
         if (m_currentTarget != null)
             m_targetPosition = m_currentTarget.position;
@@ -102,8 +102,17 @@ public class CameraController : MonoSingleton<CameraController>
         );
 
         // 3. 보간된 타겟 위치 + 회전 오프셋 + 세로 오프셋 = 카메라 위치
-        m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset;
-        m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
+        if (m_currentTarget != null)
+        {
+            m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset;
+            m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
+        }
+        else
+        {
+            m_targetCamera.transform.position = m_interpolatedTargetPosition;
+            if (rotatedOffset.sqrMagnitude > 0.001f) 
+                m_targetCamera.transform.rotation = Quaternion.LookRotation(-rotatedOffset);
+        }
     }
 
     private bool m_inputEnabled = true;
@@ -204,7 +213,7 @@ public class CameraController : MonoSingleton<CameraController>
             Vector2 mouseDelta = (Vector2)Input.mousePosition - (Vector2)m_startTouchPosition;
             if (mouseDelta.magnitude > 1f)
             {
-                CameraMove_LeftRightUpDown(mouseDelta);
+                CameraPanning(mouseDelta);
                 m_startTouchPosition = Input.mousePosition;
             }
         }
@@ -270,7 +279,7 @@ public class CameraController : MonoSingleton<CameraController>
                     {
                         //m_isPanning = true;
                         Vector2 touchCenterDelta = currentTouchCenter - m_lastTwoTouchCenter;
-                        CameraMove_LeftRightUpDown(touchCenterDelta);
+                        CameraPanning(touchCenterDelta);
                     }
                     // 그 외: 애매한 경우 → 이전 상태 유지 (아무것도 안 함)
                 }
@@ -337,7 +346,7 @@ public class CameraController : MonoSingleton<CameraController>
         m_currentZoom = Mathf.Lerp(m_minZoom, m_maxZoom, normalizedZoom);
     }
 
-    public void CameraMove_LeftRightUpDown(Vector2 screenDelta)
+    public void CameraPanning(Vector2 screenDelta)
     {
         if (m_targetCamera == null) return;
 
@@ -346,8 +355,15 @@ public class CameraController : MonoSingleton<CameraController>
             return;
 
         // Transform 추적 중이면 해제 (팬 이동 시 고정 위치로 전환)
-        m_currentTarget = null;
+        if (m_currentTarget != null)
+        {
+            m_currentTarget = null;
+            m_targetPosition = m_targetCamera.transform.position;
+            m_interpolatedTargetPosition = m_targetPosition;
+        }
 
+            
+        
         // 카메라의 오른쪽(Right)과 위쪽(Up) 방향 벡터 구하기
         Vector3 cameraRight = m_targetCamera.transform.right;
         Vector3 cameraUp = m_targetCamera.transform.up;

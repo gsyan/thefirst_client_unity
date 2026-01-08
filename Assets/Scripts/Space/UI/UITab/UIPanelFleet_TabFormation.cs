@@ -10,8 +10,8 @@ public class UIPanelFleet_TabFormation : UITabBase
     
     private SpaceFleet m_myFleet;
     private EFormationType m_currentFormationType;
-    private Button m_prevButton;
-    private Button m_nextButton;
+    [SerializeField] private Button m_prevButton;
+    [SerializeField] private Button m_nextButton;
 
     public override void InitializeUITab()
     {

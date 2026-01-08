@@ -31,7 +31,7 @@ public class LauncherMissile : LauncherBase
     public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
     {
         if (m_isInitialized == false) return;
-        //StartCoroutine(FireMissileCoroutine(target, damage, sourceModuleBase));
+        StartCoroutine(FireMissileCoroutine(target, damage, sourceModuleBase));
     }
 
     private IEnumerator FireMissileCoroutine(ModuleBase target, float damage, ModuleBase sourceModuleBase)

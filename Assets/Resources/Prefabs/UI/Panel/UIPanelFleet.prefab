@@ -2568,6 +2568,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_tabSystemParent: {fileID: 0}
   m_formationNameText: {fileID: 7427710899288071603}
+  m_prevButton: {fileID: 581123559249895347}
+  m_nextButton: {fileID: 2070691586038854686}
 --- !u!1 &4453904022772365875
 GameObject:
   m_ObjectHideFlags: 0
