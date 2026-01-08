@@ -402,17 +402,66 @@ public abstract class AircraftBase : MonoBehaviour
             yield break;
         }
 
+        // 적 함선의 gridpoint를 이용한 귀환 경로 설정
+        bool useGridPath = false;
+        List<AirCraftPathPoint> points = null;
+        int currentIndex = 0;
+
+        if (m_targetModule != null)
+        {
+            SpaceShip targetShip = m_targetModule.GetSpaceShip();
+            if (targetShip != null)
+            {
+                AirCraftPathGrid targetShipAirCraftPathGrid = targetShip.m_airCraftPathGrid;
+                if (targetShipAirCraftPathGrid != null && targetShipAirCraftPathGrid.m_aircraftPathPoints != null && targetShipAirCraftPathGrid.m_aircraftPathPoints.Count > 0)
+                {
+                    points = targetShipAirCraftPathGrid.m_aircraftPathPoints;
+                    currentIndex = FindClosestOutlineIndex(points, transform.position);
+                    useGridPath = true;
+                }
+            }
+        }
+
+        m_currentDirection = transform.forward.normalized;
         while (true)
         {
             Vector3 toCarrier = (m_firePoint.position - transform.position).normalized;
             float dotValue = Vector3.Dot(transform.forward, toCarrier);
+            float distanceToCarrier = Vector3.Distance(transform.position, m_firePoint.position);
 
-            // 목표를 지나쳤으면 도착으로 판정
-            if (dotValue < 0.0f && Vector3.Distance(transform.position, m_firePoint.position) < m_aircraftInfo.attackRange)
+            // 목표를 지나쳤으면 도착으로 판정 (기존 로직 유지)
+            if (dotValue < 0.0f && distanceToCarrier < m_aircraftInfo.attackRange)
                 break;
 
+            Vector3 targetDirection = toCarrier;
+
+            // gridpoint를 이용한 경로 이동
+            if (useGridPath && points != null)
+            {
+                Vector3 currentPoint = points[currentIndex].transform.position;
+                Vector3 toPoint = (currentPoint - transform.position).normalized;
+
+                // 현재 gridpoint가 모함 방향과 일치하는지 확인 (dot > 0.3 = 약 72도 이내)
+                float alignmentToCarrier = Vector3.Dot(toPoint, toCarrier);
+
+                if (alignmentToCarrier > 0.3f) // 모함 방향과 어느정도 일치하면 gridpoint 따라가기
+                {
+                    targetDirection = toPoint;
+
+                    // 포인트를 지나쳤으면 다음 포인트로
+                    float dotToPoint = Vector3.Dot(transform.forward, toPoint);
+                    if (dotToPoint < 0.0f)
+                        currentIndex = GetNextIndexByAlignment(points, currentIndex, m_currentDirection);
+                }
+                else // 모함 방향과 맞지 않으면 직행 모드로 전환
+                {
+                    useGridPath = false;
+                    targetDirection = toCarrier;
+                }
+            }
+
             // 자연스러운 방향 전환 및 회전
-            SmoothRotate(toCarrier);
+            SmoothRotate(targetDirection);
 
             // 이동
             transform.position += m_currentDirection * m_aircraftInfo.moveSpeed * Time.deltaTime;
