@@ -4153,7 +4153,7 @@ MonoBehaviour:
     0.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
     \"mineral\": 50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
-    \"Engine_Standard LV.1\",\r\n        \"m_movementSpeed\": 3.5,\r\n        \"m_attackFireCount\":
+    \"Engine_Standard LV.1\",\r\n        \"m_movementSpeed\": 55.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4170,7 +4170,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Standard
-    LV.2\",\r\n        \"m_movementSpeed\": 4.0,\r\n        \"m_attackFireCount\":
+    LV.2\",\r\n        \"m_movementSpeed\": 60.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4187,7 +4187,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Standard
-    LV.3\",\r\n        \"m_movementSpeed\": 4.5,\r\n        \"m_attackFireCount\":
+    LV.3\",\r\n        \"m_movementSpeed\": 65.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4204,7 +4204,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Standard
-    LV.4\",\r\n        \"m_movementSpeed\": 5.0,\r\n        \"m_attackFireCount\":
+    LV.4\",\r\n        \"m_movementSpeed\": 70.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4221,7 +4221,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Standard
-    LV.5\",\r\n        \"m_movementSpeed\": 5.5,\r\n        \"m_attackFireCount\":
+    LV.5\",\r\n        \"m_movementSpeed\": 75.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4238,7 +4238,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Standard
-    LV.6\",\r\n        \"m_movementSpeed\": 6.0,\r\n        \"m_attackFireCount\":
+    LV.6\",\r\n        \"m_movementSpeed\": 80.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4255,7 +4255,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Standard
-    LV.7\",\r\n        \"m_movementSpeed\": 6.5,\r\n        \"m_attackFireCount\":
+    LV.7\",\r\n        \"m_movementSpeed\": 85.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4272,7 +4272,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Standard
-    LV.8\",\r\n        \"m_movementSpeed\": 7.0,\r\n        \"m_attackFireCount\":
+    LV.8\",\r\n        \"m_movementSpeed\": 90.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4289,7 +4289,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Standard
-    LV.9\",\r\n        \"m_movementSpeed\": 7.5,\r\n        \"m_attackFireCount\":
+    LV.9\",\r\n        \"m_movementSpeed\": 95.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4306,7 +4306,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Standard
-    LV.10\",\r\n        \"m_movementSpeed\": 8.0,\r\n        \"m_attackFireCount\":
+    LV.10\",\r\n        \"m_movementSpeed\": 100.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4323,7 +4323,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.1\",\r\n        \"m_movementSpeed\": 3.5,\r\n        \"m_attackFireCount\":
+    LV.1\",\r\n        \"m_movementSpeed\": 55.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4340,7 +4340,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.2\",\r\n        \"m_movementSpeed\": 4.0,\r\n        \"m_attackFireCount\":
+    LV.2\",\r\n        \"m_movementSpeed\": 60.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4357,7 +4357,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.3\",\r\n        \"m_movementSpeed\": 4.5,\r\n        \"m_attackFireCount\":
+    LV.3\",\r\n        \"m_movementSpeed\": 65.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4374,7 +4374,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.4\",\r\n        \"m_movementSpeed\": 5.0,\r\n        \"m_attackFireCount\":
+    LV.4\",\r\n        \"m_movementSpeed\": 70.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4391,7 +4391,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.5\",\r\n        \"m_movementSpeed\": 5.5,\r\n        \"m_attackFireCount\":
+    LV.5\",\r\n        \"m_movementSpeed\": 75.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4408,7 +4408,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.6\",\r\n        \"m_movementSpeed\": 6.0,\r\n        \"m_attackFireCount\":
+    LV.6\",\r\n        \"m_movementSpeed\": 80.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4425,7 +4425,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.7\",\r\n        \"m_movementSpeed\": 6.5,\r\n        \"m_attackFireCount\":
+    LV.7\",\r\n        \"m_movementSpeed\": 85.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4442,7 +4442,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.8\",\r\n        \"m_movementSpeed\": 7.0,\r\n        \"m_attackFireCount\":
+    LV.8\",\r\n        \"m_movementSpeed\": 90.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4459,7 +4459,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.9\",\r\n        \"m_movementSpeed\": 7.5,\r\n        \"m_attackFireCount\":
+    LV.9\",\r\n        \"m_movementSpeed\": 95.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4476,7 +4476,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Booster
-    LV.10\",\r\n        \"m_movementSpeed\": 8.0,\r\n        \"m_attackFireCount\":
+    LV.10\",\r\n        \"m_movementSpeed\": 100.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4493,7 +4493,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.1\",\r\n        \"m_movementSpeed\": 3.5,\r\n        \"m_attackFireCount\":
+    LV.1\",\r\n        \"m_movementSpeed\": 55.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4510,7 +4510,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.2\",\r\n        \"m_movementSpeed\": 4.0,\r\n        \"m_attackFireCount\":
+    LV.2\",\r\n        \"m_movementSpeed\": 60.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4527,7 +4527,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.3\",\r\n        \"m_movementSpeed\": 4.5,\r\n        \"m_attackFireCount\":
+    LV.3\",\r\n        \"m_movementSpeed\": 65.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4544,7 +4544,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.4\",\r\n        \"m_movementSpeed\": 5.0,\r\n        \"m_attackFireCount\":
+    LV.4\",\r\n        \"m_movementSpeed\": 70.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4561,7 +4561,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.5\",\r\n        \"m_movementSpeed\": 5.5,\r\n        \"m_attackFireCount\":
+    LV.5\",\r\n        \"m_movementSpeed\": 75.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4578,7 +4578,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.6\",\r\n        \"m_movementSpeed\": 6.0,\r\n        \"m_attackFireCount\":
+    LV.6\",\r\n        \"m_movementSpeed\": 80.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4595,7 +4595,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.7\",\r\n        \"m_movementSpeed\": 6.5,\r\n        \"m_attackFireCount\":
+    LV.7\",\r\n        \"m_movementSpeed\": 85.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4612,7 +4612,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.8\",\r\n        \"m_movementSpeed\": 7.0,\r\n        \"m_attackFireCount\":
+    LV.8\",\r\n        \"m_movementSpeed\": 90.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4629,7 +4629,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.9\",\r\n        \"m_movementSpeed\": 7.5,\r\n        \"m_attackFireCount\":
+    LV.9\",\r\n        \"m_movementSpeed\": 95.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
@@ -4646,7 +4646,7 @@ MonoBehaviour:
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
     \"mineralDark\": 0\r\n        },\r\n        \"m_description\": \"Engine_Warp
-    LV.10\",\r\n        \"m_movementSpeed\": 8.0,\r\n        \"m_attackFireCount\":
+    LV.10\",\r\n        \"m_movementSpeed\": 100.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileLength\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
     \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       

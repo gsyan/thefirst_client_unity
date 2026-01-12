@@ -19,8 +19,8 @@ public class DataTableModuleEditor : Editor
     private bool showEngineModules = false;
     private bool showWeaponModules = false;
     private bool showHangerModules = false;
-    private bool showJsonTools = false;
-    private bool showUtilityTools = false;
+    private bool showUtilityTools = true;
+    private bool showJsonTools = true;
 
     private readonly Color bodyColor = new Color(0.7f, 0.9f, 0.7f);
     private readonly Color engineColor = new Color(0.7f, 0.7f, 0.9f);

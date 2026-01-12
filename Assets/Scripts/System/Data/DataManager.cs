@@ -9,6 +9,7 @@ public class DataManager : Singleton<DataManager>
     protected override void OnInitialize()
     {
         LoadDataTableModule();
+        LoadDataTableModuleResearch();
         LoadDataTableConfig();
         LoadCharacterDataFromPlayerPrefs();
         LoadFleetDataFromPlayerPrefs();
@@ -17,6 +18,7 @@ public class DataManager : Singleton<DataManager>
     public void Initialize()
     {
         LoadDataTableModule();
+        LoadDataTableModuleResearch();
         LoadDataTableConfig();
         LoadCharacterDataFromPlayerPrefs();
         LoadFleetDataFromPlayerPrefs();
@@ -252,7 +254,7 @@ public class DataManager : Singleton<DataManager>
 
     #region Data Table Module ###############################################################
     public DataTableModule m_dataTableModule;
-    
+
     private void LoadDataTableModule()
     {
         m_dataTableModule = Resources.Load<DataTableModule>("DataTable/DataTableModule");
@@ -272,7 +274,7 @@ public class DataManager : Singleton<DataManager>
         if (m_dataTableModule == null) return null;
         return m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
     }
-    
+
     public ModuleData RestoreModuleData(int moduleTypePacked, int moduleLevel)
     {
         if (m_dataTableModule == null) return null;
@@ -288,9 +290,40 @@ public class DataManager : Singleton<DataManager>
         cost = new CostStruct();
         ModuleData moduleData = RestoreModuleData(moduleTypePacked, moduleLevel);
         if (moduleData == null) return false;
-        
+
         cost = moduleData.m_upgradeCost;
         return true;
+    }
+    #endregion
+
+    #region Data Table Module Research ###############################################################
+    public DataTableModuleResearch m_dataTableModuleResearch;
+
+    private void LoadDataTableModuleResearch()
+    {
+        m_dataTableModuleResearch = Resources.Load<DataTableModuleResearch>("DataTable/DataTableModuleResearch");
+        if (m_dataTableModuleResearch == null)
+        {
+            Debug.LogError("DataTableModuleResearch is not exist");
+        }
+        else
+        {
+            Debug.Log("DataTableModuleResearch loaded successfully");
+        }
+    }
+
+    public CostStruct GetModuleResearchCost(EModuleSubType subType)
+    {
+        if (m_dataTableModuleResearch == null) return new CostStruct();
+        return m_dataTableModuleResearch.GetResearchCost(subType);
+    }
+
+    public CostStruct GetModuleResearchCost(int moduleTypePacked)
+    {
+        EModuleSubType subType = CommonUtility.GetModuleSubType(moduleTypePacked);
+        if (subType == EModuleSubType.None) return new CostStruct();
+
+        return GetModuleResearchCost(subType);
     }
     #endregion
 

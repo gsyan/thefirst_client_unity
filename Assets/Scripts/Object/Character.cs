@@ -94,7 +94,17 @@ public class Character
         EventManager.TriggerMineralDarkChange(mineralDark);
     }
 
-    
+    public void UpdateAllMinerals(CostRemainInfo costRemainInfo)
+    {
+        if (m_characterInfo == null || costRemainInfo == null) return;
+
+        UpdateMineral(costRemainInfo.remainMineral);
+        UpdateMineralRare(costRemainInfo.remainMineralRare);
+        UpdateMineralExotic(costRemainInfo.remainMineralExotic);
+        UpdateMineralDark(costRemainInfo.remainMineralDark);
+    }
+
+
 
 
     public void SetOwnedFleet(SpaceFleet fleet)
@@ -160,6 +170,13 @@ public class Character
         {
             m_researchedModules.Add(moduleTypePacked);
         }
+    }
+
+    // 개발된 모듈 목록 업데이트 (배열로)
+    public void UpdateResearchedModules(int[] researchedModules)
+    {
+        if (researchedModules == null) return;
+        SetResearchedModules(researchedModules);
     }
 
 }

@@ -8,6 +8,7 @@ public class DataTableTotalEditor : EditorWindow
 {
     private DataTableConfig dataTableConfig;
     private DataTableModule dataTableModule;
+    private DataTableModuleResearch dataTableModuleResearch;
     private Vector2 scrollPosition;
 
     [MenuItem("Tools/DataTable Total Manager")]
@@ -33,6 +34,9 @@ public class DataTableTotalEditor : EditorWindow
 
         dataTableModule = (DataTableModule)EditorGUILayout.ObjectField(
             "DataTable Module", dataTableModule, typeof(DataTableModule), false);
+
+        dataTableModuleResearch = (DataTableModuleResearch)EditorGUILayout.ObjectField(
+            "DataTable Module Research", dataTableModuleResearch, typeof(DataTableModuleResearch), false);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
@@ -129,18 +133,28 @@ public class DataTableTotalEditor : EditorWindow
                 dataTableModule = AssetDatabase.LoadAssetAtPath<DataTableModule>(path);
             }
         }
+
+        if (dataTableModuleResearch == null)
+        {
+            string[] guids = AssetDatabase.FindAssets("t:DataTableModuleResearch", new[] { "Assets/Resources/DataTable" });
+            if (guids.Length > 0)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                dataTableModuleResearch = AssetDatabase.LoadAssetAtPath<DataTableModuleResearch>(path);
+            }
+        }
     }
 
     private bool IsValid()
     {
-        return dataTableModule != null && dataTableConfig != null;
+        return dataTableModule != null && dataTableConfig != null && dataTableModuleResearch != null;
     }
 
     private void ExportAll()
     {
         if (!IsValid())
         {
-            EditorUtility.DisplayDialog("Error", "Please assign both DataTableModule and DataTableConfig!", "OK");
+            EditorUtility.DisplayDialog("Error", "Please assign all DataTables!", "OK");
             return;
         }
 
@@ -157,8 +171,13 @@ public class DataTableTotalEditor : EditorWindow
             string modulePath = Path.Combine(folderPath, "DataTableModule.json");
             File.WriteAllText(modulePath, moduleJson);
 
+            // DataTableModuleResearch.json 내보내기
+            string researchJson = dataTableModuleResearch.ExportToJson();
+            string researchPath = Path.Combine(folderPath, "DataTableModuleResearch.json");
+            File.WriteAllText(researchPath, researchJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to:\n{configPath}\n{modulePath}", "OK");
+                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}", "OK");
         }
     }
 
@@ -166,7 +185,7 @@ public class DataTableTotalEditor : EditorWindow
     {
         if (!IsValid())
         {
-            EditorUtility.DisplayDialog("Error", "Please assign both DataTableModule and DataTableConfig!", "OK");
+            EditorUtility.DisplayDialog("Error", "Please assign all DataTables!", "OK");
             return;
         }
 
@@ -189,8 +208,13 @@ public class DataTableTotalEditor : EditorWindow
             string moduleServerPath = Path.Combine(serverDataPath, "DataTableModule.json");
             File.WriteAllText(moduleServerPath, moduleJson);
 
+            // DataTableModuleResearch.json 서버로 내보내기
+            string researchJson = dataTableModuleResearch.ExportToJson();
+            string researchServerPath = Path.Combine(serverDataPath, "DataTableModuleResearch.json");
+            File.WriteAllText(researchServerPath, researchJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}", "OK");
+                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}", "OK");
         }
         catch (System.Exception e)
         {
