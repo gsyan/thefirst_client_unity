@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f87b369cd8b7e04dbf59e153ca92230, type: 3}
+  m_Name: DataTableModuleResearch
+  m_EditorClassIdentifier: 
+  researchDataList:
+  - m_moduleType: 1
+    m_moduleSubType: 1001
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Body_Battle module technology
+  - m_moduleType: 1
+    m_moduleSubType: 1002
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Body_Aircraft module technology
+  - m_moduleType: 1
+    m_moduleSubType: 1003
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Body_Repair module technology
+  - m_moduleType: 2
+    m_moduleSubType: 2001
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Engine_Standard module technology
+  - m_moduleType: 2
+    m_moduleSubType: 2002
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Engine_Booster module technology
+  - m_moduleType: 2
+    m_moduleSubType: 2003
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Engine_Warp module technology
+  - m_moduleType: 3
+    m_moduleSubType: 3001
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Weapon_Beam module technology
+  - m_moduleType: 3
+    m_moduleSubType: 3002
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Weapon_Missile module technology
+  - m_moduleType: 4
+    m_moduleSubType: 4001
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Hanger_Standard module technology
+  - m_moduleType: 4
+    m_moduleSubType: 4002
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Hanger_Advanced module technology

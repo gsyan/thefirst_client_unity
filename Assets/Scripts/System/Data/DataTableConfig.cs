@@ -83,7 +83,7 @@ public class GameSettings
     }
 
     [Header("Ship Module Settings")]
-    public int moduleReleasePrice = 1000;
+    public int moduleUnlockPrice = 1000;
 
     [Header("Enemy Settings")]
     public float enemyFleetSpawnInterval = 5.0f;

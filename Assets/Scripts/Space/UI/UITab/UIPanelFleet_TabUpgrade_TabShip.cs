@@ -21,7 +21,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     [SerializeField] private GameObject m_scrollViewModule;
     [SerializeField] private RectTransform m_scrollViewModuleContent;
     [SerializeField] private GameObject m_scrollViewModuleItem;       // 프리팹
-    [SerializeField] private Button m_selectModuleButton;
     [SerializeField] private Button m_upgradeModuleButton;
 
     // 생성된 모든 ScrollViewModuleItem 추적
@@ -42,7 +41,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
         m_backButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(0));
         m_unlockModuleButton.onClick.AddListener(UnlockModule);
-        m_selectModuleButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(2));
         m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
         
         
@@ -125,8 +123,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         {
             m_unlockModuleButton.gameObject.SetActive(true);
 
-            m_scrollViewModule.gameObject.SetActive(false);
-            m_selectModuleButton.gameObject.SetActive(false);
+            m_scrollViewModule.gameObject.SetActive(false);            
             m_upgradeModuleButton.gameObject.SetActive(false);
         }
         else
@@ -134,7 +131,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             m_unlockModuleButton.gameObject.SetActive(false);
             
             m_scrollViewModule.gameObject.SetActive(true);
-            m_selectModuleButton.gameObject.SetActive(true);
             m_upgradeModuleButton.gameObject.SetActive(true);
         }
     }
@@ -186,7 +182,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
 
         // 해금 비용 확인
-        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleReleasePrice;
+        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null)
         {
@@ -508,8 +504,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             {
                 scrollViewItem.InitializeScrollViewModuleItem(
                     moduleName,
-                    () => OnModuleTypeSelected(scrollViewItem, moduleTypePacked),
-                    () => OnDevelopModuleClicked(moduleTypePacked)
+                    () => OnModuleTypeItemClicked(scrollViewItem, moduleTypePacked),
+                    () => OnModuleTypeResearchClicked(moduleTypePacked)
                 );
 
                 // 개발 여부에 따라 Dev 버튼 활성화/비활성화
@@ -524,7 +520,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
     }
 
-    private void OnModuleTypeSelected(ScrollViewModuleItem selectedItem, int moduleTypePacked)
+    private void OnModuleTypeItemClicked(ScrollViewModuleItem selectedItem, int moduleTypePacked)
     {
         // 사용자가 스크롤뷰에서 모듈 타입을 선택했을 때
         Debug.Log($"Module type selected: {moduleTypePacked}");
@@ -558,70 +554,74 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
     }
 
-    private void OnDevelopModuleClicked(int moduleTypePacked)
+    private void OnModuleTypeResearchClicked(int moduleTypePacked)
     {
         // 개발 버튼 클릭 시
         EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
-        int subTypeValue = (moduleTypePacked >> 16) & 0xFF; // SUBTYPE_SHIFT = 16
+        EModuleSubType moduleSubType = CommonUtility.GetModuleSubType(moduleTypePacked);
 
-        Debug.Log($"Development requested for: Type={moduleType}, SubType={subTypeValue}");
+        // Get research cost from DataManager
+        CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);
 
-        // TODO: 모듈 개발 UI나 로직 연결
-        ShowResultMessage($"Module development not implemented yet: {moduleType}", 3f);
+        string title = "Module Research";
+        string message = $"Research {moduleSubType} module?";
+
+        UIManager.Instance.ShowConfirmPopup(
+            title,
+            message,
+            researchCost,
+            onConfirm: () =>
+            {
+                // Confirm button clicked - Send research request to server
+                Debug.Log($"Research confirmed for: {moduleSubType}");
+
+                var request = new ModuleResearchRequest
+                {
+                    moduleTypePacked = moduleTypePacked
+                };
+
+                NetworkManager.Instance.ResearchModule(request, OnModuleResearchResponse);
+            },
+            onCancel: () =>
+            {
+                // Cancel button clicked
+                Debug.Log($"Research cancelled for: {moduleSubType}");
+                ShowResultMessage("Research cancelled", 2f);
+            }
+        );
     }
 
-    // private void ChangeModule()
-    // {
-    //     if (m_selectedShip == null || m_selectedModule == null)
-    //     {
-    //         ShowResultMessage("No ship or module selected", 3f);
-    //         return;
-    //     }
+    private void OnModuleResearchResponse(ApiResponse<ModuleResearchResponse> response)
+    {
+        if (response.errorCode == 0)
+        {
+            // Research successful
+            var researchResponse = response.data;
 
-    //     if (m_selectedModule is ModulePlaceholder)
-    //     {
-    //         ShowResultMessage("Cannot change placeholder module", 3f);
-    //         return;
-    //     }
+            // Update character's remaining resources
+            if (researchResponse.costRemainInfo != null)
+                DataManager.Instance.m_currentCharacter.UpdateAllMinerals(researchResponse.costRemainInfo);
 
-    //     // TODO: 사용자가 교체할 새 모듈을 선택하도록 UI 구현 필요
-    //     // 현재는 임시로 같은 타입의 모듈로 교체하는 예시
-    //     int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
-    //     int newModuleTypePacked = m_selectedModule.GetModuleTypePacked();
-    //     int newModuleLevel = m_selectedModule.GetModuleLevel();
+            // Update researched modules list
+            if (researchResponse.researchedModuleTypePacked != null)
+                DataManager.Instance.m_currentCharacter.UpdateResearchedModules(researchResponse.researchedModuleTypePacked);
 
-    //     // 슬롯 인덱스 가져오기
-    //     int slotIndex = -1;
-    //     if (m_selectedModule is ModuleWeapon weapon)
-    //         slotIndex = weapon.m_moduleSlot?.m_slotIndex ?? -1;
-    //     else if (m_selectedModule is ModuleEngine engine)
-    //         slotIndex = engine.m_moduleSlot?.m_slotIndex ?? -1;
-    //     else if (m_selectedModule is ModuleHanger hanger)
-    //         slotIndex = hanger.m_moduleSlot?.m_slotIndex ?? -1;
+            EModuleSubType moduleSubType = CommonUtility.GetModuleSubType(researchResponse.moduleTypePacked);
+            ShowResultMessage($"Research completed: {moduleSubType}", 3f);
 
-    //     if (slotIndex < 0)
-    //     {
-    //         ShowResultMessage("Invalid slot index", 3f);
-    //         return;
-    //     }
+            // Refresh UI to show newly researched module
+            UpdateScrollView();
+        }
+        else
+        {
+            // Research failed
+            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+            Debug.LogError($"Research failed: {errorMessage}");
+            ShowResultMessage($"Research failed: {errorMessage}", 3f);
+        }
+    }
 
-    //     // 모듈 교체 요청 생성
-    //     var changeRequest = new ModuleChangeRequest
-    //     {
-    //         shipId = m_selectedShip.m_shipInfo.id,
-    //         bodyIndex = m_selectedModule.GetModuleBodyIndex(),
-    //         slotIndex = slotIndex,
-    //         currentModuleTypePacked = currentModuleTypePacked,
-    //         newModuleTypePacked = newModuleTypePacked,
-    //         newModuleLevel = newModuleLevel
-    //     };
-
-    //     Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
-
-    //     // 서버에 모듈 교체 요청 전송
-    //     NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
-    // }
-
+    
     private void OnChangeModuleResponse(ApiResponse<ModuleChangeResponse> response)
     {
         if (response.errorCode == 0)

@@ -625,6 +625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_resultText: {fileID: 0}
   m_uiMode: 0
+  m_uiPopup: {fileID: 0}
 --- !u!1 &2008579210
 GameObject:
   m_ObjectHideFlags: 0

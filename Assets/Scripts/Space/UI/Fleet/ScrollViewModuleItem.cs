@@ -6,10 +6,10 @@ public class ScrollViewModuleItem : MonoBehaviour
 {
     [SerializeField] private Button m_selectButton;
     [SerializeField] private TMP_Text m_selectButtonText;
-    [SerializeField] private Button m_developmentButton;    
+    [SerializeField] private Button m_researchButton;    
     [SerializeField] private GameObject m_selectedIndicator; // 선택 표시 오브젝트 (Image, Border 등)
     
-    public void InitializeScrollViewModuleItem(string text, UnityEngine.Events.UnityAction actionSelect, UnityEngine.Events.UnityAction actionDev)
+    public void InitializeScrollViewModuleItem(string text, UnityEngine.Events.UnityAction actionSelect, UnityEngine.Events.UnityAction actionResearch)
     {       
         m_selectButton.gameObject.SetActive(true);
         m_selectButton.onClick.RemoveAllListeners();
@@ -17,7 +17,7 @@ public class ScrollViewModuleItem : MonoBehaviour
         m_selectButton.onClick.AddListener(() => SetSelected_ScrollViewModuleItem(true));
         m_selectButtonText.text = text;
 
-        m_developmentButton.onClick.AddListener(actionDev);
+        m_researchButton.onClick.AddListener(actionResearch);
 
         // 초기 상태: 선택 상태 숨김
         SetSelected_ScrollViewModuleItem(false);
@@ -32,6 +32,6 @@ public class ScrollViewModuleItem : MonoBehaviour
 
     public void SetDevelopmentButtonEnabled(bool isResearched)
     {
-        m_developmentButton.gameObject.SetActive(!isResearched);
+        m_researchButton.gameObject.SetActive(!isResearched);
     }
 }

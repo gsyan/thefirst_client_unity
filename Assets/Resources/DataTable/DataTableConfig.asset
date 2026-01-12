@@ -72,7 +72,7 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    moduleReleasePrice: 1000
+    moduleUnlockPrice: 1000
     enemyFleetSpawnInterval: 5
     explorationInterval: 15
     enemySpawnRate: 2
@@ -104,7 +104,7 @@ MonoBehaviour:
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
     0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 51200,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    }\r\n  ],\r\n  \"moduleReleasePrice\": 1000,\r\n  \"enemyFleetSpawnInterval\":
+    0\r\n    }\r\n  ],\r\n  \"moduleUnlockPrice\": 1000,\r\n  \"enemyFleetSpawnInterval\":
     5.0,\r\n  \"explorationInterval\": 15.0,\r\n  \"enemySpawnRate\": 2.0,\r\n  \"linearFormationSpacing\":
     3.0,\r\n  \"gridFormationSpacing\": 5.0,\r\n  \"circleFormationSpacing\": 8.0,\r\n 
     \"diamondFormationSpacing\": 6.0,\r\n  \"wedgeFormationSpacing\": 3.0\r\n}"
