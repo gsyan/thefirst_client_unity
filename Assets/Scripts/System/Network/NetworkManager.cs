@@ -356,14 +356,14 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (redirectDetected == false)
         {
             Debug.LogError("[Google OAuth] Timeout - no redirect detected");
-            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT));
+            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT));
             yield break;
         }
 
         if (string.IsNullOrEmpty(authToken))
         {
             Debug.LogError("[Google OAuth] No token extracted from redirect");
-            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION));
+            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION));
             yield break;
         }
 

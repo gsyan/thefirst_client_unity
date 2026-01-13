@@ -104,6 +104,17 @@ public class Character
         UpdateMineralDark(costRemainInfo.remainMineralDark);
     }
 
+    public bool CheckEnoughCostStruct(CostStruct cost)
+    {
+        if (cost == null) return true;
+        if (m_characterInfo.techLevel < cost.techLevel) return false;
+        if (m_characterInfo.mineral < cost.mineral) return false;
+        if (m_characterInfo.mineralRare < cost.mineralRare) return false;
+        if (m_characterInfo.mineralExotic < cost.mineralExotic) return false;
+        if (m_characterInfo.mineralDark < cost.mineralDark) return false;
+        return true;
+    }
+
 
 
 
