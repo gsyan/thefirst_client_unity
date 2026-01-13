@@ -289,16 +289,16 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         if (character.m_ownedFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;
         int currentShipCount = character.m_ownedFleet.m_ships.Count;
-        if (currentShipCount >= gameSettings.maxShipsPerFleet) return ServerErrorCode.FLEET_MAX_SHIPS_REACHED;
+        if (currentShipCount >= gameSettings.maxShipsPerFleet) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
         CostStruct cost = gameSettings.GetAddShipCost(currentShipCount);
         // tech 레벨 체크
-        if( character.m_characterInfo.techLevel < cost.techLevel) return ServerErrorCode.INSUFFICIENT_TECH_LEVEL;
+        if( character.m_characterInfo.techLevel < cost.techLevel) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
         // 모든 광물 타입 체크
-        if (character.m_characterInfo.mineral < cost.mineral) return ServerErrorCode.INSUFFICIENT_MINERAL;
-        if (character.m_characterInfo.mineralRare < cost.mineralRare) return ServerErrorCode.INSUFFICIENT_MINERAL_RARE;
-        if (character.m_characterInfo.mineralExotic < cost.mineralExotic) return ServerErrorCode.INSUFFICIENT_MINERAL_EXOTIC;
-        if (character.m_characterInfo.mineralDark < cost.mineralDark) return ServerErrorCode.INSUFFICIENT_MINERAL_DARK;
+        if (character.m_characterInfo.mineral < cost.mineral) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL;
+        if (character.m_characterInfo.mineralRare < cost.mineralRare) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL_RARE;
+        if (character.m_characterInfo.mineralExotic < cost.mineralExotic) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL_EXOTIC;
+        if (character.m_characterInfo.mineralDark < cost.mineralDark) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL_DARK;
 
         return ServerErrorCode.SUCCESS;
     }

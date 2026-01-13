@@ -107,7 +107,7 @@ public class CharacterInfo
     public long mineral;
     public long mineralRare;
     public long mineralExotic;
-    public long mineralDark;    
+    public long mineralDark;
 }
 
 

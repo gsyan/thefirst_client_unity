@@ -522,8 +522,14 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
     private void OnModuleTypeItemClicked(ScrollViewModuleItem selectedItem, int moduleTypePacked)
     {
-        // 사용자가 스크롤뷰에서 모듈 타입을 선택했을 때
-        Debug.Log($"Module type selected: {moduleTypePacked}");
+        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
+
+        // 같은 모듈이면 바꿀 필요 없음
+        if (currentModuleTypePacked == moduleTypePacked)
+        {
+            ShowResultMessage("Same module type selected. No change needed", 3f);
+            return;
+        }
 
         // 다른 모든 아이템의 선택 해제
         foreach (var item in m_moduleItems)
@@ -532,7 +538,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
                 item.SetSelected_ScrollViewModuleItem(false);
         }
 
-        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
         int slotIndex = 0;
         if( EModuleType.Body != m_selectedModule.GetModuleType())
             slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex;
@@ -561,7 +566,14 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         EModuleSubType moduleSubType = CommonUtility.GetModuleSubType(moduleTypePacked);
 
         // Get research cost from DataManager
-        CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);
+        CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);        
+        // check)
+        bool result = DataManager.Instance.m_currentCharacter.CheckEnoughCostStruct(researchCost);
+        if( result == false)
+        {
+            ShowResultMessage("Insufficient resources", 3f);
+            return;
+        }
 
         string title = "Module Research";
         string message = $"Research {moduleSubType} module?";
