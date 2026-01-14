@@ -62,9 +62,9 @@ public class ModuleBase : MonoBehaviour
     {
         return EModuleSubType.None;
     }
-    public virtual EModuleStyle GetModuleStyle()
+    public virtual EModuleSlotType GetModuleSlotType()
     {
-        return EModuleStyle.None;
+        return EModuleSlotType.All;
     }
     public virtual int GetModuleTypePacked()
     {

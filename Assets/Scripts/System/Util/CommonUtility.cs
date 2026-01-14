@@ -161,14 +161,14 @@ public static class CommonUtility
     #region Module Type Packing begin -----------------------------------------------------------------------------------
     private const int TYPE_SHIFT = 24;
     private const int SUBTYPE_SHIFT = 16;
-    private const int STYLE_SHIFT = 8;
+    private const int SLOTTYPE_SHIFT = 8;
     private const int MASK = 0xFF;
 
-    public static int CreateModuleTypePacked(EModuleType type, EModuleSubType subType, EModuleStyle style)
+    public static int CreateModuleTypePacked(EModuleType type, EModuleSubType subType, EModuleSlotType slotType)
     {
         // SubType에서 순수한 서브타입 값만 추출 (1001 -> 1, 2002 -> 2)
         int pureSubType = (int)subType % 1000;
-        return ((int)type << TYPE_SHIFT) | (pureSubType << SUBTYPE_SHIFT) | ((int)style << STYLE_SHIFT);
+        return ((int)type << TYPE_SHIFT) | (pureSubType << SUBTYPE_SHIFT) | ((int)slotType << SLOTTYPE_SHIFT);
     }
 
     public static EModuleType GetModuleType(int moduleTypePacked)
@@ -193,12 +193,12 @@ public static class CommonUtility
         return (moduleTypePacked >> SUBTYPE_SHIFT) & MASK;
     }
 
-    public static EModuleStyle GetModuleStyle(int moduleType)
+    public static EModuleSlotType GetModuleSlotType(int moduleType)
     {
-        return (EModuleStyle)((moduleType >> STYLE_SHIFT) & MASK);
+        return (EModuleSlotType)((moduleType >> SLOTTYPE_SHIFT) & MASK);
     }
 
-    public static int GetModuleTypeWithoutStyle(int moduleType)
+    public static int GetModuleTypeWithoutSlotType(int moduleType)
     {
         return moduleType & unchecked((int)0xFFFF0000);
     }
@@ -212,10 +212,21 @@ public static class CommonUtility
     {
         EModuleType type = GetModuleType(moduleType1);
 
-        if (type == EModuleType.Weapon)
-            return GetModuleTypeWithoutStyle(moduleType1) == GetModuleTypeWithoutStyle(moduleType2);
+        // if (type == EModuleType.Weapon)
+        //     return GetModuleTypeWithoutSlotType(moduleType1) == GetModuleTypeWithoutSlotType(moduleType2);
 
         return GetModuleTypeOnly(moduleType1) == GetModuleTypeOnly(moduleType2);
+    }
+
+    // 슬롯 타입 비트 연산: 모듈이 특정 슬롯에 부착 가능한지 확인
+    public static bool CanAttachToSlot(EModuleSlotType moduleSlotType, EModuleSlotType slotType)
+    {
+        // All(0) = 모든 슬롯 허용
+        if (moduleSlotType == EModuleSlotType.All || slotType == EModuleSlotType.All)
+            return true;
+
+        // 비트 AND 연산으로 호환성 체크
+        return ((int)moduleSlotType & (int)slotType) != 0;
     }
 
     public static EModuleType GetModuleTypeFromSubType(EModuleSubType subType)

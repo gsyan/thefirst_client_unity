@@ -17,13 +17,13 @@ public class ModuleData
     public string m_moduleName = "Module";
     public EModuleType m_moduleType = EModuleType.None;
     public EModuleSubType m_moduleSubType = EModuleSubType.None;
-    public EModuleStyle m_moduleStyle = EModuleStyle.None;
+    public EModuleSlotType m_moduleSlotType = EModuleSlotType.All;
     public int m_moduleLevel = 1;
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        m_moduleTypePacked = CommonUtility.CreateModuleTypePacked(m_moduleType, m_moduleSubType, m_moduleStyle);
+        m_moduleTypePacked = CommonUtility.CreateModuleTypePacked(m_moduleType, m_moduleSubType, m_moduleSlotType);
     }
 #endif
 
@@ -396,7 +396,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleStyle = EModuleStyle.None,
+                        m_moduleSlotType = EModuleSlotType.All,
                         m_moduleLevel = i,
                         m_health = 100f + (i * 50f),
                         m_cargoCapacity = 50f + (i * 25f),
@@ -416,7 +416,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleStyle = EModuleStyle.None,
+                        m_moduleSlotType = EModuleSlotType.All,
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
                         m_movementSpeed = 50f + (i * 5f),
@@ -436,7 +436,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleStyle = EModuleStyle.None,
+                        m_moduleSlotType = EModuleSlotType.All,
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
                         m_attackFireCount = 1 + (i / 5),
@@ -461,7 +461,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleStyle = EModuleStyle.None,
+                        m_moduleSlotType = EModuleSlotType.All,
                         m_moduleLevel = i,
                         m_health = 40f + (i * 15f),
                         m_hangarCapability = 2 + (i * 3),

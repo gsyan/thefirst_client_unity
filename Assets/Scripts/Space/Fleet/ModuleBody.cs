@@ -42,9 +42,9 @@ public class ModuleBody : ModuleBase
     {
         return m_moduleBodyInfo.ModuleSubType;
     }
-    public override EModuleStyle GetModuleStyle()
+    public override EModuleSlotType GetModuleSlotType()
     {
-        return m_moduleBodyInfo.ModuleStyle;
+        return m_moduleBodyInfo.ModuleSlotType;
     }
     public override int GetModuleTypePacked()
     {
@@ -404,9 +404,12 @@ public class ModuleBody : ModuleBase
     // 특정 타입과 인덱스의 슬롯 찾기
     public ModuleSlot FindModuleSlot(int moduleTypePacked, int slotIndex)
     {
+        EModuleSlotType moduleSlotType = CommonUtility.GetModuleSlotType(moduleTypePacked);
+
         return m_moduleSlots.FirstOrDefault(slot =>
             CommonUtility.CompareModuleTypeForSlot(slot.m_moduleTypePacked, moduleTypePacked)
-            && slot.m_slotIndex == slotIndex);
+            && slot.m_slotIndex == slotIndex
+            && CommonUtility.CanAttachToSlot(moduleSlotType, slot.m_moduleSlotType));
     }
 
     // moduleTypePacked와 slotIndex로 특정 모듈 찾기
@@ -424,9 +427,12 @@ public class ModuleBody : ModuleBase
     // 사용 가능한 슬롯 찾기 (빈 슬롯), 자동으로 관리해주는 기능 개발시 쓸 가능성 있음. 그러나 사용자가 직접 moduleSlot 을 골라서 할는 것만 허용될 때는 쓸 일이 없음
     public ModuleSlot FindAvailableSlot(int moduleTypePacked)
     {
+        EModuleSlotType moduleSlotType = CommonUtility.GetModuleSlotType(moduleTypePacked);
+
         return m_moduleSlots.FirstOrDefault(slot =>
             CommonUtility.CompareModuleTypeForSlot(slot.m_moduleTypePacked, moduleTypePacked)
-            && slot.transform.childCount == 0);
+            && slot.transform.childCount == 0
+            && CommonUtility.CanAttachToSlot(moduleSlotType, slot.m_moduleSlotType));
     }
 
     public void SetTarget(ModuleBody target)

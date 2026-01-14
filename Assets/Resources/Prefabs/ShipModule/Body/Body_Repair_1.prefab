@@ -4299,10 +4299,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 33554432
-  m_slotIndex: 0
+  m_moduleTypePacked: 33562624
   m_moduleType: 2
   m_moduleSubType: 0
+  m_moduleSlotType: 32
+  m_slotIndex: 0
 --- !u!1 &5991020507682207948
 GameObject:
   m_ObjectHideFlags: 0

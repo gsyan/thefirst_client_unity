@@ -466,16 +466,21 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
         if (currentModuleTypePacked == 0) return;
 
+        // 선택된 모듈의 슬롯 타입 가져오기
+        EModuleSlotType targetSlotType = EModuleSlotType.All;
+        if (m_selectedModule.m_moduleSlot != null)
+            targetSlotType = m_selectedModule.m_moduleSlot.m_moduleSlotType;
+
         // 기존 아이템 모두 제거
-        m_moduleItems.Clear();        
+        m_moduleItems.Clear();
         foreach(Transform child in m_scrollViewModuleContent)
             Destroy(child.gameObject);
-        
+
         EModuleType targetModuleType = m_selectedModule.GetModuleType();
         EModuleSubType targetModuleSubType = EModuleSubType.None;
         if( targetModuleType == EModuleType.Weapon)
             targetModuleSubType = m_selectedModule.GetModuleSubType();
-        
+
         // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
         foreach(EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
@@ -486,7 +491,13 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             // targetModuleSubType 이 EModuleSubType.None 이면 통과, 아니라면 같아야 통과
             if (targetModuleSubType != EModuleSubType.None && subType != targetModuleSubType) continue;
 
-            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(moduleType, subType, EModuleStyle.None);
+            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(moduleType, subType, EModuleSlotType.All);
+            EModuleSlotType moduleSlotType = CommonUtility.GetModuleSlotType(moduleTypePacked);
+
+            // 슬롯 타입 호환성 체크
+            if (!CommonUtility.CanAttachToSlot(moduleSlotType, targetSlotType))
+                continue;
+
             string moduleName = $"{subType}";
             bool isResearched = character.IsModuleResearched(moduleTypePacked);
             bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
@@ -530,6 +541,9 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             ShowResultMessage("Same module type selected. No change needed", 3f);
             return;
         }
+
+        // 여기
+
 
         // 다른 모든 아이템의 선택 해제
         foreach (var item in m_moduleItems)
