@@ -284,7 +284,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
     private ServerErrorCode CanAddShip()
     {
         var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return ServerErrorCode.CHARACTER_NOT_FOUND;
+        if (character == null) return ServerErrorCode.CLIENT_CanAddShip_CHARACTER_NOT_FOUND;
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         if (character.m_ownedFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;

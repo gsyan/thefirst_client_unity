@@ -31,7 +31,7 @@ public class DataTableModuleResearchEditor : Editor
         serializedObject.Update();
 
         EditorGUILayout.Space(5);
-        DrawHeader();
+        DrawCustomHeader();
         EditorGUILayout.Space(10);
 
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
@@ -58,7 +58,7 @@ public class DataTableModuleResearchEditor : Editor
         }
     }
 
-    private void DrawHeader()
+    private void DrawCustomHeader()
     {
         EditorGUILayout.BeginHorizontal("box");
         GUILayout.Label("Data Table Module Research", EditorStyles.largeLabel);
