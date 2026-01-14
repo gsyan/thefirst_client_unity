@@ -118,7 +118,7 @@ public class DataTableModuleEditor : Editor
                 m_moduleName = $"{group.subType} LV.{group.modules.Count + 1}",
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
-                m_moduleStyle = EModuleStyle.None,
+                m_moduleSlotType = EModuleSlotType.All,
                 m_moduleLevel = group.modules.Count + 1,
                 m_health = 200f,
                 m_cargoCapacity = 100f,
@@ -157,7 +157,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleStyle = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_moduleStyle);
+        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
@@ -214,7 +214,7 @@ public class DataTableModuleEditor : Editor
                 m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
-                m_moduleStyle = EModuleStyle.None,
+                m_moduleSlotType = EModuleSlotType.All,
                 m_moduleLevel = group.modules.Count + 1,
                 m_health = 50f,
                 m_attackPower = 25f,
@@ -255,7 +255,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleStyle = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_moduleStyle);
+        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
@@ -319,7 +319,7 @@ public class DataTableModuleEditor : Editor
                 m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
-                m_moduleStyle = EModuleStyle.None,
+                m_moduleSlotType = EModuleSlotType.All,
                 m_moduleLevel = group.modules.Count + 1,
                 m_health = 50f,
                 m_movementSpeed = 5f,
@@ -358,7 +358,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleStyle = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_moduleStyle);
+        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
@@ -415,7 +415,7 @@ public class DataTableModuleEditor : Editor
                 m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
-                m_moduleStyle = EModuleStyle.None,
+                m_moduleSlotType = EModuleSlotType.All,
                 m_moduleLevel = group.modules.Count + 1,
                 m_health = 50f,
                 m_hangarCapability = 5,
@@ -465,7 +465,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleStyle = (EModuleStyle)EditorGUILayout.EnumPopup("Style", module.m_moduleStyle);
+        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);

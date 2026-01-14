@@ -56,7 +56,7 @@ public class ModuleBodyInfo
 
     public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
     public EModuleSubType ModuleSubType => CommonUtility.GetModuleSubType(moduleTypePacked);
-    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
+    public EModuleSlotType ModuleSlotType => CommonUtility.GetModuleSlotType(moduleTypePacked);
 }
 
 [System.Serializable]
@@ -66,10 +66,10 @@ public class ModuleInfo
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
-    
+
     public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
     public EModuleSubType ModuleSubType => CommonUtility.GetModuleSubType(moduleTypePacked);
-    public EModuleStyle ModuleStyle => CommonUtility.GetModuleStyle(moduleTypePacked);
+    public EModuleSlotType ModuleSlotType => CommonUtility.GetModuleSlotType(moduleTypePacked);
 }
 
 [System.Serializable]

@@ -173,9 +173,9 @@ public class ModuleWeapon : ModuleBase
     {
         return m_moduleInfo.ModuleSubType;
     }
-    public override EModuleStyle GetModuleStyle()
+    public override EModuleSlotType GetModuleSlotType()
     {
-        return m_moduleInfo.ModuleStyle;
+        return m_moduleInfo.ModuleSlotType;
     }
     public override int GetModuleTypePacked()
     {

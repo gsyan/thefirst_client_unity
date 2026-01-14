@@ -19,7 +19,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.1
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 150
       m_cargoCapacity: 75
@@ -55,7 +55,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.2
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 200
       m_cargoCapacity: 100
@@ -91,7 +91,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.3
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 250
       m_cargoCapacity: 125
@@ -127,7 +127,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.4
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 300
       m_cargoCapacity: 150
@@ -163,7 +163,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.5
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 350
       m_cargoCapacity: 175
@@ -199,7 +199,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.6
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 400
       m_cargoCapacity: 200
@@ -235,7 +235,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.7
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 450
       m_cargoCapacity: 225
@@ -271,7 +271,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.8
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 500
       m_cargoCapacity: 250
@@ -307,7 +307,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.9
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 550
       m_cargoCapacity: 275
@@ -343,7 +343,7 @@ MonoBehaviour:
       m_moduleName: Body_Battle Lv.10
       m_moduleType: 1
       m_moduleSubType: 1001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 600
       m_cargoCapacity: 300
@@ -381,7 +381,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.1
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 150
       m_cargoCapacity: 75
@@ -417,7 +417,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.2
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 200
       m_cargoCapacity: 100
@@ -453,7 +453,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.3
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 250
       m_cargoCapacity: 125
@@ -489,7 +489,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.4
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 300
       m_cargoCapacity: 150
@@ -525,7 +525,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.5
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 350
       m_cargoCapacity: 175
@@ -561,7 +561,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.6
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 400
       m_cargoCapacity: 200
@@ -597,7 +597,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.7
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 450
       m_cargoCapacity: 225
@@ -633,7 +633,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.8
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 500
       m_cargoCapacity: 250
@@ -669,7 +669,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.9
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 550
       m_cargoCapacity: 275
@@ -705,7 +705,7 @@ MonoBehaviour:
       m_moduleName: Body_Aircraft Lv.10
       m_moduleType: 1
       m_moduleSubType: 1002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 600
       m_cargoCapacity: 300
@@ -743,7 +743,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.1
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 150
       m_cargoCapacity: 75
@@ -779,7 +779,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.2
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 200
       m_cargoCapacity: 100
@@ -815,7 +815,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.3
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 250
       m_cargoCapacity: 125
@@ -851,7 +851,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.4
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 300
       m_cargoCapacity: 150
@@ -887,7 +887,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.5
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 350
       m_cargoCapacity: 175
@@ -923,7 +923,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.6
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 400
       m_cargoCapacity: 200
@@ -959,7 +959,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.7
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 450
       m_cargoCapacity: 225
@@ -995,7 +995,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.8
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 500
       m_cargoCapacity: 250
@@ -1031,7 +1031,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.9
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 550
       m_cargoCapacity: 275
@@ -1067,7 +1067,7 @@ MonoBehaviour:
       m_moduleName: Body_Repair Lv.10
       m_moduleType: 1
       m_moduleSubType: 1003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 600
       m_cargoCapacity: 300
@@ -1106,7 +1106,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.1
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 40
       m_cargoCapacity: 0
@@ -1142,7 +1142,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.2
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 50
       m_cargoCapacity: 0
@@ -1178,7 +1178,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.3
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 60
       m_cargoCapacity: 0
@@ -1214,7 +1214,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.4
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 70
       m_cargoCapacity: 0
@@ -1250,7 +1250,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.5
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 80
       m_cargoCapacity: 0
@@ -1286,7 +1286,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.6
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 90
       m_cargoCapacity: 0
@@ -1322,7 +1322,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.7
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 100
       m_cargoCapacity: 0
@@ -1358,7 +1358,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.8
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 110
       m_cargoCapacity: 0
@@ -1394,7 +1394,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.9
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 120
       m_cargoCapacity: 0
@@ -1430,7 +1430,7 @@ MonoBehaviour:
       m_moduleName: Engine_Standard Lv.10
       m_moduleType: 2
       m_moduleSubType: 2001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 130
       m_cargoCapacity: 0
@@ -1468,7 +1468,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.1
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 40
       m_cargoCapacity: 0
@@ -1504,7 +1504,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.2
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 50
       m_cargoCapacity: 0
@@ -1540,7 +1540,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.3
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 60
       m_cargoCapacity: 0
@@ -1576,7 +1576,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.4
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 70
       m_cargoCapacity: 0
@@ -1612,7 +1612,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.5
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 80
       m_cargoCapacity: 0
@@ -1648,7 +1648,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.6
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 90
       m_cargoCapacity: 0
@@ -1684,7 +1684,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.7
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 100
       m_cargoCapacity: 0
@@ -1720,7 +1720,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.8
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 110
       m_cargoCapacity: 0
@@ -1756,7 +1756,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.9
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 120
       m_cargoCapacity: 0
@@ -1792,7 +1792,7 @@ MonoBehaviour:
       m_moduleName: Engine_Booster Lv.10
       m_moduleType: 2
       m_moduleSubType: 2002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 130
       m_cargoCapacity: 0
@@ -1830,7 +1830,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.1
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 40
       m_cargoCapacity: 0
@@ -1866,7 +1866,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.2
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 50
       m_cargoCapacity: 0
@@ -1902,7 +1902,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.3
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 60
       m_cargoCapacity: 0
@@ -1938,7 +1938,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.4
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 70
       m_cargoCapacity: 0
@@ -1974,7 +1974,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.5
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 80
       m_cargoCapacity: 0
@@ -2010,7 +2010,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.6
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 90
       m_cargoCapacity: 0
@@ -2046,7 +2046,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.7
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 100
       m_cargoCapacity: 0
@@ -2082,7 +2082,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.8
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 110
       m_cargoCapacity: 0
@@ -2118,7 +2118,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.9
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 120
       m_cargoCapacity: 0
@@ -2154,7 +2154,7 @@ MonoBehaviour:
       m_moduleName: Engine_Warp Lv.10
       m_moduleType: 2
       m_moduleSubType: 2003
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 130
       m_cargoCapacity: 0
@@ -2193,7 +2193,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.1
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 40
       m_cargoCapacity: 0
@@ -2229,7 +2229,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.2
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 50
       m_cargoCapacity: 0
@@ -2265,7 +2265,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.3
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 60
       m_cargoCapacity: 0
@@ -2301,7 +2301,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.4
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 70
       m_cargoCapacity: 0
@@ -2337,7 +2337,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.5
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 80
       m_cargoCapacity: 0
@@ -2373,7 +2373,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.6
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 90
       m_cargoCapacity: 0
@@ -2409,7 +2409,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.7
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 100
       m_cargoCapacity: 0
@@ -2445,7 +2445,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.8
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 110
       m_cargoCapacity: 0
@@ -2481,7 +2481,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.9
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 120
       m_cargoCapacity: 0
@@ -2517,7 +2517,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Beam Lv.10
       m_moduleType: 3
       m_moduleSubType: 3001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 130
       m_cargoCapacity: 0
@@ -2555,7 +2555,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.1
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 40
       m_cargoCapacity: 0
@@ -2591,7 +2591,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.2
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 50
       m_cargoCapacity: 0
@@ -2627,7 +2627,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.3
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 60
       m_cargoCapacity: 0
@@ -2663,7 +2663,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.4
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 70
       m_cargoCapacity: 0
@@ -2699,7 +2699,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.5
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 80
       m_cargoCapacity: 0
@@ -2735,7 +2735,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.6
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 90
       m_cargoCapacity: 0
@@ -2771,7 +2771,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.7
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 100
       m_cargoCapacity: 0
@@ -2807,7 +2807,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.8
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 110
       m_cargoCapacity: 0
@@ -2843,7 +2843,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.9
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 120
       m_cargoCapacity: 0
@@ -2879,7 +2879,7 @@ MonoBehaviour:
       m_moduleName: Weapon_Missile Lv.10
       m_moduleType: 3
       m_moduleSubType: 3002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 130
       m_cargoCapacity: 0
@@ -2918,7 +2918,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.1
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 55
       m_cargoCapacity: 0
@@ -2954,7 +2954,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.2
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 70
       m_cargoCapacity: 0
@@ -2990,7 +2990,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.3
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 85
       m_cargoCapacity: 0
@@ -3026,7 +3026,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.4
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 100
       m_cargoCapacity: 0
@@ -3062,7 +3062,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.5
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 115
       m_cargoCapacity: 0
@@ -3098,7 +3098,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.6
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 130
       m_cargoCapacity: 0
@@ -3134,7 +3134,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.7
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 145
       m_cargoCapacity: 0
@@ -3170,7 +3170,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.8
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 160
       m_cargoCapacity: 0
@@ -3206,7 +3206,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.9
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 175
       m_cargoCapacity: 0
@@ -3242,7 +3242,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Standard Lv.10
       m_moduleType: 4
       m_moduleSubType: 4001
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 190
       m_cargoCapacity: 0
@@ -3280,7 +3280,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.1
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 1
       m_health: 55
       m_cargoCapacity: 0
@@ -3316,7 +3316,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.2
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 2
       m_health: 70
       m_cargoCapacity: 0
@@ -3352,7 +3352,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.3
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 3
       m_health: 85
       m_cargoCapacity: 0
@@ -3388,7 +3388,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.4
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 4
       m_health: 100
       m_cargoCapacity: 0
@@ -3424,7 +3424,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.5
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 5
       m_health: 115
       m_cargoCapacity: 0
@@ -3460,7 +3460,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.6
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 6
       m_health: 130
       m_cargoCapacity: 0
@@ -3496,7 +3496,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.7
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 7
       m_health: 145
       m_cargoCapacity: 0
@@ -3532,7 +3532,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.8
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 8
       m_health: 160
       m_cargoCapacity: 0
@@ -3568,7 +3568,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.9
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 9
       m_health: 175
       m_cargoCapacity: 0
@@ -3604,7 +3604,7 @@ MonoBehaviour:
       m_moduleName: Hanger_Advanced Lv.10
       m_moduleType: 4
       m_moduleSubType: 4002
-      m_moduleStyle: 0
+      m_moduleSlotType: 0
       m_moduleLevel: 10
       m_health: 190
       m_cargoCapacity: 0
@@ -3638,7 +3638,7 @@ MonoBehaviour:
       m_aircraftAvoidanceRadius: 250
   exportedJson: "{\r\n  \"modules\": {\r\n    \"1\": [\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_moduleName\": \"Body_Battle Lv.1\",\r\n        \"m_moduleType\":
-    1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n       
+    1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n       
     \"m_moduleLevel\": 1,\r\n        \"m_health\": 150.0,\r\n        \"m_cargoCapacity\":
     75.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
     \"mineral\": 50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
@@ -3655,7 +3655,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Battle Lv.2\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 200.0,\r\n        \"m_cargoCapacity\": 100.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3672,7 +3672,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Battle Lv.3\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\": 125.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3689,7 +3689,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Battle Lv.4\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 300.0,\r\n        \"m_cargoCapacity\": 150.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3706,7 +3706,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Battle Lv.5\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 350.0,\r\n        \"m_cargoCapacity\": 175.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3723,7 +3723,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Battle Lv.6\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\": 200.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3740,7 +3740,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Battle Lv.7\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 450.0,\r\n        \"m_cargoCapacity\": 225.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3757,7 +3757,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Battle Lv.8\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 500.0,\r\n        \"m_cargoCapacity\": 250.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3774,7 +3774,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Battle Lv.9\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\": 275.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3791,7 +3791,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Battle Lv.10\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 600.0,\r\n        \"m_cargoCapacity\": 300.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3808,7 +3808,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.1\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     1,\r\n        \"m_health\": 150.0,\r\n        \"m_cargoCapacity\": 75.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3825,7 +3825,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.2\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 200.0,\r\n        \"m_cargoCapacity\": 100.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3842,7 +3842,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.3\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\": 125.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3859,7 +3859,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.4\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 300.0,\r\n        \"m_cargoCapacity\": 150.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3876,7 +3876,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.5\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 350.0,\r\n        \"m_cargoCapacity\": 175.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3893,7 +3893,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.6\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\": 200.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3910,7 +3910,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.7\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 450.0,\r\n        \"m_cargoCapacity\": 225.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3927,7 +3927,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.8\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 500.0,\r\n        \"m_cargoCapacity\": 250.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3944,7 +3944,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.9\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\": 275.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3961,7 +3961,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Aircraft Lv.10\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 600.0,\r\n        \"m_cargoCapacity\": 300.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3978,7 +3978,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.1\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     1,\r\n        \"m_health\": 150.0,\r\n        \"m_cargoCapacity\": 75.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -3995,7 +3995,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.2\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 200.0,\r\n        \"m_cargoCapacity\": 100.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4012,7 +4012,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.3\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\": 125.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4029,7 +4029,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.4\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 300.0,\r\n        \"m_cargoCapacity\": 150.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4046,7 +4046,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.5\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 350.0,\r\n        \"m_cargoCapacity\": 175.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4063,7 +4063,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.6\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 400.0,\r\n        \"m_cargoCapacity\": 200.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4080,7 +4080,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.7\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 450.0,\r\n        \"m_cargoCapacity\": 225.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4097,7 +4097,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.8\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 500.0,\r\n        \"m_cargoCapacity\": 250.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4114,7 +4114,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.9\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\": 275.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4131,7 +4131,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Body_Repair Lv.10\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 600.0,\r\n        \"m_cargoCapacity\": 300.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4148,7 +4148,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      }\r\n    ],\r\n    \"2\": [\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_moduleName\": \"Engine_Standard Lv.1\",\r\n        \"m_moduleType\":
-    2,\r\n        \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n       
+    2,\r\n        \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n       
     \"m_moduleLevel\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_cargoCapacity\":
     0.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
     \"mineral\": 50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
@@ -4165,7 +4165,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Standard Lv.2\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 50.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4182,7 +4182,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Standard Lv.3\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 60.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4199,7 +4199,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Standard Lv.4\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 70.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4216,7 +4216,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Standard Lv.5\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 80.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4233,7 +4233,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Standard Lv.6\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 90.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4250,7 +4250,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Standard Lv.7\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 100.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4267,7 +4267,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Standard Lv.8\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 110.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4284,7 +4284,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Standard Lv.9\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 120.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4301,7 +4301,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Standard Lv.10\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 130.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4318,7 +4318,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.1\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     1,\r\n        \"m_health\": 40.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4335,7 +4335,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.2\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 50.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4352,7 +4352,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.3\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 60.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4369,7 +4369,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.4\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 70.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4386,7 +4386,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.5\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 80.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4403,7 +4403,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.6\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 90.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4420,7 +4420,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.7\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 100.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4437,7 +4437,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.8\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 110.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4454,7 +4454,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.9\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 120.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4471,7 +4471,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Booster Lv.10\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 130.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4488,7 +4488,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.1\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     1,\r\n        \"m_health\": 40.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4505,7 +4505,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.2\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 50.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4522,7 +4522,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.3\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 60.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4539,7 +4539,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.4\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 70.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4556,7 +4556,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.5\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 80.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4573,7 +4573,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.6\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 90.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4590,7 +4590,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.7\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 100.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4607,7 +4607,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.8\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 110.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4624,7 +4624,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.9\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 120.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4641,7 +4641,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Engine_Warp Lv.10\",\r\n        \"m_moduleType\": 2,\r\n       
-    \"m_moduleSubType\": 2003,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 2003,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 130.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4658,7 +4658,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      }\r\n    ],\r\n    \"3\": [\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_moduleName\": \"Weapon_Beam Lv.1\",\r\n        \"m_moduleType\":
-    3,\r\n        \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n       
+    3,\r\n        \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n       
     \"m_moduleLevel\": 1,\r\n        \"m_health\": 40.0,\r\n        \"m_cargoCapacity\":
     0.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
     \"mineral\": 50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
@@ -4675,7 +4675,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Beam Lv.2\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 50.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4692,7 +4692,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Beam Lv.3\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 60.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4709,7 +4709,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Beam Lv.4\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 70.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4726,7 +4726,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Beam Lv.5\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 80.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4743,7 +4743,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Beam Lv.6\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 90.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4760,7 +4760,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Beam Lv.7\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 100.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4777,7 +4777,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Beam Lv.8\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 110.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4794,7 +4794,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Beam Lv.9\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 120.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4811,7 +4811,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Beam Lv.10\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 130.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4828,7 +4828,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.1\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     1,\r\n        \"m_health\": 40.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4845,7 +4845,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.2\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 50.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4862,7 +4862,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.3\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 60.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4879,7 +4879,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.4\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 70.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4896,7 +4896,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.5\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 80.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4913,7 +4913,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.6\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 90.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4930,7 +4930,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.7\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 100.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4947,7 +4947,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.8\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 110.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4964,7 +4964,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.9\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 120.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4981,7 +4981,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Weapon_Missile Lv.10\",\r\n        \"m_moduleType\": 3,\r\n       
-    \"m_moduleSubType\": 3002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 3002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 130.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -4998,7 +4998,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      }\r\n    ],\r\n    \"4\": [\r\n      {\r\n        \"m_moduleTypePacked\":
     0,\r\n        \"m_moduleName\": \"Hanger_Standard Lv.1\",\r\n        \"m_moduleType\":
-    4,\r\n        \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n       
+    4,\r\n        \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n       
     \"m_moduleLevel\": 1,\r\n        \"m_health\": 55.0,\r\n        \"m_cargoCapacity\":
     0.0,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
     \"mineral\": 50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
@@ -5015,7 +5015,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 210.0,\r\n        \"m_aircraftAvoidanceRadius\":
     205.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Standard Lv.2\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 70.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5032,7 +5032,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 220.0,\r\n        \"m_aircraftAvoidanceRadius\":
     210.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Standard Lv.3\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 85.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5049,7 +5049,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 230.0,\r\n        \"m_aircraftAvoidanceRadius\":
     215.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Standard Lv.4\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 100.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5066,7 +5066,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 240.0,\r\n        \"m_aircraftAvoidanceRadius\":
     220.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Standard Lv.5\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 115.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5083,7 +5083,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 250.0,\r\n        \"m_aircraftAvoidanceRadius\":
     225.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Standard Lv.6\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 130.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5100,7 +5100,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 260.0,\r\n        \"m_aircraftAvoidanceRadius\":
     230.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Standard Lv.7\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 145.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5117,7 +5117,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 270.0,\r\n        \"m_aircraftAvoidanceRadius\":
     235.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Standard Lv.8\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 160.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5134,7 +5134,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 280.0,\r\n        \"m_aircraftAvoidanceRadius\":
     240.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Standard Lv.9\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 175.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5151,7 +5151,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 290.0,\r\n        \"m_aircraftAvoidanceRadius\":
     245.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Standard Lv.10\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4001,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4001,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 190.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5168,7 +5168,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 300.0,\r\n        \"m_aircraftAvoidanceRadius\":
     250.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.1\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     1,\r\n        \"m_health\": 55.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     50,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5185,7 +5185,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 210.0,\r\n        \"m_aircraftAvoidanceRadius\":
     205.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.2\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     2,\r\n        \"m_health\": 70.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5202,7 +5202,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 220.0,\r\n        \"m_aircraftAvoidanceRadius\":
     210.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.3\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     3,\r\n        \"m_health\": 85.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5219,7 +5219,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 230.0,\r\n        \"m_aircraftAvoidanceRadius\":
     215.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.4\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     4,\r\n        \"m_health\": 100.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5236,7 +5236,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 240.0,\r\n        \"m_aircraftAvoidanceRadius\":
     220.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.5\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     5,\r\n        \"m_health\": 115.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     250,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5253,7 +5253,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 250.0,\r\n        \"m_aircraftAvoidanceRadius\":
     225.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.6\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     6,\r\n        \"m_health\": 130.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     300,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5270,7 +5270,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 260.0,\r\n        \"m_aircraftAvoidanceRadius\":
     230.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.7\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     7,\r\n        \"m_health\": 145.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     350,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5287,7 +5287,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 270.0,\r\n        \"m_aircraftAvoidanceRadius\":
     235.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.8\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     8,\r\n        \"m_health\": 160.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     400,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5304,7 +5304,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 280.0,\r\n        \"m_aircraftAvoidanceRadius\":
     240.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.9\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     9,\r\n        \"m_health\": 175.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     450,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
@@ -5321,7 +5321,7 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 290.0,\r\n        \"m_aircraftAvoidanceRadius\":
     245.0\r\n      },\r\n      {\r\n        \"m_moduleTypePacked\": 0,\r\n       
     \"m_moduleName\": \"Hanger_Advanced Lv.10\",\r\n        \"m_moduleType\": 4,\r\n       
-    \"m_moduleSubType\": 4002,\r\n        \"m_moduleStyle\": 0,\r\n        \"m_moduleLevel\":
+    \"m_moduleSubType\": 4002,\r\n        \"m_moduleSlotType\": 0,\r\n        \"m_moduleLevel\":
     10,\r\n        \"m_health\": 190.0,\r\n        \"m_cargoCapacity\": 0.0,\r\n       
     \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n          \"mineral\":
     500,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n         
