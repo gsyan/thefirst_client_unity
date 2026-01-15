@@ -44,11 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 33562624
-  m_moduleType: 2
-  m_moduleSubType: 0
-  m_moduleSlotType: 32
-  m_slotIndex: 2
+  m_moduleTypePacked: 33554432
+  m_moduleSlotInfo:
+    moduleType: 2
+    moduleSubType: 0
+    moduleSlotType: 0
+    slotIndex: 2
 --- !u!1 &64444960579461125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,11 +1025,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 33562624
-  m_moduleType: 2
-  m_moduleSubType: 0
-  m_moduleSlotType: 32
-  m_slotIndex: 1
+  m_moduleTypePacked: 33554432
+  m_moduleSlotInfo:
+    moduleType: 2
+    moduleSubType: 0
+    moduleSlotType: 0
+    slotIndex: 1
 --- !u!1 &1092716740447258718
 GameObject:
   m_ObjectHideFlags: 0
@@ -2007,10 +2009,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleTypePacked: 50339328
-  m_moduleType: 3
-  m_moduleSubType: 0
-  m_moduleSlotType: 30
-  m_slotIndex: 3
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 30
+    slotIndex: 3
 --- !u!1 &2568670027936170514
 GameObject:
   m_ObjectHideFlags: 0
@@ -2595,11 +2598,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50331904
-  m_moduleType: 3
-  m_moduleSubType: 0
-  m_moduleSlotType: 1
-  m_slotIndex: 0
+  m_moduleTypePacked: 50331648
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 0
+    slotIndex: 0
 --- !u!1 &3475413584511971002
 GameObject:
   m_ObjectHideFlags: 0
@@ -3042,11 +3046,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50331904
-  m_moduleType: 3
-  m_moduleSubType: 0
-  m_moduleSlotType: 1
-  m_slotIndex: 2
+  m_moduleTypePacked: 50331648
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 0
+    slotIndex: 2
 --- !u!1 &3683003127390809299
 GameObject:
   m_ObjectHideFlags: 0
@@ -3298,10 +3303,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleTypePacked: 50339328
-  m_moduleType: 3
-  m_moduleSubType: 0
-  m_moduleSlotType: 30
-  m_slotIndex: 4
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 30
+    slotIndex: 4
 --- !u!1 &3941079547458030506
 GameObject:
   m_ObjectHideFlags: 0
@@ -3763,10 +3769,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleTypePacked: 67116544
-  m_moduleType: 4
-  m_moduleSubType: 0
-  m_moduleSlotType: 30
-  m_slotIndex: 0
+  m_moduleSlotInfo:
+    moduleType: 4
+    moduleSubType: 0
+    moduleSlotType: 30
+    slotIndex: 0
 --- !u!1 &5065918944317701448
 GameObject:
   m_ObjectHideFlags: 0
@@ -4227,11 +4234,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50331904
-  m_moduleType: 3
-  m_moduleSubType: 0
-  m_moduleSlotType: 1
-  m_slotIndex: 1
+  m_moduleTypePacked: 50331648
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 0
+    slotIndex: 1
 --- !u!1 &5676725772829899621
 GameObject:
   m_ObjectHideFlags: 0
@@ -4795,11 +4803,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 33562624
-  m_moduleType: 2
-  m_moduleSubType: 0
-  m_moduleSlotType: 32
-  m_slotIndex: 0
+  m_moduleTypePacked: 33554432
+  m_moduleSlotInfo:
+    moduleType: 2
+    moduleSubType: 0
+    moduleSlotType: 0
+    slotIndex: 0
 --- !u!1 &6010037350057386152
 GameObject:
   m_ObjectHideFlags: 0
@@ -5778,10 +5787,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleTypePacked: 50339328
-  m_moduleType: 3
-  m_moduleSubType: 0
-  m_moduleSlotType: 30
-  m_slotIndex: 5
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 30
+    slotIndex: 5
 --- !u!1 &8013673809369426631
 GameObject:
   m_ObjectHideFlags: 0

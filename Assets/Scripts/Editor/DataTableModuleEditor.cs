@@ -14,6 +14,7 @@ public class DataTableModuleEditor : Editor
     private Dictionary<EModuleSubType, bool> engineSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> weaponSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> hangerSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<ModuleData, bool> moduleSlotFoldouts = new Dictionary<ModuleData, bool>();
 
     private bool showBodyModules = false;
     private bool showEngineModules = false;
@@ -159,6 +160,22 @@ public class DataTableModuleEditor : Editor
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
         module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
+
+        // Module Slots (from prefab)
+        int slotCount = module.m_moduleSlots != null ? module.m_moduleSlots.Length : 0;
+        if (!moduleSlotFoldouts.ContainsKey(module))
+            moduleSlotFoldouts[module] = false;
+
+        moduleSlotFoldouts[module] = EditorGUILayout.Foldout(moduleSlotFoldouts[module], $"Module Slots ({slotCount})", true);
+        if (moduleSlotFoldouts[module] && module.m_moduleSlots != null)
+        {
+            EditorGUI.indentLevel++;
+            foreach (var slot in module.m_moduleSlots)
+            {
+                EditorGUILayout.LabelField($"{slot.moduleType} / {slot.moduleSubType} / {slot.moduleSlotType} / Slot:{slot.slotIndex}");
+            }
+            EditorGUI.indentLevel--;
+        }
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);

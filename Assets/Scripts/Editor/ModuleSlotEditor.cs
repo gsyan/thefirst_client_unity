@@ -5,18 +5,12 @@ using UnityEditor;
 public class ModuleSlotEditor : Editor
 {
     SerializedProperty m_moduleTypePacked;
-    SerializedProperty m_slotIndex;
-    SerializedProperty m_moduleType;
-    SerializedProperty m_moduleSubType;
-    SerializedProperty m_moduleSlotType;
+    SerializedProperty m_moduleSlotInfo;
 
     private void OnEnable()
     {
         m_moduleTypePacked = serializedObject.FindProperty("m_moduleTypePacked");
-        m_slotIndex = serializedObject.FindProperty("m_slotIndex");
-        m_moduleType = serializedObject.FindProperty("m_moduleType");
-        m_moduleSubType = serializedObject.FindProperty("m_moduleSubType");
-        m_moduleSlotType = serializedObject.FindProperty("m_moduleSlotType");
+        m_moduleSlotInfo = serializedObject.FindProperty("m_moduleSlotInfo");
     }
 
     public override void OnInspectorGUI()
@@ -29,28 +23,31 @@ public class ModuleSlotEditor : Editor
         GUI.enabled = true;
 
         EditorGUILayout.Space();
-        
+
         // Module Type
-        EditorGUILayout.PropertyField(m_moduleType);
+        var moduleTypeProp = m_moduleSlotInfo.FindPropertyRelative("moduleType");
+        EditorGUILayout.PropertyField(moduleTypeProp);
 
         // Module SubType - 타입에 따라 필터링된 SubType 표시
-        EModuleType typeValue = (EModuleType)m_moduleType.enumValueIndex;
+        EModuleType typeValue = (EModuleType)moduleTypeProp.enumValueIndex;
 
+        var moduleSubTypeProp = m_moduleSlotInfo.FindPropertyRelative("moduleSubType");
         EditorGUI.BeginChangeCheck();
-        // enumValueIndex uses ordinal position, but we need actual enum value
-        int currentEnumValue = m_moduleSubType.intValue;
+        int currentEnumValue = moduleSubTypeProp.intValue;
         EModuleSubType currentSubType = (EModuleSubType)currentEnumValue;
         EModuleSubType newSubType = DrawFilteredSubTypePopup(typeValue, currentSubType);
         if (EditorGUI.EndChangeCheck())
-            m_moduleSubType.intValue = (int)newSubType;
+            moduleSubTypeProp.intValue = (int)newSubType;
 
         // Slot Type - 비트 플래그로 다중 선택 가능
-        EModuleSlotType currentSlotType = (EModuleSlotType)m_moduleSlotType.intValue;
+        var moduleSlotTypeProp = m_moduleSlotInfo.FindPropertyRelative("moduleSlotType");
+        EModuleSlotType currentSlotType = (EModuleSlotType)moduleSlotTypeProp.intValue;
         EModuleSlotType newSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Module Slot Type", currentSlotType);
-        m_moduleSlotType.intValue = (int)newSlotType;
+        moduleSlotTypeProp.intValue = (int)newSlotType;
 
         // Module Slot Index
-        EditorGUILayout.PropertyField(m_slotIndex);
+        var slotIndexProp = m_moduleSlotInfo.FindPropertyRelative("slotIndex");
+        EditorGUILayout.PropertyField(slotIndexProp);
 
         serializedObject.ApplyModifiedProperties();
     }

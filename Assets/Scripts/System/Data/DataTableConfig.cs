@@ -5,34 +5,15 @@ using Newtonsoft.Json;
 using UnityEditor;
 #endif
 
-// [System.Serializable]
-// public struct CostStruct
-// {
-//     public int techLevel;
-//     public int mineral;
-//     public int mineralRare;
-//     public int mineralExotic;
-//     public int mineralDark;
-
-//     public CostStruct(int techLevel, int mineral, int mineralRare, int mineralExotic, int mineralDark)
-//     {
-//         this.techLevel = techLevel;
-//         this.mineral = mineral;
-//         this.mineralRare = mineralRare;
-//         this.mineralExotic = mineralExotic;
-//         this.mineralDark = mineralDark;
-//     }
-// }
-
 [System.Serializable]
 public class GameSettings
 {
     [Header("Game Settings")]
-    public string version = "0.0.1";
-    public int maxLives = 3;
+    public string m_version = "0.0.1";
+    public int m_maxLives = 3;
 
     [Header("Fleet Settings")]
-    public int maxShipsPerFleet = 8;
+    public int m_maxShipsPerFleet = 8;
 
     [Tooltip("함선 추가 시 필요한 Mineral 비용 (함선 개수별 차등 적용)")]
     // public CostStruct[] addShipCosts = new CostStruct[]
@@ -49,7 +30,7 @@ public class GameSettings
     //     new CostStruct(30, 5500, 0, 0, 0),
     //     new CostStruct(40, 8900, 0, 0, 0)
     // };
-    public CostStruct[] addShipCosts = new CostStruct[]
+    public CostStruct[] m_addShipCosts = new CostStruct[]
     {
         new CostStruct(0, 0, 0, 0, 0),
         new CostStruct(1, 100, 0, 0, 0),
@@ -71,31 +52,24 @@ public class GameSettings
         CostStruct defaultCost = new CostStruct(1, 500, 0, 0, 0);
 
         // 배열 유효성 체크
-        if (addShipCosts == null || addShipCosts.Length == 0)
+        if (m_addShipCosts == null || m_addShipCosts.Length == 0)
             return defaultCost;
 
         // 배열 범위 체크
-        if (currentShipCount < addShipCosts.Length)
-            return addShipCosts[currentShipCount];
+        if (currentShipCount < m_addShipCosts.Length)
+            return m_addShipCosts[currentShipCount];
 
         // 배열 범위를 초과하면 마지막 값 사용
-        return addShipCosts[^1];
+        return m_addShipCosts[^1];
     }
 
     [Header("Ship Module Settings")]
-    public int moduleUnlockPrice = 1000;
+    public int m_moduleUnlockPrice = 1000;
 
     [Header("Enemy Settings")]
-    public float enemyFleetSpawnInterval = 5.0f;
-    public float explorationInterval = 15.0f;
-    public float enemySpawnRate = 2.0f;
-
-    [Header("Formation Settings")]
-    public float linearFormationSpacing = 3.0f;
-    public float gridFormationSpacing = 5.0f;
-    public float circleFormationSpacing = 8.0f;
-    public float diamondFormationSpacing = 6.0f;
-    public float wedgeFormationSpacing = 3.0f;
+    public float m_enemyFleetSpawnInterval = 5.0f;
+    public float m_explorationInterval = 15.0f;
+    public float m_enemySpawnRate = 2.0f;
 }
 
 [CreateAssetMenu(fileName = "DataTableConfig", menuName = "Custom/DataTableConfig")]

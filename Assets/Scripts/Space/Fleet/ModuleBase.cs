@@ -95,7 +95,7 @@ public class ModuleBase : MonoBehaviour
     public virtual int GetSlotIndex()
     {
         if (m_moduleSlot == null) return 0;
-        return m_moduleSlot.m_slotIndex;
+        return m_moduleSlot.m_moduleSlotInfo.slotIndex;
     }
 
     // 함대 정보 설정

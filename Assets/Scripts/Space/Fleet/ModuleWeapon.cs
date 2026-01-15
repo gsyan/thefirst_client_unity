@@ -62,6 +62,7 @@ public class ModuleWeapon : ModuleBase
         switch (m_moduleInfo.ModuleSubType)
         {
             case EModuleSubType.Weapon_Beam:
+                //gameObject.transform.rotation = m_parentBody.transform.rotation;
                 for(int i=0; i< moduleData.m_attackFireCount; i++)
                 {
                     LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
@@ -137,7 +138,7 @@ public class ModuleWeapon : ModuleBase
         
         if (m_health <= 0)
         {
-            Debug.Log($"[{GetFleetName()}] ModuleWeapon[Body{m_moduleInfo.bodyIndex}-Slot{m_moduleSlot.m_slotIndex}] destroyed!");
+            Debug.Log($"[{GetFleetName()}] ModuleWeapon[Body{m_moduleInfo.bodyIndex}-Slot{m_moduleSlot.m_moduleSlotInfo.slotIndex}] destroyed!");
             
             // 부모 바디에서 이 무기 제거
             if (m_parentBody != null)

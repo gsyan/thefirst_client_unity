@@ -158,7 +158,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
     }
     private void MakeAddShipButtonItem()
     {
-        if(m_myFleet.m_ships.Count >= DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet)
+        if(m_myFleet.m_ships.Count >= DataManager.Instance.m_dataTableConfig.gameSettings.m_maxShipsPerFleet)
             return;
         // 새로운 Add 버튼 생성
         m_addButtonItem = Instantiate(m_scrollViewShipItemAdd, m_scrollViewShipsContent);
@@ -259,7 +259,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
                 character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
                 character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
                 character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
-                DataManager.Instance.SetCharacterData(character.m_characterInfo);
+                DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
 
                 if (response.data.updatedFleetInfo != null)
                     DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
@@ -289,7 +289,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         if (character.m_ownedFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;
         int currentShipCount = character.m_ownedFleet.m_ships.Count;
-        if (currentShipCount >= gameSettings.maxShipsPerFleet) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
+        if (currentShipCount >= gameSettings.m_maxShipsPerFleet) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
         CostStruct cost = gameSettings.GetAddShipCost(currentShipCount);
         // tech 레벨 체크

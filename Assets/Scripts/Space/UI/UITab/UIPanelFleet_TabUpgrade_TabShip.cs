@@ -117,9 +117,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     private void UpdateUIFrame()
     {
         if (bShow != true) return;
-
-        int moduleTypePacked = m_selectedModule.GetModuleTypePacked();
-        if( moduleTypePacked == 0)
+        
+        if( m_selectedModule is ModulePlaceholder)
         {
             m_unlockModuleButton.gameObject.SetActive(true);
 
@@ -182,7 +181,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
 
         // 해금 비용 확인
-        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
+        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.m_moduleUnlockPrice;
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null)
         {
@@ -202,9 +201,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         {
             shipId = m_selectedShip.m_shipInfo.id,
             bodyIndex = m_selectedModule.GetModuleBodyIndex(),
-            moduleType = m_selectedModule.m_moduleSlot.m_moduleType,
-            moduleSubType = m_selectedModule.m_moduleSlot.m_moduleSubType,
-            slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex
+            moduleTypePacked = m_selectedModule.GetModuleTypePacked(),
+            slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex
         };
 
         // 서버에 모듈 해금 요청 전송
@@ -215,66 +213,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     {
         if (response.errorCode == 0)
         {
-            Character character = DataManager.Instance.m_currentCharacter;
-            if (character == null) return;
-
-            // 자원 업데이트
-            if (response.data.costRemainInfo == null) return;
-            character.UpdateMineral(response.data.costRemainInfo.remainMineral);
-            character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
-            character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
-            character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
-
-            var characterInfo = character.GetInfo();
-            DataManager.Instance.SetCharacterData(characterInfo);
-
-            // 응답 데이터로부터 업데이트할 함선 찾기
-            if (response.data.updatedShipInfo == null)
-            {
-                Debug.LogError("updatedShipInfo is null");
-                ShowResultMessage("Module unlock failed: Invalid server response", 3f);
-                return;
-            }
-
-            // Character -> SpaceFleet -> SpaceShip 경로로 업데이트할 함선 찾기
-            SpaceFleet fleet = character.GetOwnedFleet();
-            if (fleet == null)
-            {
-                Debug.LogError("Owned fleet is null");
-                return;
-            }
-
-            // updatedShipInfo의 id로 함선 찾기
-            SpaceShip targetShip = null;
-            foreach (SpaceShip ship in fleet.m_ships)
-            {
-                if (ship != null && ship.m_shipInfo.id == response.data.updatedShipInfo.id)
-                {
-                    targetShip = ship;
-                    break;
-                }
-            }
-
-            if (targetShip == null)
-            {
-                Debug.LogError($"Ship with id {response.data.updatedShipInfo.id} not found in fleet");
-                return;
-            }
-
-            // unlock 의 대상은 body 를 제외한 ship module
-            int moduleTypePacked = m_selectedModule.m_moduleSlot.m_moduleTypePacked;
-            int  bodyIndex = m_selectedModule.GetModuleBodyIndex();
-            int slotIndex = m_selectedModule.m_moduleSlot?.m_slotIndex ?? -1;
-
-            // 함선 정보 업데이트
-            targetShip.UpdateShipFromServerResponse(response.data.updatedShipInfo);
-            // 성공 메시지 표시
-            ShowResultMessage("Module unlock successful!", 3f);
-
-            // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
-            if (m_selectedShip == null || m_selectedShip.m_shipInfo.id != response.data.updatedShipInfo.id) return;
-            // 새로 생성된 모듈을 다시 선택
-            ReselectReplacedModule(targetShip, bodyIndex, slotIndex, moduleTypePacked);
+            UpdateModuleAfterUnlock(response.data);
         }
         else
         {
@@ -282,6 +221,40 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
             ShowResultMessage($"Module unlock failed: {errorMessage}", 3f);
         }
+    }
+
+    private void UpdateModuleAfterUnlock(ModuleUnlockResponse unlockData)
+    {
+        if (unlockData == null) return;
+
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        // 자원 업데이트
+        if (unlockData.costRemainInfo != null)
+        {
+            character.UpdateMineral(unlockData.costRemainInfo.remainMineral);
+            character.UpdateMineralRare(unlockData.costRemainInfo.remainMineralRare);
+            character.UpdateMineralExotic(unlockData.costRemainInfo.remainMineralExotic);
+            character.UpdateMineralDark(unlockData.costRemainInfo.remainMineralDark);
+            DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
+        }
+
+        // 함선 찾기
+        SpaceFleet fleet = character.GetOwnedFleet();
+        if (fleet == null) return;
+        SpaceShip targetShip = fleet.FindShip(unlockData.shipId);
+        if (targetShip == null) return;
+
+        // 모듈 해금 처리
+        targetShip.UnlockModule(unlockData.bodyIndex, unlockData.moduleTypePacked, unlockData.slotIndex);
+
+        // 성공 메시지 표시
+        ShowResultMessage("Module unlock successful!", 3f);
+
+        // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
+            ReselectReplacedModule(targetShip, unlockData.bodyIndex, unlockData.slotIndex, unlockData.moduleTypePacked);
     }
 
     private void UpgradeModule()
@@ -405,12 +378,11 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         {
             if (response.data.costRemainInfo != null)
             {
-                var characterInfo = DataManager.Instance.m_currentCharacter.GetInfo();
                 character.UpdateMineral(response.data.costRemainInfo.remainMineral);
                 character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
                 character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
                 character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
-                DataManager.Instance.SetCharacterData(characterInfo);
+                DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
             }
 
             // Update local data - shipId, bodyIndex, moduleTypePacked, slotIndex로 특정 모듈 찾아서 업데이트
@@ -469,7 +441,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         // 선택된 모듈의 슬롯 타입 가져오기
         EModuleSlotType targetSlotType = EModuleSlotType.All;
         if (m_selectedModule.m_moduleSlot != null)
-            targetSlotType = m_selectedModule.m_moduleSlot.m_moduleSlotType;
+            targetSlotType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleSlotType;
 
         // 기존 아이템 모두 제거
         m_moduleItems.Clear();
@@ -554,7 +526,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
         int slotIndex = 0;
         if( EModuleType.Body != m_selectedModule.GetModuleType())
-            slotIndex = m_selectedModule.m_moduleSlot.m_slotIndex;
+            slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
 
         // 모듈 교체 요청 생성
         var changeRequest = new ModuleChangeRequest
@@ -657,7 +629,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         else
         {
             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            Debug.LogError($"Module change failed: {errorMessage}");
+            Debug.Log($"Module change failed: {errorMessage}");
             ShowResultMessage($"Module change failed: {errorMessage}", 3f);
         }
     }

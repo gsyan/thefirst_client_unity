@@ -526,29 +526,21 @@ public class SpaceShip : MonoBehaviour
         switch (formationType)
         {
             case EFormationType.LinearHorizontal:
-                float linearHSpacing = spacing > 0f ? spacing : (gameSettings?.linearFormationSpacing ?? 2f);
-                return CalculateLinearHorizontalPosition(positionIndex, linearHSpacing + sizeAdjustment);
+                return CalculateLinearHorizontalPosition(positionIndex, spacing + sizeAdjustment);
             case EFormationType.LinearVertical:
-                float linearVSpacing = spacing > 0f ? spacing : (gameSettings?.linearFormationSpacing ?? 2f);
-                return CalculateLinearVerticalPosition(positionIndex, linearVSpacing + sizeAdjustment);
+                return CalculateLinearVerticalPosition(positionIndex, spacing + sizeAdjustment);
             case EFormationType.LinearDepth:
-                float linearDSpacing = spacing > 0f ? spacing : (gameSettings?.linearFormationSpacing ?? 2f);
-                return CalculateLinearDepthPosition(positionIndex, linearDSpacing + sizeAdjustment);
+                return CalculateLinearDepthPosition(positionIndex, spacing + sizeAdjustment);
             case EFormationType.Grid:
-                float gridSpacing = spacing > 0f ? spacing : (gameSettings?.gridFormationSpacing ?? 5f);
-                return CalculateGridPosition(positionIndex, gridSpacing + sizeAdjustment);
+                return CalculateGridPosition(positionIndex, spacing + sizeAdjustment);
             case EFormationType.Circle:
-                float circleSpacing = spacing > 0f ? spacing : gameSettings?.circleFormationSpacing ?? 8f;
-                return CalculateCirclePosition(positionIndex, circleSpacing + sizeAdjustment);
+                return CalculateCirclePosition(positionIndex, spacing + sizeAdjustment);
             case EFormationType.Cross:
-                float crossSpacing = spacing > 0f ? spacing : (gameSettings?.diamondFormationSpacing ?? 6f);
-                return CalculateCrossPosition(positionIndex, crossSpacing + sizeAdjustment);
+                return CalculateCrossPosition(positionIndex, spacing + sizeAdjustment);
             case EFormationType.X:
-                float xSpacing = spacing > 0f ? spacing : (gameSettings?.wedgeFormationSpacing ?? 7f);
-                return CalculateXPosition(positionIndex, xSpacing + sizeAdjustment);
+                return CalculateXPosition(positionIndex, spacing + sizeAdjustment);
             default:
-                float defaultSpacing = spacing > 0f ? spacing : (gameSettings?.linearFormationSpacing ?? 2f);
-                return CalculateLinearHorizontalPosition(positionIndex, defaultSpacing + sizeAdjustment);
+                return CalculateLinearHorizontalPosition(positionIndex, spacing + sizeAdjustment);
         }
     }
 
@@ -902,7 +894,6 @@ public class SpaceShip : MonoBehaviour
         // 모듈 selectedModuleVisual 갱신 (새로 생성된 모듈들을 포함하도록)
         RefreshSelectedModuleVisuals();
     }
-
     private void UpdateModulesFromInfo(ModuleBody body, ModuleInfo[] moduleInfos)
     {
         foreach (ModuleInfo moduleInfo in moduleInfos)
@@ -933,7 +924,42 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
-    // Body 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
+
+    // module unlock (외부 호출용 - 모듈 해금 UI에서 사용)
+    public void UnlockModule(int bodyIndex, int moduleTypePacked, int slotIndex)
+    {
+        ModuleBody body = FindModuleBodyByIndex(bodyIndex);
+        if (body == null)
+        {
+            Debug.LogError($"Body not found: shipId={m_shipInfo.id}, bodyIndex={bodyIndex}");
+            return;
+        }
+
+        EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
+        int moduleLevel = 1; // 해금 시 기본 레벨 1
+
+        // 슬롯에서 placeholder를 실제 모듈로 교체
+        bool success = body.ReplaceModuleInSlot(slotIndex, moduleTypePacked, moduleType, moduleLevel);
+        if (!success)
+        {
+            Debug.LogError($"Failed to unlock module: moduleTypePacked={moduleTypePacked}, slotIndex={slotIndex}");
+            return;
+        }
+
+        // 함선 스탯 업데이트
+        UpdateShipStats();
+
+        // Outline 갱신 (새로 생성된 모듈들을 포함하도록)
+        if (m_shipOutline != null)
+            m_shipOutline.RefreshOutline();
+
+        // 모듈 selectedModuleVisual 갱신 (새로 생성된 모듈들을 포함하도록)
+        RefreshSelectedModuleVisuals();
+
+        Debug.Log($"Module unlocked: Ship={m_shipInfo.id}, Body={bodyIndex}, Slot={slotIndex}, Type={moduleTypePacked}");
+    }
+
+    // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
     public void ChangeModule(int bodyIndex, int oldModuleTypePacked, int newModuleTypePacked, int slotIndex)
     {
         EModuleType moduleType = CommonUtility.GetModuleType(newModuleTypePacked);
@@ -987,7 +1013,6 @@ public class SpaceShip : MonoBehaviour
 
         ReplaceBodyWhilePreservingModules(oldBody, newBodyInfo);
     }
-
     // Body 교체 시 기존 모듈을 보존하는 메서드
     private void ReplaceBodyWhilePreservingModules(ModuleBody oldBody, ModuleBodyInfo newBodyInfo)
     {
@@ -1013,6 +1038,9 @@ public class SpaceShip : MonoBehaviour
         // 3. 새 body 생성 (저장된 모듈 재배치)
         InitSpaceShipBody(newBodyInfo, savedModules);
     }
+
+
+
 
     private void OnDrawGizmos()
     {

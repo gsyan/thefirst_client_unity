@@ -133,7 +133,7 @@ public class ModuleBody : ModuleBase
         foreach (var module in savedModules)
         {
             int moduleTypePacked = module.GetModuleTypePacked();
-            int oldSlotIndex = module.m_moduleSlot != null ? module.m_moduleSlot.m_slotIndex : 0;
+            int oldSlotIndex = module.m_moduleSlot != null ? module.m_moduleSlot.m_moduleSlotInfo.slotIndex : 0;
 
             // 새 body에서 같은 타입과 인덱스의 슬롯 찾기
             ModuleSlot targetSlot = FindModuleSlot(moduleTypePacked, oldSlotIndex);
@@ -317,7 +317,7 @@ public class ModuleBody : ModuleBase
             int typeComparison = slot1.m_moduleTypePacked.CompareTo(slot2.m_moduleTypePacked);
             if (typeComparison != 0)
                 return typeComparison;
-            return slot1.m_slotIndex.CompareTo(slot2.m_slotIndex);
+            return slot1.m_moduleSlotInfo.slotIndex.CompareTo(slot2.m_moduleSlotInfo.slotIndex);
         });
 
     }
@@ -327,7 +327,7 @@ public class ModuleBody : ModuleBase
         GameObject placeholderPrefab = ObjectManager.Instance.LoadModulePlaceholderPrefab();
         if (placeholderPrefab == null)
         {
-            Debug.LogWarning("ModulePlaceholder prefab not found. Skipping empty slot filling.");
+            Debug.LogError("ModulePlaceholder prefab not found. Skipping empty slot filling.");
             return;
         }
 
@@ -346,7 +346,7 @@ public class ModuleBody : ModuleBase
             if (modulePlaceholder == null)
                 modulePlaceholder = placeholderObj.AddComponent<ModulePlaceholder>();
 
-            modulePlaceholder.InitializeModulePlaceholder(slot);
+            modulePlaceholder.InitializeModulePlaceholder(this, slot);
         }
     }
 
@@ -408,8 +408,8 @@ public class ModuleBody : ModuleBase
 
         return m_moduleSlots.FirstOrDefault(slot =>
             CommonUtility.CompareModuleTypeForSlot(slot.m_moduleTypePacked, moduleTypePacked)
-            && slot.m_slotIndex == slotIndex
-            && CommonUtility.CanAttachToSlot(moduleSlotType, slot.m_moduleSlotType));
+            && slot.m_moduleSlotInfo.slotIndex == slotIndex
+            && CommonUtility.CanAttachToSlot(moduleSlotType, slot.m_moduleSlotInfo.moduleSlotType));
     }
 
     // moduleTypePacked와 slotIndex로 특정 모듈 찾기
@@ -432,7 +432,7 @@ public class ModuleBody : ModuleBase
         return m_moduleSlots.FirstOrDefault(slot =>
             CommonUtility.CompareModuleTypeForSlot(slot.m_moduleTypePacked, moduleTypePacked)
             && slot.transform.childCount == 0
-            && CommonUtility.CanAttachToSlot(moduleSlotType, slot.m_moduleSlotType));
+            && CommonUtility.CanAttachToSlot(moduleSlotType, slot.m_moduleSlotInfo.moduleSlotType));
     }
 
     public void SetTarget(ModuleBody target)
@@ -626,7 +626,7 @@ public class ModuleBody : ModuleBase
         {
             moduleTypePacked = moduleTypePacked,
             moduleLevel = moduleLevel,
-            slotIndex = targetSlot.m_slotIndex
+            slotIndex = targetSlot.m_moduleSlotInfo.slotIndex
         };
 
         // 타입별 컴포넌트 추가 및 초기화
