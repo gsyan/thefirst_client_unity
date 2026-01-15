@@ -116,13 +116,15 @@ public class ProjectileBeam : ProjectileBase
                 m_beamHeadPos = m_beamTailPos + m_direction * m_toalBeamLength;
             }
 
-            RaycastHit hit;
+
             float checkDistance = Vector3.Distance(m_beamHeadPos, m_beamTailPos);
+            // RaycastHit? validHit = GetValidRaycastHit(m_beamTailPos, m_direction, checkDistance);
+            // if (validHit.HasValue)
+            // {
+            //     RaycastHit hit = validHit.Value;
+            RaycastHit hit;            
             if (Physics.Raycast(m_beamTailPos, m_direction, out hit, checkDistance))
             {
-                // SpaceShip hitTarget = hit.collider.GetComponent<SpaceShip>();
-                // if (hitTarget == null)
-                //     hitTarget = hit.collider.GetComponentInParent<SpaceShip>();
                 SpaceShip hitTarget = hit.collider.GetComponentInParent<SpaceShip>();
                 if (hitTarget != null && m_sourceShip != null)
                 {
@@ -183,6 +185,41 @@ public class ProjectileBeam : ProjectileBase
 
             yield return null;
         }
+    }
+
+    // source 모듈(발사한 무기)의 콜라이더를 제외한 유효한 RaycastHit 반환
+    private static readonly RaycastHit[] s_raycastHitBuffer = new RaycastHit[16];
+    private RaycastHit? GetValidRaycastHit(Vector3 origin, Vector3 direction, float distance)
+    {
+        int hitCount = Physics.RaycastNonAlloc(origin, direction, s_raycastHitBuffer, distance);
+        if (hitCount == 0) return null;
+
+        // 거리순 정렬
+        System.Array.Sort(s_raycastHitBuffer, 0, hitCount, s_raycastHitComparer);
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            RaycastHit hit = s_raycastHitBuffer[i];
+
+            // source 모듈 자신의 콜라이더인지 확인
+            if (m_sourceModuleBase != null)
+            {
+                // hit된 오브젝트가 source 모듈의 자식인지 확인
+                if (hit.collider.transform.IsChildOf(m_sourceModuleBase.transform))
+                    continue;
+            }
+
+            // 유효한 hit 발견
+            return hit;
+        }
+
+        return null;
+    }
+
+    private static readonly RaycastHitDistanceComparer s_raycastHitComparer = new RaycastHitDistanceComparer();
+    private class RaycastHitDistanceComparer : System.Collections.Generic.IComparer<RaycastHit>
+    {
+        public int Compare(RaycastHit a, RaycastHit b) => a.distance.CompareTo(b.distance);
     }
 
     private void ReturnToPool()

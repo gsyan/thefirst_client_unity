@@ -72,6 +72,25 @@ public class ModuleInfo
     public EModuleSlotType ModuleSlotType => CommonUtility.GetModuleSlotType(moduleTypePacked);
 }
 
+// Body 프리팹의 ModuleSlot 정보를 저장하는 클래스
+[System.Serializable]
+public class ModuleSlotInfo
+{
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
+    public EModuleSlotType moduleSlotType;
+    public int slotIndex;
+
+    public ModuleSlotInfo() { }
+    public ModuleSlotInfo(EModuleType moduleType, EModuleSubType moduleSubType, EModuleSlotType moduleSlotType, int slotIndex)
+    {
+        this.moduleType = moduleType;
+        this.moduleSubType = moduleSubType;
+        this.moduleSlotType = moduleSlotType;
+        this.slotIndex = slotIndex;
+    }
+}
+
 [System.Serializable]
 public class CostStruct
 {
@@ -249,15 +268,17 @@ public class ModuleUnlockRequest
 {
     public long shipId;
     public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
+    public int moduleTypePacked;
     public int slotIndex;
 }
 
 [System.Serializable]
 public class ModuleUnlockResponse
 {
-    public ShipInfo updatedShipInfo;
+    public long shipId;
+    public int bodyIndex;
+    public int moduleTypePacked;
+    public int slotIndex;
     public CostRemainInfo costRemainInfo;
 }
 

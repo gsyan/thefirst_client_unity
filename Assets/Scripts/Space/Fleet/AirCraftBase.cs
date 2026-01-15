@@ -56,7 +56,7 @@ public abstract class AircraftBase : MonoBehaviour
             m_carrierShip = moduleHanger.GetSpaceShip();
             if (moduleHanger.m_moduleSlot != null)
             {
-                m_hangerSlotIndex = moduleHanger.m_moduleSlot.m_slotIndex;
+                m_hangerSlotIndex = moduleHanger.m_moduleSlot.m_moduleSlotInfo.slotIndex;
                 m_hangerModuleTypePacked = moduleHanger.m_moduleSlot.m_moduleTypePacked;
             }
         }

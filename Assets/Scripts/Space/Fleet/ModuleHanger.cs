@@ -257,7 +257,7 @@ public class ModuleHanger : ModuleBase
 
         if (m_health <= 0)
         {
-            Debug.Log($"[{GetFleetName()}] ModuleHanger[Body{m_moduleInfo.bodyIndex}-Slot{m_moduleSlot.m_slotIndex}] destroyed!");
+            Debug.Log($"[{GetFleetName()}] ModuleHanger[Body{m_moduleInfo.bodyIndex}-Slot{m_moduleSlot.m_moduleSlotInfo.slotIndex}] destroyed!");
 
             if (m_parentBody != null)
                 m_parentBody.RemoveHanger(this);

@@ -267,7 +267,7 @@ public class UIMain : UIManager
                     // Save character information to DataManager
                     if (response.data.characterInfo != null)
                     {
-                        DataManager.Instance.SetCharacterData(response.data.characterInfo);
+                        DataManager.Instance.SetCharacterInfo(response.data.characterInfo);
 
                         // Set researched modules to Character
                         if (response.data.researchedModuleTypePackeds != null)

@@ -1595,11 +1595,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50470400
-  m_moduleType: 3
-  m_moduleSubType: 3002
-  m_moduleSlotType: 30
-  m_slotIndex: 2
+  m_moduleTypePacked: 50339328
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 30
+    slotIndex: 2
 --- !u!1 &2611978524852029812
 GameObject:
   m_ObjectHideFlags: 0
@@ -2074,11 +2075,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50397440
-  m_moduleType: 3
-  m_moduleSubType: 3001
-  m_moduleSlotType: 1
-  m_slotIndex: 0
+  m_moduleTypePacked: 50331648
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 0
+    slotIndex: 0
 --- !u!1 &3535879074326055736
 GameObject:
   m_ObjectHideFlags: 0
@@ -3654,11 +3656,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50397440
-  m_moduleType: 3
-  m_moduleSubType: 3001
-  m_moduleSlotType: 1
-  m_slotIndex: 1
+  m_moduleTypePacked: 50331648
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 0
+    slotIndex: 1
 --- !u!1 &5277126229279383619
 GameObject:
   m_ObjectHideFlags: 0
@@ -4123,11 +4126,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 33562624
-  m_moduleType: 2
-  m_moduleSubType: 0
-  m_moduleSlotType: 32
-  m_slotIndex: 0
+  m_moduleTypePacked: 33554432
+  m_moduleSlotInfo:
+    moduleType: 2
+    moduleSubType: 0
+    moduleSlotType: 0
+    slotIndex: 0
 --- !u!1 &5974891156665351536
 GameObject:
   m_ObjectHideFlags: 0
@@ -4386,11 +4390,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50470400
-  m_moduleType: 3
-  m_moduleSubType: 3002
-  m_moduleSlotType: 30
-  m_slotIndex: 3
+  m_moduleTypePacked: 50339328
+  m_moduleSlotInfo:
+    moduleType: 3
+    moduleSubType: 0
+    moduleSlotType: 30
+    slotIndex: 3
 --- !u!1 &7303000482564616845
 GameObject:
   m_ObjectHideFlags: 0
@@ -4436,10 +4441,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleTypePacked: 67116544
-  m_moduleType: 4
-  m_moduleSubType: 0
-  m_moduleSlotType: 30
-  m_slotIndex: 1
+  m_moduleSlotInfo:
+    moduleType: 4
+    moduleSubType: 0
+    moduleSlotType: 30
+    slotIndex: 1
 --- !u!1 &7401861825076032492
 GameObject:
   m_ObjectHideFlags: 0
@@ -4798,10 +4804,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleTypePacked: 67116544
-  m_moduleType: 4
-  m_moduleSubType: 0
-  m_moduleSlotType: 30
-  m_slotIndex: 0
+  m_moduleSlotInfo:
+    moduleType: 4
+    moduleSubType: 0
+    moduleSlotType: 30
+    slotIndex: 0
 --- !u!1 &8121957284378149956
 GameObject:
   m_ObjectHideFlags: 0

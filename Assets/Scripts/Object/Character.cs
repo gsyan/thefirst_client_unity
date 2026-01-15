@@ -52,11 +52,11 @@ public class Character
     public void UpdateCharacterInfo(CharacterInfo characterInfo)
     {
         m_characterInfo = characterInfo;
-        EventManager.TriggerTechLevelChange(m_characterInfo.techLevel);
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
-        EventManager.TriggerMineralRareChange(m_characterInfo.mineralRare);
-        EventManager.TriggerMineralExoticChange(m_characterInfo.mineralExotic);
-        EventManager.TriggerMineralDarkChange(m_characterInfo.mineralDark);
+        // EventManager.TriggerTechLevelChange(m_characterInfo.techLevel);
+        // EventManager.TriggerMineralChange(m_characterInfo.mineral);
+        // EventManager.TriggerMineralRareChange(m_characterInfo.mineralRare);
+        // EventManager.TriggerMineralExoticChange(m_characterInfo.mineralExotic);
+        // EventManager.TriggerMineralDarkChange(m_characterInfo.mineralDark);
     }
 
     public void UpdateTechLevel(int techLevel)

@@ -27,6 +27,10 @@ public class ModuleData
     }
 #endif
 
+    // Body Module Slots (extracted from prefab) ---------------------------------------
+    [Header("Body Slot Info")]
+    public ModuleSlotInfo[] m_moduleSlots;
+
     // common ---------------------------------------------------------------------------
     [Header("Body Stats")]
     [Range(1, 1000)]
@@ -350,6 +354,33 @@ public class DataTableModule : ScriptableObject
 
     #region Validation & Utility
 
+#if UNITY_EDITOR
+    private ModuleSlotInfo[] ExtractModuleSlotsFromPrefab(EModuleSubType subType, int level)
+    {
+        string prefabPath = $"Prefabs/ShipModule/Body/{subType}_{level}";
+        GameObject prefab = Resources.Load<GameObject>(prefabPath);
+        if (prefab == null) return null;
+        
+        ModuleSlot[] slots = prefab.GetComponentsInChildren<ModuleSlot>(true);
+        if (slots == null || slots.Length == 0) return null;
+        
+        var slotInfos = new List<ModuleSlotInfo>();
+        foreach (var slot in slots)
+        {
+            var info = new ModuleSlotInfo(
+                slot.m_moduleSlotInfo.moduleType,
+                slot.m_moduleSlotInfo.moduleSubType,
+                slot.m_moduleSlotInfo.moduleSlotType,
+                slot.m_moduleSlotInfo.slotIndex
+            );
+            slotInfos.Add(info);
+        }
+
+        Debug.Log($"Extracted {slotInfos.Count} ModuleSlots from {prefabPath}");
+        return slotInfos.ToArray();
+    }
+#endif
+
     public bool ValidateData()
     {
         bool isValid = true;
@@ -375,6 +406,7 @@ public class DataTableModule : ScriptableObject
         return isValid;
     }
 
+#if UNITY_EDITOR
     public void GenerateLevel1to10Data()
     {
         bodyGroups.Clear();
@@ -391,6 +423,9 @@ public class DataTableModule : ScriptableObject
             {
                 for (int i = 1; i <= 10; i++)
                 {
+                    // Extract slot info from Body prefab for each level
+                    ModuleSlotInfo[] slotInfos = ExtractModuleSlotsFromPrefab(subType, i);
+
                     var module = new ModuleData
                     {
                         m_moduleName = $"{subType} Lv.{i}",
@@ -398,6 +433,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleSubType = subType,
                         m_moduleSlotType = EModuleSlotType.All,
                         m_moduleLevel = i,
+                        m_moduleSlots = slotInfos,
                         m_health = 100f + (i * 50f),
                         m_cargoCapacity = 50f + (i * 25f),
                         //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
@@ -405,7 +441,7 @@ public class DataTableModule : ScriptableObject
                         m_description = $"{subType}-class hull module level {i}"
                     };
                     AddModuleDataToTable(module);
-                }    
+                }
             }
             else if( moduleType == EModuleType.Engine)
             {
@@ -429,6 +465,10 @@ public class DataTableModule : ScriptableObject
             }
             else if( moduleType == EModuleType.Weapon)
             {
+                // subType 에 따른 분기
+                EModuleSlotType tempSlotType = EModuleSlotType.All;
+                if (subType == EModuleSubType.Weapon_Beam)  tempSlotType =  EModuleSlotType.Head;
+
                 for (int i = 1; i <= 10; i++)
                 {
                     var module = new ModuleData
@@ -436,7 +476,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleSlotType = EModuleSlotType.All,
+                        m_moduleSlotType = tempSlotType,
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
                         m_attackFireCount = 1 + (i / 5),
@@ -461,7 +501,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleSlotType = EModuleSlotType.All,
+                        m_moduleSlotType = EModuleSlotType.Top | EModuleSlotType.Bottom | EModuleSlotType.Left | EModuleSlotType.Right,
                         m_moduleLevel = i,
                         m_health = 40f + (i * 15f),
                         m_hangarCapability = 2 + (i * 3),
@@ -488,10 +528,9 @@ public class DataTableModule : ScriptableObject
             }
         }
 
-#if UNITY_EDITOR
         EditorUtility.SetDirty(this);
-#endif
     }
+#endif
 
     #endregion
 

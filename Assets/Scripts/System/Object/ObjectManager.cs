@@ -86,7 +86,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
     {
-        DataManager.Instance.RestoreCurrentCharacterData();
+        DataManager.Instance.RestoreCurrentCharacterInfo();
         DataManager.Instance.RestoreCurrentFleetInfo();
 
         SpawnFleet();
@@ -129,7 +129,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         {
             if (!m_isFirstEnemySpawned)
             {
-                yield return new WaitForSeconds(DataManager.Instance.m_dataTableConfig.gameSettings.enemyFleetSpawnInterval);
+                yield return new WaitForSeconds(DataManager.Instance.m_dataTableConfig.gameSettings.m_enemyFleetSpawnInterval);
                 if (m_enemyFleets.Count == 0)
                 {
                     SpawnEnemyFleetFromData();
@@ -138,7 +138,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             }
             else
             {
-                if (m_enemyFleets.Count == 0 && Time.time - m_lastEnemyDestroyTime >= DataManager.Instance.m_dataTableConfig.gameSettings.enemyFleetSpawnInterval)
+                if (m_enemyFleets.Count == 0 && Time.time - m_lastEnemyDestroyTime >= DataManager.Instance.m_dataTableConfig.gameSettings.m_enemyFleetSpawnInterval)
                 {
                     SpawnEnemyFleetFromData();
                 }
@@ -362,7 +362,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         while (true)
         {
-            yield return new WaitForSeconds(DataManager.Instance.m_dataTableConfig.gameSettings.explorationInterval);
+            yield return new WaitForSeconds(DataManager.Instance.m_dataTableConfig.gameSettings.m_explorationInterval);
             
             // Dynamic space resource prefab loading
             GameObject mineralPrefab = LoadSpaceResourcePrefab("", "Mineral");
@@ -447,9 +447,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         var character = DataManager.Instance.m_currentCharacter;
         if (character != null)
         {
-            var newData = character.GetInfo();
-            newData.mineral += mineralAmount;
-            DataManager.Instance.SetCharacterData(newData);
+            character.UpdateMineral(character.m_characterInfo.mineral + mineralAmount);
+            DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
         }
 
         m_mineralList.Remove(mineral);

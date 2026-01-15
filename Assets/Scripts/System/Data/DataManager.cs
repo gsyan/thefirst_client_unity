@@ -11,7 +11,7 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableModule();
         LoadDataTableModuleResearch();
         LoadDataTableConfig();
-        LoadCharacterDataFromPlayerPrefs();
+        LoadCharacterInfoFromPlayerPrefs();
         LoadFleetDataFromPlayerPrefs();
     }
 
@@ -20,30 +20,30 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableModule();
         LoadDataTableModuleResearch();
         LoadDataTableConfig();
-        LoadCharacterDataFromPlayerPrefs();
+        LoadCharacterInfoFromPlayerPrefs();
         LoadFleetDataFromPlayerPrefs();
     }
     #endregion
 
-    #region Character Data Management ###########################################################
+    #region Character Info Management ###########################################################
     private const string CHARACTER_DATA_KEY = "CurrentCharacterData";
     public Character m_currentCharacter;
 
-    public void SetCharacterData(CharacterInfo characterInfo)
+    public void SetCharacterInfo(CharacterInfo characterInfo)
     {
         if (m_currentCharacter == null)
             m_currentCharacter = new Character(characterInfo);
         
         m_currentCharacter.UpdateCharacterInfo(characterInfo);
 
-        SaveCharacterDataToPlayerPrefs();
+        SaveCharacterInfoToPlayerPrefs();
     }
 
-    public void RestoreCurrentCharacterData()
+    public void RestoreCurrentCharacterInfo()
     {
         if (m_currentCharacter == null)
         {
-            LoadCharacterDataFromPlayerPrefs();
+            LoadCharacterInfoFromPlayerPrefs();
             if (m_currentCharacter == null)
             {
                 var defaultCharacterInfo = new CharacterInfo
@@ -56,12 +56,12 @@ public class DataManager : Singleton<DataManager>
                     , mineralDark = 0                                        
                 };
                 m_currentCharacter = new Character(defaultCharacterInfo);
-                SaveCharacterDataToPlayerPrefs();
+                SaveCharacterInfoToPlayerPrefs();
             }
         }
     }
 
-    private void SaveCharacterDataToPlayerPrefs()
+    public void SaveCharacterInfoToPlayerPrefs()
     {
         if (m_currentCharacter != null)
         {
@@ -76,7 +76,7 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    public void LoadCharacterDataFromPlayerPrefs()
+    public void LoadCharacterInfoFromPlayerPrefs()
     {
         if (PlayerPrefs.HasKey(CHARACTER_DATA_KEY))
         {
@@ -103,14 +103,14 @@ public class DataManager : Singleton<DataManager>
     }
     #endregion
 
-    #region Fleet Data Management ###############################################################
+    #region Fleet Info Management ###############################################################
     private const string FLEET_DATA_KEY = "CurrentFleetData";
     public FleetInfo m_currentFleetInfo;
 
     public void SetFleetData(FleetInfo fleetInfo)
     {
         m_currentFleetInfo = fleetInfo;
-        SaveFleetDataToPlayerPrefs();
+        SaveFleetInfoToPlayerPrefs();
     }
 
     public void RestoreCurrentFleetInfo()
@@ -156,10 +156,10 @@ public class DataManager : Singleton<DataManager>
             }
         };
         m_currentFleetInfo = defaultFleetInfo;
-        SaveFleetDataToPlayerPrefs();
+        SaveFleetInfoToPlayerPrefs();
     }
 
-    private void SaveFleetDataToPlayerPrefs()
+    private void SaveFleetInfoToPlayerPrefs()
     {
         if (m_currentFleetInfo != null)
         {
@@ -246,7 +246,7 @@ public class DataManager : Singleton<DataManager>
 
     public string GetGameVersion()
     {
-        return m_dataTableConfig?.gameSettings?.version ?? "1.0.0";
+        return m_dataTableConfig?.gameSettings?.m_version ?? "1.0.0";
     }
 
     #endregion
