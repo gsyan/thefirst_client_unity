@@ -158,7 +158,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Slot Type", module.m_moduleSlotType);
+        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumPopup("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         // Module Slots (from prefab)
@@ -272,7 +272,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Slot Type", module.m_moduleSlotType);
+        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumPopup("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
@@ -375,7 +375,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Slot Type", module.m_moduleSlotType);
+        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumPopup("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
@@ -482,7 +482,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Slot Type", module.m_moduleSlotType);
+        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumPopup("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);

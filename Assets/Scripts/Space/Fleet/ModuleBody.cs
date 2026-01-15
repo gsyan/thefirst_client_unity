@@ -36,19 +36,11 @@ public class ModuleBody : ModuleBase
     
     public override EModuleType GetModuleType()
     {
-        return m_moduleBodyInfo.ModuleType;
+        return m_moduleBodyInfo.moduleType;
     }
     public override EModuleSubType GetModuleSubType()
     {
-        return m_moduleBodyInfo.ModuleSubType;
-    }
-    public override EModuleSlotType GetModuleSlotType()
-    {
-        return m_moduleBodyInfo.ModuleSlotType;
-    }
-    public override int GetModuleTypePacked()
-    {
-        return m_moduleBodyInfo.moduleTypePacked;
+        return m_moduleBodyInfo.moduleSubType;
     }
     public override int GetModuleLevel()
     {
@@ -65,7 +57,7 @@ public class ModuleBody : ModuleBase
         SetModuleLevel(newLevel);
 
         // 새 레벨의 ModuleData 가져오기
-        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleBodyInfo.moduleTypePacked, newLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleBodyInfo.moduleSubType, newLevel);
         if (moduleData == null)
         {
             Debug.LogError($"Failed to restore module data for level {newLevel}");
@@ -97,7 +89,7 @@ public class ModuleBody : ModuleBase
         m_moduleSlot = null;
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
-        ModuleData moduleData = DataManager.Instance.RestoreModuleData(moduleBodyInfo.ModuleSubType, moduleBodyInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType, moduleBodyInfo.moduleLevel);
         if (moduleData == null) return;
 
         // 복원된 데이터로 초기화
@@ -132,11 +124,11 @@ public class ModuleBody : ModuleBase
 
         foreach (var module in savedModules)
         {
-            int moduleTypePacked = module.GetModuleTypePacked();
+            EModuleType moduleType = module.GetModuleType();
             int oldSlotIndex = module.m_moduleSlot != null ? module.m_moduleSlot.m_moduleSlotInfo.slotIndex : 0;
 
             // 새 body에서 같은 타입과 인덱스의 슬롯 찾기
-            ModuleSlot targetSlot = FindModuleSlot(moduleTypePacked, oldSlotIndex);
+            ModuleSlot targetSlot = FindModuleSlot(moduleType, oldSlotIndex);
 
             if (targetSlot != null && targetSlot.transform.childCount == 0)
             {
@@ -161,7 +153,7 @@ public class ModuleBody : ModuleBase
             else
             {
                 // 슬롯을 찾을 수 없음 - 모듈 파괴
-                Debug.LogWarning($"Cannot find compatible slot for {module.GetType().Name} (type={moduleTypePacked}, slot={oldSlotIndex}). Module destroyed.");
+                Debug.LogWarning($"Cannot find compatible slot for {module.GetType().Name} (type={moduleType}, slot={oldSlotIndex}). Module destroyed.");
                 Destroy(module.gameObject);
             }
         }
@@ -175,7 +167,7 @@ public class ModuleBody : ModuleBase
         {
             foreach (var engineInfo in bodyInfo.engines)
             {
-                ModuleSlot slot = FindModuleSlot(engineInfo.moduleTypePacked, engineInfo.slotIndex);
+                ModuleSlot slot = FindModuleSlot(engineInfo.moduleType, engineInfo.slotIndex);
                 if (slot != null && slot.transform.childCount == 0)
                     InitializeEngine(engineInfo);
             }
@@ -186,7 +178,7 @@ public class ModuleBody : ModuleBase
         {
             foreach (var weaponInfo in bodyInfo.weapons)
             {
-                ModuleSlot slot = FindModuleSlot(weaponInfo.moduleTypePacked, weaponInfo.slotIndex);
+                ModuleSlot slot = FindModuleSlot(weaponInfo.moduleType, weaponInfo.slotIndex);
                 if (slot != null && slot.transform.childCount == 0)
                     InitializeWeapon(weaponInfo);
             }
@@ -197,7 +189,7 @@ public class ModuleBody : ModuleBase
         {
             foreach (var hangerInfo in bodyInfo.hangers)
             {
-                ModuleSlot slot = FindModuleSlot(hangerInfo.moduleTypePacked, hangerInfo.slotIndex);
+                ModuleSlot slot = FindModuleSlot(hangerInfo.moduleType, hangerInfo.slotIndex);
                 if (slot != null && slot.transform.childCount == 0)
                     InitializeHanger(hangerInfo);
             }
@@ -209,14 +201,14 @@ public class ModuleBody : ModuleBase
 
     private void InitializeEngine(ModuleInfo moduleInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.ModuleType.ToString(), moduleInfo.ModuleSubType.ToString(), moduleInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString(), moduleInfo.moduleLevel);
         if (modulePrefab == null)
         {
             Debug.LogWarning($"InitializeEngine: Cannot find module prefab - Level: {moduleInfo.moduleLevel}");
             return;
         }
 
-        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
+        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null)
         {
             Debug.LogWarning($"InitializeEngine: Cannot find engine slot {moduleInfo.slotIndex}");
@@ -241,14 +233,14 @@ public class ModuleBody : ModuleBase
 
     private void InitializeWeapon(ModuleInfo moduleInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.ModuleType.ToString(), moduleInfo.ModuleSubType.ToString(), moduleInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString(), moduleInfo.moduleLevel);
         if (modulePrefab == null)
         {
-            Debug.LogWarning($"InitializeWeapon: Cannot find module prefab - ModuleType: {moduleInfo.ModuleType},  ModuleSubType: {moduleInfo.ModuleSubType},  Level: {moduleInfo.moduleLevel}");
+            Debug.LogWarning($"InitializeWeapon: Cannot find module prefab - ModuleType: {moduleInfo.moduleType},  ModuleSubType: {moduleInfo.moduleSubType},  Level: {moduleInfo.moduleLevel}");
             return;
         }
 
-        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
+        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null)
         {
             Debug.LogWarning($"InitializeWeapon: Cannot find weapon slot {moduleInfo.slotIndex}");
@@ -273,14 +265,14 @@ public class ModuleBody : ModuleBase
 
     private void InitializeHanger(ModuleInfo moduleInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.ModuleType.ToString(), moduleInfo.ModuleSubType.ToString(), moduleInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString(), moduleInfo.moduleLevel);
         if (modulePrefab == null)
         {
             Debug.LogWarning($"InitializeHanger: Cannot find module prefab - Level: {moduleInfo.moduleLevel}");
             return;
         }
 
-        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
+        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null)
         {
             Debug.LogWarning($"InitializeHanger: Cannot find hanger slot {moduleInfo.slotIndex}");
@@ -402,37 +394,25 @@ public class ModuleBody : ModuleBase
     }
 
     // 특정 타입과 인덱스의 슬롯 찾기
-    public ModuleSlot FindModuleSlot(int moduleTypePacked, int slotIndex)
+    public ModuleSlot FindModuleSlot(EModuleType moduleType, int slotIndex)
     {
-        EModuleSlotType moduleSlotType = CommonUtility.GetModuleSlotType(moduleTypePacked);
+        //EModuleSlotType moduleSlotType = CommonUtility.GetModuleSlotType(moduleTypePacked);
 
         return m_moduleSlots.FirstOrDefault(slot =>
-            CommonUtility.CompareModuleTypeForSlot(slot.m_moduleTypePacked, moduleTypePacked)
-            && slot.m_moduleSlotInfo.slotIndex == slotIndex
-            && CommonUtility.CanAttachToSlot(moduleSlotType, slot.m_moduleSlotInfo.moduleSlotType));
+            CommonUtility.CompareModuleTypeForSlot(slot.m_moduleSlotInfo.moduleType, moduleType)
+            && slot.m_moduleSlotInfo.slotIndex == slotIndex);
     }
 
     // moduleTypePacked와 slotIndex로 특정 모듈 찾기
-    public ModuleBase FindModule(int moduleTypePacked, int slotIndex)
+    public ModuleBase FindModule(EModuleType moduleType, int slotIndex)
     {
-        ModuleSlot slot = FindModuleSlot(moduleTypePacked, slotIndex);
+        ModuleSlot slot = FindModuleSlot(moduleType, slotIndex);
         if (slot == null) return null;
 
         if (slot.transform.childCount > 0)
             return slot.GetComponentInChildren<ModuleBase>();
 
         return null;
-    }
-
-    // 사용 가능한 슬롯 찾기 (빈 슬롯), 자동으로 관리해주는 기능 개발시 쓸 가능성 있음. 그러나 사용자가 직접 moduleSlot 을 골라서 할는 것만 허용될 때는 쓸 일이 없음
-    public ModuleSlot FindAvailableSlot(int moduleTypePacked)
-    {
-        EModuleSlotType moduleSlotType = CommonUtility.GetModuleSlotType(moduleTypePacked);
-
-        return m_moduleSlots.FirstOrDefault(slot =>
-            CommonUtility.CompareModuleTypeForSlot(slot.m_moduleTypePacked, moduleTypePacked)
-            && slot.transform.childCount == 0
-            && CommonUtility.CanAttachToSlot(moduleSlotType, slot.m_moduleSlotInfo.moduleSlotType));
     }
 
     public void SetTarget(ModuleBody target)
@@ -553,8 +533,8 @@ public class ModuleBody : ModuleBase
 
     public override string GetUpgradeComparisonText()
     {
-        ModuleData currentStats = DataManager.Instance.RestoreModuleData(m_moduleBodyInfo.ModuleSubType, m_moduleBodyInfo.moduleLevel);
-        ModuleData upgradeStats = DataManager.Instance.RestoreModuleData(m_moduleBodyInfo.ModuleSubType, m_moduleBodyInfo.moduleLevel + 1);
+        ModuleData currentStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleBodyInfo.moduleSubType, m_moduleBodyInfo.moduleLevel);
+        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleBodyInfo.moduleSubType, m_moduleBodyInfo.moduleLevel + 1);
 
         if (currentStats == null)
             return "Current module data not found.";
@@ -581,13 +561,13 @@ public class ModuleBody : ModuleBase
     }
 
     // 슬롯의 모듈을 교체
-    public bool ReplaceModuleInSlot(int slotIndex, int moduleTypePacked, EModuleType moduleType, int moduleLevel)
+    public bool ReplaceModuleInSlot(EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel, int slotIndex)
     {
         // 슬롯 찾기
-        ModuleSlot targetSlot = FindModuleSlot(moduleTypePacked, slotIndex);
+        ModuleSlot targetSlot = FindModuleSlot(moduleType, slotIndex);
         if (targetSlot == null)
         {
-            Debug.LogError($"ReplaceModuleInSlot: Cannot find slot - moduleTypePacked: {moduleTypePacked}, slotIndex: {slotIndex}");
+            Debug.LogError($"ReplaceModuleInSlot: Cannot find slot - moduleType: {moduleType}, slotIndex: {slotIndex}");
             return false;
         }
 
@@ -611,20 +591,19 @@ public class ModuleBody : ModuleBase
         }
 
         // 새 모듈 생성
-        return CreateAndPlaceModule(targetSlot, moduleTypePacked, moduleLevel);
+        return CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel);
     }
 
-    private bool CreateAndPlaceModule(ModuleSlot targetSlot, int moduleTypePacked, int moduleLevel)
+    private bool CreateAndPlaceModule(ModuleSlot targetSlot, EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel)
     {
-        EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
-        EModuleSubType moduleSubType = CommonUtility.GetModuleSubType(moduleTypePacked);
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleType.ToString(), moduleSubType.ToString(), moduleLevel);
         if (modulePrefab == null) return false;        
         GameObject moduleObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         moduleObj.transform.SetParent(targetSlot.transform);
         ModuleInfo moduleInfo = new ModuleInfo
         {
-            moduleTypePacked = moduleTypePacked,
+            moduleType = moduleType,
+            moduleSubType = moduleSubType,
             moduleLevel = moduleLevel,
             slotIndex = targetSlot.m_moduleSlotInfo.slotIndex
         };

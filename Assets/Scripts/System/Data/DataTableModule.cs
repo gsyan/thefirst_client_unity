@@ -501,7 +501,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleSlotType = EModuleSlotType.Top | EModuleSlotType.Bottom | EModuleSlotType.Left | EModuleSlotType.Right,
+                        m_moduleSlotType = EModuleSlotType.Side,
                         m_moduleLevel = i,
                         m_health = 40f + (i * 15f),
                         m_hangarCapability = 2 + (i * 3),

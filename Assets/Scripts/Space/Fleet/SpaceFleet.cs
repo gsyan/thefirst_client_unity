@@ -62,13 +62,13 @@ public class SpaceFleet : MonoBehaviour
         return null;
     }
 
-    // shipId, bodyIndex, moduleTypePacked, slotIndex로 특정 모듈 찾기
-    public ModuleBase FindModule(long shipId, int bodyIndex, int moduleTypePacked, int slotIndex)
+    // shipId, bodyIndex, moduleType, slotIndex로 특정 모듈 찾기
+    public ModuleBase FindModule(long shipId, int bodyIndex, EModuleType moduleType, int slotIndex)
     {
         SpaceShip ship = FindShip(shipId);
         if (ship == null) return null;
 
-        return ship.FindModule(bodyIndex, moduleTypePacked, slotIndex);
+        return ship.FindModule(bodyIndex, moduleType, slotIndex);
     }
 
     public void UpdateShipFormation(EFormationType formationType = EFormationType.LinearHorizontal, bool smooth = true)

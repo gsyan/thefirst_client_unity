@@ -47,29 +47,23 @@ public class ShipInfo
 [System.Serializable]
 public class ModuleBodyInfo
 {
-    public int moduleTypePacked;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
     public int moduleLevel;
     public int bodyIndex;
     public ModuleInfo[] engines;
     public ModuleInfo[] weapons;
     public ModuleInfo[] hangers;
-
-    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
-    public EModuleSubType ModuleSubType => CommonUtility.GetModuleSubType(moduleTypePacked);
-    public EModuleSlotType ModuleSlotType => CommonUtility.GetModuleSlotType(moduleTypePacked);
 }
 
 [System.Serializable]
 public class ModuleInfo
 {
-    public int moduleTypePacked;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
-
-    public EModuleType ModuleType => CommonUtility.GetModuleType(moduleTypePacked);
-    public EModuleSubType ModuleSubType => CommonUtility.GetModuleSubType(moduleTypePacked);
-    public EModuleSlotType ModuleSlotType => CommonUtility.GetModuleSlotType(moduleTypePacked);
 }
 
 // Body 프리팹의 ModuleSlot 정보를 저장하는 클래스
@@ -167,7 +161,7 @@ public class AuthResponse
     public string refreshToken;
     public FleetInfo activeFleetInfo;
     public CharacterInfo characterInfo;
-    public int[] researchedModuleTypePackeds;
+    public int[][] researchedModuleTypes;  // [moduleType, moduleSubType] 쌍의 배열
 }
 
 [System.Serializable]
@@ -226,7 +220,8 @@ public class ModuleUpgradeRequest
 {
     public long shipId;
     public int bodyIndex;
-    public int moduleTypePacked;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
     public int slotIndex;
     public int currentLevel;
     public int targetLevel;
@@ -237,7 +232,8 @@ public class ModuleUpgradeResponse
 {
     public long shipId;
     public int bodyIndex;
-    public int moduleTypePacked;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
     public int slotIndex;
     public int newLevel;
     public CostRemainInfo costRemainInfo;
@@ -248,8 +244,10 @@ public class ModuleChangeRequest
 {
     public long shipId;
     public int bodyIndex;
-    public int currentModuleTypePacked;
-    public int newModuleTypePacked;
+    public EModuleType moduleTypeCurrent;
+    public EModuleSubType moduleSubTypeCurrent;
+    public EModuleType moduleTypeNew;
+    public EModuleSubType moduleSubTypeNew;
     public int slotIndex;
 }
 
@@ -258,8 +256,10 @@ public class ModuleChangeResponse
 {
     public long shipId;
     public int bodyIndex;
-    public int oldModuleTypePacked;
-    public int newModuleTypePacked;
+    public EModuleType moduleTypeCurrent;
+    public EModuleSubType moduleSubTypeCurrent;
+    public EModuleType moduleTypeNew;
+    public EModuleSubType moduleSubTypeNew;
     public int slotIndex;
 }
 
@@ -268,7 +268,8 @@ public class ModuleUnlockRequest
 {
     public long shipId;
     public int bodyIndex;
-    public int moduleTypePacked;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
     public int slotIndex;
 }
 
@@ -277,7 +278,8 @@ public class ModuleUnlockResponse
 {
     public long shipId;
     public int bodyIndex;
-    public int moduleTypePacked;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
     public int slotIndex;
     public CostRemainInfo costRemainInfo;
 }
@@ -285,15 +287,17 @@ public class ModuleUnlockResponse
 [System.Serializable]
 public class ModuleResearchRequest
 {
-    public int moduleTypePacked;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
 }
 
 [System.Serializable]
 public class ModuleResearchResponse
 {
-    public int moduleTypePacked;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
     public CostRemainInfo costRemainInfo;
-    public int[] researchedModuleTypePacked;    
+    public int[][] researchedModuleTypes;  // [moduleType, moduleSubType] 쌍의 배열
 }
 
 [System.Serializable]

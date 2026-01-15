@@ -138,7 +138,7 @@ public class SpaceShip : MonoBehaviour
    // Body 초기화 (기존 모듈 재사용 가능)
     private void InitSpaceShipBody(ModuleBodyInfo bodyInfo, List<ModuleBase> savedModules)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.ModuleType.ToString(), bodyInfo.ModuleSubType.ToString(), bodyInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType.ToString(), bodyInfo.moduleLevel);
         if (modulePrefab == null) return;
 
         GameObject bodyObj = Instantiate(modulePrefab, transform.position, transform.rotation);
@@ -351,16 +351,15 @@ public class SpaceShip : MonoBehaviour
     }
 
     // bodyIndex, moduleTypePacked, slotIndex로 특정 모듈 찾기
-    public ModuleBase FindModule(int bodyIndex, int moduleTypePacked, int slotIndex)
+    public ModuleBase FindModule(int bodyIndex, EModuleType moduleType, int slotIndex)
     {
         ModuleBody body = FindModuleBodyByIndex(bodyIndex);
         if (body == null) return null;
 
-        EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
         if (moduleType == EModuleType.Body)
             return body;
 
-        return body.FindModule(moduleTypePacked, slotIndex);
+        return body.FindModule(moduleType, slotIndex);
     }
 
     // 함선의 능력치 프로파일 계산
@@ -856,10 +855,9 @@ public class SpaceShip : MonoBehaviour
                 ModuleBody body = FindModuleBodyByIndex(updatedBodyInfo.bodyIndex);
                 if (body == null) continue;
                 if (body.m_moduleBodyInfo == null) continue;
-                if (updatedBodyInfo.moduleTypePacked == 0) continue;
-
+                
                 // Body 모듈 자체가 변경되었는지 확인
-                if (body.m_moduleBodyInfo.moduleTypePacked != updatedBodyInfo.moduleTypePacked)
+                if (body.m_moduleBodyInfo.moduleType != updatedBodyInfo.moduleType)
                 {
                     ReplaceBodyWhilePreservingModules(body, updatedBodyInfo);
                     // 주의: 새로 생성된 body는 이미 모듈 복원이 완료되었으므로 아래 업데이트는 스킵 (continue)
@@ -898,7 +896,7 @@ public class SpaceShip : MonoBehaviour
     {
         foreach (ModuleInfo moduleInfo in moduleInfos)
         {
-            ModuleSlot slot = body.FindModuleSlot(moduleInfo.moduleTypePacked, moduleInfo.slotIndex);
+            ModuleSlot slot = body.FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
             if (slot == null) continue;
 
             ModuleBase existingModule = null;
@@ -908,25 +906,25 @@ public class SpaceShip : MonoBehaviour
             bool needsReplacement = false;
             if (existingModule == null || existingModule is ModulePlaceholder)
                 needsReplacement = true;
-            else if (existingModule.GetModuleTypePacked() != moduleInfo.moduleTypePacked ||
+            else if (existingModule.GetModuleType() != moduleInfo.moduleType ||
                      existingModule.GetModuleLevel() != moduleInfo.moduleLevel)
                 needsReplacement = true;
 
             if (needsReplacement)
             {
-                EModuleType moduleType = CommonUtility.GetModuleType(moduleInfo.moduleTypePacked);
-                bool success = body.ReplaceModuleInSlot(moduleInfo.slotIndex, moduleInfo.moduleTypePacked, moduleType, moduleInfo.moduleLevel);
+                EModuleType moduleType = moduleInfo.moduleType;
+                bool success = body.ReplaceModuleInSlot(moduleInfo.moduleType, moduleInfo.moduleSubType, moduleInfo.moduleLevel, moduleInfo.slotIndex);
                 if (success)
-                    Debug.Log($"module replaced: Type={moduleInfo.ModuleSubType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
+                    Debug.Log($"module replaced: Type={moduleInfo.moduleSubType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
                 else
-                    Debug.LogError($"Failed to replace module: Type={moduleInfo.ModuleSubType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
+                    Debug.LogError($"Failed to replace module: Type={moduleInfo.moduleSubType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
             }
         }
     }
 
 
     // module unlock (외부 호출용 - 모듈 해금 UI에서 사용)
-    public void UnlockModule(int bodyIndex, int moduleTypePacked, int slotIndex)
+    public void UnlockModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex)
     {
         ModuleBody body = FindModuleBodyByIndex(bodyIndex);
         if (body == null)
@@ -935,14 +933,13 @@ public class SpaceShip : MonoBehaviour
             return;
         }
 
-        EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
         int moduleLevel = 1; // 해금 시 기본 레벨 1
 
         // 슬롯에서 placeholder를 실제 모듈로 교체
-        bool success = body.ReplaceModuleInSlot(slotIndex, moduleTypePacked, moduleType, moduleLevel);
+        bool success = body.ReplaceModuleInSlot(moduleType, moduleSubType, moduleLevel, slotIndex);
         if (!success)
         {
-            Debug.LogError($"Failed to unlock module: moduleTypePacked={moduleTypePacked}, slotIndex={slotIndex}");
+            Debug.LogError($"Failed to unlock module: moduleType={moduleType}, slotIndex={slotIndex}");
             return;
         }
 
@@ -956,35 +953,34 @@ public class SpaceShip : MonoBehaviour
         // 모듈 selectedModuleVisual 갱신 (새로 생성된 모듈들을 포함하도록)
         RefreshSelectedModuleVisuals();
 
-        Debug.Log($"Module unlocked: Ship={m_shipInfo.id}, Body={bodyIndex}, Slot={slotIndex}, Type={moduleTypePacked}");
+        Debug.Log($"Module unlocked: Ship={m_shipInfo.id}, Body={bodyIndex}, Slot={slotIndex}, Type={moduleType}");
     }
 
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
-    public void ChangeModule(int bodyIndex, int oldModuleTypePacked, int newModuleTypePacked, int slotIndex)
+    public void ChangeModule(int bodyIndex, EModuleType moduleTypeCurrent, EModuleType moduleTypeNew, EModuleSubType moduleSubTypeNew, int slotIndex)
     {
-        EModuleType moduleType = CommonUtility.GetModuleType(newModuleTypePacked);
-        ModuleBase oldModule = FindModule(bodyIndex, oldModuleTypePacked, slotIndex);
+        ModuleBase oldModule = FindModule(bodyIndex, moduleTypeCurrent, slotIndex);
         if (oldModule == null)
         {
-            Debug.LogError($"Old module not found: shipId={m_shipInfo.id}, bodyIndex={bodyIndex}, oldModuleTypePacked={oldModuleTypePacked}, slotIndex={slotIndex}");
+            Debug.LogError($"Old module not found: shipId={m_shipInfo.id}, bodyIndex={bodyIndex}, moduleTypeCurrent={moduleTypeCurrent}, slotIndex={slotIndex}");
             return;
         }
         int moduleLevel = oldModule.GetModuleLevel();
 
-        if (moduleType == EModuleType.Body)
+        if (moduleTypeNew == EModuleType.Body)
         {
             // Body 교체 처리
-            ChangeModuleBody(bodyIndex, newModuleTypePacked, moduleLevel);
+            ChangeModuleBody(bodyIndex, moduleTypeNew, moduleSubTypeNew, moduleLevel);
         }
         else
         {
             // 일반 모듈 교체
             ModuleBody body = FindModuleBodyByIndex(bodyIndex);
             if (body == null) return;
-            bool success = body.ReplaceModuleInSlot(slotIndex, newModuleTypePacked, moduleType, moduleLevel);
+            bool success = body.ReplaceModuleInSlot(moduleTypeNew, moduleSubTypeNew, moduleLevel, slotIndex);
             if (success == false)
             {
-                Debug.LogError($"Failed to replace module: moduleTypePacked={newModuleTypePacked}");
+                Debug.LogError($"Failed to replace module: moduleTypeNew={moduleTypeNew}");
                 return;
             }
         }
@@ -996,14 +992,15 @@ public class SpaceShip : MonoBehaviour
         // 모듈 selectedModuleVisual 갱신 (새로 생성된 모듈들을 포함하도록)
         RefreshSelectedModuleVisuals();
     }
-    private void ChangeModuleBody(int bodyIndex, int newModuleTypePacked, int moduleLevel)
+    private void ChangeModuleBody(int bodyIndex, EModuleType moduleTypeNew, EModuleSubType moduleSubTypeNew, int moduleLevel)
     {
         ModuleBody oldBody = FindModuleBodyByIndex(bodyIndex);
         if (oldBody == null) return;
         
         ModuleBodyInfo newBodyInfo = new ModuleBodyInfo
         {
-            moduleTypePacked = newModuleTypePacked,
+            moduleType = moduleTypeNew,
+            moduleSubType = moduleSubTypeNew,
             moduleLevel = moduleLevel,
             bodyIndex = bodyIndex,
             engines = oldBody.m_moduleBodyInfo.engines,

@@ -39,10 +39,10 @@ public class ModuleSlotEditor : Editor
         if (EditorGUI.EndChangeCheck())
             moduleSubTypeProp.intValue = (int)newSubType;
 
-        // Slot Type - 비트 플래그로 다중 선택 가능
+        // Slot Type
         var moduleSlotTypeProp = m_moduleSlotInfo.FindPropertyRelative("moduleSlotType");
         EModuleSlotType currentSlotType = (EModuleSlotType)moduleSlotTypeProp.intValue;
-        EModuleSlotType newSlotType = (EModuleSlotType)EditorGUILayout.EnumFlagsField("Module Slot Type", currentSlotType);
+        EModuleSlotType newSlotType = (EModuleSlotType)EditorGUILayout.EnumPopup("Module Slot Type", currentSlotType);
         moduleSlotTypeProp.intValue = (int)newSlotType;
 
         // Module Slot Index

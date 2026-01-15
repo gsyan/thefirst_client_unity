@@ -46,16 +46,12 @@ public enum EModuleSubType
     Hanger_Advanced = 4002
 }
 [System.Serializable]
-[System.Flags]
 public enum EModuleSlotType
 {
     All     = 0,        // 0 = 기본값 (모든 슬롯 허용)
-    Head    = 1 << 0,   // 0b000001 = 1
-    Top     = 1 << 1,   // 0b000010 = 2
-    Bottom  = 1 << 2,   // 0b000100 = 4
-    Left    = 1 << 3,   // 0b001000 = 8
-    Right   = 1 << 4,   // 0b010000 = 16
-    Rear    = 1 << 5    // 0b100000 = 32
+    Head    = 1,
+    Rear    = 2,
+    Side    = 3,
 }
 
 

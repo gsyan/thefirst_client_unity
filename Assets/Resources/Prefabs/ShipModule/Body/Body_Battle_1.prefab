@@ -2008,11 +2008,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50339328
+  m_moduleTypePacked: 50332416
   m_moduleSlotInfo:
     moduleType: 3
     moduleSubType: 0
-    moduleSlotType: 30
+    moduleSlotType: 3
     slotIndex: 3
 --- !u!1 &2568670027936170514
 GameObject:
@@ -3302,11 +3302,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50339328
+  m_moduleTypePacked: 50332416
   m_moduleSlotInfo:
     moduleType: 3
     moduleSubType: 0
-    moduleSlotType: 30
+    moduleSlotType: 3
     slotIndex: 4
 --- !u!1 &3941079547458030506
 GameObject:
@@ -3768,11 +3768,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 67116544
+  m_moduleTypePacked: 67109632
   m_moduleSlotInfo:
     moduleType: 4
     moduleSubType: 0
-    moduleSlotType: 30
+    moduleSlotType: 3
     slotIndex: 0
 --- !u!1 &5065918944317701448
 GameObject:
@@ -5786,11 +5786,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50339328
+  m_moduleTypePacked: 50332416
   m_moduleSlotInfo:
     moduleType: 3
     moduleSubType: 0
-    moduleSlotType: 30
+    moduleSlotType: 3
     slotIndex: 5
 --- !u!1 &8013673809369426631
 GameObject:

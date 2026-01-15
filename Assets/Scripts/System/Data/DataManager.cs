@@ -139,16 +139,31 @@ public class DataManager : Singleton<DataManager>
                     {
                         new ModuleBodyInfo
                         {
-                            moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, EModuleSubType.Body_Battle, EModuleSlotType.All),
+                            moduleType = EModuleType.Body,
+                            moduleSubType = EModuleSubType.Body_Battle,
                             moduleLevel = 1,
                             bodyIndex = 0,
                             engines = new ModuleInfo[]
                             {
-                                new ModuleInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, EModuleSubType.Engine_Standard, EModuleSlotType.All), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                                new ModuleInfo
+                                {
+                                    moduleType = EModuleType.Engine,
+                                    moduleSubType = EModuleSubType.Engine_Standard,
+                                    moduleLevel = 1,
+                                    bodyIndex = 0,
+                                    slotIndex = 0
+                                }
                             },
                             weapons = new ModuleInfo[]
                             {
-                                new ModuleInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, EModuleSubType.Weapon_Beam, EModuleSlotType.All), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                                new ModuleInfo
+                                {
+                                    moduleType = EModuleType.Weapon,
+                                    moduleSubType = EModuleSubType.Weapon_Beam,
+                                    moduleLevel = 1,
+                                    bodyIndex = 0,
+                                    slotIndex = 0
+                                }
                             }
                         }
                     }
@@ -268,27 +283,27 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    // 서버 데이터를 기반으로 완전한 모듈 데이터 복원
-    public ModuleData RestoreModuleData(EModuleSubType subType, int moduleLevel)
-    {
-        if (m_dataTableModule == null) return null;
-        return m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
-    }
+    // // 서버 데이터를 기반으로 완전한 모듈 데이터 복원
+    // public ModuleData RestoreModuleData(EModuleSubType subType, int moduleLevel)
+    // {
+    //     if (m_dataTableModule == null) return null;
+    //     return m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
+    // }
 
-    public ModuleData RestoreModuleData(int moduleTypePacked, int moduleLevel)
-    {
-        if (m_dataTableModule == null) return null;
+    // public ModuleData RestoreModuleData(int moduleTypePacked, int moduleLevel)
+    // {
+    //     if (m_dataTableModule == null) return null;
 
-        EModuleSubType subType = CommonUtility.GetModuleSubType(moduleTypePacked);
-        if (subType == EModuleSubType.None) return null;
+    //     EModuleSubType subType = CommonUtility.GetModuleSubType(moduleTypePacked);
+    //     if (subType == EModuleSubType.None) return null;
 
-        return RestoreModuleData(subType, moduleLevel);
-    }
+    //     return RestoreModuleData(subType, moduleLevel);
+    // }
 
-    public bool GetModuleUpgradeCost(int moduleTypePacked, int moduleLevel, out CostStruct cost)
+    public bool GetModuleUpgradeCost(EModuleSubType subType, int moduleLevel, out CostStruct cost)
     {
         cost = new CostStruct();
-        ModuleData moduleData = RestoreModuleData(moduleTypePacked, moduleLevel);
+        ModuleData moduleData = m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
         if (moduleData == null) return false;
 
         cost = moduleData.m_upgradeCost;

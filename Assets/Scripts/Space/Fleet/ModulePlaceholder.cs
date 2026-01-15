@@ -28,19 +28,11 @@ public class ModulePlaceholder : ModuleBase
 
     public override EModuleType GetModuleType()
     {
-        return CommonUtility.GetModuleType(m_moduleSlot.m_moduleTypePacked);
+        return m_moduleSlot.m_moduleSlotInfo.moduleType;
     }
     public override EModuleSubType GetModuleSubType()
     {
-        return CommonUtility.GetModuleSubType(m_moduleSlot.m_moduleTypePacked);
-    }
-    public override EModuleSlotType GetModuleSlotType()
-    {
-        return CommonUtility.GetModuleSlotType(m_moduleSlot.m_moduleTypePacked);
-    }
-    public override int GetModuleTypePacked()
-    {
-        return m_moduleSlot.m_moduleTypePacked;
+        return m_moduleSlot.m_moduleSlotInfo.moduleSubType;
     }
     public override int GetModuleBodyIndex()
     {
@@ -53,7 +45,8 @@ public class ModulePlaceholder : ModuleBase
     {
         m_moduleInfo = new ModuleInfo
         {
-            moduleTypePacked = moduleSlot.m_moduleTypePacked,
+            moduleType = moduleSlot.m_moduleSlotInfo.moduleType,
+            moduleSubType = moduleSlot.m_moduleSlotInfo.moduleSubType,
             moduleLevel = 0,
             bodyIndex = parentBody.GetModuleBodyIndex(),
             slotIndex = moduleSlot.m_moduleSlotInfo.slotIndex
