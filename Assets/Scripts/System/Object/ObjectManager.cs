@@ -182,16 +182,31 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 {
                     new ModuleBodyInfo
                     {
-                        moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Body, EModuleSubType.Body_Battle, EModuleSlotType.All),
+                        moduleType = EModuleType.Body,
+                        moduleSubType = EModuleSubType.Body_Battle,
                         moduleLevel = enemyLevel,
                         bodyIndex = 0,
                         engines = new[]
                         {
-                            new ModuleInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Engine, EModuleSubType.Engine_Standard, EModuleSlotType.All), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                            new ModuleInfo
+                            {
+                                moduleType = EModuleType.Engine,
+                                moduleSubType = EModuleSubType.Engine_Standard,
+                                moduleLevel = 1,
+                                bodyIndex = 0,
+                                slotIndex = 0
+                            }
                         },
                         weapons = new[]
                         {
-                            new ModuleInfo { moduleTypePacked = CommonUtility.CreateModuleTypePacked(EModuleType.Weapon, EModuleSubType.Weapon_Beam, EModuleSlotType.All), moduleLevel = 1, bodyIndex = 0, slotIndex = 0 }
+                            new ModuleInfo
+                            {
+                                moduleType = EModuleType.Weapon,
+                                moduleSubType = EModuleSubType.Weapon_Beam,
+                                moduleLevel = 1,
+                                bodyIndex = 0,
+                                slotIndex = 0
+                            }
                         }
                     }
                 }

@@ -72,7 +72,7 @@ public class ModuleHanger : ModuleBase
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
 
-        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
         if (moduleData == null)
         {
             Debug.LogError("Failed to restore module data for ModuleHanger");
@@ -116,7 +116,7 @@ public class ModuleHanger : ModuleBase
 
     private void InitializeHangerSubType(ModuleData moduleData)
     {
-        switch (m_moduleInfo.ModuleSubType)
+        switch (m_moduleInfo.moduleSubType)
         {
             case EModuleSubType.Hanger_Standard:
                 for(int i=0; i< moduleData.m_launchCount; i++)
@@ -231,7 +231,7 @@ public class ModuleHanger : ModuleBase
     public void ReturnAircraft(AircraftInfo aircraftInfo)
     {
         // 복귀 시 현재 격납고의 최신 스펙으로 재정비
-        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.moduleTypePacked, m_moduleInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
         if (moduleData != null)
             aircraftInfo.UpdateAircraftInfo(moduleData);
 
@@ -268,19 +268,11 @@ public class ModuleHanger : ModuleBase
 
     public override EModuleType GetModuleType()
     {
-        return m_moduleInfo.ModuleType;
+        return m_moduleInfo.moduleType;
     }
     public override EModuleSubType GetModuleSubType()
     {
-        return m_moduleInfo.ModuleSubType;
-    }
-    public override EModuleSlotType GetModuleSlotType()
-    {
-        return m_moduleInfo.ModuleSlotType;
-    }
-    public override int GetModuleTypePacked()
-    {
-        return m_moduleInfo.moduleTypePacked;
+        return m_moduleInfo.moduleSubType;
     }
     public override int GetModuleLevel()
     {
@@ -298,7 +290,7 @@ public class ModuleHanger : ModuleBase
         SetModuleLevel(newLevel);
 
         // 새 레벨의 ModuleData 가져오기
-        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.moduleTypePacked, newLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, newLevel);
         if (moduleData == null) return;
         
         // 스탯 갱신
@@ -384,8 +376,8 @@ public class ModuleHanger : ModuleBase
 
     public override string GetUpgradeComparisonText()
     {
-        ModuleData currentStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
-        ModuleData upgradeStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel + 1);
+        ModuleData currentStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel + 1);
 
         if (currentStats == null)
             return "Current module data not found.";

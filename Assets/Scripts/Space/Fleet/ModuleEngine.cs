@@ -57,19 +57,11 @@ public class ModuleEngine : ModuleBase
 
     public override EModuleType GetModuleType()
     {
-        return m_moduleInfo.ModuleType;
+        return m_moduleInfo.moduleType;
     }
     public override EModuleSubType GetModuleSubType()
     {
-        return m_moduleInfo.ModuleSubType;
-    }
-    public override EModuleSlotType GetModuleSlotType()
-    {
-        return m_moduleInfo.ModuleSlotType;
-    }
-    public override int GetModuleTypePacked()
-    {
-        return m_moduleInfo.moduleTypePacked;
+        return m_moduleInfo.moduleSubType;
     }
     public override int GetModuleLevel()
     {
@@ -86,7 +78,7 @@ public class ModuleEngine : ModuleBase
         SetModuleLevel(newLevel);
 
         // 새 레벨의 ModuleData 가져오기
-        ModuleData moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.moduleTypePacked, newLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, newLevel);
         if (moduleData == null)
         {
             Debug.LogError($"Failed to restore module data for level {newLevel}");
@@ -119,7 +111,7 @@ public class ModuleEngine : ModuleBase
         m_parentBody = parentBody;
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
-        var moduleData = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
+        var moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
         if (moduleData == null)
         {
             Debug.LogError("Failed to restore module data for ModuleEngine");
@@ -179,8 +171,8 @@ public class ModuleEngine : ModuleBase
 
     public override string GetUpgradeComparisonText()
     {
-        ModuleData currentStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel);
-        ModuleData upgradeStats = DataManager.Instance.RestoreModuleData(m_moduleInfo.ModuleSubType, m_moduleInfo.moduleLevel + 1);
+        ModuleData currentStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel + 1);
 
         if (currentStats == null)
             return "Current module data not found.";

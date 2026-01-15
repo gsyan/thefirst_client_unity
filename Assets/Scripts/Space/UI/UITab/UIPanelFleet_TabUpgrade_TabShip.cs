@@ -201,7 +201,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         {
             shipId = m_selectedShip.m_shipInfo.id,
             bodyIndex = m_selectedModule.GetModuleBodyIndex(),
-            moduleTypePacked = m_selectedModule.GetModuleTypePacked(),
+            moduleType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType,
+            moduleSubType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleSubType,
             slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex
         };
 
@@ -247,14 +248,14 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (targetShip == null) return;
 
         // 모듈 해금 처리
-        targetShip.UnlockModule(unlockData.bodyIndex, unlockData.moduleTypePacked, unlockData.slotIndex);
+        targetShip.UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
 
         // 성공 메시지 표시
         ShowResultMessage("Module unlock successful!", 3f);
 
         // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
-            ReselectReplacedModule(targetShip, unlockData.bodyIndex, unlockData.slotIndex, unlockData.moduleTypePacked);
+            ReselectReplacedModule(targetShip, unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
     }
 
     private void UpgradeModule()
@@ -278,7 +279,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         {
             shipId = m_selectedShip.m_shipInfo.id
             ,bodyIndex = m_selectedModule.GetModuleBodyIndex()
-            ,moduleTypePacked = m_selectedModule.GetModuleTypePacked()
+            ,moduleType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType
+            ,moduleSubType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleSubType
             ,slotIndex = m_selectedModule.GetSlotIndex()
             ,currentLevel = m_selectedModule.GetModuleLevel()
             ,targetLevel = m_selectedModule.GetModuleLevel() + 1
@@ -299,7 +301,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             return false;
         }
 
-        ModuleData upgradeStats = DataManager.Instance.RestoreModuleData(m_selectedModule.GetModuleTypePacked(), m_selectedModule.GetModuleLevel() + 1);
+        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel() + 1);
         if (upgradeStats == null)
         {
             validationMessage = "Max level reached";
@@ -314,7 +316,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
 
         CostStruct cost;
-        if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleTypePacked(), m_selectedModule.GetModuleLevel(), out cost) == false)
+        if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out cost) == false)
         {
             validationMessage = "Failed to get upgrade cost";
             return false;
@@ -410,10 +412,10 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (m_myFleet == null) return;
 
         // Fleet의 계층적 FindModule 사용: shipId → bodyIndex → moduleTypePacked, slotIndex
-        ModuleBase targetModule = m_myFleet.FindModule(upgradeData.shipId, upgradeData.bodyIndex, upgradeData.moduleTypePacked, upgradeData.slotIndex);
+        ModuleBase targetModule = m_myFleet.FindModule(upgradeData.shipId, upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.slotIndex);
         if (targetModule == null)
         {
-            Debug.LogError($"Module not found: shipId={upgradeData.shipId}, bodyIndex={upgradeData.bodyIndex}, moduleTypePacked={upgradeData.moduleTypePacked}, slotIndex={upgradeData.slotIndex}");
+            Debug.LogError($"Module not found: shipId={upgradeData.shipId}, bodyIndex={upgradeData.bodyIndex}, moduleType={upgradeData.moduleType}, slotIndex={upgradeData.slotIndex}");
             return;
         }
 
@@ -435,8 +437,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (m_selectedModule == null) return;
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
-        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
-        if (currentModuleTypePacked == 0) return;
+        if (m_selectedModule is ModulePlaceholder) return;
 
         // 선택된 모듈의 슬롯 타입 가져오기
         EModuleSlotType targetSlotType = EModuleSlotType.All;
@@ -448,10 +449,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         foreach(Transform child in m_scrollViewModuleContent)
             Destroy(child.gameObject);
 
+        // 슬롯의 원래 정보를 기준으로 목록 구성
         EModuleType targetModuleType = m_selectedModule.GetModuleType();
-        EModuleSubType targetModuleSubType = EModuleSubType.None;
-        if( targetModuleType == EModuleType.Weapon)
-            targetModuleSubType = m_selectedModule.GetModuleSubType();
 
         // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
         foreach(EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
@@ -460,24 +459,25 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
             // targetModuleType 에 속하는 서브 타입만 순회
             if (moduleType != targetModuleType) continue;
-            // targetModuleSubType 이 EModuleSubType.None 이면 통과, 아니라면 같아야 통과
-            if (targetModuleSubType != EModuleSubType.None && subType != targetModuleSubType) continue;
 
-            int moduleTypePacked = CommonUtility.CreateModuleTypePacked(moduleType, subType, EModuleSlotType.All);
-            EModuleSlotType moduleSlotType = CommonUtility.GetModuleSlotType(moduleTypePacked);
+            // DataTableModule에서 해당 SubType의 SlotType 조회
+            ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, 1);
+            if (moduleData == null) continue;
+
+            EModuleSlotType moduleSlotType = moduleData.m_moduleSlotType;
 
             // 슬롯 타입 호환성 체크
             if (!CommonUtility.CanAttachToSlot(moduleSlotType, targetSlotType))
                 continue;
 
             string moduleName = $"{subType}";
-            bool isResearched = character.IsModuleResearched(moduleTypePacked);
-            bool isCurrentModule = moduleTypePacked == currentModuleTypePacked;
-            CreateModuleItem(moduleName, moduleTypePacked, isResearched, isCurrentModule);
+            bool isResearched = character.IsModuleResearched(moduleType, subType);
+            bool isCurrentModule = subType == m_selectedModule.GetModuleSubType();
+            CreateModuleItem(moduleName, moduleType, subType, isResearched, isCurrentModule);
         }
     }
 
-    private void CreateModuleItem(string moduleName, int moduleTypePacked, bool isResearched, bool isCurrentModule)
+    private void CreateModuleItem(string moduleName, EModuleType moduleType, EModuleSubType moduleSubType, bool isResearched, bool isCurrentModule)
     {
         GameObject item = Instantiate(m_scrollViewModuleItem, m_scrollViewModuleContent);
         if(item != null)
@@ -487,8 +487,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             {
                 scrollViewItem.InitializeScrollViewModuleItem(
                     moduleName,
-                    () => OnModuleTypeItemClicked(scrollViewItem, moduleTypePacked),
-                    () => OnModuleTypeResearchClicked(moduleTypePacked)
+                    () => OnModuleTypeItemClicked(scrollViewItem, moduleType, moduleSubType),
+                    () => OnModuleTypeResearchClicked(moduleType, moduleSubType)
                 );
 
                 // 개발 여부에 따라 Dev 버튼 활성화/비활성화
@@ -503,20 +503,19 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
     }
 
-    private void OnModuleTypeItemClicked(ScrollViewModuleItem selectedItem, int moduleTypePacked)
+    private void OnModuleTypeItemClicked(ScrollViewModuleItem selectedItem, EModuleType moduleType, EModuleSubType moduleSubType)
     {
-        int currentModuleTypePacked = m_selectedModule.GetModuleTypePacked();
+        EModuleType currentModuleType = m_selectedModule.GetModuleType();
+        EModuleSubType currentModuleSubType = m_selectedModule.GetModuleSubType();
 
         // 같은 모듈이면 바꿀 필요 없음
-        if (currentModuleTypePacked == moduleTypePacked)
+        if (currentModuleType == moduleType && currentModuleSubType == moduleSubType)
         {
             ShowResultMessage("Same module type selected. No change needed", 3f);
             return;
         }
 
-        // 여기
-
-
+        
         // 다른 모든 아이템의 선택 해제
         foreach (var item in m_moduleItems)
         {
@@ -534,8 +533,10 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             shipId = m_selectedShip.m_shipInfo.id
             , bodyIndex = m_selectedModule.GetModuleBodyIndex()
             , slotIndex = slotIndex
-            , currentModuleTypePacked = currentModuleTypePacked
-            , newModuleTypePacked = moduleTypePacked
+            , moduleTypeCurrent = currentModuleType
+            , moduleSubTypeCurrent = currentModuleSubType
+            , moduleTypeNew = moduleType
+            , moduleSubTypeNew = moduleSubType
         };
 
         Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
@@ -545,12 +546,9 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
     }
 
-    private void OnModuleTypeResearchClicked(int moduleTypePacked)
+    private void OnModuleTypeResearchClicked(EModuleType moduleType, EModuleSubType moduleSubType)
     {
         // 개발 버튼 클릭 시
-        EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
-        EModuleSubType moduleSubType = CommonUtility.GetModuleSubType(moduleTypePacked);
-
         // Get research cost from DataManager
         CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);        
         // check)
@@ -575,7 +573,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
                 var request = new ModuleResearchRequest
                 {
-                    moduleTypePacked = moduleTypePacked
+                    moduleType = moduleType
+                    , moduleSubType = moduleSubType
                 };
 
                 NetworkManager.Instance.ResearchModule(request, OnModuleResearchResponse);
@@ -601,11 +600,10 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
                 DataManager.Instance.m_currentCharacter.UpdateAllMinerals(researchResponse.costRemainInfo);
 
             // Update researched modules list
-            if (researchResponse.researchedModuleTypePacked != null)
-                DataManager.Instance.m_currentCharacter.UpdateResearchedModules(researchResponse.researchedModuleTypePacked);
+            if (researchResponse.researchedModuleTypes != null)
+                DataManager.Instance.m_currentCharacter.UpdateResearchedModules(researchResponse.researchedModuleTypes);
 
-            EModuleSubType moduleSubType = CommonUtility.GetModuleSubType(researchResponse.moduleTypePacked);
-            ShowResultMessage($"Research completed: {moduleSubType}", 3f);
+            ShowResultMessage($"Research completed: {researchResponse.moduleType}-{researchResponse.moduleSubType}", 3f);
 
             // Refresh UI to show newly researched module
             UpdateScrollView();
@@ -640,17 +638,17 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (m_myFleet == null) return;
 
         // 이전 모듈 찾기
-        ModuleBase oldModule = m_myFleet.FindModule(changeData.shipId, changeData.bodyIndex, changeData.oldModuleTypePacked, changeData.slotIndex);
+        ModuleBase oldModule = m_myFleet.FindModule(changeData.shipId, changeData.bodyIndex, changeData.moduleTypeCurrent, changeData.slotIndex);
         if (oldModule == null)
         {
-            Debug.LogError($"Old module not found: shipId={changeData.shipId}, bodyIndex={changeData.bodyIndex}, oldModuleTypePacked={changeData.oldModuleTypePacked}, slotIndex={changeData.slotIndex}");
+            Debug.LogError($"Old module not found: shipId={changeData.shipId}, bodyIndex={changeData.bodyIndex}, moduleTypeCurrent={changeData.moduleTypeCurrent}, slotIndex={changeData.slotIndex}");
             ShowResultMessage("Module change failed: Old module not found", 3f);
             return;
         }
         SpaceShip ship = m_myFleet.FindShip(changeData.shipId);
         if (ship == null) return;
 
-        ship.ChangeModule(changeData.bodyIndex, changeData.oldModuleTypePacked, changeData.newModuleTypePacked, changeData.slotIndex);
+        ship.ChangeModule(changeData.bodyIndex, changeData.moduleTypeCurrent, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex);
 
         // SpaceShip 통계 업데이트
         ship.UpdateShipStats();
@@ -659,19 +657,18 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
         // 새로 생성된 모듈 재선택
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
-            ReselectReplacedModule(ship, changeData.bodyIndex, changeData.slotIndex, changeData.newModuleTypePacked);
+            ReselectReplacedModule(ship, changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex);
     }
 
     // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택하여 selectedModuleVisual 적용
-    private void ReselectReplacedModule(SpaceShip targetShip, int bodyIndex, int slotIndex, int moduleTypePacked)
+    private void ReselectReplacedModule(SpaceShip targetShip, int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex)
     {
         if (targetShip == null) return;
 
         ModuleBody body = targetShip.FindModuleBodyByIndex(bodyIndex);
         if (body == null) return;
 
-        // Body 자체가 교체된 경우 (slotIndex == -1)
-        EModuleType moduleType = CommonUtility.GetModuleType(moduleTypePacked);
+        // Body 자체가 교체된 경우
         if (moduleType == EModuleType.Body || slotIndex < 0)
         {
             m_selectedModule = body;
@@ -680,7 +677,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
 
         // 일반 모듈 (Weapon, Engine, Hanger 등)이 교체된 경우
-        ModuleSlot slot = body.FindModuleSlot(moduleTypePacked, slotIndex);
+        ModuleSlot slot = body.FindModuleSlot(moduleType, slotIndex);
         if (slot != null && slot.transform.childCount > 0)
         {
             ModuleBase newModule = slot.GetComponentInChildren<ModuleBase>();

@@ -6,12 +6,12 @@ public class Character
 {
     public CharacterInfo m_characterInfo;
     public SpaceFleet m_ownedFleet;
-    private List<int> m_researchedModules;
+    private List<int[]> m_researchedModules;  // [moduleType, moduleSubType] 쌍의 리스트
 
     public Character(CharacterInfo characterInfo)
     {
         m_characterInfo = characterInfo;
-        m_researchedModules = new List<int>();
+        m_researchedModules = new List<int[]>();
     }
 
     public string GetName()
@@ -146,7 +146,7 @@ public class Character
     }
 
     // 개발된 모듈 목록 설정
-    public void SetResearchedModules(int[] researchedModules)
+    public void SetResearchedModules(int[][] researchedModules)
     {
         if (researchedModules == null)
         {
@@ -154,37 +154,36 @@ public class Character
             return;
         }
 
-        m_researchedModules = new List<int>(researchedModules);
-    }
-
-    // 개발된 모듈 목록 조회
-    public List<int> GetResearchedModules()
-    {
-        return m_researchedModules;
+        m_researchedModules = new List<int[]>(researchedModules);
     }
 
     // 특정 모듈이 개발되었는지 확인
-    public bool IsModuleResearched(int moduleTypePacked)
+    public bool IsModuleResearched(EModuleType moduleType, EModuleSubType moduleSubType)
     {
         if (m_researchedModules == null) return false;
 
-        return m_researchedModules.Contains(moduleTypePacked);
+        foreach (var pair in m_researchedModules)
+        {
+            if (pair[0] == (int)moduleType && pair[1] == (int)moduleSubType)
+                return true;
+        }
+        return false;
     }
 
     // 모듈 개발 추가
-    public void AddResearchedModule(int moduleTypePacked)
+    public void AddResearchedModule(EModuleType moduleType, EModuleSubType moduleSubType)
     {
         if (m_researchedModules == null)
-            m_researchedModules = new List<int>();
+            m_researchedModules = new List<int[]>();
 
-        if (!IsModuleResearched(moduleTypePacked))
+        if (!IsModuleResearched(moduleType, moduleSubType))
         {
-            m_researchedModules.Add(moduleTypePacked);
+            m_researchedModules.Add(new int[] { (int)moduleType, (int)moduleSubType });
         }
     }
 
-    // 개발된 모듈 목록 업데이트 (배열로)
-    public void UpdateResearchedModules(int[] researchedModules)
+    // 개발된 모듈 목록 업데이트
+    public void UpdateResearchedModules(int[][] researchedModules)
     {
         if (researchedModules == null) return;
         SetResearchedModules(researchedModules);

@@ -38,18 +38,18 @@ public static class CommonUtility
     {
         CapabilityProfile stats = new CapabilityProfile();
         if (moduleInfo == null) return stats;
-        ModuleData moduleData = DataManager.Instance.RestoreModuleData(moduleInfo.moduleTypePacked, moduleInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleInfo.moduleSubType, moduleInfo.moduleLevel);
         if (moduleData == null) return stats;
 
         // 모듈 타입에 따라 능력치 설정
-        if (moduleInfo.ModuleType == EModuleType.Weapon)
+        if (moduleInfo.moduleType == EModuleType.Weapon)
         {
             // DPS 계산: 공격력 × 발사 개수 / 쿨타임
             if (moduleData.m_attackCoolTime > 0)
                 stats.attackDps = moduleData.m_attackPower * moduleData.m_attackFireCount / moduleData.m_attackCoolTime;
             stats.totalWeapons = 1;
         }
-        else if (moduleInfo.ModuleType == EModuleType.Engine)
+        else if (moduleInfo.moduleType == EModuleType.Engine)
         {
             stats.engineSpeed = moduleData.m_movementSpeed;
             stats.totalEngines = 1;
@@ -64,7 +64,7 @@ public static class CommonUtility
         CapabilityProfile stats = new CapabilityProfile();
         if (bodyInfo == null) return stats;
         // Body 자체의 데이터
-        ModuleData bodyData = DataManager.Instance.RestoreModuleData(bodyInfo.moduleTypePacked, bodyInfo.moduleLevel);
+        ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodyInfo.moduleSubType, bodyInfo.moduleLevel);
         if (bodyData != null)
         {
             stats.hp = bodyData.m_health;
@@ -208,25 +208,27 @@ public static class CommonUtility
         return moduleType & unchecked((int)0xFF000000);
     }
 
-    public static bool CompareModuleTypeForSlot(int moduleType1, int moduleType2)
+    public static bool CompareModuleTypeForSlot(EModuleType moduleType1, EModuleType moduleType2)
     {
-        EModuleType type = GetModuleType(moduleType1);
-
-        // if (type == EModuleType.Weapon)
-        //     return GetModuleTypeWithoutSlotType(moduleType1) == GetModuleTypeWithoutSlotType(moduleType2);
-
-        return GetModuleTypeOnly(moduleType1) == GetModuleTypeOnly(moduleType2);
+        return moduleType1 == moduleType2;
     }
 
-    // 슬롯 타입 비트 연산: 모듈이 특정 슬롯에 부착 가능한지 확인
+    // 슬롯 타입 호환성 체크: 모듈이 특정 슬롯에 부착 가능한지 확인
     public static bool CanAttachToSlot(EModuleSlotType moduleSlotType, EModuleSlotType slotType)
     {
         // All(0) = 모든 슬롯 허용
         if (moduleSlotType == EModuleSlotType.All || slotType == EModuleSlotType.All)
             return true;
 
-        // 비트 AND 연산으로 호환성 체크
-        return ((int)moduleSlotType & (int)slotType) != 0;
+        // Side는 Head, Rear 제외한 모든 슬롯 허용
+        if (moduleSlotType == EModuleSlotType.Side || slotType == EModuleSlotType.Side)
+        {
+            var other = (moduleSlotType == EModuleSlotType.Side) ? slotType : moduleSlotType;
+            return other != EModuleSlotType.Head && other != EModuleSlotType.Rear;
+        }
+
+        // 정확히 일치해야 부착 가능
+        return moduleSlotType == slotType;
     }
 
     public static EModuleType GetModuleTypeFromSubType(EModuleSubType subType)

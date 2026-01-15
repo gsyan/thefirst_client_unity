@@ -24,8 +24,10 @@ public abstract class AircraftBase : MonoBehaviour
 
     // Body 교체 시 새 hanger를 찾기 위한 정보
     [SerializeField] protected SpaceShip m_carrierShip;
+    [SerializeField] protected EModuleType m_hangerModuleType;
+    [SerializeField] protected EModuleSubType m_hangerModuleSubType;
     [SerializeField] protected int m_hangerSlotIndex;
-    [SerializeField] protected int m_hangerModuleTypePacked;
+    
 
     [SerializeField] protected float m_repositionMinDistanceMultiplier = 1.5f;
     [SerializeField] protected float m_repositionMaxDistanceMultiplier = 2.5f;
@@ -57,7 +59,8 @@ public abstract class AircraftBase : MonoBehaviour
             if (moduleHanger.m_moduleSlot != null)
             {
                 m_hangerSlotIndex = moduleHanger.m_moduleSlot.m_moduleSlotInfo.slotIndex;
-                m_hangerModuleTypePacked = moduleHanger.m_moduleSlot.m_moduleTypePacked;
+                m_hangerModuleType = moduleHanger.m_moduleSlot.m_moduleSlotInfo.moduleType;
+                m_hangerModuleSubType = moduleHanger.m_moduleSlot.m_moduleSlotInfo.moduleSubType;
             }
         }
 
@@ -502,7 +505,7 @@ public abstract class AircraftBase : MonoBehaviour
         // SpaceShip의 모든 body를 순회하며 같은 슬롯의 ModuleHanger 찾기
         foreach (var body in m_carrierShip.m_moduleBodys)
         {
-            ModuleSlot newSlot = body.FindModuleSlot(m_hangerModuleTypePacked, m_hangerSlotIndex);
+            ModuleSlot newSlot = body.FindModuleSlot(m_hangerModuleType, m_hangerSlotIndex);
             if (newSlot != null && newSlot.transform.childCount > 0)
             {
                 ModuleHanger newHanger = newSlot.GetComponentInChildren<ModuleHanger>();
