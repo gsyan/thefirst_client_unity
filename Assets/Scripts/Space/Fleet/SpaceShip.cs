@@ -145,10 +145,10 @@ public class SpaceShip : MonoBehaviour
     }
 
    // Body 초기화 (기존 모듈 재사용 가능)
-    private void InitSpaceShipBody(ModuleBodyInfo bodyInfo, List<ModuleBase> savedModules)
+    private ModuleBody InitSpaceShipBody(ModuleBodyInfo bodyInfo, List<ModuleBase> savedModules)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType.ToString(), bodyInfo.moduleLevel);
-        if (modulePrefab == null) return;
+        if (modulePrefab == null) return null;
 
         GameObject bodyObj = Instantiate(modulePrefab, transform.position, transform.rotation);
         bodyObj.transform.SetParent(transform);
@@ -160,6 +160,7 @@ public class SpaceShip : MonoBehaviour
         moduleBody.InitializeModuleBody(bodyInfo, savedModules);
         m_moduleBodys.Add(moduleBody);
         moduleBody.ApplyShipStateToModule(); // 모듈 변경시를 위해 필요
+        return moduleBody;
     }
 
     private ModuleBody m_currentTargetBody;
@@ -321,7 +322,7 @@ public class SpaceShip : MonoBehaviour
             parentFleet.RemoveShip(this);
             if (parentFleet.m_isEnemyFleet == true)
             {
-                DeveloperConsole.ExecuteCommandStatic("AddMoney 100");
+                // 적 파괴시 보상
                 DeveloperConsole.ExecuteCommandStatic("AddMineral 50");
             }
         }
@@ -956,13 +957,19 @@ public class SpaceShip : MonoBehaviour
             }
         }
 
-        // 2. 기존 body 제거
+        // 2. 삭제 전 이벤트 발행 (oldBody 아직 유효)
+        EventManager.TriggerModuleReplaced(oldBody, null);
+
+        // 3. 기존 body 제거
         m_moduleBodys.Remove(oldBody);
-        //Destroy(oldBody.gameObject);
         DestroyImmediate(oldBody.gameObject);
 
-        // 3. 새 body 생성 (저장된 모듈 재배치)
-        InitSpaceShipBody(newBodyInfo, savedModules);
+        // 4. 새 body 생성 (저장된 모듈 재배치)
+        ModuleBody newBody = InitSpaceShipBody(newBodyInfo, savedModules);
+
+        // 5. 새 body 이벤트 발행
+        if (newBody != null)
+            EventManager.TriggerModuleReplaced(null, newBody);
     }
 
     private void OnDrawGizmos()

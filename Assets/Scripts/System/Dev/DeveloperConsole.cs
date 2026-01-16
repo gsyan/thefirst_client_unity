@@ -397,21 +397,6 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
-        RegisterCommand("addmoney", "Add money amount (usage: addmoney [amount])", (args) =>
-        {
-            if (args.Length == 0) return;
-            if (NetworkManager.Instance == null) return;
-            NetworkManager.Instance.ExecuteDevCommand("addmoney", args, (response) =>
-            {
-                if (response.errorCode == 0)
-                {
-                    string[] parts = response.data.Split('|');
-                    if (parts.Length > 1)
-                        UpdateResourceFromResponse(parts[1]);
-                }
-            });
-        });
-
         RegisterCommand("setmineral", "Set mineral amount (usage: setmineral [amount])", (args) =>
         {
             if (args.Length == 0) return;

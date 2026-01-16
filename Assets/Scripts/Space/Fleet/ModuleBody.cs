@@ -641,6 +641,9 @@ public class ModuleBody : ModuleBase
             ModuleBase existingModule = targetSlot.GetComponentInChildren<ModuleBase>();
             if (existingModule != null)
             {
+                // 삭제 전 이벤트 발행 (existingModule 아직 유효)
+                EventManager.TriggerModuleReplaced(existingModule, null);
+
                 // 리스트에서 제거
                 if (existingModule is ModuleEngine engine)
                     RemoveEngine(engine);
@@ -657,13 +660,20 @@ public class ModuleBody : ModuleBase
         }
 
         // 새 모듈 생성
-        return CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel);
+        moduleLevel = 1;// 프리팹 레벨1만
+        ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel);
+
+        // 새 모듈 생성 이벤트 발행
+        if (newModule != null)
+            EventManager.TriggerModuleReplaced(null, newModule);
+
+        return newModule != null;
     }
 
-    private bool CreateAndPlaceModule(ModuleSlot targetSlot, EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel)
+    private ModuleBase CreateAndPlaceModule(ModuleSlot targetSlot, EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel = 1)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleType.ToString(), moduleSubType.ToString(), moduleLevel);
-        if (modulePrefab == null) return false;        
+        if (modulePrefab == null) return null;
         GameObject moduleObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         moduleObj.transform.SetParent(targetSlot.transform);
         ModuleInfo moduleInfo = new ModuleInfo
@@ -682,33 +692,33 @@ public class ModuleBody : ModuleBase
                 if (moduleEngine == null)
                     moduleEngine = moduleObj.AddComponent<ModuleEngine>();
                 moduleEngine.InitializeModuleEngine(moduleInfo, this, targetSlot);
-                return true;
+                return moduleEngine;
 
             case EModuleType.Beam:
                 ModuleBeam moduleBeam = moduleObj.GetComponent<ModuleBeam>();
                 if (moduleBeam == null)
                     moduleBeam = moduleObj.AddComponent<ModuleBeam>();
                 moduleBeam.InitializeModuleBeam(moduleInfo, this, targetSlot);
-                return true;
-            
+                return moduleBeam;
+
             case EModuleType.Missile:
                 ModuleMissile moduleMissile = moduleObj.GetComponent<ModuleMissile>();
                 if (moduleMissile == null)
                     moduleMissile = moduleObj.AddComponent<ModuleMissile>();
                 moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot);
-                return true;
+                return moduleMissile;
 
             case EModuleType.Hanger:
                 ModuleHanger moduleHanger = moduleObj.GetComponent<ModuleHanger>();
                 if (moduleHanger == null)
                     moduleHanger = moduleObj.AddComponent<ModuleHanger>();
                 moduleHanger.InitializeModuleHanger(moduleInfo, this, targetSlot);
-                return true;
+                return moduleHanger;
 
             default:
                 Debug.LogError($"CreateAndPlaceModule: Unsupported module type: {moduleType}");
                 Destroy(moduleObj); // 생성한 오브젝트 정리
-                return false;
+                return null;
         }
     }
 

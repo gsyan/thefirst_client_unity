@@ -27,12 +27,31 @@ public class GaugeBars : MonoBehaviour
         m_spaceShip = GetComponent<SpaceShip>();
         if (m_targetCanvas == null)
             m_targetCanvas = FindFirstObjectByType<Canvas>();
+
+        EventManager.Subscribe_ModuleReplaced(OnModuleReplaced);
     }
 
     void Start()
     {
         if (m_spaceShip != null)
             InitializeGaugeBars();
+    }
+
+    private void OnModuleReplaced(ModuleBase oldModule, ModuleBase newModule)
+    {
+        // 기존 모듈 게이지바 제거
+        if (oldModule != null && m_moduleGaugeBars.TryGetValue(oldModule, out GaugeBar oldGaugeBar))
+        {
+            if (oldGaugeBar != null)
+                Destroy(oldGaugeBar.gameObject);
+            m_moduleGaugeBars.Remove(oldModule);
+        }
+
+        // 새 모듈 게이지바 생성 (Body 타입만)
+        if (newModule != null && newModule is ModuleBody)
+        {
+            CreateGaugeBarForModule(newModule);
+        }
     }
 
     private void InitializeGaugeBars()
@@ -228,6 +247,7 @@ public class GaugeBars : MonoBehaviour
 
     void OnDestroy()
     {
+        EventManager.Unsubscribe_ModuleReplaced(OnModuleReplaced);
         ClearAllGaugeBars();
     }
 }

@@ -153,4 +153,19 @@ public static class EventManager
         OnCameraModeChanged -= callback;
     }
 
+    // Module Replaced (oldModule, newModule)
+    public static event Action<ModuleBase, ModuleBase> OnModuleReplaced;
+    public static void TriggerModuleReplaced(ModuleBase oldModule, ModuleBase newModule)
+    {
+        OnModuleReplaced?.Invoke(oldModule, newModule);
+    }
+    public static void Subscribe_ModuleReplaced(Action<ModuleBase, ModuleBase> callback)
+    {
+        OnModuleReplaced += callback;
+    }
+    public static void Unsubscribe_ModuleReplaced(Action<ModuleBase, ModuleBase> callback)
+    {
+        OnModuleReplaced -= callback;
+    }
+
 }
