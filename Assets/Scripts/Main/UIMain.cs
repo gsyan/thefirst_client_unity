@@ -254,15 +254,9 @@ public class UIMain : UIManager
                     
                     // Save fleet information to DataManager
                     if (response.data.activeFleetInfo != null)
-                    {
                         DataManager.Instance.SetFleetData(response.data.activeFleetInfo);
-                        Debug.Log($"Fleet data saved to DataManager: {response.data.activeFleetInfo.fleetName} with {response.data.activeFleetInfo.ships?.Length ?? 0} ships");
-                    }
                     else
-                    {
-                        Debug.LogWarning("No active fleet data received from server");
                         DataManager.Instance.ClearFleetData();
-                    }
 
                     // Save character information to DataManager
                     if (response.data.characterInfo != null)

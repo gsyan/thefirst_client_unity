@@ -466,10 +466,22 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ChangeFormationAsync(request), onComplete));
     }
 
+    public void UnlockModule(ModuleUnlockRequest request, System.Action<ApiResponse<ModuleUnlockResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.UnlockModuleAsync(request), onComplete));
+    }
+
     public void UpgradeModule(ModuleUpgradeRequest request, System.Action<ApiResponse<ModuleUpgradeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.UpgradeModuleAsync(request), onComplete));
+    }
+
+    public void ResearchModule(ModuleResearchRequest request, System.Action<ApiResponse<ModuleResearchResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ResearchModuleAsync(request), onComplete));
     }
 
     public void ChangeModule(ModuleChangeRequest request, System.Action<ApiResponse<ModuleChangeResponse>> onComplete)
@@ -478,17 +490,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ChangeModuleAsync(request), onComplete));
     }
 
-    public void UnlockModule(ModuleUnlockRequest request, System.Action<ApiResponse<ModuleUnlockResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.UnlockModuleAsync(request), onComplete));
-    }
-
-    public void ResearchModule(ModuleResearchRequest request, System.Action<ApiResponse<ModuleResearchResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ResearchModuleAsync(request), onComplete));
-    }
+    
 
     // public void AddModuleBody(ModuleBodyAddRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
     // {

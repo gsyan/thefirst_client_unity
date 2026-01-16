@@ -11,7 +11,8 @@ public class ModuleBody : ModuleBase
 
     [HideInInspector] public List<ModuleSlot> m_moduleSlots = new List<ModuleSlot>();
     [HideInInspector] public List<ModuleEngine> m_engines = new List<ModuleEngine>();
-    [HideInInspector] public List<ModuleWeapon> m_weapons = new List<ModuleWeapon>();    
+    [HideInInspector] public List<ModuleBeam> m_beams = new List<ModuleBeam>();
+    [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
     [HideInInspector] public List<ModuleHanger> m_hangers = new List<ModuleHanger>();
 
     [HideInInspector] public float m_cargoCapacity;
@@ -41,6 +42,10 @@ public class ModuleBody : ModuleBase
     public override EModuleSubType GetModuleSubType()
     {
         return m_moduleBodyInfo.moduleSubType;
+    }
+    public override int GetModuleSlotIndex()
+    {
+        return m_moduleBodyInfo.bodyIndex;
     }
     public override int GetModuleLevel()
     {
@@ -125,7 +130,7 @@ public class ModuleBody : ModuleBase
         foreach (var module in savedModules)
         {
             EModuleType moduleType = module.GetModuleType();
-            int oldSlotIndex = module.m_moduleSlot != null ? module.m_moduleSlot.m_moduleSlotInfo.slotIndex : 0;
+            int oldSlotIndex = module.GetModuleSlotIndex();
 
             // 새 body에서 같은 타입과 인덱스의 슬롯 찾기
             ModuleSlot targetSlot = FindModuleSlot(moduleType, oldSlotIndex);
@@ -158,6 +163,24 @@ public class ModuleBody : ModuleBase
             }
         }
     }
+    
+    // 모듈을 슬롯에 배치
+    private void PlaceModuleInSlot(ModuleBase module, ModuleSlot targetSlot, SpaceShip myShip, SpaceFleet myFleet)
+    {
+        module.transform.SetParent(targetSlot.transform);
+        module.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        module.gameObject.SetActive(true);
+
+        // 모듈의 슬롯 참조 업데이트
+        module.m_moduleSlot = targetSlot;
+
+        // 모듈의 함대 정보 재설정 (부모가 바뀌었으므로)
+        if (myShip != null && myFleet != null)
+            module.SetFleetInfo(myFleet, myShip);
+
+        // 코루틴 재시작 (각 모듈에서 필요시 override)
+        module.RestartCoroutines();
+    }
 
     // 서버 정보에 있지만 재배치되지 못한 모듈들을 생성
     private void CreateMissingModules(ModuleBodyInfo bodyInfo)
@@ -173,16 +196,28 @@ public class ModuleBody : ModuleBase
             }
         }
 
-        // 무기 생성
-        if (bodyInfo.weapons != null)
+        // Beam 생성
+        if (bodyInfo.beams != null)
         {
-            foreach (var weaponInfo in bodyInfo.weapons)
+            foreach (var beamInfo in bodyInfo.beams)
             {
-                ModuleSlot slot = FindModuleSlot(weaponInfo.moduleType, weaponInfo.slotIndex);
+                ModuleSlot slot = FindModuleSlot(beamInfo.moduleType, beamInfo.slotIndex);
                 if (slot != null && slot.transform.childCount == 0)
-                    InitializeWeapon(weaponInfo);
+                    InitializeBeam(beamInfo);
             }
         }
+
+        // Missile 생성
+        if (bodyInfo.missiles != null)
+        {
+            foreach (var missileInfo in bodyInfo.missiles)
+            {
+                ModuleSlot slot = FindModuleSlot(missileInfo.moduleType, missileInfo.slotIndex);
+                if (slot != null && slot.transform.childCount == 0)
+                    InitializeMissile(missileInfo);
+            }
+        }
+
 
         // 행거 생성
         if (bodyInfo.hangers != null)
@@ -231,36 +266,40 @@ public class ModuleBody : ModuleBase
         moduleEngine.InitializeModuleEngine(moduleInfo, this, targetSlot);
     }
 
-    private void InitializeWeapon(ModuleInfo moduleInfo)
+    private void InitializeBeam(ModuleInfo moduleInfo)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString(), moduleInfo.moduleLevel);
-        if (modulePrefab == null)
-        {
-            Debug.LogWarning($"InitializeWeapon: Cannot find module prefab - ModuleType: {moduleInfo.moduleType},  ModuleSubType: {moduleInfo.moduleSubType},  Level: {moduleInfo.moduleLevel}");
-            return;
-        }
-
+        if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
-        if (targetSlot == null)
-        {
-            Debug.LogWarning($"InitializeWeapon: Cannot find weapon slot {moduleInfo.slotIndex}");
-            return;
-        }
+        if (targetSlot == null) return;
+        if (targetSlot.transform.childCount > 0) return;
+        
+        GameObject beamObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
+        beamObj.transform.SetParent(targetSlot.transform);
 
-        if (targetSlot.transform.childCount > 0)
-        {
-            Debug.LogWarning($"InitializeWeapon: Weapon slot {moduleInfo.slotIndex} is already occupied");
-            return;
-        }
+        ModuleBeam moduleBeam = beamObj.GetComponent<ModuleBeam>();
+        if (moduleBeam == null)
+            moduleBeam = beamObj.AddComponent<ModuleBeam>();
 
-        GameObject weaponObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
-        weaponObj.transform.SetParent(targetSlot.transform);
+        moduleBeam.InitializeModuleBeam(moduleInfo, this, targetSlot);
+    }
 
-        ModuleWeapon moduleWeapon = weaponObj.GetComponent<ModuleWeapon>();
-        if (moduleWeapon == null)
-            moduleWeapon = weaponObj.AddComponent<ModuleWeapon>();
+    private void InitializeMissile(ModuleInfo moduleInfo)
+    {
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString(), moduleInfo.moduleLevel);
+        if (modulePrefab == null) return;
+        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
+        if (targetSlot == null) return;
+        if (targetSlot.transform.childCount > 0) return;
+        
+        GameObject missileObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
+        missileObj.transform.SetParent(targetSlot.transform);
 
-        moduleWeapon.InitializeModuleWeapon(moduleInfo, this, targetSlot);
+        ModuleMissile moduleMissile = missileObj.GetComponent<ModuleMissile>();
+        if (moduleMissile == null)
+            moduleMissile = missileObj.AddComponent<ModuleMissile>();
+
+        moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot);
     }
 
     private void InitializeHanger(ModuleInfo moduleInfo)
@@ -306,12 +345,11 @@ public class ModuleBody : ModuleBase
         // 모듈 타입별, 슬롯 인덱스별로 정렬
         m_moduleSlots.Sort((slot1, slot2) =>
         {
-            int typeComparison = slot1.m_moduleTypePacked.CompareTo(slot2.m_moduleTypePacked);
+            int typeComparison = slot1.m_moduleSlotInfo.moduleType.CompareTo(slot2.m_moduleSlotInfo.moduleType);
             if (typeComparison != 0)
                 return typeComparison;
             return slot1.m_moduleSlotInfo.slotIndex.CompareTo(slot2.m_moduleSlotInfo.slotIndex);
         });
-
     }
 
     private void FillEmptySlotsWithPlaceholders()
@@ -345,28 +383,41 @@ public class ModuleBody : ModuleBase
     // 엔진 추가
     public void AddEngine(ModuleEngine engine)
     {
+        if (m_moduleBodyInfo.engines.Contains(engine.m_moduleInfo) == false)
+            m_moduleBodyInfo.engines.Add(engine.m_moduleInfo);
+
         if (!m_engines.Contains(engine))
-        {
             m_engines.Add(engine);
-        }
     }
 
-    // 무기 추가
-    public void AddWeapon(ModuleWeapon weapon)
+    // Beam 추가
+    public void AddBeam(ModuleBeam beam)
     {
-        if (!m_weapons.Contains(weapon))
-        {
-            m_weapons.Add(weapon);
-        }
+        if (m_moduleBodyInfo.beams.Contains(beam.m_moduleInfo) == false)
+            m_moduleBodyInfo.beams.Add(beam.m_moduleInfo);
+
+        if (m_beams.Contains(beam) == false)
+            m_beams.Add(beam);
+    }
+
+    // Missile 추가
+    public void AddMissile(ModuleMissile missile)
+    {
+        if (m_moduleBodyInfo.missiles.Contains(missile.m_moduleInfo) == false)
+            m_moduleBodyInfo.missiles.Add(missile.m_moduleInfo);
+
+        if (m_missiles.Contains(missile) == false)
+            m_missiles.Add(missile);
     }
 
     // 행거 추가
     public void AddHanger(ModuleHanger hanger)
     {
+        if (m_moduleBodyInfo.hangers.Contains(hanger.m_moduleInfo) == false)
+            m_moduleBodyInfo.hangers.Add(hanger.m_moduleInfo);
+
         if (!m_hangers.Contains(hanger))
-        {
             m_hangers.Add(hanger);
-        }
     }
 
     // 엔진 제거
@@ -378,9 +429,16 @@ public class ModuleBody : ModuleBase
     }
 
     // 무기 제거
-    public void RemoveWeapon(ModuleWeapon weapon)
+    public void RemoveBeam(ModuleBeam beam)
     {
-        if (m_weapons.Remove(weapon))
+        if (m_beams.Remove(beam))
+        {
+        }
+    }
+
+    public void RemoveMissile(ModuleMissile missile)
+    {
+        if (m_missiles.Remove(missile))
         {
         }
     }
@@ -396,11 +454,10 @@ public class ModuleBody : ModuleBase
     // 특정 타입과 인덱스의 슬롯 찾기
     public ModuleSlot FindModuleSlot(EModuleType moduleType, int slotIndex)
     {
-        //EModuleSlotType moduleSlotType = CommonUtility.GetModuleSlotType(moduleTypePacked);
-
-        return m_moduleSlots.FirstOrDefault(slot =>
-            CommonUtility.CompareModuleTypeForSlot(slot.m_moduleSlotInfo.moduleType, moduleType)
-            && slot.m_moduleSlotInfo.slotIndex == slotIndex);
+        return m_moduleSlots.FirstOrDefault(slot => 
+            slot.m_moduleSlotInfo.moduleType == moduleType
+            && slot.m_moduleSlotInfo.slotIndex == slotIndex
+            );
     }
 
     // moduleTypePacked와 slotIndex로 특정 모듈 찾기
@@ -421,10 +478,17 @@ public class ModuleBody : ModuleBase
         {
             if (slot != null && slot.transform.childCount > 0)
             {
-                ModuleWeapon weapon = slot.GetComponentInChildren<ModuleWeapon>();
-                if (weapon != null && weapon.m_health > 0)
+                ModuleBeam beam = slot.GetComponentInChildren<ModuleBeam>();
+                if (beam != null && beam.m_health > 0)
                 {
-                    weapon.SetTarget(target);
+                    beam.SetTarget(target);
+                    continue;
+                }
+
+                ModuleMissile missile = slot.GetComponentInChildren<ModuleMissile>();
+                if (missile != null && missile.m_health > 0)
+                {
+                    missile.SetTarget(target);
                     continue;
                 }
 
@@ -578,10 +642,12 @@ public class ModuleBody : ModuleBase
             if (existingModule != null)
             {
                 // 리스트에서 제거
-                if (existingModule is ModuleWeapon weapon)
-                    RemoveWeapon(weapon);
-                else if (existingModule is ModuleEngine engine)
+                if (existingModule is ModuleEngine engine)
                     RemoveEngine(engine);
+                else if (existingModule is ModuleBeam beam)
+                    RemoveBeam(beam);
+                else if (existingModule is ModuleMissile missile)
+                    RemoveMissile(missile);
                 else if (existingModule is ModuleHanger hanger)
                     RemoveHanger(hanger);
 
@@ -618,11 +684,18 @@ public class ModuleBody : ModuleBase
                 moduleEngine.InitializeModuleEngine(moduleInfo, this, targetSlot);
                 return true;
 
-            case EModuleType.Weapon:
-                ModuleWeapon moduleWeapon = moduleObj.GetComponent<ModuleWeapon>();
-                if (moduleWeapon == null)
-                    moduleWeapon = moduleObj.AddComponent<ModuleWeapon>();
-                moduleWeapon.InitializeModuleWeapon(moduleInfo, this, targetSlot);
+            case EModuleType.Beam:
+                ModuleBeam moduleBeam = moduleObj.GetComponent<ModuleBeam>();
+                if (moduleBeam == null)
+                    moduleBeam = moduleObj.AddComponent<ModuleBeam>();
+                moduleBeam.InitializeModuleBeam(moduleInfo, this, targetSlot);
+                return true;
+            
+            case EModuleType.Missile:
+                ModuleMissile moduleMissile = moduleObj.GetComponent<ModuleMissile>();
+                if (moduleMissile == null)
+                    moduleMissile = moduleObj.AddComponent<ModuleMissile>();
+                moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot);
                 return true;
 
             case EModuleType.Hanger:

@@ -28,9 +28,9 @@ public class SpaceFleet : MonoBehaviour
         m_isEnemyFleet = isEnemy;
         m_fleetState = fleetState;
 
-        if (m_fleetInfo.ships != null && m_fleetInfo.ships.Length > 0)
+        if (m_fleetInfo.ships != null && m_fleetInfo.ships.Count > 0)
         {
-            for (int i = 0; i < m_fleetInfo.ships.Length; i++)
+            for (int i = 0; i < m_fleetInfo.ships.Count; i++)
                 CreateSpaceShipFromData(fleetInfo.ships[i]);
 
             UpdateShipFormation(m_fleetInfo.formation, false);

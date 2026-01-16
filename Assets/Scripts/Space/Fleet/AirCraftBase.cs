@@ -60,7 +60,6 @@ public abstract class AircraftBase : MonoBehaviour
             {
                 m_hangerSlotIndex = moduleHanger.m_moduleSlot.m_moduleSlotInfo.slotIndex;
                 m_hangerModuleType = moduleHanger.m_moduleSlot.m_moduleSlotInfo.moduleType;
-                m_hangerModuleSubType = moduleHanger.m_moduleSlot.m_moduleSlotInfo.moduleSubType;
             }
         }
 

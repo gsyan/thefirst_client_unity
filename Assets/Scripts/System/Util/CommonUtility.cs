@@ -42,7 +42,7 @@ public static class CommonUtility
         if (moduleData == null) return stats;
 
         // 모듈 타입에 따라 능력치 설정
-        if (moduleInfo.moduleType == EModuleType.Weapon)
+        if (moduleInfo.moduleType == EModuleType.Beam || moduleInfo.moduleType == EModuleType.Missile)
         {
             // DPS 계산: 공격력 × 발사 개수 / 쿨타임
             if (moduleData.m_attackCoolTime > 0)
@@ -71,17 +71,6 @@ public static class CommonUtility
             stats.cargoCapacity = bodyData.m_cargoCapacity;
         }
 
-        // Weapon 모듈들 합산
-        if (bodyInfo.weapons != null)
-        {
-            foreach (ModuleInfo weaponInfo in bodyInfo.weapons)
-            {
-                CapabilityProfile weaponStats = GetCapabilityProfile(weaponInfo);
-                stats.attackDps += weaponStats.attackDps;
-                stats.totalWeapons += weaponStats.totalWeapons;
-            }
-        }
-
         // Engine 모듈들 합산
         if (bodyInfo.engines != null)
         {
@@ -90,6 +79,28 @@ public static class CommonUtility
                 CapabilityProfile engineStats = GetCapabilityProfile(engineInfo);
                 stats.engineSpeed += engineStats.engineSpeed;
                 stats.totalEngines += engineStats.totalEngines;
+            }
+        }
+
+        // Beam 모듈들 합산
+        if (bodyInfo.beams != null)
+        {
+            foreach (ModuleInfo moduleInfo in bodyInfo.beams)
+            {
+                CapabilityProfile moduleStats = GetCapabilityProfile(moduleInfo);
+                stats.attackDps += moduleStats.attackDps;
+                stats.totalWeapons += moduleStats.totalWeapons;
+            }
+        }
+
+        // Missile 모듈들 합산
+        if (bodyInfo.missiles != null)
+        {
+            foreach (ModuleInfo moduleInfo in bodyInfo.missiles)
+            {
+                CapabilityProfile moduleStats = GetCapabilityProfile(moduleInfo);
+                stats.attackDps += moduleStats.attackDps;
+                stats.totalWeapons += moduleStats.totalWeapons;
             }
         }
 
@@ -144,7 +155,7 @@ public static class CommonUtility
             stats.totalWeapons += shipStats.totalWeapons;
             stats.totalEngines += shipStats.totalEngines;
         }
-        stats.engineSpeed = stats.engineSpeed / fleetInfo.ships.Length;
+        stats.engineSpeed = stats.engineSpeed / fleetInfo.ships.Count;
 
         // 육각형 능력치 자동 계산
         stats.firepower = stats.attackDps;
@@ -158,79 +169,7 @@ public static class CommonUtility
     }
     #endregion Fleet Utility end -----------------------------------------------------------------------------------
 
-    #region Module Type Packing begin -----------------------------------------------------------------------------------
-    private const int TYPE_SHIFT = 24;
-    private const int SUBTYPE_SHIFT = 16;
-    private const int SLOTTYPE_SHIFT = 8;
-    private const int MASK = 0xFF;
-
-    public static int CreateModuleTypePacked(EModuleType type, EModuleSubType subType, EModuleSlotType slotType)
-    {
-        // SubType에서 순수한 서브타입 값만 추출 (1001 -> 1, 2002 -> 2)
-        int pureSubType = (int)subType % 1000;
-        return ((int)type << TYPE_SHIFT) | (pureSubType << SUBTYPE_SHIFT) | ((int)slotType << SLOTTYPE_SHIFT);
-    }
-
-    public static EModuleType GetModuleType(int moduleTypePacked)
-    {
-        return (EModuleType)((moduleTypePacked >> TYPE_SHIFT) & MASK);
-    }
-
-    public static EModuleSubType GetModuleSubType(int moduleTypePacked)
-    {
-        int pureSubType = (moduleTypePacked >> SUBTYPE_SHIFT) & MASK;
-        if (pureSubType == 0)
-            return EModuleSubType.None;
-
-        // Type 정보를 가져와서 완전한 SubType 값으로 복원 (Type=1, SubType=1 -> 1001)
-        EModuleType type = GetModuleType(moduleTypePacked);
-        int fullSubType = (int)type * 1000 + pureSubType;
-        return (EModuleSubType)fullSubType;
-    }
-
-    public static int GetModuleSubTypeValue(int moduleTypePacked)
-    {
-        return (moduleTypePacked >> SUBTYPE_SHIFT) & MASK;
-    }
-
-    public static EModuleSlotType GetModuleSlotType(int moduleType)
-    {
-        return (EModuleSlotType)((moduleType >> SLOTTYPE_SHIFT) & MASK);
-    }
-
-    public static int GetModuleTypeWithoutSlotType(int moduleType)
-    {
-        return moduleType & unchecked((int)0xFFFF0000);
-    }
-
-    public static int GetModuleTypeOnly(int moduleType)
-    {
-        return moduleType & unchecked((int)0xFF000000);
-    }
-
-    public static bool CompareModuleTypeForSlot(EModuleType moduleType1, EModuleType moduleType2)
-    {
-        return moduleType1 == moduleType2;
-    }
-
-    // 슬롯 타입 호환성 체크: 모듈이 특정 슬롯에 부착 가능한지 확인
-    public static bool CanAttachToSlot(EModuleSlotType moduleSlotType, EModuleSlotType slotType)
-    {
-        // All(0) = 모든 슬롯 허용
-        if (moduleSlotType == EModuleSlotType.All || slotType == EModuleSlotType.All)
-            return true;
-
-        // Side는 Head, Rear 제외한 모든 슬롯 허용
-        if (moduleSlotType == EModuleSlotType.Side || slotType == EModuleSlotType.Side)
-        {
-            var other = (moduleSlotType == EModuleSlotType.Side) ? slotType : moduleSlotType;
-            return other != EModuleSlotType.Head && other != EModuleSlotType.Rear;
-        }
-
-        // 정확히 일치해야 부착 가능
-        return moduleSlotType == slotType;
-    }
-
+    #region Module Type begin -----------------------------------------------------------------------------------
     public static EModuleType GetModuleTypeFromSubType(EModuleSubType subType)
     {
         if (subType == EModuleSubType.None) return EModuleType.None;        
@@ -238,7 +177,7 @@ public static class CommonUtility
         return (EModuleType)typeValue;
     }
 
-    #endregion Module Type Packing end -----------------------------------------------------------------------------------
+    #endregion Module Type end -----------------------------------------------------------------------------------
 
 
 

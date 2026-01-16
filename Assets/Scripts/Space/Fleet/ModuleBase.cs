@@ -62,6 +62,10 @@ public class ModuleBase : MonoBehaviour
     {
         return EModuleSubType.None;
     }
+    public virtual int GetModuleSlotIndex()
+    {
+        return 0;
+    }
     public virtual int GetModuleLevel()
     {
         return 0;

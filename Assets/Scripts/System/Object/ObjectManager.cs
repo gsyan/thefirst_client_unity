@@ -94,7 +94,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 카메라가 함대를 타겟으로 설정
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 
-        StartCoroutine(SpawnEnemies());
+        //StartCoroutine(SpawnEnemies());
         //StartCoroutine(SpawnMineral());
 
         UIManager.Instance.InitializeUIManager();
@@ -178,7 +178,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             {
                 shipName = $"EnemyShip_{i}",
                 positionIndex = i,
-                bodies = new[]
+                bodies = new List<ModuleBodyInfo>
                 {
                     new ModuleBodyInfo
                     {
@@ -186,7 +186,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                         moduleSubType = EModuleSubType.Body_Battle,
                         moduleLevel = enemyLevel,
                         bodyIndex = 0,
-                        engines = new[]
+                        engines = new List<ModuleInfo>
                         {
                             new ModuleInfo
                             {
@@ -197,12 +197,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                                 slotIndex = 0
                             }
                         },
-                        weapons = new[]
+                        beams = new List<ModuleInfo>
                         {
                             new ModuleInfo
                             {
-                                moduleType = EModuleType.Weapon,
-                                moduleSubType = EModuleSubType.Weapon_Beam,
+                                moduleType = EModuleType.Beam,
+                                moduleSubType = EModuleSubType.Beam_Standard,
                                 moduleLevel = 1,
                                 bodyIndex = 0,
                                 slotIndex = 0
@@ -218,7 +218,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         {
             fleetName = $"EnemyFleet",
             formation = EFormationType.LinearHorizontal,
-            ships = enemyShips.ToArray()
+            ships = enemyShips
         };
 
         enemyFleet.InitializeSpaceFleet(enemyFleetInfo, true);
