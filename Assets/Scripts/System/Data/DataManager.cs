@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 public class DataManager : Singleton<DataManager>
@@ -126,7 +127,7 @@ public class DataManager : Singleton<DataManager>
             description = "Default Fleet",
             isActive = true,
             formation = EFormationType.LinearHorizontal,
-            ships = new ShipInfo[]
+            ships = new List<ShipInfo>
             {
                 new ShipInfo
                 {
@@ -135,7 +136,7 @@ public class DataManager : Singleton<DataManager>
                     shipName = "DefaultShip",
                     positionIndex = 0,
                     description = "Default Ship",
-                    bodies = new ModuleBodyInfo[]
+                    bodies = new List<ModuleBodyInfo>
                     {
                         new ModuleBodyInfo
                         {
@@ -143,7 +144,7 @@ public class DataManager : Singleton<DataManager>
                             moduleSubType = EModuleSubType.Body_Battle,
                             moduleLevel = 1,
                             bodyIndex = 0,
-                            engines = new ModuleInfo[]
+                            engines = new List<ModuleInfo>
                             {
                                 new ModuleInfo
                                 {
@@ -154,12 +155,12 @@ public class DataManager : Singleton<DataManager>
                                     slotIndex = 0
                                 }
                             },
-                            weapons = new ModuleInfo[]
+                            beams = new List<ModuleInfo>
                             {
                                 new ModuleInfo
                                 {
-                                    moduleType = EModuleType.Weapon,
-                                    moduleSubType = EModuleSubType.Weapon_Beam,
+                                    moduleType = EModuleType.Beam,
+                                    moduleSubType = EModuleSubType.Beam_Standard,
                                     moduleLevel = 1,
                                     bodyIndex = 0,
                                     slotIndex = 0
@@ -234,7 +235,7 @@ public class DataManager : Singleton<DataManager>
 
     public int GetShipCount()
     {
-        return m_currentFleetInfo?.ships?.Length ?? 0;
+        return m_currentFleetInfo?.ships?.Count ?? 0;
     }
     #endregion
 
@@ -331,14 +332,6 @@ public class DataManager : Singleton<DataManager>
     {
         if (m_dataTableModuleResearch == null) return new CostStruct();
         return m_dataTableModuleResearch.GetResearchCost(subType);
-    }
-
-    public CostStruct GetModuleResearchCost(int moduleTypePacked)
-    {
-        EModuleSubType subType = CommonUtility.GetModuleSubType(moduleTypePacked);
-        if (subType == EModuleSubType.None) return new CostStruct();
-
-        return GetModuleResearchCost(subType);
     }
     #endregion
 

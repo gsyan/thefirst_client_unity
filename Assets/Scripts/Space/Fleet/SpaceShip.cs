@@ -71,7 +71,7 @@ public class SpaceShip : MonoBehaviour
         ApplyFleetStateToShip();
 
         m_shipInfo = shipInfo;
-        if (shipInfo.bodies == null || shipInfo.bodies.Length == 0) return;
+        if (shipInfo.bodies == null || shipInfo.bodies.Count == 0) return;
         foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
             InitSpaceShipBody(bodyInfo, null);
 
@@ -94,7 +94,7 @@ public class SpaceShip : MonoBehaviour
 
     public int GetAverageModuleLevel()
     {
-        if (m_shipInfo.bodies == null || m_shipInfo.bodies.Length == 0) return 0;
+        if (m_shipInfo.bodies == null || m_shipInfo.bodies.Count == 0) return 0;
         int totalLevel = 0;
         int moduleCount = 0;
 
@@ -112,11 +112,20 @@ public class SpaceShip : MonoBehaviour
                 }
             }
 
-            if (body.weapons != null)
+            if (body.beams != null)
             {
-                foreach (ModuleInfo weapon in body.weapons)
+                foreach (ModuleInfo beam in body.beams)
                 {
-                    totalLevel += weapon.moduleLevel;
+                    totalLevel += beam.moduleLevel;
+                    moduleCount++;
+                }
+            }
+
+            if (body.missiles != null)
+            {
+                foreach (ModuleInfo missile in body.missiles)
+                {
+                    totalLevel += missile.moduleLevel;
                     moduleCount++;
                 }
             }
@@ -842,87 +851,6 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
-    // 서버 응답으로부터 함선 정보 업데이트 (모듈 교체 시)
-    public void UpdateShipFromServerResponse(ShipInfo updatedShipInfo)
-    {
-        if (updatedShipInfo == null) return;
-        
-        // 각 바디의 모듈 정보 업데이트 (m_shipInfo 교체 전에 먼저 처리)
-        if (updatedShipInfo.bodies != null)
-        {
-            foreach (ModuleBodyInfo updatedBodyInfo in updatedShipInfo.bodies)
-            {
-                ModuleBody body = FindModuleBodyByIndex(updatedBodyInfo.bodyIndex);
-                if (body == null) continue;
-                if (body.m_moduleBodyInfo == null) continue;
-                
-                // Body 모듈 자체가 변경되었는지 확인
-                if (body.m_moduleBodyInfo.moduleType != updatedBodyInfo.moduleType)
-                {
-                    ReplaceBodyWhilePreservingModules(body, updatedBodyInfo);
-                    // 주의: 새로 생성된 body는 이미 모듈 복원이 완료되었으므로 아래 업데이트는 스킵 (continue)
-                    continue;
-                }
-
-                // 엔진 모듈 업데이트
-                if (updatedBodyInfo.engines != null)
-                    UpdateModulesFromInfo(body, updatedBodyInfo.engines);
-                // 무기 모듈 업데이트
-                if (updatedBodyInfo.weapons != null)
-                    UpdateModulesFromInfo(body, updatedBodyInfo.weapons);
-                // 행거 모듈 업데이트
-                if (updatedBodyInfo.hangers != null)
-                    UpdateModulesFromInfo(body, updatedBodyInfo.hangers);
-                // 바디의 정보 업데이트
-                body.m_moduleBodyInfo = updatedBodyInfo;
-            }
-        }
-
-        // 함선 기본 정보 업데이트 (가장 마지막에)
-        m_shipInfo = updatedShipInfo;
-
-        
-        m_spaceShipStatsOrg = CommonUtility.GetCapabilityProfile(updatedShipInfo);
-        m_spaceShipStatsCur = GetCapabilityProfile();
-
-        // Outline 갱신 (새로 생성된 모듈들을 포함하도록)
-        if (m_shipOutline != null)
-            m_shipOutline.RefreshOutline();
-
-        // 모듈 selectedModuleVisual 갱신 (새로 생성된 모듈들을 포함하도록)
-        RefreshSelectedModuleVisuals();
-    }
-    private void UpdateModulesFromInfo(ModuleBody body, ModuleInfo[] moduleInfos)
-    {
-        foreach (ModuleInfo moduleInfo in moduleInfos)
-        {
-            ModuleSlot slot = body.FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
-            if (slot == null) continue;
-
-            ModuleBase existingModule = null;
-            if (slot.transform.childCount > 0)
-                existingModule = slot.GetComponentInChildren<ModuleBase>();
-
-            bool needsReplacement = false;
-            if (existingModule == null || existingModule is ModulePlaceholder)
-                needsReplacement = true;
-            else if (existingModule.GetModuleType() != moduleInfo.moduleType ||
-                     existingModule.GetModuleLevel() != moduleInfo.moduleLevel)
-                needsReplacement = true;
-
-            if (needsReplacement)
-            {
-                EModuleType moduleType = moduleInfo.moduleType;
-                bool success = body.ReplaceModuleInSlot(moduleInfo.moduleType, moduleInfo.moduleSubType, moduleInfo.moduleLevel, moduleInfo.slotIndex);
-                if (success)
-                    Debug.Log($"module replaced: Type={moduleInfo.moduleSubType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
-                else
-                    Debug.LogError($"Failed to replace module: Type={moduleInfo.moduleSubType}, Level={moduleInfo.moduleLevel}, Slot={moduleInfo.slotIndex}");
-            }
-        }
-    }
-
-
     // module unlock (외부 호출용 - 모듈 해금 UI에서 사용)
     public void UnlockModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex)
     {
@@ -1003,8 +931,9 @@ public class SpaceShip : MonoBehaviour
             moduleSubType = moduleSubTypeNew,
             moduleLevel = moduleLevel,
             bodyIndex = bodyIndex,
-            engines = oldBody.m_moduleBodyInfo.engines,
-            weapons = oldBody.m_moduleBodyInfo.weapons,
+            engines = oldBody.m_moduleBodyInfo.engines,   // 새 배열 생성,
+            beams = oldBody.m_moduleBodyInfo.beams,
+            missiles = oldBody.m_moduleBodyInfo.missiles,
             hangers = oldBody.m_moduleBodyInfo.hangers
         };
 
@@ -1035,9 +964,6 @@ public class SpaceShip : MonoBehaviour
         // 3. 새 body 생성 (저장된 모듈 재배치)
         InitSpaceShipBody(newBodyInfo, savedModules);
     }
-
-
-
 
     private void OnDrawGizmos()
     {

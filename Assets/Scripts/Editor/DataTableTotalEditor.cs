@@ -71,12 +71,14 @@ public class DataTableTotalEditor : EditorWindow
             EditorGUILayout.LabelField("Module Data Info", EditorStyles.boldLabel);
 
             int totalModules = dataTableModule.BodyModules.Count +
-                               dataTableModule.WeaponModules.Count +
+                               dataTableModule.BeamModules.Count +
+                               dataTableModule.MissileModules.Count +
                                dataTableModule.EngineModules.Count;
 
             EditorGUILayout.LabelField($"Total Modules: {totalModules}");
             EditorGUILayout.LabelField($"Body Modules: {dataTableModule.BodyModules.Count}");
-            EditorGUILayout.LabelField($"Weapon Modules: {dataTableModule.WeaponModules.Count}");
+            EditorGUILayout.LabelField($"Beam Modules: {dataTableModule.BeamModules.Count}");
+            EditorGUILayout.LabelField($"Missile Modules: {dataTableModule.MissileModules.Count}");
             EditorGUILayout.LabelField($"Engine Modules: {dataTableModule.EngineModules.Count}");
 
             EditorGUILayout.EndVertical();
@@ -223,21 +225,21 @@ public class DataTableTotalEditor : EditorWindow
         }
     }
 
-    private TotalGameConfigData CreateTotalGameConfig()
-    {
-        var totalConfig = new TotalGameConfigData();
+    // private TotalGameConfigData CreateTotalGameConfig()
+    // {
+    //     var totalConfig = new TotalGameConfigData();
 
-        // DataTableModule 데이터 추가
-        totalConfig.modules = new System.Collections.Generic.Dictionary<string, object>();
-        totalConfig.modules["0"] = dataTableModule.BodyModules.modules;
-        totalConfig.modules["1"] = dataTableModule.WeaponModules.modules;
-        totalConfig.modules["2"] = dataTableModule.EngineModules.modules;
+    //     // DataTableModule 데이터 추가
+    //     totalConfig.modules = new System.Collections.Generic.Dictionary<string, object>();
+    //     totalConfig.modules["0"] = dataTableModule.BodyModules.modules;
+    //     totalConfig.modules["1"] = dataTableModule.WeaponModules.modules;
+    //     totalConfig.modules["2"] = dataTableModule.EngineModules.modules;
 
-        // GameSettings 데이터 추가
-        totalConfig.gameSettings = dataTableConfig.gameSettings;
+    //     // GameSettings 데이터 추가
+    //     totalConfig.gameSettings = dataTableConfig.gameSettings;
 
-        return totalConfig;
-    }
+    //     return totalConfig;
+    // }
 
     [System.Serializable]
     public class TotalGameConfigData

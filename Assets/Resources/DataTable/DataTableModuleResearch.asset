@@ -75,7 +75,7 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_description: Research Weapon_Beam module technology
+    m_description: Research Beam_Standard module technology
   - m_moduleType: 3
     m_moduleSubType: 3002
     m_researchCost:
@@ -84,7 +84,7 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_description: Research Weapon_Missile module technology
+    m_description: Research Beam_Advanced module technology
   - m_moduleType: 4
     m_moduleSubType: 4001
     m_researchCost:
@@ -93,9 +93,27 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_description: Research Hanger_Standard module technology
+    m_description: Research Missile_Standard module technology
   - m_moduleType: 4
     m_moduleSubType: 4002
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Missile_Advanced module technology
+  - m_moduleType: 5
+    m_moduleSubType: 5001
+    m_researchCost:
+      techLevel: 1
+      mineral: 1000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    m_description: Research Hanger_Standard module technology
+  - m_moduleType: 5
+    m_moduleSubType: 5002
     m_researchCost:
       techLevel: 1
       mineral: 1000

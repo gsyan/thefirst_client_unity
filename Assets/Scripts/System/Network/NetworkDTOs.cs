@@ -29,8 +29,8 @@ public class FleetInfo
     public string fleetName;
     public string description;
     public bool isActive;
-    public EFormationType formation;    
-    public ShipInfo[] ships;
+    public EFormationType formation;
+    public List<ShipInfo> ships;
 }
 
 [System.Serializable]
@@ -41,7 +41,7 @@ public class ShipInfo
     public string shipName;
     public int positionIndex;
     public string description;
-    public ModuleBodyInfo[] bodies;
+    public List<ModuleBodyInfo> bodies;
 }
 
 [System.Serializable]
@@ -51,9 +51,10 @@ public class ModuleBodyInfo
     public EModuleSubType moduleSubType;
     public int moduleLevel;
     public int bodyIndex;
-    public ModuleInfo[] engines;
-    public ModuleInfo[] weapons;
-    public ModuleInfo[] hangers;
+    public List<ModuleInfo> engines;
+    public List<ModuleInfo> beams;
+    public List<ModuleInfo> missiles;
+    public List<ModuleInfo> hangers;
 }
 
 [System.Serializable]
@@ -71,16 +72,12 @@ public class ModuleInfo
 public class ModuleSlotInfo
 {
     public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public EModuleSlotType moduleSlotType;
     public int slotIndex;
 
     public ModuleSlotInfo() { }
-    public ModuleSlotInfo(EModuleType moduleType, EModuleSubType moduleSubType, EModuleSlotType moduleSlotType, int slotIndex)
+    public ModuleSlotInfo(EModuleType moduleType, int slotIndex)
     {
         this.moduleType = moduleType;
-        this.moduleSubType = moduleSubType;
-        this.moduleSlotType = moduleSlotType;
         this.slotIndex = slotIndex;
     }
 }
@@ -269,7 +266,6 @@ public class ModuleUnlockRequest
     public long shipId;
     public int bodyIndex;
     public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
     public int slotIndex;
 }
 

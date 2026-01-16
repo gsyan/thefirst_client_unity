@@ -16,7 +16,8 @@ public class DataTableModuleResearchEditor : Editor
 
     private readonly Color bodyColor = new Color(0.7f, 0.9f, 0.7f);
     private readonly Color engineColor = new Color(0.7f, 0.7f, 0.9f);
-    private readonly Color weaponColor = new Color(0.9f, 0.7f, 0.7f);
+    private readonly Color beamColor = new Color(0.9f, 0.7f, 0.7f);
+    private readonly Color missileColor = new Color(0.9f, 0.7f, 0.7f);
     private readonly Color hangerColor = new Color(0.9f, 0.9f, 0.7f);
 
     private void OnEnable()
@@ -213,8 +214,10 @@ public class DataTableModuleResearchEditor : Editor
                 return bodyColor;
             case EModuleType.Engine:
                 return engineColor;
-            case EModuleType.Weapon:
-                return weaponColor;
+            case EModuleType.Beam:
+                return beamColor;
+            case EModuleType.Missile:
+                return missileColor;
             case EModuleType.Hanger:
                 return hangerColor;
             default:

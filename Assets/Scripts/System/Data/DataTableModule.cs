@@ -11,21 +11,11 @@ using UnityEditor;
 [System.Serializable]
 public class ModuleData
 {
-    public int m_moduleTypePacked;
-
     [Header("Basic Info")]
     public string m_moduleName = "Module";
     public EModuleType m_moduleType = EModuleType.None;
     public EModuleSubType m_moduleSubType = EModuleSubType.None;
-    public EModuleSlotType m_moduleSlotType = EModuleSlotType.All;
     public int m_moduleLevel = 1;
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        m_moduleTypePacked = CommonUtility.CreateModuleTypePacked(m_moduleType, m_moduleSubType, m_moduleSlotType);
-    }
-#endif
 
     // Body Module Slots (extracted from prefab) ---------------------------------------
     [Header("Body Slot Info")]
@@ -137,8 +127,11 @@ public class DataTableModule : ScriptableObject
     [Header("Engine Modules by SubType")]
     [SerializeField] private List<ModuleSubTypeGroup> engineGroups = new();
 
-    [Header("Weapon Modules by SubType")]
-    [SerializeField] private List<ModuleSubTypeGroup> weaponGroups = new();
+    [Header("Beam Modules by SubType")]
+    [SerializeField] private List<ModuleSubTypeGroup> beamGroups = new();
+
+    [Header("Missile Modules by SubType")]
+    [SerializeField] private List<ModuleSubTypeGroup> missileGroups = new();
 
     [Header("Hanger Modules by SubType")]
     [SerializeField] private List<ModuleSubTypeGroup> hangerGroups = new();
@@ -148,7 +141,8 @@ public class DataTableModule : ScriptableObject
 
     public List<ModuleSubTypeGroup> BodyGroups => bodyGroups;
     public List<ModuleSubTypeGroup> EngineGroups => engineGroups;
-    public List<ModuleSubTypeGroup> WeaponGroups => weaponGroups;
+    public List<ModuleSubTypeGroup> BeamGroups => beamGroups;
+    public List<ModuleSubTypeGroup> MissileGroups => missileGroups;
     public List<ModuleSubTypeGroup> HangerGroups => hangerGroups;
 
     public ModuleDataList BodyModules
@@ -175,12 +169,24 @@ public class DataTableModule : ScriptableObject
         }
     }
 
-    public ModuleDataList WeaponModules
+    public ModuleDataList BeamModules
     {
         get
         {
             var list = new ModuleDataList();
-            foreach (var group in weaponGroups)
+            foreach (var group in beamGroups)
+                foreach (var module in group.modules)
+                    list.Add(module);
+            return list;
+        }
+    }
+
+    public ModuleDataList MissileModules
+    {
+        get
+        {
+            var list = new ModuleDataList();
+            foreach (var group in missileGroups)
                 foreach (var module in group.modules)
                     list.Add(module);
             return list;
@@ -209,8 +215,10 @@ public class DataTableModule : ScriptableObject
             group = bodyGroups.Find(g => g.subType == data.m_moduleSubType);
         else if( data.m_moduleType == EModuleType.Engine)
             group = engineGroups.Find(g => g.subType == data.m_moduleSubType);
-        else if( data.m_moduleType == EModuleType.Weapon)
-            group = weaponGroups.Find(g => g.subType == data.m_moduleSubType);
+        else if( data.m_moduleType == EModuleType.Beam)
+            group = beamGroups.Find(g => g.subType == data.m_moduleSubType);
+        else if( data.m_moduleType == EModuleType.Missile)
+            group = missileGroups.Find(g => g.subType == data.m_moduleSubType);
         else if( data.m_moduleType == EModuleType.Hanger)
             group = hangerGroups.Find(g => g.subType == data.m_moduleSubType);
 
@@ -234,8 +242,10 @@ public class DataTableModule : ScriptableObject
             group = bodyGroups.Find(g => g.subType == subType);
         else if( moduleType == EModuleType.Engine)
             group = engineGroups.Find(g => g.subType == subType);
-        else if( moduleType == EModuleType.Weapon)
-            group = weaponGroups.Find(g => g.subType == subType);
+        else if( moduleType == EModuleType.Beam)
+            group = beamGroups.Find(g => g.subType == subType);
+        else if( moduleType == EModuleType.Missile)
+            group = missileGroups.Find(g => g.subType == subType);
         else if( moduleType == EModuleType.Hanger)
             group = hangerGroups.Find(g => g.subType == subType);
 
@@ -253,8 +263,10 @@ public class DataTableModule : ScriptableObject
                 bodyGroups.Add(new ModuleSubTypeGroup { subType = subType });
             else if (moduleType == EModuleType.Engine)
                 engineGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.Weapon)
-                weaponGroups.Add(new ModuleSubTypeGroup { subType = subType });
+            else if (moduleType == EModuleType.Beam)
+                beamGroups.Add(new ModuleSubTypeGroup { subType = subType });
+            else if (moduleType == EModuleType.Missile)
+                missileGroups.Add(new ModuleSubTypeGroup { subType = subType });
             else if (moduleType == EModuleType.Hanger)
                 hangerGroups.Add(new ModuleSubTypeGroup { subType = subType });
         }
@@ -275,7 +287,8 @@ public class DataTableModule : ScriptableObject
         {
             { (int)EModuleType.Body, BodyModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.Engine, EngineModules.modules.Cast<object>().ToList() },
-            { (int)EModuleType.Weapon, WeaponModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.Beam, BeamModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.Missile, MissileModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.Hanger, HangerModules.modules.Cast<object>().ToList() }
         };
 
@@ -302,7 +315,8 @@ public class DataTableModule : ScriptableObject
             {
                 bodyGroups.Clear();
                 engineGroups.Clear();
-                weaponGroups.Clear();
+                beamGroups.Clear();
+                missileGroups.Clear();
                 hangerGroups.Clear();
                 InitializeSubTypeGroups();
 
@@ -322,11 +336,19 @@ public class DataTableModule : ScriptableObject
                         AddModuleDataToTable(module);
                 }
 
-                int weaponKey = (int)EModuleType.Weapon;
-                if (modulesObj[weaponKey.ToString()] != null)
+                int beamKey = (int)EModuleType.Beam;
+                if (modulesObj[beamKey.ToString()] != null)
                 {
-                    var weaponList = modulesObj[weaponKey.ToString()].ToObject<List<ModuleData>>();
-                    foreach (var module in weaponList)
+                    var beamList = modulesObj[beamKey.ToString()].ToObject<List<ModuleData>>();
+                    foreach (var module in beamList)
+                        AddModuleDataToTable(module);
+                }
+
+                int missileKey = (int)EModuleType.Missile;
+                if (modulesObj[missileKey.ToString()] != null)
+                {
+                    var missileList = modulesObj[missileKey.ToString()].ToObject<List<ModuleData>>();
+                    foreach (var module in missileList)
                         AddModuleDataToTable(module);
                 }
 
@@ -369,8 +391,6 @@ public class DataTableModule : ScriptableObject
         {
             var info = new ModuleSlotInfo(
                 slot.m_moduleSlotInfo.moduleType,
-                slot.m_moduleSlotInfo.moduleSubType,
-                slot.m_moduleSlotInfo.moduleSlotType,
                 slot.m_moduleSlotInfo.slotIndex
             );
             slotInfos.Add(info);
@@ -391,7 +411,13 @@ public class DataTableModule : ScriptableObject
             isValid = false;
         }
 
-        if (WeaponModules.Count == 0)
+        if (BeamModules.Count == 0)
+        {
+            Debug.LogWarning("No Weapon modules defined!");
+            isValid = false;
+        }
+
+        if (MissileModules.Count == 0)
         {
             Debug.LogWarning("No Weapon modules defined!");
             isValid = false;
@@ -410,8 +436,9 @@ public class DataTableModule : ScriptableObject
     public void GenerateLevel1to10Data()
     {
         bodyGroups.Clear();
-        weaponGroups.Clear();
         engineGroups.Clear();
+        beamGroups.Clear();
+        missileGroups.Clear();        
         hangerGroups.Clear();
         InitializeSubTypeGroups();
 
@@ -431,7 +458,6 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleSlotType = EModuleSlotType.All,
                         m_moduleLevel = i,
                         m_moduleSlots = slotInfos,
                         m_health = 100f + (i * 50f),
@@ -452,7 +478,6 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleSlotType = EModuleSlotType.All,
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
                         m_movementSpeed = 50f + (i * 5f),
@@ -463,12 +488,8 @@ public class DataTableModule : ScriptableObject
                     AddModuleDataToTable(module);
                 }
             }
-            else if( moduleType == EModuleType.Weapon)
+            else if( moduleType == EModuleType.Beam)
             {
-                // subType 에 따른 분기
-                EModuleSlotType tempSlotType = EModuleSlotType.All;
-                if (subType == EModuleSubType.Weapon_Beam)  tempSlotType =  EModuleSlotType.Head;
-
                 for (int i = 1; i <= 10; i++)
                 {
                     var module = new ModuleData
@@ -476,7 +497,30 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleSlotType = tempSlotType,
+                        m_moduleLevel = i,
+                        m_health = 30f + (i * 10f),
+                        m_attackFireCount = 1 + (i / 5),
+                        m_attackPower = 10f + (i * 5f),                        
+                        m_attackCoolTime = 2.0f - (i * 0.05f),
+                        m_projectileLength = 50f/* + (i * 5.0f)*/,
+                        m_projectileWidth = 5f/* + (i * 0.5f)*/,
+                        m_projectileSpeed = 200f/* + (i * 5.0f)*/,
+                        //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
+                        m_description = $"{subType} Lv.{i}"
+                    };
+                    AddModuleDataToTable(module);
+                }
+            }
+            else if( moduleType == EModuleType.Missile)
+            {
+                for (int i = 1; i <= 10; i++)
+                {
+                    var module = new ModuleData
+                    {
+                        m_moduleName = $"{subType} Lv.{i}",
+                        m_moduleType = moduleType,
+                        m_moduleSubType = subType,
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
                         m_attackFireCount = 1 + (i / 5),
@@ -501,7 +545,6 @@ public class DataTableModule : ScriptableObject
                         m_moduleName = $"{subType} Lv.{i}",
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
-                        m_moduleSlotType = EModuleSlotType.Side,
                         m_moduleLevel = i,
                         m_health = 40f + (i * 15f),
                         m_hangarCapability = 2 + (i * 3),

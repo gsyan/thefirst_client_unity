@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ModuleWeapon : ModuleBase
+public class ModuleMissile : ModuleBase
 {
     [SerializeField] private ModuleBody m_parentBody;
     public ModuleInfo m_moduleInfo;
@@ -20,7 +20,34 @@ public class ModuleWeapon : ModuleBase
     private ModuleBody m_currentTarget;
     private Coroutine m_autoAttackCoroutine;
 
-    public void InitializeModuleWeapon(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
+
+    public override EModuleType GetModuleType()
+    {
+        return m_moduleInfo.moduleType;
+    }
+    public override EModuleSubType GetModuleSubType()
+    {
+        return m_moduleInfo.moduleSubType;
+    }
+    public override int GetModuleSlotIndex()
+    {
+        return m_moduleInfo.slotIndex;
+    }
+    public override int GetModuleLevel()
+    {
+        return m_moduleInfo.moduleLevel;
+    }
+    public override void SetModuleLevel(int level)
+    {
+        m_moduleInfo.moduleLevel = level;
+    }
+
+
+
+
+
+
+    public void InitializeModuleMissile(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
     {
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
@@ -30,7 +57,7 @@ public class ModuleWeapon : ModuleBase
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
         if (moduleData == null)
         {
-            Debug.LogError("Failed to restore module data for ModuleWeapon");
+            Debug.LogError("Failed to restore module data for ModuleMissile");
             return;
         }
 
@@ -47,30 +74,22 @@ public class ModuleWeapon : ModuleBase
         m_lastAttackTime = 0f;
 
         // 무기 서브 타입 초기화
-        InitializeWeaponSubType(moduleData);
+        InitializeSubType(moduleData);
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
 
         // 부모 바디에 이 무기 등록
         if (m_parentBody != null)
-            m_parentBody.AddWeapon(this);
+            m_parentBody.AddMissile(this);
     }
 
-    private void InitializeWeaponSubType(ModuleData moduleData)
+    private void InitializeSubType(ModuleData moduleData)
     {
         switch (m_moduleInfo.moduleSubType)
         {
-            case EModuleSubType.Weapon_Beam:
-                //gameObject.transform.rotation = m_parentBody.transform.rotation;
-                for(int i=0; i< moduleData.m_attackFireCount; i++)
-                {
-                    LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
-                    launcher.InitializeLauncherBeam(moduleData);
-                    m_launchers.Add(launcher);
-                }
-                break;
-            case EModuleSubType.Weapon_Missile:
+            case EModuleSubType.Missile_Standard:
+            case EModuleSubType.Missile_Advanced:
                 for(int i=0; i< moduleData.m_attackFireCount; i++)
                 {
                     LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
@@ -138,13 +157,9 @@ public class ModuleWeapon : ModuleBase
         
         if (m_health <= 0)
         {
-            Debug.Log($"[{GetFleetName()}] ModuleWeapon[Body{m_moduleInfo.bodyIndex}-Slot{m_moduleSlot.m_moduleSlotInfo.slotIndex}] destroyed!");
-            
             // 부모 바디에서 이 무기 제거
             if (m_parentBody != null)
-            {
-                m_parentBody.RemoveWeapon(this);
-            }
+                m_parentBody.RemoveMissile(this);
             
             // 비활성화
             gameObject.SetActive(false);
@@ -166,22 +181,7 @@ public class ModuleWeapon : ModuleBase
         return stats;
     }
 
-    public override EModuleType GetModuleType()
-    {
-        return m_moduleInfo.moduleType;
-    }
-    public override EModuleSubType GetModuleSubType()
-    {
-        return m_moduleInfo.moduleSubType;
-    }
-    public override int GetModuleLevel()
-    {
-        return m_moduleInfo.moduleLevel;
-    }
-    public override void SetModuleLevel(int level)
-    {
-        m_moduleInfo.moduleLevel = level;
-    }
+    
 
     public override void ApplyModuleLevelUp(int newLevel)
     {
@@ -204,7 +204,7 @@ public class ModuleWeapon : ModuleBase
         m_attackCoolTime = moduleData.m_attackCoolTime;
         m_upgradeCost = moduleData.m_upgradeCost;
 
-        Debug.Log($"ModuleWeapon leveled up to {newLevel}: HP={m_healthMax}, AttackPower={m_attackPower}, FireCount={m_attackFireCount}, CoolTime={m_attackCoolTime}");
+        Debug.Log($"ModuleMissile leveled up to {newLevel}: HP={m_healthMax}, AttackPower={m_attackPower}, FireCount={m_attackFireCount}, CoolTime={m_attackCoolTime}");
     }
 
     public override int GetModuleBodyIndex()
@@ -256,9 +256,7 @@ public class ModuleWeapon : ModuleBase
     private void OnDestroy()
     {
         if (m_parentBody != null)
-        {
-            m_parentBody.RemoveWeapon(this);
-        }
+            m_parentBody.RemoveMissile(this);
     }
 
     public override string GetUpgradeComparisonText()

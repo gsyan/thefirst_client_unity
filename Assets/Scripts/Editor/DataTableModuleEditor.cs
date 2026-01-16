@@ -12,20 +12,23 @@ public class DataTableModuleEditor : Editor
 
     private Dictionary<EModuleSubType, bool> bodySubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> engineSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
-    private Dictionary<EModuleSubType, bool> weaponSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<EModuleSubType, bool> beamSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<EModuleSubType, bool> missileSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> hangerSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<ModuleData, bool> moduleSlotFoldouts = new Dictionary<ModuleData, bool>();
 
     private bool showBodyModules = false;
     private bool showEngineModules = false;
-    private bool showWeaponModules = false;
+    private bool showBeamModules = false;
+    private bool showMissileModules = false;
     private bool showHangerModules = false;
     private bool showUtilityTools = true;
     private bool showJsonTools = true;
 
     private readonly Color bodyColor = new Color(0.7f, 0.9f, 0.7f);
     private readonly Color engineColor = new Color(0.7f, 0.7f, 0.9f);
-    private readonly Color weaponColor = new Color(0.9f, 0.7f, 0.7f);
+    private readonly Color beamColor = new Color(0.9f, 0.7f, 0.7f);
+    private readonly Color missileColor = new Color(0.9f, 0.7f, 0.7f);
     private readonly Color hangerColor = new Color(0.9f, 0.9f, 0.7f);
 
     private void OnEnable()
@@ -51,7 +54,8 @@ public class DataTableModuleEditor : Editor
 
         DrawBodyModuleSection();
         DrawEngineModuleSection();
-        DrawWeaponModuleSection();
+        DrawBeamModuleSection();
+        DrawMissileModuleSection();
         DrawHangerModuleSection();
 
         EditorGUILayout.Space(20);
@@ -74,7 +78,7 @@ public class DataTableModuleEditor : Editor
         GUILayout.Label("Data Table Module", EditorStyles.largeLabel);
         GUILayout.FlexibleSpace();
 
-        int totalModules = dataTableModule.BodyModules.Count + dataTableModule.EngineModules.Count + dataTableModule.WeaponModules.Count + dataTableModule.HangerModules.Count;
+        int totalModules = dataTableModule.BodyModules.Count + dataTableModule.EngineModules.Count + dataTableModule.BeamModules.Count + dataTableModule.MissileModules.Count + dataTableModule.HangerModules.Count;
         GUILayout.Label($"Total: {totalModules}", EditorStyles.miniLabel);
 
         EditorGUILayout.EndHorizontal();
@@ -119,7 +123,6 @@ public class DataTableModuleEditor : Editor
                 m_moduleName = $"{group.subType} LV.{group.modules.Count + 1}",
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
-                m_moduleSlotType = EModuleSlotType.All,
                 m_moduleLevel = group.modules.Count + 1,
                 m_health = 200f,
                 m_cargoCapacity = 100f,
@@ -158,7 +161,6 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumPopup("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         // Module Slots (from prefab)
@@ -172,7 +174,7 @@ public class DataTableModuleEditor : Editor
             EditorGUI.indentLevel++;
             foreach (var slot in module.m_moduleSlots)
             {
-                EditorGUILayout.LabelField($"{slot.moduleType} / {slot.moduleSubType} / {slot.moduleSlotType} / Slot:{slot.slotIndex}");
+                EditorGUILayout.LabelField($"{slot.moduleType} / Slot:{slot.slotIndex}");
             }
             EditorGUI.indentLevel--;
         }
@@ -191,112 +193,7 @@ public class DataTableModuleEditor : Editor
         module.m_description = EditorGUILayout.TextField("Description", module.m_description);
     }
     #endregion
-
-    #region Weapon Modules
-    private void DrawWeaponModuleSection()
-    {
-        EditorGUILayout.BeginVertical("box");
-
-        var originalColor = GUI.backgroundColor;
-        GUI.backgroundColor = weaponColor;
-        showWeaponModules = EditorGUILayout.Foldout(showWeaponModules, $"Weapon Modules ({dataTableModule.WeaponModules.Count})", true, EditorStyles.foldoutHeader);
-        GUI.backgroundColor = originalColor;
-
-        if (showWeaponModules)
-        {
-            foreach (var group in dataTableModule.WeaponGroups)
-            {
-                DrawWeaponSubTypeGroup(group);
-            }
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawWeaponSubTypeGroup(ModuleSubTypeGroup group)
-    {
-        if (!weaponSubTypeFoldouts.ContainsKey(group.subType))
-            weaponSubTypeFoldouts[group.subType] = false;
-
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-
-        weaponSubTypeFoldouts[group.subType] = EditorGUILayout.Foldout(weaponSubTypeFoldouts[group.subType], $"{group.subType} ({group.modules.Count})", true);
-
-        if (GUILayout.Button("Add", GUILayout.Width(50)))
-        {
-            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
-            var module = new ModuleData
-            {
-                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
-                m_moduleType = moduleType,
-                m_moduleSubType = group.subType,
-                m_moduleSlotType = EModuleSlotType.All,
-                m_moduleLevel = group.modules.Count + 1,
-                m_health = 50f,
-                m_attackPower = 25f,
-                m_attackFireCount = 1,
-                m_attackCoolTime = 2f,
-                m_description = $"{group.subType} LV{group.modules.Count + 1}"
-            };
-            group.modules.Add(module);
-            EditorUtility.SetDirty(dataTableModule);
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        if (weaponSubTypeFoldouts[group.subType])
-        {
-            for (int i = 0; i < group.modules.Count; i++)
-            {
-                EditorGUILayout.BeginVertical("box");
-                DrawWeaponModuleDetails(group.modules[i], group, i);
-                EditorGUILayout.EndVertical();
-            }
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawWeaponModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
-    {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
-
-        if (GUILayout.Button("Remove", GUILayout.Width(70)))
-        {
-            group.modules.RemoveAt(index);
-            EditorUtility.SetDirty(dataTableModule);
-            return;
-        }
-        EditorGUILayout.EndHorizontal();
-
-        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumPopup("Slot Type", module.m_moduleSlotType);
-        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
-
-        EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
-        module.m_attackPower = EditorGUILayout.Slider("Attack Power", module.m_attackPower, 0f, 100f);
-        module.m_attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.m_attackFireCount, 0, 100);
-        module.m_attackCoolTime = EditorGUILayout.Slider("Cool Time", module.m_attackCoolTime, 0.1f, 10f);
-
-        EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.m_projectileLength = EditorGUILayout.Slider("Projectile Length", module.m_projectileLength, 1f, 100f);
-        module.m_projectileWidth = EditorGUILayout.Slider("Projectile Width", module.m_projectileWidth, 0.01f, 5f);
-        module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 500f);
-
-        EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
-
-        module.m_description = EditorGUILayout.TextField("Description", module.m_description);
-    }
-    #endregion
-
+    
     #region Engine Modules
     private void DrawEngineModuleSection()
     {
@@ -336,7 +233,6 @@ public class DataTableModuleEditor : Editor
                 m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
-                m_moduleSlotType = EModuleSlotType.All,
                 m_moduleLevel = group.modules.Count + 1,
                 m_health = 50f,
                 m_movementSpeed = 5f,
@@ -375,13 +271,218 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumPopup("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
         module.m_movementSpeed = EditorGUILayout.Slider("Movement Speed", module.m_movementSpeed, 0f, 20f);
         
+        EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
+        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
+        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
+
+        module.m_description = EditorGUILayout.TextField("Description", module.m_description);
+    }
+    #endregion
+
+    #region Beam Modules
+    private void DrawBeamModuleSection()
+    {
+        EditorGUILayout.BeginVertical("box");
+
+        var originalColor = GUI.backgroundColor;
+        GUI.backgroundColor = beamColor;
+        showBeamModules = EditorGUILayout.Foldout(showBeamModules, $"Beam Modules ({dataTableModule.BeamModules.Count})", true, EditorStyles.foldoutHeader);
+        GUI.backgroundColor = originalColor;
+
+        if (showBeamModules)
+        {
+            foreach (var group in dataTableModule.BeamGroups)
+            {
+                DrawBeamSubTypeGroup(group);
+            }
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawBeamSubTypeGroup(ModuleSubTypeGroup group)
+    {
+        if (!beamSubTypeFoldouts.ContainsKey(group.subType))
+            beamSubTypeFoldouts[group.subType] = false;
+
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+
+        beamSubTypeFoldouts[group.subType] = EditorGUILayout.Foldout(beamSubTypeFoldouts[group.subType], $"{group.subType} ({group.modules.Count})", true);
+
+        if (GUILayout.Button("Add", GUILayout.Width(50)))
+        {
+            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
+            var module = new ModuleData
+            {
+                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
+                m_moduleType = moduleType,
+                m_moduleSubType = group.subType,
+                m_moduleLevel = group.modules.Count + 1,
+                m_health = 50f,
+                m_attackPower = 25f,
+                m_attackFireCount = 1,
+                m_attackCoolTime = 2f,
+                m_description = $"{group.subType} LV{group.modules.Count + 1}"
+            };
+            group.modules.Add(module);
+            EditorUtility.SetDirty(dataTableModule);
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        if (beamSubTypeFoldouts[group.subType])
+        {
+            for (int i = 0; i < group.modules.Count; i++)
+            {
+                EditorGUILayout.BeginVertical("box");
+                DrawBeamModuleDetails(group.modules[i], group, i);
+                EditorGUILayout.EndVertical();
+            }
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawBeamModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
+    {
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
+
+        if (GUILayout.Button("Remove", GUILayout.Width(70)))
+        {
+            group.modules.RemoveAt(index);
+            EditorUtility.SetDirty(dataTableModule);
+            return;
+        }
+        EditorGUILayout.EndHorizontal();
+
+        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
+        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
+
+        EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
+        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
+        module.m_attackPower = EditorGUILayout.Slider("Attack Power", module.m_attackPower, 0f, 100f);
+        module.m_attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.m_attackFireCount, 0, 100);
+        module.m_attackCoolTime = EditorGUILayout.Slider("Cool Time", module.m_attackCoolTime, 0.1f, 10f);
+
+        EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
+        module.m_projectileLength = EditorGUILayout.Slider("Projectile Length", module.m_projectileLength, 1f, 100f);
+        module.m_projectileWidth = EditorGUILayout.Slider("Projectile Width", module.m_projectileWidth, 0.01f, 5f);
+        module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 500f);
+
+        EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
+        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
+        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
+        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
+        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
+        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
+
+        module.m_description = EditorGUILayout.TextField("Description", module.m_description);
+    }
+    #endregion
+
+    #region Missile Modules
+    private void DrawMissileModuleSection()
+    {
+        EditorGUILayout.BeginVertical("box");
+
+        var originalColor = GUI.backgroundColor;
+        GUI.backgroundColor = missileColor;
+        showMissileModules = EditorGUILayout.Foldout(showMissileModules, $"Missile Modules ({dataTableModule.MissileModules.Count})", true, EditorStyles.foldoutHeader);
+        GUI.backgroundColor = originalColor;
+
+        if (showMissileModules)
+        {
+            foreach (var group in dataTableModule.MissileGroups)
+            {
+                DrawMissileSubTypeGroup(group);
+            }
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawMissileSubTypeGroup(ModuleSubTypeGroup group)
+    {
+        if (!missileSubTypeFoldouts.ContainsKey(group.subType))
+            missileSubTypeFoldouts[group.subType] = false;
+
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+
+        missileSubTypeFoldouts[group.subType] = EditorGUILayout.Foldout(missileSubTypeFoldouts[group.subType], $"{group.subType} ({group.modules.Count})", true);
+
+        if (GUILayout.Button("Add", GUILayout.Width(50)))
+        {
+            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
+            var module = new ModuleData
+            {
+                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
+                m_moduleType = moduleType,
+                m_moduleSubType = group.subType,
+                m_moduleLevel = group.modules.Count + 1,
+                m_health = 50f,
+                m_attackPower = 25f,
+                m_attackFireCount = 1,
+                m_attackCoolTime = 2f,
+                m_description = $"{group.subType} LV{group.modules.Count + 1}"
+            };
+            group.modules.Add(module);
+            EditorUtility.SetDirty(dataTableModule);
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        if (missileSubTypeFoldouts[group.subType])
+        {
+            for (int i = 0; i < group.modules.Count; i++)
+            {
+                EditorGUILayout.BeginVertical("box");
+                DrawMissileModuleDetails(group.modules[i], group, i);
+                EditorGUILayout.EndVertical();
+            }
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawMissileModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
+    {
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
+
+        if (GUILayout.Button("Remove", GUILayout.Width(70)))
+        {
+            group.modules.RemoveAt(index);
+            EditorUtility.SetDirty(dataTableModule);
+            return;
+        }
+        EditorGUILayout.EndHorizontal();
+
+        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
+        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
+
+        EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
+        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
+        module.m_attackPower = EditorGUILayout.Slider("Attack Power", module.m_attackPower, 0f, 100f);
+        module.m_attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.m_attackFireCount, 0, 100);
+        module.m_attackCoolTime = EditorGUILayout.Slider("Cool Time", module.m_attackCoolTime, 0.1f, 10f);
+
+        EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
+        module.m_projectileLength = EditorGUILayout.Slider("Projectile Length", module.m_projectileLength, 1f, 100f);
+        module.m_projectileWidth = EditorGUILayout.Slider("Projectile Width", module.m_projectileWidth, 0.01f, 5f);
+        module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 500f);
+
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
         module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
@@ -432,7 +533,6 @@ public class DataTableModuleEditor : Editor
                 m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
-                m_moduleSlotType = EModuleSlotType.All,
                 m_moduleLevel = group.modules.Count + 1,
                 m_health = 50f,
                 m_hangarCapability = 5,
@@ -482,7 +582,6 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleSlotType = (EModuleSlotType)EditorGUILayout.EnumPopup("Slot Type", module.m_moduleSlotType);
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);

@@ -128,8 +128,10 @@ public class GaugeBars : MonoBehaviour
     {
         if (module is ModuleBody)
             return new Color(0.2f, 0.8f, 0.2f);
-        else if (module is ModuleWeapon)
+        else if (module is ModuleBeam)
             return new Color(0.8f, 0.2f, 0.2f);
+        else if (module is ModuleMissile)
+            return new Color(0.8f, 0.3f, 0.2f);
         else if (module is ModuleEngine)
             return new Color(0.2f, 0.5f, 0.8f);
         else
@@ -158,10 +160,15 @@ public class GaugeBars : MonoBehaviour
                 currentHealth = body.m_health;
                 maxHealth = body.m_healthMax;
             }
-            else if (module is ModuleWeapon weapon)
+            else if (module is ModuleBeam beam)
             {
-                currentHealth = weapon.m_health;
-                maxHealth = weapon.m_healthMax;
+                currentHealth = beam.m_health;
+                maxHealth = beam.m_healthMax;
+            }
+            else if (module is ModuleMissile missile)
+            {
+                currentHealth = missile.m_health;
+                maxHealth = missile.m_healthMax;
             }
             else if (module is ModuleEngine engine)
             {

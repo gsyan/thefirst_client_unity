@@ -14,7 +14,7 @@ public class ScrollViewModuleItem : MonoBehaviour
         m_selectButton.gameObject.SetActive(true);
         m_selectButton.onClick.RemoveAllListeners();
         m_selectButton.onClick.AddListener(actionSelect);
-        m_selectButton.onClick.AddListener(() => SetSelected_ScrollViewModuleItem(true));
+        //m_selectButton.onClick.AddListener(() => SetSelected_ScrollViewModuleItem(true));
         m_selectButtonText.text = text;
 
         m_researchButton.onClick.AddListener(actionResearch);

@@ -63,6 +63,10 @@ public class ModuleEngine : ModuleBase
     {
         return m_moduleInfo.moduleSubType;
     }
+    public override int GetModuleSlotIndex()
+    {
+        return m_moduleInfo.slotIndex;
+    }
     public override int GetModuleLevel()
     {
         return m_moduleInfo.moduleLevel;

@@ -1576,13 +1576,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2528791835458230320}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 21.3, z: 12.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 992329172262420132}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
 --- !u!114 &7232223293500515495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1595,12 +1595,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50332416
   m_moduleSlotInfo:
-    moduleType: 3
-    moduleSubType: 0
-    moduleSlotType: 3
-    slotIndex: 2
+    moduleType: 4
+    slotIndex: 0
 --- !u!1 &2611978524852029812
 GameObject:
   m_ObjectHideFlags: 0
@@ -2075,11 +2072,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50331648
   m_moduleSlotInfo:
     moduleType: 3
-    moduleSubType: 0
-    moduleSlotType: 0
     slotIndex: 0
 --- !u!1 &3535879074326055736
 GameObject:
@@ -3656,11 +3650,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50331648
   m_moduleSlotInfo:
     moduleType: 3
-    moduleSubType: 0
-    moduleSlotType: 0
     slotIndex: 1
 --- !u!1 &5277126229279383619
 GameObject:
@@ -4107,13 +4098,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5966678029490934347}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -2.7, z: -42.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 992329172262420132}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &8590299772016236934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4126,11 +4117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 33554432
   m_moduleSlotInfo:
     moduleType: 2
-    moduleSubType: 0
-    moduleSlotType: 0
     slotIndex: 0
 --- !u!1 &5974891156665351536
 GameObject:
@@ -4371,13 +4359,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6656025448179369268}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -14.3, z: 12.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 992329172262420132}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &4267017315106768724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4390,12 +4378,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 50332416
   m_moduleSlotInfo:
-    moduleType: 3
-    moduleSubType: 0
-    moduleSlotType: 3
-    slotIndex: 3
+    moduleType: 4
+    slotIndex: 1
 --- !u!1 &7303000482564616845
 GameObject:
   m_ObjectHideFlags: 0
@@ -4421,13 +4406,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7303000482564616845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 20, y: 6, z: 29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 992329172262420132}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
 --- !u!114 &4653623630363959966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4440,11 +4425,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 67109632
   m_moduleSlotInfo:
-    moduleType: 4
-    moduleSubType: 0
-    moduleSlotType: 3
+    moduleType: 5
     slotIndex: 1
 --- !u!1 &7401861825076032492
 GameObject:
@@ -4784,13 +4766,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8037458587924931298}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: -20, y: 6, z: 29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 992329172262420132}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
 --- !u!114 &2756483536704493162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4803,11 +4785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moduleTypePacked: 67109632
   m_moduleSlotInfo:
-    moduleType: 4
-    moduleSubType: 0
-    moduleSlotType: 3
+    moduleType: 5
     slotIndex: 0
 --- !u!1 &8121957284378149956
 GameObject:

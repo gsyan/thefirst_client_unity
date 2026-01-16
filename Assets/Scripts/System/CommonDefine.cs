@@ -19,41 +19,36 @@ public enum ESpaceMineralState
 [System.Serializable]
 public enum EModuleType
 {
-    None        = 0,
-    Body        = 1,
-    Engine      = 2,
-    Weapon      = 3,
-    Hanger      = 4,
-    Max         = 5
+    None            = 0,
+    Body            = 1,
+    Engine          = 2,
+    Beam            = 3,
+    Missile         = 4,
+    Hanger          = 5,
+    Max             = 6
 }
 [System.Serializable]
 public enum EModuleSubType
 {
-    None            = 0,
-    // BodySubType
-    Body_Battle     = 1001,
-    Body_Aircraft   = 1002,
-    Body_Repair     = 1003,
-    // EngineSubType
-    Engine_Standard = 2001,
-    Engine_Booster  = 2002,
-    Engine_Warp     = 2003,
-    // WeaponSubType
-    Weapon_Beam     = 3001,
-    Weapon_Missile  = 3002,
+    None                = 0,
+    // Body SubType 
+    Body_Battle         = 1001,
+    Body_Aircraft       = 1002,
+    Body_Repair         = 1003,
+    // Engine SubType
+    Engine_Standard     = 2001,
+    Engine_Booster      = 2002,
+    Engine_Warp         = 2003,
+    // Beam SubType
+    Beam_Standard       = 3001,
+    Beam_Advanced       = 3002,
+    // Missile SubType    
+    Missile_Standard    = 4001,
+    Missile_Advanced    = 4002,
     // HangerSubType
-    Hanger_Standard = 4001,
-    Hanger_Advanced = 4002
+    Hanger_Standard     = 5001,
+    Hanger_Advanced     = 5002
 }
-[System.Serializable]
-public enum EModuleSlotType
-{
-    All     = 0,        // 0 = 기본값 (모든 슬롯 허용)
-    Head    = 1,
-    Rear    = 2,
-    Side    = 3,
-}
-
 
 public static class EModuleTypeExtensions
 {
@@ -65,7 +60,9 @@ public static class EModuleTypeExtensions
                 return new UnityEngine.Color(0.7f, 0.9f, 0.7f);
             case EModuleType.Engine:
                 return new UnityEngine.Color(0.7f, 0.7f, 0.9f);
-            case EModuleType.Weapon:
+            case EModuleType.Beam:
+                return new UnityEngine.Color(0.9f, 0.7f, 0.7f);
+            case EModuleType.Missile:
                 return new UnityEngine.Color(0.9f, 0.7f, 0.7f);
             case EModuleType.Hanger:
                 return new UnityEngine.Color(0.9f, 0.9f, 0.7f);
