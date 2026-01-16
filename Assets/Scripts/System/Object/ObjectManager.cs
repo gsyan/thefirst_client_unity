@@ -94,7 +94,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 카메라가 함대를 타겟으로 설정
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 
-        //StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnEnemies());
         //StartCoroutine(SpawnMineral());
 
         UIManager.Instance.InitializeUIManager();
