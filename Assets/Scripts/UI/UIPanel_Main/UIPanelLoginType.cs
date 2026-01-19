@@ -28,30 +28,34 @@ public class UIPanelLoginType : UIPanelBase
    }
 
    private void GoogleLogin()
-    {
-        if (m_resultText != null)
-            m_resultText.text = "Processing Google Login...";
+   {
+      UIManager.Instance.ShowMainPanel();
 
-        NetworkManager.Instance.GoogleLogin((response) => {
-            ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
-            string message = "";
-            if (errorCode == ServerErrorCode.SUCCESS)
-            {
-                message = ErrorCodeMapping.Messages[errorCode];
-                Debug.Log($"Google Login successful: {message}");
-                Debug.Log($"Access Token received: {response.data?.accessToken}");
+      if (m_resultText != null)
+         m_resultText.text = "Processing Google Login...";
 
-                m_uiMain.GetCharacters();
-            }
-            else
-            {
-                message = ErrorCodeMapping.GetMessage(response.errorCode);
-                Debug.LogError($"Google Login failed - ErrorCode: {errorCode}, Message: {message}");
-            }
-            if (m_resultText != null)
-                m_resultText.text = $"Result: {message}";
-        });
-    }
+      NetworkManager.Instance.GoogleLogin((response) => {
+         ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
+         string message = "";
+         if (errorCode == ServerErrorCode.SUCCESS)
+         {
+               message = ErrorCodeMapping.Messages[errorCode];
+               Debug.Log($"Google Login successful: {message}");
+               Debug.Log($"Access Token received: {response.data?.accessToken}");
+
+               m_uiMain.GetCharacters();
+         }
+         else
+         {
+               message = ErrorCodeMapping.GetMessage(response.errorCode);
+               Debug.LogError($"Google Login failed - ErrorCode: {errorCode}, Message: {message}");
+
+               UIManager.Instance.ShowPanel("UIpanelLoginType");
+         }
+         if (m_resultText != null)
+               m_resultText.text = $"Result: {message}";
+      });
+   }
 
    public override void OnShowUIPanel()
    {
