@@ -10,131 +10,48 @@ using UnityEngine.UI;
 
 public class UIMain : UIManager
 {
-    public TMP_InputField emailInput;
-    public TMP_InputField passwordInput;
-    public TMP_InputField characterNameInput;
-    public Button registerButton;
-    public Button loginButton;
-    public Button googleLoginButton;
-    public Button createCharacterButton;
-    public Button getCharactersButton;
-    public Button selectCharacterButton;
+    private void Start()
+    {
+        InitializeUIManager();
+        NetworkManager.Instance.OnChangeScene();
+    }
+
+    public override void InitializeUIManager()
+    {
+        const string PANEL_Main_PREFAB_PATH = "Prefabs/UI/Panel_Main";
+
+        // Load all prefabs from the Panel folder
+        GameObject[] panelPrefabs = Resources.LoadAll<GameObject>(PANEL_Main_PREFAB_PATH);
+
+        if (panelPrefabs == null || panelPrefabs.Length == 0)
+        {
+            Debug.LogWarning($"No panel prefabs found in {PANEL_Main_PREFAB_PATH}");
+            return;
+        }
+
+        foreach (GameObject prefab in panelPrefabs)
+        {
+            GameObject panelInstance = Instantiate(prefab, transform);
+            panelInstance.name = prefab.name; // Remove "(Clone)" suffix
+            
+            var panelBase = panelInstance.GetComponent<UIPanelBase>();
+            if(panelBase != null)
+            {
+                panelBase.panelName = prefab.name;
+                panelBase.InitializeUIPanel();
+            }
+                
+            AddPanel(panelBase);
+        }
+
+        InitializePanels();
+        ShowDefaultPanel();
+    }
 
     private List<CharacterResponse> m_characterList = new List<CharacterResponse>();
 
-    private void Start()
-    {
-        registerButton.onClick.AddListener(() => Register());
-        loginButton.onClick.AddListener(() => Login(null, null));
-        if (googleLoginButton != null)
-        {
-            googleLoginButton.onClick.AddListener(() => GoogleLogin());
-        }
-        // createCharacterButton.onClick.AddListener(() => CreateCharacter(null));
-        // getCharactersButton.onClick.AddListener(() => GetCharacters());
-        // selectCharacterButton.onClick.AddListener(() => SelectCharacter());
-    }
-
-    private void Register()
-    {
-        string email = emailInput.text;
-        string password = passwordInput.text;
-
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-        {
-            m_resultText.text = "Email and password are required!";
-            return;
-        }
-
-        if (m_resultText != null)
-            m_resultText.text = "Processing...";
-
-        NetworkManager.Instance.Register(email, password, (response) => {
-            ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
-            string message = "";
-            if (errorCode == ServerErrorCode.SUCCESS)
-            {
-                message = ErrorCodeMapping.Messages[errorCode];
-                Debug.Log($"Registration successful: {message}");
-
-                //Login(email, password); // Attempt automatic login
-            }
-            else
-            {
-                message = ErrorCodeMapping.GetMessage(response.errorCode);
-                Debug.LogError($"Registration failed - ErrorCode: {errorCode}, Message: {message}");
-            }
-            if (m_resultText != null)
-                m_resultText.text = $"Result: {message}";
-        });
-    }
-
-    private void Login(string email, string password)
-    {
-        if (email == null)
-            email = emailInput.text;
-        if (password == null)
-            password = passwordInput.text;
-
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-        {
-            m_resultText.text = "Email and password are required!";
-            return;
-        }
-
-        if (m_resultText != null)
-            m_resultText.text = "Processing...";
-
-        NetworkManager.Instance.Login(email, password, (response) => {
-            ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
-            string message = "";
-            if (errorCode == ServerErrorCode.SUCCESS)
-            {
-                message = ErrorCodeMapping.Messages[errorCode];
-                Debug.Log($"Login successful: {message}");
-                GetCharacters();
-            }
-            else
-            {
-                message = ErrorCodeMapping.GetMessage(response.errorCode);
-                Debug.LogError($"Login failed - ErrorCode: {errorCode}, Message: {message}");
-            }
-            if (m_resultText != null)
-                m_resultText.text = $"Result: {message}";
-        });
-    }
-
-    private void GoogleLogin()
-    {
-        if (m_resultText != null)
-            m_resultText.text = "Processing Google Login...";
-
-        NetworkManager.Instance.GoogleLogin((response) => {
-            ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
-            string message = "";
-            if (errorCode == ServerErrorCode.SUCCESS)
-            {
-                message = ErrorCodeMapping.Messages[errorCode];
-                Debug.Log($"Google Login successful: {message}");
-                Debug.Log($"Access Token received: {response.data?.accessToken}");
-
-                GetCharacters();
-            }
-            else
-            {
-                message = ErrorCodeMapping.GetMessage(response.errorCode);
-                Debug.LogError($"Google Login failed - ErrorCode: {errorCode}, Message: {message}");
-            }
-            if (m_resultText != null)
-                m_resultText.text = $"Result: {message}";
-        });
-    }
-
     public void GetCharacters()
     {
-        if (m_resultText != null)
-            m_resultText.text = "Processing...";
-
         NetworkManager.Instance.GetCharacters((response) =>
         {
             ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
@@ -159,7 +76,8 @@ public class UIMain : UIManager
                     }
                     else
                     {
-                        CreateCharacter("HiddenCharacter_" + emailInput.text); // Automatically create character
+                        //CreateCharacter("HiddenCharacter_" + emailInput.text); // Automatically create character
+                        Debug.LogError("No characters found.");
                     }
                 }
                 else
@@ -172,25 +90,13 @@ public class UIMain : UIManager
                 message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Get characters failed - ErrorCode: {errorCode}, Message: {message}");
             }
-            if (m_resultText != null)
-                m_resultText.text = $"Result: {message}";
         });
     }
 
     private void CreateCharacter(string name)
     {
-        if( name == null)
-            name = characterNameInput.text;
-
-        if (string.IsNullOrEmpty(name))
-        {
-            m_resultText.text = "Character name is required!";
-            return;
-        }
-
-        if (m_resultText != null)
-            m_resultText.text = "Processing...";
-
+        if (string.IsNullOrEmpty(name)) return;
+        
         NetworkManager.Instance.CreateCharacter(name, (response) => {
             ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
             string message = "";
@@ -212,8 +118,6 @@ public class UIMain : UIManager
                 message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Character creation failed - ErrorCode: {errorCode}, Message: {message}");
             }
-            if (m_resultText != null)
-                m_resultText.text = $"Result: {message}";
         });
     }
 
@@ -225,19 +129,10 @@ public class UIMain : UIManager
         if (characterId == 0)
         {
             if (m_characterList.Count > 0)
-            {
                 characterId = m_characterList[0].characterId;
-            }
             else
-            {
-                if (m_resultText != null)
-                    m_resultText.text = "No characters available to select!";
                 return;
-            }
         }
-        
-        if (m_resultText != null)
-            m_resultText.text = "Processing...";
 
         NetworkManager.Instance.SelectCharacter(characterId, (response) => {
             ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
@@ -284,8 +179,6 @@ public class UIMain : UIManager
                 message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Character selection failed - ErrorCode: {errorCode}, Message: {message}");
             }
-            if (m_resultText != null)
-                m_resultText.text = $"Result: {message}";
         });
     }
 

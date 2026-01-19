@@ -5,14 +5,14 @@ public class UISpace : UIManager
 {
     public override void InitializeUIManager()
     {
-        const string PANEL_PREFAB_PATH = "Prefabs/UI/Panel";
+        const string PANEL_GAME_PREFAB_PATH = "Prefabs/UI/Panel_Game";
 
         // Load all prefabs from the Panel folder
-        GameObject[] panelPrefabs = Resources.LoadAll<GameObject>(PANEL_PREFAB_PATH);
+        GameObject[] panelPrefabs = Resources.LoadAll<GameObject>(PANEL_GAME_PREFAB_PATH);
 
         if (panelPrefabs == null || panelPrefabs.Length == 0)
         {
-            Debug.LogWarning($"No panel prefabs found in {PANEL_PREFAB_PATH}");
+            Debug.LogWarning($"No panel prefabs found in {PANEL_GAME_PREFAB_PATH}");
             return;
         }
 

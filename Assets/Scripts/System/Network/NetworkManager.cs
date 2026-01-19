@@ -13,14 +13,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     protected override void OnInitialize()
     {
         m_apiClient = new ApiClient();
-        m_apiClient.LoadRefreshToken();
-
-        if (SceneManager.GetActiveScene().name == "MainScene")
-            GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
-        else if (SceneManager.GetActiveScene().name == "SpaceScene")
-            GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
-        else if (SceneManager.GetActiveScene().name == "LoadingScene")
-            GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
+        m_apiClient.LoadRefreshToken();        
     }
     #endregion
 
@@ -33,10 +26,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     private bool m_useFirebaseAuth = false;
     private bool m_autoLoginAttempted = false;
 
-    void Start()
+    public void OnChangeScene()
     {
-        // Stop operation in background: future thread implementation
-        InvokeRepeating(nameof(CheckConnection), 0f, 10f); // Check every 10 seconds
+        if (SceneManager.GetActiveScene().name == "MainScene")
+        {
+            GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
+            m_bConnected = false;
+            InvokeRepeating(nameof(CheckConnection), 0f, 10f); // Check every 10 seconds
+        }
+        else if (SceneManager.GetActiveScene().name == "SpaceScene")
+            GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
+        else if (SceneManager.GetActiveScene().name == "LoadingScene")
+            GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
     }
 
     void CheckConnection()
@@ -45,13 +46,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
         m_networkStatus = Application.internetReachability;
         if (m_networkStatus == NetworkReachability.NotReachable)
-        {
             m_bConnected = false;
-        }
         else
-        {
             StartCoroutine(CheckInternetAccess());
-        }
     }
 
     // Check if internet is actually working
@@ -60,6 +57,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         using (UnityEngine.Networking.UnityWebRequest request =
             UnityEngine.Networking.UnityWebRequest.Get("https://www.google.com"))
         {
+            Debug.Log("CheckInternetAccess");
             request.timeout = 3; // 3 second limit
             yield return request.SendWebRequest();
 
@@ -78,6 +76,34 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                                 if (uiMain != null)
                                     uiMain.GetCharacters();
                             }
+                            else
+                            {
+                                // 에러 처리
+                                switch ((ServerErrorCode)response.errorCode)
+                                {
+                                    case ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL:
+                                        UIManager.Instance.ShowPanel("UIPanelLoginType");
+                                        break;
+                                    case ServerErrorCode.REFRESH_TOKEN_FAIL_INVALID_TOKEN:
+                                    case ServerErrorCode.REFRESH_TOKEN_FAIL_EMPTY_TOKEN:
+                                    case ServerErrorCode.REFRESH_TOKEN_FAIL_ACCOUNT_NOT_FOUND:
+                                    case ServerErrorCode.HTTP_UNAUTHORIZED_401:
+                                        // 토큰 삭제 필요
+                                        PlayerPrefs.DeleteKey("RefreshToken");
+                                        PlayerPrefs.Save();
+                                        UIManager.Instance.ShowPanel("UIPanelLoginType");
+                                        break;
+                                    case ServerErrorCode.HTTP_SERVER_ERROR_500:
+                                    case ServerErrorCode.UNKNOWN_ERROR:
+                                        // 서버 에러 - 토큰 유지, 로그만 기록
+                                        Debug.LogWarning($"AutoLogin failed with server error: {response.errorCode}");
+                                        break;
+                                    default:
+                                        // 기타 에러
+                                        Debug.LogError($"AutoLogin failed with error: {response.errorCode}");
+                                        break;
+                                }
+                            }
                         });
                     }
                     else
@@ -89,8 +115,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         }
     }
     
-
-
     private IEnumerator RunAsync<T>(Func<Task<ApiResponse<T>>> taskFunc, System.Action<ApiResponse<T>> onComplete, int maxRetries = 2)
     {
         int retryCount = 0;

@@ -3,13 +3,13 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EUIMode
-{
-    Main
-    , Fleet_Upgrade
-    , Fleet_Formation
-    , Fleet_Admiral
-}
+// public enum EUIMode
+// {
+//     Main
+//     , Fleet_Upgrade
+//     , Fleet_Formation
+//     , Fleet_Admiral
+// }
 
 public class UIManager : MonoSingleton<UIManager>
 {
@@ -22,8 +22,8 @@ public class UIManager : MonoSingleton<UIManager>
     }
     #endregion MonoSingleton ---------------------------------------------------------------
 
-    public TMP_Text m_resultText;
-    public EUIMode m_uiMode = EUIMode.Main;
+    //public TMP_Text m_resultText;
+    //public EUIMode m_uiMode = EUIMode.Main;
 
     [Header("Animation Settings")]
     protected bool useAnimation = true;
