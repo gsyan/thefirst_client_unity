@@ -34,5 +34,7 @@ public class UILoading : UIManager
             loadingManager.loadingText = loadingText;
             loadingManager.progressBar = progressBar;
         }
+
+        NetworkManager.Instance.OnChangeScene();
     }
 }

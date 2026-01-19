@@ -94,10 +94,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 카메라가 함대를 타겟으로 설정
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 
-        StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnEnemies()); // 적 스폰
         //StartCoroutine(SpawnMineral());
 
         UIManager.Instance.InitializeUIManager();
+        NetworkManager.Instance.OnChangeScene();
     }
 
     public void RemoveEnemyFleet(SpaceFleet fleet)

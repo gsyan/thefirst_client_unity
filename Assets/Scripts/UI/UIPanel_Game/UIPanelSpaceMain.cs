@@ -8,8 +8,9 @@ public class UIPanelSpaceMain : UIPanelBase
     //public UIManager m_UIManager;
 
     [Header("UI Buttons")]
-    public Button fleetButton;
-    public Button explorationButton;
+    public Button m_fleetButton;
+    public Button m_explorationButton;
+    public Button m_settingButton;
 
     void Start()
     {
@@ -18,8 +19,9 @@ public class UIPanelSpaceMain : UIPanelBase
 
     private void SetupButtons()
     {
-        fleetButton?.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelFleet"));
-        explorationButton?.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelExploration"));
+        m_fleetButton?.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelFleet"));
+        m_explorationButton?.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelExploration"));
+        m_settingButton?.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelSetting"));
     }
 
     public override void OnShowUIPanel()
