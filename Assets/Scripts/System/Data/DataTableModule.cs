@@ -8,6 +8,16 @@ using System.Linq;
 using UnityEditor;
 #endif
 
+// 모듈 최대 능력치 (육각형 차트 백분율 계산용)
+[System.Serializable]
+public struct ModuleMaxStats
+{
+    public float maxDps;
+    public float maxHp;
+    public float maxSpeed;
+    public float maxCargo;
+}
+
 [System.Serializable]
 public class ModuleData
 {
@@ -145,6 +155,9 @@ public class DataTableModule : ScriptableObject
     public List<ModuleSubTypeGroup> MissileGroups => missileGroups;
     public List<ModuleSubTypeGroup> HangerGroups => hangerGroups;
 
+    // 최대 능력치 (캐싱)
+    public ModuleMaxStats MaxStats { get; private set; }
+
     public ModuleDataList BodyModules
     {
         get
@@ -207,6 +220,73 @@ public class DataTableModule : ScriptableObject
 
 
     #region Public Methods
+
+    /// <summary>
+    /// 모든 모듈 데이터에서 각 능력치의 최대값을 계산하여 캐싱
+    /// DataManager 초기화 시 호출
+    /// </summary>
+    public void CalculateMaxStats()
+    {
+        float maxDps = 0f;
+        float maxHp = 0f;
+        float maxSpeed = 0f;
+        float maxCargo = 0f;
+
+        // Beam 모듈에서 최대 DPS
+        foreach (var group in beamGroups)
+        {
+            foreach (var module in group.modules)
+            {
+                if (module.m_attackCoolTime > 0)
+                {
+                    float dps = module.m_attackPower * module.m_attackFireCount / module.m_attackCoolTime;
+                    if (dps > maxDps) maxDps = dps;
+                }
+            }
+        }
+
+        // Missile 모듈에서 최대 DPS
+        foreach (var group in missileGroups)
+        {
+            foreach (var module in group.modules)
+            {
+                if (module.m_attackCoolTime > 0)
+                {
+                    float dps = module.m_attackPower * module.m_attackFireCount / module.m_attackCoolTime;
+                    if (dps > maxDps) maxDps = dps;
+                }
+            }
+        }
+
+        // Body 모듈에서 최대 HP, Cargo
+        foreach (var group in bodyGroups)
+        {
+            foreach (var module in group.modules)
+            {
+                if (module.m_health > maxHp) maxHp = module.m_health;
+                if (module.m_cargoCapacity > maxCargo) maxCargo = module.m_cargoCapacity;
+            }
+        }
+
+        // Engine 모듈에서 최대 Speed
+        foreach (var group in engineGroups)
+        {
+            foreach (var module in group.modules)
+            {
+                if (module.m_movementSpeed > maxSpeed) maxSpeed = module.m_movementSpeed;
+            }
+        }
+
+        MaxStats = new ModuleMaxStats
+        {
+            maxDps = maxDps,
+            maxHp = maxHp,
+            maxSpeed = maxSpeed,
+            maxCargo = maxCargo
+        };
+
+        Debug.Log($"[DataTableModule] MaxStats calculated - DPS:{maxDps}, HP:{maxHp}, Speed:{maxSpeed}, Cargo:{maxCargo}");
+    }
 
     public void AddModuleDataToTable(ModuleData data)
     {
