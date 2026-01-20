@@ -126,13 +126,8 @@ public static class CommonUtility
             stats.totalEngines += bodyStats.totalEngines;
         }
 
-        // 육각형 능력치 자동 계산
-        stats.firepower = stats.attackDps;
-        stats.survivability = stats.hp;
-        stats.mobility = stats.engineSpeed;
-        stats.logistics = stats.cargoCapacity;
-        stats.sustainment = 0; // 향후 확장
-        stats.detection = 0;   // 향후 확장
+        // 육각형 능력치 자동 계산 (최대값 대비 백분율)
+        CalculateHexagonStats(ref stats);
 
         return stats;
     }
@@ -157,15 +152,33 @@ public static class CommonUtility
         }
         stats.engineSpeed = stats.engineSpeed / fleetInfo.ships.Count;
 
-        // 육각형 능력치 자동 계산
-        stats.firepower = stats.attackDps;
-        stats.survivability = stats.hp;
-        stats.mobility = stats.engineSpeed;
-        stats.logistics = stats.cargoCapacity;
-        stats.sustainment = 0; // 향후 확장
-        stats.detection = 0;   // 향후 확장
+        // 육각형 능력치 자동 계산 (최대값 대비 백분율)
+        CalculateHexagonStats(ref stats);
 
         return stats;
+    }
+
+    // 육각형 능력치 계산 (장착 모듈 수 × 최대값 대비 백분율, 0~100)
+    private static void CalculateHexagonStats(ref CapabilityProfile stats)
+    {
+        var maxStats = DataManager.Instance.m_dataTableModule.MaxStats;
+
+        // firepower: 장착된 무기 수 × 최대 DPS 대비
+        float maxTotalDps = maxStats.maxDps * stats.totalWeapons;
+        stats.firepower = maxTotalDps > 0 ? stats.attackDps / maxTotalDps * 100f : 0f;
+
+        // survivability: 단일 Body 최대 HP 대비 (Body는 합산 개념이 아님)
+        stats.survivability = maxStats.maxHp > 0 ? stats.hp / maxStats.maxHp * 100f : 0f;
+
+        // mobility: 장착된 엔진 수 × 최대 Speed 대비
+        float maxTotalSpeed = maxStats.maxSpeed * stats.totalEngines;
+        stats.mobility = maxTotalSpeed > 0 ? stats.engineSpeed / maxTotalSpeed * 100f : 0f;
+
+        // logistics: 단일 Body 최대 Cargo 대비 (Body는 합산 개념이 아님)
+        stats.logistics = maxStats.maxCargo > 0 ? stats.cargoCapacity / maxStats.maxCargo * 100f : 0f;
+
+        stats.sustainment = 0f; // 향후 확장
+        stats.detection = 0f;   // 향후 확장
     }
     #endregion Fleet Utility end -----------------------------------------------------------------------------------
 

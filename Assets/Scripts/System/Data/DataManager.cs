@@ -280,6 +280,7 @@ public class DataManager : Singleton<DataManager>
         }
         else
         {
+            m_dataTableModule.CalculateMaxStats();
             Debug.Log("DataTableModule loaded successfully");
         }
     }

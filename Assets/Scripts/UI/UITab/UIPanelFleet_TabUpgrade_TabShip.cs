@@ -12,6 +12,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
     [SerializeField] private TextMeshProUGUI m_textTop;
     [SerializeField] private TextMeshProUGUI m_textStat;
+    [SerializeField] private SimpleRadarChart m_radarChart;
     [SerializeField] private TextMeshProUGUI m_textResult;
     private Coroutine m_textResultCoroutine;
 
@@ -165,6 +166,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         {
             m_textStat.text += "\n\n" + "Select Module First";
         }
+        
+        m_radarChart.SetStats(statsOrg);
         
     }
 
