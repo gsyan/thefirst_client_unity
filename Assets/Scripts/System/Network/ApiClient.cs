@@ -23,6 +23,7 @@ public class ApiClient
 #if UNITY_EDITOR
     // 유니티 에디터에서 실행될 때 사용할 URL (로컬 개발 서버)
     private readonly string baseUrl = "http://localhost:8080/api";
+    //private readonly string baseUrl = "http://192.168.0.51:8080/api";
 #elif DEVELOPMENT_BUILD
     // 개발 빌드(Development Build)에서 사용할 URL (개발 테스트 서버)
     private readonly string baseUrl = "http://192.168.0.61:8080/api";
