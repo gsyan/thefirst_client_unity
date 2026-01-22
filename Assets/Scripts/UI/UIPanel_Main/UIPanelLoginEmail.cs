@@ -21,11 +21,11 @@ public class UIPanelLoginEmail : UIPanelBase
    {
       if (m_backButton != null)
          m_backButton.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelLoginType"));
-         
+
       if (m_registerButton != null)
          //m_registerButton.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelRegisterEmail"));
          m_registerButton.onClick.AddListener(EmailRegister);
-      
+
       if (m_loginButton != null)
          m_loginButton.onClick.AddListener(EmailLogin);
 
@@ -33,6 +33,13 @@ public class UIPanelLoginEmail : UIPanelBase
       if (SceneManager.GetActiveScene().name == "MainScene")
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uiMain);
 
+#if UNITY_EDITOR
+      // 에디터에서만 테스트용 이메일/비밀번호 자동 입력
+      if (m_emailInput != null)
+         m_emailInput.text = "gsyan5@naver.com";
+      if (m_passwordInput != null)
+         m_passwordInput.text = "12345678";
+#endif
    }
 
 
