@@ -127,6 +127,11 @@ public class ModuleBase : MonoBehaviour
         return "Unknown Ship";
     }
 
+    public SpaceShip GetMyShip()
+    {
+        return m_myShip;
+    }
+
     public virtual string GetUpgradeComparisonText()
     {
         return "";

@@ -59,6 +59,9 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (m_myFleet != null)
             m_myFleet.ClearAllSelectedModule();
         
+        if (m_selectedModule != null && ship != m_selectedModule.GetMyShip())
+            m_selectedModule = null;
+
         if (m_selectedModule == null)
         {
             if (ship.m_moduleBodys[0].m_beams.Count > 0)
