@@ -34,7 +34,7 @@ public static class CommonUtility
     }
 
     // ModuleInfo로부터 능력치 계산
-    public static CapabilityProfile GetCapabilityProfile(ModuleInfo moduleInfo)
+    public static CapabilityProfile GetModuleCapabilityProfile(ModuleInfo moduleInfo)
     {
         CapabilityProfile stats = new CapabilityProfile();
         if (moduleInfo == null) return stats;
@@ -59,7 +59,7 @@ public static class CommonUtility
     }
 
     // ModuleBodyInfo로부터 능력치 계산
-    public static CapabilityProfile GetCapabilityProfile(ModuleBodyInfo bodyInfo)
+    public static CapabilityProfile GetBodyCapabilityProfile(ModuleBodyInfo bodyInfo)
     {
         CapabilityProfile stats = new CapabilityProfile();
         if (bodyInfo == null) return stats;
@@ -76,7 +76,7 @@ public static class CommonUtility
         {
             foreach (ModuleInfo engineInfo in bodyInfo.engines)
             {
-                CapabilityProfile engineStats = GetCapabilityProfile(engineInfo);
+                CapabilityProfile engineStats = GetModuleCapabilityProfile(engineInfo);
                 stats.engineSpeed += engineStats.engineSpeed;
                 stats.totalEngines += engineStats.totalEngines;
             }
@@ -87,7 +87,7 @@ public static class CommonUtility
         {
             foreach (ModuleInfo moduleInfo in bodyInfo.beams)
             {
-                CapabilityProfile moduleStats = GetCapabilityProfile(moduleInfo);
+                CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
                 stats.attackDps += moduleStats.attackDps;
                 stats.totalWeapons += moduleStats.totalWeapons;
             }
@@ -98,7 +98,7 @@ public static class CommonUtility
         {
             foreach (ModuleInfo moduleInfo in bodyInfo.missiles)
             {
-                CapabilityProfile moduleStats = GetCapabilityProfile(moduleInfo);
+                CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
                 stats.attackDps += moduleStats.attackDps;
                 stats.totalWeapons += moduleStats.totalWeapons;
             }
@@ -107,33 +107,8 @@ public static class CommonUtility
         return stats;
     }
 
-    // ShipInfo로부터 능력치 계산
-    public static CapabilityProfile GetCapabilityProfile(ShipInfo shipInfo)
-    {
-        CapabilityProfile stats = new CapabilityProfile();
-
-        if (shipInfo == null || shipInfo.bodies == null) return stats;
-
-        // 모든 바디의 능력치 합산
-        foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
-        {
-            CapabilityProfile bodyStats = GetCapabilityProfile(bodyInfo);
-            stats.attackDps += bodyStats.attackDps;
-            stats.hp += bodyStats.hp;
-            stats.engineSpeed += bodyStats.engineSpeed;
-            stats.cargoCapacity += bodyStats.cargoCapacity;            
-            stats.totalWeapons += bodyStats.totalWeapons;
-            stats.totalEngines += bodyStats.totalEngines;
-        }
-
-        // 육각형 능력치 자동 계산 (최대값 대비 백분율)
-        CalculateHexagonStats(ref stats);
-
-        return stats;
-    }
-
     // FleetInfo로부터 능력치 계산
-    public static CapabilityProfile GetCapabilityProfile(FleetInfo fleetInfo)
+    public static CapabilityProfile GetFleetCapabilityProfile(FleetInfo fleetInfo)
     {
         CapabilityProfile stats = new CapabilityProfile();
 
@@ -142,7 +117,7 @@ public static class CommonUtility
         // 모든 함선의 능력치 합산
         foreach (ShipInfo shipInfo in fleetInfo.ships)
         {
-            CapabilityProfile shipStats = GetCapabilityProfile(shipInfo);
+            CapabilityProfile shipStats = GetShipCapabilityProfile(shipInfo);
             stats.attackDps += shipStats.attackDps;
             stats.hp += shipStats.hp;
             stats.engineSpeed += shipStats.engineSpeed;
@@ -153,13 +128,38 @@ public static class CommonUtility
         stats.engineSpeed = stats.engineSpeed / fleetInfo.ships.Count;
 
         // 육각형 능력치 자동 계산 (최대값 대비 백분율)
-        CalculateHexagonStats(ref stats);
+        CalculatePersentStats(ref stats);
+
+        return stats;
+    }
+
+    // ShipInfo로부터 능력치 계산
+    public static CapabilityProfile GetShipCapabilityProfile(ShipInfo shipInfo)
+    {
+        CapabilityProfile stats = new CapabilityProfile();
+
+        if (shipInfo == null || shipInfo.bodies == null) return stats;
+
+        // 모든 바디의 능력치 합산
+        foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
+        {
+            CapabilityProfile bodyStats = GetBodyCapabilityProfile(bodyInfo);
+            stats.attackDps += bodyStats.attackDps;
+            stats.hp += bodyStats.hp;
+            stats.engineSpeed += bodyStats.engineSpeed;
+            stats.cargoCapacity += bodyStats.cargoCapacity;            
+            stats.totalWeapons += bodyStats.totalWeapons;
+            stats.totalEngines += bodyStats.totalEngines;
+        }
+
+        // 육각형 능력치 자동 계산 (최대값 대비 백분율)
+        CalculatePersentStats(ref stats);
 
         return stats;
     }
 
     // 육각형 능력치 계산 (장착 모듈 수 × 최대값 대비 백분율, 0~100)
-    private static void CalculateHexagonStats(ref CapabilityProfile stats)
+    private static void CalculatePersentStats(ref CapabilityProfile stats)
     {
         var maxStats = DataManager.Instance.m_dataTableModule.MaxStats;
 

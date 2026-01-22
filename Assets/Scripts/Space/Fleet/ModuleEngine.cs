@@ -43,15 +43,14 @@ public class ModuleEngine : ModuleBase
         }
     }
 
-    public override CapabilityProfile GetCapabilityProfile()
+    public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
+        if (bByInfo == true) return CommonUtility.GetModuleCapabilityProfile(m_moduleInfo);
+
         CapabilityProfile stats = new CapabilityProfile();
-
         if (m_health <= 0) return stats;
-
         stats.engineSpeed = GetEngineSpeed();
         stats.totalEngines = 1;
-
         return stats;
     }
 

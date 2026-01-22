@@ -553,10 +553,11 @@ public class ModuleBody : ModuleBase
     }
 
     // Body의 능력치 프로파일 계산
-    public override CapabilityProfile GetCapabilityProfile()
+    public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
-        CapabilityProfile stats = new CapabilityProfile();
+        if (bByInfo == true) return CommonUtility.GetBodyCapabilityProfile(m_moduleBodyInfo);
 
+        CapabilityProfile stats = new CapabilityProfile();
         if (m_health <= 0) return stats;
 
         // Body 자체의 능력치
@@ -571,7 +572,7 @@ public class ModuleBody : ModuleBase
                 ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
                 if (module != null && module.m_health > 0)
                 {
-                    CapabilityProfile moduleStats = module.GetCapabilityProfile();
+                    CapabilityProfile moduleStats = module.GetModuleCapabilityProfile(false);
                     stats.engineSpeed += moduleStats.engineSpeed;
                     stats.attackDps += moduleStats.attackDps;
                     stats.totalWeapons += moduleStats.totalWeapons;

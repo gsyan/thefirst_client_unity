@@ -23,7 +23,7 @@ public class ShipStatsRadarChart : MonoBehaviour
             radarChart = GetComponent<SimpleRadarChart>();
 
         // 차트 업데이트
-        radarChart.SetStats(stats);
+        radarChart.SetRadarChartStats(stats);
 
         // 라벨 업데이트
         // if (firepowerLabel != null) firepowerLabel.text = $"Attack: {stats.attack:F0}";
@@ -40,7 +40,7 @@ public class ShipStatsRadarChart : MonoBehaviour
     public void UpdateFromShipInfo(ShipInfo shipInfo)
     {
         if (shipInfo == null) return;
-        CapabilityProfile profile = CommonUtility.GetCapabilityProfile(shipInfo);
+        CapabilityProfile profile = CommonUtility.GetShipCapabilityProfile(shipInfo);
         UpdateShipStats(profile);
     }
 }

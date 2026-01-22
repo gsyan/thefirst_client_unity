@@ -11,10 +11,14 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     private ModuleBase m_selectedModule;
 
     [SerializeField] private TextMeshProUGUI m_textTop;
-    [SerializeField] private TextMeshProUGUI m_textStat;
     [SerializeField] private SimpleRadarChart m_radarChart;
     [SerializeField] private TextMeshProUGUI m_textResult;
     private Coroutine m_textResultCoroutine;
+
+    [Header("Ship Stats Display")]
+    [SerializeField] private RectTransform m_moduleStatsContainer;    // VerticalLayoutGroup 필요
+    [SerializeField] private GameObject m_rowLabelValuePrefab;      // RowLabelValue 프리팹
+    private readonly Dictionary<string, RowLabelValue> m_statRows = new();
 
     [SerializeField] private Button m_backButton;
     [SerializeField] private Button m_unlockModuleButton;
@@ -75,7 +79,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         m_selectedModule = module;
         m_selectedShip.SetSelectedModule(ship, module);
 
-        UpdateShipStatsDisplay();
+        UpdateModuleStatsDisplay();
         UpdateUIFrame();
         UpdateScrollView();
     }
@@ -92,7 +96,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(m_selectedShip, m_selectedModule);
 
         bShow = true;
-        UpdateShipStatsDisplay();
+        UpdateModuleStatsDisplay();
         UpdateUIFrame();
         UpdateScrollView();
     }
@@ -113,7 +117,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     {
         if (bShow != true) return;
 
-        UpdateShipStatsDisplay();
+        UpdateModuleStatsDisplay();
     }
 
 
@@ -137,38 +141,44 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         }
     }
 
-    private void UpdateShipStatsDisplay()
+    private void UpdateModuleStatsDisplay()
     {
         if (bShow != true) return;
-        if (m_textStat == null) return;
-
-        CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
-        CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
+        if (m_selectedShip == null) return;
         
-        string shipStatsText = $"=== SHIP STATS ===\n" +
-                              $"Att(dps): {statsCur.attackDps:F1} / {statsOrg.attackDps:F1}\n" +
-                              $"HP: {statsCur.hp:F0} / {statsOrg.hp:F0}\n" +                              
-                              $"Sp: {statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}\n" +
-                              $"Car: {statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}\n" +
-                              $"Weapons: {statsCur.totalWeapons}\n" +
-                              $"Engines: {statsCur.totalEngines}";
+        CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
+        
 
+        SetOrCreateModuleStatRow("Attack(DPS)", $"{statsOrg.attackDps:F1}");
+        SetOrCreateModuleStatRow("HP", $"{statsOrg.hp:F0}");
+        SetOrCreateModuleStatRow("Speed", $"{statsOrg.engineSpeed:F1}");
+        SetOrCreateModuleStatRow("Cargo", $"{statsOrg.cargoCapacity:F0}");
 
+        m_radarChart.SetRadarChartStats(statsOrg);
+    }
 
-        m_textStat.text = shipStatsText;
+    private void SetOrCreateModuleStatRow(string label, string value)
+    {
+        if (m_moduleStatsContainer == null || m_rowLabelValuePrefab == null)
+            return;
 
-        if (m_selectedModule != null)
+        // 이미 생성된 행이 있으면 값만 업데이트
+        if (m_statRows.TryGetValue(label, out RowLabelValue existingRow))
         {
-            string moduleStatsCompareText = m_selectedModule.GetUpgradeComparisonText();
-            m_textStat.text += "\n\n" + moduleStatsCompareText;
+            existingRow.SetValue(value);
+            return;
         }
-        else
+
+        // 새 행 생성 (VerticalLayoutGroup이 있으면 자동으로 아래에 배치됨)
+        GameObject rowObj = Instantiate(m_rowLabelValuePrefab, m_moduleStatsContainer);
+        rowObj.name = $"Row_{label}";
+
+        RowLabelValue row = rowObj.GetComponent<RowLabelValue>();
+        if (row != null)
         {
-            m_textStat.text += "\n\n" + "Select Module First";
+            row.SetRow(label, value);
+            m_statRows.Add(label, row);
         }
-        
-        m_radarChart.SetStats(statsOrg);
-        
     }
 
     private void UnlockModule()
@@ -397,7 +407,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             UpdateModuleAfterUpgrade(response.data);
             
             // Refresh UI
-            UpdateShipStatsDisplay();
+            UpdateModuleStatsDisplay();
 
             // Show success message
             ShowResultMessage("Upgrade successful!", 3f);

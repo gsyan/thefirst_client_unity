@@ -133,7 +133,7 @@ public class ModuleBase : MonoBehaviour
     }
 
     // 모듈의 능력치 프로파일 반환 (하위 클래스에서 override)
-    public virtual CapabilityProfile GetCapabilityProfile()
+    public virtual CapabilityProfile GetModuleCapabilityProfile(bool bByInfo = true)
     {
         return new CapabilityProfile();
     }
