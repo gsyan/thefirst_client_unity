@@ -166,18 +166,16 @@ public class ModuleMissile : ModuleBase
         }
     }
 
-    public override CapabilityProfile GetCapabilityProfile()
+    public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
+        if (bByInfo == true) return CommonUtility.GetModuleCapabilityProfile(m_moduleInfo);
+
         CapabilityProfile stats = new CapabilityProfile();
-
         if (m_health <= 0) return stats;
-
         stats.totalWeapons = 1;
-
         // DPS 계산: 공격력 × 발사 개수 / 쿨타임
         if (m_attackCoolTime > 0)
             stats.attackDps = m_attackPower * m_attackFireCount / m_attackCoolTime;
-
         return stats;
     }
 

@@ -75,8 +75,8 @@ public class SpaceShip : MonoBehaviour
         foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
             InitSpaceShipBody(bodyInfo, null);
 
-        m_spaceShipStatsOrg = CommonUtility.GetCapabilityProfile(shipInfo);
-        m_spaceShipStatsCur = GetCapabilityProfile();
+        m_spaceShipStatsOrg = GetShipCapabilityProfile(true);
+        m_spaceShipStatsCur = GetShipCapabilityProfile(false);
 
         SetupSelectedModuleVisualing();
         
@@ -253,7 +253,7 @@ public class SpaceShip : MonoBehaviour
         }
 
         // 전체 함선 체력 재계산
-        m_spaceShipStatsCur = GetCapabilityProfile();
+        m_spaceShipStatsCur = GetShipCapabilityProfile(false);
 
         if (m_spaceShipStatsCur.hp <= 0.0f)
             OnSpaceShipDestroyed();
@@ -262,7 +262,7 @@ public class SpaceShip : MonoBehaviour
     // 함선이 살아있는지 확인
     public bool IsAlive()
     {
-        return m_spaceShipStatsOrg.hp > 0 && HasAliveBodies();
+        return m_spaceShipStatsCur.hp > 0 && HasAliveBodies();
     }
 
     // 살아있는 바디가 있는지 확인
@@ -301,13 +301,13 @@ public class SpaceShip : MonoBehaviour
 
     public void UpdateShipStatCur()
     {
-        m_spaceShipStatsCur = GetCapabilityProfile();
+        m_spaceShipStatsCur = GetShipCapabilityProfile(false);
     }
 
     public void UpdateShipStats()
     {
-        m_spaceShipStatsOrg = CommonUtility.GetCapabilityProfile(m_shipInfo);
-        m_spaceShipStatsCur = GetCapabilityProfile();
+        m_spaceShipStatsOrg = GetShipCapabilityProfile(true);
+        m_spaceShipStatsCur = GetShipCapabilityProfile(false);
     }
 
     // ModuleBody에서 호출되는 파괴 체크 메서드
@@ -373,19 +373,22 @@ public class SpaceShip : MonoBehaviour
     }
 
     // 함선의 능력치 프로파일 계산
-    public CapabilityProfile GetCapabilityProfile()
+    // bByInfo = true: Info 기반 계산 (최대 스펙)
+    // bByInfo = false: 실제 상태 기반 계산 (현재 체력/상태 반영)
+    public CapabilityProfile GetShipCapabilityProfile(bool bByInfo = true)
     {
-        CapabilityProfile stats = new CapabilityProfile();
+        if (bByInfo == true) return CommonUtility.GetShipCapabilityProfile(m_shipInfo);
 
+        CapabilityProfile stats = new CapabilityProfile();
         foreach (ModuleBody body in m_moduleBodys)
         {
             if (body != null && body.m_health > 0)
             {
-                CapabilityProfile bodyStats = body.GetCapabilityProfile();
+                CapabilityProfile bodyStats = body.GetModuleCapabilityProfile(false);
+                stats.attackDps += bodyStats.attackDps;
                 stats.hp += bodyStats.hp;
                 stats.engineSpeed += bodyStats.engineSpeed;
-                stats.cargoCapacity += bodyStats.cargoCapacity;
-                stats.attackDps += bodyStats.attackDps;
+                stats.cargoCapacity += bodyStats.cargoCapacity;               
                 stats.totalWeapons += bodyStats.totalWeapons;
                 stats.totalEngines += bodyStats.totalEngines;
             }

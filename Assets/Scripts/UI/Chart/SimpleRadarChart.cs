@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 // 간단한 레이더 차트
 [RequireComponent(typeof(CanvasRenderer))]
@@ -8,6 +9,7 @@ public class SimpleRadarChart : Graphic
 {
     [Header("Chart Data")]
     public List<float> m_stats = new List<float>();
+    public List<string> m_statNames = new List<string>();
 
     [Tooltip("최대 값 (정규화 기준)")]
     public float maxValue = 100f;
@@ -32,15 +34,100 @@ public class SimpleRadarChart : Graphic
     [Range(2, 10)]
     public int gridLevels = 5;
 
-    public void SetStats(CapabilityProfile stats)
+    [Header("Labels")]
+    [Tooltip("라벨 폰트")]
+    [SerializeField] private TMP_FontAsset m_labelFont;
+    [Tooltip("라벨 폰트 크기")]
+    [SerializeField] private float m_labelFontSize = 20f;
+    [Tooltip("라벨 색상")]
+    [SerializeField] private Color m_labelColor = Color.white;
+    [Tooltip("라벨 오프셋 (반지름 기준 배율)")]
+    [SerializeField] private float m_labelOffset = 1.2f;
+
+    private List<TMP_Text> m_labels = new List<TMP_Text>();
+
+    public void SetRadarChartStats(CapabilityProfile stats)
     {
         m_stats.Clear();
+        m_statNames.Clear();
+
         m_stats.Add(stats.firepower);
+        m_statNames.Add("Firepower");
+
         m_stats.Add(stats.survivability);
+        m_statNames.Add("Survivability");
+
         m_stats.Add(stats.mobility);
+        m_statNames.Add("Mobility");
+
         m_stats.Add(stats.logistics);
-        
+        m_statNames.Add("Logistics");
+
+        UpdateLabels();
         SetVerticesDirty();
+    }
+
+    private void UpdateLabels()
+    {
+        // 라벨 수가 스탯 수와 다르면 재생성
+        if (m_labels.Count != m_stats.Count)
+        {
+            ClearLabels();
+            CreateLabels();
+        }
+
+        // 라벨 위치 및 텍스트 업데이트
+        for (int i = 0; i < m_stats.Count; i++)
+        {
+            if (i < m_labels.Count && m_labels[i] != null)
+            {
+                Vector2 pos = GetHexagonPoint(i, radius * m_labelOffset);
+                m_labels[i].rectTransform.anchoredPosition = pos;
+
+                string statName = (i < m_statNames.Count) ? m_statNames[i] : $"Stat{i}";
+                m_labels[i].text = $"{statName}\n{m_stats[i]:F0}";
+            }
+        }
+    }
+
+    private void CreateLabels()
+    {
+        for (int i = 0; i < m_stats.Count; i++)
+        {
+            GameObject labelObj = new GameObject($"Label_{i}");
+            labelObj.transform.SetParent(transform, false);
+
+            TMP_Text label = labelObj.AddComponent<TextMeshProUGUI>();
+            label.font = m_labelFont;
+            label.fontSize = m_labelFontSize;
+            label.color = m_labelColor;
+            label.alignment = TextAlignmentOptions.Center;
+            label.raycastTarget = false;
+
+            RectTransform rt = label.rectTransform;
+            rt.anchorMin = new Vector2(0.5f, 0.5f);
+            rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = new Vector2(100f, 40f);
+
+            m_labels.Add(label);
+        }
+    }
+
+    private void ClearLabels()
+    {
+        foreach (var label in m_labels)
+        {
+            if (label != null)
+                DestroyImmediate(label.gameObject);
+        }
+        m_labels.Clear();
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        ClearLabels();
     }
 
     protected override void OnPopulateMesh(VertexHelper vh)

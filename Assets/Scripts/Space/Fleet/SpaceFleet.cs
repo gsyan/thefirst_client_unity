@@ -219,7 +219,7 @@ public class SpaceFleet : MonoBehaviour
         {
             yield return new WaitForSeconds(1.0f);
 
-            CapabilityProfile fleetStats = GetTotalStats(true);
+            CapabilityProfile fleetStats = GetFleetCapabilityProfile(true);
             float repairPerSecond = 10;//fleetStats.totalMaintenanceCapability;
 
             if (repairPerSecond <= 0) continue;
@@ -255,30 +255,25 @@ public class SpaceFleet : MonoBehaviour
         // gameObject.SetActive(false);
     }
 
-    // GetTotalStats는 하위 호환성을 위해 GetCapabilityProfile을 호출
-    public CapabilityProfile GetTotalStats(bool useCurrent = true)
-    {
-        return GetCapabilityProfile(useCurrent);
-    }
-
     // 함대의 능력치 프로파일 계산
-    public CapabilityProfile GetCapabilityProfile(bool useCurrent = true)
+    public CapabilityProfile GetFleetCapabilityProfile(bool useCurrent = true)
     {
         CapabilityProfile totalStats = new CapabilityProfile();
-
+        int shipCount = 0;
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
-
+            shipCount++;
             CapabilityProfile shipStats = useCurrent ? ship.m_spaceShipStatsCur : ship.m_spaceShipStatsOrg;
-
+            totalStats.attackDps += shipStats.attackDps;
             totalStats.hp += shipStats.hp;
             totalStats.engineSpeed += shipStats.engineSpeed;
-            totalStats.cargoCapacity += shipStats.cargoCapacity;
-            totalStats.attackDps += shipStats.attackDps;
+            totalStats.cargoCapacity += shipStats.cargoCapacity;            
             totalStats.totalWeapons += shipStats.totalWeapons;
             totalStats.totalEngines += shipStats.totalEngines;
         }
+        // 일단 평균
+        totalStats.engineSpeed /= shipCount;
 
         // 육각형 능력치 자동 계산
         totalStats.firepower = totalStats.attackDps;
