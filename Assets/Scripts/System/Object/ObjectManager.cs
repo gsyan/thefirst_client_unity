@@ -345,6 +345,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     
     public GameObject LoadShipModulePrefab(string moduleTypeName, string modulePrefabName, int moduleLevel = 1)
     {
+        // module level 1
+        moduleLevel = 1;
         return LoadPrefab("ShipModule", moduleTypeName, modulePrefabName, moduleLevel);
     }
 

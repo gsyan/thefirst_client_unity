@@ -407,4 +407,23 @@ public class ModuleHanger : ModuleBase
 
         return comparison;
     }
+
+    public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
+    {
+        if (bByInfo == true) return CommonUtility.GetModuleCapabilityProfile(m_moduleInfo);
+
+        CapabilityProfile stats = new CapabilityProfile();
+        if (m_health <= 0) return stats;
+
+        stats.hp = m_health;
+        stats.totalWeapons = 1;
+
+        // DPS 계산: 함재기 데이터로부터 계산
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        if (moduleData != null && moduleData.m_aircraftAttackCooldown > 0)
+            stats.attackDps = m_hangarCapability * moduleData.m_aircraftAttackPower / moduleData.m_aircraftAttackCooldown;
+
+        return stats;
+    }
+
 }

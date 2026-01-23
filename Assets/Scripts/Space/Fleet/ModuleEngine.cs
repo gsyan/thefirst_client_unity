@@ -49,6 +49,7 @@ public class ModuleEngine : ModuleBase
 
         CapabilityProfile stats = new CapabilityProfile();
         if (m_health <= 0) return stats;
+        stats.hp = m_health;
         stats.engineSpeed = GetEngineSpeed();
         stats.totalEngines = 1;
         return stats;

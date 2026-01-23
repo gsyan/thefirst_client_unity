@@ -30,9 +30,9 @@ public struct CapabilityProfile
 
     public override string ToString()
     {
-        return $"AttackDPS: {attackDps:F1}, HP: {hp:F1}, " +
-                $"EngineSpeed: {engineSpeed:F1}, Cargo: {cargoCapacity:F1}, " +
-                $"Weapons: {totalWeapons}, Engines: {totalEngines}\n" +
+        return $"Weapons: {totalWeapons}, Engines: {totalEngines}\n" +
+                $"AttackDPS: {attackDps:F1}, HP: {hp:F1}, " +
+                $"EngineSpeed: {engineSpeed:F1}, Cargo: {cargoCapacity:F1}, " +                
                 $"Firepower: {firepower:F1}, Survivability: {survivability:F1}, " +
                 $"Mobility: {mobility:F1}, Logistics: {logistics:F1}";
     }

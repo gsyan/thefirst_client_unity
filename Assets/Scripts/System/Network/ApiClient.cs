@@ -70,17 +70,21 @@ public class ApiClient
 
     private async Task SendRequestAsync(UnityWebRequest request)
     {
+        //Debug.Log($"[API Request] URL: {request.url}, Method: {request.method}");
+
         var operation = request.SendWebRequest();
         while (!operation.isDone)
             await Task.Yield();
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            //string errorText = request.downloadHandler?.text ?? request.error;
-            //Debug.LogError($"Request failed: {request.error} - {errorText} (HTTP {request.responseCode})");
+            string errorText = request.downloadHandler?.text ?? request.error;
+            Debug.LogError($"[API Error] Result: {request.result}, Error: {request.error}, ResponseCode: {request.responseCode}, Response: {errorText}");
             ServerErrorCode errorCode = GetHttpErrorCode(request.responseCode);
             throw new CustomException(errorCode);
         }
+
+        //Debug.Log($"[API Success] ResponseCode: {request.responseCode}");
     }
     private ServerErrorCode GetHttpErrorCode(long responseCode) => responseCode switch
     {
@@ -340,7 +344,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module Unlock Request: {json}");
-
+        
         using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/unlock-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
