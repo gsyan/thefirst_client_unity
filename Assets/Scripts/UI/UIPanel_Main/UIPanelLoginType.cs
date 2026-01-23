@@ -21,7 +21,7 @@ public class UIPanelLoginType : UIPanelBase
       if (m_googleLoginButton != null)
          m_googleLoginButton.onClick.AddListener(() => GoogleLogin());
       if (m_guestLoginButton != null)
-         m_guestLoginButton.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelGuestLogin"));
+         m_guestLoginButton.onClick.AddListener(() => GuestLogin());
 
       if (SceneManager.GetActiveScene().name == "MainScene")
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uiMain);
@@ -49,6 +49,36 @@ public class UIPanelLoginType : UIPanelBase
          {
                message = ErrorCodeMapping.GetMessage(response.errorCode);
                Debug.LogError($"Google Login failed - ErrorCode: {errorCode}, Message: {message}");
+
+               UIManager.Instance.ShowPanel("UIpanelLoginType");
+         }
+         if (m_resultText != null)
+               m_resultText.text = $"Result: {message}";
+      });
+   }
+
+   private void GuestLogin()
+   {
+      UIManager.Instance.ShowMainPanel();
+
+      if (m_resultText != null)
+         m_resultText.text = "Processing Guest Login...";
+
+      NetworkManager.Instance.GuestLogin((response) => {
+         ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
+         string message = "";
+         if (errorCode == ServerErrorCode.SUCCESS)
+         {
+               message = ErrorCodeMapping.Messages[errorCode];
+               Debug.Log($"Guest Login successful: {message}");
+               Debug.Log($"Access Token received: {response.data?.accessToken}");
+
+               m_uiMain.GetCharacters();
+         }
+         else
+         {
+               message = ErrorCodeMapping.GetMessage(response.errorCode);
+               Debug.LogError($"Guest Login failed - ErrorCode: {errorCode}, Message: {message}");
 
                UIManager.Instance.ShowPanel("UIpanelLoginType");
          }

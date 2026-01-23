@@ -152,6 +152,12 @@ public class GoogleLoginRequest
 }
 
 [System.Serializable]
+public class GuestLoginRequest
+{
+    public string guestId;
+}
+
+[System.Serializable]
 public class AuthResponse
 {
     public string accessToken;

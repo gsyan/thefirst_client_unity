@@ -202,6 +202,27 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             StartCoroutine(GoogleLoginCoroutine(onComplete));
     }
 
+    public void GuestLogin(System.Action<ApiResponse<AuthResponse>> onComplete = null)
+    {
+        if (m_bConnected == false) return;
+
+        // PlayerPrefs에서 guestId 가져오기, 없으면 새로 생성
+        string guestId = PlayerPrefs.GetString("GuestId", "");
+        if (string.IsNullOrEmpty(guestId))
+        {
+            guestId = System.Guid.NewGuid().ToString();
+            PlayerPrefs.SetString("GuestId", guestId);
+            PlayerPrefs.Save();
+            Debug.Log($"New GuestId created: {guestId}");
+        }
+        else
+        {
+            Debug.Log($"Existing GuestId found: {guestId}");
+        }
+
+        StartCoroutine(RunAsync(() => m_apiClient.GuestLoginAsync(guestId), onComplete));
+    }
+
     private void GoogleLoginFirebase(System.Action<ApiResponse<AuthResponse>> onComplete = null)
     {
         // FirebaseAuthManager.Instance.SignInWithGPGS(

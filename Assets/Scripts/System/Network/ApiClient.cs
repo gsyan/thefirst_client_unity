@@ -176,6 +176,26 @@ public class ApiClient
         return response;
     }
 
+    public async Task<ApiResponse<AuthResponse>> GuestLoginAsync(string guestId)
+    {
+        var requestDto = new GuestLoginRequest { guestId = guestId };
+        string json = JsonConvert.SerializeObject(requestDto);
+        Debug.Log($"GuestLogin JSON: {json}");
+
+        using var request = new UnityWebRequest($"{baseUrl}/account/guest-login", "POST");
+        request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        await SendRequestAsync(request);
+        var response = JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+
+        if (response.errorCode == 0)
+            SetTokens(response.data.accessToken, response.data.refreshToken);
+
+        return response;
+    }
+
     public async Task<ApiResponse<string>> DeleteAccountAsync()
     {
         if (string.IsNullOrEmpty(refreshToken) == true) return ApiResponse<string>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
