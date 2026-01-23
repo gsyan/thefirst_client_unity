@@ -169,9 +169,10 @@ public class ModuleBeam : ModuleBase
     public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
         if (bByInfo == true) return CommonUtility.GetModuleCapabilityProfile(m_moduleInfo);
-        
+
         CapabilityProfile stats = new CapabilityProfile();
         if (m_health <= 0) return stats;
+        stats.hp = m_health;
         stats.totalWeapons = 1;
         // DPS 계산: 공격력 × 발사 개수 / 쿨타임
         if (m_attackCoolTime > 0)

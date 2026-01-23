@@ -108,7 +108,7 @@ public class SimpleRadarChart : Graphic
             rt.anchorMin = new Vector2(0.5f, 0.5f);
             rt.anchorMax = new Vector2(0.5f, 0.5f);
             rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.sizeDelta = new Vector2(100f, 40f);
+            rt.sizeDelta = new Vector2(120f, 40f);
 
             m_labels.Add(label);
         }

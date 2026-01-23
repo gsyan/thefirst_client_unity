@@ -1,4 +1,68 @@
+using System.Reflection;
 using UnityEngine;
+
+// 모듈 최대 능력치 (육각형 차트 백분율 계산용)
+[System.Serializable]
+public struct ModuleMaxStats
+{
+    // Body
+    public float maxBodyHp;
+    public float maxBodyCargo;
+
+    // Engine
+    public float maxEngineHp;
+    public float maxEngineSpeed;
+
+    // Beam
+    public float maxBeamHp;
+    public float maxBeamDps;
+
+    // Missile
+    public float maxMissileHp;
+    public float maxMissileDps;
+
+    // Hanger
+    public float maxHangerHp;
+    public float maxHangerDps;
+
+    // 모듈 타입에 따른 최대 DPS 반환 (합산 시 무기 중 최대값)
+    public readonly float GetMaxDps(EModuleType moduleType)
+    {
+        return moduleType switch
+        {
+            EModuleType.Beam => maxBeamDps,
+            EModuleType.Missile => maxMissileDps,
+            EModuleType.Hanger => maxHangerDps,
+            _ => Mathf.Max(maxBeamDps, maxMissileDps, maxHangerDps)
+        };
+    }
+
+    // 모듈 타입에 따른 최대 HP 반환 (합산 시 Body HP 기준)
+    public readonly float GetMaxHp(EModuleType moduleType)
+    {
+        return moduleType switch
+        {
+            EModuleType.Body => maxBodyHp,
+            EModuleType.Engine => maxEngineHp,
+            EModuleType.Beam => maxBeamHp,
+            EModuleType.Missile => maxMissileHp,
+            EModuleType.Hanger => maxHangerHp,
+            _ => maxBodyHp
+        };
+    }
+
+    // 모듈 타입에 따른 최대 Speed 반환 (Engine만 해당)
+    public readonly float GetMaxSpeed(EModuleType moduleType)
+    {
+        return moduleType == EModuleType.Engine ? maxEngineSpeed : 0f;
+    }
+
+    // 모듈 타입에 따른 최대 Cargo 반환 (Body만 해당)
+    public readonly float GetMaxCargo(EModuleType moduleType)
+    {
+        return moduleType == EModuleType.Body ? maxBodyCargo : 0f;
+    }
+}
 
 public static class CommonUtility
 {
@@ -47,19 +111,53 @@ public static class CommonUtility
             // DPS 계산: 공격력 × 발사 개수 / 쿨타임
             if (moduleData.m_attackCoolTime > 0)
                 stats.attackDps = moduleData.m_attackPower * moduleData.m_attackFireCount / moduleData.m_attackCoolTime;
+            // 체력 수치
+            stats.hp = moduleData.m_health;
+            stats.totalWeapons = 1;
+        }
+        else if (moduleInfo.moduleType == EModuleType.Hanger)
+        {
+            // DPS 계산: 함재기 수용량 × 함재기 공격력 / 함재기 공격 쿨다운
+            if (moduleData.m_aircraftAttackCooldown > 0)
+                stats.attackDps = moduleData.m_hangarCapability * moduleData.m_aircraftAttackPower / moduleData.m_aircraftAttackCooldown;
+            // 체력 수치
+            stats.hp = moduleData.m_health;
             stats.totalWeapons = 1;
         }
         else if (moduleInfo.moduleType == EModuleType.Engine)
         {
             stats.engineSpeed = moduleData.m_movementSpeed;
+            stats.hp = moduleData.m_health;
             stats.totalEngines = 1;
         }
+
+
+
+        // 육각형 능력치 자동 계산 (최대값 대비 백분율) - 모듈 타입별 max 사용
+        CalculatePersentStats(ref stats, moduleInfo.moduleType);
 
         return stats;
     }
 
-    // ModuleBodyInfo로부터 능력치 계산
+    // ModuleBodyInfo로부터 Body 고유의 능력치만 계산
     public static CapabilityProfile GetBodyCapabilityProfile(ModuleBodyInfo bodyInfo)
+    {
+        CapabilityProfile stats = new CapabilityProfile();
+        if (bodyInfo == null) return stats;
+
+        ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodyInfo.moduleSubType, bodyInfo.moduleLevel);
+        if (bodyData != null)
+        {
+            stats.hp = bodyData.m_health;
+            stats.cargoCapacity = bodyData.m_cargoCapacity;
+        }
+
+        CalculatePersentStats(ref stats, EModuleType.Body);
+        return stats;
+    }
+
+    // ModuleBodyInfo로부터 능력치 계산 (구버전 - 모든 모듈 합산)
+    public static CapabilityProfile GetBodyCapabilityProfile_old(ModuleBodyInfo bodyInfo)
     {
         CapabilityProfile stats = new CapabilityProfile();
         if (bodyInfo == null) return stats;
@@ -104,6 +202,9 @@ public static class CommonUtility
             }
         }
 
+        // 육각형 능력치 자동 계산 (최대값 대비 백분율)
+        CalculatePersentStats(ref stats);
+
         return stats;
     }
 
@@ -133,23 +234,67 @@ public static class CommonUtility
         return stats;
     }
 
-    // ShipInfo로부터 능력치 계산
+    // ShipInfo로부터 능력치 계산 (모든 바디 + 모든 모듈 합산)
     public static CapabilityProfile GetShipCapabilityProfile(ShipInfo shipInfo)
     {
         CapabilityProfile stats = new CapabilityProfile();
 
         if (shipInfo == null || shipInfo.bodies == null) return stats;
 
-        // 모든 바디의 능력치 합산
         foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
         {
+            // Body 고유 능력치
             CapabilityProfile bodyStats = GetBodyCapabilityProfile(bodyInfo);
-            stats.attackDps += bodyStats.attackDps;
             stats.hp += bodyStats.hp;
-            stats.engineSpeed += bodyStats.engineSpeed;
-            stats.cargoCapacity += bodyStats.cargoCapacity;            
-            stats.totalWeapons += bodyStats.totalWeapons;
-            stats.totalEngines += bodyStats.totalEngines;
+            stats.cargoCapacity += bodyStats.cargoCapacity;
+
+            // Engine 모듈들 합산
+            if (bodyInfo.engines != null)
+            {
+                foreach (ModuleInfo moduleInfo in bodyInfo.engines)
+                {
+                    CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
+                    stats.engineSpeed += moduleStats.engineSpeed;
+                    stats.totalEngines += moduleStats.totalEngines;
+                    stats.hp += moduleStats.hp;
+                }
+            }
+
+            // Beam 모듈들 합산
+            if (bodyInfo.beams != null)
+            {
+                foreach (ModuleInfo moduleInfo in bodyInfo.beams)
+                {
+                    CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
+                    stats.attackDps += moduleStats.attackDps;
+                    stats.totalWeapons += moduleStats.totalWeapons;
+                    stats.hp += moduleStats.hp;
+                }
+            }
+
+            // Missile 모듈들 합산
+            if (bodyInfo.missiles != null)
+            {
+                foreach (ModuleInfo moduleInfo in bodyInfo.missiles)
+                {
+                    CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
+                    stats.attackDps += moduleStats.attackDps;
+                    stats.totalWeapons += moduleStats.totalWeapons;
+                    stats.hp += moduleStats.hp;
+                }
+            }
+
+            // Hanger 모듈들 합산
+            if (bodyInfo.hangers != null)
+            {
+                foreach (ModuleInfo moduleInfo in bodyInfo.hangers)
+                {
+                    CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
+                    stats.attackDps += moduleStats.attackDps;
+                    stats.totalWeapons += moduleStats.totalWeapons;
+                    stats.hp += moduleStats.hp;
+                }
+            }
         }
 
         // 육각형 능력치 자동 계산 (최대값 대비 백분율)
@@ -159,23 +304,28 @@ public static class CommonUtility
     }
 
     // 육각형 능력치 계산 (장착 모듈 수 × 최대값 대비 백분율, 0~100)
-    private static void CalculatePersentStats(ref CapabilityProfile stats)
+    // moduleType: 개별 모듈일 경우 해당 타입, 합산일 경우 None
+    private static void CalculatePersentStats(ref CapabilityProfile stats, EModuleType moduleType = EModuleType.None)
     {
-        var maxStats = DataManager.Instance.m_dataTableModule.MaxStats;
+        ModuleMaxStats maxStats = DataManager.Instance.m_dataTableModule.MaxStats;
 
-        // firepower: 장착된 무기 수 × 최대 DPS 대비
-        float maxTotalDps = maxStats.maxDps * stats.totalWeapons;
+        // firepower: 장착된 무기 수 × 타입별 최대 DPS 대비
+        float maxDps = maxStats.GetMaxDps(moduleType);
+        float maxTotalDps = maxDps * stats.totalWeapons;
         stats.firepower = maxTotalDps > 0 ? stats.attackDps / maxTotalDps * 100f : 0f;
 
-        // survivability: 단일 Body 최대 HP 대비 (Body는 합산 개념이 아님)
-        stats.survivability = maxStats.maxHp > 0 ? stats.hp / maxStats.maxHp * 100f : 0f;
+        // survivability: 타입별 최대 HP 대비
+        float maxHp = maxStats.GetMaxHp(moduleType);
+        stats.survivability = maxHp > 0 ? stats.hp / maxHp * 100f : 0f;
 
         // mobility: 장착된 엔진 수 × 최대 Speed 대비
-        float maxTotalSpeed = maxStats.maxSpeed * stats.totalEngines;
+        float maxSpeed = maxStats.GetMaxSpeed(EModuleType.Engine);
+        float maxTotalSpeed = maxSpeed * stats.totalEngines;
         stats.mobility = maxTotalSpeed > 0 ? stats.engineSpeed / maxTotalSpeed * 100f : 0f;
 
-        // logistics: 단일 Body 최대 Cargo 대비 (Body는 합산 개념이 아님)
-        stats.logistics = maxStats.maxCargo > 0 ? stats.cargoCapacity / maxStats.maxCargo * 100f : 0f;
+        // logistics: Body 최대 Cargo 대비
+        float maxCargo = maxStats.GetMaxCargo(EModuleType.Body);
+        stats.logistics = maxCargo > 0 ? stats.cargoCapacity / maxCargo * 100f : 0f;
 
         stats.sustainment = 0f; // 향후 확장
         stats.detection = 0f;   // 향후 확장

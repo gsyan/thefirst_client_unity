@@ -8,15 +8,7 @@ using System.Linq;
 using UnityEditor;
 #endif
 
-// 모듈 최대 능력치 (육각형 차트 백분율 계산용)
-[System.Serializable]
-public struct ModuleMaxStats
-{
-    public float maxDps;
-    public float maxHp;
-    public float maxSpeed;
-    public float maxCargo;
-}
+
 
 [System.Serializable]
 public class ModuleData
@@ -227,65 +219,99 @@ public class DataTableModule : ScriptableObject
     /// </summary>
     public void CalculateMaxStats()
     {
-        float maxDps = 0f;
-        float maxHp = 0f;
-        float maxSpeed = 0f;
-        float maxCargo = 0f;
+        float maxBodyHp = 0f;
+        float maxBodyCargo = 0f;
+        float maxEngineHp = 0f;
+        float maxEngineSpeed = 0f;
+        float maxBeamHp = 0f;
+        float maxBeamDps = 0f;
+        float maxMissileHp = 0f;
+        float maxMissileDps = 0f;
+        float maxHangerHp = 0f;
+        float maxHangerDps = 0f;
 
-        // Beam 모듈에서 최대 DPS
-        foreach (var group in beamGroups)
-        {
-            foreach (var module in group.modules)
-            {
-                if (module.m_attackCoolTime > 0)
-                {
-                    float dps = module.m_attackPower * module.m_attackFireCount / module.m_attackCoolTime;
-                    if (dps > maxDps) maxDps = dps;
-                }
-            }
-        }
-
-        // Missile 모듈에서 최대 DPS
-        foreach (var group in missileGroups)
-        {
-            foreach (var module in group.modules)
-            {
-                if (module.m_attackCoolTime > 0)
-                {
-                    float dps = module.m_attackPower * module.m_attackFireCount / module.m_attackCoolTime;
-                    if (dps > maxDps) maxDps = dps;
-                }
-            }
-        }
-
-        // Body 모듈에서 최대 HP, Cargo
+        // Body 모듈 최대값
         foreach (var group in bodyGroups)
         {
             foreach (var module in group.modules)
             {
-                if (module.m_health > maxHp) maxHp = module.m_health;
-                if (module.m_cargoCapacity > maxCargo) maxCargo = module.m_cargoCapacity;
+                if (module.m_health > maxBodyHp) maxBodyHp = module.m_health;
+                if (module.m_cargoCapacity > maxBodyCargo) maxBodyCargo = module.m_cargoCapacity;
             }
         }
 
-        // Engine 모듈에서 최대 Speed
+        // Engine 모듈 최대값
         foreach (var group in engineGroups)
         {
             foreach (var module in group.modules)
             {
-                if (module.m_movementSpeed > maxSpeed) maxSpeed = module.m_movementSpeed;
+                if (module.m_health > maxEngineHp) maxEngineHp = module.m_health;
+                if (module.m_movementSpeed > maxEngineSpeed) maxEngineSpeed = module.m_movementSpeed;
+            }
+        }
+
+        // Beam 모듈 최대값
+        foreach (var group in beamGroups)
+        {
+            foreach (var module in group.modules)
+            {
+                if (module.m_health > maxBeamHp) maxBeamHp = module.m_health;
+                if (module.m_attackCoolTime > 0)
+                {
+                    float dps = module.m_attackPower * module.m_attackFireCount / module.m_attackCoolTime;
+                    if (dps > maxBeamDps) maxBeamDps = dps;
+                }
+            }
+        }
+
+        // Missile 모듈 최대값
+        foreach (var group in missileGroups)
+        {
+            foreach (var module in group.modules)
+            {
+                if (module.m_health > maxMissileHp) maxMissileHp = module.m_health;
+                if (module.m_attackCoolTime > 0)
+                {
+                    float dps = module.m_attackPower * module.m_attackFireCount / module.m_attackCoolTime;
+                    if (dps > maxMissileDps) maxMissileDps = dps;
+                }
+            }
+        }
+
+        // Hanger 모듈 최대값
+        foreach (var group in hangerGroups)
+        {
+            foreach (var module in group.modules)
+            {
+                if (module.m_health > maxHangerHp) maxHangerHp = module.m_health;
+                if (module.m_aircraftAttackCooldown > 0)
+                {
+                    float dps = module.m_hangarCapability * module.m_aircraftAttackPower / module.m_aircraftAttackCooldown;
+                    if (dps > maxHangerDps) maxHangerDps = dps;
+                }
             }
         }
 
         MaxStats = new ModuleMaxStats
         {
-            maxDps = maxDps,
-            maxHp = maxHp,
-            maxSpeed = maxSpeed,
-            maxCargo = maxCargo
+            maxBodyHp = maxBodyHp,
+            maxBodyCargo = maxBodyCargo,
+            maxEngineHp = maxEngineHp,
+            maxEngineSpeed = maxEngineSpeed,
+            maxBeamHp = maxBeamHp,
+            maxBeamDps = maxBeamDps,
+            maxMissileHp = maxMissileHp,
+            maxMissileDps = maxMissileDps,
+            maxHangerHp = maxHangerHp,
+            maxHangerDps = maxHangerDps
         };
 
-        Debug.Log($"[DataTableModule] MaxStats calculated - DPS:{maxDps}, HP:{maxHp}, Speed:{maxSpeed}, Cargo:{maxCargo}");
+        Debug.Log($"[DataTableModule] MaxStats calculated\n" +
+                  $"Body - HP:{maxBodyHp}, Cargo:{maxBodyCargo}\n" +
+                  $"Engine - HP:{maxEngineHp}, Speed:{maxEngineSpeed}\n" +
+                  $"Beam - HP:{maxBeamHp}, DPS:{maxBeamDps}\n" +
+                  $"Missile - HP:{maxMissileHp}, DPS:{maxMissileDps}\n" +
+                  $"Hanger - HP:{maxHangerHp}, DPS:{maxHangerDps}");
     }
 
     public void AddModuleDataToTable(ModuleData data)

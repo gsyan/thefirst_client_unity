@@ -577,6 +577,7 @@ public class ModuleBody : ModuleBase
                     stats.attackDps += moduleStats.attackDps;
                     stats.totalWeapons += moduleStats.totalWeapons;
                     stats.totalEngines += moduleStats.totalEngines;
+                    stats.hp += moduleStats.hp;
                 }
             }
         }

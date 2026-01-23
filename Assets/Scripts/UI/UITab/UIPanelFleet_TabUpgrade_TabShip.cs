@@ -152,7 +152,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
         
 
-        SetOrCreateModuleStatRow("Attack(DPS)", $"{statsOrg.attackDps:F1}");
+        SetOrCreateModuleStatRow("Attack", $"{statsOrg.attackDps:F1}");
         SetOrCreateModuleStatRow("HP", $"{statsOrg.hp:F0}");
         SetOrCreateModuleStatRow("Speed", $"{statsOrg.engineSpeed:F1}");
         SetOrCreateModuleStatRow("Cargo", $"{statsOrg.cargoCapacity:F0}");
