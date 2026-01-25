@@ -51,7 +51,7 @@ public class SpaceShip : MonoBehaviour
     [HideInInspector] public Outline m_shipOutline;
 
     private GaugeBars m_gaugeBars;
-    public AirCraftPathGrid m_airCraftPathGrid;
+    public ShieldGrid m_shieldGrid;
 
     virtual protected void Start()
     {
@@ -80,8 +80,8 @@ public class SpaceShip : MonoBehaviour
 
         SetupSelectedModuleVisualing();
         
-        // AirCraftPathGrid, 지금은 바디가 오직 하나...
-        m_airCraftPathGrid = m_moduleBodys[0].GetComponent<AirCraftPathGrid>();
+        // ShieldGrid, 지금은 바디가 오직 하나...
+        m_shieldGrid = m_moduleBodys[0].GetComponent<ShieldGrid>();
         
         // Outline 미리 설정
         m_shipOutline = gameObject.AddComponent<Outline>();

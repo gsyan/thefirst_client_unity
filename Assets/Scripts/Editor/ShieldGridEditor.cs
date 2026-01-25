@@ -39,14 +39,19 @@ public class ShieldGridEditor : Editor
         if (GUILayout.Button("Clear All", GUILayout.Height(25)))
         {
             Undo.RecordObject(grid, "Clear Shield");
-            if (grid.m_PointParent != null)
-            {
-                while (grid.m_PointParent.childCount > 0)
-                    DestroyImmediate(grid.m_PointParent.GetChild(0).gameObject);
-            }
-            grid.m_vertices.Clear();
-            grid.m_cells.Clear();
+            grid.ClearAll();
             EditorUtility.SetDirty(grid);
+        }
+
+        // 메시 에셋 생성
+        EditorGUILayout.Space(5);
+        if (grid.unitSphereMesh == null)
+        {
+            EditorGUILayout.HelpBox("단위 구 메시 에셋이 필요합니다.", MessageType.Warning);
+            if (GUILayout.Button("Create Unit Sphere Mesh Asset", GUILayout.Height(25)))
+            {
+                CreateUnitSphereMeshAsset(grid);
+            }
         }
 
         EditorGUILayout.Space(5);
@@ -76,5 +81,65 @@ public class ShieldGridEditor : Editor
                     EditorGUILayout.LabelField($"  {i}-이웃: {neighborCounts[i]}개");
             }
         }
+    }
+
+    void CreateUnitSphereMeshAsset(ShieldGrid grid)
+    {
+        int resolution = grid.colliderResolution;
+        Mesh mesh = new Mesh();
+        mesh.name = "UnitSphere";
+
+        var vertices = new System.Collections.Generic.List<Vector3>();
+        var triangles = new System.Collections.Generic.List<int>();
+
+        for (int lat = 0; lat <= resolution; lat++)
+        {
+            float theta = lat * Mathf.PI / resolution;
+            float sinTheta = Mathf.Sin(theta);
+            float cosTheta = Mathf.Cos(theta);
+
+            for (int lon = 0; lon <= resolution; lon++)
+            {
+                float phi = lon * 2f * Mathf.PI / resolution;
+                float x = Mathf.Cos(phi) * sinTheta * 0.5f;
+                float y = cosTheta * 0.5f;
+                float z = Mathf.Sin(phi) * sinTheta * 0.5f;
+                vertices.Add(new Vector3(x, y, z));
+            }
+        }
+
+        for (int lat = 0; lat < resolution; lat++)
+        {
+            for (int lon = 0; lon < resolution; lon++)
+            {
+                int curr = lat * (resolution + 1) + lon;
+                int next = curr + resolution + 1;
+                triangles.Add(curr);
+                triangles.Add(next);
+                triangles.Add(curr + 1);
+                triangles.Add(curr + 1);
+                triangles.Add(next);
+                triangles.Add(next + 1);
+            }
+        }
+
+        mesh.vertices = vertices.ToArray();
+        mesh.triangles = triangles.ToArray();
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+
+        // 에셋 저장
+        string path = "Assets/Resources/UnitSphereMesh.asset";
+        if (!AssetDatabase.IsValidFolder("Assets/Resources"))
+            AssetDatabase.CreateFolder("Assets", "Resources");
+
+        AssetDatabase.CreateAsset(mesh, path);
+        AssetDatabase.SaveAssets();
+
+        // 자동 할당
+        grid.unitSphereMesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
+        EditorUtility.SetDirty(grid);
+
+        Debug.Log($"단위 구 메시 에셋 생성: {path}");
     }
 }

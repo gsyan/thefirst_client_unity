@@ -83,6 +83,8 @@ public class ProjectileBeam : ProjectileBase
         m_lifeCycleCoroutine = StartCoroutine(BeamLifeCycle());
     }
 
+    private const int m_layerShield = 13;
+    private LayerMask m_layerMaskShield = 1 << m_layerShield;
     private IEnumerator BeamLifeCycle()
     {
         Vector3 saveTargetPosition = m_target.transform.position;
@@ -122,8 +124,9 @@ public class ProjectileBeam : ProjectileBase
             // if (validHit.HasValue)
             // {
             //     RaycastHit hit = validHit.Value;
+            LayerMask pickMask = ~m_layerMaskShield;
             RaycastHit hit;            
-            if (Physics.Raycast(m_beamTailPos, m_direction, out hit, checkDistance))
+            if (Physics.Raycast(m_beamTailPos, m_direction, out hit, checkDistance, pickMask))
             {
                 SpaceShip hitTarget = hit.collider.GetComponentInParent<SpaceShip>();
                 if (hitTarget != null && m_sourceShip != null)

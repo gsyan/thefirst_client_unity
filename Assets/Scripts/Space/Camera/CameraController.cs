@@ -36,11 +36,12 @@ public class CameraController : MonoSingleton<CameraController>
     public ECameraControllerMode m_currentMode = ECameraControllerMode.Normal;
 
     // LayerMask
-    private LayerMask m_layerDefault = default;
     private const int m_layerShip = 30;
     private LayerMask m_layerMaskShip = 1 << m_layerShip;
     private const int m_layerShipModule = 31;
     private LayerMask m_layerMaskShipModule = 1 << m_layerShipModule;
+    private const int m_layerShield = 13;
+    private LayerMask m_layerMaskShield = 1 << m_layerShield;
 
     protected override bool ShouldDontDestroyOnLoad => false;
 
@@ -321,7 +322,8 @@ public class CameraController : MonoSingleton<CameraController>
         if(m_currentMode != ECameraControllerMode.Manage_Ship)
             return;
 
-        if (GetCameraRaycast(out RaycastHit hit, m_layerDefault, 1000f, screenPosition))
+        LayerMask pickMask = ~m_layerMaskShield;
+        if (GetCameraRaycast(out RaycastHit hit, pickMask, 1000f, screenPosition))
         {
             SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
             ModuleBase module = hit.collider.GetComponentInParent<ModuleBase>();

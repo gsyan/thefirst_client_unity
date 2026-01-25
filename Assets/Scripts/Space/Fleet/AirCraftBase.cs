@@ -278,15 +278,14 @@ public abstract class AircraftBase : MonoBehaviour
         SpaceShip targetShip = m_targetModule.GetSpaceShip();
         if (targetShip == null) { m_state = EAircraftState.ReturnToCarrier; yield break; }
         
-        AirCraftPathGrid targetShipAirCraftPathGrid = targetShip.m_airCraftPathGrid;
-        if (targetShipAirCraftPathGrid == null || targetShipAirCraftPathGrid.m_aircraftPathPoints == null || targetShipAirCraftPathGrid.m_aircraftPathPoints.Count == 0)
+        ShieldGrid targetShieldGrid = targetShip.m_shieldGrid;
+        if (targetShieldGrid == null || targetShieldGrid.m_vertices == null || targetShieldGrid.m_vertices.Count == 0)
         {
-            Debug.LogWarning("No outlineInfos on target ship!");
-            //m_state = EAircraftState.ReturnToCarrier; yield break;
+            Debug.LogWarning("No ShieldGrid vertices on target ship!");
             yield break;
         }
 
-        List<AirCraftPathPoint> points = targetShipAirCraftPathGrid.m_aircraftPathPoints;
+        List<ShieldVertex> points = targetShieldGrid.m_vertices;
         // 시작 시, 가장 가까운 포인트 찾기
         int currentIndex = FindClosestOutlineIndex(points, transform.position);
         m_currentDirection = transform.forward.normalized;
@@ -323,13 +322,14 @@ public abstract class AircraftBase : MonoBehaviour
             yield return null;
         }
     }
-    int FindClosestOutlineIndex(List<AirCraftPathPoint> points, Vector3 pos)
+    int FindClosestOutlineIndex(List<ShieldVertex> points, Vector3 pos)
     {
         int bestIndex = 0;
         float bestDist = float.MaxValue;
 
         for (int i = 0; i < points.Count; i++)
         {
+            if (points[i] == null) continue;
             float d = (points[i].transform.position - pos).sqrMagnitude;
             if (d < bestDist)
             {
@@ -340,19 +340,22 @@ public abstract class AircraftBase : MonoBehaviour
         return bestIndex;
     }
 
-    int GetNextIndexByAlignment(List<AirCraftPathPoint> points, int current, Vector3 forward)
+    int GetNextIndexByAlignment(List<ShieldVertex> points, int current, Vector3 forward)
     {
         float savedDot = -1f;
-        int savedNeighbor = 0;
-        foreach(var neighbor in points[current].neighbors)
+        int savedNeighbor = current;
+
+        foreach (int neighborIdx in points[current].neighborIndices)
         {
-            if( neighbor == points[current] ) continue;
+            if (neighborIdx == current || neighborIdx >= points.Count) continue;
+            var neighbor = points[neighborIdx];
+            if (neighbor == null) continue;
 
             float tempDot = Vector3.Dot(forward, neighbor.transform.position - points[current].transform.position);
-            if( tempDot > savedDot)
+            if (tempDot > savedDot)
             {
                 savedDot = tempDot;
-                savedNeighbor = neighbor.index;
+                savedNeighbor = neighborIdx;
             }
         }
 
@@ -404,9 +407,9 @@ public abstract class AircraftBase : MonoBehaviour
             yield break;
         }
 
-        // 적 함선의 gridpoint를 이용한 귀환 경로 설정
+        // 적 함선의 ShieldGrid를 이용한 귀환 경로 설정
         bool useGridPath = false;
-        List<AirCraftPathPoint> points = null;
+        List<ShieldVertex> points = null;
         int currentIndex = 0;
 
         if (m_targetModule != null)
@@ -414,10 +417,10 @@ public abstract class AircraftBase : MonoBehaviour
             SpaceShip targetShip = m_targetModule.GetSpaceShip();
             if (targetShip != null)
             {
-                AirCraftPathGrid targetShipAirCraftPathGrid = targetShip.m_airCraftPathGrid;
-                if (targetShipAirCraftPathGrid != null && targetShipAirCraftPathGrid.m_aircraftPathPoints != null && targetShipAirCraftPathGrid.m_aircraftPathPoints.Count > 0)
+                ShieldGrid targetShieldGrid = targetShip.m_shieldGrid;
+                if (targetShieldGrid != null && targetShieldGrid.m_vertices != null && targetShieldGrid.m_vertices.Count > 0)
                 {
-                    points = targetShipAirCraftPathGrid.m_aircraftPathPoints;
+                    points = targetShieldGrid.m_vertices;
                     currentIndex = FindClosestOutlineIndex(points, transform.position);
                     useGridPath = true;
                 }

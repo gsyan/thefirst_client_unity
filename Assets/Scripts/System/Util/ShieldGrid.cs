@@ -10,9 +10,28 @@ public enum EShieldGridMode
     Hexagon    // 벌집 그리드 (꼭지점 이웃 3개)
 }
 
+[System.Serializable]
+public struct BoundingBox
+{
+    public Vector3 center;
+    public Vector3 size;
+    public Vector3 extents;
+    public float margin;
+    public Quaternion rotation; // ***추가*** 박스의 회전
+
+    public BoundingBox(Vector3 c, Vector3 s, float m, Quaternion r)
+    {
+        center = c;
+        size = s;
+        extents = s * 0.5f;
+        margin = m;
+        rotation = r;
+    }
+}
+
 /// <summary>
-/// Geodesic Dome 기반 보호층 그리드. 삼각형/헥사곤 모드 지원.
-/// </summary>
+// Geodesic Dome 기반 보호층 그리드. 삼각형/헥사곤 모드 지원.
+
 public class ShieldGrid : MonoBehaviour
 {
     [Header("Grid Settings")]
@@ -31,6 +50,20 @@ public class ShieldGrid : MonoBehaviour
     [Tooltip("축별 추가 스케일 (X=좌우, Y=상하, Z=전후)")]
     public Vector3 axisScale = Vector3.one;
 
+    [Header("Collider Settings")]
+    [Tooltip("충돌체 생성 여부")]
+    public bool generateCollider = true;
+
+    [Tooltip("Shield 레이어 이름 (미리 생성 필요)")]
+    public string shieldLayerName = "Shield";
+
+    [Tooltip("타원체 메시 해상도 (8권장, 높으면 convex 경고)")]
+    [Range(4, 14)]
+    public int colliderResolution = 8;
+
+    [Tooltip("공용 단위 구 메시 에셋")]
+    public Mesh unitSphereMesh;
+
     [Header("References")]
     public Transform m_PointParent;
 
@@ -39,6 +72,10 @@ public class ShieldGrid : MonoBehaviour
 
     private BoundingBox m_boundBox;
     private Vector3 m_extents;
+
+    // 충돌체 관련
+    private GameObject m_colliderObject;
+    private MeshCollider m_meshCollider;
 
     private static readonly float PHI = (1f + Mathf.Sqrt(5f)) / 2f;
 
@@ -70,7 +107,87 @@ public class ShieldGrid : MonoBehaviour
         else
             GenerateHexagonMode();
 
+        // 충돌체 생성
+        if (generateCollider)
+            GenerateCollider();
+
         Debug.Log($"ShieldGrid 생성 [{gridMode}]: {m_vertices.Count}개 꼭지점, {m_cells.Count}개 셀");
+    }
+
+    /// <summary>
+    /// 히트 지점에서 가장 가까운 셀 반환
+    /// </summary>
+    public ShieldCell GetHitCell(Vector3 hitPoint)
+    {
+        if (m_cells.Count == 0) return null;
+
+        ShieldCell closest = null;
+        float minDistSqr = float.MaxValue;
+
+        foreach (var cell in m_cells)
+        {
+            float distSqr = (cell.center - hitPoint).sqrMagnitude;
+            if (distSqr < minDistSqr)
+            {
+                minDistSqr = distSqr;
+                closest = cell;
+            }
+        }
+        return closest;
+    }
+
+    /// <summary>
+    /// 히트 지점에서 가장 가까운 꼭지점 반환
+    /// </summary>
+    public ShieldVertex GetHitVertex(Vector3 hitPoint)
+    {
+        if (m_vertices.Count == 0) return null;
+
+        ShieldVertex closest = null;
+        float minDistSqr = float.MaxValue;
+
+        foreach (var v in m_vertices)
+        {
+            if (v == null) continue;
+            float distSqr = (v.transform.position - hitPoint).sqrMagnitude;
+            if (distSqr < minDistSqr)
+            {
+                minDistSqr = distSqr;
+                closest = v;
+            }
+        }
+        return closest;
+    }
+
+    void GenerateCollider()
+    {
+        // 기존 충돌체 제거
+        if (m_colliderObject != null)
+            DestroyImmediate(m_colliderObject);
+
+        // 충돌체용 오브젝트 생성
+        m_colliderObject = new GameObject("ShieldCollider");
+        m_colliderObject.transform.SetParent(transform);
+
+        // 위치: boundBox 중심 (로컬 좌표)
+        Vector3 localCenter = transform.InverseTransformPoint(m_boundBox.center);
+        m_colliderObject.transform.localPosition = localCenter;
+        m_colliderObject.transform.localRotation = Quaternion.Inverse(transform.rotation) * m_boundBox.rotation;
+        // 크기: extents로 타원체 형태 (단위 구 * 2 * extents)
+        m_colliderObject.transform.localScale = m_extents * 2f;
+
+        // 레이어 설정
+        int layer = LayerMask.NameToLayer(shieldLayerName);
+        if (layer >= 0)
+            m_colliderObject.layer = layer;
+        else
+            Debug.LogWarning($"Shield 레이어 '{shieldLayerName}'가 없습니다. Project Settings > Tags and Layers에서 생성하세요.");
+
+        // MeshCollider 추가
+        m_meshCollider = m_colliderObject.AddComponent<MeshCollider>();
+        m_meshCollider.sharedMesh = unitSphereMesh;
+        m_meshCollider.convex = true;
+        m_meshCollider.isTrigger = true;
     }
 
     /// <summary>
@@ -332,7 +449,7 @@ public class ShieldGrid : MonoBehaviour
         return vertex;
     }
 
-    void ClearAll()
+    public void ClearAll()
     {
         foreach (var v in m_vertices)
         {
@@ -349,6 +466,20 @@ public class ShieldGrid : MonoBehaviour
             while (m_PointParent.childCount > 0)
                 DestroyImmediate(m_PointParent.GetChild(0).gameObject);
         }
+
+        // 충돌체 제거 (참조가 끊어져도 이름으로 찾아서 삭제)
+        if (m_colliderObject != null)
+        {
+            DestroyImmediate(m_colliderObject);
+        }
+        else
+        {
+            var existing = transform.Find("ShieldCollider");
+            if (existing != null)
+                DestroyImmediate(existing.gameObject);
+        }
+        m_colliderObject = null;
+        m_meshCollider = null;
     }
 
     BoundingBox ComputeBoundingBox(Transform ship, float margin)
@@ -406,9 +537,32 @@ public class ShieldGrid : MonoBehaviour
     [SerializeField] private Color cellColor = new Color(1f, 0.5f, 0f, 0.5f);
     [SerializeField] private bool bShowCellOutline = true;
 
+    // m_PointParent의 자식에서 ShieldVertex를 다시 수집
+    void RefreshVertexReferences()
+    {
+        if (m_PointParent == null)
+        {
+            Debug.LogWarning("[ShieldGrid] m_PointParent가 null입니다");
+            return;
+        }
+
+        var vertices = m_PointParent.GetComponentsInChildren<ShieldVertex>();
+        Debug.Log($"[ShieldGrid] RefreshVertexReferences: {vertices.Length}개 발견 (m_vertices.Count={m_vertices.Count})");
+
+        if (vertices.Length == 0) return;
+
+        m_vertices.Clear();
+        m_vertices.AddRange(vertices);
+        m_vertices.Sort((a, b) => a.index.CompareTo(b.index));
+    }
+
     private void OnDrawGizmos()
     {
         if (!bShowGrid) return;
+        
+        // destroyed 객체 감지 시 자동 복구
+        if (m_vertices.Count > 0 && m_vertices[0] == null)
+            RefreshVertexReferences();
 
         // 꼭지점
         Gizmos.color = vertexColor;
@@ -477,13 +631,6 @@ public class ShieldGrid : MonoBehaviour
         }
     }
 #endif
-}
-
-public class ShieldVertex : MonoBehaviour
-{
-    public int index;
-    public List<int> neighborIndices = new List<int>();
-    public Vector3 GetPosition() => transform.position;
 }
 
 [System.Serializable]
