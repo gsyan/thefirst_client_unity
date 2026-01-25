@@ -376,9 +376,8 @@ public class DataTableModuleEditor : Editor
         module.m_attackCoolTime = EditorGUILayout.Slider("Cool Time", module.m_attackCoolTime, 0.1f, 10f);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.m_projectileLength = EditorGUILayout.Slider("Projectile Length", module.m_projectileLength, 1f, 100f);
         module.m_projectileWidth = EditorGUILayout.Slider("Projectile Width", module.m_projectileWidth, 0.01f, 5f);
-        module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 500f);
+        module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 5000f);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
@@ -479,9 +478,8 @@ public class DataTableModuleEditor : Editor
         module.m_attackCoolTime = EditorGUILayout.Slider("Cool Time", module.m_attackCoolTime, 0.1f, 10f);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.m_projectileLength = EditorGUILayout.Slider("Projectile Length", module.m_projectileLength, 1f, 100f);
         module.m_projectileWidth = EditorGUILayout.Slider("Projectile Width", module.m_projectileWidth, 0.01f, 5f);
-        module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 500f);
+        module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 5000f);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
