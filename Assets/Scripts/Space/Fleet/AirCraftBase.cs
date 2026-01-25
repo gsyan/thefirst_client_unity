@@ -111,11 +111,11 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual IEnumerator LaunchStraightPhase()
     {
-        Vector3 targetPos = m_launchStartPos + transform.forward * m_aircraftInfo.launchStraightDistance + m_randomOffset;
+        Vector3 targetPos = m_launchStartPos + transform.up * m_aircraftInfo.launchStraightDistance + m_randomOffset;
         while (true)
         {
             Vector3 toTarget = (targetPos - transform.position).normalized;
-            float dotValue = Vector3.Dot(transform.forward, toTarget);
+            float dotValue = Vector3.Dot(transform.up, toTarget);
             if(dotValue < 0.0f)
                 break;
                         

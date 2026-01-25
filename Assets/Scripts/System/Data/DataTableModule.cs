@@ -51,11 +51,9 @@ public class ModuleData
     [Range(0.1f, 10f)]
     public float m_attackCoolTime = 0f;
     [Header("Weapon Projectile Stats")]
-    [Range(1f, 100f)]
-    public float m_projectileLength = 0f;
     [Range(0.01f, 5f)]
     public float m_projectileWidth = 0f;
-    [Range(1f, 500f)]
+    [Range(1f, 5000f)]
     public float m_projectileSpeed = 0f;
     
     // Hanger ------------------------------------------------------------------------------------------------
@@ -607,10 +605,9 @@ public class DataTableModule : ScriptableObject
                         m_health = 30f + (i * 10f),
                         m_attackFireCount = 1 + (i / 5),
                         m_attackPower = 10f + (i * 5f),                        
-                        m_attackCoolTime = 2.0f - (i * 0.05f),
-                        m_projectileLength = 50f/* + (i * 5.0f)*/,
+                        m_attackCoolTime = 5.2f - (i * 0.05f),
                         m_projectileWidth = 5f/* + (i * 0.5f)*/,
-                        m_projectileSpeed = 200f/* + (i * 5.0f)*/,
+                        m_projectileSpeed = 2000f/* + (i * 50.0f)*/,
                         //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
                         m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
                         m_description = $"{subType} Lv.{i}"
@@ -632,7 +629,6 @@ public class DataTableModule : ScriptableObject
                         m_attackFireCount = 1 + (i / 5),
                         m_attackPower = 10f + (i * 5f),                        
                         m_attackCoolTime = 2.0f - (i * 0.05f),
-                        m_projectileLength = 50f/* + (i * 5.0f)*/,
                         m_projectileWidth = 5f/* + (i * 0.5f)*/,
                         m_projectileSpeed = 200f/* + (i * 5.0f)*/,
                         //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
