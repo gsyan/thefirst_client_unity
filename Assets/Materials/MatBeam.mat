@@ -85,7 +85,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _BeamThickness: 0.24
+    - _BeamThickness: 0.244
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -112,7 +112,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HighlightIntensity: 0
-    - _Intensity: 2
+    - _Intensity: 4
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
