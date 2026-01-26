@@ -43,12 +43,33 @@ public class SpaceFleet : MonoBehaviour
         spaceShip.InitializeSpaceShip(this, shipInfo);
         AddShip(spaceShip);
     }
-    public void AddShip(SpaceShip ship)
+    public void AddShip(SpaceShip ship, bool placeInFormation = false)
     {
         if (ship == null) return;
         m_ships.Add(ship);
         ship.transform.SetParent(transform);
         ship.transform.localRotation = Quaternion.identity;
+
+        // 새 함선을 현재 진형의 빈 위치에 즉시 배치
+        if (placeInFormation)
+        {
+            Vector3 targetPos = ship.CalculateShipPosition(m_currentFormationType);
+            ship.transform.localPosition = targetPos;
+        }
+    }
+
+    // 진형 재계획 (함선 추가/제거 시 호출)
+    public void RefreshFormation()
+    {
+        // 이동 중인 함선들 중지
+        foreach (var ship in m_ships)
+        {
+            if (ship != null)
+                ship.StopFormationMovement();
+        }
+
+        // 진형 재계획 및 이동 시작
+        UpdateShipFormationWithPlannedPath(m_currentFormationType);
     }
 
     // shipId로 함선 찾기
@@ -77,16 +98,8 @@ public class SpaceFleet : MonoBehaviour
 
         if (smooth)
         {
-            List<SpaceShip> sortedShips = new List<SpaceShip>(m_ships);
-            sortedShips.Sort((a, b) => a.m_shipInfo.positionIndex.CompareTo(b.m_shipInfo.positionIndex));
-
-            for (int i = 0; i < sortedShips.Count; i++)
-            {
-                SpaceShip ship = sortedShips[i];
-                if (ship == null) continue;
-                float delay = i * 0.1f;
-                StartCoroutine(DelayedFormationMove(ship, formationType, delay));
-            }
+            // 새 시스템: 사전 경로 계획 후 이동
+            UpdateShipFormationWithPlannedPath(formationType);
         }
         else
         {
@@ -95,6 +108,44 @@ public class SpaceFleet : MonoBehaviour
                 if (ship != null)
                     ship.transform.localPosition = ship.CalculateShipPosition(formationType);
             }
+        }
+    }
+
+    // 새 진형 이동 시스템: Hungarian Algorithm + 경로 계획
+    private void UpdateShipFormationWithPlannedPath(EFormationType formationType)
+    {
+        // null이 아닌 함선만 필터링
+        List<SpaceShip> validShips = m_ships.FindAll(s => s != null);
+        if (validShips.Count == 0) return;
+
+        // 경로 계획 생성
+        var plannedPaths = FormationPathPlanner.PlanFormationChange(validShips, formationType);
+
+        // 디버그 시각화 (에디터에서만)
+        #if UNITY_EDITOR
+        FormationPathPlanner.DebugDrawPaths(plannedPaths, 5f);
+        #endif
+
+        // 각 함선에 계획된 경로 전달
+        foreach (var path in plannedPaths)
+        {
+            if (path.ship != null)
+                path.ship.FollowPlannedPath(path);
+        }
+    }
+
+    // 기존 방식 (레거시, 필요시 사용)
+    private void UpdateShipFormationLegacy(EFormationType formationType)
+    {
+        List<SpaceShip> sortedShips = new List<SpaceShip>(m_ships);
+        sortedShips.Sort((a, b) => a.m_shipInfo.positionIndex.CompareTo(b.m_shipInfo.positionIndex));
+
+        for (int i = 0; i < sortedShips.Count; i++)
+        {
+            SpaceShip ship = sortedShips[i];
+            if (ship == null) continue;
+            float delay = i * 0.1f;
+            StartCoroutine(DelayedFormationMove(ship, formationType, delay));
         }
     }
 
@@ -127,7 +178,7 @@ public class SpaceFleet : MonoBehaviour
         });
     }
 
-    public void RemoveShip(SpaceShip ship)
+    public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
     {
         if (ship == null) return;
         m_ships.Remove(ship);
@@ -136,6 +187,11 @@ public class SpaceFleet : MonoBehaviour
         {
             if (m_isEnemyFleet == true)
                 ObjectManager.Instance.RemoveEnemyFleet(this);
+        }
+        else if (refreshFormation)
+        {
+            // 필요 시 진형 재계획
+            RefreshFormation();
         }
     }
 

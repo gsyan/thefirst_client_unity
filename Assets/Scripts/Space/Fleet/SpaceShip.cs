@@ -512,6 +512,13 @@ public class SpaceShip : MonoBehaviour
     private bool m_isMovingToFormation = false;
     private float m_detectionDistanceLimit = 6f;
 
+    // 사전 계획 경로 기반 이동 (새 시스템)
+    private FormationPathPlanner.PlannedPath m_plannedPath;
+    private int m_currentWaypointIndex;
+    private Coroutine m_pathFollowCoroutine;
+    private const float ARRIVAL_THRESHOLD = 0.5f;
+    private const float SLOWDOWN_DISTANCE = 3f;
+
     private float CalculateShipSize()
     {
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
@@ -690,6 +697,86 @@ public class SpaceShip : MonoBehaviour
             m_isMovingToFormation = true;
             StartCoroutine(AutonomousFormationMovement());
         }
+    }
+
+    // 계획된 경로로 이동 (새 시스템)
+    public void FollowPlannedPath(FormationPathPlanner.PlannedPath path)
+    {
+        if (path == null) return;
+
+        // 기존 이동 중지
+        StopFormationMovement();
+
+        m_plannedPath = path;
+        m_currentWaypointIndex = 0;
+        m_isMovingToFormation = true;
+        m_pathFollowCoroutine = StartCoroutine(PlannedPathMovement());
+    }
+
+    public void StopFormationMovement()
+    {
+        m_isMovingToFormation = false;
+        if (m_pathFollowCoroutine != null)
+        {
+            StopCoroutine(m_pathFollowCoroutine);
+            m_pathFollowCoroutine = null;
+        }
+    }
+
+    private IEnumerator PlannedPathMovement()
+    {
+        // 출발 지연 대기
+        if (m_plannedPath.startDelay > 0f)
+            yield return new WaitForSeconds(m_plannedPath.startDelay);
+
+        while (m_isMovingToFormation && m_currentWaypointIndex < m_plannedPath.waypoints.Count)
+        {
+            Vector3 targetWaypoint = m_plannedPath.waypoints[m_currentWaypointIndex];
+            Vector3 currentPos = transform.localPosition;
+            float distanceToWaypoint = Vector3.Distance(currentPos, targetWaypoint);
+
+            // 웨이포인트 도달 체크
+            if (distanceToWaypoint < ARRIVAL_THRESHOLD)
+            {
+                m_currentWaypointIndex++;
+
+                // 마지막 웨이포인트면 정확한 위치로 스냅
+                if (m_currentWaypointIndex >= m_plannedPath.waypoints.Count)
+                {
+                    transform.localPosition = m_plannedPath.endPos;
+                    break;
+                }
+                continue;
+            }
+
+            // 이동 방향 계산
+            Vector3 direction = (targetWaypoint - currentPos).normalized;
+
+            // 속도 계산 (목표 근처에서 감속)
+            float baseSpeed = m_spaceShipStatsCur.engineSpeed;
+            float speedMultiplier = 1f;
+
+            // 마지막 웨이포인트 근처에서 감속
+            if (m_currentWaypointIndex == m_plannedPath.waypoints.Count - 1)
+            {
+                speedMultiplier = Mathf.Clamp01(distanceToWaypoint / SLOWDOWN_DISTANCE);
+                speedMultiplier = Mathf.Max(speedMultiplier, 0.2f); // 최소 20% 속도 유지
+            }
+
+            float moveSpeed = baseSpeed * speedMultiplier;
+
+            // 이동 (오버슈팅 방지)
+            float moveDistance = moveSpeed * Time.deltaTime;
+            if (moveDistance > distanceToWaypoint)
+                moveDistance = distanceToWaypoint;
+
+            transform.localPosition = currentPos + direction * moveDistance;
+
+            yield return null;
+        }
+
+        m_isMovingToFormation = false;
+        m_pathFollowCoroutine = null;
     }
 
     private IEnumerator AutonomousFormationMovement()
