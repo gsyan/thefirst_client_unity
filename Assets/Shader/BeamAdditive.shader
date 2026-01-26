@@ -4,7 +4,7 @@ Shader "SpaceFleet/BeamAdditive"
     {
         _MainTex ("Beam Texture", 2D) = "white" {}
         _Color ("Beam Color", Color) = (0,0.5,1,1)
-        _Intensity ("Intensity", Range(0,10)) = 2.0
+        _Intensity ("Intensity", Range(5,50)) = 10.0
         _BeamThickness ("Beam Thickness", Range(0.01, 1.0)) = 0.05
         _EdgeFadeArea ("Edge Fade Area", Range(0.0, 0.5)) = 0.1
         _EdgeFadeXPower ("Edge Fade X Power", Range(1.0, 5.0)) = 2.0
