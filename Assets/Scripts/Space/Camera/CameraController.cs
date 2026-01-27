@@ -21,7 +21,7 @@ public class CameraController : MonoSingleton<CameraController>
     private float m_zoomSpeed = 50f;
     private float m_panSpeed = 0.001f;
     private float m_minZoom = 100f;
-    private float m_maxZoom = 1000f;
+    private float m_maxZoom = 1500f; // 카메라 줌
 
     // Camera state management
     private Vector3 m_offset;

@@ -114,32 +114,21 @@ public class GaugeBars : MonoBehaviour
             ShowAllGaugeBars();
     }
 
+    // 게이지바 생성
     private void CreateGaugeBarForModule(ModuleBase module)
     {
-        if (m_moduleGaugeBars.ContainsKey(module) == true) return;
-        if (m_targetCanvas == null) return;
+        // if (m_moduleGaugeBars.ContainsKey(module) == true) return;
+        // if (m_targetCanvas == null) return;
 
-        // if (m_multiGaugeBarPrefab == null)
-        //     m_multiGaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/MultiGaugeBar");
-        // if (m_multiGaugeBarPrefab == null) return;
+        // GameObject gaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/GaugeBar");
+        // if (gaugeBarPrefab == null) return;
 
-        // GameObject multiGaugeBarObj = Instantiate(m_multiGaugeBarPrefab, m_targetCanvas.transform);
-        // MultiGaugeBar multiGaugeBar = multiGaugeBarObj.GetComponent<MultiGaugeBar>();
-        // if (multiGaugeBar == null) return;
-        // multiGaugeBar.SetMultiGaugeTarget(module.transform);
+        // GameObject gaugeBarObj = Instantiate(gaugeBarPrefab, m_targetCanvas.transform);
+        // GaugeBar gaugeBar = gaugeBarObj.GetComponent<GaugeBar>();
+        // if (gaugeBar == null) return;
         // Color gaugeColor = GetModuleColor(module);
-        // multiGaugeBar.AddGauge(gaugeColor);
-        // m_moduleGaugeBars[module] = multiGaugeBar;
-
-        GameObject gaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/GaugeBar");
-        if (gaugeBarPrefab == null) return;
-
-        GameObject gaugeBarObj = Instantiate(gaugeBarPrefab, m_targetCanvas.transform);
-        GaugeBar gaugeBar = gaugeBarObj.GetComponent<GaugeBar>();
-        if (gaugeBar == null) return;
-        Color gaugeColor = GetModuleColor(module);
-        gaugeBar.InitializeGaugeBar(module.transform, m_offsetFromTarget, gaugeColor, m_smoothSpeed);
-        m_moduleGaugeBars.Add(module, gaugeBar);
+        // gaugeBar.InitializeGaugeBar(module.transform, m_offsetFromTarget, gaugeColor, m_smoothSpeed);
+        // m_moduleGaugeBars.Add(module, gaugeBar);
 
     }
 

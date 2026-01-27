@@ -540,18 +540,18 @@ public class SpaceShip : MonoBehaviour
 
         // 함선 크기를 계산하여 spacing에 반영
         float shipSize = CalculateShipSize();
-        float sizeAdjustment = shipSize * 1.0f; // 함선 크기의 절반을 추가 간격으로 사용
+        float sizeAdjustment = shipSize * 1.0f; // 추가 간격
 
         switch (formationType)
         {
             case EFormationType.LinearHorizontal:
                 return CalculateLinearHorizontalPosition(positionIndex, spacing + sizeAdjustment);
-            case EFormationType.LinearVertical:
-                return CalculateLinearVerticalPosition(positionIndex, spacing + sizeAdjustment);
-            case EFormationType.LinearDepth:
-                return CalculateLinearDepthPosition(positionIndex, spacing + sizeAdjustment);
-            case EFormationType.Grid:
-                return CalculateGridPosition(positionIndex, spacing + sizeAdjustment);
+            //case EFormationType.LinearVertical:
+            //    return CalculateLinearVerticalPosition(positionIndex, spacing + sizeAdjustment);
+            // case EFormationType.LinearDepth:
+            //     return CalculateLinearDepthPosition(positionIndex, spacing + sizeAdjustment);
+            //case EFormationType.Grid:
+            //    return CalculateGridPosition(positionIndex, spacing + sizeAdjustment);
             case EFormationType.Circle:
                 return CalculateCirclePosition(positionIndex, spacing + sizeAdjustment);
             case EFormationType.Cross:
@@ -575,78 +575,124 @@ public class SpaceShip : MonoBehaviour
         return new Vector3(xOffset, 0, 0);
     }
 
-    private static Vector3 CalculateLinearVerticalPosition(int positionIndex, float spacing)
+    // private static Vector3 CalculateLinearVerticalPosition(int positionIndex, float spacing)
+    // {
+    //     if (positionIndex == 0)
+    //         return new Vector3(0, 0, 0);
+
+    //     int side = (positionIndex % 2 == 1) ? -1 : 1;
+    //     int distance = (positionIndex + 1) / 2;
+    //     float yOffset = side * distance * spacing;
+
+    //     return new Vector3(0, yOffset, 0);
+    // }
+
+    // private Vector3 CalculateLinearDepthPosition(int positionIndex, float spacing)
+    // {
+    //     if (m_myFleet == null)
+    //         return new Vector3(0, 0, positionIndex * spacing);
+
+    //     List<SpaceShip> sortedShips = new List<SpaceShip>(m_myFleet.m_ships);
+    //     sortedShips.Sort((a, b) => a.m_shipInfo.positionIndex.CompareTo(b.m_shipInfo.positionIndex));
+
+    //     float accumulatedZ = 0f;
+
+    //     foreach (SpaceShip ship in sortedShips)
+    //     {
+    //         if (ship == null) continue;
+    //         if (ship.m_shipInfo.positionIndex >= positionIndex) break;
+
+    //         Bounds shipBounds = ship.CalculateShipBounds();
+    //         accumulatedZ -= shipBounds.size.z + spacing;
+    //     }
+
+    //     return new Vector3(0, 0, accumulatedZ);
+    // }
+
+    // private static Vector3 CalculateGridPosition(int positionIndex, float spacing, int shipsPerRow = 3)
+    // {
+    //     int row = positionIndex / shipsPerRow;
+    //     int col = positionIndex % shipsPerRow;
+
+    //     return new Vector3(
+    //         col * spacing - (shipsPerRow - 1) * spacing * 0.5f,
+    //         row * spacing - row * spacing * 0.5f,
+    //         0
+    //     );
+    // }
+
+    // 기함 중심 원형 진형: 기함(0번)은 중심, 나머지는 기함 위쪽 기준 원형 배치
+    private Vector3 CalculateCirclePosition(int positionIndex, float spacing)
     {
+        // 기함(0번)은 항상 중심
         if (positionIndex == 0)
-            return new Vector3(0, 0, 0);
+            return Vector3.zero;
 
-        int side = (positionIndex % 2 == 1) ? -1 : 1;
-        int distance = (positionIndex + 1) / 2;
-        float yOffset = side * distance * spacing;
+        // Fleet에서 총 함선 수와 기함 정보 가져오기
+        int totalShips = m_myFleet != null ? m_myFleet.m_ships.Count : 1;
+        int circleShipCount = totalShips - 1; // 원에 배치할 함선 수 (기함 제외)
 
-        return new Vector3(0, yOffset, 0);
-    }
+        if (circleShipCount <= 0)
+            return Vector3.zero;
 
-    private Vector3 CalculateLinearDepthPosition(int positionIndex, float spacing)
-    {
-        if (m_myFleet == null)
-            return new Vector3(0, 0, positionIndex * spacing);
-
-        List<SpaceShip> sortedShips = new List<SpaceShip>(m_myFleet.m_ships);
-        sortedShips.Sort((a, b) => a.m_shipInfo.positionIndex.CompareTo(b.m_shipInfo.positionIndex));
-
-        float accumulatedZ = 0f;
-
-        foreach (SpaceShip ship in sortedShips)
+        // 기함의 돌출 크기 (z축 오프셋용)
+        float flagshipForwardOffset = 0f;
+        if (m_myFleet != null)
         {
-            if (ship == null) continue;
-            if (ship.m_shipInfo.positionIndex >= positionIndex) break;
-
-            Bounds shipBounds = ship.CalculateShipBounds();
-            accumulatedZ -= shipBounds.size.z + spacing;
+            SpaceShip flagship = m_myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
+            if (flagship != null)
+                flagshipForwardOffset = flagship.CalculateShipBounds().size.z;
         }
 
-        return new Vector3(0, 0, accumulatedZ);
-    }
+        // 원형 배치 계산
+        float radius = spacing * 1.5f;
+        int circleIndex = positionIndex - 1; // 0번 제외 인덱스
 
-    private static Vector3 CalculateGridPosition(int positionIndex, float spacing, int shipsPerRow = 3)
-    {
-        int row = positionIndex / shipsPerRow;
-        int col = positionIndex % shipsPerRow;
+        // 2대(좌우 배치): 180도, 0도 (왼쪽, 오른쪽)
+        // 3대 이상: 위쪽(90도) 기준 균등 배치
+        float angle;
+        if (circleShipCount == 2)
+        {
+            // 좌우 배치: 첫 번째는 왼쪽(180도), 두 번째는 오른쪽(0도)
+            angle = (circleIndex == 0) ? 180f : 0f;
+        }
+        else
+        {
+            // 위쪽(90도) 기준 균등 배치
+            float angleStep = 360f / circleShipCount;
+            angle = 90f + circleIndex * angleStep;
+        }
 
-        return new Vector3(
-            col * spacing - (shipsPerRow - 1) * spacing * 0.5f,
-            row * spacing - row * spacing * 0.5f,
-            0
-        );
-    }
-
-    private static Vector3 CalculateCirclePosition(int positionIndex, float spacing)
-    {
-        float radius = spacing * 1f;
-        float angle = positionIndex * (360f / 8f);
         float radians = angle * Mathf.Deg2Rad;
-
         return new Vector3(
             Mathf.Cos(radians) * radius,
             Mathf.Sin(radians) * radius,
-            0
+            flagshipForwardOffset // 기함 돌출 크기만큼 앞에 배치
         );
     }
 
-    private static Vector3 CalculateCrossPosition(int positionIndex, float spacing)
+    private Vector3 CalculateCrossPosition(int positionIndex, float spacing)
     {
+        // 기함의 돌출 크기 (z축 오프셋용)
+        float flagshipForwardOffset = 0f;
+        if (m_myFleet != null)
+        {
+            SpaceShip flagship = m_myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
+            if (flagship != null)
+                flagshipForwardOffset = flagship.CalculateShipBounds().size.z;
+        }
+
         switch (positionIndex)
         {
             case 0: return new Vector3(0, 0, 0);
-            case 1: return new Vector3(-spacing, 0, 0);
-            case 2: return new Vector3(spacing, 0, 0);
-            case 3: return new Vector3(0, spacing, 0);
-            case 4: return new Vector3(0, -spacing, 0);
-            case 5: return new Vector3(-spacing * 2f, 0, 0);
-            case 6: return new Vector3(spacing * 2f, 0, 0);
-            case 7: return new Vector3(0, spacing * 2f, 0);
-            case 8: return new Vector3(0, -spacing * 2f, 0);
+            case 1: return new Vector3(-spacing, 0, -flagshipForwardOffset);
+            case 2: return new Vector3(spacing, 0, -flagshipForwardOffset);
+            case 3: return new Vector3(0, spacing, -flagshipForwardOffset);
+            case 4: return new Vector3(0, -spacing, -flagshipForwardOffset);
+            case 5: return new Vector3(-spacing * 2f, 0, -flagshipForwardOffset * 2);
+            case 6: return new Vector3(spacing * 2f, 0, -flagshipForwardOffset * 2);
+            case 7: return new Vector3(0, spacing * 2f, -flagshipForwardOffset * 2);
+            case 8: return new Vector3(0, -spacing * 2f, -flagshipForwardOffset * 2);
             default:
                 int extraIndex = positionIndex - 9;
                 int arm = extraIndex / 2;
@@ -660,19 +706,28 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
-    private static Vector3 CalculateXPosition(int positionIndex, float spacing)
+    private Vector3 CalculateXPosition(int positionIndex, float spacing)
     {
+        // 기함의 돌출 크기 (z축 오프셋용)
+        float flagshipForwardOffset = 0f;
+        if (m_myFleet != null)
+        {
+            SpaceShip flagship = m_myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
+            if (flagship != null)
+                flagshipForwardOffset = flagship.CalculateShipBounds().size.z;
+        }
+
         switch (positionIndex)
         {
             case 0: return new Vector3(0, 0, 0);
-            case 1: return new Vector3(-spacing, spacing, 0);
-            case 2: return new Vector3(spacing, spacing, 0);
-            case 3: return new Vector3(-spacing, -spacing, 0);
-            case 4: return new Vector3(spacing, -spacing, 0);
-            case 5: return new Vector3(-spacing * 2f, spacing * 2f, 0);
-            case 6: return new Vector3(spacing * 2f, spacing * 2f, 0);
-            case 7: return new Vector3(-spacing * 2f, -spacing * 2f, 0);
-            case 8: return new Vector3(spacing * 2f, -spacing * 2f, 0);
+            case 1: return new Vector3(-spacing, spacing, flagshipForwardOffset);
+            case 2: return new Vector3(spacing, spacing, flagshipForwardOffset);
+            case 3: return new Vector3(-spacing, -spacing, flagshipForwardOffset);
+            case 4: return new Vector3(spacing, -spacing, flagshipForwardOffset);
+            case 5: return new Vector3(-spacing * 2f, spacing * 2f, flagshipForwardOffset * 2);
+            case 6: return new Vector3(spacing * 2f, spacing * 2f, flagshipForwardOffset * 2);
+            case 7: return new Vector3(-spacing * 2f, -spacing * 2f, flagshipForwardOffset * 2);
+            case 8: return new Vector3(spacing * 2f, -spacing * 2f, flagshipForwardOffset * 2);
             default:
                 int extraIndex = positionIndex - 9;
                 int layer = (extraIndex / 4) + 3;

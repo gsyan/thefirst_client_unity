@@ -79,9 +79,6 @@ public static class EModuleTypeExtensions
 public enum EFormationType
 {
     LinearHorizontal,   // 가로 일렬 배치
-    LinearVertical,     // 세로 일렬 배치
-    LinearDepth,        // 전후방 일렬 배치
-    Grid,               // 격자 배치
     Circle,             // 원형 배치
     Cross,              // 십자 배치
     X                   // X자 배치
