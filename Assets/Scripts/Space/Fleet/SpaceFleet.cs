@@ -15,11 +15,8 @@ public class SpaceFleet : MonoBehaviour
 
     private void Start()
     {
-        //UpdateShipFormation(m_currentFormationType, false);
         if (m_isEnemyFleet == false)
-        {
             StartCoroutine(AutoRepair());
-        }
     }
 
     public void InitializeSpaceFleet(FleetInfo fleetInfo, bool isEnemy = false, EFleetState fleetState = EFleetState.None)

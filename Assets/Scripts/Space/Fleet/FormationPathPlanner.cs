@@ -32,25 +32,52 @@ public class FormationPathPlanner
         if (ships == null || ships.Count == 0)
             return new List<PlannedPath>();
 
-        // 1. 현재 위치들과 목표 위치들 수집
+        var paths = new List<PlannedPath>();
+
+        // 기함(positionIndex == 0) 분리
+        SpaceShip flagship = null;
+        var otherShips = new List<SpaceShip>();
+        foreach (var ship in ships)
+        {
+            if (ship.m_shipInfo.positionIndex == 0)
+                flagship = ship;
+            else
+                otherShips.Add(ship);
+        }
+
+        // 기함은 항상 중심 위치로 고정 (Hungarian에서 제외)
+        if (flagship != null)
+        {
+            Vector3 flagshipTarget = flagship.CalculateShipPosition(targetFormation);
+            var flagshipPath = new PlannedPath(flagship, flagship.transform.localPosition, flagshipTarget);
+            paths.Add(flagshipPath);
+        }
+
+        // 나머지 함선이 없으면 기함만 반환
+        if (otherShips.Count == 0)
+        {
+            ResolvePathCrossings(paths);
+            return paths;
+        }
+
+        // 1. 나머지 함선들의 현재 위치와 목표 위치 수집
         var currentPositions = new List<Vector3>();
         var targetPositions = new List<Vector3>();
 
-        foreach (var ship in ships)
+        foreach (var ship in otherShips)
         {
             currentPositions.Add(ship.transform.localPosition);
             targetPositions.Add(ship.CalculateShipPosition(targetFormation));
         }
 
-        // 2. Hungarian Algorithm으로 최적 매칭
+        // 2. Hungarian Algorithm으로 최적 매칭 (기함 제외)
         int[] assignment = SolveHungarianAssignment(currentPositions, targetPositions);
 
         // 3. 계획된 경로 생성
-        var paths = new List<PlannedPath>();
-        for (int i = 0; i < ships.Count; i++)
+        for (int i = 0; i < otherShips.Count; i++)
         {
             int targetIdx = assignment[i];
-            var path = new PlannedPath(ships[i], currentPositions[i], targetPositions[targetIdx]);
+            var path = new PlannedPath(otherShips[i], currentPositions[i], targetPositions[targetIdx]);
             paths.Add(path);
         }
 
@@ -100,9 +127,9 @@ public class FormationPathPlanner
         for (int i = 1; i <= n; i++)
         {
             p[0] = i;
-            int j0 = 0;
-            float[] minv = new float[n + 1];
-            bool[] used = new bool[n + 1];
+            int j0 = 0; // 증강 경로 담색에서 지금 서 있는 열
+            float[] minv = new float[n + 1]; // 열j로 갈 수 있는 최소 reduced cost
+            bool[] used = new bool[n + 1]; // 이미 탐색된 트리에 포함된 열인가?
 
             for (int j = 0; j <= n; j++)
             {
@@ -205,51 +232,97 @@ public class FormationPathPlanner
             RecalculateTotalDistance(path);
     }
 
-    // 두 경로의 교차점 계산
+    // 두 경로의 근접점 계산 (3D 선분 간 최소 거리 기반)
+    private const float COLLISION_THRESHOLD = 5f;  // 충돌 판정 거리
+
     private static bool TryGetIntersectionPoint(PlannedPath a, PlannedPath b, out Vector3 intersection)
     {
         intersection = Vector3.zero;
 
-        Vector2 a1 = new Vector2(a.startPos.x, a.startPos.z);
-        Vector2 a2 = new Vector2(a.endPos.x, a.endPos.z);
-        Vector2 b1 = new Vector2(b.startPos.x, b.startPos.z);
-        Vector2 b2 = new Vector2(b.endPos.x, b.endPos.z);
+        Vector3 p1 = a.startPos, p2 = a.endPos;
+        Vector3 p3 = b.startPos, p4 = b.endPos;
 
-        if (!LineSegmentsIntersect(a1, a2, b1, b2))
+        // 두 선분 사이 최소 거리와 최근접점 계산
+        Vector3 closestOnA, closestOnB;
+        float minDist = ClosestPointsBetweenSegments(p1, p2, p3, p4, out closestOnA, out closestOnB);
+
+        if (minDist > COLLISION_THRESHOLD)
             return false;
 
-        float denom = (a1.x - a2.x) * (b1.y - b2.y) - (a1.y - a2.y) * (b1.x - b2.x);
-        if (Mathf.Abs(denom) < 0.0001f)
-            return false;
-
-        float t = ((a1.x - b1.x) * (b1.y - b2.y) - (a1.y - b1.y) * (b1.x - b2.x)) / denom;
-
-        float ix = a1.x + t * (a2.x - a1.x);
-        float iy = a1.y + t * (a2.y - a1.y);
-
-        float avgY = (a.startPos.y + a.endPos.y + b.startPos.y + b.endPos.y) * 0.25f;
-        intersection = new Vector3(ix, avgY, iy);
-
+        // 교차점은 두 최근접점의 중간
+        intersection = (closestOnA + closestOnB) * 0.5f;
         return true;
     }
 
-    // 우회 경유점 추가 (서로 반대 방향으로 우회)
+    // 두 3D 선분 사이 최소 거리 및 최근접점 계산
+    private static float ClosestPointsBetweenSegments(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,
+        out Vector3 closestOnA, out Vector3 closestOnB)
+    {
+        Vector3 d1 = p2 - p1;  // 선분 A 방향
+        Vector3 d2 = p4 - p3;  // 선분 B 방향
+        Vector3 r = p1 - p3;
+
+        float a = Vector3.Dot(d1, d1);
+        float b = Vector3.Dot(d1, d2);
+        float c = Vector3.Dot(d2, d2);
+        float d = Vector3.Dot(d1, r);
+        float e = Vector3.Dot(d2, r);
+
+        float denom = a * c - b * b;
+        float s, t;
+
+        if (denom < 0.0001f)
+        {
+            // 평행한 경우
+            s = 0f;
+            t = (b > c ? d / b : e / c);
+        }
+        else
+        {
+            s = (b * e - c * d) / denom;
+            t = (a * e - b * d) / denom;
+        }
+
+        // 선분 범위로 클램프
+        s = Mathf.Clamp01(s);
+        t = Mathf.Clamp01(t);
+
+        // 클램프 후 재계산
+        if (s < 0f || s > 1f)
+        {
+            s = Mathf.Clamp01(s);
+            t = Mathf.Clamp01((b * s + e) / c);
+        }
+        if (t < 0f || t > 1f)
+        {
+            t = Mathf.Clamp01(t);
+            s = Mathf.Clamp01((b * t - d) / a);
+        }
+
+        closestOnA = p1 + d1 * s;
+        closestOnB = p3 + d2 * t;
+
+        return Vector3.Distance(closestOnA, closestOnB);
+    }
+
+    // 우회 경유점 추가 (서로 반대 방향으로 우회, 3D 기준)
     private static void AddDetourWaypoints(PlannedPath pathA, PlannedPath pathB, Vector3 intersection)
     {
         Vector3 dirA = (pathA.endPos - pathA.startPos).normalized;
         Vector3 dirB = (pathB.endPos - pathB.startPos).normalized;
 
-        // 경로에 수직인 방향
-        Vector3 perpA = new Vector3(-dirA.z, 0, dirA.x).normalized;
-        Vector3 perpB = new Vector3(-dirB.z, 0, dirB.x).normalized;
+        // 두 경로의 외적으로 공통 수직 방향 계산
+        Vector3 crossDir = Vector3.Cross(dirA, dirB);
+        if (crossDir.sqrMagnitude < 0.0001f)
+        {
+            // 평행한 경우 x,y 평면 기준 수직 방향 사용
+            crossDir = new Vector3(-dirA.y, dirA.x, 0);
+        }
+        crossDir.Normalize();
 
-        // 서로 반대 방향으로 우회
-        float dot = Vector3.Dot(perpA, perpB);
-        if (dot > 0)
-            perpB = -perpB;
-
-        Vector3 detourA = intersection + perpA * DETOUR_OFFSET;
-        Vector3 detourB = intersection + perpB * DETOUR_OFFSET;
+        // A는 +방향, B는 -방향으로 우회
+        Vector3 detourA = intersection + crossDir * DETOUR_OFFSET;
+        Vector3 detourB = intersection - crossDir * DETOUR_OFFSET;
 
         pathA.waypoints.Clear();
         pathA.waypoints.Add(pathA.startPos);

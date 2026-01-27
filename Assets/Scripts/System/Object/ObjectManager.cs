@@ -493,10 +493,27 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     private Vector3 GetEnemySpawnPosition()
     {
         // 내 함대의 위치와 방향 가져오기
-        if (m_myFleet == null || m_myFleet.transform == null)
-        {
-            return RandomPosition(); // 내 함대가 없으면 기존 랜덤 위치
-        }
+        if (m_myFleet == null || m_myFleet.transform == null) return Vector3.zero;
+
+        Vector3 fleetPosition = m_myFleet.transform.position;
+        Vector3 fleetForward = m_myFleet.transform.forward;
+
+        // 거리 설정
+        float spawnDistance = UnityEngine.Random.Range(500.0f, 600.0f);
+        
+        // 최종 스폰 위치 계산
+        Vector3 spawnPosition = fleetPosition +  fleetForward * spawnDistance;
+        
+        // Y 위치는 0으로 고정
+        spawnPosition.y = 0;
+        
+        return spawnPosition;
+    }
+
+    private Vector3 GetMineralSpawnPosition()
+    {
+        // 내 함대의 위치와 방향 가져오기
+        if (m_myFleet == null || m_myFleet.transform == null) return RandomPosition(); // 내 함대가 없으면 기존 랜덤 위치
 
         Vector3 fleetPosition = m_myFleet.transform.position;
         Vector3 fleetForward = m_myFleet.transform.forward;
