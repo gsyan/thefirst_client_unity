@@ -33,12 +33,13 @@ public class SpaceFleet : MonoBehaviour
             UpdateShipFormation(m_fleetInfo.formation, false);
         }
     }
-    public void CreateSpaceShipFromData(ShipInfo shipInfo)
+    // smoothSpawn: true면 기함 뒤에서 스폰 후 이동, false면 즉시 진형 위치에 배치
+    public void CreateSpaceShipFromData(ShipInfo shipInfo, bool smoothSpawn = false)
     {
         GameObject shipGo = new GameObject($"{shipInfo.shipName}");
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
         spaceShip.InitializeSpaceShip(this, shipInfo);
-        AddShip(spaceShip);
+        AddShip(spaceShip, smoothSpawn);
     }
     public void AddShip(SpaceShip ship, bool placeInFormation = false)
     {
@@ -47,11 +48,25 @@ public class SpaceFleet : MonoBehaviour
         ship.transform.SetParent(transform);
         ship.transform.localRotation = Quaternion.identity;
 
-        // 새 함선을 현재 진형의 빈 위치에 즉시 배치
         if (placeInFormation)
         {
-            Vector3 targetPos = ship.CalculateShipPosition(m_currentFormationType);
-            ship.transform.localPosition = targetPos;
+            // 기함 찾기
+            SpaceShip flagship = m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
+            if (flagship != null)
+            {
+                // 새 함선을 기함 뒤쪽(z축 거리의 2배)에 배치
+                float flagshipLength = flagship.CalculateShipBounds().size.z;
+                Vector3 spawnPos = flagship.transform.localPosition + new Vector3(0, 0, -flagshipLength * 2f);
+                ship.transform.localPosition = spawnPos;
+            }
+            else
+            {
+                // 기함이 없으면 원점 뒤쪽에 배치
+                ship.transform.localPosition = new Vector3(0, 0, -20f);
+            }
+
+            // 모든 함선(기존 + 신규) 진형 재배치
+            RefreshFormation();
         }
     }
 
