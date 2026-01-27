@@ -494,10 +494,8 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                                 DataManager.Instance.SetFleetData(addShipResponse.updatedFleetInfo);
 
                             if (ObjectManager.Instance != null && addShipResponse.newShipInfo != null)
-                            {
+                                // CreateSpaceShipFromData 내부에서 진형 재배치 처리됨
                                 ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(addShipResponse.newShipInfo);
-                                ObjectManager.Instance.m_myFleet.UpdateShipFormation(ObjectManager.Instance.m_myFleet.m_currentFormationType, false);
-                            }
                                 
 
                             EventManager.TriggerFleetChange();

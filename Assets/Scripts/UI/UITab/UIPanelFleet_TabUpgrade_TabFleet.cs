@@ -319,10 +319,8 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
                     DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
 
                 if (response.data.newShipInfo != null && character.m_ownedFleet != null)
-                {
-                    ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(response.data.newShipInfo);
-                    ObjectManager.Instance.m_myFleet.UpdateShipFormation(ObjectManager.Instance.m_myFleet.m_currentFormationType, false);
-                }
+                    // smoothSpawn=true: 기함 뒤에서 스폰 후 진형으로 이동
+                    ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(response.data.newShipInfo, true);
 
                 EventManager.TriggerFleetChange();
 
