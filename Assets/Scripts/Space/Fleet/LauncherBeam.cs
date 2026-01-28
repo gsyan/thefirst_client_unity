@@ -9,11 +9,12 @@ public class LauncherBeam : LauncherBase
 
     [SerializeField] private Color m_beamColor = Color.cyan;
 
-    public void InitializeLauncherBeam(ModuleData moduleData)
+    public void InitializeLauncherBeam(ModuleData moduleData, int firePointIndex)
     {
         if (m_isInitialized == true) return;
 
-        m_firePoint = transform.Find("FirePoint");
+        // 인덱스에 맞는 FirePoint 찾기
+        m_firePoint = FindFirePointByIndex(firePointIndex);
         if (m_firePoint == null)
             m_firePoint = transform;
             
@@ -31,6 +32,17 @@ public class LauncherBeam : LauncherBase
         m_moduleData = moduleData;
 
         m_isInitialized = true;
+    }
+
+    private Transform FindFirePointByIndex(int index)
+    {
+        FirePoint[] firePoints = GetComponentsInChildren<FirePoint>();
+        foreach (var fp in firePoints)
+        {
+            if (fp.Index == index)
+                return fp.transform;
+        }
+        return null;
     }
 
 

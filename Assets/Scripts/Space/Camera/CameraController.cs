@@ -31,8 +31,8 @@ public class CameraController : MonoSingleton<CameraController>
     private Vector3 m_targetPosition; // 카메라가 바라보는 목표 위치
     private Vector3 m_interpolatedTargetPosition; // 부드럽게 보간된 타겟 위치
     private float m_currentZoom;
-    private float m_currentRotationY = 0f;
-    private float m_currentRotationX = 0f;
+    private float m_currentRotationY = 200f;
+    private float m_currentRotationX = 30f;
     public ECameraControllerMode m_currentMode = ECameraControllerMode.Normal;
 
     // LayerMask

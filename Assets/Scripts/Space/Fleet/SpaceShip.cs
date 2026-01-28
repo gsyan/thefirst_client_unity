@@ -340,8 +340,11 @@ public class SpaceShip : MonoBehaviour
         // 코루틴 중지
         StopAllCoroutines();
 
-        // 필요한 정리 작업
-        // 예: 폭발 이펙트, 점수 추가, 리스폰 등
+        // 폭발 이펙트 생성 (풀에서 가져와서 재생 후 자동 반환)
+        ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(
+            EPoolName.EFFECT_SHIP_EXPLOSION,
+            transform.position
+        );
 
         // 게임 오브젝트 비활성화 또는 파괴
         // gameObject.SetActive(false);
@@ -440,6 +443,18 @@ public class SpaceShip : MonoBehaviour
         SelectedModuleVisual selectedModuleVisual = moduleBase.gameObject.AddComponent<SelectedModuleVisual>();
         selectedModuleVisual.InitializeSelectedModuleVisual(this, moduleBase);
         m_selectedModuleVisuals.Add(selectedModuleVisual);
+    }
+
+    // 단일 모듈에 SelectedModuleVisual 추가 (모듈 업그레이드 시 사용)
+    public void AddSelectedModuleVisual(ModuleBase moduleBase)
+    {
+        if (moduleBase == null) return;
+        if (moduleBase.GetComponent<SelectedModuleVisual>() != null) return;
+
+        // 삭제된 모듈의 null 항목 제거
+        m_selectedModuleVisuals.RemoveAll(v => v == null);
+
+        SetupSelectedModuleVisual(moduleBase);
     }
 
     

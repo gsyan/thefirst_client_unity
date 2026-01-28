@@ -288,10 +288,30 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             return;
         }
 
+        // 업그레이드 비용 가져오기
+        if (!DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out CostStruct cost))
+        {
+            ShowResultMessage("Failed to get upgrade cost", 3f);
+            return;
+        }
+
+        int currentLevel = m_selectedModule.GetModuleLevel();
+        int targetLevel = currentLevel + 1;
+        string moduleName = m_selectedModule.GetModuleSubType().ToString();
+
+        UIManager.Instance.ShowConfirmPopup(
+            "Upgrade Module",
+            $"Upgrade {moduleName} Lv.{currentLevel} → Lv.{targetLevel}?",
+            cost,
+            () => ExecuteUpgradeModule()
+        );
+    }
+
+    private void ExecuteUpgradeModule()
+    {
         string partsInfo = GetPartsUpgradeInfo(m_selectedModule);
         Debug.Log($"Requesting upgrade for {partsInfo} on ship {m_selectedShip.name}");
 
-        // Create upgrade request
         var upgradeRequest = new ModuleUpgradeRequest
         {
             shipId = m_selectedShip.m_shipInfo.id
@@ -302,9 +322,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             ,currentLevel = m_selectedModule.GetModuleLevel()
             ,targetLevel = m_selectedModule.GetModuleLevel() + 1
         };
-        
 
-        // Send upgrade request to server
         NetworkManager.Instance.UpgradeModule(upgradeRequest, OnUpgradeResponse);
     }
     
@@ -430,23 +448,47 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (upgradeData == null) return;
         if (m_myFleet == null) return;
 
-        // Fleet의 계층적 FindModule 사용: shipId → bodyIndex → moduleTypePacked, slotIndex
-        ModuleBase targetModule = m_myFleet.FindModule(upgradeData.shipId, upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.slotIndex);
-        if (targetModule == null)
+        // SpaceShip 찾기
+        SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
+        if (ship == null)
         {
-            Debug.LogError($"Module not found: shipId={upgradeData.shipId}, bodyIndex={upgradeData.bodyIndex}, moduleType={upgradeData.moduleType}, slotIndex={upgradeData.slotIndex}");
+            Debug.LogError($"Ship not found: shipId={upgradeData.shipId}");
             return;
         }
 
-        // 모듈 레벨업 적용 (레벨 + 모든 스탯 갱신)
-        targetModule.ApplyModuleLevelUp(upgradeData.newLevel);
+        // ModuleBody 찾기
+        ModuleBody body = ship.FindModuleBodyByIndex(upgradeData.bodyIndex);
+        if (body == null)
+        {
+            Debug.LogError($"Body not found: bodyIndex={upgradeData.bodyIndex}");
+            return;
+        }
+
+        // 기존 모듈의 SubType 가져오기
+        ModuleBase targetModule = body.FindModule(upgradeData.moduleType, upgradeData.slotIndex);
+        if (targetModule == null)
+        {
+            Debug.LogError($"Module not found: moduleType={upgradeData.moduleType}, slotIndex={upgradeData.slotIndex}");
+            return;
+        }
+
+        EModuleSubType subType = targetModule.GetModuleSubType();
+
+        // 프리팹 교체 방식으로 업그레이드 (기존 모듈 제거 후 새 프리팹 생성)
+        body.ReplaceModuleInSlot(upgradeData.moduleType, subType, upgradeData.newLevel, upgradeData.slotIndex);
+
+        // 새 모듈의 SelectedModuleVisual 추가
+        ModuleBase newModule = body.FindModule(upgradeData.moduleType, upgradeData.slotIndex);
+        if (newModule != null)
+            ship.AddSelectedModuleVisual(newModule);
+
+        // 새 모듈 선택 상태로 설정 (그리드 표시용)
+        ReselectReplacedModule(ship, upgradeData.bodyIndex, upgradeData.moduleType, subType, upgradeData.slotIndex);
 
         // SpaceShip 통계 업데이트
-        SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
-        if (ship != null)
-            ship.UpdateShipStats();
+        ship.UpdateShipStats();
 
-        Debug.Log($"Module upgraded successfully: Ship={upgradeData.shipId}, Body={upgradeData.bodyIndex}, Slot={upgradeData.slotIndex}, NewLevel={upgradeData.newLevel}");
+        Debug.Log($"Module upgraded (replaced): Ship={upgradeData.shipId}, Body={upgradeData.bodyIndex}, Slot={upgradeData.slotIndex}, NewLevel={upgradeData.newLevel}");
     }
 
     private void UpdateScrollView()

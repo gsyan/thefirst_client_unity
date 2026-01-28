@@ -5,7 +5,7 @@ public class EffectBase : MonoBehaviour
 {
     [SerializeField] protected EPoolName m_poolName;
 
-    public virtual void ReturnToPool()
+    public virtual void ReturnToPool_Effect()
     {
         ObjectManager.Instance.m_poolManager.Return(m_poolName, this);
     }

@@ -566,8 +566,8 @@ public class DataTableModule : ScriptableObject
                         m_moduleSlots = slotInfos,
                         m_health = 100f + (i * 50f),
                         m_cargoCapacity = 50f + (i * 25f),
-                        //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
+                        //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
                         m_description = $"{subType}-class hull module level {i}"
                     };
                     AddModuleDataToTable(module);
@@ -585,8 +585,8 @@ public class DataTableModule : ScriptableObject
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
                         m_movementSpeed = 50f + (i * 5f),
-                        //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
+                        //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
                         m_description = $"{subType} LV.{i}"
                     };
                     AddModuleDataToTable(module);
@@ -608,8 +608,8 @@ public class DataTableModule : ScriptableObject
                         m_attackCoolTime = 5.2f - (i * 0.05f),
                         m_projectileWidth = 5f/* + (i * 0.5f)*/,
                         m_projectileSpeed = 2000f/* + (i * 50.0f)*/,
-                        //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
+                        //m_upgradeCost = new CostStruct(i,100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
                         m_description = $"{subType} Lv.{i}"
                     };
                     AddModuleDataToTable(module);
@@ -628,11 +628,11 @@ public class DataTableModule : ScriptableObject
                         m_health = 30f + (i * 10f),
                         m_attackFireCount = 1 + (i / 5),
                         m_attackPower = 10f + (i * 5f),                        
-                        m_attackCoolTime = 2.0f - (i * 0.05f),
+                        m_attackCoolTime = 4.2f - (i * 0.05f),
                         m_projectileWidth = 5f/* + (i * 0.5f)*/,
-                        m_projectileSpeed = 200f/* + (i * 5.0f)*/,
-                        //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
+                        m_projectileSpeed = 300f/* + (i * 5.0f)*/,
+                        //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
                         m_description = $"{subType} Lv.{i}"
                     };
                     AddModuleDataToTable(module);
@@ -658,14 +658,14 @@ public class DataTableModule : ScriptableObject
                         m_aircraftHealth = 30f + (i * 10f),
                         m_aircraftAttackPower = 5f + (i * 3f),
                         m_aircraftAttackRange = 100f + (i * 5f),
-                        //m_aircraftAttackCooldown = 10f - (i * 0.2f),
-                        m_aircraftAttackCooldown = 1f,
+                        m_aircraftAttackCooldown = 10f - (i * 0.2f),
+                        //m_aircraftAttackCooldown = 1f,
                         m_aircraftSpeed = 300f + (i * 5f),
                         m_aircraftAmmo = 10 + (i * 2),
                         m_aircraftDetectionRadius = 200f + (i * 10f),
                         m_aircraftAvoidanceRadius = 200f + (i * 5f),
-                        //m_upgradeCost = new CostStruct(i, 50 * i, 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 50 * i, 0, 0, 0),
+                        //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
                         m_description = $"{subType} hanger bay level {i}"
                     };
                     AddModuleDataToTable(module);

@@ -52,11 +52,15 @@ public class DataTableModuleResearch : ScriptableObject
 
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
 
+            // subType의 마지막 자리 숫자로 tier 결정 (1→1000, 2→10000, 3→100000)
+            int tier = (int)subType % 10;
+            long researchCost = 1000L * (long)System.Math.Pow(10, tier - 1);
+
             var researchData = new ModuleResearchData
             {
                 m_moduleType = moduleType,
                 m_moduleSubType = subType,
-                m_researchCost = new CostStruct(1, 1000, 0, 0, 0), // Default cost
+                m_researchCost = new CostStruct(1, researchCost, 0, 0, 0),
                 m_description = $"Research {subType} module technology"
             };
 

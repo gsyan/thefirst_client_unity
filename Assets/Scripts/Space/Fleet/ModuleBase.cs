@@ -74,7 +74,7 @@ public class ModuleBase : MonoBehaviour
     {
     }
 
-    // 모듈 레벨업 시 스탯 갱신 (각 모듈에서 override)
+    // 모듈 레벨업 시 스탯 갱신 (각 모듈에서 override) - 모듈 프리팹 갱신까지 하는 경우는 ReplaceModuleInSlot 을 사용
     public virtual void ApplyModuleLevelUp(int newLevel)
     {
         // 기본 구현: 레벨만 설정

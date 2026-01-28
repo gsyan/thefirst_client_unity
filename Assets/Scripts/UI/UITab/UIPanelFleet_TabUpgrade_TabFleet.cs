@@ -250,7 +250,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
             m_addButtonItem.GetComponent<ScrollViewShipItemAdd>().InitializeScrollViewShipItemAdd(
                 costText,
-                AddShip
+                OnAddShipButtonClicked
             );
         }
     }
@@ -288,16 +288,37 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
     }
 
+    // Add 버튼 클릭 시 Confirm 팝업 표시
+    private void OnAddShipButtonClicked()
+    {
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        ServerErrorCode errorCode = CanAddShip();
+        if (errorCode != ServerErrorCode.SUCCESS)
+        {
+            // TODO: 에러 메시지 표시
+            return;
+        }
+
+        var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
+        CostStruct cost = gameSettings.GetAddShipCost(m_myFleet.m_ships.Count);
+
+        UIManager.Instance.ShowConfirmPopup(
+            "Add Ship",
+            "Do you want to add a new ship to your fleet?",
+            cost,
+            AddShip
+        );
+    }
+
     private void AddShip()
     {
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
-        
+
         if (CanAddShip() != ServerErrorCode.SUCCESS)
-        {
-            // selectedModuleText.text = "Failed to add ship";
             return;
-        }
 
         // Request ship addition to server
         var request = new AddShipRequest

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4979280998672066885}
   - component: {fileID: 7154293749827293640}
   m_Layer: 0
-  m_Name: EffectMissileHit
+  m_Name: EffectShipExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bb8ec103608fa741b0fce63292a1359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_poolName: 5
+  m_poolName: 6
 --- !u!198 &4979280998672066885
 ParticleSystem:
   m_ObjectHideFlags: 0
