@@ -13,7 +13,7 @@ public class GameSettings
     public int m_maxLives = 3;
 
     [Header("Fleet Settings")]
-    public int m_maxShipsPerFleet = 8;
+    public int m_maxShipsPerFleet = 9;
 
     [Tooltip("함선 추가 시 필요한 Mineral 비용 (함선 개수별 차등 적용)")]
     // public CostStruct[] addShipCosts = new CostStruct[]
@@ -33,16 +33,16 @@ public class GameSettings
     public CostStruct[] m_addShipCosts = new CostStruct[]
     {
         new CostStruct(0, 0, 0, 0, 0),
-        new CostStruct(1, 100, 0, 0, 0),
-        new CostStruct(1, 200, 0, 0, 0),
-        new CostStruct(1, 400, 0, 0, 0),
-        new CostStruct(1, 800, 0, 0, 0),
-        new CostStruct(1, 1600, 0, 0, 0),
-        new CostStruct(1, 3200, 0, 0, 0),
-        new CostStruct(1, 6400, 0, 0, 0),
-        new CostStruct(1, 12800, 0, 0, 0),
-        new CostStruct(1, 25600, 0, 0, 0),
-        new CostStruct(1, 51200, 0, 0, 0)
+        new CostStruct(1, 50000, 0, 0, 0),
+        new CostStruct(1, 100000, 0, 0, 0),
+        new CostStruct(1, 200000, 0, 0, 0),
+        new CostStruct(1, 400000, 0, 0, 0),
+        new CostStruct(1, 800000, 0, 0, 0),
+        new CostStruct(1, 1600000, 0, 0, 0),
+        new CostStruct(1, 3200000, 0, 0, 0),
+        new CostStruct(1, 6400000, 0, 0, 0),
+        new CostStruct(1, 12800000, 0, 0, 0),
+        new CostStruct(1, 25600000, 0, 0, 0)
     };
 
     // 현재 함선 개수에 따른 다음 함선 추가 비용 반환
@@ -64,7 +64,7 @@ public class GameSettings
     }
 
     [Header("Ship Module Settings")]
-    public int m_moduleUnlockPrice = 1000;
+    public int m_moduleUnlockPrice = 5000;
 
     [Header("Enemy Settings")]
     public float m_enemyFleetSpawnInterval = 5.0f;

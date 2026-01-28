@@ -18,9 +18,6 @@ public class ProjectileBeam : ProjectileBase
     private Vector3 m_direction;
     private Vector3 m_beamHeadPos;
     private Vector3 m_beamTailPos;
-    private float m_toalBeamLength;
-    
-    private SpaceShip m_currentTarget = null;
     
     private Material m_beamMaterial;
     private float m_uvOffset;
@@ -69,8 +66,6 @@ public class ProjectileBeam : ProjectileBase
             m_beamMaterial.color = m_beamColor;
         }
 
-        m_toalBeamLength = 0f;
-        m_currentTarget = null;
         m_uvOffset = 0f;
         m_lifeTime = 0f;
         m_hitEffectTime = Time.time;
@@ -168,7 +163,7 @@ public class ProjectileBeam : ProjectileBase
         // 헤드 이펙트 먼저 제거
         if (m_headEffect != null)
         {
-            m_headEffect.ReturnToPool();
+            m_headEffect.ReturnToPool_Effect();
             m_headEffect = null;
         }
 
@@ -329,7 +324,7 @@ public class ProjectileBeam : ProjectileBase
 
         if (m_headEffect != null)
         {
-            m_headEffect.ReturnToPool();
+            m_headEffect.ReturnToPool_Effect();
             m_headEffect = null;
         }
 

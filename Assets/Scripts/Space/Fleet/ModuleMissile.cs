@@ -93,7 +93,7 @@ public class ModuleMissile : ModuleBase
                 for(int i=0; i< moduleData.m_attackFireCount; i++)
                 {
                     LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
-                    launcher.InitializeLauncherMissile(moduleData);
+                    launcher.InitializeLauncherMissile(moduleData, i);
                     m_launchers.Add(launcher);
                 }
                 break;
@@ -197,10 +197,10 @@ public class ModuleMissile : ModuleBase
 
         // 스탯 갱신
         m_healthMax = moduleData.m_health;
-        m_health = Mathf.Min(m_health, m_healthMax); // 현재 체력이 최대치를 넘지 않도록
+        m_health = Mathf.Min(m_health, m_healthMax);
         m_attackPower = moduleData.m_attackPower;
-        m_attackFireCount = moduleData.m_attackFireCount;
         m_attackCoolTime = moduleData.m_attackCoolTime;
+        m_attackFireCount = moduleData.m_attackFireCount;
         m_upgradeCost = moduleData.m_upgradeCost;
 
         Debug.Log($"ModuleMissile leveled up to {newLevel}: HP={m_healthMax}, AttackPower={m_attackPower}, FireCount={m_attackFireCount}, CoolTime={m_attackCoolTime}");

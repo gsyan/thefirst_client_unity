@@ -6,10 +6,12 @@ public class LauncherMissile : LauncherBase
 {
     private ModuleData m_moduleData;
     
-    public void InitializeLauncherMissile(ModuleData moduleData)
+    public void InitializeLauncherMissile(ModuleData moduleData, int firePointIndex)
     {
         if (m_isInitialized == true) return;
 
+        // 인덱스에 맞는 FirePoint 찾기
+        m_firePoint = FindFirePointByIndex(firePointIndex);
         if (m_firePoint == null)
             m_firePoint = transform;
 
@@ -26,6 +28,17 @@ public class LauncherMissile : LauncherBase
         m_moduleData = moduleData;
 
         m_isInitialized = true;
+    }
+
+    private Transform FindFirePointByIndex(int index)
+    {
+        FirePoint[] firePoints = GetComponentsInChildren<FirePoint>();
+        foreach (var fp in firePoints)
+        {
+            if (fp.Index == index)
+                return fp.transform;
+        }
+        return null;
     }
 
     public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)

@@ -117,18 +117,18 @@ public class GaugeBars : MonoBehaviour
     // 게이지바 생성
     private void CreateGaugeBarForModule(ModuleBase module)
     {
-        // if (m_moduleGaugeBars.ContainsKey(module) == true) return;
-        // if (m_targetCanvas == null) return;
+        if (m_moduleGaugeBars.ContainsKey(module) == true) return;
+        if (m_targetCanvas == null) return;
 
-        // GameObject gaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/GaugeBar");
-        // if (gaugeBarPrefab == null) return;
+        GameObject gaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/GaugeBar");
+        if (gaugeBarPrefab == null) return;
 
-        // GameObject gaugeBarObj = Instantiate(gaugeBarPrefab, m_targetCanvas.transform);
-        // GaugeBar gaugeBar = gaugeBarObj.GetComponent<GaugeBar>();
-        // if (gaugeBar == null) return;
-        // Color gaugeColor = GetModuleColor(module);
-        // gaugeBar.InitializeGaugeBar(module.transform, m_offsetFromTarget, gaugeColor, m_smoothSpeed);
-        // m_moduleGaugeBars.Add(module, gaugeBar);
+        GameObject gaugeBarObj = Instantiate(gaugeBarPrefab, m_targetCanvas.transform);
+        GaugeBar gaugeBar = gaugeBarObj.GetComponent<GaugeBar>();
+        if (gaugeBar == null) return;
+        Color gaugeColor = GetModuleColor(module);
+        gaugeBar.InitializeGaugeBar(module.transform, m_offsetFromTarget, gaugeColor, m_smoothSpeed);
+        m_moduleGaugeBars.Add(module, gaugeBar);
 
     }
 

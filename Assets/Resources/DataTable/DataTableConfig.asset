@@ -23,81 +23,81 @@ MonoBehaviour:
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 100
+      mineral: 50000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 200
+      mineral: 100000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 400
+      mineral: 200000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 800
+      mineral: 400000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 1600
+      mineral: 800000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 3200
+      mineral: 1600000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 6400
+      mineral: 3200000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 12800
+      mineral: 6400000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 25600
+      mineral: 12800000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 51200
+      mineral: 25600000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_moduleUnlockPrice: 1000
+    m_moduleUnlockPrice: 5000
     m_enemyFleetSpawnInterval: 5
     m_explorationInterval: 15
     m_enemySpawnRate: 2
   exportedJson: "{\r\n  \"m_version\": \"0.0.1\",\r\n  \"m_maxLives\": 3,\r\n  \"m_maxShipsPerFleet\":
     9,\r\n  \"m_addShipCosts\": [\r\n    {\r\n      \"techLevel\": 0,\r\n      \"mineral\":
     0,\r\n      \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 100,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 50000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 200,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 100000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 400,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 200000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 800,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 400000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 1600,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 800000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 3200,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 1600000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 6400,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 3200000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 12800,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 6400000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 25600,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 12800000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 51200,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 25600000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    }\r\n  ],\r\n  \"m_moduleUnlockPrice\": 1000,\r\n  \"m_enemyFleetSpawnInterval\":
+    0\r\n    }\r\n  ],\r\n  \"m_moduleUnlockPrice\": 5000,\r\n  \"m_enemyFleetSpawnInterval\":
     5.0,\r\n  \"m_explorationInterval\": 15.0,\r\n  \"m_enemySpawnRate\": 2.0\r\n}"

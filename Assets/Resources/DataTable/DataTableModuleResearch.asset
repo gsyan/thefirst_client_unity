@@ -26,7 +26,7 @@ MonoBehaviour:
     m_moduleSubType: 1002
     m_researchCost:
       techLevel: 1
-      mineral: 1000
+      mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
@@ -35,7 +35,7 @@ MonoBehaviour:
     m_moduleSubType: 1003
     m_researchCost:
       techLevel: 1
-      mineral: 1000
+      mineral: 100000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
     m_moduleSubType: 2002
     m_researchCost:
       techLevel: 1
-      mineral: 1000
+      mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
     m_moduleSubType: 2003
     m_researchCost:
       techLevel: 1
-      mineral: 1000
+      mineral: 100000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
     m_moduleSubType: 3002
     m_researchCost:
       techLevel: 1
-      mineral: 1000
+      mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
     m_moduleSubType: 4002
     m_researchCost:
       techLevel: 1
-      mineral: 1000
+      mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
     m_moduleSubType: 5002
     m_researchCost:
       techLevel: 1
-      mineral: 1000
+      mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0

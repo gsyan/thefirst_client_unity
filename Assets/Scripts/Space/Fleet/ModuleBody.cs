@@ -662,8 +662,8 @@ public class ModuleBody : ModuleBase
         }
 
         // 새 모듈 생성
-        moduleLevel = 1;// 프리팹 레벨1만
-        ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel);
+        int prefabLevel = 1;// 프리팹 레벨1만
+        ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel, prefabLevel);
 
         // 새 모듈 생성 이벤트 발행
         if (newModule != null)
@@ -672,9 +672,9 @@ public class ModuleBody : ModuleBase
         return newModule != null;
     }
 
-    private ModuleBase CreateAndPlaceModule(ModuleSlot targetSlot, EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel = 1)
+    private ModuleBase CreateAndPlaceModule(ModuleSlot targetSlot, EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel, int prefabLevel)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleType.ToString(), moduleSubType.ToString(), moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleType.ToString(), moduleSubType.ToString(), prefabLevel);
         if (modulePrefab == null) return null;
         GameObject moduleObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         moduleObj.transform.SetParent(targetSlot.transform);
