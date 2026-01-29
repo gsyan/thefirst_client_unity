@@ -247,9 +247,8 @@ public class ModuleChangeRequest
 {
     public long shipId;
     public int bodyIndex;
-    public EModuleType moduleTypeCurrent;
+    public EModuleType moduleType;
     public EModuleSubType moduleSubTypeCurrent;
-    public EModuleType moduleTypeNew;
     public EModuleSubType moduleSubTypeNew;
     public int slotIndex;
 }
@@ -264,6 +263,7 @@ public class ModuleChangeResponse
     public EModuleType moduleTypeNew;
     public EModuleSubType moduleSubTypeNew;
     public int slotIndex;
+    public int moduleNewLevel;
 }
 
 [System.Serializable]

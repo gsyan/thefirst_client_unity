@@ -141,28 +141,28 @@ public class TabSystem : MonoBehaviour
         if (button == null) return;
         
         // 버튼 색상 변경
-        var colors = button.colors;
-        colors.normalColor = color;
-        colors.highlightedColor = color * 1.1f;
-        colors.pressedColor = color * 0.8f;
-        button.colors = colors;
+        // var colors = button.colors;
+        // colors.normalColor = color;
+        // colors.highlightedColor = color * 1.1f;
+        // colors.pressedColor = color * 0.8f;
+        // button.colors = colors;
         
-        // 텍스트 색상 변경 (있다면)
-        var text = button.GetComponentInChildren<TextMeshProUGUI>();
-        if (text != null)
-        {
-            text.color = isActive ? Color.black : Color.white;
-        }
+        // // 텍스트 색상 변경 (있다면)
+        // var text = button.GetComponentInChildren<TextMeshProUGUI>();
+        // if (text != null)
+        // {
+        //     text.color = isActive ? Color.black : Color.white;
+        // }
         
-        // 스케일 효과 (선택사항)
-        if (isActive)
-        {
-            button.transform.localScale = Vector3.one * 1.05f;
-        }
-        else
-        {
-            button.transform.localScale = Vector3.one;
-        }
+        // // 스케일 효과 (선택사항)
+        // if (isActive)
+        // {
+        //     button.transform.localScale = Vector3.one * 1.05f;
+        // }
+        // else
+        // {
+        //     button.transform.localScale = Vector3.one;
+        // }
     }
     
     private System.Collections.IEnumerator AnimatePanel(GameObject panel, bool show)

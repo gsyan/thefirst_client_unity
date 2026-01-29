@@ -114,6 +114,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         m_selectedShip.m_shipOutline.enabled = false;
 
         bShow = false;
+
+        m_textResult.text = "";
     }
 
     private void OnShipChanged()
@@ -151,7 +153,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         
         CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
         
-
+        SetOrCreateModuleStatRow("Level", $"{m_selectedModule.GetModuleLevel()}");
         SetOrCreateModuleStatRow("Attack", $"{statsOrg.attackDps:F1}");
         SetOrCreateModuleStatRow("HP", $"{statsOrg.hp:F0}");
         SetOrCreateModuleStatRow("Speed", $"{statsOrg.engineSpeed:F1}");
@@ -450,45 +452,19 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
         // SpaceShip 찾기
         SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
-        if (ship == null)
-        {
-            Debug.LogError($"Ship not found: shipId={upgradeData.shipId}");
-            return;
-        }
+        if (ship == null) return;
+        
+        ship.ChangeModule(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
+        
+        ShowResultMessage("Module Upgrade successful!", 3f);
 
-        // ModuleBody 찾기
-        ModuleBody body = ship.FindModuleBodyByIndex(upgradeData.bodyIndex);
-        if (body == null)
-        {
-            Debug.LogError($"Body not found: bodyIndex={upgradeData.bodyIndex}");
-            return;
-        }
+        // 모든 아이템의 선택 해제
+	    foreach (var item in m_moduleItems)
+		item.SetSelected_ScrollViewModuleItem(false);
 
-        // 기존 모듈의 SubType 가져오기
-        ModuleBase targetModule = body.FindModule(upgradeData.moduleType, upgradeData.slotIndex);
-        if (targetModule == null)
-        {
-            Debug.LogError($"Module not found: moduleType={upgradeData.moduleType}, slotIndex={upgradeData.slotIndex}");
-            return;
-        }
-
-        EModuleSubType subType = targetModule.GetModuleSubType();
-
-        // 프리팹 교체 방식으로 업그레이드 (기존 모듈 제거 후 새 프리팹 생성)
-        body.ReplaceModuleInSlot(upgradeData.moduleType, subType, upgradeData.newLevel, upgradeData.slotIndex);
-
-        // 새 모듈의 SelectedModuleVisual 추가
-        ModuleBase newModule = body.FindModule(upgradeData.moduleType, upgradeData.slotIndex);
-        if (newModule != null)
-            ship.AddSelectedModuleVisual(newModule);
-
-        // 새 모듈 선택 상태로 설정 (그리드 표시용)
-        ReselectReplacedModule(ship, upgradeData.bodyIndex, upgradeData.moduleType, subType, upgradeData.slotIndex);
-
-        // SpaceShip 통계 업데이트
-        ship.UpdateShipStats();
-
-        Debug.Log($"Module upgraded (replaced): Ship={upgradeData.shipId}, Body={upgradeData.bodyIndex}, Slot={upgradeData.slotIndex}, NewLevel={upgradeData.newLevel}");
+        // 새로 생성된 모듈 재선택
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == upgradeData.shipId)
+		ReselectReplacedModule(ship, upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex);
     }
 
     private void UpdateScrollView()
@@ -575,9 +551,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             shipId = m_selectedShip.m_shipInfo.id
             , bodyIndex = m_selectedModule.GetModuleBodyIndex()
             , slotIndex = slotIndex
-            , moduleTypeCurrent = currentModuleType
+            , moduleType = currentModuleType
             , moduleSubTypeCurrent = currentModuleSubType
-            , moduleTypeNew = moduleType
             , moduleSubTypeNew = moduleSubType
         };
 
@@ -679,21 +654,10 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (changeData == null) return;
         if (m_myFleet == null) return;
 
-        // 이전 모듈 찾기
-        ModuleBase oldModule = m_myFleet.FindModule(changeData.shipId, changeData.bodyIndex, changeData.moduleTypeCurrent, changeData.slotIndex);
-        if (oldModule == null)
-        {
-            Debug.LogError($"Old module not found: shipId={changeData.shipId}, bodyIndex={changeData.bodyIndex}, moduleTypeCurrent={changeData.moduleTypeCurrent}, slotIndex={changeData.slotIndex}");
-            ShowResultMessage("Module change failed: Old module not found", 3f);
-            return;
-        }
         SpaceShip ship = m_myFleet.FindShip(changeData.shipId);
         if (ship == null) return;
 
-        ship.ChangeModule(changeData.bodyIndex, changeData.moduleTypeCurrent, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex);
-
-        // SpaceShip 통계 업데이트
-        ship.UpdateShipStats();
+        ship.ChangeModule(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel);
 
         ShowResultMessage("Module change successful!", 3f);
 

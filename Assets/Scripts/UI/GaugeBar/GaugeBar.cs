@@ -193,9 +193,37 @@ public class GaugeBar : MonoBehaviour
         if (renderers.Length == 0)
             return new Bounds(target.position, Vector3.zero);
 
-        Bounds bounds = renderers[0].bounds;
-        for (int i = 1; i < renderers.Length; i++)
-            bounds.Encapsulate(renderers[i].bounds);
+        Bounds bounds = new Bounds();
+        bool initialized = false;
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Renderer r = renderers[i];
+
+            // 비활성화된 렌더러, ParticleSystemRenderer 제외
+            if (!r.enabled || !r.gameObject.activeInHierarchy)
+                continue;
+            if (r is ParticleSystemRenderer)
+                continue;
+
+            // bounds 유효성 검사 (NaN, Infinity 체크)
+            Bounds b = r.bounds;
+            if (float.IsNaN(b.center.x) || float.IsInfinity(b.size.x))
+                continue;
+
+            if (!initialized)
+            {
+                bounds = b;
+                initialized = true;
+            }
+            else
+            {
+                bounds.Encapsulate(b);
+            }
+        }
+
+        if (!initialized)
+            return new Bounds(target.position, Vector3.zero);
 
         return bounds;
     }

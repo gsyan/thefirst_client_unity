@@ -12,8 +12,7 @@ public enum EGaugeBarMode
 
 public class GaugeBars : MonoBehaviour
 {
-    [SerializeField] private GameObject m_multiGaugeBarPrefab;
-    [SerializeField] private Canvas m_targetCanvas;
+    private Transform m_gaugeBarContainer;
     [HideInInspector] public EGaugeBarMode m_displayMode = EGaugeBarMode.Body;
 
     private SpaceShip m_spaceShip;
@@ -25,8 +24,8 @@ public class GaugeBars : MonoBehaviour
     void Awake()
     {
         m_spaceShip = GetComponent<SpaceShip>();
-        if (m_targetCanvas == null)
-            m_targetCanvas = FindFirstObjectByType<Canvas>();
+        if (m_gaugeBarContainer == null)
+            m_gaugeBarContainer = FindFirstObjectByType<Canvas>().transform.Find("UIGuageBarContainer");
 
         EventManager.Subscribe_ModuleReplaced(OnModuleReplaced);
     }
@@ -118,12 +117,12 @@ public class GaugeBars : MonoBehaviour
     private void CreateGaugeBarForModule(ModuleBase module)
     {
         if (m_moduleGaugeBars.ContainsKey(module) == true) return;
-        if (m_targetCanvas == null) return;
+        if (m_gaugeBarContainer == null) return;
 
         GameObject gaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/GaugeBar");
         if (gaugeBarPrefab == null) return;
 
-        GameObject gaugeBarObj = Instantiate(gaugeBarPrefab, m_targetCanvas.transform);
+        GameObject gaugeBarObj = Instantiate(gaugeBarPrefab, m_gaugeBarContainer);
         GaugeBar gaugeBar = gaugeBarObj.GetComponent<GaugeBar>();
         if (gaugeBar == null) return;
         Color gaugeColor = GetModuleColor(module);
