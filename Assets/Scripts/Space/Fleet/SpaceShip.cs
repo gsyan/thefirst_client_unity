@@ -445,19 +445,6 @@ public class SpaceShip : MonoBehaviour
         m_selectedModuleVisuals.Add(selectedModuleVisual);
     }
 
-    // 단일 모듈에 SelectedModuleVisual 추가 (모듈 업그레이드 시 사용)
-    public void AddSelectedModuleVisual(ModuleBase moduleBase)
-    {
-        if (moduleBase == null) return;
-        if (moduleBase.GetComponent<SelectedModuleVisual>() != null) return;
-
-        // 삭제된 모듈의 null 항목 제거
-        m_selectedModuleVisuals.RemoveAll(v => v == null);
-
-        SetupSelectedModuleVisual(moduleBase);
-    }
-
-    
 
     private Bounds CalculatePartsBounds(ModuleBase partsBase)
     {
@@ -1046,30 +1033,22 @@ public class SpaceShip : MonoBehaviour
     }
 
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
-    public void ChangeModule(int bodyIndex, EModuleType moduleTypeCurrent, EModuleType moduleTypeNew, EModuleSubType moduleSubTypeNew, int slotIndex)
+    public void ChangeModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel)
     {
-        ModuleBase oldModule = FindModule(bodyIndex, moduleTypeCurrent, slotIndex);
-        if (oldModule == null)
-        {
-            Debug.LogError($"Old module not found: shipId={m_shipInfo.id}, bodyIndex={bodyIndex}, moduleTypeCurrent={moduleTypeCurrent}, slotIndex={slotIndex}");
-            return;
-        }
-        int moduleLevel = oldModule.GetModuleLevel();
-
-        if (moduleTypeNew == EModuleType.Body)
+        if (moduleType == EModuleType.Body)
         {
             // Body 교체 처리
-            ChangeModuleBody(bodyIndex, moduleTypeNew, moduleSubTypeNew, moduleLevel);
+            ChangeModuleBody(bodyIndex, moduleType, moduleSubTypeNew, moduleNewLevel);
         }
         else
         {
             // 일반 모듈 교체
             ModuleBody body = FindModuleBodyByIndex(bodyIndex);
             if (body == null) return;
-            bool success = body.ReplaceModuleInSlot(moduleTypeNew, moduleSubTypeNew, moduleLevel, slotIndex);
+            bool success = body.ReplaceModuleInSlot(moduleType, moduleSubTypeNew, moduleNewLevel, slotIndex);
             if (success == false)
             {
-                Debug.LogError($"Failed to replace module: moduleTypeNew={moduleTypeNew}");
+                Debug.LogError($"Failed to replace module: moduleTypeNew={moduleType}");
                 return;
             }
         }
@@ -1080,6 +1059,9 @@ public class SpaceShip : MonoBehaviour
 
         // 모듈 selectedModuleVisual 갱신 (새로 생성된 모듈들을 포함하도록)
         RefreshSelectedModuleVisuals();
+
+        // SpaceShip 통계 업데이트
+        UpdateShipStats();
     }
     private void ChangeModuleBody(int bodyIndex, EModuleType moduleTypeNew, EModuleSubType moduleSubTypeNew, int moduleLevel)
     {

@@ -104,6 +104,17 @@ public class SpaceFleet : MonoBehaviour
         return ship.FindModule(bodyIndex, moduleType, slotIndex);
     }
 
+    // 살아있는 첫 번째 함선 반환
+    public SpaceShip GetFirstAliveShip()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship != null && ship.IsAlive())
+                return ship;
+        }
+        return null;
+    }
+
     public void UpdateShipFormation(EFormationType formationType = EFormationType.LinearHorizontal, bool smooth = true)
     {
         m_currentFormationType = formationType;

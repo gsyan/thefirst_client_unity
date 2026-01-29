@@ -46,7 +46,7 @@ public class UIPanelFleet : UIPanelBase
     {
         m_tabSystem.ForceActivateTab();
         
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
         // 카메라를 화면 위쪽 절반만 사용하도록 설정
         CameraController.Instance.SetCameraViewportToUpperHalf();
     }

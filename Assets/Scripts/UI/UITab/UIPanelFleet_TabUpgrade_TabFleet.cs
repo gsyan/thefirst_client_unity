@@ -24,6 +24,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
     [SerializeField] private GameObject m_rowLabelValuePrefab;      // RowLabelValue 프리팹
     private readonly System.Collections.Generic.Dictionary<string, RowLabelValue> m_fleetStatRows = new();
     private readonly System.Collections.Generic.Dictionary<string, RowLabelValue> m_shipStatRows = new();
+    private readonly System.Collections.Generic.Dictionary<SpaceShip, ScrollViewShipItem> m_shipItemMap = new();
     
     public override void InitializeUITab()
     {
@@ -47,6 +48,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
                         () => OnShipItemSelected(scrollViewItem, ship),
                         () => OnManageShipClicked(ship)
                     );
+                    m_shipItemMap[ship] = scrollViewItem;
                 }                    
             }
             MakeAddShipButtonItem();
@@ -58,6 +60,9 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         InitializeUI();
 
         EventManager.Subscribe_FleetChange(OnFleetChanged);
+
+        if (m_selectedShip == null)
+            SelectShip(m_myFleet.GetFirstAliveShip());
 
         if (m_selectedShip != null)
         {
@@ -202,6 +207,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
                         () => OnShipItemSelected(scrollViewItem, newShip),
                         () => OnManageShipClicked(newShip)
                     );
+                    m_shipItemMap[newShip] = scrollViewItem;
                 }
 
                 // 3. 새로운 Add 버튼 추가
@@ -261,6 +267,14 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
             m_tabSystemParent.SwitchToTab(1);
     }
 
+    // Ship으로 선택 (외부 호출용)
+    public void SelectShip(SpaceShip ship)
+    {
+        if (ship == null) return;
+        if (m_shipItemMap.TryGetValue(ship, out var scrollViewItem))
+            OnShipItemSelected(scrollViewItem, ship);
+    }
+
     private void OnShipItemSelected(ScrollViewShipItem selectedItem, SpaceShip ship)
     {
         if (selectedItem == null || ship == null) return;
@@ -282,6 +296,8 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
         // 선택 스크롤 뷰 아이템 업데이트
         m_selectedScrollViewShipItem = selectedItem;
+
+        m_selectedScrollViewShipItem.SetSelected_ScrollViewShipItem(true);
         // 선택 함선의 아웃라인 활성화
         m_selectedShip.m_shipOutline.enabled = true;        
         // 카메라 포커스

@@ -13,7 +13,6 @@ public class ScrollViewShipItem : MonoBehaviour
         m_selectButton.gameObject.SetActive(true);
         m_selectButton.onClick.RemoveAllListeners();
         m_selectButton.onClick.AddListener(actionSelect);
-        m_selectButton.onClick.AddListener(() => OnSelectButtonClicked());
         m_selectButtonText.text = text;
 
         m_manageButton.onClick.RemoveAllListeners();
@@ -21,11 +20,6 @@ public class ScrollViewShipItem : MonoBehaviour
 
         // 초기 상태: 관리 버튼 숨김
         SetSelected_ScrollViewShipItem(false);
-    }
-
-    private void OnSelectButtonClicked()
-    {
-        SetSelected_ScrollViewShipItem(true);
     }
 
     public void SetSelected_ScrollViewShipItem(bool selected)

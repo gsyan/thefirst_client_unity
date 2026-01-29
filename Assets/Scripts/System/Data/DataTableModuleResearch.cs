@@ -54,7 +54,7 @@ public class DataTableModuleResearch : ScriptableObject
 
             // subType의 마지막 자리 숫자로 tier 결정 (1→1000, 2→10000, 3→100000)
             int tier = (int)subType % 10;
-            long researchCost = 1000L * (long)System.Math.Pow(10, tier - 1);
+            long researchCost = 10000L * (long)System.Math.Pow(10, tier - 1);
 
             var researchData = new ModuleResearchData
             {

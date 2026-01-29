@@ -567,7 +567,7 @@ public class DataTableModule : ScriptableObject
                         m_health = 100f + (i * 50f),
                         m_cargoCapacity = 50f + (i * 25f),
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Body_Battle ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType}-class hull module level {i}"
                     };
                     AddModuleDataToTable(module);
@@ -586,7 +586,7 @@ public class DataTableModule : ScriptableObject
                         m_health = 30f + (i * 10f),
                         m_movementSpeed = 50f + (i * 5f),
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Engine_Standard ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType} LV.{i}"
                     };
                     AddModuleDataToTable(module);
@@ -603,13 +603,13 @@ public class DataTableModule : ScriptableObject
                         m_moduleSubType = subType,
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
-                        m_attackFireCount = 1 + (i / 5),
+                        m_attackFireCount = (subType == EModuleSubType.Beam_Standard) ? 1 : 2,
                         m_attackPower = 10f + (i * 5f),                        
                         m_attackCoolTime = 5.2f - (i * 0.05f),
                         m_projectileWidth = 5f/* + (i * 0.5f)*/,
                         m_projectileSpeed = 2000f/* + (i * 50.0f)*/,
                         //m_upgradeCost = new CostStruct(i,100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Beam_Standard ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType} Lv.{i}"
                     };
                     AddModuleDataToTable(module);
@@ -626,13 +626,13 @@ public class DataTableModule : ScriptableObject
                         m_moduleSubType = subType,
                         m_moduleLevel = i,
                         m_health = 30f + (i * 10f),
-                        m_attackFireCount = 1 + (i / 5),
-                        m_attackPower = 10f + (i * 5f),                        
+                        m_attackFireCount = (subType == EModuleSubType.Missile_Standard) ? 1 : 2,
+                        m_attackPower = 10f + (i * 5f),
                         m_attackCoolTime = 4.2f - (i * 0.05f),
                         m_projectileWidth = 5f/* + (i * 0.5f)*/,
                         m_projectileSpeed = 300f/* + (i * 5.0f)*/,
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Missile_Standard ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType} Lv.{i}"
                     };
                     AddModuleDataToTable(module);
@@ -648,7 +648,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
                         m_moduleLevel = i,
-                        m_health = 40f + (i * 15f),
+                        m_health = (subType == EModuleSubType.Hanger_Standard ? 40 : 80) + (i * 15f),
                         m_hangarCapability = 2 + (i * 3),
                         m_scoutCapability = 1 + (i * 2),
                         m_launchCool = 3.0f - (i * 0.15f),
@@ -656,7 +656,7 @@ public class DataTableModule : ScriptableObject
                         m_maintenanceTime = 15.0f - (i * 0.5f),
                         m_aircraftLaunchStraightDistance = 100f + (i * 5f),
                         m_aircraftHealth = 30f + (i * 10f),
-                        m_aircraftAttackPower = 5f + (i * 3f),
+                        m_aircraftAttackPower = (subType == EModuleSubType.Hanger_Standard ? 5 : 50) + (i * 3f),
                         m_aircraftAttackRange = 100f + (i * 5f),
                         m_aircraftAttackCooldown = 10f - (i * 0.2f),
                         //m_aircraftAttackCooldown = 1f,
@@ -665,7 +665,7 @@ public class DataTableModule : ScriptableObject
                         m_aircraftDetectionRadius = 200f + (i * 10f),
                         m_aircraftAvoidanceRadius = 200f + (i * 5f),
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, 100 << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Hanger_Standard ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType} hanger bay level {i}"
                     };
                     AddModuleDataToTable(module);
