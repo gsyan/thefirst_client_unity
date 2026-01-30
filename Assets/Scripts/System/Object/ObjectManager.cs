@@ -100,11 +100,43 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 카메라가 함대를 타겟으로 설정
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 
-        StartCoroutine(SpawnEnemies()); // 적 스폰
-        //StartCoroutine(SpawnMineral());
-
         UIManager.Instance.InitializeUIManager();
         NetworkManager.Instance.OnChangeScene();
+
+        // 튜토리얼 체크 및 시작
+        TutorialManager.Instance.ResetAllTutorials();
+        StartTutorialIfNeeded();
+    }
+
+    // 튜토리얼 시작 체크
+    private void StartTutorialIfNeeded()
+    {
+        if (TutorialManager.Instance == null)
+        {
+            StartGameplay();
+            return;
+        }
+
+        // UI 초기화 후 약간의 딜레이 후 시작
+        StartCoroutine(StartTutorialDelayed());
+    }
+
+    private IEnumerator StartTutorialDelayed()
+    {
+        yield return new WaitForSeconds(1f);
+
+        // 튜토리얼 시작 (완료 시 StartGameplay 호출)
+        TutorialManager.Instance.StartTutorial("Tutorial_FirstPlay", (tutorialId) =>
+        {
+            StartGameplay();
+        });
+    }
+
+    // 튜토리얼 완료 후 게임플레이 시작
+    private void StartGameplay()
+    {
+        StartCoroutine(SpawnEnemies()); // 적 스폰
+        //StartCoroutine(SpawnMineral());
     }
 
     public void RemoveEnemyFleet(SpaceFleet fleet)
