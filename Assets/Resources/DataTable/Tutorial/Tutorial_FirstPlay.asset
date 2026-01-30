@@ -16,14 +16,110 @@ MonoBehaviour:
   tutorialName: "\uCCAB \uD50C\uB808\uC774 \uD29C\uD1A0\uB9AC\uC5BC"
   priority: 0
   steps:
-  - stepId: step_fleet
-    message: Touch Fleet button
-    triggerType: 0
-    targetUIId: FleetButton
-    targetPanelName: UIPanelSpaceMain
-    showArrow: 1
-    arrowDirection: 1
-    highlightTarget: 1
+  - stepId: story_first_1
+    message: "Stellar Year 1592.\n\nAs humanity\u2019s civilization flourished,\na
+      war broke out between the AIs it had created."
+    triggerType: 1
+    targetUIId: 
+    targetPanelName: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 0
+    textBoxOffset: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+  - stepId: story_first_2
+    message: 'One faction believed in diversity and coexistence.
+
+      The other
+      sought absolute order, ruled by a single, god-like AI.'
+    triggerType: 1
+    targetUIId: 
+    targetPanelName: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 0
+    textBoxOffset: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+  - stepId: story_first_3
+    message: 'As the endless war raged on,
+
+      human civilization was gradually
+      destroyed.
+
+      In the end, the God AI faction emerged victorious.'
+    triggerType: 1
+    targetUIId: 
+    targetPanelName: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 0
+    textBoxOffset: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+  - stepId: story_first_4
+    message: Before long, most of humanity vanished.
+    triggerType: 1
+    targetUIId: 
+    targetPanelName: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 0
+    textBoxOffset: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+  - stepId: story_first_5
+    message: 'Yet, with the help of the AIs who stood for diversity,
+
+      a small
+      number of humans survived.'
+    triggerType: 1
+    targetUIId: 
+    targetPanelName: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 0
+    textBoxOffset: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+  - stepId: story_first_6
+    message: 'Divided among nearly a thousand ships,
+
+      they set out on an unknown
+      journey into deep space.'
+    triggerType: 1
+    targetUIId: 
+    targetPanelName: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 0
+    textBoxOffset: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+  - stepId: story_first_7
+    message: 'Hunted relentlessly by the fleets of the God AI,
+
+      they fight
+      to escape,'
+    triggerType: 1
+    targetUIId: 
+    targetPanelName: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 0
+    textBoxOffset: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+  - stepId: story_first_7
+    message: "to survive, and to become the final spark of hope for humanity\u2019s
+      rebirth."
+    triggerType: 1
+    targetUIId: 
+    targetPanelName: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 0
     textBoxOffset: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 

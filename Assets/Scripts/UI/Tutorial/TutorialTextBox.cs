@@ -14,8 +14,19 @@ public class TutorialTextBox : MonoBehaviour
     [SerializeField] private bool m_useTypewriter = true;
     [SerializeField] private float m_typewriterSpeed = 0.03f;
 
+    [Header("스토리 모드 (타겟 없을 때)")]
+    [SerializeField] private float m_storyModeWidth = 600f;
+    [SerializeField] private Vector2 m_storyModePosition = new Vector2(0, 0); // 화면 중앙
+
     private Coroutine m_typewriterCoroutine;
+    private float m_originalWidth;
     private StringBuilder m_stringBuilder = new StringBuilder(256);
+
+    private void Awake()
+    {
+        if (m_boxRect != null)
+            m_originalWidth = m_boxRect.sizeDelta.x;
+    }
 
     // 메시지 표시
     public void ShowMessage(string message, Vector2 offset, RectTransform targetUI)
@@ -39,11 +50,15 @@ public class TutorialTextBox : MonoBehaviour
                 // 타겟의 중앙 위치 (pivot에 관계없이)
                 Vector3 targetCenter = targetUI.TransformPoint(targetUI.rect.center);
                 m_boxRect.position = targetCenter + scaledOffset;
+
+                // 원래 너비로 복원
+                m_boxRect.sizeDelta = new Vector2(m_originalWidth, m_boxRect.sizeDelta.y);
             }
             else
             {
-                // 화면 중앙 하단
-                m_boxRect.anchoredPosition = new Vector2(0, -200f) + offset;
+                // 스토리 모드: 화면 중앙, 넓은 너비
+                m_boxRect.anchoredPosition = m_storyModePosition + offset;
+                m_boxRect.sizeDelta = new Vector2(m_storyModeWidth, m_boxRect.sizeDelta.y);
             }
         }
 

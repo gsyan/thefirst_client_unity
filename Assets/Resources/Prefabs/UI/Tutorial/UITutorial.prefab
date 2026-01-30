@@ -32,10 +32,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3319929249762509292}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 250, y: 50}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6687625588434078517
 CanvasRenderer:
@@ -482,10 +482,10 @@ RectTransform:
   - {fileID: 5429373241562843526}
   m_Father: {fileID: 2718822309170969134}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -120, y: -753}
+  m_SizeDelta: {x: 240, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3979322712255879448
 CanvasRenderer:
@@ -622,6 +622,8 @@ MonoBehaviour:
   m_boxRect: {fileID: 3319929249762509292}
   m_useTypewriter: 1
   m_typewriterSpeed: 0.03
+  m_storyModeWidth: 600
+  m_storyModePosition: {x: 0, y: 0}
 --- !u!1 &6333081282745753869
 GameObject:
   m_ObjectHideFlags: 0

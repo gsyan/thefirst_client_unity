@@ -69,6 +69,18 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
         m_maskMaterial.SetVector(HoleSizeID, Vector4.zero);
     }
 
+    // 전체 어둡게 표시 (구멍 없이) - 스토리 텍스트용
+    public void ShowDimOnly()
+    {
+        m_currentTarget = null;
+        m_isHighlighting = false;
+
+        if (m_maskImage != null)
+            m_maskImage.gameObject.SetActive(true);
+
+        SetHoleOff();
+    }
+
     // 대상 강조
     public void HighlightTarget(RectTransform target)
     {
