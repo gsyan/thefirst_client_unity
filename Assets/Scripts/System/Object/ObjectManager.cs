@@ -128,7 +128,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 튜토리얼 시작 (완료 시 StartGameplay 호출)
         TutorialManager.Instance.StartTutorial("Tutorial_FirstPlay", (tutorialId) =>
         {
-            StartGameplay();
+            TutorialManager.Instance.StartTutorial("Tutorial_FleetButton", (tutorialId) =>
+            {
+                StartGameplay();
+            });
         });
     }
 

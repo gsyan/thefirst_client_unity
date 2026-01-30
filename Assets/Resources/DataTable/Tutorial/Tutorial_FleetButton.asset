@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cec351f6132315419d794e5ec26a741, type: 3}
+  m_Name: Tutorial_FleetButton
+  m_EditorClassIdentifier: 
+  tutorialId: Tutorial_FleetButton
+  tutorialName: "\uD568\uB300 \uAD00\uB9AC \uD29C\uD1A0\uB9AC\uC5BC"
+  priority: 0
+  steps:
+  - stepId: step_fleet
+    message: Touch button
+    triggerType: 0
+    targetUIId: FleetButton
+    targetPanelName: UIPanelSpaceMain
+    showArrow: 1
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 100}
+    autoNextDelay: 0
+    preActionPanelName: 

@@ -63,6 +63,8 @@ public class TutorialUI : UIPopupBase
         {
             if (step.highlightTarget && m_targetRect != null)
                 m_mask.HighlightTarget(m_targetRect);
+            else if (m_targetRect == null)
+                m_mask.ShowDimOnly(); // 스토리 텍스트용 (구멍 없이 전체 어둡게)
             else
                 m_mask.HideHighlight();
 
