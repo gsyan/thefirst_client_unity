@@ -296,7 +296,6 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
         // 선택 스크롤 뷰 아이템 업데이트
         m_selectedScrollViewShipItem = selectedItem;
-
         m_selectedScrollViewShipItem.SetSelected_ScrollViewShipItem(true);
         // 선택 함선의 아웃라인 활성화
         m_selectedShip.m_shipOutline.enabled = true;        
