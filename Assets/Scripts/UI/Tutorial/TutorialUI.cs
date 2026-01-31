@@ -7,10 +7,14 @@ public class TutorialUI : UIPopupBase
 {
     [Header("UI 요소")]
     [SerializeField] private TutorialTextBox m_textBox;
-    [SerializeField] private TutorialArrow m_arrow;
+    //[SerializeField] private TutorialArrow m_arrow;
     [SerializeField] private TutorialMask m_mask;
+    [SerializeField] private UIBorderFrame m_borderFrame;
     [SerializeField] private Button m_skipButton;
     [SerializeField] private CanvasGroup m_canvasGroup;
+
+    [Header("테두리 설정")]
+    [SerializeField] private float m_borderPadding = 8f;
 
     private TutorialStep m_currentStep;
     private RectTransform m_targetRect;
@@ -47,16 +51,16 @@ public class TutorialUI : UIPopupBase
 
         // 텍스트 표시
         if (m_textBox != null)
-            m_textBox.ShowMessage(step.message, step.textBoxOffset, m_targetRect);
+            m_textBox.ShowMessage(step.message, step.textBoxOffset, m_targetRect, step.textBoxSize);
 
-        // 화살표 표시
-        if (m_arrow != null)
-        {
-            if (step.showArrow && m_targetRect != null)
-                m_arrow.Show(m_targetRect, step.arrowDirection);
-            else
-                m_arrow.Hide();
-        }
+        // // 화살표 표시
+        // if (m_arrow != null)
+        // {
+        //     if (step.showArrow && m_targetRect != null)
+        //         m_arrow.Show(m_targetRect, step.arrowDirection);
+        //     else
+        //         m_arrow.Hide();
+        // }
 
         // 마스크(강조) 표시
         if (m_mask != null)
@@ -71,6 +75,25 @@ public class TutorialUI : UIPopupBase
             // 클릭 핸들러 설정
             SetupClickHandler(step);
         }
+
+        // 테두리 표시
+        if (m_borderFrame != null)
+        {
+            if (step.highlightTarget && m_targetRect != null)
+            {
+                RectTransform borderRect = m_borderFrame.rectTransform;
+                borderRect.position = m_targetRect.TransformPoint(m_targetRect.rect.center);
+                borderRect.sizeDelta = m_targetRect.sizeDelta + Vector2.one * m_borderPadding * 2;
+                m_borderFrame.gameObject.SetActive(true);
+            }
+            else
+            {
+                m_borderFrame.gameObject.SetActive(false);
+            }
+        }
+
+        
+
     }
 
     // 숨기기
@@ -82,8 +105,9 @@ public class TutorialUI : UIPopupBase
             m_autoNextCoroutine = null;
         }
 
-        if (m_arrow != null) m_arrow.Hide();
+        //if (m_arrow != null) m_arrow.Hide();
         if (m_mask != null) m_mask.HideHighlight();
+        if (m_borderFrame != null) m_borderFrame.gameObject.SetActive(false);
         HidePopup();
     }
 

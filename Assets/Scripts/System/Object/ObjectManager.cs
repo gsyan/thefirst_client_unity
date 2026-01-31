@@ -95,15 +95,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         DataManager.Instance.RestoreCurrentCharacterInfo();
         DataManager.Instance.RestoreCurrentFleetInfo();
 
-        SpawnFleet();
+        SpawnFleet();        
 
-        // 카메라가 함대를 타겟으로 설정
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
-
-        UIManager.Instance.InitializeUIManager();
         NetworkManager.Instance.OnChangeScene();
 
-        // 튜토리얼 체크 및 시작
+        // UI 초기화
+        UIManager.Instance.InitializeUIManager();
+
+        // 튜토리얼 체크 및 시작, StartGameplay
         TutorialManager.Instance.ResetAllTutorials();
         StartTutorialIfNeeded();
     }
@@ -128,9 +127,18 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 튜토리얼 시작 (완료 시 StartGameplay 호출)
         TutorialManager.Instance.StartTutorial("Tutorial_FirstPlay", (tutorialId) =>
         {
-            TutorialManager.Instance.StartTutorial("Tutorial_FleetButton", (tutorialId) =>
+            // 스토리 튜토리얼 완료 → 자원 패널 표시
+            UIManager.Instance.ShowPanel("UIPanelMineral");
+
+            TutorialManager.Instance.StartTutorial("Tutorial_Mineral", (tutorialId) =>
             {
-                StartGameplay();
+                // 자원 튜토리얼 완료 → 메인 패널 표시
+                UIManager.Instance.ShowMainPanel();
+
+                TutorialManager.Instance.StartTutorial("Tutorial_FleetButton", (tutorialId) =>
+                {
+                    StartGameplay();
+                });
             });
         });
     }
@@ -158,6 +166,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         if (DataManager.Instance.m_currentCharacter != null)
             DataManager.Instance.m_currentCharacter.SetOwnedFleet(m_myFleet);
+
+        // 카메라가 함대를 타겟으로 설정
+        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 
         // 임시로 배틀로 초기화, 최종적으로는 none으로 하고 중간에 함대 상태 바꾸는 기능이 있어야 함
         m_myFleet.SetFleetState(EFleetState.Battle);

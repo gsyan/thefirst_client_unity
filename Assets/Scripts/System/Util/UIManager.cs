@@ -42,6 +42,11 @@ public class UIManager : MonoSingleton<UIManager>
     private UIPopupBase currentPopup;
     private Canvas mainCanvas;
 
+    // UI 컨테이너
+    protected RectTransform m_gaugeBarContainer;
+    protected RectTransform m_generalContainer;
+    protected RectTransform m_tutorialContainer;
+
     protected override void  Awake()
     {
         base.Awake();
@@ -52,7 +57,34 @@ public class UIManager : MonoSingleton<UIManager>
 
     public virtual void InitializeUIManager()
     {
+        InitializeContainers();
     }
+
+    // 컨테이너 초기화 (하이라키 순서로 정렬)
+    protected void InitializeContainers()
+    {
+        m_gaugeBarContainer = CreateContainer("UIGaugeBarContainer");
+        m_generalContainer = CreateContainer("UIGeneralContainer");
+        m_tutorialContainer = CreateContainer("UITutorialContainer");
+    }
+
+    private RectTransform CreateContainer(string name)
+    {
+        GameObject containerObj = new GameObject(name);
+        containerObj.transform.SetParent(transform, false);
+
+        RectTransform rect = containerObj.AddComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+
+        return rect;
+    }
+
+    public RectTransform GetGaugeBarContainer() => m_gaugeBarContainer;
+    public RectTransform GetGeneralContainer() => m_generalContainer;
+    public RectTransform GetTutorialContainer() => m_tutorialContainer;
 
     protected void InitializePanels()
     {
@@ -73,12 +105,6 @@ public class UIManager : MonoSingleton<UIManager>
         }
     }
     
-    public void ShowDefaultPanel()
-    {
-        if (mainPanel != null)
-            ShowPanel(mainPanel.panelName);
-    }
-
     public void ShowPanel(string panelName)
     {
         if (!panelDictionary.ContainsKey(panelName)) return;
@@ -267,15 +293,15 @@ public class UIManager : MonoSingleton<UIManager>
             return;
         }
 
-        // Canvas가 없으면 에러
-        if (mainCanvas == null)
+        // GeneralContainer가 없으면 에러
+        if (m_generalContainer == null)
         {
-            Debug.LogError("Main Canvas not found!");
+            Debug.LogError("GeneralContainer not found!");
             return;
         }
 
-        // 팝업 생성 및 Canvas의 자식으로 추가
-        GameObject popupObj = Instantiate(popupPrefab, mainCanvas.transform);
+        // 팝업 생성 및 GeneralContainer의 자식으로 추가
+        GameObject popupObj = Instantiate(popupPrefab, m_generalContainer);
         UIPopupConfirm confirmPopup = popupObj.GetComponent<UIPopupConfirm>();
 
         if (confirmPopup == null)

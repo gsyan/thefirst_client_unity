@@ -45,7 +45,7 @@ public class UIMain : UIManager
         }
 
         InitializePanels();
-        ShowDefaultPanel();
+        ShowMainPanel();
     }
 
     private List<CharacterResponse> m_characterList = new List<CharacterResponse>();

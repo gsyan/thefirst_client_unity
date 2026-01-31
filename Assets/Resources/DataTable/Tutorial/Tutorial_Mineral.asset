@@ -10,21 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cec351f6132315419d794e5ec26a741, type: 3}
-  m_Name: Tutorial_FleetButton
+  m_Name: Tutorial_Mineral
   m_EditorClassIdentifier: 
-  tutorialId: Tutorial_FleetButton
-  tutorialName: "\uD568\uB300 \uAD00\uB9AC \uD29C\uD1A0\uB9AC\uC5BC"
+  tutorialId: Tutorial_Mineral
+  tutorialName: "\uC790\uC6D0 \uD29C\uD1A0\uB9AC\uC5BC"
   priority: 0
   steps:
-  - stepId: step_fleet
-    message: Touch Button
-    triggerType: 0
-    targetUIId: FleetButton
+  - stepId: step_mineral
+    message: 'This is our current resource
+
+      status.'
+    triggerType: 1
+    targetUIId: UIPanelMineral
     targetPanelName: UIPanelSpaceMain
     showArrow: 0
     arrowDirection: 0
     highlightTarget: 1
-    textBoxOffset: {x: 0, y: 80}
-    textBoxSize: {x: 0, y: 0}
+    textBoxOffset: {x: -400, y: 0}
+    textBoxSize: {x: 600, y: 0}
     autoNextDelay: 0
     preActionPanelName: 

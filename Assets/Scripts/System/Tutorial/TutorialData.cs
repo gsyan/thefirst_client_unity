@@ -38,6 +38,7 @@ public class TutorialStep
     public EArrowDirection arrowDirection = EArrowDirection.Down;
     public bool highlightTarget = true;
     public Vector2 textBoxOffset = new Vector2(0, 100f);
+    public Vector2 textBoxSize = Vector2.zero; // (0,0)이면 기본값 사용
 
     [Header("자동 진행")]
     public float autoNextDelay = 0f; // 0이면 수동 진행
