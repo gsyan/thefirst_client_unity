@@ -24,8 +24,8 @@ public class GaugeBars : MonoBehaviour
     void Awake()
     {
         m_spaceShip = GetComponent<SpaceShip>();
-        if (m_gaugeBarContainer == null)
-            m_gaugeBarContainer = FindFirstObjectByType<Canvas>().transform.Find("UIGuageBarContainer");
+        if (m_gaugeBarContainer == null && UIManager.Instance != null)
+            m_gaugeBarContainer = UIManager.Instance.GetGaugeBarContainer();
 
         EventManager.Subscribe_ModuleReplaced(OnModuleReplaced);
     }

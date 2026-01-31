@@ -26,6 +26,7 @@ MonoBehaviour:
     arrowDirection: 0
     highlightTarget: 0
     textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
   - stepId: story_first_2
@@ -40,6 +41,7 @@ MonoBehaviour:
     arrowDirection: 0
     highlightTarget: 0
     textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
   - stepId: story_first_3
@@ -56,6 +58,7 @@ MonoBehaviour:
     arrowDirection: 0
     highlightTarget: 0
     textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
   - stepId: story_first_4
@@ -67,6 +70,7 @@ MonoBehaviour:
     arrowDirection: 0
     highlightTarget: 0
     textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
   - stepId: story_first_5
@@ -81,6 +85,7 @@ MonoBehaviour:
     arrowDirection: 0
     highlightTarget: 0
     textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
   - stepId: story_first_6
@@ -95,6 +100,7 @@ MonoBehaviour:
     arrowDirection: 0
     highlightTarget: 0
     textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
   - stepId: story_first_7
@@ -109,6 +115,7 @@ MonoBehaviour:
     arrowDirection: 0
     highlightTarget: 0
     textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
   - stepId: story_first_7
@@ -121,5 +128,6 @@ MonoBehaviour:
     arrowDirection: 0
     highlightTarget: 0
     textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 

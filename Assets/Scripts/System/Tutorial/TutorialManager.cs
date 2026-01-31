@@ -144,9 +144,10 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         Debug.Log($"[Tutorial] 완료: {completedId}");
         m_currentTutorial = null;
 
-        // 콜백 호출
-        m_onCompleteCallback?.Invoke(completedId);
+        // 콜백 호출 (콜백 내에서 새 튜토리얼 시작 시 덮어쓰기 방지)
+        var callback = m_onCompleteCallback;
         m_onCompleteCallback = null;
+        callback?.Invoke(completedId);
 
         // 이벤트 발생
         OnTutorialCompleted?.Invoke(completedId);
@@ -164,14 +165,15 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             return;
         }
 
-        Canvas canvas = FindFirstObjectByType<Canvas>();
-        if (canvas == null)
+        // UITutorialContainer에 생성
+        Transform parent = UIManager.Instance != null ? UIManager.Instance.GetTutorialContainer() : null;
+        if (parent == null)
         {
-            Debug.LogError("[Tutorial] Canvas를 찾을 수 없음");
+            Debug.LogError("[Tutorial] TutorialContainer를 찾을 수 없음");
             return;
         }
 
-        GameObject uiObject = Instantiate(prefab, canvas.transform);
+        GameObject uiObject = Instantiate(prefab, parent);
         uiObject.name = "UITutorial";
         m_tutorialUI = uiObject.GetComponent<TutorialUI>();
     }
