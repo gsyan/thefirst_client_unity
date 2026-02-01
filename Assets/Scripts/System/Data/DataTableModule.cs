@@ -658,7 +658,7 @@ public class DataTableModule : ScriptableObject
                         m_aircraftHealth = 30f + (i * 10f),
                         m_aircraftAttackPower = (subType == EModuleSubType.Hanger_Standard ? 5 : 50) + (i * 3f),
                         m_aircraftAttackRange = 100f + (i * 5f),
-                        m_aircraftAttackCooldown = 10f - (i * 0.2f),
+                        m_aircraftAttackCooldown = (subType == EModuleSubType.Hanger_Standard ? 5.1f : 3.1f) - (i * 0.1f),
                         //m_aircraftAttackCooldown = 1f,
                         m_aircraftSpeed = 300f + (i * 5f),
                         m_aircraftAmmo = 10 + (i * 2),
