@@ -49,6 +49,10 @@ public class TutorialUI : UIPopupBase
         // 대상 UI 찾기
         m_targetRect = FindTargetUI(step.targetUIId, step.targetPanelName);
 
+        // 레이아웃 강제 업데이트 (ContentSizeFitter/LayoutGroup 계산 완료 보장)
+        if (m_targetRect != null)
+            Canvas.ForceUpdateCanvases();
+
         // 텍스트 표시
         if (m_textBox != null)
             m_textBox.ShowMessage(step.message, step.textBoxOffset, m_targetRect, step.textBoxSize);
@@ -82,8 +86,20 @@ public class TutorialUI : UIPopupBase
             if (step.highlightTarget && m_targetRect != null)
             {
                 RectTransform borderRect = m_borderFrame.rectTransform;
-                borderRect.position = m_targetRect.TransformPoint(m_targetRect.rect.center);
-                borderRect.sizeDelta = m_targetRect.sizeDelta + Vector2.one * m_borderPadding * 2;
+
+                // GetWorldCorners로 실제 렌더링된 크기/위치 계산 (LayoutGroup/ContentSizeFitter 대응)
+                Vector3[] corners = new Vector3[4];
+                m_targetRect.GetWorldCorners(corners);
+                Vector3 center = (corners[0] + corners[2]) * 0.5f;
+
+                // Canvas 스케일 보정 (월드 좌표 → 로컬 좌표)
+                Vector2 size = new Vector2(
+                    Mathf.Abs(corners[3].x - corners[0].x) / borderRect.lossyScale.x,
+                    Mathf.Abs(corners[1].y - corners[0].y) / borderRect.lossyScale.y
+                );
+
+                borderRect.position = center;
+                borderRect.sizeDelta = size + Vector2.one * m_borderPadding * 2;
                 m_borderFrame.gameObject.SetActive(true);
             }
             else

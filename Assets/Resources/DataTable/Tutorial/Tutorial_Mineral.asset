@@ -22,7 +22,7 @@ MonoBehaviour:
       status.'
     triggerType: 1
     targetUIId: UIPanelMineral
-    targetPanelName: UIPanelSpaceMain
+    targetPanelName: UIPanelMineral
     showArrow: 0
     arrowDirection: 0
     highlightTarget: 1
