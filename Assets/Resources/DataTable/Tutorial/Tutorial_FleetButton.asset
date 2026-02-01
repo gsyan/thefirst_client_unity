@@ -16,7 +16,7 @@ MonoBehaviour:
   tutorialName: "\uD568\uB300 \uAD00\uB9AC \uD29C\uD1A0\uB9AC\uC5BC"
   priority: 0
   steps:
-  - stepId: step_fleet
+  - stepId: step_fleet_button_1
     message: Touch Button
     triggerType: 0
     targetUIId: FleetButton
@@ -25,6 +25,18 @@ MonoBehaviour:
     arrowDirection: 0
     highlightTarget: 1
     textBoxOffset: {x: 0, y: 80}
+    textBoxSize: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+  - stepId: step_fleet_button_2
+    message: '   This is Fleet Status'
+    triggerType: 1
+    targetUIId: FleetStatContainer
+    targetPanelName: UIPanelFleet
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: -150}
     textBoxSize: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 

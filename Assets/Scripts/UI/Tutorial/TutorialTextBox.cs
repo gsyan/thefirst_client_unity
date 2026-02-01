@@ -42,17 +42,20 @@ public class TutorialTextBox : MonoBehaviour
         {
             if (targetUI != null)
             {
-                // Canvas 스케일 기준 오프셋 계산
-                Canvas canvas = GetComponentInParent<Canvas>();
-                float scale = canvas != null ? canvas.scaleFactor : 1f;
-                Vector3 scaledOffset = (Vector3)offset / scale;
+                // GetWorldCorners로 실제 렌더링된 크기/위치 계산 (LayoutGroup/ContentSizeFitter 대응)
+                Vector3[] corners = new Vector3[4];
+                targetUI.GetWorldCorners(corners);
+                Vector3 targetCenter = (corners[0] + corners[2]) * 0.5f;
 
-                // 타겟의 중앙 위치 (pivot에 관계없이)
-                Vector3 targetCenter = targetUI.TransformPoint(targetUI.rect.center);
+                // Canvas 스케일 보정 (월드 좌표 → 로컬 좌표)
+                float scale = m_boxRect.lossyScale.x;
+                float actualWidth = Mathf.Abs(corners[3].x - corners[0].x) / scale;
+                Vector3 scaledOffset = (Vector3)offset * scale;
+
                 m_boxRect.position = targetCenter + scaledOffset;
 
                 // 사이즈 적용 (customSize가 0이면 타겟 너비 사용)
-                float width = customSize.x > 0 ? customSize.x : targetUI.sizeDelta.x;
+                float width = customSize.x > 0 ? customSize.x : actualWidth;
                 float height = customSize.y > 0 ? customSize.y : m_boxRect.sizeDelta.y;
                 m_boxRect.sizeDelta = new Vector2(width, height);
             }
