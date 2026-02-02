@@ -102,8 +102,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // UI 초기화
         UIManager.Instance.InitializeUIManager();
 
+        // 튜토리얼 초기화
+        //TutorialManager.Instance.ResetAllTutorials();
         // 튜토리얼 체크 및 시작, StartGameplay
-        TutorialManager.Instance.ResetAllTutorials();
         StartTutorialIfNeeded();
     }
 
