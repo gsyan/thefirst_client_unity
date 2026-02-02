@@ -53,9 +53,14 @@ public class TutorialUI : UIPopupBase
         if (m_targetRect != null)
             Canvas.ForceUpdateCanvases();
 
-        // 텍스트 표시
+        // 텍스트 표시 (로컬라이제이션 적용 - message를 키로 사용, 키가 없으면 그대로 표시)
         if (m_textBox != null)
-            m_textBox.ShowMessage(step.message, step.textBoxOffset, m_targetRect, step.textBoxSize);
+        {
+            string message = LocalizationManager.Instance != null
+                ? LocalizationManager.Instance.Get(step.message)
+                : step.message;
+            m_textBox.ShowMessage(message, step.textBoxOffset, m_targetRect, step.textBoxSize, step.textBoxPosition);
+        }
 
         // // 화살표 표시
         // if (m_arrow != null)
@@ -188,6 +193,9 @@ public class TutorialUI : UIPopupBase
     // 클릭 핸들러 설정
     private void SetupClickHandler(TutorialStep step)
     {
+        // 기본값: 상단 통과 해제
+        m_mask.SetTopPassthrough(false);
+
         switch (step.triggerType)
         {
             case ETutorialTrigger.AnyClick:
@@ -206,6 +214,8 @@ public class TutorialUI : UIPopupBase
 
             case ETutorialTrigger.Custom:
                 m_mask.SetClickable(false, null);
+                m_mask.SetTopPassthrough(true, 0.5f);  // 상단 50% 터치 가능
+                TutorialManager.Instance.StartTutorialCondition(step);
                 break;
         }
     }

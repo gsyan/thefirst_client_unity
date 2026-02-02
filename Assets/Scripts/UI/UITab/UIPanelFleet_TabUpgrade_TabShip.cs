@@ -216,6 +216,20 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             return;
         }
 
+        // 확인 팝업 표시
+        CostStruct cost = new CostStruct { mineral = unlockPrice };
+        string slotTypeName = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType.ToString();
+
+        UIManager.Instance.ShowConfirmPopup(
+            "Module Unlock",
+            $"Unlock {slotTypeName} slot?",
+            cost,
+            () => ExecuteUnlockModule()
+        );
+    }
+
+    private void ExecuteUnlockModule()
+    {
         // 모듈 해금 요청 생성
         var unlockRequest = new ModuleUnlockRequest
         {
