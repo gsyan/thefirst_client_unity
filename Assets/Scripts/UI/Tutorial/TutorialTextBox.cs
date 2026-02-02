@@ -29,7 +29,7 @@ public class TutorialTextBox : MonoBehaviour
     }
 
     // 메시지 표시
-    public void ShowMessage(string message, Vector2 offset, RectTransform targetUI, Vector2 customSize = default)
+    public void ShowMessage(string message, Vector2 offset, RectTransform targetUI, Vector2 customSize = default, Vector2 customPosition = default)
     {
         if (m_typewriterCoroutine != null)
         {
@@ -40,7 +40,15 @@ public class TutorialTextBox : MonoBehaviour
         // 위치 설정
         if (m_boxRect != null)
         {
-            if (targetUI != null)
+            // 절대 위치가 지정된 경우
+            if (customPosition != Vector2.zero)
+            {
+                m_boxRect.anchoredPosition = customPosition;
+                float width = customSize.x > 0 ? customSize.x : m_storyModeWidth;
+                float height = customSize.y > 0 ? customSize.y : m_boxRect.sizeDelta.y;
+                m_boxRect.sizeDelta = new Vector2(width, height);
+            }
+            else if (targetUI != null)
             {
                 // GetWorldCorners로 실제 렌더링된 크기/위치 계산 (LayoutGroup/ContentSizeFitter 대응)
                 Vector3[] corners = new Vector3[4];

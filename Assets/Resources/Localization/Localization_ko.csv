@@ -1,0 +1,32 @@
+key,value
+# 공통 UI
+ui.button.confirm,확인
+ui.button.cancel,취소
+ui.button.close,닫기
+ui.button.back,뒤로
+ui.button.next,다음
+ui.button.skip,건너뛰기
+ui.button.yes,예
+ui.button.no,아니오
+
+# 튜토리얼 - 함대 버튼
+tutorial.fleet.step1,버튼을 터치하세요
+tutorial.fleet.step2,이것은 함대 상태입니다
+tutorial.fleet.step3,이것은 함선 상태입니다
+tutorial.fleet.step4,"이것은\n함선 관리\n버튼입니다"
+tutorial.fleet.step5,"터치하고 드래그하세요\n카메라를 회전해서 우주선을 확인하세요"
+
+# 튜토리얼 - 기본
+tutorial.welcome,환영합니다!
+tutorial.tap_continue,탭하여 계속
+
+# 함대
+fleet.title,함대
+fleet.status,함대 상태
+fleet.ship_status,함선 상태
+fleet.manage,관리
+
+# 자원
+resource.mineral,광물
+resource.energy,에너지
+resource.credit,크레딧

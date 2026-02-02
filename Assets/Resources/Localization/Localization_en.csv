@@ -1,0 +1,32 @@
+key,value
+# Common UI
+ui.button.confirm,Confirm
+ui.button.cancel,Cancel
+ui.button.close,Close
+ui.button.back,Back
+ui.button.next,Next
+ui.button.skip,Skip
+ui.button.yes,Yes
+ui.button.no,No
+
+# Tutorial - Fleet Button
+tutorial.fleet.step1,Touch Button
+tutorial.fleet.step2,This is Fleet Status
+tutorial.fleet.step3,This is Ship Status
+tutorial.fleet.step4,"This is\nShip Manage\nButton"
+tutorial.fleet.step5,"Touch and drag\nRotate camera and check your space ship"
+
+# Tutorial - Basic
+tutorial.welcome,Welcome!
+tutorial.tap_continue,Tap to continue
+
+# Fleet
+fleet.title,Fleet
+fleet.status,Fleet Status
+fleet.ship_status,Ship Status
+fleet.manage,Manage
+
+# Resources
+resource.mineral,Mineral
+resource.energy,Energy
+resource.credit,Credit

@@ -153,6 +153,30 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
             m_maskImage.raycastTarget = true;
     }
 
+    // 화면 상단 영역 통과 설정 (3D 공간 터치용)
+    // ratio: 상단에서부터 통과시킬 비율 (0.5 = 상단 50%)
+    public void SetTopPassthrough(bool enable, float ratio = 0.5f)
+    {
+        if (enable && m_maskMaterial != null)
+        {
+            // 상단 영역에 큰 구멍 뚫기
+            ratio = Mathf.Clamp01(ratio);
+            float centerY = 1f - (ratio * 0.5f);  // 상단 50% → centerY = 0.75
+            float halfHeight = ratio * 0.5f;      // 상단 50% → halfHeight = 0.25
+            m_maskMaterial.SetVector(HoleCenterID, new Vector4(0.5f, centerY, 0, 0));
+            m_maskMaterial.SetVector(HoleSizeID, new Vector4(0.5f, halfHeight, 0, 0));
+            m_isHighlighting = true;
+            m_currentTarget = null;
+
+            if (m_maskImage != null)
+                m_maskImage.gameObject.SetActive(true);
+        }
+        else if (!enable)
+        {
+            SetHoleOff();
+        }
+    }
+
     private void OnFullScreenClick()
     {
         m_onClick?.Invoke();
@@ -174,30 +198,44 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     // ICanvasRaycastFilter: 구멍 영역만 클릭 통과
     public bool IsRaycastLocationValid(Vector2 screenPoint, Camera eventCamera)
     {
-        // 하이라이팅 중이고 타겟이 있으면 구멍 영역 체크
-        if (m_isHighlighting && m_currentTarget != null)
+        if (!m_isHighlighting) return true;
+
+        // 타겟이 있으면 타겟 기준으로 구멍 영역 체크
+        if (m_currentTarget != null)
         {
-            // 타겟의 월드 코너
             Vector3[] corners = new Vector3[4];
             m_currentTarget.GetWorldCorners(corners);
 
-            // 스크린 좌표로 변환
             Vector2 min = RectTransformUtility.WorldToScreenPoint(m_canvasCamera, corners[0]);
             Vector2 max = RectTransformUtility.WorldToScreenPoint(m_canvasCamera, corners[2]);
 
-            // 패딩 적용
             min -= new Vector2(m_highlightPadding, m_highlightPadding);
             max += new Vector2(m_highlightPadding, m_highlightPadding);
 
-            // 구멍 안에 있으면 클릭 통과 (false 반환)
             if (screenPoint.x >= min.x && screenPoint.x <= max.x &&
                 screenPoint.y >= min.y && screenPoint.y <= max.y)
             {
                 return false;
             }
         }
+        else if (m_maskMaterial != null)
+        {
+            // 타겟 없이 구멍이 설정된 경우 (SetTopPassthrough 등)
+            Vector4 center = m_maskMaterial.GetVector(HoleCenterID);
+            Vector4 halfSize = m_maskMaterial.GetVector(HoleSizeID);
 
-        // 구멍 밖이면 마스크가 클릭 차단 (true 반환)
+            // 스크린 좌표를 0-1로 정규화
+            float normalizedX = screenPoint.x / Screen.width;
+            float normalizedY = screenPoint.y / Screen.height;
+
+            // 구멍 영역 체크
+            if (Mathf.Abs(normalizedX - center.x) <= halfSize.x &&
+                Mathf.Abs(normalizedY - center.y) <= halfSize.y)
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 }

@@ -19,24 +19,303 @@ MonoBehaviour:
   - stepId: step_fleet_button_1
     message: Touch Button
     triggerType: 0
-    targetUIId: FleetButton
     targetPanelName: UIPanelSpaceMain
+    targetUIId: FleetButton
     showArrow: 0
     arrowDirection: 0
     highlightTarget: 1
     textBoxOffset: {x: 0, y: 80}
     textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
   - stepId: step_fleet_button_2
     message: '   This is Fleet Status'
     triggerType: 1
-    targetUIId: FleetStatContainer
     targetPanelName: UIPanelFleet
+    targetUIId: FleetStatContainer
     showArrow: 0
     arrowDirection: 0
     highlightTarget: 1
     textBoxOffset: {x: 0, y: -150}
     textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_fleet_button_3
+    message: '   This is Ship Status'
+    triggerType: 1
+    targetPanelName: UIPanelFleet
+    targetUIId: ShipStatContainer
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: -200}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_fleet_button_4
+    message: 'This is
+
+      Ship Manage
+
+      Button'
+    triggerType: 0
+    targetPanelName: TabFleetInfo
+    targetUIId: ManageButton
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: -30, y: 150}
+    textBoxSize: {x: 220, y: 100}
+    textBoxPosition: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_fleet_button_5
+    message: 'Touch and drag
+
+      to rotate the camera and
+
+      inspect your
+      spaceship'
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 1
+    conditionThreshold: 180
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_fleet_button_6
+    message: 'Pinch with two fingers
+
+      to zoom in and out'
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 2
+    conditionThreshold: 400
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_fleet_button_7
+    message: 'The Body module of your ship is currently selected.
+
+      This ship
+      has a Body module and an Engine module.'
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_fleet_button_8
+    message: 'First, select the Engine module,
+
+      Depending on the selected module,
+
+      the
+      UI below will change accordingly.'
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 5
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 2
+  - stepId: step_fleet_button_9
+    message: then select the Body module again.
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 5
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 1
+  - stepId: step_fleet_button_10
+    message: 'Some modules are currently locked.
+
+      Try selecting the locked
+      module located
+
+      at the front center of the ship.'
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 300}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 5
+    conditionThreshold: 200
+    conditionCount: 0
+    targetModuleType: 3
+  - stepId: step_fleet_button_11
+    message: 'When you unlock the front module,
+
+      a Beam module will be added.'
+    triggerType: 0
+    targetPanelName: UIPanelFleet
+    targetUIId: UnlockModuleButton
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0
+  - stepId: step_fleet_button_12
+    message: Confirm unlock
+    triggerType: 0
+    targetPanelName: UIPopupConfirm
+    targetUIId: ConfirmButton
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0
+  - stepId: step_fleet_button_13
+    message: 'Unlocked modules can be upgraded
+
+      using the Upgrade button below.'
+    triggerType: 0
+    targetPanelName: UIPanelFleet
+    targetUIId: UpgradeModuleButton
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0
+  - stepId: step_fleet_button_14
+    message: Confirm Upgrade
+    triggerType: 0
+    targetPanelName: UIPopupConfirm
+    targetUIId: ConfirmButton
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0
+  - stepId: step_fleet_button_15
+    message: "You can also switch to other researched modules\nfrom the list on the
+      right.\r\nResearch requires more resources,\nso we\u2019ll try that later."
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0
+  - stepId: step_fleet_button_16
+    message: "An enemy ship is approaching.\nLet\u2019s watch the battle.\r\n\r\nDestroying
+      enemy ships allows\nyou to obtain resources.\r\n\nUse these resources\nto develop
+      your ships and fleet.\r\n\r\nGood luck, Commander."
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0

@@ -40,6 +40,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
                 GameObject item = Instantiate(m_scrollViewShipItem, m_scrollViewShipsContent);
                 if( item != null)
                 {
+                    item.name = m_scrollViewShipItem.name;
                     int index = i; // 클로저 문제 방지
                     SpaceShip ship = m_myFleet.m_ships[index];
                     ScrollViewShipItem scrollViewItem = item.GetComponent<ScrollViewShipItem>();
@@ -223,6 +224,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         m_addButtonItem = Instantiate(m_scrollViewShipItemAdd, m_scrollViewShipsContent);
         if (m_addButtonItem != null)
         {
+            m_addButtonItem.name = m_scrollViewShipItemAdd.name;
             var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
             CostStruct cost = gameSettings.GetAddShipCost(m_myFleet.m_ships.Count);
 

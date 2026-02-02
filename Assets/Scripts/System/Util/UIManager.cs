@@ -310,7 +310,7 @@ public class UIManager : MonoSingleton<UIManager>
             Destroy(popupObj);
             return;
         }
-
+        popupObj.name = popupPrefab.name;
         currentPopup = confirmPopup;
 
         // 콜백 래핑 (팝업 닫을 때 자동 삭제)

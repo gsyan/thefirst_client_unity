@@ -17,6 +17,14 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private Dictionary<string, int> m_tutorialProgress = new Dictionary<string, int>();
     private System.Action<string> m_onCompleteCallback;
 
+    // Tutorial 조건용 상태
+    private Coroutine m_customConditionCoroutine;
+    private HashSet<int> m_selectedModuleIds = new HashSet<int>();  // 선택된 모듈 InstanceID
+    private float m_cameraRotationAccumulated;
+    private Quaternion m_lastCameraRotation;
+    private float m_cameraZoomAccumulated;
+    private float m_lastCameraZoom;
+
     // 튜토리얼 완료 이벤트 (tutorialId 전달)
     public event System.Action<string> OnTutorialCompleted;
 
@@ -82,6 +90,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     public void SkipTutorial()
     {
         if (!m_isPlaying) return;
+        StopTutorialCondition();
         CompleteTutorial();
     }
 
@@ -129,6 +138,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // 튜토리얼 완료
     private void CompleteTutorial()
     {
+        StopTutorialCondition();
         string completedId = m_currentTutorial?.tutorialId;
 
         if (m_currentTutorial != null)
@@ -260,6 +270,139 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         PlayerPrefs.Save();
         Debug.Log("[Tutorial] 모든 튜토리얼 초기화됨");
     }
+
+    #region Tutorial Condition
+
+    // 튜토리얼 조건 시작 (TutorialUI에서 호출)
+    public void StartTutorialCondition(TutorialStep step)
+    {
+        StopTutorialCondition();
+
+        switch (step.conditionType)
+        {
+            case ETutorialConditionType.CameraRotationChanged:
+                m_cameraRotationAccumulated = 0f;
+                m_lastCameraRotation = Camera.main.transform.rotation;
+                m_customConditionCoroutine = StartCoroutine(CheckCameraRotation(step.conditionThreshold));
+                break;
+
+            case ETutorialConditionType.CameraZoomChanged:
+                m_cameraZoomAccumulated = 0f;
+                m_lastCameraZoom = CameraController.Instance.CurrentZoom;
+                m_customConditionCoroutine = StartCoroutine(CheckCameraZoom(step.conditionThreshold));
+                break;
+
+            case ETutorialConditionType.ModuleSelected:
+            case ETutorialConditionType.ModuleSelectedCount:
+            case ETutorialConditionType.SpecificModuleSelected:
+                m_selectedModuleIds.Clear();
+                EventManager.Subscribe_SpaceShipModuleSelected_TabUpgrade(OnModuleSelected);
+                break;
+        }
+    }
+
+    // 튜토리얼 조건 정리
+    public void StopTutorialCondition()
+    {
+        if (m_customConditionCoroutine != null)
+        {
+            StopCoroutine(m_customConditionCoroutine);
+            m_customConditionCoroutine = null;
+        }
+
+        EventManager.Unsubscribe_SpaceShipModuleSelected_TabUpgrade(OnModuleSelected);
+        m_selectedModuleIds.Clear();
+        m_cameraRotationAccumulated = 0f;
+    }
+
+    // 카메라 회전량 체크 코루틴
+    private IEnumerator CheckCameraRotation(float threshold)
+    {
+        while (m_isPlaying)
+        {
+            if (Camera.main == null)
+            {
+                yield return null;
+                continue;
+            }
+
+            Quaternion currentRotation = Camera.main.transform.rotation;
+            float angleDelta = Quaternion.Angle(m_lastCameraRotation, currentRotation);
+            m_cameraRotationAccumulated += angleDelta;
+            m_lastCameraRotation = currentRotation;
+
+            if (m_cameraRotationAccumulated >= threshold)
+            {
+                NextStep();
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    // 카메라 줌 변화량 체크 코루틴
+    private IEnumerator CheckCameraZoom(float threshold)
+    {
+        while (m_isPlaying)
+        {
+            if (CameraController.Instance == null)
+            {
+                yield return null;
+                continue;
+            }
+
+            float currentZoom = CameraController.Instance.CurrentZoom;
+            float zoomDelta = Mathf.Abs(currentZoom - m_lastCameraZoom);
+            m_cameraZoomAccumulated += zoomDelta;
+            m_lastCameraZoom = currentZoom;
+
+            if (m_cameraZoomAccumulated >= threshold)
+            {
+                NextStep();
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    // 모듈 선택 이벤트 콜백
+    private void OnModuleSelected(SpaceShip ship, ModuleBase module)
+    {
+        if (!m_isPlaying || m_currentTutorial == null) return;
+        if (m_currentStepIndex >= m_currentTutorial.steps.Count) return;
+
+        TutorialStep step = m_currentTutorial.steps[m_currentStepIndex];
+        if (step.triggerType != ETutorialTrigger.Custom) return;
+
+        switch (step.conditionType)
+        {
+            case ETutorialConditionType.ModuleSelected:
+                // 아무 모듈이나 선택하면 완료
+                NextStep();
+                break;
+
+            case ETutorialConditionType.ModuleSelectedCount:
+                // 서로 다른 모듈 N개 선택
+                int moduleId = module.GetInstanceID();
+                if (m_selectedModuleIds.Add(moduleId))
+                {
+                    Debug.Log($"[Tutorial] 모듈 선택 {m_selectedModuleIds.Count}/{step.conditionCount}");
+                    if (m_selectedModuleIds.Count >= step.conditionCount)
+                        NextStep();
+                }
+                break;
+
+            case ETutorialConditionType.SpecificModuleSelected:
+                // 특정 모듈 선택 (classId 비교)
+                if (module.GetModuleType() == step.targetModuleType)
+                    NextStep();
+                break;
+        }
+    }
+
+    #endregion
 }
 
 // 저장 데이터 구조
