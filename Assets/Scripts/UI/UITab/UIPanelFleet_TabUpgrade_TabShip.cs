@@ -525,6 +525,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             ScrollViewModuleItem scrollViewItem = item.GetComponent<ScrollViewModuleItem>();
             if(scrollViewItem != null)
             {
+                scrollViewItem.gameObject.name = m_scrollViewModuleItem.name;
                 scrollViewItem.InitializeScrollViewModuleItem(
                     moduleName,
                     () => OnModuleSelectClicked(scrollViewItem, moduleType, moduleSubType),
@@ -586,7 +587,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         bool result = DataManager.Instance.m_currentCharacter.CheckEnoughCostStruct(researchCost);
         if( result == false)
         {
-            ShowResultMessage("Insufficient resources", 3f);
+            ShowResultMessage($"Insufficient resources(cost mineral: {researchCost.mineral})", 3f);
             return;
         }
 

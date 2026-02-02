@@ -283,8 +283,29 @@ MonoBehaviour:
     conditionCount: 2
     targetModuleType: 0
   - stepId: step_fleet_button_15
-    message: "You can also switch to other researched modules\nfrom the list on the
-      right.\r\nResearch requires more resources,\nso we\u2019ll try that later."
+    message: 'You can also switch to other researched modules
+
+      from the list
+      on the right.
+
+      But not enough mineral now'
+    triggerType: 0
+    targetPanelName: TabShipInfo
+    targetUIId: ResearchButton
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0
+  - stepId: step_fleet_button_16
+    message: "Research requires more resources,\r\nso we\u2019ll try that later."
     triggerType: 1
     targetPanelName: 
     targetUIId: 
@@ -300,7 +321,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 2
     targetModuleType: 0
-  - stepId: step_fleet_button_16
+  - stepId: step_fleet_button_17
     message: "An enemy ship is approaching.\nLet\u2019s watch the battle.\r\n\r\nDestroying
       enemy ships allows\nyou to obtain resources.\r\n\nUse these resources\nto develop
       your ships and fleet.\r\n\r\nGood luck, Commander."
@@ -312,7 +333,7 @@ MonoBehaviour:
     highlightTarget: 1
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
-    textBoxPosition: {x: 0, y: 200}
+    textBoxPosition: {x: 0, y: 400}
     autoNextDelay: 0
     preActionPanelName: 
     conditionType: 0

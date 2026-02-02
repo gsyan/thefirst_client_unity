@@ -19,6 +19,7 @@ public class TutorialUI : UIPopupBase
     private TutorialStep m_currentStep;
     private RectTransform m_targetRect;
     private Coroutine m_autoNextCoroutine;
+    private Coroutine m_waitTargetCoroutine;
 
     // UI 캐시 (동일 UI 반복 검색 방지)
     private System.Collections.Generic.Dictionary<string, RectTransform> m_uiCache =
@@ -36,11 +37,16 @@ public class TutorialUI : UIPopupBase
     {
         m_currentStep = step;
 
-        // 진행 중인 자동 진행 취소
+        // 진행 중인 코루틴 취소
         if (m_autoNextCoroutine != null)
         {
             StopCoroutine(m_autoNextCoroutine);
             m_autoNextCoroutine = null;
+        }
+        if (m_waitTargetCoroutine != null)
+        {
+            StopCoroutine(m_waitTargetCoroutine);
+            m_waitTargetCoroutine = null;
         }
 
         // 먼저 팝업 활성화 (자식 코루틴 사용 가능하도록)
@@ -49,6 +55,40 @@ public class TutorialUI : UIPopupBase
         // 대상 UI 찾기
         m_targetRect = FindTargetUI(step.targetUIId, step.targetPanelName);
 
+        // 타겟이 지정되어 있는데 못 찾으면 대기
+        if (!string.IsNullOrEmpty(step.targetUIId) && m_targetRect == null)
+        {
+            m_waitTargetCoroutine = StartCoroutine(WaitForTargetCoroutine(step));
+            return;
+        }
+
+        DisplayStep(step);
+    }
+
+    // 타겟 UI 활성화 대기
+    private IEnumerator WaitForTargetCoroutine(TutorialStep step)
+    {
+        float elapsed = 0f;
+        const float maxWaitTime = 2f;
+        const float checkInterval = 0.1f;
+
+        while (elapsed < maxWaitTime)
+        {
+            yield return new WaitForSeconds(checkInterval);
+            elapsed += checkInterval;
+
+            m_targetRect = FindTargetUI(step.targetUIId, step.targetPanelName);
+            if (m_targetRect != null)
+                break;
+        }
+
+        m_waitTargetCoroutine = null;
+        DisplayStep(step);
+    }
+
+    // 실제 스텝 UI 표시
+    private void DisplayStep(TutorialStep step)
+    {
         // 레이아웃 강제 업데이트 (ContentSizeFitter/LayoutGroup 계산 완료 보장)
         if (m_targetRect != null)
             Canvas.ForceUpdateCanvases();
@@ -61,15 +101,6 @@ public class TutorialUI : UIPopupBase
                 : step.message;
             m_textBox.ShowMessage(message, step.textBoxOffset, m_targetRect, step.textBoxSize, step.textBoxPosition);
         }
-
-        // // 화살표 표시
-        // if (m_arrow != null)
-        // {
-        //     if (step.showArrow && m_targetRect != null)
-        //         m_arrow.Show(m_targetRect, step.arrowDirection);
-        //     else
-        //         m_arrow.Hide();
-        // }
 
         // 마스크(강조) 표시
         if (m_mask != null)
@@ -112,9 +143,6 @@ public class TutorialUI : UIPopupBase
                 m_borderFrame.gameObject.SetActive(false);
             }
         }
-
-        
-
     }
 
     // 숨기기
@@ -125,8 +153,12 @@ public class TutorialUI : UIPopupBase
             StopCoroutine(m_autoNextCoroutine);
             m_autoNextCoroutine = null;
         }
+        if (m_waitTargetCoroutine != null)
+        {
+            StopCoroutine(m_waitTargetCoroutine);
+            m_waitTargetCoroutine = null;
+        }
 
-        //if (m_arrow != null) m_arrow.Hide();
         if (m_mask != null) m_mask.HideHighlight();
         if (m_borderFrame != null) m_borderFrame.gameObject.SetActive(false);
         HidePopup();
@@ -173,15 +205,17 @@ public class TutorialUI : UIPopupBase
         return result;
     }
 
-    // 재귀 자식 검색
+    // 재귀 자식 검색 (활성화된 오브젝트만)
     private Transform FindChildRecursive(Transform parent, string name)
     {
-        if (parent.name == name)
+        if (parent.name == name && parent.gameObject.activeInHierarchy)
             return parent;
 
         for (int i = 0; i < parent.childCount; i++)
         {
             Transform child = parent.GetChild(i);
+            if (!child.gameObject.activeInHierarchy) continue;
+
             if (child.name == name) return child;
 
             Transform found = FindChildRecursive(child, name);
