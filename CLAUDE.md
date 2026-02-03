@@ -23,6 +23,7 @@
 ## 서버 프로젝트 경로
 - 서버 프로젝트 루트: D:\BK\thefirst\thefirst_server 또는 C:\bk\thefirst\thefirst_server
 - 서버 관련 질문은 해당 경로 기준으로 설명할 것
+- Java Spring 서버임
 
 ## 코드 생성 도구
 - Python generator 경로: 서버경로\tools\generator

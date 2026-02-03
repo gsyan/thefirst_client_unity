@@ -147,9 +147,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 튜토리얼 완료 후 게임플레이 시작
     private void StartGameplay()
     {
-        StartCoroutine(SpawnEnemies()); // 적 스폰
         //StartCoroutine(SpawnMineral());
     }
+
+    public void StartSpawnEnemies()
+    {
+        StartCoroutine(SpawnEnemies()); // 적 스폰
+    }
+
 
     public void RemoveEnemyFleet(SpaceFleet fleet)
     {
@@ -396,11 +401,19 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
     
     
-    public GameObject LoadShipModulePrefab(string moduleTypeName, string modulePrefabName, int moduleLevel = 1)
+    // 프리팹 경로 생성 (에디터에서도 사용 가능)
+    public static string GetShipModulePrefabPath(string moduleTypeName, string modulePrefabName, int moduleLevel)
     {
+        // 현재 프리팹은 레벨 1만 존재
         // module level 1
         moduleLevel = 1;
-        return LoadPrefab("ShipModule", moduleTypeName, modulePrefabName, moduleLevel);
+        return $"Prefabs/ShipModule/{moduleTypeName}/{modulePrefabName}_{moduleLevel}";
+    }
+
+    public GameObject LoadShipModulePrefab(string moduleTypeName, string modulePrefabName, int moduleLevel = 1)
+    {
+        string path = GetShipModulePrefabPath(moduleTypeName, modulePrefabName, moduleLevel);
+        return Resources.Load<GameObject>(path);
     }
 
     public GameObject LoadModulePlaceholderPrefab()

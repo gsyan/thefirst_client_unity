@@ -387,6 +387,73 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
-    
+    #region Fleet Warp
+    private List<WarpEffect> m_warpEffects = new List<WarpEffect>();
+    private bool m_isFleetWarping = false;
+
+    // 함대 워프 시작 (모든 함선 동시에)
+    public void StartFleetWarp(System.Action onWarpComplete = null)
+    {
+        if (m_isFleetWarping) return;
+
+        m_isFleetWarping = true;
+        EnsureWarpEffects();
+
+        int completedCount = 0;
+        int totalShips = m_warpEffects.Count;
+
+        foreach (var warpEffect in m_warpEffects)
+        {
+            if (warpEffect == null) continue;
+
+            warpEffect.StartWarp(() =>
+            {
+                completedCount++;
+                if (completedCount >= totalShips)
+                {
+                    m_isFleetWarping = false;
+                    onWarpComplete?.Invoke();
+                }
+            });
+        }
+
+        // 함선이 없는 경우
+        if (totalShips == 0)
+        {
+            m_isFleetWarping = false;
+            onWarpComplete?.Invoke();
+        }
+    }
+
+    // 함대 워프 중단
+    public void StopFleetWarp()
+    {
+        foreach (var warpEffect in m_warpEffects)
+        {
+            if (warpEffect != null)
+                warpEffect.StopWarp();
+        }
+        m_isFleetWarping = false;
+    }
+
+    // WarpEffect 컴포넌트 확보
+    private void EnsureWarpEffects()
+    {
+        m_warpEffects.Clear();
+
+        foreach (var ship in m_ships)
+        {
+            if (ship == null) continue;
+
+            WarpEffect warpEffect = ship.GetComponent<WarpEffect>();
+            if (warpEffect == null)
+                warpEffect = ship.gameObject.AddComponent<WarpEffect>();
+
+            m_warpEffects.Add(warpEffect);
+        }
+    }
+
+    public bool IsFleetWarping => m_isFleetWarping;
+    #endregion
 
 }

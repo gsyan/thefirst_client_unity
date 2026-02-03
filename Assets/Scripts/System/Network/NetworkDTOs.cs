@@ -118,6 +118,7 @@ public class CharacterInfo
     public long mineralRare;
     public long mineralExotic;
     public long mineralDark;
+    public string clearedZone;  // 클리어한 최고 zone (예: "3-5"), 신규는 "" 또는 "0-0"
 }
 
 
@@ -397,4 +398,19 @@ public class ModuleInstallRequest
 //     public int totalWeapons;
 //     public int totalEngines;
 // }
+#endregion
+
+#region Zone Battle Data Classes ##############################################################################
+[System.Serializable]
+public class ZoneClearRequest
+{
+    public string zoneName;  // 클리어한 zone 이름 (예: "2-5")
+}
+
+[System.Serializable]
+public class ZoneClearResponse
+{
+    public string clearedZone;  // 업데이트된 최고 클리어 zone
+    public CostRemainInfo rewardInfo;  // 클리어 보상 (광물 등)
+}
 #endregion
