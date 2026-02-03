@@ -587,6 +587,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.DeleteAccountAsync(), onComplete));
     }
 
+    public void ClearZone(ZoneClearRequest request, System.Action<ApiResponse<ZoneClearResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ClearZoneAsync(request), onComplete));
+    }
+
     public ApiClient GetApiClient()
     {
         return m_apiClient;

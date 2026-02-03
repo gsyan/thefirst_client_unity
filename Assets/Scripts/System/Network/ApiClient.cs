@@ -469,4 +469,26 @@ public class ApiClient
     //     return response;
     // }
     #endregion
+
+    #region Zone Battle API Methods -------------------------------------------------------------------------------
+    public async Task<ApiResponse<ZoneClearResponse>> ClearZoneAsync(ZoneClearRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneClearResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"Zone Clear Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/clear", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ZoneClearResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Zone Clear Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+    #endregion
 }
