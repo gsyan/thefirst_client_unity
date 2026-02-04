@@ -65,7 +65,7 @@ public class ZoneEnemyFleetConfigEditor : Editor
         }
     }
 
-    private void DrawHeader()
+    private new void DrawHeader()
     {
         EditorGUILayout.BeginHorizontal("box");
         GUILayout.Label("Zone Enemy Fleet Config", EditorStyles.largeLabel);

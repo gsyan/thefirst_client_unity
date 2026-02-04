@@ -955,13 +955,10 @@ public class SpaceShip : MonoBehaviour
 
     public Bounds CalculateShipBounds()
     {
-        Bounds bounds = new Bounds(transform.position, Vector3.zero);
-        MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>();
+        Bounds bounds = CommonUtility.CalculateRendererBounds(transform, excludeParticles: true, excludeTrails: true, excludeDisabled: false);
 
-        foreach (MeshRenderer renderer in renderers)
-            bounds.Encapsulate(renderer.bounds);
-
-        if (renderers.Length == 0)
+        // 렌더러가 없으면 기본 크기
+        if (bounds.size == Vector3.zero)
             bounds.size = Vector3.one * 2f;
 
         return bounds;

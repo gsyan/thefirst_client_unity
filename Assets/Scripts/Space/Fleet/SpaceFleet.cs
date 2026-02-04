@@ -447,7 +447,11 @@ public class SpaceFleet : MonoBehaviour
 
             WarpEffect warpEffect = ship.GetComponent<WarpEffect>();
             if (warpEffect == null)
+            {
                 warpEffect = ship.gameObject.AddComponent<WarpEffect>();
+                warpEffect.InitializeWarpEffect();
+            }
+                
 
             m_warpEffects.Add(warpEffect);
         }

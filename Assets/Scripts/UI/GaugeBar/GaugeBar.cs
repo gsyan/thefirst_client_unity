@@ -144,7 +144,8 @@ public class GaugeBar : MonoBehaviour
         if (!m_useAutoBounds)
             return m_targetTransform.position + m_offsetFromTarget;
 
-        Bounds combinedBounds = CalculateObjectBounds(m_targetTransform);
+        Bounds combinedBounds = CommonUtility.CalculateRendererBounds(m_targetTransform, excludeParticles: true, excludeTrails: true, excludeDisabled: true);
+        
         if (combinedBounds.size == Vector3.zero)
             return m_targetTransform.position + m_offsetFromTarget;
 
@@ -184,48 +185,6 @@ public class GaugeBar : MonoBehaviour
         offset += directionFromCamera * m_offsetFromTarget.z;
 
         return combinedBounds.center + offset;
-    }
-
-    private Bounds CalculateObjectBounds(Transform target)
-    {
-        Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
-
-        if (renderers.Length == 0)
-            return new Bounds(target.position, Vector3.zero);
-
-        Bounds bounds = new Bounds();
-        bool initialized = false;
-
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            Renderer r = renderers[i];
-
-            // 비활성화된 렌더러, ParticleSystemRenderer 제외
-            if (!r.enabled || !r.gameObject.activeInHierarchy)
-                continue;
-            if (r is ParticleSystemRenderer)
-                continue;
-
-            // bounds 유효성 검사 (NaN, Infinity 체크)
-            Bounds b = r.bounds;
-            if (float.IsNaN(b.center.x) || float.IsInfinity(b.size.x))
-                continue;
-
-            if (!initialized)
-            {
-                bounds = b;
-                initialized = true;
-            }
-            else
-            {
-                bounds.Encapsulate(b);
-            }
-        }
-
-        if (!initialized)
-            return new Bounds(target.position, Vector3.zero);
-
-        return bounds;
     }
 
     public float GetCurrentValue() => m_currentValue;
