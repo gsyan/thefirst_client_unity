@@ -21,7 +21,8 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     [SerializeField] private float m_warpFOV = 15f;  // 워프 시 FOV 감소량
 
     [Header("Radial Blur Settings")]
-    [SerializeField] private float m_warpRadialBlurIntensity = 0.3f;  // 워프 시 방사형 블러 강도
+    [SerializeField] private float m_warpRadialBlurIntensity = 0.1f;  // 워프 시 방사형 블러 강도
+
 
     // 원본값 저장
     private float m_originalChromaticAberration;
