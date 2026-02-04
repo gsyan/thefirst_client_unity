@@ -271,6 +271,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_targetCamera: {fileID: 0}
   m_currentMode: 0
+--- !u!1 &413080345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 413080347}
+  - component: {fileID: 413080346}
+  m_Layer: 0
+  m_Name: RadialBlurController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &413080346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413080345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81269806e9ccf794b9432fefd67861e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_radialBlurMaterial: {fileID: 2100000, guid: 6eba62007fb06074e9c4ae9253597b63, type: 2}
+  m_blurStrength: 0
+  m_sampleCount: 8
+  m_centerX: 0.5
+  m_centerY: 0.5
+--- !u!4 &413080347
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413080345}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &451708792
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,3 +729,4 @@ SceneRoots:
   - {fileID: 1963102159}
   - {fileID: 451708795}
   - {fileID: 725481649}
+  - {fileID: 413080347}
