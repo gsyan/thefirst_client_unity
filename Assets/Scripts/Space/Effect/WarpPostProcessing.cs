@@ -20,6 +20,9 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     [Header("FOV Settings")]
     [SerializeField] private float m_warpFOV = 15f;  // 워프 시 FOV 감소량
 
+    [Header("Radial Blur Settings")]
+    [SerializeField] private float m_warpRadialBlurIntensity = 0.3f;  // 워프 시 방사형 블러 강도
+
     // 원본값 저장
     private float m_originalChromaticAberration;
     private float m_originalBloomIntensity;
@@ -99,6 +102,10 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         // FOV 감소 (외곽이 날아가는 느낌)
         if (m_mainCamera != null)
             m_mainCamera.fieldOfView = Mathf.Lerp(m_originalFOV, m_originalFOV - m_warpFOV, t);
+
+        // Radial Blur (방사형 모션 블러)
+        if (RadialBlurFeature.Instance != null)
+            RadialBlurFeature.Instance.SetIntensity(m_warpRadialBlurIntensity * t);
     }
 
     // 즉시 원본으로 복원
