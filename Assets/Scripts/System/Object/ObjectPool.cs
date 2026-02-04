@@ -53,6 +53,10 @@ public class ObjectPool<T> where T : Component
 
         obj.gameObject.SetActive(false);
 
+        // 원래 부모로 복원 (다른 곳에서 SetParent 했을 경우 대비)
+        if (obj.transform.parent != m_parent)
+            obj.transform.SetParent(m_parent);
+
         if (m_pool.Count < m_maxSize)
         {
             m_pool.Enqueue(obj);

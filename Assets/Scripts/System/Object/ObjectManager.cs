@@ -72,6 +72,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         else
             Debug.LogError("effectShipExplosionPrefab not found at Resources/Prefabs/Effect/EffectShipExplosion");
 
+        EffectBase effectWarpSpeedLinesPrefab = Resources.Load<EffectBase>("Prefabs/Effect/WarpSpeedLines");
+        if (effectWarpSpeedLinesPrefab != null)
+            m_poolManager.CreatePool(EPoolName.EFFECT_WARP_SPEEDLINES, effectWarpSpeedLinesPrefab, 5, 20);
+        else
+            Debug.LogError("WarpSpeedLines not found at Resources/Prefabs/Effect/WarpSpeedLines");
+
         AircraftStandard aircraftStandardPrefab = Resources.Load<AircraftStandard>("Prefabs/Aircraft/AircraftStandard");
         if (aircraftStandardPrefab != null)
             m_poolManager.CreatePool(EPoolName.AIRCRAFT_STANDARD, aircraftStandardPrefab, 1, 30);

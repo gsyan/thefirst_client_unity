@@ -120,7 +120,6 @@ public class UIPanelExploration_TabBattle : UITabBase
         // 전투 완료 후 OnZoneBattleComplete 호출
 
         //ObjectManager.Instance.StartSpawnEnemies();
-
         m_myFleet.StartFleetWarp();
     }
 

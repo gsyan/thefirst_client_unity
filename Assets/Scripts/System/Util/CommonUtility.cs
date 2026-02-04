@@ -97,6 +97,69 @@ public static class CommonUtility
         return bounds;
     }
 
+    // 렌더러들의 bounds 계산 (파티클/트레일 제외 옵션)
+    public static Bounds CalculateRendererBounds(Transform target, bool excludeParticles = true, bool excludeTrails = true, bool excludeDisabled = true)
+    {
+        if (target == null)
+            return new Bounds(Vector3.zero, Vector3.zero);
+
+        Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
+        return CalculateRendererBoundsInternal(renderers, target.position, excludeParticles, excludeTrails, excludeDisabled);
+    }
+
+    // Renderer 배열로 bounds 계산
+    public static Bounds CalculateRendererBounds(Renderer[] renderers, Vector3 fallbackCenter, bool excludeParticles = true, bool excludeTrails = true, bool excludeDisabled = true)
+    {
+        return CalculateRendererBoundsInternal(renderers, fallbackCenter, excludeParticles, excludeTrails, excludeDisabled);
+    }
+
+    private static Bounds CalculateRendererBoundsInternal(Renderer[] renderers, Vector3 fallbackCenter, bool excludeParticles, bool excludeTrails, bool excludeDisabled)
+    {
+        if (renderers == null || renderers.Length == 0)
+            return new Bounds(fallbackCenter, Vector3.zero);
+
+        Bounds bounds = new Bounds();
+        bool initialized = false;
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Renderer r = renderers[i];
+            if (r == null) continue;
+
+            // 비활성화 체크
+            if (excludeDisabled && (!r.enabled || !r.gameObject.activeInHierarchy))
+                continue;
+
+            // 파티클 제외
+            if (excludeParticles && r is ParticleSystemRenderer)
+                continue;
+
+            // 트레일 제외
+            if (excludeTrails && r is TrailRenderer)
+                continue;
+
+            // bounds 유효성 검사 (NaN, Infinity 체크)
+            Bounds b = r.bounds;
+            if (float.IsNaN(b.center.x) || float.IsInfinity(b.size.x))
+                continue;
+
+            if (!initialized)
+            {
+                bounds = b;
+                initialized = true;
+            }
+            else
+            {
+                bounds.Encapsulate(b);
+            }
+        }
+
+        if (!initialized)
+            return new Bounds(fallbackCenter, Vector3.zero);
+
+        return bounds;
+    }
+
     // ModuleInfo로부터 능력치 계산
     public static CapabilityProfile GetModuleCapabilityProfile(ModuleInfo moduleInfo)
     {
