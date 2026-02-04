@@ -18,8 +18,11 @@ public class WarpEffect : MonoBehaviour
 
     [Header("Warp Duration")]
     [SerializeField] private float m_warpChargeTime = 0.5f;
-    [SerializeField] private float m_warpDuration = 2f;
-    [SerializeField] private float m_warpExitTime = 0.3f;
+    [SerializeField] private float m_warpDuration = 3f;
+    [SerializeField] private float m_warpExitTime = 0.5f;
+
+    [Header("Post-Processing Timing")]
+    [SerializeField, Range(0f, 1f)] private float m_chargePhaseMaxIntensity = 0.1f;  // Phase1에서 도달할 최대 강도 (나머지는 Phase2에서)
 
     
 
@@ -168,7 +171,7 @@ public class WarpEffect : MonoBehaviour
     {
         m_isWarping = true;
 
-        // Phase 1: 워프 차지
+        // Phase 1: 워프 차지 (PP: 0 → m_chargePhaseMaxIntensity)
         float elapsed = 0f;
         while (elapsed < m_warpChargeTime)
         {
@@ -180,8 +183,8 @@ public class WarpEffect : MonoBehaviour
             float glow = Mathf.Lerp(m_normalGlowIntensity, m_warpGlowIntensity, easedT);
             SetEngineGlow(glow);
 
-            // Post-Processing 증가
-            SetPostProcessingWarpEffect(easedT);
+            // Post-Processing: 0 → chargeMax
+            SetPostProcessingWarpEffect(easedT * m_chargePhaseMaxIntensity);
 
             yield return null;
         }
@@ -189,13 +192,20 @@ public class WarpEffect : MonoBehaviour
         // 스피드라인 시작
         SetSpeedLinesActive(true);
 
-        // Phase 2: 워프 중 (최대 강도 유지)
+        // Phase 2: 워프 중 (PP: chargeMax → 1.0)
         elapsed = 0f;
         while (elapsed < m_warpDuration)
         {
             elapsed += Time.deltaTime;
+            float t = elapsed / m_warpDuration;
+
+            // 엔진 글로우 펄스
             float pulse = 1f + Mathf.Sin(elapsed * 20f) * 0.2f;
             SetEngineGlow(m_warpGlowIntensity * pulse);
+
+            // Post-Processing: chargeMax → 1.0 (t=0.9에서 1.0 도달)
+            SetPostProcessingWarpEffect(Mathf.Clamp01(t + m_chargePhaseMaxIntensity));
+
             yield return null;
         }
 
