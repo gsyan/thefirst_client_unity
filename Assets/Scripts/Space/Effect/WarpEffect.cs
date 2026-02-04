@@ -21,6 +21,8 @@ public class WarpEffect : MonoBehaviour
     [SerializeField] private float m_warpDuration = 2f;
     [SerializeField] private float m_warpExitTime = 0.3f;
 
+    
+
     // 내부 상태
     private List<Renderer> m_engineRenderers = new List<Renderer>();
     private EffectBase m_speedLineEffect;
@@ -52,9 +54,8 @@ public class WarpEffect : MonoBehaviour
             m_spaceShip = GetComponent<SpaceShip>();
 
         CollectEngineRenderers();
+        
         m_shipBounds = CommonUtility.CalculateRendererBounds(transform, excludeParticles: true, excludeTrails: true, excludeDisabled: false);
-
-        Debug.Log($"[WarpEffect] Init - Engines:{m_engineRenderers.Count}, Bounds:{m_shipBounds.size}");
     }
 
     // 엔진 렌더러 수집
@@ -157,6 +158,9 @@ public class WarpEffect : MonoBehaviour
         m_isWarping = false;
         SetEngineGlow(m_normalGlowIntensity);
         ReturnSpeedLineToPool();
+
+        // PP 복원
+        SetPostProcessingWarpEffect(0f);
     }
 
     // 워프 시퀀스
@@ -170,15 +174,22 @@ public class WarpEffect : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float t = elapsed / m_warpChargeTime;
-            float glow = Mathf.Lerp(m_normalGlowIntensity, m_warpGlowIntensity, EaseOutQuad(t));
+            float easedT = EaseOutQuad(t);
+
+            // 엔진 글로우
+            float glow = Mathf.Lerp(m_normalGlowIntensity, m_warpGlowIntensity, easedT);
             SetEngineGlow(glow);
+
+            // Post-Processing 증가
+            SetPostProcessingWarpEffect(easedT);
+
             yield return null;
         }
 
         // 스피드라인 시작
         SetSpeedLinesActive(true);
 
-        // Phase 2: 워프 중
+        // Phase 2: 워프 중 (최대 강도 유지)
         elapsed = 0f;
         while (elapsed < m_warpDuration)
         {
@@ -194,13 +205,23 @@ public class WarpEffect : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float t = elapsed / m_warpExitTime;
-            float glow = Mathf.Lerp(m_warpGlowIntensity, m_normalGlowIntensity, EaseInQuad(t));
+            float easedT = EaseInQuad(t);
+
+            // 엔진 글로우 감소
+            float glow = Mathf.Lerp(m_warpGlowIntensity, m_normalGlowIntensity, easedT);
             SetEngineGlow(glow);
+
+            // Post-Processing 감소
+            SetPostProcessingWarpEffect(1f - easedT);
+
             yield return null;
         }
 
         // 스피드라인 종료
         SetSpeedLinesActive(false);
+
+        // 최종 상태 복원
+        SetPostProcessingWarpEffect(0f);
 
         m_isWarping = false;
         m_warpCoroutine = null;
@@ -269,10 +290,21 @@ public class WarpEffect : MonoBehaviour
         m_speedLineFadeCoroutine = null;
     }
 
+    // 처음 빠름 → 끝 느림
     private float EaseOutQuad(float t) => 1f - (1f - t) * (1f - t);
+
+    // 처음 느림 → 끝 빠름
     private float EaseInQuad(float t) => t * t;
 
     public bool IsWarping => m_isWarping;
+
+    // Post-Processing 효과 설정 (0~1 lerp값)
+    private void SetPostProcessingWarpEffect(float t)
+    {
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null)
+            pp.SetWarpIntensity(t);
+    }
 
     private void OnDestroy()
     {
