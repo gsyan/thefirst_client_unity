@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 // 각 슬롯에 장착할 모듈 설정
 [System.Serializable]
@@ -60,7 +61,20 @@ public class ZoneConfig
     public string zoneDescription;
     public int shipCount = 1;      // 적 함선 개수
     public int moduleLevel = 1;    // 적 모듈 레벨
+    public Material skyboxMaterial;  // 스카이박스 머티리얼
     public List<WaveConfig> waves = new List<WaveConfig>();
+
+    [Header("시간당 자원 수확량 (클리어 후)")]
+    public float mineralPerHour = 3600f;
+    public float mineralRarePerHour = 0f;
+    public float mineralExoticPerHour = 0f;
+    public float mineralDarkPerHour = 0f;
+
+    // 실제 계산용 (시간당 → 초당 변환)
+    public float MineralPerSecond => mineralPerHour / 3600f;
+    public float MineralRarePerSecond => mineralRarePerHour / 3600f;
+    public float MineralExoticPerSecond => mineralExoticPerHour / 3600f;
+    public float MineralDarkPerSecond => mineralDarkPerHour / 3600f;
 
     public int TotalWaveCount => waves.Count;
     public int TotalEnemyShipCount
@@ -75,8 +89,8 @@ public class ZoneConfig
     }
 }
 
-[CreateAssetMenu(fileName = "ZoneEnemyFleetConfig", menuName = "Custom/ZoneEnemyFleetConfig")]
-public class ZoneEnemyFleetConfig : ScriptableObject
+[CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
+public class DataTableZone : ScriptableObject
 {
     public List<ZoneConfig> zones = new List<ZoneConfig>();
 
@@ -119,4 +133,22 @@ public class ZoneEnemyFleetConfig : ScriptableObject
     }
 
     public int ZoneCount => zones.Count;
+
+    // 서버용 export (필요한 필드만)
+    public string ExportToJson()
+    {
+        var serverData = new List<object>();
+        foreach (var zone in zones)
+        {
+            serverData.Add(new
+            {
+                zoneName = zone.zoneName,
+                mineralPerHour = zone.mineralPerHour,
+                mineralRarePerHour = zone.mineralRarePerHour,
+                mineralExoticPerHour = zone.mineralExoticPerHour,
+                mineralDarkPerHour = zone.mineralDarkPerHour
+            });
+        }
+        return JsonConvert.SerializeObject(new { zones = serverData }, Formatting.Indented);
+    }
 }

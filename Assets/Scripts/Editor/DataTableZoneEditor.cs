@@ -4,10 +4,10 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
 
-[CustomEditor(typeof(ZoneEnemyFleetConfig))]
-public class ZoneEnemyFleetConfigEditor : Editor
+[CustomEditor(typeof(DataTableZone))]
+public class DataTableZoneEditor : Editor
 {
-    private ZoneEnemyFleetConfig config;
+    private DataTableZone config;
     private Vector2 scrollPosition;
 
     private Dictionary<int, bool> zoneFoldouts = new Dictionary<int, bool>();
@@ -26,7 +26,7 @@ public class ZoneEnemyFleetConfigEditor : Editor
 
     private void OnEnable()
     {
-        config = (ZoneEnemyFleetConfig)target;
+        config = (DataTableZone)target;
         CacheBodySubTypes();
     }
 
@@ -68,7 +68,7 @@ public class ZoneEnemyFleetConfigEditor : Editor
     private new void DrawHeader()
     {
         EditorGUILayout.BeginHorizontal("box");
-        GUILayout.Label("Zone Enemy Fleet Config", EditorStyles.largeLabel);
+        GUILayout.Label("Datatable Zone", EditorStyles.largeLabel);
         GUILayout.FlexibleSpace();
         GUILayout.Label($"Zones: {config.zones.Count}", EditorStyles.miniLabel);
 
@@ -115,6 +115,20 @@ public class ZoneEnemyFleetConfigEditor : Editor
         config.zones.Clear();
         int totalZones = 0;
 
+        // Zone-0: 안전지역 (적 없음)
+        Material safeZoneSkybox = AssetDatabase.LoadAssetAtPath<Material>("Assets/DeepSpaceSkyboxPack/DiverseSpace/Material/DiverseSpaceMaterial.mat");
+        var safeZone = new ZoneConfig
+        {
+            zoneName = "Zone-0",
+            zoneDescription = "안전지역",
+            shipCount = 0,
+            moduleLevel = 0,
+            skyboxMaterial = safeZoneSkybox,
+            waves = new List<WaveConfig>()
+        };
+        config.zones.Add(safeZone);
+        totalZones++;
+
         for (int shipCount = 1; shipCount <= 9; shipCount++)
         {
             for (int stage = 1; stage <= 10; stage++)
@@ -122,13 +136,19 @@ public class ZoneEnemyFleetConfigEditor : Editor
                 // 레벨은 스테이지와 함선 개수 중 작은 값 (레벨 상한 = 함선 개수)
                 int moduleLevel = Mathf.Min(stage, shipCount);
 
+                // 스카이박스 머티리얼: 1~5는 GalacticGreen, 6~9는 GalaxyFire
+                string skyboxFolder = shipCount <= 5 ? "GalacticGreen" : "GalaxyFire";
+                Material skyboxMat = AssetDatabase.LoadAssetAtPath<Material>($"Assets/DeepSpaceSkyboxPack/{skyboxFolder}/Material/{skyboxFolder}Material.mat");
+                
                 var zone = new ZoneConfig
                 {
                     zoneName = $"{shipCount}-{stage}",
                     zoneDescription = $"함선 {shipCount}척, 모듈 Lv.{moduleLevel}",
                     shipCount = shipCount,
                     moduleLevel = moduleLevel,
-                    waves = new List<WaveConfig>()
+                    skyboxMaterial = skyboxMat,
+                    waves = new List<WaveConfig>(),
+                    mineralPerHour = 100f * shipCount + (stage - 1)
                 };
 
                 // Wave 1개 생성
@@ -347,7 +367,7 @@ public class ZoneEnemyFleetConfigEditor : Editor
         // Zone Header
         EditorGUILayout.BeginHorizontal();
         zoneFoldouts[zoneIndex] = EditorGUILayout.Foldout(zoneFoldouts[zoneIndex],
-            $"Zone {zoneIndex + 1}: {zone.zoneName} (Waves: {zone.TotalWaveCount}, Ships: {zone.TotalEnemyShipCount})", true, EditorStyles.foldoutHeader);
+            $"Zone {zoneIndex}: {zone.zoneName} (Waves: {zone.TotalWaveCount}, Ships: {zone.TotalEnemyShipCount})", true, EditorStyles.foldoutHeader);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
@@ -368,6 +388,16 @@ public class ZoneEnemyFleetConfigEditor : Editor
             EditorGUILayout.BeginVertical("box");
             zone.zoneName = EditorGUILayout.TextField("Zone Name", zone.zoneName);
             zone.zoneDescription = EditorGUILayout.TextField("Description", zone.zoneDescription);
+            zone.skyboxMaterial = (Material)EditorGUILayout.ObjectField("Skybox Material", zone.skyboxMaterial, typeof(Material), false);
+            EditorGUILayout.EndVertical();
+
+            // 시간당 자원 수확량
+            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.LabelField("시간당 자원 수확량 (클리어 후)", EditorStyles.boldLabel);
+            zone.mineralPerHour = EditorGUILayout.FloatField("Mineral/hour", zone.mineralPerHour);
+            zone.mineralRarePerHour = EditorGUILayout.FloatField("MineralRare/hour", zone.mineralRarePerHour);
+            zone.mineralExoticPerHour = EditorGUILayout.FloatField("MineralExotic/hour", zone.mineralExoticPerHour);
+            zone.mineralDarkPerHour = EditorGUILayout.FloatField("MineralDark/hour", zone.mineralDarkPerHour);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);

@@ -9,6 +9,7 @@ public class DataTableTotalEditor : EditorWindow
     private DataTableConfig dataTableConfig;
     private DataTableModule dataTableModule;
     private DataTableModuleResearch dataTableModuleResearch;
+    private DataTableZone dataTableZone;
     private Vector2 scrollPosition;
 
     [MenuItem("Tools/DataTable Total Manager")]
@@ -37,6 +38,9 @@ public class DataTableTotalEditor : EditorWindow
 
         dataTableModuleResearch = (DataTableModuleResearch)EditorGUILayout.ObjectField(
             "DataTable Module Research", dataTableModuleResearch, typeof(DataTableModuleResearch), false);
+
+        dataTableZone = (DataTableZone)EditorGUILayout.ObjectField(
+            "DataTable Zone", dataTableZone, typeof(DataTableZone), false);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
@@ -145,11 +149,21 @@ public class DataTableTotalEditor : EditorWindow
                 dataTableModuleResearch = AssetDatabase.LoadAssetAtPath<DataTableModuleResearch>(path);
             }
         }
+
+        if (dataTableZone == null)
+        {
+            string[] guids = AssetDatabase.FindAssets("t:DataTableZone", new[] { "Assets/Resources/DataTable" });
+            if (guids.Length > 0)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                dataTableZone = AssetDatabase.LoadAssetAtPath<DataTableZone>(path);
+            }
+        }
     }
 
     private bool IsValid()
     {
-        return dataTableModule != null && dataTableConfig != null && dataTableModuleResearch != null;
+        return dataTableModule != null && dataTableConfig != null && dataTableModuleResearch != null && dataTableZone != null;
     }
 
     private void ExportAll()
@@ -178,8 +192,13 @@ public class DataTableTotalEditor : EditorWindow
             string researchPath = Path.Combine(folderPath, "DataTableModuleResearch.json");
             File.WriteAllText(researchPath, researchJson);
 
+            // DataTableZone.json 내보내기
+            string zoneJson = dataTableZone.ExportToJson();
+            string zonePath = Path.Combine(folderPath, "DataTableZone.json");
+            File.WriteAllText(zonePath, zoneJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}", "OK");
+                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}\n{zonePath}", "OK");
         }
     }
 
@@ -215,8 +234,13 @@ public class DataTableTotalEditor : EditorWindow
             string researchServerPath = Path.Combine(serverDataPath, "DataTableModuleResearch.json");
             File.WriteAllText(researchServerPath, researchJson);
 
+            // DataTableZone.json 서버로 내보내기
+            string zoneJson = dataTableZone.ExportToJson();
+            string zoneServerPath = Path.Combine(serverDataPath, "DataTableZone.json");
+            File.WriteAllText(zoneServerPath, zoneJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}", "OK");
+                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}\n{zoneServerPath}", "OK");
         }
         catch (System.Exception e)
         {

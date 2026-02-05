@@ -388,37 +388,37 @@ public class SpaceFleet : MonoBehaviour
     }
 
     #region Fleet Warp
-    private List<WarpEffect> m_warpEffects = new List<WarpEffect>();
+    private List<WarpEffectShip> m_warpEffects = new List<WarpEffectShip>();
     private bool m_isFleetWarping = false;
 
     // 함대 워프 시작 (모든 함선 동시에)
-    public void StartFleetWarp(System.Action onWarpComplete = null)
+    public void StartFleetWarp(Material skyBoxMaterial, System.Action onWarpComplete = null)
     {
         if (m_isFleetWarping) return;
 
         m_isFleetWarping = true;
         EnsureWarpEffects();
 
-        int completedCount = 0;
-        int totalShips = m_warpEffects.Count;
-
-        foreach (var warpEffect in m_warpEffects)
+        // 글로벌 효과 (Skybox, PP) - 함대 단위로 1회만 호출
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null)
         {
-            if (warpEffect == null) continue;
-
-            warpEffect.StartWarp(() =>
+            pp.StartWarpSequence(skyBoxMaterial, () =>
             {
-                completedCount++;
-                if (completedCount >= totalShips)
-                {
-                    m_isFleetWarping = false;
-                    onWarpComplete?.Invoke();
-                }
+                m_isFleetWarping = false;
+                onWarpComplete?.Invoke();
             });
         }
 
-        // 함선이 없는 경우
-        if (totalShips == 0)
+        // 함선별 개별 효과 (엔진 글로우, 스피드라인)
+        foreach (var warpEffect in m_warpEffects)
+        {
+            if (warpEffect != null)
+                warpEffect.StartWarp();
+        }
+
+        // PP가 없는 경우 즉시 완료
+        if (pp == null)
         {
             m_isFleetWarping = false;
             onWarpComplete?.Invoke();
@@ -428,15 +428,22 @@ public class SpaceFleet : MonoBehaviour
     // 함대 워프 중단
     public void StopFleetWarp()
     {
+        // 함선별 효과 중단
         foreach (var warpEffect in m_warpEffects)
         {
             if (warpEffect != null)
                 warpEffect.StopWarp();
         }
+
+        // 글로벌 효과 중단
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null)
+            pp.StopWarpSequence();
+
         m_isFleetWarping = false;
     }
 
-    // WarpEffect 컴포넌트 확보
+    // WarpEffectShip 컴포넌트 확보
     private void EnsureWarpEffects()
     {
         m_warpEffects.Clear();
@@ -445,13 +452,12 @@ public class SpaceFleet : MonoBehaviour
         {
             if (ship == null) continue;
 
-            WarpEffect warpEffect = ship.GetComponent<WarpEffect>();
+            WarpEffectShip warpEffect = ship.GetComponent<WarpEffectShip>();
             if (warpEffect == null)
             {
-                warpEffect = ship.gameObject.AddComponent<WarpEffect>();
+                warpEffect = ship.gameObject.AddComponent<WarpEffectShip>();
                 warpEffect.InitializeWarpEffect();
             }
-                
 
             m_warpEffects.Add(warpEffect);
         }

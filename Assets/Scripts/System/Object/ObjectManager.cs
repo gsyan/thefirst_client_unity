@@ -91,9 +91,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     [HideInInspector] public List<SpaceFleet> m_enemyFleets = new List<SpaceFleet>();
     [HideInInspector] public List<SpaceMineral> m_mineralList = new List<SpaceMineral>();
 
-    
-    private bool m_isFirstEnemySpawned = false;
-    private float m_lastEnemyDestroyTime = 0f;
+    // Zone 전투 관련
+    private ZoneConfig m_currentZoneConfig;
+    private int m_currentWaveIndex;
+    private int m_totalSpawnedEnemies;
+    private int m_totalDestroyedEnemies;
+    private System.Action<bool> m_onZoneBattleComplete;
+    private Coroutine m_spawnCoroutine;
 
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
@@ -156,18 +160,114 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         //StartCoroutine(SpawnMineral());
     }
 
-    public void StartSpawnEnemies()
+    // ZoneConfig 기반 적 스폰 시작
+    public void StartSpawnEnemies(ZoneConfig zoneConfig, System.Action<bool> onComplete)
     {
-        StartCoroutine(SpawnEnemies()); // 적 스폰
-    }
+        if (zoneConfig == null || zoneConfig.waves.Count == 0)
+        {
+            onComplete?.Invoke(true);
+            return;
+        }
 
+        // 기존 스폰 중이면 중지
+        if (m_spawnCoroutine != null)
+            StopCoroutine(m_spawnCoroutine);
+
+        m_currentZoneConfig = zoneConfig;
+        m_currentWaveIndex = 0;
+        m_totalSpawnedEnemies = 0;
+        m_totalDestroyedEnemies = 0;
+        m_onZoneBattleComplete = onComplete;
+
+        m_spawnCoroutine = StartCoroutine(SpawnWaves());
+    }
 
     public void RemoveEnemyFleet(SpaceFleet fleet)
     {
         if (fleet == null) return;
+
+        int shipCount = fleet.m_fleetInfo.ships.Count;
         m_enemyFleets.Remove(fleet);
-        m_lastEnemyDestroyTime = Time.time;
         Destroy(fleet.gameObject);
+
+        // Zone 전투 중이면 파괴된 적 카운트 증가
+        if (m_currentZoneConfig != null)
+        {
+            m_totalDestroyedEnemies += shipCount;
+            CheckZoneBattleComplete();
+        }
+    }
+
+    // 적 스폰 코루틴 중지 및 Zone 전투 상태 초기화
+    public void StopEnemySpawning()
+    {
+        if (m_spawnCoroutine != null)
+        {
+            StopCoroutine(m_spawnCoroutine);
+            m_spawnCoroutine = null;
+        }
+
+        m_currentZoneConfig = null;
+        m_currentWaveIndex = 0;
+        m_totalSpawnedEnemies = 0;
+        m_totalDestroyedEnemies = 0;
+        m_onZoneBattleComplete = null;
+    }
+
+    // 모든 적 함대 제거
+    public void RemoveAllEnemyFleets()
+    {
+        for (int i = m_enemyFleets.Count - 1; i >= 0; i--)
+        {
+            if (m_enemyFleets[i] != null)
+                Destroy(m_enemyFleets[i].gameObject);
+        }
+        m_enemyFleets.Clear();
+    }
+
+    // 모든 활성 빔/미사일 풀로 반환
+    public void CleanupAllProjectiles()
+    {
+        // 빔 제거
+        ProjectileBeam[] beams = FindObjectsByType<ProjectileBeam>(FindObjectsSortMode.None);
+        foreach (var beam in beams)
+        {
+            if (beam != null && beam.gameObject.activeSelf)
+                m_poolManager.Return(EPoolName.PROJECTILE_BEAM, beam);
+        }
+
+        // 미사일 제거
+        ProjectileMissile[] missiles = FindObjectsByType<ProjectileMissile>(FindObjectsSortMode.None);
+        foreach (var missile in missiles)
+        {
+            if (missile != null && missile.gameObject.activeSelf)
+                m_poolManager.Return(EPoolName.PROJECTILE_MISSILE, missile);
+        }
+    }
+
+    // 모든 함재기에게 귀환 명령
+    public void OrderAllAircraftReturn()
+    {
+        AircraftBase[] aircrafts = FindObjectsByType<AircraftBase>(FindObjectsSortMode.None);
+        foreach (var aircraft in aircrafts)
+        {
+            if (aircraft != null && aircraft.gameObject.activeSelf)
+                aircraft.ForceReturnToCarrier();
+        }
+    }
+
+    private void CheckZoneBattleComplete()
+    {
+        // 모든 wave 스폰 완료 + 모든 적 처치 시
+        if (m_currentWaveIndex >= m_currentZoneConfig.waves.Count &&
+            m_totalDestroyedEnemies >= m_totalSpawnedEnemies &&
+            m_enemyFleets.Count == 0)
+        {
+            var callback = m_onZoneBattleComplete;
+            m_currentZoneConfig = null;
+            m_onZoneBattleComplete = null;
+            callback?.Invoke(true);
+        }
     }
 
     private void SpawnFleet()
@@ -188,109 +288,130 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     
 
-    private IEnumerator SpawnEnemies()
+    // Wave 기반 적 스폰
+    private IEnumerator SpawnWaves()
     {
-        while (true)
+        while (m_currentWaveIndex < m_currentZoneConfig.waves.Count)
         {
-            if (!m_isFirstEnemySpawned)
-            {
-                yield return new WaitForSeconds(DataManager.Instance.m_dataTableConfig.gameSettings.m_enemyFleetSpawnInterval);
-                if (m_enemyFleets.Count == 0)
-                {
-                    SpawnEnemyFleetFromData();
-                    m_isFirstEnemySpawned = true;
-                }
-            }
-            else
-            {
-                if (m_enemyFleets.Count == 0 && Time.time - m_lastEnemyDestroyTime >= DataManager.Instance.m_dataTableConfig.gameSettings.m_enemyFleetSpawnInterval)
-                {
-                    SpawnEnemyFleetFromData();
-                }
-            }
-            yield return new WaitForSeconds(1f);
+            WaveConfig wave = m_currentZoneConfig.waves[m_currentWaveIndex];
+
+            // Wave 시작 전 대기
+            if (wave.delayBeforeWave > 0)
+                yield return new WaitForSeconds(wave.delayBeforeWave);
+
+            // 해당 Wave의 적 함대 스폰
+            SpawnEnemyFleetFromWave(wave);
+
+            m_currentWaveIndex++;
+
+            // 현재 Wave의 적이 모두 죽을 때까지 대기 (다음 Wave로 넘어가기 전)
+            yield return new WaitUntil(() => m_enemyFleets.Count == 0);
         }
+
+        // 모든 Wave 스폰 완료 후 전투 완료 체크
+        CheckZoneBattleComplete();
     }
-    private void SpawnEnemyFleetFromData()
+
+    // WaveConfig 기반으로 적 함대 생성
+    private void SpawnEnemyFleetFromWave(WaveConfig wave)
     {
-        if (m_myFleet == null) return;
-
-        int playerShipCount = m_myFleet.m_ships.Count;
-        int playerAverageLevel = m_myFleet.GetAverageShipLevel();
-
-        EnemyFleetPreset presetAsset = Resources.Load<EnemyFleetPreset>("DataTable/EnemyFleetPresets");
-        if (presetAsset == null)
-        {
-            Debug.LogError("EnemyFleetPresets not found in Resources/DataTable");
-            return;
-        }
-
-        var (enemyShipCount, enemyLevel) = presetAsset.GetMatchingPreset(playerShipCount, playerAverageLevel);
+        if (m_myFleet == null || wave.enemyShips.Count == 0) return;
 
         Vector3 spawnPosition = GetEnemySpawnPosition();
-        GameObject fleetObj = new GameObject($"EnemyFleet");
+        GameObject fleetObj = new GameObject($"EnemyFleet_Wave{m_currentWaveIndex}");
         fleetObj.transform.position = spawnPosition;
+
         Vector3 directionToPlayer = m_myFleet.transform.position - spawnPosition;
         directionToPlayer.y = 0;
         if (directionToPlayer != Vector3.zero)
             fleetObj.transform.rotation = Quaternion.LookRotation(directionToPlayer);
+
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
 
         List<ShipInfo> enemyShips = new List<ShipInfo>();
-        for (int i = 0; i < enemyShipCount; i++)
+        for (int i = 0; i < wave.enemyShips.Count; i++)
         {
-            ShipInfo enemyShipInfo = new ShipInfo
-            {
-                shipName = $"EnemyShip_{i}",
-                positionIndex = i,
-                bodies = new List<ModuleBodyInfo>
-                {
-                    new ModuleBodyInfo
-                    {
-                        moduleType = EModuleType.Body,
-                        moduleSubType = EModuleSubType.Body_Battle,
-                        moduleLevel = enemyLevel,
-                        bodyIndex = 0,
-                        engines = new List<ModuleInfo>
-                        {
-                            new ModuleInfo
-                            {
-                                moduleType = EModuleType.Engine,
-                                moduleSubType = EModuleSubType.Engine_Standard,
-                                moduleLevel = 1,
-                                bodyIndex = 0,
-                                slotIndex = 0
-                            }
-                        },
-                        beams = new List<ModuleInfo>
-                        {
-                            new ModuleInfo
-                            {
-                                moduleType = EModuleType.Beam,
-                                moduleSubType = EModuleSubType.Beam_Standard,
-                                moduleLevel = 1,
-                                bodyIndex = 0,
-                                slotIndex = 0
-                            }
-                        }
-                    }
-                }
-            };
+            EnemyShipConfig shipConfig = wave.enemyShips[i];
+            ShipInfo enemyShipInfo = CreateShipInfoFromConfig(shipConfig, i);
             enemyShips.Add(enemyShipInfo);
         }
 
         FleetInfo enemyFleetInfo = new FleetInfo
         {
-            fleetName = $"EnemyFleet",
+            fleetName = $"EnemyFleet_Wave{m_currentWaveIndex}",
             formation = EFormationType.LinearHorizontal,
             ships = enemyShips
         };
 
         enemyFleet.InitializeSpaceFleet(enemyFleetInfo, true);
-        // 임시로 배틀로 초기화 none 으로
-        //enemyFleet.SetFleetState(EFleetState.Battle);
+        m_totalSpawnedEnemies += wave.enemyShips.Count;
 
         StartCoroutine(AddEnemyFleetNextFrame(enemyFleet));
+    }
+
+    // EnemyShipConfig를 ShipInfo로 변환
+    private ShipInfo CreateShipInfoFromConfig(EnemyShipConfig config, int positionIndex)
+    {
+        var bodyInfo = new ModuleBodyInfo
+        {
+            moduleType = EModuleType.Body,
+            moduleSubType = config.bodySubType,
+            moduleLevel = config.bodyLevel,
+            bodyIndex = 0,
+            engines = new List<ModuleInfo>(),
+            beams = new List<ModuleInfo>(),
+            missiles = new List<ModuleInfo>(),
+            hangers = new List<ModuleInfo>()
+        };
+
+        // 슬롯 설정에 따라 모듈 추가
+        foreach (var slot in config.moduleSlots)
+        {
+            var moduleInfo = new ModuleInfo
+            {
+                moduleType = slot.slotType,
+                moduleSubType = slot.moduleSubType,
+                moduleLevel = slot.moduleLevel,
+                bodyIndex = 0,
+                slotIndex = slot.slotIndex
+            };
+
+            switch (slot.slotType)
+            {
+                case EModuleType.Engine:
+                    bodyInfo.engines.Add(moduleInfo);
+                    break;
+                case EModuleType.Beam:
+                    bodyInfo.beams.Add(moduleInfo);
+                    break;
+                case EModuleType.Missile:
+                    bodyInfo.missiles.Add(moduleInfo);
+                    break;
+                case EModuleType.Hanger:
+                    bodyInfo.hangers.Add(moduleInfo);
+                    break;
+            }
+        }
+
+        // 기본 엔진이 없으면 추가
+        if (bodyInfo.engines.Count == 0)
+        {
+            bodyInfo.engines.Add(new ModuleInfo
+            {
+                moduleType = EModuleType.Engine,
+                moduleSubType = EModuleSubType.Engine_Standard,
+                moduleLevel = 1,
+                bodyIndex = 0,
+                slotIndex = 0
+            });
+        }
+
+        return new ShipInfo
+        {
+            shipName = $"EnemyShip_{positionIndex}",
+            positionIndex = positionIndex,
+            bodies = new List<ModuleBodyInfo> { bodyInfo }
+        };
     }
 
     private IEnumerator AddEnemyFleetNextFrame(SpaceFleet enemyFleet)
