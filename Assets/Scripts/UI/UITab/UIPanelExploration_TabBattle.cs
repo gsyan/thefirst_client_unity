@@ -11,7 +11,7 @@ public class UIPanelExploration_TabBattle : UITabBase
     [SerializeField] private Button m_safeZoneButton;
     [SerializeField] private RectTransform m_scrollViewZoneContent;
     [SerializeField] private GameObject m_scrollViewZoneItem;       // 프리팹
-    [SerializeField] private ZoneEnemyFleetConfig m_zoneConfig;     // Zone 설정 ScriptableObject
+    [SerializeField] private DataTableZone m_datatableZone;     // Zone 설정 ScriptableObject
 
     [HideInInspector] public SpaceFleet m_myFleet;
     private ScrollViewZoneItem m_selectedScrollViewZoneItem;    // 현재 선택된 스크롤 뷰 아이템
@@ -21,22 +21,25 @@ public class UIPanelExploration_TabBattle : UITabBase
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null || character.GetOwnedFleet() == null) return;
         m_myFleet = character.GetOwnedFleet();
-        if (m_scrollViewZoneContent == null || m_scrollViewZoneItem == null || m_zoneConfig == null) return;
+
+        m_safeZoneButton.onClick.AddListener(OnEnterZoneZeroClicked);
+
+        if (m_scrollViewZoneContent == null || m_scrollViewZoneItem == null || m_datatableZone == null) return;
 
         string clearedZoneName = character.m_characterInfo.clearedZone;
 
         // 클리어한 zone 표시 (있으면)
         if (!string.IsNullOrEmpty(clearedZoneName))
         {
-            ZoneConfig clearedConfig = m_zoneConfig.GetZoneByName(clearedZoneName);
+            ZoneConfig clearedConfig = m_datatableZone.GetZoneByName(clearedZoneName);
             if (clearedConfig != null)
                 CreateZoneItem(clearedConfig, isCleared: true, isNextChallenge: false);
         }
 
-        // 다음 zone 표시
+        // 다음 zone 표시 (0번은 안전지역이므로 1번부터 시작)
         ZoneConfig nextConfig = string.IsNullOrEmpty(clearedZoneName)
-            ? m_zoneConfig.GetZone(0)  // 클리어한 게 없으면 첫 번째 zone
-            : m_zoneConfig.GetNextZone(clearedZoneName);
+            ? m_datatableZone.GetZone(1)  // 클리어한 게 없으면 1번 zone (0번은 안전지역)
+            : m_datatableZone.GetNextZone(clearedZoneName);
 
         if (nextConfig != null)
             CreateZoneItem(nextConfig, isCleared: false, isNextChallenge: true);
@@ -53,6 +56,7 @@ public class UIPanelExploration_TabBattle : UITabBase
             zoneConfig,
             () => OnZoneItemSelected(scrollViewItem, zoneConfig),
             () => OnEnterZoneClicked(zoneConfig),
+            () => OnCollectZoneClicked(zoneConfig),
             isCleared,
             isNextChallenge
         );
@@ -97,6 +101,17 @@ public class UIPanelExploration_TabBattle : UITabBase
         // UpdateShipStatsDisplay();
     }
 
+    private void OnEnterZoneZeroClicked()
+    {
+        // Zone-0: 안전지역 (0번 인덱스)
+        ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
+        if (zoneConfig == null) return;
+
+        m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
+        {
+            
+        });
+    }
 
     private void OnZoneItemSelected(ScrollViewZoneItem selectedItem, ZoneConfig zoneConfig)
     {
@@ -104,23 +119,26 @@ public class UIPanelExploration_TabBattle : UITabBase
         if (selectedItem == m_selectedScrollViewZoneItem) return;
 
         // 이전에 선택된 아이템의 관리 버튼 숨김
-        if (m_selectedScrollViewZoneItem != null && m_selectedScrollViewZoneItem != selectedItem)
-            m_selectedScrollViewZoneItem.SetSelected_ScrollViewZoneItem(false);
+        // if (m_selectedScrollViewZoneItem != null && m_selectedScrollViewZoneItem != selectedItem)
+        //     m_selectedScrollViewZoneItem.SetSelected_ScrollViewZoneItem(false);
 
         // 선택 스크롤 뷰 아이템 업데이트
         m_selectedScrollViewZoneItem = selectedItem;
-        m_selectedScrollViewZoneItem.SetSelected_ScrollViewZoneItem(true);
+        //m_selectedScrollViewZoneItem.SetSelected_ScrollViewZoneItem(true);
 
         // TODO: Zone 상세 정보 표시 (Wave 정보, 적 함대 구성 등)
     }
 
     private void OnEnterZoneClicked(ZoneConfig zoneConfig)
     {
-        // TODO: 해당 Zone으로 진입, zoneConfig를 기반으로 적 함대 생성
-        // 전투 완료 후 OnZoneBattleComplete 호출
-
-        //ObjectManager.Instance.StartSpawnEnemies();
-        m_myFleet.StartFleetWarp();
+        m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
+        {
+            // ZoneConfig 기반으로 적 함대 생성, 전투 완료 시 콜백
+            ObjectManager.Instance.StartSpawnEnemies(zoneConfig, (isVictory) =>
+            {
+                OnZoneBattleComplete(zoneConfig.zoneName, isVictory);
+            });
+        });
     }
 
     // 전투 클리어 시 호출 (전투 시스템에서 호출)
@@ -149,17 +167,51 @@ public class UIPanelExploration_TabBattle : UITabBase
             // 보상 처리
             if (response.data.rewardInfo != null)
             {
-                character.m_characterInfo.mineral = response.data.rewardInfo.remainMineral;
-                character.m_characterInfo.mineralRare = response.data.rewardInfo.remainMineralRare;
-                character.m_characterInfo.mineralExotic = response.data.rewardInfo.remainMineralExotic;
-                character.m_characterInfo.mineralDark = response.data.rewardInfo.remainMineralDark;
+                character.UpdateMineral(response.data.rewardInfo.remainMineral);
+                character.UpdateMineralRare(response.data.rewardInfo.remainMineralRare);
+                character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
+                character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
             }
         }
 
         // Zone 목록 갱신
         RefreshZoneList();
 
+        // zone zero 로 이동
+        OnEnterZoneZeroClicked();
+
         Debug.Log($"Zone cleared! New clearedZone: {response.data.clearedZone}");
+    }
+
+    private void OnCollectZoneClicked(ZoneConfig zoneConfig)
+    {
+        var request = new ZoneCollectRequest { zoneName = zoneConfig.zoneName };
+        NetworkManager.Instance.CollectZone(request, OnZoneCollectResponse);
+    }
+
+    private void OnZoneCollectResponse(ApiResponse<ZoneCollectResponse> response)
+    {
+        if (response.errorCode != 0)
+        {
+            Debug.LogError($"Zone collect failed: {response.errorCode}");
+            return;
+        }
+
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+        {
+            character.m_characterInfo.collectDateTime = response.data.collectDateTime;
+
+            if (response.data.rewardInfo != null)
+            {
+                character.UpdateMineral(response.data.rewardInfo.remainMineral);
+                character.UpdateMineralRare(response.data.rewardInfo.remainMineralRare);
+                character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
+                character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
+            }
+        }
+
+        Debug.Log($"Zone collected! New collectDateTime: {response.data.collectDateTime}");
     }
 
     // Zone 목록 갱신

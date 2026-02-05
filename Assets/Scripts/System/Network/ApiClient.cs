@@ -490,5 +490,25 @@ public class ApiClient
         Debug.Log($"Zone Clear Response: {webRequest.downloadHandler.text}");
         return response;
     }
+
+    public async Task<ApiResponse<ZoneCollectResponse>> CollectZoneAsync(ZoneCollectRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneCollectResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"Zone Collect Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/collect", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ZoneCollectResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Zone Collect Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
     #endregion
 }

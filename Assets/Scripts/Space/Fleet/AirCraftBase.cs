@@ -587,6 +587,13 @@ public abstract class AircraftBase : MonoBehaviour
         }
     }
 
+    // 강제로 귀환 상태로 전환 (안전지역 진입 시 호출)
+    public void ForceReturnToCarrier()
+    {
+        if (m_state == EAircraftState.None) return;
+        m_state = EAircraftState.ReturnToCarrier;
+    }
+
     protected virtual void ReturnToPool()
     {}
 

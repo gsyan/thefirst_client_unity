@@ -119,6 +119,7 @@ public class CharacterInfo
     public long mineralExotic;
     public long mineralDark;
     public string clearedZone;  // 클리어한 최고 zone (예: "3-5"), 신규는 "" 또는 "0-0"
+    public string collectDateTime;  // 마지막 자원 수확 시간 (ISO 8601 형식)
 }
 
 
@@ -412,5 +413,18 @@ public class ZoneClearResponse
 {
     public string clearedZone;  // 업데이트된 최고 클리어 zone
     public CostRemainInfo rewardInfo;  // 클리어 보상 (광물 등)
+}
+
+[System.Serializable]
+public class ZoneCollectRequest
+{
+    public string zoneName;  // 수확할 zone 이름
+}
+
+[System.Serializable]
+public class ZoneCollectResponse
+{
+    public string collectDateTime;  // 수확 시간 (ISO 8601 형식)
+    public CostRemainInfo rewardInfo;  // 수확 보상
 }
 #endregion

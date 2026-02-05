@@ -8,13 +8,14 @@ public class ScrollViewZoneItem : MonoBehaviour
     public TMP_Text m_selectButtonText;
     public TMP_Text m_zoneInfoText;  // Wave 수, 적 함선 수 등 표시용 (Optional)
     public TMP_Text m_statusText;    // 클리어/도전 상태 표시 (Optional)
-    public Button m_enterButton;
+    public Button m_enterButton;        // clear 하지 않은 경우 clear 위해 입장
+    public Button m_collectButton;   // clear 한 경우 시간당 쌓이는 mineral을 수확기 위해 
 
     public ZoneConfig m_zoneConfig { get; private set; }
     public bool m_isCleared { get; private set; }
     public bool m_isNextChallenge { get; private set; }
 
-    public void InitializeScrollViewZoneItem(ZoneConfig zoneConfig, UnityEngine.Events.UnityAction actionSelect, UnityEngine.Events.UnityAction actionEnter, bool isCleared = false, bool isNextChallenge = false)
+    public void InitializeScrollViewZoneItem(ZoneConfig zoneConfig, UnityEngine.Events.UnityAction actionSelect, UnityEngine.Events.UnityAction actionEnter, UnityEngine.Events.UnityAction actionCollect, bool isCleared = false, bool isNextChallenge = false)
     {
         m_zoneConfig = zoneConfig;
         m_isCleared = isCleared;
@@ -39,15 +40,27 @@ public class ScrollViewZoneItem : MonoBehaviour
                 m_statusText.text = "";
         }
 
-        m_enterButton.onClick.RemoveAllListeners();
-        m_enterButton.onClick.AddListener(actionEnter);
-
-        // 초기 상태: 관리 버튼 숨김
-        SetSelected_ScrollViewZoneItem(false);
+        // 클리어 여부에 따라 버튼 활성화 분기
+        if (isCleared == false)
+        {
+            m_enterButton.gameObject.SetActive(true);
+            m_collectButton.gameObject.SetActive(false);
+            m_enterButton.onClick.RemoveAllListeners();
+            m_enterButton.onClick.AddListener(actionEnter);
+        }
+        else
+        {
+            m_enterButton.gameObject.SetActive(false);
+            m_collectButton.gameObject.SetActive(true);
+            m_collectButton.onClick.RemoveAllListeners();
+            m_collectButton.onClick.AddListener(actionCollect);
+        }
+        
+        
     }
 
-    public void SetSelected_ScrollViewZoneItem(bool selected)
-    {
-        m_enterButton.gameObject.SetActive(selected);
-    }
+    // public void SetSelected_ScrollViewZoneItem(bool selected)
+    // {
+    //     m_enterButton.gameObject.SetActive(selected);
+    // }
 }

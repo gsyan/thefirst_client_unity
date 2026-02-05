@@ -593,6 +593,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClearZoneAsync(request), onComplete));
     }
 
+    public void CollectZone(ZoneCollectRequest request, System.Action<ApiResponse<ZoneCollectResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.CollectZoneAsync(request), onComplete));
+    }
+
     public ApiClient GetApiClient()
     {
         return m_apiClient;

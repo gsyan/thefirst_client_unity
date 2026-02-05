@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 함선 중심 워프 이펙트 컨트롤러
-public class WarpEffect : MonoBehaviour
+// 함선 개별 워프 이펙트 (엔진 글로우, 스피드라인)
+public class WarpEffectShip : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private SpaceShip m_spaceShip;
@@ -21,11 +21,6 @@ public class WarpEffect : MonoBehaviour
     [SerializeField] private float m_warpDuration = 3f;
     [SerializeField] private float m_warpExitTime = 0.5f;
 
-    [Header("Post-Processing Timing")]
-    [SerializeField, Range(0f, 1f)] private float m_chargePhaseMaxIntensity = 0.1f;  // Phase1에서 도달할 최대 강도 (나머지는 Phase2에서)
-
-    
-
     // 내부 상태
     private List<Renderer> m_engineRenderers = new List<Renderer>();
     private EffectBase m_speedLineEffect;
@@ -38,6 +33,10 @@ public class WarpEffect : MonoBehaviour
 
     private static readonly int GlowIntensityID = Shader.PropertyToID("_GlowIntensity");
     private bool m_initialized = false;
+
+    public float WarpChargeTime => m_warpChargeTime;
+    public float WarpDuration => m_warpDuration;
+    public float WarpExitTime => m_warpExitTime;
 
     private void Awake()
     {
@@ -57,7 +56,7 @@ public class WarpEffect : MonoBehaviour
             m_spaceShip = GetComponent<SpaceShip>();
 
         CollectEngineRenderers();
-        
+
         m_shipBounds = CommonUtility.CalculateRendererBounds(transform, excludeParticles: true, excludeTrails: true, excludeDisabled: false);
     }
 
@@ -91,10 +90,7 @@ public class WarpEffect : MonoBehaviour
         m_speedLineEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_WARP_SPEEDLINES);
         if (m_speedLineEffect == null) return;
 
-        // 부모는 바꾸지 않고 position/rotation만 동기화
         UpdateSpeedLineTransform();
-
-        // 파티클 Shape Box 크기를 ship bounds에 맞게 조절
         ApplyShipBoundsToParticle(m_speedLineEffect);
     }
 
@@ -114,7 +110,6 @@ public class WarpEffect : MonoBehaviour
         var shape = ps.shape;
         if (shape.shapeType != ParticleSystemShapeType.Box) return;
 
-        // ship bounds를 로컬 좌표로 변환
         Vector3 localSize = transform.InverseTransformVector(m_shipBounds.size);
         localSize = new Vector3(Mathf.Abs(localSize.x), Mathf.Abs(localSize.y), Mathf.Abs(localSize.z));
 
@@ -131,7 +126,7 @@ public class WarpEffect : MonoBehaviour
         m_speedLineEffect = null;
     }
 
-    // 워프 시작
+    // 워프 시작 (함선 개별 효과만)
     public void StartWarp(System.Action onWarpComplete = null)
     {
         if (m_isWarping) return;
@@ -151,7 +146,6 @@ public class WarpEffect : MonoBehaviour
             m_warpCoroutine = null;
         }
 
-        // fade out 코루틴도 정리
         if (m_speedLineFadeCoroutine != null)
         {
             StopCoroutine(m_speedLineFadeCoroutine);
@@ -161,17 +155,14 @@ public class WarpEffect : MonoBehaviour
         m_isWarping = false;
         SetEngineGlow(m_normalGlowIntensity);
         ReturnSpeedLineToPool();
-
-        // PP 복원
-        SetPostProcessingWarpEffect(0f);
     }
 
-    // 워프 시퀀스
+    // 워프 시퀀스 (함선 개별 효과만)
     private IEnumerator WarpSequence(System.Action onWarpComplete)
     {
         m_isWarping = true;
 
-        // Phase 1: 워프 차지 (PP: 0 → m_chargePhaseMaxIntensity)
+        // Phase 1: 워프 차지
         float elapsed = 0f;
         while (elapsed < m_warpChargeTime)
         {
@@ -179,12 +170,8 @@ public class WarpEffect : MonoBehaviour
             float t = elapsed / m_warpChargeTime;
             float easedT = EaseOutQuad(t);
 
-            // 엔진 글로우
             float glow = Mathf.Lerp(m_normalGlowIntensity, m_warpGlowIntensity, easedT);
             SetEngineGlow(glow);
-
-            // Post-Processing: 0 → chargeMax
-            SetPostProcessingWarpEffect(easedT * m_chargePhaseMaxIntensity);
 
             yield return null;
         }
@@ -192,19 +179,15 @@ public class WarpEffect : MonoBehaviour
         // 스피드라인 시작
         SetSpeedLinesActive(true);
 
-        // Phase 2: 워프 중 (PP: chargeMax → 1.0)
+        // Phase 2: 워프 중
         elapsed = 0f;
         while (elapsed < m_warpDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / m_warpDuration;
 
             // 엔진 글로우 펄스
             float pulse = 1f + Mathf.Sin(elapsed * 20f) * 0.2f;
             SetEngineGlow(m_warpGlowIntensity * pulse);
-
-            // Post-Processing: chargeMax → 1.0 (t=0.9에서 1.0 도달)
-            SetPostProcessingWarpEffect(Mathf.Clamp01(t + m_chargePhaseMaxIntensity));
 
             yield return null;
         }
@@ -217,21 +200,14 @@ public class WarpEffect : MonoBehaviour
             float t = elapsed / m_warpExitTime;
             float easedT = EaseInQuad(t);
 
-            // 엔진 글로우 감소
             float glow = Mathf.Lerp(m_warpGlowIntensity, m_normalGlowIntensity, easedT);
             SetEngineGlow(glow);
-
-            // Post-Processing 감소
-            SetPostProcessingWarpEffect(1f - easedT);
 
             yield return null;
         }
 
         // 스피드라인 종료
         SetSpeedLinesActive(false);
-
-        // 최종 상태 복원
-        SetPostProcessingWarpEffect(0f);
 
         m_isWarping = false;
         m_warpCoroutine = null;
@@ -254,14 +230,13 @@ public class WarpEffect : MonoBehaviour
         }
     }
 
-    // 스피드 라인 On/Off (풀 방식)
+    // 스피드 라인 On/Off
     private void SetSpeedLinesActive(bool active)
     {
         if (!m_useSpeedLines) return;
 
         if (active)
         {
-            // fade out 코루틴 중이면 취소
             if (m_speedLineFadeCoroutine != null)
             {
                 StopCoroutine(m_speedLineFadeCoroutine);
@@ -274,7 +249,6 @@ public class WarpEffect : MonoBehaviour
         }
         else
         {
-            // 방출 중지 후 fade out
             if (m_speedLineEffect != null && m_speedLineFadeCoroutine == null)
                 m_speedLineFadeCoroutine = StartCoroutine(FadeOutSpeedLine());
         }
@@ -285,44 +259,28 @@ public class WarpEffect : MonoBehaviour
     {
         if (m_speedLineEffect == null) yield break;
 
-        // 파티클 방출만 중지 (기존 파티클은 수명대로 사라짐)
         if (m_speedLineEffect.TryGetComponent(out ParticleSystem ps))
         {
             ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
-            // 파티클 수명만큼 대기
             float lifetime = ps.main.startLifetime.constantMax;
             yield return new WaitForSeconds(lifetime);
         }
 
-        // 풀에 반환
         ReturnSpeedLineToPool();
         m_speedLineFadeCoroutine = null;
     }
 
-    // 처음 빠름 → 끝 느림
     private float EaseOutQuad(float t) => 1f - (1f - t) * (1f - t);
-
-    // 처음 느림 → 끝 빠름
     private float EaseInQuad(float t) => t * t;
 
     public bool IsWarping => m_isWarping;
 
-    // Post-Processing 효과 설정 (0~1 lerp값)
-    private void SetPostProcessingWarpEffect(float t)
-    {
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null)
-            pp.SetWarpIntensity(t);
-    }
-
     private void OnDestroy()
     {
-        // 코루틴 정리
         if (m_speedLineFadeCoroutine != null)
             m_speedLineFadeCoroutine = null;
 
-        // 스피드라인은 풀에 반환
         ReturnSpeedLineToPool();
     }
 }
