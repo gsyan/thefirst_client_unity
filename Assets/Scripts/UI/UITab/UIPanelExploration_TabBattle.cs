@@ -95,7 +95,7 @@ public class UIPanelExploration_TabBattle : UITabBase
         
 
         if (m_textTop != null)
-             m_textTop.text = "Exploration Battle";
+             m_textTop.text = "Exploration";
 
         // UpdateFleetStatsDisplay();
         // UpdateShipStatsDisplay();
@@ -163,6 +163,7 @@ public class UIPanelExploration_TabBattle : UITabBase
         if (character != null)
         {
             character.m_characterInfo.clearedZone = response.data.clearedZone;
+            character.m_characterInfo.collectDateTime = response.data.collectDateTime;
 
             // 보상 처리
             if (response.data.rewardInfo != null)
@@ -185,7 +186,7 @@ public class UIPanelExploration_TabBattle : UITabBase
 
     private void OnCollectZoneClicked(ZoneConfig zoneConfig)
     {
-        var request = new ZoneCollectRequest { zoneName = zoneConfig.zoneName };
+        var request = new ZoneCollectRequest {};
         NetworkManager.Instance.CollectZone(request, OnZoneCollectResponse);
     }
 

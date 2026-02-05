@@ -63,7 +63,12 @@ public class ZoneConfig
     public int moduleLevel = 1;    // 적 모듈 레벨
     public Material skyboxMaterial;  // 스카이박스 머티리얼
     public List<WaveConfig> waves = new List<WaveConfig>();
-
+    
+    public float clearMineral = 0f;
+    public float clearMineralRare = 0f;
+    public float clearMineralExotic = 0f;
+    public float clearMineralDark = 0f;
+    
     [Header("시간당 자원 수확량 (클리어 후)")]
     public float mineralPerHour = 3600f;
     public float mineralRarePerHour = 0f;
@@ -143,6 +148,10 @@ public class DataTableZone : ScriptableObject
             serverData.Add(new
             {
                 zoneName = zone.zoneName,
+                clearMineral = zone.clearMineral,
+                clearMineralRare = zone.clearMineralRare,
+                clearMineralExotic = zone.clearMineralExotic,
+                clearMineralDark = zone.clearMineralDark,
                 mineralPerHour = zone.mineralPerHour,
                 mineralRarePerHour = zone.mineralRarePerHour,
                 mineralExoticPerHour = zone.mineralExoticPerHour,

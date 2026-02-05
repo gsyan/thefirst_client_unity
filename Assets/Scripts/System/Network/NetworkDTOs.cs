@@ -413,12 +413,13 @@ public class ZoneClearResponse
 {
     public string clearedZone;  // 업데이트된 최고 클리어 zone
     public CostRemainInfo rewardInfo;  // 클리어 보상 (광물 등)
+    public string collectDateTime;  // 자원 수확 시작 시간 (ISO 8601 형식)
 }
 
 [System.Serializable]
 public class ZoneCollectRequest
 {
-    public string zoneName;  // 수확할 zone 이름
+    
 }
 
 [System.Serializable]
