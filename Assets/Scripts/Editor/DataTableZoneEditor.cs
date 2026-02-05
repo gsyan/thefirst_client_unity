@@ -148,7 +148,14 @@ public class DataTableZoneEditor : Editor
                     moduleLevel = moduleLevel,
                     skyboxMaterial = skyboxMat,
                     waves = new List<WaveConfig>(),
-                    mineralPerHour = 100f * shipCount + (stage - 1)
+                    clearMineral = 1000f + (shipCount - 1) * 1000,
+                    clearMineralRare = 0,
+                    clearMineralExotic = 0,
+                    clearMineralDark = 0,
+                    mineralPerHour = 3600f + (shipCount - 1) * 1000,
+                    mineralRarePerHour = 0,
+                    mineralExoticPerHour = 0,
+                    mineralDarkPerHour = 0
                 };
 
                 // Wave 1개 생성
@@ -389,6 +396,15 @@ public class DataTableZoneEditor : Editor
             zone.zoneName = EditorGUILayout.TextField("Zone Name", zone.zoneName);
             zone.zoneDescription = EditorGUILayout.TextField("Description", zone.zoneDescription);
             zone.skyboxMaterial = (Material)EditorGUILayout.ObjectField("Skybox Material", zone.skyboxMaterial, typeof(Material), false);
+            EditorGUILayout.EndVertical();
+
+            // 클리어 보상
+            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.LabelField("클리어 보상", EditorStyles.boldLabel);
+            zone.clearMineral = EditorGUILayout.FloatField("Mineral", zone.clearMineral);
+            zone.clearMineralRare = EditorGUILayout.FloatField("MineralRare", zone.clearMineralRare);
+            zone.clearMineralExotic = EditorGUILayout.FloatField("MineralExotic", zone.clearMineralExotic);
+            zone.clearMineralDark = EditorGUILayout.FloatField("MineralDark", zone.clearMineralDark);
             EditorGUILayout.EndVertical();
 
             // 시간당 자원 수확량
