@@ -94,7 +94,7 @@ public class DataTableZoneEditor : Editor
         if (GUILayout.Button("Generate Default Zones (1-1 ~ 9-10)"))
         {
             if (EditorUtility.DisplayDialog("Generate Default Zones",
-                "Zone 1-1 ~ 9-10을 기본 데이터로 생성합니다.\n(x-y: x=함선개수, y=스테이지, 레벨=min(y,x))\n기존 데이터가 삭제됩니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
+                "Zone 1-1 ~ 9-10을 기본 데이터로 생성합니다.\n(x-y: x=함선개수, y=스테이지)\n- Wave 수 = y (스테이지)\n- 레벨 = min(x, y)\n기존 데이터가 삭제됩니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
             {
                 GenerateDefaultZones();
             }
@@ -129,6 +129,8 @@ public class DataTableZoneEditor : Editor
         config.zones.Add(safeZone);
         totalZones++;
 
+        float tempMineralPerHour = 3600f;
+
         for (int shipCount = 1; shipCount <= 9; shipCount++)
         {
             for (int stage = 1; stage <= 10; stage++)
@@ -152,35 +154,40 @@ public class DataTableZoneEditor : Editor
                     clearMineralRare = 0,
                     clearMineralExotic = 0,
                     clearMineralDark = 0,
-                    mineralPerHour = 3600f + (shipCount - 1) * 1000,
+                    mineralPerHour = tempMineralPerHour,
                     mineralRarePerHour = 0,
                     mineralExoticPerHour = 0,
                     mineralDarkPerHour = 0
                 };
+                tempMineralPerHour += 100;
 
-                // Wave 1개 생성
-                var wave = new WaveConfig
+                // stage 수만큼 wave 생성
+                for (int w = 0; w < stage; w++)
                 {
-                    delayBeforeWave = 5f,
-                    enemyShips = new List<EnemyShipConfig>()
-                };
-
-                // x개의 적 함선 생성
-                for (int s = 0; s < shipCount; s++)
-                {
-                    var ship = new EnemyShipConfig
+                    var wave = new WaveConfig
                     {
-                        bodySubType = EModuleSubType.Body_Battle,
-                        bodyLevel = moduleLevel
+                        delayBeforeWave = 5f,
+                        enemyShips = new List<EnemyShipConfig>()
                     };
-                    RefreshShipModuleSlots(ship);
-                    ApplyLevelBasedSlotRestrictions(ship, moduleLevel);
-                    wave.enemyShips.Add(ship);
+
+                    // 각 wave에 shipCount개의 적 함선 생성
+                    for (int s = 0; s < shipCount; s++)
+                    {
+                        var ship = new EnemyShipConfig
+                        {
+                            bodySubType = EModuleSubType.Body_Battle,
+                            bodyLevel = moduleLevel
+                        };
+                        RefreshShipModuleSlots(ship);
+                        ApplyLevelBasedSlotRestrictions(ship, moduleLevel);
+                        wave.enemyShips.Add(ship);
+                    }
+                    zone.waves.Add(wave);
                 }
-                zone.waves.Add(wave);
                 config.zones.Add(zone);
                 totalZones++;
             }
+            tempMineralPerHour += 1000;
         }
         EditorUtility.SetDirty(config);
         EditorUtility.DisplayDialog("Complete", $"Zone 1-1 ~ 9-10 생성 완료! (총 {totalZones}개)", "OK");

@@ -1660,7 +1660,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8879122971386230117}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9996613
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1677,6 +1677,7 @@ GameObject:
   - component: {fileID: 188558012543927149}
   - component: {fileID: 6383762291819914110}
   - component: {fileID: 4260947097186711469}
+  - component: {fileID: 8024529374033739545}
   m_Layer: 5
   m_Name: TryZoneButton
   m_TagString: Untagged
@@ -1786,6 +1787,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8024529374033739545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126039307859954068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00af6ce94692a17468cee8cf2e747d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_tutorialTargetId: TryZoneButton
 --- !u!1 &2291342336508462629
 GameObject:
   m_ObjectHideFlags: 0
@@ -3746,7 +3760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000018302395}
+  m_AnchoredPosition: {x: 0, y: 0.00013219981}
   m_SizeDelta: {x: 0, y: 268.3005}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &7121605312510421975
@@ -5118,7 +5132,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5792665652879521115}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9997023
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7350,6 +7364,7 @@ GameObject:
   - component: {fileID: 5785499375457641318}
   - component: {fileID: 2164455007474370872}
   - component: {fileID: 995537016461539307}
+  - component: {fileID: 1863729968983816102}
   m_Layer: 5
   m_Name: ExplorationButton
   m_TagString: Untagged
@@ -7459,6 +7474,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1863729968983816102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7113463694405018981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00af6ce94692a17468cee8cf2e747d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_tutorialTargetId: ExplorationButton
 --- !u!1 &7124919322653773452
 GameObject:
   m_ObjectHideFlags: 0
@@ -8646,7 +8674,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000046407957}
+  m_AnchoredPosition: {x: 0, y: 0.00018180907}
   m_SizeDelta: {x: 0, y: 351.9103}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &4295333355785520783

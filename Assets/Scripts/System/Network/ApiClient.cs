@@ -68,6 +68,30 @@ public class ApiClient
         PlayerPrefs.Save();
     }
 
+    // 서버가 살아있는지 체크 (health check)
+    public async Task<bool> CheckServerAliveAsync()
+    {
+        try
+        {
+            using var request = UnityWebRequest.Get(baseUrl);
+            request.timeout = 3;
+            var operation = request.SendWebRequest();
+            while (!operation.isDone)
+                await Task.Yield();
+
+            // 연결 자체가 실패한 경우만 false (ConnectionError)
+            // 4xx, 5xx 응답은 서버가 살아있다는 의미
+            bool isServerAlive = request.result != UnityWebRequest.Result.ConnectionError;
+            Debug.Log($"[ServerCheck] URL: {baseUrl}, Result: {request.result}, Code: {request.responseCode}, Alive: {isServerAlive}");
+            return isServerAlive;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[ServerCheck] Exception: {e.Message}");
+            return false;
+        }
+    }
+
     private async Task SendRequestAsync(UnityWebRequest request)
     {
         //Debug.Log($"[API Request] URL: {request.url}, Method: {request.method}");
@@ -509,6 +533,37 @@ public class ApiClient
         var response = JsonConvert.DeserializeObject<ApiResponse<ZoneCollectResponse>>(webRequest.downloadHandler.text);
         Debug.Log($"Zone Collect Response: {webRequest.downloadHandler.text}");
         return response;
+    }
+    #endregion
+
+    #region Progress API Methods ----------------------------------------------------------------------------------
+    public async Task<ApiResponse<ProgressInfo>> SaveProgressAsync(ProgressSaveRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ProgressInfo>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/progress/save", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<ProgressInfo>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<ProgressListResponse>> GetProgressListAsync(string category)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ProgressListResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/progress/{category}", "GET");
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<ProgressListResponse>>(webRequest.downloadHandler.text);
     }
     #endregion
 }

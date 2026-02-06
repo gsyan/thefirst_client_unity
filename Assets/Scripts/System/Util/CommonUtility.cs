@@ -409,8 +409,32 @@ public static class CommonUtility
 
 
     #region  begin -----------------------------------------------------------------------------------
-    
-    
+
+
 
     #endregion  end -----------------------------------------------------------------------------------
+
+    #region Number Format begin -----------------------------------------------------------------------------------
+    // 숫자를 K, M, B, T 단위로 포맷팅
+    public static string FormatBigNumber(float value)
+    {
+        float absValue = Mathf.Abs(value);
+
+        if (absValue >= 1_000_000_000_000f)
+            return $"{value / 1_000_000_000_000f:0.#}T";
+        if (absValue >= 1_000_000_000f)
+            return $"{value / 1_000_000_000f:0.#}B";
+        if (absValue >= 1_000_000f)
+            return $"{value / 1_000_000f:0.#}M";
+        if (absValue >= 1_000f)
+            return $"{value / 1_000f:0.#}K";
+
+        return $"{(int)value}";
+    }
+
+    public static string FormatBigNumber(long value)
+    {
+        return FormatBigNumber((float)value);
+    }
+    #endregion Number Format end -----------------------------------------------------------------------------------
 }

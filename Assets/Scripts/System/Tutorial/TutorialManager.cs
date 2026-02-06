@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -8,10 +9,12 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 {
     private const string TUTORIAL_PROGRESS_KEY = "TutorialProgress";
     private const string TUTORIAL_UI_PATH = "Prefabs/UI/Tutorial/UITutorial";
+    private const string PROGRESS_CATEGORY = "tutorial";
 
     private TutorialData m_currentTutorial;
     private int m_currentStepIndex;
     private bool m_isPlaying;
+    private bool m_isServerLoaded;
     private TutorialUI m_tutorialUI;
     private HashSet<string> m_completedTutorials = new HashSet<string>();
     private Dictionary<string, int> m_tutorialProgress = new Dictionary<string, int>();
@@ -19,7 +22,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
     // Tutorial 조건용 상태
     private Coroutine m_customConditionCoroutine;
-    private HashSet<int> m_selectedModuleIds = new HashSet<int>();  // 선택된 모듈 InstanceID
+    private HashSet<int> m_selectedModuleIds = new HashSet<int>();
     private float m_cameraRotationAccumulated;
     private Quaternion m_lastCameraRotation;
     private float m_cameraZoomAccumulated;
@@ -33,6 +36,39 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     protected override void OnInitialize()
     {
         LoadProgressFromCache();
+    }
+
+    // 서버에서 진행도 로드 (로그인 후 호출)
+    public async Task LoadProgressFromServerAsync()
+    {
+        if (m_isServerLoaded) return;
+
+        try
+        {
+            var apiClient = NetworkManager.Instance?.GetApiClient();
+            if (apiClient == null) return;
+
+            var response = await apiClient.GetProgressListAsync(PROGRESS_CATEGORY);
+            if (response.errorCode != 0) return;
+
+            m_completedTutorials.Clear();
+
+            if (response.data?.progressList != null)
+            {
+                foreach (var progress in response.data.progressList)
+                {
+                    // key가 곧 tutorialId
+                    m_completedTutorials.Add(progress.key);
+                }
+            }
+
+            m_isServerLoaded = true;
+            Debug.Log($"[Tutorial] 서버에서 {m_completedTutorials.Count}개 완료된 튜토리얼 로드됨");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"[Tutorial] 서버 로드 실패: {e.Message}");
+        }
     }
 
     // 튜토리얼 시작 (콜백 버전)
@@ -56,7 +92,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             return;
         }
 
-        // 이전 진행 상태 복원
+        // 로컬 진행 상태 복원
         m_currentStepIndex = GetTutorialProgress(tutorialId);
         if (m_currentStepIndex >= m_currentTutorial.steps.Count)
         {
@@ -143,6 +179,9 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         if (m_currentTutorial != null)
         {
+            // 서버에 tutorialId 저장
+            SaveTutorialToServer(m_currentTutorial.tutorialId);
+
             m_completedTutorials.Add(m_currentTutorial.tutorialId);
             m_tutorialProgress.Remove(m_currentTutorial.tutorialId);
         }
@@ -154,13 +193,36 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         Debug.Log($"[Tutorial] 완료: {completedId}");
         m_currentTutorial = null;
 
-        // 콜백 호출 (콜백 내에서 새 튜토리얼 시작 시 덮어쓰기 방지)
+        // 콜백 호출
         var callback = m_onCompleteCallback;
         m_onCompleteCallback = null;
         callback?.Invoke(completedId);
 
         // 이벤트 발생
         OnTutorialCompleted?.Invoke(completedId);
+    }
+
+    // 서버에 튜토리얼 완료 저장 (fire and forget)
+    private async void SaveTutorialToServer(string tutorialId)
+    {
+        try
+        {
+            var apiClient = NetworkManager.Instance?.GetApiClient();
+            if (apiClient == null) return;
+
+            var request = new ProgressSaveRequest
+            {
+                category = PROGRESS_CATEGORY,
+                key = tutorialId
+            };
+
+            await apiClient.SaveProgressAsync(request);
+            Debug.Log($"[Tutorial] 서버 저장: {tutorialId}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"[Tutorial] 서버 저장 실패: {e.Message}");
+        }
     }
 
     // 튜토리얼 UI 생성
@@ -175,7 +237,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             return;
         }
 
-        // UITutorialContainer에 생성
         Transform parent = UIManager.Instance != null ? UIManager.Instance.GetTutorialContainer() : null;
         if (parent == null)
         {
@@ -195,13 +256,13 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         return Resources.Load<TutorialData>(path);
     }
 
-    // 진행 상태 가져오기
+    // 진행 상태 가져오기 (로컬)
     private int GetTutorialProgress(string tutorialId)
     {
         return m_tutorialProgress.TryGetValue(tutorialId, out int progress) ? progress : 0;
     }
 
-    // 로컬 캐시 저장
+    // 로컬 캐시 저장 (오프라인 fallback)
     private void SaveProgressToCache()
     {
         if (m_currentTutorial != null && m_isPlaying)
@@ -229,7 +290,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         PlayerPrefs.Save();
     }
 
-    // 로컬 캐시 로드
+    // 로컬 캐시 로드 (오프라인 fallback)
     private void LoadProgressFromCache()
     {
         m_completedTutorials.Clear();
@@ -266,6 +327,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     {
         m_completedTutorials.Clear();
         m_tutorialProgress.Clear();
+        m_isServerLoaded = false;
         PlayerPrefs.DeleteKey(TUTORIAL_PROGRESS_KEY);
         PlayerPrefs.Save();
         Debug.Log("[Tutorial] 모든 튜토리얼 초기화됨");
@@ -273,7 +335,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
     #region Tutorial Condition
 
-    // 튜토리얼 조건 시작 (TutorialUI에서 호출)
     public void StartTutorialCondition(TutorialStep step)
     {
         StopTutorialCondition();
@@ -301,7 +362,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         }
     }
 
-    // 튜토리얼 조건 정리
     public void StopTutorialCondition()
     {
         if (m_customConditionCoroutine != null)
@@ -315,7 +375,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         m_cameraRotationAccumulated = 0f;
     }
 
-    // 카메라 회전량 체크 코루틴
     private IEnumerator CheckCameraRotation(float threshold)
     {
         while (m_isPlaying)
@@ -341,7 +400,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         }
     }
 
-    // 카메라 줌 변화량 체크 코루틴
     private IEnumerator CheckCameraZoom(float threshold)
     {
         while (m_isPlaying)
@@ -367,7 +425,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         }
     }
 
-    // 모듈 선택 이벤트 콜백
     private void OnModuleSelected(SpaceShip ship, ModuleBase module)
     {
         if (!m_isPlaying || m_currentTutorial == null) return;
@@ -379,12 +436,10 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         switch (step.conditionType)
         {
             case ETutorialConditionType.ModuleSelected:
-                // 아무 모듈이나 선택하면 완료
                 NextStep();
                 break;
 
             case ETutorialConditionType.ModuleSelectedCount:
-                // 서로 다른 모듈 N개 선택
                 int moduleId = module.GetInstanceID();
                 if (m_selectedModuleIds.Add(moduleId))
                 {
@@ -395,7 +450,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
                 break;
 
             case ETutorialConditionType.SpecificModuleSelected:
-                // 특정 모듈 선택 (classId 비교)
                 if (module.GetModuleType() == step.targetModuleType)
                     NextStep();
                 break;

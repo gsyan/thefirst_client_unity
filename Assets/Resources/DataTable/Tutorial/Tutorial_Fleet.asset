@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cec351f6132315419d794e5ec26a741, type: 3}
-  m_Name: Tutorial_FleetButton
+  m_Name: Tutorial_Fleet
   m_EditorClassIdentifier: 
-  tutorialId: Tutorial_FleetButton
+  tutorialId: Tutorial_Fleet
   tutorialName: "\uD568\uB300 \uAD00\uB9AC \uD29C\uD1A0\uB9AC\uC5BC"
   priority: 0
   steps:
-  - stepId: step_fleet_button_1
+  - stepId: step_fleet_0
     message: Touch Button
     triggerType: 0
     targetPanelName: UIPanelSpaceMain
@@ -33,7 +33,7 @@ MonoBehaviour:
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step_fleet_button_2
+  - stepId: step_fleet_1
     message: '   This is Fleet Status'
     triggerType: 1
     targetPanelName: UIPanelFleet
@@ -50,7 +50,7 @@ MonoBehaviour:
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step_fleet_button_3
+  - stepId: step_fleet_2
     message: '   This is Ship Status'
     triggerType: 1
     targetPanelName: UIPanelFleet
@@ -67,28 +67,24 @@ MonoBehaviour:
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step_fleet_button_4
-    message: 'This is
-
-      Ship Manage
-
-      Button'
+  - stepId: step_fleet_3
+    message: This is Ship Manage Button
     triggerType: 0
     targetPanelName: TabFleetInfo
     targetUIId: ManageButton
     showArrow: 0
     arrowDirection: 0
     highlightTarget: 1
-    textBoxOffset: {x: -30, y: 150}
-    textBoxSize: {x: 220, y: 100}
-    textBoxPosition: {x: 0, y: 0}
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
     autoNextDelay: 0
     preActionPanelName: 
     conditionType: 0
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step_fleet_button_5
+  - stepId: step_fleet_4
     message: 'Touch and drag
 
       to rotate the camera and
@@ -110,7 +106,7 @@ MonoBehaviour:
     conditionThreshold: 180
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step_fleet_button_6
+  - stepId: step_fleet_5
     message: 'Pinch with two fingers
 
       to zoom in and out'
@@ -129,7 +125,7 @@ MonoBehaviour:
     conditionThreshold: 400
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step_fleet_button_7
+  - stepId: step_fleet_6
     message: 'The Body module of your ship is currently selected.
 
       This ship
@@ -149,7 +145,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step_fleet_button_8
+  - stepId: step_fleet_7
     message: 'First, select the Engine module,
 
       Depending on the selected module,
@@ -171,7 +167,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 2
     targetModuleType: 2
-  - stepId: step_fleet_button_9
+  - stepId: step_fleet_8
     message: then select the Body module again.
     triggerType: 3
     targetPanelName: 
@@ -188,7 +184,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 2
     targetModuleType: 1
-  - stepId: step_fleet_button_10
+  - stepId: step_fleet_9
     message: 'Some modules are currently locked.
 
       Try selecting the locked
@@ -210,7 +206,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 0
     targetModuleType: 3
-  - stepId: step_fleet_button_11
+  - stepId: step_fleet_10
     message: 'When you unlock the front module,
 
       a Beam module will be added.'
@@ -229,7 +225,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 2
     targetModuleType: 0
-  - stepId: step_fleet_button_12
+  - stepId: step_fleet_11
     message: Confirm unlock
     triggerType: 0
     targetPanelName: UIPopupConfirm
@@ -246,7 +242,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 2
     targetModuleType: 0
-  - stepId: step_fleet_button_13
+  - stepId: step_fleet_12
     message: 'Unlocked modules can be upgraded
 
       using the Upgrade button below.'
@@ -265,7 +261,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 2
     targetModuleType: 0
-  - stepId: step_fleet_button_14
+  - stepId: step_fleet_13
     message: Confirm Upgrade
     triggerType: 0
     targetPanelName: UIPopupConfirm
@@ -282,7 +278,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 2
     targetModuleType: 0
-  - stepId: step_fleet_button_15
+  - stepId: step_fleet_14
     message: 'You can also switch to other researched modules
 
       from the list
@@ -304,7 +300,7 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 2
     targetModuleType: 0
-  - stepId: step_fleet_button_16
+  - stepId: step_fleet_15
     message: "Research requires more resources,\r\nso we\u2019ll try that later."
     triggerType: 1
     targetPanelName: 
@@ -321,10 +317,63 @@ MonoBehaviour:
     conditionThreshold: 200
     conditionCount: 2
     targetModuleType: 0
-  - stepId: step_fleet_button_17
-    message: "An enemy ship is approaching.\nLet\u2019s watch the battle.\r\n\r\nDestroying
-      enemy ships allows\nyou to obtain resources.\r\n\nUse these resources\nto develop
-      your ships and fleet.\r\n\r\nGood luck, Commander."
+  - stepId: step_fleet_16
+    message: "Let\u2019s learn about exploration."
+    triggerType: 0
+    targetPanelName: UIPanelFleet
+    targetUIId: ExplorationButton
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0
+  - stepId: step_fleet_17
+    message: "As you expand your exploration area,\nyou\u2019ll earn resources regularly.\nLet\u2019s
+      begin exploring"
+    triggerType: 0
+    targetPanelName: TabFleetExploration
+    targetUIId: TryZoneButton
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 0
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0
+  - stepId: step_fleet_18
+    message: "We\u2019re currently in warp,\nentering a new zone for exploration.\nThis
+      could be dangerous."
+    triggerType: 2
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    highlightTarget: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 200}
+    autoNextDelay: 5
+    preActionPanelName: 
+    conditionType: 0
+    conditionThreshold: 200
+    conditionCount: 2
+    targetModuleType: 0
+  - stepId: step_fleet_18
+    message: "We\u2019ve arrived!\nAn enemy ship is approaching.\nLet\u2019s watch
+      the battle.\n\nUse your resources\nto upgrade your ships and expand your fleet.\n\nGood
+      luck, Commander."
     triggerType: 1
     targetPanelName: 
     targetUIId: 
