@@ -128,12 +128,17 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         }
 
         // UI 초기화 후 약간의 딜레이 후 시작
-        StartCoroutine(StartTutorialDelayed());
+        StartCoroutine(StartTutorial());
     }
 
-    private IEnumerator StartTutorialDelayed()
+    private IEnumerator StartTutorial()
     {
-        yield return new WaitForSeconds(1f);
+        // 서버에서 튜토리얼 진행도 로드 대기
+        var loadTask = TutorialManager.Instance.LoadProgressFromServerAsync();
+        while (!loadTask.IsCompleted)
+        {
+            yield return null;
+        }
 
         // 튜토리얼 시작 (완료 시 StartGameplay 호출)
         TutorialManager.Instance.StartTutorial("Tutorial_FirstPlay", (tutorialId) =>

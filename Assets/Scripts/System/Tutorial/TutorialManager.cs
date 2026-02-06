@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using Newtonsoft.Json;
 
 // 튜토리얼 시스템 관리자
 public class TutorialManager : MonoSingleton<TutorialManager>
 {
-    private const string TUTORIAL_PROGRESS_KEY = "TutorialProgress";
     private const string TUTORIAL_UI_PATH = "Prefabs/UI/Tutorial/UITutorial";
     private const string PROGRESS_CATEGORY = "tutorial";
 
@@ -17,7 +15,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private bool m_isServerLoaded;
     private TutorialUI m_tutorialUI;
     private HashSet<string> m_completedTutorials = new HashSet<string>();
-    private Dictionary<string, int> m_tutorialProgress = new Dictionary<string, int>();
     private System.Action<string> m_onCompleteCallback;
 
     // Tutorial 조건용 상태
@@ -35,7 +32,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
     protected override void OnInitialize()
     {
-        LoadProgressFromCache();
     }
 
     // 서버에서 진행도 로드 (로그인 후 호출)
@@ -57,7 +53,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             {
                 foreach (var progress in response.data.progressList)
                 {
-                    // key가 곧 tutorialId
                     m_completedTutorials.Add(progress.key);
                 }
             }
@@ -92,14 +87,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             return;
         }
 
-        // 로컬 진행 상태 복원
-        m_currentStepIndex = GetTutorialProgress(tutorialId);
-        if (m_currentStepIndex >= m_currentTutorial.steps.Count)
-        {
-            CompleteTutorial();
-            return;
-        }
-
+        m_currentStepIndex = 0;
         m_isPlaying = true;
         EnsureTutorialUI();
         ExecuteCurrentStep();
@@ -111,7 +99,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         if (!m_isPlaying) return;
 
         m_currentStepIndex++;
-        SaveProgressToCache();
 
         if (m_currentStepIndex >= m_currentTutorial.steps.Count)
         {
@@ -179,16 +166,12 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         if (m_currentTutorial != null)
         {
-            // 서버에 tutorialId 저장
             SaveTutorialToServer(m_currentTutorial.tutorialId);
-
             m_completedTutorials.Add(m_currentTutorial.tutorialId);
-            m_tutorialProgress.Remove(m_currentTutorial.tutorialId);
         }
 
         m_isPlaying = false;
         m_tutorialUI?.Hide();
-        SaveProgressToCache();
 
         Debug.Log($"[Tutorial] 완료: {completedId}");
         m_currentTutorial = null;
@@ -256,81 +239,12 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         return Resources.Load<TutorialData>(path);
     }
 
-    // 진행 상태 가져오기 (로컬)
-    private int GetTutorialProgress(string tutorialId)
-    {
-        return m_tutorialProgress.TryGetValue(tutorialId, out int progress) ? progress : 0;
-    }
-
-    // 로컬 캐시 저장 (오프라인 fallback)
-    private void SaveProgressToCache()
-    {
-        if (m_currentTutorial != null && m_isPlaying)
-        {
-            m_tutorialProgress[m_currentTutorial.tutorialId] = m_currentStepIndex;
-        }
-
-        TutorialSaveData saveData = new TutorialSaveData
-        {
-            completedTutorials = new List<string>(m_completedTutorials),
-            progressData = new List<TutorialProgressEntry>()
-        };
-
-        foreach (var kvp in m_tutorialProgress)
-        {
-            saveData.progressData.Add(new TutorialProgressEntry
-            {
-                tutorialId = kvp.Key,
-                stepIndex = kvp.Value
-            });
-        }
-
-        string json = JsonConvert.SerializeObject(saveData);
-        PlayerPrefs.SetString(TUTORIAL_PROGRESS_KEY, json);
-        PlayerPrefs.Save();
-    }
-
-    // 로컬 캐시 로드 (오프라인 fallback)
-    private void LoadProgressFromCache()
-    {
-        m_completedTutorials.Clear();
-        m_tutorialProgress.Clear();
-
-        if (!PlayerPrefs.HasKey(TUTORIAL_PROGRESS_KEY)) return;
-
-        try
-        {
-            string json = PlayerPrefs.GetString(TUTORIAL_PROGRESS_KEY);
-            TutorialSaveData saveData = JsonConvert.DeserializeObject<TutorialSaveData>(json);
-
-            if (saveData.completedTutorials != null)
-            {
-                foreach (string id in saveData.completedTutorials)
-                    m_completedTutorials.Add(id);
-            }
-
-            if (saveData.progressData != null)
-            {
-                foreach (var entry in saveData.progressData)
-                    m_tutorialProgress[entry.tutorialId] = entry.stepIndex;
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogWarning($"[Tutorial] 캐시 로드 실패: {e.Message}");
-            PlayerPrefs.DeleteKey(TUTORIAL_PROGRESS_KEY);
-        }
-    }
-
-    // 디버그: 튜토리얼 초기화
+    // 디버그: 튜토리얼 초기화 (메모리만)
     public void ResetAllTutorials()
     {
         m_completedTutorials.Clear();
-        m_tutorialProgress.Clear();
         m_isServerLoaded = false;
-        PlayerPrefs.DeleteKey(TUTORIAL_PROGRESS_KEY);
-        PlayerPrefs.Save();
-        Debug.Log("[Tutorial] 모든 튜토리얼 초기화됨");
+        Debug.Log("[Tutorial] 모든 튜토리얼 초기화됨 (서버 데이터는 유지)");
     }
 
     #region Tutorial Condition
@@ -457,19 +371,4 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     }
 
     #endregion
-}
-
-// 저장 데이터 구조
-[System.Serializable]
-public class TutorialSaveData
-{
-    public List<string> completedTutorials;
-    public List<TutorialProgressEntry> progressData;
-}
-
-[System.Serializable]
-public class TutorialProgressEntry
-{
-    public string tutorialId;
-    public int stepIndex;
 }
