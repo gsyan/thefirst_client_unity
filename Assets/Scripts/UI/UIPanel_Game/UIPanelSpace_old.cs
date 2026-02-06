@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPanelSpaceMain : UIPanelBase
+public class UIPanelSpace_old : UIPanelBase
 {
     //public UIManager m_UIManager;
 

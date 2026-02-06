@@ -1059,7 +1059,7 @@ GameObject:
   - component: {fileID: 3878115373562031869}
   - component: {fileID: 4397370085269037531}
   m_Layer: 5
-  m_Name: UIPanelSpaceMain
+  m_Name: UIPanelSpace_back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

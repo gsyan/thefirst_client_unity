@@ -46,8 +46,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
                     ScrollViewShipItem scrollViewItem = item.GetComponent<ScrollViewShipItem>();
                     scrollViewItem.InitializeScrollViewShipItem(
                         ship.m_shipInfo.shipName,
-                        () => OnShipItemSelected(scrollViewItem, ship),
-                        () => OnManageShipClicked(ship)
+                        () => OnShipItemSelected(scrollViewItem, ship)
                     );
                     m_shipItemMap[ship] = scrollViewItem;
                 }                    
@@ -205,8 +204,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
                     ScrollViewShipItem scrollViewItem = shipItem.GetComponent<ScrollViewShipItem>();
                     scrollViewItem.InitializeScrollViewShipItem(
                         newShip.m_shipInfo.shipName,
-                        () => OnShipItemSelected(scrollViewItem, newShip),
-                        () => OnManageShipClicked(newShip)
+                        () => OnShipItemSelected(scrollViewItem, newShip)
                     );
                     m_shipItemMap[newShip] = scrollViewItem;
                 }
@@ -283,10 +281,6 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         if (selectedItem == m_selectedScrollViewShipItem) return;
         if (m_selectedShip == ship) return;
 
-        // 이전에 선택된 아이템의 관리 버튼 숨김
-        if (m_selectedScrollViewShipItem != null && m_selectedScrollViewShipItem != selectedItem)
-            m_selectedScrollViewShipItem.SetSelected_ScrollViewShipItem(false);        
-        
         // 이전에 포커스된 함선의 아웃라인 비활성화
         if (m_selectedShip != null)
             m_selectedShip.m_shipOutline.enabled = false;        
@@ -298,7 +292,6 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
         // 선택 스크롤 뷰 아이템 업데이트
         m_selectedScrollViewShipItem = selectedItem;
-        m_selectedScrollViewShipItem.SetSelected_ScrollViewShipItem(true);
         // 선택 함선의 아웃라인 활성화
         m_selectedShip.m_shipOutline.enabled = true;        
         // 카메라 포커스

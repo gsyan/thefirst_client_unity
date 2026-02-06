@@ -4,63 +4,34 @@ using UnityEngine.UI;
 
 public class ScrollViewZoneItem : MonoBehaviour
 {
-    public Button m_selectButton;
-    public TMP_Text m_selectButtonText;
-    public TMP_Text m_zoneInfoText;  // Wave 수, 적 함선 수 등 표시용 (Optional)
-    public TMP_Text m_statusText;    // 클리어/도전 상태 표시 (Optional)
-    public Button m_enterButton;        // clear 하지 않은 경우 clear 위해 입장
-    public Button m_collectButton;   // clear 한 경우 시간당 쌓이는 mineral을 수확기 위해 
+    [SerializeField] private Button m_enterButton;     // 입장
+    [SerializeField] private TMP_Text m_zoneText;
+    [SerializeField] private TMP_Text m_zoneStatusText;
 
     public ZoneConfig m_zoneConfig { get; private set; }
     public bool m_isCleared { get; private set; }
-    public bool m_isNextChallenge { get; private set; }
-
-    public void InitializeScrollViewZoneItem(ZoneConfig zoneConfig, UnityEngine.Events.UnityAction actionSelect, UnityEngine.Events.UnityAction actionEnter, UnityEngine.Events.UnityAction actionCollect, bool isCleared = false, bool isNextChallenge = false)
+    
+    public void InitializeScrollViewZoneItem(ZoneConfig zoneConfig, UnityEngine.Events.UnityAction actionEnter, bool isCleared = false)
     {
         m_zoneConfig = zoneConfig;
         m_isCleared = isCleared;
-        m_isNextChallenge = isNextChallenge;
+        
+        // if (m_zoneInfoText != null)
+        //     m_zoneInfoText.text = $"Wave {zoneConfig.TotalWaveCount} | Ships {zoneConfig.TotalEnemyShipCount}";
 
-        m_selectButton.gameObject.SetActive(true);
-        m_selectButton.onClick.RemoveAllListeners();
-        m_selectButton.onClick.AddListener(actionSelect);
-        m_selectButtonText.text = zoneConfig.zoneName;
+        m_enterButton.onClick.RemoveAllListeners();
+        m_enterButton.onClick.AddListener(actionEnter);
 
-        if (m_zoneInfoText != null)
-            m_zoneInfoText.text = $"Wave {zoneConfig.TotalWaveCount} | Ships {zoneConfig.TotalEnemyShipCount}";
-
-        // 클리어/도전 상태 표시
-        if (m_statusText != null)
-        {
-            if (isCleared)
-                m_statusText.text = "CLEARED";
-            else if (isNextChallenge)
-                m_statusText.text = "NEW";
-            else
-                m_statusText.text = "";
-        }
+        m_zoneText.text = zoneConfig.zoneName;
 
         // 클리어 여부에 따라 버튼 활성화 분기
         if (isCleared == false)
         {
-            m_enterButton.gameObject.SetActive(true);
-            m_collectButton.gameObject.SetActive(false);
-            m_enterButton.onClick.RemoveAllListeners();
-            m_enterButton.onClick.AddListener(actionEnter);
+            m_zoneStatusText.text = "CLEARED";
         }
         else
         {
-            m_enterButton.gameObject.SetActive(false);
-            m_collectButton.gameObject.SetActive(true);
-            m_collectButton.onClick.RemoveAllListeners();
-            m_collectButton.onClick.AddListener(actionCollect);
-        }
-        
-        
+            m_zoneStatusText.text = "";
+        }        
     }
-
-    // public void SetSelected_ScrollViewZoneItem(bool selected)
-    // {
-    //     m_enterButton.gameObject.SetActive(selected);
-    // }
 }
