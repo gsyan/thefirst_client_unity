@@ -175,9 +175,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
+    y: 0.5
     width: 1
-    height: 1
+    height: 0.5
   near clip plane: 0.3
   far clip plane: 10000
   field of view: 60
@@ -496,7 +496,6 @@ MonoBehaviour:
   m_warpLensDistortion: -0.5
   m_warpFOV: 15
   m_warpRadialBlurIntensity: 0.1
-  m_skyboxBlendMaterial: {fileID: 2100000, guid: 20d1eba6a48cc874ea9edbb16fdb482e, type: 2}
   m_warpChargeTime: 0.5
   m_warpDuration: 3
   m_warpExitTime: 0.5

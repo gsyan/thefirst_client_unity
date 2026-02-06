@@ -1,47 +1,114 @@
 using System;
 using System.Collections;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPanelFleet_TabExploration : UITabBase
+public class UITabExploration : UITabBase
 {
-    [SerializeField] private TextMeshProUGUI m_textTop;
-    [SerializeField] private TextMeshProUGUI m_textCollectMineral;
-    [SerializeField] private TextMeshProUGUI m_textCollectMineralRare;
-    [SerializeField] private TextMeshProUGUI m_textCollectMineralExotic;
-    [SerializeField] private TextMeshProUGUI m_textCollectMineralDark;
-    [SerializeField] private Button m_collectMineralButton;
+    [SerializeField] private RowLabelValue m_rowLabelValueMineral;
+    [SerializeField] private RowLabelValue m_rowLabelValueMineralRare;
+    [SerializeField] private RowLabelValue m_rowLabelValueMineralExotic;
+    [SerializeField] private RowLabelValue m_rowLabelValueMineralDark;    
+    [SerializeField] private RectTransform m_scrollViewZoneContent;
+    [SerializeField] private GameObject m_scrollViewZoneItem;       // 프리팹
     [SerializeField] private Button m_safeZoneButton;
-    [SerializeField] private Button m_tryZoneButton;
-    [SerializeField] private TextMeshProUGUI m_textTryZoneButton;
-    [SerializeField] private DataTableZone m_datatableZone;     // Zone 설정 ScriptableObject
+    [SerializeField] private Button m_collectMineralButton;
+    [SerializeField] private DataTableZone m_datatableZone;         // Zone 설정 ScriptableObject
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
     private ZoneConfig m_clearedZone;
-    private ZoneConfig m_nextZone;
-
+    
     private Coroutine m_mineralUpdateCoroutine;
     private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
 
     public override void InitializeUITab()
     {
-        if (m_textTop != null)
-             m_textTop.text = "Exploration Battle";
+        InitializeUITabExploration();
+    }
 
+    private void InitializeUITabExploration()
+    {
         m_myCharacter = DataManager.Instance.m_currentCharacter;
         if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
         m_collectMineralButton.onClick.AddListener(OnCollectZoneClicked);
         m_safeZoneButton.onClick.AddListener(OnEnterZoneZeroClicked);
-        m_tryZoneButton.onClick.AddListener(OnTryZoneClicked);
+        // m_tryZoneButton.onClick.AddListener(OnTryZoneClicked);
 
-        // 초기 상태: 평화 상태로 시작 (tryZone 버튼 표시)
-        SetZoneButtonState(false);
+        m_rowLabelValueMineral.SetLabel("Mineral:");
+        m_rowLabelValueMineralRare.SetLabel("Mineral.R:");
+        m_rowLabelValueMineralExotic.SetLabel("Mineral.E:");
+        m_rowLabelValueMineralDark.SetLabel("Mineral.D:");
 
+        PopulateZoneScrollView();
         UpdateZoneInfo();
+    }
+
+    // 현재 그룹의 zone 목록으로 스크롤뷰 채우기
+    private void PopulateZoneScrollView()
+    {
+        if (m_scrollViewZoneContent == null || m_scrollViewZoneItem == null) return;
+        if (m_datatableZone == null || m_myCharacter == null) return;
+
+        // 기존 아이템 제거
+        for (int i = m_scrollViewZoneContent.childCount - 1; i >= 0; i--)
+            Destroy(m_scrollViewZoneContent.GetChild(i).gameObject);
+
+        int targetGroup = GetCurrentZoneGroup();
+        string prefix = targetGroup + "-";
+
+        string clearedZoneName = m_myCharacter.m_characterInfo.clearedZone;
+        int clearedIndex = string.IsNullOrEmpty(clearedZoneName)
+            ? -1
+            : m_datatableZone.GetZoneIndex(clearedZoneName);
+
+        for (int i = 0; i < m_datatableZone.ZoneCount; i++)
+        {
+            ZoneConfig zone = m_datatableZone.GetZone(i);
+            if (zone == null || !zone.zoneName.StartsWith(prefix)) continue;
+
+            int zoneIndex = m_datatableZone.GetZoneIndex(zone.zoneName);
+            bool isCleared = zoneIndex <= clearedIndex;
+
+            GameObject item = Instantiate(m_scrollViewZoneItem, m_scrollViewZoneContent);
+            if (item == null) continue;
+
+            item.name = m_scrollViewZoneItem.name;
+            ZoneConfig capturedZone = zone;
+            ScrollViewZoneItem scrollViewItem = item.GetComponent<ScrollViewZoneItem>();
+            scrollViewItem.InitializeScrollViewZoneItem(
+                capturedZone,
+                () => OnTryZoneClicked(capturedZone),
+                isCleared
+            );
+        }
+    }
+
+    // 캐릭터의 클리어 진행도에 따라 표시할 zone 그룹 번호 반환
+    private int GetCurrentZoneGroup()
+    {
+        string clearedZone = m_myCharacter.m_characterInfo.clearedZone;
+        if (string.IsNullOrEmpty(clearedZone)) return 1;
+
+        // "x-y" 파싱
+        string[] parts = clearedZone.Split('-');
+        if (parts.Length < 2 || !int.TryParse(parts[0], out int groupNum)) return 1;
+
+        // 다음 zone 확인하여 그룹이 바뀌었는지 체크
+        ZoneConfig nextZone = m_datatableZone.GetNextZone(clearedZone);
+        if (nextZone == null) return groupNum; // 모든 zone 클리어 완료
+
+        string[] nextParts = nextZone.zoneName.Split('-');
+        if (nextParts.Length >= 2 && int.TryParse(nextParts[0], out int nextGroupNum))
+        {
+            // 다음 zone이 다른 그룹이면 현재 그룹 완료 → 다음 그룹 표시
+            if (nextGroupNum != groupNum) return nextGroupNum;
+        }
+
+        return groupNum;
     }
 
     public override void OnTabActivated()
@@ -53,6 +120,8 @@ public class UIPanelFleet_TabExploration : UITabBase
     public override void OnTabDeactivated()
     {
         StopMineralUpdateCoroutine();
+
+        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
     private void StartMineralUpdateCoroutine()
@@ -116,14 +185,10 @@ public class UIPanelFleet_TabExploration : UITabBase
         if (string.IsNullOrEmpty(clearedZoneName))
         {
             // 클리어한 zone이 없으면 수확량 0
-            m_nextZone = m_datatableZone.GetZone(1);
-
             SetMineralTexts(0, 0, 0, 0, 0, 0, 0, 0);
         }
         else
         {
-            m_nextZone = m_datatableZone.GetNextZone(clearedZoneName);            
-            
             // 누적 자원량 계산
             float elapsedSeconds = GetElapsedSecondsFromCollect();
             float accumulatedMineral = m_clearedZone.MineralPerSecond * elapsedSeconds;
@@ -138,8 +203,6 @@ public class UIPanelFleet_TabExploration : UITabBase
                 accumulatedDark, m_clearedZone.mineralDarkPerHour
             );
         }
-        // try zone button text
-        m_textTryZoneButton.text = $"Try {m_nextZone.zoneName}";
     }
 
     // 마지막 수확 시간으로부터 경과한 초 계산
@@ -161,23 +224,16 @@ public class UIPanelFleet_TabExploration : UITabBase
     private void SetMineralTexts(float mineral, float mineralPerH, float rare, float rarePerH,
                                   float exotic, float exoticPerH, float dark, float darkPerH)
     {
-        m_textCollectMineral.text = FormatMineralText(mineral, mineralPerH);
-        m_textCollectMineralRare.text = FormatMineralText(rare, rarePerH);
-        m_textCollectMineralExotic.text = FormatMineralText(exotic, exoticPerH);
-        m_textCollectMineralDark.text = FormatMineralText(dark, darkPerH);
+        m_rowLabelValueMineral.SetValue(FormatMineralText(mineral, mineralPerH));
+        m_rowLabelValueMineralRare.SetValue(FormatMineralText(rare, rarePerH));
+        m_rowLabelValueMineralExotic.SetValue(FormatMineralText(exotic, exoticPerH));
+        m_rowLabelValueMineralDark.SetValue(FormatMineralText(dark, darkPerH));
     }
 
     // "{누적량}({시간당}/h)" 형식 문자열 생성
     private string FormatMineralText(float accumulated, float perHour)
     {
         return $"{CommonUtility.FormatBigNumber(accumulated)}({CommonUtility.FormatBigNumber(perHour)}/h)";
-    }
-
-    // 버튼 표시 상태 변경 (isBattleMode: true=전투, false=평화)
-    private void SetZoneButtonState(bool isBattleMode)
-    {
-        m_safeZoneButton.gameObject.SetActive(isBattleMode);
-        m_tryZoneButton.gameObject.SetActive(!isBattleMode);
     }
 
     private void OnEnterZoneZeroClicked()
@@ -188,20 +244,18 @@ public class UIPanelFleet_TabExploration : UITabBase
 
         m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
         {
-            SetZoneButtonState(false); // 평화 상태로 전환
+            
         });
     }
 
-    private void OnTryZoneClicked()
+    private void OnTryZoneClicked(ZoneConfig zone)
     {
-        SetZoneButtonState(true); // 전투 상태로 전환
-
-        m_myFleet.StartFleetWarp(m_nextZone.skyboxMaterial, () =>
+        m_myFleet.StartFleetWarp(zone.skyboxMaterial, () =>
         {
             // ZoneConfig 기반으로 적 함대 생성, 전투 완료 시 콜백
-            ObjectManager.Instance.StartSpawnEnemies(m_nextZone, (isVictory) =>
+            ObjectManager.Instance.StartSpawnEnemies(zone, (isVictory) =>
             {
-                OnZoneBattleComplete(m_nextZone.zoneName, isVictory);
+                OnZoneBattleComplete(zone.zoneName, isVictory);
             });
         });
     }
@@ -236,6 +290,9 @@ public class UIPanelFleet_TabExploration : UITabBase
             }
         }
 
+        // 스크롤뷰 갱신 (그룹 완료 시 다음 그룹으로 전환)
+        PopulateZoneScrollView();
+
         UpdateZoneInfo();
 
         // zone zero 로 이동
@@ -267,3 +324,4 @@ public class UIPanelFleet_TabExploration : UITabBase
         }
     }    
 }
+

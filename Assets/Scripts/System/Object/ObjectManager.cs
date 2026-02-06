@@ -127,6 +127,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             return;
         }
 
+        // test 용
+        PassTutorial(); return;
+
         // UI 초기화 후 약간의 딜레이 후 시작
         StartCoroutine(StartTutorial());
     }
@@ -164,6 +167,15 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         //StartCoroutine(SpawnMineral());
     }
+
+    private void PassTutorial()
+    {
+        // 스토리 튜토리얼 완료 → 자원 패널 표시
+        UIManager.Instance.ShowPanel("UIPanelMineral");
+        // 자원 튜토리얼 완료 → 메인 패널 표시
+        UIManager.Instance.ShowMainPanel();
+    }
+
 
     // ZoneConfig 기반 적 스폰 시작
     public void StartSpawnEnemies(ZoneConfig zoneConfig, System.Action<bool> onComplete)

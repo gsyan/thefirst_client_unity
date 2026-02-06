@@ -21,9 +21,9 @@ public class UIPanelFleet_TabFormation : UITabBase
     {
         if (m_myFleet == null)
         {
-            UIPanelFleet panelFleet = GetComponentInParent<UIPanelFleet>();
-            if (panelFleet != null)
-                m_myFleet = panelFleet.m_myFleet;
+            // UIPanelFleet panelFleet = GetComponentInParent<UIPanelFleet>();
+            // if (panelFleet != null)
+            //     m_myFleet = panelFleet.m_myFleet;
         }
 
         if (m_prevButton != null)

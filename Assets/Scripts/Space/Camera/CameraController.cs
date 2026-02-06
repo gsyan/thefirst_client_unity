@@ -458,40 +458,4 @@ public class CameraController : MonoSingleton<CameraController>
         return m_targetPosition;
     }
 
-    // 카메라 뷰포트를 화면 위쪽 절반으로 설정
-    public void SetCameraViewportToUpperHalf()
-    {
-        if (m_targetCamera != null)
-        {
-            m_targetCamera.rect = new Rect(0, 0.5f, 1, 0.5f);
-
-            // 하단 영역을 Clear하기 위한 배경 카메라 생성
-            if (m_backgroundCamera == null)
-            {
-                GameObject bgCamObj = new GameObject("BackgroundCamera");
-                bgCamObj.transform.SetParent(m_targetCamera.transform.parent);
-                m_backgroundCamera = bgCamObj.AddComponent<Camera>();
-                m_backgroundCamera.clearFlags = CameraClearFlags.SolidColor;
-                m_backgroundCamera.backgroundColor = Color.black;
-                m_backgroundCamera.cullingMask = 0; // 아무것도 렌더링하지 않음
-                m_backgroundCamera.depth = m_targetCamera.depth - 1; // 메인 카메라보다 먼저 렌더링
-                m_backgroundCamera.rect = new Rect(0, 0, 1, 0.5f); // 하단 절반만
-            }
-            m_backgroundCamera.enabled = true;
-        }
-    }
-
-    // 카메라 뷰포트를 전체 화면으로 복구
-    public void ResetCameraViewport()
-    {
-        if (m_targetCamera != null)
-        {
-            m_targetCamera.rect = new Rect(0, 0, 1, 1);
-
-            // 배경 카메라 비활성화
-            if (m_backgroundCamera != null)
-                m_backgroundCamera.enabled = false;
-        }
-    }
-
 }
