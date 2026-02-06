@@ -146,7 +146,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 // 자원 튜토리얼 완료 → 메인 패널 표시
                 UIManager.Instance.ShowMainPanel();
 
-                TutorialManager.Instance.StartTutorial("Tutorial_FleetButton", (tutorialId) =>
+                TutorialManager.Instance.StartTutorial("Tutorial_Fleet", (tutorialId) =>
                 {
                     StartGameplay();
                 });
@@ -258,11 +258,20 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private void CheckZoneBattleComplete()
     {
+        if (m_currentZoneConfig == null) return;
+
         // 모든 wave 스폰 완료 + 모든 적 처치 시
         if (m_currentWaveIndex >= m_currentZoneConfig.waves.Count &&
             m_totalDestroyedEnemies >= m_totalSpawnedEnemies &&
             m_enemyFleets.Count == 0)
         {
+            // 코루틴 중지 먼저
+            if (m_spawnCoroutine != null)
+            {
+                StopCoroutine(m_spawnCoroutine);
+                m_spawnCoroutine = null;
+            }
+
             var callback = m_onZoneBattleComplete;
             m_currentZoneConfig = null;
             m_onZoneBattleComplete = null;
@@ -346,7 +355,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         enemyFleet.InitializeSpaceFleet(enemyFleetInfo, true);
         m_totalSpawnedEnemies += wave.enemyShips.Count;
 
-        StartCoroutine(AddEnemyFleetNextFrame(enemyFleet));
+        m_enemyFleets.Add(enemyFleet);
     }
 
     // EnemyShipConfig를 ShipInfo로 변환
@@ -412,12 +421,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             positionIndex = positionIndex,
             bodies = new List<ModuleBodyInfo> { bodyInfo }
         };
-    }
-
-    private IEnumerator AddEnemyFleetNextFrame(SpaceFleet enemyFleet)
-    {
-        yield return null;
-        m_enemyFleets.Add(enemyFleet);
     }
 
     #region Prefabs ---------------------------------------------------------------

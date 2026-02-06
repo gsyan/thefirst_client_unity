@@ -46,9 +46,30 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
         m_networkStatus = Application.internetReachability;
         if (m_networkStatus == NetworkReachability.NotReachable)
+        {
             m_bConnected = false;
+            ShowFatalErrorPopup("Network Error", "Please check your internet connection.\nThe app will close.");
+        }
         else
             StartCoroutine(CheckInternetAccess());
+    }
+
+    private bool m_bNetworkPopupShown = false;
+
+    private void ShowFatalErrorPopup(string title, string message)
+    {
+        if (m_bNetworkPopupShown) return;
+        m_bNetworkPopupShown = true;
+
+        CancelInvoke(nameof(CheckConnection));
+
+        UIManager.Instance.ShowAlertPopup(title, message, () => {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }, "Exit");
     }
 
     // Check if internet is actually working
@@ -61,60 +82,74 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             request.timeout = 3; // 3 second limit
             yield return request.SendWebRequest();
 
-            if (request.result == UnityEngine.Networking.UnityWebRequest.Result.Success)
+            if (request.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
             {
-                if (m_bConnected == false)
-                {
-                    m_bConnected = true;
+                ShowFatalErrorPopup("Internet Error", "Please check your internet connection.\nThe app will close.");
+                yield break;
+            }
+        }
 
-                    if (SceneManager.GetActiveScene().name == "MainScene")
+        // 서버 체크
+        var serverCheckTask = m_apiClient.CheckServerAliveAsync();
+        while (!serverCheckTask.IsCompleted)
+            yield return null;
+
+        if (serverCheckTask.Result == false)
+        {
+            ShowFatalErrorPopup("Server Not Found", "The server is currently unavailable.\nPlease try again later.");
+            yield break;
+        }
+
+        if (m_bConnected == false)
+        {
+            m_bConnected = true;
+
+            if (SceneManager.GetActiveScene().name == "MainScene")
+            {
+                AutoLogin((response) => {
+                    if (response.errorCode == 0 && m_uIManager != null)
                     {
-                        AutoLogin((response) => {
-                            if (response.errorCode == 0 && m_uIManager != null)
-                            {
-                                UIMain uiMain = m_uIManager as UIMain;
-                                if (uiMain != null)
-                                    uiMain.GetCharacters();
-                            }
-                            else
-                            {
-                                // 에러 처리
-                                switch ((ServerErrorCode)response.errorCode)
-                                {
-                                    case ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL:
-                                        UIManager.Instance.ShowPanel("UIPanelLoginType");
-                                        break;
-                                    case ServerErrorCode.REFRESH_TOKEN_FAIL_INVALID_TOKEN:
-                                    case ServerErrorCode.REFRESH_TOKEN_FAIL_EMPTY_TOKEN:
-                                    case ServerErrorCode.REFRESH_TOKEN_FAIL_ACCOUNT_NOT_FOUND:
-                                    case ServerErrorCode.HTTP_UNAUTHORIZED_401:
-                                        // 토큰 삭제 필요
-                                        PlayerPrefs.DeleteKey("RefreshToken");
-                                        PlayerPrefs.Save();
-                                        UIManager.Instance.ShowPanel("UIPanelLoginType");
-                                        break;
-                                    case ServerErrorCode.HTTP_SERVER_ERROR_500:
-                                    case ServerErrorCode.UNKNOWN_ERROR:
-                                        // 서버 에러 - 토큰 유지, 로그만 기록
-                                        Debug.LogWarning($"AutoLogin failed with server error: {response.errorCode}");
-                                        break;
-                                    default:
-                                        // 기타 에러
-                                        Debug.LogError($"AutoLogin failed with error: {response.errorCode}");
-                                        break;
-                                }
-                            }
-                        });
+                        UIMain uiMain = m_uIManager as UIMain;
+                        if (uiMain != null)
+                            uiMain.GetCharacters();
                     }
                     else
                     {
-                        AutoLogin(null);
+                        // 에러 처리
+                        switch ((ServerErrorCode)response.errorCode)
+                        {
+                            case ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL:
+                                UIManager.Instance.ShowPanel("UIPanelLoginType");
+                                break;
+                            case ServerErrorCode.REFRESH_TOKEN_FAIL_INVALID_TOKEN:
+                            case ServerErrorCode.REFRESH_TOKEN_FAIL_EMPTY_TOKEN:
+                            case ServerErrorCode.REFRESH_TOKEN_FAIL_ACCOUNT_NOT_FOUND:
+                            case ServerErrorCode.HTTP_UNAUTHORIZED_401:
+                                // 토큰 삭제 필요
+                                PlayerPrefs.DeleteKey("RefreshToken");
+                                PlayerPrefs.Save();
+                                UIManager.Instance.ShowPanel("UIPanelLoginType");
+                                break;
+                            case ServerErrorCode.HTTP_SERVER_ERROR_500:
+                            case ServerErrorCode.UNKNOWN_ERROR:
+                                // 서버 에러 - 토큰 유지, 로그만 기록
+                                Debug.LogWarning($"AutoLogin failed with server error: {response.errorCode}");
+                                break;
+                            default:
+                                // 기타 에러
+                                Debug.LogError($"AutoLogin failed with error: {response.errorCode}");
+                                break;
+                        }
                     }
-                }
+                });
+            }
+            else
+            {
+                AutoLogin(null);
             }
         }
     }
-    
+
     private IEnumerator RunAsync<T>(Func<Task<ApiResponse<T>>> taskFunc, System.Action<ApiResponse<T>> onComplete, int maxRetries = 2)
     {
         int retryCount = 0;

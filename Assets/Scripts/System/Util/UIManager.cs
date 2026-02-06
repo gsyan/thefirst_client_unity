@@ -339,4 +339,45 @@ public class UIManager : MonoSingleton<UIManager>
         }
     }
 
+    // 단순 알림 팝업 (확인 버튼만)
+    public void ShowAlertPopup(string title, string message, System.Action onConfirm, string buttonText = "확인")
+    {
+        if (currentPopup != null)
+            CloseCurrentPopup();
+
+        GameObject popupPrefab = Resources.Load<GameObject>($"{POPUP_PREFAB_PATH}/UIPopupAlert");
+        if (popupPrefab == null)
+        {
+            Debug.LogError($"Failed to load popup prefab at {POPUP_PREFAB_PATH}/UIPopupAlert");
+            return;
+        }
+
+        if (m_generalContainer == null)
+        {
+            Debug.LogError("GeneralContainer not found!");
+            return;
+        }
+
+        GameObject popupObj = Instantiate(popupPrefab, m_generalContainer);
+        UIPopupAlert alertPopup = popupObj.GetComponent<UIPopupAlert>();
+
+        if (alertPopup == null)
+        {
+            Debug.LogError("UIPopupAlert component not found on prefab!");
+            Destroy(popupObj);
+            return;
+        }
+
+        popupObj.name = popupPrefab.name;
+        currentPopup = alertPopup;
+
+        System.Action wrappedConfirm = () =>
+        {
+            onConfirm?.Invoke();
+            CloseCurrentPopup();
+        };
+
+        alertPopup.ShowPopupAlert(title, message, wrappedConfirm, buttonText);
+    }
+
 }

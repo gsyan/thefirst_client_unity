@@ -18,6 +18,8 @@ public class UIMain : UIManager
 
     public override void InitializeUIManager()
     {
+        base.InitializeUIManager();
+
         const string PANEL_Main_PREFAB_PATH = "Prefabs/UI/Panel_Main";
 
         // Load all prefabs from the Panel folder
@@ -31,7 +33,7 @@ public class UIMain : UIManager
 
         foreach (GameObject prefab in panelPrefabs)
         {
-            GameObject panelInstance = Instantiate(prefab, transform);
+            GameObject panelInstance = Instantiate(prefab, m_generalContainer);
             panelInstance.name = prefab.name; // Remove "(Clone)" suffix
             
             var panelBase = panelInstance.GetComponent<UIPanelBase>();

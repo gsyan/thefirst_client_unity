@@ -48,18 +48,18 @@ public class UIPanelMineral : UIPanelBase
     }
     public void OnMineralChanged(long mineral)
     {
-        m_mineralText.text = $"M: {mineral}";
+        m_mineralText.text = $"M: {CommonUtility.FormatBigNumber(mineral)}";
     }
     public void OnMineralRareChanged(long mineralRare)
     {
-        m_mineralRareText.text = $"R: {mineralRare}";
+        m_mineralRareText.text = $"R: {CommonUtility.FormatBigNumber(mineralRare)}";
     }
     public void OnMineralExoticChanged(long mineralExotic)
     {
-        m_mineralExoticText.text = $"E: {mineralExotic}";
+        m_mineralExoticText.text = $"E: {CommonUtility.FormatBigNumber(mineralExotic)}";
     }
     public void OnMineralDarkChanged(long mineralDark)
     {
-        m_mineralDarkText.text = $"D: {mineralDark}";
+        m_mineralDarkText.text = $"D: {CommonUtility.FormatBigNumber(mineralDark)}";
     }
 }

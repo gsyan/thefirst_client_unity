@@ -170,7 +170,7 @@ public class UIPanelFleet_TabExploration : UITabBase
     // "{누적량}({시간당}/h)" 형식 문자열 생성
     private string FormatMineralText(float accumulated, float perHour)
     {
-        return $"{(int)accumulated}({(int)perHour}/h)";
+        return $"{CommonUtility.FormatBigNumber(accumulated)}({CommonUtility.FormatBigNumber(perHour)}/h)";
     }
 
     // 버튼 표시 상태 변경 (isBattleMode: true=전투, false=평화)

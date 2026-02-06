@@ -401,6 +401,29 @@ public class ModuleInstallRequest
 // }
 #endregion
 
+#region Progress Data Classes #################################################################################
+[System.Serializable]
+public class ProgressSaveRequest
+{
+    public string category;  // "tutorial", "achievement", "quest" 등
+    public string key;       // "tutorialId_stepId" 형식
+}
+
+[System.Serializable]
+public class ProgressInfo
+{
+    public string category;
+    public string key;
+    public string completedDateTime;  // ISO 8601 UTC 형식
+}
+
+[System.Serializable]
+public class ProgressListResponse
+{
+    public List<ProgressInfo> progressList;
+}
+#endregion
+
 #region Zone Battle Data Classes ##############################################################################
 [System.Serializable]
 public class ZoneClearRequest
