@@ -6,7 +6,7 @@ using System.Data;
 
 public class UIPanelFleet_TabFormation : UITabBase
 {
-    public TextMeshProUGUI m_formationNameText;
+    public TMP_Text m_formationNameText;
     
     private SpaceFleet m_myFleet;
     private EFormationType m_currentFormationType;

@@ -614,6 +614,10 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         m_apiClient.ClearTokens();
         m_autoLoginAttempted = false;
+
+        // 게스트 ID 삭제 - 재로그인 시 새 계정으로 시작되도록
+        PlayerPrefs.DeleteKey("GuestId");
+        PlayerPrefs.Save();
     }
 
     public void DeleteAccount(System.Action<ApiResponse<string>> onComplete = null)

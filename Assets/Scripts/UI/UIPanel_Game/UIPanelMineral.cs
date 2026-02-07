@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class UIPanelMineral : UIPanelBase
 {
-    public TextMeshProUGUI m_TechLevelText;
-    public TextMeshProUGUI m_mineralText;
-    public TextMeshProUGUI m_mineralRareText;
-    public TextMeshProUGUI m_mineralExoticText;
-    public TextMeshProUGUI m_mineralDarkText;
+    public TMP_Text m_TechLevelText;
+    public TMP_Text m_mineralText;
+    public TMP_Text m_mineralRareText;
+    public TMP_Text m_mineralExoticText;
+    public TMP_Text m_mineralDarkText;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
