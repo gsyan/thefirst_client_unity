@@ -329,7 +329,7 @@ public class CameraController : MonoSingleton<CameraController>
             SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
             ModuleBase module = hit.collider.GetComponentInParent<ModuleBase>();
             if (ship != null && ship.gameObject == m_currentTarget.gameObject && module != null)
-                EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(ship, module);
+                EventManager.TriggerSpaceShipModuleSelected(ship, module);
         }
     }
 

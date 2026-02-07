@@ -3,7 +3,7 @@ using TMPro;
 
 public class DebugOverlay : MonoSingleton<DebugOverlay>
 {
-    private TextMeshProUGUI m_debugText;
+    private TMP_Text m_debugText;
     private Canvas m_canvas;
 
     protected override bool ShouldDontDestroyOnLoad => true;
@@ -29,7 +29,7 @@ public class DebugOverlay : MonoSingleton<DebugOverlay>
         GameObject textGO = new GameObject("DebugText");
         textGO.transform.SetParent(canvasGO.transform);
 
-        m_debugText = textGO.AddComponent<TextMeshProUGUI>();
+        m_debugText = textGO.AddComponent<TMP_Text>();
         m_debugText.fontSize = 48;
         m_debugText.color = Color.white;
         m_debugText.alignment = TextAlignmentOptions.TopLeft;

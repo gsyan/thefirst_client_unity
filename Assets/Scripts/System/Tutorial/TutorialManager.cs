@@ -271,7 +271,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             case ETutorialConditionType.ModuleSelectedCount:
             case ETutorialConditionType.SpecificModuleSelected:
                 m_selectedModuleIds.Clear();
-                EventManager.Subscribe_SpaceShipModuleSelected_TabUpgrade(OnModuleSelected);
+                EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelected);
                 break;
         }
     }
@@ -284,7 +284,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             m_customConditionCoroutine = null;
         }
 
-        EventManager.Unsubscribe_SpaceShipModuleSelected_TabUpgrade(OnModuleSelected);
+        EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelected);
         m_selectedModuleIds.Clear();
         m_cameraRotationAccumulated = 0f;
     }

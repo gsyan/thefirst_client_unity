@@ -10,7 +10,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 {
     [HideInInspector] public SpaceFleet m_myFleet;
     private SpaceShip m_selectedShip;
-    [SerializeField] private TextMeshProUGUI m_textTop;
+    [SerializeField] private TMP_Text m_textTop;
     [SerializeField] private RectTransform m_scrollViewShipsContent;
     [SerializeField] private GameObject m_scrollViewShipItem;       // 프리팹
     [SerializeField] private GameObject m_scrollViewShipItemAdd;    // 프리팹
@@ -287,7 +287,7 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         
         // 선택 함선 업데이트
         m_selectedShip = ship;
-        EventManager.TriggerSpaceShipSelected_TabUpgrade(m_selectedShip);
+        EventManager.TriggerSpaceShipSelected(m_selectedShip);
         UpdateShipStatsDisplay();
 
         // 선택 스크롤 뷰 아이템 업데이트

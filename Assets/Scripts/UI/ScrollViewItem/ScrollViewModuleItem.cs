@@ -6,18 +6,20 @@ public class ScrollViewModuleItem : MonoBehaviour
 {
     [SerializeField] private Button m_selectButton;
     [SerializeField] private TMP_Text m_selectButtonText;
-    [SerializeField] private Button m_researchButton;    
+    [SerializeField] private Button m_researchButton;
+    [SerializeField] private TMP_Text m_researchButtonText;
     [SerializeField] private GameObject m_selectedIndicator; // 선택 표시 오브젝트 (Image, Border 등)
-    
-    public void InitializeScrollViewModuleItem(string text, UnityEngine.Events.UnityAction actionSelect, UnityEngine.Events.UnityAction actionResearch)
-    {       
+
+    public void InitializeScrollViewModuleItem(string text, UnityEngine.Events.UnityAction actionSelect, UnityEngine.Events.UnityAction actionResearch, string researchCostText = "")
+    {
         m_selectButton.gameObject.SetActive(true);
         m_selectButton.onClick.RemoveAllListeners();
         m_selectButton.onClick.AddListener(actionSelect);
-        //m_selectButton.onClick.AddListener(() => SetSelected_ScrollViewModuleItem(true));
         m_selectButtonText.text = text;
 
         m_researchButton.onClick.AddListener(actionResearch);
+        if (m_researchButtonText != null && !string.IsNullOrEmpty(researchCostText))
+            m_researchButtonText.text = $"Research\n{researchCostText}";
 
         // 초기 상태: 선택 상태 숨김
         SetSelected_ScrollViewModuleItem(false);

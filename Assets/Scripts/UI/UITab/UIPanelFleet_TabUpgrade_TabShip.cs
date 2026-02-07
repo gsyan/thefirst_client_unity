@@ -10,9 +10,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
     private SpaceShip m_selectedShip;
     private ModuleBase m_selectedModule;
 
-    [SerializeField] private TextMeshProUGUI m_textTop;
+    [SerializeField] private TMP_Text m_textTop;
     [SerializeField] private SimpleRadarChart m_radarChart;
-    [SerializeField] private TextMeshProUGUI m_textResult;
     private Coroutine m_textResultCoroutine;
 
     [Header("Ship Stats Display")]
@@ -49,8 +48,8 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
         
         
-        EventManager.Subscribe_SpaceShipSelected_TabUpgrade(OnSpaceShipSelected);
-        EventManager.Subscribe_SpaceShipModuleSelected_TabUpgrade(OnSpaceShipModuleSelected);
+        EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
+        EventManager.Subscribe_SpaceShipModuleSelected(OnSpaceShipModuleSelected);
     }
     private void OnSpaceShipSelected(SpaceShip ship)
     {
@@ -96,7 +95,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
         m_selectedShip.m_shipOutline.enabled = true;
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
-        EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(m_selectedShip, m_selectedModule);
+        EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, m_selectedModule);
 
         bShow = true;
         UpdateModuleStatsDisplay();
@@ -114,8 +113,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         m_selectedShip.m_shipOutline.enabled = false;
 
         bShow = false;
-
-        m_textResult.text = "";
     }
 
     private void OnShipChanged()
@@ -697,7 +694,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
         if (moduleType == EModuleType.Body || slotIndex < 0)
         {
             m_selectedModule = body;
-            EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(targetShip, m_selectedModule);
+            EventManager.TriggerSpaceShipModuleSelected(targetShip, m_selectedModule);
             return;
         }
 
@@ -710,7 +707,7 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
             {
                 m_selectedModule = newModule;
                 // 새로 생성된 모듈을 선택 상태로 설정 (selectedModuleVisual 적용)
-                EventManager.TriggerSpaceShipModuleSelected_TabUpgrade(targetShip, m_selectedModule);
+                EventManager.TriggerSpaceShipModuleSelected(targetShip, m_selectedModule);
             }
         }
     }
@@ -741,31 +738,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
 
 
-    // m_textResult에 텍스트를 표시하고 n초 후 자동으로 사라지게 합니다.
-    public void ShowResultMessage(string message, float displayDuration = 3f)
-    {
-        if (m_textResult == null) return;
-
-        // 이전 코루틴이 실행 중이면 중지
-        if (m_textResultCoroutine != null)
-            StopCoroutine(m_textResultCoroutine);
-
-        // 메시지 표시 및 자동 사라지기 코루틴 시작
-        m_textResultCoroutine = StartCoroutine(ShowResultMessageCoroutine(message, displayDuration));
-    }
-
-    private IEnumerator ShowResultMessageCoroutine(string message, float displayDuration)
-    {
-        // 메시지 표시
-        m_textResult.text = message;
-
-        // 지정된 시간만큼 대기
-        yield return new WaitForSeconds(displayDuration);
-
-        // 메시지 제거
-        m_textResult.text = "";
-        m_textResultCoroutine = null;
-    }
 
 
 }

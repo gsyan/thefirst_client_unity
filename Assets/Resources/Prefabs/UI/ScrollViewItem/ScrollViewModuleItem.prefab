@@ -449,7 +449,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 165, y: 60}
+  m_SizeDelta: {x: 293.7066, y: 60}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &4451990502362716635
 CanvasRenderer:
@@ -762,6 +762,7 @@ MonoBehaviour:
   m_selectButton: {fileID: 1226997078326999291}
   m_selectButtonText: {fileID: 8857938998179338330}
   m_researchButton: {fileID: 8155791726592368226}
+  m_researchButtonText: {fileID: 2376132554029840225}
   m_selectedIndicator: {fileID: 9023458842879594898}
 --- !u!1 &9023458842879594898
 GameObject:

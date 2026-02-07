@@ -10,9 +10,7 @@ public class SpaceFleet : MonoBehaviour
     public EFleetState m_fleetState = EFleetState.None;
     public EFormationType m_currentFormationType = EFormationType.LinearHorizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
-    [HideInInspector] public UIPanelFleet_TabUpgrade m_panelFleet_TabUpgrade;
-
-
+    
     private void Start()
     {
         if (m_isEnemyFleet == false)

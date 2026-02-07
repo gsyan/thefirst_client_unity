@@ -53,8 +53,14 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         }
         else if (_instance != this)
         {
-            Debug.LogWarning($"[MonoSingleton] Duplicate instance of {typeof(T).Name} detected, destroying: {name}");
-            Destroy(gameObject);
+            // DontDestroyOnLoad 싱글톤이 씬 재로드 시 중복 생성되는 것은 정상 흐름
+            if (ShouldDontDestroyOnLoad)
+                Destroy(gameObject);
+            else
+            {
+                Debug.LogWarning($"[MonoSingleton] Duplicate instance of {typeof(T).Name} detected, destroying: {name}");
+                Destroy(gameObject);
+            }
         }
     }
 

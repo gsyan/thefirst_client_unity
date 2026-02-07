@@ -12,8 +12,8 @@ public class RowLabelValue : MonoBehaviour
 
     public void SetRow(string label, string value)
     {
-        if (m_label != null) m_label.text = label;
-        if (m_value != null) m_value.text = value;
+        SetLabel(label);
+        SetValue(value);
     }
 
     public void SetLabel(string label)

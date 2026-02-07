@@ -109,33 +109,33 @@ public static class EventManager
     }
 
     // SpaceShip Selection
-    public static event Action<SpaceShip> OnSpaceShipSelected_TabUpgrade;
-    public static void TriggerSpaceShipSelected_TabUpgrade(SpaceShip ship)
+    public static event Action<SpaceShip> OnSpaceShipSelected;
+    public static void TriggerSpaceShipSelected(SpaceShip ship)
     {
-        OnSpaceShipSelected_TabUpgrade?.Invoke(ship);
+        OnSpaceShipSelected?.Invoke(ship);
     }
-    public static void Subscribe_SpaceShipSelected_TabUpgrade(Action<SpaceShip> callback)
+    public static void Subscribe_SpaceShipSelected(Action<SpaceShip> callback)
     {
-        OnSpaceShipSelected_TabUpgrade += callback;
+        OnSpaceShipSelected += callback;
     }
-    public static void Unsubscribe_SpaceShipSelected_TabUpgrade(Action<SpaceShip> callback)
+    public static void Unsubscribe_SpaceShipSelected(Action<SpaceShip> callback)
     {
-        OnSpaceShipSelected_TabUpgrade -= callback;
+        OnSpaceShipSelected -= callback;
     }
 
     // SpaceShip Module Selection
-    public static event Action<SpaceShip, ModuleBase> OnSpaceShipModuleSelected_TabUpgrade;
-    public static void TriggerSpaceShipModuleSelected_TabUpgrade(SpaceShip ship, ModuleBase module)
+    public static event Action<SpaceShip, ModuleBase> OnSpaceShipModuleSelected;
+    public static void TriggerSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
     {
-        OnSpaceShipModuleSelected_TabUpgrade?.Invoke(ship, module);
+        OnSpaceShipModuleSelected?.Invoke(ship, module);
     }
-    public static void Subscribe_SpaceShipModuleSelected_TabUpgrade(Action<SpaceShip, ModuleBase> callback)
+    public static void Subscribe_SpaceShipModuleSelected(Action<SpaceShip, ModuleBase> callback)
     {
-        OnSpaceShipModuleSelected_TabUpgrade += callback;
+        OnSpaceShipModuleSelected += callback;
     }
-    public static void Unsubscribe_SpaceShipModuleSelected_TabUpgrade(Action<SpaceShip, ModuleBase> callback)
+    public static void Unsubscribe_SpaceShipModuleSelected(Action<SpaceShip, ModuleBase> callback)
     {
-        OnSpaceShipModuleSelected_TabUpgrade -= callback;
+        OnSpaceShipModuleSelected -= callback;
     }
 
     // Camera Mode Change

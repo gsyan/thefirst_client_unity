@@ -25,13 +25,15 @@ public class ScrollViewZoneItem : MonoBehaviour
         m_zoneText.text = zoneConfig.zoneName;
 
         // 클리어 여부에 따라 버튼 활성화 분기
-        if (isCleared == false)
-        {
+        if (isCleared == true)
             m_zoneStatusText.text = "CLEARED";
-        }
         else
-        {
-            m_zoneStatusText.text = "";
-        }        
+            m_zoneStatusText.text = "";        
+    }
+
+    public void SetCleared(bool bCleared)
+    {
+        m_zoneStatusText.text = bCleared ? "CLEARED" : "";
+        m_isCleared = bCleared;
     }
 }

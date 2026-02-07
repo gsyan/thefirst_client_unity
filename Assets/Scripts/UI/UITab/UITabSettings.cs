@@ -3,35 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPanelSetting : UIPanelBase
+public class UITabSettings : UITabBase
 {
-    [HideInInspector] public SpaceFleet m_myFleet;
-    
-    [SerializeField] private Button m_closeButton;
     [SerializeField] private Button m_logoutButton;
+    [SerializeField] private Button m_testMineralButton;
 
-    public override void InitializeUIPanel()
+    private SpaceFleet m_myFleet;
+
+    public override void InitializeUITab()
     {
-        InitializeUIPanelSetting();
+        InitializeUITabSettings();
     }
 
-    private void InitializeUIPanelSetting()
+    private void InitializeUITabSettings()
     {
         if (m_myFleet == null)
             m_myFleet = DataManager.Instance.m_currentCharacter.GetOwnedFleet();
 
-        if (m_closeButton != null)
-            m_closeButton.onClick.AddListener(() => UIManager.Instance.ShowMainPanel());
         if (m_logoutButton != null)
             m_logoutButton.onClick.AddListener(OnLogoutButtonClicked);
+
+        if (m_testMineralButton != null)
+            m_testMineralButton?.onClick.AddListener(() => DeveloperConsole.ExecuteCommandStatic("addmineral 1000000"));
     }
 
-    public override void OnShowUIPanel()
+    public override void OnTabActivated()
     {
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
-    public override void OnHideUIPanel()
+    public override void OnTabDeactivated()
     {
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
