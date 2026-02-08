@@ -15,7 +15,6 @@ public class UITabShip : UITabBase
     
     [SerializeField] private TMP_Text  m_textModuleStatus;
     [SerializeField] private RectTransform m_moduleStatsContainer;    // VerticalLayoutGroup 필요
-    [SerializeField] private SimpleRadarChart m_radarChart;
     [SerializeField] private GameObject m_scrollViewModule;
     [SerializeField] private RectTransform m_scrollViewModuleContent;
     [SerializeField] private GameObject m_scrollViewModuleItem;       // 프리팹    
@@ -200,12 +199,12 @@ public class UITabShip : UITabBase
         CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
 
-        SetOrCreateShipStatRow("Weapons", $"{statsCur.totalWeapons}");
-        SetOrCreateShipStatRow("Engines", $"{statsCur.totalEngines}");
-        SetOrCreateShipStatRow("Attack", $"{statsCur.attackDps:F1} / {statsOrg.attackDps:F1}");
-        SetOrCreateShipStatRow("HP", $"{statsCur.hp:F0} / {statsOrg.hp:F0}");
-        SetOrCreateShipStatRow("Speed", $"{statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}");
-        SetOrCreateShipStatRow("Cargo", $"{statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}");
+        SetOrCreateShipStatRow("module_weapon_count", $"{statsCur.totalWeapons}");
+        SetOrCreateShipStatRow("module_engine_count", $"{statsCur.totalEngines}");
+        SetOrCreateShipStatRow("attack_power", $"{statsCur.attackDps:F1} / {statsOrg.attackDps:F1}");
+        SetOrCreateShipStatRow("health_power", $"{statsCur.hp:F0} / {statsOrg.hp:F0}");
+        SetOrCreateShipStatRow("speed_power", $"{statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}");
+        SetOrCreateShipStatRow("cargo_power", $"{statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}");
     }
 
     private void SetOrCreateShipStatRow(string label, string value)
@@ -608,13 +607,12 @@ public class UITabShip : UITabBase
         
         CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
         
-        SetOrCreateModuleStatRow("Level", $"{m_selectedModule.GetModuleLevel()}");
-        SetOrCreateModuleStatRow("Attack", $"{statsOrg.attackDps:F1}");
-        SetOrCreateModuleStatRow("HP", $"{statsOrg.hp:F0}");
-        SetOrCreateModuleStatRow("Speed", $"{statsOrg.engineSpeed:F1}");
-        SetOrCreateModuleStatRow("Cargo", $"{statsOrg.cargoCapacity:F0}");
-
-        m_radarChart.SetRadarChartStats(statsOrg);
+        SetOrCreateModuleStatRow("module_type", $"{m_selectedModule.GetModuleType()}");
+        SetOrCreateModuleStatRow("level", $"{m_selectedModule.GetModuleLevel()}");
+        SetOrCreateModuleStatRow("attack_power", $"{statsOrg.attackDps:F1}");
+        SetOrCreateModuleStatRow("health_power", $"{statsOrg.hp:F0}");
+        SetOrCreateModuleStatRow("speed_power", $"{statsOrg.engineSpeed:F1}");
+        SetOrCreateModuleStatRow("cargo_power", $"{statsOrg.cargoCapacity:F0}");
     }
 
     private void SetOrCreateModuleStatRow(string label, string value)
