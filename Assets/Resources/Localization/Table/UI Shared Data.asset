@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: UI Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: UI
+  m_TableCollectionNameGuidString: d85d8ecc73ff1304c8410066ceb06829
+  m_Entries:
+  - m_Id: 4360310226944
+    m_Key: fleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360310226945
+    m_Key: ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360310226946
+    m_Key: exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360310226947
+    m_Key: settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39525816336384
+    m_Key: fleet_status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232257425408
+    m_Key: ship_count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46863080095744
+    m_Key: attack_power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47211509317632
+    m_Key: health_power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48108159238144
+    m_Key: speed_power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48178879397888
+    m_Key: cargo_power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619712
+    m_Key: formation_list
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619713
+    m_Key: formation_linear_horizontal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619714
+    m_Key: formation_circle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619715
+    m_Key: formation_cross
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619716
+    m_Key: formation_x
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218309197824
+    m_Key: add_ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619717
+    m_Key: ship_status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55998282596352
+    m_Key: module_weapon_count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56055799087104
+    m_Key: module_engine_count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619718
+    m_Key: module_status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619719
+    m_Key: module_type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619720
+    m_Key: level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40010770153472
+    m_Key: module_unlock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40166030704640
+    m_Key: module_upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619721
+    m_Key: cleared
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619722
+    m_Key: auto_exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619723
+    m_Key: wave_exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40395924701184
+    m_Key: safe_zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619724
+    m_Key: collected_minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619725
+    m_Key: collect_mineral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40830739808256
+    m_Key: logout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42515386204160
+    m_Key: language_options
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 3331168568662556935
+  references:
+    version: 2
+    RefIds:
+    - rid: 3331168568662556935
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1770507662789

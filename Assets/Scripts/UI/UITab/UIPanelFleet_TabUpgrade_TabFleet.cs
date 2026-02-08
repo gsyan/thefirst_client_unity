@@ -110,7 +110,8 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
         CapabilityProfile statsOrg = fleet.GetFleetCapabilityProfile(false);
         CapabilityProfile statsCur = fleet.GetFleetCapabilityProfile(true);
 
-        SetOrCreateFleetStatRow("Ships", $"{fleet.m_ships.Count}");
+        //SetOrCreateFleetStatRow("Ship", $"{fleet.m_ships.Count}");
+        SetOrCreateFleetStatRow(LocalizationManager.Instance.Get("Ship", "UI"), $"{fleet.m_ships.Count}");
         SetOrCreateFleetStatRow("Attack", $"{statsCur.attackDps:F1} / {statsOrg.attackDps:F1}");
         SetOrCreateFleetStatRow("HP", $"{statsCur.hp:F0} / {statsOrg.hp:F0}");
         SetOrCreateFleetStatRow("Speed", $"{statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}");
@@ -146,8 +147,8 @@ public class UIPanelFleet_TabUpgrade_TabFleet : UITabBase
 
         CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
-
-        SetOrCreateShipStatRow("Weapons", $"{statsCur.totalWeapons}");
+        //SetOrCreateShipStatRow("Weapons", $"{statsCur.totalWeapons}");
+        SetOrCreateShipStatRow(LocalizationManager.Instance.Get("Weapons", "UI"), $"{statsCur.totalWeapons}");
         SetOrCreateShipStatRow("Engines", $"{statsCur.totalEngines}");
         SetOrCreateShipStatRow("Attack", $"{statsCur.attackDps:F1} / {statsOrg.attackDps:F1}");
         SetOrCreateShipStatRow("HP", $"{statsCur.hp:F0} / {statsOrg.hp:F0}");

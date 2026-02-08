@@ -1,0 +1,29 @@
+https://fonts.google.com/selection
+
+
+
+-생성방법
+UnityEditor > Window > TextMeshPro > Font Asset Creator
+Font Asset Creator
+	Padding: 5 px
+	Atlass Resulution: 4096 * 4096
+	Character Set: Unicode Range(Hex)
+	Character Sequence: 20-7E,AC00-D7A3,3131-318E
+	Generate Font Atlas button go 
+
+
+
+-설정 방법
+메인 폰트 에셋(예: NotoSansKR SDF) 선택
+Inspector에서 Fallback Font Assets 리스트에 다른 언어 폰트 추가:
+NotoSansJP SDF
+NotoSansSC SDF
+NotoSansTC SDF
+TMP가 글자를 렌더링할 때 메인 폰트에 해당 글자가 없으면 Fallback 리스트를 순서대로 탐색해서 자동으로 표시합니다.
+
+또는 글로벌 설정
+폰트마다 개별 설정하기 귀찮으면:
+
+Edit > Project Settings > TextMesh Pro > Settings 에서 Fallback Font Assets에 등록하면 프로젝트 전체 TMP에 일괄 적용됩니다.
+
+이러면 어떤 언어가 들어오든 폰트 교체 없이 다 표시됩니다.

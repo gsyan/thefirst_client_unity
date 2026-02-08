@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: d85d8ecc73ff1304c8410066ceb06829, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 218309197824
+    m_Localized: Add Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360310226944
+    m_Localized: Fleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360310226945
+    m_Localized: Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360310226946
+    m_Localized: Exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360310226947
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39525816336384
+    m_Localized: Fleet Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40010770153472
+    m_Localized: Unlock Module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40166030704640
+    m_Localized: Upgrade Module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40395924701184
+    m_Localized: Safe Zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40830739808256
+    m_Localized: Logout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42515386204160
+    m_Localized: Language options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46863080095744
+    m_Localized: Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47211509317632
+    m_Localized: HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48108159238144
+    m_Localized: Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48178879397888
+    m_Localized: Cargo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 55998282596352
+    m_Localized: Weapons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56055799087104
+    m_Localized: Engines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232257425408
+    m_Localized: Ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619712
+    m_Localized: Formation List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619713
+    m_Localized: Linear Horizontal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619714
+    m_Localized: Circle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619715
+    m_Localized: Cross
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619716
+    m_Localized: X
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619717
+    m_Localized: Ship Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619718
+    m_Localized: Module Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619719
+    m_Localized: Module Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619720
+    m_Localized: Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619721
+    m_Localized: Cleared
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619722
+    m_Localized: Auto Exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619723
+    m_Localized: Wave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619724
+    m_Localized: Collected Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619725
+    m_Localized: Collect Mineral
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

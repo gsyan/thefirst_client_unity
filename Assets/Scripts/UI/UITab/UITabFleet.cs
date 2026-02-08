@@ -12,7 +12,6 @@ public class UIPanelFleet_TabUpgrade : UITabBase
     [SerializeField] private RectTransform m_scrollViewFormationContent;
     [SerializeField] private GameObject m_scrollViewFormationItem;          // 프리팹    
     [SerializeField] private RectTransform m_rightContainer;                // VerticalLayoutGroup 필요
-    [SerializeField] private TMP_Text  m_textAddShip;
     [SerializeField] private Button m_addShipButton;
 
     private Character m_myCharacter;
@@ -35,8 +34,6 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         PopulateFormationScrollView();
 
         m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
-        UpdateAddShipText();
-
     }
 
     public override void OnTabActivated()
@@ -94,11 +91,11 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         CapabilityProfile statsOrg = fleet.GetFleetCapabilityProfile(false);
         CapabilityProfile statsCur = fleet.GetFleetCapabilityProfile(true);
 
-        SetOrCreateFleetStatRow("Ships", $"{fleet.m_ships.Count}");
-        SetOrCreateFleetStatRow("Attack", $"{statsCur.attackDps:F1} / {statsOrg.attackDps:F1}");
-        SetOrCreateFleetStatRow("HP", $"{statsCur.hp:F0} / {statsOrg.hp:F0}");
-        SetOrCreateFleetStatRow("Speed", $"{statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}");
-        SetOrCreateFleetStatRow("Cargo", $"{statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}");
+        SetOrCreateFleetStatRow("ship", $"{fleet.m_ships.Count}");
+        SetOrCreateFleetStatRow("attack_power", $"{statsCur.attackDps:F1} / {statsOrg.attackDps:F1}");
+        SetOrCreateFleetStatRow("health_power", $"{statsCur.hp:F0} / {statsOrg.hp:F0}");
+        SetOrCreateFleetStatRow("speed_power", $"{statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}");
+        SetOrCreateFleetStatRow("cargo_power", $"{statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}");
     }
 
     private void SetOrCreateFleetStatRow(string label, string value)
@@ -123,55 +120,10 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         }
     }
 
-
-    private void UpdateAddShipText()
-    {
-        var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
-        CostStruct cost = gameSettings.GetAddShipCost(m_myFleet.m_ships.Count);
-
-        // 비용 문자열 생성 (0이 아닌 광물만 표시)
-        string costText = "Add Ship (";
-        bool firstItem = true;
-
-        if (cost.mineral > 0)
-        {
-            costText += $"Mineral: {CommonUtility.FormatBigNumber(cost.mineral)}";
-            firstItem = false;
-        }
-        if (cost.mineralRare > 0)
-        {
-            if (!firstItem) costText += ", ";
-            costText += $"Rare: {CommonUtility.FormatBigNumber(cost.mineralRare)}";
-            firstItem = false;
-        }
-        if (cost.mineralExotic > 0)
-        {
-            if (!firstItem) costText += ", ";
-            costText += $"Exotic: {CommonUtility.FormatBigNumber(cost.mineralExotic)}";
-            firstItem = false;
-        }
-        if (cost.mineralDark > 0)
-        {
-            if (!firstItem) costText += ", ";
-            costText += $"Dark: {CommonUtility.FormatBigNumber(cost.mineralDark)}";
-        }
-        costText += ")";
-
-        m_textAddShip.text = costText;
-        
-    }
-    
     // Add 버튼 클릭 시 Confirm 팝업 표시
     private void OnAddShipButtonClicked()
     {
         if (m_myCharacter == null) return;
-
-        ServerErrorCode errorCode = CanAddShip();
-        if (errorCode != ServerErrorCode.SUCCESS)
-        {
-            ShowResultMessage($"{errorCode}", 3f);
-            return;
-        }
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         CostStruct cost = gameSettings.GetAddShipCost(m_myFleet.m_ships.Count);
@@ -188,8 +140,12 @@ public class UIPanelFleet_TabUpgrade : UITabBase
     {
         if (m_myCharacter == null) return;
 
-        if (CanAddShip() != ServerErrorCode.SUCCESS)
+        ServerErrorCode errorCode = CanAddShip();
+        if (errorCode != ServerErrorCode.SUCCESS)
+        {
+            ShowResultMessage($"{errorCode}", 3f);
             return;
+        }
 
         // Request ship addition to server
         var request = new AddShipRequest
