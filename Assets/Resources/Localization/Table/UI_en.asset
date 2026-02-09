@@ -146,6 +146,26 @@ MonoBehaviour:
     m_Localized: Collect Mineral
     m_Metadata:
       m_Items: []
+  - m_Id: 394150382993408
+    m_Localized: Tech Lv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394150433325056
+    m_Localized: Mineral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394150433325057
+    m_Localized: Mineral.R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394150433325058
+    m_Localized: Mineral.E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394150433325059
+    m_Localized: Mineral.D
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -143,6 +143,26 @@ MonoBehaviour:
     m_Key: language_options
     m_Metadata:
       m_Items: []
+  - m_Id: 394150382993408
+    m_Key: tech_level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394150433325056
+    m_Key: mineral_amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394150433325057
+    m_Key: mineral_rare_amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394150433325058
+    m_Key: mineral_exotic_amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394150433325059
+    m_Key: mineral_dark_amount
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
