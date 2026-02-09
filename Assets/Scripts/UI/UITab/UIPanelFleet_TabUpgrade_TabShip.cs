@@ -1,718 +1,716 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+// using System.Collections;
+// using System.Collections.Generic;
+// using TMPro;
+// using UnityEngine;
+// using UnityEngine.UI;
 
-public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
-{
-    [HideInInspector] public SpaceFleet m_myFleet;
-    private SpaceShip m_selectedShip;
-    private ModuleBase m_selectedModule;
+// public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
+// {
+//     [HideInInspector] public SpaceFleet m_myFleet;
+//     private SpaceShip m_selectedShip;
+//     private ModuleBase m_selectedModule;
 
-    [SerializeField] private TMP_Text m_textTop;
-    [SerializeField] private SimpleRadarChart m_radarChart;
-    private Coroutine m_textResultCoroutine;
+//     [SerializeField] private TMP_Text m_textTop;
+//     [SerializeField] private SimpleRadarChart m_radarChart;
+//     private Coroutine m_textResultCoroutine;
 
-    [Header("Ship Stats Display")]
-    [SerializeField] private RectTransform m_moduleStatsContainer;    // VerticalLayoutGroup 필요
-    [SerializeField] private GameObject m_rowLabelValuePrefab;      // RowLabelValue 프리팹
-    private readonly Dictionary<string, RowLabelValue> m_statRows = new();
+//     [Header("Ship Stats Display")]
+//     [SerializeField] private RectTransform m_moduleStatsContainer;    // VerticalLayoutGroup 필요
+//     [SerializeField] private GameObject m_rowLabelValuePrefab;      // RowLabelValue 프리팹
+//     private readonly Dictionary<string, RowLabelValue> m_statRows = new();
 
-    [SerializeField] private Button m_backButton;
-    [SerializeField] private Button m_unlockModuleButton;
-    [SerializeField] private TMP_Text m_unlockModuleButtonText;
-    [SerializeField] private GameObject m_scrollViewModule;
-    [SerializeField] private RectTransform m_scrollViewModuleContent;
-    [SerializeField] private GameObject m_scrollViewModuleItem;       // 프리팹
-    [SerializeField] private Button m_upgradeModuleButton;
+//     [SerializeField] private Button m_backButton;
+//     [SerializeField] private Button m_unlockModuleButton;
+//     [SerializeField] private TMP_Text m_unlockModuleButtonText;
+//     [SerializeField] private GameObject m_scrollViewModule;
+//     [SerializeField] private RectTransform m_scrollViewModuleContent;
+//     [SerializeField] private GameObject m_scrollViewModuleItem;       // 프리팹
+//     [SerializeField] private Button m_upgradeModuleButton;
 
-    // 생성된 모든 ScrollViewModuleItem 추적
-    private List<ScrollViewModuleItem> m_moduleItems = new List<ScrollViewModuleItem>();
+//     // 생성된 모든 ScrollViewModuleItem 추적
+//     private List<ScrollViewModuleItem> m_moduleItems = new List<ScrollViewModuleItem>();
 
-    private bool bShow = false;
+//     private bool bShow = false;
     
-    public override void InitializeUITab()
-    {
-        if (m_textTop != null)
-            m_textTop.text = "Ship Management";
+//     public override void InitializeUITab()
+//     {
+//         if (m_textTop != null)
+//             m_textTop.text = "Ship Management";
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+//         var character = DataManager.Instance.m_currentCharacter;
+//         if (character == null) return;
         
-        m_myFleet = character.GetOwnedFleet();
-        if (m_myFleet == null) return;
+//         m_myFleet = character.GetOwnedFleet();
+//         if (m_myFleet == null) return;
 
-        m_backButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(0));
-        m_unlockModuleButton.onClick.AddListener(UnlockModule);
-        m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
+//         m_backButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(0));
+//         m_unlockModuleButton.onClick.AddListener(UnlockModule);
+//         m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
         
         
-        EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
-        EventManager.Subscribe_SpaceShipModuleSelected(OnSpaceShipModuleSelected);
-    }
-    private void OnSpaceShipSelected(SpaceShip ship)
-    {
-        m_selectedShip = ship;
+//         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
+//         EventManager.Subscribe_SpaceShipModuleSelected(OnSpaceShipModuleSelected);
+//     }
+//     private void OnSpaceShipSelected(SpaceShip ship)
+//     {
+//         m_selectedShip = ship;
 
-        if (m_myFleet != null)
-            m_myFleet.ClearAllSelectedModule();
+//         if (m_myFleet != null)
+//             m_myFleet.ClearAllSelectedModule();
         
-        if (m_selectedModule != null && ship != m_selectedModule.GetMyShip())
-            m_selectedModule = null;
+//         if (m_selectedModule != null && ship != m_selectedModule.GetMyShip())
+//             m_selectedModule = null;
 
-        if (m_selectedModule == null)
-        {
-            if (ship.m_moduleBodys[0].m_beams.Count > 0)
-                m_selectedModule = ship.m_moduleBodys[0].m_beams[0];
-            else if (ship.m_moduleBodys[0].m_missiles.Count > 0)
-                m_selectedModule = ship.m_moduleBodys[0].m_missiles[0];
-            else
-                m_selectedModule = ship.m_moduleBodys[0];
-        }
+//         if (m_selectedModule == null)
+//         {
+//             if (ship.m_moduleBodys[0].m_beams.Count > 0)
+//                 m_selectedModule = ship.m_moduleBodys[0].m_beams[0];
+//             else if (ship.m_moduleBodys[0].m_missiles.Count > 0)
+//                 m_selectedModule = ship.m_moduleBodys[0].m_missiles[0];
+//             else
+//                 m_selectedModule = ship.m_moduleBodys[0];
+//         }
             
-    }
-    private void OnSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
-    {
-        if( m_selectedShip != ship) return;
-        if (module == null) return;
-        if (m_myFleet == null) return;
+//     }
+//     private void OnSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
+//     {
+//         if( m_selectedShip != ship) return;
+//         if (module == null) return;
+//         if (m_myFleet == null) return;
         
-        m_selectedModule = module;
-        m_selectedShip.SetSelectedModule(ship, module);
+//         m_selectedModule = module;
+//         m_selectedShip.SetSelectedModule(ship, module);
 
-        UpdateModuleStatsDisplay();
-        UpdateUIFrame();
-        UpdateScrollView();
-    }
+//         UpdateModuleStatsDisplay();
+//         UpdateUIFrame();
+//         UpdateScrollView();
+//     }
 
-    public override void OnTabActivated()
-    {
-        EventManager.Subscribe_ShipChange(OnShipChanged);
+//     public override void OnTabActivated()
+//     {
+//         EventManager.Subscribe_ShipChange(OnShipChanged);
 
-        // 함선 관리 모드로 전환
-        CameraController.Instance.m_currentMode = ECameraControllerMode.Manage_Ship;
+//         // 함선 관리 모드로 전환
+//         CameraController.Instance.m_currentMode = ECameraControllerMode.Manage_Ship;
 
-        m_selectedShip.m_shipOutline.enabled = true;
-        CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
-        EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, m_selectedModule);
+//         m_selectedShip.m_shipOutline.enabled = true;
+//         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
+//         EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, m_selectedModule);
 
-        bShow = true;
-        UpdateModuleStatsDisplay();
-        UpdateUIFrame();
-        UpdateScrollView();
-    }
+//         bShow = true;
+//         UpdateModuleStatsDisplay();
+//         UpdateUIFrame();
+//         UpdateScrollView();
+//     }
 
-    public override void OnTabDeactivated()
-    {
-        EventManager.Unsubscribe_ShipChange(OnShipChanged);
+//     public override void OnTabDeactivated()
+//     {
+//         EventManager.Unsubscribe_ShipChange(OnShipChanged);
         
-        // 평소 카메라 모드로 전환
-        CameraController.Instance.m_currentMode = ECameraControllerMode.Normal;
+//         // 평소 카메라 모드로 전환
+//         CameraController.Instance.m_currentMode = ECameraControllerMode.Normal;
 
-        m_selectedShip.m_shipOutline.enabled = false;
+//         m_selectedShip.m_shipOutline.enabled = false;
 
-        bShow = false;
-    }
+//         bShow = false;
+//     }
 
-    private void OnShipChanged()
-    {
-        if (bShow != true) return;
+//     private void OnShipChanged()
+//     {
+//         if (bShow != true) return;
 
-        UpdateModuleStatsDisplay();
-    }
+//         UpdateModuleStatsDisplay();
+//     }
 
 
-    private void UpdateUIFrame()
-    {
-        if (bShow != true) return;
+//     private void UpdateUIFrame()
+//     {
+//         if (bShow != true) return;
         
-        if( m_selectedModule is ModulePlaceholder)
-        {
-            m_unlockModuleButton.gameObject.SetActive(true);
+//         if( m_selectedModule is ModulePlaceholder)
+//         {
+//             m_unlockModuleButton.gameObject.SetActive(true);
 
-            m_scrollViewModule.gameObject.SetActive(false);            
-            m_upgradeModuleButton.gameObject.SetActive(false);
-        }
-        else
-        {
-            m_unlockModuleButton.gameObject.SetActive(false);
+//             m_scrollViewModule.gameObject.SetActive(false);            
+//             m_upgradeModuleButton.gameObject.SetActive(false);
+//         }
+//         else
+//         {
+//             m_unlockModuleButton.gameObject.SetActive(false);
             
-            m_scrollViewModule.gameObject.SetActive(true);
-            m_upgradeModuleButton.gameObject.SetActive(true);
-        }
-    }
+//             m_scrollViewModule.gameObject.SetActive(true);
+//             m_upgradeModuleButton.gameObject.SetActive(true);
+//         }
+//     }
 
-    private void UpdateModuleStatsDisplay()
-    {
-        if (bShow != true) return;
-        if (m_selectedShip == null) return;
+//     private void UpdateModuleStatsDisplay()
+//     {
+//         if (bShow != true) return;
+//         if (m_selectedShip == null) return;
         
-        CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
+//         CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
         
-        SetOrCreateModuleStatRow("Level", $"{m_selectedModule.GetModuleLevel()}");
-        SetOrCreateModuleStatRow("Attack", $"{statsOrg.attackDps:F1}");
-        SetOrCreateModuleStatRow("HP", $"{statsOrg.hp:F0}");
-        SetOrCreateModuleStatRow("Speed", $"{statsOrg.engineSpeed:F1}");
-        SetOrCreateModuleStatRow("Cargo", $"{statsOrg.cargoCapacity:F0}");
+//         SetOrCreateModuleStatRow("Level", $"{m_selectedModule.GetModuleLevel()}");
+//         SetOrCreateModuleStatRow("Attack", $"{statsOrg.attackDps:F1}");
+//         SetOrCreateModuleStatRow("HP", $"{statsOrg.hp:F0}");
+//         SetOrCreateModuleStatRow("Speed", $"{statsOrg.engineSpeed:F1}");
+//         SetOrCreateModuleStatRow("Cargo", $"{statsOrg.cargoCapacity:F0}");
 
-        m_radarChart.SetRadarChartStats(statsOrg);
-    }
+//         m_radarChart.SetRadarChartStats(statsOrg);
+//     }
 
-    private void SetOrCreateModuleStatRow(string label, string value)
-    {
-        if (m_moduleStatsContainer == null || m_rowLabelValuePrefab == null)
-            return;
+//     private void SetOrCreateModuleStatRow(string label, string value)
+//     {
+//         if (m_moduleStatsContainer == null || m_rowLabelValuePrefab == null)
+//             return;
 
-        // 이미 생성된 행이 있으면 값만 업데이트
-        if (m_statRows.TryGetValue(label, out RowLabelValue existingRow))
-        {
-            existingRow.SetValue(value);
-            return;
-        }
+//         // 이미 생성된 행이 있으면 값만 업데이트
+//         if (m_statRows.TryGetValue(label, out RowLabelValue existingRow))
+//         {
+//             existingRow.SetValue(value);
+//             return;
+//         }
 
-        // 새 행 생성 (VerticalLayoutGroup이 있으면 자동으로 아래에 배치됨)
-        GameObject rowObj = Instantiate(m_rowLabelValuePrefab, m_moduleStatsContainer);
-        rowObj.name = $"Row_{label}";
+//         // 새 행 생성 (VerticalLayoutGroup이 있으면 자동으로 아래에 배치됨)
+//         GameObject rowObj = Instantiate(m_rowLabelValuePrefab, m_moduleStatsContainer);
+//         rowObj.name = $"Row_{label}";
 
-        RowLabelValue row = rowObj.GetComponent<RowLabelValue>();
-        if (row != null)
-        {
-            row.SetRow(label, value);
-            m_statRows.Add(label, row);
-        }
-    }
+//         RowLabelValue row = rowObj.GetComponent<RowLabelValue>();
+//         if (row != null)
+//         {
+//             row.SetRow(label, value);
+//             m_statRows.Add(label, row);
+//         }
+//     }
 
-    private void UnlockModule()
-    {
-        if (m_selectedShip == null || m_selectedModule == null)
-        {
-            ShowResultMessage("No ship or module selected", 3f);
-            return;
-        }
+//     private void UnlockModule()
+//     {
+//         if (m_selectedShip == null || m_selectedModule == null)
+//         {
+//             ShowResultMessage("No ship or module selected", 3f);
+//             return;
+//         }
 
-        if ((m_selectedModule is ModulePlaceholder) == false )
-        {
-            ShowResultMessage("Selected module is not a placeholder", 3f);
-            return;
-        }
+//         if ((m_selectedModule is ModulePlaceholder) == false )
+//         {
+//             ShowResultMessage("Selected module is not a placeholder", 3f);
+//             return;
+//         }
 
-        // 해금 비용 확인
-        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.m_moduleUnlockPrice;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null)
-        {
-            ShowResultMessage("Character data not available", 3f);
-            return;
-        }
+//         // 해금 비용 확인
+//         int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.m_moduleUnlockPrice;
+//         Character character = DataManager.Instance.m_currentCharacter;
+//         if (character == null)
+//         {
+//             ShowResultMessage("Character data not available", 3f);
+//             return;
+//         }
 
-        long playerMineral = character.GetMineral();
-        if (playerMineral < unlockPrice)
-        {
-            ShowResultMessage($"Insufficient mineral (need {unlockPrice}, have {playerMineral})", 3f);
-            return;
-        }
+//         long playerMineral = character.GetMineral();
+//         if (playerMineral < unlockPrice)
+//         {
+//             ShowResultMessage($"Insufficient mineral (need {unlockPrice}, have {playerMineral})", 3f);
+//             return;
+//         }
 
-        // 확인 팝업 표시
-        CostStruct cost = new CostStruct { mineral = unlockPrice };
-        string slotTypeName = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType.ToString();
+//         // 확인 팝업 표시
+//         CostStruct cost = new CostStruct { mineral = unlockPrice };
+//         string slotTypeName = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType.ToString();
 
-        UIManager.Instance.ShowConfirmPopup(
-            "Module Unlock",
-            $"Unlock {slotTypeName} slot?",
-            cost,
-            () => ExecuteUnlockModule()
-        );
-    }
+//         UIManager.Instance.ShowConfirmPopup(
+//             "Module Unlock",
+//             $"Unlock {slotTypeName} slot?",
+//             cost,
+//             () => ExecuteUnlockModule()
+//         );
+//     }
 
-    private void ExecuteUnlockModule()
-    {
-        // 모듈 해금 요청 생성
-        var unlockRequest = new ModuleUnlockRequest
-        {
-            shipId = m_selectedShip.m_shipInfo.id,
-            bodyIndex = m_selectedModule.GetModuleBodyIndex(),
-            moduleType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType,
-            slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex
-        };
+//     private void ExecuteUnlockModule()
+//     {
+//         // 모듈 해금 요청 생성
+//         var unlockRequest = new ModuleUnlockRequest
+//         {
+//             shipId = m_selectedShip.m_shipInfo.id,
+//             bodyIndex = m_selectedModule.GetModuleBodyIndex(),
+//             moduleType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType,
+//             slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex
+//         };
 
-        // 서버에 모듈 해금 요청 전송
-        NetworkManager.Instance.UnlockModule(unlockRequest, OnUnlockModuleResponse);
-    }
+//         // 서버에 모듈 해금 요청 전송
+//         NetworkManager.Instance.UnlockModule(unlockRequest, OnUnlockModuleResponse);
+//     }
 
-    private void OnUnlockModuleResponse(ApiResponse<ModuleUnlockResponse> response)
-    {
-        if (response.errorCode == 0)
-        {
-            UpdateModuleAfterUnlock(response.data);
-        }
-        else
-        {
-            // 실패 메시지 표시
-            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            ShowResultMessage($"Module unlock failed: {errorMessage}", 3f);
-        }
-    }
+//     private void OnUnlockModuleResponse(ApiResponse<ModuleUnlockResponse> response)
+//     {
+//         if (response.errorCode == 0)
+//         {
+//             UpdateModuleAfterUnlock(response.data);
+//         }
+//         else
+//         {
+//             // 실패 메시지 표시
+//             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+//             ShowResultMessage($"Module unlock failed: {errorMessage}", 3f);
+//         }
+//     }
 
-    private void UpdateModuleAfterUnlock(ModuleUnlockResponse unlockData)
-    {
-        if (unlockData == null) return;
+//     private void UpdateModuleAfterUnlock(ModuleUnlockResponse unlockData)
+//     {
+//         if (unlockData == null) return;
 
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+//         Character character = DataManager.Instance.m_currentCharacter;
+//         if (character == null) return;
 
-        // 자원 업데이트
-        if (unlockData.costRemainInfo != null)
-        {
-            character.UpdateMineral(unlockData.costRemainInfo.remainMineral);
-            character.UpdateMineralRare(unlockData.costRemainInfo.remainMineralRare);
-            character.UpdateMineralExotic(unlockData.costRemainInfo.remainMineralExotic);
-            character.UpdateMineralDark(unlockData.costRemainInfo.remainMineralDark);
-            DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
-        }
+//         // 자원 업데이트
+//         if (unlockData.costRemainInfo != null)
+//         {
+//             character.UpdateMineral(unlockData.costRemainInfo.remainMineral);
+//             character.UpdateMineralRare(unlockData.costRemainInfo.remainMineralRare);
+//             character.UpdateMineralExotic(unlockData.costRemainInfo.remainMineralExotic);
+//             character.UpdateMineralDark(unlockData.costRemainInfo.remainMineralDark);
+//             DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
+//         }
 
-        // 함선 찾기
-        SpaceFleet fleet = character.GetOwnedFleet();
-        if (fleet == null) return;
-        SpaceShip targetShip = fleet.FindShip(unlockData.shipId);
-        if (targetShip == null) return;
+//         // 함선 찾기
+//         SpaceFleet fleet = character.GetOwnedFleet();
+//         if (fleet == null) return;
+//         SpaceShip targetShip = fleet.FindShip(unlockData.shipId);
+//         if (targetShip == null) return;
 
-        // 모듈 해금 처리
-        targetShip.UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
+//         // 모듈 해금 처리
+//         targetShip.UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
 
-        // 성공 메시지 표시
-        ShowResultMessage("Module unlock successful!", 3f);
+//         // 성공 메시지 표시
+//         ShowResultMessage("Module unlock successful!", 3f);
 
-        // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
-        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
-            ReselectReplacedModule(targetShip, unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
-    }
+//         // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
+//         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
+//             ReselectReplacedModule(targetShip, unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
+//     }
 
-    private void UpgradeModule()
-    {
-        if (m_selectedShip == null || m_selectedModule == null) return;
-        if (m_selectedModule is ModulePlaceholder == true) return;
+//     private void UpgradeModule()
+//     {
+//         if (m_selectedShip == null || m_selectedModule == null) return;
+//         if (m_selectedModule is ModulePlaceholder == true) return;
 
-        // Validate resources and upgrade availability
-        if (!CanUpgrade(out string validationMessage))
-        {
-            Debug.LogWarning($"Upgrade blocked: {validationMessage}");
-            ShowResultMessage($"Upgrade failed: {validationMessage}", 3f);
-            return;
-        }
+//         // Validate resources and upgrade availability
+//         if (!CanUpgrade(out string validationMessage))
+//         {
+//             Debug.LogWarning($"Upgrade blocked: {validationMessage}");
+//             ShowResultMessage($"Upgrade failed: {validationMessage}", 3f);
+//             return;
+//         }
 
-        // 업그레이드 비용 가져오기
-        if (!DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out CostStruct cost))
-        {
-            ShowResultMessage("Failed to get upgrade cost", 3f);
-            return;
-        }
+//         // 업그레이드 비용 가져오기
+//         if (!DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out CostStruct cost))
+//         {
+//             ShowResultMessage("Failed to get upgrade cost", 3f);
+//             return;
+//         }
 
-        int currentLevel = m_selectedModule.GetModuleLevel();
-        int targetLevel = currentLevel + 1;
-        string moduleName = m_selectedModule.GetModuleSubType().ToString();
+//         int currentLevel = m_selectedModule.GetModuleLevel();
+//         int targetLevel = currentLevel + 1;
+//         string moduleName = m_selectedModule.GetModuleSubType().ToString();
 
-        UIManager.Instance.ShowConfirmPopup(
-            "Upgrade Module",
-            $"Upgrade {moduleName} Lv.{currentLevel} → Lv.{targetLevel}?",
-            cost,
-            () => ExecuteUpgradeModule()
-        );
-    }
+//         UIManager.Instance.ShowConfirmPopup(
+//             "Upgrade Module",
+//             $"Upgrade {moduleName} Lv.{currentLevel} → Lv.{targetLevel}?",
+//             cost,
+//             () => ExecuteUpgradeModule()
+//         );
+//     }
 
-    private void ExecuteUpgradeModule()
-    {
-        string partsInfo = GetPartsUpgradeInfo(m_selectedModule);
-        Debug.Log($"Requesting upgrade for {partsInfo} on ship {m_selectedShip.name}");
+//     private void ExecuteUpgradeModule()
+//     {
+//         string partsInfo = GetPartsUpgradeInfo(m_selectedModule);
+//         Debug.Log($"Requesting upgrade for {partsInfo} on ship {m_selectedShip.name}");
 
-        var upgradeRequest = new ModuleUpgradeRequest
-        {
-            shipId = m_selectedShip.m_shipInfo.id
-            ,bodyIndex = m_selectedModule.GetModuleBodyIndex()
-            ,moduleType = m_selectedModule.GetModuleType()
-            ,moduleSubType = m_selectedModule.GetModuleSubType()
-            ,slotIndex = m_selectedModule.GetSlotIndex()
-            ,currentLevel = m_selectedModule.GetModuleLevel()
-            ,targetLevel = m_selectedModule.GetModuleLevel() + 1
-        };
+//         var upgradeRequest = new ModuleUpgradeRequest
+//         {
+//             shipId = m_selectedShip.m_shipInfo.id
+//             ,bodyIndex = m_selectedModule.GetModuleBodyIndex()
+//             ,moduleType = m_selectedModule.GetModuleType()
+//             ,moduleSubType = m_selectedModule.GetModuleSubType()
+//             ,slotIndex = m_selectedModule.GetSlotIndex()
+//             ,currentLevel = m_selectedModule.GetModuleLevel()
+//             ,targetLevel = m_selectedModule.GetModuleLevel() + 1
+//         };
 
-        NetworkManager.Instance.UpgradeModule(upgradeRequest, OnUpgradeResponse);
-    }
+//         NetworkManager.Instance.UpgradeModule(upgradeRequest, OnUpgradeResponse);
+//     }
     
-    private bool CanUpgrade(out string validationMessage)
-    {
-        validationMessage = "";
+//     private bool CanUpgrade(out string validationMessage)
+//     {
+//         validationMessage = "";
 
-        if (m_selectedModule == null)
-        {
-            validationMessage = "No module selected";
-            return false;
-        }
+//         if (m_selectedModule == null)
+//         {
+//             validationMessage = "No module selected";
+//             return false;
+//         }
 
-        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel() + 1);
-        if (upgradeStats == null)
-        {
-            validationMessage = "Max level reached";
-            return false;
-        }
+//         ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel() + 1);
+//         if (upgradeStats == null)
+//         {
+//             validationMessage = "Max level reached";
+//             return false;
+//         }
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null)
-        {
-            validationMessage = "Character data not available";
-            return false;
-        }
+//         var character = DataManager.Instance.m_currentCharacter;
+//         if (character == null)
+//         {
+//             validationMessage = "Character data not available";
+//             return false;
+//         }
 
-        CostStruct cost;
-        if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out cost) == false)
-        {
-            validationMessage = "Failed to get upgrade cost";
-            return false;
-        }
+//         CostStruct cost;
+//         if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out cost) == false)
+//         {
+//             validationMessage = "Failed to get upgrade cost";
+//             return false;
+//         }
 
-        int playerTechLevel = character.GetTechLevel();
-        long playerMineral = character.GetMineral();
-        long playerMineralRare = character.GetMineralRare();
-        long playerMineralExotic = character.GetMineralExotic();
-        long playerMineralDark = character.GetMineralDark();
+//         int playerTechLevel = character.GetTechLevel();
+//         long playerMineral = character.GetMineral();
+//         long playerMineralRare = character.GetMineralRare();
+//         long playerMineralExotic = character.GetMineralExotic();
+//         long playerMineralDark = character.GetMineralDark();
     
-        if (playerTechLevel < cost.techLevel)
-        {
-            validationMessage = $"Insufficient tech level (need {cost.techLevel} tech level, current {playerTechLevel})";
-            return false;
-        }
-        if (playerMineral < cost.mineral)
-        {
-            validationMessage = $"Insufficient mineral (need {cost.mineral}, have {playerMineral})";
-            return false;
-        }
-        if (playerMineralRare < cost.mineralRare)
-        {
-            validationMessage = $"Insufficient mineralRare (need {cost.mineralRare}, have {playerMineralRare})";
-            return false;
-        }
-        if (playerMineralExotic < cost.mineralExotic)
-        {
-            validationMessage = $"Insufficient mineralExotic (need {cost.mineralExotic}, have {playerMineralExotic})";
-            return false;
-        }
-        if (playerMineralDark < cost.mineralDark)
-        {
-            validationMessage = $"Insufficient mineralDark (need {cost.mineralDark}, have {playerMineralDark})";
-            return false;
-        }
+//         if (playerTechLevel < cost.techLevel)
+//         {
+//             validationMessage = $"Insufficient tech level (need {cost.techLevel} tech level, current {playerTechLevel})";
+//             return false;
+//         }
+//         if (playerMineral < cost.mineral)
+//         {
+//             validationMessage = $"Insufficient mineral (need {cost.mineral}, have {playerMineral})";
+//             return false;
+//         }
+//         if (playerMineralRare < cost.mineralRare)
+//         {
+//             validationMessage = $"Insufficient mineralRare (need {cost.mineralRare}, have {playerMineralRare})";
+//             return false;
+//         }
+//         if (playerMineralExotic < cost.mineralExotic)
+//         {
+//             validationMessage = $"Insufficient mineralExotic (need {cost.mineralExotic}, have {playerMineralExotic})";
+//             return false;
+//         }
+//         if (playerMineralDark < cost.mineralDark)
+//         {
+//             validationMessage = $"Insufficient mineralDark (need {cost.mineralDark}, have {playerMineralDark})";
+//             return false;
+//         }
 
-        return true;
-    }
+//         return true;
+//     }
 
-    private string GetPartsUpgradeInfo(ModuleBase moduleBase)
-    {
-        if (moduleBase is ModuleBody body)
-            return $"ModuleBody[{body.m_moduleBodyInfo.bodyIndex}]";
-        else if (moduleBase is ModuleBeam beam)
-            return $"ModuleBeam[{beam.m_classId}]";
-        else if (moduleBase is ModuleMissile missile)
-            return $"ModuleMissile[{missile.m_classId}]";
-        else if (moduleBase is ModuleEngine engine)
-            return $"ModuleEngine[{engine.m_classId}]";
-        else if (moduleBase is ModuleHanger hanger)
-            return $"ModuleHanger[{hanger.m_classId}]";
-        else
-            return $"{moduleBase.GetType().Name}[{moduleBase.m_classId}]";
-    }
+//     private string GetPartsUpgradeInfo(ModuleBase moduleBase)
+//     {
+//         if (moduleBase is ModuleBody body)
+//             return $"ModuleBody[{body.m_moduleBodyInfo.bodyIndex}]";
+//         else if (moduleBase is ModuleBeam beam)
+//             return $"ModuleBeam[{beam.m_classId}]";
+//         else if (moduleBase is ModuleMissile missile)
+//             return $"ModuleMissile[{missile.m_classId}]";
+//         else if (moduleBase is ModuleEngine engine)
+//             return $"ModuleEngine[{engine.m_classId}]";
+//         else if (moduleBase is ModuleHanger hanger)
+//             return $"ModuleHanger[{hanger.m_classId}]";
+//         else
+//             return $"{moduleBase.GetType().Name}[{moduleBase.m_classId}]";
+//     }
 
-    private void OnUpgradeResponse(ApiResponse<ModuleUpgradeResponse> response)
-    {
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+//     private void OnUpgradeResponse(ApiResponse<ModuleUpgradeResponse> response)
+//     {
+//         Character character = DataManager.Instance.m_currentCharacter;
+//         if (character == null) return;
         
-        if (response.errorCode == 0)
-        {
-            if (response.data.costRemainInfo != null)
-            {
-                character.UpdateMineral(response.data.costRemainInfo.remainMineral);
-                character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
-                character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
-                character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
-                DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
-            }
+//         if (response.errorCode == 0)
+//         {
+//             if (response.data.costRemainInfo != null)
+//             {
+//                 character.UpdateMineral(response.data.costRemainInfo.remainMineral);
+//                 character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
+//                 character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
+//                 character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
+//                 DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
+//             }
 
-            // Update local data - shipId, bodyIndex, moduleTypePacked, slotIndex로 특정 모듈 찾아서 업데이트
-            UpdateModuleAfterUpgrade(response.data);
+//             // Update local data - shipId, bodyIndex, moduleTypePacked, slotIndex로 특정 모듈 찾아서 업데이트
+//             UpdateModuleAfterUpgrade(response.data);
             
-            // Refresh UI
-            UpdateModuleStatsDisplay();
+//             // Refresh UI
+//             UpdateModuleStatsDisplay();
 
-            // Show success message
-            ShowResultMessage("Upgrade successful!", 3f);
-        }
-        else
-        {
-            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            Debug.LogError($"Upgrade failed: {errorMessage}");
+//             // Show success message
+//             ShowResultMessage("Upgrade successful!", 3f);
+//         }
+//         else
+//         {
+//             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+//             Debug.LogError($"Upgrade failed: {errorMessage}");
 
-            // Show error message
-            ShowResultMessage($"Upgrade failed: {errorMessage}", 3f);
-        }
-    }
+//             // Show error message
+//             ShowResultMessage($"Upgrade failed: {errorMessage}", 3f);
+//         }
+//     }
 
-    private void UpdateModuleAfterUpgrade(ModuleUpgradeResponse upgradeData)
-    {
-        if (upgradeData == null) return;
-        if (m_myFleet == null) return;
+//     private void UpdateModuleAfterUpgrade(ModuleUpgradeResponse upgradeData)
+//     {
+//         if (upgradeData == null) return;
+//         if (m_myFleet == null) return;
 
-        // SpaceShip 찾기
-        SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
-        if (ship == null) return;
+//         // SpaceShip 찾기
+//         SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
+//         if (ship == null) return;
         
-        ship.ChangeModule(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
+//         ship.ChangeModule(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
         
-        ShowResultMessage("Module Upgrade successful!", 3f);
+//         ShowResultMessage("Module Upgrade successful!", 3f);
 
-        // 모든 아이템의 선택 해제
-	    foreach (var item in m_moduleItems)
-		item.SetSelected_ScrollViewModuleItem(false);
+//         // 모든 아이템의 선택 해제
+// 	    foreach (var item in m_moduleItems)
+// 		item.SetSelected_ScrollViewModuleItem(false);
 
-        // 새로 생성된 모듈 재선택
-        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == upgradeData.shipId)
-		ReselectReplacedModule(ship, upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex);
-    }
+//         // 새로 생성된 모듈 재선택
+//         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == upgradeData.shipId)
+// 		ReselectReplacedModule(ship, upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex);
+//     }
 
-    private void UpdateScrollView()
-    {
-        if (bShow != true) return;
-        if (m_scrollViewModuleContent == null || m_scrollViewModuleItem == null) return;
-        if (m_selectedModule == null) return;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-        if (m_selectedModule is ModulePlaceholder) return;
+//     private void UpdateScrollView()
+//     {
+//         if (bShow != true) return;
+//         if (m_scrollViewModuleContent == null || m_scrollViewModuleItem == null) return;
+//         if (m_selectedModule == null) return;
+//         Character character = DataManager.Instance.m_currentCharacter;
+//         if (character == null) return;
+//         if (m_selectedModule is ModulePlaceholder) return;
 
-        // 기존 아이템 모두 제거
-        m_moduleItems.Clear();
-        foreach(Transform child in m_scrollViewModuleContent)
-            Destroy(child.gameObject);
+//         // 기존 아이템 모두 제거
+//         m_moduleItems.Clear();
+//         foreach(Transform child in m_scrollViewModuleContent)
+//             Destroy(child.gameObject);
 
-        // 슬롯의 원래 정보를 기준으로 목록 구성
-        EModuleType targetModuleType = m_selectedModule.GetModuleType();
+//         // 슬롯의 원래 정보를 기준으로 목록 구성
+//         EModuleType targetModuleType = m_selectedModule.GetModuleType();
 
-        // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
-        foreach(EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
-        {
-            if (subType == EModuleSubType.None) continue;
-            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
-            // targetModuleType 에 속하는 서브 타입만 순회
-            if (moduleType != targetModuleType) continue;
+//         // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
+//         foreach(EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
+//         {
+//             if (subType == EModuleSubType.None) continue;
+//             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
+//             // targetModuleType 에 속하는 서브 타입만 순회
+//             if (moduleType != targetModuleType) continue;
 
-            // DataTableModule에서 해당 SubType의 SlotType 조회
-            ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, 1);
-            if (moduleData == null) continue;
+//             // DataTableModule에서 해당 SubType의 SlotType 조회
+//             ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, 1);
+//             if (moduleData == null) continue;
 
-            string moduleName = $"{subType}";
-            bool isResearched = character.IsModuleResearched(moduleType, subType);
-            bool isCurrentModule = subType == m_selectedModule.GetModuleSubType();
-            CreateModuleItem(moduleName, moduleType, subType, isResearched, isCurrentModule);
-        }
-    }
+//             string moduleName = $"{subType}";
+//             bool isResearched = character.IsModuleResearched(moduleType, subType);
+//             bool isCurrentModule = subType == m_selectedModule.GetModuleSubType();
+//             CreateModuleItem(moduleName, moduleType, subType, isResearched, isCurrentModule);
+//         }
+//     }
 
-    private void CreateModuleItem(string moduleName, EModuleType moduleType, EModuleSubType moduleSubType, bool isResearched, bool isCurrentModule)
-    {
-        GameObject item = Instantiate(m_scrollViewModuleItem, m_scrollViewModuleContent);
-        if(item != null)
-        {
-            ScrollViewModuleItem scrollViewItem = item.GetComponent<ScrollViewModuleItem>();
-            if(scrollViewItem != null)
-            {
-                scrollViewItem.gameObject.name = m_scrollViewModuleItem.name;
-                scrollViewItem.InitializeScrollViewModuleItem(
-                    moduleName,
-                    () => OnModuleSelectClicked(scrollViewItem, moduleType, moduleSubType),
-                    () => OnModuleResearchClicked(moduleType, moduleSubType)
-                );
+//     private void CreateModuleItem(string moduleName, EModuleType moduleType, EModuleSubType moduleSubType, bool isResearched, bool isCurrentModule)
+//     {
+//         GameObject item = Instantiate(m_scrollViewModuleItem, m_scrollViewModuleContent);
+//         if(item != null)
+//         {
+//             ScrollViewModuleItem scrollViewItem = item.GetComponent<ScrollViewModuleItem>();
+//             if(scrollViewItem != null)
+//             {
+//                 scrollViewItem.gameObject.name = m_scrollViewModuleItem.name;
+//                 scrollViewItem.InitializeScrollViewModuleItem(
+//                     moduleName,
+//                     () => OnModuleSelectClicked(scrollViewItem, moduleType, moduleSubType),
+//                     () => OnModuleResearchClicked(moduleType, moduleSubType)
+//                 );
 
-                // 개발 여부에 따라 Dev 버튼 활성화/비활성화
-                scrollViewItem.SetDevelopmentButtonEnabled(isResearched);
+//                 // 개발 여부에 따라 Dev 버튼 활성화/비활성화
+//                 scrollViewItem.SetDevelopmentButtonEnabled(isResearched);
 
-                // 현재 선택된 모듈 표시
-                scrollViewItem.SetSelected_ScrollViewModuleItem(isCurrentModule);
+//                 // 현재 선택된 모듈 표시
+//                 scrollViewItem.SetSelected_ScrollViewModuleItem(isCurrentModule);
 
-                // 리스트에 추가
-                m_moduleItems.Add(scrollViewItem);
-            }
-        }
-    }
+//                 // 리스트에 추가
+//                 m_moduleItems.Add(scrollViewItem);
+//             }
+//         }
+//     }
 
-    private void OnModuleSelectClicked(ScrollViewModuleItem selectedItem, EModuleType moduleType, EModuleSubType moduleSubType)
-    {
-        EModuleType currentModuleType = m_selectedModule.GetModuleType();
-        EModuleSubType currentModuleSubType = m_selectedModule.GetModuleSubType();
+//     private void OnModuleSelectClicked(ScrollViewModuleItem selectedItem, EModuleType moduleType, EModuleSubType moduleSubType)
+//     {
+//         EModuleType currentModuleType = m_selectedModule.GetModuleType();
+//         EModuleSubType currentModuleSubType = m_selectedModule.GetModuleSubType();
 
-        // 같은 모듈이면 바꿀 필요 없음
-        if (currentModuleType == moduleType && currentModuleSubType == moduleSubType)
-        {
-            ShowResultMessage("Same module type selected. No change needed", 3f);
-            return;
-        }
+//         // 같은 모듈이면 바꿀 필요 없음
+//         if (currentModuleType == moduleType && currentModuleSubType == moduleSubType)
+//         {
+//             ShowResultMessage("Same module type selected. No change needed", 3f);
+//             return;
+//         }
 
-        int slotIndex = 0;
-        if( EModuleType.Body != m_selectedModule.GetModuleType())
-            slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+//         int slotIndex = 0;
+//         if( EModuleType.Body != m_selectedModule.GetModuleType())
+//             slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
 
-        // 모듈 교체 요청 생성
-        var changeRequest = new ModuleChangeRequest
-        {
-            shipId = m_selectedShip.m_shipInfo.id
-            , bodyIndex = m_selectedModule.GetModuleBodyIndex()
-            , slotIndex = slotIndex
-            , moduleType = currentModuleType
-            , moduleSubTypeCurrent = currentModuleSubType
-            , moduleSubTypeNew = moduleSubType
-        };
+//         // 모듈 교체 요청 생성
+//         var changeRequest = new ModuleChangeRequest
+//         {
+//             shipId = m_selectedShip.m_shipInfo.id
+//             , bodyIndex = m_selectedModule.GetModuleBodyIndex()
+//             , slotIndex = slotIndex
+//             , moduleType = currentModuleType
+//             , moduleSubTypeCurrent = currentModuleSubType
+//             , moduleSubTypeNew = moduleSubType
+//         };
 
-        Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
+//         Debug.Log($"Requesting module change: Ship {m_selectedShip.name}, Body {changeRequest.bodyIndex}, Slot {slotIndex}");
 
-        // 서버에 모듈 교체 요청 전송
-        NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
+//         // 서버에 모듈 교체 요청 전송
+//         NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
 
-    }
+//     }
 
-    private void OnModuleResearchClicked(EModuleType moduleType, EModuleSubType moduleSubType)
-    {
-        // 개발 버튼 클릭 시
-        // Get research cost from DataManager
-        CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);        
-        // check)
-        bool result = DataManager.Instance.m_currentCharacter.CheckEnoughCostStruct(researchCost);
-        if( result == false)
-        {
-            ShowResultMessage($"Insufficient resources(cost mineral: {researchCost.mineral})", 3f);
-            return;
-        }
+//     private void OnModuleResearchClicked(EModuleType moduleType, EModuleSubType moduleSubType)
+//     {
+//         // 개발 버튼 클릭 시
+//         // Get research cost from DataManager
+//         CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);        
+//         // check)
+//         bool result = DataManager.Instance.m_currentCharacter.CheckEnoughCostStruct(researchCost);
+//         if( result == false)
+//         {
+//             ShowResultMessage($"Insufficient resources(cost mineral: {researchCost.mineral})", 3f);
+//             return;
+//         }
 
-        string title = "Module Research";
-        string message = $"Research {moduleSubType} module?";
+//         string title = "Module Research";
+//         string message = $"Research {moduleSubType} module?";
 
-        UIManager.Instance.ShowConfirmPopup(
-            title,
-            message,
-            researchCost,
-            onConfirm: () =>
-            {
-                // Confirm button clicked - Send research request to server
-                Debug.Log($"Research confirmed for: {moduleSubType}");
+//         UIManager.Instance.ShowConfirmPopup(
+//             title,
+//             message,
+//             researchCost,
+//             onConfirm: () =>
+//             {
+//                 // Confirm button clicked - Send research request to server
+//                 Debug.Log($"Research confirmed for: {moduleSubType}");
 
-                var request = new ModuleResearchRequest
-                {
-                    moduleType = moduleType
-                    , moduleSubType = moduleSubType
-                };
+//                 var request = new ModuleResearchRequest
+//                 {
+//                     moduleType = moduleType
+//                     , moduleSubType = moduleSubType
+//                 };
 
-                NetworkManager.Instance.ResearchModule(request, OnModuleResearchResponse);
-            },
-            onCancel: () =>
-            {
-                // Cancel button clicked
-                Debug.Log($"Research cancelled for: {moduleSubType}");
-                ShowResultMessage("Research cancelled", 2f);
-            }
-        );
-    }
+//                 NetworkManager.Instance.ResearchModule(request, OnModuleResearchResponse);
+//             },
+//             onCancel: () =>
+//             {
+//                 // Cancel button clicked
+//                 Debug.Log($"Research cancelled for: {moduleSubType}");
+//                 ShowResultMessage("Research cancelled", 2f);
+//             }
+//         );
+//     }
 
-    private void OnModuleResearchResponse(ApiResponse<ModuleResearchResponse> response)
-    {
-        if (response.errorCode == 0)
-        {
-            // Research successful
-            var researchResponse = response.data;
+//     private void OnModuleResearchResponse(ApiResponse<ModuleResearchResponse> response)
+//     {
+//         if (response.errorCode == 0)
+//         {
+//             // Research successful
+//             var researchResponse = response.data;
 
-            // Update character's remaining resources
-            if (researchResponse.costRemainInfo != null)
-                DataManager.Instance.m_currentCharacter.UpdateAllMinerals(researchResponse.costRemainInfo);
+//             // Update character's remaining resources
+//             if (researchResponse.costRemainInfo != null)
+//                 DataManager.Instance.m_currentCharacter.UpdateAllMinerals(researchResponse.costRemainInfo);
 
-            // Update researched modules list
-            if (researchResponse.researchedModuleTypes != null)
-                DataManager.Instance.m_currentCharacter.UpdateResearchedModules(researchResponse.researchedModuleTypes);
+//             // Update researched modules list
+//             if (researchResponse.researchedModuleTypes != null)
+//                 DataManager.Instance.m_currentCharacter.UpdateResearchedModules(researchResponse.researchedModuleTypes);
 
-            ShowResultMessage($"Research completed: {researchResponse.moduleType}-{researchResponse.moduleSubType}", 3f);
+//             ShowResultMessage($"Research completed: {researchResponse.moduleType}-{researchResponse.moduleSubType}", 3f);
 
-            // Refresh UI to show newly researched module
-            UpdateScrollView();
-        }
-        else
-        {
-            // Research failed
-            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            Debug.LogError($"Research failed: {errorMessage}");
-            ShowResultMessage($"Research failed: {errorMessage}", 3f);
-        }
-    }
+//             // Refresh UI to show newly researched module
+//             UpdateScrollView();
+//         }
+//         else
+//         {
+//             // Research failed
+//             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+//             Debug.LogError($"Research failed: {errorMessage}");
+//             ShowResultMessage($"Research failed: {errorMessage}", 3f);
+//         }
+//     }
 
     
-    private void OnChangeModuleResponse(ApiResponse<ModuleChangeResponse> response)
-    {
-        if (response.errorCode == 0)
-        {
-            UpdateModuleAfterChange(response.data);
-        }
-        else
-        {
-            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            Debug.Log($"Module change failed: {errorMessage}");
-            ShowResultMessage($"Module change failed: {errorMessage}", 3f);
-        }
-    }
+//     private void OnChangeModuleResponse(ApiResponse<ModuleChangeResponse> response)
+//     {
+//         if (response.errorCode == 0)
+//         {
+//             UpdateModuleAfterChange(response.data);
+//         }
+//         else
+//         {
+//             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+//             Debug.Log($"Module change failed: {errorMessage}");
+//             ShowResultMessage($"Module change failed: {errorMessage}", 3f);
+//         }
+//     }
 
-    private void UpdateModuleAfterChange(ModuleChangeResponse changeData)
-    {
-        if (changeData == null) return;
-        if (m_myFleet == null) return;
+//     private void UpdateModuleAfterChange(ModuleChangeResponse changeData)
+//     {
+//         if (changeData == null) return;
+//         if (m_myFleet == null) return;
 
-        SpaceShip ship = m_myFleet.FindShip(changeData.shipId);
-        if (ship == null) return;
+//         SpaceShip ship = m_myFleet.FindShip(changeData.shipId);
+//         if (ship == null) return;
 
-        ship.ChangeModule(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel);
+//         ship.ChangeModule(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel);
 
-        ShowResultMessage("Module change successful!", 3f);
+//         ShowResultMessage("Module change successful!", 3f);
 
-        // 모든 아이템의 선택 해제
-        foreach (var item in m_moduleItems)
-            item.SetSelected_ScrollViewModuleItem(false);
+//         // 모든 아이템의 선택 해제
+//         foreach (var item in m_moduleItems)
+//             item.SetSelected_ScrollViewModuleItem(false);
 
-        // 새로 생성된 모듈 재선택
-        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
-            ReselectReplacedModule(ship, changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex);
-    }
+//         // 새로 생성된 모듈 재선택
+//         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
+//             ReselectReplacedModule(ship, changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex);
+//     }
 
-    // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택하여 selectedModuleVisual 적용
-    private void ReselectReplacedModule(SpaceShip targetShip, int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex)
-    {
-        if (targetShip == null) return;
+//     // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택하여 selectedModuleVisual 적용
+//     private void ReselectReplacedModule(SpaceShip targetShip, int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex)
+//     {
+//         if (targetShip == null) return;
 
-        ModuleBody body = targetShip.FindModuleBodyByIndex(bodyIndex);
-        if (body == null) return;
+//         ModuleBody body = targetShip.FindModuleBodyByIndex(bodyIndex);
+//         if (body == null) return;
 
-        // Body 자체가 교체된 경우
-        if (moduleType == EModuleType.Body || slotIndex < 0)
-        {
-            m_selectedModule = body;
-            EventManager.TriggerSpaceShipModuleSelected(targetShip, m_selectedModule);
-            return;
-        }
+//         // Body 자체가 교체된 경우
+//         if (moduleType == EModuleType.Body || slotIndex < 0)
+//         {
+//             m_selectedModule = body;
+//             EventManager.TriggerSpaceShipModuleSelected(targetShip, m_selectedModule);
+//             return;
+//         }
 
-        // 일반 모듈 (Weapon, Engine, Hanger 등)이 교체된 경우
-        ModuleSlot slot = body.FindModuleSlot(moduleType, slotIndex);
-        if (slot != null && slot.transform.childCount > 0)
-        {
-            ModuleBase newModule = slot.GetComponentInChildren<ModuleBase>();
-            if (newModule != null)
-            {
-                m_selectedModule = newModule;
-                // 새로 생성된 모듈을 선택 상태로 설정 (selectedModuleVisual 적용)
-                EventManager.TriggerSpaceShipModuleSelected(targetShip, m_selectedModule);
-            }
-        }
-    }
-
-
+//         // 일반 모듈 (Weapon, Engine, Hanger 등)이 교체된 경우
+//         ModuleSlot slot = body.FindModuleSlot(moduleType, slotIndex);
+//         if (slot != null && slot.transform.childCount > 0)
+//         {
+//             ModuleBase newModule = slot.GetComponentInChildren<ModuleBase>();
+//             if (newModule != null)
+//             {
+//                 m_selectedModule = newModule;
+//                 // 새로 생성된 모듈을 선택 상태로 설정 (selectedModuleVisual 적용)
+//                 EventManager.TriggerSpaceShipModuleSelected(targetShip, m_selectedModule);
+//             }
+//         }
+//     }
 
 
 
@@ -740,4 +738,6 @@ public class UIPanelFleet_TabUpgrade_TabShip : UITabBase
 
 
 
-}
+
+
+// }

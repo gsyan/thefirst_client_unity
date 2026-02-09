@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,16 +9,15 @@ public class UIPopupConfirm : UIPopupBase
     [Header("Confirm Popup UI")]
     public TMP_Text titleText;
     public TMP_Text messageText;
-    public TMP_Text techText;
-    public TMP_Text mineralText;
-    public TMP_Text mineralRareText;
-    public TMP_Text mineralExoticText;
-    public TMP_Text mineralDarkText;
+    [SerializeField] private RowLabelValue m_rowPrefab;
+    [SerializeField] private Transform m_rowContainer;
     public Button confirmButton;
     public Button cancelButton;
 
     private Action onCancelCallback;
     private Action onConfirmCallback;
+    private List<RowLabelValue> m_activeRows = new List<RowLabelValue>();
+    private List<RowLabelValue> m_pooledRows = new List<RowLabelValue>();
     
     protected override void Awake()
     {
@@ -28,58 +28,52 @@ public class UIPopupConfirm : UIPopupBase
 
     public void ShowPopupConfirm(string title, string message, CostStruct cost, Action onConfirm, Action onCancel = null)
     {
-        // Set text
         if (titleText != null) titleText.text = title;
-
         if (messageText != null) messageText.text = message;
 
-        // Display mineral costs
-        if (cost.techLevel > 0)
-        {
-            techText.gameObject.SetActive(true);
-            techText.text = $"Tech: {cost.techLevel:N0}";
-        }
-        else
-            techText.gameObject.SetActive(false);
-    
+        // 기존 Row들 풀에 반환
+        ClearRows();
 
-        if (cost.mineral > 0)
-        {
-            mineralText.gameObject.SetActive(true);
-            mineralText.text = $"Mineral: {cost.mineral:N0}";
-        }
-        else
-            mineralText.gameObject.SetActive(false);
+        // CostStruct 필드별로 0보다 크면 Row 추가
+        if (cost.techLevel > 0) AddRow("tech_level", cost.techLevel.ToString("N0"));
+        if (cost.mineral > 0) AddRow("mineral_amount", CommonUtility.FormatBigNumber(cost.mineral));
+        if (cost.mineralRare > 0) AddRow("mineral_rare_amount", CommonUtility.FormatBigNumber(cost.mineralRare));
+        if (cost.mineralExotic > 0) AddRow("mineral_exotic_amount", CommonUtility.FormatBigNumber(cost.mineralExotic));
+        if (cost.mineralDark > 0) AddRow("mineral_dark_amount", CommonUtility.FormatBigNumber(cost.mineralDark));
 
-        if (cost.mineralRare > 0)
-        {
-            mineralRareText.gameObject.SetActive(true);
-            mineralRareText.text = $"Rare: {cost.mineralRare:N0}";
-        }
-        else
-            mineralRareText.gameObject.SetActive(false);
-
-        if (cost.mineralExotic > 0)
-        {
-            mineralExoticText.gameObject.SetActive(true);
-            mineralExoticText.text = $"Exotic: {cost.mineralExotic:N0}";
-        }
-        else
-            mineralExoticText.gameObject.SetActive(false);
-
-        if (cost.mineralDark > 0)
-        {
-            mineralDarkText.gameObject.SetActive(true);
-            mineralDarkText.text = $"Dark: {cost.mineralDark:N0}";
-        }
-        else
-            mineralDarkText.gameObject.SetActive(false);
-
-        // Set callbacks
         onCancelCallback = onCancel;
         onConfirmCallback = onConfirm;
 
         base.ShowPopup();
+    }
+
+    private void AddRow(string labelKey, string value)
+    {
+        RowLabelValue row = GetOrCreateRow();
+        row.SetRow(labelKey, value);
+        row.gameObject.SetActive(true);
+        m_activeRows.Add(row);
+    }
+
+    private RowLabelValue GetOrCreateRow()
+    {
+        if (m_pooledRows.Count > 0)
+        {
+            var row = m_pooledRows[m_pooledRows.Count - 1];
+            m_pooledRows.RemoveAt(m_pooledRows.Count - 1);
+            return row;
+        }
+        return Instantiate(m_rowPrefab, m_rowContainer);
+    }
+
+    private void ClearRows()
+    {
+        foreach (var row in m_activeRows)
+        {
+            row.gameObject.SetActive(false);
+            m_pooledRows.Add(row);
+        }
+        m_activeRows.Clear();
     }
 
     private void OnConfirmClicked()
