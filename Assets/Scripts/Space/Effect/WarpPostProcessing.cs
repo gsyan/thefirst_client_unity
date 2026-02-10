@@ -194,12 +194,12 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     {
         if (m_isWarping) return;
 
-        //SetSkyboxBlendTarget(targetSkyboxMaterial);
+        SetSkyboxBlendTarget(targetSkyboxMaterial);
 
         if (m_warpCoroutine != null)
             StopCoroutine(m_warpCoroutine);
 
-        m_warpCoroutine = StartCoroutine(WarpSequenceCoroutine(targetSkyboxMaterial, onWarpComplete));
+        m_warpCoroutine = StartCoroutine(WarpSequenceCoroutine(onWarpComplete));
     }
 
     // 워프 시퀀스 중단
@@ -216,19 +216,13 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         FinalizeSkyboxBlend();
     }
 
-    private System.Collections.IEnumerator WarpSequenceCoroutine(Material targetSkyboxMaterial, System.Action onWarpComplete)
+    private System.Collections.IEnumerator WarpSequenceCoroutine(System.Action onWarpComplete)
     {
         m_isWarping = true;
 
         // Warp 시작 시점: 적 스폰 중지, 함재기 귀환 명령
         ObjectManager.Instance.StopEnemySpawning();
         ObjectManager.Instance.OrderAllAircraftReturn();
-
-        // Phase 1: 워프 차지 (PP: 0 → chargeMax, 스카이박스 텍스처 프레임 분산 로딩)
-        bool needSkyboxLoad = m_skyboxBlendInstance != null && targetSkyboxMaterial != null;
-        int skyboxLoadIndex = 0;
-        if (needSkyboxLoad)
-            m_skyboxBlendInstance.SetFloat(BlendID, 0f);
 
         float elapsed = 0f;
         while (elapsed < m_warpChargeTime)
@@ -238,15 +232,6 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
             float easedT = EaseOutQuad(t);
 
             SetWarpIntensity(easedT * m_chargePhaseMaxIntensity);
-
-            // 프레임당 스카이박스 텍스처 1장씩 로딩
-            if (needSkyboxLoad && skyboxLoadIndex < FaceNames.Length)
-            {
-                var tex = targetSkyboxMaterial.GetTexture(FaceNames[skyboxLoadIndex]);
-                if (tex != null)
-                    m_skyboxBlendInstance.SetTexture(FaceNamesB[skyboxLoadIndex], tex);
-                skyboxLoadIndex++;
-            }
 
             yield return null;
         }

@@ -51,9 +51,22 @@ public class UITabExploration : UITabBase
         m_rowLabelValueMineralExotic.SetLabel("mineral_exotic_amount");
         m_rowLabelValueMineralDark.SetLabel("mineral_dark_amount");
 
+
         PopulateZoneScrollView();
         UpdateZoneInfo();
         SetExplorationUI(true);
+        
+        
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null)
+        {
+            string clearedZone = m_myCharacter.m_characterInfo.clearedZone;
+            if (string.IsNullOrEmpty(clearedZone)) return;
+
+            ZoneConfig zone = m_datatableZone.GetNextZone(clearedZone);
+            if (zone == null) return;
+            pp.SetSkyboxBlendTarget(zone.skyboxMaterial);
+        }
     }
 
     // 현재 그룹의 zone 목록으로 스크롤뷰 채우기 (풀 재사용)
@@ -384,6 +397,17 @@ public class UITabExploration : UITabBase
 
         // zone zero 로 이동
         OnEnterZoneZeroClicked();
+
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null)
+        {
+            string clearedZone = m_myCharacter.m_characterInfo.clearedZone;
+            if (string.IsNullOrEmpty(clearedZone)) return;
+
+            ZoneConfig zone = m_datatableZone.GetNextZone(clearedZone);
+            if (zone == null) return;
+            pp.SetSkyboxBlendTarget(zone.skyboxMaterial);
+        }
     }
 
     private void OnCollectZoneClicked()
