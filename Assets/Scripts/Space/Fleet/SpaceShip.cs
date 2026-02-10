@@ -15,27 +15,10 @@ public struct CapabilityProfile
     public int totalEngines;
 
     // 세부 전투 능력치
-    public float attackDps;        // 초당 공격력 (DPS)
-    public float hp;               // 체력
-    public float engineSpeed;      // 엔진 속도 (이동+회전 통합)
-    public float cargoCapacity;    // 화물 용량
-
-    // 육각형 차트용 포괄적 능력치
-    public float firepower;        // 화력
-    public float survivability;    // 생존력
-    public float mobility;         // 기동력
-    public float logistics;        // 군수
-    public float sustainment;      // 지속력
-    public float detection;        // 탐지력
-
-    public override string ToString()
-    {
-        return $"Weapons: {totalWeapons}, Engines: {totalEngines}\n" +
-                $"AttackDPS: {attackDps:F1}, HP: {hp:F1}, " +
-                $"EngineSpeed: {engineSpeed:F1}, Cargo: {cargoCapacity:F1}, " +                
-                $"Firepower: {firepower:F1}, Survivability: {survivability:F1}, " +
-                $"Mobility: {mobility:F1}, Logistics: {logistics:F1}";
-    }
+    public float attack_power;      // 공격력
+    public float health_power;      // 체력
+    public float speed_power;       // 속력 (이동+회전 통합)
+    public float cargo_capacity;    // 적재량
 }
 
 public class SpaceShip : MonoBehaviour
@@ -255,14 +238,14 @@ public class SpaceShip : MonoBehaviour
         // 전체 함선 체력 재계산
         m_spaceShipStatsCur = GetShipCapabilityProfile(false);
 
-        if (m_spaceShipStatsCur.hp <= 0.0f)
+        if (m_spaceShipStatsCur.health_power <= 0.0f)
             OnSpaceShipDestroyed();
     }
 
     // 함선이 살아있는지 확인
     public bool IsAlive()
     {
-        return m_spaceShipStatsCur.hp > 0 && HasAliveBodies();
+        return m_spaceShipStatsCur.health_power > 0 && HasAliveBodies();
     }
 
     // 살아있는 바디가 있는지 확인
@@ -369,7 +352,7 @@ public class SpaceShip : MonoBehaviour
         ModuleBody body = FindModuleBodyByIndex(bodyIndex);
         if (body == null) return null;
 
-        if (moduleType == EModuleType.Body)
+        if (moduleType == EModuleType.body)
             return body;
 
         return body.FindModule(moduleType, slotIndex);
@@ -388,23 +371,14 @@ public class SpaceShip : MonoBehaviour
             if (body != null && body.m_health > 0)
             {
                 CapabilityProfile bodyStats = body.GetModuleCapabilityProfile(false);
-                stats.attackDps += bodyStats.attackDps;
-                stats.hp += bodyStats.hp;
-                stats.engineSpeed += bodyStats.engineSpeed;
-                stats.cargoCapacity += bodyStats.cargoCapacity;               
+                stats.attack_power += bodyStats.attack_power;
+                stats.health_power += bodyStats.health_power;
+                stats.speed_power += bodyStats.speed_power;
+                stats.cargo_capacity += bodyStats.cargo_capacity;               
                 stats.totalWeapons += bodyStats.totalWeapons;
                 stats.totalEngines += bodyStats.totalEngines;
             }
         }
-
-        // 육각형 능력치 자동 계산
-        stats.firepower = stats.attackDps;
-        stats.survivability = stats.hp;
-        stats.mobility = stats.engineSpeed;
-        stats.logistics = stats.cargoCapacity;
-        stats.sustainment = 0; // 향후 확장
-        stats.detection = 0;   // 향후 확장
-
         return stats;
     }
 
@@ -546,26 +520,20 @@ public class SpaceShip : MonoBehaviour
 
         switch (formationType)
         {
-            case EFormationType.LinearHorizontal:
-                return CalculateLinearHorizontalPosition(positionIndex, spacing + sizeAdjustment);
-            //case EFormationType.LinearVertical:
-            //    return CalculateLinearVerticalPosition(positionIndex, spacing + sizeAdjustment);
-            // case EFormationType.LinearDepth:
-            //     return CalculateLinearDepthPosition(positionIndex, spacing + sizeAdjustment);
-            //case EFormationType.Grid:
-            //    return CalculateGridPosition(positionIndex, spacing + sizeAdjustment);
-            case EFormationType.Circle:
+            case EFormationType.formation_type_linear_horizontal:
+                return Calculateformation_type_linear_horizontalPosition(positionIndex, spacing + sizeAdjustment);
+            case EFormationType.formation_type_circle:
                 return CalculateCirclePosition(positionIndex, spacing + sizeAdjustment);
-            case EFormationType.Cross:
+            case EFormationType.formation_type_cross:
                 return CalculateCrossPosition(positionIndex, spacing + sizeAdjustment);
-            case EFormationType.X:
+            case EFormationType.formation_type_x:
                 return CalculateXPosition(positionIndex, spacing + sizeAdjustment);
             default:
-                return CalculateLinearHorizontalPosition(positionIndex, spacing + sizeAdjustment);
+                return Calculateformation_type_linear_horizontalPosition(positionIndex, spacing + sizeAdjustment);
         }
     }
 
-    private static Vector3 CalculateLinearHorizontalPosition(int positionIndex, float spacing)
+    private static Vector3 Calculateformation_type_linear_horizontalPosition(int positionIndex, float spacing)
     {
         if (positionIndex == 0)
             return new Vector3(0, 0, 0);
@@ -810,7 +778,7 @@ public class SpaceShip : MonoBehaviour
             Vector3 direction = (targetWaypoint - currentPos).normalized;
 
             // 속도 계산 (목표 근처에서 감속)
-            float baseSpeed = m_spaceShipStatsCur.engineSpeed;
+            float baseSpeed = m_spaceShipStatsCur.speed_power;
             float speedMultiplier = 1f;
 
             // 마지막 웨이포인트 근처에서 감속
@@ -858,7 +826,7 @@ public class SpaceShip : MonoBehaviour
              else
                  finalDirection = directionToTarget;
 
-            float moveSpeed = m_spaceShipStatsCur.engineSpeed;
+            float moveSpeed = m_spaceShipStatsCur.speed_power;
             Vector3 newPosition = currentPos + finalDirection * moveSpeed * Time.deltaTime;
             transform.localPosition = newPosition;
 
@@ -1032,7 +1000,7 @@ public class SpaceShip : MonoBehaviour
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
     public void ChangeModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel)
     {
-        if (moduleType == EModuleType.Body)
+        if (moduleType == EModuleType.body)
         {
             // Body 교체 처리
             ChangeModuleBody(bodyIndex, moduleType, moduleSubTypeNew, moduleNewLevel);

@@ -9,12 +9,6 @@ public class ModulePlaceholder : ModuleBase
     
     
 
-    public override string GetUpgradeComparisonText()
-    {
-        string comparison = $"Empty Slot. Select Module First";   
-        return comparison;
-    }
-
     public override void ApplyShipStateToModule()
     {
         // 플레이스홀더는 상태 변화에 반응하지 않음
@@ -50,7 +44,7 @@ public class ModulePlaceholder : ModuleBase
         m_moduleInfo = new ModuleInfo
         {
             moduleType = moduleSlot.m_moduleSlotInfo.moduleType,
-            moduleSubType = EModuleSubType.None,
+            moduleSubType = EModuleSubType.none,
             moduleLevel = 0,
             bodyIndex = parentBody.GetModuleBodyIndex(),
             slotIndex = moduleSlot.m_moduleSlotInfo.slotIndex

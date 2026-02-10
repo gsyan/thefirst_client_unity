@@ -92,10 +92,10 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         CapabilityProfile statsCur = fleet.GetFleetCapabilityProfile(true);
 
         SetOrCreateFleetStatRow("ship", $"{fleet.m_ships.Count}");
-        SetOrCreateFleetStatRow("attack_power", $"{statsCur.attackDps:F1} / {statsOrg.attackDps:F1}");
-        SetOrCreateFleetStatRow("health_power", $"{statsCur.hp:F0} / {statsOrg.hp:F0}");
-        SetOrCreateFleetStatRow("speed_power", $"{statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}");
-        SetOrCreateFleetStatRow("cargo_power", $"{statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}");
+        SetOrCreateFleetStatRow("attack_power", $"{statsCur.attack_power:F0}/{statsOrg.attack_power:F0}");
+        SetOrCreateFleetStatRow("health_power", $"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
+        SetOrCreateFleetStatRow("speed_power", $"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");
+        SetOrCreateFleetStatRow("cargo_power", $"{statsCur.cargo_capacity:F0}/{statsOrg.cargo_capacity:F0}");
     }
 
     private void SetOrCreateFleetStatRow(string label, string value)
@@ -129,8 +129,8 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         CostStruct cost = gameSettings.GetAddShipCost(m_myFleet.m_ships.Count);
 
         UIManager.Instance.ShowConfirmPopup(
-            "Add Ship",
-            "Do you want to add a new ship to your fleet?",
+            LocalizationManager.Instance.Get("add_ship"),
+            LocalizationManager.Instance.Get("popup_message_add_ship"),
             cost,
             AddShip
         );

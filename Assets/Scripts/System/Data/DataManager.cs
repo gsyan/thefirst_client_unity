@@ -15,15 +15,6 @@ public class DataManager : Singleton<DataManager>
         LoadCharacterInfoFromPlayerPrefs();
         LoadFleetDataFromPlayerPrefs();
     }
-
-    public void Initialize()
-    {
-        LoadDataTableModule();
-        LoadDataTableModuleResearch();
-        LoadDataTableConfig();
-        LoadCharacterInfoFromPlayerPrefs();
-        LoadFleetDataFromPlayerPrefs();
-    }
     #endregion
 
     #region Character Info Management ###########################################################
@@ -126,7 +117,7 @@ public class DataManager : Singleton<DataManager>
             fleetName = "DefaultFleet",
             description = "Default Fleet",
             isActive = true,
-            formation = EFormationType.LinearHorizontal,
+            formation = EFormationType.formation_type_linear_horizontal,
             ships = new List<ShipInfo>
             {
                 new ShipInfo
@@ -140,16 +131,16 @@ public class DataManager : Singleton<DataManager>
                     {
                         new ModuleBodyInfo
                         {
-                            moduleType = EModuleType.Body,
-                            moduleSubType = EModuleSubType.Body_Battle,
+                            moduleType = EModuleType.body,
+                            moduleSubType = EModuleSubType.body_battle,
                             moduleLevel = 1,
                             bodyIndex = 0,
                             engines = new List<ModuleInfo>
                             {
                                 new ModuleInfo
                                 {
-                                    moduleType = EModuleType.Engine,
-                                    moduleSubType = EModuleSubType.Engine_Standard,
+                                    moduleType = EModuleType.engine,
+                                    moduleSubType = EModuleSubType.engine_standard,
                                     moduleLevel = 1,
                                     bodyIndex = 0,
                                     slotIndex = 0
@@ -159,8 +150,8 @@ public class DataManager : Singleton<DataManager>
                             {
                                 new ModuleInfo
                                 {
-                                    moduleType = EModuleType.Beam,
-                                    moduleSubType = EModuleSubType.Beam_Standard,
+                                    moduleType = EModuleType.beam,
+                                    moduleSubType = EModuleSubType.beam_standard,
                                     moduleLevel = 1,
                                     bodyIndex = 0,
                                     slotIndex = 0
@@ -275,32 +266,8 @@ public class DataManager : Singleton<DataManager>
     {
         m_dataTableModule = Resources.Load<DataTableModule>("DataTable/DataTableModule");
         if (m_dataTableModule == null)
-        {
             Debug.LogError("DataTableModule is not exist");
-        }
-        else
-        {
-            m_dataTableModule.CalculateMaxStats();
-            Debug.Log("DataTableModule loaded successfully");
-        }
     }
-
-    // // 서버 데이터를 기반으로 완전한 모듈 데이터 복원
-    // public ModuleData RestoreModuleData(EModuleSubType subType, int moduleLevel)
-    // {
-    //     if (m_dataTableModule == null) return null;
-    //     return m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
-    // }
-
-    // public ModuleData RestoreModuleData(int moduleTypePacked, int moduleLevel)
-    // {
-    //     if (m_dataTableModule == null) return null;
-
-    //     EModuleSubType subType = CommonUtility.GetModuleSubType(moduleTypePacked);
-    //     if (subType == EModuleSubType.None) return null;
-
-    //     return RestoreModuleData(subType, moduleLevel);
-    // }
 
     public bool GetModuleUpgradeCost(EModuleSubType subType, int moduleLevel, out CostStruct cost)
     {

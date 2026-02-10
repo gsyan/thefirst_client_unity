@@ -528,30 +528,6 @@ public class ModuleBody : ModuleBase
         }
     }
 
-    // 총 엔진 속도 계산 (모든 엔진의 합)
-    public float GetTotalEngineSpeed()
-    {
-        float totalSpeed = 0f;
-        foreach (ModuleSlot slot in m_moduleSlots)
-        {
-            if (slot != null && slot.transform.childCount > 0)
-            {
-                ModuleEngine engine = slot.GetComponentInChildren<ModuleEngine>();
-                if (engine != null && engine.m_health > 0)
-                {
-                    totalSpeed += engine.GetEngineSpeed();
-                }
-            }
-        }
-        return totalSpeed;
-    }
-
-    // 총 화물 용량 반환 (Body 자체 용량)
-    public float GetTotalCargoCapacity()
-    {
-        return m_cargoCapacity;
-    }
-
     // Body의 능력치 프로파일 계산
     public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
@@ -561,8 +537,8 @@ public class ModuleBody : ModuleBase
         if (m_health <= 0) return stats;
 
         // Body 자체의 능력치
-        stats.hp = m_health;
-        stats.cargoCapacity = m_cargoCapacity;
+        stats.health_power = m_health;
+        stats.cargo_capacity = m_cargoCapacity;
 
         // 모든 슬롯의 모듈들을 순회하며 능력치 합산
         foreach (ModuleSlot slot in m_moduleSlots)
@@ -570,14 +546,14 @@ public class ModuleBody : ModuleBase
             if (slot != null && slot.transform.childCount > 0)
             {
                 ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
-                if (module != null && module.m_health > 0)
+                if (module != null)
                 {
                     CapabilityProfile moduleStats = module.GetModuleCapabilityProfile(false);
-                    stats.engineSpeed += moduleStats.engineSpeed;
-                    stats.attackDps += moduleStats.attackDps;
                     stats.totalWeapons += moduleStats.totalWeapons;
                     stats.totalEngines += moduleStats.totalEngines;
-                    stats.hp += moduleStats.hp;
+                    stats.attack_power += moduleStats.attack_power;
+                    stats.health_power += moduleStats.health_power;
+                    stats.speed_power += moduleStats.speed_power;
                 }
             }
         }
@@ -589,41 +565,6 @@ public class ModuleBody : ModuleBase
     public float GetHealthRatio()
     {
         return m_healthMax > 0 ? m_health / m_healthMax : 0f;
-    }
-
-    // 바디가 사용 가능한 상태인지 체크
-    public bool IsOperational()
-    {
-        return m_health > 0;
-    }
-
-    public override string GetUpgradeComparisonText()
-    {
-        ModuleData currentStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleBodyInfo.moduleSubType, m_moduleBodyInfo.moduleLevel);
-        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleBodyInfo.moduleSubType, m_moduleBodyInfo.moduleLevel + 1);
-
-        if (currentStats == null)
-            return "Current module data not found.";
-
-        if (upgradeStats == null)
-            return "Upgrade not available (max level reached).";
-
-        string comparison = $"=== UPGRADE COMPARISON ===\n";
-        comparison += $"Level: {currentStats.m_moduleLevel} -> {upgradeStats.m_moduleLevel}\n";
-        comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
-        comparison += $"Cargo: {currentStats.m_cargoCapacity:F0} -> {upgradeStats.m_cargoCapacity:F0}\n";
-        string costString = $"Cost: Tech Level {currentStats.m_upgradeCost.techLevel}";
-        if (currentStats.m_upgradeCost.mineral > 0)
-            costString += $", Mineral {currentStats.m_upgradeCost.mineral}";
-        if (currentStats.m_upgradeCost.mineralRare > 0)
-            costString += $", MineralRare {currentStats.m_upgradeCost.mineralRare}";
-        if (currentStats.m_upgradeCost.mineralExotic > 0)
-            costString += $", MineralExotic {currentStats.m_upgradeCost.mineralExotic}";
-        if (currentStats.m_upgradeCost.mineralDark > 0)
-            costString += $", MineralDark {currentStats.m_upgradeCost.mineralDark}";
-        comparison += costString;
-
-        return comparison;
     }
 
     // 슬롯의 모듈을 교체
@@ -689,28 +630,28 @@ public class ModuleBody : ModuleBase
         // 타입별 컴포넌트 추가 및 초기화
         switch (moduleType)
         {
-            case EModuleType.Engine:
+            case EModuleType.engine:
                 ModuleEngine moduleEngine = moduleObj.GetComponent<ModuleEngine>();
                 if (moduleEngine == null)
                     moduleEngine = moduleObj.AddComponent<ModuleEngine>();
                 moduleEngine.InitializeModuleEngine(moduleInfo, this, targetSlot);
                 return moduleEngine;
 
-            case EModuleType.Beam:
+            case EModuleType.beam:
                 ModuleBeam moduleBeam = moduleObj.GetComponent<ModuleBeam>();
                 if (moduleBeam == null)
                     moduleBeam = moduleObj.AddComponent<ModuleBeam>();
                 moduleBeam.InitializeModuleBeam(moduleInfo, this, targetSlot);
                 return moduleBeam;
 
-            case EModuleType.Missile:
+            case EModuleType.missile:
                 ModuleMissile moduleMissile = moduleObj.GetComponent<ModuleMissile>();
                 if (moduleMissile == null)
                     moduleMissile = moduleObj.AddComponent<ModuleMissile>();
                 moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot);
                 return moduleMissile;
 
-            case EModuleType.Hanger:
+            case EModuleType.hanger:
                 ModuleHanger moduleHanger = moduleObj.GetComponent<ModuleHanger>();
                 if (moduleHanger == null)
                     moduleHanger = moduleObj.AddComponent<ModuleHanger>();

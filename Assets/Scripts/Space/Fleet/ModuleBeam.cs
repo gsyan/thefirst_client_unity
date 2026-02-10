@@ -88,8 +88,8 @@ public class ModuleBeam : ModuleBase
     {
         switch (m_moduleInfo.moduleSubType)
         {
-            case EModuleSubType.Beam_Standard:
-            case EModuleSubType.Beam_Advanced:
+            case EModuleSubType.beam_standard:
+            case EModuleSubType.beam_advanced:
                 for(int i=0; i< moduleData.m_attackFireCount; i++)
                 {
                     LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
@@ -121,12 +121,6 @@ public class ModuleBeam : ModuleBase
     {
         while (true)
         {
-            if (m_health <= 0)
-            {
-                yield return null;
-                continue;
-            }
-
             if( m_moduleState != EModuleState.Battle ) yield return null;
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
@@ -154,32 +148,13 @@ public class ModuleBeam : ModuleBase
         }
     }
 
-    public override void TakeDamage(float damage)
-    {
-        base.TakeDamage(damage);
-        
-        if (m_health <= 0)
-        {
-            // 부모 바디에서 이 무기 제거
-            if (m_parentBody != null)
-                m_parentBody.RemoveBeam(this);
-            
-            // 비활성화
-            gameObject.SetActive(false);
-        }
-    }
-
     public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
         if (bByInfo == true) return CommonUtility.GetModuleCapabilityProfile(m_moduleInfo);
 
         CapabilityProfile stats = new CapabilityProfile();
-        if (m_health <= 0) return stats;
-        stats.hp = m_health;
         stats.totalWeapons = 1;
-        // DPS 계산: 공격력 × 발사 개수 / 쿨타임
-        if (m_attackCoolTime > 0)
-            stats.attackDps = m_attackPower * m_attackFireCount / m_attackCoolTime;
+        stats.attack_power = m_attackPower * m_attackFireCount;// 공격력 × 발사 개수
         return stats;
     }
 
@@ -192,12 +167,8 @@ public class ModuleBeam : ModuleBase
 
         // 새 레벨의 ModuleData 가져오기
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, newLevel);
-        if (moduleData == null)
-        {
-            Debug.LogError($"Failed to restore module data for level {newLevel}");
-            return;
-        }
-
+        if (moduleData == null) return;
+        
         // 스탯 갱신
         m_healthMax = moduleData.m_health;
         m_health = Mathf.Min(m_health, m_healthMax);
@@ -205,8 +176,6 @@ public class ModuleBeam : ModuleBase
         m_attackCoolTime = moduleData.m_attackCoolTime;
         m_attackFireCount = moduleData.m_attackFireCount;
         m_upgradeCost = moduleData.m_upgradeCost;
-
-        Debug.Log($"ModuleBeam leveled up to {newLevel}: HP={m_healthMax}, AttackPower={m_attackPower}, FireCount={m_attackFireCount}, CoolTime={m_attackCoolTime}");
     }
 
     public override int GetModuleBodyIndex()
@@ -218,23 +187,9 @@ public class ModuleBeam : ModuleBase
         m_moduleInfo.bodyIndex = bodyIndex;
     }
 
-    
-
-
-
-    
-
     public void SetTarget(ModuleBody target)
     {
         m_currentTarget = target;
-    }
-
-    
-
-    // 무기가 공격 가능한 상태인지 체크
-    public bool CanAttack()
-    {
-        return m_health > 0 && Time.time >= m_lastAttackTime + m_attackCoolTime;
     }
     
     // 다음 공격까지 남은 시간
@@ -248,12 +203,6 @@ public class ModuleBeam : ModuleBase
     public int GetAttackFireCount() { return m_attackFireCount; }
     public float GetAttackCoolTime() { return m_attackCoolTime; }
 
-    // 체력 비율 반환 (체력에 따른 성능 감소 계산용)
-    public float GetHealthRatio()
-    {
-        return m_healthMax > 0 ? m_health / m_healthMax : 0f;
-    }
-    
     // 파괴 시 정리
     private void OnDestroy()
     {
@@ -261,32 +210,4 @@ public class ModuleBeam : ModuleBase
             m_parentBody.RemoveBeam(this);
     }
 
-    public override string GetUpgradeComparisonText()
-    {
-        ModuleData currentStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel + 1);
-
-        if (currentStats == null)
-            return "Current module data not found.";
-
-        if (upgradeStats == null)
-            return "Upgrade not available (max level reached).";
-
-        string comparison = $"=== UPGRADE COMPARISON ===\n";
-        comparison += $"Level: {currentStats.m_moduleLevel} -> {upgradeStats.m_moduleLevel}\n";
-        comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
-        comparison += $"Attack Power: {currentStats.m_attackPower:F1} -> {upgradeStats.m_attackPower:F1}\n";
-        string costString = $"Cost: Tech Level {currentStats.m_upgradeCost.techLevel}";
-        if (currentStats.m_upgradeCost.mineral > 0)
-            costString += $", Mineral {currentStats.m_upgradeCost.mineral}";
-        if (currentStats.m_upgradeCost.mineralRare > 0)
-            costString += $", MineralRare {currentStats.m_upgradeCost.mineralRare}";
-        if (currentStats.m_upgradeCost.mineralExotic > 0)
-            costString += $", MineralExotic {currentStats.m_upgradeCost.mineralExotic}";
-        if (currentStats.m_upgradeCost.mineralDark > 0)
-            costString += $", MineralDark {currentStats.m_upgradeCost.mineralDark}";
-        comparison += costString;
-
-        return comparison;
-    }
 }

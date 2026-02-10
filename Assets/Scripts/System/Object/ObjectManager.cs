@@ -365,7 +365,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         FleetInfo enemyFleetInfo = new FleetInfo
         {
             fleetName = $"EnemyFleet_Wave{m_currentWaveIndex}",
-            formation = EFormationType.LinearHorizontal,
+            formation = EFormationType.formation_type_linear_horizontal,
             ships = enemyShips
         };
 
@@ -380,7 +380,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         var bodyInfo = new ModuleBodyInfo
         {
-            moduleType = EModuleType.Body,
+            moduleType = EModuleType.body,
             moduleSubType = config.bodySubType,
             moduleLevel = config.bodyLevel,
             bodyIndex = 0,
@@ -404,16 +404,16 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
             switch (slot.slotType)
             {
-                case EModuleType.Engine:
+                case EModuleType.engine:
                     bodyInfo.engines.Add(moduleInfo);
                     break;
-                case EModuleType.Beam:
+                case EModuleType.beam:
                     bodyInfo.beams.Add(moduleInfo);
                     break;
-                case EModuleType.Missile:
+                case EModuleType.missile:
                     bodyInfo.missiles.Add(moduleInfo);
                     break;
-                case EModuleType.Hanger:
+                case EModuleType.hanger:
                     bodyInfo.hangers.Add(moduleInfo);
                     break;
             }
@@ -424,8 +424,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         {
             bodyInfo.engines.Add(new ModuleInfo
             {
-                moduleType = EModuleType.Engine,
-                moduleSubType = EModuleSubType.Engine_Standard,
+                moduleType = EModuleType.engine,
+                moduleSubType = EModuleSubType.engine_standard,
                 moduleLevel = 1,
                 bodyIndex = 0,
                 slotIndex = 0

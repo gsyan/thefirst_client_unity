@@ -151,10 +151,10 @@
 //         CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
         
 //         SetOrCreateModuleStatRow("Level", $"{m_selectedModule.GetModuleLevel()}");
-//         SetOrCreateModuleStatRow("Attack", $"{statsOrg.attackDps:F1}");
-//         SetOrCreateModuleStatRow("HP", $"{statsOrg.hp:F0}");
-//         SetOrCreateModuleStatRow("Speed", $"{statsOrg.engineSpeed:F1}");
-//         SetOrCreateModuleStatRow("Cargo", $"{statsOrg.cargoCapacity:F0}");
+//         SetOrCreateModuleStatRow("Attack", $"{statsOrg.attack_power:F1}");
+//         SetOrCreateModuleStatRow("HP", $"{statsOrg.health_power:F0}");
+//         SetOrCreateModuleStatRow("Speed", $"{statsOrg.speed_power:F1}");
+//         SetOrCreateModuleStatRow("Cargo", $"{statsOrg.cargo_capacity:F0}");
 
 //         m_radarChart.SetRadarChartStats(statsOrg);
 //     }
@@ -498,7 +498,7 @@
 //         // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
 //         foreach(EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
 //         {
-//             if (subType == EModuleSubType.None) continue;
+//             if (subType == EModuleSubType.none) continue;
 //             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
 //             // targetModuleType 에 속하는 서브 타입만 순회
 //             if (moduleType != targetModuleType) continue;
@@ -554,7 +554,7 @@
 //         }
 
 //         int slotIndex = 0;
-//         if( EModuleType.Body != m_selectedModule.GetModuleType())
+//         if( EModuleType.body != m_selectedModule.GetModuleType())
 //             slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
 
 //         // 모듈 교체 요청 생성
@@ -691,7 +691,7 @@
 //         if (body == null) return;
 
 //         // Body 자체가 교체된 경우
-//         if (moduleType == EModuleType.Body || slotIndex < 0)
+//         if (moduleType == EModuleType.body || slotIndex < 0)
 //         {
 //             m_selectedModule = body;
 //             EventManager.TriggerSpaceShipModuleSelected(targetShip, m_selectedModule);

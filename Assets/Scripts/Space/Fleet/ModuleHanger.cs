@@ -118,7 +118,7 @@ public class ModuleHanger : ModuleBase
     {
         switch (m_moduleInfo.moduleSubType)
         {
-            case EModuleSubType.Hanger_Standard:
+            case EModuleSubType.hanger_standard:
                 for(int i=0; i< moduleData.m_launchCount; i++)
                 {
                     LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
@@ -126,7 +126,7 @@ public class ModuleHanger : ModuleBase
                     m_launchers.Add(launcher);
                 }
                 break;
-            case EModuleSubType.Hanger_Advanced:
+            case EModuleSubType.hanger_advanced:
                 for(int i=0; i< moduleData.m_launchCount; i++)
                 {
                     LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
@@ -163,12 +163,6 @@ public class ModuleHanger : ModuleBase
     {
         while (true)
         {
-            if (m_health <= 0)
-            {
-                yield return null;
-                continue;
-            }
-
             if( m_moduleState != EModuleState.Battle ) yield return null;
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
@@ -249,21 +243,6 @@ public class ModuleHanger : ModuleBase
                 count++;
         }
         return count;
-    }
-
-    public override void TakeDamage(float damage)
-    {
-        base.TakeDamage(damage);
-
-        if (m_health <= 0)
-        {
-            Debug.Log($"[{GetFleetName()}] ModuleHanger[Body{m_moduleInfo.bodyIndex}-Slot{m_moduleSlot.m_moduleSlotInfo.slotIndex}] destroyed!");
-
-            if (m_parentBody != null)
-                m_parentBody.RemoveHanger(this);
-
-            gameObject.SetActive(false);
-        }
     }
 
     public override EModuleType GetModuleType()
@@ -350,8 +329,6 @@ public class ModuleHanger : ModuleBase
         // 격납고에 있는 함재기들의 스펙 업데이트 (출격 중인 함재기는 복귀 시 자동 업데이트)
         foreach (var aircraft in m_aircraftPool)
             aircraft.UpdateAircraftInfo(moduleData);
-
-        Debug.Log($"ModuleHanger leveled up to {newLevel}: HP={m_healthMax}, HangarCap={oldCapacity}->{newCapacity}, InHangar={m_aircraftPool.Count}, AircraftAttack={m_attackPower}");
     }
 
     public override int GetModuleBodyIndex()
@@ -378,51 +355,15 @@ public class ModuleHanger : ModuleBase
     }
 
 
-    public override string GetUpgradeComparisonText()
-    {
-        ModuleData currentStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel + 1);
-
-        if (currentStats == null)
-            return "Current module data not found.";
-
-        if (upgradeStats == null)
-            return "Upgrade not available (max level reached).";
-
-        string comparison = $"=== UPGRADE COMPARISON ===\n";
-        comparison += $"Level: {currentStats.m_moduleLevel} -> {upgradeStats.m_moduleLevel}\n";
-        comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
-        comparison += $"Hangar: {currentStats.m_hangarCapability:F0} -> {upgradeStats.m_hangarCapability:F0}\n";
-        comparison += $"Scout: {currentStats.m_scoutCapability:F0} -> {upgradeStats.m_scoutCapability:F0}\n";
-        string costString = $"Cost: Tech Level {currentStats.m_upgradeCost.techLevel}";
-        if (currentStats.m_upgradeCost.mineral > 0)
-            costString += $", Mineral {currentStats.m_upgradeCost.mineral}";
-        if (currentStats.m_upgradeCost.mineralRare > 0)
-            costString += $", MineralRare {currentStats.m_upgradeCost.mineralRare}";
-        if (currentStats.m_upgradeCost.mineralExotic > 0)
-            costString += $", MineralExotic {currentStats.m_upgradeCost.mineralExotic}";
-        if (currentStats.m_upgradeCost.mineralDark > 0)
-            costString += $", MineralDark {currentStats.m_upgradeCost.mineralDark}";
-        comparison += costString;
-
-        return comparison;
-    }
-
     public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
         if (bByInfo == true) return CommonUtility.GetModuleCapabilityProfile(m_moduleInfo);
 
         CapabilityProfile stats = new CapabilityProfile();
-        if (m_health <= 0) return stats;
-
-        stats.hp = m_health;
         stats.totalWeapons = 1;
-
-        // DPS 계산: 함재기 데이터로부터 계산
+        // 함재기 데이터로부터 계산
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        if (moduleData != null && moduleData.m_aircraftAttackCooldown > 0)
-            stats.attackDps = m_hangarCapability * moduleData.m_aircraftAttackPower / moduleData.m_aircraftAttackCooldown;
-
+        stats.attack_power = m_hangarCapability * moduleData.m_aircraftAttackPower;
         return stats;
     }
 
