@@ -3,6 +3,7 @@ using UnityEngine;
 
 public static class EventManager
 {
+    # region Character Tech, Mineral ----------------------------------------------------------------------
     // TechLevel
     public static event Action<int> OnTechLevelChanged;
     public static void TriggerTechLevelChange(int techLevel)
@@ -77,6 +78,8 @@ public static class EventManager
     {
         OnMineralDarkChanged -= callback;
     }
+    #endregion Character Tech, Mineral ----------------------------------------------------------------------
+    
 
     // Fleet
     public static event Action OnFleetChanged;
@@ -151,6 +154,21 @@ public static class EventManager
     public static void Unsubscribe_CameraModeChanged(Action<ECameraControllerMode> callback)
     {
         OnCameraModeChanged -= callback;
+    }
+
+    // Wave Started (1-based currentWave, totalWaves)
+    public static event Action<int, int> OnWaveStarted;
+    public static void TriggerWaveStarted(int currentWave, int totalWaves)
+    {
+        OnWaveStarted?.Invoke(currentWave, totalWaves);
+    }
+    public static void Subscribe_WaveStarted(Action<int, int> callback)
+    {
+        OnWaveStarted += callback;
+    }
+    public static void Unsubscribe_WaveStarted(Action<int, int> callback)
+    {
+        OnWaveStarted -= callback;
     }
 
     // Module Replaced (oldModule, newModule)

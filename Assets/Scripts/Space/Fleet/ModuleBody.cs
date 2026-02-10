@@ -479,23 +479,24 @@ public class ModuleBody : ModuleBase
             if (slot != null && slot.transform.childCount > 0)
             {
                 ModuleBeam beam = slot.GetComponentInChildren<ModuleBeam>();
-                if (beam != null && beam.m_health > 0)
+                if (beam != null)
                 {
                     beam.SetTarget(target);
                     continue;
                 }
 
                 ModuleMissile missile = slot.GetComponentInChildren<ModuleMissile>();
-                if (missile != null && missile.m_health > 0)
+                if (missile != null)
                 {
                     missile.SetTarget(target);
                     continue;
                 }
 
                 ModuleHanger hanger = slot.GetComponentInChildren<ModuleHanger>();
-                if (hanger != null && hanger.m_health > 0)
+                if (hanger != null)
                 {
                     hanger.SetTarget(target);
+                    continue;
                 }
             }
         }

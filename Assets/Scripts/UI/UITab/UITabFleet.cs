@@ -19,6 +19,8 @@ public class UIPanelFleet_TabUpgrade : UITabBase
     private SpaceShip m_selectedShip;
     
     private readonly System.Collections.Generic.Dictionary<string, RowLabelValue> m_fleetStatRows = new();
+    private readonly List<ScrollViewFormationItem> m_formationItemPool = new List<ScrollViewFormationItem>();
+    private readonly List<ScrollViewFormationItem> m_formationItemActive = new List<ScrollViewFormationItem>();
 
     public override void InitializeUITab()
     {
@@ -53,25 +55,36 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         if (m_scrollViewFormationContent == null || m_scrollViewFormationItem == null) return;
         if (m_myFleet == null) return;
 
-        // 기존 아이템 제거
-        for (int i = m_scrollViewFormationContent.childCount - 1; i >= 0; i--)
-            Destroy(m_scrollViewFormationContent.GetChild(i).gameObject);
+        // 활성 아이템 비활성화
+        for (int i = 0; i < m_formationItemActive.Count; i++)
+            m_formationItemActive[i].gameObject.SetActive(false);
+        m_formationItemActive.Clear();
 
+        int poolIndex = 0;
         var formationTypes = System.Enum.GetValues(typeof(EFormationType));
         foreach (EFormationType formationType in formationTypes)
         {
-            GameObject item = Instantiate(m_scrollViewFormationItem, m_scrollViewFormationContent);
-            if (item == null) continue;
-
-            item.name = formationType.ToString();
-            ScrollViewFormationItem scrollViewItem = item.GetComponent<ScrollViewFormationItem>();
-            if (scrollViewItem == null) continue;
+            ScrollViewFormationItem scrollViewItem;
+            if (poolIndex < m_formationItemPool.Count)
+            {
+                scrollViewItem = m_formationItemPool[poolIndex];
+                scrollViewItem.gameObject.SetActive(true);
+            }
+            else
+            {
+                var item = Instantiate(m_scrollViewFormationItem, m_scrollViewFormationContent);
+                item.name = formationType.ToString();
+                scrollViewItem = item.GetComponent<ScrollViewFormationItem>();
+                m_formationItemPool.Add(scrollViewItem);
+            }
 
             EFormationType captured = formationType;
             scrollViewItem.InitializeScrollViewFormationItem(
                 () => OnFormationItemSelected(captured),
                 formationType.ToString()
             );
+            m_formationItemActive.Add(scrollViewItem);
+            poolIndex++;
         }
     }
 

@@ -7,7 +7,7 @@
 - 모든 Unity 관련 답변은 Unity 2021+ 기준으로 작성할 것
 - C# 코드 예시는 Unity 스타일에 맞출 것
 - 항상 성능과 GC Alloc을 고려할 것
-- Update 남용 금지, 이벤트 또는 코루틴 우선
+- Update 남용 금지, 이벤트 또는 코루틴 우선 (public static class EventManager 참고할 것)
 - Raycast, Physics 사용 시 반드시 성능 비용 및 가능한 대안 설명 포함
 - 주석을 /// <summary> 를 사용하지 말고 간단하게 한줄로
 

@@ -44,8 +44,11 @@ public class UITabShip : UITabBase
     private readonly List<RowLabelValue> m_activeModuleRows = new List<RowLabelValue>();
     private readonly List<RowLabelValue> m_pooledModuleRows = new List<RowLabelValue>();
 
-    // 생성된 모든 ScrollViewModuleItem 추적
-    private List<ScrollViewModuleItem> m_moduleItems = new List<ScrollViewModuleItem>();
+    private readonly List<ScrollViewShipItem> m_shipItemPool = new List<ScrollViewShipItem>();
+    private readonly List<ScrollViewShipItem> m_shipItemActive = new List<ScrollViewShipItem>();
+
+    private readonly List<ScrollViewModuleItem> m_moduleItemPool = new List<ScrollViewModuleItem>();
+    private List<ScrollViewModuleItem> m_moduleItemActive = new List<ScrollViewModuleItem>();
 
     private Coroutine m_mineralUpdateCoroutine;
     private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
@@ -149,25 +152,36 @@ public class UITabShip : UITabBase
         if (m_scrollViewShipContent == null || m_scrollViewShipItem == null) return;
         if (m_myFleet == null) return;
 
-        // 기존 아이템 제거
-        for (int i = m_scrollViewShipContent.childCount - 1; i >= 0; i--)
-            Destroy(m_scrollViewShipContent.GetChild(i).gameObject);
+        // 활성 아이템 비활성화
+        for (int i = 0; i < m_shipItemActive.Count; i++)
+            m_shipItemActive[i].gameObject.SetActive(false);
+        m_shipItemActive.Clear();
+        m_shipItemMap.Clear();
 
-        for(int i = 0; i < m_myFleet.m_ships.Count; i++)
+        for (int i = 0; i < m_myFleet.m_ships.Count; i++)
         {
-            GameObject item = Instantiate(m_scrollViewShipItem, m_scrollViewShipContent);
-            if( item != null)
+            ScrollViewShipItem scrollViewItem;
+            if (i < m_shipItemPool.Count)
             {
+                scrollViewItem = m_shipItemPool[i];
+                scrollViewItem.gameObject.SetActive(true);
+            }
+            else
+            {
+                var item = Instantiate(m_scrollViewShipItem, m_scrollViewShipContent);
                 item.name = m_scrollViewShipItem.name;
-                int index = i; // 클로저 문제 방지
-                SpaceShip ship = m_myFleet.m_ships[index];
-                ScrollViewShipItem scrollViewItem = item.GetComponent<ScrollViewShipItem>();
-                scrollViewItem.InitializeScrollViewShipItem(
-                    ship.m_shipInfo.shipName,
-                    () => OnShipItemSelected(scrollViewItem, ship)
-                );
-                m_shipItemMap[ship] = scrollViewItem;
-            }                    
+                scrollViewItem = item.GetComponent<ScrollViewShipItem>();
+                m_shipItemPool.Add(scrollViewItem);
+            }
+
+            SpaceShip ship = m_myFleet.m_ships[i];
+            ScrollViewShipItem captured = scrollViewItem;
+            scrollViewItem.InitializeScrollViewShipItem(
+                ship.m_shipInfo.shipName,
+                () => OnShipItemSelected(captured, ship)
+            );
+            m_shipItemMap[ship] = scrollViewItem;
+            m_shipItemActive.Add(scrollViewItem);
         }
     }
 
@@ -244,18 +258,19 @@ public class UITabShip : UITabBase
     {
         if (bShow != true) return;
         if (m_myCharacter == null) return;
-        if (m_scrollViewModuleContent == null || m_scrollViewModuleItem == null) return;        
-        if (m_selectedModule == null) return;        
+        if (m_scrollViewModuleContent == null || m_scrollViewModuleItem == null) return;
+        if (m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder) return;
 
-        // 기존 아이템 모두 제거
-        m_moduleItems.Clear();
-        foreach(Transform child in m_scrollViewModuleContent)
-            Destroy(child.gameObject);
+        // 활성 아이템 비활성화
+        for (int i = 0; i < m_moduleItemActive.Count; i++)
+            m_moduleItemActive[i].gameObject.SetActive(false);
+        m_moduleItemActive.Clear();
 
         // 슬롯의 원래 정보를 기준으로 목록 구성
         EModuleType targetModuleType = m_selectedModule.GetModuleType();
 
+        int poolIndex = 0;
         // 선택된 모듈의 타입에 맞는 스크롤 뷰 목록 구성
         foreach(EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
@@ -270,39 +285,37 @@ public class UITabShip : UITabBase
 
             string moduleName = $"{subType}";
 
-
             bool isResearched = m_myCharacter.IsModuleResearched(moduleType, subType);
             bool isCurrentModule = subType == m_selectedModule.GetModuleSubType();
-            CreateModuleItem(moduleName, moduleType, subType, isResearched, isCurrentModule);
+            CreateModuleItem(poolIndex, moduleName, moduleType, subType, isResearched, isCurrentModule);
+            poolIndex++;
         }
     }
-    
-    private void CreateModuleItem(string moduleName, EModuleType moduleType, EModuleSubType moduleSubType, bool isResearched, bool isCurrentModule)
+
+    private void CreateModuleItem(int poolIndex, string moduleName, EModuleType moduleType, EModuleSubType moduleSubType, bool isResearched, bool isCurrentModule)
     {
-        GameObject item = Instantiate(m_scrollViewModuleItem, m_scrollViewModuleContent);
-        if(item != null)
+        ScrollViewModuleItem scrollViewItem;
+        if (poolIndex < m_moduleItemPool.Count)
         {
-            ScrollViewModuleItem scrollViewItem = item.GetComponent<ScrollViewModuleItem>();
-            if(scrollViewItem != null)
-            {
-                scrollViewItem.gameObject.name = m_scrollViewModuleItem.name;
-                
-                scrollViewItem.InitializeScrollViewModuleItem(
-                    moduleName,
-                    () => OnModuleSelectClicked(scrollViewItem, moduleType, moduleSubType),
-                    () => OnModuleResearchClicked(moduleType, moduleSubType)
-                );
-
-                // 개발 여부에 따라 Dev 버튼 활성화/비활성화
-                scrollViewItem.SetDevelopmentButtonEnabled(isResearched);
-
-                // 현재 선택된 모듈 표시
-                scrollViewItem.SetSelected_ScrollViewModuleItem(isCurrentModule);
-
-                // 리스트에 추가
-                m_moduleItems.Add(scrollViewItem);
-            }
+            scrollViewItem = m_moduleItemPool[poolIndex];
+            scrollViewItem.gameObject.SetActive(true);
         }
+        else
+        {
+            var item = Instantiate(m_scrollViewModuleItem, m_scrollViewModuleContent);
+            item.name = m_scrollViewModuleItem.name;
+            scrollViewItem = item.GetComponent<ScrollViewModuleItem>();
+            m_moduleItemPool.Add(scrollViewItem);
+        }
+
+        scrollViewItem.InitializeScrollViewModuleItem(
+            moduleName,
+            () => OnModuleSelectClicked(scrollViewItem, moduleType, moduleSubType),
+            () => OnModuleResearchClicked(moduleType, moduleSubType)
+        );
+        scrollViewItem.SetDevelopmentButtonEnabled(isResearched);
+        scrollViewItem.SetSelected_ScrollViewModuleItem(isCurrentModule);
+        m_moduleItemActive.Add(scrollViewItem);
     }
 
 
@@ -594,7 +607,7 @@ public class UITabShip : UITabBase
         ShowResultMessage("Module Upgrade successful!", 3f);
 
         // 모든 아이템의 선택 해제
-	    foreach (var item in m_moduleItems)
+	    foreach (var item in m_moduleItemActive)
 		item.SetSelected_ScrollViewModuleItem(false);
 
         // 새로 생성된 모듈 재선택
@@ -844,7 +857,7 @@ public class UITabShip : UITabBase
         ShowResultMessage("Module change successful!", 3f);
 
         // 모든 아이템의 선택 해제
-        foreach (var item in m_moduleItems)
+        foreach (var item in m_moduleItemActive)
             item.SetSelected_ScrollViewModuleItem(false);
 
         // 새로 생성된 모듈 재선택
