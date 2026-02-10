@@ -10,15 +10,23 @@ public class UITabExploration : UITabBase
     [SerializeField] private RowLabelValue m_rowLabelValueMineralRare;
     [SerializeField] private RowLabelValue m_rowLabelValueMineralExotic;
     [SerializeField] private RowLabelValue m_rowLabelValueMineralDark;    
+    [SerializeField] private GameObject m_scrollViewZone;            // 스크롤뷰 루트 (Content의 상위)
     [SerializeField] private RectTransform m_scrollViewZoneContent;
     [SerializeField] private GameObject m_scrollViewZoneItem;       // 프리팹
     [SerializeField] private Button m_safeZoneButton;
     [SerializeField] private Button m_collectMineralButton;
     [SerializeField] private DataTableZone m_datatableZone;         // Zone 설정 ScriptableObject
+    [SerializeField] private GameObject m_scrollViewWave;            // 웨이브 스크롤뷰 루트
+    [SerializeField] private RectTransform m_scrollViewWaveContent;
+    [SerializeField] private GameObject m_scrollViewWaveItem;        // 웨이브 아이템 프리팹
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
     private ZoneConfig m_clearedZone;
+    private readonly List<ScrollViewZoneItem> m_zoneItemPool = new List<ScrollViewZoneItem>();
+    private readonly List<ScrollViewZoneItem> m_zoneItemActive = new List<ScrollViewZoneItem>();
+    private readonly List<ScrollViewWaveItem> m_waveItemPool = new List<ScrollViewWaveItem>();
+    private readonly List<ScrollViewWaveItem> m_waveItemActive = new List<ScrollViewWaveItem>();
     
     private Coroutine m_mineralUpdateCoroutine;
     private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
@@ -38,24 +46,26 @@ public class UITabExploration : UITabBase
         m_safeZoneButton.onClick.AddListener(OnEnterZoneZeroClicked);
         // m_tryZoneButton.onClick.AddListener(OnTryZoneClicked);
 
-        // m_rowLabelValueMineral.SetLabel("Mineral:");
-        // m_rowLabelValueMineralRare.SetLabel("Mineral.R:");
-        // m_rowLabelValueMineralExotic.SetLabel("Mineral.E:");
-        // m_rowLabelValueMineralDark.SetLabel("Mineral.D:");
+        m_rowLabelValueMineral.SetLabel("mineral_amount");
+        m_rowLabelValueMineralRare.SetLabel("mineral_rare_amount");
+        m_rowLabelValueMineralExotic.SetLabel("mineral_exotic_amount");
+        m_rowLabelValueMineralDark.SetLabel("mineral_dark_amount");
 
         PopulateZoneScrollView();
         UpdateZoneInfo();
+        SetExplorationUI(true);
     }
 
-    // 현재 그룹의 zone 목록으로 스크롤뷰 채우기
+    // 현재 그룹의 zone 목록으로 스크롤뷰 채우기 (풀 재사용)
     private void PopulateZoneScrollView()
     {
         if (m_scrollViewZoneContent == null || m_scrollViewZoneItem == null) return;
         if (m_datatableZone == null || m_myCharacter == null) return;
 
-        // 기존 아이템 제거
-        for (int i = m_scrollViewZoneContent.childCount - 1; i >= 0; i--)
-            Destroy(m_scrollViewZoneContent.GetChild(i).gameObject);
+        // 활성 아이템 비활성화
+        for (int i = 0; i < m_zoneItemActive.Count; i++)
+            m_zoneItemActive[i].gameObject.SetActive(false);
+        m_zoneItemActive.Clear();
 
         int targetGroup = GetCurrentZoneGroup();
         string prefix = targetGroup + "-";
@@ -65,6 +75,7 @@ public class UITabExploration : UITabBase
             ? -1
             : m_datatableZone.GetZoneIndex(clearedZoneName);
 
+        int poolIndex = 0;
         for (int i = 0; i < m_datatableZone.ZoneCount; i++)
         {
             ZoneConfig zone = m_datatableZone.GetZone(i);
@@ -73,17 +84,28 @@ public class UITabExploration : UITabBase
             int zoneIndex = m_datatableZone.GetZoneIndex(zone.zoneName);
             bool isCleared = zoneIndex <= clearedIndex;
 
-            GameObject item = Instantiate(m_scrollViewZoneItem, m_scrollViewZoneContent);
-            if (item == null) continue;
+            ScrollViewZoneItem scrollViewItem;
+            if (poolIndex < m_zoneItemPool.Count)
+            {
+                scrollViewItem = m_zoneItemPool[poolIndex];
+                scrollViewItem.gameObject.SetActive(true);
+            }
+            else
+            {
+                var item = Instantiate(m_scrollViewZoneItem, m_scrollViewZoneContent);
+                item.name = m_scrollViewZoneItem.name;
+                scrollViewItem = item.GetComponent<ScrollViewZoneItem>();
+                m_zoneItemPool.Add(scrollViewItem);
+            }
 
-            item.name = m_scrollViewZoneItem.name;
             ZoneConfig capturedZone = zone;
-            ScrollViewZoneItem scrollViewItem = item.GetComponent<ScrollViewZoneItem>();
             scrollViewItem.InitializeScrollViewZoneItem(
                 capturedZone,
                 () => OnTryZoneClicked(capturedZone),
                 isCleared
             );
+            m_zoneItemActive.Add(scrollViewItem);
+            poolIndex++;
         }
     }
 
@@ -236,6 +258,60 @@ public class UITabExploration : UITabBase
         return $"{CommonUtility.FormatBigNumber(accumulated)}({CommonUtility.FormatBigNumber(perHour)}/h)";
     }
 
+    // 안전지역: Zone스크롤뷰 보이고 안전지역버튼+웨이브스크롤뷰 숨김 / 탐사중: 반대
+    private void SetExplorationUI(bool isSafeZone)
+    {
+        if (m_scrollViewZone != null) m_scrollViewZone.SetActive(isSafeZone);
+        if (m_scrollViewWave != null) m_scrollViewWave.SetActive(!isSafeZone);
+        m_safeZoneButton.gameObject.SetActive(!isSafeZone);
+    }
+
+    // 웨이브 스크롤뷰에 아이템 배치 (풀에서 꺼내 재사용)
+    private void PopulateWaveScrollView(int totalWaves)
+    {
+        ClearWaveScrollView();
+        if (m_scrollViewWaveContent == null || m_scrollViewWaveItem == null) return;
+
+        for (int i = 0; i < totalWaves; i++)
+        {
+            ScrollViewWaveItem waveItem;
+            if (i < m_waveItemPool.Count)
+            {
+                waveItem = m_waveItemPool[i];
+                waveItem.gameObject.SetActive(true);
+            }
+            else
+            {
+                var item = Instantiate(m_scrollViewWaveItem, m_scrollViewWaveContent);
+                item.name = m_scrollViewWaveItem.name;
+                waveItem = item.GetComponent<ScrollViewWaveItem>();
+                m_waveItemPool.Add(waveItem);
+            }
+            waveItem.InitializeScrollViewWaveItem(i);
+            m_waveItemActive.Add(waveItem);
+        }
+    }
+
+    // 활성 아이템 비활성화, 풀에 유지
+    private void ClearWaveScrollView()
+    {
+        for (int i = 0; i < m_waveItemActive.Count; i++)
+            m_waveItemActive[i].gameObject.SetActive(false);
+        m_waveItemActive.Clear();
+    }
+
+    // ObjectManager 웨이브 이벤트 핸들러 (1-based currentWave)
+    private void OnWaveStarted(int currentWave, int totalWaves)
+    {
+        for (int i = 0; i < m_waveItemActive.Count; i++)
+        {
+            if (i < currentWave - 1)
+                m_waveItemActive[i].SetState(EWaveState.Cleared);
+            else if (i == currentWave - 1)
+                m_waveItemActive[i].SetState(EWaveState.InProgress);
+        }
+    }
+
     private void OnEnterZoneZeroClicked()
     {
         // Zone-0: 안전지역 (0번 인덱스)
@@ -244,17 +320,28 @@ public class UITabExploration : UITabBase
 
         m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
         {
-            
+            ClearWaveScrollView();
+            SetExplorationUI(true);
         });
     }
 
     private void OnTryZoneClicked(ZoneConfig zone)
     {
+        SetExplorationUI(false);
+        
+        PopulateWaveScrollView(zone.TotalWaveCount);
+        
+        EventManager.Subscribe_WaveStarted(OnWaveStarted);
+        
         m_myFleet.StartFleetWarp(zone.skyboxMaterial, () =>
         {
-            // ZoneConfig 기반으로 적 함대 생성, 전투 완료 시 콜백
             ObjectManager.Instance.StartSpawnEnemies(zone, (isVictory) =>
             {
+                // 전투 완료 시 마지막 웨이브도 클리어 표시
+                for (int i = 0; i < m_waveItemActive.Count; i++)
+                    m_waveItemActive[i].SetState(EWaveState.Cleared);
+
+                EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
                 OnZoneBattleComplete(zone.zoneName, isVictory);
             });
         });

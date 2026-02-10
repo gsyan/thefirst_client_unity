@@ -8,10 +8,15 @@ public class RowLabelValue : MonoBehaviour
     [SerializeField] private TMP_Text m_label;
     [SerializeField] private TMP_Text m_value;
 
-    public void SetRow(string text, string value)
+    public void SetRow(string label, string value)
     {
-        CommonUtility.SetUILabelText(m_label, text);
+        CommonUtility.SetUILabelText(m_label, label);
         SetValue(value);
+    }
+
+    public void SetLabel(string label)
+    {
+        CommonUtility.SetUILabelText(m_label, label);
     }
 
     public void SetValue(string value)

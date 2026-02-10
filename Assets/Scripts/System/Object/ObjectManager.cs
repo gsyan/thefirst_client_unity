@@ -330,6 +330,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
             m_currentWaveIndex++;
 
+            EventManager.TriggerWaveStarted(m_currentWaveIndex, m_currentZoneConfig.waves.Count);
+
             // 현재 Wave의 적이 모두 죽을 때까지 대기 (다음 Wave로 넘어가기 전)
             yield return new WaitUntil(() => m_enemyFleets.Count == 0);
         }
