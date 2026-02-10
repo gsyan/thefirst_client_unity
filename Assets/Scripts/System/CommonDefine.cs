@@ -19,35 +19,35 @@ public enum ESpaceMineralState
 [System.Serializable]
 public enum EModuleType
 {
-    None            = 0,
-    Body            = 1,
-    Engine          = 2,
-    Beam            = 3,
-    Missile         = 4,
-    Hanger          = 5,
-    Max             = 6
+    none            = 0,
+    body            = 1,
+    engine          = 2,
+    beam            = 3,
+    missile         = 4,
+    hanger          = 5,
+    max             = 6
 }
 [System.Serializable]
 public enum EModuleSubType
 {
-    None                = 0,
+    none                = 0,
     // Body SubType 
-    Body_Battle         = 1001,
-    Body_Aircraft       = 1002,
-    Body_Repair         = 1003,
+    body_battle         = 1001,
+    body_aircraft       = 1002,
+    body_repair         = 1003,
     // Engine SubType
-    Engine_Standard     = 2001,
-    Engine_Booster      = 2002,
-    Engine_Warp         = 2003,
+    engine_standard     = 2001,
+    engine_booster      = 2002,
+    engine_warp         = 2003,
     // Beam SubType
-    Beam_Standard       = 3001,
-    Beam_Advanced       = 3002,
+    beam_standard       = 3001,
+    beam_advanced       = 3002,
     // Missile SubType    
-    Missile_Standard    = 4001,
-    Missile_Advanced    = 4002,
+    missile_standard    = 4001,
+    missile_advanced    = 4002,
     // HangerSubType
-    Hanger_Standard     = 5001,
-    Hanger_Advanced     = 5002
+    hanger_standard     = 5001,
+    hanger_advanced     = 5002
 }
 
 public static class EModuleTypeExtensions
@@ -56,15 +56,15 @@ public static class EModuleTypeExtensions
     {
         switch (moduleType)
         {
-            case EModuleType.Body:
+            case EModuleType.body:
                 return new UnityEngine.Color(0.7f, 0.9f, 0.7f);
-            case EModuleType.Engine:
+            case EModuleType.engine:
                 return new UnityEngine.Color(0.7f, 0.7f, 0.9f);
-            case EModuleType.Beam:
+            case EModuleType.beam:
                 return new UnityEngine.Color(0.9f, 0.7f, 0.7f);
-            case EModuleType.Missile:
+            case EModuleType.missile:
                 return new UnityEngine.Color(0.9f, 0.7f, 0.7f);
-            case EModuleType.Hanger:
+            case EModuleType.hanger:
                 return new UnityEngine.Color(0.9f, 0.9f, 0.7f);
             default:
                 return UnityEngine.Color.white;
@@ -78,9 +78,9 @@ public static class EModuleTypeExtensions
 [System.Serializable]
 public enum EFormationType
 {
-    LinearHorizontal,   // 가로 일렬 배치
-    Circle,             // 원형 배치
-    Cross,              // 십자 배치
-    X                   // X자 배치
+    formation_type_linear_horizontal,   // 가로 일렬 배치
+    formation_type_circle,              // 원형 배치
+    formation_type_cross,               // 십자 배치
+    formation_type_x                    // X자 배치
 }
 #endregion

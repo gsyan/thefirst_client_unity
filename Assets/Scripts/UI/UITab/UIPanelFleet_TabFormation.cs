@@ -52,7 +52,7 @@ public class UIPanelFleet_TabFormation : UITabBase
         if (fleet != null)
             m_currentFormationType = fleet.m_currentFormationType;
         else
-            m_currentFormationType = EFormationType.LinearHorizontal;
+            m_currentFormationType = EFormationType.formation_type_linear_horizontal;
 
         UpdateFormationDisplay();
     }

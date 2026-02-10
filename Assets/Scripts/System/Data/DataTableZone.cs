@@ -24,11 +24,11 @@ public class EnemyModuleSlotConfig
     {
         switch (moduleType)
         {
-            case EModuleType.Engine: return EModuleSubType.Engine_Standard;
-            case EModuleType.Beam: return EModuleSubType.Beam_Standard;
-            case EModuleType.Missile: return EModuleSubType.Missile_Standard;
-            case EModuleType.Hanger: return EModuleSubType.Hanger_Standard;
-            default: return EModuleSubType.None;
+            case EModuleType.engine: return EModuleSubType.engine_standard;
+            case EModuleType.beam: return EModuleSubType.beam_standard;
+            case EModuleType.missile: return EModuleSubType.missile_standard;
+            case EModuleType.hanger: return EModuleSubType.hanger_standard;
+            default: return EModuleSubType.none;
         }
     }
 }
@@ -37,7 +37,7 @@ public class EnemyModuleSlotConfig
 [System.Serializable]
 public class EnemyShipConfig
 {
-    public EModuleSubType bodySubType = EModuleSubType.Body_Battle;
+    public EModuleSubType bodySubType = EModuleSubType.body_battle;
     public int bodyLevel = 1;
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
 }

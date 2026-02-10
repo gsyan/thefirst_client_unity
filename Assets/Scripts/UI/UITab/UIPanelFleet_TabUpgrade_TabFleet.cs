@@ -112,10 +112,10 @@
 
 //         //SetOrCreateFleetStatRow("Ship", $"{fleet.m_ships.Count}");
 //         SetOrCreateFleetStatRow(LocalizationManager.Instance.Get("Ship", "UI"), $"{fleet.m_ships.Count}");
-//         SetOrCreateFleetStatRow("Attack", $"{statsCur.attackDps:F1} / {statsOrg.attackDps:F1}");
-//         SetOrCreateFleetStatRow("HP", $"{statsCur.hp:F0} / {statsOrg.hp:F0}");
-//         SetOrCreateFleetStatRow("Speed", $"{statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}");
-//         SetOrCreateFleetStatRow("Cargo", $"{statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}");
+//         SetOrCreateFleetStatRow("Attack", $"{statsCur.attack_power:F1} / {statsOrg.attack_power:F1}");
+//         SetOrCreateFleetStatRow("HP", $"{statsCur.health_power:F0} / {statsOrg.health_power:F0}");
+//         SetOrCreateFleetStatRow("Speed", $"{statsCur.speed_power:F1} / {statsOrg.speed_power:F1}");
+//         SetOrCreateFleetStatRow("Cargo", $"{statsCur.cargo_capacity:F0} / {statsOrg.cargo_capacity:F0}");
 //     }
 
 //     private void SetOrCreateFleetStatRow(string label, string value)
@@ -150,10 +150,10 @@
 //         //SetOrCreateShipStatRow("Weapons", $"{statsCur.totalWeapons}");
 //         SetOrCreateShipStatRow(LocalizationManager.Instance.Get("Weapons", "UI"), $"{statsCur.totalWeapons}");
 //         SetOrCreateShipStatRow("Engines", $"{statsCur.totalEngines}");
-//         SetOrCreateShipStatRow("Attack", $"{statsCur.attackDps:F1} / {statsOrg.attackDps:F1}");
-//         SetOrCreateShipStatRow("HP", $"{statsCur.hp:F0} / {statsOrg.hp:F0}");
-//         SetOrCreateShipStatRow("Speed", $"{statsCur.engineSpeed:F1} / {statsOrg.engineSpeed:F1}");
-//         SetOrCreateShipStatRow("Cargo", $"{statsCur.cargoCapacity:F0} / {statsOrg.cargoCapacity:F0}");
+//         SetOrCreateShipStatRow("Attack", $"{statsCur.attack_power:F1} / {statsOrg.attack_power:F1}");
+//         SetOrCreateShipStatRow("HP", $"{statsCur.health_power:F0} / {statsOrg.health_power:F0}");
+//         SetOrCreateShipStatRow("Speed", $"{statsCur.speed_power:F1} / {statsOrg.speed_power:F1}");
+//         SetOrCreateShipStatRow("Cargo", $"{statsCur.cargo_capacity:F0} / {statsOrg.cargo_capacity:F0}");
 //     }
 
 //     private void SetOrCreateShipStatRow(string label, string value)

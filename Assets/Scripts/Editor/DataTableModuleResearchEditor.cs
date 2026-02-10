@@ -210,15 +210,15 @@ public class DataTableModuleResearchEditor : Editor
     {
         switch (moduleType)
         {
-            case EModuleType.Body:
+            case EModuleType.body:
                 return bodyColor;
-            case EModuleType.Engine:
+            case EModuleType.engine:
                 return engineColor;
-            case EModuleType.Beam:
+            case EModuleType.beam:
                 return beamColor;
-            case EModuleType.Missile:
+            case EModuleType.missile:
                 return missileColor;
-            case EModuleType.Hanger:
+            case EModuleType.hanger:
                 return hangerColor;
             default:
                 return Color.white;

@@ -8,7 +8,7 @@ public class SpaceFleet : MonoBehaviour
     public FleetInfo m_fleetInfo;
     [SerializeField] public bool m_isEnemyFleet = false;
     public EFleetState m_fleetState = EFleetState.None;
-    public EFormationType m_currentFormationType = EFormationType.LinearHorizontal;
+    public EFormationType m_currentFormationType = EFormationType.formation_type_linear_horizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
     
     private void Start()
@@ -113,7 +113,7 @@ public class SpaceFleet : MonoBehaviour
         return null;
     }
 
-    public void UpdateShipFormation(EFormationType formationType = EFormationType.LinearHorizontal, bool smooth = true)
+    public void UpdateShipFormation(EFormationType formationType = EFormationType.formation_type_linear_horizontal, bool smooth = true)
     {
         m_currentFormationType = formationType;
 
@@ -342,23 +342,15 @@ public class SpaceFleet : MonoBehaviour
             if (ship == null) continue;
             shipCount++;
             CapabilityProfile shipStats = useCurrent ? ship.m_spaceShipStatsCur : ship.m_spaceShipStatsOrg;
-            totalStats.attackDps += shipStats.attackDps;
-            totalStats.hp += shipStats.hp;
-            totalStats.engineSpeed += shipStats.engineSpeed;
-            totalStats.cargoCapacity += shipStats.cargoCapacity;            
+            totalStats.attack_power += shipStats.attack_power;
+            totalStats.health_power += shipStats.health_power;
+            totalStats.speed_power += shipStats.speed_power;
+            totalStats.cargo_capacity += shipStats.cargo_capacity;            
             totalStats.totalWeapons += shipStats.totalWeapons;
             totalStats.totalEngines += shipStats.totalEngines;
         }
         // 일단 평균
-        totalStats.engineSpeed /= shipCount;
-
-        // 육각형 능력치 자동 계산
-        totalStats.firepower = totalStats.attackDps;
-        totalStats.survivability = totalStats.hp;
-        totalStats.mobility = totalStats.engineSpeed;
-        totalStats.logistics = totalStats.cargoCapacity;
-        totalStats.sustainment = 0; // 향후 확장
-        totalStats.detection = 0;   // 향후 확장
+        totalStats.speed_power /= shipCount;
 
         return totalStats;
     }

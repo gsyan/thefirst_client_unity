@@ -9,8 +9,8 @@ using UnityEditor;
 [System.Serializable]
 public class ModuleResearchData
 {
-    public EModuleType m_moduleType = EModuleType.None;
-    public EModuleSubType m_moduleSubType = EModuleSubType.None;
+    public EModuleType m_moduleType = EModuleType.none;
+    public EModuleSubType m_moduleSubType = EModuleSubType.none;
 
     [Header("Research Cost")]
     public CostStruct m_researchCost = new CostStruct();
@@ -48,7 +48,7 @@ public class DataTableModuleResearch : ScriptableObject
         // Add research data for each subtype
         foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
-            if (subType == EModuleSubType.None) continue;
+            if (subType == EModuleSubType.none) continue;
 
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
 

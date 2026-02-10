@@ -56,11 +56,11 @@ public class ModuleBase : MonoBehaviour
 
     public virtual EModuleType GetModuleType()
     {
-        return EModuleType.None;
+        return EModuleType.none;
     }
     public virtual EModuleSubType GetModuleSubType()
     {
-        return EModuleSubType.None;
+        return EModuleSubType.none;
     }
     public virtual int GetModuleSlotIndex()
     {
@@ -130,11 +130,6 @@ public class ModuleBase : MonoBehaviour
     public SpaceShip GetMyShip()
     {
         return m_myShip;
-    }
-
-    public virtual string GetUpgradeComparisonText()
-    {
-        return "";
     }
 
     // 모듈의 능력치 프로파일 반환 (하위 클래스에서 override)

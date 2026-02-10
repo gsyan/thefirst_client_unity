@@ -30,12 +30,12 @@ public class ModuleSlotEditor : Editor
     {
         // 타입에 맞는 SubType만 필터링
         var filteredSubTypes = new System.Collections.Generic.List<EModuleSubType>();
-        filteredSubTypes.Add(EModuleSubType.None);
+        filteredSubTypes.Add(EModuleSubType.none);
 
         int typeValue = (int)moduleType;
         foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
-            if (subType == EModuleSubType.None) continue;
+            if (subType == EModuleSubType.none) continue;
 
             int subTypeValue = (int)subType;
             if (subTypeValue / 1000 == typeValue)
@@ -47,7 +47,7 @@ public class ModuleSlotEditor : Editor
         // 현재 선택된 SubType이 필터링된 목록에 없으면 None으로 변경
         if (filteredSubTypes.Contains(currentSubType) == false)
         {
-            currentSubType = EModuleSubType.None;
+            currentSubType = EModuleSubType.none;
         }
 
         int currentIndex = filteredSubTypes.IndexOf(currentSubType);

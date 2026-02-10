@@ -28,29 +28,12 @@ public class ModuleEngine : ModuleBase
         // base.Attack 호출하지 않음
     }
     
-    public override void TakeDamage(float damage)
-    {
-        base.TakeDamage(damage);
-        
-        if (m_health <= 0)
-        {
-            // 부모 바디에서 이 엔진 제거
-            if (m_parentBody != null)
-                m_parentBody.RemoveEngine(this);
-            
-            // 비활성화
-            gameObject.SetActive(false);
-        }
-    }
-
     public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
         if (bByInfo == true) return CommonUtility.GetModuleCapabilityProfile(m_moduleInfo);
 
         CapabilityProfile stats = new CapabilityProfile();
-        if (m_health <= 0) return stats;
-        stats.hp = m_health;
-        stats.engineSpeed = GetEngineSpeed();
+        stats.speed_power = m_movementSpeed;
         stats.totalEngines = 1;
         return stats;
     }
@@ -83,19 +66,13 @@ public class ModuleEngine : ModuleBase
 
         // 새 레벨의 ModuleData 가져오기
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, newLevel);
-        if (moduleData == null)
-        {
-            Debug.LogError($"Failed to restore module data for level {newLevel}");
-            return;
-        }
-
+        if (moduleData == null) return;
+        
         // 스탯 갱신
         m_healthMax = moduleData.m_health;
         m_health = Mathf.Min(m_health, m_healthMax);
         m_movementSpeed = moduleData.m_movementSpeed;
         m_upgradeCost = moduleData.m_upgradeCost;
-
-        Debug.Log($"ModuleEngine leveled up to {newLevel}: HP={m_healthMax}, MovementSpeed={m_movementSpeed}");
     }
 
     public override int GetModuleBodyIndex()
@@ -143,27 +120,6 @@ public class ModuleEngine : ModuleBase
         }
     }
 
-    
-    
-    // 엔진이 작동 가능한 상태인지 체크
-    public bool IsOperational()
-    {
-        return m_health > 0;
-    }
-    
-    // 현재 제공하는 엔진 속도 (체력에 따라 감소 가능)
-    public float GetEngineSpeed()
-    {
-        if (m_health <= 0) return 0f;
-
-        // 체력 비율에 따른 성능 감소 (선택적)
-        float healthRatio = m_health / m_healthMax;
-        return m_movementSpeed * healthRatio;
-    }
-
-    // 엔진 스탯 Getter (원본 값)
-    public float GetBaseEngineSpeed() { return m_movementSpeed; }
-
     // 파괴 시 정리
     private void OnDestroy()
     {
@@ -173,32 +129,4 @@ public class ModuleEngine : ModuleBase
         }
     }
 
-    public override string GetUpgradeComparisonText()
-    {
-        ModuleData currentStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel + 1);
-
-        if (currentStats == null)
-            return "Current module data not found.";
-
-        if (upgradeStats == null)
-            return "Upgrade not available (max level reached).";
-
-        string comparison = $"=== UPGRADE COMPARISON ===\n";
-        comparison += $"Level: {currentStats.m_moduleLevel} -> {upgradeStats.m_moduleLevel}\n";
-        comparison += $"HP: {currentStats.m_health:F0} -> {upgradeStats.m_health:F0}\n";
-        comparison += $"Engine Speed: {currentStats.m_movementSpeed:F1} -> {upgradeStats.m_movementSpeed:F1}\n";
-        string costString = $"Cost: Tech Level {currentStats.m_upgradeCost.techLevel}";
-        if (currentStats.m_upgradeCost.mineral > 0)
-            costString += $", Mineral {currentStats.m_upgradeCost.mineral}";
-        if (currentStats.m_upgradeCost.mineralRare > 0)
-            costString += $", MineralRare {currentStats.m_upgradeCost.mineralRare}";
-        if (currentStats.m_upgradeCost.mineralExotic > 0)
-            costString += $", MineralExotic {currentStats.m_upgradeCost.mineralExotic}";
-        if (currentStats.m_upgradeCost.mineralDark > 0)
-            costString += $", MineralDark {currentStats.m_upgradeCost.mineralDark}";
-        comparison += costString;
-
-        return comparison;
-    }
 }

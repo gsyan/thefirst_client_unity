@@ -59,20 +59,20 @@ MonoBehaviour:
     m_Key: formation_list
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619713
-    m_Key: formation_linear_horizontal
+  - m_Id: 728096982302720
+    m_Key: formation_type_linear_horizontal
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619714
-    m_Key: formation_circle
+  - m_Id: 728097020051456
+    m_Key: formation_type_circle
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619715
-    m_Key: formation_cross
+  - m_Id: 728097020051457
+    m_Key: formation_type_cross
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619716
-    m_Key: formation_x
+  - m_Id: 728097020051458
+    m_Key: formation_type_x
     m_Metadata:
       m_Items: []
   - m_Id: 218309197824
@@ -99,6 +99,90 @@ MonoBehaviour:
     m_Key: module_type
     m_Metadata:
       m_Items: []
+  - m_Id: 767916345524224
+    m_Key: module_type_engine_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916345524225
+    m_Key: module_type_beam_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718528
+    m_Key: module_type_missile_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718529
+    m_Key: module_type_hanger_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718530
+    m_Key: module_type_body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718531
+    m_Key: module_type_engine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718532
+    m_Key: module_type_beam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718533
+    m_Key: module_type_missile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718534
+    m_Key: module_type_hanger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857300742144
+    m_Key: body_battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490880
+    m_Key: body_aircraft
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490881
+    m_Key: body_repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490882
+    m_Key: engine_standard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490883
+    m_Key: engine_booster
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490884
+    m_Key: engine_warp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490885
+    m_Key: beam_standard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490886
+    m_Key: beam_advanced
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490887
+    m_Key: missile_standard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490888
+    m_Key: missile_advanced
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490889
+    m_Key: hanger_standard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857338490890
+    m_Key: hanger_advanced
+    m_Metadata:
+      m_Items: []
   - m_Id: 63232261619720
     m_Key: level
     m_Metadata:
@@ -109,6 +193,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 40166030704640
     m_Key: module_upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 705451670765568
+    m_Key: module_research
     m_Metadata:
       m_Items: []
   - m_Id: 63232261619721
@@ -143,6 +231,14 @@ MonoBehaviour:
     m_Key: language_options
     m_Metadata:
       m_Items: []
+  - m_Id: 705451700125696
+    m_Key: cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 705451700125697
+    m_Key: confirm
+    m_Metadata:
+      m_Items: []
   - m_Id: 394150382993408
     m_Key: tech_level
     m_Metadata:
@@ -161,6 +257,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 394150433325059
     m_Key: mineral_dark_amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 697933359874048
+    m_Key: popup_message_add_ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 697933397622784
+    m_Key: popup_message_logout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 697933397622785
+    m_Key: popup_message_module_unlock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 705451700125698
+    m_Key: popup_message_module_upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 705451700125699
+    m_Key: popup_message_module_research
+    m_Metadata:
+      m_Items: []
+  - m_Id: 797857342685184
+    m_Key: max_level
     m_Metadata:
       m_Items: []
   m_Metadata:

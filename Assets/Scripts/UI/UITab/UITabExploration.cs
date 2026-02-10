@@ -38,10 +38,10 @@ public class UITabExploration : UITabBase
         m_safeZoneButton.onClick.AddListener(OnEnterZoneZeroClicked);
         // m_tryZoneButton.onClick.AddListener(OnTryZoneClicked);
 
-        m_rowLabelValueMineral.SetLabel("Mineral:");
-        m_rowLabelValueMineralRare.SetLabel("Mineral.R:");
-        m_rowLabelValueMineralExotic.SetLabel("Mineral.E:");
-        m_rowLabelValueMineralDark.SetLabel("Mineral.D:");
+        // m_rowLabelValueMineral.SetLabel("Mineral:");
+        // m_rowLabelValueMineralRare.SetLabel("Mineral.R:");
+        // m_rowLabelValueMineralExotic.SetLabel("Mineral.E:");
+        // m_rowLabelValueMineralDark.SetLabel("Mineral.D:");
 
         PopulateZoneScrollView();
         UpdateZoneInfo();

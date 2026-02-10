@@ -29,7 +29,7 @@ public class ShipStatsRadarChart : MonoBehaviour
         // if (firepowerLabel != null) firepowerLabel.text = $"Attack: {stats.attack:F0}";
         // if (defenseLabel != null) defenseLabel.text = $"Defense: {stats.defense:F0}";
         // if (speedLabel != null) speedLabel.text = $"Speed: {stats.speed:F0}";
-        // if (hpLabel != null) hpLabel.text = $"HP: {stats.hp:F0}";
+        // if (hpLabel != null) hpLabel.text = $"HP: {stats.health_power:F0}";
         // if (shieldLabel != null) shieldLabel.text = $"Shield: {stats.shield:F0}";
         // if (energyLabel != null) energyLabel.text = $"Energy: {stats.energy:F0}";
     }

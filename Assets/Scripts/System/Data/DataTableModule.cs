@@ -15,8 +15,8 @@ public class ModuleData
 {
     [Header("Basic Info")]
     public string m_moduleName = "Module";
-    public EModuleType m_moduleType = EModuleType.None;
-    public EModuleSubType m_moduleSubType = EModuleSubType.None;
+    public EModuleType m_moduleType = EModuleType.none;
+    public EModuleSubType m_moduleSubType = EModuleSubType.none;
     public int m_moduleLevel = 1;
 
     // Body Module Slots (extracted from prefab) ---------------------------------------
@@ -145,9 +145,6 @@ public class DataTableModule : ScriptableObject
     public List<ModuleSubTypeGroup> MissileGroups => missileGroups;
     public List<ModuleSubTypeGroup> HangerGroups => hangerGroups;
 
-    // 최대 능력치 (캐싱)
-    public ModuleMaxStats MaxStats { get; private set; }
-
     public ModuleDataList BodyModules
     {
         get
@@ -211,119 +208,18 @@ public class DataTableModule : ScriptableObject
 
     #region Public Methods
 
-    /// <summary>
-    /// 모든 모듈 데이터에서 각 능력치의 최대값을 계산하여 캐싱
-    /// DataManager 초기화 시 호출
-    /// </summary>
-    public void CalculateMaxStats()
-    {
-        float maxBodyHp = 0f;
-        float maxBodyCargo = 0f;
-        float maxEngineHp = 0f;
-        float maxEngineSpeed = 0f;
-        float maxBeamHp = 0f;
-        float maxBeamDps = 0f;
-        float maxMissileHp = 0f;
-        float maxMissileDps = 0f;
-        float maxHangerHp = 0f;
-        float maxHangerDps = 0f;
-
-        // Body 모듈 최대값
-        foreach (var group in bodyGroups)
-        {
-            foreach (var module in group.modules)
-            {
-                if (module.m_health > maxBodyHp) maxBodyHp = module.m_health;
-                if (module.m_cargoCapacity > maxBodyCargo) maxBodyCargo = module.m_cargoCapacity;
-            }
-        }
-
-        // Engine 모듈 최대값
-        foreach (var group in engineGroups)
-        {
-            foreach (var module in group.modules)
-            {
-                if (module.m_health > maxEngineHp) maxEngineHp = module.m_health;
-                if (module.m_movementSpeed > maxEngineSpeed) maxEngineSpeed = module.m_movementSpeed;
-            }
-        }
-
-        // Beam 모듈 최대값
-        foreach (var group in beamGroups)
-        {
-            foreach (var module in group.modules)
-            {
-                if (module.m_health > maxBeamHp) maxBeamHp = module.m_health;
-                if (module.m_attackCoolTime > 0)
-                {
-                    float dps = module.m_attackPower * module.m_attackFireCount / module.m_attackCoolTime;
-                    if (dps > maxBeamDps) maxBeamDps = dps;
-                }
-            }
-        }
-
-        // Missile 모듈 최대값
-        foreach (var group in missileGroups)
-        {
-            foreach (var module in group.modules)
-            {
-                if (module.m_health > maxMissileHp) maxMissileHp = module.m_health;
-                if (module.m_attackCoolTime > 0)
-                {
-                    float dps = module.m_attackPower * module.m_attackFireCount / module.m_attackCoolTime;
-                    if (dps > maxMissileDps) maxMissileDps = dps;
-                }
-            }
-        }
-
-        // Hanger 모듈 최대값
-        foreach (var group in hangerGroups)
-        {
-            foreach (var module in group.modules)
-            {
-                if (module.m_health > maxHangerHp) maxHangerHp = module.m_health;
-                if (module.m_aircraftAttackCooldown > 0)
-                {
-                    float dps = module.m_hangarCapability * module.m_aircraftAttackPower / module.m_aircraftAttackCooldown;
-                    if (dps > maxHangerDps) maxHangerDps = dps;
-                }
-            }
-        }
-
-        MaxStats = new ModuleMaxStats
-        {
-            maxBodyHp = maxBodyHp,
-            maxBodyCargo = maxBodyCargo,
-            maxEngineHp = maxEngineHp,
-            maxEngineSpeed = maxEngineSpeed,
-            maxBeamHp = maxBeamHp,
-            maxBeamDps = maxBeamDps,
-            maxMissileHp = maxMissileHp,
-            maxMissileDps = maxMissileDps,
-            maxHangerHp = maxHangerHp,
-            maxHangerDps = maxHangerDps
-        };
-
-        Debug.Log($"[DataTableModule] MaxStats calculated\n" +
-                  $"Body - HP:{maxBodyHp}, Cargo:{maxBodyCargo}\n" +
-                  $"Engine - HP:{maxEngineHp}, Speed:{maxEngineSpeed}\n" +
-                  $"Beam - HP:{maxBeamHp}, DPS:{maxBeamDps}\n" +
-                  $"Missile - HP:{maxMissileHp}, DPS:{maxMissileDps}\n" +
-                  $"Hanger - HP:{maxHangerHp}, DPS:{maxHangerDps}");
-    }
-
     public void AddModuleDataToTable(ModuleData data)
     {
         ModuleSubTypeGroup group = null;
-        if( data.m_moduleType == EModuleType.Body)
+        if( data.m_moduleType == EModuleType.body)
             group = bodyGroups.Find(g => g.subType == data.m_moduleSubType);
-        else if( data.m_moduleType == EModuleType.Engine)
+        else if( data.m_moduleType == EModuleType.engine)
             group = engineGroups.Find(g => g.subType == data.m_moduleSubType);
-        else if( data.m_moduleType == EModuleType.Beam)
+        else if( data.m_moduleType == EModuleType.beam)
             group = beamGroups.Find(g => g.subType == data.m_moduleSubType);
-        else if( data.m_moduleType == EModuleType.Missile)
+        else if( data.m_moduleType == EModuleType.missile)
             group = missileGroups.Find(g => g.subType == data.m_moduleSubType);
-        else if( data.m_moduleType == EModuleType.Hanger)
+        else if( data.m_moduleType == EModuleType.hanger)
             group = hangerGroups.Find(g => g.subType == data.m_moduleSubType);
 
         if (group == null)
@@ -342,15 +238,15 @@ public class DataTableModule : ScriptableObject
         ModuleSubTypeGroup group = null;
         EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
 
-        if( moduleType == EModuleType.Body)
+        if( moduleType == EModuleType.body)
             group = bodyGroups.Find(g => g.subType == subType);
-        else if( moduleType == EModuleType.Engine)
+        else if( moduleType == EModuleType.engine)
             group = engineGroups.Find(g => g.subType == subType);
-        else if( moduleType == EModuleType.Beam)
+        else if( moduleType == EModuleType.beam)
             group = beamGroups.Find(g => g.subType == subType);
-        else if( moduleType == EModuleType.Missile)
+        else if( moduleType == EModuleType.missile)
             group = missileGroups.Find(g => g.subType == subType);
-        else if( moduleType == EModuleType.Hanger)
+        else if( moduleType == EModuleType.hanger)
             group = hangerGroups.Find(g => g.subType == subType);
 
         if (group == null) return null;
@@ -361,17 +257,17 @@ public class DataTableModule : ScriptableObject
     {
         foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
-            if (subType == EModuleSubType.None) continue;
+            if (subType == EModuleSubType.none) continue;
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
-            if (moduleType == EModuleType.Body)
+            if (moduleType == EModuleType.body)
                 bodyGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.Engine)
+            else if (moduleType == EModuleType.engine)
                 engineGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.Beam)
+            else if (moduleType == EModuleType.beam)
                 beamGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.Missile)
+            else if (moduleType == EModuleType.missile)
                 missileGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.Hanger)
+            else if (moduleType == EModuleType.hanger)
                 hangerGroups.Add(new ModuleSubTypeGroup { subType = subType });
         }
 
@@ -389,11 +285,11 @@ public class DataTableModule : ScriptableObject
     {
         var modulesDict = new Dictionary<int, List<object>>
         {
-            { (int)EModuleType.Body, BodyModules.modules.Cast<object>().ToList() },
-            { (int)EModuleType.Engine, EngineModules.modules.Cast<object>().ToList() },
-            { (int)EModuleType.Beam, BeamModules.modules.Cast<object>().ToList() },
-            { (int)EModuleType.Missile, MissileModules.modules.Cast<object>().ToList() },
-            { (int)EModuleType.Hanger, HangerModules.modules.Cast<object>().ToList() }
+            { (int)EModuleType.body, BodyModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.engine, EngineModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.beam, BeamModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.missile, MissileModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.hanger, HangerModules.modules.Cast<object>().ToList() }
         };
 
         var exportData = new { modules = modulesDict };
@@ -424,7 +320,7 @@ public class DataTableModule : ScriptableObject
                 hangerGroups.Clear();
                 InitializeSubTypeGroups();
 
-                int bodyKey = (int)EModuleType.Body;
+                int bodyKey = (int)EModuleType.body;
                 if (modulesObj[bodyKey.ToString()] != null)
                 {
                     var bodyList = modulesObj[bodyKey.ToString()].ToObject<List<ModuleData>>();
@@ -432,7 +328,7 @@ public class DataTableModule : ScriptableObject
                         AddModuleDataToTable(module);
                 }
 
-                int engineKey = (int)EModuleType.Engine;
+                int engineKey = (int)EModuleType.engine;
                 if (modulesObj[engineKey.ToString()] != null)
                 {
                     var engineList = modulesObj[engineKey.ToString()].ToObject<List<ModuleData>>();
@@ -440,7 +336,7 @@ public class DataTableModule : ScriptableObject
                         AddModuleDataToTable(module);
                 }
 
-                int beamKey = (int)EModuleType.Beam;
+                int beamKey = (int)EModuleType.beam;
                 if (modulesObj[beamKey.ToString()] != null)
                 {
                     var beamList = modulesObj[beamKey.ToString()].ToObject<List<ModuleData>>();
@@ -448,7 +344,7 @@ public class DataTableModule : ScriptableObject
                         AddModuleDataToTable(module);
                 }
 
-                int missileKey = (int)EModuleType.Missile;
+                int missileKey = (int)EModuleType.missile;
                 if (modulesObj[missileKey.ToString()] != null)
                 {
                     var missileList = modulesObj[missileKey.ToString()].ToObject<List<ModuleData>>();
@@ -456,7 +352,7 @@ public class DataTableModule : ScriptableObject
                         AddModuleDataToTable(module);
                 }
 
-                int hangerKey = (int)EModuleType.Hanger;
+                int hangerKey = (int)EModuleType.hanger;
                 if (modulesObj[hangerKey.ToString()] != null)
                 {
                     var hangerList = modulesObj[hangerKey.ToString()].ToObject<List<ModuleData>>();
@@ -548,9 +444,9 @@ public class DataTableModule : ScriptableObject
 
         foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
-            if (subType == EModuleSubType.None) continue;
+            if (subType == EModuleSubType.none) continue;
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
-            if( moduleType == EModuleType.Body)
+            if( moduleType == EModuleType.body)
             {
                 for (int i = 1; i <= 10; i++)
                 {
@@ -567,13 +463,13 @@ public class DataTableModule : ScriptableObject
                         m_health = 100f + (i * 50f),
                         m_cargoCapacity = 50f + (i * 25f),
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Body_Battle ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.body_battle ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType}-class hull module level {i}"
                     };
                     AddModuleDataToTable(module);
                 }
             }
-            else if( moduleType == EModuleType.Engine)
+            else if( moduleType == EModuleType.engine)
             {
                 for (int i = 1; i <= 10; i++)
                 {
@@ -583,16 +479,16 @@ public class DataTableModule : ScriptableObject
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
                         m_moduleLevel = i,
-                        m_health = 30f + (i * 10f),
+                        m_health = 0,
                         m_movementSpeed = 50f + (i * 5f),
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Engine_Standard ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.engine_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType} LV.{i}"
                     };
                     AddModuleDataToTable(module);
                 }
             }
-            else if( moduleType == EModuleType.Beam)
+            else if( moduleType == EModuleType.beam)
             {
                 for (int i = 1; i <= 10; i++)
                 {
@@ -602,20 +498,20 @@ public class DataTableModule : ScriptableObject
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
                         m_moduleLevel = i,
-                        m_health = 30f + (i * 10f),
-                        m_attackFireCount = (subType == EModuleSubType.Beam_Standard) ? 1 : 2,
+                        m_health = 0,
+                        m_attackFireCount = (subType == EModuleSubType.beam_standard) ? 1 : 2,
                         m_attackPower = 10f + (i * 5f),                        
                         m_attackCoolTime = 5.2f - (i * 0.05f),
                         m_projectileWidth = 5f/* + (i * 0.5f)*/,
                         m_projectileSpeed = 2000f/* + (i * 50.0f)*/,
                         //m_upgradeCost = new CostStruct(i,100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Beam_Standard ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.beam_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType} Lv.{i}"
                     };
                     AddModuleDataToTable(module);
                 }
             }
-            else if( moduleType == EModuleType.Missile)
+            else if( moduleType == EModuleType.missile)
             {
                 for (int i = 1; i <= 10; i++)
                 {
@@ -625,20 +521,20 @@ public class DataTableModule : ScriptableObject
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
                         m_moduleLevel = i,
-                        m_health = 30f + (i * 10f),
-                        m_attackFireCount = (subType == EModuleSubType.Missile_Standard) ? 1 : 2,
+                        m_health = 0,
+                        m_attackFireCount = (subType == EModuleSubType.missile_standard) ? 1 : 2,
                         m_attackPower = 10f + (i * 5f),
                         m_attackCoolTime = 4.2f - (i * 0.05f),
                         m_projectileWidth = 5f/* + (i * 0.5f)*/,
                         m_projectileSpeed = 300f/* + (i * 5.0f)*/,
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Missile_Standard ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.missile_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType} Lv.{i}"
                     };
                     AddModuleDataToTable(module);
                 }
             }
-            else if( moduleType == EModuleType.Hanger)
+            else if( moduleType == EModuleType.hanger)
             {
                 for (int i = 1; i <= 10; i++)
                 {
@@ -648,7 +544,7 @@ public class DataTableModule : ScriptableObject
                         m_moduleType = moduleType,
                         m_moduleSubType = subType,
                         m_moduleLevel = i,
-                        m_health = (subType == EModuleSubType.Hanger_Standard ? 40 : 80) + (i * 15f),
+                        m_health = 0,
                         m_hangarCapability = 2 + (i * 3),
                         m_scoutCapability = 1 + (i * 2),
                         m_launchCool = 3.0f - (i * 0.15f),
@@ -656,16 +552,16 @@ public class DataTableModule : ScriptableObject
                         m_maintenanceTime = 15.0f - (i * 0.5f),
                         m_aircraftLaunchStraightDistance = 100f + (i * 5f),
                         m_aircraftHealth = 30f + (i * 10f),
-                        m_aircraftAttackPower = (subType == EModuleSubType.Hanger_Standard ? 5 : 50) + (i * 3f),
+                        m_aircraftAttackPower = (subType == EModuleSubType.hanger_standard ? 5 : 50) + (i * 3f),
                         m_aircraftAttackRange = 100f + (i * 5f),
-                        m_aircraftAttackCooldown = (subType == EModuleSubType.Hanger_Standard ? 5.1f : 3.1f) - (i * 0.1f),
+                        m_aircraftAttackCooldown = (subType == EModuleSubType.hanger_standard ? 5.1f : 3.1f) - (i * 0.1f),
                         //m_aircraftAttackCooldown = 1f,
                         m_aircraftSpeed = 300f + (i * 5f),
                         m_aircraftAmmo = 10 + (i * 2),
                         m_aircraftDetectionRadius = 200f + (i * 10f),
                         m_aircraftAvoidanceRadius = 200f + (i * 5f),
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.Hanger_Standard ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.hanger_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType} hanger bay level {i}"
                     };
                     AddModuleDataToTable(module);

@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization;
 
 public class ScrollViewFormationItem : MonoBehaviour
 {
@@ -12,6 +14,6 @@ public class ScrollViewFormationItem : MonoBehaviour
         m_selectButton.onClick.RemoveAllListeners();
         m_selectButton.onClick.AddListener(actionSelect);
 
-        m_text.text = formationName;
+        CommonUtility.SetUILabelText(m_text, formationName);
     }
 }

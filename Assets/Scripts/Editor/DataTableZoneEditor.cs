@@ -35,7 +35,7 @@ public class DataTableZoneEditor : Editor
         var bodyTypes = new List<EModuleSubType>();
         foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
-            if (CommonUtility.GetModuleTypeFromSubType(subType) == EModuleType.Body)
+            if (CommonUtility.GetModuleTypeFromSubType(subType) == EModuleType.body)
                 bodyTypes.Add(subType);
         }
         bodySubTypes = bodyTypes.ToArray();
@@ -175,7 +175,7 @@ public class DataTableZoneEditor : Editor
                     {
                         var ship = new EnemyShipConfig
                         {
-                            bodySubType = EModuleSubType.Body_Battle,
+                            bodySubType = EModuleSubType.body_battle,
                             bodyLevel = moduleLevel
                         };
                         RefreshShipModuleSlots(ship);
@@ -227,15 +227,15 @@ public class DataTableZoneEditor : Editor
 
             switch (slot.slotType)
             {
-                case EModuleType.Beam:
+                case EModuleType.beam:
                     beamCount++;
                     if (beamCount > maxBeam) remove = true;
                     break;
-                case EModuleType.Missile:
+                case EModuleType.missile:
                     missileCount++;
                     if (missileCount > maxMissile) remove = true;
                     break;
-                case EModuleType.Hanger:
+                case EModuleType.hanger:
                     hangerCount++;
                     if (hangerCount > maxHanger) remove = true;
                     break;
@@ -493,7 +493,7 @@ public class DataTableZoneEditor : Editor
             {
                 var ship = new EnemyShipConfig
                 {
-                    bodySubType = EModuleSubType.Body_Battle,
+                    bodySubType = EModuleSubType.body_battle,
                     bodyLevel = 1
                 };
                 RefreshShipModuleSlots(ship);
@@ -601,19 +601,19 @@ public class DataTableZoneEditor : Editor
     private void DrawModuleSlots(EnemyShipConfig ship)
     {
         // 타입별로 그룹화
-        var engineSlots = ship.moduleSlots.Where(s => s.slotType == EModuleType.Engine).OrderBy(s => s.slotIndex).ToList();
-        var beamSlots = ship.moduleSlots.Where(s => s.slotType == EModuleType.Beam).OrderBy(s => s.slotIndex).ToList();
-        var missileSlots = ship.moduleSlots.Where(s => s.slotType == EModuleType.Missile).OrderBy(s => s.slotIndex).ToList();
-        var hangerSlots = ship.moduleSlots.Where(s => s.slotType == EModuleType.Hanger).OrderBy(s => s.slotIndex).ToList();
+        var engineSlots = ship.moduleSlots.Where(s => s.slotType == EModuleType.engine).OrderBy(s => s.slotIndex).ToList();
+        var beamSlots = ship.moduleSlots.Where(s => s.slotType == EModuleType.beam).OrderBy(s => s.slotIndex).ToList();
+        var missileSlots = ship.moduleSlots.Where(s => s.slotType == EModuleType.missile).OrderBy(s => s.slotIndex).ToList();
+        var hangerSlots = ship.moduleSlots.Where(s => s.slotType == EModuleType.hanger).OrderBy(s => s.slotIndex).ToList();
 
         if (engineSlots.Count > 0)
-            DrawSlotGroup("Engine", engineSlots, EModuleType.Engine, ship);
+            DrawSlotGroup("Engine", engineSlots, EModuleType.engine, ship);
         if (beamSlots.Count > 0)
-            DrawSlotGroup("Beam", beamSlots, EModuleType.Beam, ship);
+            DrawSlotGroup("Beam", beamSlots, EModuleType.beam, ship);
         if (missileSlots.Count > 0)
-            DrawSlotGroup("Missile", missileSlots, EModuleType.Missile, ship);
+            DrawSlotGroup("Missile", missileSlots, EModuleType.missile, ship);
         if (hangerSlots.Count > 0)
-            DrawSlotGroup("Hanger", hangerSlots, EModuleType.Hanger, ship);
+            DrawSlotGroup("Hanger", hangerSlots, EModuleType.hanger, ship);
     }
 
     private void DrawSlotGroup(string groupName, List<EnemyModuleSlotConfig> slots, EModuleType moduleType, EnemyShipConfig ship)
@@ -682,7 +682,7 @@ public class DataTableZoneEditor : Editor
         ship.moduleSlots = new List<EnemyModuleSlotConfig>();
 
         string prefabPath = ObjectManager.GetShipModulePrefabPath(
-            EModuleType.Body.ToString(),
+            EModuleType.body.ToString(),
             ship.bodySubType.ToString(),
             ship.bodyLevel);
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
