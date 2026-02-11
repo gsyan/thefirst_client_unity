@@ -414,7 +414,7 @@ public class UITabShip : UITabBase
         if (targetShip == null) return;
 
         // 모듈 해금 처리
-        targetShip.UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
+        targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
 
         // 성공 메시지 표시
         ShowResultMessage("Module unlock successful!", 3f);
@@ -602,7 +602,7 @@ public class UITabShip : UITabBase
         SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
         if (ship == null) return;
         
-        ship.ChangeModule(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
+        ship.Apply_ChangeModule(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
         
         ShowResultMessage("Module Upgrade successful!", 3f);
 
@@ -852,7 +852,7 @@ public class UITabShip : UITabBase
         SpaceShip ship = m_myFleet.FindShip(changeData.shipId);
         if (ship == null) return;
 
-        ship.ChangeModule(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel);
+        ship.Apply_ChangeModule(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel);
 
         ShowResultMessage("Module change successful!", 3f);
 
