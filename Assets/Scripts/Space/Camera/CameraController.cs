@@ -456,17 +456,26 @@ public class CameraController : MonoSingleton<CameraController>
         ApplyFocusTarget(focusTarget);
     }
 
-    // 카메라 중심점을 순환 전환 (MyFleet → Center → EnemyFleet → MyFleet)
+    // 카메라 중심점을 순환 전환 (MyFleet → EnemyFleet → Center → MyFleet)
     public void CycleCameraFocusTarget()
     {
-        // m_focusTarget = m_focusTarget switch
-        // {
-        //     ECameraFocusTarget.camera_focus_enemy_fleet => ECameraFocusTarget.camera_focus_center,
-        //     ECameraFocusTarget.camera_focus_center => ECameraFocusTarget.camera_focus_my_fleet,
-        //     ECameraFocusTarget.camera_focus_my_fleet => ECameraFocusTarget.camera_focus_enemy_fleet,
-        //     _ => ECameraFocusTarget.camera_focus_my_fleet
-        // };
-        // ApplyFocusTarget();
+        ECameraFocusTarget next;
+        switch (m_focusTarget)
+        {
+            case ECameraFocusTarget.camera_focus_my_fleet:
+                next = ECameraFocusTarget.camera_focus_enemy_fleet;
+                break;
+            case ECameraFocusTarget.camera_focus_enemy_fleet:
+                next = ECameraFocusTarget.camera_focus_center;
+                break;
+            case ECameraFocusTarget.camera_focus_center:
+                next = ECameraFocusTarget.camera_focus_my_fleet;
+                break;
+            default:
+                next = ECameraFocusTarget.camera_focus_my_fleet;
+                break;
+        }
+        ApplyFocusTarget(next);
     }
 
     // 현재 focusTarget에 따라 카메라 타겟을 적용

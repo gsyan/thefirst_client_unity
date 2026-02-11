@@ -32,22 +32,19 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Unsubscribe_CameraFocusTargetChanged(OnCameraFocusTargetChanged);
     }
 
-    private void OnCameraFocusTargetChanged(ECameraFocusTarget target)
-    {
-        UpdateCurrentCameraViewText();
-    }
-
     private void OnCameraViewCycleClicked()
     {
         CameraController.Instance.CycleCameraFocusTarget();
-        UpdateCurrentCameraViewText();
     }
 
     private void OnCameraViewClicked(ECameraFocusTarget cameraFocusTarget)
     {
         CameraController.Instance.SetCameraFocusTarget(cameraFocusTarget);
-        // SetCameraFocusTarget 내부에서 trigger 발동으로 OnCameraFocusTargetChanged이 호출되게 됨, 그래서 안불러도 됨
-        //UpdateCurrentCameraViewText();
+    }
+
+    private void OnCameraFocusTargetChanged(ECameraFocusTarget target)
+    {
+        UpdateCurrentCameraViewText();
     }
 
     private void UpdateCurrentCameraViewText()
