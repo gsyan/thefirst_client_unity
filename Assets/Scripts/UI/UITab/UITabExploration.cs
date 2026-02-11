@@ -19,6 +19,7 @@ public class UITabExploration : UITabBase
     [SerializeField] private GameObject m_scrollViewWave;            // 웨이브 스크롤뷰 루트
     [SerializeField] private RectTransform m_scrollViewWaveContent;
     [SerializeField] private GameObject m_scrollViewWaveItem;        // 웨이브 아이템 프리팹
+    [SerializeField] private Toggle m_autoExplorationToggle;         // 자동 탐사 토글
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
@@ -28,6 +29,8 @@ public class UITabExploration : UITabBase
     private readonly List<ScrollViewWaveItem> m_waveItemPool = new List<ScrollViewWaveItem>();
     private readonly List<ScrollViewWaveItem> m_waveItemActive = new List<ScrollViewWaveItem>();
     
+    private bool m_isAutoExploration;
+    private bool m_isInZone;
     private Coroutine m_mineralUpdateCoroutine;
     private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
 
@@ -44,7 +47,12 @@ public class UITabExploration : UITabBase
 
         m_collectMineralButton.onClick.AddListener(OnCollectZoneClicked);
         m_safeZoneButton.onClick.AddListener(OnEnterZoneZeroClicked);
-        // m_tryZoneButton.onClick.AddListener(OnTryZoneClicked);
+
+        if (m_autoExplorationToggle != null)
+        {
+            m_autoExplorationToggle.isOn = m_isAutoExploration;
+            m_autoExplorationToggle.onValueChanged.AddListener(v => m_isAutoExploration = v);
+        }
 
         m_rowLabelValueMineral.SetLabel("mineral_amount");
         m_rowLabelValueMineralRare.SetLabel("mineral_rare_amount");
@@ -271,10 +279,10 @@ public class UITabExploration : UITabBase
         return $"{CommonUtility.FormatBigNumber(accumulated)}({CommonUtility.FormatBigNumber(perHour)}/h)";
     }
 
-    // 안전지역: Zone스크롤뷰 보이고 안전지역버튼+웨이브스크롤뷰 숨김 / 탐사중: 반대
+    // 존 진입 시 웨이브UI+안전지역버튼 활성화, zone스크롤뷰는 상시 표시
     private void SetExplorationUI(bool isSafeZone)
     {
-        if (m_scrollViewZone != null) m_scrollViewZone.SetActive(isSafeZone);
+        m_isInZone = !isSafeZone;
         if (m_scrollViewWave != null) m_scrollViewWave.SetActive(!isSafeZone);
         m_safeZoneButton.gameObject.SetActive(!isSafeZone);
     }
@@ -338,14 +346,22 @@ public class UITabExploration : UITabBase
         });
     }
 
+    // UI 버튼 콜백 → 존 안에서는 차단
     private void OnTryZoneClicked(ZoneConfig zone)
     {
+        if (m_isInZone) return;
+        EnterZone(zone);
+    }
+
+    // 실제 존 진입 로직 (자동 탐사에서도 직접 호출)
+    private void EnterZone(ZoneConfig zone)
+    {
         SetExplorationUI(false);
-        
+
         PopulateWaveScrollView(zone.TotalWaveCount);
-        
+
         EventManager.Subscribe_WaveStarted(OnWaveStarted);
-        
+
         m_myFleet.StartFleetWarp(zone.skyboxMaterial, () =>
         {
             ObjectManager.Instance.StartSpawnEnemies(zone, (isVictory) =>
@@ -395,18 +411,23 @@ public class UITabExploration : UITabBase
 
         UpdateZoneInfo();
 
-        // zone zero 로 이동
-        OnEnterZoneZeroClicked();
+        string clearedZoneName = character.m_characterInfo.clearedZone;
+        ZoneConfig nextZone = string.IsNullOrEmpty(clearedZoneName) ? null : m_datatableZone.GetNextZone(clearedZoneName);
+
+        // 자동 탐사: 다음 존이 있으면 바로 진입 (가드 우회)
+        if (m_isAutoExploration && nextZone != null)
+        {
+            EnterZone(nextZone);
+        }
+        else
+        {
+            OnEnterZoneZeroClicked();
+        }
 
         var pp = WarpPostProcessing.Instance;
-        if (pp != null)
+        if (pp != null && nextZone != null)
         {
-            string clearedZone = m_myCharacter.m_characterInfo.clearedZone;
-            if (string.IsNullOrEmpty(clearedZone)) return;
-
-            ZoneConfig zone = m_datatableZone.GetNextZone(clearedZone);
-            if (zone == null) return;
-            pp.SetSkyboxBlendTarget(zone.skyboxMaterial);
+            pp.SetSkyboxBlendTarget(nextZone.skyboxMaterial);
         }
     }
 

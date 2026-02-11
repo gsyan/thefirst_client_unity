@@ -114,10 +114,6 @@ MonoBehaviour:
     m_Localized: Cleared
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619722
-    m_Localized: Auto Exploration
-    m_Metadata:
-      m_Items: []
   - m_Id: 63232261619723
     m_Localized: Wave
     m_Metadata:
@@ -284,6 +280,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 797857342685184
     m_Localized: Max Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1099552815710208
+    m_Localized: Auto Exploration
     m_Metadata:
       m_Items: []
   references:

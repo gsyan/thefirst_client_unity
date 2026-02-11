@@ -203,8 +203,8 @@ MonoBehaviour:
     m_Key: cleared
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619722
-    m_Key: auto_exploration
+  - m_Id: 1099552815710208
+    m_Key: toggle_auto_explroation
     m_Metadata:
       m_Items: []
   - m_Id: 63232261619723
