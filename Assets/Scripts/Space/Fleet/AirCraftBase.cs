@@ -154,7 +154,7 @@ public abstract class AircraftBase : MonoBehaviour
             if (m_targetModule == null || m_targetModule.gameObject.activeSelf == false)
             {
                 // 탄약이 남아있으면 모함 타겟으로 재할당 시도
-                if (TryReassignTargetFromCarrier())
+                if (TryReassignTarget())
                 {
                     m_state = EAircraftState.MoveToTarget;
                     yield break;
@@ -282,7 +282,7 @@ public abstract class AircraftBase : MonoBehaviour
     {
         if (m_targetModule == null)
         {
-            if (TryReassignTargetFromCarrier()) { m_state = EAircraftState.MoveToTarget; yield break; }
+            if (TryReassignTarget()) { m_state = EAircraftState.MoveToTarget; yield break; }
             m_state = EAircraftState.ReturnToCarrier; yield break;
         }
         SpaceShip targetShip = m_targetModule.GetSpaceShip();
@@ -311,7 +311,7 @@ public abstract class AircraftBase : MonoBehaviour
             // 목표 상실 시 모함 타겟으로 재할당 시도
             if (m_targetModule == null || !m_targetModule.gameObject.activeSelf)
             {
-                if (TryReassignTargetFromCarrier())
+                if (TryReassignTarget())
                 {
                     m_state = EAircraftState.MoveToTarget;
                     yield break;
@@ -608,16 +608,50 @@ public abstract class AircraftBase : MonoBehaviour
         }
     }
 
-    // 목표 상실 시 모함의 현재 타겟으로 재할당 시도. 성공하면 true
-    private bool TryReassignTargetFromCarrier()
+    // 목표 상실 시 타겟 재할당. 1순위: 모함 타겟, 2순위: 적 함대에서 직접 탐색
+    private bool TryReassignTarget()
     {
         if (m_aircraftInfo.ammo <= 0) return false;
-        if (m_moduleHanger == null) return false;
 
-        ModuleBody carrierTarget = m_moduleHanger.GetCurrentTarget();
-        if (carrierTarget == null) return false;
+        // 1순위: 모함의 현재 타겟
+        if (m_moduleHanger != null)
+        {
+            ModuleBody carrierTarget = m_moduleHanger.GetCurrentTarget();
+            if (carrierTarget != null)
+            {
+                m_targetModule = carrierTarget;
+                return true;
+            }
+        }
 
-        m_targetModule = carrierTarget;
+        // 2순위: 적 함대에서 직접 탐색 (모함 타겟이 아직 갱신 안 됐을 때)
+        if (m_carrierShip == null || m_carrierShip.m_myFleet == null) return false;
+
+        // 적 함대에서 살아있는 모듈 직접 탐색
+        SpaceFleet enemyFleet = null;
+        if (m_carrierShip.m_myFleet.m_isEnemyFleet)
+        {
+            enemyFleet = ObjectManager.Instance.m_myFleet;
+        }
+        else
+        {
+            List<SpaceFleet> enemyFleets = ObjectManager.Instance.m_enemyFleets;
+            for (int i = 0; i < enemyFleets.Count; i++)
+            {
+                if (enemyFleets[i] != null && enemyFleets[i].IsFleetAlive())
+                {
+                    enemyFleet = enemyFleets[i];
+                    break;
+                }
+            }
+        }
+
+        if (enemyFleet == null) return false;
+
+        ModuleBody enemyBody = enemyFleet.GetRandomAliveBodyPart();
+        if (enemyBody == null) return false;
+
+        m_targetModule = enemyBody;
         return true;
     }
 
