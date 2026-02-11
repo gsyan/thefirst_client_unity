@@ -153,6 +153,12 @@ public abstract class AircraftBase : MonoBehaviour
 
             if (m_targetModule == null || m_targetModule.gameObject.activeSelf == false)
             {
+                // 탄약이 남아있으면 모함 타겟으로 재할당 시도
+                if (TryReassignTargetFromCarrier())
+                {
+                    m_state = EAircraftState.MoveToTarget;
+                    yield break;
+                }
                 m_state = EAircraftState.ReturnToCarrier;
                 yield break;
             }
@@ -274,7 +280,11 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual IEnumerator AttackShipPhase()
     {
-        if (m_targetModule == null) { m_state = EAircraftState.ReturnToCarrier; yield break; }
+        if (m_targetModule == null)
+        {
+            if (TryReassignTargetFromCarrier()) { m_state = EAircraftState.MoveToTarget; yield break; }
+            m_state = EAircraftState.ReturnToCarrier; yield break;
+        }
         SpaceShip targetShip = m_targetModule.GetSpaceShip();
         if (targetShip == null) { m_state = EAircraftState.ReturnToCarrier; yield break; }
         
@@ -292,9 +302,20 @@ public abstract class AircraftBase : MonoBehaviour
 
         while (true)
         {
-            // 종료 조건
-            if (m_targetModule == null || !m_targetModule.gameObject.activeSelf || m_aircraftInfo.ammo <= 0)
+            // 종료 조건: 탄약 소진 시 무조건 귀환
+            if (m_aircraftInfo.ammo <= 0)
             {
+                m_state = EAircraftState.ReturnToCarrier;
+                yield break;
+            }
+            // 목표 상실 시 모함 타겟으로 재할당 시도
+            if (m_targetModule == null || !m_targetModule.gameObject.activeSelf)
+            {
+                if (TryReassignTargetFromCarrier())
+                {
+                    m_state = EAircraftState.MoveToTarget;
+                    yield break;
+                }
                 m_state = EAircraftState.ReturnToCarrier;
                 yield break;
             }
@@ -585,6 +606,19 @@ public abstract class AircraftBase : MonoBehaviour
             m_aircraftInfo.health = 0;
             ReturnToPool();
         }
+    }
+
+    // 목표 상실 시 모함의 현재 타겟으로 재할당 시도. 성공하면 true
+    private bool TryReassignTargetFromCarrier()
+    {
+        if (m_aircraftInfo.ammo <= 0) return false;
+        if (m_moduleHanger == null) return false;
+
+        ModuleBody carrierTarget = m_moduleHanger.GetCurrentTarget();
+        if (carrierTarget == null) return false;
+
+        m_targetModule = carrierTarget;
+        return true;
     }
 
     // 강제로 귀환 상태로 전환 (안전지역 진입 시 호출)

@@ -398,6 +398,12 @@ public class UITabExploration : UITabBase
         ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
         if (zoneConfig == null) return;
 
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null && zoneConfig != null)
+            pp.SetSkyboxBlendTarget(zoneConfig.skyboxMaterial);
+
+        UIManager.Instance.HidePanel("UIPanelCameraView");
+
         m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
         {
             ClearWaveScrollView();
@@ -415,6 +421,10 @@ public class UITabExploration : UITabBase
     // 실제 존 진입 로직 (자동 탐사에서도 직접 호출)
     private void EnterZone(ZoneConfig zone)
     {
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null && zone != null)
+            pp.SetSkyboxBlendTarget(zone.skyboxMaterial);
+
         SetExplorationUI(false);
 
         PopulateWaveScrollView(zone.TotalWaveCount);
@@ -423,6 +433,8 @@ public class UITabExploration : UITabBase
 
         m_myFleet.StartFleetWarp(zone.skyboxMaterial, () =>
         {
+            UIManager.Instance.ShowPanel("UIPanelCameraView");
+
             ObjectManager.Instance.StartSpawnEnemies(zone, (isVictory) =>
             {
                 // 전투 완료 시 마지막 웨이브도 클리어 표시
@@ -483,11 +495,7 @@ public class UITabExploration : UITabBase
             OnEnterZoneZeroClicked();
         }
 
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null && nextZone != null)
-        {
-            pp.SetSkyboxBlendTarget(nextZone.skyboxMaterial);
-        }
+        
     }
 
     private void OnCollectZoneClicked()

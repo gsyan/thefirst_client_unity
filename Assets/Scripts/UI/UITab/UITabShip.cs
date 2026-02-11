@@ -633,9 +633,9 @@ public class UITabShip : UITabBase
             CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
             CommonUtility.SetUILabelText(m_textModuleType, localizationKeyModuleType);
             AddModuleStatRow("level", $"{m_selectedModule.GetModuleLevel()}");
-            AddModuleStatRow("attack_power", $"{statsOrg.attack_power:F1}");
+            AddModuleStatRow("attack_power", $"{statsOrg.attack_power:F0}");
             AddModuleStatRow("health_power", $"{statsOrg.health_power:F0}");
-            AddModuleStatRow("speed_power", $"{statsOrg.speed_power:F1}");
+            AddModuleStatRow("speed_power", $"{statsOrg.speed_power:F0}");
             AddModuleStatRow("cargo_power", $"{statsOrg.cargo_capacity:F0}");
         }
     }
@@ -648,6 +648,7 @@ public class UITabShip : UITabBase
         RowLabelValue row = GetOrCreateModuleRow();
         row.SetRow(label, value);
         row.gameObject.SetActive(true);
+        row.transform.SetAsLastSibling();
         m_activeModuleRows.Add(row);
     }
 

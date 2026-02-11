@@ -294,6 +294,18 @@ MonoBehaviour:
     m_Localized: Wave
     m_Metadata:
       m_Items: []
+  - m_Id: 1211027840434176
+    m_Localized: Enemy Fleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1211027873988608
+    m_Localized: Center
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1211027873988609
+    m_Localized: My Fleet
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

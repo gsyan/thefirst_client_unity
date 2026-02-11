@@ -153,6 +153,15 @@ public class UIManager : MonoSingleton<UIManager>
         }
     }
     
+    // 이름으로 특정 패널을 숨김 (스택 관리 없이 단순 hide)
+    public void HidePanel(string panelName)
+    {
+        if (!panelDictionary.ContainsKey(panelName)) return;
+        var targetPanel = panelDictionary[panelName];
+        if (!targetPanel.gameObject.activeInHierarchy) return;
+        HidePanel(targetPanel);
+    }
+
     public void TogglePanel(string panelName)
     {
         if (!panelDictionary.ContainsKey(panelName)) return;

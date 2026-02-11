@@ -354,6 +354,14 @@ public class ModuleHanger : ModuleBase
         m_currentTarget = target;
     }
 
+    // 현재 모함의 타겟 반환 (함재기 목표 재할당용)
+    public ModuleBody GetCurrentTarget()
+    {
+        if (m_currentTarget != null && m_currentTarget.gameObject.activeSelf && m_currentTarget.m_health > 0)
+            return m_currentTarget;
+        return null;
+    }
+
 
     public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
