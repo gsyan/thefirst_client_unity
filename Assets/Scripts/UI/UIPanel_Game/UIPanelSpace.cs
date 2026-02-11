@@ -12,7 +12,9 @@ public class UIPanelSpace : UIPanelBase
     public Button closeButton;
 
     [HideInInspector] public SpaceFleet m_myFleet;
-    
+
+    // UITabShip 탭 인덱스 (자동 전환용)
+    private int m_shipTabIndex = -1;
 
     public override void InitializeUIPanel()
     {
@@ -35,6 +37,10 @@ public class UIPanelSpace : UIPanelBase
                 tabBase.InitializeUITab();
                 tabData.onActivate = tabBase.OnTabActivated;
                 tabData.onDeactivate = tabBase.OnTabDeactivated;
+
+                // UITabShip 탭 인덱스 저장
+                if (tabBase is UITabShip)
+                    m_shipTabIndex = i;
             }
         }
 
@@ -44,16 +50,27 @@ public class UIPanelSpace : UIPanelBase
 
     public override void OnShowUIPanel()
     {
+        CameraController.Instance.SetShipSelectionEnabled(true);
+        EventManager.Subscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
         m_tabSystem.ForceActivateTab();
-        
-        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
     public override void OnHideUIPanel()
     {
+        CameraController.Instance.SetShipSelectionEnabled(false);
+        EventManager.Unsubscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
         m_tabSystem.ForceDeactivateTab();
 
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+    }
+
+    // 다른 탭에서 함선 클릭 시 UITabShip으로 자동 전환
+    private void OnShipSelectedAutoTabSwitch(SpaceShip ship)
+    {
+        if (m_shipTabIndex < 0) return;
+        if (m_tabSystem.GetCurrentActiveTab() == m_shipTabIndex) return;
+        m_tabSystem.SwitchToTab(m_shipTabIndex);
+        
     }
 
 }

@@ -2,15 +2,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-[System.Serializable]
-public enum ECameraControllerMode
-{
-    Normal                  // 일반 게임 모드
-    , Select_Ship
-    , Upgrade_Fleet         // 함대 보기 모드
-    , Manage_Ship          // 함선 보기 모드
-}
-
 // 카메라 중심점 타겟
 public enum ECameraFocusTarget
 {
@@ -39,7 +30,10 @@ public class CameraController : MonoSingleton<CameraController>
     public float CurrentZoom => m_currentZoom;
     private float m_currentRotationY = 200f;
     private float m_currentRotationX = 30f;
-    public ECameraControllerMode m_currentMode = ECameraControllerMode.Normal;
+    
+    // UIPanelSpace 활성화 시 true, 비활성화 시 false
+    private bool m_shipSelectionEnabled = false;
+    public void SetShipSelectionEnabled(bool enabled) { m_shipSelectionEnabled = enabled; }
 
     // 카메라 중심점 타겟
     private ECameraFocusTarget m_focusTarget = ECameraFocusTarget.camera_focus_my_fleet;
@@ -68,32 +62,12 @@ public class CameraController : MonoSingleton<CameraController>
         m_currentZoom = (m_minZoom + m_maxZoom) / 2f;
     }
 
-    public void SwitchCameraMode(ECameraControllerMode mode, Transform viewTarget = null)
-    {
-        if (m_targetCamera == null) return;
-
-        m_currentMode = mode;
-
-        switch (mode)
-        {
-            case ECameraControllerMode.Normal:
-                break;
-            case ECameraControllerMode.Select_Ship:
-            case ECameraControllerMode.Upgrade_Fleet:
-            case ECameraControllerMode.Manage_Ship:
-                break;
-        }
-
-        // 카메라 모드 변경 이벤트 발생
-        EventManager.TriggerCameraModeChanged(mode);
-    }
-
     public void UpdateCameraTransform()
     {
         if (m_targetCamera == null) return;
 	
-        // Transform이 설정되어 있으면 해당 위치를 따라감 (움직이는 타겟)
-        if (m_currentTarget != null)
+        // Transform이 설정되어 있으면 해당 위치를 따라감
+        if (m_currentTarget != null && m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
             m_targetPosition = m_currentTarget.position;
 
         // Center 모드: 매 프레임 두 함대의 중간점을 갱신
@@ -125,19 +99,8 @@ public class CameraController : MonoSingleton<CameraController>
         );
 
         // 3. 보간된 타겟 위치 기준으로 카메라 배치
-        // orbit 모드: Transform 추적 중이거나 Center 포커스일 때 (타겟 주위를 공전)
-        bool useOrbit = m_currentTarget != null || m_focusTarget != ECameraFocusTarget.camera_focus_my_fleet;
-        if (useOrbit)
-        {
-            m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset;
-            m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
-        }
-        else
-        {
-            m_targetCamera.transform.position = m_interpolatedTargetPosition;
-            if (rotatedOffset.sqrMagnitude > 0.001f)
-                m_targetCamera.transform.rotation = Quaternion.LookRotation(-rotatedOffset);
-        }
+        m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset;
+        m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
     }
 
     private bool m_inputEnabled = true;
@@ -336,19 +299,29 @@ public class CameraController : MonoSingleton<CameraController>
     }
     
 
+    // 3D 클릭으로 내 함선/모듈 선택 (UIPanelSpace 활성 시에만 동작)
     private void HandleModuleSelection(Vector3? screenPosition = null)
     {
-        if(m_currentMode != ECameraControllerMode.Manage_Ship)
-            return;
+        if (!m_shipSelectionEnabled) return;
 
         LayerMask pickMask = ~m_layerMaskShield;
-        if (GetCameraRaycast(out RaycastHit hit, pickMask, 1000f, screenPosition))
-        {
-            SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
-            ModuleBase module = hit.collider.GetComponentInParent<ModuleBase>();
-            if (ship != null && ship.gameObject == m_currentTarget.gameObject && module != null)
-                EventManager.TriggerSpaceShipModuleSelected(ship, module);
-        }
+        if (!GetCameraRaycast(out RaycastHit hit, pickMask, 3000f, screenPosition))
+            return;
+
+        SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
+        if (ship == null) return;
+        if (ship.m_myFleet == null || ship.m_myFleet.m_isEnemyFleet) return;
+
+        // 내함대 보기
+        SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
+
+        // 함선 선택 이벤트 (UITabShip에서 동일 함선 중복 체크)
+        EventManager.TriggerSpaceShipSelected(ship);
+
+        // 모듈도 감지되었으면 모듈 선택
+        ModuleBase module = hit.collider.GetComponentInParent<ModuleBase>();
+        if (module != null)
+            EventManager.TriggerSpaceShipModuleSelected(ship, module);
     }
 
     public void RotateCamera(float deltaRotationY, float deltaRotationX)
@@ -512,7 +485,7 @@ public class CameraController : MonoSingleton<CameraController>
                 if( m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
                 {
                     m_currentTargetBackup = m_currentTarget;
-                    m_currentTarget = null;    
+                    m_currentTarget = null;
                 }                
                 m_targetPosition = objMgr.m_enemyFleets[0].transform.position;
                 break;
@@ -539,6 +512,7 @@ public class CameraController : MonoSingleton<CameraController>
         }
 
         m_focusTarget = focusTarget;
+        EventManager.TriggerCameraFocusTargetChanged(focusTarget);
     }
 
 }

@@ -78,9 +78,6 @@ public class UITabShip : UITabBase
         base.OnTabActivated();
         EventManager.Subscribe_ShipChange(OnShipChanged);
 
-        // 함선 관리 모드로 전환
-        CameraController.Instance.m_currentMode = ECameraControllerMode.Manage_Ship;
-
         if (m_selectedShip == null)
             m_selectedShip = m_myFleet.m_ships[0];
         if (m_selectedModule == null)
@@ -109,41 +106,63 @@ public class UITabShip : UITabBase
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
+    // 함선 선택 처리 (3D 클릭 + UI 버튼 양쪽에서 호출됨)
     private void OnSpaceShipSelected(SpaceShip ship)
     {
+        if (m_selectedShip == ship) return;
+
+        // 이전 함선 아웃라인 해제
+        if (m_selectedShip != null)
+            m_selectedShip.m_shipOutline.enabled = false;
+
         m_selectedShip = ship;
+        m_selectedShip.m_shipOutline.enabled = true;
+        CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
 
         if (m_myFleet != null)
             m_myFleet.ClearAllSelectedModule();
-        
-        if (m_selectedModule != null && ship != m_selectedModule.GetMyShip())
-            m_selectedModule = null;
 
-        if (m_selectedModule == null)
+        // 기본 모듈 선택
+        m_selectedModule = null;
+        if (ship.m_moduleBodys[0].m_beams.Count > 0)
+            m_selectedModule = ship.m_moduleBodys[0].m_beams[0];
+        else if (ship.m_moduleBodys[0].m_missiles.Count > 0)
+            m_selectedModule = ship.m_moduleBodys[0].m_missiles[0];
+        else
+            m_selectedModule = ship.m_moduleBodys[0];
+
+        // 스크롤뷰 아이템 동기화
+        if (m_shipItemMap.TryGetValue(ship, out ScrollViewShipItem scrollItem))
+            m_selectedScrollViewShipItem = scrollItem;
+
+        // 탭이 활성화 상태일 때만 UI 갱신
+        if (bShow)
         {
-            if (ship.m_moduleBodys[0].m_beams.Count > 0)
-                m_selectedModule = ship.m_moduleBodys[0].m_beams[0];
-            else if (ship.m_moduleBodys[0].m_missiles.Count > 0)
-                m_selectedModule = ship.m_moduleBodys[0].m_missiles[0];
-            else
-                m_selectedModule = ship.m_moduleBodys[0];
+            UpdateShipStatsDisplay();
+            PopulateShipScrollView();
+            UpdateModuleStatsDisplay();
+            UpdateUIFrame();
+            PopulateModuleScrollView();
         }
-            
     }
     private void OnSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
     {
-        if( m_selectedShip != ship) return;
         if (module == null) return;
         if (m_myFleet == null) return;
-        
+        // CameraController가 ship 이벤트를 먼저 발생시키므로 이미 전환됨
+        if (m_selectedShip != ship) return;
+
         m_selectedModule = module;
         m_selectedShip.SetSelectedModule(ship, module);
 
-        UpdateShipStatsDisplay();
-        PopulateShipScrollView();        
-        UpdateModuleStatsDisplay();
-        UpdateUIFrame();
-        PopulateModuleScrollView();
+        if (bShow)
+        {
+            UpdateShipStatsDisplay();
+            PopulateShipScrollView();
+            UpdateModuleStatsDisplay();
+            UpdateUIFrame();
+            PopulateModuleScrollView();
+        }
     }
 
 
@@ -185,27 +204,14 @@ public class UITabShip : UITabBase
         }
     }
 
+    // UI 스크롤뷰 버튼으로 함선 선택 (이벤트 트리거만 담당, 실제 로직은 OnSpaceShipSelected)
     private void OnShipItemSelected(ScrollViewShipItem selectedItem, SpaceShip ship)
     {
         if (selectedItem == null || ship == null) return;
-        if (selectedItem == m_selectedScrollViewShipItem) return;
         if (m_selectedShip == ship) return;
 
-        // 이전에 포커스된 함선의 아웃라인 비활성화
-        if (m_selectedShip != null)
-            m_selectedShip.m_shipOutline.enabled = false;        
-        
-        // 선택 함선 업데이트
-        m_selectedShip = ship;
-        EventManager.TriggerSpaceShipSelected(m_selectedShip);
-        UpdateShipStatsDisplay();
-
-        // 선택 스크롤 뷰 아이템 업데이트
+        EventManager.TriggerSpaceShipSelected(ship);
         m_selectedScrollViewShipItem = selectedItem;
-        // 선택 함선의 아웃라인 활성화
-        m_selectedShip.m_shipOutline.enabled = true;        
-        // 카메라 포커스
-        CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
     }
 
     private void UpdateShipStatsDisplay()

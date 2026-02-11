@@ -141,19 +141,19 @@ public static class EventManager
         OnSpaceShipModuleSelected -= callback;
     }
 
-    // Camera Mode Change
-    public static event Action<ECameraControllerMode> OnCameraModeChanged;
-    public static void TriggerCameraModeChanged(ECameraControllerMode mode)
+    // Camera Focus Change
+    public static event Action<ECameraFocusTarget> OnCameraFocusTargetChanged;
+    public static void TriggerCameraFocusTargetChanged(ECameraFocusTarget target)
     {
-        OnCameraModeChanged?.Invoke(mode);
+        OnCameraFocusTargetChanged?.Invoke(target);
     }
-    public static void Subscribe_CameraModeChanged(Action<ECameraControllerMode> callback)
+    public static void Subscribe_CameraFocusTargetChanged(Action<ECameraFocusTarget> callback)
     {
-        OnCameraModeChanged += callback;
+        OnCameraFocusTargetChanged += callback;
     }
-    public static void Unsubscribe_CameraModeChanged(Action<ECameraControllerMode> callback)
+    public static void Unsubscribe_CameraFocusTargetChanged(Action<ECameraFocusTarget> callback)
     {
-        OnCameraModeChanged -= callback;
+        OnCameraFocusTargetChanged -= callback;
     }
 
     // Wave Started (1-based currentWave, totalWaves)
