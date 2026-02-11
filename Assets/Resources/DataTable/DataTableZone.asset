@@ -33,7 +33,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -60,7 +60,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -100,7 +100,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -153,7 +153,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -219,7 +219,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -298,7 +298,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -390,7 +390,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -495,7 +495,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -613,7 +613,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -744,7 +744,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -888,7 +888,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -926,7 +926,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -988,7 +988,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -1074,7 +1074,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -1184,7 +1184,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -1318,7 +1318,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -1476,7 +1476,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -1658,7 +1658,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -1864,7 +1864,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -2094,7 +2094,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -2348,7 +2348,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -2397,7 +2397,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -2481,7 +2481,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -2636,7 +2636,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -2838,7 +2838,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -3087,7 +3087,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -3383,7 +3383,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -3726,7 +3726,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -4116,7 +4116,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -4553,7 +4553,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -5037,7 +5037,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -5097,7 +5097,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -5203,7 +5203,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -5403,7 +5403,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -5665,7 +5665,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -5989,7 +5989,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -6375,7 +6375,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -6823,7 +6823,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -7333,7 +7333,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -7905,7 +7905,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -8539,7 +8539,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -8610,7 +8610,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -8738,7 +8738,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -8983,7 +8983,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -9305,7 +9305,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -9804,7 +9804,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -10400,7 +10400,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -11093,7 +11093,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -11883,7 +11883,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -12770,7 +12770,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -13754,7 +13754,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -13836,7 +13836,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -13986,7 +13986,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -14276,7 +14276,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -14658,7 +14658,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -15252,7 +15252,7 @@ MonoBehaviour:
     moduleLevel: 6
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 6
@@ -15962,7 +15962,7 @@ MonoBehaviour:
     moduleLevel: 6
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 6
@@ -16788,7 +16788,7 @@ MonoBehaviour:
     moduleLevel: 6
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 6
@@ -17730,7 +17730,7 @@ MonoBehaviour:
     moduleLevel: 6
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 6
@@ -18788,7 +18788,7 @@ MonoBehaviour:
     moduleLevel: 6
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 6
@@ -19962,7 +19962,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -20055,7 +20055,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -20227,7 +20227,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -20562,7 +20562,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -21004,7 +21004,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -21693,7 +21693,7 @@ MonoBehaviour:
     moduleLevel: 6
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 6
@@ -22517,7 +22517,7 @@ MonoBehaviour:
     moduleLevel: 7
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 7
@@ -23672,7 +23672,7 @@ MonoBehaviour:
     moduleLevel: 7
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 7
@@ -24990,7 +24990,7 @@ MonoBehaviour:
     moduleLevel: 7
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 7
@@ -26471,7 +26471,7 @@ MonoBehaviour:
     moduleLevel: 7
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 7
@@ -28115,7 +28115,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -28219,7 +28219,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -28413,7 +28413,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -28793,7 +28793,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -29295,7 +29295,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -30079,7 +30079,7 @@ MonoBehaviour:
     moduleLevel: 6
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 6
@@ -31017,7 +31017,7 @@ MonoBehaviour:
     moduleLevel: 7
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 7
@@ -32333,7 +32333,7 @@ MonoBehaviour:
     moduleLevel: 8
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 8
@@ -33835,7 +33835,7 @@ MonoBehaviour:
     moduleLevel: 8
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 8
@@ -35523,7 +35523,7 @@ MonoBehaviour:
     moduleLevel: 8
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 8
@@ -37397,7 +37397,7 @@ MonoBehaviour:
     moduleLevel: 1
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 1
@@ -37512,7 +37512,7 @@ MonoBehaviour:
     moduleLevel: 2
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 2
@@ -37728,7 +37728,7 @@ MonoBehaviour:
     moduleLevel: 3
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 3
@@ -38153,7 +38153,7 @@ MonoBehaviour:
     moduleLevel: 4
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 4
@@ -38715,7 +38715,7 @@ MonoBehaviour:
     moduleLevel: 5
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 5
@@ -39594,7 +39594,7 @@ MonoBehaviour:
     moduleLevel: 6
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 6
@@ -40646,7 +40646,7 @@ MonoBehaviour:
     moduleLevel: 7
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 7
@@ -42123,7 +42123,7 @@ MonoBehaviour:
     moduleLevel: 8
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 8
@@ -43809,7 +43809,7 @@ MonoBehaviour:
     moduleLevel: 9
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 9
@@ -45704,7 +45704,7 @@ MonoBehaviour:
     moduleLevel: 9
     skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     waves:
-    - delayBeforeWave: 5
+    - delayBeforeWave: 0
       enemyShips:
       - bodySubType: 1001
         bodyLevel: 9
