@@ -286,6 +286,14 @@ MonoBehaviour:
     m_Localized: Auto Exploration
     m_Metadata:
       m_Items: []
+  - m_Id: 1160778044276736
+    m_Localized: Zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1160778098802688
+    m_Localized: Wave
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
