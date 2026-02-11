@@ -68,3 +68,6 @@ popup_message_module_research,,Research {0} module?,{0} 모듈을 연구할까�
 max_level,,Max Level,최고 레벨,,,,
 zone_list_name,,Zone,지역,,,,
 wave_list_name,,Wave,웨이브,,,,
+camera_focus_enemy_fleet,,Enemy Fleet,적 함대,,,,
+camera_focus_center,,Center,중앙,,,,
+camera_focus_my_fleet,,My Fleet,내 함대,,,,

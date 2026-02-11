@@ -166,7 +166,7 @@ public class DataTableZoneEditor : Editor
                 {
                     var wave = new WaveConfig
                     {
-                        delayBeforeWave = 5f,
+                        delayBeforeWave = w == 0 ? 0f : 5f,
                         enemyShips = new List<EnemyShipConfig>()
                     };
 

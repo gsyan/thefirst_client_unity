@@ -291,6 +291,18 @@ MonoBehaviour:
     m_Key: wave_list_name
     m_Metadata:
       m_Items: []
+  - m_Id: 1211027840434176
+    m_Key: camera_focus_enemy_fleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1211027873988608
+    m_Key: camera_focus_center
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1211027873988609
+    m_Key: camera_focus_my_fleet
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

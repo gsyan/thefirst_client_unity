@@ -11,23 +11,28 @@ public enum ECameraControllerMode
     , Manage_Ship          // 함선 보기 모드
 }
 
+// 카메라 중심점 타겟
+public enum ECameraFocusTarget
+{
+    camera_focus_my_fleet,      // 우리 함대
+    camera_focus_center,        // 중간 (우리 함대와 적 함대의 중간점)
+    camera_focus_enemy_fleet    // 적 함대
+}
+
 
 public class CameraController : MonoSingleton<CameraController>
 {
     [Header("Camera Settings")]
     public Camera m_targetCamera;
-    private Camera m_backgroundCamera; // 하단 영역을 Clear하기 위한 배경 카메라
     private float m_rotationSpeed = 0.1f;
     private float m_zoomSpeed = 50f;
     private float m_panSpeed = 0.001f;
     private float m_minZoom = 100f;
     private float m_maxZoom = 1500f; // 카메라 줌
 
-    // Camera state management
-    private Vector3 m_offset;
-
     // Current camera state
     private Transform m_currentTarget; // (Optional) 움직이는 타겟을 따라가기 위한 Transform
+    private Transform m_currentTargetBackup; // (Optional) 움직이는 타겟을 따라가기 위한 Transform
     private Vector3 m_targetPosition; // 카메라가 바라보는 목표 위치
     private Vector3 m_interpolatedTargetPosition; // 부드럽게 보간된 타겟 위치
     private float m_currentZoom;
@@ -35,6 +40,10 @@ public class CameraController : MonoSingleton<CameraController>
     private float m_currentRotationY = 200f;
     private float m_currentRotationX = 30f;
     public ECameraControllerMode m_currentMode = ECameraControllerMode.Normal;
+
+    // 카메라 중심점 타겟
+    private ECameraFocusTarget m_focusTarget = ECameraFocusTarget.camera_focus_my_fleet;
+    public ECameraFocusTarget FocusTarget => m_focusTarget;
 
     // LayerMask
     private const int m_layerShip = 30;
@@ -79,13 +88,25 @@ public class CameraController : MonoSingleton<CameraController>
         EventManager.TriggerCameraModeChanged(mode);
     }
 
-    public void UpdateFleetViewPosition()
+    public void UpdateCameraTransform()
     {
         if (m_targetCamera == null) return;
 	
         // Transform이 설정되어 있으면 해당 위치를 따라감 (움직이는 타겟)
         if (m_currentTarget != null)
             m_targetPosition = m_currentTarget.position;
+
+        // Center 모드: 매 프레임 두 함대의 중간점을 갱신
+        if (m_focusTarget == ECameraFocusTarget.camera_focus_center && m_currentTarget == null)
+        {
+            var objMgr = ObjectManager.Instance;
+            if (objMgr != null && objMgr.m_myFleet != null
+                && objMgr.m_enemyFleets.Count > 0 && objMgr.m_enemyFleets[0] != null)
+            {
+                m_targetPosition = (objMgr.m_myFleet.transform.position
+                    + objMgr.m_enemyFleets[0].transform.position) * 0.5f;
+            }
+        }
         
 
         // 타겟 위치를 부드럽게 보간 (Lerp 속도 조절 가능)
@@ -103,8 +124,10 @@ public class CameraController : MonoSingleton<CameraController>
             Mathf.Cos(radiansY) * horizontalDistance
         );
 
-        // 3. 보간된 타겟 위치 + 회전 오프셋 + 세로 오프셋 = 카메라 위치
-        if (m_currentTarget != null)
+        // 3. 보간된 타겟 위치 기준으로 카메라 배치
+        // orbit 모드: Transform 추적 중이거나 Center 포커스일 때 (타겟 주위를 공전)
+        bool useOrbit = m_currentTarget != null || m_focusTarget != ECameraFocusTarget.camera_focus_my_fleet;
+        if (useOrbit)
         {
             m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset;
             m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
@@ -112,7 +135,7 @@ public class CameraController : MonoSingleton<CameraController>
         else
         {
             m_targetCamera.transform.position = m_interpolatedTargetPosition;
-            if (rotatedOffset.sqrMagnitude > 0.001f) 
+            if (rotatedOffset.sqrMagnitude > 0.001f)
                 m_targetCamera.transform.rotation = Quaternion.LookRotation(-rotatedOffset);
         }
     }
@@ -140,7 +163,7 @@ public class CameraController : MonoSingleton<CameraController>
     private void Update()
     {
         HandleInput();
-        UpdateFleetViewPosition();
+        UpdateCameraTransform();
     }
 
     private void HandleInput()
@@ -225,12 +248,7 @@ public class CameraController : MonoSingleton<CameraController>
         if (Mathf.Abs(scrollDelta) > 0.01f)
         {
             if (Mathf.Abs(scrollDelta) > 0.01f)
-            {
-                if (m_currentTarget != null)
-                    ZoomCamera(-scrollDelta * 5f);
-                else
-                    CameraMove_FrontBack(scrollDelta);
-            }
+                ZoomCamera(-scrollDelta * 5f);
         }
             
     }
@@ -456,6 +474,71 @@ public class CameraController : MonoSingleton<CameraController>
     public Vector3 GetTargetPosition()
     {
         return m_targetPosition;
+    }
+
+    // 카메라 중심점 전환 (적함대, 중간, 우리함대)
+    public void SetCameraFocusTarget(ECameraFocusTarget focusTarget)
+    {
+        if( m_focusTarget == focusTarget) return;
+        ApplyFocusTarget(focusTarget);
+    }
+
+    // 카메라 중심점을 순환 전환 (MyFleet → Center → EnemyFleet → MyFleet)
+    public void CycleCameraFocusTarget()
+    {
+        // m_focusTarget = m_focusTarget switch
+        // {
+        //     ECameraFocusTarget.camera_focus_enemy_fleet => ECameraFocusTarget.camera_focus_center,
+        //     ECameraFocusTarget.camera_focus_center => ECameraFocusTarget.camera_focus_my_fleet,
+        //     ECameraFocusTarget.camera_focus_my_fleet => ECameraFocusTarget.camera_focus_enemy_fleet,
+        //     _ => ECameraFocusTarget.camera_focus_my_fleet
+        // };
+        // ApplyFocusTarget();
+    }
+
+    // 현재 focusTarget에 따라 카메라 타겟을 적용
+    private void ApplyFocusTarget(ECameraFocusTarget focusTarget)
+    {
+        var objMgr = ObjectManager.Instance;
+        if (objMgr == null) return;
+
+        SpaceFleet myFleet = objMgr.m_myFleet;
+        if (myFleet == null) return;
+
+        switch (focusTarget)
+        {
+            case ECameraFocusTarget.camera_focus_enemy_fleet:
+                if (objMgr.m_enemyFleets.Count < 1 || objMgr.m_enemyFleets[0] == null) return; // 적 함대 없으면 리턴
+                if( m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
+                {
+                    m_currentTargetBackup = m_currentTarget;
+                    m_currentTarget = null;    
+                }                
+                m_targetPosition = objMgr.m_enemyFleets[0].transform.position;
+                break;
+            case ECameraFocusTarget.camera_focus_center:
+                if (objMgr.m_enemyFleets.Count < 1 || objMgr.m_enemyFleets[0] == null) return; // 적 함대 없으면 리턴
+                if( m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
+                {
+                    m_currentTargetBackup = m_currentTarget;
+                    m_currentTarget = null;    
+                }                
+                m_targetPosition = (myFleet.transform.position + objMgr.m_enemyFleets[0].transform.position) * 0.5f;                    
+                break;
+            case ECameraFocusTarget.camera_focus_my_fleet:
+                if (m_currentTargetBackup == null)
+                {
+                    m_currentTarget = myFleet.transform;
+                }
+                else
+                {
+                    SetTargetOfCameraController(m_currentTargetBackup);
+                    m_currentTargetBackup = null;
+                }
+                break;
+        }
+
+        m_focusTarget = focusTarget;
     }
 
 }
