@@ -965,7 +965,7 @@ public class SpaceShip : MonoBehaviour
     }
 
     // module unlock (외부 호출용 - 모듈 해금 UI에서 사용)
-    public void UnlockModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex)
+    public void Apply_UnlockModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex)
     {
         ModuleBody body = FindModuleBodyByIndex(bodyIndex);
         if (body == null)
@@ -998,7 +998,7 @@ public class SpaceShip : MonoBehaviour
     }
 
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
-    public void ChangeModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel)
+    public void Apply_ChangeModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel)
     {
         if (moduleType == EModuleType.body)
         {

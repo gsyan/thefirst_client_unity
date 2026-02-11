@@ -423,32 +423,28 @@ public class ModuleBody : ModuleBase
     // 엔진 제거
     public void RemoveEngine(ModuleEngine engine)
     {
-        if (m_engines.Remove(engine))
-        {
-        }
+        m_moduleBodyInfo.engines.Remove(engine.m_moduleInfo);
+        m_engines.Remove(engine);
     }
 
     // 무기 제거
     public void RemoveBeam(ModuleBeam beam)
     {
-        if (m_beams.Remove(beam))
-        {
-        }
+        m_moduleBodyInfo.beams.Remove(beam.m_moduleInfo);
+        m_beams.Remove(beam);
     }
 
     public void RemoveMissile(ModuleMissile missile)
     {
-        if (m_missiles.Remove(missile))
-        {
-        }
+        m_moduleBodyInfo.missiles.Remove(missile.m_moduleInfo);
+        m_missiles.Remove(missile);
     }
 
     // 행거 제거
     public void RemoveHanger(ModuleHanger hanger)
     {
-        if (m_hangers.Remove(hanger))
-        {
-        }
+        m_moduleBodyInfo.hangers.Remove(hanger.m_moduleInfo);
+        m_hangers.Remove(hanger);
     }
 
     // 특정 타입과 인덱스의 슬롯 찾기
