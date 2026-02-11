@@ -7,7 +7,8 @@ public class EffectBase : MonoBehaviour
 
     public virtual void ReturnToPool_Effect()
     {
-        ObjectManager.Instance.m_poolManager.Return(m_poolName, this);
+        if (ObjectManager.Instance != null)
+            ObjectManager.Instance.m_poolManager.Return(m_poolName, this);
     }
     
     public virtual void Play()

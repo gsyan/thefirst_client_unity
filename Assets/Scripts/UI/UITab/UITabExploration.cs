@@ -1,3 +1,4 @@
+using TMPro;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,17 +10,21 @@ public class UITabExploration : UITabBase
     [SerializeField] private RowLabelValue m_rowLabelValueMineral;
     [SerializeField] private RowLabelValue m_rowLabelValueMineralRare;
     [SerializeField] private RowLabelValue m_rowLabelValueMineralExotic;
-    [SerializeField] private RowLabelValue m_rowLabelValueMineralDark;    
-    [SerializeField] private GameObject m_scrollViewZone;            // 스크롤뷰 루트 (Content의 상위)
+    [SerializeField] private RowLabelValue m_rowLabelValueMineralDark;
+    
+    [SerializeField] private GameObject m_scrollViewZone;               // 스크롤뷰 루트 (Content의 상위)
     [SerializeField] private RectTransform m_scrollViewZoneContent;
-    [SerializeField] private GameObject m_scrollViewZoneItem;       // 프리팹
-    [SerializeField] private Button m_safeZoneButton;
-    [SerializeField] private Button m_collectMineralButton;
-    [SerializeField] private DataTableZone m_datatableZone;         // Zone 설정 ScriptableObject
-    [SerializeField] private GameObject m_scrollViewWave;            // 웨이브 스크롤뷰 루트
+    [SerializeField] private GameObject m_scrollViewZoneItem;           // 프리팹    
+    [SerializeField] private Toggle m_autoExplorationToggle;            // 자동 탐사 토글
+    
+    [SerializeField] private GameObject m_waveContainer;
+    [SerializeField] private GameObject m_scrollViewWave;               // 웨이브 스크롤뷰 루트
     [SerializeField] private RectTransform m_scrollViewWaveContent;
-    [SerializeField] private GameObject m_scrollViewWaveItem;        // 웨이브 아이템 프리팹
-    [SerializeField] private Toggle m_autoExplorationToggle;         // 자동 탐사 토글
+    [SerializeField] private GameObject m_scrollViewWaveItem;           // 웨이브 아이템 프리팹
+    [SerializeField] private Button m_safeZoneButton;
+
+    [SerializeField] private Button m_collectMineralButton;
+    [SerializeField] private DataTableZone m_datatableZone;             // Zone 설정 ScriptableObject
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
@@ -33,6 +38,8 @@ public class UITabExploration : UITabBase
     private bool m_isInZone;
     private Coroutine m_mineralUpdateCoroutine;
     private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
+    private ScrollViewAutoCenter m_zoneAutoCenter;
+    private ScrollViewAutoCenter m_waveAutoCenter;
 
     public override void InitializeUITab()
     {
@@ -52,6 +59,18 @@ public class UITabExploration : UITabBase
         {
             m_autoExplorationToggle.isOn = m_isAutoExploration;
             m_autoExplorationToggle.onValueChanged.AddListener(v => m_isAutoExploration = v);
+        }
+
+        // 기존 스크롤뷰 오브젝트에 자동 센터링 컴포넌트 부착
+        if (m_scrollViewZone != null)
+        {
+            if (!m_scrollViewZone.TryGetComponent(out m_zoneAutoCenter))
+                m_zoneAutoCenter = m_scrollViewZone.AddComponent<ScrollViewAutoCenter>();
+        }
+        if (m_scrollViewWave != null)
+        {
+            if (!m_scrollViewWave.TryGetComponent(out m_waveAutoCenter))
+                m_waveAutoCenter = m_scrollViewWave.AddComponent<ScrollViewAutoCenter>();
         }
 
         m_rowLabelValueMineral.SetLabel("mineral_amount");
@@ -93,7 +112,7 @@ public class UITabExploration : UITabBase
 
         string clearedZoneName = m_myCharacter.m_characterInfo.clearedZone;
         int clearedIndex = string.IsNullOrEmpty(clearedZoneName)
-            ? -1
+            ? 0
             : m_datatableZone.GetZoneIndex(clearedZoneName);
 
         int poolIndex = 0;
@@ -103,7 +122,13 @@ public class UITabExploration : UITabBase
             if (zone == null || !zone.zoneName.StartsWith(prefix)) continue;
 
             int zoneIndex = m_datatableZone.GetZoneIndex(zone.zoneName);
-            bool isCleared = zoneIndex <= clearedIndex;
+            EZoneState zoneState;
+            if (zoneIndex <= clearedIndex)
+                zoneState = EZoneState.Cleared;
+            else if (zoneIndex == clearedIndex + 1)
+                zoneState = EZoneState.Current;
+            else
+                zoneState = EZoneState.Locked;
 
             ScrollViewZoneItem scrollViewItem;
             if (poolIndex < m_zoneItemPool.Count)
@@ -123,10 +148,36 @@ public class UITabExploration : UITabBase
             scrollViewItem.InitializeScrollViewZoneItem(
                 capturedZone,
                 () => OnTryZoneClicked(capturedZone),
-                isCleared
+                zoneState
             );
             m_zoneItemActive.Add(scrollViewItem);
             poolIndex++;
+        }
+
+        // Current 상태인 존 아이템을 스크롤뷰 중앙에 배치
+        if (m_zoneAutoCenter != null)
+        {
+            ScrollViewZoneItem centerTarget = null;
+            for (int i = 0; i < m_zoneItemActive.Count; i++)
+            {
+                if (m_zoneItemActive[i].gameObject.activeSelf)
+                {
+                    centerTarget = m_zoneItemActive[i]; // 마지막 활성 아이템을 fallback
+                }
+            }
+            // Current 상태 우선
+            for (int i = 0; i < m_zoneItemActive.Count; i++)
+            {
+                // Current 상태 판별: clearedIndex+1 위치
+                int zi = m_datatableZone.GetZoneIndex(m_zoneItemActive[i].m_zoneConfig.zoneName);
+                if (zi == clearedIndex + 1)
+                {
+                    centerTarget = m_zoneItemActive[i];
+                    break;
+                }
+            }
+            if (centerTarget != null)
+                m_zoneAutoCenter.CenterOnChild((RectTransform)centerTarget.transform);
         }
     }
 
@@ -283,8 +334,7 @@ public class UITabExploration : UITabBase
     private void SetExplorationUI(bool isSafeZone)
     {
         m_isInZone = !isSafeZone;
-        if (m_scrollViewWave != null) m_scrollViewWave.SetActive(!isSafeZone);
-        m_safeZoneButton.gameObject.SetActive(!isSafeZone);
+        if (m_waveContainer != null) m_waveContainer.SetActive(!isSafeZone);
     }
 
     // 웨이브 스크롤뷰에 아이템 배치 (풀에서 꺼내 재사용)
@@ -311,6 +361,10 @@ public class UITabExploration : UITabBase
             waveItem.InitializeScrollViewWaveItem(i);
             m_waveItemActive.Add(waveItem);
         }
+
+        // 첫 웨이브 아이템을 중앙에 배치
+        if (m_waveAutoCenter != null && m_waveItemActive.Count > 0)
+            m_waveAutoCenter.CenterOnChild((RectTransform)m_waveItemActive[0].transform);
     }
 
     // 활성 아이템 비활성화, 풀에 유지
@@ -331,6 +385,11 @@ public class UITabExploration : UITabBase
             else if (i == currentWave - 1)
                 m_waveItemActive[i].SetState(EWaveState.InProgress);
         }
+
+        // 현재 진행 중인 웨이브를 중앙에 배치
+        int inProgressIndex = currentWave - 1;
+        if (m_waveAutoCenter != null && inProgressIndex >= 0 && inProgressIndex < m_waveItemActive.Count)
+            m_waveAutoCenter.CenterOnChild((RectTransform)m_waveItemActive[inProgressIndex].transform);
     }
 
     private void OnEnterZoneZeroClicked()
