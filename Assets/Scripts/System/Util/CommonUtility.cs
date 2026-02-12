@@ -205,55 +205,7 @@ public static class CommonUtility
         {
             stats.health_power = bodyData.m_health;
             stats.cargo_capacity = bodyData.m_cargoCapacity;
-        }
-
-        return stats;
-    }
-
-    // ModuleBodyInfo로부터 능력치 계산
-    public static CapabilityProfile GetBodyCapabilityProfile_old(ModuleBodyInfo bodyInfo)
-    {
-        CapabilityProfile stats = new CapabilityProfile();
-        if (bodyInfo == null) return stats;
-        // Body 자체의 데이터
-        ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodyInfo.moduleSubType, bodyInfo.moduleLevel);
-        if (bodyData != null)
-        {
-            stats.health_power = bodyData.m_health;
-            stats.cargo_capacity = bodyData.m_cargoCapacity;
-        }
-
-        // Engine 모듈들 합산
-        if (bodyInfo.engines != null)
-        {
-            foreach (ModuleInfo engineInfo in bodyInfo.engines)
-            {
-                CapabilityProfile engineStats = GetModuleCapabilityProfile(engineInfo);
-                stats.speed_power += engineStats.speed_power;
-                stats.totalEngines += engineStats.totalEngines;
-            }
-        }
-
-        // Beam 모듈들 합산
-        if (bodyInfo.beams != null)
-        {
-            foreach (ModuleInfo moduleInfo in bodyInfo.beams)
-            {
-                CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                stats.attack_power += moduleStats.attack_power;
-                stats.totalWeapons += moduleStats.totalWeapons;
-            }
-        }
-
-        // Missile 모듈들 합산
-        if (bodyInfo.missiles != null)
-        {
-            foreach (ModuleInfo moduleInfo in bodyInfo.missiles)
-            {
-                CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                stats.attack_power += moduleStats.attack_power;
-                stats.totalWeapons += moduleStats.totalWeapons;
-            }
+            stats.repair_power = bodyData.m_repairPower;
         }
 
         return stats;
@@ -274,6 +226,7 @@ public static class CommonUtility
             stats.health_power += shipStats.health_power;
             stats.speed_power += shipStats.speed_power;
             stats.cargo_capacity += shipStats.cargo_capacity;
+            stats.repair_power += shipStats.repair_power;
             stats.totalWeapons += shipStats.totalWeapons;
             stats.totalEngines += shipStats.totalEngines;
         }
@@ -295,6 +248,7 @@ public static class CommonUtility
             CapabilityProfile bodyStats = GetBodyCapabilityProfile(bodyInfo);
             stats.health_power += bodyStats.health_power;
             stats.cargo_capacity += bodyStats.cargo_capacity;
+            stats.repair_power += bodyStats.repair_power;
 
             // Engine 모듈들 합산
             if (bodyInfo.engines != null)

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 
 
-public class UIPanelFleet_TabUpgrade : UITabBase
+public class UITabFleet : UITabBase
 {
     [SerializeField] private TMP_Text  m_textFleetStatus;
     [SerializeField] private RectTransform m_fleetStatsContainer;           // VerticalLayoutGroup 필요
@@ -36,6 +36,9 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         PopulateFormationScrollView();
 
         m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
+
+        EventManager.Subscribe_AddShip(UpdateFleetStatsDisplay);
+        EventManager.Subscribe_FleetUpdateHP(UpdateFleetStatsDisplay);
     }
 
     public override void OnTabActivated()
@@ -109,6 +112,7 @@ public class UIPanelFleet_TabUpgrade : UITabBase
         SetOrCreateFleetStatRow("health_power", $"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
         SetOrCreateFleetStatRow("speed_power", $"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");
         SetOrCreateFleetStatRow("cargo_power", $"{statsCur.cargo_capacity:F0}/{statsOrg.cargo_capacity:F0}");
+        SetOrCreateFleetStatRow("repair_power", $"{statsCur.repair_power:F0}/{statsOrg.repair_power:F0}");
     }
 
     private void SetOrCreateFleetStatRow(string label, string value)
@@ -182,14 +186,13 @@ public class UIPanelFleet_TabUpgrade : UITabBase
                 if (response.data.newShipInfo != null && m_myCharacter.m_ownedFleet != null)
                     // smoothSpawn=true: 기함 뒤에서 스폰 후 진형으로 이동
                     ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(response.data.newShipInfo, true);
+                
+                EventManager.Trigger_AddShip();
 
-                EventManager.TriggerFleetChange();
-
-                // selectedModuleText.text = "Success add ship";
             }
             else
             {
-                // selectedModuleText.text = "Failed to add ship";
+
             }
         });
     }

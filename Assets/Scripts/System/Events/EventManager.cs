@@ -80,40 +80,40 @@ public static class EventManager
     }
     #endregion Character Tech, Mineral ----------------------------------------------------------------------
     
-
-    // Fleet
-    public static event Action OnFleetChanged;
-    public static void TriggerFleetChange()
+    # region Fleet AddShip / HP----------------------------------------------------------------------
+    public static event Action OnFleetAddShip;
+    public static void Trigger_AddShip()
     {
-        OnFleetChanged?.Invoke();
+        OnFleetAddShip?.Invoke();
     }
-    public static void Subscribe_FleetChange(Action callback)
+    public static void Subscribe_AddShip(Action callback)
     {
-        OnFleetChanged += callback;
+        OnFleetAddShip += callback;
     }
-    public static void Unsubscribe_FleetChange(Action callback)
+    public static void Unsubscribe_AddShip(Action callback)
     {
-        OnFleetChanged -= callback;
-    }
-
-    // SpaceShip Stat Changed
-    public static event Action OnShipChanged;
-    public static void TriggerShipChange()
-    {
-        OnShipChanged?.Invoke();
-    }
-    public static void Subscribe_ShipChange(Action callback)
-    {
-        OnShipChanged += callback;
-    }
-    public static void Unsubscribe_ShipChange(Action callback)
-    {
-        OnShipChanged -= callback;
+        OnFleetAddShip -= callback;
     }
 
-    // SpaceShip Selection
+    public static event Action OnFleetUpdateHP;
+    public static void Trigger_FleetUpdateHP()
+    {
+        OnFleetUpdateHP?.Invoke();
+    }
+    public static void Subscribe_FleetUpdateHP(Action callback)
+    {
+        OnFleetUpdateHP += callback;
+    }
+    public static void Unsubscribe_FleetUpdateHP(Action callback)
+    {
+        OnFleetUpdateHP -= callback;
+    }
+
+    # endregion Fleet --------------------------------------------------------------------
+
+    # region Ship ----------------------------------------------------------------------
     public static event Action<SpaceShip> OnSpaceShipSelected;
-    public static void TriggerSpaceShipSelected(SpaceShip ship)
+    public static void Trigger_SpaceShipSelected(SpaceShip ship)
     {
         OnSpaceShipSelected?.Invoke(ship);
     }
@@ -125,6 +125,25 @@ public static class EventManager
     {
         OnSpaceShipSelected -= callback;
     }
+
+    public static event Action OnShipUpdateHP;
+    public static void Trigger_ShipUpdateHP()
+    {
+        OnShipUpdateHP?.Invoke();
+    }
+    public static void Subscribe_ShipUpdateHP(Action callback)
+    {
+        OnShipUpdateHP += callback;
+    }
+    public static void Unsubscribe_ShipUpdateHP(Action callback)
+    {
+        OnShipUpdateHP -= callback;
+    }
+    
+    # endregion Ship --------------------------------------------------------------------
+    
+
+    
 
     // SpaceShip Module Selection
     public static event Action<SpaceShip, ModuleBase> OnSpaceShipModuleSelected;
@@ -169,6 +188,21 @@ public static class EventManager
     public static void Unsubscribe_WaveStarted(Action<int, int> callback)
     {
         OnWaveStarted -= callback;
+    }
+
+    // 플레이어 함대 전멸
+    public static event Action OnMyFleetDestroyed;
+    public static void Trigger_MyFleetDestroyed()
+    {
+        OnMyFleetDestroyed?.Invoke();
+    }
+    public static void Subscribe_MyFleetDestroyed(Action callback)
+    {
+        OnMyFleetDestroyed += callback;
+    }
+    public static void Unsubscribe_MyFleetDestroyed(Action callback)
+    {
+        OnMyFleetDestroyed -= callback;
     }
 
     // Module Replaced (oldModule, newModule)

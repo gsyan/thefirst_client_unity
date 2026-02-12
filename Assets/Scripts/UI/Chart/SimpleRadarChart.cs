@@ -52,16 +52,19 @@ public class SimpleRadarChart : Graphic
         m_statNames.Clear();
 
         m_stats.Add(stats.attack_power);
-        m_statNames.Add("Firepower");
+        m_statNames.Add("Attack");
 
         m_stats.Add(stats.health_power);
-        m_statNames.Add("Survivability");
+        m_statNames.Add("Health");
 
         m_stats.Add(stats.speed_power);
-        m_statNames.Add("Mobility");
+        m_statNames.Add("Speed");
 
         m_stats.Add(stats.cargo_capacity);
-        m_statNames.Add("Logistics");
+        m_statNames.Add("Cargo");
+
+        m_stats.Add(stats.repair_power);
+        m_statNames.Add("Repair");
 
         UpdateLabels();
         SetVerticesDirty();

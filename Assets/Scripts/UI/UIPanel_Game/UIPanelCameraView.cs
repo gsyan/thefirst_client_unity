@@ -4,26 +4,23 @@ using UnityEngine.UI;
 
 public class UIPanelCameraView : UIPanelBase
 {
-    [SerializeField] private TMP_Text m_textCameraView;
     public Button m_cameraViewCycleButton;
-    public Button m_cameraViewEnemyButton;
-    public Button m_cameraViewCenterButton;
-    public Button m_cameraViewMyFleetButton;
-    
+    [SerializeField] private ButtonGroupSystem buttonGroup;
+
     void Start()
     {
         if( m_cameraViewCycleButton != null)
             m_cameraViewCycleButton.onClick.AddListener(() => OnCameraViewCycleClicked());
-        if( m_cameraViewEnemyButton != null)
-            m_cameraViewEnemyButton.onClick.AddListener(() => OnCameraViewClicked(ECameraFocusTarget.camera_focus_enemy_fleet));
-        if( m_cameraViewCenterButton != null)
-            m_cameraViewCenterButton.onClick.AddListener(() => OnCameraViewClicked(ECameraFocusTarget.camera_focus_center));
-        if( m_cameraViewMyFleetButton != null)
-            m_cameraViewMyFleetButton.onClick.AddListener(() => OnCameraViewClicked(ECameraFocusTarget.camera_focus_my_fleet));
 
-        LocalizationManager.Instance.OnLanguageChanged += UpdateCurrentCameraViewText;
-        UpdateCurrentCameraViewText();
+        // 버튼 클릭 시 카메라 포커스 변경
+        if (buttonGroup != null)
+            buttonGroup.items[0].onSelected = () => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
+            buttonGroup.items[1].onSelected = () => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_center);
+            buttonGroup.items[2].onSelected = () => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_enemy_fleet);
 
+        buttonGroup.defaultIndex = (int)CameraController.Instance.FocusTarget;
+        buttonGroup.Initialize();
+        
         EventManager.Subscribe_CameraFocusTargetChanged(OnCameraFocusTargetChanged);
     }
 
@@ -37,19 +34,9 @@ public class UIPanelCameraView : UIPanelBase
         CameraController.Instance.CycleCameraFocusTarget();
     }
 
-    private void OnCameraViewClicked(ECameraFocusTarget cameraFocusTarget)
-    {
-        CameraController.Instance.SetCameraFocusTarget(cameraFocusTarget);
-    }
-
+    // 외부에서 카메라 포커스가 변경되었을 때 버튼 상태 동기화
     private void OnCameraFocusTargetChanged(ECameraFocusTarget target)
     {
-        UpdateCurrentCameraViewText();
-    }
-
-    private void UpdateCurrentCameraViewText()
-    {
-        ECameraFocusTarget current = CameraController.Instance.FocusTarget;
-        m_textCameraView.text = LocalizationManager.Instance.Get(current.ToString());
+        buttonGroup.Select((int)target);
     }
 }

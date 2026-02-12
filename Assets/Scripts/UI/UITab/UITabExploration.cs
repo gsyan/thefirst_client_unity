@@ -36,6 +36,7 @@ public class UITabExploration : UITabBase
     
     private bool m_isAutoExploration;
     private bool m_isInZone;
+    private bool m_isFleetWiped;
     private Coroutine m_mineralUpdateCoroutine;
     private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
     private ScrollViewAutoCenter m_zoneAutoCenter;
@@ -53,7 +54,9 @@ public class UITabExploration : UITabBase
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
         m_collectMineralButton.onClick.AddListener(OnCollectZoneClicked);
-        m_safeZoneButton.onClick.AddListener(OnEnterZoneZeroClicked);
+        m_safeZoneButton.onClick.AddListener(ReturnToSafeZone);
+
+        EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
 
         if (m_autoExplorationToggle != null)
         {
@@ -392,23 +395,14 @@ public class UITabExploration : UITabBase
             m_waveAutoCenter.CenterOnChild((RectTransform)m_waveItemActive[inProgressIndex].transform);
     }
 
-    private void OnEnterZoneZeroClicked()
+    private void OnMyFleetWiped()
     {
-        // Zone-0: 안전지역 (0번 인덱스)
-        ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
-        if (zoneConfig == null) return;
+        m_isFleetWiped = true;
+    }
 
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null && zoneConfig != null)
-            pp.SetSkyboxBlendTarget(zoneConfig.skyboxMaterial);
-
-        UIManager.Instance.HidePanel("UIPanelCameraView");
-
-        m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
-        {
-            ClearWaveScrollView();
-            SetExplorationUI(true);
-        });
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
     }
 
     // UI 버튼 콜백 → 존 안에서는 차단
@@ -437,23 +431,54 @@ public class UITabExploration : UITabBase
 
             ObjectManager.Instance.StartSpawnEnemies(zone, (isVictory) =>
             {
-                // 전투 완료 시 마지막 웨이브도 클리어 표시
-                for (int i = 0; i < m_waveItemActive.Count; i++)
-                    m_waveItemActive[i].SetState(EWaveState.Cleared);
-
                 EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
-                OnZoneBattleComplete(zone.zoneName, isVictory);
+
+                if (isVictory)
+                {
+                    // 승리 시 마지막 웨이브도 클리어 표시
+                    for (int i = 0; i < m_waveItemActive.Count; i++)
+                        m_waveItemActive[i].SetState(EWaveState.Cleared);
+                    
+                    var request = new ZoneClearRequest { zoneName = zone.zoneName };
+                    NetworkManager.Instance.ClearZone(request, OnZoneClearResponse);
+                }
+                else
+                {
+                    ReturnToSafeZone();// 패배/퇴각 처리
+                }
             });
         });
     }
 
-    // 전투 클리어 시 호출 (전투 시스템에서 호출)
-    public void OnZoneBattleComplete(string zoneName, bool isVictory)
+    // 안전지역 워프 (isDefeat=true면 워프 완료 후 함선 복구)
+    private void ReturnToSafeZone()
     {
-        if (!isVictory) return;
+        ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
+        if (zoneConfig == null) return;
 
-        var request = new ZoneClearRequest { zoneName = zoneName };
-        NetworkManager.Instance.ClearZone(request, OnZoneClearResponse);
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null)
+            pp.SetSkyboxBlendTarget(zoneConfig.skyboxMaterial);
+
+        UIManager.Instance.HidePanel("UIPanelCameraView");
+
+        m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
+        {
+            ClearWaveScrollView();
+            SetExplorationUI(true);
+
+            if (m_isFleetWiped)
+            {
+                // 전멸: 모든 함선 재건, 10% HP
+                m_myFleet.RebuildFleet(0.1f);
+                m_isFleetWiped = false;
+            }
+            else
+            {
+                // 퇴각: 파괴된 함선만 10%로 복구, 살아있는 함선은 현재 체력 유지
+                m_myFleet.RestoreDestroyedShips(0.1f);
+            }
+        });
     }
 
     private void OnZoneClearResponse(ApiResponse<ZoneClearResponse> response)
@@ -485,17 +510,11 @@ public class UITabExploration : UITabBase
         string clearedZoneName = character.m_characterInfo.clearedZone;
         ZoneConfig nextZone = string.IsNullOrEmpty(clearedZoneName) ? null : m_datatableZone.GetNextZone(clearedZoneName);
 
-        // 자동 탐사: 다음 존이 있으면 바로 진입 (가드 우회)
-        if (m_isAutoExploration && nextZone != null)
-        {
-            EnterZone(nextZone);
-        }
-        else
-        {
-            OnEnterZoneZeroClicked();
-        }
-
         
+        if (m_isAutoExploration && nextZone != null)
+            EnterZone(nextZone);// 자동 탐사: 다음 존이 있으면 바로 진입 (가드 우회)
+        else
+            ReturnToSafeZone();
     }
 
     private void OnCollectZoneClicked()

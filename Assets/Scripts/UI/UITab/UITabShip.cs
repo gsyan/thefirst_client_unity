@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Localization.Components;
-using UnityEngine.Localization.SmartFormat.Core.Parsing;
 using UnityEngine.UI;
 
 public class UITabShip : UITabBase
@@ -12,8 +8,6 @@ public class UITabShip : UITabBase
     [SerializeField] private TMP_Text  m_textShipStatus;
     [SerializeField] private RectTransform m_shipStatsContainer;    // VerticalLayoutGroup 필요
     [SerializeField] private GameObject m_rowLabelValuePrefab;      // 프리팹
-    [SerializeField] private RectTransform m_scrollViewShipContent;
-    [SerializeField] private GameObject m_scrollViewShipItem;       // 프리팹    
     
     [SerializeField] private TMP_Text  m_textModuleStatus;
     [SerializeField] private TMP_Text  m_textModuleType;
@@ -70,14 +64,14 @@ public class UITabShip : UITabBase
         m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
+        EventManager.Subscribe_ShipUpdateHP(UpdateShipStatsDisplay);
         EventManager.Subscribe_SpaceShipModuleSelected(OnSpaceShipModuleSelected);
     }
 
     public override void OnTabActivated()
     {  
         base.OnTabActivated();
-        EventManager.Subscribe_ShipChange(OnShipChanged);
-
+        
         if (m_selectedShip == null)
             m_selectedShip = m_myFleet.m_ships[0];
         if (m_selectedModule == null)
@@ -89,7 +83,6 @@ public class UITabShip : UITabBase
 
         bShow = true;
         UpdateShipStatsDisplay();
-        PopulateShipScrollView();
         UpdateModuleStatsDisplay();
         UpdateUIFrame();
         PopulateModuleScrollView();
@@ -98,8 +91,7 @@ public class UITabShip : UITabBase
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        EventManager.Unsubscribe_ShipChange(OnShipChanged);
-
+        
         if (m_myFleet != null)
             m_myFleet.ClearAllSelectedModule();
 
@@ -139,7 +131,6 @@ public class UITabShip : UITabBase
         if (bShow)
         {
             UpdateShipStatsDisplay();
-            PopulateShipScrollView();
             UpdateModuleStatsDisplay();
             UpdateUIFrame();
             PopulateModuleScrollView();
@@ -158,60 +149,10 @@ public class UITabShip : UITabBase
         if (bShow)
         {
             UpdateShipStatsDisplay();
-            PopulateShipScrollView();
             UpdateModuleStatsDisplay();
             UpdateUIFrame();
             PopulateModuleScrollView();
         }
-    }
-
-
-    private void PopulateShipScrollView()
-    {
-        if (m_scrollViewShipContent == null || m_scrollViewShipItem == null) return;
-        if (m_myFleet == null) return;
-
-        // 활성 아이템 비활성화
-        for (int i = 0; i < m_shipItemActive.Count; i++)
-            m_shipItemActive[i].gameObject.SetActive(false);
-        m_shipItemActive.Clear();
-        m_shipItemMap.Clear();
-
-        for (int i = 0; i < m_myFleet.m_ships.Count; i++)
-        {
-            ScrollViewShipItem scrollViewItem;
-            if (i < m_shipItemPool.Count)
-            {
-                scrollViewItem = m_shipItemPool[i];
-                scrollViewItem.gameObject.SetActive(true);
-            }
-            else
-            {
-                var item = Instantiate(m_scrollViewShipItem, m_scrollViewShipContent);
-                item.name = m_scrollViewShipItem.name;
-                scrollViewItem = item.GetComponent<ScrollViewShipItem>();
-                m_shipItemPool.Add(scrollViewItem);
-            }
-
-            SpaceShip ship = m_myFleet.m_ships[i];
-            ScrollViewShipItem captured = scrollViewItem;
-            scrollViewItem.InitializeScrollViewShipItem(
-                ship.m_shipInfo.shipName,
-                () => OnShipItemSelected(captured, ship)
-            );
-            m_shipItemMap[ship] = scrollViewItem;
-            m_shipItemActive.Add(scrollViewItem);
-        }
-    }
-
-    // UI 스크롤뷰 버튼으로 함선 선택 (이벤트 트리거만 담당, 실제 로직은 OnSpaceShipSelected)
-    private void OnShipItemSelected(ScrollViewShipItem selectedItem, SpaceShip ship)
-    {
-        if (selectedItem == null || ship == null) return;
-        if (m_selectedShip == ship) return;
-
-        EventManager.TriggerSpaceShipSelected(ship);
-        m_selectedScrollViewShipItem = selectedItem;
     }
 
     private void UpdateShipStatsDisplay()
@@ -228,6 +169,7 @@ public class UITabShip : UITabBase
         SetOrCreateShipStatRow("health_power", $"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
         SetOrCreateShipStatRow("speed_power", $"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");
         SetOrCreateShipStatRow("cargo_power", $"{statsCur.cargo_capacity:F0}/{statsOrg.cargo_capacity:F0}");
+        SetOrCreateShipStatRow("repair_power", $"{statsCur.repair_power:F0}/{statsOrg.repair_power:F0}");
     }
 
     private void SetOrCreateShipStatRow(string label, string value)
@@ -252,14 +194,7 @@ public class UITabShip : UITabBase
         }
     }
 
-    private void OnShipChanged()
-    {
-        if (bShow != true) return;
-
-        UpdateModuleStatsDisplay();
-    }
-
-
+    
     private void PopulateModuleScrollView()
     {
         if (bShow != true) return;
@@ -643,6 +578,7 @@ public class UITabShip : UITabBase
             AddModuleStatRow("health_power", $"{statsOrg.health_power:F0}");
             AddModuleStatRow("speed_power", $"{statsOrg.speed_power:F0}");
             AddModuleStatRow("cargo_power", $"{statsOrg.cargo_capacity:F0}");
+            AddModuleStatRow("repair_power", $"{statsOrg.repair_power:F0}");
         }
     }
 
