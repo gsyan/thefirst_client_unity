@@ -126,6 +126,7 @@ public class DataTableModuleEditor : Editor
                 m_moduleLevel = group.modules.Count + 1,
                 m_health = 200f,
                 m_cargoCapacity = 100f,
+                m_repairPower = 1f,
                 m_description = $"{group.subType} LV.{group.modules.Count + 1}"
             };
             group.modules.Add(moduleData);
@@ -182,7 +183,8 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
         module.m_cargoCapacity = EditorGUILayout.Slider("Cargo", module.m_cargoCapacity, 0f, 1000f);
-
+        module.m_repairPower = EditorGUILayout.Slider("Repair", module.m_repairPower, 0f, 1000f);
+        
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
         module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);

@@ -72,15 +72,16 @@ public class ProjectileMissile : ProjectileBase
         }
     }
 
-    private void ReturnToPool()
+    public void ReturnToPool(bool showHitEffect = true)
     {
         if (m_lifeCycleCoroutine != null)
         {
             StopCoroutine(m_lifeCycleCoroutine);
             m_lifeCycleCoroutine = null;
         }
-        
-        ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(EPoolName.EFFECT_MISSILE_HIT, transform.position);
+
+        if (showHitEffect && gameObject.activeInHierarchy)
+            ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(EPoolName.EFFECT_MISSILE_HIT, transform.position);
 
         ObjectManager.Instance.m_poolManager.Return(EPoolName.PROJECTILE_MISSILE, this);
     }

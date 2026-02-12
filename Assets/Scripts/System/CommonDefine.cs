@@ -1,11 +1,4 @@
 // ------------------------------------------------------------
-public class CommonDefine
-{ 
-    public const int MAX_MODULE_LEVEL = 10;
-    public const int DEFAULT_CARGO_CAPACITY = 50;
-    public const float DEFAULT_HEALTH = 100f;
-
-}
 
 [System.Serializable]
 public enum ESpaceMineralState
@@ -52,7 +45,7 @@ public enum EModuleSubType
 
 public static class EModuleTypeExtensions
 {
-    public static UnityEngine.Color GetColor(this EModuleType moduleType)
+    public static UnityEngine.Color GetColorByModuleType(this EModuleType moduleType)
     {
         switch (moduleType)
         {

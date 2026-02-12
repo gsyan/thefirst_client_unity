@@ -121,6 +121,7 @@ public class ProjectileBeam : ProjectileBase
             m_lifeTime += Time.deltaTime;
             if (m_lifeTime >= MAX_LIFE_TIME)
             {
+                if (!gameObject.activeInHierarchy) yield break;
                 yield return StartCoroutine(BeamScatterAndReturn());
                 yield break;
             }
@@ -153,7 +154,8 @@ public class ProjectileBeam : ProjectileBase
             ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(EPoolName.EFFECT_BEAM_HIT, finalHitPoint);
         }
 
-        // 3단계: 흩어지며 소멸
+        // 3단계: 흩어지며 소멸 (TakeDamage→전멸→CleanupAllProjectiles 동기 체인으로 비활성화될 수 있음)
+        if (!gameObject.activeInHierarchy) yield break;
         yield return StartCoroutine(BeamScatterAndReturn());
     }
 
@@ -314,7 +316,7 @@ public class ProjectileBeam : ProjectileBase
         public int Compare(RaycastHit a, RaycastHit b) => a.distance.CompareTo(b.distance);
     }
 
-    private void ReturnToPool()
+    public void ReturnToPool()
     {
         if (m_lifeCycleCoroutine != null)
         {
@@ -326,6 +328,12 @@ public class ProjectileBeam : ProjectileBase
         {
             m_headEffect.ReturnToPool_Effect();
             m_headEffect = null;
+        }
+
+        if (m_scatterParticle != null)
+        {
+            m_scatterParticle.Stop(true);
+            m_scatterParticle.Clear();
         }
 
         m_lineRenderer.enabled = false;

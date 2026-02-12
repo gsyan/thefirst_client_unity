@@ -105,17 +105,44 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         DataManager.Instance.RestoreCurrentCharacterInfo();
         DataManager.Instance.RestoreCurrentFleetInfo();
 
-        SpawnFleet();        
+        SpawnFleet();
 
         NetworkManager.Instance.OnChangeScene();
 
         // UI 초기화
         UIManager.Instance.InitializeUIManager();
 
+        // 플레이어 함대 전멸 이벤트 구독
+        EventManager.Subscribe_MyFleetDestroyed(OnMyFleetDestroyed);
+
         // 튜토리얼 초기화
         //TutorialManager.Instance.ResetAllTutorials();
         // 튜토리얼 체크 및 시작, StartGameplay
         StartTutorialIfNeeded();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetDestroyed);
+    }
+
+    private void OnMyFleetDestroyed()
+    {
+        ForceEndBattle(false);
+    }
+
+    // 전투 강제 종료 (전멸/퇴각 공통)
+    public void ForceEndBattle(bool isVictory)
+    {
+        StopEnemySpawning();
+        OrderAllAircraftReturn();
+        CleanupAllProjectiles();
+        RemoveAllEnemyFleets();
+
+        var callback = m_onZoneBattleComplete;
+        m_onZoneBattleComplete = null;
+        m_currentZoneConfig = null;
+        callback?.Invoke(isVictory);
     }
 
     // 튜토리얼 시작 체크
@@ -228,7 +255,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_currentWaveIndex = 0;
         m_totalSpawnedEnemies = 0;
         m_totalDestroyedEnemies = 0;
-        m_onZoneBattleComplete = null;
+        //m_onZoneBattleComplete = null;
     }
 
     // 모든 적 함대 제거
@@ -242,23 +269,21 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_enemyFleets.Clear();
     }
 
-    // 모든 활성 빔/미사일 풀로 반환
+    // 모든 활성 빔/미사일: 코루틴/이펙트 정리 후 풀 반환
     public void CleanupAllProjectiles()
     {
-        // 빔 제거
         ProjectileBeam[] beams = FindObjectsByType<ProjectileBeam>(FindObjectsSortMode.None);
         foreach (var beam in beams)
         {
             if (beam != null && beam.gameObject.activeSelf)
-                m_poolManager.Return(EPoolName.PROJECTILE_BEAM, beam);
+                beam.ReturnToPool();
         }
 
-        // 미사일 제거
         ProjectileMissile[] missiles = FindObjectsByType<ProjectileMissile>(FindObjectsSortMode.None);
         foreach (var missile in missiles)
         {
             if (missile != null && missile.gameObject.activeSelf)
-                m_poolManager.Return(EPoolName.PROJECTILE_MISSILE, missile);
+                missile.ReturnToPool(showHitEffect: false);
         }
     }
 
@@ -282,15 +307,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             m_totalDestroyedEnemies >= m_totalSpawnedEnemies &&
             m_enemyFleets.Count == 0)
         {
-            // 코루틴 중지 먼저
-            if (m_spawnCoroutine != null)
-            {
-                StopCoroutine(m_spawnCoroutine);
-                m_spawnCoroutine = null;
-            }
+            // ForceEndBattle과 동일한 정리 (스폰중지+카운터초기화, 함재기귀환, 투사체제거), 적함은 없는 상태니 적 클리어 할 필요 없음
+            StopEnemySpawning();
+            OrderAllAircraftReturn();
+            CleanupAllProjectiles();
 
             var callback = m_onZoneBattleComplete;
-            m_currentZoneConfig = null;
             m_onZoneBattleComplete = null;
             callback?.Invoke(true);
         }
@@ -307,9 +329,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         // 카메라가 함대를 타겟으로 설정
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
-
-        // 임시로 배틀로 초기화, 최종적으로는 none으로 하고 중간에 함대 상태 바꾸는 기능이 있어야 함
-        m_myFleet.SetFleetState(EFleetState.Battle);
     }
 
     
@@ -332,8 +351,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
             EventManager.TriggerWaveStarted(m_currentWaveIndex, m_currentZoneConfig.waves.Count);
 
-            // 현재 Wave의 적이 모두 죽을 때까지 대기 (다음 Wave로 넘어가기 전)
-            yield return new WaitUntil(() => m_enemyFleets.Count == 0);
+            // 현재 Wave의 적이 모두 죽거나 플레이어 전멸 시 다음 단계로
+            yield return new WaitUntil(() => m_enemyFleets.Count == 0 || (m_myFleet != null && m_myFleet.IsFleetAlive() == false));
+            if (m_myFleet != null && m_myFleet.IsFleetAlive()== false) yield break;
         }
 
         // 모든 Wave 스폰 완료 후 전투 완료 체크

@@ -2,9 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+
 
 // 능력치 프로파일 구조체 (함선/함대의 전투 및 작전 능력)
 [System.Serializable]
@@ -19,6 +18,7 @@ public struct CapabilityProfile
     public float health_power;      // 체력
     public float speed_power;       // 속력 (이동+회전 통합)
     public float cargo_capacity;    // 적재량
+    public float repair_power;      // 수리 능력
 }
 
 public class SpaceShip : MonoBehaviour
@@ -238,6 +238,9 @@ public class SpaceShip : MonoBehaviour
         // 전체 함선 체력 재계산
         m_spaceShipStatsCur = GetShipCapabilityProfile(false);
 
+        EventManager.Trigger_FleetUpdateHP();
+        EventManager.Trigger_ShipUpdateHP();
+
         if (m_spaceShipStatsCur.health_power <= 0.0f)
             OnSpaceShipDestroyed();
     }
@@ -374,7 +377,8 @@ public class SpaceShip : MonoBehaviour
                 stats.attack_power += bodyStats.attack_power;
                 stats.health_power += bodyStats.health_power;
                 stats.speed_power += bodyStats.speed_power;
-                stats.cargo_capacity += bodyStats.cargo_capacity;               
+                stats.cargo_capacity += bodyStats.cargo_capacity;           
+                stats.repair_power += bodyStats.repair_power;
                 stats.totalWeapons += bodyStats.totalWeapons;
                 stats.totalEngines += bodyStats.totalEngines;
             }

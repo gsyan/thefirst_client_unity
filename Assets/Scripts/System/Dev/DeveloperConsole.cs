@@ -496,9 +496,6 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                             if (ObjectManager.Instance != null && addShipResponse.newShipInfo != null)
                                 // CreateSpaceShipFromData 내부에서 진형 재배치 처리됨
                                 ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(addShipResponse.newShipInfo);
-                                
-
-                            EventManager.TriggerFleetChange();
                         }
                     }
                     catch (System.Exception e)

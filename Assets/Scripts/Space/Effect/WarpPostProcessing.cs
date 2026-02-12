@@ -238,6 +238,7 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
 
         // Phase 2: 워프 중 (PP: chargeMax → 1.0, Skybox 블렌드)
         elapsed = 0f;
+        bool cleanedUp = false;
         while (elapsed < m_warpDuration)
         {
             elapsed += Time.deltaTime;
@@ -247,11 +248,12 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
             SetWarpIntensity(intensity);
             SetSkyboxBlend(intensity);
 
-            if( t > 0.5f)
+            // 워프 중반에 잔여 오브젝트 1회 정리
+            if (t > 0.5f && cleanedUp == false)
             {
-                // 빔/미사일 제거, 적 함대 제거
+                cleanedUp = true;
                 ObjectManager.Instance.CleanupAllProjectiles();
-                ObjectManager.Instance.RemoveAllEnemyFleets();       
+                ObjectManager.Instance.RemoveAllEnemyFleets();
             }
 
             yield return null;

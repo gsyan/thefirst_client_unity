@@ -55,6 +55,10 @@ MonoBehaviour:
     m_Key: cargo_power
     m_Metadata:
       m_Items: []
+  - m_Id: 1462580203618304
+    m_Key: repair_power
+    m_Metadata:
+      m_Items: []
   - m_Id: 63232261619712
     m_Key: formation_list
     m_Metadata:

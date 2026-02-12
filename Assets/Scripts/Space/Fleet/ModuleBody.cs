@@ -15,10 +15,10 @@ public class ModuleBody : ModuleBase
     [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
     [HideInInspector] public List<ModuleHanger> m_hangers = new List<ModuleHanger>();
 
-    [HideInInspector] public float m_cargoCapacity;
+    private float m_cargoCapacity;
+    private float m_repairPower;
 
-    private ModuleBody m_currentTarget;
-
+    
     public override void ApplyShipStateToModule()
     {
         base.ApplyShipStateToModule();
@@ -63,19 +63,14 @@ public class ModuleBody : ModuleBase
 
         // 새 레벨의 ModuleData 가져오기
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleBodyInfo.moduleSubType, newLevel);
-        if (moduleData == null)
-        {
-            Debug.LogError($"Failed to restore module data for level {newLevel}");
-            return;
-        }
-
+        if (moduleData == null) return;
+        
         // 스탯 갱신
         m_healthMax = moduleData.m_health;
         m_health = Mathf.Min(m_health, m_healthMax);
-        m_cargoCapacity = moduleData.m_cargoCapacity;
         m_upgradeCost = moduleData.m_upgradeCost;
-
-        Debug.Log($"ModuleBody leveled up to {newLevel}: HP={m_healthMax}, CargoCapacity={m_cargoCapacity}");
+        m_cargoCapacity = moduleData.m_cargoCapacity;
+        m_repairPower = moduleData.m_repairPower;
     }
 
     public override int GetModuleBodyIndex()
@@ -99,14 +94,15 @@ public class ModuleBody : ModuleBase
 
         // 복원된 데이터로 초기화
         m_health = moduleData.m_health;
-        m_healthMax = moduleData.m_health;
+        m_healthMax = moduleData.m_health;        
+        // 업그레이드 비용 설정
+        m_upgradeCost = moduleData.m_upgradeCost;
+        
         m_attackPower = 0.0f; // Body는 직접 공격하지 않음
 
         // Body 전용 능력치
         m_cargoCapacity = moduleData.m_cargoCapacity;
-
-        // 업그레이드 비용 설정
-        m_upgradeCost = moduleData.m_upgradeCost;
+        m_repairPower = moduleData.m_repairPower;
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
@@ -536,6 +532,7 @@ public class ModuleBody : ModuleBase
         // Body 자체의 능력치
         stats.health_power = m_health;
         stats.cargo_capacity = m_cargoCapacity;
+        stats.repair_power = m_repairPower;
 
         // 모든 슬롯의 모듈들을 순회하며 능력치 합산
         foreach (ModuleSlot slot in m_moduleSlots)

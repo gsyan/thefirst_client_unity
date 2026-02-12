@@ -3,6 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 수리 시 한 함선을 어느 수준까지 회복한 뒤 다음 함선으로 넘어갈지
+public enum ERepairThreshold
+{
+    Full,       // 100%까지 회복
+    TwoThirds,  // 2/3까지 회복
+    OneThird,   // 1/3까지 회복
+}
+
+// 동시에 몇 대의 함선을 수리할지
+public enum ERepairConcurrency
+{
+    One,    // 1대 집중
+    Two,    // 2대 동시
+    Three,  // 3대 동시
+    All,    // 체력 100% 아닌 함선 모두
+}
+
 public class SpaceFleet : MonoBehaviour
 {
     public FleetInfo m_fleetInfo;
@@ -10,6 +27,10 @@ public class SpaceFleet : MonoBehaviour
     public EFleetState m_fleetState = EFleetState.None;
     public EFormationType m_currentFormationType = EFormationType.formation_type_linear_horizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
+
+    // 수리 설정
+    public ERepairThreshold m_repairThreshold = ERepairThreshold.Full;
+    public ERepairConcurrency m_repairConcurrency = ERepairConcurrency.One;
     
     private void Start()
     {
@@ -30,6 +51,9 @@ public class SpaceFleet : MonoBehaviour
 
             UpdateShipFormation(m_fleetInfo.formation, false);
         }
+        
+        //if (isEnemy == false)
+            SetFleetState(EFleetState.Battle);
     }
     // smoothSpawn: true면 기함 뒤에서 스폰 후 이동, false면 즉시 진형 위치에 배치
     public void CreateSpaceShipFromData(ShipInfo shipInfo, bool smoothSpawn = false)
@@ -208,12 +232,95 @@ public class SpaceFleet : MonoBehaviour
         {
             if (m_isEnemyFleet == true)
                 ObjectManager.Instance.RemoveEnemyFleet(this);
+            else
+                EventManager.Trigger_MyFleetDestroyed();
         }
         else if (refreshFormation)
         {
-            // 필요 시 진형 재계획
             RefreshFormation();
         }
+    }
+
+    // 함대 전체 재건 (전멸 후 복구용, 모든 함선 재생성)
+    public void RebuildFleet(float healthRatio = 0.1f)
+    {
+        StopAllCoroutines();
+
+        for (int i = m_ships.Count - 1; i >= 0; i--)
+        {
+            if (m_ships[i] != null)
+                Destroy(m_ships[i].gameObject);
+        }
+        m_ships.Clear();
+
+        if (m_fleetInfo.ships != null && m_fleetInfo.ships.Count > 0)
+        {
+            for (int i = 0; i < m_fleetInfo.ships.Count; i++)
+                CreateSpaceShipFromData(m_fleetInfo.ships[i]);
+
+            UpdateShipFormation(m_fleetInfo.formation, false);
+        }
+
+        ApplyHealthRatio(healthRatio);
+        SetFleetState(EFleetState.Battle);
+
+        if (m_isEnemyFleet == false)
+            StartCoroutine(AutoRepair());
+    }
+
+    // 파괴된 함선만 복구 (퇴각용, 살아있는 함선은 현재 체력 유지)
+    public void RestoreDestroyedShips(float healthRatio = 0.1f)
+    {
+        HashSet<long> aliveShipIds = new HashSet<long>();
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship != null)
+                aliveShipIds.Add(ship.m_shipInfo.id);
+        }
+
+        bool hasRestored = false;
+        foreach (ShipInfo shipInfo in m_fleetInfo.ships)
+        {
+            if (aliveShipIds.Contains(shipInfo.id)) continue;
+
+            CreateSpaceShipFromData(shipInfo);
+            SpaceShip newShip = FindShip(shipInfo.id);
+            if (newShip != null)
+            {
+                foreach (ModuleBody body in newShip.m_moduleBodys)
+                {
+                    if (body != null)
+                        body.m_health = body.m_healthMax * healthRatio;
+                }
+                newShip.UpdateShipStatCur();
+            }
+            hasRestored = true;
+        }
+
+        if (hasRestored)
+        {
+            RefreshFormation();
+            EventManager.Trigger_FleetUpdateHP();
+            EventManager.Trigger_ShipUpdateHP();
+        }
+    }
+
+    // 모든 함선의 체력을 지정 비율로 설정
+    private void ApplyHealthRatio(float ratio)
+    {
+        ratio = Mathf.Clamp01(ratio);
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleBody body in ship.m_moduleBodys)
+            {
+                if (body == null) continue;
+                body.m_health = body.m_healthMax * ratio;
+            }
+            ship.UpdateShipStatCur();
+        }
+        EventManager.Trigger_FleetUpdateHP();
+        EventManager.Trigger_ShipUpdateHP();
     }
 
     public bool IsFleetAlive()
@@ -290,33 +397,113 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
-    public System.Collections.IEnumerator AutoRepair()
+    // 함선의 전체 체력 비율 계산 (모든 바디의 합산)
+    private float GetShipHealthRatio(SpaceShip ship)
+    {
+        float totalHealth = 0f;
+        float totalMaxHealth = 0f;
+        foreach (ModuleBody body in ship.m_moduleBodys)
+        {
+            if (body == null) continue;
+            totalHealth += body.m_health;
+            totalMaxHealth += body.m_healthMax;
+        }
+        return totalMaxHealth > 0f ? totalHealth / totalMaxHealth : 1f;
+    }
+
+    // 임계값 enum → 실제 비율
+    private float GetRepairThresholdRatio()
+    {
+        switch (m_repairThreshold)
+        {
+            case ERepairThreshold.TwoThirds: return 2f / 3f;
+            case ERepairThreshold.OneThird:  return 1f / 3f;
+            default:                         return 1f;
+        }
+    }
+
+    public IEnumerator AutoRepair()
     {
         while (IsFleetAlive() == true)
         {
             yield return new WaitForSeconds(1.0f);
 
             CapabilityProfile fleetStats = GetFleetCapabilityProfile(true);
-            float repairPerSecond = 10;//fleetStats.totalMaintenanceCapability;
+            float totalRepair = fleetStats.repair_power;
+            if (totalRepair <= 0f) continue;
 
-            if (repairPerSecond <= 0) continue;
+            float threshold = GetRepairThresholdRatio();
 
-            float repairPerShip = repairPerSecond / m_ships.Count;
-
+            // 수리가 필요한 함선 수집 (체력비율이 threshold 미만이거나, threshold 이상이지만 100% 미달)
+            // 우선순위: 체력 비율이 낮은 함선부터
+            List<SpaceShip> needRepair = new List<SpaceShip>();
             foreach (SpaceShip ship in m_ships)
             {
                 if (ship == null || ship.IsAlive() == false) continue;
+                if (GetShipHealthRatio(ship) < 1f)
+                    needRepair.Add(ship);
+            }
+
+            if (needRepair.Count == 0) continue;
+
+            // 체력 비율이 낮은 순으로 정렬
+            needRepair.Sort((a, b) => GetShipHealthRatio(a).CompareTo(GetShipHealthRatio(b)));
+
+            // 동시 수리 대수 결정
+            int maxTargets;
+            switch (m_repairConcurrency)
+            {
+                case ERepairConcurrency.Two:   maxTargets = 2; break;
+                case ERepairConcurrency.Three: maxTargets = 3; break;
+                case ERepairConcurrency.All:   maxTargets = needRepair.Count; break;
+                default:                       maxTargets = 1; break;
+            }
+
+            // threshold 미달인 함선 우선, 그 다음 나머지
+            List<SpaceShip> targets = new List<SpaceShip>();
+            foreach (SpaceShip ship in needRepair)
+            {
+                if (targets.Count >= maxTargets) break;
+                if (GetShipHealthRatio(ship) < threshold)
+                    targets.Add(ship);
+            }
+            // 아직 자리가 남으면 threshold 이상~100% 미달 함선도 추가
+            if (targets.Count < maxTargets)
+            {
+                foreach (SpaceShip ship in needRepair)
+                {
+                    if (targets.Count >= maxTargets) break;
+                    if (targets.Contains(ship) == false)
+                        targets.Add(ship);
+                }
+            }
+
+            // 총 수리력을 대상 수로 균등 분배
+            float repairPerTarget = totalRepair / targets.Count;
+
+            foreach (SpaceShip ship in targets)
+            {
+                // 함선 내 바디별 균등 분배
+                int aliveBodyCount = 0;
+                foreach (ModuleBody body in ship.m_moduleBodys)
+                {
+                    if (body != null && body.m_health < body.m_healthMax)
+                        aliveBodyCount++;
+                }
+                if (aliveBodyCount == 0) continue;
+
+                float repairPerBody = repairPerTarget / aliveBodyCount;
 
                 foreach (ModuleBody body in ship.m_moduleBodys)
                 {
                     if (body == null || body.m_health >= body.m_healthMax) continue;
-
-                    float repairAmount = repairPerShip / ship.m_moduleBodys.Count;
-                    body.m_health = Mathf.Min(body.m_health + repairAmount, body.m_healthMax);
+                    body.m_health = Mathf.Min(body.m_health + repairPerBody, body.m_healthMax);
                 }
 
                 ship.UpdateShipStatCur();
+                EventManager.Trigger_ShipUpdateHP();
             }
+            EventManager.Trigger_FleetUpdateHP();
         }
     }
 
@@ -345,7 +532,8 @@ public class SpaceFleet : MonoBehaviour
             totalStats.attack_power += shipStats.attack_power;
             totalStats.health_power += shipStats.health_power;
             totalStats.speed_power += shipStats.speed_power;
-            totalStats.cargo_capacity += shipStats.cargo_capacity;            
+            totalStats.cargo_capacity += shipStats.cargo_capacity;
+            totalStats.repair_power += shipStats.repair_power;
             totalStats.totalWeapons += shipStats.totalWeapons;
             totalStats.totalEngines += shipStats.totalEngines;
         }
