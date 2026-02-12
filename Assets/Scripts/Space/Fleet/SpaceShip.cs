@@ -1050,6 +1050,19 @@ public class SpaceShip : MonoBehaviour
         };
 
         ReplaceBodyWhilePreservingModules(oldBody, newBodyInfo);
+
+        // m_shipInfo.bodies의 해당 항목을 새 ModuleBodyInfo로 교체 (FleetInfo까지 동일 참조이므로 함께 갱신됨)
+        if (m_shipInfo.bodies != null)
+        {
+            for (int i = 0; i < m_shipInfo.bodies.Count; i++)
+            {
+                if (m_shipInfo.bodies[i].bodyIndex == bodyIndex)
+                {
+                    m_shipInfo.bodies[i] = newBodyInfo;
+                    break;
+                }
+            }
+        }
     }
     // Body 교체 시 기존 모듈을 보존하는 메서드
     private void ReplaceBodyWhilePreservingModules(ModuleBody oldBody, ModuleBodyInfo newBodyInfo)

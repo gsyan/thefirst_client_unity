@@ -375,4 +375,11 @@ public class ModuleHanger : ModuleBase
         return stats;
     }
 
+
+    // 파괴 시 정리
+    private void OnDestroy()
+    {
+        if (m_parentBody != null)
+            m_parentBody.RemoveHanger(this);
+    }
 }

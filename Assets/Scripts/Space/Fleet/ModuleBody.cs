@@ -85,7 +85,8 @@ public class ModuleBody : ModuleBase
     // Body 초기화 (기존 모듈 재사용 가능)
     public void InitializeModuleBody(ModuleBodyInfo moduleBodyInfo, List<ModuleBase> savedModules)
     {
-        m_moduleBodyInfo = moduleBodyInfo;
+        // 전투 중 모듈 제거가 원본 FleetInfo를 변경하지 않도록 깊은 복사
+        m_moduleBodyInfo = moduleBodyInfo;//DeepCopyBodyInfo(moduleBodyInfo);
         m_moduleSlot = null;
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
@@ -160,24 +161,6 @@ public class ModuleBody : ModuleBase
         }
     }
     
-    // 모듈을 슬롯에 배치
-    private void PlaceModuleInSlot(ModuleBase module, ModuleSlot targetSlot, SpaceShip myShip, SpaceFleet myFleet)
-    {
-        module.transform.SetParent(targetSlot.transform);
-        module.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        module.gameObject.SetActive(true);
-
-        // 모듈의 슬롯 참조 업데이트
-        module.m_moduleSlot = targetSlot;
-
-        // 모듈의 함대 정보 재설정 (부모가 바뀌었으므로)
-        if (myShip != null && myFleet != null)
-            module.SetFleetInfo(myFleet, myShip);
-
-        // 코루틴 재시작 (각 모듈에서 필요시 override)
-        module.RestartCoroutines();
-    }
-
     // 서버 정보에 있지만 재배치되지 못한 모듈들을 생성
     private void CreateMissingModules(ModuleBodyInfo bodyInfo)
     {
@@ -417,30 +400,70 @@ public class ModuleBody : ModuleBase
     }
 
     // 엔진 제거
-    public void RemoveEngine(ModuleEngine engine)
+    public void RemoveEngine(ModuleEngine engine, bool bRemoveFromInfo = false)
     {
-        m_moduleBodyInfo.engines.Remove(engine.m_moduleInfo);
+        if( bRemoveFromInfo == true)
+            m_moduleBodyInfo.engines.Remove(engine.m_moduleInfo);
         m_engines.Remove(engine);
     }
 
     // 무기 제거
-    public void RemoveBeam(ModuleBeam beam)
+    public void RemoveBeam(ModuleBeam beam, bool bRemoveFromInfo = false)
     {
-        m_moduleBodyInfo.beams.Remove(beam.m_moduleInfo);
+        if( bRemoveFromInfo == true)
+            m_moduleBodyInfo.beams.Remove(beam.m_moduleInfo);
         m_beams.Remove(beam);
     }
 
-    public void RemoveMissile(ModuleMissile missile)
+    public void RemoveMissile(ModuleMissile missile, bool bRemoveFromInfo = false)
     {
-        m_moduleBodyInfo.missiles.Remove(missile.m_moduleInfo);
+        if( bRemoveFromInfo == true)
+            m_moduleBodyInfo.missiles.Remove(missile.m_moduleInfo);
         m_missiles.Remove(missile);
     }
 
     // 행거 제거
-    public void RemoveHanger(ModuleHanger hanger)
+    public void RemoveHanger(ModuleHanger hanger, bool bRemoveFromInfo = false)
     {
-        m_moduleBodyInfo.hangers.Remove(hanger.m_moduleInfo);
+        if( bRemoveFromInfo == true)
+            m_moduleBodyInfo.hangers.Remove(hanger.m_moduleInfo);
         m_hangers.Remove(hanger);
+    }
+
+    // ModuleBodyInfo 깊은 복사 (원본 FleetInfo 보호용)
+    private ModuleBodyInfo DeepCopyBodyInfo(ModuleBodyInfo source)
+    {
+        var copy = new ModuleBodyInfo
+        {
+            moduleType = source.moduleType,
+            moduleSubType = source.moduleSubType,
+            moduleLevel = source.moduleLevel,
+            bodyIndex = source.bodyIndex,
+            engines = CopyModuleInfoList(source.engines),
+            beams = CopyModuleInfoList(source.beams),
+            missiles = CopyModuleInfoList(source.missiles),
+            hangers = CopyModuleInfoList(source.hangers)
+        };
+        return copy;
+    }
+
+    private List<ModuleInfo> CopyModuleInfoList(List<ModuleInfo> source)
+    {
+        if (source == null) return new List<ModuleInfo>();
+        var copy = new List<ModuleInfo>(source.Count);
+        for (int i = 0; i < source.Count; i++)
+        {
+            var s = source[i];
+            copy.Add(new ModuleInfo
+            {
+                moduleType = s.moduleType,
+                moduleSubType = s.moduleSubType,
+                moduleLevel = s.moduleLevel,
+                bodyIndex = s.bodyIndex,
+                slotIndex = s.slotIndex
+            });
+        }
+        return copy;
     }
 
     // 특정 타입과 인덱스의 슬롯 찾기
@@ -583,13 +606,13 @@ public class ModuleBody : ModuleBase
 
                 // 리스트에서 제거
                 if (existingModule is ModuleEngine engine)
-                    RemoveEngine(engine);
+                    RemoveEngine(engine, bRemoveFromInfo: true);
                 else if (existingModule is ModuleBeam beam)
-                    RemoveBeam(beam);
+                    RemoveBeam(beam, bRemoveFromInfo: true);
                 else if (existingModule is ModuleMissile missile)
-                    RemoveMissile(missile);
+                    RemoveMissile(missile, bRemoveFromInfo: true);
                 else if (existingModule is ModuleHanger hanger)
-                    RemoveHanger(hanger);
+                    RemoveHanger(hanger, bRemoveFromInfo: true);
 
                 // 게임 오브젝트 즉시 삭제 (같은 프레임 내에서 새 모듈을 생성하므로 DestroyImmediate 사용)
                 DestroyImmediate(existingModule.gameObject);
