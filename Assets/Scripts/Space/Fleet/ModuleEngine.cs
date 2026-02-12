@@ -124,9 +124,7 @@ public class ModuleEngine : ModuleBase
     private void OnDestroy()
     {
         if (m_parentBody != null)
-        {
             m_parentBody.RemoveEngine(this);
-        }
     }
 
 }

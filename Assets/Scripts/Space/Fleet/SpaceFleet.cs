@@ -52,7 +52,8 @@ public class SpaceFleet : MonoBehaviour
             UpdateShipFormation(m_fleetInfo.formation, false);
         }
         
-        //if (isEnemy == false)
+        // 적함, 내함 공격 안하게
+        //if (isEnemy == true)
             SetFleetState(EFleetState.Battle);
     }
     // smoothSpawn: true면 기함 뒤에서 스폰 후 이동, false면 즉시 진형 위치에 배치

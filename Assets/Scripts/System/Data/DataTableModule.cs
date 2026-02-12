@@ -454,7 +454,7 @@ public class DataTableModule : ScriptableObject
                 for (int i = 1; i <= 10; i++)
                 {
                     // Extract slot info from Body prefab for each level
-                    ModuleSlotInfo[] slotInfos = ExtractModuleSlotsFromPrefab(subType, i);
+                    ModuleSlotInfo[] slotInfos = ExtractModuleSlotsFromPrefab(subType, 1);// 프리팹 레벨1만
 
                     var module = new ModuleData
                     {

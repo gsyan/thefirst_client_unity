@@ -220,7 +220,7 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     {
         m_isWarping = true;
 
-        // Warp 시작 시점: 적 스폰 중지, 함재기 귀환 명령
+        // Warp 시작 시점: 적 스폰 중지, 함재기 귀환 명령, 안전지역 -> zone 
         ObjectManager.Instance.StopEnemySpawning();
         ObjectManager.Instance.OrderAllAircraftReturn();
 

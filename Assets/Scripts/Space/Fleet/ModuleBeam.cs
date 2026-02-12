@@ -84,6 +84,39 @@ public class ModuleBeam : ModuleBase
             m_parentBody.AddBeam(this);
     }
 
+    // // ModuleInfo 깊은 복사 (원본 FleetInfo 보호용)
+    // private ModuleInfo DeepCopyModuleInfo(ModuleInfo source)
+    // {
+    //     var copy = new ModuleInfo
+    //     {
+    //         moduleType = source.moduleType,
+    //         moduleSubType = source.moduleSubType,
+    //         moduleLevel = source.moduleLevel,
+    //         bodyIndex = source.bodyIndex,
+    //         slotIndex = source.slotIndex
+    //     };
+    //     return copy;
+    // }
+
+    // private List<ModuleInfo> CopyModuleInfoList(List<ModuleInfo> source)
+    // {
+    //     if (source == null) return new List<ModuleInfo>();
+    //     var copy = new List<ModuleInfo>(source.Count);
+    //     for (int i = 0; i < source.Count; i++)
+    //     {
+    //         var s = source[i];
+    //         copy.Add(new ModuleInfo
+    //         {
+    //             moduleType = s.moduleType,
+    //             moduleSubType = s.moduleSubType,
+    //             moduleLevel = s.moduleLevel,
+    //             bodyIndex = s.bodyIndex,
+    //             slotIndex = s.slotIndex
+    //         });
+    //     }
+    //     return copy;
+    // }
+
     private void InitializeSubType(ModuleData moduleData)
     {
         switch (m_moduleInfo.moduleSubType)
