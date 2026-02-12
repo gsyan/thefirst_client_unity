@@ -33,23 +33,23 @@ public class GameSettings
     public CostStruct[] m_addShipCosts = new CostStruct[]
     {
         new CostStruct(0, 0, 0, 0, 0),
-        new CostStruct(1, 50000, 0, 0, 0),
-        new CostStruct(1, 100000, 0, 0, 0),
-        new CostStruct(1, 200000, 0, 0, 0),
-        new CostStruct(1, 400000, 0, 0, 0),
-        new CostStruct(1, 800000, 0, 0, 0),
-        new CostStruct(1, 1600000, 0, 0, 0),
-        new CostStruct(1, 3200000, 0, 0, 0),
-        new CostStruct(1, 6400000, 0, 0, 0),
-        new CostStruct(1, 12800000, 0, 0, 0),
-        new CostStruct(1, 25600000, 0, 0, 0)
+        new CostStruct(1, 5000, 0, 0, 0),
+        new CostStruct(1, 10000, 0, 0, 0),
+        new CostStruct(1, 20000, 5000, 0, 0),
+        new CostStruct(1, 40000, 10000, 0, 0),
+        new CostStruct(1, 80000, 20000, 5000, 0),
+        new CostStruct(1, 160000, 40000, 10000, 0),
+        new CostStruct(1, 320000, 80000, 20000, 5000),
+        new CostStruct(1, 640000, 160000, 40000, 10000),
+        new CostStruct(1, 1280000, 320000, 80000, 20000),
+        new CostStruct(1, 2560000, 640000, 160000, 40000)
     };
 
     // 현재 함선 개수에 따른 다음 함선 추가 비용 반환
     public CostStruct GetAddShipCost(int currentShipCount)
     {
         // 기본값
-        CostStruct defaultCost = new CostStruct(1, 500, 0, 0, 0);
+        CostStruct defaultCost = new CostStruct(1, 5000, 0, 0, 0);
 
         // 배열 유효성 체크
         if (m_addShipCosts == null || m_addShipCosts.Length == 0)
@@ -63,13 +63,15 @@ public class GameSettings
         return m_addShipCosts[^1];
     }
 
-    [Header("Ship Module Settings")]
+    [Header("Pvp Settings")]
+    public int m_pvpListCount = 3;
+    public int m_pvpListRefreshCount = 5;    
+    public int m_pvpRankScoreInit = 1000;
+    public int m_pvpRankScorePenalty = 1;
+    
     public int m_moduleUnlockPrice = 5000;
+    public float m_explorationInterval = 10.0f;
 
-    [Header("Enemy Settings")]
-    public float m_enemyFleetSpawnInterval = 5.0f;
-    public float m_explorationInterval = 15.0f;
-    public float m_enemySpawnRate = 2.0f;
 }
 
 [CreateAssetMenu(fileName = "DataTableConfig", menuName = "Custom/DataTableConfig")]

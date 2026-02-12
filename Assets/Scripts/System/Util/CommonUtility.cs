@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
@@ -65,6 +66,12 @@ public struct ModuleMaxStats
     {
         return moduleType == EModuleType.body ? maxBodyCargo : 0f;
     }
+}
+
+public static class EnumExtensions
+{
+    public static string ToLocKey<T>(this T value) where T : Enum
+        => value.ToString();
 }
 
 public static class CommonUtility

@@ -292,7 +292,7 @@ public class UITabShip : UITabBase
 
         // 확인 팝업 표시
         CostStruct cost = new CostStruct { mineral = unlockPrice };
-        string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType()}");
+        string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("module_unlock"),
@@ -386,7 +386,7 @@ public class UITabShip : UITabBase
         }
 
 
-        string moduleTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType()}");
+        string moduleTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
         int currentLevel = m_selectedModule.GetModuleLevel();
         int targetLevel = currentLevel + 1;
         
@@ -732,7 +732,7 @@ public class UITabShip : UITabBase
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("module_research"),
-            LocalizationManager.Instance.Get("popup_message_module_research", new object[] { moduleSubType }),
+            LocalizationManager.Instance.Get("popup_message_module_research", new object[] { moduleSubType.ToLocKey() }),
             researchCost,
             onConfirm: () =>
             {

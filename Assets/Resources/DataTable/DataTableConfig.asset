@@ -23,59 +23,61 @@ MonoBehaviour:
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 50000
+      mineral: 5000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 100000
+      mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 200000
-      mineralRare: 0
+      mineral: 20000
+      mineralRare: 5000
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 400000
-      mineralRare: 0
+      mineral: 40000
+      mineralRare: 10000
       mineralExotic: 0
       mineralDark: 0
     - techLevel: 1
-      mineral: 800000
-      mineralRare: 0
-      mineralExotic: 0
+      mineral: 80000
+      mineralRare: 20000
+      mineralExotic: 5000
       mineralDark: 0
     - techLevel: 1
-      mineral: 1600000
-      mineralRare: 0
-      mineralExotic: 0
+      mineral: 160000
+      mineralRare: 40000
+      mineralExotic: 10000
       mineralDark: 0
     - techLevel: 1
-      mineral: 3200000
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
+      mineral: 320000
+      mineralRare: 80000
+      mineralExotic: 20000
+      mineralDark: 5000
     - techLevel: 1
-      mineral: 6400000
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
+      mineral: 640000
+      mineralRare: 160000
+      mineralExotic: 40000
+      mineralDark: 10000
     - techLevel: 1
-      mineral: 12800000
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
+      mineral: 1280000
+      mineralRare: 320000
+      mineralExotic: 80000
+      mineralDark: 20000
     - techLevel: 1
-      mineral: 25600000
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
+      mineral: 2560000
+      mineralRare: 640000
+      mineralExotic: 160000
+      mineralDark: 40000
+    m_pvpListCount: 3
+    m_pvpListRefreshCount: 5
+    m_pvpRankScoreInit: 1000
+    m_pvpRankScorePenalty: 1
     m_moduleUnlockPrice: 5000
-    m_enemyFleetSpawnInterval: 5
-    m_explorationInterval: 15
-    m_enemySpawnRate: 2
+    m_explorationInterval: 10
   exportedJson: "{\r\n  \"m_version\": \"0.0.1\",\r\n  \"m_maxLives\": 3,\r\n  \"m_maxShipsPerFleet\":
     9,\r\n  \"m_addShipCosts\": [\r\n    {\r\n      \"techLevel\": 0,\r\n      \"mineral\":
     0,\r\n      \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":

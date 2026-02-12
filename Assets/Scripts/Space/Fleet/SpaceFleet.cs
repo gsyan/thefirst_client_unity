@@ -20,6 +20,19 @@ public enum ERepairConcurrency
     All,    // 체력 100% 아닌 함선 모두
 }
 
+public enum EFleetSide
+{
+    fleet_side_player,
+    fleet_side_enemy
+}
+
+public enum EFleetSource
+{
+    fleet_source_player,
+    fleet_source_player_remote,
+    fleet_source_zone_data,
+}
+
 public class SpaceFleet : MonoBehaviour
 {
     public FleetInfo m_fleetInfo;
