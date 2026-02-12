@@ -4526,7 +4526,13 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_battle Lv.2\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleLevel\":
-    2,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
+    2,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 5,\r\n           
+    \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 200,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"body_battle-class hull module level 2\",\r\n       
@@ -4542,7 +4548,13 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_battle Lv.3\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleLevel\":
-    3,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
+    3,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 5,\r\n           
+    \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 400,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"body_battle-class hull module level 3\",\r\n       
@@ -4558,7 +4570,13 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_battle Lv.4\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleLevel\":
-    4,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
+    4,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 5,\r\n           
+    \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 800,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"body_battle-class hull module level 4\",\r\n       
@@ -4574,7 +4592,13 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_battle Lv.5\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleLevel\":
-    5,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
+    5,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 5,\r\n           
+    \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 1600,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"body_battle-class hull module level 5\",\r\n       
@@ -4590,7 +4614,13 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_battle Lv.6\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleLevel\":
-    6,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
+    6,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 5,\r\n           
+    \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 3200,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"body_battle-class hull module level 6\",\r\n       
@@ -4606,7 +4636,13 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_battle Lv.7\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleLevel\":
-    7,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
+    7,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 5,\r\n           
+    \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 6400,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"body_battle-class hull module level 7\",\r\n       
@@ -4622,7 +4658,13 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_battle Lv.8\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleLevel\":
-    8,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
+    8,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 5,\r\n           
+    \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 12800,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"body_battle-class hull module level 8\",\r\n       
@@ -4638,7 +4680,13 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_battle Lv.9\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1001,\r\n        \"m_moduleLevel\":
-    9,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
+    9,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 5,\r\n           
+    \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n         
     \"techLevel\": 1,\r\n          \"mineral\": 25600,\r\n          \"mineralRare\":
     0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
     },\r\n        \"m_description\": \"body_battle-class hull module level 9\",\r\n       
@@ -4656,16 +4704,10 @@ MonoBehaviour:
     \"m_moduleName\": \"body_battle Lv.10\",\r\n        \"m_moduleType\": 1,\r\n       
     \"m_moduleSubType\": 1001,\r\n        \"m_moduleLevel\": 10,\r\n        \"m_moduleSlots\":
     [\r\n          {\r\n            \"moduleType\": 2,\r\n            \"slotIndex\":
-    0\r\n          },\r\n          {\r\n            \"moduleType\": 2,\r\n           
-    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
-    2,\r\n            \"slotIndex\": 2\r\n          },\r\n          {\r\n           
-    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
-    },\r\n          {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\":
-    2\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 3,\r\n           
     \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    4,\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": 4,\r\n            \"slotIndex\": 2\r\n          },\r\n         
+    3,\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
+    \"moduleType\": 4,\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": 5,\r\n            \"slotIndex\": 0\r\n         
     }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
     \"mineral\": 51200,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
@@ -4708,136 +4750,216 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_aircraft Lv.2\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\":
-    2,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 2000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_aircraft-class hull module level 2\",\r\n       
-    \"m_health\": 200.0,\r\n        \"m_cargoCapacity\": 100.0,\r\n        \"m_repairPower\":
-    3.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
-    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
-    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
-    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
+    2,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    5,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 5,\r\n            \"slotIndex\": 1\r\n          }\r\n       
+    ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
+    \"mineral\": 2000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
+    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
+    \"body_aircraft-class hull module level 2\",\r\n        \"m_health\": 200.0,\r\n       
+    \"m_cargoCapacity\": 100.0,\r\n        \"m_repairPower\": 3.0,\r\n        \"m_movementSpeed\":
+    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
+    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
+    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
+    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
+    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
     100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
     10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
     10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_aircraft Lv.3\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\":
-    3,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 4000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_aircraft-class hull module level 3\",\r\n       
-    \"m_health\": 250.0,\r\n        \"m_cargoCapacity\": 125.0,\r\n        \"m_repairPower\":
-    4.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
-    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
-    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
-    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
+    3,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    5,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 5,\r\n            \"slotIndex\": 1\r\n          }\r\n       
+    ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
+    \"mineral\": 4000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
+    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
+    \"body_aircraft-class hull module level 3\",\r\n        \"m_health\": 250.0,\r\n       
+    \"m_cargoCapacity\": 125.0,\r\n        \"m_repairPower\": 4.0,\r\n        \"m_movementSpeed\":
+    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
+    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
+    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
+    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
+    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
     100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
     10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
     10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_aircraft Lv.4\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\":
-    4,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 8000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_aircraft-class hull module level 4\",\r\n       
-    \"m_health\": 300.0,\r\n        \"m_cargoCapacity\": 150.0,\r\n        \"m_repairPower\":
-    5.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
-    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
-    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
-    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
+    4,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    5,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 5,\r\n            \"slotIndex\": 1\r\n          }\r\n       
+    ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
+    \"mineral\": 8000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
+    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
+    \"body_aircraft-class hull module level 4\",\r\n        \"m_health\": 300.0,\r\n       
+    \"m_cargoCapacity\": 150.0,\r\n        \"m_repairPower\": 5.0,\r\n        \"m_movementSpeed\":
+    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
+    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
+    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
+    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
+    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
     100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
     10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
     10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_aircraft Lv.5\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\":
-    5,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 16000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_aircraft-class hull module level 5\",\r\n       
-    \"m_health\": 350.0,\r\n        \"m_cargoCapacity\": 175.0,\r\n        \"m_repairPower\":
-    6.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
-    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
-    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
-    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
+    5,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    5,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 5,\r\n            \"slotIndex\": 1\r\n          }\r\n       
+    ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
+    \"mineral\": 16000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
+    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
+    \"body_aircraft-class hull module level 5\",\r\n        \"m_health\": 350.0,\r\n       
+    \"m_cargoCapacity\": 175.0,\r\n        \"m_repairPower\": 6.0,\r\n        \"m_movementSpeed\":
+    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
+    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
+    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
+    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
+    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
     100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
     10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
     10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_aircraft Lv.6\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\":
-    6,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 32000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_aircraft-class hull module level 6\",\r\n       
-    \"m_health\": 400.0,\r\n        \"m_cargoCapacity\": 200.0,\r\n        \"m_repairPower\":
-    7.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
-    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
-    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
-    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
+    6,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    5,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 5,\r\n            \"slotIndex\": 1\r\n          }\r\n       
+    ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
+    \"mineral\": 32000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
+    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
+    \"body_aircraft-class hull module level 6\",\r\n        \"m_health\": 400.0,\r\n       
+    \"m_cargoCapacity\": 200.0,\r\n        \"m_repairPower\": 7.0,\r\n        \"m_movementSpeed\":
+    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
+    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
+    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
+    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
+    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
     100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
     10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
     10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_aircraft Lv.7\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\":
-    7,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 64000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_aircraft-class hull module level 7\",\r\n       
-    \"m_health\": 450.0,\r\n        \"m_cargoCapacity\": 225.0,\r\n        \"m_repairPower\":
-    8.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
-    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
-    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
-    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
+    7,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    5,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 5,\r\n            \"slotIndex\": 1\r\n          }\r\n       
+    ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
+    \"mineral\": 64000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
+    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
+    \"body_aircraft-class hull module level 7\",\r\n        \"m_health\": 450.0,\r\n       
+    \"m_cargoCapacity\": 225.0,\r\n        \"m_repairPower\": 8.0,\r\n        \"m_movementSpeed\":
+    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
+    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
+    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
+    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
+    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
     100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
     10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
     10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_aircraft Lv.8\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\":
-    8,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 128000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_aircraft-class hull module level 8\",\r\n       
-    \"m_health\": 500.0,\r\n        \"m_cargoCapacity\": 250.0,\r\n        \"m_repairPower\":
-    9.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
-    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
-    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
-    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
+    8,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    5,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 5,\r\n            \"slotIndex\": 1\r\n          }\r\n       
+    ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
+    \"mineral\": 128000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
+    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
+    \"body_aircraft-class hull module level 8\",\r\n        \"m_health\": 500.0,\r\n       
+    \"m_cargoCapacity\": 250.0,\r\n        \"m_repairPower\": 9.0,\r\n        \"m_movementSpeed\":
+    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
+    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
+    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
+    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
+    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
     100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
     10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
     10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_aircraft Lv.9\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\":
-    9,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 256000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_aircraft-class hull module level 9\",\r\n       
-    \"m_health\": 550.0,\r\n        \"m_cargoCapacity\": 275.0,\r\n        \"m_repairPower\":
-    10.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\":
-    0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
-    \"m_projectileWidth\": 0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n       
-    \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\":
-    1.0,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n       
-    \"m_aircraftLaunchStraightDistance\": 100.0,\r\n        \"m_aircraftHealth\":
-    50.0,\r\n        \"m_aircraftAttackPower\": 10.0,\r\n        \"m_aircraftAttackRange\":
-    100.0,\r\n        \"m_aircraftAttackCooldown\": 10.0,\r\n        \"m_aircraftSpeed\":
-    200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n        \"m_aircraftDetectionRadius\":
-    200.0,\r\n        \"m_aircraftAvoidanceRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"m_moduleName\": \"body_aircraft Lv.10\",\r\n        \"m_moduleType\": 1,\r\n       
-    \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\": 10,\r\n        \"m_moduleSlots\":
-    null,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
+    9,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    5,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 5,\r\n            \"slotIndex\": 1\r\n          }\r\n       
+    ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
+    \"mineral\": 256000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
+    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
+    \"body_aircraft-class hull module level 9\",\r\n        \"m_health\": 550.0,\r\n       
+    \"m_cargoCapacity\": 275.0,\r\n        \"m_repairPower\": 10.0,\r\n        \"m_movementSpeed\":
+    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
+    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
+    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
+    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
+    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
+    100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
+    10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
+    10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
+    \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
+    200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_aircraft Lv.10\",\r\n       
+    \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1002,\r\n        \"m_moduleLevel\":
+    10,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 3,\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": 3,\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": 4,\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": 4,\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    5,\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": 5,\r\n            \"slotIndex\": 1\r\n          }\r\n       
+    ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
     \"mineral\": 512000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
     \"body_aircraft-class hull module level 10\",\r\n        \"m_health\": 600.0,\r\n       
@@ -4871,29 +4993,14 @@ MonoBehaviour:
     200.0,\r\n        \"m_aircraftAvoidanceRadius\": 200.0\r\n      },\r\n      {\r\n       
     \"m_moduleName\": \"body_repair Lv.2\",\r\n        \"m_moduleType\": 1,\r\n       
     \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\": 2,\r\n        \"m_moduleSlots\":
-    null,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
-    \"mineral\": 2000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
-    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
-    \"body_repair-class hull module level 2\",\r\n        \"m_health\": 200.0,\r\n       
-    \"m_cargoCapacity\": 100.0,\r\n        \"m_repairPower\": 3.0,\r\n        \"m_movementSpeed\":
-    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
-    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
-    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
-    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
-    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
-    100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
-    10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
-    10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
-    \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
-    200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_repair Lv.3\",\r\n       
-    \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\":
-    3,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 4000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_repair-class hull module level 3\",\r\n       
-    \"m_health\": 250.0,\r\n        \"m_cargoCapacity\": 125.0,\r\n        \"m_repairPower\":
-    4.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
+    [\r\n          {\r\n            \"moduleType\": 2,\r\n            \"slotIndex\":
+    0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
+    1,\r\n          \"mineral\": 2000,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"m_description\": \"body_repair-class hull module level 2\",\r\n        \"m_health\":
+    200.0,\r\n        \"m_cargoCapacity\": 100.0,\r\n        \"m_repairPower\": 3.0,\r\n       
+    \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\":
+    0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
     0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
     5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
     \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
@@ -4901,15 +5008,34 @@ MonoBehaviour:
     10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
     10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
-    200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_repair Lv.4\",\r\n       
+    200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_repair Lv.3\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\":
-    4,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 8000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_repair-class hull module level 4\",\r\n       
-    \"m_health\": 300.0,\r\n        \"m_cargoCapacity\": 150.0,\r\n        \"m_repairPower\":
-    5.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
+    3,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\":
+    {\r\n          \"techLevel\": 1,\r\n          \"mineral\": 4000,\r\n         
+    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
+    0\r\n        },\r\n        \"m_description\": \"body_repair-class hull module
+    level 3\",\r\n        \"m_health\": 250.0,\r\n        \"m_cargoCapacity\": 125.0,\r\n       
+    \"m_repairPower\": 4.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\":
+    0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
+    \"m_projectileWidth\": 0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n       
+    \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\":
+    1.0,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n       
+    \"m_aircraftLaunchStraightDistance\": 100.0,\r\n        \"m_aircraftHealth\":
+    50.0,\r\n        \"m_aircraftAttackPower\": 10.0,\r\n        \"m_aircraftAttackRange\":
+    100.0,\r\n        \"m_aircraftAttackCooldown\": 10.0,\r\n        \"m_aircraftSpeed\":
+    200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n        \"m_aircraftDetectionRadius\":
+    200.0,\r\n        \"m_aircraftAvoidanceRadius\": 200.0\r\n      },\r\n      {\r\n       
+    \"m_moduleName\": \"body_repair Lv.4\",\r\n        \"m_moduleType\": 1,\r\n       
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\": 4,\r\n        \"m_moduleSlots\":
+    [\r\n          {\r\n            \"moduleType\": 2,\r\n            \"slotIndex\":
+    0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
+    1,\r\n          \"mineral\": 8000,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"m_description\": \"body_repair-class hull module level 4\",\r\n        \"m_health\":
+    300.0,\r\n        \"m_cargoCapacity\": 150.0,\r\n        \"m_repairPower\": 5.0,\r\n       
+    \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\":
+    0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
     0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
     5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
     \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
@@ -4919,29 +5045,32 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_repair Lv.5\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\":
-    5,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 16000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_repair-class hull module level 5\",\r\n       
-    \"m_health\": 350.0,\r\n        \"m_cargoCapacity\": 175.0,\r\n        \"m_repairPower\":
-    6.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
-    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
-    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
-    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
-    100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
-    10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
-    10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
-    \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
-    200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_repair Lv.6\",\r\n       
-    \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\":
-    6,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 32000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_repair-class hull module level 6\",\r\n       
-    \"m_health\": 400.0,\r\n        \"m_cargoCapacity\": 200.0,\r\n        \"m_repairPower\":
-    7.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
+    5,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\":
+    {\r\n          \"techLevel\": 1,\r\n          \"mineral\": 16000,\r\n         
+    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
+    0\r\n        },\r\n        \"m_description\": \"body_repair-class hull module
+    level 5\",\r\n        \"m_health\": 350.0,\r\n        \"m_cargoCapacity\": 175.0,\r\n       
+    \"m_repairPower\": 6.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\":
+    0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
+    \"m_projectileWidth\": 0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n       
+    \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\":
+    1.0,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n       
+    \"m_aircraftLaunchStraightDistance\": 100.0,\r\n        \"m_aircraftHealth\":
+    50.0,\r\n        \"m_aircraftAttackPower\": 10.0,\r\n        \"m_aircraftAttackRange\":
+    100.0,\r\n        \"m_aircraftAttackCooldown\": 10.0,\r\n        \"m_aircraftSpeed\":
+    200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n        \"m_aircraftDetectionRadius\":
+    200.0,\r\n        \"m_aircraftAvoidanceRadius\": 200.0\r\n      },\r\n      {\r\n       
+    \"m_moduleName\": \"body_repair Lv.6\",\r\n        \"m_moduleType\": 1,\r\n       
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\": 6,\r\n        \"m_moduleSlots\":
+    [\r\n          {\r\n            \"moduleType\": 2,\r\n            \"slotIndex\":
+    0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
+    1,\r\n          \"mineral\": 32000,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"m_description\": \"body_repair-class hull module level 6\",\r\n        \"m_health\":
+    400.0,\r\n        \"m_cargoCapacity\": 200.0,\r\n        \"m_repairPower\": 7.0,\r\n       
+    \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\":
+    0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
     0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
     5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
     \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
@@ -4951,29 +5080,32 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_repair Lv.7\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\":
-    7,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 64000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_repair-class hull module level 7\",\r\n       
-    \"m_health\": 450.0,\r\n        \"m_cargoCapacity\": 225.0,\r\n        \"m_repairPower\":
-    8.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
-    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
-    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
-    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
-    100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
-    10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
-    10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
-    \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
-    200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_repair Lv.8\",\r\n       
-    \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\":
-    8,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 128000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_repair-class hull module level 8\",\r\n       
-    \"m_health\": 500.0,\r\n        \"m_cargoCapacity\": 250.0,\r\n        \"m_repairPower\":
-    9.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n       
-    \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
+    7,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\":
+    {\r\n          \"techLevel\": 1,\r\n          \"mineral\": 64000,\r\n         
+    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
+    0\r\n        },\r\n        \"m_description\": \"body_repair-class hull module
+    level 7\",\r\n        \"m_health\": 450.0,\r\n        \"m_cargoCapacity\": 225.0,\r\n       
+    \"m_repairPower\": 8.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\":
+    0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
+    \"m_projectileWidth\": 0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n       
+    \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\":
+    1.0,\r\n        \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n       
+    \"m_aircraftLaunchStraightDistance\": 100.0,\r\n        \"m_aircraftHealth\":
+    50.0,\r\n        \"m_aircraftAttackPower\": 10.0,\r\n        \"m_aircraftAttackRange\":
+    100.0,\r\n        \"m_aircraftAttackCooldown\": 10.0,\r\n        \"m_aircraftSpeed\":
+    200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n        \"m_aircraftDetectionRadius\":
+    200.0,\r\n        \"m_aircraftAvoidanceRadius\": 200.0\r\n      },\r\n      {\r\n       
+    \"m_moduleName\": \"body_repair Lv.8\",\r\n        \"m_moduleType\": 1,\r\n       
+    \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\": 8,\r\n        \"m_moduleSlots\":
+    [\r\n          {\r\n            \"moduleType\": 2,\r\n            \"slotIndex\":
+    0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
+    1,\r\n          \"mineral\": 128000,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"m_description\": \"body_repair-class hull module level 8\",\r\n        \"m_health\":
+    500.0,\r\n        \"m_cargoCapacity\": 250.0,\r\n        \"m_repairPower\": 9.0,\r\n       
+    \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\":
+    0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
     0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
     5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
     \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
@@ -4983,12 +5115,13 @@ MonoBehaviour:
     \"m_aircraftDetectionRadius\": 200.0,\r\n        \"m_aircraftAvoidanceRadius\":
     200.0\r\n      },\r\n      {\r\n        \"m_moduleName\": \"body_repair Lv.9\",\r\n       
     \"m_moduleType\": 1,\r\n        \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\":
-    9,\r\n        \"m_moduleSlots\": null,\r\n        \"m_upgradeCost\": {\r\n         
-    \"techLevel\": 1,\r\n          \"mineral\": 256000,\r\n          \"mineralRare\":
-    0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n       
-    },\r\n        \"m_description\": \"body_repair-class hull module level 9\",\r\n       
-    \"m_health\": 550.0,\r\n        \"m_cargoCapacity\": 275.0,\r\n        \"m_repairPower\":
-    10.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\":
+    9,\r\n        \"m_moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    2,\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\":
+    {\r\n          \"techLevel\": 1,\r\n          \"mineral\": 256000,\r\n         
+    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
+    0\r\n        },\r\n        \"m_description\": \"body_repair-class hull module
+    level 9\",\r\n        \"m_health\": 550.0,\r\n        \"m_cargoCapacity\": 275.0,\r\n       
+    \"m_repairPower\": 10.0,\r\n        \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\":
     0,\r\n        \"m_attackPower\": 0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n       
     \"m_projectileWidth\": 0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n       
     \"m_hangarCapability\": 5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\":
@@ -5000,16 +5133,17 @@ MonoBehaviour:
     200.0,\r\n        \"m_aircraftAvoidanceRadius\": 200.0\r\n      },\r\n      {\r\n       
     \"m_moduleName\": \"body_repair Lv.10\",\r\n        \"m_moduleType\": 1,\r\n       
     \"m_moduleSubType\": 1003,\r\n        \"m_moduleLevel\": 10,\r\n        \"m_moduleSlots\":
-    null,\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\": 1,\r\n         
-    \"mineral\": 512000,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
-    0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"m_description\":
-    \"body_repair-class hull module level 10\",\r\n        \"m_health\": 600.0,\r\n       
-    \"m_cargoCapacity\": 300.0,\r\n        \"m_repairPower\": 11.0,\r\n        \"m_movementSpeed\":
-    0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\": 0.0,\r\n       
-    \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\": 0.0,\r\n       
-    \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\": 5,\r\n       
-    \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n        \"m_launchCount\":
-    1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
+    [\r\n          {\r\n            \"moduleType\": 2,\r\n            \"slotIndex\":
+    0\r\n          }\r\n        ],\r\n        \"m_upgradeCost\": {\r\n          \"techLevel\":
+    1,\r\n          \"mineral\": 512000,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"m_description\": \"body_repair-class hull module level 10\",\r\n        \"m_health\":
+    600.0,\r\n        \"m_cargoCapacity\": 300.0,\r\n        \"m_repairPower\": 11.0,\r\n       
+    \"m_movementSpeed\": 0.0,\r\n        \"m_attackFireCount\": 0,\r\n        \"m_attackPower\":
+    0.0,\r\n        \"m_attackCoolTime\": 0.0,\r\n        \"m_projectileWidth\":
+    0.0,\r\n        \"m_projectileSpeed\": 0.0,\r\n        \"m_hangarCapability\":
+    5,\r\n        \"m_scoutCapability\": 5,\r\n        \"m_launchCool\": 1.0,\r\n       
+    \"m_launchCount\": 1,\r\n        \"m_maintenanceTime\": 10.0,\r\n        \"m_aircraftLaunchStraightDistance\":
     100.0,\r\n        \"m_aircraftHealth\": 50.0,\r\n        \"m_aircraftAttackPower\":
     10.0,\r\n        \"m_aircraftAttackRange\": 100.0,\r\n        \"m_aircraftAttackCooldown\":
     10.0,\r\n        \"m_aircraftSpeed\": 200.0,\r\n        \"m_aircraftAmmo\": 10,\r\n       
