@@ -310,7 +310,7 @@ public class CameraController : MonoSingleton<CameraController>
 
         SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
         if (ship == null) return;
-        if (ship.m_myFleet == null || ship.m_myFleet.m_isEnemyFleet) return;
+        if (ship.m_myFleet == null || ship.m_myFleet.IsEnemy) return;
 
         // 내함대 보기
         SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);

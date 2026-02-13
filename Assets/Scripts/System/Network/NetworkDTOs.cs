@@ -452,3 +452,72 @@ public class ZoneCollectResponse
     public CostRemainInfo rewardInfo;  // 수확 보상
 }
 #endregion
+
+#region PvP Data Classes #################################################################################
+[System.Serializable]
+public class PvpRankInfo
+{
+    public int pvpScore;
+    public int pvpWins;
+    public int pvpLosses;
+    public int pvpRank;
+    public int pvpListRefreshRemain;
+}
+
+[System.Serializable]
+public class PvpOpponentInfo
+{
+    public long characterId;
+    public string characterName;
+    public int pvpScore;
+    public FleetInfo fleetInfo;
+}
+
+[System.Serializable]
+public class PvpListRequest { }
+
+[System.Serializable]
+public class PvpListResponse
+{
+    public List<PvpOpponentInfo> opponents;
+    public PvpRankInfo myRankInfo;
+}
+
+[System.Serializable]
+public class PvpRefreshRequest { }
+
+[System.Serializable]
+public class PvpRefreshResponse
+{
+    public List<PvpOpponentInfo> opponents;
+    public int refreshRemain;
+}
+
+[System.Serializable]
+public class PvpBattleStartRequest
+{
+    public long opponentCharacterId;
+}
+
+[System.Serializable]
+public class PvpBattleStartResponse
+{
+    public FleetInfo opponentFleetInfo;
+    public string battleToken;
+}
+
+[System.Serializable]
+public class PvpBattleResultRequest
+{
+    public string battleToken;
+    public bool isVictory;
+}
+
+[System.Serializable]
+public class PvpBattleResultResponse
+{
+    public int scoreChange;
+    public int newScore;
+    public int newRank;
+}
+#endregion

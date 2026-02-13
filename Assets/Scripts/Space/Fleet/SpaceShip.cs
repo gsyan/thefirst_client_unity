@@ -195,7 +195,7 @@ public class SpaceShip : MonoBehaviour
             {
                 if (m_targetShip == null || m_targetShip.IsAlive() == false)
                 {
-                    if (m_myFleet != null && m_myFleet.m_isEnemyFleet == true)
+                    if (m_myFleet != null && m_myFleet.IsEnemy)
                     {
                         if (ObjectManager.Instance.m_myFleet != null)
                             m_targetShip = ObjectManager.Instance.m_myFleet.GetRandomAliveShip();
@@ -306,9 +306,9 @@ public class SpaceShip : MonoBehaviour
         if (parentFleet != null)
         {
             parentFleet.RemoveShip(this);
-            if (parentFleet.m_isEnemyFleet == true)
+            if (parentFleet.IsZoneEnemy)
             {
-                // 적 파괴시 보상
+                // Zone 적 파괴시 보상 (PvP 적은 광물 미지급)
                 DeveloperConsole.ExecuteCommandStatic("AddMineral 50");
             }
         }

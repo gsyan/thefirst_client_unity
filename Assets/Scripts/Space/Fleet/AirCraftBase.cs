@@ -629,7 +629,7 @@ public abstract class AircraftBase : MonoBehaviour
 
         // 적 함대에서 살아있는 모듈 직접 탐색
         SpaceFleet enemyFleet = null;
-        if (m_carrierShip.m_myFleet.m_isEnemyFleet)
+        if (m_carrierShip.m_myFleet.IsEnemy)
         {
             enemyFleet = ObjectManager.Instance.m_myFleet;
         }

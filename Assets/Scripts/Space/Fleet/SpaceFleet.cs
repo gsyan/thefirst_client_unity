@@ -36,8 +36,14 @@ public enum EFleetSource
 public class SpaceFleet : MonoBehaviour
 {
     public FleetInfo m_fleetInfo;
-    [SerializeField] public bool m_isEnemyFleet = false;
+    public EFleetSide m_fleetSide = EFleetSide.fleet_side_player;
+    public EFleetSource m_fleetSource = EFleetSource.fleet_source_player;
     public EFleetState m_fleetState = EFleetState.None;
+
+    // 편의 프로퍼티
+    public bool IsEnemy => m_fleetSide == EFleetSide.fleet_side_enemy;
+    public bool IsZoneEnemy => m_fleetSource == EFleetSource.fleet_source_zone_data;
+    public bool IsPvpEnemy => m_fleetSource == EFleetSource.fleet_source_player_remote;
     public EFormationType m_currentFormationType = EFormationType.formation_type_linear_horizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
 
@@ -47,14 +53,15 @@ public class SpaceFleet : MonoBehaviour
     
     private void Start()
     {
-        if (m_isEnemyFleet == false)
+        if (m_fleetSource == EFleetSource.fleet_source_player || m_fleetSource == EFleetSource.fleet_source_player_remote)
             StartCoroutine(AutoRepair());
     }
 
-    public void InitializeSpaceFleet(FleetInfo fleetInfo, bool isEnemy = false, EFleetState fleetState = EFleetState.None)
+    public void InitializeSpaceFleet(FleetInfo fleetInfo, EFleetSide side = EFleetSide.fleet_side_player, EFleetSource source = EFleetSource.fleet_source_player, EFleetState fleetState = EFleetState.None)
     {
         m_fleetInfo = fleetInfo;
-        m_isEnemyFleet = isEnemy;
+        m_fleetSide = side;
+        m_fleetSource = source;
         m_fleetState = fleetState;
 
         if (m_fleetInfo.ships != null && m_fleetInfo.ships.Count > 0)
@@ -218,7 +225,7 @@ public class SpaceFleet : MonoBehaviour
 
     public void ChangeFormation(EFormationType newFormationType)
     {
-        if (m_isEnemyFleet) return;
+        if (IsEnemy) return;
 
         var request = new ChangeFormationRequest
         {
@@ -244,7 +251,7 @@ public class SpaceFleet : MonoBehaviour
 
         if (IsFleetAlive() == false)
         {
-            if (m_isEnemyFleet == true)
+            if (IsEnemy)
                 ObjectManager.Instance.RemoveEnemyFleet(this);
             else
                 EventManager.Trigger_MyFleetDestroyed();
@@ -278,7 +285,7 @@ public class SpaceFleet : MonoBehaviour
         ApplyHealthRatio(healthRatio);
         SetFleetState(EFleetState.Battle);
 
-        if (m_isEnemyFleet == false)
+        if (m_fleetSource == EFleetSource.fleet_source_player || m_fleetSource == EFleetSource.fleet_source_player_remote)
             StartCoroutine(AutoRepair());
     }
 
@@ -525,7 +532,7 @@ public class SpaceFleet : MonoBehaviour
     {
         StopAllCoroutines();
 
-        if (m_isEnemyFleet == true)
+        if (IsEnemy)
         {
             ObjectManager.Instance.RemoveEnemyFleet(this);
         }

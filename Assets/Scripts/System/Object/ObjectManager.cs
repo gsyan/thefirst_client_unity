@@ -391,7 +391,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             ships = enemyShips
         };
 
-        enemyFleet.InitializeSpaceFleet(enemyFleetInfo, true);
+        enemyFleet.InitializeSpaceFleet(enemyFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data);
         m_totalSpawnedEnemies += wave.enemyShips.Count;
 
         m_enemyFleets.Add(enemyFleet);
