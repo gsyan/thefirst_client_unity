@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,21 +7,28 @@ using UnityEngine.UI;
 public class UITabShip : UITabBase
 {
     [SerializeField] private TMP_Text  m_textShipStatus;
-    [SerializeField] private RectTransform m_shipStatsContainer;    // VerticalLayoutGroup 필요
-    [SerializeField] private GameObject m_rowLabelValuePrefab;      // 프리팹
+    [SerializeField] private RectTransform m_shipStatsContainer;
+    private readonly List<string> shipStatLabels = new List<string>{"module_weapon_count", "module_engine_count", "attack_power", "health_power", "speed_power", "cargo_power", "repair_power"};
     
     [SerializeField] private TMP_Text  m_textModuleStatus;
-    [SerializeField] private TMP_Text  m_textModuleType;
-    [SerializeField] private RectTransform m_moduleStatsContainer;    // VerticalLayoutGroup 필요
+    [SerializeField] private RectTransform m_moduleStatsContainer;
+    private readonly List<string> moduleStatLabels = new List<string>{"module_type", "level", "attack_power", "health_power", "speed_power", "cargo_power", "repair_power"};
+
+    [SerializeField] private RectTransform m_unlockModuleContainer;
+    [SerializeField] private TMP_Text m_unlockModuleDescription;
+    [SerializeField] private RectTransform m_unlockModuleStatusContainer;
+    [SerializeField] private Button m_unlockModuleButton;
+    
+    [SerializeField] private RectTransform m_upgradeModuleContainer;
+    [SerializeField] private TMP_Text m_upgradeModuleDescription;
+    [SerializeField] private RectTransform m_upgradeModuleStatusContainer;
+    [SerializeField] private Button m_upgradeModuleButton;    
+    [SerializeField] private TMP_Text m_upgradeModuleButtonText;
+    
+
     [SerializeField] private GameObject m_scrollViewModule;
     [SerializeField] private RectTransform m_scrollViewModuleContent;
-    [SerializeField] private GameObject m_scrollViewModuleItem;       // 프리팹    
-    
-    [SerializeField] private Button m_unlockModuleButton;
-    [SerializeField] private Button m_upgradeModuleButton;
-    [SerializeField] private TMP_Text m_upgradeModuleButtonText;
-
-    
+    [SerializeField] private GameObject m_scrollViewModuleItem;       // 프리팹
     
 
     private bool bShow = false;
@@ -29,24 +37,16 @@ public class UITabShip : UITabBase
     private SpaceFleet m_myFleet;
     
     private SpaceShip m_selectedShip;
-    private ScrollViewShipItem m_selectedScrollViewShipItem;    // 현재 선택된 스크롤 뷰 아이템
     private ModuleBase m_selectedModule;
 
-    private readonly System.Collections.Generic.Dictionary<string, RowLabelValue> m_shipStatRows = new();
-    private readonly System.Collections.Generic.Dictionary<SpaceShip, ScrollViewShipItem> m_shipItemMap = new();
+    private readonly List<RowLabelValue> m_shipStatRows = new();
+    private readonly List<RowLabelValue> m_moduleStatRows = new();
+    private readonly List<RowLabelValue> m_unlockModuleStatRows = new();
+    private readonly List<RowLabelValue2> m_upgradeModuleStatRows = new();
     
-    private readonly List<RowLabelValue> m_activeModuleRows = new List<RowLabelValue>();
-    private readonly List<RowLabelValue> m_pooledModuleRows = new List<RowLabelValue>();
-
-    private readonly List<ScrollViewShipItem> m_shipItemPool = new List<ScrollViewShipItem>();
-    private readonly List<ScrollViewShipItem> m_shipItemActive = new List<ScrollViewShipItem>();
-
     private readonly List<ScrollViewModuleItem> m_moduleItemPool = new List<ScrollViewModuleItem>();
     private List<ScrollViewModuleItem> m_moduleItemActive = new List<ScrollViewModuleItem>();
 
-    private Coroutine m_mineralUpdateCoroutine;
-    private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
-    
 
     public override void InitializeUITab()
     {
@@ -60,7 +60,71 @@ public class UITabShip : UITabBase
         m_myFleet = m_myCharacter.GetOwnedFleet();
         if (m_myFleet == null) return;
 
+        // m_shipStatsContainer 내부의 자식들을 하이어라키 순서대로 캐싱
+        if (m_shipStatsContainer != null)
+        {
+            m_shipStatRows.Clear();
+            for (int i = 0; i < m_shipStatsContainer.childCount; i++)
+            {
+                Transform child = m_shipStatsContainer.GetChild(i);
+                RowLabelValue row = child.GetComponent<RowLabelValue>();
+                if (row != null)
+                {
+                    row.SetLabel(shipStatLabels[i]);
+                    m_shipStatRows.Add(row);
+                }
+            }
+        }
+
+        // m_moduleStatsContainer 내부의 자식들을 하이어라키 순서대로 캐싱
+        if (m_moduleStatsContainer != null)
+        {
+            m_moduleStatRows.Clear();
+            for (int i = 0; i < m_moduleStatsContainer.childCount; i++)
+            {
+                Transform child = m_moduleStatsContainer.GetChild(i);
+                RowLabelValue row = child.GetComponent<RowLabelValue>();
+                if (row != null)
+                {
+                    row.SetLabel(moduleStatLabels[i]);
+                    m_moduleStatRows.Add(row);
+                }       
+            }
+        }
+
+        // m_unlockModuleStatusContainer 내부의 자식들을 하이어라키 순서대로 캐싱
+        if (m_unlockModuleStatusContainer != null)
+        {
+            m_unlockModuleStatRows.Clear();
+            for (int i = 0; i < m_unlockModuleStatusContainer.childCount; i++)
+            {
+                Transform child = m_unlockModuleStatusContainer.GetChild(i);
+                RowLabelValue row = child.GetComponent<RowLabelValue>();
+                if (row != null)
+                {
+                    row.SetLabel(moduleStatLabels[i + 1]);
+                    m_unlockModuleStatRows.Add(row);
+                }
+            }
+        }
         m_unlockModuleButton.onClick.AddListener(UnlockModule);
+
+
+        // m_upgradeModuleStatusContainer 내부의 자식들을 하이어라키 순서대로 캐싱
+        if (m_upgradeModuleStatusContainer != null)
+        {
+            m_upgradeModuleStatRows.Clear();
+            for (int i = 0; i < m_upgradeModuleStatusContainer.childCount; i++)
+            {
+                Transform child = m_upgradeModuleStatusContainer.GetChild(i);
+                RowLabelValue2 row = child.GetComponent<RowLabelValue2>();
+                if (row != null)
+                {
+                    row.SetLabel(moduleStatLabels[i + 1]);
+                    m_upgradeModuleStatRows.Add(row);
+                }
+            }
+        }
         m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
@@ -84,7 +148,7 @@ public class UITabShip : UITabBase
         bShow = true;
         UpdateShipStatsDisplay();
         UpdateModuleStatsDisplay();
-        UpdateUIFrame();
+        UpdateModuleRightUIFrame();
         PopulateModuleScrollView();
     }
 
@@ -123,16 +187,13 @@ public class UITabShip : UITabBase
         else
             m_selectedModule = ship.m_moduleBodys[0];
 
-        // 스크롤뷰 아이템 동기화
-        if (m_shipItemMap.TryGetValue(ship, out ScrollViewShipItem scrollItem))
-            m_selectedScrollViewShipItem = scrollItem;
 
         // 탭이 활성화 상태일 때만 UI 갱신
         if (bShow)
         {
             UpdateShipStatsDisplay();
             UpdateModuleStatsDisplay();
-            UpdateUIFrame();
+            UpdateModuleRightUIFrame();
             PopulateModuleScrollView();
         }
     }
@@ -150,7 +211,7 @@ public class UITabShip : UITabBase
         {
             UpdateShipStatsDisplay();
             UpdateModuleStatsDisplay();
-            UpdateUIFrame();
+            UpdateModuleRightUIFrame();
             PopulateModuleScrollView();
         }
     }
@@ -163,37 +224,14 @@ public class UITabShip : UITabBase
         CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
 
-        SetOrCreateShipStatRow("module_weapon_count", $"{statsCur.totalWeapons}");
-        SetOrCreateShipStatRow("module_engine_count", $"{statsCur.totalEngines}");
-        SetOrCreateShipStatRow("attack_power", $"{statsCur.attack_power:F0}/{statsOrg.attack_power:F0}");
-        SetOrCreateShipStatRow("health_power", $"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
-        SetOrCreateShipStatRow("speed_power", $"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");
-        SetOrCreateShipStatRow("cargo_power", $"{statsCur.cargo_capacity:F0}/{statsOrg.cargo_capacity:F0}");
-        SetOrCreateShipStatRow("repair_power", $"{statsCur.repair_power:F0}/{statsOrg.repair_power:F0}");
+        m_shipStatRows[0].SetValue($"{statsCur.totalWeapons}");
+        m_shipStatRows[1].SetValue($"{statsCur.totalEngines}");
+        m_shipStatRows[2].SetValue($"{statsCur.attack_power:F0}/{statsOrg.attack_power:F0}");
+        m_shipStatRows[3].SetValue($"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
+        m_shipStatRows[4].SetValue($"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");
+        m_shipStatRows[5].SetValue($"{statsCur.cargo_capacity:F0}/{statsOrg.cargo_capacity:F0}");
+        m_shipStatRows[6].SetValue($"{statsCur.repair_power:F0}/{statsOrg.repair_power:F0}");
     }
-
-    private void SetOrCreateShipStatRow(string label, string value)
-    {
-        if (m_shipStatsContainer == null || m_rowLabelValuePrefab == null)
-            return;
-
-        if (m_shipStatRows.TryGetValue(label, out RowLabelValue existingRow))
-        {
-            existingRow.SetValue(value);
-            return;
-        }
-
-        GameObject rowObj = Instantiate(m_rowLabelValuePrefab, m_shipStatsContainer);
-        rowObj.name = $"ShipRow_{label}";
-
-        RowLabelValue row = rowObj.GetComponent<RowLabelValue>();
-        if (row != null)
-        {
-            row.SetRow(label, value);
-            m_shipStatRows.Add(label, row);
-        }
-    }
-
     
     private void PopulateModuleScrollView()
     {
@@ -561,91 +599,117 @@ public class UITabShip : UITabBase
         if (bShow != true) return;
         if (m_selectedShip == null) return;
 
-        ClearModuleRows();
+        foreach (var row in m_moduleStatRows)
+            row.gameObject.SetActive(false);
 
         string localizationKeyModuleType = $"module_type_{m_selectedModule.GetModuleType()}";
 
         if (m_selectedModule is ModulePlaceholder)
         {
-            CommonUtility.SetUILabelText(m_textModuleType, localizationKeyModuleType + "_placeholder");
+            m_moduleStatRows[0].SetValue(localizationKeyModuleType);
+            m_moduleStatRows[0].gameObject.SetActive(true);
+            
         }
         else
         {
             CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
-            CommonUtility.SetUILabelText(m_textModuleType, localizationKeyModuleType);
-            AddModuleStatRow("level", $"{m_selectedModule.GetModuleLevel()}");
-            AddModuleStatRow("attack_power", $"{statsOrg.attack_power:F0}");
-            AddModuleStatRow("health_power", $"{statsOrg.health_power:F0}");
-            AddModuleStatRow("speed_power", $"{statsOrg.speed_power:F0}");
-            AddModuleStatRow("cargo_power", $"{statsOrg.cargo_capacity:F0}");
-            AddModuleStatRow("repair_power", $"{statsOrg.repair_power:F0}");
+
+            m_moduleStatRows[0].SetValue(localizationKeyModuleType);
+            m_moduleStatRows[0].gameObject.SetActive(true);
+            m_moduleStatRows[1].SetValue($"{m_selectedModule.GetModuleLevel()}");
+            m_moduleStatRows[1].gameObject.SetActive(true);
+            m_moduleStatRows[2].SetValue($"{statsOrg.attack_power:F0}");
+            m_moduleStatRows[2].gameObject.SetActive(true);
+            m_moduleStatRows[3].SetValue($"{statsOrg.health_power:F0}");
+            m_moduleStatRows[3].gameObject.SetActive(true);
+            m_moduleStatRows[4].SetValue($"{statsOrg.speed_power:F0}");
+            m_moduleStatRows[4].gameObject.SetActive(true);
+            m_moduleStatRows[5].SetValue($"{statsOrg.cargo_capacity:F0}");
+            m_moduleStatRows[5].gameObject.SetActive(true);
+            m_moduleStatRows[6].SetValue($"{statsOrg.repair_power:F0}");
+            m_moduleStatRows[6].gameObject.SetActive(true);
         }
     }
 
-    private void AddModuleStatRow(string label, string value)
-    {
-        if (m_moduleStatsContainer == null || m_rowLabelValuePrefab == null)
-            return;
-
-        RowLabelValue row = GetOrCreateModuleRow();
-        row.SetRow(label, value);
-        row.gameObject.SetActive(true);
-        row.transform.SetAsLastSibling();
-        m_activeModuleRows.Add(row);
-    }
-
-    private RowLabelValue GetOrCreateModuleRow()
-    {
-        if (m_pooledModuleRows.Count > 0)
-        {
-            var row = m_pooledModuleRows[m_pooledModuleRows.Count - 1];
-            m_pooledModuleRows.RemoveAt(m_pooledModuleRows.Count - 1);
-            return row;
-        }
-        return Instantiate(m_rowLabelValuePrefab, m_moduleStatsContainer).GetComponent<RowLabelValue>();
-    }
-
-    private void ClearModuleRows()
-    {
-        foreach (var row in m_activeModuleRows)
-        {
-            row.gameObject.SetActive(false);
-            m_pooledModuleRows.Add(row);
-        }
-        m_activeModuleRows.Clear();
-    }
-
-    private void UpdateUIFrame()
+    private void UpdateModuleRightUIFrame()
     {
         if (bShow != true) return;
 
+        string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
+
         if( m_selectedModule is ModulePlaceholder)
         {
-            m_unlockModuleButton.gameObject.SetActive(true);
-            m_scrollViewModule.gameObject.SetActive(false);
-            m_upgradeModuleButton.gameObject.SetActive(false);
+            m_upgradeModuleContainer.gameObject.SetActive(false);
+            m_unlockModuleContainer.gameObject.SetActive(true);
+
+            m_unlockModuleDescription.text = LocalizationManager.Instance.Get("locked_module_description", new object[] { slotTypeName });
+
+            EModuleType moduleType = m_selectedModule.GetModuleType();
+            EModuleSubType subType = EnemyModuleSlotConfig.GetDefaultSubType(moduleType);
+            ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, 1);
+            if (moduleData != null)
+            {
+                m_unlockModuleStatRows[0].SetValue("1");
+                m_unlockModuleStatRows[1].SetValue($"{moduleData.m_attackPower:F0}");
+                m_unlockModuleStatRows[2].SetValue($"{moduleData.m_health:F0}");
+                m_unlockModuleStatRows[3].SetValue($"{moduleData.m_movementSpeed:F0}");
+                m_unlockModuleStatRows[4].SetValue($"{moduleData.m_cargoCapacity:F0}");
+                m_unlockModuleStatRows[5].SetValue($"{moduleData.m_repairPower:F0}");
+            }
+            
         }
         else
         {
-            m_unlockModuleButton.gameObject.SetActive(false);
+            m_unlockModuleContainer.gameObject.SetActive(false);
+            m_upgradeModuleContainer.gameObject.SetActive(true);
 
-            m_scrollViewModule.gameObject.SetActive(true);
-            m_upgradeModuleButton.gameObject.SetActive(true);
-            UpdateUpgradeButtonText();
-        }
-    }
+            m_upgradeModuleDescription.text = LocalizationManager.Instance.Get("module_upgrade_description", new object[] { slotTypeName });
+            // m_upgradeModuleStatRows
 
-    private void UpdateUpgradeButtonText()
-    {
-        if (m_selectedModule == null) return;
+            EModuleType moduleType = m_selectedModule.GetModuleType();
+            EModuleSubType subType = m_selectedModule.GetModuleSubType();
+            int currentLevel = m_selectedModule.GetModuleLevel();
+            int nextLevel = currentLevel + 1;
 
-        m_upgradeModuleButton.interactable = true;
+            ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
+            if (moduleDataNext != null)
+            {
+                ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
 
-        if (!DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out CostStruct cost))
-        {
-            m_upgradeModuleButtonText.text = LocalizationManager.Instance.Get("max_level");
-            m_upgradeModuleButton.interactable = false;
-            return;
+                m_upgradeModuleStatusContainer.gameObject.SetActive(true);    
+
+                m_upgradeModuleStatRows[0].SetLabel("level");
+                m_upgradeModuleStatRows[0].SetValue1($"{currentLevel}");
+                m_upgradeModuleStatRows[0].SetValue2($"{nextLevel}");                
+                
+                m_upgradeModuleStatRows[0].SetLabel("attack_power");
+                m_upgradeModuleStatRows[1].SetValue1($"{moduleDataCurrent.m_attackPower:F0}");
+                m_upgradeModuleStatRows[1].SetValue2($"{moduleDataNext.m_attackPower:F0}");
+
+                m_upgradeModuleStatRows[0].SetLabel("health_power");
+                m_upgradeModuleStatRows[2].SetValue1($"{moduleDataCurrent.m_health:F0}");
+                m_upgradeModuleStatRows[2].SetValue2($"{moduleDataNext.m_health:F0}");
+
+                m_upgradeModuleStatRows[0].SetLabel("speed_power");
+                m_upgradeModuleStatRows[3].SetValue1($"{moduleDataCurrent.m_movementSpeed:F0}");
+                m_upgradeModuleStatRows[3].SetValue2($"{moduleDataNext.m_movementSpeed:F0}");
+
+                m_upgradeModuleStatRows[0].SetLabel("cargo_power");
+                m_upgradeModuleStatRows[4].SetValue1($"{moduleDataCurrent.m_cargoCapacity:F0}");
+                m_upgradeModuleStatRows[4].SetValue2($"{moduleDataNext.m_cargoCapacity:F0}");
+
+                m_upgradeModuleStatRows[0].SetLabel("repair_power");
+                m_upgradeModuleStatRows[5].SetValue1($"{moduleDataCurrent.m_repairPower:F0}");
+                m_upgradeModuleStatRows[5].SetValue2($"{moduleDataNext.m_repairPower:F0}");
+                
+                // DataManager.Instance.GetModuleUpgradeCost(subType, currentLevel, out CostStruct cost)
+                //m_upgradeModuleStatRows[2].SetValue1($"Mineral: {CommonUtility.FormatBigNumber(cost.mineral)}");
+            }
+            else
+            {
+                m_upgradeModuleStatusContainer.gameObject.SetActive(false);
+                m_upgradeModuleDescription.text = LocalizationManager.Instance.Get("max_level");
+            }
         }
     }
 
@@ -839,4 +903,3 @@ public class UITabShip : UITabBase
     }
 
 }
-

@@ -10,17 +10,17 @@ public class RowLabelValue : MonoBehaviour
 
     public void SetRow(string label, string value)
     {
-        CommonUtility.SetUILabelText(m_label, label);
+        CommonUtility.SetUILocText(m_label, label);
         SetValue(value);
     }
 
     public void SetLabel(string label)
     {
-        CommonUtility.SetUILabelText(m_label, label);
+        CommonUtility.SetUILocText(m_label, label);
     }
 
     public void SetValue(string value)
     {
-        if (m_value != null) m_value.text = value;
+        CommonUtility.SetUILocText(m_value, value);
     }
 }

@@ -310,6 +310,22 @@ MonoBehaviour:
     m_Localized: Repair
     m_Metadata:
       m_Items: []
+  - m_Id: 2289214481629184
+    m_Localized: Locked Module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2289214523572224
+    m_Localized: Unlock and install {0}?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2292450827567104
+    m_Localized: Module List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2289214523572226
+    m_Localized: Upgrade {0} Module
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

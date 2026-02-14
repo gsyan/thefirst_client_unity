@@ -31,3 +31,6 @@
 ## 코드 생성 도구
 - Python generator 경로: 서버경로\tools\generator
 - py generate 요청 시 이 경로의 구조를 기준으로 설명할 것
+
+## 주의 사항
+- unity 코딩중 using UnityEditor.ShaderGraph; 를 사용하게되면 android 빌드 실패함
