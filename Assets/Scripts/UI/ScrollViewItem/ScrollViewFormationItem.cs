@@ -14,6 +14,6 @@ public class ScrollViewFormationItem : MonoBehaviour
         m_selectButton.onClick.RemoveAllListeners();
         m_selectButton.onClick.AddListener(actionSelect);
 
-        CommonUtility.SetUILabelText(m_text, formationName);
+        CommonUtility.SetUILocText(m_text, formationName);
     }
 }

@@ -15,11 +15,11 @@ public class ScrollViewModuleItem : MonoBehaviour
         m_selectButton.gameObject.SetActive(true);
         m_selectButton.onClick.RemoveAllListeners();
         m_selectButton.onClick.AddListener(actionSelect);
-        CommonUtility.SetUILabelText(m_selectButtonText, text);
+        CommonUtility.SetUILocText(m_selectButtonText, text);
 
         m_researchButton.onClick.AddListener(actionResearch);
         if (m_researchButtonText != null)
-            CommonUtility.SetUILabelText(m_researchButtonText, "module_research");
+            CommonUtility.SetUILocText(m_researchButtonText, "module_research");
 
         // 초기 상태: 선택 상태 숨김
         SetSelected_ScrollViewModuleItem(false);

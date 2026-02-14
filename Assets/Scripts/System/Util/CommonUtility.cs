@@ -354,10 +354,10 @@ public static class CommonUtility
     }
 
     // label 에 localization
-    public static void SetUILabelText(TMP_Text label, string text)
+    public static void SetUILocText(TMP_Text textComp, string text)
     {
         // Label (Localized)
-        var labelLocalize = label.GetComponent<LocalizeStringEvent>();
+        var labelLocalize = textComp.GetComponent<LocalizeStringEvent>();
         if (labelLocalize != null)
         {
             const string TABLE = "UI";
@@ -367,7 +367,7 @@ public static class CommonUtility
         else
         {
             // LocalizeStringEvent가 없으면 그냥 raw 텍스트로라도 표시
-            label.text = text;
+            textComp.text = text;
         }
     }
 
