@@ -18,10 +18,10 @@ public class UIPanelSpace : UIPanelBase
 
     public override void InitializeUIPanel()
     {
-        InitializeUIPanelFleet();
+        InitializeUIPanelSpace();
     }
 
-    private void InitializeUIPanelFleet()
+    private void InitializeUIPanelSpace()
     {
         if (m_myFleet == null)
             m_myFleet = DataManager.Instance.m_currentCharacter.GetOwnedFleet();

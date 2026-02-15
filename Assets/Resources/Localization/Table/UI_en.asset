@@ -159,7 +159,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 705451670765568
-    m_Localized: Module Research
+    m_Localized: Research Module
     m_Metadata:
       m_Items: []
   - m_Id: 705451700125696
@@ -195,19 +195,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 767916345524224
-    m_Localized: Engine Locked
+    m_Localized: Engine(Locked)
     m_Metadata:
       m_Items: []
   - m_Id: 767916345524225
-    m_Localized: Beam Locked
+    m_Localized: Beam(Locked)
     m_Metadata:
       m_Items: []
   - m_Id: 767916349718528
-    m_Localized: Missile Locked
+    m_Localized: Missile(Locked)
     m_Metadata:
       m_Items: []
   - m_Id: 767916349718529
-    m_Localized: Hanger Locked
+    m_Localized: Hanger(Locked)
     m_Metadata:
       m_Items: []
   - m_Id: 767916349718530
@@ -310,20 +310,16 @@ MonoBehaviour:
     m_Localized: Repair
     m_Metadata:
       m_Items: []
-  - m_Id: 2289214481629184
-    m_Localized: Locked Module
+  - m_Id: 2777898846912512
+    m_Localized: Module Researched List
     m_Metadata:
       m_Items: []
-  - m_Id: 2289214523572224
-    m_Localized: Unlock and install {0}?
+  - m_Id: 2781321348644864
+    m_Localized: Research
     m_Metadata:
       m_Items: []
-  - m_Id: 2292450827567104
-    m_Localized: Module List
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2289214523572226
-    m_Localized: Upgrade {0} Module
+  - m_Id: 2782536530788352
+    m_Localized: PVP
     m_Metadata:
       m_Items: []
   references:

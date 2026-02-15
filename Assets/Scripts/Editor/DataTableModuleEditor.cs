@@ -236,7 +236,7 @@ public class DataTableModuleEditor : Editor
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
                 m_moduleLevel = group.modules.Count + 1,
-                m_health = 50f,
+                m_health = 0f,
                 m_movementSpeed = 5f,
                 m_description = $"{group.subType} LV{group.modules.Count + 1}"
             };
@@ -276,7 +276,7 @@ public class DataTableModuleEditor : Editor
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
+        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 0f, 1000f);
         module.m_movementSpeed = EditorGUILayout.Slider("Movement Speed", module.m_movementSpeed, 0f, 20f);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
@@ -330,7 +330,7 @@ public class DataTableModuleEditor : Editor
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
                 m_moduleLevel = group.modules.Count + 1,
-                m_health = 50f,
+                m_health = 0f,
                 m_attackPower = 25f,
                 m_attackFireCount = 1,
                 m_attackCoolTime = 2f,
@@ -372,7 +372,7 @@ public class DataTableModuleEditor : Editor
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
+        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 0f, 1000f);
         module.m_attackPower = EditorGUILayout.Slider("Attack Power", module.m_attackPower, 0f, 100f);
         module.m_attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.m_attackFireCount, 0, 100);
         module.m_attackCoolTime = EditorGUILayout.Slider("Cool Time", module.m_attackCoolTime, 0.1f, 10f);
@@ -432,7 +432,7 @@ public class DataTableModuleEditor : Editor
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
                 m_moduleLevel = group.modules.Count + 1,
-                m_health = 50f,
+                m_health = 00f,
                 m_attackPower = 25f,
                 m_attackFireCount = 1,
                 m_attackCoolTime = 2f,
@@ -474,7 +474,7 @@ public class DataTableModuleEditor : Editor
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
+        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 0f, 1000f);
         module.m_attackPower = EditorGUILayout.Slider("Attack Power", module.m_attackPower, 0f, 100f);
         module.m_attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.m_attackFireCount, 0, 100);
         module.m_attackCoolTime = EditorGUILayout.Slider("Cool Time", module.m_attackCoolTime, 0.1f, 10f);
@@ -534,7 +534,7 @@ public class DataTableModuleEditor : Editor
                 m_moduleType = moduleType,
                 m_moduleSubType = group.subType,
                 m_moduleLevel = group.modules.Count + 1,
-                m_health = 50f,
+                m_health = 0f,
                 m_hangarCapability = 5,
                 m_scoutCapability = 5,
                 m_launchCool = 1f,
@@ -585,7 +585,7 @@ public class DataTableModuleEditor : Editor
         module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
+        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 0f, 1000f);
         module.m_hangarCapability = EditorGUILayout.IntSlider("Hangar Capability", module.m_hangarCapability, 0, 1000);
         module.m_scoutCapability = EditorGUILayout.IntSlider("Scout Capability", module.m_scoutCapability, 0, 1000);
         module.m_launchCool = EditorGUILayout.Slider("Launch Cool", module.m_launchCool, 0f, 10f);
