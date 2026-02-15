@@ -195,28 +195,24 @@ MonoBehaviour:
     m_Key: module_unlock
     m_Metadata:
       m_Items: []
-  - m_Id: 2289214481629184
-    m_Key: locked_module_text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2289214523572224
-    m_Key: locked_module_description
-    m_Metadata:
-      m_Items: []
   - m_Id: 40166030704640
     m_Key: module_upgrade
     m_Metadata:
       m_Items: []
-  - m_Id: 2289214523572226
-    m_Key: module_upgrade_description
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2292450827567104
-    m_Key: module_change_List
+  - m_Id: 2781321348644864
+    m_Key: research_name
     m_Metadata:
       m_Items: []
   - m_Id: 705451670765568
     m_Key: module_research
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2777898846912512
+    m_Key: module_researched_list_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2782536530788352
+    m_Key: pvp_name
     m_Metadata:
       m_Items: []
   - m_Id: 63232261619721

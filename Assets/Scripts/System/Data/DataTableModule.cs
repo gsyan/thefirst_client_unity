@@ -33,7 +33,7 @@ public class ModuleData
 
     // Body ---------------------------------------------------------------------------
     [Header("Body Stats")]
-    [Range(1, 1000)]
+    [Range(0, 1000)]
     public float m_health = 0f;
     [Range(0, 1000)] 
     public float m_cargoCapacity = 0f;
