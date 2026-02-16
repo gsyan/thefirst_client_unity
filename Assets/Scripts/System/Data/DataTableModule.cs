@@ -238,22 +238,28 @@ public class DataTableModule : ScriptableObject
 
     public ModuleData GetModuleDataFromTable(EModuleSubType subType, int level)
     {
-        ModuleSubTypeGroup group = null;
-        EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
-
-        if( moduleType == EModuleType.body)
-            group = bodyGroups.Find(g => g.subType == subType);
-        else if( moduleType == EModuleType.engine)
-            group = engineGroups.Find(g => g.subType == subType);
-        else if( moduleType == EModuleType.beam)
-            group = beamGroups.Find(g => g.subType == subType);
-        else if( moduleType == EModuleType.missile)
-            group = missileGroups.Find(g => g.subType == subType);
-        else if( moduleType == EModuleType.hanger)
-            group = hangerGroups.Find(g => g.subType == subType);
-
+        ModuleSubTypeGroup group = FindGroup(subType);
         if (group == null) return null;
         return group.modules.Find(m => m.m_moduleLevel == level);
+    }
+
+    // 해당 subType의 최대 레벨 반환 (데이터가 없으면 0)
+    public int GetMaxLevel(EModuleSubType subType)
+    {
+        ModuleSubTypeGroup group = FindGroup(subType);
+        if (group == null) return 0;
+        return group.modules.Count;
+    }
+
+    private ModuleSubTypeGroup FindGroup(EModuleSubType subType)
+    {
+        EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
+        if (moduleType == EModuleType.body) return bodyGroups.Find(g => g.subType == subType);
+        if (moduleType == EModuleType.engine) return engineGroups.Find(g => g.subType == subType);
+        if (moduleType == EModuleType.beam) return beamGroups.Find(g => g.subType == subType);
+        if (moduleType == EModuleType.missile) return missileGroups.Find(g => g.subType == subType);
+        if (moduleType == EModuleType.hanger) return hangerGroups.Find(g => g.subType == subType);
+        return null;
     }
 
     public void InitializeSubTypeGroups()

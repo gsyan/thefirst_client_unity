@@ -16,20 +16,8 @@ public class EnemyModuleSlotConfig
     {
         this.slotType = slotType;
         this.slotIndex = slotIndex;
-        this.moduleSubType = GetDefaultSubType(slotType);
+        this.moduleSubType = CommonUtility.GetDefaultSubType(slotType);
         this.moduleLevel = 1;
-    }
-
-    public static EModuleSubType GetDefaultSubType(EModuleType moduleType)
-    {
-        switch (moduleType)
-        {
-            case EModuleType.engine: return EModuleSubType.engine_standard;
-            case EModuleType.beam: return EModuleSubType.beam_standard;
-            case EModuleType.missile: return EModuleSubType.missile_standard;
-            case EModuleType.hanger: return EModuleSubType.hanger_standard;
-            default: return EModuleSubType.none;
-        }
     }
 }
 

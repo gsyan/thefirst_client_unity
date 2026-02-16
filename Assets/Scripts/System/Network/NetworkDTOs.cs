@@ -470,6 +470,7 @@ public class PvpOpponentInfo
     public long characterId;
     public string characterName;
     public int pvpScore;
+    public int rank;
     public FleetInfo fleetInfo;
 }
 

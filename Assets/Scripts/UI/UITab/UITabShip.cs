@@ -9,16 +9,17 @@ public class UITabShip : UITabBase
 {
     [SerializeField] private TMP_Text  m_textShipStatus;
     [SerializeField] private RectTransform m_shipStatsContainer;
-    private readonly List<string> shipStatLabels = new List<string>{"module_weapon_count", "module_engine_count", "attack_power", "health_power", "speed_power", "cargo_power", "repair_power"};
+    private readonly List<string> shipStatLabels = new List<string>{"ship_module_weapon_count", "ship_module_engine_count", "attack_power", "health_power", "speed_power", "cargo_power", "repair_power"};
     
     [SerializeField] private TMP_Text  m_textModuleStatus;
     [SerializeField] private RectTransform m_moduleStatsContainer;
-    private readonly List<string> moduleStatLabels = new List<string>{"module_type", "level", "attack_power", "health_power", "speed_power", "cargo_power", "repair_power"};
+    private readonly List<string> moduleStatLabels = new List<string>{"ship_module_type", "level", "attack_power", "health_power", "speed_power", "cargo_power", "repair_power"};
 
     [SerializeField] private Button m_unlockModuleButton;    
     [SerializeField] private Button m_upgradeModuleButton;
     [SerializeField] private TMP_Text m_upgradeModuleButtonText;
     
+    [SerializeField] private GameObject m_moduleResearchedListContainer;
     [SerializeField] private RectTransform m_scrollViewModuleContent;
     [SerializeField] private GameObject m_scrollViewModuleItem;       // 프리팹
     
@@ -113,6 +114,8 @@ public class UITabShip : UITabBase
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
+        
+        bShow = false;
         
         if (m_myFleet != null)
             m_myFleet.ClearAllSelectedModule();
@@ -223,13 +226,15 @@ public class UITabShip : UITabBase
             string moduleName = $"{subType}";
 
             bool isResearched = m_myCharacter.IsModuleResearched(moduleType, subType);
+            if (isResearched == false) continue;
+
             bool isCurrentModule = subType == m_selectedModule.GetModuleSubType();
-            CreateModuleItem(poolIndex, moduleName, moduleType, subType, isResearched, isCurrentModule);
+            CreateModuleItem(poolIndex, moduleName, moduleType, subType, isCurrentModule);
             poolIndex++;
         }
     }
 
-    private void CreateModuleItem(int poolIndex, string moduleName, EModuleType moduleType, EModuleSubType moduleSubType, bool isResearched, bool isCurrentModule)
+    private void CreateModuleItem(int poolIndex, string moduleName, EModuleType moduleType, EModuleSubType moduleSubType, bool isCurrentModule)
     {
         ScrollViewModuleItem scrollViewItem;
         if (poolIndex < m_moduleItemPool.Count)
@@ -245,12 +250,7 @@ public class UITabShip : UITabBase
             m_moduleItemPool.Add(scrollViewItem);
         }
 
-        scrollViewItem.InitializeScrollViewModuleItem(
-            moduleName,
-            () => OnModuleSelectClicked(scrollViewItem, moduleType, moduleSubType),
-            () => OnModuleResearchClicked(moduleType, moduleSubType)
-        );
-        scrollViewItem.SetDevelopmentButtonEnabled(isResearched);
+        scrollViewItem.InitializeScrollViewModuleItem( moduleName, () => OnModuleSelectClicked(scrollViewItem, moduleType, moduleSubType));
         scrollViewItem.SetSelected_ScrollViewModuleItem(isCurrentModule);
         m_moduleItemActive.Add(scrollViewItem);
     }
@@ -291,7 +291,7 @@ public class UITabShip : UITabBase
         string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
 
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("module_unlock"),
+            LocalizationManager.Instance.Get("ship_module_unlock"),
             LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
             cost,
             () => ExecuteUnlockModule()
@@ -387,7 +387,7 @@ public class UITabShip : UITabBase
         int targetLevel = currentLevel + 1;
         
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("module_upgrade"),
+            LocalizationManager.Instance.Get("ship_module_upgrade"),
             LocalizationManager.Instance.Get("popup_message_module_upgrade", new object[] { moduleTypeName, currentLevel, targetLevel }),
             cost,
             () => ExecuteUpgradeModule()
@@ -557,21 +557,19 @@ public class UITabShip : UITabBase
         if (bShow != true) return;
         if (m_selectedShip == null) return;
 
-        // foreach (var row in m_moduleStatRows)
-        //     row.gameObject.SetActive(false);
-
         string localizationKeyModuleType = $"module_type_{m_selectedModule.GetModuleType()}";
         
         if (m_selectedModule is ModulePlaceholder)
         {
+            m_moduleResearchedListContainer.gameObject.SetActive(false);
             m_upgradeModuleButton.gameObject.SetActive(false);
             m_unlockModuleButton.gameObject.SetActive(true);
+            
 
             m_moduleStatRows[0].SetValue(localizationKeyModuleType + "_placeholder");
-            //m_moduleStatRows[0].gameObject.SetActive(true);
 
             EModuleType moduleType = m_selectedModule.GetModuleType();
-            EModuleSubType subType = EnemyModuleSlotConfig.GetDefaultSubType(moduleType);
+            EModuleSubType subType = CommonUtility.GetDefaultSubType(moduleType);
             ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, 1);
             if (moduleData != null)
             {
@@ -581,22 +579,13 @@ public class UITabShip : UITabBase
                 m_moduleStatRows[4].SetValue($"{moduleData.m_movementSpeed:F0}");                
                 m_moduleStatRows[5].SetValue($"{moduleData.m_cargoCapacity:F0}");                
                 m_moduleStatRows[6].SetValue($"{moduleData.m_repairPower:F0}");
-                
-                // m_moduleStatRows[1].gameObject.SetActive(true);
-                // m_moduleStatRows[2].gameObject.SetActive(true);
-                // m_moduleStatRows[3].gameObject.SetActive(true);
-                // m_moduleStatRows[4].gameObject.SetActive(true);
-                // m_moduleStatRows[5].gameObject.SetActive(true);
-                // m_moduleStatRows[6].gameObject.SetActive(true);
             }
-
-            
-            
         }
         else
         {
             m_unlockModuleButton.gameObject.SetActive(false);
             m_upgradeModuleButton.gameObject.SetActive(true);
+            m_moduleResearchedListContainer.gameObject.SetActive(true);
 
             EModuleType moduleType = m_selectedModule.GetModuleType();
             EModuleSubType subType = m_selectedModule.GetModuleSubType();
@@ -607,7 +596,7 @@ public class UITabShip : UITabBase
             // 업그레이드 가능한 상황
             if (moduleDataNext != null)
             {
-                CommonUtility.SetUILocText(m_upgradeModuleButtonText, "module_upgrade");
+                CommonUtility.SetUILocText(m_upgradeModuleButtonText, "ship_module_upgrade");
 
                 ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
                 
@@ -710,76 +699,6 @@ public class UITabShip : UITabBase
             ShowResultMessage($"Module change failed: {errorMessage}", 3f);
         }
     }
-
-    private void OnModuleResearchClicked(EModuleType moduleType, EModuleSubType moduleSubType)
-    {
-        // 개발 버튼 클릭 시
-        // Get research cost from DataManager
-        CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);        
-        // check)
-        bool result = DataManager.Instance.m_currentCharacter.CheckEnoughCostStruct(researchCost);
-        if( result == false)
-        {
-            ShowResultMessage($"Insufficient resources(cost mineral: {researchCost.mineral})", 3f);
-            return;
-        }
-
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("module_research"),
-            LocalizationManager.Instance.Get("popup_message_module_research", new object[] { moduleSubType.ToLocKey() }),
-            researchCost,
-            onConfirm: () =>
-            {
-                // Confirm button clicked - Send research request to server
-                Debug.Log($"Research confirmed for: {moduleSubType}");
-
-                var request = new ModuleResearchRequest
-                {
-                    moduleType = moduleType
-                    , moduleSubType = moduleSubType
-                };
-
-                NetworkManager.Instance.ResearchModule(request, OnModuleResearchResponse);
-            },
-            onCancel: () =>
-            {
-                // Cancel button clicked
-                Debug.Log($"Research cancelled for: {moduleSubType}");
-                ShowResultMessage("Research cancelled", 2f);
-            }
-        );
-    }
-
-    private void OnModuleResearchResponse(ApiResponse<ModuleResearchResponse> response)
-    {
-        if (response.errorCode == 0)
-        {
-            // Research successful
-            var researchResponse = response.data;
-
-            // Update character's remaining resources
-            if (researchResponse.costRemainInfo != null)
-                DataManager.Instance.m_currentCharacter.UpdateAllMinerals(researchResponse.costRemainInfo);
-
-            // Update researched modules list
-            if (researchResponse.researchedModuleTypes != null)
-                DataManager.Instance.m_currentCharacter.UpdateResearchedModules(researchResponse.researchedModuleTypes);
-
-            ShowResultMessage($"Research completed: {researchResponse.moduleType}-{researchResponse.moduleSubType}", 3f);
-
-            // Refresh UI to show newly researched module
-            PopulateModuleScrollView();
-        }
-        else
-        {
-            // Research failed
-            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            Debug.LogError($"Research failed: {errorMessage}");
-            ShowResultMessage($"Research failed: {errorMessage}", 3f);
-        }
-    }
-
-
 
     private void UpdateModuleAfterChange(ModuleChangeResponse changeData)
     {

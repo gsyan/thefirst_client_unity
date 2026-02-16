@@ -8,7 +8,7 @@ public class DataTableTotalEditor : EditorWindow
 {
     private DataTableConfig dataTableConfig;
     private DataTableModule dataTableModule;
-    private DataTableModuleResearch dataTableModuleResearch;
+    private DataTableResearch dataTableResearch;
     private DataTableZone dataTableZone;
     private Vector2 scrollPosition;
 
@@ -36,8 +36,8 @@ public class DataTableTotalEditor : EditorWindow
         dataTableModule = (DataTableModule)EditorGUILayout.ObjectField(
             "DataTable Module", dataTableModule, typeof(DataTableModule), false);
 
-        dataTableModuleResearch = (DataTableModuleResearch)EditorGUILayout.ObjectField(
-            "DataTable Module Research", dataTableModuleResearch, typeof(DataTableModuleResearch), false);
+        dataTableResearch = (DataTableResearch)EditorGUILayout.ObjectField(
+            "DataTable Module Research", dataTableResearch, typeof(DataTableResearch), false);
 
         dataTableZone = (DataTableZone)EditorGUILayout.ObjectField(
             "DataTable Zone", dataTableZone, typeof(DataTableZone), false);
@@ -140,13 +140,13 @@ public class DataTableTotalEditor : EditorWindow
             }
         }
 
-        if (dataTableModuleResearch == null)
+        if (dataTableResearch == null)
         {
-            string[] guids = AssetDatabase.FindAssets("t:DataTableModuleResearch", new[] { "Assets/Resources/DataTable" });
+            string[] guids = AssetDatabase.FindAssets("t:DataTableResearch", new[] { "Assets/Resources/DataTable" });
             if (guids.Length > 0)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                dataTableModuleResearch = AssetDatabase.LoadAssetAtPath<DataTableModuleResearch>(path);
+                dataTableResearch = AssetDatabase.LoadAssetAtPath<DataTableResearch>(path);
             }
         }
 
@@ -163,7 +163,7 @@ public class DataTableTotalEditor : EditorWindow
 
     private bool IsValid()
     {
-        return dataTableModule != null && dataTableConfig != null && dataTableModuleResearch != null && dataTableZone != null;
+        return dataTableModule != null && dataTableConfig != null && dataTableResearch != null && dataTableZone != null;
     }
 
     private void ExportAll()
@@ -188,8 +188,8 @@ public class DataTableTotalEditor : EditorWindow
             File.WriteAllText(modulePath, moduleJson);
 
             // DataTableModuleResearch.json 내보내기
-            string researchJson = dataTableModuleResearch.ExportToJson();
-            string researchPath = Path.Combine(folderPath, "DataTableModuleResearch.json");
+            string researchJson = dataTableResearch.ExportToJson();
+            string researchPath = Path.Combine(folderPath, "DataTableResearch.json");
             File.WriteAllText(researchPath, researchJson);
 
             // DataTableZone.json 내보내기
@@ -229,9 +229,9 @@ public class DataTableTotalEditor : EditorWindow
             string moduleServerPath = Path.Combine(serverDataPath, "DataTableModule.json");
             File.WriteAllText(moduleServerPath, moduleJson);
 
-            // DataTableModuleResearch.json 서버로 내보내기
-            string researchJson = dataTableModuleResearch.ExportToJson();
-            string researchServerPath = Path.Combine(serverDataPath, "DataTableModuleResearch.json");
+            // DataTableResearch.json 서버로 내보내기
+            string researchJson = dataTableResearch.ExportToJson();
+            string researchServerPath = Path.Combine(serverDataPath, "DataTableResearch.json");
             File.WriteAllText(researchServerPath, researchJson);
 
             // DataTableZone.json 서버로 내보내기

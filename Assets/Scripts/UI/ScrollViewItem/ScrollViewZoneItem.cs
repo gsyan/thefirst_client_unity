@@ -45,7 +45,13 @@ public class ScrollViewZoneItem : MonoBehaviour
             m_enterButton.interactable = state != EZoneState.Locked;
 
         if (m_zoneStatusText != null)
-            m_zoneStatusText.text = state == EZoneState.Cleared ? "CLEARED" : "";
+        {
+            if(state == EZoneState.Cleared)
+                CommonUtility.SetUILocText(m_zoneStatusText, "explroation_cleared");
+            else
+                m_zoneStatusText.text = "";
+        }
+            
 
         if (m_backgroundImage == null) return;
 

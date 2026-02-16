@@ -15,28 +15,160 @@ MonoBehaviour:
   m_TableCollectionName: UI
   m_TableCollectionNameGuidString: d85d8ecc73ff1304c8410066ceb06829
   m_Entries:
-  - m_Id: 4360310226944
-    m_Key: fleet
+  - m_Id: 2924654586888192
+    m_Key: tab_fleet
     m_Metadata:
       m_Items: []
-  - m_Id: 4360310226945
-    m_Key: ship
+  - m_Id: 2924654624636928
+    m_Key: tab_ship
     m_Metadata:
       m_Items: []
-  - m_Id: 4360310226946
-    m_Key: exploration
+  - m_Id: 2924654624636929
+    m_Key: tab_exploration
     m_Metadata:
       m_Items: []
-  - m_Id: 4360310226947
-    m_Key: settings
+  - m_Id: 2924654624636930
+    m_Key: tab_research
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636931
+    m_Key: tab_pvp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636932
+    m_Key: tab_settings
     m_Metadata:
       m_Items: []
   - m_Id: 39525816336384
     m_Key: fleet_status
     m_Metadata:
       m_Items: []
-  - m_Id: 63232257425408
-    m_Key: ship_count
+  - m_Id: 2924654624636933
+    m_Key: fleet_ship_count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636934
+    m_Key: fleet_formation_list
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636935
+    m_Key: fleet_add_ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619717
+    m_Key: ship_status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636936
+    m_Key: ship_module_weapon_count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636937
+    m_Key: ship_module_engine_count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636938
+    m_Key: ship_module_status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636939
+    m_Key: ship_module_type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636940
+    m_Key: ship_module_unlock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636941
+    m_Key: ship_module_upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2929882979762176
+    m_Key: ship_module_researched_list
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636948
+    m_Key: explroation_zone_list_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636942
+    m_Key: explroation_cleared
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636943
+    m_Key: explroation_toggle_auto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636949
+    m_Key: explroation_wave_list_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636945
+    m_Key: explroation_safe_zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636946
+    m_Key: explroation_collected_minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636947
+    m_Key: explroation_collect_mineral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636950
+    m_Key: research_module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2973369905315840
+    m_Key: research_tech_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3089099820761088
+    m_Key: research_already
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636952
+    m_Key: pvp_opponent_list
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636953
+    m_Key: pvp_opponent_list_refresh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2952446292656128
+    m_Key: pvp_score_mine_head
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636954
+    m_Key: pvp_score_mine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636955
+    m_Key: pvp_rank_mine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636957
+    m_Key: settings_language_options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636956
+    m_Key: settings_logout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1211027840434176
+    m_Key: camera_focus_enemy_fleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1211027873988608
+    m_Key: camera_focus_center
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1211027873988609
+    m_Key: camera_focus_my_fleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63232261619720
+    m_Key: level
     m_Metadata:
       m_Items: []
   - m_Id: 46863080095744
@@ -59,10 +191,6 @@ MonoBehaviour:
     m_Key: repair_power
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619712
-    m_Key: formation_list
-    m_Metadata:
-      m_Items: []
   - m_Id: 728096982302720
     m_Key: formation_type_linear_horizontal
     m_Metadata:
@@ -77,30 +205,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 728097020051458
     m_Key: formation_type_x
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218309197824
-    m_Key: add_ship
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619717
-    m_Key: ship_status
-    m_Metadata:
-      m_Items: []
-  - m_Id: 55998282596352
-    m_Key: module_weapon_count
-    m_Metadata:
-      m_Items: []
-  - m_Id: 56055799087104
-    m_Key: module_engine_count
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619718
-    m_Key: module_status
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619719
-    m_Key: module_type
     m_Metadata:
       m_Items: []
   - m_Id: 767916345524224
@@ -187,66 +291,6 @@ MonoBehaviour:
     m_Key: hanger_advanced
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619720
-    m_Key: level
-    m_Metadata:
-      m_Items: []
-  - m_Id: 40010770153472
-    m_Key: module_unlock
-    m_Metadata:
-      m_Items: []
-  - m_Id: 40166030704640
-    m_Key: module_upgrade
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2781321348644864
-    m_Key: research_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 705451670765568
-    m_Key: module_research
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2777898846912512
-    m_Key: module_researched_list_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2782536530788352
-    m_Key: pvp_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619721
-    m_Key: cleared
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1099552815710208
-    m_Key: toggle_auto_explroation
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619723
-    m_Key: wave_exploration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 40395924701184
-    m_Key: safe_zone
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619724
-    m_Key: collected_minerals
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619725
-    m_Key: collect_mineral
-    m_Metadata:
-      m_Items: []
-  - m_Id: 40830739808256
-    m_Key: logout
-    m_Metadata:
-      m_Items: []
-  - m_Id: 42515386204160
-    m_Key: language_options
-    m_Metadata:
-      m_Items: []
   - m_Id: 705451700125696
     m_Key: cancel
     m_Metadata:
@@ -297,26 +341,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 797857342685184
     m_Key: max_level
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1160778044276736
-    m_Key: zone_list_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1160778098802688
-    m_Key: wave_list_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1211027840434176
-    m_Key: camera_focus_enemy_fleet
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1211027873988608
-    m_Key: camera_focus_center
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1211027873988609
-    m_Key: camera_focus_my_fleet
     m_Metadata:
       m_Items: []
   m_Metadata:

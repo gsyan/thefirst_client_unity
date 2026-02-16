@@ -20,6 +20,7 @@ public enum EModuleType
     hanger          = 5,
     max             = 6
 }
+// 3001~3009 연관, 3011~3019 연관
 [System.Serializable]
 public enum EModuleSubType
 {

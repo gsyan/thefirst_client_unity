@@ -107,7 +107,7 @@ public class UITabFleet : UITabBase
         CapabilityProfile statsOrg = fleet.GetFleetCapabilityProfile(false);
         CapabilityProfile statsCur = fleet.GetFleetCapabilityProfile(true);
 
-        SetOrCreateFleetStatRow("ship", $"{fleet.m_ships.Count}");
+        SetOrCreateFleetStatRow("fleet_ship_count", $"{fleet.m_ships.Count}");
         SetOrCreateFleetStatRow("attack_power", $"{statsCur.attack_power:F0}/{statsOrg.attack_power:F0}");
         SetOrCreateFleetStatRow("health_power", $"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
         SetOrCreateFleetStatRow("speed_power", $"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");

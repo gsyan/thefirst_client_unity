@@ -205,6 +205,21 @@ public static class EventManager
         OnMyFleetDestroyed -= callback;
     }
 
+    // PvP 전투 결과 (isVictory, scoreChange, newScore, newRank)
+    public static event Action<bool, int, int, int> OnPvpBattleResult;
+    public static void TriggerPvpBattleResult(bool isVictory, int scoreChange, int newScore, int newRank)
+    {
+        OnPvpBattleResult?.Invoke(isVictory, scoreChange, newScore, newRank);
+    }
+    public static void Subscribe_PvpBattleResult(Action<bool, int, int, int> callback)
+    {
+        OnPvpBattleResult += callback;
+    }
+    public static void Unsubscribe_PvpBattleResult(Action<bool, int, int, int> callback)
+    {
+        OnPvpBattleResult -= callback;
+    }
+
     // Module Replaced (oldModule, newModule)
     public static event Action<ModuleBase, ModuleBase> OnModuleReplaced;
     public static void TriggerModuleReplaced(ModuleBase oldModule, ModuleBase newModule)
