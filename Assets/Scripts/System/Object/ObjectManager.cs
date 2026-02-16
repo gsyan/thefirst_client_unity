@@ -99,6 +99,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     private System.Action<bool> m_onZoneBattleComplete;
     private Coroutine m_spawnCoroutine;
 
+    // PvP 전투 관련
+    private bool m_isPvpBattle;
+    private System.Action<bool> m_onPvpBattleComplete;
+
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
     {
@@ -139,10 +143,20 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         CleanupAllProjectiles();
         RemoveAllEnemyFleets();
 
-        var callback = m_onZoneBattleComplete;
-        m_onZoneBattleComplete = null;
-        m_currentZoneConfig = null;
-        callback?.Invoke(isVictory);
+        if (m_isPvpBattle)
+        {
+            m_isPvpBattle = false;
+            var pvpCallback = m_onPvpBattleComplete;
+            m_onPvpBattleComplete = null;
+            pvpCallback?.Invoke(isVictory);
+        }
+        else
+        {
+            var callback = m_onZoneBattleComplete;
+            m_onZoneBattleComplete = null;
+            m_currentZoneConfig = null;
+            callback?.Invoke(isVictory);
+        }
     }
 
     // 튜토리얼 시작 체크
@@ -226,6 +240,33 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_spawnCoroutine = StartCoroutine(SpawnWaves());
     }
 
+    // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
+    public void StartPvpBattle(FleetInfo opponentFleetInfo, System.Action<bool> onComplete)
+    {
+        if (opponentFleetInfo == null || m_myFleet == null)
+        {
+            onComplete?.Invoke(false);
+            return;
+        }
+
+        m_isPvpBattle = true;
+        m_onPvpBattleComplete = onComplete;
+
+        Vector3 spawnPosition = GetEnemySpawnPosition();
+        GameObject fleetObj = new GameObject("PvpEnemyFleet");
+        fleetObj.transform.position = spawnPosition;
+
+        Vector3 directionToPlayer = m_myFleet.transform.position - spawnPosition;
+        directionToPlayer.y = 0;
+        if (directionToPlayer != Vector3.zero)
+            fleetObj.transform.rotation = Quaternion.LookRotation(directionToPlayer);
+
+        SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
+        enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote);
+
+        m_enemyFleets.Add(enemyFleet);
+    }
+
     public void RemoveEnemyFleet(SpaceFleet fleet)
     {
         if (fleet == null) return;
@@ -233,6 +274,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         int shipCount = fleet.m_fleetInfo.ships.Count;
         m_enemyFleets.Remove(fleet);
         Destroy(fleet.gameObject);
+
+        // PvP 전투 중이면 적 함대 전멸 = 승리
+        if (m_isPvpBattle && m_enemyFleets.Count == 0)
+        {
+            ForceEndBattle(true);
+            return;
+        }
 
         // Zone 전투 중이면 파괴된 적 카운트 증가
         if (m_currentZoneConfig != null)

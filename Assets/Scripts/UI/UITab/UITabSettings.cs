@@ -73,7 +73,7 @@ public class UITabSettings : UITabBase
     private void OnLogoutButtonClicked()
     {
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("logout"),
+            LocalizationManager.Instance.Get("settings_logout"),
             LocalizationManager.Instance.Get("popup_message_logout"),
             new CostStruct(),
             onConfirm: () =>

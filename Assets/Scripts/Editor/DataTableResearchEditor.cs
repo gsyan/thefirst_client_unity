@@ -5,12 +5,12 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
 
-[CustomEditor(typeof(DataTableModuleResearch))]
-public class DataTableModuleResearchEditor : Editor
+[CustomEditor(typeof(DataTableResearch))]
+public class DataTableResearchEditor : Editor
 {
-    private DataTableModuleResearch dataTable;
+    private DataTableResearch dataTable;
     private Vector2 scrollPosition;
-
+    
     private Dictionary<EModuleType, bool> typeFoldouts = new Dictionary<EModuleType, bool>();
     private Dictionary<ModuleResearchData, bool> dataFoldouts = new Dictionary<ModuleResearchData, bool>();
 
@@ -22,7 +22,7 @@ public class DataTableModuleResearchEditor : Editor
 
     private void OnEnable()
     {
-        dataTable = (DataTableModuleResearch)target;
+        dataTable = (DataTableResearch)target;
     }
 
     public override void OnInspectorGUI()
@@ -112,7 +112,7 @@ public class DataTableModuleResearchEditor : Editor
         EditorGUILayout.BeginHorizontal();
         dataFoldouts[researchData] = EditorGUILayout.Foldout(
             dataFoldouts[researchData],
-            $"{researchData.m_moduleSubType}",
+            $"{researchData.m_moduleSubType} ({researchData.m_researchId})",
             true
         );
         EditorGUILayout.EndHorizontal();
@@ -121,6 +121,55 @@ public class DataTableModuleResearchEditor : Editor
         {
             EditorGUI.indentLevel++;
 
+            // ResearchNodeData 공통 필드
+            EditorGUILayout.LabelField("Node Info", EditorStyles.boldLabel);
+            researchData.m_researchId = EditorGUILayout.TextField("Research ID", researchData.m_researchId);
+
+            EditorGUILayout.Space(5);
+
+            // 선행 연구 조건 (string ID를 EModuleSubType 드롭다운으로 편집)
+            EditorGUILayout.LabelField("Prerequisites", EditorStyles.boldLabel);
+            if (researchData.m_prerequisiteIds == null)
+                researchData.m_prerequisiteIds = new List<string>();
+
+            for (int i = 0; i < researchData.m_prerequisiteIds.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                // string → EModuleSubType 변환 시도, 실패하면 텍스트 필드
+                EModuleSubType prereqEnum = EModuleSubType.none;
+                bool isModuleSubType = System.Enum.TryParse(researchData.m_prerequisiteIds[i], out prereqEnum);
+
+                if (isModuleSubType)
+                {
+                    prereqEnum = (EModuleSubType)EditorGUILayout.EnumPopup($"Prerequisite {i + 1}", prereqEnum);
+                    researchData.m_prerequisiteIds[i] = prereqEnum.ToString();
+                }
+                else
+                {
+                    researchData.m_prerequisiteIds[i] = EditorGUILayout.TextField($"Prerequisite {i + 1}", researchData.m_prerequisiteIds[i]);
+                }
+
+                if (GUILayout.Button("-", GUILayout.Width(25)))
+                {
+                    researchData.m_prerequisiteIds.RemoveAt(i);
+                    break;
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            if (GUILayout.Button("+ Add Prerequisite", GUILayout.Width(150)))
+            {
+                researchData.m_prerequisiteIds.Add(EModuleSubType.none.ToString());
+            }
+
+            EditorGUILayout.Space(5);
+
+            // UI 위치
+            researchData.m_uiPosition = EditorGUILayout.Vector2Field("UI Position", researchData.m_uiPosition);
+
+            EditorGUILayout.Space(5);
+
+            // 연구 비용
             EditorGUILayout.LabelField("Research Cost", EditorStyles.boldLabel);
             researchData.m_researchCost.techLevel = EditorGUILayout.IntField("Tech Level", researchData.m_researchCost.techLevel);
             researchData.m_researchCost.mineral = EditorGUILayout.LongField("Mineral", researchData.m_researchCost.mineral);

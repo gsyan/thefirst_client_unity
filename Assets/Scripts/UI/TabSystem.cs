@@ -33,6 +33,19 @@ public class TabSystem : MonoBehaviour
     private ButtonGroupSystem buttonGroup;
     private int currentActiveTab = -1;
 
+    // 인스펙터에서 + 버튼으로 추가 시 색상 기본값 자동 적용
+    private void OnValidate()
+    {
+        for (int i = 0; i < tabs.Count; i++)
+        {
+            var item = tabs[i];
+            if (item.activeColor.a == 0f && item.activeColor.r == 0f && item.activeColor.g == 0f && item.activeColor.b == 0f)
+                item.activeColor = new Color(1f, 0.8f, 0.2f, 1f);
+            if (item.inactiveColor.a == 0f && item.inactiveColor.r == 0f && item.inactiveColor.g == 0f && item.inactiveColor.b == 0f)
+                item.inactiveColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+        }
+    }
+
     private void Start()
     {
         InitializeTabs();

@@ -638,6 +638,31 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.CollectZoneAsync(request), onComplete));
     }
 
+    // PvP API
+    public void PvpList(PvpListRequest request, System.Action<ApiResponse<PvpListResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.PvpListAsync(request), onComplete));
+    }
+
+    public void PvpRefresh(PvpRefreshRequest request, System.Action<ApiResponse<PvpRefreshResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.PvpRefreshAsync(request), onComplete));
+    }
+
+    public void PvpBattleStart(PvpBattleStartRequest request, System.Action<ApiResponse<PvpBattleStartResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.PvpBattleStartAsync(request), onComplete));
+    }
+
+    public void PvpBattleResult(PvpBattleResultRequest request, System.Action<ApiResponse<PvpBattleResultResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.PvpBattleResultAsync(request), onComplete));
+    }
+
     public ApiClient GetApiClient()
     {
         return m_apiClient;

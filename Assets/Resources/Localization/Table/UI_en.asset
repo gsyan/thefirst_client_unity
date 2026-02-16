@@ -18,48 +18,8 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 218309197824
-    m_Localized: Add Ship
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4360310226944
-    m_Localized: Fleet
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4360310226945
-    m_Localized: Ship
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4360310226946
-    m_Localized: Exploration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4360310226947
-    m_Localized: Settings
-    m_Metadata:
-      m_Items: []
   - m_Id: 39525816336384
     m_Localized: Fleet Status
-    m_Metadata:
-      m_Items: []
-  - m_Id: 40010770153472
-    m_Localized: Unlock Module
-    m_Metadata:
-      m_Items: []
-  - m_Id: 40166030704640
-    m_Localized: Upgrade Module
-    m_Metadata:
-      m_Items: []
-  - m_Id: 40395924701184
-    m_Localized: Safe Zone
-    m_Metadata:
-      m_Items: []
-  - m_Id: 40830739808256
-    m_Localized: Logout
-    m_Metadata:
-      m_Items: []
-  - m_Id: 42515386204160
-    m_Localized: Language options
     m_Metadata:
       m_Items: []
   - m_Id: 46863080095744
@@ -78,52 +38,12 @@ MonoBehaviour:
     m_Localized: Cargo
     m_Metadata:
       m_Items: []
-  - m_Id: 55998282596352
-    m_Localized: Weapons
-    m_Metadata:
-      m_Items: []
-  - m_Id: 56055799087104
-    m_Localized: Engines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232257425408
-    m_Localized: Ships
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619712
-    m_Localized: Formation List
-    m_Metadata:
-      m_Items: []
   - m_Id: 63232261619717
     m_Localized: Ship Status
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619718
-    m_Localized: Module Status
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619719
-    m_Localized: Type
-    m_Metadata:
-      m_Items: []
   - m_Id: 63232261619720
     m_Localized: Level
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619721
-    m_Localized: Cleared
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619723
-    m_Localized: Wave
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619724
-    m_Localized: Collected Minerals
-    m_Metadata:
-      m_Items: []
-  - m_Id: 63232261619725
-    m_Localized: Collect Mineral
     m_Metadata:
       m_Items: []
   - m_Id: 394150382993408
@@ -156,10 +76,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 697933397622785
     m_Localized: Unlock {0} slot?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 705451670765568
-    m_Localized: Research Module
     m_Metadata:
       m_Items: []
   - m_Id: 705451700125696
@@ -282,18 +198,6 @@ MonoBehaviour:
     m_Localized: Max Level
     m_Metadata:
       m_Items: []
-  - m_Id: 1099552815710208
-    m_Localized: Auto Exploration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1160778044276736
-    m_Localized: Zone
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1160778098802688
-    m_Localized: Wave
-    m_Metadata:
-      m_Items: []
   - m_Id: 1211027840434176
     m_Localized: Enemy Fleet
     m_Metadata:
@@ -310,16 +214,136 @@ MonoBehaviour:
     m_Localized: Repair
     m_Metadata:
       m_Items: []
-  - m_Id: 2777898846912512
-    m_Localized: Module Researched List
+  - m_Id: 2924654586888192
+    m_Localized: Fleet
     m_Metadata:
       m_Items: []
-  - m_Id: 2781321348644864
+  - m_Id: 2924654624636928
+    m_Localized: Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636929
+    m_Localized: Exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636930
     m_Localized: Research
     m_Metadata:
       m_Items: []
-  - m_Id: 2782536530788352
+  - m_Id: 2924654624636931
     m_Localized: PVP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636932
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636933
+    m_Localized: Ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636934
+    m_Localized: Formation List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636935
+    m_Localized: Add Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636936
+    m_Localized: Weapons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636937
+    m_Localized: Engines
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636938
+    m_Localized: Module Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636939
+    m_Localized: Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636940
+    m_Localized: Unlock Module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636941
+    m_Localized: Upgrade Module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636942
+    m_Localized: Cleared
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636943
+    m_Localized: Auto Exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636945
+    m_Localized: Safe Zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636946
+    m_Localized: Collected Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636947
+    m_Localized: Collect Mineral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636948
+    m_Localized: Zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636949
+    m_Localized: Wave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636950
+    m_Localized: Research Module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636952
+    m_Localized: PVP List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636953
+    m_Localized: Refresh({0}/{1})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636954
+    m_Localized: Score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636955
+    m_Localized: Rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636956
+    m_Localized: Logout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2924654624636957
+    m_Localized: Language options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2929882979762176
+    m_Localized: Module Researched List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2952446292656128
+    m_Localized: My PVP Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2973369905315840
+    m_Localized: Tech
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3089099820761088
+    m_Localized: Already Researched
     m_Metadata:
       m_Items: []
   references:

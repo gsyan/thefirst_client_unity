@@ -536,6 +536,88 @@ public class ApiClient
     }
     #endregion
 
+    #region PvP API Methods --------------------------------------------------------------------------------------
+    public async Task<ApiResponse<PvpListResponse>> PvpListAsync(PvpListRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<PvpListResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"PvP List Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/list", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<PvpListResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"PvP List Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
+    public async Task<ApiResponse<PvpRefreshResponse>> PvpRefreshAsync(PvpRefreshRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<PvpRefreshResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"PvP Refresh Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/refresh", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<PvpRefreshResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"PvP Refresh Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
+    public async Task<ApiResponse<PvpBattleStartResponse>> PvpBattleStartAsync(PvpBattleStartRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<PvpBattleStartResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"PvP Battle Start Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/battle/start", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<PvpBattleStartResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"PvP Battle Start Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
+    public async Task<ApiResponse<PvpBattleResultResponse>> PvpBattleResultAsync(PvpBattleResultRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<PvpBattleResultResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"PvP Battle Result Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/battle/result", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<PvpBattleResultResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"PvP Battle Result Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+    #endregion
+
     #region Progress API Methods ----------------------------------------------------------------------------------
     public async Task<ApiResponse<ProgressInfo>> SaveProgressAsync(ProgressSaveRequest request)
     {

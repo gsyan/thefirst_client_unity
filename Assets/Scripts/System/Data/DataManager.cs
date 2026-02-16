@@ -281,25 +281,25 @@ public class DataManager : Singleton<DataManager>
     #endregion
 
     #region Data Table Module Research ###############################################################
-    public DataTableModuleResearch m_dataTableModuleResearch;
+    public DataTableResearch m_dataTableResearch;
 
     private void LoadDataTableModuleResearch()
     {
-        m_dataTableModuleResearch = Resources.Load<DataTableModuleResearch>("DataTable/DataTableModuleResearch");
-        if (m_dataTableModuleResearch == null)
+        m_dataTableResearch = Resources.Load<DataTableResearch>("DataTable/DataTableResearch");
+        if (m_dataTableResearch == null)
         {
-            Debug.LogError("DataTableModuleResearch is not exist");
+            Debug.LogError("DataTableResearch is not exist");
         }
         else
         {
-            Debug.Log("DataTableModuleResearch loaded successfully");
+            Debug.Log("DataTableResearch loaded successfully");
         }
     }
 
     public CostStruct GetModuleResearchCost(EModuleSubType subType)
     {
-        if (m_dataTableModuleResearch == null) return new CostStruct();
-        return m_dataTableModuleResearch.GetResearchCost(subType);
+        if (m_dataTableResearch == null) return new CostStruct();
+        return m_dataTableResearch.GetResearchCost(subType);
     }
     #endregion
 

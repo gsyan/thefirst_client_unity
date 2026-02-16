@@ -319,6 +319,12 @@ public static class CommonUtility
         int typeValue = (int)subType / 1000;
         return (EModuleType)typeValue;
     }
+    public static EModuleSubType GetDefaultSubType(EModuleType moduleType)
+    {
+        EModuleSubType defaultSubType = (EModuleSubType)((int)moduleType * 1000 + 1);
+        return defaultSubType;
+    }
+
 
     #endregion Module Type end -----------------------------------------------------------------------------------
 
