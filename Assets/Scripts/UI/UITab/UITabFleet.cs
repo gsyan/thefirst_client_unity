@@ -111,8 +111,10 @@ public class UITabFleet : UITabBase
         SetOrCreateFleetStatRow("attack_power", $"{statsCur.attack_power:F0}/{statsOrg.attack_power:F0}");
         SetOrCreateFleetStatRow("health_power", $"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
         SetOrCreateFleetStatRow("speed_power", $"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");
-        SetOrCreateFleetStatRow("cargo_power", $"{statsCur.cargo_capacity:F0}/{statsOrg.cargo_capacity:F0}");
         SetOrCreateFleetStatRow("repair_power", $"{statsCur.repair_power:F0}/{statsOrg.repair_power:F0}");
+        SetOrCreateFleetStatRow("aircraft_attack_power", $"{statsCur.aircraft_attack_power:F0}/{statsOrg.aircraft_attack_power:F0}");
+        SetOrCreateFleetStatRow("aircraft_count", $"{statsCur.aircraft_count:F0}/{statsOrg.aircraft_count:F0}");
+        SetOrCreateFleetStatRow("aircraft_launch_count", $"{statsCur.aircraft_launch_count:F0}/{statsOrg.aircraft_launch_count:F0}");
     }
 
     private void SetOrCreateFleetStatRow(string label, string value)
@@ -122,7 +124,7 @@ public class UITabFleet : UITabBase
 
         if (m_fleetStatRows.TryGetValue(label, out RowLabelValue existingRow))
         {
-            existingRow.SetValue(value);
+            existingRow.SetValues(value);
             return;
         }
 
@@ -146,7 +148,7 @@ public class UITabFleet : UITabBase
         CostStruct cost = gameSettings.GetAddShipCost(m_myFleet.m_ships.Count);
 
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("add_ship"),
+            LocalizationManager.Instance.Get("fleet_add_ship"),
             LocalizationManager.Instance.Get("popup_message_add_ship"),
             cost,
             AddShip

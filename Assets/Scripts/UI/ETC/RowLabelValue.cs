@@ -1,26 +1,37 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Localization.Components;
-using UnityEngine.Localization;
 
 public class RowLabelValue : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_label;
-    [SerializeField] private TMP_Text m_value;
+    [SerializeField] private TMP_Text m_value1;
+    [SerializeField] private TMP_Text m_value2;
 
-    public void SetRow(string label, string value)
+    private void Awake()
     {
-        CommonUtility.SetUILocText(m_label, label);
-        SetValue(value);
+        if (m_label == null)
+            m_label = GetComponent<RectTransform>().GetChild(0).GetComponent<TMP_Text>();
+        if (m_value1 == null)
+            m_value1 = GetComponent<RectTransform>().GetChild(1).GetComponent<TMP_Text>();
+    }
+
+    public void SetRow(string label, string value1, string value2 = "")
+    {
+        SetLabel(label);
+        SetValues(value1, value2);
     }
 
     public void SetLabel(string label)
     {
-        CommonUtility.SetUILocText(m_label, label);
+        if( m_label != null)
+            CommonUtility.SetUILocText(m_label, label);
     }
 
-    public void SetValue(string value)
+    public void SetValues(string value1, string value2 = "")
     {
-        CommonUtility.SetUILocText(m_value, value);
+        if( m_value1 != null)
+            CommonUtility.SetUILocText(m_value1, value1);
+        if( m_value2 != null)
+            CommonUtility.SetUILocText(m_value2, value2);
     }
 }

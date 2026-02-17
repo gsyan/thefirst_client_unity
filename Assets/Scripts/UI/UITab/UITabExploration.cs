@@ -321,10 +321,10 @@ public class UITabExploration : UITabBase
     private void SetMineralTexts(float mineral, float mineralPerH, float rare, float rarePerH,
                                   float exotic, float exoticPerH, float dark, float darkPerH)
     {
-        m_rowLabelValueMineral.SetValue(FormatMineralText(mineral, mineralPerH));
-        m_rowLabelValueMineralRare.SetValue(FormatMineralText(rare, rarePerH));
-        m_rowLabelValueMineralExotic.SetValue(FormatMineralText(exotic, exoticPerH));
-        m_rowLabelValueMineralDark.SetValue(FormatMineralText(dark, darkPerH));
+        m_rowLabelValueMineral.SetValues(FormatMineralText(mineral, mineralPerH));
+        m_rowLabelValueMineralRare.SetValues(FormatMineralText(rare, rarePerH));
+        m_rowLabelValueMineralExotic.SetValues(FormatMineralText(exotic, exoticPerH));
+        m_rowLabelValueMineralDark.SetValues(FormatMineralText(dark, darkPerH));
     }
 
     // "{누적량}({시간당}/h)" 형식 문자열 생성
@@ -461,6 +461,7 @@ public class UITabExploration : UITabBase
             pp.SetSkyboxBlendTarget(zoneConfig.skyboxMaterial);
 
         UIManager.Instance.HidePanel("UIPanelCameraView");
+        CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
         m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
         {

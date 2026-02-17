@@ -550,13 +550,15 @@ public class SpaceFleet : MonoBehaviour
             if (ship == null) continue;
             shipCount++;
             CapabilityProfile shipStats = useCurrent ? ship.m_spaceShipStatsCur : ship.m_spaceShipStatsOrg;
-            totalStats.attack_power += shipStats.attack_power;
-            totalStats.health_power += shipStats.health_power;
-            totalStats.speed_power += shipStats.speed_power;
-            totalStats.cargo_capacity += shipStats.cargo_capacity;
-            totalStats.repair_power += shipStats.repair_power;
             totalStats.totalWeapons += shipStats.totalWeapons;
             totalStats.totalEngines += shipStats.totalEngines;
+            totalStats.attack_power += shipStats.attack_power;
+            totalStats.health_power += shipStats.health_power;
+            totalStats.speed_power += shipStats.speed_power;            
+            totalStats.repair_power += shipStats.repair_power;            
+            totalStats.aircraft_attack_power += shipStats.aircraft_attack_power;
+            totalStats.aircraft_count += shipStats.aircraft_count;
+            totalStats.aircraft_launch_count += shipStats.aircraft_launch_count;
         }
         // 일단 평균
         totalStats.speed_power /= shipCount;

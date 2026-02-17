@@ -4,19 +4,19 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class UITabShip : UITabBase
 {
     [SerializeField] private TMP_Text  m_textShipStatus;
     [SerializeField] private RectTransform m_shipStatsContainer;
-    private readonly List<string> shipStatLabels = new List<string>{"ship_module_weapon_count", "ship_module_engine_count", "attack_power", "health_power", "speed_power", "cargo_power", "repair_power"};
+    [SerializeField] private GameObject m_rowLabelValuePrefab;                // RowLabelValue 프리팹
     
     [SerializeField] private TMP_Text  m_textModuleStatus;
     [SerializeField] private RectTransform m_moduleStatsContainer;
-    private readonly List<string> moduleStatLabels = new List<string>{"ship_module_type", "level", "attack_power", "health_power", "speed_power", "cargo_power", "repair_power"};
 
-    [SerializeField] private Button m_unlockModuleButton;    
-    [SerializeField] private Button m_upgradeModuleButton;
+    [SerializeField] private UnityEngine.UI.Button m_unlockModuleButton;    
+    [SerializeField] private UnityEngine.UI.Button m_upgradeModuleButton;
     [SerializeField] private TMP_Text m_upgradeModuleButtonText;
     
     [SerializeField] private GameObject m_moduleResearchedListContainer;
@@ -32,9 +32,9 @@ public class UITabShip : UITabBase
     private SpaceShip m_selectedShip;
     private ModuleBase m_selectedModule;
 
-    private readonly List<RowLabelValue> m_shipStatRows = new();
+    private readonly Dictionary<string, RowLabelValue> m_shipStatRows = new();
+
     private readonly List<RowLabelValue> m_moduleStatRows = new();
-    
     private readonly List<ScrollViewModuleItem> m_moduleItemPool = new List<ScrollViewModuleItem>();
     private List<ScrollViewModuleItem> m_moduleItemActive = new List<ScrollViewModuleItem>();
 
@@ -51,21 +51,7 @@ public class UITabShip : UITabBase
         m_myFleet = m_myCharacter.GetOwnedFleet();
         if (m_myFleet == null) return;
 
-        // m_shipStatsContainer 내부의 자식들을 하이어라키 순서대로 캐싱
-        if (m_shipStatsContainer != null)
-        {
-            m_shipStatRows.Clear();
-            for (int i = 0; i < m_shipStatsContainer.childCount; i++)
-            {
-                Transform child = m_shipStatsContainer.GetChild(i);
-                RowLabelValue row = child.GetComponent<RowLabelValue>();
-                if (row != null)
-                {
-                    row.SetLabel(shipStatLabels[i]);
-                    m_shipStatRows.Add(row);
-                }
-            }
-        }
+        m_shipStatRows.Clear();
 
         // m_moduleStatsContainer 내부의 자식들을 하이어라키 순서대로 캐싱
         if (m_moduleStatsContainer != null)
@@ -74,12 +60,9 @@ public class UITabShip : UITabBase
             for (int i = 0; i < m_moduleStatsContainer.childCount; i++)
             {
                 Transform child = m_moduleStatsContainer.GetChild(i);
-                RowLabelValue row = child.GetComponent<RowLabelValue>();
+                var row = child.GetComponent<RowLabelValue>();
                 if (row != null)
-                {
-                    row.SetLabel(moduleStatLabels[i]);
                     m_moduleStatRows.Add(row);
-                }       
             }
         }
 
@@ -154,7 +137,6 @@ public class UITabShip : UITabBase
         {
             UpdateShipStatsDisplay();
             UpdateModuleStatsDisplay();
-            //UpdateModuleRightUIFrame();
             PopulateModuleScrollView();
         }
     }
@@ -172,7 +154,6 @@ public class UITabShip : UITabBase
         {
             UpdateShipStatsDisplay();
             UpdateModuleStatsDisplay();
-            //UpdateModuleRightUIFrame();
             PopulateModuleScrollView();
         }
     }
@@ -185,13 +166,37 @@ public class UITabShip : UITabBase
         CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
 
-        m_shipStatRows[0].SetValue($"{statsCur.totalWeapons}");
-        m_shipStatRows[1].SetValue($"{statsCur.totalEngines}");
-        m_shipStatRows[2].SetValue($"{statsCur.attack_power:F0}/{statsOrg.attack_power:F0}");
-        m_shipStatRows[3].SetValue($"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
-        m_shipStatRows[4].SetValue($"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");
-        m_shipStatRows[5].SetValue($"{statsCur.cargo_capacity:F0}/{statsOrg.cargo_capacity:F0}");
-        m_shipStatRows[6].SetValue($"{statsCur.repair_power:F0}/{statsOrg.repair_power:F0}");
+        SetOrCreateShipStatRow("ship_module_weapon_count", $"{statsCur.totalWeapons}");
+        SetOrCreateShipStatRow("ship_module_engine_count", $"{statsCur.totalEngines}");
+        SetOrCreateShipStatRow("attack_power", $"{statsCur.attack_power:F0}/{statsOrg.attack_power:F0}");
+        SetOrCreateShipStatRow("health_power", $"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
+        SetOrCreateShipStatRow("speed_power", $"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");
+        SetOrCreateShipStatRow("repair_power", $"{statsCur.repair_power:F0}/{statsOrg.repair_power:F0}");
+        SetOrCreateShipStatRow("aircraft_attack_power", $"{statsCur.aircraft_attack_power:F0}/{statsOrg.aircraft_attack_power:F0}");
+        SetOrCreateShipStatRow("aircraft_count", $"{statsCur.aircraft_count:F0}/{statsOrg.aircraft_count:F0}");
+        SetOrCreateShipStatRow("aircraft_launch_count", $"{statsCur.aircraft_launch_count:F0}/{statsOrg.aircraft_launch_count:F0}");
+    }
+
+    private void SetOrCreateShipStatRow(string label, string value)
+    {
+        if (m_shipStatsContainer == null || m_rowLabelValuePrefab == null)
+            return;
+
+        if (m_shipStatRows.TryGetValue(label, out RowLabelValue existingRow) == true)
+        {
+            existingRow.SetValues(value);
+            return;
+        }
+
+        GameObject rowObj = Instantiate(m_rowLabelValuePrefab, m_shipStatsContainer);
+        rowObj.name = $"ShipRow_{label}";
+
+        RowLabelValue row = rowObj.GetComponent<RowLabelValue>();
+        if (row != null)
+        {
+            row.SetRow(label, value);
+            m_shipStatRows.Add(label, row);
+        }
     }
     
     private void PopulateModuleScrollView()
@@ -558,28 +563,15 @@ public class UITabShip : UITabBase
         if (m_selectedShip == null) return;
 
         string localizationKeyModuleType = $"module_type_{m_selectedModule.GetModuleType()}";
-        
+
         if (m_selectedModule is ModulePlaceholder)
         {
             m_moduleResearchedListContainer.gameObject.SetActive(false);
             m_upgradeModuleButton.gameObject.SetActive(false);
             m_unlockModuleButton.gameObject.SetActive(true);
-            
 
-            m_moduleStatRows[0].SetValue(localizationKeyModuleType + "_placeholder");
-
-            EModuleType moduleType = m_selectedModule.GetModuleType();
-            EModuleSubType subType = CommonUtility.GetDefaultSubType(moduleType);
-            ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, 1);
-            if (moduleData != null)
-            {
-                m_moduleStatRows[1].SetValue("1");
-                m_moduleStatRows[2].SetValue($"{moduleData.m_attackPower:F0}");                
-                m_moduleStatRows[3].SetValue($"{moduleData.m_health:F0}");                
-                m_moduleStatRows[4].SetValue($"{moduleData.m_movementSpeed:F0}");                
-                m_moduleStatRows[5].SetValue($"{moduleData.m_cargoCapacity:F0}");                
-                m_moduleStatRows[6].SetValue($"{moduleData.m_repairPower:F0}");
-            }
+            m_moduleStatRows[0].SetRow("ship_module_type", localizationKeyModuleType + "_placeholder");
+            m_selectedModule.SetModuleStatRows(m_moduleStatRows);
         }
         else
         {
@@ -593,42 +585,13 @@ public class UITabShip : UITabBase
             int nextLevel = currentLevel + 1;
 
             ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
-            // 업그레이드 가능한 상황
             if (moduleDataNext != null)
-            {
                 CommonUtility.SetUILocText(m_upgradeModuleButtonText, "ship_module_upgrade");
-
-                ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-                
-                m_moduleStatRows[0].SetValue(localizationKeyModuleType);
-                m_moduleStatRows[1].SetValue($"<mspace=0.6em>{currentLevel,5} <voffset=6>→</voffset> {nextLevel,-5}</mspace>");
-                m_moduleStatRows[2].SetValue($"<mspace=0.6em>{moduleDataCurrent.m_attackPower,5:F0} <voffset=6>→</voffset> {moduleDataNext.m_attackPower,-5:F0}</mspace>");
-                m_moduleStatRows[3].SetValue($"<mspace=0.6em>{moduleDataCurrent.m_health,5:F0} <voffset=6>→</voffset> {moduleDataNext.m_health,-5:F0}</mspace>");
-                m_moduleStatRows[4].SetValue($"<mspace=0.6em>{moduleDataCurrent.m_movementSpeed,5:F0} <voffset=6>→</voffset> {moduleDataNext.m_movementSpeed,-5:F0}</mspace>");
-                m_moduleStatRows[5].SetValue($"<mspace=0.6em>{moduleDataCurrent.m_cargoCapacity,5:F0} <voffset=6>→</voffset> {moduleDataNext.m_cargoCapacity,-5:F0}</mspace>");
-                m_moduleStatRows[6].SetValue($"<mspace=0.6em>{moduleDataCurrent.m_repairPower,5:F0} <voffset=6>→</voffset> {moduleDataNext.m_repairPower,-5:F0}</mspace>");
-
-                // DataManager.Instance.GetModuleUpgradeCost(subType, currentLevel, out CostStruct cost)
-                //m_upgradeModuleStatRows[2].SetValue1($"Mineral: {CommonUtility.FormatBigNumber(cost.mineral)}");
-            }
-            // 이미 맥스 레벨
             else
-            {
                 CommonUtility.SetUILocText(m_upgradeModuleButtonText, "max_level");
 
-                CapabilityProfile statsOrg = m_selectedModule.GetModuleCapabilityProfile(true);
-
-                m_moduleStatRows[0].SetValue(localizationKeyModuleType);
-                m_moduleStatRows[1].SetValue($"{currentLevel}");
-                m_moduleStatRows[2].SetValue($"{statsOrg.attack_power:F0}");
-                m_moduleStatRows[3].SetValue($"{statsOrg.health_power:F0}");
-                m_moduleStatRows[4].SetValue($"{statsOrg.speed_power:F0}");
-                m_moduleStatRows[5].SetValue($"{statsOrg.cargo_capacity:F0}");
-                m_moduleStatRows[6].SetValue($"{statsOrg.repair_power:F0}");
-
-                //m_upgradeModuleStatusContainer.gameObject.SetActive(false);
-                //m_upgradeModuleDescription.text = LocalizationManager.Instance.Get("max_level");
-            }
+            m_moduleStatRows[0].SetRow("ship_module_type", localizationKeyModuleType);
+            m_selectedModule.SetModuleStatRows(m_moduleStatRows);
         }
     }
 

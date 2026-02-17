@@ -236,6 +236,35 @@ public class ModuleBeam : ModuleBase
     public int GetAttackFireCount() { return m_attackFireCount; }
     public float GetAttackCoolTime() { return m_attackCoolTime; }
 
+
+    public override void SetModuleStatRows(List<RowLabelValue> statRows)
+    {
+        EModuleSubType subType = GetModuleSubType();
+        int currentLevel = GetModuleLevel();
+        int nextLevel = currentLevel + 1;
+
+        ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
+        ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
+
+        if (moduleDataCurrent == null) return;
+
+        if (moduleDataNext != null)
+        {
+            statRows[1].SetRow("level", $"{currentLevel} <voffset=6>→</voffset>", $"{nextLevel}");
+            statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_attackPower:F0}");
+        }
+        else
+        {
+            statRows[1].SetRow("level", $"{currentLevel}");
+            statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
+        }
+        statRows[3].SetRow("empty_text", "");
+        statRows[4].SetRow("empty_text", "");
+        statRows[5].SetRow("empty_text", "");
+        statRows[6].SetRow("empty_text", "");
+    }
+
+
     // 파괴 시 정리
     private void OnDestroy()
     {

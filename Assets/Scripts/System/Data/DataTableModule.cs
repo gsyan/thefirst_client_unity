@@ -36,8 +36,6 @@ public class ModuleData
     [Range(0, 1000)]
     public float m_health = 0f;
     [Range(0, 1000)] 
-    public float m_cargoCapacity = 0f;
-    [Range(0, 1000)] 
     public float m_repairPower = 0f;
 
     // Engine ---------------------------------------------------------------------------
@@ -470,7 +468,6 @@ public class DataTableModule : ScriptableObject
                         m_moduleLevel = i,
                         m_moduleSlots = slotInfos,
                         m_health = 100f + (i * 50f),
-                        m_cargoCapacity = 50f + (i * 25f),
                         m_repairPower = 1f + (i * 1f),
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
                         m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.body_battle ? 100 : 1000) << (i - 1), 0, 0, 0),

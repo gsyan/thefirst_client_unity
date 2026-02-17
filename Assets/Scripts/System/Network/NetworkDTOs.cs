@@ -318,15 +318,6 @@ public class CostRemainInfo
     public long remainMineralDark;
 }
 
-// [System.Serializable]
-// public class ModuleBodyAddRequest
-// {
-//     public long shipId;
-//     public string bodyType;
-//     public int bodyLevel;
-//     public Vector3 position;
-// }
-
 [System.Serializable]
 public class ModuleBodyRemoveRequest
 {
@@ -344,61 +335,6 @@ public class ModuleInstallRequest
     public int slotIndex;
 }
 
-// [System.Serializable]
-// public class FleetStatsRequest
-// {
-//     public long fleetId;
-// }
-
-// [System.Serializable]
-// public class FleetStatsResponse
-// {
-//     public long fleetId;
-//     public string fleetName;
-//     public ShipStatsInfo[] ships;
-//     public FleetTotalStats totalStats;
-// }
-
-// [System.Serializable]
-// public class ShipStatsInfo
-// {
-//     public long shipId;
-//     public string shipName;
-//     public int positionIndex;
-//     public ModuleStats totalStats;
-//     //public PartsBodyInfo[] partsBodies;
-// }
-
-// [System.Serializable]
-// public class PartsBodyInfo
-// {
-//     public int bodyIndex;
-//     public int level;
-//     public ModuleStats stats;
-//     public ModuleInfo[] weapons;
-//     public ModuleInfo[] engines;
-// }
-
-// [System.Serializable]
-// public class ModuleInfo
-// {
-//     public EModuleType moduleType;
-//     public int level;
-//     public int slotIndex;
-//     public ModuleStats stats;
-// }
-
-// [System.Serializable]
-// public class FleetTotalStats
-// {
-//     public float totalHealth;
-//     public float totalAttackPower;
-//     public float averageMovementSpeed;
-//     public float totalCargoCapacity;
-//     public int totalShips;
-//     public int totalWeapons;
-//     public int totalEngines;
-// }
 #endregion
 
 #region Progress Data Classes #################################################################################
