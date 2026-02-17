@@ -15,7 +15,6 @@ public class ModuleBody : ModuleBase
     [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
     [HideInInspector] public List<ModuleHanger> m_hangers = new List<ModuleHanger>();
 
-    private float m_cargoCapacity;
     private float m_repairPower;
 
     
@@ -68,9 +67,8 @@ public class ModuleBody : ModuleBase
         // 스탯 갱신
         m_healthMax = moduleData.m_health;
         m_health = Mathf.Min(m_health, m_healthMax);
-        m_upgradeCost = moduleData.m_upgradeCost;
-        m_cargoCapacity = moduleData.m_cargoCapacity;
         m_repairPower = moduleData.m_repairPower;
+        m_upgradeCost = moduleData.m_upgradeCost;
     }
 
     public override int GetModuleBodyIndex()
@@ -102,7 +100,6 @@ public class ModuleBody : ModuleBase
         m_attackPower = 0.0f; // Body는 직접 공격하지 않음
 
         // Body 전용 능력치
-        m_cargoCapacity = moduleData.m_cargoCapacity;
         m_repairPower = moduleData.m_repairPower;
 
         // 함대 정보 자동 설정
@@ -554,7 +551,6 @@ public class ModuleBody : ModuleBase
 
         // Body 자체의 능력치
         stats.health_power = m_health;
-        stats.cargo_capacity = m_cargoCapacity;
         stats.repair_power = m_repairPower;
 
         // 모든 슬롯의 모듈들을 순회하며 능력치 합산
@@ -571,6 +567,9 @@ public class ModuleBody : ModuleBase
                     stats.attack_power += moduleStats.attack_power;
                     stats.health_power += moduleStats.health_power;
                     stats.speed_power += moduleStats.speed_power;
+                    stats.aircraft_attack_power += moduleStats.aircraft_attack_power;
+                    stats.aircraft_count += moduleStats.aircraft_count;
+                    stats.aircraft_launch_count += moduleStats.aircraft_launch_count;
                 }
             }
         }
@@ -682,5 +681,32 @@ public class ModuleBody : ModuleBase
         }
     }
 
+    public override void SetModuleStatRows(List<RowLabelValue> statRows)
+    {
+        EModuleSubType subType = GetModuleSubType();
+        int currentLevel = GetModuleLevel();
+        int nextLevel = currentLevel + 1;
+
+        ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
+        ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
+
+        if (moduleDataCurrent == null) return;
+
+        if (moduleDataNext != null)
+        {
+            statRows[1].SetRow("level", $"{currentLevel} <voffset=6>→</voffset>", $"{nextLevel}");
+            statRows[2].SetRow("health_power", $"{moduleDataCurrent.m_health:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_health:F0}");
+            statRows[3].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_repairPower:F0}");
+        }
+        else
+        {
+            statRows[1].SetRow("level", $"{currentLevel}");
+            statRows[2].SetRow("health_power", $"{moduleDataCurrent.m_health:F0}");
+            statRows[3].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0}");
+        }
+        statRows[4].SetRow("empty_text", "");
+        statRows[5].SetRow("empty_text", "");
+        statRows[6].SetRow("empty_text", "");
+    }
     
 }

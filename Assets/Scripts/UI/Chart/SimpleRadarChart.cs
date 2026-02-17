@@ -60,9 +60,6 @@ public class SimpleRadarChart : Graphic
         m_stats.Add(stats.speed_power);
         m_statNames.Add("Speed");
 
-        m_stats.Add(stats.cargo_capacity);
-        m_statNames.Add("Cargo");
-
         m_stats.Add(stats.repair_power);
         m_statNames.Add("Repair");
 

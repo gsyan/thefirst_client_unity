@@ -34,10 +34,6 @@ MonoBehaviour:
     m_Localized: Speed
     m_Metadata:
       m_Items: []
-  - m_Id: 48178879397888
-    m_Localized: Cargo
-    m_Metadata:
-      m_Items: []
   - m_Id: 63232261619717
     m_Localized: Ship Status
     m_Metadata:
@@ -344,6 +340,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 3089099820761088
     m_Localized: Already Researched
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613497212928
+    m_Localized: Attack(Air)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613539155968
+    m_Localized: HP(Air)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613539155969
+    m_Localized: Speed(Air)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613539155970
+    m_Localized: Aircrafts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613539155971
+    m_Localized: Launch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3370864741318656
+    m_Localized: ' '
     m_Metadata:
       m_Items: []
   references:

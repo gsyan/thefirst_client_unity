@@ -192,21 +192,8 @@ public class CameraController : MonoSingleton<CameraController>
             m_startTouchPosition = Input.mousePosition;
             HandleModuleSelection(m_startTouchPosition); // 카메라 모드에 따라 처리 필요
         }
-        else if (Input.GetMouseButtonUp(0) == true)
-        {
-            //m_isPanning = false;
-        }
-        else if (Input.GetMouseButton(0) == true)
-        {
-            Vector2 mouseDelta = (Vector2)Input.mousePosition - (Vector2)m_startTouchPosition;
-            if (mouseDelta.magnitude > 1f)
-            {
-                CameraPanning(mouseDelta);
-                m_startTouchPosition = Input.mousePosition;
-            }
-        }
-
-        // 마우스 휠 줌 또는 전진/후퇴
+        
+        // 마우스 휠 줌
         float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
         if (Mathf.Abs(scrollDelta) > 0.01f)
         {
@@ -251,18 +238,7 @@ public class CameraController : MonoSingleton<CameraController>
                     {
                         //m_isPanning = false;
                         float deltaPinch = currentPinchDistance - m_lastPinchDistance;
-
-                        if (m_currentTarget != null)
-                            ZoomCamera(-deltaPinch * 0.01f);
-                        else
-                            CameraMove_FrontBack(deltaPinch * 0.01f);
-                    }
-                    // dot > 0.8: 같은 방향 → 팬 이동
-                    else if (dotProduct > 0.8f)
-                    {
-                        //m_isPanning = true;
-                        Vector2 touchCenterDelta = currentTouchCenter - m_lastTwoTouchCenter;
-                        CameraPanning(touchCenterDelta);
+                        ZoomCamera(-deltaPinch * 0.01f);
                     }
                     // 그 외: 애매한 경우 → 이전 상태 유지 (아무것도 안 함)
                 }
@@ -339,46 +315,6 @@ public class CameraController : MonoSingleton<CameraController>
     {
         m_currentZoom = Mathf.Lerp(m_minZoom, m_maxZoom, normalizedZoom);
     }
-
-    public void CameraPanning(Vector2 screenDelta)
-    {
-        if (m_targetCamera == null) return;
-
-        // Normal 모드가 아니면 자유 이동 불가
-        if( UIManager.Instance.CanCameraMove() == false)
-            return;
-
-        // Transform 추적 중이면 해제 (팬 이동 시 고정 위치로 전환)
-        if (m_currentTarget != null)
-        {
-            m_currentTarget = null;
-            m_targetPosition = m_targetCamera.transform.position;
-            m_interpolatedTargetPosition = m_targetPosition;
-        }
-
-            
-        
-        // 카메라의 오른쪽(Right)과 위쪽(Up) 방향 벡터 구하기
-        Vector3 cameraRight = m_targetCamera.transform.right;
-        Vector3 cameraUp = m_targetCamera.transform.up;
-
-        // 화면 이동량을 월드 공간으로 변환 (줌 레벨에 비례)
-        float panScale = m_currentZoom * m_panSpeed;
-        Vector3 worldDelta = (-cameraRight * screenDelta.x - cameraUp * screenDelta.y) * panScale;
-
-        // 타겟 위치 이동
-        m_targetPosition += worldDelta;
-    }
-
-    private void CameraMove_FrontBack(float deltaZoom)
-    {
-        float moveSpeed = m_currentZoom * 0.5f; // 줌 레벨에 비례한 이동 속도
-        Vector3 moveDirection = m_targetCamera.transform.forward * deltaZoom * moveSpeed;
-        m_targetPosition += moveDirection;
-    }
-
-    
-
 
     private bool IsPointerOverUIObject()
     {

@@ -15,6 +15,10 @@ MonoBehaviour:
   m_TableCollectionName: UI
   m_TableCollectionNameGuidString: d85d8ecc73ff1304c8410066ceb06829
   m_Entries:
+  - m_Id: 3370864741318656
+    m_Key: empty_text
+    m_Metadata:
+      m_Items: []
   - m_Id: 2924654586888192
     m_Key: tab_fleet
     m_Metadata:
@@ -183,12 +187,28 @@ MonoBehaviour:
     m_Key: speed_power
     m_Metadata:
       m_Items: []
-  - m_Id: 48178879397888
-    m_Key: cargo_power
-    m_Metadata:
-      m_Items: []
   - m_Id: 1462580203618304
     m_Key: repair_power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613497212928
+    m_Key: aircraft_attack_power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613539155968
+    m_Key: aircraft_health_power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613539155969
+    m_Key: aircraft_speed_power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613539155970
+    m_Key: aircraft_count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3367613539155971
+    m_Key: aircraft_launch_count
     m_Metadata:
       m_Items: []
   - m_Id: 728096982302720

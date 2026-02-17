@@ -5,69 +5,6 @@ using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.Localization;
 
-// 모듈 최대 능력치 (육각형 차트 백분율 계산용)
-[System.Serializable]
-public struct ModuleMaxStats
-{
-    // Body
-    public float maxBodyHp;
-    public float maxBodyCargo;
-
-    // Engine
-    public float maxEngineHp;
-    public float maxEngineSpeed;
-
-    // Beam
-    public float maxBeamHp;
-    public float maxBeamDps;
-
-    // Missile
-    public float maxMissileHp;
-    public float maxMissileDps;
-
-    // Hanger
-    public float maxHangerHp;
-    public float maxHangerDps;
-
-    // 모듈 타입에 따른 최대 DPS 반환 (합산 시 무기 중 최대값)
-    public readonly float GetMaxDps(EModuleType moduleType)
-    {
-        return moduleType switch
-        {
-            EModuleType.beam => maxBeamDps,
-            EModuleType.missile => maxMissileDps,
-            EModuleType.hanger => maxHangerDps,
-            _ => Mathf.Max(maxBeamDps, maxMissileDps, maxHangerDps)
-        };
-    }
-
-    // 모듈 타입에 따른 최대 HP 반환 (합산 시 Body HP 기준)
-    public readonly float GetMaxHp(EModuleType moduleType)
-    {
-        return moduleType switch
-        {
-            EModuleType.body => maxBodyHp,
-            EModuleType.engine => maxEngineHp,
-            EModuleType.beam => maxBeamHp,
-            EModuleType.missile => maxMissileHp,
-            EModuleType.hanger => maxHangerHp,
-            _ => maxBodyHp
-        };
-    }
-
-    // 모듈 타입에 따른 최대 Speed 반환 (Engine만 해당)
-    public readonly float GetMaxSpeed(EModuleType moduleType)
-    {
-        return moduleType == EModuleType.engine ? maxEngineSpeed : 0f;
-    }
-
-    // 모듈 타입에 따른 최대 Cargo 반환 (Body만 해당)
-    public readonly float GetMaxCargo(EModuleType moduleType)
-    {
-        return moduleType == EModuleType.body ? maxBodyCargo : 0f;
-    }
-}
-
 public static class EnumExtensions
 {
     public static string ToLocKey<T>(this T value) where T : Enum
@@ -182,19 +119,18 @@ public static class CommonUtility
         if (moduleInfo.moduleType == EModuleType.beam || moduleInfo.moduleType == EModuleType.missile)
         {
             stats.attack_power = moduleData.m_attackPower * moduleData.m_attackFireCount;// 공격력 × 발사 개수
-            stats.health_power = moduleData.m_health;// 체력 수치
             stats.totalWeapons = 1;
         }
         else if (moduleInfo.moduleType == EModuleType.hanger)
         {
-            stats.attack_power = moduleData.m_hangarCapability * moduleData.m_aircraftAttackPower;// 함재기 수용량 × 함재기 공격력
-            stats.health_power = moduleData.m_health;// 체력 수치
+            stats.aircraft_attack_power = (int)moduleData.m_aircraftAttackPower;    // 함재기 공격력
+            stats.aircraft_count = moduleData.m_hangarCapability;                   // 함재기 수
+            stats.aircraft_launch_count = moduleData.m_launchCount;                 // 함재기 발진 수
             stats.totalWeapons = 1;
         }
         else if (moduleInfo.moduleType == EModuleType.engine)
         {
             stats.speed_power = moduleData.m_movementSpeed;
-            stats.health_power = moduleData.m_health;
             stats.totalEngines = 1;
         }
 
@@ -211,7 +147,6 @@ public static class CommonUtility
         if (bodyData != null)
         {
             stats.health_power = bodyData.m_health;
-            stats.cargo_capacity = bodyData.m_cargoCapacity;
             stats.repair_power = bodyData.m_repairPower;
         }
 
@@ -229,13 +164,15 @@ public static class CommonUtility
         foreach (ShipInfo shipInfo in fleetInfo.ships)
         {
             CapabilityProfile shipStats = GetShipCapabilityProfile(shipInfo);
+            stats.totalWeapons += shipStats.totalWeapons;
+            stats.totalEngines += shipStats.totalEngines;
             stats.attack_power += shipStats.attack_power;
             stats.health_power += shipStats.health_power;
             stats.speed_power += shipStats.speed_power;
-            stats.cargo_capacity += shipStats.cargo_capacity;
             stats.repair_power += shipStats.repair_power;
-            stats.totalWeapons += shipStats.totalWeapons;
-            stats.totalEngines += shipStats.totalEngines;
+            stats.aircraft_attack_power += shipStats.aircraft_attack_power;
+            stats.aircraft_count += shipStats.aircraft_count;
+            stats.aircraft_launch_count+= shipStats.aircraft_launch_count;
         }
         stats.speed_power = stats.speed_power / fleetInfo.ships.Count;
 
@@ -254,7 +191,6 @@ public static class CommonUtility
             // Body 고유 능력치
             CapabilityProfile bodyStats = GetBodyCapabilityProfile(bodyInfo);
             stats.health_power += bodyStats.health_power;
-            stats.cargo_capacity += bodyStats.cargo_capacity;
             stats.repair_power += bodyStats.repair_power;
 
             // Engine 모듈들 합산
@@ -264,8 +200,8 @@ public static class CommonUtility
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
                     stats.speed_power += moduleStats.speed_power;
+                    
                     stats.totalEngines += moduleStats.totalEngines;
-                    stats.health_power += moduleStats.health_power;
                 }
             }
 
@@ -276,8 +212,8 @@ public static class CommonUtility
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
                     stats.attack_power += moduleStats.attack_power;
+                    
                     stats.totalWeapons += moduleStats.totalWeapons;
-                    stats.health_power += moduleStats.health_power;
                 }
             }
 
@@ -288,8 +224,8 @@ public static class CommonUtility
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
                     stats.attack_power += moduleStats.attack_power;
+
                     stats.totalWeapons += moduleStats.totalWeapons;
-                    stats.health_power += moduleStats.health_power;
                 }
             }
 
@@ -299,9 +235,11 @@ public static class CommonUtility
                 foreach (ModuleInfo moduleInfo in bodyInfo.hangers)
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                    stats.attack_power += moduleStats.attack_power;
+                    stats.aircraft_attack_power += moduleStats.aircraft_attack_power;
+                    stats.aircraft_count += moduleStats.aircraft_count;
+                    stats.aircraft_launch_count+= moduleStats.aircraft_launch_count;
+
                     stats.totalWeapons += moduleStats.totalWeapons;
-                    stats.health_power += moduleStats.health_power;
                 }
             }
         }

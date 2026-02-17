@@ -371,8 +371,44 @@ public class ModuleHanger : ModuleBase
         stats.totalWeapons = 1;
         // 함재기 데이터로부터 계산
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        stats.attack_power = m_hangarCapability * moduleData.m_aircraftAttackPower;
+        stats.aircraft_attack_power = (int)(moduleData.m_aircraftAttackPower);
+        stats.aircraft_count = moduleData.m_hangarCapability;
+        stats.aircraft_launch_count = moduleData.m_launchCount;
+
         return stats;
+    }
+
+    // 모듈 타입별 stat row 표시 위임 (하위 클래스에서 override)
+    public override void SetModuleStatRows(System.Collections.Generic.List<RowLabelValue> statRows)
+    {
+        EModuleSubType subType = GetModuleSubType();
+        int currentLevel = GetModuleLevel();
+        int nextLevel = currentLevel + 1;
+
+        ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
+        ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
+
+        if (moduleDataCurrent == null) return;
+
+        if (moduleDataNext != null)
+        {
+            statRows[1].SetRow("level", $"{currentLevel} <voffset=6>→</voffset>", $"{nextLevel}");
+            statRows[2].SetRow("aircraft_attack_power", $"{moduleDataCurrent.m_aircraftAttackPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_aircraftAttackPower:F0}");
+            statRows[3].SetRow("aircraft_health_power", $"{moduleDataCurrent.m_aircraftHealth:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_aircraftHealth:F0}");
+            statRows[4].SetRow("aircraft_speed_power", $"{moduleDataCurrent.m_aircraftSpeed:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_aircraftSpeed:F0}");
+            statRows[5].SetRow("aircraft_count", $"{moduleDataCurrent.m_hangarCapability:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_hangarCapability:F0}");
+            statRows[6].SetRow("aircraft_launch_count", $"{moduleDataCurrent.m_launchCount:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_launchCount:F0}");
+
+        }
+        else
+        {
+            statRows[1].SetRow("level", $"{currentLevel}");
+            statRows[2].SetRow("aircraft_attack_power", $"{moduleDataCurrent.m_aircraftAttackPower:F0}");
+            statRows[3].SetRow("aircraft_health_power", $"{moduleDataCurrent.m_aircraftHealth:F0}");
+            statRows[4].SetRow("aircraft_speed_power", $"{moduleDataCurrent.m_aircraftSpeed:F0}");
+            statRows[5].SetRow("aircraft_count", $"{moduleDataCurrent.m_hangarCapability:F0}");
+            statRows[6].SetRow("aircraft_launch_count", $"{moduleDataCurrent.m_launchCount:F0}");
+        }
     }
 
 

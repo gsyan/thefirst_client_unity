@@ -14,11 +14,13 @@ public struct CapabilityProfile
     public int totalEngines;
 
     // 세부 전투 능력치
-    public float attack_power;      // 공격력
-    public float health_power;      // 체력
-    public float speed_power;       // 속력 (이동+회전 통합)
-    public float cargo_capacity;    // 적재량
-    public float repair_power;      // 수리 능력
+    public float attack_power;          // 공격력
+    public float health_power;          // 체력
+    public float speed_power;           // 속력 (이동+회전 통합)
+    public float repair_power;          // 수리 능력
+    public int aircraft_attack_power;   // 함재기 공격력
+    public int aircraft_count;          // 함재기 수
+    public int aircraft_launch_count;   // 함재기 발진 수
 }
 
 public class SpaceShip : MonoBehaviour
@@ -374,13 +376,15 @@ public class SpaceShip : MonoBehaviour
             if (body != null && body.m_health > 0)
             {
                 CapabilityProfile bodyStats = body.GetModuleCapabilityProfile(false);
-                stats.attack_power += bodyStats.attack_power;
-                stats.health_power += bodyStats.health_power;
-                stats.speed_power += bodyStats.speed_power;
-                stats.cargo_capacity += bodyStats.cargo_capacity;           
-                stats.repair_power += bodyStats.repair_power;
                 stats.totalWeapons += bodyStats.totalWeapons;
                 stats.totalEngines += bodyStats.totalEngines;
+                stats.attack_power += bodyStats.attack_power;
+                stats.health_power += bodyStats.health_power;
+                stats.speed_power += bodyStats.speed_power;    
+                stats.repair_power += bodyStats.repair_power;
+                stats.aircraft_attack_power += bodyStats.aircraft_attack_power;
+                stats.aircraft_count += bodyStats.aircraft_count;
+                stats.aircraft_launch_count += bodyStats.aircraft_launch_count;
             }
         }
         return stats;
@@ -1081,19 +1085,25 @@ public class SpaceShip : MonoBehaviour
             }
         }
 
-        // 2. 삭제 전 이벤트 발행 (oldBody 아직 유효)
+        // 2. 교체 전 HP 비율 저장
+        float healthRatio = oldBody.GetHealthRatio();
+
+        // 3. 삭제 전 이벤트 발행 (oldBody 아직 유효)
         EventManager.TriggerModuleReplaced(oldBody, null);
 
-        // 3. 기존 body 제거
+        // 4. 기존 body 제거
         m_moduleBodys.Remove(oldBody);
         DestroyImmediate(oldBody.gameObject);
 
-        // 4. 새 body 생성 (저장된 모듈 재배치)
+        // 5. 새 body 생성 (저장된 모듈 재배치)
         ModuleBody newBody = InitSpaceShipBody(newBodyInfo, savedModules);
 
-        // 5. 새 body 이벤트 발행
+        // 6. 새 body에 이전 HP 비율 적용
         if (newBody != null)
+        {
+            newBody.m_health = newBody.m_healthMax * healthRatio;
             EventManager.TriggerModuleReplaced(null, newBody);
+        }
     }
 
     private void OnDrawGizmos()

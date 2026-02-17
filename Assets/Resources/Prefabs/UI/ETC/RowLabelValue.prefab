@@ -393,4 +393,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_label: {fileID: 6715654426485622829}
-  m_value: {fileID: 4971057232385670042}
+  m_value1: {fileID: 4971057232385670042}
+  m_value2: {fileID: 0}

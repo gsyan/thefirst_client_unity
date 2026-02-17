@@ -34,7 +34,6 @@ public class UITabResearch : UITabBase
     private EModuleType m_currentModuleType = EModuleType.beam;
     private string m_selectedNodeId = "";
 
-    private readonly List<string> moduleStatLabels = new List<string>{"ship_module_type", "level", "attack_power", "health_power", "speed_power", "cargo_power", "repair_power"};
     private readonly List<RowLabelValue> m_moduleStatRows = new();
 
     // 현재 표시중인 노드 리스트 (ResearchNodeData 베이스)
@@ -68,12 +67,9 @@ public class UITabResearch : UITabBase
             for (int i = 0; i < m_moduleStatsContainer.childCount; i++)
             {
                 Transform child = m_moduleStatsContainer.GetChild(i);
-                RowLabelValue row = child.GetComponent<RowLabelValue>();
+                var row = child.GetComponent<RowLabelValue>();
                 if (row != null)
-                {
-                    row.SetLabel(moduleStatLabels[i]);
                     m_moduleStatRows.Add(row);
-                }
             }
         }
 
@@ -311,13 +307,60 @@ public class UITabResearch : UITabBase
 
         if (moduleData != null)
         {
-            m_moduleStatRows[0].SetValue(localizationKeyModuleSubType);
-            m_moduleStatRows[1].SetValue($"<mspace=0.6em>{firstLevel,5} <voffset=6>→</voffset> {maxLevel,-5}</mspace>");
-            m_moduleStatRows[2].SetValue($"<mspace=0.6em>{moduleData.m_attackPower,5:F0} <voffset=6>→</voffset> {moduleDataMax.m_attackPower,-5:F0}</mspace>");
-            m_moduleStatRows[3].SetValue($"<mspace=0.6em>{moduleData.m_health,5:F0} <voffset=6>→</voffset> {moduleDataMax.m_health,-5:F0}</mspace>");
-            m_moduleStatRows[4].SetValue($"<mspace=0.6em>{moduleData.m_movementSpeed,5:F0} <voffset=6>→</voffset> {moduleDataMax.m_movementSpeed,-5:F0}</mspace>");
-            m_moduleStatRows[5].SetValue($"<mspace=0.6em>{moduleData.m_cargoCapacity,5:F0} <voffset=6>→</voffset> {moduleDataMax.m_cargoCapacity,-5:F0}</mspace>");
-            m_moduleStatRows[6].SetValue($"<mspace=0.6em>{moduleData.m_repairPower,5:F0} <voffset=6>→</voffset> {moduleDataMax.m_repairPower,-5:F0}</mspace>");
+            m_moduleStatRows[0].SetRow("ship_module_type", localizationKeyModuleSubType);
+            m_moduleStatRows[1].SetRow("level", $"{firstLevel} <voffset=6>→</voffset> {maxLevel}");
+            
+            if (m_currentModuleType == EModuleType.body)
+            {
+                m_moduleStatRows[2].SetRow("health_power", $"{moduleData.m_health:F0} <voffset=6>→</voffset> {moduleDataMax.m_health:F0}");
+                m_moduleStatRows[3].SetRow("repair_power", $"{moduleData.m_repairPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_repairPower:F0}");
+                m_moduleStatRows[4].SetRow("empty_text", "");
+                m_moduleStatRows[5].SetRow("empty_text", "");
+                m_moduleStatRows[6].SetRow("empty_text", "");
+            }
+            else if (m_currentModuleType == EModuleType.engine)
+            {
+                m_moduleStatRows[2].SetRow("speed_power", $"{moduleData.m_movementSpeed:F0} <voffset=6>→</voffset> {moduleDataMax.m_movementSpeed:F0}");
+                m_moduleStatRows[3].SetRow("empty_text", "");
+                m_moduleStatRows[4].SetRow("empty_text", "");
+                m_moduleStatRows[5].SetRow("empty_text", "");
+                m_moduleStatRows[6].SetRow("empty_text", "");
+            }
+            else if (m_currentModuleType == EModuleType.beam || m_currentModuleType == EModuleType.missile)
+            {
+                m_moduleStatRows[2].SetRow("attack_power", $"{moduleData.m_attackPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_attackPower:F0}");
+                m_moduleStatRows[3].SetRow("empty_text", "");
+                m_moduleStatRows[4].SetRow("empty_text", "");
+                m_moduleStatRows[5].SetRow("empty_text", "");
+                m_moduleStatRows[6].SetRow("empty_text", "");
+            }
+            else if (m_currentModuleType == EModuleType.hanger)
+            {
+                m_moduleStatRows[2].SetRow("aircraft_attack_power", $"{moduleData.m_aircraftAttackPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftAttackPower:F0}");                
+                m_moduleStatRows[3].SetRow("aircraft_health_power", $"{moduleData.m_aircraftHealth:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftHealth:F0}");
+                m_moduleStatRows[4].SetRow("aircraft_speed_power", $"{moduleData.m_aircraftSpeed:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftSpeed:F0}");
+                m_moduleStatRows[5].SetRow("aircraft_count", $"{moduleData.m_hangarCapability:F0} <voffset=6>→</voffset> {moduleDataMax.m_hangarCapability:F0}");
+                m_moduleStatRows[6].SetRow("aircraft_launch_count", $"{moduleData.m_launchCount:F0} <voffset=6>→</voffset> {moduleDataMax.m_launchCount:F0}");
+            }
+
+
+
+            // if (m_currentModuleType != EModuleType.hanger)
+            // {
+            //     m_moduleStatRows[2].SetRow("attack_power", $"{moduleData.m_attackPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_attackPower:F0}");
+            //     m_moduleStatRows[3].SetRow("health_power", $"{moduleData.m_health:F0} <voffset=6>→</voffset> {moduleDataMax.m_health:F0}");
+            //     m_moduleStatRows[4].SetRow("speed_power", $"{moduleData.m_movementSpeed:F0} <voffset=6>→</voffset> {moduleDataMax.m_movementSpeed:F0}");
+            //     m_moduleStatRows[5].SetRow("repair_power", $"{moduleData.m_repairPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_repairPower:F0}");
+            //     m_moduleStatRows[6].SetRow("empty_text", "");
+            // }
+            // else
+            // {
+            //     m_moduleStatRows[2].SetRow("aircraft_attack_power", $"{moduleData.m_aircraftAttackPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftAttackPower:F0}");                
+            //     m_moduleStatRows[3].SetRow("aircraft_health_power", $"{moduleData.m_aircraftHealth:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftHealth:F0}");
+            //     m_moduleStatRows[4].SetRow("aircraft_speed_power", $"{moduleData.m_aircraftSpeed:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftSpeed:F0}");
+            //     m_moduleStatRows[5].SetRow("aircraft_count", $"{moduleData.m_hangarCapability:F0} <voffset=6>→</voffset> {moduleDataMax.m_hangarCapability:F0}");
+            //     m_moduleStatRows[6].SetRow("aircraft_launch_count", $"{moduleData.m_launchCount:F0} <voffset=6>→</voffset> {moduleDataMax.m_launchCount:F0}");
+            // }
         }
     }
 
