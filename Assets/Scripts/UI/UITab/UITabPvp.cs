@@ -13,6 +13,10 @@ public class UITabPvp : UITabBase
     [SerializeField] private RectTransform m_scrollViewContent;
     [SerializeField] private GameObject m_pvpItemPrefab;
 
+    [Header("PvP Warp")]
+    [SerializeField] private Material m_pvpBattleSkybox;
+    [SerializeField] private DataTableZone m_datatableZone;
+
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
     private readonly List<ScrollViewPvpItem> m_pvpItemPool = new List<ScrollViewPvpItem>();
@@ -142,13 +146,42 @@ public class UITabPvp : UITabBase
         PopulateOpponentList(response.data.opponents);
     }
 
-    // 공격 버튼
+    // 공격 버튼 - 상대 함대 정보 팝업 표시
     private void OnAttackClicked(PvpOpponentInfo opponent)
     {
-        var request = new PvpBattleStartRequest { opponentCharacterId = opponent.characterId };
-        NetworkManager.Instance.PvpBattleStart(request, (response) => OnBattleStartResponse(response));
+        CapabilityProfile stats = CommonUtility.GetFleetCapabilityProfile(opponent.fleetInfo);
+        int shipCount = (opponent.fleetInfo != null && opponent.fleetInfo.ships != null) ? opponent.fleetInfo.ships.Count : 0;
+
+        string[] labels = new string[]
+        {
+            "fleet_ship_count",
+            "health_power",
+            "attack_power",
+            "aircraft_count"
+        };
+        string[] values = new string[]
+        {
+            shipCount.ToString(),
+            CommonUtility.FormatBigNumber(stats.health_power),
+            CommonUtility.FormatBigNumber(stats.attack_power),
+            stats.aircraft_count.ToString()
+        };
+
+        string title = opponent.characterName;
+        string message = LocalizationManager.Instance.Get("pvp_opponent_info", new object[] { opponent.pvpScore, opponent.rank });
+
+        UIManager.Instance.ShowConfirmPopup(title, message, labels, values,
+            () => RequestPvpBattleStart(opponent));
     }
 
+    // 서버에 전투 시작 요청
+    private void RequestPvpBattleStart(PvpOpponentInfo opponent)
+    {
+        var request = new PvpBattleStartRequest { opponentCharacterId = opponent.characterId };
+        NetworkManager.Instance.PvpBattleStart(request, OnBattleStartResponse);
+    }
+
+    // 서버 응답 후 워프 연출 → 전투 시작
     private void OnBattleStartResponse(ApiResponse<PvpBattleStartResponse> response)
     {
         if (response == null || response.errorCode != 0)
@@ -160,11 +193,18 @@ public class UITabPvp : UITabBase
         m_currentBattleToken = response.data.battleToken;
         FleetInfo opponentFleetInfo = response.data.opponentFleetInfo;
 
-        UIManager.Instance.ShowPanel("UIPanelCameraView");
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null)
+            pp.SetSkyboxBlendTarget(m_pvpBattleSkybox);
 
-        ObjectManager.Instance.StartPvpBattle(opponentFleetInfo, (isVictory) =>
+        m_myFleet.StartFleetWarp(m_pvpBattleSkybox, () =>
         {
-            ReportBattleResult(isVictory);
+            UIManager.Instance.ShowPanel("UIPanelCameraView");
+
+            ObjectManager.Instance.StartPvpBattle(opponentFleetInfo, (isVictory) =>
+            {
+                ReportBattleResult(isVictory);
+            });
         });
     }
 
@@ -187,8 +227,6 @@ public class UITabPvp : UITabBase
 
     private void OnBattleResultResponse(ApiResponse<PvpBattleResultResponse> response)
     {
-        UIManager.Instance.HidePanel("UIPanelCameraView");
-
         if (response == null || response.errorCode != 0)
         {
             ShowResultMessage("전투 결과 처리 실패");
@@ -213,17 +251,29 @@ public class UITabPvp : UITabBase
         ReturnFromBattle();
     }
 
+    // 전투 종료 후 워프 복귀
     private void ReturnFromBattle()
     {
         m_currentBattleToken = null;
 
-        // 전멸 시 함대 복구
-        if (m_myFleet.IsFleetAlive() == false)
-            m_myFleet.RebuildFleet(0.1f);
-        else
-            m_myFleet.RestoreDestroyedShips(0.1f);
+        UIManager.Instance.HidePanel("UIPanelCameraView");
+        CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
-        // 상대 목록 재요청
-        RequestPvpList();
+        ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
+        if (zoneConfig == null) return;
+
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null)
+            pp.SetSkyboxBlendTarget(zoneConfig.skyboxMaterial);
+
+        m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
+        {
+            if (m_myFleet.IsFleetAlive() == false)
+                m_myFleet.RebuildFleet(0.1f);
+            else
+                m_myFleet.RestoreDestroyedShips(0.1f);
+
+            RequestPvpList();
+        });
     }
 }

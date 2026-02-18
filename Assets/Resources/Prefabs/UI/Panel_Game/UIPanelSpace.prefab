@@ -885,7 +885,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00015188778}
+  m_AnchoredPosition: {x: 0, y: -0.000053511154}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7592059761097661012
@@ -4804,7 +4804,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000055255296}
+  m_AnchoredPosition: {x: 0, y: 0.00007229807}
   m_SizeDelta: {x: 659, y: 111.8755}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1667755806433218038
@@ -7234,6 +7234,8 @@ MonoBehaviour:
   m_refreshButtonText: {fileID: 8515490223598602019}
   m_scrollViewContent: {fileID: 8187173284724984939}
   m_pvpItemPrefab: {fileID: 3418093155193504895, guid: 74b0dc04bc3afad488b9ca2b7d5de6dc, type: 3}
+  m_pvpBattleSkybox: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
+  m_datatableZone: {fileID: 11400000, guid: bd8d30f325141e14985eec04b7ecdf46, type: 2}
 --- !u!114 &4641730104391544125
 MonoBehaviour:
   m_ObjectHideFlags: 0

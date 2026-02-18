@@ -33,6 +33,7 @@ pvp_opponent_list_refresh,,Refresh({0}/{1}),목록갱신({0}/{1})
 pvp_score_mine_head,,My PVP Info,내 PVP 정보
 pvp_score_mine,,Score,점수
 pvp_rank_mine,,Rank,랭크
+pvp_opponent_info,,Opponent Fleet Power,상대 함대 전력
 settings_language_options,,Language options,언어 변경
 settings_logout,,Logout,로그아웃
 camera_focus_enemy_fleet,,Enemy Fleet,적 함대

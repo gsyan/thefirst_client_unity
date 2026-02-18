@@ -339,6 +339,54 @@ public class UIManager : MonoSingleton<UIManager>
         confirmPopup.ShowPopupConfirm(title, message, cost, wrappedConfirm, wrappedCancel);
     }
 
+    // 커스텀 label/value 행으로 확인 팝업 표시
+    public void ShowConfirmPopup(string title, string message, string[] rowLabels, string[] rowValues, System.Action onConfirm, System.Action onCancel = null)
+    {
+        if (currentPopup != null)
+        {
+            CloseCurrentPopup();
+        }
+
+        GameObject popupPrefab = Resources.Load<GameObject>($"{POPUP_PREFAB_PATH}/UIPopupConfirm");
+        if (popupPrefab == null)
+        {
+            Debug.LogError($"Failed to load popup prefab at {POPUP_PREFAB_PATH}/UIPopupConfirm");
+            return;
+        }
+
+        if (m_generalContainer == null)
+        {
+            Debug.LogError("GeneralContainer not found!");
+            return;
+        }
+
+        GameObject popupObj = Instantiate(popupPrefab, m_generalContainer);
+        UIPopupConfirm confirmPopup = popupObj.GetComponent<UIPopupConfirm>();
+
+        if (confirmPopup == null)
+        {
+            Debug.LogError("UIPopupConfirm component not found on prefab!");
+            Destroy(popupObj);
+            return;
+        }
+        popupObj.name = popupPrefab.name;
+        currentPopup = confirmPopup;
+
+        System.Action wrappedConfirm = () =>
+        {
+            onConfirm?.Invoke();
+            CloseCurrentPopup();
+        };
+
+        System.Action wrappedCancel = () =>
+        {
+            onCancel?.Invoke();
+            CloseCurrentPopup();
+        };
+
+        confirmPopup.ShowPopupConfirm(title, message, rowLabels, rowValues, wrappedConfirm, wrappedCancel);
+    }
+
     private void CloseCurrentPopup()
     {
         if (currentPopup != null)
