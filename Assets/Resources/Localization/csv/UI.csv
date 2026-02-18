@@ -16,7 +16,7 @@ ship_module_engine_count,,Engines,엔진 수
 ship_module_status,,Module Status,모듈 정보
 ship_module_type,,Type,타입
 ship_module_unlock,,Unlock Module,모듈 잠금 해제
-ship_module_upgrade,,Upgrade Module,모듈 업그레이드
+ship_module_upgrade,,Upgrade Module,모듈 레벨업
 ship_module_researched_list,,Module Researched List,연구 완료 모듈 목록
 explroation_zone_list_name,,Zone,지역
 explroation_cleared,,Cleared,클리어
@@ -43,9 +43,9 @@ attack_power,,Attack,공격력
 health_power,,HP,체력
 speed_power,,Speed,이동력
 repair_power,,Repair,정비력
-aircraft_attack_power,,Attack(Air),공격력(함재기)
-aircraft_health_power,,HP(Air),체력(함재기)
-aircraft_speed_power,,Speed(Air),이동력(함재기)
+aircraft_attack_power,,Attack(Air),공격력(함)
+aircraft_health_power,,HP(Air),체력(함)
+aircraft_speed_power,,Speed(Air),이동력(함)
 aircraft_count,,Aircrafts,함재기 수
 aircraft_launch_count,,Launch,발진 수
 formation_type_linear_horizontal,,Linear Horizontal,일자횡진

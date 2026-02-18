@@ -79,6 +79,7 @@ public class UITabSettings : UITabBase
             onConfirm: () =>
             {
                 NetworkManager.Instance.Logout();
+                EventManager.UnsubscribeAll();
                 LoadingManager.LoadSceneWithLoading("MainScene");
             },
             onCancel: null

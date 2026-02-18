@@ -64,6 +64,11 @@ public class UIPanelSpace : UIPanelBase
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
+    private void OnDestroy()
+    {
+        
+    }
+
     // 다른 탭에서 함선 클릭 시 UITabShip으로 자동 전환
     private void OnShipSelectedAutoTabSwitch(SpaceShip ship)
     {
