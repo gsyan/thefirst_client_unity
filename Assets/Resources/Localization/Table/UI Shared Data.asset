@@ -151,6 +151,10 @@ MonoBehaviour:
     m_Key: pvp_rank_mine
     m_Metadata:
       m_Items: []
+  - m_Id: 3668074850811904
+    m_Key: pvp_opponent_info
+    m_Metadata:
+      m_Items: []
   - m_Id: 2924654624636957
     m_Key: settings_language_options
     m_Metadata:

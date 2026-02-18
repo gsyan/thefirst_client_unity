@@ -47,6 +47,26 @@ public class UIPopupConfirm : UIPopupBase
         base.ShowPopup();
     }
 
+    // 커스텀 label/value 행으로 팝업 표시
+    public void ShowPopupConfirm(string title, string message, string[] rowLabels, string[] rowValues, Action onConfirm, Action onCancel = null)
+    {
+        if (titleText != null) titleText.text = title;
+        if (messageText != null) messageText.text = message;
+
+        ClearRows();
+
+        int count = Mathf.Min(rowLabels.Length, rowValues.Length);
+        for (int i = 0; i < count; i++)
+        {
+            AddRow(rowLabels[i], rowValues[i]);
+        }
+
+        onCancelCallback = onCancel;
+        onConfirmCallback = onConfirm;
+
+        base.ShowPopup();
+    }
+
     private void AddRow(string labelKey, string value)
     {
         RowLabelValue row = GetOrCreateRow();
