@@ -1,8 +1,20 @@
 using System;
+using System.Reflection;
 using UnityEngine;
 
 public static class EventManager
 {
+    // 로그아웃 등 씬 전환 시 모든 이벤트 구독 해제 (리플렉션으로 자동 처리)
+    public static void UnsubscribeAll()
+    {
+        var fields = typeof(EventManager).GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+        for (int i = 0; i < fields.Length; i++)
+        {
+            if (typeof(Delegate).IsAssignableFrom(fields[i].FieldType) == true)
+                fields[i].SetValue(null, null);
+        }
+    }
+
     # region Character Tech, Mineral ----------------------------------------------------------------------
     // TechLevel
     public static event Action<int> OnTechLevelChanged;
