@@ -215,14 +215,13 @@ public class ModuleMissile : ModuleBase
 
         if (moduleDataCurrent == null) return;
 
+        statRows[1].SetRow("level", $"{currentLevel}");
         if (moduleDataNext != null)
         {
-            statRows[1].SetRow("level", $"{currentLevel} <voffset=6>→</voffset>", $"{nextLevel}");
             statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_attackPower:F0}");
         }
         else
         {
-            statRows[1].SetRow("level", $"{currentLevel}");
             statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
         }
         statRows[3].SetRow("empty_text", "");

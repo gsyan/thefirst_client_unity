@@ -75,7 +75,7 @@ public class UITabSettings : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("settings_logout"),
             LocalizationManager.Instance.Get("popup_message_logout"),
-            new CostStruct(),
+            null, null, null,
             onConfirm: () =>
             {
                 NetworkManager.Instance.Logout();

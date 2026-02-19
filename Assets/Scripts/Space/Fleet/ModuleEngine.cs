@@ -133,14 +133,13 @@ public class ModuleEngine : ModuleBase
 
         if (moduleDataCurrent == null) return;
 
+        statRows[1].SetRow("level", $"{currentLevel}");
         if (moduleDataNext != null)
         {
-            statRows[1].SetRow("level", $"{currentLevel} <voffset=6>→</voffset>", $"{nextLevel}");
             statRows[2].SetRow("speed_power", $"{moduleDataCurrent.m_movementSpeed:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_movementSpeed:F0}");
         }
         else
         {
-            statRows[1].SetRow("level", $"{currentLevel}");
             statRows[2].SetRow("speed_power", $"{moduleDataCurrent.m_movementSpeed:F0}");
         }
         statRows[3].SetRow("empty_text", "");

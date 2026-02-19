@@ -692,15 +692,14 @@ public class ModuleBody : ModuleBase
 
         if (moduleDataCurrent == null) return;
 
+        statRows[1].SetRow("level", $"{currentLevel}");
         if (moduleDataNext != null)
         {
-            statRows[1].SetRow("level", $"{currentLevel} <voffset=6>→</voffset>", $"{nextLevel}");
             statRows[2].SetRow("health_power", $"{moduleDataCurrent.m_health:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_health:F0}");
             statRows[3].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_repairPower:F0}");
         }
         else
         {
-            statRows[1].SetRow("level", $"{currentLevel}");
             statRows[2].SetRow("health_power", $"{moduleDataCurrent.m_health:F0}");
             statRows[3].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0}");
         }

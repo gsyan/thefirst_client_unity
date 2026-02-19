@@ -170,7 +170,7 @@ public class UITabPvp : UITabBase
         string title = opponent.characterName;
         string message = LocalizationManager.Instance.Get("pvp_opponent_info", new object[] { opponent.pvpScore, opponent.rank });
 
-        UIManager.Instance.ShowConfirmPopup(title, message, labels, values,
+        UIManager.Instance.ShowConfirmPopup(title, message, labels, values, null,
             () => RequestPvpBattleStart(opponent));
     }
 

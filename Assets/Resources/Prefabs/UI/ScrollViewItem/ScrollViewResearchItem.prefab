@@ -91,6 +91,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_selectButton: {fileID: 5154888399299302083}
   m_nameText: {fileID: 3198475400130081378}
+  m_backgroundImage: {fileID: 0}
+  m_colorResearchable: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+  m_colorResearched: {r: 0.2, g: 0.8, b: 0.4, a: 1}
+  m_colorSelected: {r: 1, g: 0.8, b: 0.2, a: 1}
 --- !u!1 &3963689274595372330
 GameObject:
   m_ObjectHideFlags: 0
