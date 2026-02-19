@@ -370,6 +370,14 @@ MonoBehaviour:
     m_Localized: Opponent Fleet Power
     m_Metadata:
       m_Items: []
+  - m_Id: 4035192935022592
+    m_Localized: Cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4035192976965632
+    m_Localized: Details
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

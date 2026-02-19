@@ -367,6 +367,14 @@ MonoBehaviour:
     m_Key: max_level
     m_Metadata:
       m_Items: []
+  - m_Id: 4035192935022592
+    m_Key: cost_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4035192976965632
+    m_Key: details_text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

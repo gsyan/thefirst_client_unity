@@ -144,9 +144,10 @@ public class ModuleBase : MonoBehaviour
 
         if (moduleDataCurrent == null) return;
 
+
+        statRows[1].SetRow("level", $"{currentLevel}");
         if (moduleDataNext != null)
         {
-            statRows[1].SetRow("level", $"{currentLevel} <voffset=6>→</voffset>", $"{nextLevel}");
             statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_attackPower:F0}");
             statRows[3].SetRow("health_power", $"{moduleDataCurrent.m_health:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_health:F0}");
             statRows[4].SetRow("speed_power", $"{moduleDataCurrent.m_movementSpeed:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_movementSpeed:F0}");
@@ -156,7 +157,6 @@ public class ModuleBase : MonoBehaviour
         }
         else
         {
-            statRows[1].SetRow("level", $"{currentLevel}");
             statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
             statRows[3].SetRow("health_power", $"{moduleDataCurrent.m_health:F0}");
             statRows[4].SetRow("speed_power", $"{moduleDataCurrent.m_movementSpeed:F0}");

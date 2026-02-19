@@ -2,11 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 연구 노드의 3가지 상태
+// 연구 노드 기본 상태 (선택 여부와 별개 - 선택은 isSelected 파라미터로 전달)
 public enum EResearchNodeState
 {
     Researchable,   // 배울 수 있음 (선행 조건 충족)
-    Current,        // 현재 선택됨
     Researched      // 이미 배움
 }
 
@@ -18,8 +17,11 @@ public class ScrollViewResearchItem : MonoBehaviour
 
     [Header("상태별 색상")]
     [SerializeField] private Color m_colorResearchable = new Color(0.3f, 0.3f, 0.3f, 1f);
-    [SerializeField] private Color m_colorCurrent = new Color(1f, 0.8f, 0.2f, 1f);
     [SerializeField] private Color m_colorResearched = new Color(0.2f, 0.8f, 0.4f, 1f);
+    [SerializeField] private Color m_colorSelected = new Color(1f, 0.8f, 0.2f, 1f);
+    [SerializeField] private float m_outlineWidth = 4f;
+
+    private UnityEngine.UI.Outline m_outline;
 
     // string locKey 기반 (범용)
     public void InitializeScrollViewResearchItem(string locKey, UnityEngine.Events.UnityAction onSelect)
@@ -30,24 +32,24 @@ public class ScrollViewResearchItem : MonoBehaviour
 
         if (m_backgroundImage == null)
             m_backgroundImage = m_selectButton.GetComponent<Image>();
+
+        // 동적으로 Outline 부착 (UnityEngine.UI.Outline, QuickOutline 아님)
+        m_outline = m_selectButton.GetComponent<UnityEngine.UI.Outline>();
+        if (m_outline == null)
+            m_outline = m_selectButton.gameObject.AddComponent<UnityEngine.UI.Outline>();
+        m_outline.effectColor = m_colorSelected;
+        m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
+        m_outline.enabled = false;
     }
 
-    // 상태에 따라 배경색 적용
-    public void SetNodeState(EResearchNodeState state)
+    // 배경색은 연구 상태, 외곽선(색상 포함)은 선택 여부로 독립 처리
+    public void SetNodeState(EResearchNodeState baseState, bool isSelected)
     {
         if (m_backgroundImage == null) return;
 
-        switch (state)
-        {
-            case EResearchNodeState.Researched:
-                m_backgroundImage.color = m_colorResearched;
-                break;
-            case EResearchNodeState.Current:
-                m_backgroundImage.color = m_colorCurrent;
-                break;
-            case EResearchNodeState.Researchable:
-                m_backgroundImage.color = m_colorResearchable;
-                break;
-        }
+        m_backgroundImage.color = baseState == EResearchNodeState.Researched ? m_colorResearched : m_colorResearchable;
+
+        if (m_outline != null)
+            m_outline.enabled = isSelected;
     }
 }

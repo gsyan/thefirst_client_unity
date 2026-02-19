@@ -38,6 +38,7 @@ public class UITabShip : UITabBase
     private readonly List<ScrollViewModuleItem> m_moduleItemPool = new List<ScrollViewModuleItem>();
     private List<ScrollViewModuleItem> m_moduleItemActive = new List<ScrollViewModuleItem>();
 
+    
 
     public override void InitializeUITab()
     {
@@ -294,10 +295,13 @@ public class UITabShip : UITabBase
         // 확인 팝업 표시
         CostStruct cost = new CostStruct { mineral = unlockPrice };
         string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
+        string[] leftLabels = { "ship_module_type" };
+        string[] leftValues = { slotTypeName };
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_unlock"),
             LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
+            leftLabels, leftValues,
             cost,
             () => ExecuteUnlockModule()
         );
@@ -387,13 +391,16 @@ public class UITabShip : UITabBase
         }
 
 
-        string moduleTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
+        string moduleSubTypeName = LocalizationManager.Instance.Get($"{m_selectedModule.GetModuleSubType().ToLocKey()}");
         int currentLevel = m_selectedModule.GetModuleLevel();
         int targetLevel = currentLevel + 1;
-        
+        string[] leftLabels = { "ship_module_type", "level" };
+        string[] leftValues = { moduleSubTypeName, $"{currentLevel} <voffset=6>→</voffset> {targetLevel}" };
+
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_upgrade"),
-            LocalizationManager.Instance.Get("popup_message_module_upgrade", new object[] { moduleTypeName, currentLevel, targetLevel }),
+            LocalizationManager.Instance.Get("popup_message_module_upgrade", new object[] { moduleSubTypeName, currentLevel, targetLevel }),
+            leftLabels, leftValues,
             cost,
             () => ExecuteUpgradeModule()
         );
@@ -567,16 +574,16 @@ public class UITabShip : UITabBase
         if (m_selectedModule is ModulePlaceholder)
         {
             m_moduleResearchedListContainer.gameObject.SetActive(false);
-            m_upgradeModuleButton.gameObject.SetActive(false);
-            m_unlockModuleButton.gameObject.SetActive(true);
+            SetButtonVisible(m_upgradeModuleButton, false);
+            SetButtonVisible(m_unlockModuleButton, true);
 
             m_moduleStatRows[0].SetRow("ship_module_type", localizationKeyModuleType + "_placeholder");
             m_selectedModule.SetModuleStatRows(m_moduleStatRows);
         }
         else
         {
-            m_unlockModuleButton.gameObject.SetActive(false);
-            m_upgradeModuleButton.gameObject.SetActive(true);
+            SetButtonVisible(m_unlockModuleButton, false);
+            SetButtonVisible(m_upgradeModuleButton, true);
             m_moduleResearchedListContainer.gameObject.SetActive(true);
 
             EModuleType moduleType = m_selectedModule.GetModuleType();
@@ -593,6 +600,16 @@ public class UITabShip : UITabBase
             m_moduleStatRows[0].SetRow("ship_module_type", localizationKeyModuleType);
             m_selectedModule.SetModuleStatRows(m_moduleStatRows);
         }
+    }
+
+    // 레이아웃 유지하며 버튼 시각/기능만 토글
+    private void SetButtonVisible(UnityEngine.UI.Button button, bool visible)
+    {
+        if (button.TryGetComponent<UnityEngine.UI.Image>(out var img))
+            img.enabled = visible;
+        button.enabled = visible;
+        for (int i = 0; i < button.transform.childCount; i++)
+            button.transform.GetChild(i).gameObject.SetActive(visible);
     }
 
     // 0이 아닌 비용만 표시

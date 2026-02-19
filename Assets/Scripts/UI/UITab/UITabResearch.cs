@@ -248,12 +248,9 @@ public class UITabResearch : UITabBase
             ResearchNodeData nodeData = m_currentNodeList[i];
             if (m_spawnedResearchItems.TryGetValue(nodeData.m_researchId, out ScrollViewResearchItem item) == false) continue;
 
-            if (nodeData.m_researchId == m_selectedNodeId)
-                item.SetNodeState(EResearchNodeState.Current);
-            else if (IsNodeResearched(nodeData))
-                item.SetNodeState(EResearchNodeState.Researched);
-            else
-                item.SetNodeState(EResearchNodeState.Researchable);
+            bool isSelected = nodeData.m_researchId == m_selectedNodeId;
+            EResearchNodeState baseState = IsNodeResearched(nodeData) ? EResearchNodeState.Researched : EResearchNodeState.Researchable;
+            item.SetNodeState(baseState, isSelected);
         }
     }
 
@@ -389,14 +386,16 @@ public class UITabResearch : UITabBase
         }
 
         string localizedSubType = LocalizationManager.Instance.Get(moduleSubType.ToLocKey());
+        string[] leftLabels = { "ship_module_type" };
+        string[] leftValues = { localizedSubType };
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("research_module"),
             LocalizationManager.Instance.Get("popup_message_module_research", new object[] { localizedSubType }),
+            leftLabels, leftValues,
             researchCost,
             onConfirm: () =>
             {
-                // Confirm button clicked - Send research request to server
                 var request = new ModuleResearchRequest
                 {
                     moduleType = moduleType
@@ -407,7 +406,6 @@ public class UITabResearch : UITabBase
             },
             onCancel: () =>
             {
-                // Cancel button clicked
                 ShowResultMessage("Research cancelled", 2f);
             }
         );

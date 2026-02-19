@@ -285,67 +285,11 @@ public class UIManager : MonoSingleton<UIManager>
         return currentActivePanel.bCameraMove;
     }
 
-    // Popup 관리 메서드
-    public void ShowConfirmPopup(string title, string message, CostStruct cost, System.Action onConfirm, System.Action onCancel = null)
-    {
-        // 이미 팝업이 열려있으면 닫기
-        if (currentPopup != null)
-        {
-            CloseCurrentPopup();
-        }
-
-        // Resources에서 프리팹 로드
-        GameObject popupPrefab = Resources.Load<GameObject>($"{POPUP_PREFAB_PATH}/UIPopupConfirm");
-        if (popupPrefab == null)
-        {
-            Debug.LogError($"Failed to load popup prefab at {POPUP_PREFAB_PATH}/UIPopupConfirm");
-            return;
-        }
-
-        // GeneralContainer가 없으면 에러
-        if (m_generalContainer == null)
-        {
-            Debug.LogError("GeneralContainer not found!");
-            return;
-        }
-
-        // 팝업 생성 및 GeneralContainer의 자식으로 추가
-        GameObject popupObj = Instantiate(popupPrefab, m_generalContainer);
-        UIPopupConfirm confirmPopup = popupObj.GetComponent<UIPopupConfirm>();
-
-        if (confirmPopup == null)
-        {
-            Debug.LogError("UIPopupConfirm component not found on prefab!");
-            Destroy(popupObj);
-            return;
-        }
-        popupObj.name = popupPrefab.name;
-        currentPopup = confirmPopup;
-
-        // 콜백 래핑 (팝업 닫을 때 자동 삭제)
-        System.Action wrappedConfirm = () =>
-        {
-            onConfirm?.Invoke();
-            CloseCurrentPopup();
-        };
-
-        System.Action wrappedCancel = () =>
-        {
-            onCancel?.Invoke();
-            CloseCurrentPopup();
-        };
-
-        // 팝업 표시
-        confirmPopup.ShowPopupConfirm(title, message, cost, wrappedConfirm, wrappedCancel);
-    }
-
-    // 커스텀 label/value 행으로 확인 팝업 표시
-    public void ShowConfirmPopup(string title, string message, string[] rowLabels, string[] rowValues, System.Action onConfirm, System.Action onCancel = null)
+    // Popup 관리 메서드 - rowLabels/rowValues: left 상황 정보(null 허용), cost: right 비용 정보(null 허용)
+    public void ShowConfirmPopup(string title, string message, string[] rowLabels, string[] rowValues, CostStruct cost, System.Action onConfirm, System.Action onCancel = null)
     {
         if (currentPopup != null)
-        {
             CloseCurrentPopup();
-        }
 
         GameObject popupPrefab = Resources.Load<GameObject>($"{POPUP_PREFAB_PATH}/UIPopupConfirm");
         if (popupPrefab == null)
@@ -384,7 +328,7 @@ public class UIManager : MonoSingleton<UIManager>
             CloseCurrentPopup();
         };
 
-        confirmPopup.ShowPopupConfirm(title, message, rowLabels, rowValues, wrappedConfirm, wrappedCancel);
+        confirmPopup.ShowPopupConfirm(title, message, rowLabels, rowValues, cost, wrappedConfirm, wrappedCancel);
     }
 
     private void CloseCurrentPopup()
