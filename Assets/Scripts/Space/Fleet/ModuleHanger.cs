@@ -382,31 +382,16 @@ public class ModuleHanger : ModuleBase
     public override void SetModuleStatRows(System.Collections.Generic.List<RowLabelValue> statRows)
     {
         EModuleSubType subType = GetModuleSubType();
-        int currentLevel = GetModuleLevel();
-        int nextLevel = currentLevel + 1;
-
+        int currentLevel = GetModuleLevel();        
         ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
-
         if (moduleDataCurrent == null) return;
 
         statRows[1].SetRow("level", $"{currentLevel}");
-        if (moduleDataNext != null)
-        {
-            statRows[2].SetRow("aircraft_attack_power", $"{moduleDataCurrent.m_aircraftAttackPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_aircraftAttackPower:F0}");
-            statRows[3].SetRow("aircraft_health_power", $"{moduleDataCurrent.m_aircraftHealth:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_aircraftHealth:F0}");
-            statRows[4].SetRow("aircraft_speed_power", $"{moduleDataCurrent.m_aircraftSpeed:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_aircraftSpeed:F0}");
-            statRows[5].SetRow("aircraft_count", $"{moduleDataCurrent.m_hangarCapability:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_hangarCapability:F0}");
-            statRows[6].SetRow("aircraft_launch_count", $"{moduleDataCurrent.m_launchCount:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_launchCount:F0}");
-        }
-        else
-        {
-            statRows[2].SetRow("aircraft_attack_power", $"{moduleDataCurrent.m_aircraftAttackPower:F0}");
-            statRows[3].SetRow("aircraft_health_power", $"{moduleDataCurrent.m_aircraftHealth:F0}");
-            statRows[4].SetRow("aircraft_speed_power", $"{moduleDataCurrent.m_aircraftSpeed:F0}");
-            statRows[5].SetRow("aircraft_count", $"{moduleDataCurrent.m_hangarCapability:F0}");
-            statRows[6].SetRow("aircraft_launch_count", $"{moduleDataCurrent.m_launchCount:F0}");
-        }
+        statRows[2].SetRow("aircraft_attack_power", $"{moduleDataCurrent.m_aircraftAttackPower:F0}");
+        statRows[3].SetRow("aircraft_health_power", $"{moduleDataCurrent.m_aircraftHealth:F0}");
+        statRows[4].SetRow("aircraft_speed_power", $"{moduleDataCurrent.m_aircraftSpeed:F0}");
+        statRows[5].SetRow("aircraft_count", $"{moduleDataCurrent.m_hangarCapability:F0}");
+        statRows[6].SetRow("aircraft_launch_count", $"{moduleDataCurrent.m_launchCount:F0}");
     }
 
 

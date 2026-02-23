@@ -67,8 +67,8 @@ public class UITabShip : UITabBase
             }
         }
 
-        m_unlockModuleButton.onClick.AddListener(UnlockModule);        
-        m_upgradeModuleButton.onClick.AddListener(UpgradeModule);
+        m_unlockModuleButton.onClick.AddListener(OnUnlockModuleClicked);        
+        m_upgradeModuleButton.onClick.AddListener(OnUpgradeModuleClicked);
         
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
         EventManager.Subscribe_ShipUpdateHP(UpdateShipStatsDisplay);
@@ -262,8 +262,14 @@ public class UITabShip : UITabBase
     }
 
 
-    private void UnlockModule()
+    private void OnUnlockModuleClicked()
     {
+        if (m_myCharacter == null)
+        {
+            ShowResultMessage("Character data not available", 3f);
+            return;
+        }
+
         if (m_selectedShip == null || m_selectedModule == null)
         {
             ShowResultMessage("No ship or module selected", 3f);
@@ -276,39 +282,30 @@ public class UITabShip : UITabBase
             return;
         }
 
-        // 해금 비용 확인
-        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.m_moduleUnlockPrice;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null)
-        {
-            ShowResultMessage("Character data not available", 3f);
-            return;
-        }
-
-        long playerMineral = character.GetMineral();
-        if (playerMineral < unlockPrice)
-        {
-            ShowResultMessage($"Insufficient mineral (need {unlockPrice}, have {playerMineral})", 3f);
-            return;
-        }
-
         // 확인 팝업 표시
+        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.m_moduleUnlockPrice;
         CostStruct cost = new CostStruct { mineral = unlockPrice };
         string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
-        string[] leftLabels = { "ship_module_type" };
-        string[] leftValues = { slotTypeName };
+        m_selectedModule.SetModuleStatRows(out List<string> leftLabels, out List<string> leftValues, showNext: false);
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_unlock"),
             LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
-            leftLabels, leftValues,
-            cost,
+            leftLabels, leftValues, cost,
             () => ExecuteUnlockModule()
         );
     }
 
     private void ExecuteUnlockModule()
     {
+        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.m_moduleUnlockPrice;
+        long playerMineral = m_myCharacter.GetMineral();
+        if (playerMineral < unlockPrice)
+        {
+            ShowResultMessage($"Insufficient mineral (need {CommonUtility.FormatBigNumber(unlockPrice)}, have {CommonUtility.FormatBigNumber(playerMineral)})", 3f);
+            return;
+        }
+
         // 모듈 해금 요청 생성
         var unlockRequest = new ModuleUnlockRequest
         {
@@ -370,18 +367,10 @@ public class UITabShip : UITabBase
             ReselectReplacedModule(targetShip, unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
     }
 
-    private void UpgradeModule()
+    private void OnUpgradeModuleClicked()
     {
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
-
-        // Validate resources and upgrade availability
-        if (!CanUpgrade(out string validationMessage))
-        {
-            Debug.LogWarning($"Upgrade blocked: {validationMessage}");
-            ShowResultMessage($"Upgrade failed: {validationMessage}", 3f);
-            return;
-        }
 
         // 업그레이드 비용 가져오기
         if (!DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out CostStruct cost))
@@ -390,24 +379,28 @@ public class UITabShip : UITabBase
             return;
         }
 
-
         string moduleSubTypeName = LocalizationManager.Instance.Get($"{m_selectedModule.GetModuleSubType().ToLocKey()}");
         int currentLevel = m_selectedModule.GetModuleLevel();
         int targetLevel = currentLevel + 1;
-        string[] leftLabels = { "ship_module_type", "level" };
-        string[] leftValues = { moduleSubTypeName, $"{currentLevel} <voffset=6>→</voffset> {targetLevel}" };
+        m_selectedModule.SetModuleStatRows(out List<string> leftLabels, out List<string> leftValues, showNext: true);
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_upgrade"),
             LocalizationManager.Instance.Get("popup_message_module_upgrade", new object[] { moduleSubTypeName, currentLevel, targetLevel }),
-            leftLabels, leftValues,
-            cost,
+            leftLabels, leftValues, cost,
             () => ExecuteUpgradeModule()
         );
     }
 
     private void ExecuteUpgradeModule()
     {
+        // Validate resources and upgrade availability
+        if (!CanUpgrade(out string validationMessage))
+        {
+            ShowResultMessage($"Upgrade failed: {validationMessage}", 3f);
+            return;
+        }
+
         string partsInfo = GetPartsUpgradeInfo(m_selectedModule);
         Debug.Log($"Requesting upgrade for {partsInfo} on ship {m_selectedShip.name}");
 
@@ -469,22 +462,22 @@ public class UITabShip : UITabBase
         }
         if (playerMineral < cost.mineral)
         {
-            validationMessage = $"Insufficient mineral (need {cost.mineral}, have {playerMineral})";
+            validationMessage = $"Insufficient mineral (need {CommonUtility.FormatBigNumber(cost.mineral)}, have {CommonUtility.FormatBigNumber(playerMineral)})";
             return false;
         }
         if (playerMineralRare < cost.mineralRare)
         {
-            validationMessage = $"Insufficient mineralRare (need {cost.mineralRare}, have {playerMineralRare})";
+            validationMessage = $"Insufficient mineralRare (need {CommonUtility.FormatBigNumber(cost.mineralRare)}, have {playerMineralRare})";
             return false;
         }
         if (playerMineralExotic < cost.mineralExotic)
         {
-            validationMessage = $"Insufficient mineralExotic (need {cost.mineralExotic}, have {playerMineralExotic})";
+            validationMessage = $"Insufficient mineralExotic (need {CommonUtility.FormatBigNumber(cost.mineralExotic)}, have {CommonUtility.FormatBigNumber(playerMineralExotic)})";
             return false;
         }
         if (playerMineralDark < cost.mineralDark)
         {
-            validationMessage = $"Insufficient mineralDark (need {cost.mineralDark}, have {playerMineralDark})";
+            validationMessage = $"Insufficient mineralDark (need {CommonUtility.FormatBigNumber(cost.mineralDark)}, have {CommonUtility.FormatBigNumber(playerMineralDark)})";
             return false;
         }
 

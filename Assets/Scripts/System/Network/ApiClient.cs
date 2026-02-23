@@ -616,6 +616,26 @@ public class ApiClient
         Debug.Log($"PvP Battle Result Response: {webRequest.downloadHandler.text}");
         return response;
     }
+
+    public async Task<ApiResponse<PvpRankingResponse>> PvpRankingAsync(PvpRankingRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<PvpRankingResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"PvP Ranking Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/ranking", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<PvpRankingResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"PvP Ranking Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
     #endregion
 
     #region Progress API Methods ----------------------------------------------------------------------------------

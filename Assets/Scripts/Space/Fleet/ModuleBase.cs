@@ -133,36 +133,27 @@ public class ModuleBase : MonoBehaviour
     }
 
     // 모듈 타입별 stat row 표시 위임 (하위 클래스에서 override)
-    public virtual void SetModuleStatRows(System.Collections.Generic.List<RowLabelValue> statRows)
+    public virtual void SetModuleStatRows(List<RowLabelValue> statRows)
     {
         EModuleSubType subType = GetModuleSubType();
         int currentLevel = GetModuleLevel();
-        int nextLevel = currentLevel + 1;
-
         ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
-
         if (moduleDataCurrent == null) return;
-
-
         statRows[1].SetRow("level", $"{currentLevel}");
-        if (moduleDataNext != null)
-        {
-            statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_attackPower:F0}");
-            statRows[3].SetRow("health_power", $"{moduleDataCurrent.m_health:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_health:F0}");
-            statRows[4].SetRow("speed_power", $"{moduleDataCurrent.m_movementSpeed:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_movementSpeed:F0}");
-            statRows[5].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_repairPower:F0}");
-            statRows[6].SetRow("empty_text", "");
+        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
+        statRows[3].SetRow("health_power", $"{moduleDataCurrent.m_health:F0}");
+        statRows[4].SetRow("speed_power", $"{moduleDataCurrent.m_movementSpeed:F0}");
+        statRows[5].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0}");
+        statRows[6].SetRow("empty_text", "");
+    }
 
-        }
-        else
-        {
-            statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
-            statRows[3].SetRow("health_power", $"{moduleDataCurrent.m_health:F0}");
-            statRows[4].SetRow("speed_power", $"{moduleDataCurrent.m_movementSpeed:F0}");
-            statRows[5].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0}");
-            statRows[6].SetRow("empty_text", "");
-        }
+    public virtual void SetModuleStatRows(out List<string> labels, out List<string> values, bool showNext = false)
+    {
+        EModuleSubType subType = GetModuleSubType();
+        EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
+        int currentLevel = GetModuleLevel();
+        int toLevel = showNext ? currentLevel + 1 : currentLevel;
+        CommonUtility.GetModuleStatRows(moduleType, subType, currentLevel, toLevel, out labels, out values);
     }
 
     // 모듈의 능력치 프로파일 반환 (하위 클래스에서 override)

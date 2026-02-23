@@ -34,4 +34,9 @@ public class RowLabelValue : MonoBehaviour
         if( m_value2 != null)
             CommonUtility.SetUILocText(m_value2, value2);
     }
+
+    public void SetValueColor(Color color)
+    {
+        if (m_value1 != null) m_value1.color = color;
+    }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
@@ -263,6 +264,46 @@ public static class CommonUtility
         return defaultSubType;
     }
 
+    // 모듈 타입+서브타입+레벨 범위로 stat label/value 리스트 생성 (모듈 인스턴스 없이 사용 가능)
+    // fromLevel == toLevel 이면 단일 값, 다르면 "from→to" 형식
+    public static void GetModuleStatRows(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel,
+        out List<string> labels, out List<string> values)
+    {
+        labels = new List<string>();
+        values = new List<string>();
+        bool showRange = fromLevel != toLevel;
+        ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, fromLevel);
+        ModuleData nxt = showRange ? DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, toLevel) : null;
+        if (cur == null) return;
+        if (showRange && nxt == null) return;
+
+        string V(float c, float n) => showRange ? $"{c:F0}<voffset=6>→</voffset>{n:F0}" : $"{c:F0}";
+        string moduleSubTypeName = LocalizationManager.Instance.Get(subType.ToLocKey());
+        labels.Add("ship_module_type"); values.Add(moduleSubTypeName);
+        labels.Add("level"); values.Add(showRange ? $"{fromLevel}<voffset=6>→</voffset>{toLevel}" : $"{fromLevel}");
+
+        if (moduleType == EModuleType.body)
+        {
+            labels.Add("health_power"); values.Add(V(cur.m_health, nxt?.m_health ?? 0f));
+            labels.Add("repair_power"); values.Add(V(cur.m_repairPower, nxt?.m_repairPower ?? 0f));
+        }
+        else if (moduleType == EModuleType.engine)
+        {
+            labels.Add("speed_power"); values.Add(V(cur.m_movementSpeed, nxt?.m_movementSpeed ?? 0f));
+        }
+        else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
+        {
+            labels.Add("attack_power"); values.Add(V(cur.m_attackPower, nxt?.m_attackPower ?? 0f));
+        }
+        else if (moduleType == EModuleType.hanger)
+        {
+            labels.Add("aircraft_attack_power"); values.Add(V(cur.m_aircraftAttackPower, nxt?.m_aircraftAttackPower ?? 0f));
+            labels.Add("aircraft_health_power"); values.Add(V(cur.m_aircraftHealth, nxt?.m_aircraftHealth ?? 0f));
+            labels.Add("aircraft_speed_power"); values.Add(V(cur.m_aircraftSpeed, nxt?.m_aircraftSpeed ?? 0f));
+            labels.Add("aircraft_count"); values.Add(V(cur.m_hangarCapability, nxt?.m_hangarCapability ?? 0f));
+            labels.Add("aircraft_launch_count"); values.Add(V(cur.m_launchCount, nxt?.m_launchCount ?? 0f));
+        }
+    }
 
     #endregion Module Type end -----------------------------------------------------------------------------------
 
