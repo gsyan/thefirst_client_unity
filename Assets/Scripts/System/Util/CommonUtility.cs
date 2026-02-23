@@ -278,8 +278,7 @@ public static class CommonUtility
         if (showRange && nxt == null) return;
 
         string V(float c, float n) => showRange ? $"{c:F0}<voffset=6>→</voffset>{n:F0}" : $"{c:F0}";
-        string moduleSubTypeName = LocalizationManager.Instance.Get(subType.ToLocKey());
-        labels.Add("ship_module_type"); values.Add(moduleSubTypeName);
+        labels.Add("ship_module_type"); values.Add(subType.ToLocKey());
         labels.Add("level"); values.Add(showRange ? $"{fromLevel}<voffset=6>→</voffset>{toLevel}" : $"{fromLevel}");
 
         if (moduleType == EModuleType.body)
