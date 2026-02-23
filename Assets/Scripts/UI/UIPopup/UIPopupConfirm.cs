@@ -29,6 +29,7 @@ public class UIPopupConfirm : UIPopupBase
     private List<RowLabelValue> m_pooledRowsRight = new List<RowLabelValue>();
 
     [SerializeField] private float m_detailHalfWidth = 440f;
+    [SerializeField] private Color m_insufficientColor = Color.red;
 
     protected override void Awake()
     {
@@ -39,7 +40,7 @@ public class UIPopupConfirm : UIPopupBase
 
     // rowLabels/rowValues: left 상황 정보 (null이면 left 컨테이너 숨김)
     // cost: right 비용 정보 (null 또는 전부 0이면 right 컨테이너 숨김)
-    public void ShowPopupConfirm(string title, string message, string[] rowLabels, string[] rowValues, CostStruct cost, Action onConfirm, Action onCancel = null)
+    public void ShowPopupConfirm(string title, string message, List<string> rowLabels, List<string> rowValues, CostStruct cost, Action onConfirm, Action onCancel = null)
     {
         if (titleText != null) titleText.text = title;
         if (messageText != null) messageText.text = message;
@@ -47,13 +48,13 @@ public class UIPopupConfirm : UIPopupBase
         ClearRows();
 
         // Left: 상황 정보
-        bool hasLeft = rowLabels != null && rowValues != null && rowLabels.Length > 0;
+        bool hasLeft = rowLabels != null && rowValues != null && rowLabels.Count > 0;
         if (m_rowContainerLeft != null) m_rowContainerLeft.gameObject.SetActive(hasLeft);
         if (hasLeft == true)
         {
-            int count = Mathf.Min(rowLabels.Length, rowValues.Length);
+            int count = Mathf.Min(rowLabels.Count, rowValues.Count);
             for (int i = 0; i < count; i++)
-                AddRow(rowLabels[i], rowValues[i], m_rowContainerLeft, m_activeRowsLeft, m_pooledRowsLeft);
+                AddRowLeft(rowLabels[i], rowValues[i]);
         }
 
         // Right: 비용 정보
@@ -61,11 +62,13 @@ public class UIPopupConfirm : UIPopupBase
         if (m_rowContainerRight != null) m_rowContainerRight.gameObject.SetActive(hasCost);
         if (hasCost == true)
         {
-            if (cost.techLevel > 0) AddRow("tech_level", cost.techLevel.ToString("N0"), m_rowContainerRight, m_activeRowsRight, m_pooledRowsRight);
-            if (cost.mineral > 0) AddRow("mineral_amount", CommonUtility.FormatBigNumber(cost.mineral), m_rowContainerRight, m_activeRowsRight, m_pooledRowsRight);
-            if (cost.mineralRare > 0) AddRow("mineral_rare_amount", CommonUtility.FormatBigNumber(cost.mineralRare), m_rowContainerRight, m_activeRowsRight, m_pooledRowsRight);
-            if (cost.mineralExotic > 0) AddRow("mineral_exotic_amount", CommonUtility.FormatBigNumber(cost.mineralExotic), m_rowContainerRight, m_activeRowsRight, m_pooledRowsRight);
-            if (cost.mineralDark > 0) AddRow("mineral_dark_amount", CommonUtility.FormatBigNumber(cost.mineralDark), m_rowContainerRight, m_activeRowsRight, m_pooledRowsRight);
+            var ch = DataManager.Instance.m_currentCharacter;
+            var info = ch?.m_characterInfo;
+            if (cost.techLevel > 0) AddRowRight("tech_level", cost.techLevel, info != null && info.techLevel < cost.techLevel);
+            if (cost.mineral > 0) AddRowRight("mineral_amount", cost.mineral, info != null && info.mineral < cost.mineral);
+            if (cost.mineralRare > 0) AddRowRight("mineral_rare_amount", cost.mineralRare, info != null && info.mineralRare < cost.mineralRare);
+            if (cost.mineralExotic > 0) AddRowRight("mineral_exotic_amount", cost.mineralExotic, info != null && info.mineralExotic < cost.mineralExotic);
+            if (cost.mineralDark > 0) AddRowRight("mineral_dark_amount", cost.mineralDark, info != null && info.mineralDark < cost.mineralDark);
         }
 
         UpdateDetailContainerLayout(hasLeft, hasCost);
@@ -86,16 +89,34 @@ public class UIPopupConfirm : UIPopupBase
         if (either == false) return;
 
         bool both = hasLeft && hasCost;
+
+        // 양쪽 모두 있으면 650, 한쪽만 있으면 300
+        Vector2 sd = m_detailcontainer.sizeDelta;
+        sd.x = both ? 650f : 300f;
+        m_detailcontainer.sizeDelta = sd;
+
         if (m_rowContainerCenter != null)
             m_rowContainerCenter.gameObject.SetActive(both);
+
+
     }
 
-    private void AddRow(string labelKey, string value, Transform container, List<RowLabelValue> activeList, List<RowLabelValue> pool)
+    private void AddRowLeft(string labelKey, string value)
     {
-        RowLabelValue row = GetOrCreateRow(container, pool);
+        RowLabelValue row = GetOrCreateRow(m_rowContainerLeft, m_pooledRowsLeft);
         row.SetRow(labelKey, value);
+        row.SetValueColor(Color.white);
         row.gameObject.SetActive(true);
-        activeList.Add(row);
+        m_activeRowsLeft.Add(row);
+    }
+
+    private void AddRowRight(string labelKey, long value, bool insufficient = false)
+    {
+        RowLabelValue row = GetOrCreateRow(m_rowContainerRight, m_pooledRowsRight);
+        row.SetRow(labelKey, CommonUtility.FormatBigNumber(value));
+        row.SetValueColor(insufficient ? m_insufficientColor : Color.white);
+        row.gameObject.SetActive(true);
+        m_activeRowsRight.Add(row);
     }
 
     private RowLabelValue GetOrCreateRow(Transform container, List<RowLabelValue> pool)

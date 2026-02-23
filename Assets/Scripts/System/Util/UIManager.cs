@@ -286,7 +286,7 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // Popup 관리 메서드 - rowLabels/rowValues: left 상황 정보(null 허용), cost: right 비용 정보(null 허용)
-    public void ShowConfirmPopup(string title, string message, string[] rowLabels, string[] rowValues, CostStruct cost, System.Action onConfirm, System.Action onCancel = null)
+    public void ShowConfirmPopup(string title, string message, List<string> rowLabels, List<string> rowValues, CostStruct cost, System.Action onConfirm, System.Action onCancel = null)
     {
         if (currentPopup != null)
             CloseCurrentPopup();

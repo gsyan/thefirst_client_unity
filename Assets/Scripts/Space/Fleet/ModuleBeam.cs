@@ -241,22 +241,11 @@ public class ModuleBeam : ModuleBase
     {
         EModuleSubType subType = GetModuleSubType();
         int currentLevel = GetModuleLevel();
-        int nextLevel = currentLevel + 1;
-
         ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
-
         if (moduleDataCurrent == null) return;
 
         statRows[1].SetRow("level", $"{currentLevel}");
-        if (moduleDataNext != null)
-        {
-            statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_attackPower:F0}");
-        }
-        else
-        {
-            statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
-        }
+        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
         statRows[3].SetRow("empty_text", "");
         statRows[4].SetRow("empty_text", "");
         statRows[5].SetRow("empty_text", "");

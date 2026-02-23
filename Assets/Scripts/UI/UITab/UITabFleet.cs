@@ -150,8 +150,7 @@ public class UITabFleet : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("fleet_add_ship"),
             LocalizationManager.Instance.Get("popup_message_add_ship"),
-            null, null,
-            cost,
+            null, null, cost,
             AddShip
         );
     }

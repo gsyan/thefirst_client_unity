@@ -296,68 +296,14 @@ public class UITabResearch : UITabBase
 
     private void UpdateModuleStatsDisplay(EModuleSubType targetSubType)
     {
-        int firstLevel = 1;
         int maxLevel = DataManager.Instance.m_dataTableModule.GetMaxLevel(targetSubType);
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(targetSubType, 1);
-        ModuleData moduleDataMax = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(targetSubType, maxLevel);
-        string localizationKeyModuleSubType = $"{targetSubType.ToLocKey()}";
-
-        if (moduleData != null)
+        CommonUtility.GetModuleStatRows(m_currentModuleType, targetSubType, 1, maxLevel, out var labels, out var values);
+        for (int i = 0; i < m_moduleStatRows.Count; i++)
         {
-            m_moduleStatRows[0].SetRow("ship_module_type", localizationKeyModuleSubType);
-            m_moduleStatRows[1].SetRow("level", $"{firstLevel} <voffset=6>→</voffset> {maxLevel}");
-            
-            if (m_currentModuleType == EModuleType.body)
-            {
-                m_moduleStatRows[2].SetRow("health_power", $"{moduleData.m_health:F0} <voffset=6>→</voffset> {moduleDataMax.m_health:F0}");
-                m_moduleStatRows[3].SetRow("repair_power", $"{moduleData.m_repairPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_repairPower:F0}");
-                m_moduleStatRows[4].SetRow("empty_text", "");
-                m_moduleStatRows[5].SetRow("empty_text", "");
-                m_moduleStatRows[6].SetRow("empty_text", "");
-            }
-            else if (m_currentModuleType == EModuleType.engine)
-            {
-                m_moduleStatRows[2].SetRow("speed_power", $"{moduleData.m_movementSpeed:F0} <voffset=6>→</voffset> {moduleDataMax.m_movementSpeed:F0}");
-                m_moduleStatRows[3].SetRow("empty_text", "");
-                m_moduleStatRows[4].SetRow("empty_text", "");
-                m_moduleStatRows[5].SetRow("empty_text", "");
-                m_moduleStatRows[6].SetRow("empty_text", "");
-            }
-            else if (m_currentModuleType == EModuleType.beam || m_currentModuleType == EModuleType.missile)
-            {
-                m_moduleStatRows[2].SetRow("attack_power", $"{moduleData.m_attackPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_attackPower:F0}");
-                m_moduleStatRows[3].SetRow("empty_text", "");
-                m_moduleStatRows[4].SetRow("empty_text", "");
-                m_moduleStatRows[5].SetRow("empty_text", "");
-                m_moduleStatRows[6].SetRow("empty_text", "");
-            }
-            else if (m_currentModuleType == EModuleType.hanger)
-            {
-                m_moduleStatRows[2].SetRow("aircraft_attack_power", $"{moduleData.m_aircraftAttackPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftAttackPower:F0}");                
-                m_moduleStatRows[3].SetRow("aircraft_health_power", $"{moduleData.m_aircraftHealth:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftHealth:F0}");
-                m_moduleStatRows[4].SetRow("aircraft_speed_power", $"{moduleData.m_aircraftSpeed:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftSpeed:F0}");
-                m_moduleStatRows[5].SetRow("aircraft_count", $"{moduleData.m_hangarCapability:F0} <voffset=6>→</voffset> {moduleDataMax.m_hangarCapability:F0}");
-                m_moduleStatRows[6].SetRow("aircraft_launch_count", $"{moduleData.m_launchCount:F0} <voffset=6>→</voffset> {moduleDataMax.m_launchCount:F0}");
-            }
-
-
-
-            // if (m_currentModuleType != EModuleType.hanger)
-            // {
-            //     m_moduleStatRows[2].SetRow("attack_power", $"{moduleData.m_attackPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_attackPower:F0}");
-            //     m_moduleStatRows[3].SetRow("health_power", $"{moduleData.m_health:F0} <voffset=6>→</voffset> {moduleDataMax.m_health:F0}");
-            //     m_moduleStatRows[4].SetRow("speed_power", $"{moduleData.m_movementSpeed:F0} <voffset=6>→</voffset> {moduleDataMax.m_movementSpeed:F0}");
-            //     m_moduleStatRows[5].SetRow("repair_power", $"{moduleData.m_repairPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_repairPower:F0}");
-            //     m_moduleStatRows[6].SetRow("empty_text", "");
-            // }
-            // else
-            // {
-            //     m_moduleStatRows[2].SetRow("aircraft_attack_power", $"{moduleData.m_aircraftAttackPower:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftAttackPower:F0}");                
-            //     m_moduleStatRows[3].SetRow("aircraft_health_power", $"{moduleData.m_aircraftHealth:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftHealth:F0}");
-            //     m_moduleStatRows[4].SetRow("aircraft_speed_power", $"{moduleData.m_aircraftSpeed:F0} <voffset=6>→</voffset> {moduleDataMax.m_aircraftSpeed:F0}");
-            //     m_moduleStatRows[5].SetRow("aircraft_count", $"{moduleData.m_hangarCapability:F0} <voffset=6>→</voffset> {moduleDataMax.m_hangarCapability:F0}");
-            //     m_moduleStatRows[6].SetRow("aircraft_launch_count", $"{moduleData.m_launchCount:F0} <voffset=6>→</voffset> {moduleDataMax.m_launchCount:F0}");
-            // }
+            if (i < labels.Count)
+                m_moduleStatRows[i].SetRow(labels[i], values[i]);
+            else
+                m_moduleStatRows[i].SetRow("empty_text", "");
         }
     }
 
@@ -378,16 +324,9 @@ public class UITabResearch : UITabBase
         } 
 
         CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);
-        bool result = DataManager.Instance.m_currentCharacter.CheckEnoughCostStruct(researchCost);
-        if (result == false)
-        {
-            ShowResultMessage($"Insufficient resources(cost mineral: {researchCost.mineral})", 3f);
-            return;
-        }
-
         string localizedSubType = LocalizationManager.Instance.Get(moduleSubType.ToLocKey());
-        string[] leftLabels = { "ship_module_type" };
-        string[] leftValues = { localizedSubType };
+        List<string> leftLabels = new List<string>{ "ship_module_type" };
+        List<string> leftValues = new List<string>{ localizedSubType };
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("research_module"),
@@ -396,6 +335,15 @@ public class UITabResearch : UITabBase
             researchCost,
             onConfirm: () =>
             {
+                //CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);
+                bool result = DataManager.Instance.m_currentCharacter.CheckEnoughCostStruct(researchCost);
+                if (result == false)
+                {
+                    ShowResultMessage($"Insufficient resources(cost mineral: {CommonUtility.FormatBigNumber(researchCost.mineral)})", 3f);
+                    return;
+                }
+
+
                 var request = new ModuleResearchRequest
                 {
                     moduleType = moduleType

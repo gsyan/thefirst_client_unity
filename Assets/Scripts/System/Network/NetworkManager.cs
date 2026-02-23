@@ -663,6 +663,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.PvpBattleResultAsync(request), onComplete));
     }
 
+    public void PvpRanking(PvpRankingRequest request, System.Action<ApiResponse<PvpRankingResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.PvpRankingAsync(request), onComplete));
+    }
+
     public ApiClient GetApiClient()
     {
         return m_apiClient;

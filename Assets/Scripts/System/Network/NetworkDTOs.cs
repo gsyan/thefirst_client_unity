@@ -457,4 +457,27 @@ public class PvpBattleResultResponse
     public int newScore;
     public int newRank;
 }
+
+[System.Serializable]
+public class PvpRankingEntry
+{
+    public int rank;
+    public long characterId;
+    public string characterName;
+    public int pvpScore;
+}
+
+[System.Serializable]
+public class PvpRankingRequest
+{
+    public int offset; // 0-based
+    public int limit;
+}
+
+[System.Serializable]
+public class PvpRankingResponse
+{
+    public int totalCount;
+    public List<PvpRankingEntry> items;
+}
 #endregion

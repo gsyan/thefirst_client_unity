@@ -685,27 +685,16 @@ public class ModuleBody : ModuleBase
     {
         EModuleSubType subType = GetModuleSubType();
         int currentLevel = GetModuleLevel();
-        int nextLevel = currentLevel + 1;
-
         ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
-
         if (moduleDataCurrent == null) return;
 
         statRows[1].SetRow("level", $"{currentLevel}");
-        if (moduleDataNext != null)
-        {
-            statRows[2].SetRow("health_power", $"{moduleDataCurrent.m_health:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_health:F0}");
-            statRows[3].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0} <voffset=6>→</voffset>", $"{moduleDataNext.m_repairPower:F0}");
-        }
-        else
-        {
-            statRows[2].SetRow("health_power", $"{moduleDataCurrent.m_health:F0}");
-            statRows[3].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0}");
-        }
+        statRows[2].SetRow("health_power", $"{moduleDataCurrent.m_health:F0}");
+        statRows[3].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0}");
         statRows[4].SetRow("empty_text", "");
         statRows[5].SetRow("empty_text", "");
         statRows[6].SetRow("empty_text", "");
     }
-    
+
+
 }
