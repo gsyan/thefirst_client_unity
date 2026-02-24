@@ -71,6 +71,10 @@ MonoBehaviour:
     m_Key: ship_module_engine_count
     m_Metadata:
       m_Items: []
+  - m_Id: 5949497784991744
+    m_Key: ship_module_select_text
+    m_Metadata:
+      m_Items: []
   - m_Id: 2924654624636938
     m_Key: ship_module_status
     m_Metadata:
@@ -373,6 +377,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4035192976965632
     m_Key: details_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323392
+    m_Key: ship_module_select_body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323393
+    m_Key: ship_module_select_engine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323394
+    m_Key: ship_module_select_beam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323395
+    m_Key: ship_module_select_missile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323396
+    m_Key: ship_module_select_hanger
     m_Metadata:
       m_Items: []
   m_Metadata:

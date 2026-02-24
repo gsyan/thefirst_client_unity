@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 46863080095744
-    m_Localized: Attack
+    m_Localized: Att
     m_Metadata:
       m_Items: []
   - m_Id: 47211509317632
@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48108159238144
-    m_Localized: Speed
+    m_Localized: Spd
     m_Metadata:
       m_Items: []
   - m_Id: 63232261619717
@@ -167,27 +167,27 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 797857338490885
-    m_Localized: Beam Standard
+    m_Localized: Beam Std
     m_Metadata:
       m_Items: []
   - m_Id: 797857338490886
-    m_Localized: Beam Advanced
+    m_Localized: Beam Adv
     m_Metadata:
       m_Items: []
   - m_Id: 797857338490887
-    m_Localized: Missile Standard
+    m_Localized: Missile Std
     m_Metadata:
       m_Items: []
   - m_Id: 797857338490888
-    m_Localized: Missile Advanced
+    m_Localized: Missile Adv
     m_Metadata:
       m_Items: []
   - m_Id: 797857338490889
-    m_Localized: Hanger Standard
+    m_Localized: Hanger Std
     m_Metadata:
       m_Items: []
   - m_Id: 797857338490890
-    m_Localized: Hanger Advanced
+    m_Localized: Hanger Adv
     m_Metadata:
       m_Items: []
   - m_Id: 797857342685184
@@ -343,7 +343,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3367613497212928
-    m_Localized: Attack(Air)
+    m_Localized: Att(Air)
     m_Metadata:
       m_Items: []
   - m_Id: 3367613539155968
@@ -351,7 +351,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3367613539155969
-    m_Localized: Speed(Air)
+    m_Localized: Spd(Air)
     m_Metadata:
       m_Items: []
   - m_Id: 3367613539155970
@@ -376,6 +376,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4035192976965632
     m_Localized: Details
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497784991744
+    m_Localized: Module Select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323392
+    m_Localized: b
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323393
+    m_Localized: e
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323394
+    m_Localized: B
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323395
+    m_Localized: m
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5949497835323396
+    m_Localized: h
     m_Metadata:
       m_Items: []
   references:

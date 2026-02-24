@@ -30,7 +30,13 @@ public class CameraController : MonoSingleton<CameraController>
     public float CurrentZoom => m_currentZoom;
     private float m_currentRotationY = 200f;
     private float m_currentRotationX = 30f;
-    
+
+    // 모듈 포커싱용 목표 회전각 (null이면 비활성)
+    private float? m_targetRotationY = null;
+    private float? m_targetRotationX = null;
+    private const float k_rotateLerpSpeed = 4f;
+    private const float k_rotateArriveThreshold = 0.5f;
+
     // UIPanelSpace 활성화 시 true, 비활성화 시 false
     private bool m_shipSelectionEnabled = false;
     public void SetShipSelectionEnabled(bool enabled) { m_shipSelectionEnabled = enabled; }
@@ -82,6 +88,26 @@ public class CameraController : MonoSingleton<CameraController>
             }
         }
         
+
+        // 목표 회전각으로 부드럽게 보간
+        if (m_targetRotationY.HasValue == true)
+        {
+            m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_targetRotationY.Value, k_rotateLerpSpeed * Time.deltaTime);
+            if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, m_targetRotationY.Value)) < k_rotateArriveThreshold)
+            {
+                m_currentRotationY = m_targetRotationY.Value;
+                m_targetRotationY = null;
+            }
+        }
+        if (m_targetRotationX.HasValue == true)
+        {
+            m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_targetRotationX.Value, k_rotateLerpSpeed * Time.deltaTime);
+            if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationX, m_targetRotationX.Value)) < k_rotateArriveThreshold)
+            {
+                m_currentRotationX = m_targetRotationX.Value;
+                m_targetRotationX = null;
+            }
+        }
 
         // 타겟 위치를 부드럽게 보간 (Lerp 속도 조절 가능)
         float lerpSpeed = 5f * Time.deltaTime; // 속도 조절 파라미터
@@ -153,6 +179,8 @@ public class CameraController : MonoSingleton<CameraController>
             m_startTouchPosition = inputPosition;
             m_startRotationY = m_currentRotationY;
             m_startRotationX = m_currentRotationX;
+            m_targetRotationY = null;
+            m_targetRotationX = null;
         }
         else if (inputUp)
         {
@@ -304,6 +332,34 @@ public class CameraController : MonoSingleton<CameraController>
     {
         m_currentRotationY += deltaRotationY;
         m_currentRotationX = Mathf.Clamp(m_currentRotationX + deltaRotationX, -80f, 80f);
+    }
+
+    // UI 모듈 버튼 선택 시 가려진 모듈이 보이도록 카메라 yaw/pitch를 자동 보정
+    public void FocusOnModuleIfHidden(Vector3 moduleWorldPos, Vector3 shipWorldPos)
+    {
+        Vector3 moduleDir = moduleWorldPos - shipWorldPos;
+        if (moduleDir.sqrMagnitude < 0.001f) return;
+        moduleDir.Normalize();
+
+        // 현재 카메라 방향 벡터 (함선 중심 → 카메라)
+        float radY = m_currentRotationY * Mathf.Deg2Rad;
+        float radX = m_currentRotationX * Mathf.Deg2Rad;
+        Vector3 camDir = new Vector3(
+            Mathf.Sin(radY) * Mathf.Cos(radX),
+            Mathf.Sin(radX),
+            Mathf.Cos(radY) * Mathf.Cos(radX)
+        );
+
+        // 모듈이 카메라와 같은 쪽이면 이미 보임 → 회전 불필요
+        float tempDot = Vector3.Dot(camDir, moduleDir);
+        if (Vector3.Dot(camDir, moduleDir) > 0f) return;
+
+        // 목표 yaw: 모듈 방향의 XZ 각도
+        m_targetRotationY = Mathf.Atan2(moduleDir.x, moduleDir.z) * Mathf.Rad2Deg;
+
+        // 목표 pitch: 카메라와 모듈이 반대 수직 반구에 있을 때만 보정
+        if (camDir.y * moduleDir.y < 0f)
+            m_targetRotationX = Mathf.Clamp(Mathf.Asin(moduleDir.y) * Mathf.Rad2Deg, -80f, 80f);
     }
 
     public void ZoomCamera(float deltaZoom)

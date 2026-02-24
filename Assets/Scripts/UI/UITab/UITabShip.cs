@@ -12,6 +12,18 @@ public class UITabShip : UITabBase
     [SerializeField] private RectTransform m_shipStatsContainer;
     [SerializeField] private GameObject m_rowLabelValuePrefab;                // RowLabelValue 프리팹
     
+    [SerializeField] private TMP_Text  m_textModuleSelect;
+    [SerializeField] private RectTransform m_moduleBeamSelectButtonContainer;
+    [SerializeField] private RectTransform m_moduleMissileSelectButtonContainer1;
+    [SerializeField] private RectTransform m_moduleMissileSelectButtonContainer2;
+    [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer1;
+    [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer2;
+    [SerializeField] private RectTransform m_moduleBodySelectButtonContainer;
+    [SerializeField] private RectTransform m_moduleEngineSelectButtonContainer;
+
+    [SerializeField] private GameObject m_moduleSelectButtonPrefab;
+    
+
     [SerializeField] private TMP_Text  m_textModuleStatus;
     [SerializeField] private RectTransform m_moduleStatsContainer;
 
@@ -37,6 +49,11 @@ public class UITabShip : UITabBase
     private readonly List<RowLabelValue> m_moduleStatRows = new();
     private readonly List<ScrollViewModuleItem> m_moduleItemPool = new List<ScrollViewModuleItem>();
     private List<ScrollViewModuleItem> m_moduleItemActive = new List<ScrollViewModuleItem>();
+
+    // 모듈 선택 버튼 풀 (단일 풀, 컨테이너 무관)
+    private readonly List<ModuleSelector> m_moduleSelectorPool = new();
+    private readonly List<ModuleSelector> m_moduleSelectorActive = new();
+    private Transform m_selectorPoolHolder;
 
     
 
@@ -67,7 +84,11 @@ public class UITabShip : UITabBase
             }
         }
 
-        m_unlockModuleButton.onClick.AddListener(OnUnlockModuleClicked);        
+        var poolHolderGO = new GameObject("_ModuleSelectorPool");
+        poolHolderGO.transform.SetParent(transform, false);
+        m_selectorPoolHolder = poolHolderGO.transform;
+
+        m_unlockModuleButton.onClick.AddListener(OnUnlockModuleClicked);
         m_upgradeModuleButton.onClick.AddListener(OnUpgradeModuleClicked);
         
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
@@ -93,6 +114,7 @@ public class UITabShip : UITabBase
         UpdateModuleStatsDisplay();
         //UpdateModuleRightUIFrame();
         PopulateModuleScrollView();
+        PopulateModuleSelectButtons();
     }
 
     public override void OnTabDeactivated()
@@ -139,6 +161,7 @@ public class UITabShip : UITabBase
             UpdateShipStatsDisplay();
             UpdateModuleStatsDisplay();
             PopulateModuleScrollView();
+            PopulateModuleSelectButtons();
         }
     }
     private void OnSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
@@ -156,6 +179,7 @@ public class UITabShip : UITabBase
             UpdateShipStatsDisplay();
             UpdateModuleStatsDisplay();
             PopulateModuleScrollView();
+            UpdateModuleSelectButtonSelection();
         }
     }
 
@@ -364,7 +388,10 @@ public class UITabShip : UITabBase
 
         // 현재 선택된 함선 모듈이 업데이트된 함선 모듈과 같다면 모듈 재선택
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
+        {
+            PopulateModuleSelectButtons();
             ReselectReplacedModule(targetShip, unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
+        }
     }
 
     private void OnUpgradeModuleClicked()
@@ -567,16 +594,20 @@ public class UITabShip : UITabBase
         if (m_selectedModule is ModulePlaceholder)
         {
             m_moduleResearchedListContainer.gameObject.SetActive(false);
-            SetButtonVisible(m_upgradeModuleButton, false);
-            SetButtonVisible(m_unlockModuleButton, true);
+            // SetButtonVisible(m_upgradeModuleButton, false);
+            // SetButtonVisible(m_unlockModuleButton, true);
+            m_upgradeModuleButton.gameObject.SetActive(false);
+            m_unlockModuleButton.gameObject.SetActive(true);
 
-            m_moduleStatRows[0].SetRow("ship_module_type", localizationKeyModuleType + "_placeholder");
+            m_moduleStatRows[0].SetRow(localizationKeyModuleType + "_placeholder", "");
             m_selectedModule.SetModuleStatRows(m_moduleStatRows);
         }
         else
         {
-            SetButtonVisible(m_unlockModuleButton, false);
-            SetButtonVisible(m_upgradeModuleButton, true);
+            // SetButtonVisible(m_unlockModuleButton, false);
+            // SetButtonVisible(m_upgradeModuleButton, true);
+            m_unlockModuleButton.gameObject.SetActive(false);
+            m_upgradeModuleButton.gameObject.SetActive(true);
             m_moduleResearchedListContainer.gameObject.SetActive(true);
 
             EModuleType moduleType = m_selectedModule.GetModuleType();
@@ -590,7 +621,7 @@ public class UITabShip : UITabBase
             else
                 CommonUtility.SetUILocText(m_upgradeModuleButtonText, "max_level");
 
-            m_moduleStatRows[0].SetRow("ship_module_type", localizationKeyModuleType);
+            m_moduleStatRows[0].SetRow(localizationKeyModuleType, "");
             m_selectedModule.SetModuleStatRows(m_moduleStatRows);
         }
     }
@@ -689,9 +720,103 @@ public class UITabShip : UITabBase
         foreach (var item in m_moduleItemActive)
             item.SetSelected_ScrollViewModuleItem(false);
 
-        // 새로 생성된 모듈 재선택
+        // 바디 교체 시 슬롯 구성이 달라지므로 버튼 목록 재생성 후 재선택
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
+        {
+            PopulateModuleSelectButtons();
             ReselectReplacedModule(ship, changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex);
+        }
+    }
+
+    // 선택된 함선의 모듈 목록을 컨테이너에 버튼으로 생성
+    private void PopulateModuleSelectButtons()
+    {
+        if (m_selectedShip == null) return;
+        if (m_selectedShip.m_moduleBodys.Count == 0) return;
+
+        // 전체 반환 — pool holder로 이동하여 컨테이너 sibling 순서 오염 방지
+        for (int i = 0; i < m_moduleSelectorActive.Count; i++)
+        {
+            m_moduleSelectorActive[i].gameObject.SetActive(false);
+            m_moduleSelectorActive[i].transform.SetParent(m_selectorPoolHolder, false);
+        }
+        m_moduleSelectorPool.AddRange(m_moduleSelectorActive);
+        m_moduleSelectorActive.Clear();
+
+        ModuleBody body = m_selectedShip.m_moduleBodys[0];
+
+        // 바디 (단일)
+        CreateModuleSelectButton(body, m_moduleBodySelectButtonContainer);
+
+        // 슬롯 순회 — placeholder 포함 모든 모듈 생성
+        for (int i = 0; i < body.m_moduleSlots.Count; i++)
+        {
+            ModuleSlot slot = body.m_moduleSlots[i];
+            if (slot == null || slot.transform.childCount == 0) continue;
+
+            ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
+            if (module == null) continue;
+
+            RectTransform container = GetContainerForSlot(slot.m_moduleSlotInfo.moduleType, slot.m_moduleSlotInfo.slotIndex);
+            if (container == null) continue;
+
+            CreateModuleSelectButton(module, container);
+        }
+
+        UpdateModuleSelectButtonSelection();
+    }
+
+    private RectTransform GetContainerForSlot(EModuleType moduleType, int slotIndex)
+    {
+        switch (moduleType)
+        {
+            case EModuleType.beam:
+                return m_moduleBeamSelectButtonContainer;
+            case EModuleType.engine:
+                return m_moduleEngineSelectButtonContainer;
+            case EModuleType.missile:
+                return slotIndex < 2 ? m_moduleMissileSelectButtonContainer1 : m_moduleMissileSelectButtonContainer2;
+            case EModuleType.hanger:
+                return slotIndex < 2 ? m_moduleHangerSelectButtonContainer1 : m_moduleHangerSelectButtonContainer2;
+            default: return null;
+        }
+    }
+
+    private void CreateModuleSelectButton(ModuleBase module, RectTransform container)
+    {
+        ModuleSelector selector;
+        if (m_moduleSelectorPool.Count > 0)
+        {
+            selector = m_moduleSelectorPool[^1];
+            m_moduleSelectorPool.RemoveAt(m_moduleSelectorPool.Count - 1);
+            selector.gameObject.SetActive(true);
+        }
+        else
+        {
+            var go = Instantiate(m_moduleSelectButtonPrefab, container);
+            selector = go.GetComponent<ModuleSelector>();
+        }
+
+        selector.transform.SetParent(container, false);
+        // 풀 재사용 시 이전 컨테이너 크기가 남으므로 프리팹 기본값으로 리셋
+        selector.GetComponent<RectTransform>().sizeDelta = m_moduleSelectButtonPrefab.GetComponent<RectTransform>().sizeDelta;
+        ModuleBase captured = module;
+        selector.Initialize(module, () => OnModuleSelectorClicked(captured));
+        m_moduleSelectorActive.Add(selector);
+    }
+
+    // 현재 선택된 모듈과 매칭되는 버튼만 테두리 활성화
+    private void UpdateModuleSelectButtonSelection()
+    {
+        for (int i = 0; i < m_moduleSelectorActive.Count; i++)
+            m_moduleSelectorActive[i].SetSelected(m_moduleSelectorActive[i].Module == m_selectedModule);
+    }
+
+    private void OnModuleSelectorClicked(ModuleBase module)
+    {
+        if (m_selectedShip == null || module == null) return;
+        CameraController.Instance.FocusOnModuleIfHidden(module.transform.position, m_selectedShip.transform.position);
+        EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, module);
     }
 
     // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택하여 selectedModuleVisual 적용

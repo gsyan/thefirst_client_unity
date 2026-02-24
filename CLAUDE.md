@@ -27,6 +27,7 @@
 - Update 남용 금지, 이벤트 또는 코루틴 우선 (public static class EventManager 참고할 것)
 - 오브젝트 생성, 소멸을 최소화 하기 위해 pool을 사용 ( public class PoolManager 참고할 것)
 - Raycast, Physics 사용 시 반드시 성능 비용 및 가능한 대안 설명 포함
+- switch 표현식(switch expression) 지양
 
 ## 주의 사항
 - 모든 파일(generated 파일 제외)엔 최상단에 1~3줄 요약이 있어야 해. 없다면 추가
