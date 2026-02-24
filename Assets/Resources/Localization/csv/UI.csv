@@ -13,6 +13,7 @@ fleet_add_ship,,Add Ship,함선 추가
 ship_status,,Ship Status,함선 정보
 ship_module_weapon_count,,Weapons,무장 수
 ship_module_engine_count,,Engines,엔진 수
+ship_module_select_text,,Module Select,모듈 선택
 ship_module_status,,Module Status,모듈 정보
 ship_module_type,,Type,타입
 ship_module_unlock,,Unlock Module,모듈 잠금 해제
@@ -40,15 +41,15 @@ camera_focus_enemy_fleet,,Enemy Fleet,적 함대
 camera_focus_center,,Center,중앙
 camera_focus_my_fleet,,My Fleet,내 함대
 level,,Level,레벨
-attack_power,,Attack,공격력
+attack_power,,Att,공격
 health_power,,HP,체력
-speed_power,,Speed,이동력
-repair_power,,Repair,정비력
-aircraft_attack_power,,Attack(Air),공격력(함)
+speed_power,,Spd,이동
+repair_power,,Repair,정비
+aircraft_attack_power,,Att(Air),공격(함)
 aircraft_health_power,,HP(Air),체력(함)
-aircraft_speed_power,,Speed(Air),이동력(함)
-aircraft_count,,Aircrafts,함재기 수
-aircraft_launch_count,,Launch,발진 수
+aircraft_speed_power,,Spd(Air),이동(함)
+aircraft_count,,Aircrafts,함재기수
+aircraft_launch_count,,Launch,발진수
 formation_type_linear_horizontal,,Linear Horizontal,일자횡진
 formation_type_circle,,Circle,원형진
 formation_type_cross,,Cross,십자진
@@ -68,12 +69,12 @@ body_repair,,Repair,공작선
 engine_standard,,Standard,표준
 engine_booster,,Booster,부스터
 engine_warp,,Warp,워프
-beam_standard,,Beam Standard,표준 빔
-beam_advanced,,Beam Advanced,향상된 빔
-missile_standard,,Missile Standard,표준 미사일
-missile_advanced,,Missile Advanced,향상된 미사일
-hanger_standard,,Hanger Standard,표준 격납고
-hanger_advanced,,Hanger Advanced,향상된 격납고
+beam_standard,,Beam Std,표준 빔
+beam_advanced,,Beam Adv,향상된 빔
+missile_standard,,Missile Std,표준 미사일
+missile_advanced,,Missile Adv,향상된 미사일
+hanger_standard,,Hanger Std,표준 격납고
+hanger_advanced,,Hanger Adv,향상된 격납고
 cancel,,Cancel,취소
 confirm,,Confirm,확인
 tech_level,,Tech Lv,기술레벨
@@ -89,3 +90,8 @@ popup_message_module_research,,Research {0} module?,{0} 모듈을 연구할까�
 max_level,,Max Level,최고 레벨
 cost_text,,Cost,비용
 details_text,,Details,세부정보
+ship_module_select_body,,b,체
+ship_module_select_engine,,e,엔
+ship_module_select_beam,,B,빔
+ship_module_select_missile,,m,미
+ship_module_select_hanger,,h,격
