@@ -9,7 +9,7 @@ tab_settings,,Settings,설정
 fleet_status,,Fleet Status,함대 정보
 fleet_ship_count,,Ships,함선 수
 fleet_formation_list,,Formation List,함대 진영 목록
-fleet_add_ship,,Add Ship,함선 추가
+fleet_add_ship,,Add\nShip,함선\n추가
 ship_status,,Ship Status,함선 정보
 ship_module_weapon_count,,Weapons,무장 수
 ship_module_engine_count,,Engines,엔진 수
@@ -90,8 +90,8 @@ popup_message_module_research,,Research {0} module?,{0} 모듈을 연구할까�
 max_level,,Max Level,최고 레벨
 cost_text,,Cost,비용
 details_text,,Details,세부정보
-ship_module_select_body,,b,체
+ship_module_select_body,,B,체
 ship_module_select_engine,,e,엔
-ship_module_select_beam,,B,빔
+ship_module_select_beam,,b,빔
 ship_module_select_missile,,m,미
 ship_module_select_hanger,,h,격

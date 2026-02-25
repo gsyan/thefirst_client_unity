@@ -427,6 +427,23 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
+        // mineral/rare/exotic/dark 를 한 번에 추가 (0이면 해당 타입 스킵)
+        // usage: addminerals [mineral] [mineralRare] [mineralExotic] [mineralDark]
+        RegisterCommand("addminerals", "Add all minerals at once (usage: addminerals [mineral] [rare] [exotic] [dark])", (args) =>
+        {
+            if (args.Length < 4) return;
+            if (NetworkManager.Instance == null) return;
+            NetworkManager.Instance.ExecuteDevCommand("addminerals", args, (response) =>
+            {
+                if (response.errorCode == 0)
+                {
+                    string[] parts = response.data.Split('|');
+                    for (int i = 1; i < parts.Length; i++)
+                        UpdateResourceFromResponse(parts[i]);
+                }
+            });
+        });
+
         RegisterCommand("changeformation", "Change fleet formation (usage: changeformation [formation name] or [index])", (args) =>
         {
             EFormationType[] formations = (EFormationType[])System.Enum.GetValues(typeof(EFormationType));
@@ -527,15 +544,15 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 if (long.TryParse(value, out long mineral))
                     DataManager.Instance.m_currentCharacter.UpdateMineral(mineral);
                 break;
-            case "mineralRare":
+            case "mineralrare":
                 if (long.TryParse(value, out long mineralRare))
                     DataManager.Instance.m_currentCharacter.UpdateMineralRare(mineralRare);
                 break;
-            case "mineralExotic":
+            case "mineralexotic":
                 if (long.TryParse(value, out long mineralExotic))
                     DataManager.Instance.m_currentCharacter.UpdateMineralExotic(mineralExotic);
                 break;
-            case "mineralDark":
+            case "mineraldark":
                 if (long.TryParse(value, out long mineralDark))
                     DataManager.Instance.m_currentCharacter.UpdateMineralDark(mineralDark);
                 break;

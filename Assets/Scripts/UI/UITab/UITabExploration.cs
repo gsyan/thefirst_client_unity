@@ -211,6 +211,7 @@ public class UITabExploration : UITabBase
     public override void OnTabActivated()
     {
         UpdateZoneInfo();
+        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
         StartMineralUpdateCoroutine();
     }
 
@@ -218,7 +219,7 @@ public class UITabExploration : UITabBase
     {
         StopMineralUpdateCoroutine();
 
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
     private void StartMineralUpdateCoroutine()

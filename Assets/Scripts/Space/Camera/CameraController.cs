@@ -31,11 +31,14 @@ public class CameraController : MonoSingleton<CameraController>
     private float m_currentRotationY = 200f;
     private float m_currentRotationX = 30f;
 
-    // 모듈 포커싱용 목표 회전각 (null이면 비활성)
+    // 모듈 포커싱용 목표 회전각/줌 (null이면 비활성)
     private float? m_targetRotationY = null;
     private float? m_targetRotationX = null;
+    private float? m_targetZoom = null;
     private const float k_rotateLerpSpeed = 4f;
     private const float k_rotateArriveThreshold = 0.5f;
+    private const float k_zoomLerpSpeed = 4f;
+    private const float k_zoomArriveThreshold = 1f;
 
     // UIPanelSpace 활성화 시 true, 비활성화 시 false
     private bool m_shipSelectionEnabled = false;
@@ -108,6 +111,15 @@ public class CameraController : MonoSingleton<CameraController>
                 m_targetRotationX = null;
             }
         }
+        if (m_targetZoom.HasValue == true)
+        {
+            m_currentZoom = Mathf.Lerp(m_currentZoom, m_targetZoom.Value, k_zoomLerpSpeed * Time.deltaTime);
+            if (Mathf.Abs(m_currentZoom - m_targetZoom.Value) < k_zoomArriveThreshold)
+            {
+                m_currentZoom = m_targetZoom.Value;
+                m_targetZoom = null;
+            }
+        }
 
         // 타겟 위치를 부드럽게 보간 (Lerp 속도 조절 가능)
         float lerpSpeed = 5f * Time.deltaTime; // 속도 조절 파라미터
@@ -149,6 +161,9 @@ public class CameraController : MonoSingleton<CameraController>
     private Vector2 m_prevTouch0Position;
     private Vector2 m_prevTouch1Position;
 
+    // 탭 판정 — 누를 때와 뗄 때 같은 콜라이더를 픽하면 선택
+    private Collider m_tapHitCollider;
+
     private void Update()
     {
         HandleInput();
@@ -181,6 +196,7 @@ public class CameraController : MonoSingleton<CameraController>
             m_startRotationX = m_currentRotationX;
             m_targetRotationY = null;
             m_targetRotationX = null;
+            m_targetZoom = null;
         }
         else if (inputUp)
         {
@@ -213,12 +229,22 @@ public class CameraController : MonoSingleton<CameraController>
             inputPosition = Input.mousePosition;
         }
 
-        // 좌클릭: 팬 이동
+        // 좌클릭: 누를 때 픽 저장, 뗄 때 같은 콜라이더면 선택
         if (Input.GetMouseButtonDown(0) == true)
         {
-            //m_isPanning = true;
             m_startTouchPosition = Input.mousePosition;
-            HandleModuleSelection(m_startTouchPosition); // 카메라 모드에 따라 처리 필요
+            LayerMask pickMask = ~m_layerMaskShield;
+            m_tapHitCollider = GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, Input.mousePosition) ? downHit.collider : null;
+        }
+        else if (Input.GetMouseButtonUp(0) == true)
+        {
+            if (m_tapHitCollider != null)
+            {
+                LayerMask pickMask = ~m_layerMaskShield;
+                if (GetCameraRaycast(out RaycastHit upHit, pickMask, 3000f, Input.mousePosition) && upHit.collider == m_tapHitCollider)
+                    HandleModuleSelection(Input.mousePosition);
+                m_tapHitCollider = null;
+            }
         }
         
         // 마우스 휠 줌
@@ -288,11 +314,26 @@ public class CameraController : MonoSingleton<CameraController>
             {
                 inputDown = true;
                 inputPosition = touch.position;
-                HandleModuleSelection(touch.position); // 카메라 모드에 따라 처리 필요
+                // 누를 때 픽한 콜라이더 저장
+                LayerMask pickMask = ~m_layerMaskShield;
+                m_tapHitCollider = GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, touch.position) ? downHit.collider : null;
             }
-            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            else if (touch.phase == TouchPhase.Ended)
             {
                 inputUp = true;
+                // 뗄 때 같은 콜라이더면 선택
+                if (m_tapHitCollider != null)
+                {
+                    LayerMask pickMask = ~m_layerMaskShield;
+                    if (GetCameraRaycast(out RaycastHit upHit, pickMask, 3000f, touch.position) && upHit.collider == m_tapHitCollider)
+                        HandleModuleSelection(touch.position);
+                    m_tapHitCollider = null;
+                }
+            }
+            else if (touch.phase == TouchPhase.Canceled)
+            {
+                inputUp = true;
+                m_tapHitCollider = null;
             }
             else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
             {
@@ -319,7 +360,7 @@ public class CameraController : MonoSingleton<CameraController>
         // 내함대 보기
         SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
-        // 함선 선택 이벤트 (UITabShip에서 동일 함선 중복 체크)
+        // 함선 선택 이벤트 (UITabModule에서 동일 함선 중복 체크)
         EventManager.Trigger_SpaceShipSelected(ship);
 
         // 모듈도 감지되었으면 모듈 선택
@@ -334,32 +375,13 @@ public class CameraController : MonoSingleton<CameraController>
         m_currentRotationX = Mathf.Clamp(m_currentRotationX + deltaRotationX, -80f, 80f);
     }
 
-    // UI 모듈 버튼 선택 시 가려진 모듈이 보이도록 카메라 yaw/pitch를 자동 보정
-    public void FocusOnModuleIfHidden(Vector3 moduleWorldPos, Vector3 shipWorldPos)
+    // UI 모듈 버튼 선택 시 슬롯에 미리 설정된 카메라 회전/줌으로 이동
+    public void FocusOnModuleIfHidden(ModuleSlot moduleSlot)
     {
-        Vector3 moduleDir = moduleWorldPos - shipWorldPos;
-        if (moduleDir.sqrMagnitude < 0.001f) return;
-        moduleDir.Normalize();
-
-        // 현재 카메라 방향 벡터 (함선 중심 → 카메라)
-        float radY = m_currentRotationY * Mathf.Deg2Rad;
-        float radX = m_currentRotationX * Mathf.Deg2Rad;
-        Vector3 camDir = new Vector3(
-            Mathf.Sin(radY) * Mathf.Cos(radX),
-            Mathf.Sin(radX),
-            Mathf.Cos(radY) * Mathf.Cos(radX)
-        );
-
-        // 모듈이 카메라와 같은 쪽이면 이미 보임 → 회전 불필요
-        float tempDot = Vector3.Dot(camDir, moduleDir);
-        if (Vector3.Dot(camDir, moduleDir) > 0f) return;
-
-        // 목표 yaw: 모듈 방향의 XZ 각도
-        m_targetRotationY = Mathf.Atan2(moduleDir.x, moduleDir.z) * Mathf.Rad2Deg;
-
-        // 목표 pitch: 카메라와 모듈이 반대 수직 반구에 있을 때만 보정
-        if (camDir.y * moduleDir.y < 0f)
-            m_targetRotationX = Mathf.Clamp(Mathf.Asin(moduleDir.y) * Mathf.Rad2Deg, -80f, 80f);
+        if (moduleSlot == null) return;
+        m_targetRotationY = moduleSlot.m_cameraRotationY;
+        m_targetRotationX = moduleSlot.m_cameraRotationX;
+        m_targetZoom = Mathf.Clamp(moduleSlot.m_cameraZoom, m_minZoom, m_maxZoom);
     }
 
     public void ZoomCamera(float deltaZoom)
