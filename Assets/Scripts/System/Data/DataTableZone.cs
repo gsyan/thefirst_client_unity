@@ -1,3 +1,4 @@
+// Zone 데이터 테이블 — 탐사 존별 라운드·보상·자원 수확 설정 ScriptableObject
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -30,17 +31,6 @@ public class EnemyShipConfig
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
 }
 
-// Wave별 설정
-[System.Serializable]
-public class WaveConfig
-{
-    [Header("Wave Timing")]
-    public float delayBeforeWave = 5f;  // 이 Wave 시작 전 대기 시간(초)
-
-    [Header("Enemy Ships")]
-    public List<EnemyShipConfig> enemyShips = new List<EnemyShipConfig>();
-}
-
 // Zone 설정
 [System.Serializable]
 public class ZoneConfig
@@ -50,13 +40,17 @@ public class ZoneConfig
     public int shipCount = 1;      // 적 함선 개수
     public int moduleLevel = 1;    // 적 모듈 레벨
     public Material skyboxMaterial;  // 스카이박스 머티리얼
-    public List<WaveConfig> waves = new List<WaveConfig>();
     
-    public float clearMineral = 0f;
-    public float clearMineralRare = 0f;
-    public float clearMineralExotic = 0f;
-    public float clearMineralDark = 0f;
+    public int zoneClearCount = 10;
+    public float delayBeforeWave = 5f;
+    public List<EnemyShipConfig> enemyShipConfigs;
     
+    [Header("적 함선 킬 보상 (즉시 지급)")]
+    public float killRewardMineral = 0f;
+    public float killRewardMineralRare = 0f;
+    public float killRewardMineralExotic = 0f;
+    public float killRewardMineralDark = 0f;
+
     [Header("시간당 자원 수확량 (클리어 후)")]
     public float mineralPerHour = 3600f;
     public float mineralRarePerHour = 0f;
@@ -69,17 +63,7 @@ public class ZoneConfig
     public float MineralExoticPerSecond => mineralExoticPerHour / 3600f;
     public float MineralDarkPerSecond => mineralDarkPerHour / 3600f;
 
-    public int TotalWaveCount => waves.Count;
-    public int TotalEnemyShipCount
-    {
-        get
-        {
-            int count = 0;
-            foreach (var wave in waves)
-                count += wave.enemyShips.Count;
-            return count;
-        }
-    }
+
 }
 
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
@@ -136,10 +120,10 @@ public class DataTableZone : ScriptableObject
             serverData.Add(new
             {
                 zoneName = zone.zoneName,
-                clearMineral = zone.clearMineral,
-                clearMineralRare = zone.clearMineralRare,
-                clearMineralExotic = zone.clearMineralExotic,
-                clearMineralDark = zone.clearMineralDark,
+                killRewardMineral = zone.killRewardMineral,
+                killRewardMineralRare = zone.killRewardMineralRare,
+                killRewardMineralExotic = zone.killRewardMineralExotic,
+                killRewardMineralDark = zone.killRewardMineralDark,
                 mineralPerHour = zone.mineralPerHour,
                 mineralRarePerHour = zone.mineralRarePerHour,
                 mineralExoticPerHour = zone.mineralExoticPerHour,

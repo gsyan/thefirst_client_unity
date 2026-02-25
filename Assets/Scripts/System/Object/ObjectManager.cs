@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+// 게임 오브젝트(함대, 투사체, 이펙트) 생성·관리 및 Zone 전투(라운드 스폰·클리어) 제어
 //using Mono.Cecil;
 using NUnit.Framework.Constraints;
 using System;
@@ -221,7 +221,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // ZoneConfig 기반 적 스폰 시작
     public void StartSpawnEnemies(ZoneConfig zoneConfig, System.Action<bool> onComplete)
     {
-        if (zoneConfig == null || zoneConfig.waves.Count == 0)
+        if (zoneConfig == null || zoneConfig.enemyShipConfigs == null || zoneConfig.enemyShipConfigs.Count == 0)
         {
             onComplete?.Invoke(true);
             return;
@@ -282,11 +282,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             return;
         }
 
-        // Zone 전투 중이면 파괴된 적 카운트 증가
+        // Zone 전투 중이면 파괴된 적 카운트 증가 + 킬 보상 이벤트 발화 (클리어 체크는 코루틴의 WaitUntil이 담당)
         if (m_currentZoneConfig != null)
         {
             m_totalDestroyedEnemies += shipCount;
-            CheckZoneBattleComplete();
+            EventManager.Trigger_EnemyFleetKilled();
         }
     }
 
@@ -346,26 +346,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         }
     }
 
-    private void CheckZoneBattleComplete()
-    {
-        if (m_currentZoneConfig == null) return;
-
-        // 모든 wave 스폰 완료 + 모든 적 처치 시
-        if (m_currentWaveIndex >= m_currentZoneConfig.waves.Count &&
-            m_totalDestroyedEnemies >= m_totalSpawnedEnemies &&
-            m_enemyFleets.Count == 0)
-        {
-            // ForceEndBattle과 동일한 정리 (스폰중지+카운터초기화, 함재기귀환, 투사체제거), 적함은 없는 상태니 적 클리어 할 필요 없음
-            StopEnemySpawning();
-            OrderAllAircraftReturn();
-            CleanupAllProjectiles();
-
-            var callback = m_onZoneBattleComplete;
-            m_onZoneBattleComplete = null;
-            callback?.Invoke(true);
-        }
-    }
-
     private void SpawnFleet()
     {
         GameObject fleetObj = new GameObject("MyFleet");
@@ -381,40 +361,40 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     
 
-    // Wave 기반 적 스폰
+    // enemyShipConfigs를 반복 스폰 — zoneClearCount 라운드를 처치하면 클리어
     private IEnumerator SpawnWaves()
     {
-        while (m_currentWaveIndex < m_currentZoneConfig.waves.Count)
+        while (m_currentWaveIndex < m_currentZoneConfig.zoneClearCount)
         {
-            WaveConfig wave = m_currentZoneConfig.waves[m_currentWaveIndex];
+            // 라운드 시작 전 대기
+            if (m_currentZoneConfig.delayBeforeWave > 0)
+                yield return new WaitForSeconds(m_currentZoneConfig.delayBeforeWave);
 
-            // Wave 시작 전 대기
-            if (wave.delayBeforeWave > 0)
-                yield return new WaitForSeconds(wave.delayBeforeWave);
+            SpawnEnemyFleetsFromConfigs(m_currentZoneConfig.enemyShipConfigs);
+            EventManager.TriggerWaveStarted(m_currentWaveIndex + 1, m_currentZoneConfig.zoneClearCount);
 
-            // 해당 Wave의 적 함대 스폰
-            SpawnEnemyFleetFromWave(wave);
+            // 적 함대 전멸 대기
+            yield return new WaitUntil(() => m_enemyFleets.Count == 0);
 
             m_currentWaveIndex++;
 
-            EventManager.TriggerWaveStarted(m_currentWaveIndex, m_currentZoneConfig.waves.Count);
-
-            // 현재 Wave의 적이 모두 죽거나 플레이어 전멸 시 다음 단계로
-            yield return new WaitUntil(() => m_enemyFleets.Count == 0 || (m_myFleet != null && m_myFleet.IsFleetAlive() == false));
-            if (m_myFleet != null && m_myFleet.IsFleetAlive()== false) yield break;
+            if (m_currentWaveIndex >= m_currentZoneConfig.zoneClearCount)
+            {
+                var callback = m_onZoneBattleComplete;
+                m_onZoneBattleComplete = null;
+                callback?.Invoke(true);
+                yield break;
+            }
         }
-
-        // 모든 Wave 스폰 완료 후 전투 완료 체크
-        CheckZoneBattleComplete();
     }
 
-    // WaveConfig 기반으로 적 함대 생성
-    private void SpawnEnemyFleetFromWave(WaveConfig wave)
+    // enemyShipConfigs 목록으로 적 함대 1개 생성 (함선 여러 척)
+    private void SpawnEnemyFleetsFromConfigs(List<EnemyShipConfig> enemyShipConfigs)
     {
-        if (m_myFleet == null || wave.enemyShips.Count == 0) return;
+        if (m_myFleet == null || enemyShipConfigs == null || enemyShipConfigs.Count == 0) return;
 
         Vector3 spawnPosition = GetEnemySpawnPosition();
-        GameObject fleetObj = new GameObject($"EnemyFleet_Wave{m_currentWaveIndex}");
+        GameObject fleetObj = new GameObject($"EnemyFleet_{m_currentWaveIndex}");
         fleetObj.transform.position = spawnPosition;
 
         Vector3 directionToPlayer = m_myFleet.transform.position - spawnPosition;
@@ -425,23 +405,19 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
 
         List<ShipInfo> enemyShips = new List<ShipInfo>();
-        for (int i = 0; i < wave.enemyShips.Count; i++)
+        for (int i = 0; i < enemyShipConfigs.Count; i++)
         {
-            EnemyShipConfig shipConfig = wave.enemyShips[i];
-            ShipInfo enemyShipInfo = CreateShipInfoFromConfig(shipConfig, i);
-            enemyShips.Add(enemyShipInfo);
+            enemyShips.Add(CreateShipInfoFromConfig(enemyShipConfigs[i], i));
         }
 
         FleetInfo enemyFleetInfo = new FleetInfo
         {
-            fleetName = $"EnemyFleet_Wave{m_currentWaveIndex}",
+            fleetName = $"EnemyFleet_{m_currentWaveIndex}",
             formation = EFormationType.formation_type_linear_horizontal,
             ships = enemyShips
         };
 
         enemyFleet.InitializeSpaceFleet(enemyFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data);
-        m_totalSpawnedEnemies += wave.enemyShips.Count;
-
         m_enemyFleets.Add(enemyFleet);
     }
 

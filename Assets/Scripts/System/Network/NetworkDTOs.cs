@@ -378,7 +378,7 @@ public class ZoneClearResponse
 [System.Serializable]
 public class ZoneCollectRequest
 {
-    
+
 }
 
 [System.Serializable]
@@ -387,6 +387,26 @@ public class ZoneCollectResponse
     public string collectDateTime;  // 수확 시간 (ISO 8601 형식)
     public CostRemainInfo rewardInfo;  // 수확 보상
 }
+
+[System.Serializable]
+public class ZoneKillRequest
+{
+    public string zoneName;  // 킬이 발생한 존 이름 (예: "2-5")
+}
+
+[System.Serializable]
+public class ZoneKillResponse
+{
+    public CostRemainInfo rewardInfo;  // 킬 즉시 보상
+}
+#endregion
+
+#region Heartbeat Data Classes ################################################################################
+[System.Serializable]
+public class HeartbeatRequest { }
+
+[System.Serializable]
+public class HeartbeatResponse { }
 #endregion
 
 #region PvP Data Classes #################################################################################

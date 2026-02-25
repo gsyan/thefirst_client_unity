@@ -534,6 +534,40 @@ public class ApiClient
         Debug.Log($"Zone Collect Response: {webRequest.downloadHandler.text}");
         return response;
     }
+
+    public async Task<ApiResponse<ZoneKillResponse>> KillZoneEnemyAsync(ZoneKillRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneKillResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/kill", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<ZoneKillResponse>>(webRequest.downloadHandler.text);
+    }
+    #endregion
+
+    #region Heartbeat API Methods ---------------------------------------------------------------------------------
+    public async Task<ApiResponse<HeartbeatResponse>> HeartbeatAsync()
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<HeartbeatResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(new HeartbeatRequest());
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/heartbeat", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<HeartbeatResponse>>(webRequest.downloadHandler.text);
+    }
     #endregion
 
     #region PvP API Methods --------------------------------------------------------------------------------------

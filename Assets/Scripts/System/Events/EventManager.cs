@@ -219,6 +219,21 @@ public static class EventManager
         OnMyFleetDestroyed -= callback;
     }
 
+    // Zone 적 함대 격멸 (kill 보상용)
+    public static event Action OnEnemyFleetKilled;
+    public static void Trigger_EnemyFleetKilled()
+    {
+        OnEnemyFleetKilled?.Invoke();
+    }
+    public static void Subscribe_EnemyFleetKilled(Action callback)
+    {
+        OnEnemyFleetKilled += callback;
+    }
+    public static void Unsubscribe_EnemyFleetKilled(Action callback)
+    {
+        OnEnemyFleetKilled -= callback;
+    }
+
     // PvP 전투 결과 (isVictory, scoreChange, newScore, newRank)
     public static event Action<bool, int, int, int> OnPvpBattleResult;
     public static void TriggerPvpBattleResult(bool isVictory, int scoreChange, int newScore, int newRank)
