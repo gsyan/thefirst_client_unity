@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class UITabShip : UITabBase
+public class UITabModule : UITabBase
 {
     [SerializeField] private TMP_Text  m_textShipStatus;
     [SerializeField] private RectTransform m_shipStatsContainer;
@@ -126,7 +126,7 @@ public class UITabShip : UITabBase
         if (m_myFleet != null)
             m_myFleet.ClearAllSelectedModule();
 
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
     // 함선 선택 처리 (3D 클릭 + UI 버튼 양쪽에서 호출됨)
@@ -815,7 +815,7 @@ public class UITabShip : UITabBase
     private void OnModuleSelectorClicked(ModuleBase module)
     {
         if (m_selectedShip == null || module == null) return;
-        CameraController.Instance.FocusOnModuleIfHidden(module.transform.position, m_selectedShip.transform.position);
+        CameraController.Instance.FocusOnModuleIfHidden(module.m_moduleSlot);
         EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, module);
     }
 

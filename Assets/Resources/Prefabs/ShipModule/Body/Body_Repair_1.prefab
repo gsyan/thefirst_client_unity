@@ -1527,6 +1527,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 992329172262420132}
+  - component: {fileID: -1635961414259712564}
   - component: {fileID: 9200383022302291700}
   m_Layer: 0
   m_Name: Body_Repair_1
@@ -1554,6 +1555,43 @@ Transform:
   - {fileID: 1630122054160796712}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-1635961414259712564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3300205784538342367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf1d38865dc99447accf2e390355d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_classId: 0
+  m_moduleSlot: {fileID: 0}
+  m_health: 0
+  m_healthMax: 0
+  m_attackPower: 0
+  m_upgradeCost:
+    techLevel: 0
+    mineral: 0
+    mineralRare: 0
+    mineralExotic: 0
+    mineralDark: 0
+  m_moduleBodyInfo:
+    moduleType: 0
+    moduleSubType: 0
+    moduleLevel: 0
+    bodyIndex: 0
+    engines: []
+    beams: []
+    missiles: []
+    hangers: []
+  m_moduleSlots: []
+  m_engines: []
+  m_beams: []
+  m_missiles: []
+  m_hangers: []
 --- !u!114 &9200383022302291700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3005,6 +3043,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 2
     slotIndex: 0
+  m_cameraRotationY: 210
+  m_cameraRotationX: 25
+  m_cameraZoom: 200
 --- !u!1 &6497989975110097422
 GameObject:
   m_ObjectHideFlags: 0

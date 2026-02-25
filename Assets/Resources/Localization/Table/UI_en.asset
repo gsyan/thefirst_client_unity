@@ -243,7 +243,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636935
-    m_Localized: Add Ship
+    m_Localized: Add\nShip
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636936
@@ -383,7 +383,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5949497835323392
-    m_Localized: b
+    m_Localized: B
     m_Metadata:
       m_Items: []
   - m_Id: 5949497835323393
@@ -391,7 +391,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5949497835323394
-    m_Localized: B
+    m_Localized: b
     m_Metadata:
       m_Items: []
   - m_Id: 5949497835323395

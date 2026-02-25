@@ -1,3 +1,4 @@
+// 우주 공간 UI 패널 — 탭 시스템 초기화 및 모듈 선택 시 UITabModule 자동 전환
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class UIPanelSpace : UIPanelBase
     [HideInInspector] public SpaceFleet m_myFleet;
 
     // UITabShip 탭 인덱스 (자동 전환용)
-    private int m_shipTabIndex = -1;
+    private int m_moduleTabIndex = -1;
 
     public override void InitializeUIPanel()
     {
@@ -39,8 +40,8 @@ public class UIPanelSpace : UIPanelBase
                 tabData.onDeactivate = tabBase.OnTabDeactivated;
 
                 // UITabShip 탭 인덱스 저장
-                if (tabBase is UITabShip)
-                    m_shipTabIndex = i;
+                if (tabBase is UITabModule)
+                    m_moduleTabIndex = i;
             }
         }
 
@@ -51,14 +52,14 @@ public class UIPanelSpace : UIPanelBase
     public override void OnShowUIPanel()
     {
         CameraController.Instance.SetShipSelectionEnabled(true);
-        EventManager.Subscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
+        EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         m_tabSystem.ForceActivateTab();
     }
 
     public override void OnHideUIPanel()
     {
         CameraController.Instance.SetShipSelectionEnabled(false);
-        EventManager.Unsubscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
+        EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         m_tabSystem.ForceDeactivateTab();
 
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
@@ -66,16 +67,15 @@ public class UIPanelSpace : UIPanelBase
 
     private void OnDestroy()
     {
-        
+
     }
 
-    // 다른 탭에서 함선 클릭 시 UITabShip으로 자동 전환
-    private void OnShipSelectedAutoTabSwitch(SpaceShip ship)
+    // 모듈이 선택될 때만 UITabModule로 자동 전환 (함선 클릭만으로는 전환 안 함)
+    private void OnModuleSelectedAutoTabSwitch(SpaceShip ship, ModuleBase module)
     {
-        if (m_shipTabIndex < 0) return;
-        if (m_tabSystem.GetCurrentActiveTab() == m_shipTabIndex) return;
-        m_tabSystem.SwitchToTab(m_shipTabIndex);
-        
+        if (m_moduleTabIndex < 0) return;
+        if (m_tabSystem.GetCurrentActiveTab() == m_moduleTabIndex) return;
+        m_tabSystem.SwitchToTab(m_moduleTabIndex);
     }
 
 }

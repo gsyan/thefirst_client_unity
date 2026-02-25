@@ -11,11 +11,11 @@ public class UIPanelFirst : UIPanelBase
 
     public override void OnShowUIPanel()
     {
-        // CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        
     }
 
     public override void OnHideUIPanel()
     {
-        // CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        
     }
 }

@@ -1,3 +1,4 @@
+// 설정 탭 UI — 로그아웃, 언어 설정, 개발자 자원 추가 기능
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +9,14 @@ using TMPro;
 public class UITabSettings : UITabBase
 {
     [SerializeField] private Button m_logoutButton;
-    [SerializeField] private Button m_testMineralButton;
     [SerializeField] private TMP_Dropdown m_languageDropdown;
+
+    [Header("개발자 도구")]
+    [SerializeField] private Button   m_testMineralButton;
+    [SerializeField] private Toggle   m_toggleMineral;
+    [SerializeField] private Toggle   m_toggleMineralRare;
+    [SerializeField] private Toggle   m_toggleMineralExotic;
+    [SerializeField] private Toggle   m_toggleMineralDark;
 
     private SpaceFleet m_myFleet;
     private List<Locale> m_locales;
@@ -28,9 +35,18 @@ public class UITabSettings : UITabBase
             m_logoutButton.onClick.AddListener(OnLogoutButtonClicked);
 
         if (m_testMineralButton != null)
-            m_testMineralButton?.onClick.AddListener(() => DeveloperConsole.ExecuteCommandStatic("addmineral 1000000"));
+            m_testMineralButton.onClick.AddListener(OnTestMineralButtonClicked);
 
         InitializeLanguageDropdown();
+    }
+
+    private void OnTestMineralButtonClicked()
+    {
+        string mineral       = (m_toggleMineral       != null && m_toggleMineral.isOn       == true) ? "1000000" : "0";
+        string mineralRare   = (m_toggleMineralRare   != null && m_toggleMineralRare.isOn   == true) ? "1000000" : "0";
+        string mineralExotic = (m_toggleMineralExotic != null && m_toggleMineralExotic.isOn == true) ? "1000000" : "0";
+        string mineralDark   = (m_toggleMineralDark   != null && m_toggleMineralDark.isOn   == true) ? "1000000" : "0";
+        DeveloperConsole.ExecuteCommandStatic($"addminerals {mineral} {mineralRare} {mineralExotic} {mineralDark}");
     }
 
     private void InitializeLanguageDropdown()
@@ -67,7 +83,7 @@ public class UITabSettings : UITabBase
 
     public override void OnTabDeactivated()
     {
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
     private void OnLogoutButtonClicked()
@@ -87,4 +103,3 @@ public class UITabSettings : UITabBase
     }
 
 }
-

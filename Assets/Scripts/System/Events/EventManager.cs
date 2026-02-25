@@ -155,9 +155,8 @@ public static class EventManager
     # endregion Ship --------------------------------------------------------------------
     
 
-    
+    # region Module ----------------------------------------------------------------------
 
-    // SpaceShip Module Selection
     public static event Action<SpaceShip, ModuleBase> OnSpaceShipModuleSelected;
     public static void TriggerSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
     {
@@ -171,6 +170,9 @@ public static class EventManager
     {
         OnSpaceShipModuleSelected -= callback;
     }
+
+    # endregion Module --------------------------------------------------------------------
+
 
     // Camera Focus Change
     public static event Action<ECameraFocusTarget> OnCameraFocusTargetChanged;

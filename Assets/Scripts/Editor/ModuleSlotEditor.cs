@@ -1,3 +1,4 @@
+// ModuleSlot 커스텀 인스펙터 - 슬롯 정보 편집 및 카메라 목표값 리셋 버튼 제공
 using UnityEngine;
 using UnityEditor;
 
@@ -5,10 +6,24 @@ using UnityEditor;
 public class ModuleSlotEditor : Editor
 {
     SerializedProperty m_moduleSlotInfo;
+    SerializedProperty m_cameraRotationY;
+    SerializedProperty m_cameraRotationX;
+    SerializedProperty m_cameraZoom;
+
+    private const float DEFAULT_YAW_FRONT = 0f;
+    private const float DEFAULT_YAW_REAR = 180f;
+    private const float DEFAULT_YAW_VALUE = 30f;
+    private const float DEFAULT_PITCH_THRESHOLD = 0.2f;
+    private const float DEFAULT_PITCH_UP = 25f;
+    private const float DEFAULT_PITCH_DOWN = -25f;
+    private const float DEFAULT_ZOOM = 200f;
 
     private void OnEnable()
     {
         m_moduleSlotInfo = serializedObject.FindProperty("m_moduleSlotInfo");
+        m_cameraRotationY = serializedObject.FindProperty("m_cameraRotationY");
+        m_cameraRotationX = serializedObject.FindProperty("m_cameraRotationX");
+        m_cameraZoom = serializedObject.FindProperty("m_cameraZoom");
     }
 
     public override void OnInspectorGUI()
@@ -23,7 +38,54 @@ public class ModuleSlotEditor : Editor
         var slotIndexProp = m_moduleSlotInfo.FindPropertyRelative("slotIndex");
         EditorGUILayout.PropertyField(slotIndexProp);
 
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Camera Target", EditorStyles.boldLabel);
+
+        EditorGUILayout.PropertyField(m_cameraRotationY, new GUIContent("Rotation Y (Yaw)"));
+        EditorGUILayout.PropertyField(m_cameraRotationX, new GUIContent("Rotation X (Pitch)"));
+        EditorGUILayout.PropertyField(m_cameraZoom, new GUIContent("Zoom"));
+
+        if (GUILayout.Button("Reset to Default"))
+        {
+            ResetCameraValues((ModuleSlot)target);
+        }
+
         serializedObject.ApplyModifiedProperties();
+    }
+
+    private void ResetCameraValues(ModuleSlot slot)
+    {
+        // 부모 계층에서 ModuleBody 탐색
+        ModuleBody body = slot.GetComponentInParent<ModuleBody>();
+        if (body == null)
+        {
+            Debug.LogWarning("[ModuleSlotEditor] 부모에서 ModuleBody를 찾을 수 없음");
+            return;
+        }
+
+        Vector3 dir = slot.transform.position - body.transform.position;
+        if (dir.sqrMagnitude < 0.001f)
+        {
+            Debug.LogWarning("[ModuleSlotEditor] 슬롯과 바디 위치가 동일함");
+            return;
+        }
+
+        Undo.RecordObject(slot, "Reset Camera Values");
+
+        // Yaw: 전/후 기준값 + (전후 부호 * 좌우 부호 * 오프셋)으로 4분면 계산
+        bool isFront = dir.z >= 0f;
+        float yawBase = isFront ? DEFAULT_YAW_FRONT : DEFAULT_YAW_REAR;
+        float yawSign = (isFront ? 1f : -1f) * (dir.x <= 0f ? -1f : 1f);
+        slot.m_cameraRotationY = yawBase + yawSign * DEFAULT_YAW_VALUE;
+
+        // Pitch: 수직 위치 기반으로 두 단계만 구분
+        Vector3 dirNorm = dir.normalized;
+        slot.m_cameraRotationX = dirNorm.y < -DEFAULT_PITCH_THRESHOLD ? DEFAULT_PITCH_DOWN
+                               : DEFAULT_PITCH_UP;
+
+        slot.m_cameraZoom = DEFAULT_ZOOM;
+
+        EditorUtility.SetDirty(slot);
     }
 
     private EModuleSubType DrawFilteredSubTypePopup(EModuleType moduleType, EModuleSubType currentSubType)
