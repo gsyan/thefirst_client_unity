@@ -11,12 +11,10 @@ public class DataTableZoneEditor : Editor
     private Vector2 scrollPosition;
 
     private Dictionary<int, bool> zoneFoldouts = new Dictionary<int, bool>();
-    private Dictionary<int, Dictionary<int, bool>> waveFoldouts = new Dictionary<int, Dictionary<int, bool>>();
-    private Dictionary<int, Dictionary<int, Dictionary<int, bool>>> shipFoldouts = new Dictionary<int, Dictionary<int, Dictionary<int, bool>>>();
+    private Dictionary<int, Dictionary<int, bool>> shipFoldouts = new Dictionary<int, Dictionary<int, bool>>();
     private Dictionary<int, bool> shipCountGroupFoldouts = new Dictionary<int, bool>(); // x값(함선개수) 그룹 폴드아웃
 
     private readonly Color zoneColor = new Color(0.7f, 0.85f, 0.95f);
-    private readonly Color waveColor = new Color(0.95f, 0.85f, 0.7f);
     private readonly Color shipColor = new Color(0.85f, 0.95f, 0.85f);
     private readonly Color slotColor = new Color(0.9f, 0.9f, 0.95f);
 
@@ -77,8 +75,7 @@ public class DataTableZoneEditor : Editor
             config.zones.Add(new ZoneConfig
             {
                 zoneName = $"Zone {config.zones.Count + 1}",
-                zoneDescription = "New Zone",
-                waves = new List<WaveConfig>()
+                zoneDescription = "New Zone"
             });
             EditorUtility.SetDirty(config);
         }
@@ -94,7 +91,7 @@ public class DataTableZoneEditor : Editor
         if (GUILayout.Button("Generate Default Zones (1-1 ~ 9-10)"))
         {
             if (EditorUtility.DisplayDialog("Generate Default Zones",
-                "Zone 1-1 ~ 9-10을 기본 데이터로 생성합니다.\n(x-y: x=함선개수, y=스테이지)\n- Wave 수 = y (스테이지)\n- 레벨 = min(x, y)\n기존 데이터가 삭제됩니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
+                "Zone 1-1 ~ 9-10을 기본 데이터로 생성합니다.\n(x-y: x=함선개수, y=스테이지)\n- 클리어카운트 = y*2, 레벨 = min(x, y)\n기존 데이터가 삭제됩니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
             {
                 GenerateDefaultZones();
             }
@@ -109,7 +106,7 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    // x-y 형식: x=함선 개수(1~9), y=스테이지(1~10), moduleLevel=min(y, x)
+    // x-y 형식: x=함선 개수(1~9), y=스테이지(1~10), moduleLevel=min(y, x), zoneClearCount=y*2
     private void GenerateDefaultZones()
     {
         config.zones.Clear();
@@ -123,8 +120,7 @@ public class DataTableZoneEditor : Editor
             zoneDescription = "안전지역",
             shipCount = 0,
             moduleLevel = 0,
-            skyboxMaterial = safeZoneSkybox,
-            waves = new List<WaveConfig>()
+            skyboxMaterial = safeZoneSkybox
         };
         config.zones.Add(safeZone);
         totalZones++;
@@ -135,13 +131,11 @@ public class DataTableZoneEditor : Editor
         {
             for (int stage = 1; stage <= 10; stage++)
             {
-                // 레벨은 스테이지와 함선 개수 중 작은 값 (레벨 상한 = 함선 개수)
                 int moduleLevel = Mathf.Min(stage, shipCount);
 
-                // 스카이박스 머티리얼: 1~5는 GalacticGreen, 6~9는 GalaxyFire
                 string skyboxFolder = shipCount <= 5 ? "GalacticGreen" : "GalaxyFire";
                 Material skyboxMat = AssetDatabase.LoadAssetAtPath<Material>($"Assets/DeepSpaceSkyboxPack/{skyboxFolder}/Material/{skyboxFolder}Material.mat");
-                
+
                 var zone = new ZoneConfig
                 {
                     zoneName = $"{shipCount}-{stage}",
@@ -149,11 +143,13 @@ public class DataTableZoneEditor : Editor
                     shipCount = shipCount,
                     moduleLevel = moduleLevel,
                     skyboxMaterial = skyboxMat,
-                    waves = new List<WaveConfig>(),
-                    clearMineral = 1000f + (shipCount - 1) * 1000,
-                    clearMineralRare = 0,
-                    clearMineralExotic = 0,
-                    clearMineralDark = 0,
+                    zoneClearCount = stage * 2,
+                    delayBeforeWave = 5f,
+                    enemyShipConfigs = new List<EnemyShipConfig>(),
+                    killRewardMineral = 100f + (shipCount - 1) * 100,
+                    killRewardMineralRare = 0,
+                    killRewardMineralExotic = 0,
+                    killRewardMineralDark = 0,
                     mineralPerHour = tempMineralPerHour,
                     mineralRarePerHour = 0,
                     mineralExoticPerHour = 0,
@@ -161,29 +157,19 @@ public class DataTableZoneEditor : Editor
                 };
                 tempMineralPerHour += 100;
 
-                // stage 수만큼 wave 생성
-                for (int w = 0; w < stage; w++)
+                // shipCount개의 적 함선을 enemyShipConfigs에 추가
+                for (int s = 0; s < shipCount; s++)
                 {
-                    var wave = new WaveConfig
+                    var ship = new EnemyShipConfig
                     {
-                        delayBeforeWave = w == 0 ? 0f : 5f,
-                        enemyShips = new List<EnemyShipConfig>()
+                        bodySubType = EModuleSubType.body_battle,
+                        bodyLevel = moduleLevel
                     };
-
-                    // 각 wave에 shipCount개의 적 함선 생성
-                    for (int s = 0; s < shipCount; s++)
-                    {
-                        var ship = new EnemyShipConfig
-                        {
-                            bodySubType = EModuleSubType.body_battle,
-                            bodyLevel = moduleLevel
-                        };
-                        RefreshShipModuleSlots(ship);
-                        ApplyLevelBasedSlotRestrictions(ship, moduleLevel);
-                        wave.enemyShips.Add(ship);
-                    }
-                    zone.waves.Add(wave);
+                    RefreshShipModuleSlots(ship);
+                    ApplyLevelBasedSlotRestrictions(ship, moduleLevel);
+                    zone.enemyShipConfigs.Add(ship);
                 }
+
                 config.zones.Add(zone);
                 totalZones++;
             }
@@ -253,16 +239,14 @@ public class DataTableZoneEditor : Editor
 
         foreach (var zone in config.zones)
         {
-            foreach (var wave in zone.waves)
+            if (zone.enemyShipConfigs == null) continue;
+            foreach (var ship in zone.enemyShipConfigs)
             {
-                foreach (var ship in wave.enemyShips)
+                totalShips++;
+                if (ship.moduleSlots == null || ship.moduleSlots.Count == 0)
                 {
-                    totalShips++;
-                    if (ship.moduleSlots == null || ship.moduleSlots.Count == 0)
-                    {
-                        invalidShips++;
-                        RefreshShipModuleSlots(ship);
-                    }
+                    invalidShips++;
+                    RefreshShipModuleSlots(ship);
                 }
             }
         }
@@ -380,8 +364,9 @@ public class DataTableZoneEditor : Editor
 
         // Zone Header
         EditorGUILayout.BeginHorizontal();
+        int shipCount = zone.enemyShipConfigs?.Count ?? 0;
         zoneFoldouts[zoneIndex] = EditorGUILayout.Foldout(zoneFoldouts[zoneIndex],
-            $"Zone {zoneIndex}: {zone.zoneName} (Waves: {zone.TotalWaveCount}, Ships: {zone.TotalEnemyShipCount})", true, EditorStyles.foldoutHeader);
+            $"Zone {zoneIndex}: {zone.zoneName} (ClearCount: {zone.zoneClearCount}, Ships: {shipCount})", true, EditorStyles.foldoutHeader);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
@@ -405,13 +390,13 @@ public class DataTableZoneEditor : Editor
             zone.skyboxMaterial = (Material)EditorGUILayout.ObjectField("Skybox Material", zone.skyboxMaterial, typeof(Material), false);
             EditorGUILayout.EndVertical();
 
-            // 클리어 보상
+            // 킬 보상
             EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.LabelField("클리어 보상", EditorStyles.boldLabel);
-            zone.clearMineral = EditorGUILayout.FloatField("Mineral", zone.clearMineral);
-            zone.clearMineralRare = EditorGUILayout.FloatField("MineralRare", zone.clearMineralRare);
-            zone.clearMineralExotic = EditorGUILayout.FloatField("MineralExotic", zone.clearMineralExotic);
-            zone.clearMineralDark = EditorGUILayout.FloatField("MineralDark", zone.clearMineralDark);
+            EditorGUILayout.LabelField("킬 보상", EditorStyles.boldLabel);
+            zone.killRewardMineral = EditorGUILayout.FloatField("Mineral", zone.killRewardMineral);
+            zone.killRewardMineralRare = EditorGUILayout.FloatField("MineralRare", zone.killRewardMineralRare);
+            zone.killRewardMineralExotic = EditorGUILayout.FloatField("MineralExotic", zone.killRewardMineralExotic);
+            zone.killRewardMineralDark = EditorGUILayout.FloatField("MineralDark", zone.killRewardMineralDark);
             EditorGUILayout.EndVertical();
 
             // 시간당 자원 수확량
@@ -425,87 +410,35 @@ public class DataTableZoneEditor : Editor
 
             EditorGUILayout.Space(5);
 
-            // Wave List Header
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField($"Waves ({zone.waves.Count})", EditorStyles.boldLabel);
-            if (GUILayout.Button("+ Add Wave", GUILayout.Width(100)))
-            {
-                zone.waves.Add(new WaveConfig
-                {
-                    delayBeforeWave = 5f,
-                    enemyShips = new List<EnemyShipConfig>()
-                });
-                EditorUtility.SetDirty(config);
-            }
-            EditorGUILayout.EndHorizontal();
-
-            // Waves
-            for (int waveIndex = 0; waveIndex < zone.waves.Count; waveIndex++)
-            {
-                DrawWave(zoneIndex, waveIndex, zone.waves[waveIndex]);
-            }
-
-            EditorGUI.indentLevel--;
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawWave(int zoneIndex, int waveIndex, WaveConfig wave)
-    {
-        if (!waveFoldouts.ContainsKey(zoneIndex))
-            waveFoldouts[zoneIndex] = new Dictionary<int, bool>();
-        if (!waveFoldouts[zoneIndex].ContainsKey(waveIndex))
-            waveFoldouts[zoneIndex][waveIndex] = false;
-
-        var originalColor = GUI.backgroundColor;
-        GUI.backgroundColor = waveColor;
-        EditorGUILayout.BeginVertical("box");
-        GUI.backgroundColor = originalColor;
-
-        // Wave Header
-        EditorGUILayout.BeginHorizontal();
-        waveFoldouts[zoneIndex][waveIndex] = EditorGUILayout.Foldout(waveFoldouts[zoneIndex][waveIndex],
-            $"Wave {waveIndex + 1} (Delay: {wave.delayBeforeWave}s, Ships: {wave.enemyShips.Count})", true);
-
-        if (GUILayout.Button("X", GUILayout.Width(25)))
-        {
-            config.zones[zoneIndex].waves.RemoveAt(waveIndex);
-            EditorUtility.SetDirty(config);
-            EditorGUILayout.EndHorizontal();
+            // 전투 설정
+            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
+            zone.zoneClearCount = EditorGUILayout.IntField("클리어 카운트 (라운드 수)", zone.zoneClearCount);
+            zone.delayBeforeWave = EditorGUILayout.Slider("라운드 간격 (초)", zone.delayBeforeWave, 0f, 60f);
             EditorGUILayout.EndVertical();
-            return;
-        }
-        EditorGUILayout.EndHorizontal();
 
-        if (waveFoldouts[zoneIndex][waveIndex])
-        {
-            EditorGUI.indentLevel++;
+            EditorGUILayout.Space(5);
 
-            wave.delayBeforeWave = EditorGUILayout.Slider("Delay Before Wave (sec)", wave.delayBeforeWave, 0f, 60f);
-
-            EditorGUILayout.Space(3);
-
-            // Ship List Header
+            // 적 함선 목록
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField($"Enemy Ships ({wave.enemyShips.Count})", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField($"적 함선 구성 ({zone.enemyShipConfigs?.Count ?? 0})", EditorStyles.boldLabel);
             if (GUILayout.Button("+ Add Ship", GUILayout.Width(100)))
             {
-                var ship = new EnemyShipConfig
-                {
-                    bodySubType = EModuleSubType.body_battle,
-                    bodyLevel = 1
-                };
+                if (zone.enemyShipConfigs == null)
+                    zone.enemyShipConfigs = new List<EnemyShipConfig>();
+                var ship = new EnemyShipConfig { bodySubType = EModuleSubType.body_battle, bodyLevel = 1 };
                 RefreshShipModuleSlots(ship);
-                wave.enemyShips.Add(ship);
+                zone.enemyShipConfigs.Add(ship);
                 EditorUtility.SetDirty(config);
             }
             EditorGUILayout.EndHorizontal();
 
-            // Ships
-            for (int shipIndex = 0; shipIndex < wave.enemyShips.Count; shipIndex++)
+            if (zone.enemyShipConfigs != null)
             {
-                DrawEnemyShip(zoneIndex, waveIndex, shipIndex, wave.enemyShips[shipIndex]);
+                for (int shipIndex = 0; shipIndex < zone.enemyShipConfigs.Count; shipIndex++)
+                {
+                    DrawEnemyShip(zoneIndex, shipIndex, zone.enemyShipConfigs[shipIndex]);
+                }
             }
 
             EditorGUI.indentLevel--;
@@ -514,14 +447,12 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawEnemyShip(int zoneIndex, int waveIndex, int shipIndex, EnemyShipConfig ship)
+    private void DrawEnemyShip(int zoneIndex, int shipIndex, EnemyShipConfig ship)
     {
         if (!shipFoldouts.ContainsKey(zoneIndex))
-            shipFoldouts[zoneIndex] = new Dictionary<int, Dictionary<int, bool>>();
-        if (!shipFoldouts[zoneIndex].ContainsKey(waveIndex))
-            shipFoldouts[zoneIndex][waveIndex] = new Dictionary<int, bool>();
-        if (!shipFoldouts[zoneIndex][waveIndex].ContainsKey(shipIndex))
-            shipFoldouts[zoneIndex][waveIndex][shipIndex] = false;
+            shipFoldouts[zoneIndex] = new Dictionary<int, bool>();
+        if (!shipFoldouts[zoneIndex].ContainsKey(shipIndex))
+            shipFoldouts[zoneIndex][shipIndex] = false;
 
         var originalColor = GUI.backgroundColor;
         GUI.backgroundColor = shipColor;
@@ -531,13 +462,13 @@ public class DataTableZoneEditor : Editor
         // Ship Header
         EditorGUILayout.BeginHorizontal();
         string slotInfo = ship.moduleSlots != null ? $", Slots: {ship.moduleSlots.Count}" : "";
-        shipFoldouts[zoneIndex][waveIndex][shipIndex] = EditorGUILayout.Foldout(
-            shipFoldouts[zoneIndex][waveIndex][shipIndex],
+        shipFoldouts[zoneIndex][shipIndex] = EditorGUILayout.Foldout(
+            shipFoldouts[zoneIndex][shipIndex],
             $"Ship {shipIndex + 1}: {ship.bodySubType} Lv.{ship.bodyLevel}{slotInfo}", true);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
-            config.zones[zoneIndex].waves[waveIndex].enemyShips.RemoveAt(shipIndex);
+            config.zones[zoneIndex].enemyShipConfigs.RemoveAt(shipIndex);
             EditorUtility.SetDirty(config);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
@@ -545,7 +476,7 @@ public class DataTableZoneEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        if (shipFoldouts[zoneIndex][waveIndex][shipIndex])
+        if (shipFoldouts[zoneIndex][shipIndex])
         {
             EditorGUI.indentLevel++;
 

@@ -26,16 +26,22 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     private bool m_useFirebaseAuth = false;
     private bool m_autoLoginAttempted = false;
 
+    // 하트비트 간격 (초) — 서버에서 lastOnlineAt 갱신용
+    private const float HeartbeatInterval = 30f;
+
     public void OnChangeScene()
     {
         if (SceneManager.GetActiveScene().name == "MainScene")
         {
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
             m_bConnected = false;
-            InvokeRepeating(nameof(CheckConnection), 0f, 10f); // Check every 10 seconds
+            InvokeRepeating(nameof(CheckConnection), 0f, 10f);
         }
         else if (SceneManager.GetActiveScene().name == "SpaceScene")
+        {
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
+            InvokeRepeating(nameof(Heartbeat), HeartbeatInterval, HeartbeatInterval);
+        }
         else if (SceneManager.GetActiveScene().name == "LoadingScene")
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
     }
@@ -636,6 +642,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.CollectZoneAsync(request), onComplete));
+    }
+
+    public void KillZoneEnemy(ZoneKillRequest request, System.Action<ApiResponse<ZoneKillResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.KillZoneEnemyAsync(request), onComplete));
+    }
+
+    public void Heartbeat()
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.HeartbeatAsync(), (ApiResponse<HeartbeatResponse> _) => { }));
     }
 
     // PvP API

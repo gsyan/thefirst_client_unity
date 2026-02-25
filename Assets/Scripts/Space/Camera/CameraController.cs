@@ -360,7 +360,7 @@ public class CameraController : MonoSingleton<CameraController>
         // 내함대 보기
         SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
-        // 함선 선택 이벤트 (UITabModule에서 동일 함선 중복 체크)
+        // 함선 선택 이벤트 (UITabShip 에서 동일 함선 중복 체크)
         EventManager.Trigger_SpaceShipSelected(ship);
 
         // 모듈도 감지되었으면 모듈 선택

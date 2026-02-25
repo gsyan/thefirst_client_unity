@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class UITabModule : UITabBase
+public class UITabShip : UITabBase
 {
     [SerializeField] private TMP_Text  m_textShipStatus;
     [SerializeField] private RectTransform m_shipStatsContainer;

@@ -1,4 +1,4 @@
-// 우주 공간 UI 패널 — 탭 시스템 초기화 및 모듈 선택 시 UITabModule 자동 전환
+// 우주 공간 UI 패널 — 탭 시스템 초기화 및 모듈 선택 시 UITabShip 자동 전환
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,7 +40,7 @@ public class UIPanelSpace : UIPanelBase
                 tabData.onDeactivate = tabBase.OnTabDeactivated;
 
                 // UITabShip 탭 인덱스 저장
-                if (tabBase is UITabModule)
+                if (tabBase is UITabShip)
                     m_moduleTabIndex = i;
             }
         }
@@ -70,7 +70,7 @@ public class UIPanelSpace : UIPanelBase
 
     }
 
-    // 모듈이 선택될 때만 UITabModule로 자동 전환 (함선 클릭만으로는 전환 안 함)
+    // 모듈이 선택될 때만 UITabShip 로 자동 전환 (함선 클릭만으로는 전환 안 함)
     private void OnModuleSelectedAutoTabSwitch(SpaceShip ship, ModuleBase module)
     {
         if (m_moduleTabIndex < 0) return;
