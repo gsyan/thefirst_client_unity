@@ -189,11 +189,11 @@ public static class EventManager
         OnCameraFocusTargetChanged -= callback;
     }
 
-    // Wave Started (1-based currentWave, totalWaves)
+    // Wave Started (1-based currentWave, zoneClearCount)
     public static event Action<int, int> OnWaveStarted;
-    public static void TriggerWaveStarted(int currentWave, int totalWaves)
+    public static void TriggerWaveStarted(int currentWave, int zoneClearCount)
     {
-        OnWaveStarted?.Invoke(currentWave, totalWaves);
+        OnWaveStarted?.Invoke(currentWave, zoneClearCount);
     }
     public static void Subscribe_WaveStarted(Action<int, int> callback)
     {

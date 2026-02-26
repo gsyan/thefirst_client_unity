@@ -28,11 +28,14 @@ public class UITabExploration : UITabBase
     private Character m_myCharacter;
     private ZoneConfig m_clearedZone;
     private ZoneConfig m_currentZone;                                   // 현재 전투 중인 존
+    private ScrollViewZoneItem m_currentZoneItem;                       // 현재 전투 중인 존 UI 아이템
     private readonly List<ScrollViewZoneItem> m_zoneItemPool = new List<ScrollViewZoneItem>();
     private readonly List<ScrollViewZoneItem> m_zoneItemActive = new List<ScrollViewZoneItem>();
     
     private bool m_isInZone;
     private bool m_isFleetWiped;
+    private int m_currentWave;
+    private int m_zoneClearCount;
     private Coroutine m_mineralUpdateCoroutine;
     private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
     private ScrollViewAutoCenter m_zoneAutoCenter;
@@ -109,10 +112,8 @@ public class UITabExploration : UITabBase
             EZoneState zoneState;
             if (i <= clearedIndex)
                 zoneState = EZoneState.Cleared;
-            else if (i == clearedIndex + 1)
-                zoneState = EZoneState.Current;
             else
-                zoneState = EZoneState.Locked;
+                zoneState = EZoneState.Current;
 
             ScrollViewZoneItem scrollViewItem;
             if (poolIndex < m_zoneItemPool.Count)
@@ -265,9 +266,10 @@ public class UITabExploration : UITabBase
         m_isInZone = !isSafeZone;
     }
 
-    private void OnWaveStarted(int currentWave, int totalWaves)
+    private void OnWaveStarted(int currentWave, int zoneClearCount)
     {
-        
+        m_currentWave = currentWave;
+        m_zoneClearCount = zoneClearCount;
     }
 
     private void OnMyFleetWiped()
@@ -280,14 +282,16 @@ public class UITabExploration : UITabBase
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
     }
 
-    // UI 버튼 콜백 → 전투 중이면 다음 존(Current)만 허용, 나머지는 차단
+    // UI 버튼 콜백 → 현재 전투 중인 존 재진입 차단
     private void OnTryZoneClicked(ZoneConfig zone)
     {
-        if (m_isInZone)
+        if (m_isInZone == true)
         {
-            string clearedZone = m_myCharacter.m_characterInfo.clearedZone;
-            ZoneConfig nextZone = string.IsNullOrEmpty(clearedZone) ? null : m_datatableZone.GetNextZone(clearedZone);
-            if (nextZone == null || nextZone.zoneName != zone.zoneName) return;
+            if (m_currentZone != null && m_currentZone.zoneName == zone.zoneName) return;
+
+            // string clearedZone = m_myCharacter.m_characterInfo.clearedZone;
+            // ZoneConfig nextZone = string.IsNullOrEmpty(clearedZone) ? null : m_datatableZone.GetNextZone(clearedZone);
+            // if (nextZone == null || nextZone.zoneName != zone.zoneName) return;
 
             EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
@@ -308,6 +312,7 @@ public class UITabExploration : UITabBase
             pp.SetSkyboxBlendTarget(zone.skyboxMaterial);
 
         m_currentZone = zone;
+        CacheCurrentZoneItem();
         SetExplorationUI(false);
         EventManager.Subscribe_WaveStarted(OnWaveStarted);
         EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
@@ -322,9 +327,30 @@ public class UITabExploration : UITabBase
     // 워프 없이 같은 존에서 전투 재시작 (클리어 후 계속 전투)
     private void ContinueBattleInZone(ZoneConfig zone)
     {
+        CacheCurrentZoneItem();
         EventManager.Subscribe_WaveStarted(OnWaveStarted);
         EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
         StartBattleInZone(zone);
+    }
+
+    private void CacheCurrentZoneItem()
+    {
+        if (m_currentZoneItem != null)
+            m_currentZoneItem.SetSelected(false);
+
+        m_currentZoneItem = null;
+        if (m_currentZone == null) return;
+        for (int i = 0; i < m_zoneItemActive.Count; i++)
+        {
+            if (m_zoneItemActive[i].m_zoneConfig.zoneName == m_currentZone.zoneName)
+            {
+                m_currentZoneItem = m_zoneItemActive[i];
+                break;
+            }
+        }
+
+        if (m_currentZoneItem != null)
+            m_currentZoneItem.SetSelected(true);
     }
 
     // 적 스폰 및 전투 결과 처리
@@ -365,10 +391,14 @@ public class UITabExploration : UITabBase
         return zoneIndex <= clearedIndex;
     }
 
-    // 적 함대 격멸 시 킬 보상 API 호출
+    // 적 함대 격멸 시 진행률 갱신 + 킬 보상 API 호출
     private void OnEnemyFleetKilledForReward()
     {
         if (m_currentZone == null) return;
+
+        if (IsAlreadyCleared(m_currentZone) == false && m_currentZoneItem != null)
+            m_currentZoneItem.SetClearProgress(m_currentWave, m_zoneClearCount);
+
         var request = new ZoneKillRequest { zoneName = m_currentZone.zoneName };
         NetworkManager.Instance.KillZoneEnemy(request, OnZoneKillResponse);
     }
@@ -403,6 +433,11 @@ public class UITabExploration : UITabBase
         m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
         {
             m_currentZone = null;
+            if (m_currentZoneItem != null)
+            {
+                m_currentZoneItem.SetSelected(false);
+                m_currentZoneItem = null;
+            }
             SetExplorationUI(true);
 
             if (m_isFleetWiped)

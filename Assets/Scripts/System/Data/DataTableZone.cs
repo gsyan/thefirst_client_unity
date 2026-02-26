@@ -42,7 +42,7 @@ public class ZoneConfig
     public Material skyboxMaterial;  // 스카이박스 머티리얼
     
     public int zoneClearCount = 10;
-    public float delayBeforeWave = 5f;
+    public float delayBeforeSpawn = 3f;
     public List<EnemyShipConfig> enemyShipConfigs;
     
     [Header("적 함선 킬 보상 (즉시 지급)")]

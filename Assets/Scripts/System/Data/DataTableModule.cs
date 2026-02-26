@@ -467,8 +467,8 @@ public class DataTableModule : ScriptableObject
                         m_moduleSubType = subType,
                         m_moduleLevel = i,
                         m_moduleSlots = slotInfos,
-                        m_health = 100f + (i * 50f),
-                        m_repairPower = 1f + (i * 1f),
+                        m_health = 100f + ((i - 1) * 50f),
+                        m_repairPower = 5f + ((i - 1) * 1f),
                         //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
                         m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.body_battle ? 100 : 1000) << (i - 1), 0, 0, 0),
                         m_description = $"{subType}-class hull module level {i}"

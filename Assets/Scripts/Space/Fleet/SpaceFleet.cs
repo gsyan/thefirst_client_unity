@@ -528,18 +528,6 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
-    virtual protected void OnFleetDestroyed()
-    {
-        StopAllCoroutines();
-
-        if (IsEnemy)
-        {
-            ObjectManager.Instance.RemoveEnemyFleet(this);
-        }
-
-        // gameObject.SetActive(false);
-    }
-
     // 함대의 능력치 프로파일 계산
     public CapabilityProfile GetFleetCapabilityProfile(bool useCurrent = true)
     {
