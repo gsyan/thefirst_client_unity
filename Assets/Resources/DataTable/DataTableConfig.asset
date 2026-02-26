@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: DataTableConfig
   m_EditorClassIdentifier: 
   gameSettings:
-    m_version: 0.0.1
-    m_maxLives: 3
-    m_maxShipsPerFleet: 9
-    m_addShipCosts:
+    version: 0.0.1
+    maxShipsPerFleet: 9
+    addShipCosts:
     - techLevel: 0
       mineral: 0
       mineralRare: 0
@@ -72,14 +71,13 @@ MonoBehaviour:
       mineralRare: 640000
       mineralExotic: 160000
       mineralDark: 40000
-    m_pvpListCount: 3
-    m_pvpListRefreshCount: 5
-    m_pvpRankScoreInit: 1000
-    m_pvpRankScorePenalty: 1
-    m_moduleUnlockPrice: 5000
-    m_explorationInterval: 10
-  exportedJson: "{\r\n  \"m_version\": \"0.0.1\",\r\n  \"m_maxLives\": 3,\r\n  \"m_maxShipsPerFleet\":
-    9,\r\n  \"m_addShipCosts\": [\r\n    {\r\n      \"techLevel\": 0,\r\n      \"mineral\":
+    pvpListCount: 3
+    pvpListRefreshCount: 5
+    pvpRankScoreInit: 1000
+    pvpRankScorePenalty: 1
+    moduleUnlockPrice: 5000
+  exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"maxShipsPerFleet\": 9,\r\n 
+    \"addShipCosts\": [\r\n    {\r\n      \"techLevel\": 0,\r\n      \"mineral\":
     0,\r\n      \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
     0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 5000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
@@ -101,6 +99,6 @@ MonoBehaviour:
     \"mineralRare\": 320000,\r\n      \"mineralExotic\": 80000,\r\n      \"mineralDark\":
     20000\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 2560000,\r\n     
     \"mineralRare\": 640000,\r\n      \"mineralExotic\": 160000,\r\n      \"mineralDark\":
-    40000\r\n    }\r\n  ],\r\n  \"m_pvpListCount\": 3,\r\n  \"m_pvpListRefreshCount\":
-    5,\r\n  \"m_pvpRankScoreInit\": 1000,\r\n  \"m_pvpRankScorePenalty\": 1,\r\n 
-    \"m_moduleUnlockPrice\": 5000,\r\n  \"m_explorationInterval\": 10.0\r\n}"
+    40000\r\n    }\r\n  ],\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\":
+    5,\r\n  \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\":
+    5000\r\n}"
