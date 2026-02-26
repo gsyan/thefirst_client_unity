@@ -253,7 +253,7 @@ public class DataManager : Singleton<DataManager>
 
     public string GetGameVersion()
     {
-        return m_dataTableConfig?.gameSettings?.m_version ?? "1.0.0";
+        return m_dataTableConfig?.gameSettings?.version ?? "1.0.0";
     }
 
     #endregion
@@ -275,7 +275,7 @@ public class DataManager : Singleton<DataManager>
         ModuleData moduleData = m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
         if (moduleData == null) return false;
 
-        cost = moduleData.m_upgradeCost;
+        cost = moduleData.upgradeCost;
         return true;
     }
     #endregion

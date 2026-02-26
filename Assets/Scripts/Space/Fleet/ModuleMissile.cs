@@ -62,14 +62,14 @@ public class ModuleMissile : ModuleBase
         }
 
         // 복원된 데이터로 스탯 설정
-        m_health = moduleData.m_health;
-        m_healthMax = moduleData.m_health;
-        m_attackPower = moduleData.m_attackPower;
-        m_attackFireCount = moduleData.m_attackFireCount;
-        m_attackCoolTime = moduleData.m_attackCoolTime;
+        m_health = moduleData.health;
+        m_healthMax = moduleData.health;
+        m_attackPower = moduleData.attackPower;
+        m_attackFireCount = moduleData.attackFireCount;
+        m_attackCoolTime = moduleData.attackCoolTime;
 
         // 업그레이드 비용 설정
-        m_upgradeCost = moduleData.m_upgradeCost;
+        m_upgradeCost = moduleData.upgradeCost;
 
         m_lastAttackTime = 0f;
 
@@ -90,7 +90,7 @@ public class ModuleMissile : ModuleBase
         {
             case EModuleSubType.missile_standard:
             case EModuleSubType.missile_advanced:
-                for(int i=0; i< moduleData.m_attackFireCount; i++)
+                for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
                     launcher.InitializeLauncherMissile(moduleData, i);
@@ -171,12 +171,12 @@ public class ModuleMissile : ModuleBase
         }
 
         // 스탯 갱신
-        m_healthMax = moduleData.m_health;
+        m_healthMax = moduleData.health;
         m_health = Mathf.Min(m_health, m_healthMax);
-        m_attackPower = moduleData.m_attackPower;
-        m_attackCoolTime = moduleData.m_attackCoolTime;
-        m_attackFireCount = moduleData.m_attackFireCount;
-        m_upgradeCost = moduleData.m_upgradeCost;
+        m_attackPower = moduleData.attackPower;
+        m_attackCoolTime = moduleData.attackCoolTime;
+        m_attackFireCount = moduleData.attackFireCount;
+        m_upgradeCost = moduleData.upgradeCost;
     }
 
     public override int GetModuleBodyIndex()
@@ -212,7 +212,7 @@ public class ModuleMissile : ModuleBase
         if (moduleDataCurrent == null) return;
 
         statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
+        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.attackPower:F0}");
         statRows[3].SetRow("empty_text", "");
         statRows[4].SetRow("empty_text", "");
         statRows[5].SetRow("empty_text", "");

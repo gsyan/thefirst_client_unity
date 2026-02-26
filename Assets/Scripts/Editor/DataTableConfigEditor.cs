@@ -111,7 +111,7 @@ public class DataTableConfigEditor : Editor
     private void ResetAddShipCosts()
     {
         // GameSettings 기본값에서 가져옴 (중복 방지)
-        dataTableConfig.gameSettings.m_addShipCosts = new GameSettings().m_addShipCosts;
+        dataTableConfig.gameSettings.addShipCosts = new GameSettings().addShipCosts;
 
         EditorUtility.SetDirty(dataTableConfig);
         AssetDatabase.SaveAssets();

@@ -120,13 +120,13 @@ public class DataTableModuleEditor : Editor
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
             var moduleData = new ModuleData
             {
-                m_moduleName = $"{group.subType} LV.{group.modules.Count + 1}",
-                m_moduleType = moduleType,
-                m_moduleSubType = group.subType,
-                m_moduleLevel = group.modules.Count + 1,
-                m_health = 200f,
-                m_repairPower = 1f,
-                m_description = $"{group.subType} LV.{group.modules.Count + 1}"
+                moduleName = $"{group.subType} LV.{group.modules.Count + 1}",
+                moduleType = moduleType,
+                moduleSubType = group.subType,
+                moduleLevel = group.modules.Count + 1,
+                health = 200f,
+                repairPower = 1f,
+                description = $"{group.subType} LV.{group.modules.Count + 1}"
             };
             group.modules.Add(moduleData);
             EditorUtility.SetDirty(dataTableModule);
@@ -150,7 +150,7 @@ public class DataTableModuleEditor : Editor
     private void DrawBodyModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
+        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
 
         if (GUILayout.Button("Remove", GUILayout.Width(70)))
         {
@@ -160,19 +160,19 @@ public class DataTableModuleEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
+        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
+        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
 
         // Module Slots (from prefab)
-        int slotCount = module.m_moduleSlots != null ? module.m_moduleSlots.Length : 0;
+        int slotCount = module.moduleSlots != null ? module.moduleSlots.Length : 0;
         if (!moduleSlotFoldouts.ContainsKey(module))
             moduleSlotFoldouts[module] = false;
 
         moduleSlotFoldouts[module] = EditorGUILayout.Foldout(moduleSlotFoldouts[module], $"Module Slots ({slotCount})", true);
-        if (moduleSlotFoldouts[module] && module.m_moduleSlots != null)
+        if (moduleSlotFoldouts[module] && module.moduleSlots != null)
         {
             EditorGUI.indentLevel++;
-            foreach (var slot in module.m_moduleSlots)
+            foreach (var slot in module.moduleSlots)
             {
                 EditorGUILayout.LabelField($"{slot.moduleType} / Slot:{slot.slotIndex}");
             }
@@ -180,17 +180,17 @@ public class DataTableModuleEditor : Editor
         }
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 1f, 1000f);
-        module.m_repairPower = EditorGUILayout.Slider("Repair", module.m_repairPower, 0f, 1000f);
+        module.health = EditorGUILayout.Slider("Health", module.health, 1f, 1000f);
+        module.repairPower = EditorGUILayout.Slider("Repair", module.repairPower, 0f, 1000f);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
+        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
+        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
+        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
+        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
+        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
 
-        module.m_description = EditorGUILayout.TextField("Description", module.m_description);
+        module.description = EditorGUILayout.TextField("Description", module.description);
     }
     #endregion
     
@@ -230,13 +230,13 @@ public class DataTableModuleEditor : Editor
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
             var module = new ModuleData
             {
-                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
-                m_moduleType = moduleType,
-                m_moduleSubType = group.subType,
-                m_moduleLevel = group.modules.Count + 1,
-                m_health = 0f,
-                m_movementSpeed = 5f,
-                m_description = $"{group.subType} LV{group.modules.Count + 1}"
+                moduleName = $"{group.subType} LV{group.modules.Count + 1}",
+                moduleType = moduleType,
+                moduleSubType = group.subType,
+                moduleLevel = group.modules.Count + 1,
+                health = 0f,
+                speed = 5f,
+                description = $"{group.subType} LV{group.modules.Count + 1}"
             };
             group.modules.Add(module);
             EditorUtility.SetDirty(dataTableModule);
@@ -260,7 +260,7 @@ public class DataTableModuleEditor : Editor
     private void DrawEngineModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
+        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
 
         if (GUILayout.Button("Remove", GUILayout.Width(70)))
         {
@@ -270,21 +270,21 @@ public class DataTableModuleEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
+        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
+        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 0f, 1000f);
-        module.m_movementSpeed = EditorGUILayout.Slider("Movement Speed", module.m_movementSpeed, 0f, 20f);
+        module.health = EditorGUILayout.Slider("Health", module.health, 0f, 1000f);
+        module.speed = EditorGUILayout.Slider("Movement Speed", module.speed, 0f, 20f);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
+        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
+        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
+        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
+        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
+        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
 
-        module.m_description = EditorGUILayout.TextField("Description", module.m_description);
+        module.description = EditorGUILayout.TextField("Description", module.description);
     }
     #endregion
 
@@ -324,15 +324,15 @@ public class DataTableModuleEditor : Editor
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
             var module = new ModuleData
             {
-                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
-                m_moduleType = moduleType,
-                m_moduleSubType = group.subType,
-                m_moduleLevel = group.modules.Count + 1,
-                m_health = 0f,
-                m_attackPower = 25f,
-                m_attackFireCount = 1,
-                m_attackCoolTime = 2f,
-                m_description = $"{group.subType} LV{group.modules.Count + 1}"
+                moduleName = $"{group.subType} LV{group.modules.Count + 1}",
+                moduleType = moduleType,
+                moduleSubType = group.subType,
+                moduleLevel = group.modules.Count + 1,
+                health = 0f,
+                attackPower = 25f,
+                attackFireCount = 1,
+                attackCoolTime = 2f,
+                description = $"{group.subType} LV{group.modules.Count + 1}"
             };
             group.modules.Add(module);
             EditorUtility.SetDirty(dataTableModule);
@@ -356,7 +356,7 @@ public class DataTableModuleEditor : Editor
     private void DrawBeamModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
+        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
 
         if (GUILayout.Button("Remove", GUILayout.Width(70)))
         {
@@ -366,27 +366,27 @@ public class DataTableModuleEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
+        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
+        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 0f, 1000f);
-        module.m_attackPower = EditorGUILayout.Slider("Attack Power", module.m_attackPower, 0f, 100f);
-        module.m_attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.m_attackFireCount, 0, 100);
-        module.m_attackCoolTime = EditorGUILayout.Slider("Cool Time", module.m_attackCoolTime, 0.1f, 10f);
+        module.health = EditorGUILayout.Slider("Health", module.health, 0f, 1000f);
+        module.attackPower = EditorGUILayout.Slider("Attack Power", module.attackPower, 0f, 100f);
+        module.attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.attackFireCount, 0, 100);
+        module.attackCoolTime = EditorGUILayout.Slider("Cool Time", module.attackCoolTime, 0.1f, 10f);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.m_projectileWidth = EditorGUILayout.Slider("Projectile Width", module.m_projectileWidth, 0.01f, 5f);
-        module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 5000f);
+        module.projectileWidth = EditorGUILayout.Slider("Projectile Width", module.projectileWidth, 0.01f, 5f);
+        module.projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.projectileSpeed, 1f, 5000f);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
+        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
+        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
+        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
+        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
+        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
 
-        module.m_description = EditorGUILayout.TextField("Description", module.m_description);
+        module.description = EditorGUILayout.TextField("Description", module.description);
     }
     #endregion
 
@@ -426,15 +426,15 @@ public class DataTableModuleEditor : Editor
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
             var module = new ModuleData
             {
-                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
-                m_moduleType = moduleType,
-                m_moduleSubType = group.subType,
-                m_moduleLevel = group.modules.Count + 1,
-                m_health = 00f,
-                m_attackPower = 25f,
-                m_attackFireCount = 1,
-                m_attackCoolTime = 2f,
-                m_description = $"{group.subType} LV{group.modules.Count + 1}"
+                moduleName = $"{group.subType} LV{group.modules.Count + 1}",
+                moduleType = moduleType,
+                moduleSubType = group.subType,
+                moduleLevel = group.modules.Count + 1,
+                health = 00f,
+                attackPower = 25f,
+                attackFireCount = 1,
+                attackCoolTime = 2f,
+                description = $"{group.subType} LV{group.modules.Count + 1}"
             };
             group.modules.Add(module);
             EditorUtility.SetDirty(dataTableModule);
@@ -458,7 +458,7 @@ public class DataTableModuleEditor : Editor
     private void DrawMissileModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
+        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
 
         if (GUILayout.Button("Remove", GUILayout.Width(70)))
         {
@@ -468,27 +468,27 @@ public class DataTableModuleEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
+        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
+        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 0f, 1000f);
-        module.m_attackPower = EditorGUILayout.Slider("Attack Power", module.m_attackPower, 0f, 100f);
-        module.m_attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.m_attackFireCount, 0, 100);
-        module.m_attackCoolTime = EditorGUILayout.Slider("Cool Time", module.m_attackCoolTime, 0.1f, 10f);
+        module.health = EditorGUILayout.Slider("Health", module.health, 0f, 1000f);
+        module.attackPower = EditorGUILayout.Slider("Attack Power", module.attackPower, 0f, 100f);
+        module.attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.attackFireCount, 0, 100);
+        module.attackCoolTime = EditorGUILayout.Slider("Cool Time", module.attackCoolTime, 0.1f, 10f);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.m_projectileWidth = EditorGUILayout.Slider("Projectile Width", module.m_projectileWidth, 0.01f, 5f);
-        module.m_projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.m_projectileSpeed, 1f, 5000f);
+        module.projectileWidth = EditorGUILayout.Slider("Projectile Width", module.projectileWidth, 0.01f, 5f);
+        module.projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.projectileSpeed, 1f, 5000f);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
+        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
+        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
+        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
+        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
+        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
 
-        module.m_description = EditorGUILayout.TextField("Description", module.m_description);
+        module.description = EditorGUILayout.TextField("Description", module.description);
     }
     #endregion
 
@@ -528,24 +528,23 @@ public class DataTableModuleEditor : Editor
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
             var module = new ModuleData
             {
-                m_moduleName = $"{group.subType} LV{group.modules.Count + 1}",
-                m_moduleType = moduleType,
-                m_moduleSubType = group.subType,
-                m_moduleLevel = group.modules.Count + 1,
-                m_health = 0f,
-                m_hangarCapability = 5,
-                m_scoutCapability = 5,
-                m_launchCool = 1f,
-                m_launchCount = 1,
-                m_maintenanceTime = 10f,
-                m_aircraftLaunchStraightDistance = 100f,
-                m_aircraftHealth = 50f,
-                m_aircraftAttackPower = 10f,
-                m_aircraftAttackRange = 100f,
-                m_aircraftAttackCooldown = 10f,
-                m_aircraftDetectionRadius = 200f,
-                m_aircraftAvoidanceRadius = 200f,
-                m_description = $"{group.subType} LV{group.modules.Count + 1}"
+                moduleName = $"{group.subType} LV{group.modules.Count + 1}",
+                moduleType = moduleType,
+                moduleSubType = group.subType,
+                moduleLevel = group.modules.Count + 1,
+                health = 0f,
+                airCount = 5,
+                attackCoolTime = 1f,
+                attackFireCount = 1,
+                maintenanceTime = 10f,
+                aircraftLaunchStraightDistance = 100f,
+                aircraftHealth = 50f,
+                aircraftAttackPower = 10f,
+                aircraftAttackRange = 100f,
+                aircraftAttackCooldown = 10f,
+                aircraftDetectionRadius = 200f,
+                aircraftAvoidanceRadius = 200f,
+                description = $"{group.subType} LV{group.modules.Count + 1}"
             };
             group.modules.Add(module);
             EditorUtility.SetDirty(dataTableModule);
@@ -569,7 +568,7 @@ public class DataTableModuleEditor : Editor
     private void DrawHangerModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.m_moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
+        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
 
         if (GUILayout.Button("Remove", GUILayout.Width(70)))
         {
@@ -579,36 +578,35 @@ public class DataTableModuleEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        module.m_moduleName = EditorGUILayout.TextField("Name", module.m_moduleName);
-        module.m_moduleLevel = EditorGUILayout.IntSlider("Level", module.m_moduleLevel, 1, 10);
+        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
+        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.m_health = EditorGUILayout.Slider("Health", module.m_health, 0f, 1000f);
-        module.m_hangarCapability = EditorGUILayout.IntSlider("Hangar Capability", module.m_hangarCapability, 0, 1000);
-        module.m_scoutCapability = EditorGUILayout.IntSlider("Scout Capability", module.m_scoutCapability, 0, 1000);
-        module.m_launchCool = EditorGUILayout.Slider("Launch Cool", module.m_launchCool, 0f, 10f);
-        module.m_launchCount = EditorGUILayout.IntSlider("Launch Count", module.m_launchCount, 0, 10);
-        module.m_maintenanceTime = EditorGUILayout.Slider("Maintenance Time", module.m_maintenanceTime, 0f, 1000f);
+        module.health = EditorGUILayout.Slider("Health", module.health, 0f, 1000f);
+        module.airCount = EditorGUILayout.IntSlider("Hangar Capability", module.airCount, 0, 1000);
+        module.attackCoolTime = EditorGUILayout.Slider("Launch Cool", module.attackCoolTime, 0f, 10f);
+        module.attackFireCount = EditorGUILayout.IntSlider("Launch Count", module.attackFireCount, 0, 10);
+        module.maintenanceTime = EditorGUILayout.Slider("Maintenance Time", module.maintenanceTime, 0f, 1000f);
 
         EditorGUILayout.LabelField("Aircraft Stats", EditorStyles.boldLabel);
-        module.m_aircraftLaunchStraightDistance = EditorGUILayout.Slider("Aircraft Launch Straight Distance", module.m_aircraftLaunchStraightDistance, 1f, 1000f);
-        module.m_aircraftHealth = EditorGUILayout.Slider("Aircraft Health", module.m_aircraftHealth, 1f, 1000f);
-        module.m_aircraftAttackPower = EditorGUILayout.Slider("Aircraft Attack Power", module.m_aircraftAttackPower, 1f, 1000f);
-        module.m_aircraftAttackRange = EditorGUILayout.Slider("Aircraft Attack Range", module.m_aircraftAttackRange, 1f, 1000f);
-        module.m_aircraftAttackCooldown = EditorGUILayout.Slider("Aircraft Attack Cooldown", module.m_aircraftAttackCooldown, 1f, 1000f);
-        module.m_aircraftSpeed = EditorGUILayout.Slider("Aircraft Speed", module.m_aircraftSpeed, 1f, 1000f);
-        module.m_aircraftAmmo = EditorGUILayout.IntSlider("Aircraft Ammo", module.m_aircraftAmmo, 1, 100);
-        module.m_aircraftDetectionRadius = EditorGUILayout.Slider("Aircraft Detection Radius", module.m_aircraftDetectionRadius, 1f, 1000f);
-        module.m_aircraftAvoidanceRadius = EditorGUILayout.Slider("Aircraft Avoidance Radius", module.m_aircraftAvoidanceRadius, 1f, 1000f);
+        module.aircraftLaunchStraightDistance = EditorGUILayout.Slider("Aircraft Launch Straight Distance", module.aircraftLaunchStraightDistance, 1f, 1000f);
+        module.aircraftHealth = EditorGUILayout.Slider("Aircraft Health", module.aircraftHealth, 1f, 1000f);
+        module.aircraftAttackPower = EditorGUILayout.Slider("Aircraft Attack Power", module.aircraftAttackPower, 1f, 1000f);
+        module.aircraftAttackRange = EditorGUILayout.Slider("Aircraft Attack Range", module.aircraftAttackRange, 1f, 1000f);
+        module.aircraftAttackCooldown = EditorGUILayout.Slider("Aircraft Attack Cooldown", module.aircraftAttackCooldown, 1f, 1000f);
+        module.aircraftSpeed = EditorGUILayout.Slider("Aircraft Speed", module.aircraftSpeed, 1f, 1000f);
+        module.aircraftAmmo = EditorGUILayout.IntSlider("Aircraft Ammo", module.aircraftAmmo, 1, 100);
+        module.aircraftDetectionRadius = EditorGUILayout.Slider("Aircraft Detection Radius", module.aircraftDetectionRadius, 1f, 1000f);
+        module.aircraftAvoidanceRadius = EditorGUILayout.Slider("Aircraft Avoidance Radius", module.aircraftAvoidanceRadius, 1f, 1000f);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.m_upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.m_upgradeCost.techLevel);
-        module.m_upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.m_upgradeCost.mineral);
-        module.m_upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.m_upgradeCost.mineralRare);
-        module.m_upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.m_upgradeCost.mineralExotic);
-        module.m_upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.m_upgradeCost.mineralDark);
+        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
+        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
+        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
+        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
+        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
 
-        module.m_description = EditorGUILayout.TextField("Description", module.m_description);
+        module.description = EditorGUILayout.TextField("Description", module.description);
     }
     #endregion
 

@@ -9,11 +9,10 @@ using UnityEditor;
 public class GameSettings
 {
     [Header("Game Settings")]
-    public string m_version = "0.0.1";
-    public int m_maxLives = 3;
-
+    public string version = "0.0.1";
+    
     [Header("Fleet Settings")]
-    public int m_maxShipsPerFleet = 9;
+    public int maxShipsPerFleet = 9;
 
     [Tooltip("함선 추가 시 필요한 Mineral 비용 (함선 개수별 차등 적용)")]
     // public CostStruct[] addShipCosts = new CostStruct[]
@@ -30,7 +29,7 @@ public class GameSettings
     //     new CostStruct(30, 5500, 0, 0, 0),
     //     new CostStruct(40, 8900, 0, 0, 0)
     // };
-    public CostStruct[] m_addShipCosts = new CostStruct[]
+    public CostStruct[] addShipCosts = new CostStruct[]
     {
         new CostStruct(0, 0, 0, 0, 0),
         new CostStruct(1, 5000, 0, 0, 0),
@@ -52,25 +51,24 @@ public class GameSettings
         CostStruct defaultCost = new CostStruct(1, 5000, 0, 0, 0);
 
         // 배열 유효성 체크
-        if (m_addShipCosts == null || m_addShipCosts.Length == 0)
+        if (addShipCosts == null || addShipCosts.Length == 0)
             return defaultCost;
 
         // 배열 범위 체크
-        if (currentShipCount < m_addShipCosts.Length)
-            return m_addShipCosts[currentShipCount];
+        if (currentShipCount < addShipCosts.Length)
+            return addShipCosts[currentShipCount];
 
         // 배열 범위를 초과하면 마지막 값 사용
-        return m_addShipCosts[^1];
+        return addShipCosts[^1];
     }
 
     [Header("Pvp Settings")]
-    public int m_pvpListCount = 3;
-    public int m_pvpListRefreshCount = 5;    
-    public int m_pvpRankScoreInit = 1000;
-    public int m_pvpRankScorePenalty = 1;
+    public int pvpListCount = 3;
+    public int pvpListRefreshCount = 5;    
+    public int pvpRankScoreInit = 1000;
+    public int pvpRankScorePenalty = 1;
     
-    public int m_moduleUnlockPrice = 5000;
-    public float m_explorationInterval = 10.0f;
+    public int moduleUnlockPrice = 5000;
 
 }
 

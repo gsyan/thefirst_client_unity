@@ -65,10 +65,10 @@ public class ModuleBody : ModuleBase
         if (moduleData == null) return;
         
         // 스탯 갱신
-        m_healthMax = moduleData.m_health;
+        m_healthMax = moduleData.health;
         m_health = Mathf.Min(m_health, m_healthMax);
-        m_repairPower = moduleData.m_repairPower;
-        m_upgradeCost = moduleData.m_upgradeCost;
+        m_repairPower = moduleData.repairPower;
+        m_upgradeCost = moduleData.upgradeCost;
     }
 
     public override int GetModuleBodyIndex()
@@ -92,15 +92,15 @@ public class ModuleBody : ModuleBase
         if (moduleData == null) return;
 
         // 복원된 데이터로 초기화
-        m_health = moduleData.m_health;
-        m_healthMax = moduleData.m_health;        
+        m_health = moduleData.health;
+        m_healthMax = moduleData.health;        
         // 업그레이드 비용 설정
-        m_upgradeCost = moduleData.m_upgradeCost;
+        m_upgradeCost = moduleData.upgradeCost;
         
         m_attackPower = 0.0f; // Body는 직접 공격하지 않음
 
         // Body 전용 능력치
-        m_repairPower = moduleData.m_repairPower;
+        m_repairPower = moduleData.repairPower;
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
@@ -689,8 +689,8 @@ public class ModuleBody : ModuleBase
         if (moduleDataCurrent == null) return;
 
         statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("health_power", $"{moduleDataCurrent.m_health:F0}");
-        statRows[3].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0}");
+        statRows[2].SetRow("health_power", $"{moduleDataCurrent.health:F0}");
+        statRows[3].SetRow("repair_power", $"{moduleDataCurrent.repairPower:F0}");
         statRows[4].SetRow("empty_text", "");
         statRows[5].SetRow("empty_text", "");
         statRows[6].SetRow("empty_text", "");

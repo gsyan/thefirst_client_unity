@@ -90,7 +90,7 @@ public class UITabFleet : UITabBase
         m_selectedShipSelector = null;
 
         int shipCount = m_myFleet.m_ships.Count;
-        int maxShips  = DataManager.Instance.m_dataTableConfig.gameSettings.m_maxShipsPerFleet;
+        int maxShips  = DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet;
         bool atMax    = shipCount >= maxShips;
 
         // 추가 버튼 포함한 총 아이템 수로 행 표시 여부 결정
@@ -386,7 +386,7 @@ public class UITabFleet : UITabBase
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         if (m_myCharacter.m_ownedFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;
         int currentShipCount = m_myCharacter.m_ownedFleet.m_ships.Count;
-        if (currentShipCount >= gameSettings.m_maxShipsPerFleet) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
+        if (currentShipCount >= gameSettings.maxShipsPerFleet) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
         CostStruct cost = gameSettings.GetAddShipCost(currentShipCount);
         if (m_myCharacter.m_characterInfo.techLevel < cost.techLevel) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
