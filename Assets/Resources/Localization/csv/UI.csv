@@ -27,6 +27,8 @@ explroation_wave_list_name,,Wave,웨이브
 explroation_safe_zone,,Safe Zone,안전 지역
 explroation_collected_minerals,,Collected Minerals,수집된 광물
 explroation_collect_mineral,,Collect Mineral,미네랄 수확
+exploration_collect_available_title,,Harvest,수확
+exploration_elapsed_time,,Elapsed,경과 시간
 research_module,,Research Module,모듈 연구
 research_tech_name,,Tech,기술
 research_already,,Already Researched,연구 완료
@@ -65,15 +67,15 @@ module_type_beam,,Beam,빔
 module_type_missile,,Missile,미사일
 module_type_hanger,,Hanger,격납고
 body_t1_std,,T1 Body.Std,T1 함체.표준
-body_t1_adv,,T1 Body.ADV,T1 함체.향상
+body_t1_adv,,T1 Body.Adv,T1 함체.향상
 engine_t1_std,,T1 Engine.Std,T1 엔진.표준
-engine_t1_adv,,T1 Engine.ADV,T1 엔진.향상
+engine_t1_adv,,T1 Engine.Adv,T1 엔진.향상
 beam_t1_std,,T1 Beam.Std,T1 빔.표준
-beam_t1_adv,,T1 Beam.ADV,T1 빔.향상
+beam_t1_adv,,T1 Beam.Adv,T1 빔.향상
 missile_t1_std,,T1 Missile.Std,T1 미사일.표준
-missile_t1_adv,,T1 Missile.ADV,T1 미사일.향상
+missile_t1_adv,,T1 Missile.Adv,T1 미사일.향상
 hanger_t1_std,,T1 Hanger.Std,T1 격납고.표준
-hanger_t1_adv,,T1 Hanger.ADV,T1 격납고.향상
+hanger_t1_adv,,T1 Hanger.Adv,T1 격납고.향상
 cancel,,Cancel,취소
 confirm,,Confirm,확인
 tech_level,,Tech Lv,기술레벨

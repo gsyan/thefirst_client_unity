@@ -355,7 +355,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6643833282363392
-    m_Localized: T1 Body.ADV
+    m_Localized: T1 Body.Adv
     m_Metadata:
       m_Items: []
   - m_Id: 6643833282363393
@@ -363,7 +363,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6643833282363394
-    m_Localized: T1 Engine.ADV
+    m_Localized: T1 Engine.Adv
     m_Metadata:
       m_Items: []
   - m_Id: 6643833282363395
@@ -371,7 +371,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6643833282363396
-    m_Localized: T1 Beam.ADV
+    m_Localized: T1 Beam.Adv
     m_Metadata:
       m_Items: []
   - m_Id: 6643833282363397
@@ -379,7 +379,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6643833286557696
-    m_Localized: T1 Missile.ADV
+    m_Localized: T1 Missile.Adv
     m_Metadata:
       m_Items: []
   - m_Id: 6643833286557697
@@ -387,7 +387,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6643833286557698
-    m_Localized: T1 Hanger.ADV
+    m_Localized: T1 Hanger.Adv
     m_Metadata:
       m_Items: []
   - m_Id: 6655868837691392
@@ -396,6 +396,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6655868879634432
     m_Localized: Add Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6697022492901376
+    m_Localized: Harvest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6697022530650112
+    m_Localized: Elapsed
     m_Metadata:
       m_Items: []
   references:
