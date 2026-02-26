@@ -38,8 +38,8 @@ public class ProjectileBeam : ProjectileBase
         
         m_beamHeadPos = m_firePointTransform.position;
         m_beamTailPos = m_firePointTransform.position;
-        m_beamWidth = moduleData.m_projectileWidth;
-        m_beamSpeed = moduleData.m_projectileSpeed;        
+        m_beamWidth = moduleData.projectileWidth;
+        m_beamSpeed = moduleData.projectileSpeed;        
         m_beamColor = color;        
         
 

@@ -126,33 +126,33 @@ public class UITabResearch : UITabBase
             m_nodeActiveCount++;
 
             rect.gameObject.SetActive(true);
-            rect.gameObject.name = $"Node_{nodeData.m_researchId}";
-            rect.anchoredPosition = nodeData.m_uiPosition;
+            rect.gameObject.name = $"Node_{nodeData.researchId}";
+            rect.anchoredPosition = nodeData.uiPosition;
 
             ScrollViewResearchItem researchItemComp = rect.GetComponentInChildren<ScrollViewResearchItem>();
             if (researchItemComp != null)
             {
-                string nodeId = nodeData.m_researchId;
-                researchItemComp.InitializeScrollViewResearchItem(nodeData.m_researchId, () => OnNodeSelectClicked(nodeId));
+                string nodeId = nodeData.researchId;
+                researchItemComp.InitializeScrollViewResearchItem(nodeData.researchId, () => OnNodeSelectClicked(nodeId));
                 m_spawnedResearchItems[nodeId] = researchItemComp;
             }
 
-            m_spawnedNodes[nodeData.m_researchId] = rect;
+            m_spawnedNodes[nodeData.researchId] = rect;
 
-            if (Mathf.Abs(nodeData.m_uiPosition.x) > maxAbsX) maxAbsX = Mathf.Abs(nodeData.m_uiPosition.x);
-            if (Mathf.Abs(nodeData.m_uiPosition.y) > maxAbsY) maxAbsY = Mathf.Abs(nodeData.m_uiPosition.y);
+            if (Mathf.Abs(nodeData.uiPosition.x) > maxAbsX) maxAbsX = Mathf.Abs(nodeData.uiPosition.x);
+            if (Mathf.Abs(nodeData.uiPosition.y) > maxAbsY) maxAbsY = Mathf.Abs(nodeData.uiPosition.y);
         }
 
         // 3. 연결 선 그리기 (선행조건이 복수일 수 있으므로 모두 연결)
         for (int i = 0; i < m_currentNodeList.Count; i++)
         {
             var nodeData = m_currentNodeList[i];
-            if (nodeData.m_prerequisiteIds == null || nodeData.m_prerequisiteIds.Count == 0) continue;
-            if (m_spawnedNodes.TryGetValue(nodeData.m_researchId, out RectTransform current) == false) continue;
+            if (nodeData.prerequisiteIds == null || nodeData.prerequisiteIds.Count == 0) continue;
+            if (m_spawnedNodes.TryGetValue(nodeData.researchId, out RectTransform current) == false) continue;
 
-            for (int j = 0; j < nodeData.m_prerequisiteIds.Count; j++)
+            for (int j = 0; j < nodeData.prerequisiteIds.Count; j++)
             {
-                if (m_spawnedNodes.TryGetValue(nodeData.m_prerequisiteIds[j], out RectTransform prereqNode))
+                if (m_spawnedNodes.TryGetValue(nodeData.prerequisiteIds[j], out RectTransform prereqNode))
                 {
                     DrawConnection(prereqNode, current);
                 }
@@ -235,7 +235,7 @@ public class UITabResearch : UITabBase
     private bool IsNodeResearched(ResearchNodeData node)
     {
         if (node is ModuleResearchData module)
-            return m_myCharacter.IsModuleResearched(module.m_moduleType, module.m_moduleSubType);
+            return m_myCharacter.IsModuleResearched(module.moduleType, module.moduleSubType);
         // if (node is TechResearchData tech)
         //     return m_myCharacter.GetTechLevel() >= tech.m_targetTechLevel;
         return false;
@@ -247,9 +247,9 @@ public class UITabResearch : UITabBase
         for (int i = 0; i < m_currentNodeList.Count; i++)
         {
             ResearchNodeData nodeData = m_currentNodeList[i];
-            if (m_spawnedResearchItems.TryGetValue(nodeData.m_researchId, out ScrollViewResearchItem item) == false) continue;
+            if (m_spawnedResearchItems.TryGetValue(nodeData.researchId, out ScrollViewResearchItem item) == false) continue;
 
-            bool isSelected = nodeData.m_researchId == m_selectedNodeId;
+            bool isSelected = nodeData.researchId == m_selectedNodeId;
             EResearchNodeState baseState = IsNodeResearched(nodeData) ? EResearchNodeState.Researched : EResearchNodeState.Researchable;
             item.SetNodeState(baseState, isSelected);
         }
@@ -268,10 +268,10 @@ public class UITabResearch : UITabBase
         RefreshNodeColors();
 
         // 선택된 노드 찾기
-        ResearchNodeData selectedNode = m_currentNodeList.Find(n => n.m_researchId == m_selectedNodeId);
+        ResearchNodeData selectedNode = m_currentNodeList.Find(n => n.researchId == m_selectedNodeId);
         if (selectedNode is ModuleResearchData moduleNode)
         {
-            UpdateModuleStatsDisplay(moduleNode.m_moduleSubType);
+            UpdateModuleStatsDisplay(moduleNode.moduleSubType);
         }
 
         // 버튼 업데이트
@@ -288,10 +288,10 @@ public class UITabResearch : UITabBase
         for (int i = 0; i < m_currentNodeList.Count; i++)
         {
             if (IsNodeResearched(m_currentNodeList[i]) == false)
-                return m_currentNodeList[i].m_researchId;
+                return m_currentNodeList[i].researchId;
         }
         if (m_currentNodeList.Count > 0)
-            return m_currentNodeList[m_currentNodeList.Count - 1].m_researchId;
+            return m_currentNodeList[m_currentNodeList.Count - 1].researchId;
         return "";
     }
 
@@ -311,11 +311,11 @@ public class UITabResearch : UITabBase
     private void OnModuleResearchClicked()
     {
         // 선택된 노드에서 모듈 정보 추출
-        ResearchNodeData selectedNode = m_currentNodeList.Find(n => n.m_researchId == m_selectedNodeId);
+        ResearchNodeData selectedNode = m_currentNodeList.Find(n => n.researchId == m_selectedNodeId);
         if (selectedNode is not ModuleResearchData moduleNode) return;
 
-        EModuleType moduleType = moduleNode.m_moduleType;
-        EModuleSubType moduleSubType = moduleNode.m_moduleSubType;
+        EModuleType moduleType = moduleNode.moduleType;
+        EModuleSubType moduleSubType = moduleNode.moduleSubType;
 
         // 이미 연구 완료된 경우
         if (IsNodeResearched(selectedNode))

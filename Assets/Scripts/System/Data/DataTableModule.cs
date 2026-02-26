@@ -14,80 +14,74 @@ using UnityEditor;
 public class ModuleData
 {
     [Header("Basic Info")]
-    public string m_moduleName = "Module";
-    public EModuleType m_moduleType = EModuleType.none;
-    public EModuleSubType m_moduleSubType = EModuleSubType.none;
-    public int m_moduleLevel = 1;
+    public string moduleName = "Module";
+    public EModuleType moduleType = EModuleType.none;
+    public EModuleSubType moduleSubType = EModuleSubType.none;
+    public int moduleLevel = 1;
 
     // Body Module Slots (extracted from prefab) ---------------------------------------
     [Header("Body Slot Info")]
-    public ModuleSlotInfo[] m_moduleSlots;
+    public ModuleSlotInfo[] moduleSlots;
 
     // common ---------------------------------------------------------------------------
     [Header("Upgrade Costs")]
-    public CostStruct m_upgradeCost = new CostStruct();
+    public CostStruct upgradeCost = new CostStruct();
 
     [Header("Description")]
     [TextArea(2, 4)]
-    public string m_description = "Ship Module";
+    public string description = "Ship Module";
 
     // Body ---------------------------------------------------------------------------
     [Header("Body Stats")]
     [Range(0, 1000)]
-    public float m_health = 0f;
+    public float health = 0f;
     [Range(0, 1000)] 
-    public float m_repairPower = 0f;
+    public float repairPower = 0f;
 
     // Engine ---------------------------------------------------------------------------
     [Header("Engine Stats")]
     [Range(0, 20)]
-    public float m_movementSpeed = 0f;
+    public float speed = 0f;
     
     // Weapon ---------------------------------------------------------------------------
     [Header("Weapon Stats")]
     [Range(0, 100)]
-    public int m_attackFireCount = 0;
+    public int attackFireCount = 0;   // 발사당 빔, 미사일, 함재기 수
     [Range(0, 100)]
-    public float m_attackPower = 0f;
+    public float attackPower = 0f;
     [Range(0.1f, 10f)]
-    public float m_attackCoolTime = 0f;
+    public float attackCoolTime = 0f; // 발사 쿨타임 빔, 미사일, 함재기
     [Header("Weapon Projectile Stats")]
     [Range(0.01f, 5f)]
-    public float m_projectileWidth = 0f;
+    public float projectileWidth = 0f;
     [Range(1f, 5000f)]
-    public float m_projectileSpeed = 0f;
+    public float projectileSpeed = 0f;
     
     // Hanger ------------------------------------------------------------------------------------------------
     [Header("Hanger Stats")]    
     [Range(0, 1000)]
-    public int m_hangarCapability = 5;
+    public int airCount = 5;             // 총 함재기 수
     [Range(0, 1000)]
-    public int m_scoutCapability = 5; 
-    [Range(0, 10)]
-    public float m_launchCool = 1f; // 함재기 발사 쿨타임
-    [Range(0, 10)]
-    public int m_launchCount = 1;   // 함재기 회당 발사 댓수
-    [Range(0, 1000)]
-    public float m_maintenanceTime = 10f;   // 돌아온 함재기 재출격 까지 정비 시간, 함재기당 재출격에 걸리는 시간
+    public float maintenanceTime = 10f;  // 돌아온 함재기 재출격 까지 정비 시간, 함재기당 재출격에 걸리는 시간
     [Header("Aircraft Stats")]
     [Range(1, 1000)]
-    public float m_aircraftLaunchStraightDistance = 100f;    // 함재기 출격시 직진 거리
+    public float aircraftLaunchStraightDistance = 100f;    // 함재기 출격시 직진 거리
     [Range(1, 1000)]
-    public float m_aircraftHealth = 50f;    // 함재기 체력
+    public float aircraftHealth = 50f;    // 함재기 체력
     [Range(1, 1000)]
-    public float m_aircraftAttackPower = 10f;   // 함재기 공격력
+    public float aircraftAttackPower = 10f;   // 함재기 공격력
     [Range(1, 1000)]
-    public float m_aircraftAttackRange = 100f;   // 함재기 공격 거리
+    public float aircraftAttackRange = 100f;   // 함재기 공격 거리
     [Range(1, 1000)]
-    public float m_aircraftAttackCooldown = 10f;   // 함재기 공격 쿨다운
+    public float aircraftAttackCooldown = 10f;   // 함재기 공격 쿨다운
     [Range(1, 1000)]
-    public float m_aircraftSpeed = 200f;   // 함재기 이동력
+    public float aircraftSpeed = 200f;   // 함재기 이동력
     [Range(1, 100)]
-    public int m_aircraftAmmo = 10; // 함재기 탄약
+    public int aircraftAmmo = 10; // 함재기 탄약
     [Range(1, 1000)]
-    public float m_aircraftDetectionRadius = 200f;   // 함재기 적 함재기 감지거리
+    public float aircraftDetectionRadius = 200f;   // 함재기 적 함재기 감지거리
     [Range(1, 1000)]
-    public float m_aircraftAvoidanceRadius = 200f;   // 함재기 적 회피 거리
+    public float aircraftAvoidanceRadius = 200f;   // 함재기 적 회피 거리
 
 
     
@@ -212,20 +206,20 @@ public class DataTableModule : ScriptableObject
     public void AddModuleDataToTable(ModuleData data)
     {
         ModuleSubTypeGroup group = null;
-        if( data.m_moduleType == EModuleType.body)
-            group = bodyGroups.Find(g => g.subType == data.m_moduleSubType);
-        else if( data.m_moduleType == EModuleType.engine)
-            group = engineGroups.Find(g => g.subType == data.m_moduleSubType);
-        else if( data.m_moduleType == EModuleType.beam)
-            group = beamGroups.Find(g => g.subType == data.m_moduleSubType);
-        else if( data.m_moduleType == EModuleType.missile)
-            group = missileGroups.Find(g => g.subType == data.m_moduleSubType);
-        else if( data.m_moduleType == EModuleType.hanger)
-            group = hangerGroups.Find(g => g.subType == data.m_moduleSubType);
+        if( data.moduleType == EModuleType.body)
+            group = bodyGroups.Find(g => g.subType == data.moduleSubType);
+        else if( data.moduleType == EModuleType.engine)
+            group = engineGroups.Find(g => g.subType == data.moduleSubType);
+        else if( data.moduleType == EModuleType.beam)
+            group = beamGroups.Find(g => g.subType == data.moduleSubType);
+        else if( data.moduleType == EModuleType.missile)
+            group = missileGroups.Find(g => g.subType == data.moduleSubType);
+        else if( data.moduleType == EModuleType.hanger)
+            group = hangerGroups.Find(g => g.subType == data.moduleSubType);
 
         if (group == null)
         {
-            group = new ModuleSubTypeGroup { subType = data.m_moduleSubType };
+            group = new ModuleSubTypeGroup { subType = data.moduleSubType };
             bodyGroups.Add(group);
         }
         group.modules.Add(data);
@@ -238,7 +232,7 @@ public class DataTableModule : ScriptableObject
     {
         ModuleSubTypeGroup group = FindGroup(subType);
         if (group == null) return null;
-        return group.modules.Find(m => m.m_moduleLevel == level);
+        return group.modules.Find(m => m.moduleLevel == level);
     }
 
     // 해당 subType의 최대 레벨 반환 (데이터가 없으면 0)
@@ -462,16 +456,16 @@ public class DataTableModule : ScriptableObject
 
                     var module = new ModuleData
                     {
-                        m_moduleName = $"{subType} Lv.{i}",
-                        m_moduleType = moduleType,
-                        m_moduleSubType = subType,
-                        m_moduleLevel = i,
-                        m_moduleSlots = slotInfos,
-                        m_health = 100f + ((i - 1) * 50f),
-                        m_repairPower = 5f + ((i - 1) * 1f),
-                        //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.body_battle ? 100 : 1000) << (i - 1), 0, 0, 0),
-                        m_description = $"{subType}-class hull module level {i}"
+                        moduleName = $"{subType} Lv.{i}",
+                        moduleType = moduleType,
+                        moduleSubType = subType,
+                        moduleLevel = i,
+                        moduleSlots = slotInfos,
+                        health = 100f + ((i - 1) * 50f),
+                        repairPower = 5f + ((i - 1) * 1f),
+                        //upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
+                        upgradeCost = new CostStruct(1, (subType == EModuleSubType.body_battle ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        description = $"{subType}-class hull module level {i}"
                     };
                     AddModuleDataToTable(module);
                 }
@@ -482,15 +476,15 @@ public class DataTableModule : ScriptableObject
                 {
                     var module = new ModuleData
                     {
-                        m_moduleName = $"{subType} Lv.{i}",
-                        m_moduleType = moduleType,
-                        m_moduleSubType = subType,
-                        m_moduleLevel = i,
-                        m_health = 0,
-                        m_movementSpeed = 50f + (i * 5f),
-                        //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.engine_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
-                        m_description = $"{subType} LV.{i}"
+                        moduleName = $"{subType} Lv.{i}",
+                        moduleType = moduleType,
+                        moduleSubType = subType,
+                        moduleLevel = i,
+                        health = 0,
+                        speed = 50f + (i * 5f),
+                        //upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
+                        upgradeCost = new CostStruct(1, (subType == EModuleSubType.engine_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        description = $"{subType} LV.{i}"
                     };
                     AddModuleDataToTable(module);
                 }
@@ -501,19 +495,19 @@ public class DataTableModule : ScriptableObject
                 {
                     var module = new ModuleData
                     {
-                        m_moduleName = $"{subType} Lv.{i}",
-                        m_moduleType = moduleType,
-                        m_moduleSubType = subType,
-                        m_moduleLevel = i,
-                        m_health = 0,
-                        m_attackFireCount = (subType == EModuleSubType.beam_standard) ? 1 : 2,
-                        m_attackPower = 10f + (i * 5f),                        
-                        m_attackCoolTime = 3.2f - (i * 0.05f),
-                        m_projectileWidth = 5f/* + (i * 0.5f)*/,
-                        m_projectileSpeed = 2000f/* + (i * 50.0f)*/,
-                        //m_upgradeCost = new CostStruct(i,100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.beam_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
-                        m_description = $"{subType} Lv.{i}"
+                        moduleName = $"{subType} Lv.{i}",
+                        moduleType = moduleType,
+                        moduleSubType = subType,
+                        moduleLevel = i,
+                        health = 0,
+                        attackFireCount = (subType == EModuleSubType.beam_standard) ? 1 : 2,
+                        attackPower = 10f + (i * 5f),                        
+                        attackCoolTime = 3.2f - (i * 0.05f),
+                        projectileWidth = 5f/* + (i * 0.5f)*/,
+                        projectileSpeed = 2000f/* + (i * 50.0f)*/,
+                        //upgradeCost = new CostStruct(i,100 << (i - 1), 0, 0, 0),
+                        upgradeCost = new CostStruct(1, (subType == EModuleSubType.beam_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        description = $"{subType} Lv.{i}"
                     };
                     AddModuleDataToTable(module);
                 }
@@ -524,19 +518,19 @@ public class DataTableModule : ScriptableObject
                 {
                     var module = new ModuleData
                     {
-                        m_moduleName = $"{subType} Lv.{i}",
-                        m_moduleType = moduleType,
-                        m_moduleSubType = subType,
-                        m_moduleLevel = i,
-                        m_health = 0,
-                        m_attackFireCount = (subType == EModuleSubType.missile_standard) ? 1 : 2,
-                        m_attackPower = 10f + (i * 5f),
-                        m_attackCoolTime = 3.2f - (i * 0.05f),
-                        m_projectileWidth = 5f/* + (i * 0.5f)*/,
-                        m_projectileSpeed = 300f/* + (i * 5.0f)*/,
-                        //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.missile_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
-                        m_description = $"{subType} Lv.{i}"
+                        moduleName = $"{subType} Lv.{i}",
+                        moduleType = moduleType,
+                        moduleSubType = subType,
+                        moduleLevel = i,
+                        health = 0,
+                        attackFireCount = (subType == EModuleSubType.missile_standard) ? 1 : 2,
+                        attackPower = 10f + (i * 5f),
+                        attackCoolTime = 3.2f - (i * 0.05f),
+                        projectileWidth = 5f/* + (i * 0.5f)*/,
+                        projectileSpeed = 300f/* + (i * 5.0f)*/,
+                        //upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
+                        upgradeCost = new CostStruct(1, (subType == EModuleSubType.missile_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        description = $"{subType} Lv.{i}"
                     };
                     AddModuleDataToTable(module);
                 }
@@ -547,29 +541,28 @@ public class DataTableModule : ScriptableObject
                 {
                     var module = new ModuleData
                     {
-                        m_moduleName = $"{subType} Lv.{i}",
-                        m_moduleType = moduleType,
-                        m_moduleSubType = subType,
-                        m_moduleLevel = i,
-                        m_health = 0,
-                        m_hangarCapability = 2 + (i * 3),
-                        m_scoutCapability = 1 + (i * 2),
-                        m_launchCool = 3.0f - (i * 0.15f),
-                        m_launchCount = 1 + (i / 4),
-                        m_maintenanceTime = 15.0f - (i * 0.5f),
-                        m_aircraftLaunchStraightDistance = 100f + (i * 5f),
-                        m_aircraftHealth = 30f + (i * 10f),
-                        m_aircraftAttackPower = (subType == EModuleSubType.hanger_standard ? 5 : 50) + (i * 3f),
-                        m_aircraftAttackRange = 100f + (i * 5f),
-                        m_aircraftAttackCooldown = (subType == EModuleSubType.hanger_standard ? 4.1f : 2.1f) - (i * 0.1f),
-                        //m_aircraftAttackCooldown = 1f,
-                        m_aircraftSpeed = 300f + (i * 5f),
-                        m_aircraftAmmo = 10 + (i * 2),
-                        m_aircraftDetectionRadius = 200f + (i * 10f),
-                        m_aircraftAvoidanceRadius = 200f + (i * 5f),
-                        //m_upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
-                        m_upgradeCost = new CostStruct(1, (subType == EModuleSubType.hanger_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
-                        m_description = $"{subType} hanger bay level {i}"
+                        moduleName = $"{subType} Lv.{i}",
+                        moduleType = moduleType,
+                        moduleSubType = subType,
+                        moduleLevel = i,
+                        health = 0,
+                        airCount = 2 + (i * 3),
+                        attackCoolTime = 3.0f - (i * 0.15f),
+                        attackFireCount = 1 + (i / 4),
+                        maintenanceTime = 15.0f - (i * 0.5f),
+                        aircraftLaunchStraightDistance = 100f + (i * 5f),
+                        aircraftHealth = 30f + (i * 10f),
+                        aircraftAttackPower = (subType == EModuleSubType.hanger_standard ? 5 : 50) + (i * 3f),
+                        aircraftAttackRange = 100f + (i * 5f),
+                        aircraftAttackCooldown = (subType == EModuleSubType.hanger_standard ? 4.1f : 2.1f) - (i * 0.1f),
+                        //aircraftAttackCooldown = 1f,
+                        aircraftSpeed = 300f + (i * 5f),
+                        aircraftAmmo = 10 + (i * 2),
+                        aircraftDetectionRadius = 200f + (i * 10f),
+                        aircraftAvoidanceRadius = 200f + (i * 5f),
+                        //upgradeCost = new CostStruct(i, 100 << (i - 1), 0, 0, 0),
+                        upgradeCost = new CostStruct(1, (subType == EModuleSubType.hanger_standard ? 100 : 1000) << (i - 1), 0, 0, 0),
+                        description = $"{subType} hanger bay level {i}"
                     };
                     AddModuleDataToTable(module);
                 }

@@ -206,7 +206,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 튜토리얼 완료 후 게임플레이 시작
     private void StartGameplay()
     {
-        //StartCoroutine(SpawnMineral());
+        
     }
 
     private void PassTutorial()
@@ -635,37 +635,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
 
 
-    private IEnumerator SpawnMineral()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(DataManager.Instance.m_dataTableConfig.gameSettings.m_explorationInterval);
-            
-            // Dynamic space resource prefab loading
-            GameObject mineralPrefab = LoadSpaceResourcePrefab("", "Mineral");
-                
-            if (mineralPrefab != null)
-            {
-                GameObject tempObject = Instantiate(mineralPrefab, RandomPosition(), Quaternion.identity);
-                SpaceMineral temp = tempObject.GetComponent<SpaceMineral>();
-                if (temp != null && m_myFleet != null && m_myFleet.GetRandomAliveShip() != null)
-                {
-                    //temp.Initialize(m_myFleet.GetRandomAliveShip());
-                }
-                m_mineralList.Add(temp);
-                Debug.Log($"Space resource created: {tempObject.name}");
-            }
-            else
-            {
-                Debug.LogWarning("Cannot find mineral prefab. Creating default mineral.");
-                CreateDefaultMineral();
-            }
-        }
-    }
     
-    /// <summary>
-    /// Create default mineral when prefab is missing
-    /// </summary>
+    
+    
+    // Create default mineral when prefab is missing
     private void CreateDefaultMineral()
     {
         GameObject defaultMineral = new GameObject("DefaultMineral");

@@ -62,14 +62,14 @@ public class ModuleBeam : ModuleBase
         }
 
         // 복원된 데이터로 스탯 설정
-        m_health = moduleData.m_health;
-        m_healthMax = moduleData.m_health;
-        m_attackPower = moduleData.m_attackPower;
-        m_attackFireCount = moduleData.m_attackFireCount;
-        m_attackCoolTime = moduleData.m_attackCoolTime;
+        m_health = moduleData.health;
+        m_healthMax = moduleData.health;
+        m_attackPower = moduleData.attackPower;
+        m_attackFireCount = moduleData.attackFireCount;
+        m_attackCoolTime = moduleData.attackCoolTime;
 
         // 업그레이드 비용 설정
-        m_upgradeCost = moduleData.m_upgradeCost;
+        m_upgradeCost = moduleData.upgradeCost;
 
         m_lastAttackTime = 0f;
 
@@ -84,46 +84,13 @@ public class ModuleBeam : ModuleBase
             m_parentBody.AddBeam(this);
     }
 
-    // // ModuleInfo 깊은 복사 (원본 FleetInfo 보호용)
-    // private ModuleInfo DeepCopyModuleInfo(ModuleInfo source)
-    // {
-    //     var copy = new ModuleInfo
-    //     {
-    //         moduleType = source.moduleType,
-    //         moduleSubType = source.moduleSubType,
-    //         moduleLevel = source.moduleLevel,
-    //         bodyIndex = source.bodyIndex,
-    //         slotIndex = source.slotIndex
-    //     };
-    //     return copy;
-    // }
-
-    // private List<ModuleInfo> CopyModuleInfoList(List<ModuleInfo> source)
-    // {
-    //     if (source == null) return new List<ModuleInfo>();
-    //     var copy = new List<ModuleInfo>(source.Count);
-    //     for (int i = 0; i < source.Count; i++)
-    //     {
-    //         var s = source[i];
-    //         copy.Add(new ModuleInfo
-    //         {
-    //             moduleType = s.moduleType,
-    //             moduleSubType = s.moduleSubType,
-    //             moduleLevel = s.moduleLevel,
-    //             bodyIndex = s.bodyIndex,
-    //             slotIndex = s.slotIndex
-    //         });
-    //     }
-    //     return copy;
-    // }
-
     private void InitializeSubType(ModuleData moduleData)
     {
         switch (m_moduleInfo.moduleSubType)
         {
             case EModuleSubType.beam_standard:
             case EModuleSubType.beam_advanced:
-                for(int i=0; i< moduleData.m_attackFireCount; i++)
+                for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
                     launcher.InitializeLauncherBeam(moduleData, i);
@@ -203,12 +170,12 @@ public class ModuleBeam : ModuleBase
         if (moduleData == null) return;
         
         // 스탯 갱신
-        m_healthMax = moduleData.m_health;
+        m_healthMax = moduleData.health;
         m_health = Mathf.Min(m_health, m_healthMax);
-        m_attackPower = moduleData.m_attackPower;
-        m_attackCoolTime = moduleData.m_attackCoolTime;
-        m_attackFireCount = moduleData.m_attackFireCount;
-        m_upgradeCost = moduleData.m_upgradeCost;
+        m_attackPower = moduleData.attackPower;
+        m_attackCoolTime = moduleData.attackCoolTime;
+        m_attackFireCount = moduleData.attackFireCount;
+        m_upgradeCost = moduleData.upgradeCost;
     }
 
     public override int GetModuleBodyIndex()
@@ -245,7 +212,7 @@ public class ModuleBeam : ModuleBase
         if (moduleDataCurrent == null) return;
 
         statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
+        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.attackPower:F0}");
         statRows[3].SetRow("empty_text", "");
         statRows[4].SetRow("empty_text", "");
         statRows[5].SetRow("empty_text", "");

@@ -9,21 +9,21 @@ using UnityEditor;
 [System.Serializable]
 public class ResearchNodeData
 {
-    public string m_researchId; // 고유 식별자 겸 로컬라이제이션 키
-    public List<string> m_prerequisiteIds = new List<string>();
-    public CostStruct m_researchCost = new CostStruct();
-    [Newtonsoft.Json.JsonIgnore] public Vector2 m_uiPosition;
+    public string researchId; // 고유 식별자 겸 로컬라이제이션 키
+    public List<string> prerequisiteIds = new List<string>();
+    public CostStruct researchCost = new CostStruct();
+    [Newtonsoft.Json.JsonIgnore] public Vector2 uiPosition;
 }
 
 [System.Serializable]
 public class ModuleResearchData : ResearchNodeData
 {
-    public EModuleType m_moduleType = EModuleType.none;
-    public EModuleSubType m_moduleSubType = EModuleSubType.none;
+    public EModuleType moduleType = EModuleType.none;
+    public EModuleSubType moduleSubType = EModuleSubType.none;
 
     [Header("Description")]
     [TextArea(2, 4)]
-    public string m_description = "Module Research";
+    public string description = "Module Research";
 }
 
 [CreateAssetMenu(fileName = "DataTableResearch", menuName = "Custom/DataTableResearch")]
@@ -38,25 +38,25 @@ public class DataTableResearch : ScriptableObject
 
     public ModuleResearchData GetResearchData(EModuleSubType subType)
     {
-        return researchDataList.Find(r => r.m_moduleSubType == subType);
+        return researchDataList.Find(r => r.moduleSubType == subType);
     }
 
     public CostStruct GetResearchCost(EModuleSubType subType)
     {
         var data = GetResearchData(subType);
-        return data?.m_researchCost ?? new CostStruct();
+        return data?.researchCost ?? new CostStruct();
     }
 
     // 선행 연구 조건을 모두 충족하는지 확인
     public bool ArePrerequisitesMet(string researchId, HashSet<string> completedResearchIds)
     {
-        var data = researchDataList.Find(r => r.m_researchId == researchId);
+        var data = researchDataList.Find(r => r.researchId == researchId);
         if (data == null) return false;
-        if (data.m_prerequisiteIds == null || data.m_prerequisiteIds.Count == 0) return true;
+        if (data.prerequisiteIds == null || data.prerequisiteIds.Count == 0) return true;
 
-        for (int i = 0; i < data.m_prerequisiteIds.Count; i++)
+        for (int i = 0; i < data.prerequisiteIds.Count; i++)
         {
-            if (completedResearchIds.Contains(data.m_prerequisiteIds[i]) == false)
+            if (completedResearchIds.Contains(data.prerequisiteIds[i]) == false)
                 return false;
         }
         return true;
@@ -65,7 +65,7 @@ public class DataTableResearch : ScriptableObject
     // 특정 모듈 타입의 연구 데이터만 반환
     public List<ModuleResearchData> GetResearchDataByType(EModuleType moduleType)
     {
-        return researchDataList.FindAll(r => r.m_moduleType == moduleType);
+        return researchDataList.FindAll(r => r.moduleType == moduleType);
     }
 
     public void InitializeResearchData()
@@ -102,13 +102,13 @@ public class DataTableResearch : ScriptableObject
 
             var researchData = new ModuleResearchData
             {
-                m_researchId = subType.ToString(),
-                m_moduleType = moduleType,
-                m_moduleSubType = subType,
-                m_prerequisiteIds = prerequisiteIds,
-                m_researchCost = new CostStruct(1, researchCost, 0, 0, 0),
-                m_uiPosition = vector2Position,
-                m_description = $"Research {subType} module technology"
+                researchId = subType.ToString(),
+                moduleType = moduleType,
+                moduleSubType = subType,
+                prerequisiteIds = prerequisiteIds,
+                researchCost = new CostStruct(1, researchCost, 0, 0, 0),
+                uiPosition = vector2Position,
+                description = $"Research {subType} module technology"
             };
 
             researchDataList.Add(researchData);

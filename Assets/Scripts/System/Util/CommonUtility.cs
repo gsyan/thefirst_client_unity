@@ -119,19 +119,19 @@ public static class CommonUtility
         // 모듈 타입에 따라 능력치 설정
         if (moduleInfo.moduleType == EModuleType.beam || moduleInfo.moduleType == EModuleType.missile)
         {
-            stats.attack_power = moduleData.m_attackPower * moduleData.m_attackFireCount;// 공격력 × 발사 개수
+            stats.attack_power = moduleData.attackPower * moduleData.attackFireCount;// 공격력 × 발사 개수
             stats.totalWeapons = 1;
         }
         else if (moduleInfo.moduleType == EModuleType.hanger)
         {
-            stats.aircraft_attack_power = (int)moduleData.m_aircraftAttackPower;    // 함재기 공격력
-            stats.aircraft_count = moduleData.m_hangarCapability;                   // 함재기 수
-            stats.aircraft_launch_count = moduleData.m_launchCount;                 // 함재기 발진 수
+            stats.aircraft_attack_power = (int)moduleData.aircraftAttackPower;  // 함재기 공격력
+            stats.aircraft_count = moduleData.airCount;                         // 함재기 수
+            stats.aircraft_launch_count = moduleData.attackFireCount;           // 함재기 발진 수
             stats.totalWeapons = 1;
         }
         else if (moduleInfo.moduleType == EModuleType.engine)
         {
-            stats.speed_power = moduleData.m_movementSpeed;
+            stats.speed_power = moduleData.speed;
             stats.totalEngines = 1;
         }
 
@@ -147,8 +147,8 @@ public static class CommonUtility
         ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodyInfo.moduleSubType, bodyInfo.moduleLevel);
         if (bodyData != null)
         {
-            stats.health_power = bodyData.m_health;
-            stats.repair_power = bodyData.m_repairPower;
+            stats.health_power = bodyData.health;
+            stats.repair_power = bodyData.repairPower;
         }
 
         return stats;
@@ -283,24 +283,24 @@ public static class CommonUtility
 
         if (moduleType == EModuleType.body)
         {
-            labels.Add("health_power"); values.Add(V(cur.m_health, nxt?.m_health ?? 0f));
-            labels.Add("repair_power"); values.Add(V(cur.m_repairPower, nxt?.m_repairPower ?? 0f));
+            labels.Add("health_power"); values.Add(V(cur.health, nxt?.health ?? 0f));
+            labels.Add("repair_power"); values.Add(V(cur.repairPower, nxt?.repairPower ?? 0f));
         }
         else if (moduleType == EModuleType.engine)
         {
-            labels.Add("speed_power"); values.Add(V(cur.m_movementSpeed, nxt?.m_movementSpeed ?? 0f));
+            labels.Add("speed_power"); values.Add(V(cur.speed, nxt?.speed ?? 0f));
         }
         else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
         {
-            labels.Add("attack_power"); values.Add(V(cur.m_attackPower, nxt?.m_attackPower ?? 0f));
+            labels.Add("attack_power"); values.Add(V(cur.attackPower, nxt?.attackPower ?? 0f));
         }
         else if (moduleType == EModuleType.hanger)
         {
-            labels.Add("aircraft_attack_power"); values.Add(V(cur.m_aircraftAttackPower, nxt?.m_aircraftAttackPower ?? 0f));
-            labels.Add("aircraft_health_power"); values.Add(V(cur.m_aircraftHealth, nxt?.m_aircraftHealth ?? 0f));
-            labels.Add("aircraft_speed_power"); values.Add(V(cur.m_aircraftSpeed, nxt?.m_aircraftSpeed ?? 0f));
-            labels.Add("aircraft_count"); values.Add(V(cur.m_hangarCapability, nxt?.m_hangarCapability ?? 0f));
-            labels.Add("aircraft_launch_count"); values.Add(V(cur.m_launchCount, nxt?.m_launchCount ?? 0f));
+            labels.Add("aircraft_attack_power"); values.Add(V(cur.aircraftAttackPower, nxt?.aircraftAttackPower ?? 0f));
+            labels.Add("aircraft_health_power"); values.Add(V(cur.aircraftHealth, nxt?.aircraftHealth ?? 0f));
+            labels.Add("aircraft_speed_power"); values.Add(V(cur.aircraftSpeed, nxt?.aircraftSpeed ?? 0f));
+            labels.Add("aircraft_count"); values.Add(V(cur.airCount, nxt?.airCount ?? 0f));
+            labels.Add("aircraft_launch_count"); values.Add(V(cur.attackFireCount, nxt?.attackFireCount ?? 0f));
         }
     }
 

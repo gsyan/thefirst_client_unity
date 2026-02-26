@@ -140,10 +140,10 @@ public class ModuleBase : MonoBehaviour
         ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
         if (moduleDataCurrent == null) return;
         statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.m_attackPower:F0}");
-        statRows[3].SetRow("health_power", $"{moduleDataCurrent.m_health:F0}");
-        statRows[4].SetRow("speed_power", $"{moduleDataCurrent.m_movementSpeed:F0}");
-        statRows[5].SetRow("repair_power", $"{moduleDataCurrent.m_repairPower:F0}");
+        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.attackPower:F0}");
+        statRows[3].SetRow("health_power", $"{moduleDataCurrent.health:F0}");
+        statRows[4].SetRow("speed_power", $"{moduleDataCurrent.speed:F0}");
+        statRows[5].SetRow("repair_power", $"{moduleDataCurrent.repairPower:F0}");
         statRows[6].SetRow("empty_text", "");
     }
 

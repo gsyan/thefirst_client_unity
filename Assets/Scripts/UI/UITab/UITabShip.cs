@@ -307,7 +307,7 @@ public class UITabShip : UITabBase
         }
 
         // 확인 팝업 표시
-        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.m_moduleUnlockPrice;
+        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
         CostStruct cost = new CostStruct { mineral = unlockPrice };
         string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
         m_selectedModule.SetModuleStatRows(out List<string> leftLabels, out List<string> leftValues, showNext: false);
@@ -322,7 +322,7 @@ public class UITabShip : UITabBase
 
     private void ExecuteUnlockModule()
     {
-        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.m_moduleUnlockPrice;
+        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
         long playerMineral = m_myCharacter.GetMineral();
         if (playerMineral < unlockPrice)
         {

@@ -42,7 +42,7 @@ public class ProjectileMissile : ProjectileBase
             Vector3 targetDirection = (m_saveTargetPosition - transform.position).normalized;
             float dotProduct = Vector3.Dot(transform.forward, targetDirection);
             float applyDot = dotProduct * dotProduct;
-            m_currentSpeed = m_moduleData.m_projectileSpeed * Mathf.Max(0.1f, applyDot);
+            m_currentSpeed = m_moduleData.projectileSpeed * Mathf.Max(0.1f, applyDot);
             
             if (m_lifeTime < m_initialFlightDuration)
             {

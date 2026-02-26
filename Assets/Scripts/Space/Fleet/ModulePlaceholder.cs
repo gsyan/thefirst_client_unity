@@ -75,7 +75,7 @@ public class ModulePlaceholder : ModuleBase
         
         if (moduleType == EModuleType.engine)
         {
-            statRows[2].SetRow("speed_power", $"{moduleData.m_movementSpeed:F0}");
+            statRows[2].SetRow("speed_power", $"{moduleData.speed:F0}");
             statRows[3].SetRow("empty_text", "");
             statRows[4].SetRow("empty_text", "");
             statRows[5].SetRow("empty_text", "");
@@ -83,7 +83,7 @@ public class ModulePlaceholder : ModuleBase
         }
         else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
         {
-            statRows[2].SetRow("attack_power", $"{moduleData.m_attackPower:F0}");
+            statRows[2].SetRow("attack_power", $"{moduleData.attackPower:F0}");
             statRows[3].SetRow("empty_text", "");
             statRows[4].SetRow("empty_text", "");
             statRows[5].SetRow("empty_text", "");
@@ -91,11 +91,11 @@ public class ModulePlaceholder : ModuleBase
         }
         else if (moduleType == EModuleType.hanger)
         {
-            statRows[2].SetRow("aircraft_attack_power", $"{moduleData.m_aircraftAttackPower:F0}");
-            statRows[3].SetRow("aircraft_health_power", $"{moduleData.m_aircraftHealth:F0}");
-            statRows[4].SetRow("aircraft_speed_power", $"{moduleData.m_aircraftSpeed:F0}");
-            statRows[5].SetRow("aircraft_count", $"{moduleData.m_hangarCapability}");
-            statRows[6].SetRow("aircraft_launch_count", $"{moduleData.m_launchCount}");
+            statRows[2].SetRow("aircraft_attack_power", $"{moduleData.aircraftAttackPower:F0}");
+            statRows[3].SetRow("aircraft_health_power", $"{moduleData.aircraftHealth:F0}");
+            statRows[4].SetRow("aircraft_speed_power", $"{moduleData.aircraftSpeed:F0}");
+            statRows[5].SetRow("aircraft_count", $"{moduleData.airCount}");
+            statRows[6].SetRow("aircraft_launch_count", $"{moduleData.attackFireCount}");
         }
     }
 
