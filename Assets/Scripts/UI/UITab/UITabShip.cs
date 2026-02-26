@@ -579,9 +579,12 @@ public class UITabShip : UITabBase
 	    foreach (var item in m_moduleItemActive)
 		item.SetSelected_ScrollViewModuleItem(false);
 
-        // 새로 생성된 모듈 재선택
+        // 새로 생성된 모듈 재선택 (버튼 람다가 파괴된 오브젝트를 캡처하므로 반드시 버튼 먼저 갱신)
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == upgradeData.shipId)
-		ReselectReplacedModule(ship, upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex);
+        {
+            PopulateModuleSelectButtons();
+            ReselectReplacedModule(ship, upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex);
+        }
     }
 
     private void UpdateModuleStatsDisplay()

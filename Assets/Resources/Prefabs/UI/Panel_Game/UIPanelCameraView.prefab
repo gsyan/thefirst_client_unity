@@ -539,13 +539,13 @@ MonoBehaviour:
   items:
   - button: {fileID: 2834465330063948986}
     activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
   - button: {fileID: 6286616633195763111}
     activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
   - button: {fileID: 4295239486024421270}
     activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
   defaultIndex: 0
 --- !u!1 &7146030591017988328
 GameObject:

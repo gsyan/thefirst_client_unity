@@ -13,154 +13,128 @@ MonoBehaviour:
   m_Name: DataTableResearch
   m_EditorClassIdentifier: 
   researchDataList:
-  - m_researchId: body_battle
-    m_prerequisiteIds: []
-    m_researchCost:
+  - researchId: body_t1_std
+    prerequisiteIds: []
+    researchCost:
       techLevel: 1
       mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 80, y: -40}
-    m_moduleType: 1
-    m_moduleSubType: 1001
-    m_description: Research body_battle module technology
-  - m_researchId: body_aircraft
-    m_prerequisiteIds:
-    - body_battle
-    m_researchCost:
+    uiPosition: {x: 80, y: -40}
+    moduleType: 1
+    moduleSubType: 1001
+    description: Research body_t1_std module technology
+  - researchId: body_t1_adv
+    prerequisiteIds:
+    - body_t1_std
+    researchCost:
       techLevel: 1
       mineral: 100000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 280, y: -40}
-    m_moduleType: 1
-    m_moduleSubType: 1002
-    m_description: Research body_aircraft module technology
-  - m_researchId: body_repair
-    m_prerequisiteIds:
-    - body_aircraft
-    m_researchCost:
-      techLevel: 1
-      mineral: 1000000
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
-    m_uiPosition: {x: 480, y: -40}
-    m_moduleType: 1
-    m_moduleSubType: 1003
-    m_description: Research body_repair module technology
-  - m_researchId: engine_standard
-    m_prerequisiteIds: []
-    m_researchCost:
+    uiPosition: {x: 280, y: -40}
+    moduleType: 1
+    moduleSubType: 1002
+    description: Research body_t1_adv module technology
+  - researchId: engine_t1_std
+    prerequisiteIds: []
+    researchCost:
       techLevel: 1
       mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 80, y: -40}
-    m_moduleType: 2
-    m_moduleSubType: 2001
-    m_description: Research engine_standard module technology
-  - m_researchId: engine_booster
-    m_prerequisiteIds:
-    - engine_standard
-    m_researchCost:
+    uiPosition: {x: 80, y: -40}
+    moduleType: 2
+    moduleSubType: 2001
+    description: Research engine_t1_std module technology
+  - researchId: engine_t1_adv
+    prerequisiteIds:
+    - engine_t1_std
+    researchCost:
       techLevel: 1
       mineral: 100000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 280, y: -40}
-    m_moduleType: 2
-    m_moduleSubType: 2002
-    m_description: Research engine_booster module technology
-  - m_researchId: engine_warp
-    m_prerequisiteIds:
-    - engine_booster
-    m_researchCost:
-      techLevel: 1
-      mineral: 1000000
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
-    m_uiPosition: {x: 480, y: -40}
-    m_moduleType: 2
-    m_moduleSubType: 2003
-    m_description: Research engine_warp module technology
-  - m_researchId: beam_standard
-    m_prerequisiteIds: []
-    m_researchCost:
+    uiPosition: {x: 280, y: -40}
+    moduleType: 2
+    moduleSubType: 2002
+    description: Research engine_t1_adv module technology
+  - researchId: beam_t1_std
+    prerequisiteIds: []
+    researchCost:
       techLevel: 1
       mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 80, y: -40}
-    m_moduleType: 3
-    m_moduleSubType: 3001
-    m_description: Research beam_standard module technology
-  - m_researchId: beam_advanced
-    m_prerequisiteIds:
-    - beam_standard
-    m_researchCost:
+    uiPosition: {x: 80, y: -40}
+    moduleType: 3
+    moduleSubType: 3001
+    description: Research beam_t1_std module technology
+  - researchId: beam_t1_adv
+    prerequisiteIds:
+    - beam_t1_std
+    researchCost:
       techLevel: 1
       mineral: 100000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 280, y: -40}
-    m_moduleType: 3
-    m_moduleSubType: 3002
-    m_description: Research beam_advanced module technology
-  - m_researchId: missile_standard
-    m_prerequisiteIds: []
-    m_researchCost:
+    uiPosition: {x: 280, y: -40}
+    moduleType: 3
+    moduleSubType: 3002
+    description: Research beam_t1_adv module technology
+  - researchId: missile_t1_std
+    prerequisiteIds: []
+    researchCost:
       techLevel: 1
       mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 80, y: -40}
-    m_moduleType: 4
-    m_moduleSubType: 4001
-    m_description: Research missile_standard module technology
-  - m_researchId: missile_advanced
-    m_prerequisiteIds:
-    - missile_standard
-    m_researchCost:
+    uiPosition: {x: 80, y: -40}
+    moduleType: 4
+    moduleSubType: 4001
+    description: Research missile_t1_std module technology
+  - researchId: missile_t1_adv
+    prerequisiteIds:
+    - missile_t1_std
+    researchCost:
       techLevel: 1
       mineral: 100000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 280, y: -40}
-    m_moduleType: 4
-    m_moduleSubType: 4002
-    m_description: Research missile_advanced module technology
-  - m_researchId: hanger_standard
-    m_prerequisiteIds: []
-    m_researchCost:
+    uiPosition: {x: 280, y: -40}
+    moduleType: 4
+    moduleSubType: 4002
+    description: Research missile_t1_adv module technology
+  - researchId: hanger_t1_std
+    prerequisiteIds: []
+    researchCost:
       techLevel: 1
       mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 80, y: -40}
-    m_moduleType: 5
-    m_moduleSubType: 5001
-    m_description: Research hanger_standard module technology
-  - m_researchId: hanger_advanced
-    m_prerequisiteIds:
-    - hanger_standard
-    m_researchCost:
+    uiPosition: {x: 80, y: -40}
+    moduleType: 5
+    moduleSubType: 5001
+    description: Research hanger_t1_std module technology
+  - researchId: hanger_t1_adv
+    prerequisiteIds:
+    - hanger_t1_std
+    researchCost:
       techLevel: 1
       mineral: 100000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    m_uiPosition: {x: 280, y: -40}
-    m_moduleType: 5
-    m_moduleSubType: 5002
-    m_description: Research hanger_advanced module technology
+    uiPosition: {x: 280, y: -40}
+    moduleType: 5
+    moduleSubType: 5002
+    description: Research hanger_t1_adv module technology
