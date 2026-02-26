@@ -144,7 +144,7 @@ public class DataTableZoneEditor : Editor
                     moduleLevel = moduleLevel,
                     skyboxMaterial = skyboxMat,
                     zoneClearCount = stage * 2,
-                    delayBeforeWave = 5f,
+                    delayBeforeSpawn = 3f,
                     enemyShipConfigs = new List<EnemyShipConfig>(),
                     killRewardMineral = 100f + (shipCount - 1) * 100,
                     killRewardMineralRare = 0,
@@ -414,7 +414,7 @@ public class DataTableZoneEditor : Editor
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
             zone.zoneClearCount = EditorGUILayout.IntField("클리어 카운트 (라운드 수)", zone.zoneClearCount);
-            zone.delayBeforeWave = EditorGUILayout.Slider("라운드 간격 (초)", zone.delayBeforeWave, 0f, 60f);
+            zone.delayBeforeSpawn = EditorGUILayout.Slider("스폰 간격 (초)", zone.delayBeforeSpawn, 0f, 60f);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);

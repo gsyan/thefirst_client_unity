@@ -367,8 +367,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         while (m_currentWaveIndex < m_currentZoneConfig.zoneClearCount)
         {
             // 라운드 시작 전 대기
-            if (m_currentZoneConfig.delayBeforeWave > 0)
-                yield return new WaitForSeconds(m_currentZoneConfig.delayBeforeWave);
+            if (m_currentZoneConfig.delayBeforeSpawn > 0)
+                yield return new WaitForSeconds(m_currentZoneConfig.delayBeforeSpawn);
 
             SpawnEnemyFleetsFromConfigs(m_currentZoneConfig.enemyShipConfigs);
             EventManager.TriggerWaveStarted(m_currentWaveIndex + 1, m_currentZoneConfig.zoneClearCount);

@@ -315,11 +315,8 @@ public class SpaceShip : MonoBehaviour
             }
         }
 
-
         OnSpaceShipDestroyed();
         Destroy(gameObject);
-
-
     }
 
     // 함선 파괴 시 호출

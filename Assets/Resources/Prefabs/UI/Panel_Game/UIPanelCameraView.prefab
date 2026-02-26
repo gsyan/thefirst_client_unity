@@ -522,7 +522,6 @@ MonoBehaviour:
   bMainPanel: 0
   bHideCurWhenActive: 0
   bCameraMove: 0
-  m_textCameraView: {fileID: 0}
   m_cameraViewCycleButton: {fileID: 0}
   buttonGroup: {fileID: 3861254330700913340}
 --- !u!114 &3861254330700913340
@@ -539,13 +538,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - button: {fileID: 2834465330063948986}
-    activeColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
     inactiveColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   - button: {fileID: 6286616633195763111}
-    activeColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
     inactiveColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   - button: {fileID: 4295239486024421270}
-    activeColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
     inactiveColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   defaultIndex: 0
 --- !u!1 &7146030591017988328
