@@ -211,10 +211,85 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private void PassTutorial()
     {
-        // 스토리 튜토리얼 완료 → 자원 패널 표시
+        CheckOfflineHarvestAndShowPanels();
+    }
+
+    // collectDateTime 기준 10분 이상 미수확 + clearedZone 있으면 수확 팝업 표시
+    private void CheckOfflineHarvestAndShowPanels()
+    {
+        var charInfo = DataManager.Instance.m_currentCharacter?.m_characterInfo;
+        if (charInfo != null
+            && !string.IsNullOrEmpty(charInfo.clearedZone)
+            && !string.IsNullOrEmpty(charInfo.collectDateTime)
+            && GetElapsedSecondsFromCollect(charInfo.collectDateTime) > 600f) // 10분
+        {
+            ShowOfflineHarvestPopup();
+            return;
+        }
+        ShowGamePanels();
+    }
+
+    private void ShowGamePanels()
+    {
         UIManager.Instance.ShowPanel("UIPanelMineral");
-        // 자원 튜토리얼 완료 → 메인 패널 표시
         UIManager.Instance.ShowMainPanel();
+    }
+
+    private float GetElapsedSecondsFromCollect(string collectDateTimeStr)
+    {
+        if (DateTime.TryParse(collectDateTimeStr, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime collectDt))
+            return (float)(DateTime.UtcNow - collectDt).TotalSeconds;
+        return 0f;
+    }
+
+    // 접속 시 자동 수확 → 결과 팝업(경과 시간 + 수집 광물량) 표시
+    private void ShowOfflineHarvestPopup()
+    {
+        var charInfo = DataManager.Instance.m_currentCharacter.m_characterInfo;
+        float elapsedSec = GetElapsedSecondsFromCollect(charInfo.collectDateTime);
+        long hours = (long)(elapsedSec / 3600);
+        long minutes = (long)((elapsedSec % 3600) / 60);
+        string timeStr = hours > 0 ? $"{hours}h {minutes}m" : $"{minutes}m";
+
+        NetworkManager.Instance.CollectZone(new ZoneCollectRequest(), (response) => {
+            if (response.errorCode == (int)ServerErrorCode.SUCCESS && response.data != null)
+            {
+                var character = DataManager.Instance.m_currentCharacter;
+                if (character != null)
+                {
+                    character.m_characterInfo.collectDateTime = response.data.collectDateTime;
+                    if (response.data.rewardInfo != null)
+                    {
+                        character.UpdateMineral(response.data.rewardInfo.remainMineral);
+                        character.UpdateMineralRare(response.data.rewardInfo.remainMineralRare);
+                        character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
+                        character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
+                        ShowHarvestResultPopup(timeStr, response.data.rewardInfo);
+                        return;
+                    }
+                }
+            }
+            ShowGamePanels();
+        });
+    }
+
+    // 수확 결과 팝업: 경과 시간 + 수집량이 있는 광물 종류만 표시
+    private void ShowHarvestResultPopup(string timeStr, CostRemainInfo rewardInfo)
+    {
+        var labels = new List<string> { "exploration_elapsed_time" };
+        var values = new List<string> { timeStr };
+
+        if (rewardInfo.remainMineral > 0)       { labels.Add("mineral_amount");        values.Add(CommonUtility.FormatBigNumber(rewardInfo.remainMineral)); }
+        if (rewardInfo.remainMineralRare > 0)    { labels.Add("mineral_rare_amount");   values.Add(CommonUtility.FormatBigNumber(rewardInfo.remainMineralRare)); }
+        if (rewardInfo.remainMineralExotic > 0)  { labels.Add("mineral_exotic_amount"); values.Add(CommonUtility.FormatBigNumber(rewardInfo.remainMineralExotic)); }
+        if (rewardInfo.remainMineralDark > 0)    { labels.Add("mineral_dark_amount");   values.Add(CommonUtility.FormatBigNumber(rewardInfo.remainMineralDark)); }
+
+        UIManager.Instance.ShowConfirmPopup(
+            LocalizationManager.Instance.Get("exploration_collect_available_title"),
+            "",
+            labels, values, null,
+            () => ShowGamePanels()
+        );
     }
 
 

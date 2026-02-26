@@ -107,7 +107,6 @@ public class UITabShip : UITabBase
 
         m_selectedShip.m_shipOutline.enabled = true;
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
-        EventManager.TriggerCameraFocusTargetChanged(ECameraFocusTarget.camera_focus_my_fleet);
         EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, m_selectedModule);
 
         bShow = true;

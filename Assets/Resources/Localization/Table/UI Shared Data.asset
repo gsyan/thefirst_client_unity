@@ -127,6 +127,14 @@ MonoBehaviour:
     m_Key: explroation_collect_mineral
     m_Metadata:
       m_Items: []
+  - m_Id: 6697022492901376
+    m_Key: exploration_collect_available_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6697022530650112
+    m_Key: exploration_elapsed_time
+    m_Metadata:
+      m_Items: []
   - m_Id: 2924654624636950
     m_Key: research_module
     m_Metadata:
