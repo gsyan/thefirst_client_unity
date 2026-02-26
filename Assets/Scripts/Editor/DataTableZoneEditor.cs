@@ -162,7 +162,7 @@ public class DataTableZoneEditor : Editor
                 {
                     var ship = new EnemyShipConfig
                     {
-                        bodySubType = EModuleSubType.body_battle,
+                        bodySubType = EModuleSubType.body_t1_std,
                         bodyLevel = moduleLevel
                     };
                     RefreshShipModuleSlots(ship);
@@ -426,7 +426,7 @@ public class DataTableZoneEditor : Editor
             {
                 if (zone.enemyShipConfigs == null)
                     zone.enemyShipConfigs = new List<EnemyShipConfig>();
-                var ship = new EnemyShipConfig { bodySubType = EModuleSubType.body_battle, bodyLevel = 1 };
+                var ship = new EnemyShipConfig { bodySubType = EModuleSubType.body_t1_std, bodyLevel = 1 };
                 RefreshShipModuleSlots(ship);
                 zone.enemyShipConfigs.Add(ship);
                 EditorUtility.SetDirty(config);

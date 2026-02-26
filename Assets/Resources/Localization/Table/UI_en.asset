@@ -142,54 +142,6 @@ MonoBehaviour:
     m_Localized: Hanger
     m_Metadata:
       m_Items: []
-  - m_Id: 797857300742144
-    m_Localized: Battle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490880
-    m_Localized: Aircraft
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490881
-    m_Localized: Repair
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490882
-    m_Localized: Standard
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490883
-    m_Localized: Booster
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490884
-    m_Localized: Warp
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490885
-    m_Localized: Beam Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490886
-    m_Localized: Beam Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490887
-    m_Localized: Missile Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490888
-    m_Localized: Missile Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490889
-    m_Localized: Hanger Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490890
-    m_Localized: Hanger Adv
-    m_Metadata:
-      m_Items: []
   - m_Id: 797857342685184
     m_Localized: Max Level
     m_Metadata:
@@ -240,10 +192,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2924654624636934
     m_Localized: Formation List
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636935
-    m_Localized: Add\nShip
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636936
@@ -400,6 +348,54 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5949497835323396
     m_Localized: h
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833240420352
+    m_Localized: T1 Body.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833282363392
+    m_Localized: T1 Body.ADV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833282363393
+    m_Localized: T1 Engine.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833282363394
+    m_Localized: T1 Engine.ADV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833282363395
+    m_Localized: T1 Beam.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833282363396
+    m_Localized: T1 Beam.ADV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833282363397
+    m_Localized: T1 Missile.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833286557696
+    m_Localized: T1 Missile.ADV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833286557697
+    m_Localized: T1 Hanger.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6643833286557698
+    m_Localized: T1 Hanger.ADV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6655868837691392
+    m_Localized: Add\nShip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6655868879634432
+    m_Localized: Add Ship
     m_Metadata:
       m_Items: []
   references:

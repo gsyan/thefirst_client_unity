@@ -133,7 +133,11 @@ public class SpaceShip : MonoBehaviour
     private ModuleBody InitSpaceShipBody(ModuleBodyInfo bodyInfo, List<ModuleBase> savedModules)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType.ToString(), bodyInfo.moduleLevel);
-        if (modulePrefab == null) return null;
+        if (modulePrefab == null)
+        {
+            Debug.LogError("No prefab");
+            return null;  
+        } 
 
         GameObject bodyObj = Instantiate(modulePrefab, transform.position, transform.rotation);
         bodyObj.transform.SetParent(transform);

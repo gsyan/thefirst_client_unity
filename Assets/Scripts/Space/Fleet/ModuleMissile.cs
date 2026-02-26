@@ -88,8 +88,8 @@ public class ModuleMissile : ModuleBase
     {
         switch (m_moduleInfo.moduleSubType)
         {
-            case EModuleSubType.missile_standard:
-            case EModuleSubType.missile_advanced:
+            case EModuleSubType.missile_t1_std:
+            case EModuleSubType.missile_t1_adv:
                 for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();

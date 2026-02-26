@@ -26,7 +26,7 @@ public class EnemyModuleSlotConfig
 [System.Serializable]
 public class EnemyShipConfig
 {
-    public EModuleSubType bodySubType = EModuleSubType.body_battle;
+    public EModuleSubType bodySubType = EModuleSubType.body_t1_std;
     public int bodyLevel = 1;
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
 }

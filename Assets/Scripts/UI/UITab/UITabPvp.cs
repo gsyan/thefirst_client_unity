@@ -64,7 +64,7 @@ public class UITabPvp : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
         RequestPvpList();
     }
 

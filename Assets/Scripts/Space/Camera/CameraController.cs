@@ -444,6 +444,8 @@ public class CameraController : MonoSingleton<CameraController>
 
         m_currentTarget = target;
         m_targetPosition = target.position;
+
+        EventManager.TriggerCameraFocusTargetChanged(ECameraFocusTarget.camera_focus_my_fleet);
     }
 
     // Vector3 위치를 타겟으로 설정 (고정된 위치용)

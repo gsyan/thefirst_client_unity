@@ -1,5 +1,55 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3769467037341028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4602173277577527702}
+  - component: {fileID: 543246002531557692}
+  m_Layer: 0
+  m_Name: EngineSlot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4602173277577527702
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3769467037341028}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 10, y: -2, z: -37}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 992329172262420132}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &543246002531557692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3769467037341028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moduleSlotInfo:
+    moduleType: 2
+    slotIndex: 2
+  m_cameraRotationY: 150
+  m_cameraRotationX: 25
+  m_cameraZoom: 200
 --- !u!1 &102163163966252529
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,6 +602,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 59
   neighborIndices: 38000000390000003a000000
+--- !u!1 &1032181946605022852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3141539748439120697}
+  - component: {fileID: 2836953343246990057}
+  m_Layer: 0
+  m_Name: EngineSlot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3141539748439120697
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032181946605022852}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -10, y: -2, z: -37}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 992329172262420132}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &2836953343246990057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032181946605022852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moduleSlotInfo:
+    moduleType: 2
+    slotIndex: 1
+  m_cameraRotationY: 210
+  m_cameraRotationX: 25
+  m_cameraZoom: 200
 --- !u!1 &1135670034810238747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1401,10 +1501,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 992329172262420132}
-  - component: {fileID: 4115172495283143918}
+  - component: {fileID: -980976615759279016}
   - component: {fileID: 3787064404054301014}
   m_Layer: 0
-  m_Name: Body_Battle_1
+  m_Name: body_t1_std_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1426,14 +1526,19 @@ Transform:
   - {fileID: 2859836490639496276}
   - {fileID: 3925928330725103218}
   - {fileID: 3889669489284256503}
+  - {fileID: 3141539748439120697}
+  - {fileID: 4602173277577527702}
   - {fileID: 5333650010989934386}
   - {fileID: 4025172207041311363}
+  - {fileID: 7929508759967562326}
   - {fileID: 6791274779014047942}
+  - {fileID: 2199477918283865900}
+  - {fileID: 8152332251982614873}
   - {fileID: 3620958557293772022}
   - {fileID: 2833405756818831907}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4115172495283143918
+--- !u!114 &-980976615759279016
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1815,7 +1920,7 @@ Transform:
   m_GameObject: {fileID: 3422797853348065600}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7, y: 4.9, z: 47.5}
+  m_LocalPosition: {x: 0, y: 4.9, z: 47.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1950,6 +2055,56 @@ Transform:
   - {fileID: 8498570532251023622}
   m_Father: {fileID: 992329172262420132}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3670580535821047227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7929508759967562326}
+  - component: {fileID: 5178239180542785044}
+  m_Layer: 0
+  m_Name: BeamSlot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7929508759967562326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3670580535821047227}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: 4.7570004, z: 47.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 992329172262420132}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5178239180542785044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3670580535821047227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moduleSlotInfo:
+    moduleType: 3
+    slotIndex: 2
+  m_cameraRotationY: 30
+  m_cameraRotationX: 25
+  m_cameraZoom: 200
 --- !u!1 &3730057835883389851
 GameObject:
   m_ObjectHideFlags: 0
@@ -1996,6 +2151,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 44
   neighborIndices: 280000002f00000030000000
+--- !u!1 &3761267265848024727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2199477918283865900}
+  - component: {fileID: 5446542288988759833}
+  m_Layer: 0
+  m_Name: MissileSlot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2199477918283865900
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3761267265848024727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -16.2, y: 8.1, z: 10.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 992329172262420132}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &5446542288988759833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3761267265848024727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moduleSlotInfo:
+    moduleType: 4
+    slotIndex: 1
+  m_cameraRotationY: -30
+  m_cameraRotationX: 25
+  m_cameraZoom: 200
 --- !u!1 &3909550966230820224
 GameObject:
   m_ObjectHideFlags: 0
@@ -2900,7 +3105,7 @@ Transform:
   m_GameObject: {fileID: 5587926706293236221}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7, y: 4.7570004, z: 47.5}
+  m_LocalPosition: {x: -10, y: 4.7570004, z: 47.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2921,7 +3126,7 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 3
     slotIndex: 1
-  m_cameraRotationY: 30
+  m_cameraRotationY: -30
   m_cameraRotationX: 25
   m_cameraZoom: 200
 --- !u!1 &5764239973582279941
@@ -4032,6 +4237,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 41
   neighborIndices: 3d0000002b0000003a000000
+--- !u!1 &7942949514464948909
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8152332251982614873}
+  - component: {fileID: 3773092434547811752}
+  m_Layer: 0
+  m_Name: MissileSlot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8152332251982614873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942949514464948909}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 16.2, y: 8.1, z: 10.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 992329172262420132}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &3773092434547811752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942949514464948909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moduleSlotInfo:
+    moduleType: 4
+    slotIndex: 2
+  m_cameraRotationY: 30
+  m_cameraRotationX: 25
+  m_cameraZoom: 200
 --- !u!1 &8067358695243151501
 GameObject:
   m_ObjectHideFlags: 0

@@ -214,7 +214,7 @@ public class UITabResearch : UITabBase
     public override void OnTabActivated()
     {
         bShow = true;
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
         UpdateResearchUI();
     }
 

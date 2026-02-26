@@ -26,22 +26,20 @@ public enum EModuleSubType
 {
     none                = 0,
     // Body SubType 
-    body_battle         = 1001,
-    body_aircraft       = 1002,
-    body_repair         = 1003,
+    body_t1_std         = 1001,
+    body_t1_adv         = 1002,
     // Engine SubType
-    engine_standard     = 2001,
-    engine_booster      = 2002,
-    engine_warp         = 2003,
+    engine_t1_std       = 2001,
+    engine_t1_adv       = 2002,    
     // Beam SubType
-    beam_standard       = 3001,
-    beam_advanced       = 3002,
+    beam_t1_std         = 3001,
+    beam_t1_adv         = 3002,
     // Missile SubType    
-    missile_standard    = 4001,
-    missile_advanced    = 4002,
+    missile_t1_std      = 4001,
+    missile_t1_adv      = 4002,
     // HangerSubType
-    hanger_standard     = 5001,
-    hanger_advanced     = 5002
+    hanger_t1_std       = 5001,
+    hanger_t1_adv       = 5002
 }
 
 public static class EModuleTypeExtensions
