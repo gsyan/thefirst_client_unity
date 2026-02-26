@@ -55,8 +55,12 @@ MonoBehaviour:
     m_Key: fleet_formation_list
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636935
-    m_Key: fleet_add_ship
+  - m_Id: 6655868837691392
+    m_Key: fleet_add_ship_button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6655868879634432
+    m_Key: fleet_add_ship_name
     m_Metadata:
       m_Items: []
   - m_Id: 63232261619717
@@ -271,52 +275,44 @@ MonoBehaviour:
     m_Key: module_type_hanger
     m_Metadata:
       m_Items: []
-  - m_Id: 797857300742144
-    m_Key: body_battle
+  - m_Id: 6643833240420352
+    m_Key: body_t1_std
     m_Metadata:
       m_Items: []
-  - m_Id: 797857338490880
-    m_Key: body_aircraft
+  - m_Id: 6643833282363392
+    m_Key: body_t1_adv
     m_Metadata:
       m_Items: []
-  - m_Id: 797857338490881
-    m_Key: body_repair
+  - m_Id: 6643833282363393
+    m_Key: engine_t1_std
     m_Metadata:
       m_Items: []
-  - m_Id: 797857338490882
-    m_Key: engine_standard
+  - m_Id: 6643833282363394
+    m_Key: engine_t1_adv
     m_Metadata:
       m_Items: []
-  - m_Id: 797857338490883
-    m_Key: engine_booster
+  - m_Id: 6643833282363395
+    m_Key: beam_t1_std
     m_Metadata:
       m_Items: []
-  - m_Id: 797857338490884
-    m_Key: engine_warp
+  - m_Id: 6643833282363396
+    m_Key: beam_t1_adv
     m_Metadata:
       m_Items: []
-  - m_Id: 797857338490885
-    m_Key: beam_standard
+  - m_Id: 6643833282363397
+    m_Key: missile_t1_std
     m_Metadata:
       m_Items: []
-  - m_Id: 797857338490886
-    m_Key: beam_advanced
+  - m_Id: 6643833286557696
+    m_Key: missile_t1_adv
     m_Metadata:
       m_Items: []
-  - m_Id: 797857338490887
-    m_Key: missile_standard
+  - m_Id: 6643833286557697
+    m_Key: hanger_t1_std
     m_Metadata:
       m_Items: []
-  - m_Id: 797857338490888
-    m_Key: missile_advanced
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490889
-    m_Key: hanger_standard
-    m_Metadata:
-      m_Items: []
-  - m_Id: 797857338490890
-    m_Key: hanger_advanced
+  - m_Id: 6643833286557698
+    m_Key: hanger_t1_adv
     m_Metadata:
       m_Items: []
   - m_Id: 705451700125696

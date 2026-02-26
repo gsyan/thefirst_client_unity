@@ -1,3 +1,5 @@
+// DataTableModule ScriptableObject 커스텀 에디터
+// CSV Import / JSON Export / 데이터 생성 유틸리티 버튼 제공
 
 #if UNITY_EDITOR
 using UnityEngine;
@@ -23,7 +25,6 @@ public class DataTableModuleEditor : Editor
     private bool showMissileModules = false;
     private bool showHangerModules = false;
     private bool showUtilityTools = true;
-    private bool showJsonTools = true;
 
     private readonly Color bodyColor = new Color(0.7f, 0.9f, 0.7f);
     private readonly Color engineColor = new Color(0.7f, 0.7f, 0.9f);
@@ -60,8 +61,6 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.Space(20);
         DrawUtilityTools();
-        EditorGUILayout.Space(10);
-        DrawJsonTools();
 
         EditorGUILayout.EndScrollView();
 
@@ -161,7 +160,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
+        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
 
         // Module Slots (from prefab)
         int slotCount = module.moduleSlots != null ? module.moduleSlots.Length : 0;
@@ -180,8 +179,8 @@ public class DataTableModuleEditor : Editor
         }
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.health = EditorGUILayout.Slider("Health", module.health, 1f, 1000f);
-        module.repairPower = EditorGUILayout.Slider("Repair", module.repairPower, 0f, 1000f);
+        module.health = EditorGUILayout.FloatField("Health", module.health);
+        module.repairPower = EditorGUILayout.FloatField("Repair", module.repairPower);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
@@ -271,12 +270,11 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
+        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.health = EditorGUILayout.Slider("Health", module.health, 0f, 1000f);
-        module.speed = EditorGUILayout.Slider("Movement Speed", module.speed, 0f, 20f);
-        
+        module.speed = EditorGUILayout.FloatField("Speed", module.speed);
+
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
         module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
@@ -367,17 +365,16 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
+        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.health = EditorGUILayout.Slider("Health", module.health, 0f, 1000f);
-        module.attackPower = EditorGUILayout.Slider("Attack Power", module.attackPower, 0f, 100f);
-        module.attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.attackFireCount, 0, 100);
-        module.attackCoolTime = EditorGUILayout.Slider("Cool Time", module.attackCoolTime, 0.1f, 10f);
+        module.attackPower = EditorGUILayout.FloatField("Attack Power", module.attackPower);
+        module.attackFireCount = EditorGUILayout.IntField("Fire Count", module.attackFireCount);
+        module.attackCoolTime = EditorGUILayout.FloatField("Cool Time", module.attackCoolTime);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.projectileWidth = EditorGUILayout.Slider("Projectile Width", module.projectileWidth, 0.01f, 5f);
-        module.projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.projectileSpeed, 1f, 5000f);
+        module.projectileWidth = EditorGUILayout.FloatField("Projectile Width", module.projectileWidth);
+        module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
@@ -469,17 +466,16 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
+        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.health = EditorGUILayout.Slider("Health", module.health, 0f, 1000f);
-        module.attackPower = EditorGUILayout.Slider("Attack Power", module.attackPower, 0f, 100f);
-        module.attackFireCount = EditorGUILayout.IntSlider("Fire Count", module.attackFireCount, 0, 100);
-        module.attackCoolTime = EditorGUILayout.Slider("Cool Time", module.attackCoolTime, 0.1f, 10f);
+        module.attackPower = EditorGUILayout.FloatField("Attack Power", module.attackPower);
+        module.attackFireCount = EditorGUILayout.IntField("Fire Count", module.attackFireCount);
+        module.attackCoolTime = EditorGUILayout.FloatField("Cool Time", module.attackCoolTime);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.projectileWidth = EditorGUILayout.Slider("Projectile Width", module.projectileWidth, 0.01f, 5f);
-        module.projectileSpeed = EditorGUILayout.Slider("Projectile Speed", module.projectileSpeed, 1f, 5000f);
+        module.projectileWidth = EditorGUILayout.FloatField("Projectile Width", module.projectileWidth);
+        module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
@@ -579,25 +575,24 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.EndHorizontal();
 
         module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntSlider("Level", module.moduleLevel, 1, 10);
+        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.health = EditorGUILayout.Slider("Health", module.health, 0f, 1000f);
-        module.airCount = EditorGUILayout.IntSlider("Hangar Capability", module.airCount, 0, 1000);
-        module.attackCoolTime = EditorGUILayout.Slider("Launch Cool", module.attackCoolTime, 0f, 10f);
-        module.attackFireCount = EditorGUILayout.IntSlider("Launch Count", module.attackFireCount, 0, 10);
-        module.maintenanceTime = EditorGUILayout.Slider("Maintenance Time", module.maintenanceTime, 0f, 1000f);
+        module.airCount = EditorGUILayout.IntField("Aircraft Count", module.airCount);
+        module.attackCoolTime = EditorGUILayout.FloatField("Attack Cool", module.attackCoolTime);
+        module.attackFireCount = EditorGUILayout.IntField("Attack Count", module.attackFireCount);
+        module.maintenanceTime = EditorGUILayout.FloatField("Maintenance Time", module.maintenanceTime);
 
         EditorGUILayout.LabelField("Aircraft Stats", EditorStyles.boldLabel);
-        module.aircraftLaunchStraightDistance = EditorGUILayout.Slider("Aircraft Launch Straight Distance", module.aircraftLaunchStraightDistance, 1f, 1000f);
-        module.aircraftHealth = EditorGUILayout.Slider("Aircraft Health", module.aircraftHealth, 1f, 1000f);
-        module.aircraftAttackPower = EditorGUILayout.Slider("Aircraft Attack Power", module.aircraftAttackPower, 1f, 1000f);
-        module.aircraftAttackRange = EditorGUILayout.Slider("Aircraft Attack Range", module.aircraftAttackRange, 1f, 1000f);
-        module.aircraftAttackCooldown = EditorGUILayout.Slider("Aircraft Attack Cooldown", module.aircraftAttackCooldown, 1f, 1000f);
-        module.aircraftSpeed = EditorGUILayout.Slider("Aircraft Speed", module.aircraftSpeed, 1f, 1000f);
-        module.aircraftAmmo = EditorGUILayout.IntSlider("Aircraft Ammo", module.aircraftAmmo, 1, 100);
-        module.aircraftDetectionRadius = EditorGUILayout.Slider("Aircraft Detection Radius", module.aircraftDetectionRadius, 1f, 1000f);
-        module.aircraftAvoidanceRadius = EditorGUILayout.Slider("Aircraft Avoidance Radius", module.aircraftAvoidanceRadius, 1f, 1000f);
+        module.aircraftLaunchStraightDistance = EditorGUILayout.FloatField("Aircraft Launch Straight Distance", module.aircraftLaunchStraightDistance);
+        module.aircraftHealth = EditorGUILayout.FloatField("Aircraft Health", module.aircraftHealth);
+        module.aircraftAttackPower = EditorGUILayout.FloatField("Aircraft Attack Power", module.aircraftAttackPower);
+        module.aircraftAttackRange = EditorGUILayout.FloatField("Aircraft Attack Range", module.aircraftAttackRange);
+        module.aircraftAttackCooldown = EditorGUILayout.FloatField("Aircraft Attack Cooldown", module.aircraftAttackCooldown);
+        module.aircraftSpeed = EditorGUILayout.FloatField("Aircraft Speed", module.aircraftSpeed);
+        module.aircraftAmmo = EditorGUILayout.IntField("Aircraft Ammo", module.aircraftAmmo);
+        module.aircraftDetectionRadius = EditorGUILayout.FloatField("Aircraft Detection Radius", module.aircraftDetectionRadius);
+        module.aircraftAvoidanceRadius = EditorGUILayout.FloatField("Aircraft Avoidance Radius", module.aircraftAvoidanceRadius);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
@@ -620,14 +615,19 @@ public class DataTableModuleEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("Generate Lv.1~10 Data"))
+            if (GUILayout.Button("Import from CSV"))
             {
-                if (EditorUtility.DisplayDialog("Generate Data",
-                    "Generate all module types with Level 1~10 data.\n\n" +
-                    "Continue?", "Yes", "Cancel"))
+                string csvPath = Application.dataPath + "/Resources/DataTable/Module/datatable_module.csv";
+                if (System.IO.File.Exists(csvPath) == false)
                 {
-                    dataTableModule.GenerateLevel1to10Data();
-                    EditorUtility.DisplayDialog("Complete", "Level 1~10 data generated successfully!", "OK");
+                    EditorUtility.DisplayDialog("Error", $"CSV 파일을 찾을 수 없습니다:\n{csvPath}", "OK");
+                }
+                else if (EditorUtility.DisplayDialog("Import from CSV",
+                    $"CSV 파일을 읽어 모듈 데이터를 갱신합니다.\nmoduleSlots 데이터 업데이트 됩니다.\n\n{csvPath}\n\n계속하시겠습니까?", "Import", "Cancel"))
+                {
+                    string csvText = System.IO.File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
+                    dataTableModule.LoadFromCsv(csvText);
+                    EditorUtility.DisplayDialog("완료", "CSV Import가 완료되었습니다.", "OK");
                 }
             }
 
@@ -644,43 +644,5 @@ public class DataTableModuleEditor : Editor
     }
     #endregion
 
-    #region JSON Tools
-    private void DrawJsonTools()
-    {
-        EditorGUILayout.BeginVertical("box");
-        showJsonTools = EditorGUILayout.Foldout(showJsonTools, "JSON Import/Export", true, EditorStyles.foldoutHeader);
-
-        if (showJsonTools)
-        {
-            EditorGUILayout.BeginHorizontal();
-
-            if (GUILayout.Button("Export to JSON"))
-            {
-                string json = dataTableModule.ExportToJson();
-                string path = EditorUtility.SaveFilePanel("Export Module Data", "", "DataTableModule.json", "json");
-                if (!string.IsNullOrEmpty(path))
-                {
-                    System.IO.File.WriteAllText(path, json);
-                    EditorUtility.DisplayDialog("Export", "Module data exported successfully!", "OK");
-                }
-            }
-
-            if (GUILayout.Button("Import from JSON"))
-            {
-                string path = EditorUtility.OpenFilePanel("Import Module Data", "", "json");
-                if (!string.IsNullOrEmpty(path))
-                {
-                    string json = System.IO.File.ReadAllText(path);
-                    dataTableModule.ImportFromJson(json);
-                    EditorUtility.DisplayDialog("Import", "Module data imported successfully!", "OK");
-                }
-            }
-
-            EditorGUILayout.EndHorizontal();
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-    #endregion
 }
 #endif

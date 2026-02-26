@@ -78,7 +78,7 @@ public class UITabSettings : UITabBase
 
     public override void OnTabActivated()
     {
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
     public override void OnTabDeactivated()

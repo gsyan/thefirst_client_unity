@@ -974,7 +974,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00062054984}
+  m_AnchoredPosition: {x: 0, y: 0.000019955773}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7592059761097661012
@@ -4713,7 +4713,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00018387655}
+  m_AnchoredPosition: {x: 0, y: -0.0000739885}
   m_SizeDelta: {x: 659, y: 111.8755}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1667755806433218038
@@ -13671,7 +13671,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
     m_TableEntryReference:
-      m_KeyId: 2924654624636935
+      m_KeyId: 6655868837691392
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

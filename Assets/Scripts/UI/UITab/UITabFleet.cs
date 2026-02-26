@@ -334,7 +334,7 @@ public class UITabFleet : UITabBase
         CostStruct cost = gameSettings.GetAddShipCost(m_myFleet.m_ships.Count);
 
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("fleet_add_ship"),
+            LocalizationManager.Instance.Get("fleet_add_ship_name"),
             LocalizationManager.Instance.Get("popup_message_add_ship"),
             null, null, cost,
             AddShip
