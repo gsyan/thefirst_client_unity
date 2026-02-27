@@ -1,4 +1,5 @@
-// -------------------------------------------------------------------------------------
+// 연구 트리 ScriptableObject - 모듈 연구 노드 데이터 및 선행 조건 관리
+// CSV Import(에디터 전용): datatable_research.csv 기반 로드 지원, prerequisites는 '|' 구분
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -20,10 +21,6 @@ public class ModuleResearchData : ResearchNodeData
 {
     public EModuleType moduleType = EModuleType.none;
     public EModuleSubType moduleSubType = EModuleSubType.none;
-
-    [Header("Description")]
-    [TextArea(2, 4)]
-    public string description = "Module Research";
 }
 
 [CreateAssetMenu(fileName = "DataTableResearch", menuName = "Custom/DataTableResearch")]
@@ -108,7 +105,6 @@ public class DataTableResearch : ScriptableObject
                 prerequisiteIds = prerequisiteIds,
                 researchCost = new CostStruct(1, researchCost, 0, 0, 0),
                 uiPosition = vector2Position,
-                description = $"Research {subType} module technology"
             };
 
             researchDataList.Add(researchData);
@@ -133,6 +129,115 @@ public class DataTableResearch : ScriptableObject
 
         return true;
     }
+
+    #endregion
+
+    #region CSV Import/Export
+
+#if UNITY_EDITOR
+    public void LoadFromCsv(string csvText)
+    {
+        researchDataList.Clear();
+
+        string[] lines = csvText.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.None);
+        if (lines.Length < 2) return;
+
+        string[] headers = ParseCsvLine(lines[0].Trim());
+        var col = new Dictionary<string, int>();
+        for (int i = 0; i < headers.Length; i++)
+            col[headers[i].Trim()] = i;
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+
+            string[] cols = ParseCsvLine(line);
+
+            if (!int.TryParse(GetCol(cols, col, "module_type"), out int typeInt)) continue;
+            if (!int.TryParse(GetCol(cols, col, "module_sub_type"), out int subTypeInt)) continue;
+
+            EModuleType moduleType = (EModuleType)typeInt;
+            EModuleSubType moduleSubType = (EModuleSubType)subTypeInt;
+
+            string researchId = GetCol(cols, col, "research_id");
+            if (string.IsNullOrEmpty(researchId))
+                researchId = moduleSubType.ToString();
+
+            var data = new ModuleResearchData
+            {
+                researchId      = researchId,
+                moduleType      = moduleType,
+                moduleSubType   = moduleSubType,
+                prerequisiteIds = ParseCsvStringList(GetCol(cols, col, "prerequisites")),
+                uiPosition      = new Vector2(
+                    ParseCsvFloat(GetCol(cols, col, "ui_pos_x")),
+                    ParseCsvFloat(GetCol(cols, col, "ui_pos_y"))),
+                researchCost    = new CostStruct(
+                    ParseCsvInt (GetCol(cols, col, "tech_level")),
+                    ParseCsvLong(GetCol(cols, col, "cost_m")),
+                    ParseCsvLong(GetCol(cols, col, "cost_mr")),
+                    ParseCsvLong(GetCol(cols, col, "cost_me")),
+                    ParseCsvLong(GetCol(cols, col, "cost_md")))                
+            };
+
+            researchDataList.Add(data);
+        }
+
+        Debug.Log($"[DataTableResearch] CSV Import 완료: {researchDataList.Count}개 연구");
+        UnityEditor.EditorUtility.SetDirty(this);
+    }
+
+    private List<string> ParseCsvStringList(string s)
+    {
+        var list = new List<string>();
+        if (string.IsNullOrEmpty(s)) return list;
+        string[] parts = s.Split('|');
+        for (int i = 0; i < parts.Length; i++)
+        {
+            string part = parts[i].Trim();
+            if (string.IsNullOrEmpty(part) == false)
+                list.Add(part);
+        }
+        return list;
+    }
+
+    private string GetCol(string[] cols, Dictionary<string, int> colMap, string name)
+    {
+        if (colMap.TryGetValue(name, out int idx) == false || idx >= cols.Length) return "";
+        return cols[idx].Trim();
+    }
+
+    private string[] ParseCsvLine(string line)
+    {
+        var result = new List<string>();
+        bool inQuotes = false;
+        var current = new System.Text.StringBuilder();
+        foreach (char c in line)
+        {
+            if (c == '"')
+                inQuotes = !inQuotes;
+            else if (c == ',' && inQuotes == false)
+            {
+                result.Add(current.ToString());
+                current.Clear();
+            }
+            else
+                current.Append(c);
+        }
+        result.Add(current.ToString());
+        return result.ToArray();
+    }
+
+    private float ParseCsvFloat(string s)
+    {
+        s = s.Replace(",", "").Trim();
+        return float.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float r) ? r : 0f;
+    }
+
+    private int ParseCsvInt(string s) { s = s.Trim(); return int.TryParse(s, out int r) ? r : 1; }
+    private long ParseCsvLong(string s) { s = s.Replace(",", "").Trim(); return long.TryParse(s, out long r) ? r : 0L; }
+#endif
 
     #endregion
 

@@ -1,0 +1,11 @@
+research_id,module_type,module_sub_type,prerequisites,ui_pos_x,ui_pos_y,tech_level,cost_m,cost_mr,cost_me,cost_md,description
+body_t1_std,1,1001,,80,-40,1,10000,0,0,0,기본 선체 모듈 연구
+body_t1_adv,1,1002,body_t1_std,280,-40,1,100000,0,0,0,고급 선체 모듈 연구
+engine_t1_std,2,2001,,80,-160,1,10000,0,0,0,기본 엔진 모듈 연구
+engine_t1_adv,2,2002,engine_t1_std,280,-160,1,100000,0,0,0,고급 엔진 모듈 연구
+beam_t1_std,3,3001,,80,-280,1,10000,0,0,0,기본 빔 무기 연구
+beam_t1_adv,3,3002,beam_t1_std,280,-280,1,100000,0,0,0,고급 빔 무기 연구
+missile_t1_std,4,4001,,80,-400,1,10000,0,0,0,기본 미사일 무기 연구
+missile_t1_adv,4,4002,missile_t1_std,280,-400,1,100000,0,0,0,고급 미사일 무기 연구
+hanger_t1_std,5,5001,,80,-520,1,10000,0,0,0,기본 격납고 모듈 연구
+hanger_t1_adv,5,5002,hanger_t1_std,280,-520,1,100000,0,0,0,고급 격납고 모듈 연구

@@ -1,3 +1,4 @@
+// DataTableResearch 커스텀 에디터 - 연구 트리 데이터 Inspector UI 및 CSV/JSON Import/Export 툴
 
 #if UNITY_EDITOR
 using UnityEngine;
@@ -177,10 +178,6 @@ public class DataTableResearchEditor : Editor
             researchData.researchCost.mineralExotic = EditorGUILayout.LongField("Mineral Exotic", researchData.researchCost.mineralExotic);
             researchData.researchCost.mineralDark = EditorGUILayout.LongField("Mineral Dark", researchData.researchCost.mineralDark);
 
-            EditorGUILayout.Space(5);
-            EditorGUILayout.LabelField("Description", EditorStyles.boldLabel);
-            researchData.description = EditorGUILayout.TextArea(researchData.description, GUILayout.Height(60));
-
             EditorGUI.indentLevel--;
         }
 
@@ -190,69 +187,61 @@ public class DataTableResearchEditor : Editor
     private void DrawUtilityTools()
     {
         EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField("Utility Tools", EditorStyles.foldoutHeader);
-
-        EditorGUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Generate Default Research Data"))
-        {
-            if (EditorUtility.DisplayDialog("Generate Data",
-                "This will clear existing data and generate default research data for all module subtypes.\n\n" +
-                "Continue?", "Yes", "Cancel"))
-            {
-                dataTable.InitializeResearchData();
-                EditorUtility.DisplayDialog("Complete", "Research data generated successfully!", "OK");
-            }
-        }
-
-        if (GUILayout.Button("Validate Data"))
-        {
-            bool isValid = dataTable.ValidateData();
-            EditorUtility.DisplayDialog("Validation",
-                isValid ? "Data is valid!" : "Data validation failed. Check console.",
-                "OK");
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space(10);
-        DrawJsonTools();
-
+        //EditorGUILayout.Space(10);
+        DrawCsvTools();
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawJsonTools()
+    private void DrawCsvTools()
     {
         EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField("JSON Import/Export", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("CSV Import/Export", EditorStyles.boldLabel);
 
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Export to JSON"))
+        if (GUILayout.Button("Import from CSV"))
         {
-            string json = dataTable.ExportToJson();
-            string path = EditorUtility.SaveFilePanel("Export Module Research Data", "", "DataTableModuleResearch.json", "json");
-            if (!string.IsNullOrEmpty(path))
+            string csvPath = Application.dataPath + "/Resources/DataTable/Research/datatable_research.csv";
+            if (System.IO.File.Exists(csvPath) == false)
             {
-                System.IO.File.WriteAllText(path, json);
-                EditorUtility.DisplayDialog("Export", "Module research data exported successfully!", "OK");
+                EditorUtility.DisplayDialog("Error", $"CSV 파일을 찾을 수 없습니다:\n{csvPath}", "OK");
+            }
+            else if (EditorUtility.DisplayDialog("Import from CSV",
+                "CSV 파일을 읽어 연구 데이터를 갱신합니다.\n기존 데이터는 모두 삭제됩니다.\n\n계속하시겠습니까?", "Import", "Cancel"))
+            {
+                string csvText = System.IO.File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
+                dataTable.LoadFromCsv(csvText);
+                EditorUtility.DisplayDialog("Complete", "CSV Import 완료!", "OK");
             }
         }
 
-        if (GUILayout.Button("Import from JSON"))
+        if (GUILayout.Button("Export to CSV"))
         {
-            string path = EditorUtility.OpenFilePanel("Import Module Research Data", "", "json");
-            if (!string.IsNullOrEmpty(path))
-            {
-                string json = System.IO.File.ReadAllText(path);
-                dataTable.ImportFromJson(json);
-                EditorUtility.DisplayDialog("Import", "Module research data imported successfully!", "OK");
-            }
+            string dirPath = Application.dataPath + "/Resources/DataTable/Research";
+            if (System.IO.Directory.Exists(dirPath) == false)
+                System.IO.Directory.CreateDirectory(dirPath);
+
+            string csvPath = dirPath + "/datatable_research.csv";
+            string csv = ExportToCsv();
+            System.IO.File.WriteAllText(csvPath, csv, System.Text.Encoding.UTF8);
+            AssetDatabase.Refresh();
+            EditorUtility.DisplayDialog("Complete", $"CSV Export 완료!\n{csvPath}", "OK");
         }
 
         EditorGUILayout.EndHorizontal();
-
         EditorGUILayout.EndVertical();
+    }
+
+    private string ExportToCsv()
+    {
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("research_id,module_type,module_sub_type,prerequisites,ui_pos_x,ui_pos_y,tech_level,cost_m,cost_mr,cost_me,cost_md");
+        foreach (var d in dataTable.ResearchDataList)
+        {
+            string prereqs = d.prerequisiteIds != null ? string.Join("|", d.prerequisiteIds) : "";
+            sb.AppendLine($"{d.researchId},{(int)d.moduleType},{(int)d.moduleSubType},{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.techLevel},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark}");
+        }
+        return sb.ToString();
     }
 
     private Color GetColorForModuleType(EModuleType moduleType)

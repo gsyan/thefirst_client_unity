@@ -631,10 +631,17 @@ public class DataTableModuleEditor : Editor
                 }
             }
 
-            if (GUILayout.Button("Validate Data"))
+            if (GUILayout.Button("Export to CSV"))
             {
-                bool isValid = dataTableModule.ValidateData();
-                EditorUtility.DisplayDialog("Validation", isValid ? "Data is valid!" : "Data validation failed. Check console.", "OK");
+                string csvPath = Application.dataPath + "/Resources/DataTable/Module/datatable_module.csv";
+                if (EditorUtility.DisplayDialog("Export to CSV",
+                    $"현재 데이터를 CSV 파일로 덮어씁니다.\n\n{csvPath}\n\n계속하시겠습니까?", "Export", "Cancel"))
+                {
+                    string csv = ExportToCsv();
+                    System.IO.File.WriteAllText(csvPath, csv, System.Text.Encoding.UTF8);
+                    AssetDatabase.Refresh();
+                    EditorUtility.DisplayDialog("완료", "CSV Export가 완료되었습니다.", "OK");
+                }
             }
 
             EditorGUILayout.EndHorizontal();
@@ -644,5 +651,39 @@ public class DataTableModuleEditor : Editor
     }
     #endregion
 
+    private string ExportToCsv()
+    {
+        var ic = System.Globalization.CultureInfo.InvariantCulture;
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("type,sub_type,level,health,repair,speed,attack,attack_count,attack_cool,projectile_width,projectile_speed,aircraft_count,maintenance_time,air_launch_straight,air_health,attack_power_air,attack_range_air,attack_cool_air,speed_air,ammo_air,detect_radius_air,avoid_radius_air,cost_m,cost_mr,cost_me,cost_md,description");
+
+        var allGroups = new List<ModuleSubTypeGroup>();
+        allGroups.AddRange(dataTableModule.BodyGroups);
+        allGroups.AddRange(dataTableModule.EngineGroups);
+        allGroups.AddRange(dataTableModule.BeamGroups);
+        allGroups.AddRange(dataTableModule.MissileGroups);
+        allGroups.AddRange(dataTableModule.HangerGroups);
+
+        foreach (var group in allGroups)
+        {
+            foreach (var d in group.modules)
+            {
+                sb.AppendLine(string.Format(ic,
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26}",
+                    (int)d.moduleType, (int)d.moduleSubType, d.moduleLevel,
+                    d.health, d.repairPower, d.speed,
+                    d.attackPower, d.attackFireCount, d.attackCoolTime,
+                    d.projectileWidth, d.projectileSpeed,
+                    d.airCount, d.maintenanceTime, d.aircraftLaunchStraightDistance,
+                    d.aircraftHealth, d.aircraftAttackPower, d.aircraftAttackRange,
+                    d.aircraftAttackCooldown, d.aircraftSpeed, d.aircraftAmmo,
+                    d.aircraftDetectionRadius, d.aircraftAvoidanceRadius,
+                    d.upgradeCost.mineral, d.upgradeCost.mineralRare,
+                    d.upgradeCost.mineralExotic, d.upgradeCost.mineralDark,
+                    d.description));
+            }
+        }
+        return sb.ToString();
+    }
 }
 #endif

@@ -6,6 +6,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+enum EEnterZoneState
+{
+    safe,
+    warp,
+    zone,
+}
+
 public class UITabExploration : UITabBase
 {
     [SerializeField] private RowLabelValue m_rowLabelValueMineral;
@@ -32,7 +40,7 @@ public class UITabExploration : UITabBase
     private readonly List<ScrollViewZoneItem> m_zoneItemPool = new List<ScrollViewZoneItem>();
     private readonly List<ScrollViewZoneItem> m_zoneItemActive = new List<ScrollViewZoneItem>();
     
-    private bool m_isInZone;
+    private EEnterZoneState m_enterZoneState;
     private bool m_isFleetWiped;
     private int m_currentWave;
     private int m_zoneClearCount;
@@ -69,8 +77,8 @@ public class UITabExploration : UITabBase
 
         PopulateZoneScrollView();
         UpdateZoneInfo();
-        SetExplorationUI(true);
-
+        SetEnterZoneState(EEnterZoneState.safe);
+     
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
         {
@@ -261,9 +269,10 @@ public class UITabExploration : UITabBase
     }
 
     // 존 진입 시 웨이브UI+안전지역버튼 활성화, zone스크롤뷰는 상시 표시
-    private void SetExplorationUI(bool isSafeZone)
-    {
-        m_isInZone = !isSafeZone;
+    private void SetEnterZoneState(EEnterZoneState enterZoneState)
+    {   
+        m_enterZoneState =  enterZoneState;
+        m_safeZoneButton.gameObject.SetActive(enterZoneState == EEnterZoneState.zone);
     }
 
     private void OnWaveStarted(int currentWave, int zoneClearCount)
@@ -285,14 +294,14 @@ public class UITabExploration : UITabBase
     // UI 버튼 콜백 → 현재 전투 중인 존 재진입 차단
     private void OnTryZoneClicked(ZoneConfig zone)
     {
-        if (m_isInZone == true)
+        // 워프중이면 리턴
+        if(m_enterZoneState == EEnterZoneState.warp) return;
+        // 현재 존과 같은 존이면 리턴       
+        if (m_enterZoneState == EEnterZoneState.zone && m_currentZone != null && m_currentZone.zoneName == zone.zoneName) return;
+        
+        // 현재 존이라면 초기화 해야할 것들 초기화
+        if (m_enterZoneState == EEnterZoneState.zone)
         {
-            if (m_currentZone != null && m_currentZone.zoneName == zone.zoneName) return;
-
-            // string clearedZone = m_myCharacter.m_characterInfo.clearedZone;
-            // ZoneConfig nextZone = string.IsNullOrEmpty(clearedZone) ? null : m_datatableZone.GetNextZone(clearedZone);
-            // if (nextZone == null || nextZone.zoneName != zone.zoneName) return;
-
             EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
             ObjectManager.Instance.StopEnemySpawning();
@@ -300,43 +309,40 @@ public class UITabExploration : UITabBase
             ObjectManager.Instance.CleanupAllProjectiles();
             ObjectManager.Instance.RemoveAllEnemyFleets();
         }
-
         EnterZone(zone);
     }
 
     // 워프 후 전투 시작
     private void EnterZone(ZoneConfig zone)
     {
+        SetEnterZoneState(EEnterZoneState.warp);
         var pp = WarpPostProcessing.Instance;
         if (pp != null && zone != null)
             pp.SetSkyboxBlendTarget(zone.skyboxMaterial);
 
         m_currentZone = zone;
         CacheCurrentZoneItem();
-        SetExplorationUI(false);
         EventManager.Subscribe_WaveStarted(OnWaveStarted);
         EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
 
+        //Debug.Log($"step:{m_currentZone.zoneName} warp");
         m_myFleet.StartFleetWarp(zone.skyboxMaterial, () =>
         {
+            //Debug.Log($"step:{m_currentZone.zoneName} complete");
+            SetEnterZoneState(EEnterZoneState.zone);
             UIManager.Instance.ShowPanel("UIPanelCameraView");
             StartBattleInZone(zone);
         });
     }
 
-    // 워프 없이 같은 존에서 전투 재시작 (클리어 후 계속 전투)
-    private void ContinueBattleInZone(ZoneConfig zone)
-    {
-        CacheCurrentZoneItem();
-        EventManager.Subscribe_WaveStarted(OnWaveStarted);
-        EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
-        StartBattleInZone(zone);
-    }
-
     private void CacheCurrentZoneItem()
     {
         if (m_currentZoneItem != null)
+        {
             m_currentZoneItem.SetSelected(false);
+            if (IsAlreadyCleared(m_currentZone) == false)
+                m_currentZoneItem.SetZoneItemState(EZoneState.Current);
+        }
 
         m_currentZoneItem = null;
         if (m_currentZone == null) return;
@@ -358,15 +364,12 @@ public class UITabExploration : UITabBase
     {
         ObjectManager.Instance.StartSpawnEnemies(zone, (isVictory) =>
         {
-            EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
-            EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
-
             if (isVictory)
             {
                 // 이미 클리어된 존이면 API 호출 없이 바로 재진입
                 if (IsAlreadyCleared(zone))
                 {
-                    ContinueBattleInZone(zone);
+                    StartBattleInZone(zone);
                 }
                 else
                 {
@@ -420,6 +423,9 @@ public class UITabExploration : UITabBase
     // 안전지역 복귀 (패배/퇴각)
     private void ReturnToSafeZone()
     {
+        EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
+        EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
+
         ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
         if (zoneConfig == null) return;
 
@@ -436,9 +442,10 @@ public class UITabExploration : UITabBase
             if (m_currentZoneItem != null)
             {
                 m_currentZoneItem.SetSelected(false);
+                m_currentZoneItem.SetZoneItemState(EZoneState.Current);
                 m_currentZoneItem = null;
             }
-            SetExplorationUI(true);
+            SetEnterZoneState(EEnterZoneState.safe);
 
             if (m_isFleetWiped)
             {
@@ -476,7 +483,7 @@ public class UITabExploration : UITabBase
 
         // 클리어 후 안전지역으로 이동하지 않음 → 현재 존에서 계속 전투
         if (m_currentZone != null)
-            ContinueBattleInZone(m_currentZone);
+            StartBattleInZone(m_currentZone);
     }
 
     private void OnCollectZoneClicked()
