@@ -40,10 +40,10 @@ public class ScrollViewZoneItem : MonoBehaviour
         m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
         m_outline.enabled        = false;
 
-        SetState(state);
+        SetZoneItemState(state);
     }
 
-    public void SetState(EZoneState state)
+    public void SetZoneItemState(EZoneState state)
     {
         m_state = state;
 

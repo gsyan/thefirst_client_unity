@@ -310,14 +310,7 @@ public class SpaceShip : MonoBehaviour
         // SpaceFleet에서 자신을 제거
         SpaceFleet parentFleet = GetComponentInParent<SpaceFleet>();
         if (parentFleet != null)
-        {
             parentFleet.RemoveShip(this);
-            if (parentFleet.IsZoneEnemy)
-            {
-                // Zone 적 파괴시 보상 (PvP 적은 광물 미지급)
-                DeveloperConsole.ExecuteCommandStatic("AddMineral 50");
-            }
-        }
 
         OnSpaceShipDestroyed();
         Destroy(gameObject);
@@ -334,9 +327,6 @@ public class SpaceShip : MonoBehaviour
             EPoolName.EFFECT_SHIP_EXPLOSION,
             transform.position
         );
-
-        // 게임 오브젝트 비활성화 또는 파괴
-        // gameObject.SetActive(false);
     }
 
     // 인덱스로 바디 찾기

@@ -384,36 +384,7 @@ public class DataTableModule : ScriptableObject
     }
 #endif
 
-    public bool ValidateData()
-    {
-        bool isValid = true;
-
-        if (BodyModules.Count == 0)
-        {
-            Debug.LogWarning("No Body modules defined!");
-            isValid = false;
-        }
-
-        if (BeamModules.Count == 0)
-        {
-            Debug.LogWarning("No Weapon modules defined!");
-            isValid = false;
-        }
-
-        if (MissileModules.Count == 0)
-        {
-            Debug.LogWarning("No Weapon modules defined!");
-            isValid = false;
-        }
-
-        if (EngineModules.Count == 0)
-        {
-            Debug.LogWarning("No Engine modules defined!");
-            isValid = false;
-        }
-
-        return isValid;
-    }
+    
 
 #if UNITY_EDITOR
     public void LoadFromCsv(string csvText)
