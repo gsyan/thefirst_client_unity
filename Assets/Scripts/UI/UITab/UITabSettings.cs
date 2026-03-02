@@ -9,6 +9,7 @@ using TMPro;
 public class UITabSettings : UITabBase
 {
     [SerializeField] private Button m_logoutButton;
+    [SerializeField] private Button m_renameCharacterButton;
     [SerializeField] private TMP_Dropdown m_languageDropdown;
 
     [Header("개발자 도구")]
@@ -33,6 +34,9 @@ public class UITabSettings : UITabBase
 
         if (m_logoutButton != null)
             m_logoutButton.onClick.AddListener(OnLogoutButtonClicked);
+
+        if (m_renameCharacterButton != null)
+            m_renameCharacterButton.onClick.AddListener(OnRenameCharacterButtonClicked);
 
         if (m_testMineralButton != null)
             m_testMineralButton.onClick.AddListener(OnTestMineralButtonClicked);
@@ -84,6 +88,11 @@ public class UITabSettings : UITabBase
     public override void OnTabDeactivated()
     {
         //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+    }
+
+    private void OnRenameCharacterButtonClicked()
+    {
+        UIManager.Instance.ShowRenameCharacterPopup();
     }
 
     private void OnLogoutButtonClicked()

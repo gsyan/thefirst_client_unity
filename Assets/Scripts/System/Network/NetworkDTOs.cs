@@ -120,6 +120,7 @@ public class CharacterInfo
     public long mineralDark;
     public string clearedZone;  // 클리어한 최고 zone (예: "3-5"), 신규는 "" 또는 "0-0"
     public string collectDateTime;  // 마지막 자원 수확 시간 (ISO 8601 형식)
+    public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
 }
 
 
@@ -180,6 +181,25 @@ public class CharacterResponse
 {
     public long characterId;
     public string characterName;
+}
+
+[System.Serializable]
+public class CharacterValidateNameRequest
+{
+    public string name;
+}
+
+[System.Serializable]
+public class CharacterRenameRequest
+{
+    public string newName;
+}
+
+[System.Serializable]
+public class CharacterRenameResponse
+{
+    public string characterName;
+    public int nameChangeCount;  // 변경 후 남은 횟수
 }
 #endregion
 
@@ -486,13 +506,14 @@ public class PvpBattleResultResponse
     public int newRank;
 }
 
+// PVP/Zone/Attack 랭킹 공용 엔트리. score는 항상 string
 [System.Serializable]
-public class PvpRankingEntry
+public class RankingEntry
 {
     public int rank;
     public long characterId;
     public string characterName;
-    public int pvpScore;
+    public string score;
 }
 
 [System.Serializable]
@@ -506,9 +527,28 @@ public class PvpRankingRequest
 public class PvpRankingResponse
 {
     public int totalCount;
-    public List<PvpRankingEntry> items;
-    public string seasonName;       // 시즌 이름 (미설정 시 null)
-    public string seasonStartTime;  // 시즌 시작 시각 ISO 8601 (미설정 시 null)
-    public string seasonEndTime;    // 시즌 종료 시각 ISO 8601 (미설정 시 null)
+    public List<RankingEntry> items;
+    public RankingEntry myInfo;         // 내 랭킹 정보 (rank/score, 1시간 주기 랭킹 기준)
+    public string lastUpdatedAt;        // 랭킹 마지막 업데이트 시각 ISO 8601
+    public string seasonName;           // 시즌 이름 (미설정 시 null)
+    public string seasonStartTime;      // 시즌 시작 시각 ISO 8601 (미설정 시 null)
+    public string seasonEndTime;        // 시즌 종료 시각 ISO 8601 (미설정 시 null)
 }
+
+[System.Serializable]
+public class ZoneRankingRequest
+{
+    public int offset;
+    public int limit;
+}
+
+[System.Serializable]
+public class ZoneRankingResponse
+{
+    public int totalCount;
+    public List<RankingEntry> items;
+    public RankingEntry myInfo;         // 내 랭킹 정보 (rank/score, 1시간 주기 기준)
+    public string lastUpdatedAt;        // 랭킹 마지막 업데이트 시각 ISO 8601
+}
+
 #endregion

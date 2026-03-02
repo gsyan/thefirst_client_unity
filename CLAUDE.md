@@ -15,15 +15,15 @@
 - py generate 관련 사항은 이 경로의 구조를 기준으로 설명할 것
 
 ## 코드 규칙 공통
-- 불확실한 내용은 추측하지 말고 모른다고 명시할 것 
+- 불확실한 내용은 추측 및 추론하지 말고 반드시 실제 호출 체인(caller)을 Grep으로 추적하는 등 확인한 후 답할 것
 - 코드 수정 시 수정 전/후 의도와 이유를 반드시 설명할 것
 - if(!isok()) 지양, if(isok() == true) 지향
-- 주석 한줄 또는 두줄 제한
+- 주석 1~2줄로 제한
 
 ## 코딩 규칙 Unity 프로젝트
 - Unity 2021+ 기준으로 작성할 것, - C# 코드는 Unity 스타일에 맞출 것
 - 항상 성능과 GC Alloc을 고려할 것
-- 코딩중 using UnityEditor.ShaderGraph; 를 사용하게되면 android 빌드 실패함
+- **[주의]코딩중 using UnityEditor.ShaderGraph; 를 사용하게되면 android 빌드 실패함
 - Update 남용 금지, 이벤트 또는 코루틴 우선 (public static class EventManager 참고할 것)
 - 오브젝트 생성, 소멸을 최소화 하기 위해 pool을 사용 ( public class PoolManager 참고할 것)
 - Raycast, Physics 사용 시 반드시 성능 비용 및 가능한 대안 설명 포함
@@ -32,3 +32,4 @@
 ## 주의 사항
 - 모든 파일(generated 파일 제외)엔 최상단에 1~3줄 요약이 있어야 해. 없다면 추가
 - 작업 진행 후 최상단 요약 수정 필요가 있다면 수정
+- localization 을 위한 csv 수정, 생성은 직접 하지 말고, 이용자에게 부탁할 것( key, value 를 알려주면 됨)

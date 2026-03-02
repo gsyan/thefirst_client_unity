@@ -256,6 +256,41 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<CharacterResponse>>(request.downloadHandler.text);
     }
 
+    public async Task<ApiResponse<bool>> ValidateCharacterNameAsync(string name)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<bool>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(new CharacterValidateNameRequest { name = name });
+
+        using var request = new UnityWebRequest($"{baseUrl}/character/validate-name", "POST");
+        request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(request);
+        return JsonConvert.DeserializeObject<ApiResponse<bool>>(request.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<CharacterRenameResponse>> RenameCharacterAsync(CharacterRenameRequest renameRequest)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<CharacterRenameResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(renameRequest);
+        Debug.Log($"RenameCharacter JSON: {json}");
+
+        using var request = new UnityWebRequest($"{baseUrl}/character/rename", "POST");
+        request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(request);
+        var response = JsonConvert.DeserializeObject<ApiResponse<CharacterRenameResponse>>(request.downloadHandler.text);
+        Debug.Log($"RenameCharacter Response: {request.downloadHandler.text}");
+        return response;
+    }
+
     public async Task<ApiResponse<List<CharacterResponse>>> GetAllCharactersAsync()
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<List<CharacterResponse>>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
@@ -658,7 +693,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"PvP Ranking Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/ranking", "POST");
+        using var webRequest = new UnityWebRequest($"{baseUrl}/ranking/pvp", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -671,6 +706,24 @@ public class ApiClient
         return response;
     }
 
+    public async Task<ApiResponse<ZoneRankingResponse>> ZoneRankingAsync(ZoneRankingRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneRankingResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        using var webRequest = new UnityWebRequest($"{baseUrl}/ranking/zone", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ZoneRankingResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Zone Ranking Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
     public async Task<ApiResponse<PvpMyRankResponse>> PvpMyRankAsync(PvpMyRankRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<PvpMyRankResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
@@ -678,7 +731,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"PvP My Rank Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/my-rank", "POST");
+        using var webRequest = new UnityWebRequest($"{baseUrl}/ranking/pvp/my-rank", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");

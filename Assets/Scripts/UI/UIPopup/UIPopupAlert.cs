@@ -7,10 +7,11 @@ using UnityEngine.UI;
 public class UIPopupAlert : UIPopupBase
 {
     [Header("Alert Popup UI")]
-    public TMP_Text titleText;
-    public TMP_Text messageText;
-    public Button confirmButton;
-    public TMP_Text confirmButtonText;
+    [SerializeField] private  TMP_Text titleText;
+    [SerializeField] private TMP_Text messageText;
+    [SerializeField] private Button confirmButton;
+    [SerializeField] private  TMP_Text confirmButtonText;
+    [SerializeField] private Button confirmButtonBackground;
 
     private Action onConfirmCallback;
 
@@ -19,6 +20,8 @@ public class UIPopupAlert : UIPopupBase
         base.Awake();
         if (confirmButton != null)
             confirmButton.onClick.AddListener(OnConfirmClicked);
+        if (confirmButtonBackground != null)
+            confirmButtonBackground.onClick.AddListener(OnConfirmClicked);
     }
 
     public void ShowPopupAlert(string title, string message, Action onConfirm, string buttonText = "확인")
@@ -34,11 +37,5 @@ public class UIPopupAlert : UIPopupBase
     private void OnConfirmClicked()
     {
         onConfirmCallback?.Invoke();
-    }
-
-    private void OnDestroy()
-    {
-        if (confirmButton != null)
-            confirmButton.onClick.RemoveAllListeners();
     }
 }

@@ -422,6 +422,54 @@ MonoBehaviour:
     m_Localized: Score
     m_Metadata:
       m_Items: []
+  - m_Id: 8029751440441344
+    m_Localized: Victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8029751486578688
+    m_Localized: Defeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8029751486578689
+    m_Localized: "Score: {0} <voffset=6>\u2192</voffset> {1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8029751486578690
+    m_Localized: "Rank: {0} <voffset=6>\u2192</voffset> {1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668819628032
+    m_Localized: Google Login
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668848988160
+    m_Localized: Change Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765376
+    m_Localized: 'Remaining: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765377
+    m_Localized: Checking...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765378
+    m_Localized: Name is available
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765379
+    m_Localized: Name already taken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765380
+    m_Localized: Name not allowed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765381
+    m_Localized: English/Korean/Numbers 2-16 chars
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

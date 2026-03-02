@@ -37,7 +37,7 @@ public class UITabPvp : UITabBase
 
     // 랭킹 보드 - 서버에서 받아온 데이터 캐시 및 요청 중인 페이지 관리
     private const int RANKING_PAGE_SIZE = 50;
-    private readonly Dictionary<int, PvpRankingEntry> m_rankingCache = new Dictionary<int, PvpRankingEntry>();
+    private readonly Dictionary<int, RankingEntry> m_rankingCache = new Dictionary<int, RankingEntry>();
     private readonly HashSet<int> m_requestingPages = new HashSet<int>(); // 요청 중인 페이지 번호
     private bool m_rankingInitialized;
 
@@ -121,7 +121,7 @@ public class UITabPvp : UITabBase
     private void UpdateMyInfo()
     {
         if (m_myScoreText != null) m_myScoreText.text = $"{m_myScore}";
-        if (m_myRankText != null) m_myRankText.text = $"{m_myRank}";
+        if (m_myRankText != null) m_myRankText.text = m_myRank > 0 ? $"{m_myRank}" : "-";
         if (m_refreshButtonText != null) m_refreshButtonText.text = LocalizationManager.Instance.Get("pvp_opponent_list_refresh", new object[] {m_refreshRemain, 5});
     }
 
@@ -276,20 +276,20 @@ public class UITabPvp : UITabBase
         }
 
         int scoreChange = response.data.scoreChange;
+        int oldRank = m_myRank;
         m_myScore = response.data.newScore;
         m_myRank = response.data.newRank;
         bool isVictory = scoreChange >= 0;
 
         UpdateMyInfo();
-
-        string resultMsg = isVictory
-            ? $"승리! (점수 +{scoreChange})"
-            : $"패배 (점수 {scoreChange})";
-        ShowResultMessage(resultMsg, 5f);
-
         EventManager.TriggerPvpBattleResult(isVictory, scoreChange, m_myScore, m_myRank);
 
-        ReturnFromBattle();
+        string titleKey = isVictory ? "pvp_battle_result_win" : "pvp_battle_result_lose";
+        string scoreStr = isVictory ? $"+{scoreChange}" : $"{scoreChange}";
+        string title = LocalizationManager.Instance.Get(titleKey);
+        string scoreLine = LocalizationManager.Instance.Get("pvp_battle_result_score", scoreStr, m_myScore);
+        string rankLine = LocalizationManager.Instance.Get("pvp_battle_result_rank", oldRank, m_myRank);
+        UIManager.Instance.ShowAlertPopup(title, $"{scoreLine}\n{rankLine}", ReturnFromBattle);
     }
 
     // ─── 랭킹 보드 ─────────────────────────────────────────────────────────────
@@ -339,7 +339,7 @@ public class UITabPvp : UITabBase
     {
         if (itemObj.TryGetComponent<ScrollViewRankingItem>(out var item) == false) return;
 
-        if (m_rankingCache.TryGetValue(dataIndex, out PvpRankingEntry entry) == true)
+        if (m_rankingCache.TryGetValue(dataIndex, out RankingEntry entry) == true)
         {
             long myCharId = DataManager.Instance.m_currentFleetInfo?.characterId ?? 0L;
             item.SetData(entry, entry.characterId == myCharId);

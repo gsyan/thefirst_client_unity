@@ -1,4 +1,5 @@
-// PvP 전체 랭킹 팝업 - 시즌명/기간 헤더 + InfiniteScrollView 랭킹 리스트
+// PVP/Zone 랭킹 팝업 - 탭 버튼 전환 + InfiniteScrollView 랭킹 리스트
+// 서버가 내려준 nextUpdatedAt 기준으로 캐시 재활용, 만료 시 재요청
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -7,16 +8,33 @@ using UnityEngine.UI;
 
 public class UIPopupRanking : UIPopupBase
 {
+    private enum RankingType { Pvp, Zone }
+
     [Header("Ranking Popup UI")]
     [SerializeField] private TMP_Text m_periodText;
+    [SerializeField] private Button m_pvpRankListButton;
+    [SerializeField] private Button m_zoneRankListButton;
+
     [SerializeField] private ScrollViewRankingItem m_myRankInfo;
     [SerializeField] private InfiniteScrollView m_rankingScrollView;
     [SerializeField] private GameObject m_rankingItemPrefab;
     [SerializeField] private Button m_closeButton;
 
     private const int PAGE_SIZE = 50;
-    private readonly Dictionary<int, PvpRankingEntry> m_cache = new Dictionary<int, PvpRankingEntry>();
+
+    private readonly Dictionary<int, RankingEntry> m_pvpCache = new Dictionary<int, RankingEntry>();
+    private readonly Dictionary<int, RankingEntry> m_zoneCache = new Dictionary<int, RankingEntry>();
     private readonly HashSet<int> m_requestingPages = new HashSet<int>();
+
+    // 내 랭킹 정보 (랭킹 첫 응답 myInfo)
+    private RankingEntry m_pvpMyInfo;
+    private RankingEntry m_zoneMyInfo;
+
+    // 서버가 내려준 다음 갱신 예정 시각 (UTC)
+    private DateTime? m_pvpNextUpdatedAt;
+    private DateTime? m_zoneNextUpdatedAt;
+
+    private RankingType m_currentType = RankingType.Pvp;
     private Action m_onClose;
 
     protected override void Awake()
@@ -29,21 +47,57 @@ public class UIPopupRanking : UIPopupBase
             m_rankingScrollView.onItemBind = OnItemBind;
             m_rankingScrollView.onNeedData = OnNeedData;
         }
+        if (m_pvpRankListButton != null)
+            m_pvpRankListButton.onClick.AddListener(() => OnTabClicked(RankingType.Pvp));
+        if (m_zoneRankListButton != null)
+            m_zoneRankListButton.onClick.AddListener(() => OnTabClicked(RankingType.Zone));
     }
 
     public void ShowPopupRanking(Action onClose)
     {
         m_onClose = onClose;
         base.ShowPopup();
+        LoadTab(RankingType.Pvp);
+    }
 
-        // 내 랭크는 매번 최신으로 갱신
-        NetworkManager.Instance.PvpMyRank(new PvpMyRankRequest(), OnMyRankResponse);
+    private void OnTabClicked(RankingType type)
+    {
+        if (m_currentType == type) return;
+        LoadTab(type);
+    }
 
-        m_cache.Clear();
+    private void LoadTab(RankingType type)
+    {
+        m_currentType = type;
         m_requestingPages.Clear();
 
-        var request = new PvpRankingRequest { offset = 0, limit = PAGE_SIZE };
-        NetworkManager.Instance.PvpRanking(request, OnInitResponse);
+        if (type == RankingType.Pvp)
+        {
+            // 캐시 유효하면 서버 재요청 없이 로컬 데이터 표시
+            if (m_pvpCache.Count > 0 && IsExpired(m_pvpNextUpdatedAt) == false)
+            {
+                ApplyMyInfo(m_pvpMyInfo);
+                m_rankingScrollView.RefreshVisible();
+                return;
+            }
+            m_pvpCache.Clear();
+            var req = new PvpRankingRequest { offset = 0, limit = PAGE_SIZE };
+            NetworkManager.Instance.PvpRanking(req, OnPvpInitResponse);
+        }
+        else if (type == RankingType.Zone)
+        {
+            if (m_zoneCache.Count > 0 && IsExpired(m_zoneNextUpdatedAt) == false)
+            {
+                ApplyMyInfo(m_zoneMyInfo);
+                if (m_periodText != null) m_periodText.gameObject.SetActive(false);
+                m_rankingScrollView.RefreshVisible();
+                return;
+            }
+            m_zoneCache.Clear();
+            if (m_periodText != null) m_periodText.gameObject.SetActive(false);
+            var req = new ZoneRankingRequest { offset = 0, limit = PAGE_SIZE };
+            NetworkManager.Instance.ZoneRanking(req, OnZoneInitResponse);
+        }
     }
 
     private void OnCloseClicked()
@@ -51,52 +105,59 @@ public class UIPopupRanking : UIPopupBase
         m_onClose?.Invoke();
     }
 
-    private void OnMyRankResponse(ApiResponse<PvpMyRankResponse> response)
+    private void OnPvpInitResponse(ApiResponse<PvpRankingResponse> response)
     {
-        if (response == null || response.errorCode != 0 || response.data?.myRankInfo == null) return;
-        if (m_myRankInfo == null) return;
-
-        long myCharId = DataManager.Instance.m_currentFleetInfo?.characterId ?? 0L;
-        string myName = DataManager.Instance.m_currentCharacter?.GetName() ?? "";
-        var entry = new PvpRankingEntry
-        {
-            rank = response.data.myRankInfo.pvpRank,
-            characterId = myCharId,
-            characterName = myName,
-            pvpScore = response.data.myRankInfo.pvpScore
-        };
-        m_myRankInfo.SetData(entry, true);
-    }
-
-    private void OnInitResponse(ApiResponse<PvpRankingResponse> response)
-    {
+        if (m_currentType != RankingType.Pvp) return;
         if (response == null || response.errorCode != 0 || response.data == null)
         {
-            Debug.LogWarning("[UIPopupPvpRanking] 랭킹 로드 실패");
+            Debug.LogWarning("[UIPopupRanking] PVP 랭킹 로드 실패");
             return;
         }
 
         if (response.data.items != null)
         {
             for (int i = 0; i < response.data.items.Count; i++)
-                m_cache[i] = response.data.items[i];
+                m_pvpCache[i] = response.data.items[i];
         }
 
-        UpdateHeader(response.data);
+        m_pvpMyInfo = response.data.myInfo;
+        m_pvpNextUpdatedAt = ParseUpdatedAt(response.data.lastUpdatedAt);
+
+        ApplyMyInfo(m_pvpMyInfo);
+        UpdatePvpHeader(response.data);
         m_rankingScrollView.Initialize(response.data.totalCount, m_rankingItemPrefab);
     }
 
-    // 상단 시즌명/기간 텍스트 업데이트
-    private void UpdateHeader(PvpRankingResponse data)
+    private void UpdatePvpHeader(PvpRankingResponse data)
     {
-        if (m_periodText != null)
+        if (m_periodText == null) return;
+        bool hasStart = string.IsNullOrEmpty(data.seasonStartTime) == false;
+        bool hasEnd = string.IsNullOrEmpty(data.seasonEndTime) == false;
+        m_periodText.gameObject.SetActive(hasStart && hasEnd);
+        if (hasStart && hasEnd)
+            m_periodText.text = $"{data.seasonStartTime} ~ {data.seasonEndTime}";
+    }
+
+    private void OnZoneInitResponse(ApiResponse<ZoneRankingResponse> response)
+    {
+        if (m_currentType != RankingType.Zone) return;
+        if (response == null || response.errorCode != 0 || response.data == null)
         {
-            bool hasStart = string.IsNullOrEmpty(data.seasonStartTime) == false;
-            bool hasEnd = string.IsNullOrEmpty(data.seasonEndTime) == false;
-            m_periodText.gameObject.SetActive(hasStart && hasEnd);
-            if (hasStart && hasEnd)
-                m_periodText.text = $"{data.seasonStartTime} ~ {data.seasonEndTime}";
+            Debug.LogWarning("[UIPopupRanking] Zone 랭킹 로드 실패");
+            return;
         }
+
+        if (response.data.items != null)
+        {
+            for (int i = 0; i < response.data.items.Count; i++)
+                m_zoneCache[i] = response.data.items[i];
+        }
+
+        m_zoneMyInfo = response.data.myInfo;
+        m_zoneNextUpdatedAt = ParseUpdatedAt(response.data.lastUpdatedAt);
+
+        ApplyMyInfo(m_zoneMyInfo);
+        m_rankingScrollView.Initialize(response.data.totalCount, m_rankingItemPrefab);
     }
 
     // InfiniteScrollView 콜백 - 아이템 데이터 적용
@@ -104,15 +165,13 @@ public class UIPopupRanking : UIPopupBase
     {
         if (itemObj.TryGetComponent<ScrollViewRankingItem>(out var item) == false) return;
 
-        if (m_cache.TryGetValue(dataIndex, out PvpRankingEntry entry) == true)
-        {
-            long myCharId = DataManager.Instance.m_currentFleetInfo?.characterId ?? 0L;
+        long myCharId = DataManager.Instance.m_currentFleetInfo?.characterId ?? 0L;
+        Dictionary<int, RankingEntry> cache = GetCurrentCache();
+
+        if (cache.TryGetValue(dataIndex, out RankingEntry entry) == true)
             item.SetData(entry, entry.characterId == myCharId);
-        }
         else
-        {
             item.SetLoading();
-        }
     }
 
     // InfiniteScrollView 콜백 - 미캐시 페이지 서버 요청
@@ -120,35 +179,78 @@ public class UIPopupRanking : UIPopupBase
     {
         int firstPage = startIndex / PAGE_SIZE;
         int lastPage = (startIndex + count - 1) / PAGE_SIZE;
+        Dictionary<int, RankingEntry> cache = GetCurrentCache();
+        RankingType capturedType = m_currentType;
 
         for (int page = firstPage; page <= lastPage; page++)
         {
             int pageOffset = page * PAGE_SIZE;
-            if (m_cache.ContainsKey(pageOffset) == true) continue;
+            if (cache.ContainsKey(pageOffset) == true) continue;
             if (m_requestingPages.Contains(page) == true) continue;
 
             m_requestingPages.Add(page);
             int captured = page;
-            var request = new PvpRankingRequest { offset = pageOffset, limit = PAGE_SIZE };
-            NetworkManager.Instance.PvpRanking(request, res => OnPageResponse(res, captured));
+
+            if (capturedType == RankingType.Pvp)
+            {
+                var req = new PvpRankingRequest { offset = pageOffset, limit = PAGE_SIZE };
+                NetworkManager.Instance.PvpRanking(req, res => OnPvpPageResponse(res, captured));
+            }
+            else
+            {
+                var req = new ZoneRankingRequest { offset = pageOffset, limit = PAGE_SIZE };
+                NetworkManager.Instance.ZoneRanking(req, res => OnZonePageResponse(res, captured));
+            }
         }
     }
 
-    private void OnPageResponse(ApiResponse<PvpRankingResponse> response, int page)
+    private Dictionary<int, RankingEntry> GetCurrentCache()
+    {
+        if (m_currentType == RankingType.Pvp) return m_pvpCache;
+        return m_zoneCache;
+    }
+
+    private void OnPvpPageResponse(ApiResponse<PvpRankingResponse> response, int page)
     {
         m_requestingPages.Remove(page);
         if (response == null || response.errorCode != 0 || response.data?.items == null) return;
-
         int baseIndex = page * PAGE_SIZE;
         for (int i = 0; i < response.data.items.Count; i++)
-            m_cache[baseIndex + i] = response.data.items[i];
-
-        m_rankingScrollView.RefreshVisible();
+            m_pvpCache[baseIndex + i] = response.data.items[i];
+        if (m_currentType == RankingType.Pvp)
+            m_rankingScrollView.RefreshVisible();
     }
 
-    private void OnDestroy()
+    private void OnZonePageResponse(ApiResponse<ZoneRankingResponse> response, int page)
     {
-        if (m_closeButton != null)
-            m_closeButton.onClick.RemoveAllListeners();
+        m_requestingPages.Remove(page);
+        if (response == null || response.errorCode != 0 || response.data?.items == null) return;
+        int baseIndex = page * PAGE_SIZE;
+        for (int i = 0; i < response.data.items.Count; i++)
+            m_zoneCache[baseIndex + i] = response.data.items[i];
+        if (m_currentType == RankingType.Zone)
+            m_rankingScrollView.RefreshVisible();
+    }
+
+    // ── 유틸 ───────────────────────────────────────────────────────────────
+
+    private void ApplyMyInfo(RankingEntry info)
+    {
+        if (m_myRankInfo == null || info == null) return;
+        m_myRankInfo.SetData(info, true);
+    }
+
+    private bool IsExpired(DateTime? nextUpdatedAt)
+    {
+        if (nextUpdatedAt == null) return true;
+        return DateTime.UtcNow >= nextUpdatedAt.Value;
+    }
+
+    private DateTime? ParseUpdatedAt(string isoTime)
+    {
+        if (string.IsNullOrEmpty(isoTime)) return null;
+        if (DateTime.TryParse(isoTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime dt))
+            return dt;
+        return null;
     }
 }
