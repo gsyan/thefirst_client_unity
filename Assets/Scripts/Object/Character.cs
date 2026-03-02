@@ -54,6 +54,13 @@ public class Character
         m_characterInfo = characterInfo;
     }
 
+    public void UpdateCharacterName(string characterName, int nameChangeCount)
+    {
+        if (m_characterInfo == null) return;
+        m_characterInfo.characterName = characterName;
+        m_characterInfo.nameChangeCount = nameChangeCount;
+    }
+
     public void UpdateTechLevel(int techLevel)
     {
         if (m_characterInfo == null) return;

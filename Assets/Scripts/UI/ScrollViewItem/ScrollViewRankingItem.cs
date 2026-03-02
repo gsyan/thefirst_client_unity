@@ -10,11 +10,11 @@ public class ScrollViewRankingItem : MonoBehaviour
     [SerializeField] private TMP_Text m_scoreText;
     [SerializeField] private Image m_highlightImage; // 내 순위 강조 (없으면 무시)
 
-    public void SetData(PvpRankingEntry entry, bool isMyRank)
+    public void SetData(RankingEntry entry, bool isMyRank)
     {
-        if (m_rankText != null) m_rankText.text = entry.rank.ToString();
+        if (m_rankText != null) m_rankText.text = entry.rank > 0 ? entry.rank.ToString() : "-";
         if (m_nameText != null) m_nameText.text = entry.characterName;
-        if (m_scoreText != null) m_scoreText.text = entry.pvpScore.ToString();
+        if (m_scoreText != null) m_scoreText.text = entry.score ?? "";
         if (m_highlightImage != null) m_highlightImage.enabled = isMyRank;
     }
 

@@ -540,6 +540,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.SelectCharacterAsync(characterId), onComplete));
     }
 
+    public void ValidateCharacterName(string name, Action<ApiResponse<bool>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ValidateCharacterNameAsync(name), onComplete));
+    }
+
+    public void RenameCharacter(CharacterRenameRequest request, Action<ApiResponse<CharacterRenameResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.RenameCharacterAsync(request), onComplete));
+    }
+
     public void AddShip(AddShipRequest request, System.Action<ApiResponse<AddShipResponse>> onComplete)
     {
         if (m_bConnected == false) return;
@@ -691,6 +703,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.PvpMyRankAsync(request), onComplete));
+    }
+
+    public void ZoneRanking(ZoneRankingRequest request, System.Action<ApiResponse<ZoneRankingResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ZoneRankingAsync(request), onComplete));
     }
 
     public ApiClient GetApiClient()

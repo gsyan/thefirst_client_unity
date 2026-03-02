@@ -175,6 +175,22 @@ MonoBehaviour:
     m_Key: pvp_rank_title
     m_Metadata:
       m_Items: []
+  - m_Id: 8029751440441344
+    m_Key: pvp_battle_result_win
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8029751486578688
+    m_Key: pvp_battle_result_lose
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8029751486578689
+    m_Key: pvp_battle_result_score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8029751486578690
+    m_Key: pvp_battle_result_rank
+    m_Metadata:
+      m_Items: []
   - m_Id: 8001513162932224
     m_Key: rank_first_row_ranking
     m_Metadata:
@@ -193,6 +209,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2924654624636956
     m_Key: settings_logout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668819628032
+    m_Key: settings_google_account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668848988160
+    m_Key: settings_name_change
     m_Metadata:
       m_Items: []
   - m_Id: 1211027840434176
@@ -417,6 +441,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5949497835323396
     m_Key: ship_module_select_hanger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765376
+    m_Key: ui_rename_char_remain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765377
+    m_Key: ui_rename_char_checking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765378
+    m_Key: ui_rename_char_available
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765379
+    m_Key: ui_rename_char_duplicate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765380
+    m_Key: ui_rename_char_profanity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8166668865765381
+    m_Key: ui_rename_char_format_err
     m_Metadata:
       m_Items: []
   m_Metadata:

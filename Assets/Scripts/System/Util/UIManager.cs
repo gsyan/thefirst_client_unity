@@ -369,6 +369,22 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupRanking(() => CloseCurrentPopup());
     }
 
+    // 캐릭터 이름 변경 팝업
+    public void ShowRenameCharacterPopup(System.Action onRenameSuccess = null)
+    {
+        if (currentPopup != null)
+            CloseCurrentPopup();
+
+        UIPopupRenameCharacter popup = GetOrCreatePopup<UIPopupRenameCharacter>("UIPopupRenameCharacter");
+        if (popup == null) return;
+
+        currentPopup = popup;
+        popup.ShowPopupRenameCharacter(
+            onClose: () => CloseCurrentPopup(),
+            onRenameSuccess: onRenameSuccess
+        );
+    }
+
     // 단순 알림 팝업 (확인 버튼만)
     public void ShowAlertPopup(string title, string message, System.Action onConfirm, string buttonText = "확인")
     {

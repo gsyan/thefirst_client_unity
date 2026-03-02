@@ -156,10 +156,4 @@ public class UIPopupConfirm : UIPopupBase
     {
         onCancelCallback?.Invoke();
     }
-
-    private void OnDestroy()
-    {
-        if (cancelButton != null) cancelButton.onClick.RemoveAllListeners();
-        if (confirmButton != null) confirmButton.onClick.RemoveAllListeners();
-    }
 }
