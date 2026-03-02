@@ -24,7 +24,6 @@ MonoBehaviour:
     uiPosition: {x: 80, y: -40}
     moduleType: 1
     moduleSubType: 1001
-    description: Research body_t1_std module technology
   - researchId: body_t1_adv
     prerequisiteIds:
     - body_t1_std
@@ -37,7 +36,6 @@ MonoBehaviour:
     uiPosition: {x: 280, y: -40}
     moduleType: 1
     moduleSubType: 1002
-    description: Research body_t1_adv module technology
   - researchId: engine_t1_std
     prerequisiteIds: []
     researchCost:
@@ -46,10 +44,9 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    uiPosition: {x: 80, y: -40}
+    uiPosition: {x: 80, y: -160}
     moduleType: 2
     moduleSubType: 2001
-    description: Research engine_t1_std module technology
   - researchId: engine_t1_adv
     prerequisiteIds:
     - engine_t1_std
@@ -59,10 +56,9 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    uiPosition: {x: 280, y: -40}
+    uiPosition: {x: 280, y: -160}
     moduleType: 2
     moduleSubType: 2002
-    description: Research engine_t1_adv module technology
   - researchId: beam_t1_std
     prerequisiteIds: []
     researchCost:
@@ -71,10 +67,9 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    uiPosition: {x: 80, y: -40}
+    uiPosition: {x: 80, y: -280}
     moduleType: 3
     moduleSubType: 3001
-    description: Research beam_t1_std module technology
   - researchId: beam_t1_adv
     prerequisiteIds:
     - beam_t1_std
@@ -84,10 +79,9 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    uiPosition: {x: 280, y: -40}
+    uiPosition: {x: 280, y: -280}
     moduleType: 3
     moduleSubType: 3002
-    description: Research beam_t1_adv module technology
   - researchId: missile_t1_std
     prerequisiteIds: []
     researchCost:
@@ -96,10 +90,9 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    uiPosition: {x: 80, y: -40}
+    uiPosition: {x: 80, y: -400}
     moduleType: 4
     moduleSubType: 4001
-    description: Research missile_t1_std module technology
   - researchId: missile_t1_adv
     prerequisiteIds:
     - missile_t1_std
@@ -109,10 +102,9 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    uiPosition: {x: 280, y: -40}
+    uiPosition: {x: 280, y: -400}
     moduleType: 4
     moduleSubType: 4002
-    description: Research missile_t1_adv module technology
   - researchId: hanger_t1_std
     prerequisiteIds: []
     researchCost:
@@ -121,10 +113,9 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    uiPosition: {x: 80, y: -40}
+    uiPosition: {x: 80, y: -520}
     moduleType: 5
     moduleSubType: 5001
-    description: Research hanger_t1_std module technology
   - researchId: hanger_t1_adv
     prerequisiteIds:
     - hanger_t1_std
@@ -134,7 +125,6 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    uiPosition: {x: 280, y: -40}
+    uiPosition: {x: 280, y: -520}
     moduleType: 5
     moduleSubType: 5002
-    description: Research hanger_t1_adv module technology

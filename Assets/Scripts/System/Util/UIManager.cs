@@ -41,6 +41,7 @@ public class UIManager : MonoSingleton<UIManager>
     private const string POPUP_PREFAB_PATH = "Prefabs/UI/Popup";
     private UIPopupBase currentPopup;
     private Canvas mainCanvas;
+    private Dictionary<string, UIPopupBase> popupCache = new Dictionary<string, UIPopupBase>();
 
     // UI 컨테이너
     protected RectTransform m_gaugeBarContainer;
@@ -291,29 +292,9 @@ public class UIManager : MonoSingleton<UIManager>
         if (currentPopup != null)
             CloseCurrentPopup();
 
-        GameObject popupPrefab = Resources.Load<GameObject>($"{POPUP_PREFAB_PATH}/UIPopupConfirm");
-        if (popupPrefab == null)
-        {
-            Debug.LogError($"Failed to load popup prefab at {POPUP_PREFAB_PATH}/UIPopupConfirm");
-            return;
-        }
+        UIPopupConfirm confirmPopup = GetOrCreatePopup<UIPopupConfirm>("UIPopupConfirm");
+        if (confirmPopup == null) return;
 
-        if (m_generalContainer == null)
-        {
-            Debug.LogError("GeneralContainer not found!");
-            return;
-        }
-
-        GameObject popupObj = Instantiate(popupPrefab, m_generalContainer);
-        UIPopupConfirm confirmPopup = popupObj.GetComponent<UIPopupConfirm>();
-
-        if (confirmPopup == null)
-        {
-            Debug.LogError("UIPopupConfirm component not found on prefab!");
-            Destroy(popupObj);
-            return;
-        }
-        popupObj.name = popupPrefab.name;
         currentPopup = confirmPopup;
 
         System.Action wrappedConfirm = () =>
@@ -331,13 +312,61 @@ public class UIManager : MonoSingleton<UIManager>
         confirmPopup.ShowPopupConfirm(title, message, rowLabels, rowValues, cost, wrappedConfirm, wrappedCancel);
     }
 
+    // 첫 호출 시 Instantiate 후 캐싱, 이후엔 SetActive(true)로 재사용
+    private T GetOrCreatePopup<T>(string prefabName) where T : UIPopupBase
+    {
+        if (popupCache.TryGetValue(prefabName, out UIPopupBase cached))
+        {
+            cached.gameObject.SetActive(true);
+            return cached as T;
+        }
+
+        GameObject prefab = Resources.Load<GameObject>($"{POPUP_PREFAB_PATH}/{prefabName}");
+        if (prefab == null)
+        {
+            Debug.LogError($"Failed to load popup prefab: {POPUP_PREFAB_PATH}/{prefabName}");
+            return null;
+        }
+
+        if (m_generalContainer == null)
+        {
+            Debug.LogError("GeneralContainer not found!");
+            return null;
+        }
+
+        GameObject obj = Instantiate(prefab, m_generalContainer);
+        obj.name = prefab.name;
+        if (obj.TryGetComponent(out T popup) == false)
+        {
+            Debug.LogError($"{typeof(T).Name} component not found on prefab: {prefabName}");
+            Destroy(obj);
+            return null;
+        }
+
+        popupCache[prefabName] = popup;
+        return popup;
+    }
+
     private void CloseCurrentPopup()
     {
         if (currentPopup != null)
         {
-            Destroy(currentPopup.gameObject);
+            currentPopup.gameObject.SetActive(false);
             currentPopup = null;
         }
+    }
+
+    // PvP 전체 랭킹 팝업
+    public void ShowRankingPopup()
+    {
+        if (currentPopup != null)
+            CloseCurrentPopup();
+
+        UIPopupRanking popup = GetOrCreatePopup<UIPopupRanking>("UIPopupRanking");
+        if (popup == null) return;
+
+        currentPopup = popup;
+        popup.ShowPopupRanking(() => CloseCurrentPopup());
     }
 
     // 단순 알림 팝업 (확인 버튼만)
@@ -346,30 +375,9 @@ public class UIManager : MonoSingleton<UIManager>
         if (currentPopup != null)
             CloseCurrentPopup();
 
-        GameObject popupPrefab = Resources.Load<GameObject>($"{POPUP_PREFAB_PATH}/UIPopupAlert");
-        if (popupPrefab == null)
-        {
-            Debug.LogError($"Failed to load popup prefab at {POPUP_PREFAB_PATH}/UIPopupAlert");
-            return;
-        }
+        UIPopupAlert alertPopup = GetOrCreatePopup<UIPopupAlert>("UIPopupAlert");
+        if (alertPopup == null) return;
 
-        if (m_generalContainer == null)
-        {
-            Debug.LogError("GeneralContainer not found!");
-            return;
-        }
-
-        GameObject popupObj = Instantiate(popupPrefab, m_generalContainer);
-        UIPopupAlert alertPopup = popupObj.GetComponent<UIPopupAlert>();
-
-        if (alertPopup == null)
-        {
-            Debug.LogError("UIPopupAlert component not found on prefab!");
-            Destroy(popupObj);
-            return;
-        }
-
-        popupObj.name = popupPrefab.name;
         currentPopup = alertPopup;
 
         System.Action wrappedConfirm = () =>

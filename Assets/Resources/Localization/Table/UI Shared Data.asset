@@ -171,6 +171,22 @@ MonoBehaviour:
     m_Key: pvp_opponent_info
     m_Metadata:
       m_Items: []
+  - m_Id: 7977027994779648
+    m_Key: pvp_rank_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8001513162932224
+    m_Key: rank_first_row_ranking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8001513192292352
+    m_Key: rank_first_row_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8001513192292353
+    m_Key: rank_first_row_score
+    m_Metadata:
+      m_Items: []
   - m_Id: 2924654624636957
     m_Key: settings_language_options
     m_Metadata:

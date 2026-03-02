@@ -687,6 +687,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.PvpRankingAsync(request), onComplete));
     }
 
+    public void PvpMyRank(PvpMyRankRequest request, System.Action<ApiResponse<PvpMyRankResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.PvpMyRankAsync(request), onComplete));
+    }
+
     public ApiClient GetApiClient()
     {
         return m_apiClient;

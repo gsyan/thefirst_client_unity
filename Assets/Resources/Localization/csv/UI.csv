@@ -38,6 +38,10 @@ pvp_score_mine_head,,My PVP Info,내 PVP 정보
 pvp_score_mine,,Score,점수
 pvp_rank_mine,,Rank,랭크
 pvp_opponent_info,,Opponent Fleet Power,상대 함대 전력
+pvp_rank_title,,Rank List,순위표
+rank_first_row_ranking,,Rank,순위
+rank_first_row_name,,Name,이름
+rank_first_row_score,,Score,점수
 settings_language_options,,Language options,언어 변경
 settings_logout,,Logout,로그아웃
 camera_focus_enemy_fleet,,Enemy Fleet,적 함대

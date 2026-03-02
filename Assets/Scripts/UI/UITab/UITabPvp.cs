@@ -18,6 +18,8 @@ public class UITabPvp : UITabBase
     [SerializeField] private RectTransform m_scrollViewContentRankingBoard;
     [SerializeField] private GameObject m_scrollViewRankingItemPrefab;
     [SerializeField] private InfiniteScrollView m_rankingScrollView; // ranking ScrollRect에 부착된 컴포넌트
+    [SerializeField] private Button m_pvpRankListButton;
+
 
     [Header("PvP Warp")]
     [SerializeField] private Material m_pvpBattleSkybox;
@@ -46,6 +48,8 @@ public class UITabPvp : UITabBase
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
         m_refreshButton.onClick.AddListener(OnRefreshClicked);
+        if (m_pvpRankListButton != null)
+            m_pvpRankListButton.onClick.AddListener(OnRankListButtonClicked);
 
         if (m_rankingScrollView != null)
         {
@@ -66,6 +70,7 @@ public class UITabPvp : UITabBase
         base.OnTabActivated();
         //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
         RequestPvpList();
+        RequestPvpMyRank();
     }
 
     public override void OnTabDeactivated()
@@ -73,11 +78,23 @@ public class UITabPvp : UITabBase
         //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
     }
 
+    private void OnRankListButtonClicked()
+    {
+        UIManager.Instance.ShowRankingPopup();
+    }
+
     // 상대 목록 요청
     private void RequestPvpList()
     {
         var request = new PvpListRequest();
         NetworkManager.Instance.PvpList(request, OnPvpListResponse);
+    }
+
+    // 내 랭크 정보 요청
+    private void RequestPvpMyRank()
+    {
+        var request = new PvpMyRankRequest();
+        NetworkManager.Instance.PvpMyRank(request, OnPvpMyRankResponse);
     }
 
     private void OnPvpListResponse(ApiResponse<PvpListResponse> response)
@@ -88,12 +105,17 @@ public class UITabPvp : UITabBase
             return;
         }
 
+        PopulateOpponentList(response.data.opponents);
+    }
+
+    private void OnPvpMyRankResponse(ApiResponse<PvpMyRankResponse> response)
+    {
+        if (response == null || response.errorCode != 0 || response.data?.myRankInfo == null) return;
+
         m_myScore = response.data.myRankInfo.pvpScore;
         m_myRank = response.data.myRankInfo.pvpRank;
         m_refreshRemain = response.data.myRankInfo.pvpListRefreshRemain;
-
         UpdateMyInfo();
-        PopulateOpponentList(response.data.opponents);
     }
 
     private void UpdateMyInfo()
@@ -386,6 +408,7 @@ public class UITabPvp : UITabBase
                 m_myFleet.RestoreDestroyedShips(0.1f);
 
             RequestPvpList();
+            RequestPvpMyRank();
         });
     }
 }
