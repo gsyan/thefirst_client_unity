@@ -406,6 +406,22 @@ MonoBehaviour:
     m_Localized: Elapsed
     m_Metadata:
       m_Items: []
+  - m_Id: 7977027994779648
+    m_Localized: Rank List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8001513162932224
+    m_Localized: Rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8001513192292352
+    m_Localized: Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8001513192292353
+    m_Localized: Score
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

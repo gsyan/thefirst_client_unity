@@ -11,7 +11,7 @@
 
 ## 코드 생성 도구
 - Python generator 경로: 서버경로\tools\generator
-- 서버 dto들 모두 클라 메인으로 generate 된 것(서버 코드 수정시 주석에 Auto-generated 발견되면 클라부터 수정)
+- **[금지] 서버 dto 파일을 직접 생성/수정하지 말 것** - 반드시 클라 C# DTO 수정 후 generator로 생성
 - py generate 관련 사항은 이 경로의 구조를 기준으로 설명할 것
 
 ## 코드 규칙 공통

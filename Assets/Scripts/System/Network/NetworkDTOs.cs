@@ -437,6 +437,14 @@ public class PvpListRequest { }
 public class PvpListResponse
 {
     public List<PvpOpponentInfo> opponents;
+}
+
+[System.Serializable]
+public class PvpMyRankRequest { }
+
+[System.Serializable]
+public class PvpMyRankResponse
+{
     public PvpRankInfo myRankInfo;
 }
 
@@ -499,5 +507,8 @@ public class PvpRankingResponse
 {
     public int totalCount;
     public List<PvpRankingEntry> items;
+    public string seasonName;       // 시즌 이름 (미설정 시 null)
+    public string seasonStartTime;  // 시즌 시작 시각 ISO 8601 (미설정 시 null)
+    public string seasonEndTime;    // 시즌 종료 시각 ISO 8601 (미설정 시 null)
 }
 #endregion

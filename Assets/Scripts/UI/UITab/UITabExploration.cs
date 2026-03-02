@@ -340,7 +340,7 @@ public class UITabExploration : UITabBase
         if (m_currentZoneItem != null)
         {
             m_currentZoneItem.SetSelected(false);
-            if (IsAlreadyCleared(m_currentZone) == false)
+            if (IsAlreadyCleared(m_currentZoneItem.m_zoneConfig) == false)
                 m_currentZoneItem.SetZoneItemState(EZoneState.Current);
         }
 
@@ -480,6 +480,7 @@ public class UITabExploration : UITabBase
 
         PopulateZoneScrollView();
         UpdateZoneInfo();
+        CacheCurrentZoneItem(); // PopulateZoneScrollView가 outline을 초기화하므로 선택 상태 복원
 
         // 클리어 후 안전지역으로 이동하지 않음 → 현재 존에서 계속 전투
         if (m_currentZone != null)
