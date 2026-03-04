@@ -16,3 +16,5 @@ MonoBehaviour:
   iosRewardedAdUnitId: 
   testDeviceIds:
   - f4020467-eaeb-4d8d-8a6d-571aa68e1820
+  allowedDeviceIds:
+  - 60c3fb90944bfc753802965f1b38cc72
