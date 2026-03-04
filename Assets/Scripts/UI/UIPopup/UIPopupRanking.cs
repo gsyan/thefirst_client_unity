@@ -165,7 +165,7 @@ public class UIPopupRanking : UIPopupBase
     {
         if (itemObj.TryGetComponent<ScrollViewRankingItem>(out var item) == false) return;
 
-        long myCharId = DataManager.Instance.m_currentFleetInfo?.characterId ?? 0L;
+        long myCharId = DataManager.Instance.m_currentCharacter.m_characterInfo.characterId;
         Dictionary<int, RankingEntry> cache = GetCurrentCache();
 
         if (cache.TryGetValue(dataIndex, out RankingEntry entry) == true)

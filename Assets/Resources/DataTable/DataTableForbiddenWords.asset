@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7368d1967d18c47b7f064aa8e67b76, type: 3}
+  m_Name: DataTableForbiddenWords
+  m_EditorClassIdentifier: 
+  bannedWords:
+  - "\uC528\uBC1C"
+  - "\uC2DC\uBC1C"
+  - "\u3145\u3142"
+  - "\uAC1C\uC0C8\uB07C"
+  - "\uAC1C\uC0C8"
+  - "\uBCD1\uC2E0"
+  - "\u3142\u3145"
+  - "\uC9C0\uB784"
+  - "\uC874\uB098"
+  - "\uC886"
+  - "\uBCF4\uC9C0"
+  - "\uC790\uC9C0"
+  - "\uBBF8\uCE5C\uB188"
+  - "\uBBF8\uCE5C\uB144"
+  - "\uCC3D\uB140"
+  - "\uAC78\uB808"
+  - "\uC30D\uB144"
+  - "\uC30D\uB188"
+  - "\uB2C8\uC560\uBBF8"
+  - "\uB290\uAE08\uB9C8"
+  - "\uC5E0\uCC3D"
+  - "\uCC10\uB530"
+  - "\uD6C4\uC7A5"
+  - "\uD56D\uBB38"
+  - fuck
+  - shit
+  - bitch
+  - asshole
+  - cunt
+  - bastard
+  - nigger
+  - nigga
+  - fag
+  - faggot
+  - whore
+  - slut
+  - dick
+  - cock
+  - pussy
+  - empty
+  - guest
+  - fidforge
+  exportedJson: 

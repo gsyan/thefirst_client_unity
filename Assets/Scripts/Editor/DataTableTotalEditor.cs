@@ -10,6 +10,7 @@ public class DataTableTotalEditor : EditorWindow
     private DataTableModule dataTableModule;
     private DataTableResearch dataTableResearch;
     private DataTableZone dataTableZone;
+    private DataTableForbiddenWords dataTableForbiddenWords;
     private Vector2 scrollPosition;
 
     [MenuItem("Tools/DataTable Total Manager")]
@@ -41,6 +42,9 @@ public class DataTableTotalEditor : EditorWindow
 
         dataTableZone = (DataTableZone)EditorGUILayout.ObjectField(
             "DataTable Zone", dataTableZone, typeof(DataTableZone), false);
+
+        dataTableForbiddenWords = (DataTableForbiddenWords)EditorGUILayout.ObjectField(
+            "DataTable ForbiddenWords", dataTableForbiddenWords, typeof(DataTableForbiddenWords), false);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
@@ -159,11 +163,22 @@ public class DataTableTotalEditor : EditorWindow
                 dataTableZone = AssetDatabase.LoadAssetAtPath<DataTableZone>(path);
             }
         }
+
+        if (dataTableForbiddenWords == null)
+        {
+            string[] guids = AssetDatabase.FindAssets("t:DataTableForbiddenWords", new[] { "Assets/Resources/DataTable" });
+            if (guids.Length > 0)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                dataTableForbiddenWords = AssetDatabase.LoadAssetAtPath<DataTableForbiddenWords>(path);
+            }
+        }
     }
 
     private bool IsValid()
     {
-        return dataTableModule != null && dataTableConfig != null && dataTableResearch != null && dataTableZone != null;
+        return dataTableModule != null && dataTableConfig != null && dataTableResearch != null
+            && dataTableZone != null && dataTableForbiddenWords != null;
     }
 
     private void ExportAll()
@@ -197,8 +212,13 @@ public class DataTableTotalEditor : EditorWindow
             string zonePath = Path.Combine(folderPath, "DataTableZone.json");
             File.WriteAllText(zonePath, zoneJson);
 
+            // DataTableForbiddenWords.json 내보내기
+            string forbiddenJson = dataTableForbiddenWords.ExportToJson();
+            string forbiddenPath = Path.Combine(folderPath, "DataTableForbiddenWords.json");
+            File.WriteAllText(forbiddenPath, forbiddenJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}\n{zonePath}", "OK");
+                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}\n{zonePath}\n{forbiddenPath}", "OK");
         }
     }
 
@@ -239,8 +259,13 @@ public class DataTableTotalEditor : EditorWindow
             string zoneServerPath = Path.Combine(serverDataPath, "DataTableZone.json");
             File.WriteAllText(zoneServerPath, zoneJson);
 
+            // DataTableForbiddenWords.json 서버로 내보내기
+            string forbiddenJson = dataTableForbiddenWords.ExportToJson();
+            string forbiddenServerPath = Path.Combine(serverDataPath, "DataTableForbiddenWords.json");
+            File.WriteAllText(forbiddenServerPath, forbiddenJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}\n{zoneServerPath}", "OK");
+                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}\n{zoneServerPath}\n{forbiddenServerPath}", "OK");
         }
         catch (System.Exception e)
         {

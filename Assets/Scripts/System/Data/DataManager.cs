@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+// 게임 전반의 런타임 데이터(캐릭터, 함대, 계정 상태, 데이터 테이블)를 관리하는 싱글톤
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -15,6 +15,10 @@ public class DataManager : Singleton<DataManager>
         LoadCharacterInfoFromPlayerPrefs();
         LoadFleetDataFromPlayerPrefs();
     }
+    #endregion
+
+    #region Account State Management ############################################################
+    public bool m_isGoogleLinked;  // 구글 계정 연동 여부
     #endregion
 
     #region Character Info Management ###########################################################
@@ -40,6 +44,7 @@ public class DataManager : Singleton<DataManager>
             {
                 var defaultCharacterInfo = new CharacterInfo
                 {
+                    characterId = 1,
                     characterName = "DefaultCharacter"
                     , techLevel = 1
                     , mineral = 0
@@ -113,7 +118,6 @@ public class DataManager : Singleton<DataManager>
         var defaultFleetInfo = new FleetInfo
         {
             id = 0,
-            characterId = 0,
             fleetName = "DefaultFleet",
             description = "Default Fleet",
             isActive = true,

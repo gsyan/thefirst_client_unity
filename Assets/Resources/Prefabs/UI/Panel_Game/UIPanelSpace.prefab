@@ -974,7 +974,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000004140453}
+  m_AnchoredPosition: {x: 0, y: -0.000007875284}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &5525485977656587285
@@ -4834,7 +4834,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000030125271}
+  m_AnchoredPosition: {x: 0, y: 0.00006997783}
   m_SizeDelta: {x: 659, y: 111.8755}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1667755806433218038
@@ -7720,7 +7720,7 @@ GameObject:
   - component: {fileID: 7429756606274171430}
   - component: {fileID: 4651251610402411835}
   - component: {fileID: 522214477706564047}
-  - component: {fileID: 6658861723623049166}
+  - component: {fileID: 3343198125335709814}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -7847,7 +7847,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &6658861723623049166
+--- !u!114 &3343198125335709814
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7861,9 +7861,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 8166668819628032
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -15225,6 +15225,7 @@ MonoBehaviour:
   m_logoutButton: {fileID: 5583426964303816847}
   m_renameCharacterButton: {fileID: 5576984465186806489}
   m_languageDropdown: {fileID: 2133241624235379325}
+  m_googleAccountButton: {fileID: 2142338760845950734}
   m_testMineralButton: {fileID: 6890196152957189355}
   m_toggleMineral: {fileID: 2175131773008620028}
   m_toggleMineralRare: {fileID: 3381189077357480286}

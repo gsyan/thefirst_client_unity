@@ -155,6 +155,8 @@ public class UIMain : UIManager
                     else
                         DataManager.Instance.ClearFleetData();
 
+                    DataManager.Instance.m_isGoogleLinked = response.data.bGoogleLinked;
+
                     // Save character information to DataManager
                     if (response.data.characterInfo != null)
                     {

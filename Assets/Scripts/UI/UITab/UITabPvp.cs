@@ -341,7 +341,7 @@ public class UITabPvp : UITabBase
 
         if (m_rankingCache.TryGetValue(dataIndex, out RankingEntry entry) == true)
         {
-            long myCharId = DataManager.Instance.m_currentFleetInfo?.characterId ?? 0L;
+            long myCharId = DataManager.Instance.m_currentCharacter.m_characterInfo.characterId;
             item.SetData(entry, entry.characterId == myCharId);
         }
         else

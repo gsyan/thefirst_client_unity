@@ -1,3 +1,4 @@
+// PvP 상대방 목록 단일 아이템 - 이름/점수/공격 버튼 표시
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,7 @@ public class ScrollViewPvpItem : MonoBehaviour
         m_attackButton.onClick.RemoveAllListeners();
         m_attackButton.onClick.AddListener(onAttack);
 
-        if (m_nameText != null) m_nameText.text = opponentInfo.characterName;        
+        if (m_nameText != null) m_nameText.text = Character.GetDisplayName(opponentInfo.characterName, opponentInfo.characterId);
         if (m_infoText != null) m_infoText.text = $"{opponentInfo.pvpScore}(Rank: {opponentInfo.rank})";
     }
 }
