@@ -9,8 +9,11 @@ public class AdConfig : ScriptableObject
     public string androidRewardedAdUnitId;
     public string iosRewardedAdUnitId;
 
-    [Header("Test Device IDs (개발/에디터 전용)")]
+    [Header("AdMob Test Device IDs (개발 빌드 전용)")]
     public List<string> testDeviceIds = new List<string>();
+
+    [Header("Allowed Device IDs (개발 빌드 광고 허용 기기 — SystemInfo.deviceUniqueIdentifier)")]
+    public List<string> allowedDeviceIds = new List<string>();
 
     public string GetRewardedAdUnitId()
     {
