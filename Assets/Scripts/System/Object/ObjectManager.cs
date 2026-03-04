@@ -119,6 +119,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 플레이어 함대 전멸 이벤트 구독
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetDestroyed);
 
+        // 광고 초기화 (존 입장 전 미리 로드)
+        AdManager.Instance.ToString();
+
         // 튜토리얼 초기화
         //TutorialManager.Instance.ResetAllTutorials();
         // 튜토리얼 체크 및 시작, StartGameplay
