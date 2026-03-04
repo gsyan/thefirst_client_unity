@@ -1,6 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
-set VERSION=0.1.16
+set VERSION=0.1.17
 set REPO=gsyan/thefirst_client_unity
 set RELEASE_URL=https://github.com/%REPO%/releases
 
