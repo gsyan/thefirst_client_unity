@@ -26,11 +26,12 @@ public class ApiClient
     //private readonly string baseUrl = "http://192.168.0.51:8080/api";
 #elif DEVELOPMENT_BUILD
     // 개발 빌드(Development Build)에서 사용할 URL (개발 테스트 서버)
-    private readonly string baseUrl = "http://192.168.0.61:8080/api";
+    //private readonly string baseUrl = "http://192.168.0.61:8080/api";
+    private readonly string baseUrl = "https://www.fidforge.com/api";
 #else
     // 출시 빌드(Release Build)에서 사용할 URL (실제 서비스 서버)
-    //private readonly string baseUrl = "https://www.fidforge.com/api";
-    private readonly string baseUrl = "http://192.168.0.51:8080/api";
+    private readonly string baseUrl = "https://www.fidforge.com/api";
+    //private readonly string baseUrl = "http://192.168.0.51:8080/api";
 #endif
 
     private string accessToken;

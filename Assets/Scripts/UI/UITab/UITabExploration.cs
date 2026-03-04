@@ -309,7 +309,25 @@ public class UITabExploration : UITabBase
             ObjectManager.Instance.CleanupAllProjectiles();
             ObjectManager.Instance.RemoveAllEnemyFleets();
         }
-        EnterZone(zone);
+
+        // 리워드 광고 시청 후 입장 (광고 미준비 시 바로 입장)
+        bool adInstanceNull = AdManager.Instance == null;
+        bool adReady = adInstanceNull == false && AdManager.Instance.IsRewardedAdReady;
+        Debug.Log($"[Ad] Instance null={adInstanceNull}, IsReady={adReady}");
+
+        if (adInstanceNull == false && adReady == true)
+        {
+            AdManager.Instance.ShowRewardedAd(isRewarded =>
+            {
+                Debug.Log($"[Ad] ShowRewardedAd callback isRewarded={isRewarded}");
+                if (isRewarded == true)
+                    EnterZone(zone);
+            });
+        }
+        else
+        {
+            EnterZone(zone);
+        }
     }
 
     // 워프 후 전투 시작

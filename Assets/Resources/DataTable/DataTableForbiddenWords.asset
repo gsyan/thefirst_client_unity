@@ -55,4 +55,15 @@ MonoBehaviour:
   - empty
   - guest
   - fidforge
-  exportedJson: 
+  exportedJson: "{\r\n  \"bannedWords\": [\r\n    \"\uC528\uBC1C\",\r\n    \"\uC2DC\uBC1C\",\r\n   
+    \"\u3145\u3142\",\r\n    \"\uAC1C\uC0C8\uB07C\",\r\n    \"\uAC1C\uC0C8\",\r\n   
+    \"\uBCD1\uC2E0\",\r\n    \"\u3142\u3145\",\r\n    \"\uC9C0\uB784\",\r\n    \"\uC874\uB098\",\r\n   
+    \"\uC886\",\r\n    \"\uBCF4\uC9C0\",\r\n    \"\uC790\uC9C0\",\r\n    \"\uBBF8\uCE5C\uB188\",\r\n   
+    \"\uBBF8\uCE5C\uB144\",\r\n    \"\uCC3D\uB140\",\r\n    \"\uAC78\uB808\",\r\n   
+    \"\uC30D\uB144\",\r\n    \"\uC30D\uB188\",\r\n    \"\uB2C8\uC560\uBBF8\",\r\n   
+    \"\uB290\uAE08\uB9C8\",\r\n    \"\uC5E0\uCC3D\",\r\n    \"\uCC10\uB530\",\r\n   
+    \"\uD6C4\uC7A5\",\r\n    \"\uD56D\uBB38\",\r\n    \"fuck\",\r\n    \"shit\",\r\n   
+    \"bitch\",\r\n    \"asshole\",\r\n    \"cunt\",\r\n    \"bastard\",\r\n    \"nigger\",\r\n   
+    \"nigga\",\r\n    \"fag\",\r\n    \"faggot\",\r\n    \"whore\",\r\n    \"slut\",\r\n   
+    \"dick\",\r\n    \"cock\",\r\n    \"pussy\",\r\n    \"empty\",\r\n    \"guest\",\r\n   
+    \"fidforge\"\r\n  ]\r\n}"
