@@ -13,7 +13,7 @@ public class ScrollViewRankingItem : MonoBehaviour
     public void SetData(RankingEntry entry, bool isMyRank)
     {
         if (m_rankText != null) m_rankText.text = entry.rank > 0 ? entry.rank.ToString() : "-";
-        if (m_nameText != null) m_nameText.text = entry.characterName;
+        if (m_nameText != null) m_nameText.text = Character.GetDisplayName(entry.characterName, entry.characterId);
         if (m_scoreText != null) m_scoreText.text = entry.score ?? "";
         if (m_highlightImage != null) m_highlightImage.enabled = isMyRank;
     }

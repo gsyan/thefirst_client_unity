@@ -12,6 +12,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     #region MonoSingleton ---------------------------------------------------------------
     protected override void OnInitialize()
     {
+        //PlayerPrefs.DeleteAll();
         m_apiClient = new ApiClient();
         m_apiClient.LoadRefreshToken();        
     }
@@ -240,7 +241,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (m_useFirebaseAuth == true)
             GoogleLoginFirebase(onComplete);
         else
-            StartCoroutine(GoogleLoginCoroutine(onComplete));
+            StartCoroutine(GoogleWithIdTokenCoroutine(
+                onComplete,
+                m_apiClient.GoogleLoginAsync,
+                ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT,
+                ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION));
     }
 
     public void GuestLogin(System.Action<ApiResponse<AuthResponse>> onComplete = null)
@@ -254,14 +259,27 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             guestId = System.Guid.NewGuid().ToString();
             PlayerPrefs.SetString("GuestId", guestId);
             PlayerPrefs.Save();
-            Debug.Log($"New GuestId created: {guestId}");
         }
-        else
-        {
-            Debug.Log($"Existing GuestId found: {guestId}");
-        }
-
+        
         StartCoroutine(RunAsync(() => m_apiClient.GuestLoginAsync(guestId), onComplete));
+    }
+
+    // 현재 로그인된 계정에 구글 계정 연동
+    public void LinkGoogle(System.Action<ApiResponse<AuthResponse>> onComplete = null)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(GoogleWithIdTokenCoroutine(
+            onComplete,
+            m_apiClient.LinkGoogleAsync,
+            ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT,
+            ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION));
+    }
+
+    // 구글 연동 해제 — 성공 시 guestId를 PlayerPrefs에 저장
+    public void UnlinkGoogle(Action<ApiResponse<UnlinkGoogleResponse>> onComplete = null)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.UnlinkGoogleAsync(), onComplete));
     }
 
     private void GoogleLoginFirebase(System.Action<ApiResponse<AuthResponse>> onComplete = null)
@@ -295,52 +313,38 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         // );
     }
 
-    private void GoogleLoginWebView(System.Action<ApiResponse<AuthResponse>> onComplete = null)
+    // Google idToken 획득 후 지정된 API 호출 — 로그인/연동 공용
+    private IEnumerator GoogleWithIdTokenCoroutine(
+        Action<ApiResponse<AuthResponse>> onComplete,
+        Func<string, Task<ApiResponse<AuthResponse>>> apiCall,
+        ServerErrorCode timeoutError,
+        ServerErrorCode extractError)
     {
-        StartCoroutine(GoogleLoginCoroutine(onComplete));
+        string idToken = null;
+        int tokenError = 0;
+        yield return StartCoroutine(GetGoogleIdTokenCoroutine(
+            (token, err) => { idToken = token; tokenError = err; },
+            timeoutError,
+            extractError));
 
-        // FirebaseAuthManager.Instance.SignInWithGoogle(
-        //     async (firebaseUser) =>
-        //     {
-        //         try
-        //         {
-        //             // 1) Firebase ID Token 획득
-        //             string idToken = await firebaseUser.TokenAsync(true);
-        //             Debug.Log($"[GoogleLogin] Firebase ID Token: {idToken}");
+        if (tokenError != 0)
+        {
+            onComplete?.Invoke(ApiResponse<AuthResponse>.error(tokenError));
+            yield break;
+        }
 
-        //             // 2) 내 게임 서버에 Google Login 요청
-        //             var response = await m_apiClient.GoogleLoginAsync(idToken);
-
-        //             // 3) 성공 시 Access/Refresh Token 저장
-        //             if (response.errorCode == 0)
-        //             {
-        //                 m_apiClient.SetTokens(response.data.accessToken, response.data.refreshToken);
-        //             }
-        //             else
-        //             {
-        //                 string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-        //                 Debug.LogError($"Google Login failed on game server: {errorMessage} (Code: {response.errorCode})");
-        //             }
-
-        //             // 콜백 실행
-        //             onComplete?.Invoke(response);
-        //         }
-        //         catch (Exception e)
-        //         {
-        //             Debug.LogError($"Google login failed: {e.Message}");
-        //             onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.UNKNOWN_ERROR));
-        //         }
-        //     },
-        //     () =>
-        //     {
-        //         Debug.LogError("Google Login cancelled or Firebase stage failed.");
-        //         onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.UNKNOWN_ERROR, "Firebase authentication failed."));
-        //     }
-        // );
+        yield return StartCoroutine(RunAsync(() => apiCall(idToken), onComplete));
     }
 
-    private IEnumerator GoogleLoginCoroutine(System.Action<ApiResponse<AuthResponse>> onComplete)
+    // Google WebView OAuth 공통 헬퍼 — idToken 획득만 담당 (PC: 시스템 브라우저, Mobile: WebView)
+    private IEnumerator GetGoogleIdTokenCoroutine(
+        Action<string, int> onTokenResult,
+        ServerErrorCode timeoutError,
+        ServerErrorCode extractError)
     {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        yield return StartCoroutine(GetGoogleIdTokenForPCCoroutine(onTokenResult, timeoutError, extractError));
+#else
         // 1) WebView 생성
         var webViewGO = new GameObject("GoogleLoginWebView");
         var webView = webViewGO.AddComponent<WebViewObject>();
@@ -361,7 +365,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             started: (url) =>
             {
                 Debug.Log($"[WebView Started] {url}");
-                // Check redirect in started callback
                 if (url.StartsWith("https://thefirst-fd116.firebaseapp.com/__/auth/handler"))
                 {
                     Debug.Log("[Google OAuth] Redirect URL Captured in started!");
@@ -372,15 +375,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             hooked: (url) =>
             {
                 Debug.Log($"[WebView Hooked] {url}");
-
-                // Redirect URL 감지
                 if (url.StartsWith("https://thefirst-fd116.firebaseapp.com/__/auth/handler"))
                 {
                     Debug.Log("[Google OAuth] Redirect URL Captured!");
-
                     redirectDetected = true;
                     authToken = ExtractToken(url);
-
                     Debug.Log("[Google OAuth] Extracted Token => " + authToken);
                 }
                 else
@@ -388,76 +387,164 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                     Debug.Log("[Google OAuth] Hooked but not redirect URL.");
                 }
             },
-            // claude 추천
             enableWKWebView: true,
             wkContentMode: 0,
-            // CRITICAL FIX: Set User-Agent to regular Chrome browser
             ua: "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36"
-
-
         );
-        
-        // claude 추천
-        // Set margins (full screen)
-        int margin = 0;
-        webView.SetMargins(margin, margin, margin, margin);
 
-
+        webView.SetMargins(0, 0, 0, 0);
         webView.SetVisibility(true);
 
         // 3) Google OAuth URL 로딩
-        string clientId = "527468162306-m77vtlkevpa42hf41arcodjmcio5fs85.apps.googleusercontent.com"; // YOUR_WEB_CLIENT_ID.apps.googleusercontent.com
-        string redirectUri = "https://thefirst-fd116.firebaseapp.com/__/auth/handler"; // https://localhost/auth/callback
+        string clientId = "527468162306-m77vtlkevpa42hf41arcodjmcio5fs85.apps.googleusercontent.com";
+        string redirectUri = "https://thefirst-fd116.firebaseapp.com/__/auth/handler";
         string scope = "openid%20email%20profile";
-        string nonce = System.Guid.NewGuid().ToString("N");
+        string nonce = Guid.NewGuid().ToString("N");
 
         string authUrl =
             "https://accounts.google.com/o/oauth2/v2/auth" +
             "?client_id=" + clientId +
             "&redirect_uri=" + redirectUri +
-            "&response_type=id_token" +      // id_token 방식 사용
+            "&response_type=id_token" +
             "&scope=" + scope +
             "&nonce=" + nonce;
 
         Debug.Log("[Google OAuth] Loading URL: " + authUrl);
         webView.LoadURL(authUrl);
 
-        // claude 추천
-        // Wait for redirect
-        float timeout = 300f; // 5 minutes
+        // 4) redirect 될 때까지 기다리기 (최대 5분)
+        float timeout = 300f;
         float elapsed = 0f;
-
-
-        // 4) redirect 될 때까지 기다리기
         while (redirectDetected == false && elapsed < timeout)
         {
             elapsed += Time.deltaTime;
             yield return null;
-        }            
+        }
 
         // 5) WebView 닫기
         webView.SetVisibility(false);
-        GameObject.Destroy(webViewGO);
+        Destroy(webViewGO);
 
         if (redirectDetected == false)
         {
             Debug.LogError("[Google OAuth] Timeout - no redirect detected");
-            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT));
+            onTokenResult(null, (int)timeoutError);
             yield break;
         }
 
         if (string.IsNullOrEmpty(authToken))
         {
             Debug.LogError("[Google OAuth] No token extracted from redirect");
-            onComplete?.Invoke(ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION));
+            onTokenResult(null, (int)extractError);
             yield break;
         }
 
-        // 6) 서버로 Google 로그인 요청
-        Debug.Log("[Google OAuth] Sending token to backend...");
-        yield return StartCoroutine(RunAsync(() => m_apiClient.GoogleLoginAsync(authToken), onComplete));
+        onTokenResult(authToken, 0);
+#endif
     }
 
+#if UNITY_EDITOR || UNITY_STANDALONE
+    // PC: 시스템 브라우저 + HttpListener
+    // fragment(#)는 서버로 전달되지 않으므로, JS로 /token?id_token=... 으로 재리다이렉트
+    private IEnumerator GetGoogleIdTokenForPCCoroutine(
+        Action<string, int> onTokenResult,
+        ServerErrorCode timeoutError,
+        ServerErrorCode extractError)
+    {
+        const int port = 5678;
+        string idToken = null;
+        bool done = false;
+
+        var listener = new System.Net.HttpListener();
+        listener.Prefixes.Add($"http://localhost:{port}/");
+
+        try { listener.Start(); }
+        catch (Exception e)
+        {
+            Debug.LogError($"[Google OAuth PC] HttpListener 시작 실패: {e.Message}");
+            onTokenResult(null, (int)extractError);
+            yield break;
+        }
+
+        // 시스템 브라우저로 구글 로그인 열기
+        string clientId = "527468162306-m77vtlkevpa42hf41arcodjmcio5fs85.apps.googleusercontent.com";
+        string redirectUri = $"http://localhost:{port}/auth";
+        string nonce = Guid.NewGuid().ToString("N");
+        string authUrl =
+            "https://accounts.google.com/o/oauth2/v2/auth" +
+            "?client_id=" + clientId +
+            "&redirect_uri=" + Uri.EscapeDataString(redirectUri) +
+            "&response_type=id_token" +
+            "&scope=openid%20email%20profile" +
+            "&nonce=" + nonce;
+
+        Application.OpenURL(authUrl);
+        Debug.Log("[Google OAuth PC] 브라우저 열기: " + authUrl);
+
+        // 백그라운드에서 두 번의 요청 처리
+        Task.Run(async () =>
+        {
+            try
+            {
+                // 1st: /auth#id_token=... → fragment를 query로 재리다이렉트하는 HTML 반환
+                var ctx = await listener.GetContextAsync();
+                byte[] html = System.Text.Encoding.UTF8.GetBytes(
+                    "<html><body><script>" +
+                    "window.location.href='/token?' + window.location.hash.substring(1);" +
+                    "</script>잠시만 기다려주세요...</body></html>");
+                ctx.Response.ContentType = "text/html; charset=utf-8";
+                ctx.Response.ContentLength64 = html.Length;
+                await ctx.Response.OutputStream.WriteAsync(html, 0, html.Length);
+                ctx.Response.Close();
+
+                // 2nd: /token?id_token=... → 토큰 추출
+                ctx = await listener.GetContextAsync();
+                idToken = ctx.Request.QueryString["id_token"];
+                byte[] closeHtml = System.Text.Encoding.UTF8.GetBytes(
+                    "<html><body><h3>로그인 완료. 게임으로 돌아가세요.</h3></body></html>");
+                ctx.Response.ContentType = "text/html; charset=utf-8";
+                ctx.Response.ContentLength64 = closeHtml.Length;
+                await ctx.Response.OutputStream.WriteAsync(closeHtml, 0, closeHtml.Length);
+                ctx.Response.Close();
+            }
+            catch (Exception e)
+            {
+                if (listener.IsListening)
+                    Debug.LogError($"[Google OAuth PC] 리스너 에러: {e.Message}");
+            }
+            finally { done = true; }
+        });
+
+        // 최대 5분 대기
+        float elapsed = 0f;
+        while (done == false && elapsed < 300f)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        if (listener.IsListening)
+            listener.Stop();
+
+        if (done == false)
+        {
+            Debug.LogError("[Google OAuth PC] Timeout");
+            onTokenResult(null, (int)timeoutError);
+            yield break;
+        }
+
+        if (string.IsNullOrEmpty(idToken))
+        {
+            Debug.LogError("[Google OAuth PC] idToken 추출 실패");
+            onTokenResult(null, (int)extractError);
+            yield break;
+        }
+
+        onTokenResult(idToken, 0);
+    }
+#endif
+
+#if !UNITY_EDITOR && !UNITY_STANDALONE
     private string ExtractToken(string url)
     {
         Debug.Log("[ExtractToken] Raw URL => " + url);
@@ -519,7 +606,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         Debug.LogError("[ExtractToken] No id_token or code found → URL did NOT contain token.");
         return null;
     }
-
+#endif
 
     public void CreateCharacter(string name, System.Action<ApiResponse<CharacterResponse>> onComplete = null)
     {

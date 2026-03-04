@@ -438,16 +438,8 @@ MonoBehaviour:
     m_Localized: "Rank: {0} <voffset=6>\u2192</voffset> {1}"
     m_Metadata:
       m_Items: []
-  - m_Id: 8166668819628032
-    m_Localized: Google Login
-    m_Metadata:
-      m_Items: []
   - m_Id: 8166668848988160
     m_Localized: Change Name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8166668865765376
-    m_Localized: 'Remaining: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 8166668865765377
@@ -468,6 +460,34 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8166668865765381
     m_Localized: English/Korean/Numbers 2-16 chars
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8422640582524928
+    m_Localized: Link Google Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8422640620273664
+    m_Localized: Unlink Google Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8422640620273665
+    m_Localized: Google account linked successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8422640620273666
+    m_Localized: Google account unlinked successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8422640620273667
+    m_Localized: Would you like to link your Google account?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8422640620273668
+    m_Localized: Unlinking Google will revert your account to guest status. Continue?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8795249610457088
+    m_Localized: Commander
     m_Metadata:
       m_Items: []
   references:

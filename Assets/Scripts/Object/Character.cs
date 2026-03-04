@@ -14,9 +14,17 @@ public class Character
         m_researchedModules = new List<int[]>();
     }
 
+    // "empty_" 로 시작하는 이름이면 로컬라이즈된 이름 + characterId로 반환 (예: "지휘관42")
+    public static string GetDisplayName(string rawName, long characterId)
+    {
+        if (string.IsNullOrEmpty(rawName) || rawName.StartsWith("empty_"))
+            return LocalizationManager.Instance.Get("char_default_name") + characterId;
+        return rawName;
+    }
+
     public string GetName()
     {
-        return m_characterInfo?.characterName ?? "";
+        return GetDisplayName(m_characterInfo?.characterName ?? "", m_characterInfo?.characterId ?? 0);
     }
 
     public long GetMineral()

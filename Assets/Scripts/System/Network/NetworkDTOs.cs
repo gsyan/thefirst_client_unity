@@ -25,7 +25,6 @@ public class ApiResponse<T>
 public class FleetInfo
 {
     public long id;
-    public long characterId;
     public string fleetName;
     public string description;
     public bool isActive;
@@ -112,6 +111,7 @@ public class CostStruct
 [System.Serializable]
 public class CharacterInfo
 {
+    public long characterId;
     public string characterName;
     public int techLevel;
     public long mineral;
@@ -168,6 +168,19 @@ public class AuthResponse
     public FleetInfo activeFleetInfo;
     public CharacterInfo characterInfo;
     public int[][] researchedModuleTypes;  // [moduleType, moduleSubType] 쌍의 배열
+    public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
+}
+
+[System.Serializable]
+public class LinkGoogleRequest
+{
+    public string idToken;
+}
+
+[System.Serializable]
+public class UnlinkGoogleResponse
+{
+    public string guestId;  // 해제 후 게스트 복귀용 ID
 }
 
 [System.Serializable]

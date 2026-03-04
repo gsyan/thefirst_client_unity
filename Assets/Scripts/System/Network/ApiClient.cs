@@ -29,8 +29,8 @@ public class ApiClient
     private readonly string baseUrl = "http://192.168.0.61:8080/api";
 #else
     // 출시 빌드(Release Build)에서 사용할 URL (실제 서비스 서버)
-    private readonly string baseUrl = "https://www.fidforge.com/api";
-    //private readonly string baseUrl = "http://192.168.0.51:8080/api";
+    //private readonly string baseUrl = "https://www.fidforge.com/api";
+    private readonly string baseUrl = "http://192.168.0.51:8080/api";
 #endif
 
     private string accessToken;
@@ -170,6 +170,7 @@ public class ApiClient
         request.SetRequestHeader("Content-Type", "application/json");
 
         await SendRequestAsync(request);
+        Debug.Log($"[RefreshToken] Raw response: {request.downloadHandler.text}");  // ← 추가
         var response = JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
 
         if (response.errorCode == 0)
@@ -236,6 +237,38 @@ public class ApiClient
             ClearTokens();
 
         return response;
+    }
+
+    // 현재 로그인된 계정에 구글 계정을 연동
+    public async Task<ApiResponse<AuthResponse>> LinkGoogleAsync(string idToken)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        var requestDto = new LinkGoogleRequest { idToken = idToken };
+        string json = JsonConvert.SerializeObject(requestDto);
+
+        using var request = new UnityWebRequest($"{baseUrl}/account/link-google", "POST");
+        request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(request);
+        return JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
+    }
+
+    // 현재 계정의 구글 연동 해제 (게스트 상태로 복귀)
+    public async Task<ApiResponse<UnlinkGoogleResponse>> UnlinkGoogleAsync()
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<UnlinkGoogleResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        using var request = new UnityWebRequest($"{baseUrl}/account/unlink-google", "POST");
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(request);
+        return JsonConvert.DeserializeObject<ApiResponse<UnlinkGoogleResponse>>(request.downloadHandler.text);
     }
 
     public async Task<ApiResponse<CharacterResponse>> CreateCharacterAsync(string characterName)

@@ -23,9 +23,7 @@ public class UIPopupRenameCharacter : UIPopupBase
     private static readonly Regex s_nameRegex = new Regex(@"^[a-zA-Z0-9\uAC00-\uD7A3]{2,16}$", RegexOptions.Compiled);
     private const float DebounceDelay = 0.5f;
 
-    // SERVER ERROR CODE - 서버 Java enum 추가 후 ServerErrorCode.cs 재생성 시 교체
-    private const int ERR_VALIDATE_DUPLICATE = 3251;
-    private const int ERR_VALIDATE_PROFANITY  = 3252;
+    private DataTableForbiddenWords m_forbiddenWords;
 
     private enum EValidationState { Idle, Checking, Available, Error }
 
@@ -37,6 +35,7 @@ public class UIPopupRenameCharacter : UIPopupBase
     protected override void Awake()
     {
         base.Awake();
+        m_forbiddenWords = Resources.Load<DataTableForbiddenWords>("DataTable/DataTableForbiddenWords");
         if (m_confirmButton != null) m_confirmButton.onClick.AddListener(OnConfirmClicked);
         if (m_cancelButton != null)  m_cancelButton.onClick.AddListener(OnCancelClicked);
         if (m_nameInput != null)
@@ -85,6 +84,13 @@ public class UIPopupRenameCharacter : UIPopupBase
             return;
         }
 
+        if (m_forbiddenWords != null && m_forbiddenWords.ContainsForbiddenWord(value) == true)
+        {
+            SetValidationState(EValidationState.Error,
+                LocalizationManager.Instance.Get("ui_rename_char_profanity"));
+            return;
+        }
+
         // 포맷 OK → 디바운스 후 서버 요청
         SetValidationState(EValidationState.Checking,
             LocalizationManager.Instance.Get("ui_rename_char_checking"));
@@ -102,9 +108,9 @@ public class UIPopupRenameCharacter : UIPopupBase
         if (response == null || response.errorCode != 0)
         {
             string msg;
-            if (response != null && response.errorCode == ERR_VALIDATE_DUPLICATE)
+            if (response != null && response.errorCode == (int)ServerErrorCode.CHARACTER_VALIDATE_NAME_DUPLICATE)
                 msg = LocalizationManager.Instance.Get("ui_rename_char_duplicate");
-            else if (response != null && response.errorCode == ERR_VALIDATE_PROFANITY)
+            else if (response != null && response.errorCode == (int)ServerErrorCode.CHARACTER_VALIDATE_NAME_PROFANITY)
                 msg = LocalizationManager.Instance.Get("ui_rename_char_profanity");
             else
                 msg = LocalizationManager.Instance.Get("ui_rename_char_format_err");

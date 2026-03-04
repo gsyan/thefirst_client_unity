@@ -1,4 +1,4 @@
-// 설정 탭 UI — 로그아웃, 언어 설정, 개발자 자원 추가 기능
+// 설정 탭 UI — 로그아웃, 언어 설정, 구글 계정 연동/해제, 개발자 자원 추가 기능
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +11,9 @@ public class UITabSettings : UITabBase
     [SerializeField] private Button m_logoutButton;
     [SerializeField] private Button m_renameCharacterButton;
     [SerializeField] private TMP_Dropdown m_languageDropdown;
+
+    [Header("계정 연동")]
+    [SerializeField] private Button m_googleAccountButton;  // 연동/해제 공용 버튼
 
     [Header("개발자 도구")]
     [SerializeField] private Button   m_testMineralButton;
@@ -38,10 +41,14 @@ public class UITabSettings : UITabBase
         if (m_renameCharacterButton != null)
             m_renameCharacterButton.onClick.AddListener(OnRenameCharacterButtonClicked);
 
+        if (m_googleAccountButton != null)
+            m_googleAccountButton.onClick.AddListener(OnGoogleAccountButtonClicked);
+
         if (m_testMineralButton != null)
             m_testMineralButton.onClick.AddListener(OnTestMineralButtonClicked);
 
         InitializeLanguageDropdown();
+        RefreshGoogleLinkUI();
     }
 
     private void OnTestMineralButtonClicked()
@@ -82,12 +89,88 @@ public class UITabSettings : UITabBase
 
     public override void OnTabActivated()
     {
-        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        RefreshGoogleLinkUI();
     }
 
     public override void OnTabDeactivated()
     {
         //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+    }
+
+    // 연동 상태에 따라 버튼 라벨 갱신
+    private void RefreshGoogleLinkUI()
+    {
+        if (m_googleAccountButton == null) return;
+        bool linked = DataManager.Instance.m_isGoogleLinked;
+        var label = m_googleAccountButton.GetComponentInChildren<TMP_Text>();
+        if (label != null)
+            CommonUtility.SetUILocText(label, linked ? "settings_google_unlink" : "settings_google_link");
+            //label.text = LocalizationManager.Instance.Get(linked ? "settings_google_unlink" : "settings_google_link");
+    }
+
+    private void OnGoogleAccountButtonClicked()
+    {
+        if (DataManager.Instance.m_isGoogleLinked == true)
+            ShowUnlinkGoogleConfirm();
+        else
+            ShowLinkGoogleConfirm();
+    }
+
+    private void ShowLinkGoogleConfirm()
+    {
+        UIManager.Instance.ShowConfirmPopup(
+            LocalizationManager.Instance.Get("settings_google_link"),
+            LocalizationManager.Instance.Get("popup_message_google_link"),
+            null, null, null,
+            onConfirm: () =>
+            {
+                NetworkManager.Instance.LinkGoogle((response) =>
+                {
+                    if ((ServerErrorCode)response.errorCode == ServerErrorCode.SUCCESS)
+                    {
+                        DataManager.Instance.m_isGoogleLinked = true;
+                        RefreshGoogleLinkUI();
+                        ShowResultMessage(LocalizationManager.Instance.Get("settings_google_link_success"));
+                    }
+                    else
+                    {
+                        ShowResultMessage(ErrorCodeMapping.GetMessage(response.errorCode));
+                    }
+                });
+            },
+            onCancel: null
+        );
+    }
+
+    private void ShowUnlinkGoogleConfirm()
+    {
+        UIManager.Instance.ShowConfirmPopup(
+            LocalizationManager.Instance.Get("settings_google_unlink"),
+            LocalizationManager.Instance.Get("popup_message_google_unlink"),
+            null, null, null,
+            onConfirm: () =>
+            {
+                NetworkManager.Instance.UnlinkGoogle((response) =>
+                {
+                    if ((ServerErrorCode)response.errorCode == ServerErrorCode.SUCCESS)
+                    {
+                        DataManager.Instance.m_isGoogleLinked = false;
+                        if (string.IsNullOrEmpty(response.data?.guestId) == false)
+                        {
+                            PlayerPrefs.SetString("GuestId", response.data.guestId);
+                            PlayerPrefs.Save();
+                        }
+                        RefreshGoogleLinkUI();
+                        ShowResultMessage(LocalizationManager.Instance.Get("settings_google_unlink_success"));
+                    }
+                    else
+                    {
+                        ShowResultMessage(ErrorCodeMapping.GetMessage(response.errorCode));
+                    }
+                });
+            },
+            onCancel: null
+        );
     }
 
     private void OnRenameCharacterButtonClicked()
