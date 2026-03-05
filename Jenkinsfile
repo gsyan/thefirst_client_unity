@@ -142,5 +142,35 @@ pipeline {
         failure {
             echo '빌드 실패. 각 스테이지 로그 확인'
         }
+        success {
+            script {
+                // 빌드 성공 시 Jenkinsfile의 VERSION defaultValue를 현재 버전으로 업데이트 후 커밋
+                def major = params.VERSION_MAJOR
+                def minor = params.VERSION_MINOR
+                def patch = params.VERSION_PATCH
+                powershell """
+                    \$lines = Get-Content Jenkinsfile
+                    for (\$i = 0; \$i -lt \$lines.Count; \$i++) {
+                        if (\$lines[\$i] -match "name: 'VERSION_MAJOR'") {
+                            \$lines[\$i] = "        string(name: 'VERSION_MAJOR', defaultValue: '${major}', description: '메이저 버전')"
+                        }
+                        if (\$lines[\$i] -match "name: 'VERSION_MINOR'") {
+                            \$lines[\$i] = "        string(name: 'VERSION_MINOR', defaultValue: '${minor}', description: '마이너 버전')"
+                        }
+                        if (\$lines[\$i] -match "name: 'VERSION_PATCH'") {
+                            \$lines[\$i] = "        string(name: 'VERSION_PATCH', defaultValue: '${patch}', description: '패치 버전')"
+                        }
+                    }
+                    \$lines | Set-Content Jenkinsfile -Encoding UTF8
+                """
+                bat """
+                    git config user.email "jenkins@build"
+                    git config user.name "Jenkins"
+                    git add Jenkinsfile
+                    git diff --cached --quiet || git commit -m "ci: v${env.VERSION_NAME} defaultValue 업데이트"
+                    git push origin main
+                """
+            }
+        }
     }
 }
