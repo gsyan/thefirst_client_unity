@@ -33,6 +33,17 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+                // 현재 파라미터 값으로 Job의 defaultValue 갱신 → 다음 빌드에 반영
+                properties([
+                    parameters([
+                        string(name: 'VERSION_MAJOR', defaultValue: "${params.VERSION_MAJOR}", description: '메이저 버전'),
+                        string(name: 'VERSION_MINOR', defaultValue: "${params.VERSION_MINOR}", description: '마이너 버전'),
+                        string(name: 'VERSION_PATCH', defaultValue: "${params.VERSION_PATCH}", description: '패치 버전'),
+                        booleanParam(name: 'RELEASE_PLAY',     defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드'),
+                        booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드'),
+                        booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드'),
+                    ])
+                ])
             }
         }
 
@@ -141,40 +152,6 @@ pipeline {
     post {
         failure {
             echo '빌드 실패. 각 스테이지 로그 확인'
-        }
-        success {
-            script {
-                // 빌드 성공 시 Jenkinsfile의 VERSION defaultValue를 현재 버전으로 업데이트 후 커밋
-                def major = params.VERSION_MAJOR
-                def minor = params.VERSION_MINOR
-                def patch = params.VERSION_PATCH
-                powershell """
-                    \$lines = Get-Content Jenkinsfile
-                    for (\$i = 0; \$i -lt \$lines.Count; \$i++) {
-                        if (\$lines[\$i] -match "name: 'VERSION_MAJOR'") {
-                            \$lines[\$i] = "        string(name: 'VERSION_MAJOR', defaultValue: '${major}', description: '메이저 버전')"
-                        }
-                        if (\$lines[\$i] -match "name: 'VERSION_MINOR'") {
-                            \$lines[\$i] = "        string(name: 'VERSION_MINOR', defaultValue: '${minor}', description: '마이너 버전')"
-                        }
-                        if (\$lines[\$i] -match "name: 'VERSION_PATCH'") {
-                            \$lines[\$i] = "        string(name: 'VERSION_PATCH', defaultValue: '${patch}', description: '패치 버전')"
-                        }
-                    }
-                    \$lines | Set-Content Jenkinsfile -Encoding UTF8
-                """
-                withCredentials([sshUserPrivateKey(credentialsId: 'GIT_SSH_KEY', keyFileVariable: 'SSH_KEY_FILE')]) {
-                    bat """
-                        git config user.email "jenkins@build"
-                        git config user.name "Jenkins"
-                        git config core.sshCommand "ssh -i \"%SSH_KEY_FILE%\" -o StrictHostKeyChecking=no"
-                        git add Jenkinsfile
-                        git diff --cached --quiet || git commit -m "ci: update version defaultValue to v${env.VERSION_NAME}"
-                        git push origin HEAD:main
-                        git config --unset core.sshCommand
-                    """
-                }
-            }
         }
     }
 }
