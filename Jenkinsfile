@@ -131,6 +131,7 @@ pipeline {
                     set GOOGLE_APPLICATION_CREDENTIALS=${env.FIREBASE_JSON_KEY}
                     "${env.FIREBASE_CMD}" appdistribution:distribute "${env.OUTPUT_APK}" ^
                       --app ${env.FIREBASE_APP_ID} ^
+                      --groups "fidforge,testers" ^
                       --release-notes "v${env.VERSION_NAME} Build #%BUILD_NUMBER%"
                 """
             }
