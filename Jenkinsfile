@@ -163,13 +163,15 @@ pipeline {
                     }
                     \$lines | Set-Content Jenkinsfile -Encoding UTF8
                 """
-                bat """
-                    git config user.email "jenkins@build"
-                    git config user.name "Jenkins"
-                    git add Jenkinsfile
-                    git diff --cached --quiet || git commit -m "ci: update version defaultValue to v${env.VERSION_NAME}"
-                    git push origin HEAD:main
-                """
+                sshagent(['GIT_SSH_KEY']) {
+                    bat """
+                        git config user.email "jenkins@build"
+                        git config user.name "Jenkins"
+                        git add Jenkinsfile
+                        git diff --cached --quiet || git commit -m "ci: update version defaultValue to v${env.VERSION_NAME}"
+                        git push origin HEAD:main
+                    """
+                }
             }
         }
     }
