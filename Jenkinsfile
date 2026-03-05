@@ -163,13 +163,15 @@ pipeline {
                     }
                     \$lines | Set-Content Jenkinsfile -Encoding UTF8
                 """
-                sshagent(['GIT_SSH_KEY']) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'GIT_SSH_KEY', keyFileVariable: 'SSH_KEY_FILE')]) {
                     bat """
                         git config user.email "jenkins@build"
                         git config user.name "Jenkins"
+                        git config core.sshCommand "ssh -i \"%SSH_KEY_FILE%\" -o StrictHostKeyChecking=no"
                         git add Jenkinsfile
                         git diff --cached --quiet || git commit -m "ci: update version defaultValue to v${env.VERSION_NAME}"
                         git push origin HEAD:main
+                        git config --unset core.sshCommand
                     """
                 }
             }
