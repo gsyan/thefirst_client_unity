@@ -8,6 +8,7 @@ pipeline {
         string(name: 'VERSION_PATCH', defaultValue: '18', description: '패치 버전')
         booleanParam(name: 'BUILD_AAB', defaultValue: false, description: 'APK 대신 AAB 빌드')
         booleanParam(name: 'RELEASE_GITHUB', defaultValue: true, description: 'GitHub Release 에 APK 업로드')
+        booleanParam(name: 'RELEASE_PLAY', defaultValue: false, description: 'Google Play 내부 테스트 트랙에 업로드')
     }
 
     environment {
@@ -21,8 +22,9 @@ pipeline {
         PROJECT_PATH = "${WORKSPACE}"
         OUTPUT_APK   = "${WORKSPACE}/build/thefirst.apk"
         OUTPUT_AAB   = "${WORKSPACE}/build/thefirst.aab"
-        GH_REPO      = 'gsyan/thefirst_client_unity'
-        VERSION_NAME = "${params.VERSION_MAJOR}.${params.VERSION_MINOR}.${params.VERSION_PATCH}"
+        GH_REPO               = 'gsyan/thefirst_client_unity'
+        VERSION_NAME          = "${params.VERSION_MAJOR}.${params.VERSION_MINOR}.${params.VERSION_PATCH}"
+        GOOGLE_PLAY_JSON_KEY  = 'D:/BK/thefirst/thefirst_server/tools/google_relate/thefirst-fd116-93d5321f214a.json'
     }
 
     stages {
@@ -80,6 +82,23 @@ pipeline {
                           || gh release upload ${tag} "${artifact}" ^
                                --repo ${env.GH_REPO} ^
                                --clobber
+                    """
+                }
+            }
+        }
+    }
+
+        stage('Google Play') {
+            when {
+                expression { params.RELEASE_PLAY == true }
+            }
+            steps {
+                script {
+                    def artifact = params.BUILD_AAB ? env.OUTPUT_AAB : env.OUTPUT_APK
+                    bat """
+                        set APK_PATH=${artifact}
+                        set GOOGLE_PLAY_JSON_KEY=${env.GOOGLE_PLAY_JSON_KEY}
+                        fastlane android internal
                     """
                 }
             }
