@@ -1,4 +1,4 @@
-// Unity Android 빌드 파이프라인 (빌드 + GitHub Release + Google Play 배포)
+// Unity Android 빌드 파이프라인 (빌드 + GitHub Release + Google Play + Firebase 배포)
 pipeline {
     agent any
 
@@ -9,6 +9,7 @@ pipeline {
         booleanParam(name: 'BUILD_AAB', defaultValue: false, description: 'APK 대신 AAB 빌드')
         booleanParam(name: 'RELEASE_GITHUB', defaultValue: true, description: 'GitHub Release 에 APK 업로드')
         booleanParam(name: 'RELEASE_PLAY', defaultValue: false, description: 'Google Play 내부 테스트 트랙에 업로드')
+        booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드')
     }
 
     environment {
@@ -25,6 +26,9 @@ pipeline {
         GH_REPO               = 'gsyan/thefirst_client_unity'
         VERSION_NAME          = "${params.VERSION_MAJOR}.${params.VERSION_MINOR}.${params.VERSION_PATCH}"
         GOOGLE_PLAY_JSON_KEY  = 'D:/BK/thefirst/thefirst_server/tools/google_relate/thefirst-fd116-93d5321f214a.json'
+        FIREBASE_APP_ID       = '1:527468162306:android:fdd9d29003b29326e2261b'
+        FIREBASE_JSON_KEY     = 'D:/BK/thefirst/thefirst_server/tools/google_relate/firebase-service-account.json'
+        FIREBASE_CMD          = 'C:\\Users\\gsyan\\AppData\\Roaming\\npm\\firebase.cmd'
     }
 
     stages {
@@ -98,6 +102,24 @@ pipeline {
                         set APK_PATH=${artifact}
                         set GOOGLE_PLAY_JSON_KEY=${env.GOOGLE_PLAY_JSON_KEY}
                         C:\\Ruby34-x64\\bin\\fastlane android internal
+                    """
+                }
+            }
+        }
+    }
+
+        stage('Firebase Distribution') {
+            when {
+                expression { params.RELEASE_FIREBASE == true }
+            }
+            steps {
+                script {
+                    // Firebase는 APK만 지원 - BUILD_AAB 여부 무관하게 APK 사용
+                    bat """
+                        set GOOGLE_APPLICATION_CREDENTIALS=${env.FIREBASE_JSON_KEY}
+                        "${env.FIREBASE_CMD}" appdistribution:distribute "${env.OUTPUT_APK}" ^
+                          --app ${env.FIREBASE_APP_ID} ^
+                          --release-notes "v${env.VERSION_NAME} Build #%BUILD_NUMBER%"
                     """
                 }
             }
