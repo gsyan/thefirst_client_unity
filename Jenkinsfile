@@ -1,10 +1,11 @@
-// Unity Android 빌드 파이프라인 (단순 빌드 단계)
+// Unity Android 빌드 파이프라인 (빌드 + GitHub Release 배포)
 pipeline {
     agent any
 
     parameters {
         string(name: 'VERSION_NAME', defaultValue: '', description: '버전 이름 (예: 1.0.0). 비워두면 ProjectSettings 값 사용')
         booleanParam(name: 'BUILD_AAB', defaultValue: false, description: 'APK 대신 AAB 빌드')
+        booleanParam(name: 'RELEASE_GITHUB', defaultValue: true, description: 'GitHub Release 에 APK 업로드')
     }
 
     environment {
@@ -18,6 +19,7 @@ pipeline {
         PROJECT_PATH  = "${WORKSPACE}"
         OUTPUT_APK    = "${WORKSPACE}/build/thefirst.apk"
         OUTPUT_AAB    = "${WORKSPACE}/build/thefirst.aab"
+        GH_REPO       = 'gsyan/thefirst_client_unity'
     }
 
     stages {
@@ -55,6 +57,30 @@ pipeline {
                 success {
                     archiveArtifacts artifacts: 'build/*.apk,build/*.aab', allowEmptyArchive: true
                     echo "빌드 성공: ${params.BUILD_AAB ? OUTPUT_AAB : OUTPUT_APK}"
+                }
+            }
+        }
+    }
+
+        stage('GitHub Release') {
+            when {
+                expression { params.RELEASE_GITHUB == true }
+            }
+            steps {
+                script {
+                    def version = params.VERSION_NAME ?: bat(returnStdout: true, script: '@powershell -Command "(Select-String -Path \\"ProjectSettings/ProjectSettings.asset\\" -Pattern \\"bundleVersion:\\s*(.+)\\").Matches[0].Groups[1].Value.Trim()"').trim()
+                    def artifact = params.BUILD_AAB ? env.OUTPUT_AAB : env.OUTPUT_APK
+                    def tag = "v${version}"
+
+                    bat """
+                        gh release create ${tag} "${artifact}" ^
+                          --title "${tag}" ^
+                          --notes "Build #%BUILD_NUMBER%" ^
+                          --repo ${env.GH_REPO} ^
+                          || gh release upload ${tag} "${artifact}" ^
+                               --repo ${env.GH_REPO} ^
+                               --clobber
+                    """
                 }
             }
         }
