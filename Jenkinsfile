@@ -1,4 +1,4 @@
-// Unity Android 빌드 파이프라인 (빌드 + GitHub Release 배포)
+// Unity Android 빌드 파이프라인 (빌드 + GitHub Release + Google Play 배포)
 pipeline {
     agent any
 
@@ -18,10 +18,10 @@ pipeline {
         KEY_ALIAS      = credentials('android-key-alias')
         KEY_ALIAS_PASS = credentials('android-key-alias-pass')
 
-        UNITY_PATH   = 'C:/Program Files/Unity/Hub/Editor/6000.0.66f1/Editor/Unity.exe'
-        PROJECT_PATH = "${WORKSPACE}"
-        OUTPUT_APK   = "${WORKSPACE}/build/thefirst.apk"
-        OUTPUT_AAB   = "${WORKSPACE}/build/thefirst.aab"
+        UNITY_PATH            = 'C:/Program Files/Unity/Hub/Editor/6000.0.66f1/Editor/Unity.exe'
+        PROJECT_PATH          = "${WORKSPACE}"
+        OUTPUT_APK            = "${WORKSPACE}/build/thefirst.apk"
+        OUTPUT_AAB            = "${WORKSPACE}/build/thefirst.aab"
         GH_REPO               = 'gsyan/thefirst_client_unity'
         VERSION_NAME          = "${params.VERSION_MAJOR}.${params.VERSION_MINOR}.${params.VERSION_PATCH}"
         GOOGLE_PLAY_JSON_KEY  = 'D:/BK/thefirst/thefirst_server/tools/google_relate/thefirst-fd116-93d5321f214a.json'
@@ -86,7 +86,6 @@ pipeline {
                 }
             }
         }
-    }
 
         stage('Google Play') {
             when {
