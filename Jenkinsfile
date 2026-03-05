@@ -10,16 +10,16 @@ pipeline {
 
     environment {
         // Jenkins Credentials 에 등록한 Secret Text ID
-        KEYSTORE_PATH = credentials('android-keystore-path')
-        KEYSTORE_PASS = credentials('android-keystore-pass')
-        KEY_ALIAS     = credentials('android-key-alias')
+        KEYSTORE_PATH  = credentials('android-keystore-path')
+        KEYSTORE_PASS  = credentials('android-keystore-pass')
+        KEY_ALIAS      = credentials('android-key-alias')
         KEY_ALIAS_PASS = credentials('android-key-alias-pass')
 
-        UNITY_PATH    = 'C:/Program Files/Unity/Hub/Editor/6000.0.66f1/Editor/Unity.exe'
-        PROJECT_PATH  = "${WORKSPACE}"
-        OUTPUT_APK    = "${WORKSPACE}/build/thefirst.apk"
-        OUTPUT_AAB    = "${WORKSPACE}/build/thefirst.aab"
-        GH_REPO       = 'gsyan/thefirst_client_unity'
+        UNITY_PATH = 'C:/Program Files/Unity/Hub/Editor/6000.0.66f1/Editor/Unity.exe'
+        PROJECT_PATH = "${WORKSPACE}"
+        OUTPUT_APK   = "${WORKSPACE}/build/thefirst.apk"
+        OUTPUT_AAB   = "${WORKSPACE}/build/thefirst.aab"
+        GH_REPO      = 'gsyan/thefirst_client_unity'
     }
 
     stages {
@@ -56,11 +56,9 @@ pipeline {
                 }
                 success {
                     archiveArtifacts artifacts: 'build/*.apk,build/*.aab', allowEmptyArchive: true
-                    echo "빌드 성공: ${params.BUILD_AAB ? OUTPUT_AAB : OUTPUT_APK}"
                 }
             }
         }
-    }
 
         stage('GitHub Release') {
             when {
