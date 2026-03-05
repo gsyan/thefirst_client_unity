@@ -167,8 +167,8 @@ pipeline {
                     git config user.email "jenkins@build"
                     git config user.name "Jenkins"
                     git add Jenkinsfile
-                    git diff --cached --quiet || git commit -m "ci: v${env.VERSION_NAME} defaultValue 업데이트"
-                    git push origin main
+                    git diff --cached --quiet || git commit -m "ci: update version defaultValue to v${env.VERSION_NAME}"
+                    git push origin HEAD:main
                 """
             }
         }
