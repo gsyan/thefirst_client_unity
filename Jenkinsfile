@@ -97,7 +97,7 @@ pipeline {
                     bat """
                         set APK_PATH=${artifact}
                         set GOOGLE_PLAY_JSON_KEY=${env.GOOGLE_PLAY_JSON_KEY}
-                        C:\Ruby34-x64\bin\fastlane android internal
+                        C:\\Ruby34-x64\\bin\\fastlane android internal
                     """
                 }
             }
