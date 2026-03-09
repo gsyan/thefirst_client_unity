@@ -1,3 +1,5 @@
+// DataTableZone 에디터 - 존 데이터 생성/편집 GUI
+// GenerateDefaultZones: maxStages 상수 하나로 스테이지 수 조정, 그룹 총 자원량 자동 보정
 #if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
@@ -107,6 +109,7 @@ public class DataTableZoneEditor : Editor
     }
 
     // x-y 형식: x=함선 개수(1~9), y=스테이지(1~10), moduleLevel=min(y, x), zoneClearCount=y*2
+    // 자원: x≥3→MR 수확 시작 / ME·MD는 추후 콘텐츠 추가 시 반영 (현재 0)
     private void GenerateDefaultZones()
     {
         config.zones.Clear();
@@ -120,18 +123,32 @@ public class DataTableZoneEditor : Editor
             zoneDescription = "안전지역",
             shipCount = 0,
             moduleLevel = 0,
-            skyboxMaterial = safeZoneSkybox
+            skyboxMaterial = safeZoneSkybox,
+            mineralPerHour = 0f,
+            mineralRarePerHour = 0f,
+            mineralExoticPerHour = 0f,
+            mineralDarkPerHour = 0f
         };
         config.zones.Add(safeZone);
         totalZones++;
 
-        float tempMineralPerHour = 3600f;
+        // 함선 수(x) 그룹별 기본 수치 — 인덱스 0 = 함선 1척 (10스테이지 기준 stage1 수치)
+        float[] mineralBase = { 600, 1200, 2000, 3200, 5000, 8000, 13000, 21000, 33000 };
+        float[] rareBase    = {   0,    0,  350,  700, 1200, 2000,  3200,  5200,  8500 };
+        float[] killMBase   = {  40,   75,  130,  220,  360,  600,  1000,  1600,  2600 };
+        float[] killMRBase  = {   0,    0,   10,   22,   40,   70,   120,   200,   320 };
+
+        // maxStages 변경 시 stageScaleFactor가 자동 보정 → 그룹 전체 총 자원량 항상 동일
+        const int maxStages = 30;
+        const float stageScaleFactor = 10f / maxStages;
 
         for (int shipCount = 1; shipCount <= 9; shipCount++)
         {
-            for (int stage = 1; stage <= 10; stage++)
+            int idx = shipCount - 1;
+            for (int stage = 1; stage <= maxStages; stage++)
             {
                 int moduleLevel = Mathf.Min(stage, shipCount);
+                float stageMult = Mathf.Lerp(1.0f, 1.45f, (float)(stage - 1) / (maxStages - 1));
 
                 string skyboxFolder = shipCount <= 5 ? "GalacticGreen" : "GalaxyFire";
                 Material skyboxMat = AssetDatabase.LoadAssetAtPath<Material>($"Assets/DeepSpaceSkyboxPack/{skyboxFolder}/Material/{skyboxFolder}Material.mat");
@@ -146,23 +163,21 @@ public class DataTableZoneEditor : Editor
                     zoneClearCount = stage * 2,
                     delayBeforeSpawn = 3f,
                     enemyShipConfigs = new List<EnemyShipConfig>(),
-                    killRewardMineral = 100f + (shipCount - 1) * 100,
-                    killRewardMineralRare = 0,
+                    killRewardMineral       = Mathf.Round(killMBase[idx] * stageMult * stageScaleFactor),
+                    killRewardMineralRare   = Mathf.Round(killMRBase[idx] * stageMult * stageScaleFactor),
                     killRewardMineralExotic = 0,
-                    killRewardMineralDark = 0,
-                    mineralPerHour = tempMineralPerHour,
-                    mineralRarePerHour = 0,
+                    killRewardMineralDark   = 0,
+                    mineralPerHour       = Mathf.Round(mineralBase[idx] * stageMult * stageScaleFactor),
+                    mineralRarePerHour   = Mathf.Round(rareBase[idx] * stageMult * stageScaleFactor),
                     mineralExoticPerHour = 0,
-                    mineralDarkPerHour = 0
+                    mineralDarkPerHour   = 0,
                 };
-                tempMineralPerHour += 100;
 
-                // shipCount개의 적 함선을 enemyShipConfigs에 추가
                 for (int s = 0; s < shipCount; s++)
                 {
                     var ship = new EnemyShipConfig
                     {
-                        bodySubType = EModuleSubType.body_t1_std,
+                        bodySubType = EModuleSubType.body_t1_std_ver1,
                         bodyLevel = moduleLevel
                     };
                     RefreshShipModuleSlots(ship);
@@ -173,10 +188,9 @@ public class DataTableZoneEditor : Editor
                 config.zones.Add(zone);
                 totalZones++;
             }
-            tempMineralPerHour += 1000;
         }
         EditorUtility.SetDirty(config);
-        EditorUtility.DisplayDialog("Complete", $"Zone 1-1 ~ 9-10 생성 완료! (총 {totalZones}개)", "OK");
+        EditorUtility.DisplayDialog("Complete", $"Zone 1-1 ~ 9-{maxStages} 생성 완료! (총 {totalZones}개)", "OK");
     }
 
     // 레벨(y)에 따른 슬롯 제한 적용
@@ -426,7 +440,7 @@ public class DataTableZoneEditor : Editor
             {
                 if (zone.enemyShipConfigs == null)
                     zone.enemyShipConfigs = new List<EnemyShipConfig>();
-                var ship = new EnemyShipConfig { bodySubType = EModuleSubType.body_t1_std, bodyLevel = 1 };
+                var ship = new EnemyShipConfig { bodySubType = EModuleSubType.body_t1_std_ver1, bodyLevel = 1 };
                 RefreshShipModuleSlots(ship);
                 zone.enemyShipConfigs.Add(ship);
                 EditorUtility.SetDirty(config);

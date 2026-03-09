@@ -14,6 +14,7 @@ public class DataTableResearchEditor : Editor
     
     private Dictionary<EModuleType, bool> typeFoldouts = new Dictionary<EModuleType, bool>();
     private Dictionary<ModuleResearchData, bool> dataFoldouts = new Dictionary<ModuleResearchData, bool>();
+    private bool techLevelFoldout = false;
 
     private readonly Color bodyColor = new Color(0.7f, 0.9f, 0.7f);
     private readonly Color engineColor = new Color(0.7f, 0.7f, 0.9f);
@@ -47,6 +48,9 @@ public class DataTableResearchEditor : Editor
         {
             DrawModuleTypeGroup(group.Key, group.ToList());
         }
+
+        EditorGUILayout.Space(10);
+        DrawTechLevelGroup();
 
         EditorGUILayout.Space(20);
         DrawUtilityTools();
@@ -184,6 +188,37 @@ public class DataTableResearchEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
+    private void DrawTechLevelGroup()
+    {
+        var list = dataTable.TechLevelDataList;
+
+        EditorGUILayout.BeginVertical("box");
+        var originalColor = GUI.backgroundColor;
+        GUI.backgroundColor = new Color(0.8f, 0.8f, 1.0f);
+        techLevelFoldout = EditorGUILayout.Foldout(techLevelFoldout, $"Tech Level Upgrades ({list.Count})", true, EditorStyles.foldoutHeader);
+        GUI.backgroundColor = originalColor;
+
+        if (techLevelFoldout)
+        {
+            foreach (var data in list)
+            {
+                EditorGUILayout.BeginVertical("box");
+                EditorGUILayout.LabelField($"tech_level_{data.targetTechLevel}  ({data.researchId})", EditorStyles.boldLabel);
+                EditorGUI.indentLevel++;
+                EditorGUILayout.IntField("Target Tech Level", data.targetTechLevel);
+                EditorGUILayout.LabelField("Prerequisites", string.Join(", ", data.prerequisiteIds));
+                EditorGUILayout.LabelField("Cost M",  data.researchCost.mineral.ToString());
+                EditorGUILayout.LabelField("Cost MR", data.researchCost.mineralRare.ToString());
+                EditorGUILayout.LabelField("Cost ME", data.researchCost.mineralExotic.ToString());
+                EditorGUILayout.LabelField("Cost MD", data.researchCost.mineralDark.ToString());
+                EditorGUI.indentLevel--;
+                EditorGUILayout.EndVertical();
+            }
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
     private void DrawUtilityTools()
     {
         EditorGUILayout.BeginVertical("box");
@@ -211,7 +246,9 @@ public class DataTableResearchEditor : Editor
             {
                 string csvText = System.IO.File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
                 dataTable.LoadFromCsv(csvText);
-                EditorUtility.DisplayDialog("Complete", "CSV Import 완료!", "OK");
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                EditorUtility.DisplayDialog("Complete", $"CSV Import 완료!\n모듈: {dataTable.ResearchDataList.Count}개, 기술레벨: {dataTable.TechLevelDataList.Count}개", "OK");
             }
         }
 
@@ -235,11 +272,20 @@ public class DataTableResearchEditor : Editor
     private string ExportToCsv()
     {
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("research_id,module_type,module_sub_type,prerequisites,ui_pos_x,ui_pos_y,tech_level,cost_m,cost_mr,cost_me,cost_md");
+        sb.AppendLine("research_id,module_type,module_sub_type,prerequisites,ui_pos_x,ui_pos_y,tech_level,cost_m,cost_mr,cost_me,cost_md,description");
+
+        // tech_level 행 먼저 출력
+        foreach (var d in dataTable.TechLevelDataList)
+        {
+            string prereqs = d.prerequisiteIds != null ? string.Join("|", d.prerequisiteIds) : "";
+            sb.AppendLine($"{d.researchId},0,0,{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.techLevel},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark},");
+        }
+
+        // 모듈 연구 행
         foreach (var d in dataTable.ResearchDataList)
         {
             string prereqs = d.prerequisiteIds != null ? string.Join("|", d.prerequisiteIds) : "";
-            sb.AppendLine($"{d.researchId},{(int)d.moduleType},{(int)d.moduleSubType},{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.techLevel},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark}");
+            sb.AppendLine($"{d.researchId},{(int)d.moduleType},{(int)d.moduleSubType},{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.techLevel},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark},");
         }
         return sb.ToString();
     }

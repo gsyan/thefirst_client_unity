@@ -549,7 +549,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             bodyInfo.engines.Add(new ModuleInfo
             {
                 moduleType = EModuleType.engine,
-                moduleSubType = EModuleSubType.engine_t1_std,
+                moduleSubType = EModuleSubType.engine_t1_std_ver1,
                 moduleLevel = 1,
                 bodyIndex = 0,
                 slotIndex = 0

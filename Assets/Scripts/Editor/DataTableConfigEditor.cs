@@ -21,45 +21,8 @@ public class DataTableConfigEditor : Editor
 
         serializedObject.Update();
 
-        EditorGUILayout.LabelField("Data Table Config Manager", EditorStyles.largeLabel);
-        EditorGUILayout.Space(10);
 
-        // Default Inspector 그리기
-        DrawDefaultInspector();
-
-        EditorGUILayout.Space(10);
-
-        // JSON Tools 섹션
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField("JSON Import/Export", EditorStyles.boldLabel);
-
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Export to JSON"))
-        {
-            ExportGameSettings();
-        }
-
-        if (GUILayout.Button("Import from JSON"))
-        {
-            ImportGameSettings();
-        }
-        EditorGUILayout.EndHorizontal();
-
-        // JSON Preview (read-only)
-        EditorGUILayout.LabelField("JSON Preview", EditorStyles.boldLabel);
-        var jsonProp = serializedObject.FindProperty("exportedJson");
-        if (jsonProp != null)
-        {
-            GUI.enabled = false;
-            EditorGUILayout.TextArea(jsonProp.stringValue, GUILayout.Height(100));
-            GUI.enabled = true;
-        }
-
-        EditorGUILayout.EndVertical();
-
-        EditorGUILayout.Space(10);
-
-        // Reset Tools 섹션
+        // Reset Tools 섹션 (최상단)
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Reset Tools", EditorStyles.boldLabel);
 
@@ -77,6 +40,11 @@ public class DataTableConfigEditor : Editor
         }
 
         EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space(10);
+
+        // Default Inspector 그리기
+        DrawDefaultInspector();
 
         if (GUI.changed)
         {

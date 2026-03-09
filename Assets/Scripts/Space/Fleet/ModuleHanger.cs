@@ -116,7 +116,7 @@ public class ModuleHanger : ModuleBase
     {
         switch (m_moduleInfo.moduleSubType)
         {
-            case EModuleSubType.hanger_t1_std:
+            case EModuleSubType.hanger_t1_std_ver1:
                 for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
@@ -124,7 +124,7 @@ public class ModuleHanger : ModuleBase
                     m_launchers.Add(launcher);
                 }
                 break;
-            case EModuleSubType.hanger_t1_adv:
+            case EModuleSubType.hanger_t1_adv_ver1:
                 for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();

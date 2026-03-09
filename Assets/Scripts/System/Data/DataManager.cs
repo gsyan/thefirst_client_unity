@@ -46,7 +46,6 @@ public class DataManager : Singleton<DataManager>
                 {
                     characterId = 1,
                     characterName = "DefaultCharacter"
-                    , techLevel = 1
                     , mineral = 0
                     , mineralRare = 0
                     , mineralExotic = 0
@@ -136,7 +135,7 @@ public class DataManager : Singleton<DataManager>
                         new ModuleBodyInfo
                         {
                             moduleType = EModuleType.body,
-                            moduleSubType = EModuleSubType.body_t1_std,
+                            moduleSubType = EModuleSubType.body_t1_std_ver1,
                             moduleLevel = 1,
                             bodyIndex = 0,
                             engines = new List<ModuleInfo>
@@ -144,7 +143,7 @@ public class DataManager : Singleton<DataManager>
                                 new ModuleInfo
                                 {
                                     moduleType = EModuleType.engine,
-                                    moduleSubType = EModuleSubType.engine_t1_std,
+                                    moduleSubType = EModuleSubType.engine_t1_std_ver1,
                                     moduleLevel = 1,
                                     bodyIndex = 0,
                                     slotIndex = 0
@@ -155,7 +154,7 @@ public class DataManager : Singleton<DataManager>
                                 new ModuleInfo
                                 {
                                     moduleType = EModuleType.beam,
-                                    moduleSubType = EModuleSubType.beam_t1_std,
+                                    moduleSubType = EModuleSubType.beam_t1_std_ver1,
                                     moduleLevel = 1,
                                     bodyIndex = 0,
                                     slotIndex = 0

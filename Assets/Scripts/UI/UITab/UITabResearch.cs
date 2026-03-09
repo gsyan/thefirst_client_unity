@@ -1,3 +1,4 @@
+// 연구 탭 UI - 모듈 연구 트리(body/engine/beam/missile/hanger)와 기술레벨 업그레이드 트리 표시 및 연구 처리
 using TMPro;
 using System;
 using System.Collections;
@@ -36,6 +37,8 @@ public class UITabResearch : UITabBase
 
     private readonly List<RowLabelValue> m_moduleStatRows = new();
 
+    private bool m_isTechMode = false; // true면 기술레벨 탭, false면 모듈 탭
+
     // 현재 표시중인 노드 리스트 (ResearchNodeData 베이스)
     private List<ResearchNodeData> m_currentNodeList = new List<ResearchNodeData>();
     private Dictionary<string, RectTransform> m_spawnedNodes = new Dictionary<string, RectTransform>();
@@ -73,6 +76,7 @@ public class UITabResearch : UITabBase
             }
         }
 
+        m_techButton.onClick.AddListener(() => SwitchToTechMode());
         m_bodyButton.onClick.AddListener(() => SwitchModuleType(EModuleType.body));
         m_engineButton.onClick.AddListener(() => SwitchModuleType(EModuleType.engine));
         m_beamButton.onClick.AddListener(() => SwitchModuleType(EModuleType.beam));
@@ -84,9 +88,23 @@ public class UITabResearch : UITabBase
         SwitchModuleType(m_currentModuleType);
     }
 
+    private void SwitchToTechMode()
+    {
+        m_isTechMode = true;
+        m_currentModuleType = EModuleType.none;
+        m_currentNodeList.Clear();
+        var techList = m_researchTable.TechLevelDataList;
+        for (int i = 0; i < techList.Count; i++)
+            m_currentNodeList.Add(techList[i]);
+        m_selectedNodeId = "";
+        GenerateResearchTree();
+        UpdateResearchUI();
+    }
+
     // 탭 전환 시 해당 모듈 타입의 연구 트리로 갱신
     private void SwitchModuleType(EModuleType moduleType)
     {
+        m_isTechMode = false;
         m_currentModuleType = moduleType;
 
         // ModuleResearchData → ResearchNodeData 리스트로 변환
@@ -236,8 +254,8 @@ public class UITabResearch : UITabBase
     {
         if (node is ModuleResearchData module)
             return m_myCharacter.IsModuleResearched(module.moduleType, module.moduleSubType);
-        // if (node is TechResearchData tech)
-        //     return m_myCharacter.GetTechLevel() >= tech.m_targetTechLevel;
+        if (node is TechLevelResearchData tech)
+            return m_myCharacter.IsResearchCompleted(tech.researchId);
         return false;
     }
 
@@ -269,17 +287,31 @@ public class UITabResearch : UITabBase
 
         // 선택된 노드 찾기
         ResearchNodeData selectedNode = m_currentNodeList.Find(n => n.researchId == m_selectedNodeId);
-        if (selectedNode is ModuleResearchData moduleNode)
-        {
+        if (selectedNode is TechLevelResearchData techNode)
+            UpdateTechLevelDisplay(techNode);
+        else if (selectedNode is ModuleResearchData moduleNode)
             UpdateModuleStatsDisplay(moduleNode.moduleSubType);
-        }
 
         // 버튼 업데이트
         bool bResearched = IsNodeResearched(selectedNode);
-        if(bResearched == true)            
+        if (bResearched == true)
             CommonUtility.SetUILocText(m_researchButtonText, "research_already");
         else
-            CommonUtility.SetUILocText(m_researchButtonText, "research_module");
+            CommonUtility.SetUILocText(m_researchButtonText, "research_button_name");
+    }
+
+    // 기술레벨 노드 선택 시 스탯 패널에 현재/목표 기술레벨과 오프라인 캡 표시
+    private void UpdateTechLevelDisplay(TechLevelResearchData techNode)
+    {
+        // 오프라인 캡: 기본 3h, 기술레벨 2마다 +1h (2→4h, 4→5h, 6→6h, 8→7h)
+        int offlineHoursAfter = 3 + (techNode.targetTechLevel / 2);
+        for (int i = 0; i < m_moduleStatRows.Count; i++)
+        {
+            if (i == 0)      m_moduleStatRows[i].SetRow("tech_level_current", m_myCharacter.GetTechLevel().ToString(), rawValue: true);
+            else if (i == 1) m_moduleStatRows[i].SetRow("tech_level_target", techNode.targetTechLevel.ToString(), rawValue: true);
+            else if (i == 2) m_moduleStatRows[i].SetRow("offline_cap_after", $"{offlineHoursAfter}h", rawValue: true);
+            else             m_moduleStatRows[i].SetRow("empty_text", "");
+        }
     }
 
     // 연구되지 않은 노드 중 리스트 순서상 가장 앞의 것을 반환, 모두 완료면 마지막 노드
@@ -310,8 +342,15 @@ public class UITabResearch : UITabBase
 
     private void OnModuleResearchClicked()
     {
-        // 선택된 노드에서 모듈 정보 추출
+        // 선택된 노드에서 모듈/기술레벨 정보 추출
         ResearchNodeData selectedNode = m_currentNodeList.Find(n => n.researchId == m_selectedNodeId);
+
+        if (selectedNode is TechLevelResearchData techNode)
+        {
+            OnTechLevelResearchClicked(techNode);
+            return;
+        }
+
         if (selectedNode is not ModuleResearchData moduleNode) return;
 
         EModuleType moduleType = moduleNode.moduleType;
@@ -330,7 +369,7 @@ public class UITabResearch : UITabBase
         List<string> leftValues = new List<string>{ localizedSubType };
 
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("research_module"),
+            LocalizationManager.Instance.Get("research_button_name"),
             LocalizationManager.Instance.Get("popup_message_module_research", new object[] { localizedSubType }),
             leftLabels, leftValues,
             researchCost,
@@ -360,6 +399,43 @@ public class UITabResearch : UITabBase
         );
     }
 
+    private void OnTechLevelResearchClicked(TechLevelResearchData techNode)
+    {
+        if (IsNodeResearched(techNode) == true)
+        {
+            ShowResultMessage($"Already Researched", 3f);
+            return;
+        }
+
+        CostStruct researchCost = techNode.researchCost;
+        string targetLevelStr = techNode.targetTechLevel.ToString();
+        List<string> leftLabels = new List<string> { "tech_level" };
+        List<string> leftValues = new List<string> { targetLevelStr };
+
+        UIManager.Instance.ShowConfirmPopup(
+            LocalizationManager.Instance.Get("research_tech_name"),
+            LocalizationManager.Instance.Get("popup_message_tech_research", new object[] { targetLevelStr }),
+            leftLabels, leftValues,
+            researchCost,
+            onConfirm: () =>
+            {
+                bool result = DataManager.Instance.m_currentCharacter.CheckEnoughCostStruct(researchCost);
+                if (result == false)
+                {
+                    ShowResultMessage($"Insufficient resources", 3f);
+                    return;
+                }
+
+                var request = new ModuleResearchRequest { researchId = techNode.researchId };
+                NetworkManager.Instance.ResearchModule(request, OnModuleResearchResponse);
+            },
+            onCancel: () =>
+            {
+                ShowResultMessage("Research cancelled", 2f);
+            }
+        );
+    }
+
     private void OnModuleResearchResponse(ApiResponse<ModuleResearchResponse> response)
     {
         if (response.errorCode == 0)
@@ -375,8 +451,14 @@ public class UITabResearch : UITabBase
             if (researchResponse.researchedModuleTypes != null)
                 DataManager.Instance.m_currentCharacter.UpdateResearchedModules(researchResponse.researchedModuleTypes);
 
+            // Update string-based research IDs (tech_level_N 등)
+            if (researchResponse.researchedIds != null)
+                DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(researchResponse.researchedIds);
+
             ShowResultMessage($"Research completed: {researchResponse.moduleType}-{researchResponse.moduleSubType}", 3f);
 
+            // bShow 상태와 무관하게 노드 색상 즉시 갱신
+            RefreshNodeColors();
             UpdateResearchUI();
         }
         else

@@ -135,8 +135,12 @@ MonoBehaviour:
     m_Key: exploration_elapsed_time
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636950
-    m_Key: research_module
+  - m_Id: 10761965592772608
+    m_Key: exploration_zone_insufficient_ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10728497219502080
+    m_Key: research_button_name
     m_Metadata:
       m_Items: []
   - m_Id: 2973369905315840
@@ -335,44 +339,44 @@ MonoBehaviour:
     m_Key: module_type_hanger
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833240420352
-    m_Key: body_t1_std
+  - m_Id: 10726916994498560
+    m_Key: body_t1_std_ver1
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833282363392
-    m_Key: body_t1_adv
+  - m_Id: 10726917036441600
+    m_Key: body_t1_adv_ver1
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833282363393
-    m_Key: engine_t1_std
+  - m_Id: 10726917036441601
+    m_Key: engine_t1_std_ver1
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833282363394
-    m_Key: engine_t1_adv
+  - m_Id: 10726917036441602
+    m_Key: engine_t1_adv_ver1
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833282363395
-    m_Key: beam_t1_std
+  - m_Id: 10726917036441603
+    m_Key: beam_t1_std_ver1
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833282363396
-    m_Key: beam_t1_adv
+  - m_Id: 10726917036441604
+    m_Key: beam_t1_adv_ver1
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833282363397
-    m_Key: missile_t1_std
+  - m_Id: 10726917036441605
+    m_Key: missile_t1_std_ver1
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833286557696
-    m_Key: missile_t1_adv
+  - m_Id: 10726917036441606
+    m_Key: missile_t1_adv_ver1
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833286557697
-    m_Key: hanger_t1_std
+  - m_Id: 10726917036441607
+    m_Key: hanger_t1_std_ver1
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833286557698
-    m_Key: hanger_t1_adv
+  - m_Id: 10726917036441608
+    m_Key: hanger_t1_adv_ver1
     m_Metadata:
       m_Items: []
   - m_Id: 705451700125696
@@ -485,6 +489,82 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8795249610457088
     m_Key: char_default_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10734488233312256
+    m_Key: tech_level_current
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10734488275255296
+    m_Key: tech_level_target
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10734488275255297
+    m_Key: offline_cap_after
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10734488275255298
+    m_Key: popup_message_tech_research
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482391085056
+    m_Key: tech_level_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250880
+    m_Key: tech_level_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250881
+    m_Key: tech_level_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250882
+    m_Key: tech_level_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250883
+    m_Key: tech_level_5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250884
+    m_Key: tech_level_6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250885
+    m_Key: tech_level_7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250886
+    m_Key: tech_level_8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250887
+    m_Key: tech_level_9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250888
+    m_Key: tech_level_10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250889
+    m_Key: tech_level_11
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250890
+    m_Key: tech_level_12
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250891
+    m_Key: tech_level_13
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250892
+    m_Key: tech_level_14
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250893
+    m_Key: tech_level_15
     m_Metadata:
       m_Items: []
   m_Metadata:

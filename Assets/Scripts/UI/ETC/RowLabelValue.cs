@@ -1,3 +1,4 @@
+// 레이블(로컬라이제이션 키) + 값(로컬라이제이션 키 또는 raw 텍스트) 1행 UI 컴포넌트
 using TMPro;
 using UnityEngine;
 
@@ -15,10 +16,11 @@ public class RowLabelValue : MonoBehaviour
             m_value1 = GetComponent<RectTransform>().GetChild(1).GetComponent<TMP_Text>();
     }
 
-    public void SetRow(string label, string value1, string value2 = "")
+    // rawValue=true 이면 value를 로컬라이제이션 없이 직접 표시 (숫자, 단위 등)
+    public void SetRow(string label, string value1, string value2 = "", bool rawValue = false)
     {
         SetLabel(label);
-        SetValues(value1, value2);
+        SetValues(value1, value2, rawValue);
     }
 
     public void SetLabel(string label)
@@ -27,12 +29,18 @@ public class RowLabelValue : MonoBehaviour
             CommonUtility.SetUILocText(m_label, label);
     }
 
-    public void SetValues(string value1, string value2 = "")
+    public void SetValues(string value1, string value2 = "", bool rawValue = false)
     {
-        if( m_value1 != null)
-            CommonUtility.SetUILocText(m_value1, value1);
-        if( m_value2 != null)
-            CommonUtility.SetUILocText(m_value2, value2);
+        if (m_value1 != null)
+        {
+            if (rawValue) m_value1.text = value1;
+            else CommonUtility.SetUILocText(m_value1, value1);
+        }
+        if (m_value2 != null)
+        {
+            if (rawValue) m_value2.text = value2;
+            else CommonUtility.SetUILocText(m_value2, value2);
+        }
     }
 
     public void SetValueColor(Color color)

@@ -168,6 +168,10 @@ public class UIMain : UIManager
                             DataManager.Instance.m_currentCharacter.SetResearchedModules(response.data.researchedModuleTypes);
                             Debug.Log($"Researched modules loaded: {response.data.researchedModuleTypes.Length} modules");
                         }
+
+                        // Set string-based research IDs (tech_level_N 등)
+                        if (response.data.researchedIds != null)
+                            DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
                     }
                     else
                     {
