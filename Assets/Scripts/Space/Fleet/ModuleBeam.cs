@@ -88,8 +88,8 @@ public class ModuleBeam : ModuleBase
     {
         switch (m_moduleInfo.moduleSubType)
         {
-            case EModuleSubType.beam_t1_std:
-            case EModuleSubType.beam_t1_adv:
+            case EModuleSubType.beam_t1_std_ver1:
+            case EModuleSubType.beam_t1_adv_ver1:
                 for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();

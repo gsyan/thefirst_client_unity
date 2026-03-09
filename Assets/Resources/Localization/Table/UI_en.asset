@@ -246,10 +246,6 @@ MonoBehaviour:
     m_Localized: Wave
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636950
-    m_Localized: Research Module
-    m_Metadata:
-      m_Items: []
   - m_Id: 2924654624636952
     m_Localized: PVP List
     m_Metadata:
@@ -350,46 +346,6 @@ MonoBehaviour:
     m_Localized: h
     m_Metadata:
       m_Items: []
-  - m_Id: 6643833240420352
-    m_Localized: T1 Body.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6643833282363392
-    m_Localized: T1 Body.Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6643833282363393
-    m_Localized: T1 Engine.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6643833282363394
-    m_Localized: T1 Engine.Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6643833282363395
-    m_Localized: T1 Beam.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6643833282363396
-    m_Localized: T1 Beam.Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6643833282363397
-    m_Localized: T1 Missile.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6643833286557696
-    m_Localized: T1 Missile.Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6643833286557697
-    m_Localized: T1 Hanger.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6643833286557698
-    m_Localized: T1 Hanger.Adv
-    m_Metadata:
-      m_Items: []
   - m_Id: 6655868837691392
     m_Localized: Add\nShip
     m_Metadata:
@@ -488,6 +444,130 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8795249610457088
     m_Localized: Commander
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726916994498560
+    m_Localized: T1 Body.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726917036441600
+    m_Localized: T1 Body.Adv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726917036441601
+    m_Localized: T1 Engine.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726917036441602
+    m_Localized: T1 Engine.Adv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726917036441603
+    m_Localized: T1 Beam.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726917036441604
+    m_Localized: T1 Beam.Adv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726917036441605
+    m_Localized: T1 Missile.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726917036441606
+    m_Localized: T1 Missile.Adv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726917036441607
+    m_Localized: T1 Hanger.Std
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10726917036441608
+    m_Localized: T1 Hanger.Adv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10728497219502080
+    m_Localized: Research
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10734488233312256
+    m_Localized: Current Tech Lv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10734488275255296
+    m_Localized: Target Tech Lv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10734488275255297
+    m_Localized: Offline Cap (After)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10734488275255298
+    m_Localized: Upgrade to Tech Level {0}?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482391085056
+    m_Localized: Tech Level 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250880
+    m_Localized: Tech Level 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250881
+    m_Localized: Tech Level 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250882
+    m_Localized: Tech Level 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250883
+    m_Localized: Tech Level 5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250884
+    m_Localized: Tech Level 6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250885
+    m_Localized: Tech Level 7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250886
+    m_Localized: Tech Level 8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250887
+    m_Localized: Tech Level 9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250888
+    m_Localized: Tech Level 10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250889
+    m_Localized: Tech Level 11
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250890
+    m_Localized: Tech Level 12
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250891
+    m_Localized: Tech Level 13
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250892
+    m_Localized: Tech Level 14
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10739482416250893
+    m_Localized: Tech Level 15
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10761965592772608
+    m_Localized: Not enough ships
     m_Metadata:
       m_Items: []
   references:

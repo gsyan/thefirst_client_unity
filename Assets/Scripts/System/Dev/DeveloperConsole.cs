@@ -537,8 +537,13 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         switch (key.ToLower())
         {
             case "tech":
+                // 서버가 반환한 targetTechLevel까지 tech_level_1~N을 모두 완료 처리
                 if (int.TryParse(value, out int tech))
-                    DataManager.Instance.m_currentCharacter.UpdateTechLevel(tech);
+                {
+                    var ids = new string[tech];
+                    for (int i = 1; i <= tech; i++) ids[i - 1] = "tech_level_" + i;
+                    DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(ids);
+                }
                 break;
             case "mineral":
                 if (long.TryParse(value, out long mineral))

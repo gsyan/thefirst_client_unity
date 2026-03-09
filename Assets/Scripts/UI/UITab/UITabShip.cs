@@ -1,3 +1,4 @@
+// 함선/모듈 관리 UI — 모듈 업그레이드, 교체(max level + 5,000 MR 비용 검증), 슬롯 해금 처리
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -671,6 +672,13 @@ public class UITabShip : UITabBase
             return;
         }
 
+        // 교체 전 클라이언트 검증 (max level + 비용 잔액)
+        if (ValidateModuleChange(currentModuleSubType, moduleSubType, out string validationError) == false)
+        {
+            ShowResultMessage(validationError, 3f);
+            return;
+        }
+
         int slotIndex = 0;
         if( EModuleType.body != m_selectedModule.GetModuleType())
             slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
@@ -690,7 +698,44 @@ public class UITabShip : UITabBase
 
         // 서버에 모듈 교체 요청 전송
         NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
+    }
 
+    // 모듈 교체 클라이언트 사전 검증 — max level 및 재화 잔액 확인
+    private bool ValidateModuleChange(EModuleSubType currentSubType, EModuleSubType newSubType, out string errorMessage)
+    {
+        errorMessage = "";
+        int currentLevel = m_selectedModule.GetModuleLevel();
+        int maxLevel = DataManager.Instance.m_dataTableModule.GetMaxLevel(currentSubType);
+        if (currentLevel < maxLevel)
+        {
+            errorMessage = $"Module must be at max level ({maxLevel}) before applying. Current: {currentLevel}";
+            return false;
+        }
+
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null)
+        {
+            errorMessage = "Character data not available";
+            return false;
+        }
+
+        CostStruct cost = DataManager.Instance.m_dataTableConfig.gameSettings.GetModuleChangeCost(newSubType);
+        if (character.GetMineralRare() < cost.mineralRare)
+        {
+            errorMessage = $"Insufficient MineralRare (need {CommonUtility.FormatBigNumber(cost.mineralRare)}, have {CommonUtility.FormatBigNumber(character.GetMineralRare())})";
+            return false;
+        }
+        if (character.GetMineralExotic() < cost.mineralExotic)
+        {
+            errorMessage = $"Insufficient MineralExotic (need {CommonUtility.FormatBigNumber(cost.mineralExotic)}, have {CommonUtility.FormatBigNumber(character.GetMineralExotic())})";
+            return false;
+        }
+        if (character.GetMineralDark() < cost.mineralDark)
+        {
+            errorMessage = $"Insufficient MineralDark (need {CommonUtility.FormatBigNumber(cost.mineralDark)}, have {CommonUtility.FormatBigNumber(character.GetMineralDark())})";
+            return false;
+        }
+        return true;
     }
 
     private void OnChangeModuleResponse(ApiResponse<ModuleChangeResponse> response)
@@ -716,6 +761,19 @@ public class UITabShip : UITabBase
         if (ship == null) return;
 
         ship.Apply_ChangeModule(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel);
+
+        // 재화 잔액 갱신
+        if (changeData.costRemainInfo != null)
+        {
+            var character = DataManager.Instance.m_currentCharacter;
+            if (character != null)
+            {
+                character.UpdateMineral(changeData.costRemainInfo.remainMineral);
+                character.UpdateMineralRare(changeData.costRemainInfo.remainMineralRare);
+                character.UpdateMineralExotic(changeData.costRemainInfo.remainMineralExotic);
+                character.UpdateMineralDark(changeData.costRemainInfo.remainMineralDark);
+            }
+        }
 
         ShowResultMessage("Module change successful!", 3f);
 

@@ -63,8 +63,9 @@ public class UIPopupConfirm : UIPopupBase
         if (hasCost == true)
         {
             var ch = DataManager.Instance.m_currentCharacter;
+            var techLevel = ch.GetTechLevel();
             var info = ch?.m_characterInfo;
-            if (cost.techLevel > 0) AddRowRight("tech_level", cost.techLevel, info != null && info.techLevel < cost.techLevel);
+            if (cost.techLevel > 0) AddRowRight("tech_level", cost.techLevel, info != null && techLevel < cost.techLevel);
             if (cost.mineral > 0) AddRowRight("mineral_amount", cost.mineral, info != null && info.mineral < cost.mineral);
             if (cost.mineralRare > 0) AddRowRight("mineral_rare_amount", cost.mineralRare, info != null && info.mineralRare < cost.mineralRare);
             if (cost.mineralExotic > 0) AddRowRight("mineral_exotic_amount", cost.mineralExotic, info != null && info.mineralExotic < cost.mineralExotic);

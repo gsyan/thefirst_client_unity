@@ -26,79 +26,116 @@ MonoBehaviour:
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    - techLevel: 1
+    - techLevel: 2
       mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
-    - techLevel: 1
+    - techLevel: 4
       mineral: 20000
-      mineralRare: 5000
+      mineralRare: 60000
       mineralExotic: 0
       mineralDark: 0
-    - techLevel: 1
+    - techLevel: 6
       mineral: 40000
-      mineralRare: 10000
+      mineralRare: 170000
       mineralExotic: 0
       mineralDark: 0
-    - techLevel: 1
+    - techLevel: 8
       mineral: 80000
-      mineralRare: 20000
-      mineralExotic: 5000
+      mineralRare: 370000
+      mineralExotic: 0
       mineralDark: 0
-    - techLevel: 1
+    - techLevel: 10
       mineral: 160000
-      mineralRare: 40000
-      mineralExotic: 10000
+      mineralRare: 1400000
+      mineralExotic: 0
       mineralDark: 0
-    - techLevel: 1
+    - techLevel: 12
       mineral: 320000
-      mineralRare: 80000
-      mineralExotic: 20000
-      mineralDark: 5000
-    - techLevel: 1
+      mineralRare: 2500000
+      mineralExotic: 0
+      mineralDark: 0
+    - techLevel: 14
       mineral: 640000
-      mineralRare: 160000
-      mineralExotic: 40000
-      mineralDark: 10000
-    - techLevel: 1
-      mineral: 1280000
-      mineralRare: 320000
-      mineralExotic: 80000
-      mineralDark: 20000
-    - techLevel: 1
-      mineral: 2560000
-      mineralRare: 640000
-      mineralExotic: 160000
-      mineralDark: 40000
+      mineralRare: 4000000
+      mineralExotic: 0
+      mineralDark: 0
     pvpListCount: 3
     pvpListRefreshCount: 5
     pvpRankScoreInit: 1000
     pvpRankScorePenalty: 1
     moduleUnlockPrice: 5000
+    moduleChangeCosts:
+    - moduleSubType: 1010201
+      cost:
+        techLevel: 0
+        mineral: 0
+        mineralRare: 5000
+        mineralExotic: 0
+        mineralDark: 0
+    - moduleSubType: 2010201
+      cost:
+        techLevel: 0
+        mineral: 0
+        mineralRare: 5000
+        mineralExotic: 0
+        mineralDark: 0
+    - moduleSubType: 3010201
+      cost:
+        techLevel: 0
+        mineral: 0
+        mineralRare: 5000
+        mineralExotic: 0
+        mineralDark: 0
+    - moduleSubType: 4010201
+      cost:
+        techLevel: 0
+        mineral: 0
+        mineralRare: 5000
+        mineralExotic: 0
+        mineralDark: 0
+    - moduleSubType: 5010201
+      cost:
+        techLevel: 0
+        mineral: 0
+        mineralRare: 5000
+        mineralExotic: 0
+        mineralDark: 0
   exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"maxShipsPerFleet\": 9,\r\n 
     \"addShipCosts\": [\r\n    {\r\n      \"techLevel\": 0,\r\n      \"mineral\":
     0,\r\n      \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
     0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 5000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 10000,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 2,\r\n      \"mineral\": 10000,\r\n     
     \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 20000,\r\n     
-    \"mineralRare\": 5000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 40000,\r\n     
-    \"mineralRare\": 10000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 80000,\r\n     
-    \"mineralRare\": 20000,\r\n      \"mineralExotic\": 5000,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 160000,\r\n     
-    \"mineralRare\": 40000,\r\n      \"mineralExotic\": 10000,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 320000,\r\n     
-    \"mineralRare\": 80000,\r\n      \"mineralExotic\": 20000,\r\n      \"mineralDark\":
-    5000\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 640000,\r\n     
-    \"mineralRare\": 160000,\r\n      \"mineralExotic\": 40000,\r\n      \"mineralDark\":
-    10000\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 1280000,\r\n     
-    \"mineralRare\": 320000,\r\n      \"mineralExotic\": 80000,\r\n      \"mineralDark\":
-    20000\r\n    },\r\n    {\r\n      \"techLevel\": 1,\r\n      \"mineral\": 2560000,\r\n     
-    \"mineralRare\": 640000,\r\n      \"mineralExotic\": 160000,\r\n      \"mineralDark\":
-    40000\r\n    }\r\n  ],\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\":
-    5,\r\n  \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\":
-    5000\r\n}"
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 4,\r\n      \"mineral\": 20000,\r\n     
+    \"mineralRare\": 60000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 6,\r\n      \"mineral\": 40000,\r\n     
+    \"mineralRare\": 170000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 8,\r\n      \"mineral\": 80000,\r\n     
+    \"mineralRare\": 370000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 10,\r\n      \"mineral\": 160000,\r\n     
+    \"mineralRare\": 1400000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 12,\r\n      \"mineral\": 320000,\r\n     
+    \"mineralRare\": 2500000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 14,\r\n      \"mineral\": 640000,\r\n     
+    \"mineralRare\": 4000000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
+    0\r\n    }\r\n  ],\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\": 5,\r\n 
+    \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\":
+    5000,\r\n  \"moduleChangeCosts\": [\r\n    {\r\n      \"moduleSubType\": 1010201,\r\n     
+    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
+    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
+    0\r\n      }\r\n    },\r\n    {\r\n      \"moduleSubType\": 2010201,\r\n     
+    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
+    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
+    0\r\n      }\r\n    },\r\n    {\r\n      \"moduleSubType\": 3010201,\r\n     
+    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
+    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
+    0\r\n      }\r\n    },\r\n    {\r\n      \"moduleSubType\": 4010201,\r\n     
+    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
+    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
+    0\r\n      }\r\n    },\r\n    {\r\n      \"moduleSubType\": 5010201,\r\n     
+    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
+    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
+    0\r\n      }\r\n    }\r\n  ]\r\n}"

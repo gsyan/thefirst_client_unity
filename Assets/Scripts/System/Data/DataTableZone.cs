@@ -26,7 +26,7 @@ public class EnemyModuleSlotConfig
 [System.Serializable]
 public class EnemyShipConfig
 {
-    public EModuleSubType bodySubType = EModuleSubType.body_t1_std;
+    public EModuleSubType bodySubType = EModuleSubType.body_t1_std_ver1;
     public int bodyLevel = 1;
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
 }
@@ -52,7 +52,7 @@ public class ZoneConfig
     public float killRewardMineralDark = 0f;
 
     [Header("시간당 자원 수확량 (클리어 후)")]
-    public float mineralPerHour = 3600f;
+    public float mineralPerHour = 0f;
     public float mineralRarePerHour = 0f;
     public float mineralExoticPerHour = 0f;
     public float mineralDarkPerHour = 0f;
@@ -98,6 +98,17 @@ public class DataTableZone : ScriptableObject
                 return i;
         }
         return -1;
+    }
+
+    // clearedZoneName 포함, 그 이전 모든 존 반환 (index 0 = Zone-0 안전지역 제외)
+    public List<ZoneConfig> GetAllZonesUpTo(string clearedZoneName)
+    {
+        var result = new List<ZoneConfig>();
+        int clearedIndex = GetZoneIndex(clearedZoneName);
+        if (clearedIndex < 0) return result;
+        for (int i = 1; i <= clearedIndex; i++)
+            result.Add(zones[i]);
+        return result;
     }
 
     // 다음 zone 반환 (없으면 null)

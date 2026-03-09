@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+// 플레이어 캐릭터 상태 관리 - 모듈 연구 목록(int쌍), 문자열 연구 ID(tech_level_N 등) 포함
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +6,14 @@ public class Character
 {
     public CharacterInfo m_characterInfo;
     public SpaceFleet m_ownedFleet;
-    private List<int[]> m_researchedModules;  // [moduleType, moduleSubType] 쌍의 리스트
+    private List<int[]> m_researchedModules;       // [moduleType, moduleSubType] 쌍의 리스트
+    private HashSet<string> m_completedResearchIds; // tech_level_N 등 문자열 기반 완료 연구
 
     public Character(CharacterInfo characterInfo)
     {
         m_characterInfo = characterInfo;
-        m_researchedModules = new List<int[]>();
+        m_researchedModules    = new List<int[]>();
+        m_completedResearchIds = new HashSet<string>();
     }
 
     // "empty_" 로 시작하는 이름이면 로컬라이즈된 이름 + characterId로 반환 (예: "지휘관42")
@@ -47,9 +49,16 @@ public class Character
         return m_characterInfo?.mineralDark ?? 0;
     }
 
+    // 완료된 tech_level_N ID 중 최댓값을 기술레벨로 반환 (기본값 1)
     public int GetTechLevel()
     {
-        return m_characterInfo?.techLevel ?? 1;
+        int max = 1;
+        foreach (string id in m_completedResearchIds)
+        {
+            if (id.StartsWith("tech_level_") && int.TryParse(id["tech_level_".Length..], out int lv))
+                max = Mathf.Max(max, lv);
+        }
+        return max;
     }
 
     public CharacterInfo GetInfo()
@@ -67,13 +76,6 @@ public class Character
         if (m_characterInfo == null) return;
         m_characterInfo.characterName = characterName;
         m_characterInfo.nameChangeCount = nameChangeCount;
-    }
-
-    public void UpdateTechLevel(int techLevel)
-    {
-        if (m_characterInfo == null) return;
-        m_characterInfo.techLevel = techLevel;
-        EventManager.TriggerTechLevelChange(techLevel);
     }
 
     public void UpdateMineral(long mineral)
@@ -117,7 +119,7 @@ public class Character
     public bool CheckEnoughCostStruct(CostStruct cost)
     {
         if (cost == null) return true;
-        if (m_characterInfo.techLevel < cost.techLevel) return false;
+        if (GetTechLevel() < cost.techLevel) return false;
         if (m_characterInfo.mineral < cost.mineral) return false;
         if (m_characterInfo.mineralRare < cost.mineralRare) return false;
         if (m_characterInfo.mineralExotic < cost.mineralExotic) return false;
@@ -197,6 +199,29 @@ public class Character
     {
         if (researchedModules == null) return;
         SetResearchedModules(researchedModules);
+    }
+
+    // 문자열 기반 완료 연구 ID 목록 세팅
+    public void SetCompletedResearchIds(string[] ids)
+    {
+        m_completedResearchIds.Clear();
+        if (ids == null) return;
+        foreach (string id in ids)
+            m_completedResearchIds.Add(id);
+        EventManager.TriggerTechLevelChange(GetTechLevel());
+    }
+
+    // 연구 완료 후 단건 추가
+    public void AddCompletedResearchId(string id)
+    {
+        if (string.IsNullOrEmpty(id)) return;
+        m_completedResearchIds.Add(id);
+        EventManager.TriggerTechLevelChange(GetTechLevel());
+    }
+
+    public bool IsResearchCompleted(string researchId)
+    {
+        return m_completedResearchIds.Contains(researchId);
     }
 
 }

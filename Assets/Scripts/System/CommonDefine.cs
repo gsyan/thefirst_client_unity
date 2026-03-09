@@ -1,4 +1,5 @@
-// ------------------------------------------------------------
+// 게임 공통 열거형 정의 — EModuleType, EModuleSubType(7자리 인코딩), EFormationType 등
+// EModuleSubType 파싱: type=val/1000000, tech=(val/10000)%100, grade=(val/100)%100, ver=val%100
 
 [System.Serializable]
 public enum ESpaceMineralState
@@ -20,26 +21,28 @@ public enum EModuleType
     hanger          = 5,
     max             = 6
 }
-// 3001~3009 연관, 3011~3019 연관
+// 7자리 인코딩: T_tt_gg_vv (type 1자리, tech 2자리, grade 2자리, ver 2자리)
+// 파싱: type=val/1000000, tech=(val/10000)%100, grade=(val/100)%100, ver=val%100
+// grade: 01=std, 02=adv / ver: 01~99
 [System.Serializable]
 public enum EModuleSubType
 {
-    none                = 0,
-    // Body SubType 
-    body_t1_std         = 1001,
-    body_t1_adv         = 1002,
+    none                    = 0,
+    // Body SubType
+    body_t1_std_ver1        = 1010101,
+    body_t1_adv_ver1        = 1010201,
     // Engine SubType
-    engine_t1_std       = 2001,
-    engine_t1_adv       = 2002,    
+    engine_t1_std_ver1      = 2010101,
+    engine_t1_adv_ver1      = 2010201,
     // Beam SubType
-    beam_t1_std         = 3001,
-    beam_t1_adv         = 3002,
-    // Missile SubType    
-    missile_t1_std      = 4001,
-    missile_t1_adv      = 4002,
-    // HangerSubType
-    hanger_t1_std       = 5001,
-    hanger_t1_adv       = 5002
+    beam_t1_std_ver1        = 3010101,
+    beam_t1_adv_ver1        = 3010201,
+    // Missile SubType
+    missile_t1_std_ver1     = 4010101,
+    missile_t1_adv_ver1     = 4010201,
+    // Hanger SubType
+    hanger_t1_std_ver1      = 5010101,
+    hanger_t1_adv_ver1      = 5010201,
 }
 
 public static class EModuleTypeExtensions

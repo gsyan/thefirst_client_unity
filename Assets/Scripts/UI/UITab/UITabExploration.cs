@@ -1,4 +1,4 @@
-// 탐사 탭 — 존 목록/웨이브 UI, 존 진입/재진입/다음존 이동, 킬 보상 처리
+// 탐사 탭 — 존 목록/웨이브 UI, 존 진입/재진입/다음존 이동, 킬 보상 처리 (함선 수 입장 조건 포함)
 using TMPro;
 using System;
 using System.Collections;
@@ -34,7 +34,11 @@ public class UITabExploration : UITabBase
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
-    private ZoneConfig m_clearedZone;
+    private bool m_hasClearedZone;
+    private float m_totalMineralPerHour;
+    private float m_totalMineralRarePerHour;
+    private float m_totalMineralExoticPerHour;
+    private float m_totalMineralDarkPerHour;
     private ZoneConfig m_currentZone;                                   // 현재 전투 중인 존
     private ScrollViewZoneItem m_currentZoneItem;                       // 현재 전투 중인 존 UI 아이템
     private readonly List<ScrollViewZoneItem> m_zoneItemPool = new List<ScrollViewZoneItem>();
@@ -201,14 +205,14 @@ public class UITabExploration : UITabBase
 
     private void UpdateMineralTextsOnly()
     {
-        if (m_clearedZone == null) return;
+        if (m_hasClearedZone == false) return;
 
         float elapsedSeconds = GetElapsedSecondsFromCollect();
         SetMineralTexts(
-            m_clearedZone.MineralPerSecond * elapsedSeconds, m_clearedZone.mineralPerHour,
-            m_clearedZone.MineralRarePerSecond * elapsedSeconds, m_clearedZone.mineralRarePerHour,
-            m_clearedZone.MineralExoticPerSecond * elapsedSeconds, m_clearedZone.mineralExoticPerHour,
-            m_clearedZone.MineralDarkPerSecond * elapsedSeconds, m_clearedZone.mineralDarkPerHour
+            m_totalMineralPerHour / 3600f * elapsedSeconds, m_totalMineralPerHour,
+            m_totalMineralRarePerHour / 3600f * elapsedSeconds, m_totalMineralRarePerHour,
+            m_totalMineralExoticPerHour / 3600f * elapsedSeconds, m_totalMineralExoticPerHour,
+            m_totalMineralDarkPerHour / 3600f * elapsedSeconds, m_totalMineralDarkPerHour
         );
     }
 
@@ -217,14 +221,27 @@ public class UITabExploration : UITabBase
         if (m_datatableZone == null || m_myCharacter == null) return;
         string clearedZoneName = m_myCharacter.m_characterInfo.clearedZone;
 
-        if (!string.IsNullOrEmpty(clearedZoneName))
+        // 클리어된 모든 존의 시간당 수확량 합산
+        m_totalMineralPerHour = 0f;
+        m_totalMineralRarePerHour = 0f;
+        m_totalMineralExoticPerHour = 0f;
+        m_totalMineralDarkPerHour = 0f;
+        m_hasClearedZone = false;
+
+        if (string.IsNullOrEmpty(clearedZoneName) == false)
         {
-            ZoneConfig clearedConfig = m_datatableZone.GetZoneByName(clearedZoneName);
-            if (clearedConfig != null)
-                m_clearedZone = clearedConfig;
+            var clearedZones = m_datatableZone.GetAllZonesUpTo(clearedZoneName);
+            for (int i = 0; i < clearedZones.Count; i++)
+            {
+                m_totalMineralPerHour += clearedZones[i].mineralPerHour;
+                m_totalMineralRarePerHour += clearedZones[i].mineralRarePerHour;
+                m_totalMineralExoticPerHour += clearedZones[i].mineralExoticPerHour;
+                m_totalMineralDarkPerHour += clearedZones[i].mineralDarkPerHour;
+            }
+            m_hasClearedZone = clearedZones.Count > 0;
         }
 
-        if (string.IsNullOrEmpty(clearedZoneName))
+        if (m_hasClearedZone == false)
         {
             SetMineralTexts(0, 0, 0, 0, 0, 0, 0, 0);
         }
@@ -232,10 +249,10 @@ public class UITabExploration : UITabBase
         {
             float elapsed = GetElapsedSecondsFromCollect();
             SetMineralTexts(
-                m_clearedZone.MineralPerSecond * elapsed, m_clearedZone.mineralPerHour,
-                m_clearedZone.MineralRarePerSecond * elapsed, m_clearedZone.mineralRarePerHour,
-                m_clearedZone.MineralExoticPerSecond * elapsed, m_clearedZone.mineralExoticPerHour,
-                m_clearedZone.MineralDarkPerSecond * elapsed, m_clearedZone.mineralDarkPerHour
+                m_totalMineralPerHour / 3600f * elapsed, m_totalMineralPerHour,
+                m_totalMineralRarePerHour / 3600f * elapsed, m_totalMineralRarePerHour,
+                m_totalMineralExoticPerHour / 3600f * elapsed, m_totalMineralExoticPerHour,
+                m_totalMineralDarkPerHour / 3600f * elapsed, m_totalMineralDarkPerHour
             );
         }
     }
@@ -291,13 +308,30 @@ public class UITabExploration : UITabBase
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
     }
 
-    // UI 버튼 콜백 → 현재 전투 중인 존 재진입 차단
+    // zoneName "X-Y"에서 필요 함선 수(X) 파싱
+    private int ParseZoneRequiredShips(string zoneName)
+    {
+        if (string.IsNullOrEmpty(zoneName)) return 0;
+        int dashIdx = zoneName.IndexOf('-');
+        if (dashIdx <= 0) return 0;
+        return int.TryParse(zoneName.Substring(0, dashIdx), out int x) ? x : 0;
+    }
+
+    // UI 버튼 콜백 → 함선 수 조건 체크 후 존 진입
     private void OnTryZoneClicked(ZoneConfig zone)
     {
         // 워프중이면 리턴
         if(m_enterZoneState == EEnterZoneState.warp) return;
-        // 현재 존과 같은 존이면 리턴       
+        // 현재 존과 같은 존이면 리턴
         if (m_enterZoneState == EEnterZoneState.zone && m_currentZone != null && m_currentZone.zoneName == zone.zoneName) return;
+
+        // zone X-Y: X척 이상 보유 시에만 입장 허용
+        int requiredShips = ParseZoneRequiredShips(zone.zoneName);
+        if (requiredShips > 0 && m_myFleet.m_ships.Count < requiredShips)
+        {
+            ShowResultMessage(LocalizationManager.Instance.Get("zone_insufficient_ships"), 3f);
+            return;
+        }
         
         // 현재 존이라면 초기화 해야할 것들 초기화
         if (m_enterZoneState == EEnterZoneState.zone)

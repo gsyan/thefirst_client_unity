@@ -1,3 +1,4 @@
+// 상단 리소스 패널 - 기술레벨 및 4종 광물량 실시간 표시
 using TMPro;
 using UnityEngine;
 
@@ -42,6 +43,15 @@ public class UIPanelMineral : UIPanelBase
         EventManager.Subscribe_MineralDarkChanged(OnMineralDarkChanged);    
     }
     
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_TechLevelChanged(OnTechLevelChanged);
+        EventManager.Unsubscribe_MineralChanged(OnMineralChanged);
+        EventManager.Unsubscribe_MineralRareChanged(OnMineralRareChanged);
+        EventManager.Unsubscribe_MineralExoticChanged(OnMineralExoticChanged);
+        EventManager.Unsubscribe_MineralDarkChanged(OnMineralDarkChanged);
+    }
+
     public void OnTechLevelChanged(int techLevel)
     {
         m_TechLevelText.text = $"T: {techLevel}";

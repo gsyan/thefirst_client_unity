@@ -1,5 +1,5 @@
-// 연구 트리 ScriptableObject - 모듈 연구 노드 데이터 및 선행 조건 관리
-// CSV Import(에디터 전용): datatable_research.csv 기반 로드 지원, prerequisites는 '|' 구분
+// 연구 트리 ScriptableObject - 모듈 연구 및 기술레벨 업그레이드 노드 데이터 관리
+// CSV Import(에디터 전용): datatable_research.csv 기반 로드, "tech_level_N" 접두사로 분기 파싱
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -23,13 +23,22 @@ public class ModuleResearchData : ResearchNodeData
     public EModuleSubType moduleSubType = EModuleSubType.none;
 }
 
+[System.Serializable]
+public class TechLevelResearchData : ResearchNodeData
+{
+    public int targetTechLevel; // 이 연구를 완료하면 달성되는 기술레벨
+}
+
 [CreateAssetMenu(fileName = "DataTableResearch", menuName = "Custom/DataTableResearch")]
 public class DataTableResearch : ScriptableObject
 {
     [Header("Research Data")]
     [SerializeField] private List<ModuleResearchData> researchDataList = new();
+    [Header("Tech Level Upgrade Data")]
+    [SerializeField] private List<TechLevelResearchData> techLevelDataList = new();
 
     public List<ModuleResearchData> ResearchDataList => researchDataList;
+    public List<TechLevelResearchData> TechLevelDataList => techLevelDataList;
 
     #region Public Methods
 
@@ -65,54 +74,11 @@ public class DataTableResearch : ScriptableObject
         return researchDataList.FindAll(r => r.moduleType == moduleType);
     }
 
-    public void InitializeResearchData()
+    // currentLevel → currentLevel+1 업그레이드 비용 반환
+    public CostStruct GetTechLevelUpgradeCost(int currentLevel)
     {
-        researchDataList.Clear();
-
-        // Add research data for each subtype
-        foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
-        {
-            if (subType == EModuleSubType.none) continue;
-
-            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
-
-            // subType의 마지막 자리 숫자로 tier 결정 (1→1000, 2→10000, 3→100000)
-            int tier = (int)subType % 10;
-            if (tier < 1) continue;
-            long researchCost = 10000L * (long)System.Math.Pow(10, tier - 1);
-
-            // UI 배치: 같은 그룹(선후행 관계)은 좌→우, 다른 그룹은 위→아래
-            int group = ((int)subType % 100) / 10; // 0: x001~x009, 1: x011~x019
-            var vector2Position = new Vector2(80 + (tier - 1) * 200, -40 - group * 120);
-
-            // 같은 모듈 타입 내에서 tier가 낮은 것을 선행 조건으로 설정
-            var prerequisiteIds = new List<string>();
-            
-            if (tier > 1)
-            {
-                EModuleSubType prevTier = (EModuleSubType)((int)subType - 1);
-                if (System.Enum.IsDefined(typeof(EModuleSubType), prevTier))
-                {
-                    prerequisiteIds.Add(prevTier.ToString());
-                }
-            }
-
-            var researchData = new ModuleResearchData
-            {
-                researchId = subType.ToString(),
-                moduleType = moduleType,
-                moduleSubType = subType,
-                prerequisiteIds = prerequisiteIds,
-                researchCost = new CostStruct(1, researchCost, 0, 0, 0),
-                uiPosition = vector2Position,
-            };
-
-            researchDataList.Add(researchData);
-        }
-
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(this);
-#endif
+        var data = techLevelDataList.Find(r => r.targetTechLevel == currentLevel + 1);
+        return data?.researchCost ?? new CostStruct();
     }
 
     #endregion
@@ -138,6 +104,7 @@ public class DataTableResearch : ScriptableObject
     public void LoadFromCsv(string csvText)
     {
         researchDataList.Clear();
+        techLevelDataList.Clear();
 
         string[] lines = csvText.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.None);
         if (lines.Length < 2) return;
@@ -153,38 +120,53 @@ public class DataTableResearch : ScriptableObject
             if (string.IsNullOrEmpty(line)) continue;
 
             string[] cols = ParseCsvLine(line);
+            string researchId = GetCol(cols, col, "research_id");
+            if (string.IsNullOrEmpty(researchId)) continue;
 
+            var cost = new CostStruct(
+                ParseCsvInt (GetCol(cols, col, "tech_level")),
+                ParseCsvLong(GetCol(cols, col, "cost_m")),
+                ParseCsvLong(GetCol(cols, col, "cost_mr")),
+                ParseCsvLong(GetCol(cols, col, "cost_me")),
+                ParseCsvLong(GetCol(cols, col, "cost_md")));
+
+            var uiPos = new Vector2(
+                ParseCsvFloat(GetCol(cols, col, "ui_pos_x")),
+                ParseCsvFloat(GetCol(cols, col, "ui_pos_y")));
+
+            var prereqs = ParseCsvStringList(GetCol(cols, col, "prerequisites"));
+
+            // "tech_level_N" 접두사: 기술레벨 업그레이드 데이터로 파싱
+            if (researchId.StartsWith("tech_level_"))
+            {
+                int.TryParse(researchId["tech_level_".Length..], out int targetLevel);
+                techLevelDataList.Add(new TechLevelResearchData
+                {
+                    researchId      = researchId,
+                    targetTechLevel = targetLevel,
+                    prerequisiteIds = prereqs,
+                    uiPosition      = uiPos,
+                    researchCost    = cost,
+                });
+                continue;
+            }
+
+            // 일반 모듈 연구 데이터
             if (!int.TryParse(GetCol(cols, col, "module_type"), out int typeInt)) continue;
             if (!int.TryParse(GetCol(cols, col, "module_sub_type"), out int subTypeInt)) continue;
 
-            EModuleType moduleType = (EModuleType)typeInt;
-            EModuleSubType moduleSubType = (EModuleSubType)subTypeInt;
-
-            string researchId = GetCol(cols, col, "research_id");
-            if (string.IsNullOrEmpty(researchId))
-                researchId = moduleSubType.ToString();
-
-            var data = new ModuleResearchData
+            researchDataList.Add(new ModuleResearchData
             {
                 researchId      = researchId,
-                moduleType      = moduleType,
-                moduleSubType   = moduleSubType,
-                prerequisiteIds = ParseCsvStringList(GetCol(cols, col, "prerequisites")),
-                uiPosition      = new Vector2(
-                    ParseCsvFloat(GetCol(cols, col, "ui_pos_x")),
-                    ParseCsvFloat(GetCol(cols, col, "ui_pos_y"))),
-                researchCost    = new CostStruct(
-                    ParseCsvInt (GetCol(cols, col, "tech_level")),
-                    ParseCsvLong(GetCol(cols, col, "cost_m")),
-                    ParseCsvLong(GetCol(cols, col, "cost_mr")),
-                    ParseCsvLong(GetCol(cols, col, "cost_me")),
-                    ParseCsvLong(GetCol(cols, col, "cost_md")))                
-            };
-
-            researchDataList.Add(data);
+                moduleType      = (EModuleType)typeInt,
+                moduleSubType   = (EModuleSubType)subTypeInt,
+                prerequisiteIds = prereqs,
+                uiPosition      = uiPos,
+                researchCost    = cost,
+            });
         }
 
-        Debug.Log($"[DataTableResearch] CSV Import 완료: {researchDataList.Count}개 연구");
+        Debug.Log($"[DataTableResearch] CSV Import 완료: 모듈 {researchDataList.Count}개, 기술레벨 {techLevelDataList.Count}개");
         UnityEditor.EditorUtility.SetDirty(this);
     }
 
@@ -245,19 +227,21 @@ public class DataTableResearch : ScriptableObject
 
     public string ExportToJson()
     {
-        var exportData = new ModuleResearchExportData
+        var exportData = new ResearchExportData
         {
-            researchDataList = researchDataList
+            researchDataList  = researchDataList,
+            techLevelDataList = techLevelDataList,
         };
         return Newtonsoft.Json.JsonConvert.SerializeObject(exportData, Newtonsoft.Json.Formatting.Indented);
     }
 
     public void ImportFromJson(string json)
     {
-        var importData = Newtonsoft.Json.JsonConvert.DeserializeObject<ModuleResearchExportData>(json);
+        var importData = Newtonsoft.Json.JsonConvert.DeserializeObject<ResearchExportData>(json);
         if (importData != null)
         {
-            researchDataList = importData.researchDataList;
+            researchDataList  = importData.researchDataList;
+            techLevelDataList = importData.techLevelDataList ?? new List<TechLevelResearchData>();
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
 #endif
@@ -265,9 +249,10 @@ public class DataTableResearch : ScriptableObject
     }
 
     [System.Serializable]
-    private class ModuleResearchExportData
+    private class ResearchExportData
     {
-        public List<ModuleResearchData> researchDataList;
+        public List<ModuleResearchData>   researchDataList;
+        public List<TechLevelResearchData> techLevelDataList;
     }
 
     #endregion

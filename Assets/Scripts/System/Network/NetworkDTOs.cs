@@ -81,6 +81,14 @@ public class ModuleSlotInfo
     }
 }
 
+// 모듈 교체(적용) 비용 항목 — subType별 MR/ME/MD 비용 정의
+[System.Serializable]
+public class ModuleChangeCostEntry
+{
+    public EModuleSubType moduleSubType; // 적용 대상 새 모듈 subType
+    public CostStruct cost;
+}
+
 [System.Serializable]
 public class CostStruct
 {
@@ -113,7 +121,6 @@ public class CharacterInfo
 {
     public long characterId;
     public string characterName;
-    public int techLevel;
     public long mineral;
     public long mineralRare;
     public long mineralExotic;
@@ -168,6 +175,7 @@ public class AuthResponse
     public FleetInfo activeFleetInfo;
     public CharacterInfo characterInfo;
     public int[][] researchedModuleTypes;  // [moduleType, moduleSubType] 쌍의 배열
+    public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록 (tech_level_N 등)
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
 }
 
@@ -299,6 +307,7 @@ public class ModuleChangeResponse
     public EModuleSubType moduleSubTypeNew;
     public int slotIndex;
     public int moduleNewLevel;
+    public CostRemainInfo costRemainInfo;
 }
 
 [System.Serializable]
@@ -326,6 +335,7 @@ public class ModuleResearchRequest
 {
     public EModuleType moduleType;
     public EModuleSubType moduleSubType;
+    public string researchId;  // 문자열 기반 연구 ID (tech_level_N 등), 모듈 연구 시 null
 }
 
 [System.Serializable]
@@ -335,6 +345,7 @@ public class ModuleResearchResponse
     public EModuleSubType moduleSubType;
     public CostRemainInfo costRemainInfo;
     public int[][] researchedModuleTypes;  // [moduleType, moduleSubType] 쌍의 배열
+    public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록 (tech_level_N 등)
 }
 
 [System.Serializable]
