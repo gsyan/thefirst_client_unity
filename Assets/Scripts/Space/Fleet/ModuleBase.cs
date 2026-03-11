@@ -14,6 +14,19 @@ public class ModuleBase : MonoBehaviour
     [HideInInspector] public float m_attackPower;
 
     [HideInInspector] public CostStruct m_upgradeCost;
+
+    // 이 슬롯에서 subTypeAddCost 납부 이력 (비용 없이 교체 가능한 서브타입 목록)
+    [HideInInspector] public List<EModuleSubType> m_unlockedSubTypes = new List<EModuleSubType>();
+
+    public void SetUnlockedSubTypes(List<EModuleSubType> list)
+    {
+        m_unlockedSubTypes = list ?? new List<EModuleSubType>();
+    }
+
+    public bool IsSubTypeFree(EModuleSubType subType)
+    {
+        return m_unlockedSubTypes != null && m_unlockedSubTypes.Contains(subType);
+    }
     
     // 함대 정보
     protected SpaceFleet m_myFleet;

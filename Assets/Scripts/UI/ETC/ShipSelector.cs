@@ -1,15 +1,19 @@
-// 함대 내 함선 선택 UI 버튼 컴포넌트
-// 선택 여부를 Outline, 함선 체력 비율을 분할 색상(위 빨강 / 아래 초록)으로 시각화
+// 함대 내 함선 선택 UI 카드 컴포넌트
+// 선택 여부를 Outline, HP를 게이지 바(RectTransform 너비) + 수치 텍스트로 시각화, 함선 이름/ATK 표시
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ShipSelector : MonoBehaviour
 {
     [SerializeField] private Button m_button;
-    [SerializeField] private Image m_healthGreenImage;  // 배경 (초록, 고정 크기)
+    [SerializeField] private TMP_Text m_textName;   // 함선 이름 텍스트
+    [SerializeField] private TMP_Text m_textAtk;    // ATK 수치 텍스트
+    [SerializeField] private Image m_hpBarFill;     // HP 게이지 fill (Image.fillMethod = Horizontal)
+    [SerializeField] private TMP_Text m_textHp;     // HP 수치 텍스트
 
-    [Header("상태별 색상")]
+    [Header("선택 외곽선")]
     [SerializeField] private Color m_colorSelected = new Color(1f, 0.8f, 0.2f, 1f);
     [SerializeField] private float m_outlineWidth  = 4f;
     [SerializeField] private float m_healthLerpDuration = 0.4f;
@@ -23,7 +27,6 @@ public class ShipSelector : MonoBehaviour
     {
         Ship = ship;
 
-        // 풀 재사용 시 실행 중인 코루틴 정리
         if (m_healthLerpCoroutine != null)
         {
             StopCoroutine(m_healthLerpCoroutine);
@@ -40,15 +43,17 @@ public class ShipSelector : MonoBehaviour
         m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
         m_outline.enabled        = false;
 
-        // 초기화 시 즉시 반영
+        UpdateNameText();
         SetHealthImmediate();
+        UpdateAtkText();
     }
 
-    // HP 변경 시 외부에서 호출 — 비활성 계층이면 즉시 반영, 활성이면 코루틴 Lerp
+    // HP 변경 시 외부에서 호출
     public void RefreshHealth()
     {
-        if (Ship == null || m_healthGreenImage == null) return;
+        if (Ship == null || m_hpBarFill == null) return;
 
+        UpdateHpText();
         float targetRatio = GetHealthRatio();
         if (m_healthLerpCoroutine != null)
             StopCoroutine(m_healthLerpCoroutine);
@@ -76,25 +81,43 @@ public class ShipSelector : MonoBehaviour
 
     private void SetHealthImmediate()
     {
-        if (Ship == null || m_healthGreenImage == null) return;
-        float ratio = GetHealthRatio();
-        ApplyHealthRatio(ratio);
+        if (Ship == null || m_hpBarFill == null) return;
+        ApplyHealthRatio(GetHealthRatio());
+        UpdateHpText();
     }
 
     private void ApplyHealthRatio(float ratio)
     {
-        // ratio=1.0 → anchorMax.y=1 → 전체 초록 / ratio=0.8 → 아래 80% 초록, 위 20% 빨강 노출
-        RectTransform rt = m_healthGreenImage.rectTransform;
-        rt.anchorMin = new Vector2(0f, 0f);
-        rt.anchorMax = new Vector2(1f, ratio);
+        // anchorMax.x로 우측을 줄여 체력 비율 표현
+        RectTransform rt = m_hpBarFill.rectTransform;
+        rt.anchorMax = new Vector2(ratio, rt.anchorMax.y);
         rt.offsetMin = Vector2.zero;
         rt.offsetMax = Vector2.zero;
     }
 
+    private void UpdateNameText()
+    {
+        if (m_textName == null || Ship == null) return;
+        m_textName.text = Ship.m_shipInfo.shipName;
+    }
+
+    private void UpdateAtkText()
+    {
+        if (m_textAtk == null || Ship == null) return;
+        m_textAtk.text = $"ATK {CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack_power)}";
+    }
+
+    private void UpdateHpText()
+    {
+        if (m_textHp == null || Ship == null) return;
+        long cur = (long)Ship.m_spaceShipStatsCur.health_power;
+        long max = (long)Ship.m_spaceShipStatsOrg.health_power;
+        m_textHp.text = $"{CommonUtility.FormatBigNumber(cur)} / {CommonUtility.FormatBigNumber(max)}";
+    }
+
     private IEnumerator LerpHealth(float targetRatio)
     {
-        RectTransform rt = m_healthGreenImage.rectTransform;
-        float startRatio = rt.anchorMax.y;
+        float startRatio = m_hpBarFill.rectTransform.anchorMax.x;
         float elapsed = 0f;
 
         while (elapsed < m_healthLerpDuration)

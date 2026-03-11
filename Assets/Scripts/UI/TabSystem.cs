@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 탭 시스템: ButtonGroupSystem(버튼 선택 상태) + 패널 전환
+// 탭 시스템: ButtonGroupSystem(버튼 선택 상태) + 패널 전환 / defaultActiveTab=-1이면 시작 시 탭 없음
 [System.Serializable]
 public class TabData
 {
@@ -23,12 +23,18 @@ public class TabSystem : MonoBehaviour
 
     [Header("Tab Configuration")]
     public List<TabData> tabs = new List<TabData>();
-    public int defaultActiveTab = 0;
+    // -1: 시작 시 탭 없음(전체 화면 3D), 0이상: 해당 탭 기본 활성
+    public int defaultActiveTab = -1;
+    // true면 현재 탭 재클릭 시 탭 닫힘(3D 복귀)
+    public bool allowDeselect = true;
 
     [Header("Animation Settings")]
     public bool useAnimation = true;
     public float animationDuration = 0.3f;
     public AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    // 탭 인덱스 변경 시 호출 (-1이면 모든 탭 닫힘)
+    public System.Action<int> onTabSelectionChanged;
 
     private ButtonGroupSystem buttonGroup;
     private int currentActiveTab = -1;
@@ -56,6 +62,7 @@ public class TabSystem : MonoBehaviour
         // ButtonGroupSystem 생성 및 설정
         buttonGroup = gameObject.AddComponent<ButtonGroupSystem>();
         buttonGroup.defaultIndex = defaultActiveTab;
+        buttonGroup.allowDeselect = allowDeselect;
 
         for (int i = 0; i < tabs.Count; i++)
         {
@@ -84,7 +91,10 @@ public class TabSystem : MonoBehaviour
     public void SwitchToTab(int tabIndex)
     {
         if (!m_bInitialized) return;
-        buttonGroup.Select(tabIndex);
+        if (tabIndex < 0)
+            buttonGroup.Deselect();
+        else
+            buttonGroup.Select(tabIndex);
     }
 
     private void ActivatePanel(int tabIndex)
@@ -106,6 +116,7 @@ public class TabSystem : MonoBehaviour
         }
 
         tab.onActivate?.Invoke();
+        onTabSelectionChanged?.Invoke(tabIndex);
     }
 
     private void DeactivatePanel(int tabIndex)
@@ -120,6 +131,13 @@ public class TabSystem : MonoBehaviour
                 StartCoroutine(AnimatePanel(tab.tabPanel, false));
             else
                 tab.tabPanel.SetActive(false);
+        }
+
+        // allowDeselect로 전체 탭이 닫힌 경우
+        if (buttonGroup.GetCurrentIndex() < 0)
+        {
+            currentActiveTab = -1;
+            onTabSelectionChanged?.Invoke(-1);
         }
     }
 

@@ -222,7 +222,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         var charInfo = DataManager.Instance.m_currentCharacter?.m_characterInfo;
         if (charInfo != null
-            && !string.IsNullOrEmpty(charInfo.clearedZone)
+            && charInfo.clearedZones != null && charInfo.clearedZones.Count > 0
             && !string.IsNullOrEmpty(charInfo.collectDateTime)
             && GetElapsedSecondsFromCollect(charInfo.collectDateTime) > 600f) // 10분
         {

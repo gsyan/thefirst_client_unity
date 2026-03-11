@@ -51,16 +51,20 @@ MonoBehaviour:
     m_Key: fleet_ship_count
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636934
-    m_Key: fleet_formation_list
-    m_Metadata:
-      m_Items: []
   - m_Id: 6655868837691392
     m_Key: fleet_add_ship_button
     m_Metadata:
       m_Items: []
   - m_Id: 6655868879634432
     m_Key: fleet_add_ship_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11319763854557184
+    m_Key: fleet_formation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11317517746044928
+    m_Key: fleet_formation_change
     m_Metadata:
       m_Items: []
   - m_Id: 63232261619717
@@ -91,8 +95,12 @@ MonoBehaviour:
     m_Key: ship_module_unlock
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636941
-    m_Key: ship_module_upgrade
+  - m_Id: 11055826378555392
+    m_Key: ship_module_levelup
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11055826416304128
+    m_Key: ship_module_subtype_manage
     m_Metadata:
       m_Items: []
   - m_Id: 2929882979762176
@@ -435,6 +443,10 @@ MonoBehaviour:
     m_Key: popup_message_google_unlink
     m_Metadata:
       m_Items: []
+  - m_Id: 11064991343837186
+    m_Key: free
+    m_Metadata:
+      m_Items: []
   - m_Id: 797857342685184
     m_Key: max_level
     m_Metadata:
@@ -565,6 +577,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10739482416250893
     m_Key: tech_level_15
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11411921936711680
+    m_Key: exploration_try_zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11411921974460416
+    m_Key: zone_enter_confirm
     m_Metadata:
       m_Items: []
   m_Metadata:

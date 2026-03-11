@@ -12,6 +12,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f87b369cd8b7e04dbf59e153ca92230, type: 3}
   m_Name: DataTableResearch
   m_EditorClassIdentifier: 
+  subTypeAddCosts:
+  - moduleSubType: 1010201
+    cost:
+      techLevel: 0
+      mineral: 0
+      mineralRare: 5000
+      mineralExotic: 0
+      mineralDark: 0
+  - moduleSubType: 2010201
+    cost:
+      techLevel: 0
+      mineral: 0
+      mineralRare: 5000
+      mineralExotic: 0
+      mineralDark: 0
+  - moduleSubType: 3010201
+    cost:
+      techLevel: 0
+      mineral: 0
+      mineralRare: 5000
+      mineralExotic: 0
+      mineralDark: 0
+  - moduleSubType: 4010201
+    cost:
+      techLevel: 0
+      mineral: 0
+      mineralRare: 5000
+      mineralExotic: 0
+      mineralDark: 0
+  - moduleSubType: 5010201
+    cost:
+      techLevel: 0
+      mineral: 0
+      mineralRare: 5000
+      mineralExotic: 0
+      mineralDark: 0
   researchDataList:
   - researchId: body_t1_std_ver1
     prerequisiteIds: []

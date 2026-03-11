@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public enum EZoneState
 {
+    Cleared,
     Current,
-    Cleared
+    Locked,
 }
 
 public class ScrollViewZoneItem : MonoBehaviour

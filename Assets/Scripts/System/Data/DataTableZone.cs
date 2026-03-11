@@ -100,24 +100,17 @@ public class DataTableZone : ScriptableObject
         return -1;
     }
 
-    // clearedZoneName 포함, 그 이전 모든 존 반환 (index 0 = Zone-0 안전지역 제외)
-    public List<ZoneConfig> GetAllZonesUpTo(string clearedZoneName)
+    // 이름 목록으로 ZoneConfig 반환 (순서 무관, Zone-0 제외)
+    public List<ZoneConfig> GetZonesByNames(List<string> zoneNames)
     {
         var result = new List<ZoneConfig>();
-        int clearedIndex = GetZoneIndex(clearedZoneName);
-        if (clearedIndex < 0) return result;
-        for (int i = 1; i <= clearedIndex; i++)
-            result.Add(zones[i]);
+        if (zoneNames == null) return result;
+        for (int i = 0; i < zoneNames.Count; i++)
+        {
+            var zone = GetZoneByName(zoneNames[i]);
+            if (zone != null) result.Add(zone);
+        }
         return result;
-    }
-
-    // 다음 zone 반환 (없으면 null)
-    public ZoneConfig GetNextZone(string currentZoneName)
-    {
-        int currentIndex = GetZoneIndex(currentZoneName);
-        if (currentIndex < 0 || currentIndex + 1 >= zones.Count)
-            return null;
-        return zones[currentIndex + 1];
     }
 
     public int ZoneCount => zones.Count;

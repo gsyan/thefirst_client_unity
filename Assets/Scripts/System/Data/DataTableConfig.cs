@@ -1,6 +1,5 @@
-// 게임 전역 설정 ScriptableObject — 함선 추가 비용(addShipCosts), PvP 설정, 슬롯 해금 비용, 모듈 교체 비용 등 관리
+// 게임 전역 설정 ScriptableObject — 함선 추가 비용(addShipCosts), PvP 설정, 모듈 해금 비용 관리
 // addShipCosts[currentShipCount]: 함선 추가 시점 비용, 현재 M+MR만 사용 (ME/MD는 추후 콘텐츠 전용)
-using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -71,23 +70,6 @@ public class GameSettings
     
     public int moduleUnlockPrice = 5000;
 
-    // 모듈 교체(적용) 비용 — subType별 MR/ME/MD 비용 (적용 대상 새 모듈 기준)
-    public List<ModuleChangeCostEntry> moduleChangeCosts = new List<ModuleChangeCostEntry>
-    {
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.body_t1_adv_ver1,    cost = new CostStruct(0, 0, 5000, 0, 0) },
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.engine_t1_adv_ver1,  cost = new CostStruct(0, 0, 5000, 0, 0) },
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.beam_t1_adv_ver1,    cost = new CostStruct(0, 0, 5000, 0, 0) },
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.missile_t1_adv_ver1, cost = new CostStruct(0, 0, 5000, 0, 0) },
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.hanger_t1_adv_ver1,  cost = new CostStruct(0, 0, 5000, 0, 0) },
-    };
-
-    // 새 모듈 subType에 해당하는 교체 비용 반환 (없으면 기본값 MR 5000)
-    public CostStruct GetModuleChangeCost(EModuleSubType newSubType)
-    {
-        if (moduleChangeCosts == null) return new CostStruct(0, 0, 5000, 0, 0);
-        var entry = moduleChangeCosts.Find(e => e.moduleSubType == newSubType);
-        return entry != null ? entry.cost : new CostStruct(0, 0, 5000, 0, 0);
-    }
 
 }
 

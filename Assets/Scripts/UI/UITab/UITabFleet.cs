@@ -1,42 +1,46 @@
-// 함대 탭 UI — 함대 스탯, 진형 선택, 함선 선택 그리드(ShipSelector)를 관리
+// 함대 탭 UI — Fleet Stats(2행 압축), 함선 선택 그리드, Formation 하단 바 + 교체 팝업 관리
 // 함선 추가 버튼은 ShipSelector 그리드의 마지막 셀로 통합
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using NUnit.Framework.Constraints;
 
 public class UITabFleet : UITabBase
 {
-    [SerializeField] private TMP_Text  m_textFleetStatus;
-    [SerializeField] private RectTransform m_fleetStatsContainer;           // VerticalLayoutGroup 필요
-    [SerializeField] private GameObject m_rowLabelValuePrefab;              // RowLabelValue 프리팹
-    [SerializeField] private RectTransform m_scrollViewFormationContent;
-    [SerializeField] private GameObject m_scrollViewFormationItem;          // 프리팹
+    [Header("Fleet Stats (상단 2행)")]
+    // 1행: ATK / HP / SPD / REPAIR — 아이콘은 추후 TMP Sprite로 교체
+    [SerializeField] private TMP_Text m_textFleetStats1;
+    // 2행: 함재기 능력 — aircraft_count == 0 이면 숨김
+    [SerializeField] private TMP_Text m_textFleetStats2;
 
     [Header("함선 선택 그리드")]
-    [SerializeField] private RectTransform m_shipGridContainer1;             // GridLayoutGroup 부착
-    [SerializeField] private RectTransform m_shipGridContainer2;             // GridLayoutGroup 부착
-    [SerializeField] private RectTransform m_shipGridContainer3;             // GridLayoutGroup 부착
-    [SerializeField] private GameObject m_shipSelectorPrefab;               // ShipSelector 프리팹
-    [SerializeField] private Button m_addShipButton;                        // 그리드 마지막 셀(씬에서 배치)
+    [SerializeField] private RectTransform m_shipGridContainer1;
+    [SerializeField] private RectTransform m_shipGridContainer2;
+    [SerializeField] private RectTransform m_shipGridContainer3;
+    [SerializeField] private GameObject m_shipSelectorPrefab;
+    [SerializeField] private Button m_addShipButton;
+    [SerializeField] private TMP_Text m_textAddShipCost;    // + 버튼에 표시할 비용 텍스트
+
+    [Header("Formation 하단 바")]
+    [SerializeField] private TMP_Text m_textCurrentFormation;   // 현재 진형명
+    [SerializeField] private Button m_btnFormationChange;       // [교체 ▶] 버튼
 
     private Character m_myCharacter;
     private SpaceFleet m_myFleet;
     private ShipSelector m_selectedShipSelector;
 
-    private readonly Dictionary<string, RowLabelValue> m_fleetStatRows = new();
-    private readonly List<ScrollViewFormationItem> m_formationItemPool = new List<ScrollViewFormationItem>();
-    private readonly List<ScrollViewFormationItem> m_formationItemActive = new List<ScrollViewFormationItem>();
-
     private readonly List<ShipSelector> m_shipSelectorPool = new();
     private readonly List<ShipSelector> m_shipSelectorActive = new();
     private Transform m_shipSelectorPoolHolder;
+
+    private Vector2 m_shipButtonSpacing = new Vector2(8f, 8f);
 
     public override void InitializeUITab()
     {
         InitializeUITabFleet();
     }
+
     private void InitializeUITabFleet()
     {
         m_myCharacter = DataManager.Instance.m_currentCharacter;
@@ -48,10 +52,10 @@ public class UITabFleet : UITabBase
         poolHolderGO.transform.SetParent(transform, false);
         m_shipSelectorPoolHolder = poolHolderGO.transform;
 
-        PopulateFormationScrollView();
-        PopulateShipSelectorGrid();
-
         m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
+        m_btnFormationChange.onClick.AddListener(OnFormationChangeClicked);
+
+        PopulateShipSelectorGrid();
 
         EventManager.Subscribe_AddShip(OnShipAdded);
         EventManager.Subscribe_FleetUpdateHP(OnFleetHPUpdated);
@@ -61,14 +65,69 @@ public class UITabFleet : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-
         UpdateFleetStatsDisplay();
+        UpdateCurrentFormationText();
         RefreshShipHealthDisplay();
     }
 
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
+    }
+
+    // ── Fleet Stats ────────────────────────────────────────────────────
+
+    private void UpdateFleetStatsDisplay()
+    {
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null || character.GetOwnedFleet() == null) return;
+
+        SpaceFleet fleet = character.GetOwnedFleet();
+        CapabilityProfile statsOrg = fleet.GetFleetCapabilityProfile(false);
+        CapabilityProfile statsCur = fleet.GetFleetCapabilityProfile(true);
+
+        // 1행: 함선 전투력 합산 (아이콘 플레이스홀더 — 추후 TMP Sprite 태그로 교체)
+        if (m_textFleetStats1 != null)
+            m_textFleetStats1.text =
+                $"ATK {statsCur.attack_power:F0}  " +
+                $"HP {statsCur.health_power:F0}/{statsOrg.health_power:F0}  " +
+                $"SPD {statsCur.speed_power:F0}  " +
+                $"REP {statsCur.repair_power:F0}";
+
+        // 2행: 함재기 (보유 시만 표시)
+        if (m_textFleetStats2 != null)
+        {
+            bool hasAircraft = statsOrg.aircraft_count > 0;
+            m_textFleetStats2.gameObject.SetActive(hasAircraft);
+            if (hasAircraft)
+                m_textFleetStats2.text =
+                    $"AIR-ATK {statsCur.aircraft_attack_power:F0}  " +
+                    $"AIR {statsCur.aircraft_count:F0}/{statsOrg.aircraft_count:F0}  " +
+                    $"LAUNCH {statsCur.aircraft_launch_count:F0}";
+        }
+    }
+
+    // ── Formation ──────────────────────────────────────────────────────
+
+    private void OnFormationChangeClicked()
+    {
+        if (m_myFleet == null) return;
+        UIManager.Instance.ShowFormationPopup(m_myFleet.m_currentFormationType, OnFormationSelected);
+    }
+
+    private void OnFormationSelected(EFormationType formationType)
+    {
+        if (m_myFleet == null) return;
+        m_myFleet.ChangeFormation(formationType);
+        // 낙관적 업데이트 — 서버 응답 전에 UI 먼저 갱신
+        if (m_textCurrentFormation != null)
+            m_textCurrentFormation.text = LocalizationManager.Instance.Get(formationType.ToString());
+    }
+
+    private void UpdateCurrentFormationText()
+    {
+        if (m_textCurrentFormation == null || m_myFleet == null) return;
+        m_textCurrentFormation.text = LocalizationManager.Instance.Get(m_myFleet.m_currentFormationType.ToString());
     }
 
     // ── ShipSelector 그리드 ────────────────────────────────────────────
@@ -79,7 +138,6 @@ public class UITabFleet : UITabBase
     {
         if (m_shipSelectorPrefab == null || m_myFleet == null) return;
 
-        // 활성 셀 전체 풀로 반환
         for (int i = 0; i < m_shipSelectorActive.Count; i++)
         {
             m_shipSelectorActive[i].gameObject.SetActive(false);
@@ -93,7 +151,6 @@ public class UITabFleet : UITabBase
         int maxShips  = DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet;
         bool atMax    = shipCount >= maxShips;
 
-        // 추가 버튼 포함한 총 아이템 수로 행 표시 여부 결정
         int totalItems = shipCount + (atMax ? 0 : 1);
         if (m_shipGridContainer1 != null) m_shipGridContainer1.gameObject.SetActive(totalItems > 0);
         if (m_shipGridContainer2 != null) m_shipGridContainer2.gameObject.SetActive(totalItems > SHIPS_PER_ROW);
@@ -107,6 +164,7 @@ public class UITabFleet : UITabBase
 
             ShipSelector selector = GetOrCreateShipSelector();
             selector.transform.SetParent(container, false);
+            SetCellAnchor(selector.GetComponent<RectTransform>(), i % SHIPS_PER_ROW);
 
             SpaceShip captured = ship;
             selector.Initialize(ship, () => OnShipSelectorClicked(captured));
@@ -114,7 +172,6 @@ public class UITabFleet : UITabBase
             m_shipSelectorActive.Add(selector);
         }
 
-        // 추가 버튼: 다음 빈 슬롯의 행 마지막으로
         if (m_addShipButton != null)
         {
             if (atMax)
@@ -125,13 +182,29 @@ public class UITabFleet : UITabBase
             {
                 RectTransform addContainer = GetRowContainer(shipCount);
                 m_addShipButton.transform.SetParent(addContainer, false);
+                SetCellAnchor(m_addShipButton.GetComponent<RectTransform>(), shipCount % SHIPS_PER_ROW);
                 m_addShipButton.gameObject.SetActive(true);
                 m_addShipButton.transform.SetAsLastSibling();
+
+                if (m_textAddShipCost != null)
+                {
+                    CostStruct cost = DataManager.Instance.m_dataTableConfig.gameSettings.GetAddShipCost(shipCount);
+                    m_textAddShipCost.text = $"M {CommonUtility.FormatBigNumber(cost.mineral)}";
+                }
             }
         }
     }
 
-    // itemIndex 기준으로 어느 행 컨테이너에 배치할지 반환
+    private void SetCellAnchor(RectTransform rt, int indexInRow)
+    {
+        float xMin = indexInRow / (float)SHIPS_PER_ROW;
+        float xMax = (indexInRow + 1) / (float)SHIPS_PER_ROW;
+        rt.anchorMin = new Vector2(xMin, 0f);
+        rt.anchorMax = new Vector2(xMax, 1f);
+        rt.offsetMin = new Vector2(m_shipButtonSpacing.x, m_shipButtonSpacing.y);
+        rt.offsetMax = new Vector2(-m_shipButtonSpacing.x, -m_shipButtonSpacing.y);
+    }
+
     private RectTransform GetRowContainer(int itemIndex)
     {
         int row = itemIndex / SHIPS_PER_ROW;
@@ -157,7 +230,6 @@ public class UITabFleet : UITabBase
     {
         if (m_myFleet == null) return;
 
-        // 함선 수 불일치 또는 Ship 참조 파괴(RebuildFleet/RestoreDestroyedShips 이후) 시 그리드 재구성
         bool needsRebuild = m_shipSelectorActive.Count != m_myFleet.m_ships.Count;
         if (needsRebuild == false)
         {
@@ -196,103 +268,12 @@ public class UITabFleet : UITabBase
             }
         }
 
-        // 카메라 타겟 지정 + UITabShip 자동 전환 (UIPanelSpace.OnShipSelectedAutoTabSwitch 구독 중)
+        // 카메라 타겟 지정 + UITabShip 자동 전환
         EventManager.Trigger_SpaceShipSelected(ship);
-    }
-
-    // ── 진형 스크롤뷰 ─────────────────────────────────────────────────
-
-    private void PopulateFormationScrollView()
-    {
-        if (m_scrollViewFormationContent == null || m_scrollViewFormationItem == null) return;
-        if (m_myFleet == null) return;
-
-        // 활성 아이템 비활성화
-        for (int i = 0; i < m_formationItemActive.Count; i++)
-            m_formationItemActive[i].gameObject.SetActive(false);
-        m_formationItemActive.Clear();
-
-        int poolIndex = 0;
-        var formationTypes = System.Enum.GetValues(typeof(EFormationType));
-        foreach (EFormationType formationType in formationTypes)
-        {
-            ScrollViewFormationItem scrollViewItem;
-            if (poolIndex < m_formationItemPool.Count)
-            {
-                scrollViewItem = m_formationItemPool[poolIndex];
-                scrollViewItem.gameObject.SetActive(true);
-            }
-            else
-            {
-                var item = Instantiate(m_scrollViewFormationItem, m_scrollViewFormationContent);
-                item.name = formationType.ToString();
-                scrollViewItem = item.GetComponent<ScrollViewFormationItem>();
-                m_formationItemPool.Add(scrollViewItem);
-            }
-
-            EFormationType captured = formationType;
-            scrollViewItem.InitializeScrollViewFormationItem(
-                () => OnFormationItemSelected(captured),
-                formationType.ToString()
-            );
-            m_formationItemActive.Add(scrollViewItem);
-            poolIndex++;
-        }
-    }
-
-    private void OnFormationItemSelected(EFormationType formationType)
-    {
-        if (m_myFleet == null) return;
-        m_myFleet.ChangeFormation(formationType);
-    }
-
-    // ── 함대 스탯 ─────────────────────────────────────────────────────
-
-    private void UpdateFleetStatsDisplay()
-    {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null || character.GetOwnedFleet() == null)
-            return;
-
-        SpaceFleet fleet = character.GetOwnedFleet();
-        CapabilityProfile statsOrg = fleet.GetFleetCapabilityProfile(false);
-        CapabilityProfile statsCur = fleet.GetFleetCapabilityProfile(true);
-
-        SetOrCreateFleetStatRow("fleet_ship_count", $"{fleet.m_ships.Count}");
-        SetOrCreateFleetStatRow("attack_power", $"{statsCur.attack_power:F0}/{statsOrg.attack_power:F0}");
-        SetOrCreateFleetStatRow("health_power", $"{statsCur.health_power:F0}/{statsOrg.health_power:F0}");
-        SetOrCreateFleetStatRow("speed_power", $"{statsCur.speed_power:F0}/{statsOrg.speed_power:F0}");
-        SetOrCreateFleetStatRow("repair_power", $"{statsCur.repair_power:F0}/{statsOrg.repair_power:F0}");
-        SetOrCreateFleetStatRow("aircraft_attack_power", $"{statsCur.aircraft_attack_power:F0}/{statsOrg.aircraft_attack_power:F0}");
-        SetOrCreateFleetStatRow("aircraft_count", $"{statsCur.aircraft_count:F0}/{statsOrg.aircraft_count:F0}");
-        SetOrCreateFleetStatRow("aircraft_launch_count", $"{statsCur.aircraft_launch_count:F0}/{statsOrg.aircraft_launch_count:F0}");
-    }
-
-    private void SetOrCreateFleetStatRow(string label, string value)
-    {
-        if (m_fleetStatsContainer == null || m_rowLabelValuePrefab == null)
-            return;
-
-        if (m_fleetStatRows.TryGetValue(label, out RowLabelValue existingRow))
-        {
-            existingRow.SetValues(value);
-            return;
-        }
-
-        GameObject rowObj = Instantiate(m_rowLabelValuePrefab, m_fleetStatsContainer);
-        rowObj.name = $"FleetRow_{label}";
-
-        RowLabelValue row = rowObj.GetComponent<RowLabelValue>();
-        if (row != null)
-        {
-            row.SetRow(label, value);
-            m_fleetStatRows.Add(label, row);
-        }
     }
 
     // ── 이벤트 핸들러 ─────────────────────────────────────────────────
 
-    // 다른 탭에서 함선이 바뀔 때 ShipSelector 선택 상태 동기화
     private void OnSpaceShipSelected(SpaceShip ship)
     {
         if (m_selectedShipSelector != null && m_selectedShipSelector.Ship == ship) return;
@@ -352,10 +333,7 @@ public class UITabFleet : UITabBase
             return;
         }
 
-        var request = new AddShipRequest
-        {
-            fleetId = null // Add to current active fleet
-        };
+        var request = new AddShipRequest { fleetId = null };
 
         NetworkManager.Instance.AddShip(request, (response) =>
         {
@@ -371,7 +349,6 @@ public class UITabFleet : UITabBase
                     DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
 
                 if (response.data.newShipInfo != null && m_myCharacter.m_ownedFleet != null)
-                    // smoothSpawn=true: 기함 뒤에서 스폰 후 진형으로 이동
                     ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(response.data.newShipInfo, true);
 
                 EventManager.Trigger_AddShip();

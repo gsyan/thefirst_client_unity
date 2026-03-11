@@ -83,7 +83,7 @@ public class UITabResearch : UITabBase
         m_missileButton.onClick.AddListener(() => SwitchModuleType(EModuleType.missile));
         m_hangerButton.onClick.AddListener(() => SwitchModuleType(EModuleType.hanger));
 
-        m_researchButton.onClick.AddListener(() => OnModuleResearchClicked());
+        m_researchButton.onClick.AddListener(() => OnResearchButtonClicked());
 
         SwitchModuleType(m_currentModuleType);
     }
@@ -340,63 +340,11 @@ public class UITabResearch : UITabBase
         }
     }
 
-    private void OnModuleResearchClicked()
+    private void OnResearchButtonClicked()
     {
-        // 선택된 노드에서 모듈/기술레벨 정보 추출
         ResearchNodeData selectedNode = m_currentNodeList.Find(n => n.researchId == m_selectedNodeId);
-
         if (selectedNode is TechLevelResearchData techNode)
-        {
             OnTechLevelResearchClicked(techNode);
-            return;
-        }
-
-        if (selectedNode is not ModuleResearchData moduleNode) return;
-
-        EModuleType moduleType = moduleNode.moduleType;
-        EModuleSubType moduleSubType = moduleNode.moduleSubType;
-
-        // 이미 연구 완료된 경우
-        if (IsNodeResearched(selectedNode))
-        {
-            ShowResultMessage($"Already Researched", 3f);
-            return;
-        } 
-
-        CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);
-        string localizedSubType = LocalizationManager.Instance.Get(moduleSubType.ToLocKey());
-        List<string> leftLabels = new List<string>{ "ship_module_type" };
-        List<string> leftValues = new List<string>{ localizedSubType };
-
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("research_button_name"),
-            LocalizationManager.Instance.Get("popup_message_module_research", new object[] { localizedSubType }),
-            leftLabels, leftValues,
-            researchCost,
-            onConfirm: () =>
-            {
-                //CostStruct researchCost = DataManager.Instance.GetModuleResearchCost(moduleSubType);
-                bool result = DataManager.Instance.m_currentCharacter.CheckEnoughCostStruct(researchCost);
-                if (result == false)
-                {
-                    ShowResultMessage($"Insufficient resources(cost mineral: {CommonUtility.FormatBigNumber(researchCost.mineral)})", 3f);
-                    return;
-                }
-
-
-                var request = new ModuleResearchRequest
-                {
-                    moduleType = moduleType
-                    , moduleSubType = moduleSubType
-                };
-
-                NetworkManager.Instance.ResearchModule(request, OnModuleResearchResponse);
-            },
-            onCancel: () =>
-            {
-                ShowResultMessage("Research cancelled", 2f);
-            }
-        );
     }
 
     private void OnTechLevelResearchClicked(TechLevelResearchData techNode)
@@ -426,8 +374,8 @@ public class UITabResearch : UITabBase
                     return;
                 }
 
-                var request = new ModuleResearchRequest { researchId = techNode.researchId };
-                NetworkManager.Instance.ResearchModule(request, OnModuleResearchResponse);
+                var request = new TechLevelResearchRequest { researchId = techNode.researchId };
+                NetworkManager.Instance.ResearchTechLevel(request, OnTechLevelResearchResponse);
             },
             onCancel: () =>
             {
@@ -436,26 +384,19 @@ public class UITabResearch : UITabBase
         );
     }
 
-    private void OnModuleResearchResponse(ApiResponse<ModuleResearchResponse> response)
+    private void OnTechLevelResearchResponse(ApiResponse<TechLevelResearchResponse> response)
     {
         if (response.errorCode == 0)
         {
-            // Research successful
             var researchResponse = response.data;
 
-            // Update character's remaining resources
             if (researchResponse.costRemainInfo != null)
                 DataManager.Instance.m_currentCharacter.UpdateAllMinerals(researchResponse.costRemainInfo);
 
-            // Update researched modules list
-            if (researchResponse.researchedModuleTypes != null)
-                DataManager.Instance.m_currentCharacter.UpdateResearchedModules(researchResponse.researchedModuleTypes);
-
-            // Update string-based research IDs (tech_level_N 등)
             if (researchResponse.researchedIds != null)
                 DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(researchResponse.researchedIds);
 
-            ShowResultMessage($"Research completed: {researchResponse.moduleType}-{researchResponse.moduleSubType}", 3f);
+            ShowResultMessage("Research completed", 3f);
 
             // bShow 상태와 무관하게 노드 색상 즉시 갱신
             RefreshNodeColors();

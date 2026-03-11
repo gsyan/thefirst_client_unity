@@ -8,9 +8,10 @@ tab_pvp,,PVP,PVP
 tab_settings,,Settings,설정
 fleet_status,,Fleet Status,함대 정보
 fleet_ship_count,,Ships,함선 수
-fleet_formation_list,,Formation List,함대 진영 목록
 fleet_add_ship_button,,Add\nShip,함선\n추가
 fleet_add_ship_name,,Add Ship,함선 추가
+fleet_formation,,Formation,함대 진영
+fleet_formation_change,,Change Formation,진형 변경
 ship_status,,Ship Status,함선 정보
 ship_module_weapon_count,,Weapons,무장 수
 ship_module_engine_count,,Engines,엔진 수
@@ -18,7 +19,8 @@ ship_module_select_text,,Module Select,모듈 선택
 ship_module_status,,Module Status,모듈 정보
 ship_module_type,,Type,타입
 ship_module_unlock,,Unlock Module,모듈 잠금 해제
-ship_module_upgrade,,Upgrade Module,모듈 레벨업
+ship_module_levelup,,Level up Module,모듈 레벨업
+ship_module_subtype_manage,,Manage Module Type,모듈 타입 관리
 ship_module_researched_list,,Module Researched List,연구 완료 모듈 목록
 explroation_zone_list_name,,Zone,지역
 explroation_cleared,,Cleared,클리어
@@ -104,6 +106,7 @@ popup_message_module_upgrade,,Upgrade {0}\nLv.{1} → Lv.{2}?,{0} 모듈을 업�
 popup_message_module_research,,Research {0} module?,{0} 모듈을 연구할까요?
 popup_message_google_link,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
 popup_message_google_unlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
+free,,FREE,무료
 max_level,,Max Level,최고 레벨
 cost_text,,Cost,비용
 details_text,,Details,세부정보
@@ -137,3 +140,5 @@ tech_level_12,,Tech Level 12,기술레벨 12
 tech_level_13,,Tech Level 13,기술레벨 13
 tech_level_14,,Tech Level 14,기술레벨 14
 tech_level_15,,Tech Level 15,기술레벨 15
+exploration_try_zone,,Enter Zone,존 입장
+zone_enter_confirm,,Are you sure you want to enter this zone?,존에 입장 하시겠습니까?

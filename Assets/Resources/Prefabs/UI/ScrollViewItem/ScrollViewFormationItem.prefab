@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 60}
+  m_SizeDelta: {x: 200, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2433641815383670766
 CanvasRenderer:
@@ -91,6 +91,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_selectButton: {fileID: 5154888399299302083}
   m_text: {fileID: 3198475400130081378}
+  m_colorSelected: {r: 1, g: 0.8, b: 0.2, a: 1}
+  m_outlineWidth: 8
 --- !u!1 &3963689274595372330
 GameObject:
   m_ObjectHideFlags: 0

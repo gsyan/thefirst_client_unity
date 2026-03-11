@@ -997,7 +997,8 @@ public class SpaceShip : MonoBehaviour
     }
 
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
-    public void Apply_ChangeModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel)
+    // newUnlockedSubTypes: 서버 응답의 갱신된 슬롯 unlock 목록 (null이면 기존 유지)
+    public void Apply_ChangeModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel, System.Collections.Generic.List<EModuleSubType> newUnlockedSubTypes = null)
     {
         if (moduleType == EModuleType.body)
         {
@@ -1015,6 +1016,14 @@ public class SpaceShip : MonoBehaviour
                 Debug.LogError($"Failed to replace module: moduleTypeNew={moduleType}");
                 return;
             }
+        }
+
+        // 서버에서 받은 unlock 목록으로 새 모듈 갱신
+        if (newUnlockedSubTypes != null)
+        {
+            ModuleBase newModule = FindModule(bodyIndex, moduleType, slotIndex);
+            if (newModule != null)
+                newModule.SetUnlockedSubTypes(newUnlockedSubTypes);
         }
 
         // Outline 갱신 (새로 생성된 모듈들을 포함하도록)

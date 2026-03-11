@@ -90,8 +90,8 @@ public class ModuleEngine : ModuleBase
     {
         m_moduleInfo = moduleInfo;
         m_moduleSlot = moduleSlot;
-
         m_parentBody = parentBody;
+        SetUnlockedSubTypes(moduleInfo.unlockedSubTypes);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         var moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
