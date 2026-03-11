@@ -1,0 +1,139 @@
+// 존 맵 셀 — 미클리어(안개)/도전가능/클리어 상태 시각화, 클리어 시 안개 reveal 애니메이션
+using System.Collections;
+using System.Text;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ZoneMapCell : MonoBehaviour
+{
+    [SerializeField] private Button m_button;
+    [SerializeField] private TMP_Text m_zoneNameText;
+    [SerializeField] private TMP_Text m_resourceText;       // 자원 수치 (클리어 시 중앙 표시)
+    [SerializeField] private CanvasGroup m_fogCanvasGroup;  // 안개 overlay (alpha로 제어)
+    [SerializeField] private Image m_progressFill;          // 클리어 진행률 (Filled type)
+
+    private static readonly Color k_outlineColor = new Color(1f, 0.8f, 0.2f, 1f);
+    private UnityEngine.UI.Outline m_outline;
+    private Coroutine m_revealCoroutine;
+
+    public ZoneConfig m_zoneConfig { get; private set; }
+
+    public void Initialize(ZoneConfig zoneConfig, UnityEngine.Events.UnityAction onClick, EZoneState state)
+    {
+        m_zoneConfig = zoneConfig;
+
+        m_button.onClick.RemoveAllListeners();
+        m_button.onClick.AddListener(onClick);
+
+        if (m_zoneNameText != null)
+            m_zoneNameText.text = zoneConfig.zoneName;
+
+        m_outline = m_button.GetComponent<UnityEngine.UI.Outline>();
+        if (m_outline == null)
+            m_outline = m_button.gameObject.AddComponent<UnityEngine.UI.Outline>();
+        m_outline.effectColor = k_outlineColor;
+        m_outline.effectDistance = new Vector2(4f, -4f);
+        m_outline.enabled = false;
+
+        // 안개가 클릭을 막지 않도록
+        if (m_fogCanvasGroup != null) m_fogCanvasGroup.blocksRaycasts = false;
+
+        // ProgressFill 초기 비활성화 (프리팹 의존 없이 코드로 보장)
+        if (m_progressFill != null) m_progressFill.gameObject.SetActive(false);
+
+        SetState(state, false);
+    }
+
+    public void SetState(EZoneState state, bool animate = true)
+    {
+        bool cleared = state == EZoneState.Cleared;
+
+        if (cleared && animate)
+            RevealWithAnimation();
+        else
+            SetFogAlpha(state == EZoneState.Locked ? 1f : (cleared ? 0f : 0.6f));
+
+        if (m_resourceText != null)
+        {
+            m_resourceText.gameObject.SetActive(cleared);
+            if (cleared) RefreshResourceText();
+        }
+
+        if (m_progressFill != null)
+        {
+            m_progressFill.gameObject.SetActive(state == EZoneState.Current);
+            if (state == EZoneState.Current) ApplyProgressRatio(0f);
+        }
+    }
+
+    // 웨이브 진행에 따라 안개 서서히 걷힘
+    public void SetClearProgress(int clearedWaves, int zoneClearCount)
+    {
+        float ratio = zoneClearCount > 0 ? Mathf.Clamp01((float)clearedWaves / zoneClearCount) : 0f;
+        ApplyProgressRatio(ratio);
+        SetFogAlpha(Mathf.Lerp(0.6f, 0.1f, ratio));
+    }
+
+    private void ApplyProgressRatio(float ratio)
+    {
+        if (m_progressFill == null) return;
+        RectTransform rt = m_progressFill.rectTransform;
+        // Y 앵커는 프리팹 설정 유지, X만 변경
+        rt.anchorMin = new Vector2(0f, rt.anchorMin.y);
+        rt.anchorMax = new Vector2(ratio, rt.anchorMax.y);
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+    }
+
+    public void SetSelected(bool selected)
+    {
+        if (m_outline != null) m_outline.enabled = selected;
+    }
+
+    private void RevealWithAnimation()
+    {
+        if (m_revealCoroutine != null) StopCoroutine(m_revealCoroutine);
+        m_revealCoroutine = StartCoroutine(RevealRoutine());
+    }
+
+    private IEnumerator RevealRoutine()
+    {
+        float duration = 1.5f;
+        float t = 0f;
+        float startAlpha = m_fogCanvasGroup != null ? m_fogCanvasGroup.alpha : 0.6f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            SetFogAlpha(Mathf.Lerp(startAlpha, 0f, t / duration));
+            yield return null;
+        }
+        SetFogAlpha(0f);
+
+        if (m_resourceText != null)
+        {
+            m_resourceText.gameObject.SetActive(true);
+            RefreshResourceText();
+        }
+    }
+
+    private void SetFogAlpha(float alpha)
+    {
+        if (m_fogCanvasGroup != null) m_fogCanvasGroup.alpha = alpha;
+    }
+
+    private void RefreshResourceText()
+    {
+        if (m_resourceText == null || m_zoneConfig == null) return;
+        var sb = new StringBuilder();
+        if (m_zoneConfig.mineralPerHour > 0)
+            sb.Append($"M:{CommonUtility.FormatBigNumber(m_zoneConfig.mineralPerHour)}/h");
+        if (m_zoneConfig.mineralRarePerHour > 0)
+        {
+            if (sb.Length > 0) sb.Append('\n');
+            sb.Append($"R:{CommonUtility.FormatBigNumber(m_zoneConfig.mineralRarePerHour)}/h");
+        }
+        m_resourceText.text = sb.ToString();
+    }
+}

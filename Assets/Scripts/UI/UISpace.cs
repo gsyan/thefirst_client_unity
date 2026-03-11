@@ -35,8 +35,5 @@ public class UISpace : UIManager
         }
 
         InitializePanels();
-        // 패널 표시는 튜토리얼 흐름에서 처리
-        // - 자원 튜토리얼: preActionPanelName = "UIPanelMineral"
-        // - 함대버튼 튜토리얼: preActionPanelName = "MainPanel" (또는 ShowMainPanel 호출)
     }
 }

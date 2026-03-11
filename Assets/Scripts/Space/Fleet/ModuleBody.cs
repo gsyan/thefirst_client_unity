@@ -86,6 +86,7 @@ public class ModuleBody : ModuleBase
         // 전투 중 모듈 제거가 원본 FleetInfo를 변경하지 않도록 깊은 복사
         m_moduleBodyInfo = moduleBodyInfo;//DeepCopyBodyInfo(moduleBodyInfo);
         m_moduleSlot = null;
+        SetUnlockedSubTypes(moduleBodyInfo.unlockedSubTypes);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType, moduleBodyInfo.moduleLevel);
@@ -618,7 +619,7 @@ public class ModuleBody : ModuleBase
             }
         }
 
-        // 새 모듈 생성
+        // 새 모듈 생성 (기존 모듈의 unlockedSubTypes 이어받기)
         int prefabLevel = 1;// 프리팹 레벨1만
         ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel, prefabLevel);
 

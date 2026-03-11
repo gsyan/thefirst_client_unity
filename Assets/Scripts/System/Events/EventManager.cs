@@ -189,6 +189,21 @@ public static class EventManager
         OnCameraFocusTargetChanged -= callback;
     }
 
+    // Camera Viewport Open Ratio (0 = 전체화면, 1 = UI 열림)
+    public static event Action<float> OnCameraViewportChanged;
+    public static void TriggerCameraViewportChanged(float ratio)
+    {
+        OnCameraViewportChanged?.Invoke(ratio);
+    }
+    public static void Subscribe_CameraViewportChanged(Action<float> callback)
+    {
+        OnCameraViewportChanged += callback;
+    }
+    public static void Unsubscribe_CameraViewportChanged(Action<float> callback)
+    {
+        OnCameraViewportChanged -= callback;
+    }
+
     // Wave Started (1-based currentWave, zoneClearCount)
     public static event Action<int, int> OnWaveStarted;
     public static void TriggerWaveStarted(int currentWave, int zoneClearCount)

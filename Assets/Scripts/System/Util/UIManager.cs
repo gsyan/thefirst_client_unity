@@ -29,8 +29,6 @@ public class UIManager : MonoSingleton<UIManager>
     protected bool useAnimation = true;
     protected float animationDuration = 0.3f;
 
-    //protected UIPanelMineral m_uiPanelMineral;
-
     // Private fields
     private UIPanelBase currentActivePanel;
     private UIPanelBase mainPanel;
@@ -367,6 +365,32 @@ public class UIManager : MonoSingleton<UIManager>
 
         currentPopup = popup;
         popup.ShowPopupRanking(() => CloseCurrentPopup());
+    }
+
+    // 진형 선택 팝업
+    public void ShowFormationPopup(EFormationType currentFormationType, System.Action<EFormationType> onSelected)
+    {
+        if (currentPopup != null)
+            CloseCurrentPopup();
+
+        UIPopupFormation popup = GetOrCreatePopup<UIPopupFormation>("UIPopupFormation");
+        if (popup == null) return;
+
+        currentPopup = popup;
+        popup.ShowPopup(currentFormationType, onSelected);
+    }
+
+    // 모듈 서브타입 관리 팝업 (서브타입 교체 선택)
+    public void ShowModuleSubTypeManagePopup(ModuleBase sourceModule, System.Action<EModuleSubType> onConfirm)
+    {
+        if (currentPopup != null)
+            CloseCurrentPopup();
+
+        UIPopupModuleSubTypeManage popup = GetOrCreatePopup<UIPopupModuleSubTypeManage>("UIPopupModuleSubTypeManage");
+        if (popup == null) return;
+
+        currentPopup = popup;
+        popup.ShowPopup(sourceModule, onConfirm);
     }
 
     // 캐릭터 이름 변경 팝업

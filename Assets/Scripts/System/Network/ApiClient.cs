@@ -471,14 +471,14 @@ public class ApiClient
         return response;
     }
 
-    public async Task<ApiResponse<ModuleResearchResponse>> ResearchModuleAsync(ModuleResearchRequest request)
+    public async Task<ApiResponse<TechLevelResearchResponse>> ResearchTechLevelAsync(TechLevelResearchRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleResearchResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<TechLevelResearchResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
-        Debug.Log($"Module Research Request: {json}");
+        Debug.Log($"TechLevel Research Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/research-module", "POST");
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/research-tech-level", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -486,8 +486,8 @@ public class ApiClient
 
         await SendRequestAsync(webRequest);
 
-        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleResearchResponse>>(webRequest.downloadHandler.text);
-        Debug.Log($"Module Research Response: {webRequest.downloadHandler.text}");
+        var response = JsonConvert.DeserializeObject<ApiResponse<TechLevelResearchResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"TechLevel Research Response: {webRequest.downloadHandler.text}");
         return response;
     }
 

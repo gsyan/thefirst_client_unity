@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-// 카메라 중심점 타겟
+// 카메라 뷰포트 및 중심점 타겟
 public enum ECameraFocusTarget
 {
     camera_focus_my_fleet,      // 우리 함대
@@ -382,6 +382,20 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetRotationY = moduleSlot.m_cameraRotationY;
         m_targetRotationX = moduleSlot.m_cameraRotationX;
         m_targetZoom = Mathf.Clamp(moduleSlot.m_cameraZoom, m_minZoom, m_maxZoom);
+    }
+
+    // 카메라 viewport width를 즉시 설정 (UIPanelSpace에서 레이아웃 애니메이션 구동용)
+    public void SetViewportWidth(float width)
+    {
+        if (m_targetCamera == null) return;
+        Rect r = m_targetCamera.rect;
+        r.width = Mathf.Clamp01(width);
+        m_targetCamera.rect = r;
+    }
+
+    public float GetViewportWidth()
+    {
+        return m_targetCamera != null ? m_targetCamera.rect.width : 1f;
     }
 
     public void ZoomCamera(float deltaZoom)

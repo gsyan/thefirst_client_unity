@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+// 의도적 생략이 아니라면 클래스위 [System.Serializable]위에 주석 금지
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,6 +54,8 @@ public class ModuleBodyInfo
     public List<ModuleInfo> beams;
     public List<ModuleInfo> missiles;
     public List<ModuleInfo> hangers;
+    // 이 body 슬롯에서 subTypeAddCost를 납부해 비용 없이 교체 가능한 서브타입 목록
+    public List<EModuleSubType> unlockedSubTypes;
 }
 
 [System.Serializable]
@@ -64,9 +66,10 @@ public class ModuleInfo
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
+    // 이 슬롯에서 subTypeAddCost를 납부해 비용 없이 교체 가능한 서브타입 목록
+    public List<EModuleSubType> unlockedSubTypes;
 }
 
-// Body 프리팹의 ModuleSlot 정보를 저장하는 클래스
 [System.Serializable]
 public class ModuleSlotInfo
 {
@@ -79,14 +82,15 @@ public class ModuleSlotInfo
         this.moduleType = moduleType;
         this.slotIndex = slotIndex;
     }
+    // Body 프리팹의 ModuleSlot 정보를 저장하는 클래스
 }
 
-// 모듈 교체(적용) 비용 항목 — subType별 MR/ME/MD 비용 정의
 [System.Serializable]
 public class ModuleChangeCostEntry
 {
     public EModuleSubType moduleSubType; // 적용 대상 새 모듈 subType
     public CostStruct cost;
+    // 모듈 교체(적용) 비용 항목 — subType별 MR/ME/MD 비용 정의
 }
 
 [System.Serializable]
@@ -125,7 +129,7 @@ public class CharacterInfo
     public long mineralRare;
     public long mineralExotic;
     public long mineralDark;
-    public string clearedZone;  // 클리어한 최고 zone (예: "3-5"), 신규는 "" 또는 "0-0"
+    public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
     public string collectDateTime;  // 마지막 자원 수확 시간 (ISO 8601 형식)
     public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
 }
@@ -308,6 +312,8 @@ public class ModuleChangeResponse
     public int slotIndex;
     public int moduleNewLevel;
     public CostRemainInfo costRemainInfo;
+    // 교체 후 이 슬롯의 갱신된 unlock 목록 (최초 교체 시 새 subType 포함)
+    public List<EModuleSubType> newUnlockedSubTypes;
 }
 
 [System.Serializable]
@@ -331,21 +337,16 @@ public class ModuleUnlockResponse
 }
 
 [System.Serializable]
-public class ModuleResearchRequest
+public class TechLevelResearchRequest
 {
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public string researchId;  // 문자열 기반 연구 ID (tech_level_N 등), 모듈 연구 시 null
+    public string researchId;  // tech_level_N 형식
 }
 
 [System.Serializable]
-public class ModuleResearchResponse
+public class TechLevelResearchResponse
 {
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
     public CostRemainInfo costRemainInfo;
-    public int[][] researchedModuleTypes;  // [moduleType, moduleSubType] 쌍의 배열
-    public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록 (tech_level_N 등)
+    public string[] researchedIds;  // 완료된 tech_level_N 목록
 }
 
 [System.Serializable]
@@ -414,7 +415,7 @@ public class ZoneClearRequest
 [System.Serializable]
 public class ZoneClearResponse
 {
-    public string clearedZone;  // 업데이트된 최고 클리어 zone
+    public string clearedZoneName;  // 방금 클리어한 존 이름
     public CostRemainInfo rewardInfo;  // 클리어 보상 (광물 등)
     public string collectDateTime;  // 자원 수확 시작 시간 (ISO 8601 형식)
 }
@@ -530,7 +531,6 @@ public class PvpBattleResultResponse
     public int newRank;
 }
 
-// PVP/Zone/Attack 랭킹 공용 엔트리. score는 항상 string
 [System.Serializable]
 public class RankingEntry
 {
@@ -538,6 +538,7 @@ public class RankingEntry
     public long characterId;
     public string characterName;
     public string score;
+    // PVP/Zone/Attack 랭킹 공용 엔트리. score는 항상 string
 }
 
 [System.Serializable]
