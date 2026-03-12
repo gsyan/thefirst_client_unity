@@ -8,12 +8,16 @@ using UnityEngine.UI;
 public class ZoneMapCell : MonoBehaviour
 {
     [SerializeField] private Button m_button;
+    [SerializeField] private Image m_bgImage;               // 배경 이미지 (outline 부착 대상)
     [SerializeField] private TMP_Text m_zoneNameText;
     [SerializeField] private TMP_Text m_resourceText;       // 자원 수치 (클리어 시 중앙 표시)
     [SerializeField] private CanvasGroup m_fogCanvasGroup;  // 안개 overlay (alpha로 제어)
     [SerializeField] private Image m_progressFill;          // 클리어 진행률 (Filled type)
 
-    private static readonly Color k_outlineColor = new Color(1f, 0.8f, 0.2f, 1f);
+    [Header("선택 외곽선")]
+    [SerializeField] private Color m_colorSelected = new(1f, 0.8f, 0.2f, 1f);
+    [SerializeField] private float m_outlineWidth = 4f;
+
     private UnityEngine.UI.Outline m_outline;
     private Coroutine m_revealCoroutine;
 
@@ -29,11 +33,12 @@ public class ZoneMapCell : MonoBehaviour
         if (m_zoneNameText != null)
             m_zoneNameText.text = zoneConfig.zoneName;
 
-        m_outline = m_button.GetComponent<UnityEngine.UI.Outline>();
+        var outlineTarget = m_bgImage != null ? m_bgImage.gameObject : m_button.gameObject;
+        m_outline = outlineTarget.GetComponent<UnityEngine.UI.Outline>();
         if (m_outline == null)
-            m_outline = m_button.gameObject.AddComponent<UnityEngine.UI.Outline>();
-        m_outline.effectColor = k_outlineColor;
-        m_outline.effectDistance = new Vector2(4f, -4f);
+            m_outline = outlineTarget.AddComponent<UnityEngine.UI.Outline>();
+        m_outline.effectColor = m_colorSelected;
+        m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
         m_outline.enabled = false;
 
         // 안개가 클릭을 막지 않도록
@@ -52,7 +57,7 @@ public class ZoneMapCell : MonoBehaviour
         if (cleared && animate)
             RevealWithAnimation();
         else
-            SetFogAlpha(state == EZoneState.Locked ? 1f : (cleared ? 0f : 0.6f));
+            SetFogAlpha(cleared ? 0f : 1f);
 
         if (m_resourceText != null)
         {
@@ -72,7 +77,7 @@ public class ZoneMapCell : MonoBehaviour
     {
         float ratio = zoneClearCount > 0 ? Mathf.Clamp01((float)clearedWaves / zoneClearCount) : 0f;
         ApplyProgressRatio(ratio);
-        SetFogAlpha(Mathf.Lerp(0.6f, 0.1f, ratio));
+        SetFogAlpha(Mathf.Lerp(1f, 0.1f, ratio));
     }
 
     private void ApplyProgressRatio(float ratio)
@@ -101,7 +106,7 @@ public class ZoneMapCell : MonoBehaviour
     {
         float duration = 1.5f;
         float t = 0f;
-        float startAlpha = m_fogCanvasGroup != null ? m_fogCanvasGroup.alpha : 0.6f;
+        float startAlpha = m_fogCanvasGroup != null ? m_fogCanvasGroup.alpha : 1f;
 
         while (t < duration)
         {

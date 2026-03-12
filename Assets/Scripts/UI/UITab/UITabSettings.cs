@@ -15,6 +15,9 @@ public class UITabSettings : UITabBase
     [Header("계정 연동")]
     [SerializeField] private Button m_googleAccountButton;  // 연동/해제 공용 버튼
 
+    [Header("라이센스")]
+    [SerializeField] private Button m_licenseButton;
+
     [Header("개발자 도구")]
     [SerializeField] private Button   m_testMineralButton;
     [SerializeField] private Toggle   m_toggleMineral;
@@ -43,6 +46,9 @@ public class UITabSettings : UITabBase
 
         if (m_googleAccountButton != null)
             m_googleAccountButton.onClick.AddListener(OnGoogleAccountButtonClicked);
+
+        if (m_licenseButton != null)
+            m_licenseButton.onClick.AddListener(() => UIManager.Instance.ShowLicensePopup());
 
         if (m_testMineralButton != null)
             m_testMineralButton.onClick.AddListener(OnTestMineralButtonClicked);

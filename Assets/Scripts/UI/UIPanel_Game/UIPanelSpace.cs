@@ -48,6 +48,7 @@ public class UIPanelSpace : UIPanelBase
             {
                 UITabBase tabBase = tabData.tabPanel.GetComponent<UITabBase>();
                 if (tabBase == null) continue;
+                tabBase.m_tabSystemParent = m_tabSystem;
                 tabBase.InitializeUITab();
                 tabData.onActivate = tabBase.OnTabActivated;
                 tabData.onDeactivate = tabBase.OnTabDeactivated;

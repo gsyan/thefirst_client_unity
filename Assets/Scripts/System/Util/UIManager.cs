@@ -409,6 +409,19 @@ public class UIManager : MonoSingleton<UIManager>
         );
     }
 
+    // 외부 라이센스 고지 팝업
+    public void ShowLicensePopup()
+    {
+        if (currentPopup != null)
+            CloseCurrentPopup();
+
+        UIPopupLicense popup = GetOrCreatePopup<UIPopupLicense>("UIPopupLicense");
+        if (popup == null) return;
+
+        currentPopup = popup;
+        popup.ShowPopupLicense(() => CloseCurrentPopup());
+    }
+
     // 단순 알림 팝업 (확인 버튼만)
     public void ShowAlertPopup(string title, string message, System.Action onConfirm, string buttonText = "확인")
     {

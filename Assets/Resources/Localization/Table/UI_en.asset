@@ -590,6 +590,18 @@ MonoBehaviour:
     m_Localized: Are you sure you want to enter this zone?
     m_Metadata:
       m_Items: []
+  - m_Id: 11623322894598144
+    m_Localized: Third-Party Licenses
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11674320539353088
+    m_Localized: Manage Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11674320577101824
+    m_Localized: Focus Repair
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
