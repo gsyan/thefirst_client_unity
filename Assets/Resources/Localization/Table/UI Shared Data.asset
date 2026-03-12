@@ -67,6 +67,14 @@ MonoBehaviour:
     m_Key: fleet_formation_change
     m_Metadata:
       m_Items: []
+  - m_Id: 11674320539353088
+    m_Key: fleet_btn_ship_manage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11674320577101824
+    m_Key: fleet_btn_ship_repair
+    m_Metadata:
+      m_Items: []
   - m_Id: 63232261619717
     m_Key: ship_status
     m_Metadata:
@@ -241,6 +249,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8166668848988160
     m_Key: settings_name_change
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11623322894598144
+    m_Key: settings_license_title
     m_Metadata:
       m_Items: []
   - m_Id: 1211027840434176

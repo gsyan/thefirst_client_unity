@@ -12,6 +12,8 @@ fleet_add_ship_button,,Add\nShip,함선\n추가
 fleet_add_ship_name,,Add Ship,함선 추가
 fleet_formation,,Formation,함대 진영
 fleet_formation_change,,Change Formation,진형 변경
+fleet_btn_ship_manage,,Manage Ship,함선 관리
+fleet_btn_ship_repair,,Focus Repair,집중 수리
 ship_status,,Ship Status,함선 정보
 ship_module_weapon_count,,Weapons,무장 수
 ship_module_engine_count,,Engines,엔진 수
@@ -56,6 +58,7 @@ settings_google_unlink,,Unlink Google Account,구글 연동 해제
 settings_google_link_success,,Google account linked successfully.,구글 계정이 연동되었습니다.
 settings_google_unlink_success,,Google account unlinked successfully.,구글 연동이 해제되었습니다.
 settings_name_change,,Change Name,이름 변경
+settings_license_title,,Third-Party Licenses,외부 라이센스 고지
 camera_focus_enemy_fleet,,Enemy Fleet,적 함대
 camera_focus_center,,Center,중앙
 camera_focus_my_fleet,,My Fleet,내 함대

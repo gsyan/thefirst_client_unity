@@ -22,6 +22,10 @@ public class UITabFleet : UITabBase
     [SerializeField] private Button m_addShipButton;
     [SerializeField] private TMP_Text m_textAddShipCost;    // + 버튼에 표시할 비용 텍스트
 
+    [Header("함선 액션 버튼 (선택 시 활성)")]
+    [SerializeField] private Button m_btnShipManage;    // 함선 관리 탭으로 이동
+    [SerializeField] private Button m_btnShipRepair;    // 집중 수리 (추후 구현)
+
     [Header("Formation 하단 바")]
     [SerializeField] private TMP_Text m_textCurrentFormation;   // 현재 진형명
     [SerializeField] private Button m_btnFormationChange;       // [교체 ▶] 버튼
@@ -55,7 +59,11 @@ public class UITabFleet : UITabBase
         m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
         m_btnFormationChange.onClick.AddListener(OnFormationChangeClicked);
 
+        if (m_btnShipManage != null) m_btnShipManage.onClick.AddListener(OnShipManageClicked);
+        if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
+
         PopulateShipSelectorGrid();
+        UpdateShipActionButtons();
 
         EventManager.Subscribe_AddShip(OnShipAdded);
         EventManager.Subscribe_FleetUpdateHP(OnFleetHPUpdated);
@@ -253,6 +261,23 @@ public class UITabFleet : UITabBase
             m_shipSelectorActive[i].RefreshHealth();
     }
 
+    private void UpdateShipActionButtons()
+    {
+        bool hasSelection = m_selectedShipSelector != null;
+        if (m_btnShipManage != null) m_btnShipManage.interactable = hasSelection;
+        if (m_btnShipRepair != null) m_btnShipRepair.interactable = hasSelection;
+    }
+
+    private void OnShipManageClicked()
+    {
+        m_tabSystemParent.SwitchToTabByName("tab_ship");
+    }
+
+    private void OnShipRepairClicked()
+    {
+        // TODO: 집중 수리 구현
+    }
+
     private void OnShipSelectorClicked(SpaceShip ship)
     {
         if (m_selectedShipSelector != null)
@@ -268,7 +293,9 @@ public class UITabFleet : UITabBase
             }
         }
 
-        // 카메라 타겟 지정 + UITabShip 자동 전환
+        UpdateShipActionButtons();
+
+        // 카메라 타겟 지정
         EventManager.Trigger_SpaceShipSelected(ship);
     }
 
@@ -291,6 +318,8 @@ public class UITabFleet : UITabBase
                 break;
             }
         }
+
+        UpdateShipActionButtons();
     }
 
     private void OnShipAdded()

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // 탭 시스템: ButtonGroupSystem(버튼 선택 상태) + 패널 전환 / defaultActiveTab=-1이면 시작 시 탭 없음
+// 빠른 탭 전환 시 코루틴 중복 실행 방지: 패널별 코루틴 추적 후 덮어쓰기
 [System.Serializable]
 public class TabData
 {
@@ -38,6 +39,7 @@ public class TabSystem : MonoBehaviour
 
     private ButtonGroupSystem buttonGroup;
     private int currentActiveTab = -1;
+    private readonly Dictionary<GameObject, Coroutine> m_animCoroutines = new Dictionary<GameObject, Coroutine>();
 
     // 인스펙터에서 + 버튼으로 추가 시 색상 기본값 자동 적용
     private void OnValidate()
@@ -106,8 +108,8 @@ public class TabSystem : MonoBehaviour
         {
             if (useAnimation)
             {
-                StartCoroutine(AnimatePanel(tab.tabPanel, true));
-                tab.tabPanel.SetActive(true);
+                StopPanelCoroutine(tab.tabPanel);
+                m_animCoroutines[tab.tabPanel] = StartCoroutine(AnimatePanel(tab.tabPanel, true));
             }
             else
             {
@@ -128,7 +130,10 @@ public class TabSystem : MonoBehaviour
         if (tab.tabPanel != null)
         {
             if (useAnimation)
-                StartCoroutine(AnimatePanel(tab.tabPanel, false));
+            {
+                StopPanelCoroutine(tab.tabPanel);
+                m_animCoroutines[tab.tabPanel] = StartCoroutine(AnimatePanel(tab.tabPanel, false));
+            }
             else
                 tab.tabPanel.SetActive(false);
         }
@@ -176,6 +181,12 @@ public class TabSystem : MonoBehaviour
             canvasGroup.alpha = 0f;
             panel.SetActive(false);
         }
+    }
+
+    private void StopPanelCoroutine(GameObject panel)
+    {
+        if (m_animCoroutines.TryGetValue(panel, out var existing) && existing != null)
+            StopCoroutine(existing);
     }
 
     private CanvasGroup GetOrAddCanvasGroup(GameObject obj)

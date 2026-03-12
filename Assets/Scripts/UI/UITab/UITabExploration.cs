@@ -43,9 +43,10 @@ public class UITabExploration : UITabBase
     private float m_totalMineralExoticPerHour;
     private float m_totalMineralDarkPerHour;
     private ZoneConfig m_currentZone;
-    private ZoneConfig m_selectedZone;      // 셀 클릭으로 선택된 존 (미입장)
+    private ZoneConfig m_selectedZone;      // 현재 그룹에서 선택된 존
     private ZoneMapCell m_currentZoneCell;
     private readonly Dictionary<string, ZoneMapCell> m_zoneCells = new Dictionary<string, ZoneMapCell>();
+    private readonly Dictionary<int, ZoneConfig> m_selectedZonePerGroup = new(); // 그룹별 선택 존 기억
 
     private int m_selectedGroupIndex = 1;
     private EEnterZoneState m_enterZoneState;
@@ -107,6 +108,11 @@ public class UITabExploration : UITabBase
 
     private void OnGroupTabClicked(int groupIndex)
     {
+        // 이전 그룹 선택 셀 outline 해제
+        if (m_selectedZonePerGroup.TryGetValue(m_selectedGroupIndex, out ZoneConfig prevZone) &&
+            m_zoneCells.TryGetValue(prevZone.zoneName, out ZoneMapCell prevCell))
+            prevCell.SetSelected(false);
+
         m_selectedGroupIndex = groupIndex;
         ShowGroupMap(groupIndex);
         UpdateGroupTabVisual();
@@ -169,7 +175,7 @@ public class UITabExploration : UITabBase
         ShowGroupMap(m_selectedGroupIndex);
     }
 
-    // 선택된 그룹(X)의 셀만 활성화
+    // 선택된 그룹(X)의 셀만 활성화, 이전 선택 존 복원 또는 기본값 선택
     private void ShowGroupMap(int groupIndex)
     {
         foreach (var kv in m_zoneCells)
@@ -183,6 +189,14 @@ public class UITabExploration : UITabBase
             bool inCurrentGroup = ParseZoneGroup(m_currentZoneCell.m_zoneConfig.zoneName) == groupIndex;
             m_currentZoneCell.SetSelected(inCurrentGroup);
         }
+
+        // 저장된 선택 존 복원, 없으면 기본값(미클리어 최고 스테이지 or 전체 클리어 시 최고)
+        ZoneConfig toSelect = m_selectedZonePerGroup.TryGetValue(groupIndex, out ZoneConfig saved)
+            ? saved
+            : GetDefaultZoneForGroup(groupIndex);
+
+        if (toSelect != null)
+            ApplyZoneSelection(toSelect);
     }
 
     public override void OnTabActivated()
@@ -333,8 +347,53 @@ public class UITabExploration : UITabBase
     // 셀 클릭 — 선택 및 디테일 표시만 (입장 안함)
     private void OnTryZoneClicked(ZoneConfig zone)
     {
+        // 이전 선택 셀 outline 해제
+        if (m_selectedZone != null && m_zoneCells.TryGetValue(m_selectedZone.zoneName, out ZoneMapCell prevCell))
+            prevCell.SetSelected(false);
+
+        m_selectedZonePerGroup[m_selectedGroupIndex] = zone;
+        ApplyZoneSelection(zone);
+    }
+
+    private void ApplyZoneSelection(ZoneConfig zone)
+    {
         m_selectedZone = zone;
+        if (m_zoneCells.TryGetValue(zone.zoneName, out ZoneMapCell cell))
+            cell.SetSelected(true);
         RefreshZoneDetailText(zone);
+    }
+
+    // 그룹 내 기본 선택: 미클리어 최고 스테이지, 전부 클리어 시 최고 스테이지
+    private ZoneConfig GetDefaultZoneForGroup(int groupIndex)
+    {
+        var clearedZones = m_myCharacter?.m_characterInfo.clearedZones;
+        ZoneConfig highest = null;
+        ZoneConfig lowestUncleared = null;
+
+        for (int i = 1; i < m_datatableZone.ZoneCount; i++)
+        {
+            ZoneConfig zone = m_datatableZone.GetZone(i);
+            if (zone == null || ParseZoneGroup(zone.zoneName) != groupIndex) continue;
+
+            int stage = ParseZoneStage(zone.zoneName);
+            if (highest == null || stage > ParseZoneStage(highest.zoneName))
+                highest = zone;
+
+            bool isCleared = clearedZones != null && clearedZones.Contains(zone.zoneName);
+            if (isCleared == false && (lowestUncleared == null || stage < ParseZoneStage(lowestUncleared.zoneName)))
+                lowestUncleared = zone;
+        }
+
+        return lowestUncleared ?? highest;
+    }
+
+    // "X-Y"에서 스테이지 Y 파싱
+    private int ParseZoneStage(string zoneName)
+    {
+        if (string.IsNullOrEmpty(zoneName)) return 0;
+        int dashIdx = zoneName.IndexOf('-');
+        if (dashIdx < 0 || dashIdx >= zoneName.Length - 1) return 0;
+        return int.TryParse(zoneName[(dashIdx + 1)..], out int y) ? y : 0;
     }
 
     // 존 입장 버튼 클릭 — 선택된 존으로 입장 시도
