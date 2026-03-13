@@ -66,42 +66,6 @@ MonoBehaviour:
     pvpRankScoreInit: 1000
     pvpRankScorePenalty: 1
     moduleUnlockPrice: 5000
-    moduleChangeCosts:
-    - moduleSubType: 1010201
-      cost:
-        techLevel: 0
-        mineral: 0
-        mineralRare: 5000
-        mineralExotic: 0
-        mineralDark: 0
-    - moduleSubType: 2010201
-      cost:
-        techLevel: 0
-        mineral: 0
-        mineralRare: 5000
-        mineralExotic: 0
-        mineralDark: 0
-    - moduleSubType: 3010201
-      cost:
-        techLevel: 0
-        mineral: 0
-        mineralRare: 5000
-        mineralExotic: 0
-        mineralDark: 0
-    - moduleSubType: 4010201
-      cost:
-        techLevel: 0
-        mineral: 0
-        mineralRare: 5000
-        mineralExotic: 0
-        mineralDark: 0
-    - moduleSubType: 5010201
-      cost:
-        techLevel: 0
-        mineral: 0
-        mineralRare: 5000
-        mineralExotic: 0
-        mineralDark: 0
   exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"maxShipsPerFleet\": 9,\r\n 
     \"addShipCosts\": [\r\n    {\r\n      \"techLevel\": 0,\r\n      \"mineral\":
     0,\r\n      \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
@@ -123,19 +87,4 @@ MonoBehaviour:
     \"mineralRare\": 4000000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
     0\r\n    }\r\n  ],\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\": 5,\r\n 
     \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\":
-    5000,\r\n  \"moduleChangeCosts\": [\r\n    {\r\n      \"moduleSubType\": 1010201,\r\n     
-    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
-    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
-    0\r\n      }\r\n    },\r\n    {\r\n      \"moduleSubType\": 2010201,\r\n     
-    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
-    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
-    0\r\n      }\r\n    },\r\n    {\r\n      \"moduleSubType\": 3010201,\r\n     
-    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
-    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
-    0\r\n      }\r\n    },\r\n    {\r\n      \"moduleSubType\": 4010201,\r\n     
-    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
-    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
-    0\r\n      }\r\n    },\r\n    {\r\n      \"moduleSubType\": 5010201,\r\n     
-    \"cost\": {\r\n        \"techLevel\": 0,\r\n        \"mineral\": 0,\r\n       
-    \"mineralRare\": 5000,\r\n        \"mineralExotic\": 0,\r\n        \"mineralDark\":
-    0\r\n      }\r\n    }\r\n  ]\r\n}"
+    5000\r\n}"
