@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+// NetworkManager — 서버 API 호출 관리, 토큰 자동 갱신(401 retry) 포함
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +20,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     private ApiClient m_apiClient;
     private UIManager m_uIManager;
+
+    // 동시 401 발생 시 refresh 중복 호출 방지 — 진행 중인 task를 공유
+    private Task<ApiResponse<AuthResponse>> m_pendingRefreshTask = null;
 
     private NetworkReachability m_networkStatus;
     private bool m_bConnected = false;
@@ -181,8 +184,10 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 if (errorCode == ServerErrorCode.HTTP_UNAUTHORIZED_401 && retryCount < maxRetries)
                 {
                     retryCount++;
-                    // RefreshToken 호출
-                    Task<ApiResponse<AuthResponse>> refreshTask = m_apiClient.RefreshAccessTokenAsync();
+                    // 동시에 여러 401이 발생해도 refresh는 한 번만 — 진행 중인 task 공유
+                    if (m_pendingRefreshTask == null || m_pendingRefreshTask.IsCompleted == true)
+                        m_pendingRefreshTask = m_apiClient.RefreshAccessTokenAsync();
+                    Task<ApiResponse<AuthResponse>> refreshTask = m_pendingRefreshTask;
                     while (refreshTask.IsCompleted == false)
                         yield return null;
 

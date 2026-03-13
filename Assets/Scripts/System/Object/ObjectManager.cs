@@ -254,10 +254,16 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         long minutes = (long)((elapsedSec % 3600) / 60);
         string timeStr = hours > 0 ? $"{hours}h {minutes}m" : $"{minutes}m";
 
+        // 수확 전 잔액 스냅샷 — 팝업에 실제 획득량(delta)을 표시하기 위해 사용
+        var character = DataManager.Instance.m_currentCharacter;
+        long beforeMineral       = character.GetMineral();
+        long beforeMineralRare   = character.GetMineralRare();
+        long beforeMineralExotic = character.GetMineralExotic();
+        long beforeMineralDark   = character.GetMineralDark();
+
         NetworkManager.Instance.CollectZone(new ZoneCollectRequest(), (response) => {
             if (response.errorCode == (int)ServerErrorCode.SUCCESS && response.data != null)
             {
-                var character = DataManager.Instance.m_currentCharacter;
                 if (character != null)
                 {
                     character.m_characterInfo.collectDateTime = response.data.collectDateTime;
@@ -267,7 +273,16 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                         character.UpdateMineralRare(response.data.rewardInfo.remainMineralRare);
                         character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
                         character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
-                        ShowHarvestResultPopup(timeStr, response.data.rewardInfo);
+
+                        // 실제 획득량(remain - before)만 팝업에 표시
+                        var earned = new CostRemainInfo
+                        {
+                            remainMineral       = response.data.rewardInfo.remainMineral       - beforeMineral,
+                            remainMineralRare   = response.data.rewardInfo.remainMineralRare   - beforeMineralRare,
+                            remainMineralExotic = response.data.rewardInfo.remainMineralExotic - beforeMineralExotic,
+                            remainMineralDark   = response.data.rewardInfo.remainMineralDark   - beforeMineralDark,
+                        };
+                        ShowHarvestResultPopup(timeStr, earned);
                         return;
                     }
                 }

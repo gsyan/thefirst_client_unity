@@ -52,7 +52,7 @@ MonoBehaviour:
   - researchId: body_t1_std_ver1
     prerequisiteIds: []
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 0
       mineralExotic: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
     prerequisiteIds:
     - body_t1_std_ver1
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 50000
       mineralExotic: 0
@@ -75,7 +75,7 @@ MonoBehaviour:
   - researchId: engine_t1_std_ver1
     prerequisiteIds: []
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 0
       mineralExotic: 0
@@ -87,7 +87,7 @@ MonoBehaviour:
     prerequisiteIds:
     - engine_t1_std_ver1
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 50000
       mineralExotic: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   - researchId: beam_t1_std_ver1
     prerequisiteIds: []
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 0
       mineralExotic: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
     prerequisiteIds:
     - beam_t1_std_ver1
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 50000
       mineralExotic: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
   - researchId: missile_t1_std_ver1
     prerequisiteIds: []
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 0
       mineralExotic: 0
@@ -133,7 +133,7 @@ MonoBehaviour:
     prerequisiteIds:
     - missile_t1_std_ver1
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 50000
       mineralExotic: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
   - researchId: hanger_t1_std_ver1
     prerequisiteIds: []
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 0
       mineralExotic: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
     prerequisiteIds:
     - hanger_t1_std_ver1
     researchCost:
-      techLevel: 1
+      techLevel: 0
       mineral: 0
       mineralRare: 50000
       mineralExotic: 0

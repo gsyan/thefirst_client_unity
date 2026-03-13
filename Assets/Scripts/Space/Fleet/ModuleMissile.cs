@@ -214,10 +214,6 @@ public class ModuleMissile : ModuleBase
 
         statRows[1].SetRow("level", $"{currentLevel}");
         statRows[2].SetRow("attack_power", $"{moduleDataCurrent.attackPower:F0}");
-        statRows[3].SetRow("empty_text", "");
-        statRows[4].SetRow("empty_text", "");
-        statRows[5].SetRow("empty_text", "");
-        statRows[6].SetRow("empty_text", "");
     }
 
     // 파괴 시 정리

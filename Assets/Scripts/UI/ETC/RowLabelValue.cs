@@ -19,8 +19,14 @@ public class RowLabelValue : MonoBehaviour
     // rawValue=true 이면 value를 로컬라이제이션 없이 직접 표시 (숫자, 단위 등)
     public void SetRow(string label, string value1, string value2 = "", bool rawValue = false)
     {
+        gameObject.SetActive(true);
         SetLabel(label);
         SetValues(value1, value2, rawValue);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 
     public void SetLabel(string label)

@@ -136,6 +136,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
     private void RefreshNodeColors()
     {
         EModuleSubType currentSubType = m_sourceModule.GetModuleSubType();
+        int playerTechLevel = DataManager.Instance.m_currentCharacter?.GetTechLevel() ?? 0;
 
         for (int i = 0; i < m_currentNodeList.Count; i++)
         {
@@ -145,7 +146,9 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             bool isSelected = node.moduleSubType == m_selectedSubType;
             EResearchNodeState state;
 
-            if (node.moduleSubType == currentSubType)
+            if (node.moduleSubType.GetTechTier() > playerTechLevel)
+                state = EResearchNodeState.Locked;       // 어둠 = 기술레벨 부족
+            else if (node.moduleSubType == currentSubType)
                 state = EResearchNodeState.Current;      // 파랑 = 현재 장착
             else if (m_sourceModule.IsSubTypeFree(node.moduleSubType))
                 state = EResearchNodeState.Researched;   // 초록 = 비용 없음

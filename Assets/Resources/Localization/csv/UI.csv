@@ -14,6 +14,10 @@ fleet_formation,,Formation,함대 진영
 fleet_formation_change,,Change Formation,진형 변경
 fleet_btn_ship_manage,,Manage Ship,함선 관리
 fleet_btn_ship_repair,,Focus Repair,집중 수리
+fleet_tech_level_info,,Lv.{0}  ·  M:{1}h  ·  S.{2}  ·  G:{3},Lv.{0}  ·  M:{1}h  ·  S.{2}  ·  G:{3}
+fleet_tech_level_btn,,Lv.{0} <voffset=6>→</voffset> {1},Lv.{0} <voffset=6>→</voffset> {1}
+research_complete,,Research complete,연구가 완료되었습니다
+error_insufficient_resources,,Insufficient resources,자원이 부족합니다
 ship_status,,Ship Status,함선 정보
 ship_module_weapon_count,,Weapons,무장 수
 ship_module_engine_count,,Engines,엔진 수

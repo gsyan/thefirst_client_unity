@@ -157,7 +157,6 @@ public class ModuleBase : MonoBehaviour
         statRows[3].SetRow("health_power", $"{moduleDataCurrent.health:F0}");
         statRows[4].SetRow("speed_power", $"{moduleDataCurrent.speed:F0}");
         statRows[5].SetRow("repair_power", $"{moduleDataCurrent.repairPower:F0}");
-        statRows[6].SetRow("empty_text", "");
     }
 
     public virtual void SetModuleStatRows(out List<string> labels, out List<string> values, bool showNext = false)

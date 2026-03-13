@@ -1,4 +1,4 @@
-// 함대 탭 UI — Fleet Stats(2행 압축), 함선 선택 그리드, Formation 하단 바 + 교체 팝업 관리
+// 함대 탭 UI — Tech Level 행, Fleet Stats(2행 압축), 함선 선택 그리드, Formation 하단 바 + 교체 팝업 관리
 // 함선 추가 버튼은 ShipSelector 그리드의 마지막 셀로 통합
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +8,12 @@ using NUnit.Framework.Constraints;
 
 public class UITabFleet : UITabBase
 {
+    [Header("Tech Level 행")]
+    [SerializeField] private TMP_Text m_textTechLevelInfo;
+    [SerializeField] private Button   m_btnTechLevelDetail;
+    [SerializeField] private Button   m_btnTechLevel;
+    [SerializeField] private TMP_Text m_textTechLevelButton;
+
     [Header("Fleet Stats (상단 2행)")]
     // 1행: ATK / HP / SPD / REPAIR — 아이콘은 추후 TMP Sprite로 교체
     [SerializeField] private TMP_Text m_textFleetStats1;
@@ -61,6 +67,8 @@ public class UITabFleet : UITabBase
 
         if (m_btnShipManage != null) m_btnShipManage.onClick.AddListener(OnShipManageClicked);
         if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
+        if (m_btnTechLevelDetail != null) m_btnTechLevelDetail.onClick.AddListener(OnTechLevelDetailClicked);
+        if (m_btnTechLevel != null) m_btnTechLevel.onClick.AddListener(OnTechLevelButtonClicked);
 
         PopulateShipSelectorGrid();
         UpdateShipActionButtons();
@@ -68,11 +76,13 @@ public class UITabFleet : UITabBase
         EventManager.Subscribe_AddShip(OnShipAdded);
         EventManager.Subscribe_FleetUpdateHP(OnFleetHPUpdated);
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
+        EventManager.Subscribe_TechLevelChanged(OnTechLevelChanged);
     }
 
     public override void OnTabActivated()
     {
         base.OnTabActivated();
+        UpdateTechLevelDisplay();
         UpdateFleetStatsDisplay();
         UpdateCurrentFormationText();
         RefreshShipHealthDisplay();
@@ -81,6 +91,121 @@ public class UITabFleet : UITabBase
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
+    }
+
+    // ── Tech Level ────────────────────────────────────────────────────
+
+    private void UpdateTechLevelDisplay()
+    {
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        int currentLevel = character.GetTechLevel();
+        int offlineHours = 3 + (currentLevel / 2);
+        int maxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(currentLevel);
+        TechLevelResearchData nextNode = GetNextTechLevelNode(character);
+
+        // [기술레벨] Lv.N  ·  M:Nh  ·  S.N  ·  G:N
+        if (m_textTechLevelInfo != null)
+            m_textTechLevelInfo.text = $"{LocalizationManager.Instance.Get("tech_level")}.{currentLevel}  ·  M:{offlineHours}h  ·  S.{maxShips}  ·  G:{currentLevel}";
+
+        if (m_btnTechLevel != null)
+        {
+            m_btnTechLevel.interactable = nextNode != null;
+            if (m_textTechLevelButton != null)
+            {
+                // string.Format 을 사용하지 않고 직접 조합 — Smart String이 {1}을 소모하는 문제 우회
+                m_textTechLevelButton.text = nextNode != null
+                    ? $"Lv.{currentLevel} <voffset=6>→</voffset> {nextNode.targetTechLevel}"
+                    : LocalizationManager.Instance.Get("max_level");
+            }
+        }
+    }
+
+    private void OnTechLevelDetailClicked()
+    {
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        int currentLevel = character.GetTechLevel();
+        int offlineHours = 3 + (currentLevel / 2);
+        int maxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(currentLevel);
+        TechLevelResearchData nextNode = GetNextTechLevelNode(character);
+
+        string msg = $"자원 저장 제한: {offlineHours}h\n최대 함선수: {maxShips}척\n모듈 세대: {currentLevel}G";
+        if (nextNode != null)
+        {
+            int nextOffline = 3 + (nextNode.targetTechLevel / 2);
+            int nextMaxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(nextNode.targetTechLevel);
+            msg += $"\n\n[Lv.{nextNode.targetTechLevel} 달성 시]\n자원 저장 제한: {nextOffline}h최대 함선수: {nextMaxShips}척\n모듈 세대: {nextNode.targetTechLevel}G";
+        }
+
+        UIManager.Instance.ShowAlertPopup($"기술레벨 {currentLevel}", msg, null);
+    }
+
+    private TechLevelResearchData GetNextTechLevelNode(Character character)
+    {
+        var techList = DataManager.Instance.m_dataTableResearch.TechLevelDataList;
+        for (int i = 0; i < techList.Count; i++)
+        {
+            if (character.IsResearchCompleted(techList[i].researchId) == false)
+                return techList[i];
+        }
+        return null;
+    }
+
+    private void OnTechLevelButtonClicked()
+    {
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        TechLevelResearchData nextNode = GetNextTechLevelNode(character);
+        if (nextNode == null) return;
+
+        string targetLevelStr = nextNode.targetTechLevel.ToString();
+        List<string> leftLabels = new List<string> { "tech_level" };
+        List<string> leftValues = new List<string> { targetLevelStr };
+
+        UIManager.Instance.ShowConfirmPopup(
+            LocalizationManager.Instance.Get("research_tech_name"),
+            LocalizationManager.Instance.Get("popup_message_tech_research", new object[] { targetLevelStr }),
+            leftLabels, leftValues,
+            nextNode.researchCost,
+            onConfirm: () =>
+            {
+                if (character.CheckEnoughCostStruct(nextNode.researchCost) == false)
+                {
+                    ShowResultMessage(LocalizationManager.Instance.Get("error_insufficient_resources"), 3f);
+                    return;
+                }
+                var request = new TechLevelResearchRequest { researchId = nextNode.researchId };
+                NetworkManager.Instance.ResearchTechLevel(request, OnTechLevelResearchResponse);
+            }
+        );
+    }
+
+    private void OnTechLevelResearchResponse(ApiResponse<TechLevelResearchResponse> response)
+    {
+        if (response.errorCode == 0)
+        {
+            if (response.data.costRemainInfo != null)
+                DataManager.Instance.m_currentCharacter.UpdateAllMinerals(response.data.costRemainInfo);
+            if (response.data.researchedIds != null)
+                DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
+
+            ShowResultMessage(LocalizationManager.Instance.Get("research_complete"), 3f);
+            UpdateTechLevelDisplay();
+        }
+        else
+        {
+            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
+            ShowResultMessage($"Research failed: {errorMessage}", 3f);
+        }
+    }
+
+    private void OnTechLevelChanged(int techLevel)
+    {
+        UpdateTechLevelDisplay();
     }
 
     // ── Fleet Stats ────────────────────────────────────────────────────

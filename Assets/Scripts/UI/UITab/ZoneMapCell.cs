@@ -99,6 +99,19 @@ public class ZoneMapCell : MonoBehaviour
     private void RevealWithAnimation()
     {
         if (m_revealCoroutine != null) StopCoroutine(m_revealCoroutine);
+
+        // 비활성 상태(다른 그룹 탭 등)에서는 코루틴 불가 — 즉시 최종 상태 적용
+        if (gameObject.activeInHierarchy == false)
+        {
+            SetFogAlpha(0f);
+            if (m_resourceText != null)
+            {
+                m_resourceText.gameObject.SetActive(true);
+                RefreshResourceText();
+            }
+            return;
+        }
+
         m_revealCoroutine = StartCoroutine(RevealRoutine());
     }
 

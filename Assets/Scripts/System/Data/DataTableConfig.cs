@@ -44,6 +44,15 @@ public class GameSettings
         new CostStruct(14, 640000, 4000000, 0, 0),          // idx 8: 9번째 (~30일)
     };
 
+    // 기술레벨에서 해금된 최대 함선 수 반환 (addShipCosts 중 techLevel <= currentTechLevel 개수)
+    public int GetMaxShipsAtTechLevel(int techLevel)
+    {
+        int count = 0;
+        foreach (var cost in addShipCosts)
+            if (cost.techLevel <= techLevel) count++;
+        return count;
+    }
+
     // 현재 함선 개수에 따른 다음 함선 추가 비용 반환
     public CostStruct GetAddShipCost(int currentShipCount)
     {

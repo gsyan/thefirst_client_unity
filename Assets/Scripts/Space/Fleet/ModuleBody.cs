@@ -692,9 +692,6 @@ public class ModuleBody : ModuleBase
         statRows[1].SetRow("level", $"{currentLevel}");
         statRows[2].SetRow("health_power", $"{moduleDataCurrent.health:F0}");
         statRows[3].SetRow("repair_power", $"{moduleDataCurrent.repairPower:F0}");
-        statRows[4].SetRow("empty_text", "");
-        statRows[5].SetRow("empty_text", "");
-        statRows[6].SetRow("empty_text", "");
     }
 
 

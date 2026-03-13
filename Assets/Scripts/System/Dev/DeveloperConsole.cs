@@ -1,3 +1,4 @@
+// 인게임 개발자 콘솔 — 로그 캡처(색상 구분) + 개발 명령 실행
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,13 +33,52 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         RegisterCommands();
         CreateConsoleUI();
         SetConsoleVisible(false);
+        Application.logMessageReceived += OnLogReceived;
     }
+
+    private void OnDestroy()
+    {
+        Application.logMessageReceived -= OnLogReceived;
+    }
+
+    private void OnLogReceived(string message, string stackTrace, LogType type)
+    {
+        string color = type switch
+        {
+            LogType.Error     => "#FF4444",
+            LogType.Exception => "#FF4444",
+            LogType.Warning   => "#FFCC00",
+            _                 => "#FFFFFF",
+        };
+        string line = $"<color={color}>{message}</color>";
+
+        m_logHistory.Add(line);
+        if (m_logHistory.Count > maxLogLines)
+            m_logHistory.RemoveAt(0);
+
+        if (m_isConsoleVisible == true)
+            UpdateLogDisplay();
+    }
+
+    private bool m_threeFingersDown = false;
 
     private void Update()
     {
         if (Input.GetKeyDown(toggleKey))
-        {
             ToggleConsole();
+
+        // 모바일: 3손가락 동시 터치 시 토글 (손가락 떼기 전 1회만 발동)
+        if (Input.touchCount == 3)
+        {
+            if (m_threeFingersDown == false)
+            {
+                m_threeFingersDown = true;
+                ToggleConsole();
+            }
+        }
+        else
+        {
+            m_threeFingersDown = false;
         }
 
         if (m_isConsoleVisible && inputField != null)
@@ -158,9 +198,10 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         logTextObj.transform.SetParent(contentObj.transform, false);
         logText = logTextObj.AddComponent<Text>();
         logText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        logText.fontSize = 48; // Increased font size from 14 to 48
+        logText.fontSize = 48;
         logText.color = Color.white;
-        logText.maskable = true; // Ensure text is maskable
+        logText.maskable = true;
+        logText.supportRichText = true;
 
         ContentSizeFitter contentSizeFitter = logTextObj.AddComponent<ContentSizeFitter>(); // Added for auto-sizing text content
         contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -252,9 +293,11 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         if (consolePanel != null)
         {
             consolePanel.SetActive(visible);
-            if (visible && inputField != null)
+            if (visible == true)
             {
-                inputField.ActivateInputField();
+                UpdateLogDisplay();
+                if (inputField != null)
+                    inputField.ActivateInputField();
             }
         }
     }

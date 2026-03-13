@@ -51,6 +51,9 @@ public class DataTableModuleEditor : Editor
         DataTableModuleEditorDrawHeader();
         EditorGUILayout.Space(10);
 
+        DrawUtilityTools();
+        EditorGUILayout.Space(10);
+
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         DrawBodyModuleSection();
@@ -58,9 +61,6 @@ public class DataTableModuleEditor : Editor
         DrawBeamModuleSection();
         DrawMissileModuleSection();
         DrawHangerModuleSection();
-
-        EditorGUILayout.Space(20);
-        DrawUtilityTools();
 
         EditorGUILayout.EndScrollView();
 
@@ -183,7 +183,6 @@ public class DataTableModuleEditor : Editor
         module.repairPower = EditorGUILayout.FloatField("Repair", module.repairPower);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
         module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
         module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
         module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
@@ -276,7 +275,6 @@ public class DataTableModuleEditor : Editor
         module.speed = EditorGUILayout.FloatField("Speed", module.speed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
         module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
         module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
         module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
@@ -377,7 +375,6 @@ public class DataTableModuleEditor : Editor
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
         module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
         module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
         module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
@@ -478,7 +475,6 @@ public class DataTableModuleEditor : Editor
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
         module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
         module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
         module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
@@ -595,7 +591,6 @@ public class DataTableModuleEditor : Editor
         module.aircraftAvoidanceRadius = EditorGUILayout.FloatField("Aircraft Avoidance Radius", module.aircraftAvoidanceRadius);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.techLevel = EditorGUILayout.IntField("TechLevel", module.upgradeCost.techLevel);
         module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
         module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
         module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);

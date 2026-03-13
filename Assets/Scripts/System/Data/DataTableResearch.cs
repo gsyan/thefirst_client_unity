@@ -142,8 +142,9 @@ public class DataTableResearch : ScriptableObject
             string researchId = GetCol(cols, col, "research_id");
             if (string.IsNullOrEmpty(researchId)) continue;
 
+            // tech_level: TechLevelResearchData에서만 유효 — ModuleResearchData는 서브타입 인코딩에서 파싱
             var cost = new CostStruct(
-                ParseCsvInt (GetCol(cols, col, "tech_level")),
+                researchId.StartsWith("tech_level_") ? ParseCsvInt(GetCol(cols, col, "tech_level")) : 0,
                 ParseCsvLong(GetCol(cols, col, "cost_m")),
                 ParseCsvLong(GetCol(cols, col, "cost_mr")),
                 ParseCsvLong(GetCol(cols, col, "cost_me")),
