@@ -76,18 +76,10 @@ public class ModulePlaceholder : ModuleBase
         if (moduleType == EModuleType.engine)
         {
             statRows[2].SetRow("speed_power", $"{moduleData.speed:F0}");
-            statRows[3].SetRow("empty_text", "");
-            statRows[4].SetRow("empty_text", "");
-            statRows[5].SetRow("empty_text", "");
-            statRows[6].SetRow("empty_text", "");
         }
         else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
         {
             statRows[2].SetRow("attack_power", $"{moduleData.attackPower:F0}");
-            statRows[3].SetRow("empty_text", "");
-            statRows[4].SetRow("empty_text", "");
-            statRows[5].SetRow("empty_text", "");
-            statRows[6].SetRow("empty_text", "");
         }
         else if (moduleType == EModuleType.hanger)
         {

@@ -75,6 +75,26 @@ MonoBehaviour:
     m_Key: fleet_btn_ship_repair
     m_Metadata:
       m_Items: []
+  - m_Id: 12029587504365568
+    m_Key: fleet_tech_level_info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12029587550502912
+    m_Key: fleet_tech_level_info_max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12029587550502913
+    m_Key: fleet_tech_level_btn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12029587550502914
+    m_Key: research_complete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12029587550502915
+    m_Key: error_insufficient_resources
+    m_Metadata:
+      m_Items: []
   - m_Id: 63232261619717
     m_Key: ship_status
     m_Metadata:

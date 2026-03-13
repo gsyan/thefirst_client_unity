@@ -6,13 +6,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
 
+public enum EAdResult { Rewarded, UserClosed, Failed }
+
 public class AdManager : MonoSingleton<AdManager>
 {
     [SerializeField] private AdConfig m_adConfig;
 
     private RewardedAd _rewardedAd;
-    private Action<bool> _onRewardedAdClosed; // true = 보상 지급, false = 취소/실패
-    private bool _isDeviceAllowed = true;     // dev 빌드에서 비테스트 기기 차단용
+    private Action<EAdResult> _onRewardedAdClosed;
+    private bool _rewardEarned;                   // 보상 수령 여부 (Closed 시 구분용)
+    private bool _isDeviceAllowed = true;         // dev 빌드에서 비테스트 기기 차단용
 
     // AdMob 콜백은 백그라운드 스레드에서 오므로 메인 스레드로 전달
     private readonly Queue<Action> _mainThreadQueue = new Queue<Action>();
@@ -104,6 +107,13 @@ public class AdManager : MonoSingleton<AdManager>
         });
     }
 
+    // 광고 미준비 상태에서 입장 허용 후 즉시 재로드 요청
+    public void RequestLoad()
+    {
+        if (IsRewardedAdReady == false)
+            LoadRewardedAd();
+    }
+
     private IEnumerator RetryLoadAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -114,7 +124,14 @@ public class AdManager : MonoSingleton<AdManager>
     {
         ad.OnAdFullScreenContentClosed += () =>
         {
-            Dispatch(LoadRewardedAd); // 다음 광고 미리 로드
+            Dispatch(() =>
+            {
+                // 보상 없이 닫힌 경우 = 유저가 직접 닫음
+                EAdResult result = _rewardEarned ? EAdResult.Rewarded : EAdResult.UserClosed;
+                _onRewardedAdClosed?.Invoke(result);
+                _onRewardedAdClosed = null;
+                LoadRewardedAd();
+            });
         };
 
         ad.OnAdFullScreenContentFailed += error =>
@@ -122,24 +139,25 @@ public class AdManager : MonoSingleton<AdManager>
             Dispatch(() =>
             {
                 Debug.LogWarning($"[AdManager] 리워드 광고 표시 실패: {error}");
-                _onRewardedAdClosed?.Invoke(false);
+                _onRewardedAdClosed?.Invoke(EAdResult.Failed);
                 _onRewardedAdClosed = null;
                 LoadRewardedAd();
             });
         };
     }
 
-    /// <summary>리워드 광고 표시. callback: true=보상 지급, false=취소/실패</summary>
-    public void ShowRewardedAd(Action<bool> callback)
+    /// <summary>리워드 광고 표시. callback: Rewarded=보상완료, UserClosed=유저닫음, Failed=표시실패</summary>
+    public void ShowRewardedAd(Action<EAdResult> callback)
     {
         if (_rewardedAd == null || _rewardedAd.CanShowAd() == false)
         {
             Debug.LogWarning("[AdManager] 리워드 광고 준비 안 됨");
-            callback?.Invoke(false);
+            callback?.Invoke(EAdResult.Failed);
             LoadRewardedAd();
             return;
         }
 
+        _rewardEarned = false;
         _onRewardedAdClosed = callback;
 
         _rewardedAd.Show(reward =>
@@ -147,7 +165,8 @@ public class AdManager : MonoSingleton<AdManager>
             Dispatch(() =>
             {
                 Debug.Log($"[AdManager] 보상 지급: {reward.Type} x{reward.Amount}");
-                _onRewardedAdClosed?.Invoke(true);
+                _rewardEarned = true;
+                _onRewardedAdClosed?.Invoke(EAdResult.Rewarded);
                 _onRewardedAdClosed = null;
             });
         });

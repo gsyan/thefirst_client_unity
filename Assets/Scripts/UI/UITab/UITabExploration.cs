@@ -137,6 +137,20 @@ public class UITabExploration : UITabBase
     {
         if (m_zoneCellContainer == null || m_zoneMapCellPrefab == null || m_datatableZone == null) return;
 
+        Canvas.ForceUpdateCanvases();
+
+        var grid = m_zoneCellContainer.GetComponent<GridLayoutGroup>();
+        if (grid != null)
+        {
+            int columns = grid.constraintCount > 0 ? grid.constraintCount : 3;
+            float w = m_zoneCellContainer.rect.width
+                      - grid.padding.left - grid.padding.right
+                      - grid.spacing.x * (columns - 1);
+            float cellW = Mathf.Max(1f, w / columns);
+            float aspect = grid.cellSize.x > 0f ? grid.cellSize.y / grid.cellSize.x : 1f;
+            grid.cellSize = new Vector2(cellW, cellW * aspect);
+        }
+
         var clearedZoneNames = m_myCharacter != null ? m_myCharacter.m_characterInfo.clearedZones : null;
         int myShipCount = m_myFleet != null && m_myFleet.m_ships != null ? m_myFleet.m_ships.Count : 0;
 
@@ -456,19 +470,32 @@ public class UITabExploration : UITabBase
     {
         bool adInstanceNull = AdManager.Instance == null;
         bool adReady = adInstanceNull == false && AdManager.Instance.IsRewardedAdReady;
-        Debug.Log($"[Ad] Instance null={adInstanceNull}, IsReady={adReady}");
 
         if (adInstanceNull == false && adReady == true)
         {
-            AdManager.Instance.ShowRewardedAd(isRewarded =>
+            AdManager.Instance.ShowRewardedAd(result =>
             {
-                Debug.Log($"[Ad] ShowRewardedAd callback isRewarded={isRewarded}");
-                if (isRewarded == true)
+                if (result == EAdResult.Rewarded)
+                {
                     EnterZone(zone);
+                }
+                else if (result == EAdResult.Failed)
+                {
+                    ShowResultMessage("[광고] 광고 오류로 입장합니다");
+                    EnterZone(zone);
+                }
+                else if (result == EAdResult.UserClosed)
+                {
+                    ShowResultMessage("[광고] 광고를 시청해야 입장할 수 있습니다");
+                }
             });
         }
         else
         {
+            // 광고 미준비 → 입장 허용 후 즉시 재로드 요청
+            if (adInstanceNull == false)
+                AdManager.Instance.RequestLoad();
+            ShowResultMessage("[광고] 광고 미준비 상태로 입장합니다");
             EnterZone(zone);
         }
     }

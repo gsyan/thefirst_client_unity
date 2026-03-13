@@ -202,7 +202,11 @@ public class DataTableModule : ScriptableObject
         if (group == null)
         {
             group = new ModuleSubTypeGroup { subType = data.moduleSubType };
-            bodyGroups.Add(group);
+            if (data.moduleType == EModuleType.body)          bodyGroups.Add(group);
+            else if (data.moduleType == EModuleType.engine)   engineGroups.Add(group);
+            else if (data.moduleType == EModuleType.beam)     beamGroups.Add(group);
+            else if (data.moduleType == EModuleType.missile)  missileGroups.Add(group);
+            else if (data.moduleType == EModuleType.hanger)   hangerGroups.Add(group);
         }
         group.modules.Add(data);
 #if UNITY_EDITOR
@@ -444,7 +448,7 @@ public class DataTableModule : ScriptableObject
                 aircraftAmmo                    = ParseCsvInt  (GetCol(cols, col, "ammo_air")),
                 aircraftDetectionRadius         = ParseCsvFloat(GetCol(cols, col, "detect_radius_air")),
                 aircraftAvoidanceRadius         = ParseCsvFloat(GetCol(cols, col, "avoid_radius_air")),
-                upgradeCost = new CostStruct(1,
+                upgradeCost = new CostStruct(0, // techLevel: 서브타입 인코딩에서 파싱
                     ParseCsvLong (GetCol(cols, col, "cost_m")),
                     ParseCsvLong (GetCol(cols, col, "cost_mr")),
                     ParseCsvLong (GetCol(cols, col, "cost_me")),

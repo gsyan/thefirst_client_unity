@@ -605,6 +605,26 @@ MonoBehaviour:
     m_Localized: "\uC9D1\uC911 \uC218\uB9AC"
     m_Metadata:
       m_Items: []
+  - m_Id: 12029587504365568
+    m_Localized: "Lv.{0}  \xB7  \uC624\uD504\uB77C\uC778 {1}h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12029587550502912
+    m_Localized: "Lv.{0} (MAX)  \xB7  \uC624\uD504\uB77C\uC778 {1}h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12029587550502913
+    m_Localized: "Lv.{0} <voffset=6>\u2192</voffset>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12029587550502914
+    m_Localized: "\uC5F0\uAD6C\uAC00 \uC644\uB8CC\uB418\uC5C8\uC2B5\uB2C8\uB2E4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12029587550502915
+    m_Localized: "\uC790\uC6D0\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

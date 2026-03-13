@@ -7,7 +7,8 @@ public enum EResearchNodeState
 {
     Researchable,   // 배울 수 있음 (선행 조건 충족)
     Researched,     // 이미 배움
-    Current         // 현재 장착 중 (모듈 업그레이드 팝업 전용)
+    Current,        // 현재 장착 중 (모듈 업그레이드 팝업 전용)
+    Locked          // 기술레벨 부족 — 선택 불가
 }
 
 public class ScrollViewResearchItem : MonoBehaviour
@@ -20,6 +21,7 @@ public class ScrollViewResearchItem : MonoBehaviour
     [SerializeField] private Color m_colorResearchable = new Color(0.3f, 0.3f, 0.3f, 1f);
     [SerializeField] private Color m_colorResearched = new Color(0.2f, 0.8f, 0.4f, 1f);
     [SerializeField] private Color m_colorCurrent = new Color(0.2f, 0.6f, 1f, 1f);    // 현재 장착 중 - 파란색
+    [SerializeField] private Color m_colorLocked = new Color(0.15f, 0.15f, 0.15f, 0.6f); // 기술레벨 부족 - 어둡게
     [SerializeField] private Color m_colorSelected = new Color(1f, 0.8f, 0.2f, 1f);
     [SerializeField] private float m_outlineWidth = 4f;
 
@@ -49,7 +51,9 @@ public class ScrollViewResearchItem : MonoBehaviour
     {
         if (m_backgroundImage == null) return;
 
-        if (baseState == EResearchNodeState.Current)
+        if (baseState == EResearchNodeState.Locked)
+            m_backgroundImage.color = m_colorLocked;
+        else if (baseState == EResearchNodeState.Current)
             m_backgroundImage.color = m_colorCurrent;
         else if (baseState == EResearchNodeState.Researched)
             m_backgroundImage.color = m_colorResearched;
@@ -57,6 +61,6 @@ public class ScrollViewResearchItem : MonoBehaviour
             m_backgroundImage.color = m_colorResearchable;
 
         if (m_outline != null)
-            m_outline.enabled = isSelected;
+            m_outline.enabled = isSelected && baseState != EResearchNodeState.Locked;
     }
 }

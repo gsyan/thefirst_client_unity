@@ -174,9 +174,8 @@ public class DataTableResearchEditor : Editor
 
             EditorGUILayout.Space(5);
 
-            // 연구 비용
+            // 연구 비용 (Tech Level은 서브타입 인코딩에서 파싱 — 별도 입력 불필요)
             EditorGUILayout.LabelField("Research Cost", EditorStyles.boldLabel);
-            researchData.researchCost.techLevel = EditorGUILayout.IntField("Tech Level", researchData.researchCost.techLevel);
             researchData.researchCost.mineral = EditorGUILayout.LongField("Mineral", researchData.researchCost.mineral);
             researchData.researchCost.mineralRare = EditorGUILayout.LongField("Mineral Rare", researchData.researchCost.mineralRare);
             researchData.researchCost.mineralExotic = EditorGUILayout.LongField("Mineral Exotic", researchData.researchCost.mineralExotic);
@@ -285,7 +284,7 @@ public class DataTableResearchEditor : Editor
         foreach (var d in dataTable.ResearchDataList)
         {
             string prereqs = d.prerequisiteIds != null ? string.Join("|", d.prerequisiteIds) : "";
-            sb.AppendLine($"{d.researchId},{(int)d.moduleType},{(int)d.moduleSubType},{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.techLevel},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark},");
+            sb.AppendLine($"{d.researchId},{(int)d.moduleType},{(int)d.moduleSubType},{prereqs},{d.uiPosition.x},{d.uiPosition.y},0,{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark},");
         }
         return sb.ToString();
     }
