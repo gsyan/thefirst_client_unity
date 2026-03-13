@@ -142,13 +142,20 @@ public class UITabExploration : UITabBase
         var grid = m_zoneCellContainer.GetComponent<GridLayoutGroup>();
         if (grid != null)
         {
-            int columns = grid.constraintCount > 0 ? grid.constraintCount : 3;
-            float w = m_zoneCellContainer.rect.width
-                      - grid.padding.left - grid.padding.right
-                      - grid.spacing.x * (columns - 1);
-            float cellW = Mathf.Max(1f, w / columns);
-            float aspect = grid.cellSize.x > 0f ? grid.cellSize.y / grid.cellSize.x : 1f;
-            grid.cellSize = new Vector2(cellW, cellW * aspect);
+            int columns = grid.constraintCount > 0 ? grid.constraintCount : 5;
+
+            // 그룹 1 기준 존 수로 행 수 계산 (그룹마다 동일 개수 전제)
+            int zonesInGroup = 0;
+            for (int i = 1; i < m_datatableZone.ZoneCount; i++)
+            {
+                ZoneConfig z = m_datatableZone.GetZone(i);
+                if (z != null && ParseZoneGroup(z.zoneName) == 1) zonesInGroup++;
+            }
+            int rows = zonesInGroup > 0 ? Mathf.CeilToInt((float)zonesInGroup / columns) : 5;
+
+            float availW = m_zoneCellContainer.rect.width  - grid.padding.left  - grid.padding.right  - grid.spacing.x * (columns - 1);
+            float availH = m_zoneCellContainer.rect.height - grid.padding.top   - grid.padding.bottom - grid.spacing.y * (rows    - 1);
+            grid.cellSize = new Vector2(Mathf.Max(1f, availW / columns), Mathf.Max(1f, availH / rows));
         }
 
         var clearedZoneNames = m_myCharacter != null ? m_myCharacter.m_characterInfo.clearedZones : null;
