@@ -430,6 +430,7 @@ public class ZoneCollectRequest
 public class ZoneCollectResponse
 {
     public string collectDateTime;  // 수확 시간 (ISO 8601 형식)
+    public long elapsedSeconds;     // 실제 적립된 시간(초) — 오프라인 캡 적용 후 값
     public CostRemainInfo rewardInfo;  // 수확 보상
 }
 

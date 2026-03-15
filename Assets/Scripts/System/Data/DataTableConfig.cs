@@ -17,20 +17,6 @@ public class GameSettings
     public int maxShipsPerFleet = 9;
 
     [Tooltip("함선 추가 시 필요한 Mineral 비용 (함선 개수별 차등 적용)")]
-    // public CostStruct[] addShipCosts = new CostStruct[]
-    // {
-    //     new CostStruct(0, 0, 0, 0, 0),
-    //     new CostStruct(2, 100, 0, 0, 0),
-    //     new CostStruct(4, 200, 0, 0, 0),
-    //     new CostStruct(6, 300, 0, 0, 0),
-    //     new CostStruct(8, 500, 0, 0, 0),
-    //     new CostStruct(10, 800, 0, 0, 0),
-    //     new CostStruct(15, 1300, 0, 0, 0),
-    //     new CostStruct(20, 2100, 0, 0, 0),
-    //     new CostStruct(25, 3400, 0, 0, 0),
-    //     new CostStruct(30, 5500, 0, 0, 0),
-    //     new CostStruct(40, 8900, 0, 0, 0)
-    // };
     public CostStruct[] addShipCosts = new CostStruct[]
     {
         new CostStruct(0, 0, 0, 0, 0),                      // idx 0: 초기 함선 (무료)

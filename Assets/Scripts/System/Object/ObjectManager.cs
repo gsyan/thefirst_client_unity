@@ -250,9 +250,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         var charInfo = DataManager.Instance.m_currentCharacter.m_characterInfo;
         float elapsedSec = GetElapsedSecondsFromCollect(charInfo.collectDateTime);
-        long hours = (long)(elapsedSec / 3600);
-        long minutes = (long)((elapsedSec % 3600) / 60);
-        string timeStr = hours > 0 ? $"{hours}h {minutes}m" : $"{minutes}m";
 
         // 수확 전 잔액 스냅샷 — 팝업에 실제 획득량(delta)을 표시하기 위해 사용
         var character = DataManager.Instance.m_currentCharacter;
@@ -274,6 +271,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                         character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
                         character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
 
+                        // 실제 적립 시간(캡 적용 후) — 서버값 우선, 없으면 클라 경과 시간으로 fallback
+                        long creditedSec = response.data.elapsedSeconds > 0 ? response.data.elapsedSeconds : (long)elapsedSec;
+                        long ch = creditedSec / 3600;
+                        long cm = (creditedSec % 3600) / 60;
+                        string creditedTimeStr = ch > 0 ? $"{ch}h {cm}m" : $"{cm}m";
+
                         // 실제 획득량(remain - before)만 팝업에 표시
                         var earned = new CostRemainInfo
                         {
@@ -282,7 +285,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                             remainMineralExotic = response.data.rewardInfo.remainMineralExotic - beforeMineralExotic,
                             remainMineralDark   = response.data.rewardInfo.remainMineralDark   - beforeMineralDark,
                         };
-                        ShowHarvestResultPopup(timeStr, earned);
+                        ShowHarvestResultPopup(creditedTimeStr, earned);
                         return;
                     }
                 }
