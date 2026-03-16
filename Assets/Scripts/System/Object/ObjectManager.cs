@@ -91,6 +91,19 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     [HideInInspector] public List<SpaceFleet> m_enemyFleets = new List<SpaceFleet>();
     [HideInInspector] public List<SpaceMineral> m_mineralList = new List<SpaceMineral>();
 
+    // 카메라 포커스용 — 실제 적 함대 위치 우선, 없으면 마지막 스폰 위치 반환
+    // TODO: 향후 존 config에 적 위치 데이터 추가 시 이 필드를 config 값으로 대체
+    private Vector3 m_enemyFleetFocusPosition;
+    public Vector3 EnemyFleetFocusPosition
+    {
+        get
+        {
+            if (m_enemyFleets.Count > 0 && m_enemyFleets[0] != null)
+                return m_enemyFleets[0].transform.position;
+            return m_enemyFleetFocusPosition;
+        }
+    }
+
     // Zone 전투 관련
     private ZoneConfig m_currentZoneConfig;
     private int m_currentWaveIndex;
@@ -141,6 +154,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 전투 강제 종료 (전멸/퇴각 공통)
     public void ForceEndBattle(bool isVictory)
     {
+        GameSpeedController.Reset(); // timeScale 및 오디오 피치 복원
         StopEnemySpawning();
         OrderAllAircraftReturn();
         CleanupAllProjectiles();
@@ -245,18 +259,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         return 0f;
     }
 
-    // 접속 시 자동 수확 → 결과 팝업(경과 시간 + 수집 광물량) 표시
+    // 접속 시 자동 수확 → 온라인/오프라인 구간 분리 결과 팝업 표시
     private void ShowOfflineHarvestPopup()
     {
-        var charInfo = DataManager.Instance.m_currentCharacter.m_characterInfo;
-        float elapsedSec = GetElapsedSecondsFromCollect(charInfo.collectDateTime);
-
-        // 수확 전 잔액 스냅샷 — 팝업에 실제 획득량(delta)을 표시하기 위해 사용
         var character = DataManager.Instance.m_currentCharacter;
-        long beforeMineral       = character.GetMineral();
-        long beforeMineralRare   = character.GetMineralRare();
-        long beforeMineralExotic = character.GetMineralExotic();
-        long beforeMineralDark   = character.GetMineralDark();
 
         NetworkManager.Instance.CollectZone(new ZoneCollectRequest(), (response) => {
             if (response.errorCode == (int)ServerErrorCode.SUCCESS && response.data != null)
@@ -270,22 +276,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                         character.UpdateMineralRare(response.data.rewardInfo.remainMineralRare);
                         character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
                         character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
-
-                        // 실제 적립 시간(캡 적용 후) — 서버값 우선, 없으면 클라 경과 시간으로 fallback
-                        long creditedSec = response.data.elapsedSeconds > 0 ? response.data.elapsedSeconds : (long)elapsedSec;
-                        long ch = creditedSec / 3600;
-                        long cm = (creditedSec % 3600) / 60;
-                        string creditedTimeStr = ch > 0 ? $"{ch}h {cm}m" : $"{cm}m";
-
-                        // 실제 획득량(remain - before)만 팝업에 표시
-                        var earned = new CostRemainInfo
-                        {
-                            remainMineral       = response.data.rewardInfo.remainMineral       - beforeMineral,
-                            remainMineralRare   = response.data.rewardInfo.remainMineralRare   - beforeMineralRare,
-                            remainMineralExotic = response.data.rewardInfo.remainMineralExotic - beforeMineralExotic,
-                            remainMineralDark   = response.data.rewardInfo.remainMineralDark   - beforeMineralDark,
-                        };
-                        ShowHarvestResultPopup(creditedTimeStr, earned);
+                        ShowHarvestResultPopup(response.data);
                         return;
                     }
                 }
@@ -294,16 +285,67 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         });
     }
 
-    // 수확 결과 팝업: 경과 시간 + 수집량이 있는 광물 종류만 표시
-    private void ShowHarvestResultPopup(string timeStr, CostRemainInfo rewardInfo)
+    // 수확 결과 팝업: 오프라인(시간+자원) → 온라인 미수집(자원) → 합계 순서로 표시
+    private void ShowHarvestResultPopup(ZoneCollectResponse data)
     {
-        var labels = new List<string> { "exploration_elapsed_time" };
-        var values = new List<string> { timeStr };
+        var labels = new List<string>();
+        var values = new List<string>();
 
-        if (rewardInfo.remainMineral > 0)       { labels.Add("mineral_amount");        values.Add(CommonUtility.FormatBigNumber(rewardInfo.remainMineral)); }
-        if (rewardInfo.remainMineralRare > 0)    { labels.Add("mineral_rare_amount");   values.Add(CommonUtility.FormatBigNumber(rewardInfo.remainMineralRare)); }
-        if (rewardInfo.remainMineralExotic > 0)  { labels.Add("mineral_exotic_amount"); values.Add(CommonUtility.FormatBigNumber(rewardInfo.remainMineralExotic)); }
-        if (rewardInfo.remainMineralDark > 0)    { labels.Add("mineral_dark_amount");   values.Add(CommonUtility.FormatBigNumber(rewardInfo.remainMineralDark)); }
+        long onEarned_M  = data.onlineRewardInfo != null ? -data.onlineRewardInfo.mineralCost      : 0;
+        long onEarned_MR = data.onlineRewardInfo != null ? -data.onlineRewardInfo.mineralRareCost   : 0;
+        long onEarned_ME = data.onlineRewardInfo != null ? -data.onlineRewardInfo.mineralExoticCost : 0;
+        long onEarned_MD = data.onlineRewardInfo != null ? -data.onlineRewardInfo.mineralDarkCost   : 0;
+
+        long totalEarned_M  = -data.rewardInfo.mineralCost;
+        long totalEarned_MR = -data.rewardInfo.mineralRareCost;
+        long totalEarned_ME = -data.rewardInfo.mineralExoticCost;
+        long totalEarned_MD = -data.rewardInfo.mineralDarkCost;
+
+        long offEarned_M  = totalEarned_M  - onEarned_M;
+        long offEarned_MR = totalEarned_MR - onEarned_MR;
+        long offEarned_ME = totalEarned_ME - onEarned_ME;
+        long offEarned_MD = totalEarned_MD - onEarned_MD;
+
+        bool hasOffline = data.offlineSeconds > 0;
+        bool hasOnline  = data.onlineSeconds  > 0 && (onEarned_M > 0 || onEarned_MR > 0 || onEarned_ME > 0 || onEarned_MD > 0);
+
+        // 오프라인 섹션: 시간 표시 + 자원
+        if (hasOffline)
+        {
+            long ch = data.offlineSeconds / 3600;
+            long cm = (data.offlineSeconds % 3600) / 60;
+            string offTimeStr = ch > 0 ? $"{ch}h {cm}m" : $"{cm}m";
+            long cch = data.offlineCapSeconds / 3600;
+            labels.Add("harvest_offline_elapsed");
+            values.Add($"{offTimeStr} / {cch}h");
+
+            if (offEarned_M  > 0) { labels.Add("mineral_amount");        values.Add(CommonUtility.FormatBigNumber(offEarned_M)); }
+            if (offEarned_MR > 0) { labels.Add("mineral_rare_amount");   values.Add(CommonUtility.FormatBigNumber(offEarned_MR)); }
+            if (offEarned_ME > 0) { labels.Add("mineral_exotic_amount"); values.Add(CommonUtility.FormatBigNumber(offEarned_ME)); }
+            if (offEarned_MD > 0) { labels.Add("mineral_dark_amount");   values.Add(CommonUtility.FormatBigNumber(offEarned_MD)); }
+        }
+
+        // 온라인 미수집 섹션: 자원만 표시
+        if (hasOnline)
+        {
+            labels.Add("harvest_online_uncollected");
+            values.Add("");
+            if (onEarned_M  > 0) { labels.Add("mineral_amount");        values.Add(CommonUtility.FormatBigNumber(onEarned_M)); }
+            if (onEarned_MR > 0) { labels.Add("mineral_rare_amount");   values.Add(CommonUtility.FormatBigNumber(onEarned_MR)); }
+            if (onEarned_ME > 0) { labels.Add("mineral_exotic_amount"); values.Add(CommonUtility.FormatBigNumber(onEarned_ME)); }
+            if (onEarned_MD > 0) { labels.Add("mineral_dark_amount");   values.Add(CommonUtility.FormatBigNumber(onEarned_MD)); }
+        }
+
+        // 합계 섹션: 두 섹션 모두 있을 때만 표시
+        if (hasOffline && hasOnline)
+        {
+            labels.Add("harvest_total");
+            values.Add("");
+            if (totalEarned_M  > 0) { labels.Add("mineral_amount");        values.Add(CommonUtility.FormatBigNumber(totalEarned_M)); }
+            if (totalEarned_MR > 0) { labels.Add("mineral_rare_amount");   values.Add(CommonUtility.FormatBigNumber(totalEarned_MR)); }
+            if (totalEarned_ME > 0) { labels.Add("mineral_exotic_amount"); values.Add(CommonUtility.FormatBigNumber(totalEarned_ME)); }
+            if (totalEarned_MD > 0) { labels.Add("mineral_dark_amount");   values.Add(CommonUtility.FormatBigNumber(totalEarned_MD)); }
+        }
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("exploration_collect_available_title"),
@@ -333,6 +375,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_totalDestroyedEnemies = 0;
         m_onZoneBattleComplete = onComplete;
 
+        GameSpeedController.RestoreSpeed(); // 이전 전투 배속 복원
         m_spawnCoroutine = StartCoroutine(SpawnWaves());
     }
 
@@ -344,6 +387,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             onComplete?.Invoke(false);
             return;
         }
+        GameSpeedController.RestoreSpeed(); // 이전 전투 배속 복원
 
         m_isPvpBattle = true;
         m_onPvpBattleComplete = onComplete;
@@ -490,6 +534,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (m_myFleet == null || enemyShipConfigs == null || enemyShipConfigs.Count == 0) return;
 
         Vector3 spawnPosition = GetEnemySpawnPosition();
+        m_enemyFleetFocusPosition = spawnPosition;
         GameObject fleetObj = new GameObject($"EnemyFleet_{m_currentWaveIndex}");
         fleetObj.transform.position = spawnPosition;
 

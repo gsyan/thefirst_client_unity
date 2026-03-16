@@ -1,11 +1,16 @@
-// 카메라 포커스 전환 버튼 패널 — 존 전투 중 표시, 카메라 포커스 순환 및 버튼그룹 동기화
+// 카메라 포커스 전환 버튼 패널 — 존 전투 중 표시, 카메라 포커스 순환 및 속도 토글 버튼 포함
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIPanelCameraView : UIPanelBase
 {
     public Button m_cameraViewCycleButton;
     [SerializeField] private ButtonGroupSystem buttonGroup;
+
+    [Header("Game Speed")]
+    [SerializeField] private Button m_speedButton;
+    [SerializeField] private TextMeshProUGUI m_speedLabel;
 
     [Header("Viewport 연동 앵커 (0~1 범위)")]
     [SerializeField] private float m_anchorXA = 0.5f;    // UI 닫힘 앵커 중심 X
@@ -19,6 +24,7 @@ public class UIPanelCameraView : UIPanelBase
         m_rectTransform = GetComponent<RectTransform>();
         // start 에서 이벤트 등록 하면, 인스턴스 활성화 될때까지 이벤트 받지 못함. 그래서 여기로 이동
         EventManager.Subscribe_CameraViewportChanged(OnViewportChanged);
+        EventManager.Subscribe_GameSpeedChanged(OnGameSpeedChanged);
     }
 
     void Start()
@@ -37,12 +43,18 @@ public class UIPanelCameraView : UIPanelBase
 
         // buttonGroup 초기화 완료 후 구독 (Select 호출 안전 보장)
         EventManager.Subscribe_CameraFocusTargetChanged(OnCameraFocusTargetChanged);
+
+        if (m_speedButton != null)
+            m_speedButton.onClick.AddListener(OnSpeedButtonClicked);
+
+        RefreshSpeedLabel(GameSpeedController.CurrentSpeed);
     }
 
     void OnDestroy()
     {
         EventManager.Unsubscribe_CameraFocusTargetChanged(OnCameraFocusTargetChanged);
         EventManager.Unsubscribe_CameraViewportChanged(OnViewportChanged);
+        EventManager.Unsubscribe_GameSpeedChanged(OnGameSpeedChanged);
     }
 
     private void OnCameraViewCycleClicked()
@@ -53,6 +65,23 @@ public class UIPanelCameraView : UIPanelBase
     private void OnCameraFocusTargetChanged(ECameraFocusTarget target)
     {
         buttonGroup.Select((int)target);
+    }
+
+    private void OnSpeedButtonClicked()
+    {
+        GameSpeedController.CycleNext();
+    }
+
+    private void OnGameSpeedChanged(float speed, float pitch)
+    {
+        RefreshSpeedLabel(speed);
+    }
+
+    private void RefreshSpeedLabel(float speed)
+    {
+        if (m_speedLabel == null) return;
+        // 0.5 → "x0.5", 1.0 → "x1", 1.5 → "x1.5" 형태로 표시
+        m_speedLabel.text = speed == (int)speed ? $"x{(int)speed}" : $"x{speed:F1}";
     }
 
     public override void OnShowUIPanel()

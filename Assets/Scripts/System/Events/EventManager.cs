@@ -264,6 +264,21 @@ public static class EventManager
         OnPvpBattleResult -= callback;
     }
 
+    // 게임 속도 변경 (speed = timeScale 값, pitch = 오디오 피치)
+    public static event Action<float, float> OnGameSpeedChanged;
+    public static void Trigger_GameSpeedChanged(float speed, float pitch)
+    {
+        OnGameSpeedChanged?.Invoke(speed, pitch);
+    }
+    public static void Subscribe_GameSpeedChanged(Action<float, float> callback)
+    {
+        OnGameSpeedChanged += callback;
+    }
+    public static void Unsubscribe_GameSpeedChanged(Action<float, float> callback)
+    {
+        OnGameSpeedChanged -= callback;
+    }
+
     // Module Replaced (oldModule, newModule)
     public static event Action<ModuleBase, ModuleBase> OnModuleReplaced;
     public static void TriggerModuleReplaced(ModuleBase oldModule, ModuleBase newModule)

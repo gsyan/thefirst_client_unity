@@ -79,16 +79,12 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_currentTarget != null && m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
             m_targetPosition = m_currentTarget.position;
 
-        // Center 모드: 매 프레임 두 함대의 중간점을 갱신
+        // Center 모드: 매 프레임 두 함대의 중간점을 갱신 (적 없으면 마지막 스폰 위치 사용)
         if (m_focusTarget == ECameraFocusTarget.camera_focus_center && m_currentTarget == null)
         {
             var objMgr = ObjectManager.Instance;
-            if (objMgr != null && objMgr.m_myFleet != null
-                && objMgr.m_enemyFleets.Count > 0 && objMgr.m_enemyFleets[0] != null)
-            {
-                m_targetPosition = (objMgr.m_myFleet.transform.position
-                    + objMgr.m_enemyFleets[0].transform.position) * 0.5f;
-            }
+            if (objMgr != null && objMgr.m_myFleet != null)
+                m_targetPosition = (objMgr.m_myFleet.transform.position + objMgr.EnemyFleetFocusPosition) * 0.5f;
         }
         
 
@@ -520,22 +516,20 @@ public class CameraController : MonoSingleton<CameraController>
         switch (focusTarget)
         {
             case ECameraFocusTarget.camera_focus_enemy_fleet:
-                if (objMgr.m_enemyFleets.Count < 1 || objMgr.m_enemyFleets[0] == null) return; // 적 함대 없으면 리턴
-                if( m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
+                if (m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
                 {
                     m_currentTargetBackup = m_currentTarget;
                     m_currentTarget = null;
-                }                
-                m_targetPosition = objMgr.m_enemyFleets[0].transform.position;
+                }
+                m_targetPosition = objMgr.EnemyFleetFocusPosition;
                 break;
             case ECameraFocusTarget.camera_focus_center:
-                if (objMgr.m_enemyFleets.Count < 1 || objMgr.m_enemyFleets[0] == null) return; // 적 함대 없으면 리턴
-                if( m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
+                if (m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
                 {
                     m_currentTargetBackup = m_currentTarget;
-                    m_currentTarget = null;    
-                }                
-                m_targetPosition = (myFleet.transform.position + objMgr.m_enemyFleets[0].transform.position) * 0.5f;                    
+                    m_currentTarget = null;
+                }
+                m_targetPosition = (myFleet.transform.position + objMgr.EnemyFleetFocusPosition) * 0.5f;
                 break;
             case ECameraFocusTarget.camera_focus_my_fleet:
                 if (m_currentTargetBackup == null)

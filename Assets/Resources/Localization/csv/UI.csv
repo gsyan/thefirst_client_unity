@@ -14,7 +14,6 @@ fleet_formation,,Formation,함대 진영
 fleet_formation_change,,Change Formation,진형 변경
 fleet_btn_ship_manage,,Manage Ship,함선 관리
 fleet_btn_ship_repair,,Focus Repair,집중 수리
-fleet_tech_level_info,,Lv.{0}  ·  M:{1}h  ·  S.{2}  ·  G:{3},Lv.{0}  ·  M:{1}h  ·  S.{2}  ·  G:{3}
 fleet_tech_level_btn,,Lv.{0} <voffset=6>→</voffset> {1},Lv.{0} <voffset=6>→</voffset> {1}
 research_complete,,Research complete,연구가 완료되었습니다
 error_insufficient_resources,,Insufficient resources,자원이 부족합니다
@@ -37,6 +36,9 @@ explroation_collected_minerals,,Collected Minerals,수집된 광물
 explroation_collect_mineral,,Collect Mineral,미네랄 수확
 exploration_collect_available_title,,Harvest,수확
 exploration_elapsed_time,,Elapsed,경과 시간
+harvest_offline_elapsed,,Offline,오프라인
+harvest_online_uncollected,,Online (Uncollected),온라인 미수집
+harvest_total,,Total,합계
 exploration_zone_insufficient_ships,,Not enough ships,함선이 부족합니다
 research_button_name,,Research,연구
 research_tech_name,,Tech,기술
@@ -47,6 +49,7 @@ pvp_score_mine_head,,My PVP Info,내 PVP 정보
 pvp_score_mine,,Score,점수
 pvp_rank_mine,,Rank,랭크
 pvp_opponent_info,,Opponent Fleet Power,상대 함대 전력
+pvp_score_rank,,{0} (Rank {1}),{0} ({1}위)
 pvp_rank_title,,Rank List,순위표
 pvp_battle_result_win,,Victory,승리
 pvp_battle_result_lose,,Defeat,패배

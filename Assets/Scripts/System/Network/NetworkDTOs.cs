@@ -429,9 +429,12 @@ public class ZoneCollectRequest
 [System.Serializable]
 public class ZoneCollectResponse
 {
-    public string collectDateTime;  // 수확 시간 (ISO 8601 형식)
-    public long elapsedSeconds;     // 실제 적립된 시간(초) — 오프라인 캡 적용 후 값
-    public CostRemainInfo rewardInfo;  // 수확 보상
+    public string collectDateTime;           // 수확 시간 (ISO 8601 형식)
+    public long onlineSeconds;               // 온라인 미수집 구간(초)
+    public long offlineSeconds;              // 오프라인 적립 구간(초, 캡 적용)
+    public long offlineCapSeconds;           // 적용된 오프라인 캡(초)
+    public CostRemainInfo onlineRewardInfo;  // 온라인 구간 보상 (mineralCost 필드 사용)
+    public CostRemainInfo rewardInfo;        // 전체 보상 (remainMineral = 최종 잔액)
 }
 
 [System.Serializable]

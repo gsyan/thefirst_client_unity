@@ -128,7 +128,7 @@ public class UIPanelSpace : UIPanelBase
         float elapsed = 0f;
         while (elapsed < m_animDuration)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime; // timeScale 영향 차단 — 배속 중에도 UI 애니메이션 정상 속도 유지
             float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / m_animDuration));
 
             float camWidth = Mathf.Lerp(startCamWidth, targetCamWidth, t);

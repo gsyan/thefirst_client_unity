@@ -475,6 +475,10 @@ public class UITabExploration : UITabBase
 
     private void TryEnterZoneWithAd(ZoneConfig zone)
     {
+#if UNITY_EDITOR
+        EnterZone(zone);
+        return;
+#endif
         bool adInstanceNull = AdManager.Instance == null;
         bool adReady = adInstanceNull == false && AdManager.Instance.IsRewardedAdReady;
 

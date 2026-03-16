@@ -602,16 +602,8 @@ MonoBehaviour:
     m_Localized: Focus Repair
     m_Metadata:
       m_Items: []
-  - m_Id: 12029587504365568
-    m_Localized: "Lv.{0}  \xB7  Offline {1}h"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12029587550502912
-    m_Localized: "Lv.{0} (MAX)  \xB7  Offline {1}h"
-    m_Metadata:
-      m_Items: []
   - m_Id: 12029587550502913
-    m_Localized: "Lv.{0} <voffset=6>\u2192</voffset>"
+    m_Localized: "Lv.{0} <voffset=6>\u2192</voffset> {1}"
     m_Metadata:
       m_Items: []
   - m_Id: 12029587550502914
@@ -620,6 +612,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 12029587550502915
     m_Localized: Insufficient resources
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13164879267364864
+    m_Localized: Offline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13164879321890816
+    m_Localized: Online (Uncollected)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13164879321890817
+    m_Localized: Total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13164879321890818
+    m_Localized: '{0} (Rank {1})'
     m_Metadata:
       m_Items: []
   references:

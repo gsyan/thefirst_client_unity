@@ -75,14 +75,6 @@ MonoBehaviour:
     m_Key: fleet_btn_ship_repair
     m_Metadata:
       m_Items: []
-  - m_Id: 12029587504365568
-    m_Key: fleet_tech_level_info
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12029587550502912
-    m_Key: fleet_tech_level_info_max
-    m_Metadata:
-      m_Items: []
   - m_Id: 12029587550502913
     m_Key: fleet_tech_level_btn
     m_Metadata:
@@ -171,6 +163,18 @@ MonoBehaviour:
     m_Key: exploration_elapsed_time
     m_Metadata:
       m_Items: []
+  - m_Id: 13164879267364864
+    m_Key: harvest_offline_elapsed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13164879321890816
+    m_Key: harvest_online_uncollected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13164879321890817
+    m_Key: harvest_total
+    m_Metadata:
+      m_Items: []
   - m_Id: 10761965592772608
     m_Key: exploration_zone_insufficient_ships
     m_Metadata:
@@ -209,6 +213,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 3668074850811904
     m_Key: pvp_opponent_info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13164879321890818
+    m_Key: pvp_score_rank
     m_Metadata:
       m_Items: []
   - m_Id: 7977027994779648

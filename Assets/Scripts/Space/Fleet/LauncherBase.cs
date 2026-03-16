@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+// 발사기 기반 클래스 — 빔/미사일/함재기 공통 Fire 인터페이스 및 AudioSource 피치 동기화
 using UnityEngine;
 using System.Collections;
 
@@ -7,6 +7,11 @@ public class LauncherBase : MonoBehaviour
     protected bool m_isInitialized = false;
     protected Transform m_firePoint;
     [SerializeField] protected AudioSource m_audioSource;
+
+    protected virtual void Awake()
+    {
+        EventManager.Subscribe_GameSpeedChanged(OnGameSpeedChanged);
+    }
 
     public void FireAtTarget(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
     {
@@ -24,8 +29,16 @@ public class LauncherBase : MonoBehaviour
         return m_firePoint;
     }
 
+    private void OnGameSpeedChanged(float speed, float pitch)
+    {
+        if (m_audioSource != null)
+            m_audioSource.pitch = pitch;
+    }
+
     protected virtual void OnDestroy()
     {
+        EventManager.Unsubscribe_GameSpeedChanged(OnGameSpeedChanged);
+
         // Launcher가 파괴될 때 자식으로 붙어있는 파티클/이펙트를 보호
         // (PoolManager의 AutoReturn 코루틴이 완료되기 전에 파괴되는 것 방지)
         if (m_firePoint != null && m_firePoint.childCount > 0)
