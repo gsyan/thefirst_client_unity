@@ -760,6 +760,27 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.HeartbeatAsync(), (ApiResponse<HeartbeatResponse> _) => { }));
     }
 
+    // 콜백이 필요한 경우 사용 (수확 전 선발송 등)
+    public void Heartbeat(System.Action onComplete)
+    {
+        if (m_bConnected == false) { onComplete?.Invoke(); return; }
+        StartCoroutine(RunAsync(() => m_apiClient.HeartbeatAsync(), (ApiResponse<HeartbeatResponse> _) => onComplete?.Invoke()));
+    }
+
+    // 백그라운드 전환 시 하트비트 중단, 포그라운드 복귀 시 즉시 재개
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            CancelInvoke(nameof(Heartbeat));
+        }
+        else if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "SpaceScene")
+        {
+            CancelInvoke(nameof(Heartbeat));
+            InvokeRepeating(nameof(Heartbeat), 0f, HeartbeatInterval);
+        }
+    }
+
     // PvP API
     public void PvpList(PvpListRequest request, System.Action<ApiResponse<PvpListResponse>> onComplete)
     {

@@ -29,6 +29,12 @@
 - Raycast, Physics 사용 시 반드시 성능 비용 및 가능한 대안 설명 포함
 - switch 표현식(switch expression) 지양
 
+## 프로젝트별 MD 참고 및 수정
+- 전체 기획 : 클라 프로젝트 루트/claude_md_files/game_design.md
+- 서버 구조 및 운영 : 서버 프로젝트 루트/claude_md_files/server_structure_and_operation.md
+- 클라 구조 및 운영 : 클라 프로젝트 루트/claude_md_files/client_structure_and_operation.md
+- 젠킨스 설정 : 클라 프로젝트 루트/claude_md_files/jenkins-setup-tutorial.md
+
 ## 주의 사항
 - 모든 파일(generated 파일 제외)엔 최상단에 1~3줄 요약이 있어야 해. 없다면 추가
 - 작업 진행 후 최상단 요약 수정 필요가 있다면 수정

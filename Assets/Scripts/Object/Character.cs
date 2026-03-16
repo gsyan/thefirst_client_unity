@@ -49,6 +49,9 @@ public class Character
         return m_characterInfo?.mineralDark ?? 0;
     }
 
+    // 오프라인 캡(초) — 서버 calcOfflineCapSeconds와 동일 공식 (3h + techLevel/2 * 1h)
+    public float GetOfflineCapSeconds() => (3 + GetTechLevel() / 2) * 3600f;
+
     // 완료된 tech_level_N ID 중 최댓값을 기술레벨로 반환 (기본값 1)
     public int GetTechLevel()
     {

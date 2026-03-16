@@ -675,8 +675,11 @@ public class UITabExploration : UITabBase
 
     private void OnCollectZoneClicked()
     {
-        var request = new ZoneCollectRequest {};
-        NetworkManager.Instance.CollectZone(request, OnZoneCollectResponse);
+        // 하트비트 먼저 발송하여 lastOnlineAt 갱신 후 수확 — 네트워크 불안정으로 hb 누락된 경우 보정
+        NetworkManager.Instance.Heartbeat(() =>
+        {
+            NetworkManager.Instance.CollectZone(new ZoneCollectRequest(), OnZoneCollectResponse);
+        });
     }
 
     private void OnZoneCollectResponse(ApiResponse<ZoneCollectResponse> response)
