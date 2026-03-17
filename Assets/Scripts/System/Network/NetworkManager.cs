@@ -32,6 +32,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     // 하트비트 간격 (초) — 서버에서 lastOnlineAt 갱신용
     private const float HeartbeatInterval = 30f;
+    private bool m_heartbeatStarted = false;
 
     public void OnChangeScene()
     {
@@ -39,15 +40,23 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         {
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
             m_bConnected = false;
+            m_heartbeatStarted = false;
             InvokeRepeating(nameof(CheckConnection), 0f, 10f);
         }
         else if (SceneManager.GetActiveScene().name == "SpaceScene")
         {
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
-            InvokeRepeating(nameof(Heartbeat), HeartbeatInterval, HeartbeatInterval);
         }
         else if (SceneManager.GetActiveScene().name == "LoadingScene")
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
+    }
+
+    // 로그인 수확 팝업 처리 완료 후 ObjectManager에서 호출
+    public void StartHeartbeat()
+    {
+        m_heartbeatStarted = true;
+        CancelInvoke(nameof(Heartbeat));
+        InvokeRepeating(nameof(Heartbeat), HeartbeatInterval, HeartbeatInterval);
     }
 
     void CheckConnection()
@@ -767,17 +776,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.HeartbeatAsync(), (ApiResponse<HeartbeatResponse> _) => onComplete?.Invoke()));
     }
 
-    // 백그라운드 전환 시 하트비트 중단, 포그라운드 복귀 시 즉시 재개
+    // 백그라운드 전환 시 lastOnlineAt 최종 갱신 후 중단, 복귀 시 재개 (StartHeartbeat 이후에만 동작)
     private void OnApplicationPause(bool pauseStatus)
     {
         if (pauseStatus)
         {
+            if (m_heartbeatStarted) Heartbeat(); // 앱 종료 직전 lastOnlineAt 최신화
             CancelInvoke(nameof(Heartbeat));
         }
-        else if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "SpaceScene")
+        else if (m_heartbeatStarted)
         {
             CancelInvoke(nameof(Heartbeat));
-            InvokeRepeating(nameof(Heartbeat), 0f, HeartbeatInterval);
+            InvokeRepeating(nameof(Heartbeat), HeartbeatInterval, HeartbeatInterval);
         }
     }
 

@@ -181,6 +181,7 @@ public class AuthResponse
     public int[][] researchedModuleTypes;  // [moduleType, moduleSubType] 쌍의 배열
     public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록 (tech_level_N 등)
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
+    public ZoneCollectResponse loginCollectResult; // 로그인 시 자동 수확 결과 (null이면 수확 없음)
 }
 
 [System.Serializable]

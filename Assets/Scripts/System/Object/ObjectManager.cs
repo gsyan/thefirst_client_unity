@@ -231,16 +231,15 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         CheckOfflineHarvestAndShowPanels();
     }
 
-    // collectDateTime 기준 10분 이상 미수확 + clearedZone 있으면 수확 팝업 표시
+    // 서버가 로그인 시 수확 결과를 보내준 경우 팝업 표시, 없으면 바로 게임 패널
     private void CheckOfflineHarvestAndShowPanels()
     {
-        var charInfo = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-        if (charInfo != null
-            && charInfo.clearedZones != null && charInfo.clearedZones.Count > 0
-            && !string.IsNullOrEmpty(charInfo.collectDateTime)
-            && GetElapsedSecondsFromCollect(charInfo.collectDateTime) > 600f) // 10분
+        var loginCollect = DataManager.Instance.m_loginCollectResult;
+        DataManager.Instance.m_loginCollectResult = null; // 1회 사용 후 초기화
+
+        if (loginCollect != null)
         {
-            ShowOfflineHarvestPopup();
+            ShowHarvestResultPopup(loginCollect);
             return;
         }
         ShowGamePanels();
@@ -248,42 +247,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private void ShowGamePanels()
     {
+        NetworkManager.Instance.StartHeartbeat();
         UIManager.Instance.ShowPanel("UIPanelMineral");
         UIManager.Instance.ShowMainPanel();
     }
 
-    private float GetElapsedSecondsFromCollect(string collectDateTimeStr)
-    {
-        if (DateTime.TryParse(collectDateTimeStr, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime collectDt))
-            return (float)(DateTime.UtcNow - collectDt).TotalSeconds;
-        return 0f;
-    }
 
-    // 접속 시 자동 수확 → 온라인/오프라인 구간 분리 결과 팝업 표시
-    private void ShowOfflineHarvestPopup()
-    {
-        var character = DataManager.Instance.m_currentCharacter;
-
-        NetworkManager.Instance.CollectZone(new ZoneCollectRequest(), (response) => {
-            if (response.errorCode == (int)ServerErrorCode.SUCCESS && response.data != null)
-            {
-                if (character != null)
-                {
-                    character.m_characterInfo.collectDateTime = response.data.collectDateTime;
-                    if (response.data.rewardInfo != null)
-                    {
-                        character.UpdateMineral(response.data.rewardInfo.remainMineral);
-                        character.UpdateMineralRare(response.data.rewardInfo.remainMineralRare);
-                        character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
-                        character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
-                        ShowHarvestResultPopup(response.data);
-                        return;
-                    }
-                }
-            }
-            ShowGamePanels();
-        });
-    }
 
     // 수확 결과 팝업: 오프라인(시간+자원) → 온라인 미수집(자원) → 합계 순서로 표시
     private void ShowHarvestResultPopup(ZoneCollectResponse data)
