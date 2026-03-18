@@ -15,10 +15,9 @@ public class UITabFleet : UITabBase
     [SerializeField] private TMP_Text m_textTechLevelButton;
 
     [Header("Fleet Stats (상단 2행)")]
-    // 1행: ATK / HP / SPD / REPAIR — 아이콘은 추후 TMP Sprite로 교체
     [SerializeField] private TMP_Text m_textFleetStats1;
-    // 2행: 함재기 능력 — aircraft_count == 0 이면 숨김
     [SerializeField] private TMP_Text m_textFleetStats2;
+    [SerializeField] private Button   m_btnFleetStatsDetail;
 
     [Header("함선 선택 그리드")]
     [SerializeField] private RectTransform m_shipGridContainer1;
@@ -26,8 +25,7 @@ public class UITabFleet : UITabBase
     [SerializeField] private RectTransform m_shipGridContainer3;
     [SerializeField] private GameObject m_shipSelectorPrefab;
     [SerializeField] private Button m_addShipButton;
-    [SerializeField] private TMP_Text m_textAddShipCost;    // + 버튼에 표시할 비용 텍스트
-
+    
     [Header("함선 액션 버튼 (선택 시 활성)")]
     [SerializeField] private Button m_btnShipManage;    // 함선 관리 탭으로 이동
     [SerializeField] private Button m_btnShipRepair;    // 집중 수리 (추후 구현)
@@ -69,6 +67,7 @@ public class UITabFleet : UITabBase
         if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
         if (m_btnTechLevelDetail != null) m_btnTechLevelDetail.onClick.AddListener(OnTechLevelDetailClicked);
         if (m_btnTechLevel != null) m_btnTechLevel.onClick.AddListener(OnTechLevelButtonClicked);
+        if (m_btnFleetStatsDetail != null) m_btnFleetStatsDetail.onClick.AddListener(OnFleetStatsDetailClicked);
 
         PopulateShipSelectorGrid();
         UpdateShipActionButtons();
@@ -101,13 +100,16 @@ public class UITabFleet : UITabBase
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        int offlineHours = 3 + (currentLevel / 2);
+        int storageCap = 3 + (currentLevel / 2);  // 기술레벨이 높을수록 자원 보관 가능 시간 증가
         int maxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(currentLevel);
         TechLevelResearchData nextNode = GetNextTechLevelNode(character);
 
-        // [기술레벨] Lv.N  ·  M:Nh  ·  S.N  ·  G:N
+        // 기술레벨 요약: 레벨 / 자원 보관 캡 / 최대 함선 수
         if (m_textTechLevelInfo != null)
-            m_textTechLevelInfo.text = $"{LocalizationManager.Instance.Get("tech_level")}.{currentLevel}  ·  M:{offlineHours}h  ·  S.{maxShips}  ·  G:{currentLevel}";
+        {
+            m_textTechLevelInfo.text = $"<sprite name=\"IconTech\"> {currentLevel} <sprite name=\"IconMineralCap\"> {storageCap}h <sprite name=\"IconShips\"> {maxShips}";
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_textTechLevelInfo.transform.parent as RectTransform);
+        }
 
         if (m_btnTechLevel != null)
         {
@@ -128,19 +130,29 @@ public class UITabFleet : UITabBase
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        int offlineHours = 3 + (currentLevel / 2);
+        int storageCap = 3 + (currentLevel / 2);
         int maxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(currentLevel);
         TechLevelResearchData nextNode = GetNextTechLevelNode(character);
 
-        string msg = $"자원 저장 제한: {offlineHours}h\n최대 함선수: {maxShips}척\n모듈 세대: {currentLevel}G";
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"<sprite name=\"IconMineralCap\"> (Resource Cap)  {storageCap}h");
+        sb.AppendLine();
+        sb.Append    ($"<sprite name=\"IconShips\"> (Max Ships)  {maxShips}");
+
         if (nextNode != null)
         {
-            int nextOffline = 3 + (nextNode.targetTechLevel / 2);
+            int nextCap = 3 + (nextNode.targetTechLevel / 2);
             int nextMaxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(nextNode.targetTechLevel);
-            msg += $"\n\n[Lv.{nextNode.targetTechLevel} 달성 시]\n자원 저장 제한: {nextOffline}h최대 함선수: {nextMaxShips}척\n모듈 세대: {nextNode.targetTechLevel}G";
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine(LocalizationManager.Instance.Get("tech_level_on_reach", new object[] { nextNode.targetTechLevel }));
+            sb.AppendLine();
+            sb.AppendLine($"<sprite name=\"IconMineralCap\"> (Resource Cap)  {nextCap}h");
+            sb.AppendLine();
+            sb.Append    ($"<sprite name=\"IconShips\"> (Max Ships)  {nextMaxShips}");
         }
 
-        UIManager.Instance.ShowAlertPopup($"기술레벨 {currentLevel}", msg, null);
+        UIManager.Instance.ShowAlertPopup(LocalizationManager.Instance.Get("tech_level_detail_title"), sb.ToString(), null);
     }
 
     private TechLevelResearchData GetNextTechLevelNode(Character character)
@@ -163,13 +175,12 @@ public class UITabFleet : UITabBase
         if (nextNode == null) return;
 
         string targetLevelStr = nextNode.targetTechLevel.ToString();
-        List<string> leftLabels = new List<string> { "tech_level" };
-        List<string> leftValues = new List<string> { targetLevelStr };
+        string detailText = $"<sprite name=\"IconTech\"> Lv.{targetLevelStr}";
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("research_tech_name"),
             LocalizationManager.Instance.Get("popup_message_tech_research", new object[] { targetLevelStr }),
-            leftLabels, leftValues,
+            detailText,
             nextNode.researchCost,
             onConfirm: () =>
             {
@@ -219,13 +230,16 @@ public class UITabFleet : UITabBase
         CapabilityProfile statsOrg = fleet.GetFleetCapabilityProfile(false);
         CapabilityProfile statsCur = fleet.GetFleetCapabilityProfile(true);
 
-        // 1행: 함선 전투력 합산 (아이콘 플레이스홀더 — 추후 TMP Sprite 태그로 교체)
+        // 1행: 함선 전투력 합산
         if (m_textFleetStats1 != null)
+        {
             m_textFleetStats1.text =
-                $"ATK {statsCur.attack_power:F0}  " +
-                $"HP {statsCur.health_power:F0}/{statsOrg.health_power:F0}  " +
-                $"SPD {statsCur.speed_power:F0}  " +
-                $"REP {statsCur.repair_power:F0}";
+                $"<sprite name=\"IconAttack\"> {statsCur.attack_power:F0}  " +
+                $"<sprite name=\"IconHp\"> {statsCur.health_power:F0}/{statsOrg.health_power:F0}  " +
+                $"<sprite name=\"IconSpeed\"> {statsCur.speed_power:F0}  " +
+                $"<sprite name=\"IconRepair\"> {statsCur.repair_power:F0}";
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_textFleetStats1.transform.parent as RectTransform);
+        }
 
         // 2행: 함재기 (보유 시만 표시)
         if (m_textFleetStats2 != null)
@@ -233,11 +247,44 @@ public class UITabFleet : UITabBase
             bool hasAircraft = statsOrg.aircraft_count > 0;
             m_textFleetStats2.gameObject.SetActive(hasAircraft);
             if (hasAircraft)
+            {
                 m_textFleetStats2.text =
-                    $"AIR-ATK {statsCur.aircraft_attack_power:F0}  " +
-                    $"AIR {statsCur.aircraft_count:F0}/{statsOrg.aircraft_count:F0}  " +
-                    $"LAUNCH {statsCur.aircraft_launch_count:F0}";
+                    $"<sprite name=\"IconAircraftAttack\"> {statsCur.aircraft_attack_power:F0}  " +
+                    $"<sprite name=\"IconAircraft\"> {statsCur.aircraft_count:F0}/{statsOrg.aircraft_count:F0}  " +
+                    $"<sprite name=\"IconLaunch\"> {statsCur.aircraft_launch_count:F0}";
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_textFleetStats2.transform.parent as RectTransform);
+            }
         }
+    }
+
+    private void OnFleetStatsDetailClicked()
+    {
+        if (m_myFleet == null) return;
+
+        CapabilityProfile org = m_myFleet.GetFleetCapabilityProfile(false);
+        CapabilityProfile cur = m_myFleet.GetFleetCapabilityProfile(true);
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"<sprite name=\"IconAttack\"> (Attack)  {cur.attack_power:F0}");
+        sb.AppendLine();
+        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {cur.health_power:F0} / {org.health_power:F0}");
+        sb.AppendLine();
+        sb.AppendLine($"<sprite name=\"IconSpeed\"> (Speed)  {cur.speed_power:F0}");
+        sb.AppendLine();
+        sb.Append    ($"<sprite name=\"IconRepair\"> (Repair)  {cur.repair_power:F0}");
+
+        if (org.aircraft_count > 0)
+        {
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.aircraft_attack_power:F0}");
+            sb.AppendLine();
+            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {cur.aircraft_count:F0} / {org.aircraft_count:F0}");
+            sb.AppendLine();
+            sb.Append    ($"<sprite name=\"IconLaunch\"> (Aircraft Launch)  {cur.aircraft_launch_count:F0}");
+        }
+
+        UIManager.Instance.ShowAlertPopup("Fleet Stats", sb.ToString(), null);
     }
 
     // ── Formation ──────────────────────────────────────────────────────
@@ -318,12 +365,6 @@ public class UITabFleet : UITabBase
                 SetCellAnchor(m_addShipButton.GetComponent<RectTransform>(), shipCount % SHIPS_PER_ROW);
                 m_addShipButton.gameObject.SetActive(true);
                 m_addShipButton.transform.SetAsLastSibling();
-
-                if (m_textAddShipCost != null)
-                {
-                    CostStruct cost = DataManager.Instance.m_dataTableConfig.gameSettings.GetAddShipCost(shipCount);
-                    m_textAddShipCost.text = $"M {CommonUtility.FormatBigNumber(cost.mineral)}";
-                }
             }
         }
     }
@@ -471,7 +512,7 @@ public class UITabFleet : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("fleet_add_ship_name"),
             LocalizationManager.Instance.Get("popup_message_add_ship"),
-            null, null, cost,
+            null, cost,
             AddShip
         );
     }

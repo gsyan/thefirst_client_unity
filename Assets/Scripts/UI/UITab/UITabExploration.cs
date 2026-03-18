@@ -16,10 +16,9 @@ enum EEnterZoneState
 
 public class UITabExploration : UITabBase
 {
-    [SerializeField] private RowLabelValue m_rowLabelValueMineral;
-    [SerializeField] private RowLabelValue m_rowLabelValueMineralRare;
-    [SerializeField] private RowLabelValue m_rowLabelValueMineralExotic;
-    [SerializeField] private RowLabelValue m_rowLabelValueMineralDark;
+    [SerializeField] private Image m_harvestGaugeFill; // 게이지 바 Image (anchorMax.x 0~1)
+    [SerializeField] private TMP_Text m_harvestGaugeText; // "XX%" 텍스트 (게이지 위 오버레이)
+    [SerializeField] private TMP_Text m_harvestLimitText;  // 시간당 수확량 합계 텍스트
 
     [SerializeField] private Button m_safeZoneButton;
     [SerializeField] private Button m_collectMineralButton;
@@ -72,11 +71,6 @@ public class UITabExploration : UITabBase
         if (m_zoneTryButton != null) m_zoneTryButton.onClick.AddListener(OnZoneTryButtonClicked);
 
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
-
-        m_rowLabelValueMineral.SetLabel("mineral_amount");
-        m_rowLabelValueMineralRare.SetLabel("mineral_rare_amount");
-        m_rowLabelValueMineralExotic.SetLabel("mineral_exotic_amount");
-        m_rowLabelValueMineralDark.SetLabel("mineral_dark_amount");
 
         SetupGroupTabs();
         InitializeZoneMap();
@@ -252,20 +246,17 @@ public class UITabExploration : UITabBase
         while (true)
         {
             yield return m_updateInterval;
-            UpdateMineralTextsOnly();
+            UpdateHarvestGauge();
         }
     }
 
-    private void UpdateMineralTextsOnly()
+    // elapsed / cap 비율로 게이지 갱신 (1초마다 호출)
+    private void UpdateHarvestGauge()
     {
-        if (m_hasClearedZone == false) return;
-        float elapsedSeconds = GetElapsedSecondsFromCollect();
-        SetMineralTexts(
-            m_totalMineralPerHour / 3600f * elapsedSeconds, m_totalMineralPerHour,
-            m_totalMineralRarePerHour / 3600f * elapsedSeconds, m_totalMineralRarePerHour,
-            m_totalMineralExoticPerHour / 3600f * elapsedSeconds, m_totalMineralExoticPerHour,
-            m_totalMineralDarkPerHour / 3600f * elapsedSeconds, m_totalMineralDarkPerHour
-        );
+        if (m_hasClearedZone == false) { SetHarvestGauge(0f); return; }
+        float elapsed = GetElapsedSecondsFromCollect();
+        float cap = m_myCharacter.GetOfflineCapSeconds();
+        SetHarvestGauge(Mathf.Clamp01(elapsed / cap));
     }
 
     private void UpdateZoneInfo()
@@ -282,30 +273,55 @@ public class UITabExploration : UITabBase
         if (clearedZoneNames != null && clearedZoneNames.Count > 0)
         {
             var clearedZones = m_datatableZone.GetZonesByNames(clearedZoneNames);
-            for (int i = 0; i < clearedZones.Count; i++)
+            foreach (var z in clearedZones)
             {
-                m_totalMineralPerHour      += clearedZones[i].mineralPerHour;
-                m_totalMineralRarePerHour  += clearedZones[i].mineralRarePerHour;
-                m_totalMineralExoticPerHour += clearedZones[i].mineralExoticPerHour;
-                m_totalMineralDarkPerHour  += clearedZones[i].mineralDarkPerHour;
+                m_totalMineralPerHour      += z.mineralPerHour;
+                m_totalMineralRarePerHour  += z.mineralRarePerHour;
+                m_totalMineralExoticPerHour += z.mineralExoticPerHour;
+                m_totalMineralDarkPerHour  += z.mineralDarkPerHour;
             }
             m_hasClearedZone = clearedZones.Count > 0;
         }
 
-        if (m_hasClearedZone == false)
+        UpdateHarvestGauge();
+        UpdateHarvestCapText();
+    }
+
+    // 게이지 100%일 때 수확 가능한 최대량 표시 (0인 자원 생략)
+    private void UpdateHarvestCapText()
+    {
+        if (m_harvestLimitText == null) return;
+        if (m_hasClearedZone == false) { m_harvestLimitText.text = ""; return; }
+
+        float capHours = m_myCharacter.GetOfflineCapSeconds() / 3600f;
+        var sb = new System.Text.StringBuilder();
+        void AppendIfPositive(string icon, float rate)
         {
-            SetMineralTexts(0, 0, 0, 0, 0, 0, 0, 0);
+            if (rate <= 0f) return;
+            if (sb.Length > 0) sb.Append("   ");
+            sb.Append($"<sprite name=\"{icon}\"> {CommonUtility.FormatBigNumber(rate * capHours)}");
         }
-        else
+        AppendIfPositive("IconMineral",  m_totalMineralPerHour);
+        AppendIfPositive("IconMineralR", m_totalMineralRarePerHour);
+        AppendIfPositive("IconMineralE", m_totalMineralExoticPerHour);
+        AppendIfPositive("IconMineralD", m_totalMineralDarkPerHour);
+
+        string label = LocalizationManager.Instance.Get("exploration_collectable_minerals_max");
+        m_harvestLimitText.text = $"{label}({sb} )";
+    }
+
+    // 게이지 fill + % 텍스트 갱신
+    private void SetHarvestGauge(float ratio)
+    {
+        if (m_harvestGaugeFill != null)
         {
-            float elapsed = GetElapsedSecondsFromCollect();
-            SetMineralTexts(
-                m_totalMineralPerHour / 3600f * elapsed, m_totalMineralPerHour,
-                m_totalMineralRarePerHour / 3600f * elapsed, m_totalMineralRarePerHour,
-                m_totalMineralExoticPerHour / 3600f * elapsed, m_totalMineralExoticPerHour,
-                m_totalMineralDarkPerHour / 3600f * elapsed, m_totalMineralDarkPerHour
-            );
+            RectTransform rt = m_harvestGaugeFill.rectTransform;
+            rt.anchorMax = new Vector2(ratio, rt.anchorMax.y);
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
         }
+        if (m_harvestGaugeText != null)
+            m_harvestGaugeText.text = $"{ratio * 100f:F1}%";
     }
 
     private float GetElapsedSecondsFromCollect()
@@ -318,20 +334,6 @@ public class UITabExploration : UITabBase
             return (float)elapsed.TotalSeconds;
         }
         return 0f;
-    }
-
-    private void SetMineralTexts(float mineral, float mineralPerH, float rare, float rarePerH,
-                                  float exotic, float exoticPerH, float dark, float darkPerH)
-    {
-        m_rowLabelValueMineral.SetValues(FormatMineralText(mineral, mineralPerH));
-        m_rowLabelValueMineralRare.SetValues(FormatMineralText(rare, rarePerH));
-        m_rowLabelValueMineralExotic.SetValues(FormatMineralText(exotic, exoticPerH));
-        m_rowLabelValueMineralDark.SetValues(FormatMineralText(dark, darkPerH));
-    }
-
-    private string FormatMineralText(float accumulated, float perHour)
-    {
-        return $"{CommonUtility.FormatBigNumber(accumulated)}({CommonUtility.FormatBigNumber(perHour)}/h)";
     }
 
     private void SetEnterZoneState(EEnterZoneState enterZoneState)
@@ -445,7 +447,7 @@ public class UITabExploration : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             zone.zoneName,
             LocalizationManager.Instance.Get("zone_enter_confirm"),
-            null, null, null,
+            null, null,
             onConfirm: () => TryEnterZoneWithAd(zone)
         );
     }
@@ -679,11 +681,7 @@ public class UITabExploration : UITabBase
 
     private void OnCollectZoneClicked()
     {
-        // 하트비트 먼저 발송하여 lastOnlineAt 갱신 후 수확 — 네트워크 불안정으로 hb 누락된 경우 보정
-        NetworkManager.Instance.Heartbeat(() =>
-        {
-            NetworkManager.Instance.CollectZone(new ZoneCollectRequest(), OnZoneCollectResponse);
-        });
+        NetworkManager.Instance.CollectZone(new ZoneCollectRequest(), OnZoneCollectResponse);
     }
 
     private void OnZoneCollectResponse(ApiResponse<ZoneCollectResponse> response)

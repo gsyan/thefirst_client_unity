@@ -25,6 +25,9 @@ public class UITabShip : UITabBase
     [SerializeField] private RectTransform m_moduleEngineSelectButtonContainer;
     [SerializeField] private GameObject    m_moduleSelectButtonPrefab;
 
+    [Header("함선 스탯 디테일")]
+    [SerializeField] private Button m_btnShipStatsDetail;
+
     [Header("모듈 디테일 카드")]
     [SerializeField] private RectTransform m_moduleStatsContainer;
 
@@ -82,6 +85,7 @@ public class UITabShip : UITabBase
         m_unlockModuleButton.onClick.AddListener(OnUnlockModuleClicked);
         m_levelUpModuleButton.onClick.AddListener(OnLevelUpModuleClicked);
         m_subTypeManageButton.onClick.AddListener(OnSubTypeManageClicked);
+        if (m_btnShipStatsDetail != null) m_btnShipStatsDetail.onClick.AddListener(OnShipStatsDetailClicked);
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
         EventManager.Subscribe_ShipUpdateHP(UpdateShipHeader);
@@ -234,22 +238,58 @@ public class UITabShip : UITabBase
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
 
         if (m_textShipStats1 != null)
+        {
             m_textShipStats1.text =
-                $"ATK {statsCur.attack_power:F0}  " +
-                $"HP {statsCur.health_power:F0}/{statsOrg.health_power:F0}  " +
-                $"SPD {statsCur.speed_power:F0}  " +
-                $"REP {statsCur.repair_power:F0}";
+                $"<sprite name=\"IconAttack\"> {statsCur.attack_power:F0}  " +
+                $"<sprite name=\"IconHp\"> {statsCur.health_power:F0}/{statsOrg.health_power:F0}  " +
+                $"<sprite name=\"IconSpeed\"> {statsCur.speed_power:F0}  " +
+                $"<sprite name=\"IconRepair\"> {statsCur.repair_power:F0}";
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats1.transform.parent as RectTransform);
+        }
 
         if (m_textShipStats2 != null)
         {
             bool hasAircraft = statsOrg.aircraft_count > 0;
             m_textShipStats2.gameObject.SetActive(hasAircraft);
             if (hasAircraft)
+            {
                 m_textShipStats2.text =
-                    $"AIR-ATK {statsCur.aircraft_attack_power:F0}  " +
-                    $"AIR {statsCur.aircraft_count}/{statsOrg.aircraft_count}  " +
-                    $"LAUNCH {statsCur.aircraft_launch_count}";
+                    $"<sprite name=\"IconAircraftAttack\"> {statsCur.aircraft_attack_power:F0}  " +
+                    $"<sprite name=\"IconAircraft\"> {statsCur.aircraft_count}/{statsOrg.aircraft_count}  " +
+                    $"<sprite name=\"IconLaunch\"> {statsCur.aircraft_launch_count}";
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats2.transform.parent as RectTransform);
+            }
         }
+    }
+
+    private void OnShipStatsDetailClicked()
+    {
+        if (m_selectedShip == null) return;
+
+        CapabilityProfile org = m_selectedShip.m_spaceShipStatsOrg;
+        CapabilityProfile cur = m_selectedShip.m_spaceShipStatsCur;
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"<sprite name=\"IconAttack\"> (Attack)  {cur.attack_power:F0}");
+        sb.AppendLine();
+        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {cur.health_power:F0} / {org.health_power:F0}");
+        sb.AppendLine();
+        sb.AppendLine($"<sprite name=\"IconSpeed\"> (Speed)  {cur.speed_power:F0}");
+        sb.AppendLine();
+        sb.Append    ($"<sprite name=\"IconRepair\"> (Repair)  {cur.repair_power:F0}");
+
+        if (org.aircraft_count > 0)
+        {
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.aircraft_attack_power:F0}");
+            sb.AppendLine();
+            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {cur.aircraft_count:F0} / {org.aircraft_count:F0}");
+            sb.AppendLine();
+            sb.Append    ($"<sprite name=\"IconLaunch\"> (Aircraft Launch)  {cur.aircraft_launch_count:F0}");
+        }
+
+        UIManager.Instance.ShowAlertPopup(m_selectedShip.m_shipInfo.shipName, sb.ToString(), null);
     }
 
     // ─────────────────────────────────────────────
@@ -279,12 +319,12 @@ public class UITabShip : UITabBase
         int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
         CostStruct cost = new CostStruct { mineral = unlockPrice };
         string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
-        m_selectedModule.SetModuleStatRows(out List<string> leftLabels, out List<string> leftValues, showNext: false);
+        string detailText = m_selectedModule.GetDetailText(1, 1);
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_unlock"),
             LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
-            leftLabels, leftValues, cost,
+            detailText, cost,
             () => ExecuteUnlockModule()
         );
     }
@@ -367,12 +407,12 @@ public class UITabShip : UITabBase
         string moduleSubTypeName = LocalizationManager.Instance.Get($"{m_selectedModule.GetModuleSubType().ToLocKey()}");
         int currentLevel = m_selectedModule.GetModuleLevel();
         int targetLevel  = currentLevel + 1;
-        m_selectedModule.SetModuleStatRows(out List<string> leftLabels, out List<string> leftValues, showNext: true);
+        string detailText = m_selectedModule.GetDetailText(currentLevel, targetLevel);
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_levelup"),
             LocalizationManager.Instance.Get("popup_message_module_upgrade", new object[] { moduleSubTypeName, currentLevel, targetLevel }),
-            leftLabels, leftValues, cost,
+            detailText, cost,
             () => ExecuteUpgradeModule()
         );
     }
@@ -664,6 +704,9 @@ public class UITabShip : UITabBase
         m_moduleSelectorPool.AddRange(m_moduleSelectorActive);
         m_moduleSelectorActive.Clear();
 
+        if (m_moduleMissileSelectButtonContainer2 != null) m_moduleMissileSelectButtonContainer2.gameObject.SetActive(false);
+        if (m_moduleHangerSelectButtonContainer2  != null) m_moduleHangerSelectButtonContainer2.gameObject.SetActive(false);
+
         ModuleBody body = m_selectedShip.m_moduleBodys[0];
 
         CreateModuleSelectButton(body, m_moduleBodySelectButtonContainer);
@@ -679,6 +722,7 @@ public class UITabShip : UITabBase
             RectTransform container = GetContainerForSlot(slot.m_moduleSlotInfo.moduleType, slot.m_moduleSlotInfo.slotIndex);
             if (container == null) continue;
 
+            container.gameObject.SetActive(true);
             CreateModuleSelectButton(module, container);
         }
 

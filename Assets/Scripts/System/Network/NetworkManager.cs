@@ -33,6 +33,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     // 하트비트 간격 (초) — 서버에서 lastOnlineAt 갱신용
     private const float HeartbeatInterval = 30f;
     private bool m_heartbeatStarted = false;
+    // 복귀 즉시 하트비트 중복 방지 (OnApplicationPause/OnApplicationFocus 동시 발동 대응)
+    private float m_lastResumeHeartbeatTime = -999f;
+    private const float ResumeHeartbeatCooldown = 5f;
 
     public void OnChangeScene()
     {
@@ -766,29 +769,43 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void Heartbeat()
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.HeartbeatAsync(), (ApiResponse<HeartbeatResponse> _) => { }));
+        StartCoroutine(RunAsync(() => m_apiClient.HeartbeatAsync(), OnHeartbeatResponse));
     }
 
-    // 콜백이 필요한 경우 사용 (수확 전 선발송 등)
-    public void Heartbeat(System.Action onComplete)
+    // 앱 복귀 즉시 발송 — OnApplicationPause(false)/OnApplicationFocus(true) 중복 방지 쿨다운 포함
+    private void HeartbeatOnResume()
     {
-        if (m_bConnected == false) { onComplete?.Invoke(); return; }
-        StartCoroutine(RunAsync(() => m_apiClient.HeartbeatAsync(), (ApiResponse<HeartbeatResponse> _) => onComplete?.Invoke()));
+        if (m_heartbeatStarted == false) return;
+        if (Time.realtimeSinceStartup - m_lastResumeHeartbeatTime < ResumeHeartbeatCooldown) return;
+        m_lastResumeHeartbeatTime = Time.realtimeSinceStartup;
+        Heartbeat();
     }
 
-    // 백그라운드 전환 시 lastOnlineAt 최종 갱신 후 중단, 복귀 시 재개 (StartHeartbeat 이후에만 동작)
+    private void OnHeartbeatResponse(ApiResponse<HeartbeatResponse> response)
+    {
+    }
+
+    // 백그라운드 전환 시 하트비트 중단, 복귀 시 재개 (StartHeartbeat 이후에만 동작)
     private void OnApplicationPause(bool pauseStatus)
     {
+        Debug.Log($"NetworkManager/OnApplicationPause ({pauseStatus})");
         if (pauseStatus)
         {
-            if (m_heartbeatStarted) Heartbeat(); // 앱 종료 직전 lastOnlineAt 최신화
+            if (m_heartbeatStarted) Heartbeat(); // 백그라운드 직전 하트비트 전송
             CancelInvoke(nameof(Heartbeat));
         }
-        else if (m_heartbeatStarted)
+        else
         {
             CancelInvoke(nameof(Heartbeat));
+            HeartbeatOnResume(); // 복귀 즉시 발송
             InvokeRepeating(nameof(Heartbeat), HeartbeatInterval, HeartbeatInterval);
         }
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        // OnApplicationPause가 누락되는 경우 보완
+        if (hasFocus) HeartbeatOnResume();
     }
 
     // PvP API

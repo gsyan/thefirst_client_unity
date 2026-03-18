@@ -357,13 +357,12 @@ public class UITabResearch : UITabBase
 
         CostStruct researchCost = techNode.researchCost;
         string targetLevelStr = techNode.targetTechLevel.ToString();
-        List<string> leftLabels = new List<string> { "tech_level" };
-        List<string> leftValues = new List<string> { targetLevelStr };
+        string detailText = $"<sprite name=\"IconTech\"> Lv.{targetLevelStr}";
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("research_tech_name"),
             LocalizationManager.Instance.Get("popup_message_tech_research", new object[] { targetLevelStr }),
-            leftLabels, leftValues,
+            detailText,
             researchCost,
             onConfirm: () =>
             {

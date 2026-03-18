@@ -1,18 +1,19 @@
-// 상단 리소스 패널 - 기술레벨 및 4종 광물량 실시간 표시
+// 상단 리소스 패널 - 4종 광물량 실시간 표시 (TMP Sprite Asset 아이콘 사용)
 using TMPro;
 using UnityEngine;
 
 public class UIResourceBar : MonoBehaviour
 {
-    public TMP_Text m_mineralText;
-    public TMP_Text m_mineralRareText;
-    public TMP_Text m_mineralExoticText;
-    public TMP_Text m_mineralDarkText;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public TMP_Text m_resourceText;
+
+    private long m_mineral;
+    private long m_mineralRare;
+    private long m_mineralExotic;
+    private long m_mineralDark;
+
     void Start()
     {
-        if (m_mineralText == null || m_mineralRareText == null || m_mineralExoticText == null || m_mineralDarkText == null)
+        if (m_resourceText == null)
         {
             Debug.LogError("Resource text is not assigned");
             return;
@@ -21,24 +22,22 @@ public class UIResourceBar : MonoBehaviour
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null)
         {
-            m_mineralText.text = "None";
-            m_mineralRareText.text = "None";
-            m_mineralExoticText.text = "None";
-            m_mineralDarkText.text = "None";
+            m_resourceText.text = "None";
             return;
         }
-        // 이 패널은 메인 화면에 없기 때문에 메인화면에서 character 세팅될때 이벤트로 OnResourceChanged 가 불리우지 않는다. 처음엔 인위적으로 세팅해줌
-        OnMineralChanged(character.GetMineral());
-        OnMineralRareChanged(character.GetMineralRare());
-        OnMineralExoticChanged(character.GetMineralExotic());
-        OnMineralDarkChanged(character.GetMineralDark());
-        
+        // 이 패널은 메인 화면에서 이벤트로 초기값이 세팅되지 않으므로 직접 초기화
+        m_mineral       = character.GetMineral();
+        m_mineralRare   = character.GetMineralRare();
+        m_mineralExotic = character.GetMineralExotic();
+        m_mineralDark   = character.GetMineralDark();
+        RefreshText();
+
         EventManager.Subscribe_MineralChanged(OnMineralChanged);
         EventManager.Subscribe_MineralRareChanged(OnMineralRareChanged);
         EventManager.Subscribe_MineralExoticChanged(OnMineralExoticChanged);
-        EventManager.Subscribe_MineralDarkChanged(OnMineralDarkChanged);    
+        EventManager.Subscribe_MineralDarkChanged(OnMineralDarkChanged);
     }
-    
+
     private void OnDestroy()
     {
         EventManager.Unsubscribe_MineralChanged(OnMineralChanged);
@@ -47,21 +46,17 @@ public class UIResourceBar : MonoBehaviour
         EventManager.Unsubscribe_MineralDarkChanged(OnMineralDarkChanged);
     }
 
-    
-    public void OnMineralChanged(long mineral)
+    private void RefreshText()
     {
-        m_mineralText.text = $"M: {CommonUtility.FormatBigNumber(mineral)}";
+        m_resourceText.text =
+            $"<sprite name=\"IconMineral\"> {CommonUtility.FormatBigNumber(m_mineral)}   " +
+            $"<sprite name=\"IconMineralR\"> {CommonUtility.FormatBigNumber(m_mineralRare)}   " +
+            $"<sprite name=\"IconMineralE\"> {CommonUtility.FormatBigNumber(m_mineralExotic)}   " +
+            $"<sprite name=\"IconMineralD\"> {CommonUtility.FormatBigNumber(m_mineralDark)}";
     }
-    public void OnMineralRareChanged(long mineralRare)
-    {
-        m_mineralRareText.text = $"R: {CommonUtility.FormatBigNumber(mineralRare)}";
-    }
-    public void OnMineralExoticChanged(long mineralExotic)
-    {
-        m_mineralExoticText.text = $"E: {CommonUtility.FormatBigNumber(mineralExotic)}";
-    }
-    public void OnMineralDarkChanged(long mineralDark)
-    {
-        m_mineralDarkText.text = $"D: {CommonUtility.FormatBigNumber(mineralDark)}";
-    }
+
+    public void OnMineralChanged(long mineral)       { m_mineral       = mineral;       RefreshText(); }
+    public void OnMineralRareChanged(long v)         { m_mineralRare   = v;             RefreshText(); }
+    public void OnMineralExoticChanged(long v)       { m_mineralExotic = v;             RefreshText(); }
+    public void OnMineralDarkChanged(long v)         { m_mineralDark   = v;             RefreshText(); }
 }

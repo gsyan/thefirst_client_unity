@@ -178,7 +178,12 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             else
             {
                 CostStruct cost = DataManager.Instance.m_dataTableResearch.GetSubTypeAddCost(m_selectedSubType);
-                m_costText.text = $"MR {CommonUtility.FormatBigNumber(cost.mineralRare)}";
+                long have = DataManager.Instance.m_currentCharacter?.m_characterInfo?.mineralRare ?? 0;
+                bool insufficient = have < cost.mineralRare;
+                string valStr = CommonUtility.FormatBigNumber(cost.mineralRare);
+                m_costText.text = insufficient
+                    ? $"<sprite name=\"IconMineralRare\"> <color=red>{valStr}</color>"
+                    : $"<sprite name=\"IconMineralRare\"> {valStr}";
             }
         }
 

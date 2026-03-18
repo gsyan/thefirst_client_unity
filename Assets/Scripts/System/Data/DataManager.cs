@@ -19,7 +19,6 @@ public class DataManager : Singleton<DataManager>
 
     #region Account State Management ############################################################
     public bool m_isGoogleLinked;  // 구글 계정 연동 여부
-    public ZoneCollectResponse m_loginCollectResult;  // 로그인 시 자동 수확 결과 (null이면 수확 없음)
     #endregion
 
     #region Character Info Management ###########################################################

@@ -114,10 +114,10 @@ engine_t1_std_ver1 = 2010101
 
 ## 기술레벨 시스템
 - 목표 레벨: 2 / 4 / 6 / 8 (1차)
-- 역할: 함선 추가 제한 조건, 오프라인 캡 확장
+- 역할: 함선 추가 제한 조건, 최대 자원 보관량 결정 (시간 캡 × 시간당 수확량)
 - 구현 완료: datatable_research.csv의 tech_level_N 노드 기반, FleetService.researchTechLevel 처리
 
-## 오프라인 적립 시간 시스템
+## 자원 적립 시간 캡 시스템
 기본:                    3시간
 기술레벨 2 달성:          +1시간 (4시간)
 기술레벨 4 달성:          +1시간 (5시간)
@@ -125,19 +125,12 @@ engine_t1_std_ver1 = 2010101
 기술레벨 8 달성:          +1시간 (7시간)
 함대 지휘관 패스 (월정액): 24시간
 
-### 온라인/오프라인 구분 방식 — 구현 완료
-- **온라인**: 앱 포그라운드 활동 (캡 없이 전량 적립)
-- **오프라인**: 앱 백그라운드/종료 (offlineCap 적용)
-- 구분 기준: `lastOnlineAt` (Character 엔티티)
-  - 모든 인증된 API 호출 성공 시 갱신 (30s 스로틀) → `OnlineActivityInterceptor`
-  - grace period: 60s (N - L ≤ 60s면 온라인 취급)
-  - 백그라운드 전환 시 하트비트 중단 → `OnApplicationPause`
-- 수확 계산 (`calcCreditedSeconds`):
-  - C→L 구간: 온라인, 캡 없음
-  - L→N 구간: 오프라인, offlineCap 적용
-  - N-L ≤ 60s: 전 구간 온라인 취급
-  - lastOnlineAt 없음: 전 구간 오프라인 fallback
-- 수확 버튼 클릭 시 하트비트 선발송 후 collect — 네트워크 불안정 보정
+### 수확 방식 — 구현 완료
+- 온/오프라인 구분 없음: `collectTime ~ now` 단일 구간, `min(elapsed, cap)` 적용
+- 캡 초과 시간은 손실 — 유저가 직접 수확 버튼을 눌러야 적립
+- 자동 수확 없음 (로그인 자동수확, 하트비트 강제수확 모두 제거)
+- `lastOnlineAt`: 하트비트 30s 스로틀 갱신 유지 (향후 용도 대비) → `ZoneService.heartbeat()` / `CharacterRepository.updateLastOnlineAtIfStale()`
+- 하트비트 인프라 유지: 백그라운드 전환 시 발송 후 중단, 복귀 시 즉시 1회 + 30s 재개
 
 ---
 
@@ -149,11 +142,19 @@ engine_t1_std_ver1 = 2010101
 - 랭킹: 클리어 존 이름을 숫자 점수로 변환해 Redis 저장 (RankingService.java)
 
 ### 수확 방식 — 확정 (구현 완료)
-- 클리어한 **모든 존** 각각 수확 후 합산 ← 구현 완료
-  - 서버: `ZoneService.collectZoneResources()` — `getAllZoneConfigsUpTo(clearedZone)`으로 전 존 순회 합산
-  - 클라: `UITabExploration.UpdateZoneInfo()` — `DataTableZone.GetAllZonesUpTo()`로 합산 rate 계산
-- 오프라인: mineralPerHour 기반 자동 수확 (적립 상한 적용)
-- 온라인: 1.5배 효율 (킬 보상으로 구현)
+- 클리어한 **모든 존** 합산 수확
+  - 서버: `ZoneService.collectZone()` — `min(elapsed, offlineCap)` 단순 계산, 온/오프 구분 없음
+  - 클라: `UITabExploration.UpdateZoneInfo()` — clearedZones 목록으로 합산 rate 계산
+- 온라인 1.5배 효율: 킬 보상으로만 구현 (시간당 적립과 무관)
+- 자동 수확 없음 (로그인/하트비트 강제수확 모두 제거)
+
+### 수확 UI — 구현 완료
+- `UITabExploration` 게이지 바: `elapsed / cap` → fillAmount + "XX%" 텍스트 (1초 갱신)
+  - `m_harvestGaugeFill` (Image, anchorMax.x 방식), `m_harvestGaugeText` (TMP_Text)
+- 최대 수확량 표시: `m_harvestLimitText` (TMP_Text) — 게이지 100%일 때 M/R/E/D 최대량 (0인 자원 생략)
+  - 자원 아이콘은 **TMP Sprite Asset** 사용 (`<sprite name="IconMineral">` 등)
+- 기술레벨 오를수록 cap 증가 → 같은 elapsed 기준 % 낮아지며 총량 늘어나는 효과
+- 수확 버튼 클릭 → `collectZone` API → collectDateTime 갱신 → 게이지 0%로 리셋
 
 ### 자원 도입 순서
 zone 1-X, 2-X: Mineral만
@@ -243,7 +244,6 @@ zone 7-X~    : MD 필드 존재, 현재 값 0 (미사용)
   - 색 단계 미적용 (현재 단색) — 추후 Image 색상 단계 추가 가능
 - HP 수치: "현재 / 최대" 형식 (m_textHp)
 - 선택 시: Outline 외곽선 (노란색)
-- Add Ship 카드: 비용 표시 (m_textAddShipCost, "M X,XXX")
 
 #### Formation (하단 고정 바)
 - 현재 진형명 텍스트 + [교체 ▶] 버튼 1개

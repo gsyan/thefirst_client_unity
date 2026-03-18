@@ -210,34 +210,6 @@ MonoBehaviour:
     m_Localized: Unlock Module
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636942
-    m_Localized: Cleared
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636943
-    m_Localized: Auto Exploration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636945
-    m_Localized: Safe Zone
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636946
-    m_Localized: Collected Minerals
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636947
-    m_Localized: Collect Mineral
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636948
-    m_Localized: Zone
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636949
-    m_Localized: Wave
-    m_Metadata:
-      m_Items: []
   - m_Id: 2924654624636952
     m_Localized: PVP List
     m_Metadata:
@@ -628,6 +600,46 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 13164879321890818
     m_Localized: '{0} (Rank {1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13853203355271168
+    m_Localized: Zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13853203393019904
+    m_Localized: Cleared
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13853203393019905
+    m_Localized: Auto Exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13853203393019906
+    m_Localized: Wave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13853203393019907
+    m_Localized: Safe Zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13853203393019909
+    m_Localized: Collect Mineral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13892162051506176
+    m_Localized: Max Collectable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13959242268409856
+    m_Localized: '[ On reaching Lv.{0} ]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13959242310352896
+    m_Localized: Tech Level Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13982624544325632
+    m_Localized: OK
     m_Metadata:
       m_Items: []
   references:

@@ -72,7 +72,7 @@ public class ModulePlaceholder : ModuleBase
 
         statRows[1].SetValues("1");
 
-        
+
         if (moduleType == EModuleType.engine)
         {
             statRows[2].SetRow("speed_power", $"{moduleData.speed:F0}");
@@ -89,6 +89,14 @@ public class ModulePlaceholder : ModuleBase
             statRows[5].SetRow("aircraft_count", $"{moduleData.airCount}");
             statRows[6].SetRow("aircraft_launch_count", $"{moduleData.attackFireCount}");
         }
+    }
+
+    // 플레이스홀더: default subType 기준 Lv.1 수치 반환
+    public override string GetDetailText(int fromLevel, int toLevel)
+    {
+        EModuleType moduleType = GetModuleType();
+        EModuleSubType defaultSubType = CommonUtility.GetDefaultSubType(moduleType);
+        return CommonUtility.GetModuleDetailText(moduleType, defaultSubType, fromLevel, toLevel);
     }
 
 

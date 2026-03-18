@@ -19,6 +19,10 @@ MonoBehaviour:
     m_Key: empty_text
     m_Metadata:
       m_Items: []
+  - m_Id: 13982624544325632
+    m_Key: ok
+    m_Metadata:
+      m_Items: []
   - m_Id: 2924654586888192
     m_Key: tab_fleet
     m_Metadata:
@@ -127,32 +131,32 @@ MonoBehaviour:
     m_Key: ship_module_researched_list
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636948
-    m_Key: explroation_zone_list_name
+  - m_Id: 13853203355271168
+    m_Key: exploration_zone_list_name
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636942
-    m_Key: explroation_cleared
+  - m_Id: 13853203393019904
+    m_Key: exploration_cleared
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636943
-    m_Key: explroation_toggle_auto
+  - m_Id: 13853203393019905
+    m_Key: exploration_toggle_auto
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636949
-    m_Key: explroation_wave_list_name
+  - m_Id: 13853203393019906
+    m_Key: exploration_wave_list_name
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636945
-    m_Key: explroation_safe_zone
+  - m_Id: 13853203393019907
+    m_Key: exploration_safe_zone
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636946
-    m_Key: explroation_collected_minerals
+  - m_Id: 13892162051506176
+    m_Key: exploration_collectable_minerals_max
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636947
-    m_Key: explroation_collect_mineral
+  - m_Id: 13853203393019909
+    m_Key: exploration_collect_mineral
     m_Metadata:
       m_Items: []
   - m_Id: 6697022492901376
@@ -161,6 +165,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6697022530650112
     m_Key: exploration_elapsed_time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11411921936711680
+    m_Key: exploration_try_zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10761965592772608
+    m_Key: exploration_zone_insufficient_ships
     m_Metadata:
       m_Items: []
   - m_Id: 13164879267364864
@@ -173,10 +185,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 13164879321890817
     m_Key: harvest_total
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10761965592772608
-    m_Key: exploration_zone_insufficient_ships
     m_Metadata:
       m_Items: []
   - m_Id: 10728497219502080
@@ -619,8 +627,12 @@ MonoBehaviour:
     m_Key: tech_level_15
     m_Metadata:
       m_Items: []
-  - m_Id: 11411921936711680
-    m_Key: exploration_try_zone
+  - m_Id: 13959242268409856
+    m_Key: tech_level_on_reach
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13959242310352896
+    m_Key: tech_level_detail_title
     m_Metadata:
       m_Items: []
   - m_Id: 11411921974460416

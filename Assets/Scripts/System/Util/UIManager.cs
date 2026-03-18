@@ -284,8 +284,8 @@ public class UIManager : MonoSingleton<UIManager>
         return currentActivePanel.bCameraMove;
     }
 
-    // Popup 관리 메서드 - rowLabels/rowValues: left 상황 정보(null 허용), cost: right 비용 정보(null 허용)
-    public void ShowConfirmPopup(string title, string message, List<string> rowLabels, List<string> rowValues, CostStruct cost, System.Action onConfirm, System.Action onCancel = null)
+    // 확인 팝업: detailText(null 허용), cost(null 허용)
+    public void ShowConfirmPopup(string title, string message, string detailText, CostStruct cost, System.Action onConfirm, System.Action onCancel = null)
     {
         if (currentPopup != null)
             CloseCurrentPopup();
@@ -307,7 +307,7 @@ public class UIManager : MonoSingleton<UIManager>
             CloseCurrentPopup();
         };
 
-        confirmPopup.ShowPopupConfirm(title, message, rowLabels, rowValues, cost, wrappedConfirm, wrappedCancel);
+        confirmPopup.ShowPopupConfirm(title, message, detailText, cost, wrappedConfirm, wrappedCancel);
     }
 
     // 첫 호출 시 Instantiate 후 캐싱, 이후엔 SetActive(true)로 재사용
@@ -423,7 +423,7 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 단순 알림 팝업 (확인 버튼만)
-    public void ShowAlertPopup(string title, string message, System.Action onConfirm, string buttonText = "확인")
+    public void ShowAlertPopup(string title, string message, System.Action onConfirm, string buttonText = null)
     {
         if (currentPopup != null)
             CloseCurrentPopup();

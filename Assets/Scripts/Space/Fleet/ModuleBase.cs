@@ -168,6 +168,12 @@ public class ModuleBase : MonoBehaviour
         CommonUtility.GetModuleStatRows(moduleType, subType, currentLevel, toLevel, out labels, out values);
     }
 
+    // 팝업용 아이콘+수치 문자열 반환 (from==to 이면 단일, 다르면 범위)
+    public virtual string GetDetailText(int fromLevel, int toLevel)
+    {
+        return CommonUtility.GetModuleDetailText(GetModuleType(), GetModuleSubType(), fromLevel, toLevel);
+    }
+
     // 모듈의 능력치 프로파일 반환 (하위 클래스에서 override)
     public virtual CapabilityProfile GetModuleCapabilityProfile(bool bByInfo = true)
     {

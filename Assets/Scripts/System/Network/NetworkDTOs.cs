@@ -181,7 +181,6 @@ public class AuthResponse
     public int[][] researchedModuleTypes;  // [moduleType, moduleSubType] 쌍의 배열
     public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록 (tech_level_N 등)
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
-    public ZoneCollectResponse loginCollectResult; // 로그인 시 자동 수확 결과 (null이면 수확 없음)
 }
 
 [System.Serializable]
@@ -430,12 +429,8 @@ public class ZoneCollectRequest
 [System.Serializable]
 public class ZoneCollectResponse
 {
-    public string collectDateTime;           // 수확 시간 (ISO 8601 형식)
-    public long onlineSeconds;               // 온라인 미수집 구간(초)
-    public long offlineSeconds;              // 오프라인 적립 구간(초, 캡 적용)
-    public long offlineCapSeconds;           // 적용된 오프라인 캡(초)
-    public CostRemainInfo onlineRewardInfo;  // 온라인 구간 보상 (mineralCost 필드 사용)
-    public CostRemainInfo rewardInfo;        // 전체 보상 (remainMineral = 최종 잔액)
+    public string collectDateTime;  // 수확 시간 (ISO 8601 형식)
+    public CostRemainInfo rewardInfo;  // 보상 (remainMineral = 최종 잔액)
 }
 
 [System.Serializable]
@@ -456,7 +451,9 @@ public class ZoneKillResponse
 public class HeartbeatRequest { }
 
 [System.Serializable]
-public class HeartbeatResponse { }
+public class HeartbeatResponse
+{
+}
 #endregion
 
 #region PvP Data Classes #################################################################################

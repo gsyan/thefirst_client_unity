@@ -9,26 +9,26 @@ public class UIPopupAlert : UIPopupBase
     [Header("Alert Popup UI")]
     [SerializeField] private  TMP_Text titleText;
     [SerializeField] private TMP_Text messageText;
-    [SerializeField] private Button confirmButton;
+    [SerializeField] private Button okButton;
     [SerializeField] private  TMP_Text confirmButtonText;
-    [SerializeField] private Button confirmButtonBackground;
+    [SerializeField] private Button okButtonBackground;
 
     private Action onConfirmCallback;
 
     protected override void Awake()
     {
         base.Awake();
-        if (confirmButton != null)
-            confirmButton.onClick.AddListener(OnConfirmClicked);
-        if (confirmButtonBackground != null)
-            confirmButtonBackground.onClick.AddListener(OnConfirmClicked);
+        if (okButton != null)
+            okButton.onClick.AddListener(OnConfirmClicked);
+        if (okButtonBackground != null)
+            okButtonBackground.onClick.AddListener(OnConfirmClicked);
     }
 
-    public void ShowPopupAlert(string title, string message, Action onConfirm, string buttonText = "확인")
+    public void ShowPopupAlert(string title, string message, Action onConfirm, string buttonText = null)
     {
         if (titleText != null) titleText.text = title;
         if (messageText != null) messageText.text = message;
-        if (confirmButtonText != null) confirmButtonText.text = buttonText;
+        if (confirmButtonText != null) confirmButtonText.text = buttonText ?? LocalizationManager.Instance.Get("ok");
 
         onConfirmCallback = onConfirm;
         base.ShowPopup();

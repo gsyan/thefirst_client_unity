@@ -1743,8 +1743,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7092849380307065461}
-  - {fileID: 620665239797546550}
   - {fileID: 7362224993175854107}
+  - {fileID: 620665239797546550}
   - {fileID: 6494516073513314352}
   m_Father: {fileID: 5731127149932505426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2138,7 +2138,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: fbd8bdaf2cfdea4428a55a89edd06416, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901

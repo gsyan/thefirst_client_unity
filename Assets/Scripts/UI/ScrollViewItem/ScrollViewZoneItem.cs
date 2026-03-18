@@ -51,7 +51,7 @@ public class ScrollViewZoneItem : MonoBehaviour
         if (m_zoneStatusText != null)
         {
             if (state == EZoneState.Cleared)
-                CommonUtility.SetUILocText(m_zoneStatusText, "explroation_cleared");
+                CommonUtility.SetUILocText(m_zoneStatusText, "exploration_cleared");
             else
                 m_zoneStatusText.text = "";
         }

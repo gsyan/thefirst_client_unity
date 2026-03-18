@@ -161,22 +161,14 @@ public class UITabPvp : UITabBase
         string title = opponent.characterName;
         string message = LocalizationManager.Instance.Get("pvp_opponent_info", new object[] { opponent.pvpScore, opponent.rank });
 
-        List<string> labels = new List<string>
-        {
-            "fleet_ship_count",
-            "health_power",
-            "attack_power",
-            "aircraft_count"
-        };
-        List<string> values = new List<string>
-        {
-            shipCount.ToString(),
-            CommonUtility.FormatBigNumber(stats.health_power),
-            CommonUtility.FormatBigNumber(stats.attack_power),
-            stats.aircraft_count.ToString()
-        };
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine($"<sprite name=\"IconShips\"> {shipCount}");
+        sb.AppendLine($"<sprite name=\"IconHp\"> {CommonUtility.FormatBigNumber(stats.health_power)}");
+        sb.Append($"<sprite name=\"IconAttack\"> {CommonUtility.FormatBigNumber(stats.attack_power)}");
+        if (stats.aircraft_count > 0)
+            sb.Append($"\n<sprite name=\"IconAircraft\"> {stats.aircraft_count}");
 
-        UIManager.Instance.ShowConfirmPopup(title, message, labels, values, null,
+        UIManager.Instance.ShowConfirmPopup(title, message, sb.ToString(), null,
             () => RequestPvpBattleStart(opponent));
     }
 

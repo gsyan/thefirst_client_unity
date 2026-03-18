@@ -266,6 +266,45 @@ public static class CommonUtility
         return defaultSubType;
     }
 
+    // 모듈 스탯을 아이콘+수치 문자열로 반환 (팝업 detailText용)
+    public static string GetModuleDetailText(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel)
+    {
+        bool showRange = fromLevel != toLevel;
+        ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, fromLevel);
+        ModuleData nxt = showRange ? DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, toLevel) : null;
+        if (cur == null) return string.Empty;
+        if (showRange && nxt == null) return string.Empty;
+
+        string V(float c, float n) => showRange ? $"{c:F0} → {n:F0}" : $"{c:F0}";
+        string levelStr = showRange ? $"Lv. {fromLevel} → {toLevel}" : $"Lv. {fromLevel}";
+
+        var lines = new List<string> { levelStr };
+
+        if (moduleType == EModuleType.body)
+        {
+            lines.Add($"<sprite name=\"IconHp\"> {V(cur.health, nxt?.health ?? 0f)}");
+            lines.Add($"<sprite name=\"IconRepair\"> {V(cur.repairPower, nxt?.repairPower ?? 0f)}");
+        }
+        else if (moduleType == EModuleType.engine)
+        {
+            lines.Add($"<sprite name=\"IconSpeed\"> {V(cur.speed, nxt?.speed ?? 0f)}");
+        }
+        else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
+        {
+            lines.Add($"<sprite name=\"IconAttack\"> {V(cur.attackPower, nxt?.attackPower ?? 0f)}");
+        }
+        else if (moduleType == EModuleType.hanger)
+        {
+            lines.Add($"<sprite name=\"IconAircraftAttack\"> {V(cur.aircraftAttackPower, nxt?.aircraftAttackPower ?? 0f)}");
+            lines.Add($"<sprite name=\"IconAircraftHp\"> {V(cur.aircraftHealth, nxt?.aircraftHealth ?? 0f)}");
+            lines.Add($"<sprite name=\"IconAircraftSpeed\"> {V(cur.aircraftSpeed, nxt?.aircraftSpeed ?? 0f)}");
+            lines.Add($"<sprite name=\"IconAircraft\"> {V(cur.airCount, nxt?.airCount ?? 0f)}");
+            lines.Add($"<sprite name=\"IconLaunch\"> {V(cur.attackFireCount, nxt?.attackFireCount ?? 0f)}");
+        }
+
+        return string.Join("\n\n", lines);
+    }
+
     // 모듈 타입+서브타입+레벨 범위로 stat label/value 리스트 생성 (모듈 인스턴스 없이 사용 가능)
     // fromLevel == toLevel 이면 단일 값, 다르면 "from→to" 형식
     public static void GetModuleStatRows(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel,

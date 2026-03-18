@@ -228,20 +228,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private void PassTutorial()
     {
-        CheckOfflineHarvestAndShowPanels();
-    }
-
-    // 서버가 로그인 시 수확 결과를 보내준 경우 팝업 표시, 없으면 바로 게임 패널
-    private void CheckOfflineHarvestAndShowPanels()
-    {
-        var loginCollect = DataManager.Instance.m_loginCollectResult;
-        DataManager.Instance.m_loginCollectResult = null; // 1회 사용 후 초기화
-
-        if (loginCollect != null)
-        {
-            ShowHarvestResultPopup(loginCollect);
-            return;
-        }
         ShowGamePanels();
     }
 
@@ -252,77 +238,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         UIManager.Instance.ShowMainPanel();
     }
 
-
-
-    // 수확 결과 팝업: 오프라인(시간+자원) → 온라인 미수집(자원) → 합계 순서로 표시
-    private void ShowHarvestResultPopup(ZoneCollectResponse data)
-    {
-        var labels = new List<string>();
-        var values = new List<string>();
-
-        long onEarned_M  = data.onlineRewardInfo != null ? -data.onlineRewardInfo.mineralCost      : 0;
-        long onEarned_MR = data.onlineRewardInfo != null ? -data.onlineRewardInfo.mineralRareCost   : 0;
-        long onEarned_ME = data.onlineRewardInfo != null ? -data.onlineRewardInfo.mineralExoticCost : 0;
-        long onEarned_MD = data.onlineRewardInfo != null ? -data.onlineRewardInfo.mineralDarkCost   : 0;
-
-        long totalEarned_M  = -data.rewardInfo.mineralCost;
-        long totalEarned_MR = -data.rewardInfo.mineralRareCost;
-        long totalEarned_ME = -data.rewardInfo.mineralExoticCost;
-        long totalEarned_MD = -data.rewardInfo.mineralDarkCost;
-
-        long offEarned_M  = totalEarned_M  - onEarned_M;
-        long offEarned_MR = totalEarned_MR - onEarned_MR;
-        long offEarned_ME = totalEarned_ME - onEarned_ME;
-        long offEarned_MD = totalEarned_MD - onEarned_MD;
-
-        bool hasOffline = data.offlineSeconds > 0;
-        bool hasOnline  = data.onlineSeconds  > 0 && (onEarned_M > 0 || onEarned_MR > 0 || onEarned_ME > 0 || onEarned_MD > 0);
-
-        // 오프라인 섹션: 시간 표시 + 자원
-        if (hasOffline)
-        {
-            long ch = data.offlineSeconds / 3600;
-            long cm = (data.offlineSeconds % 3600) / 60;
-            string offTimeStr = ch > 0 ? $"{ch}h {cm}m" : $"{cm}m";
-            long cch = data.offlineCapSeconds / 3600;
-            labels.Add("harvest_offline_elapsed");
-            values.Add($"{offTimeStr} / {cch}h");
-
-            if (offEarned_M  > 0) { labels.Add("mineral_amount");        values.Add(CommonUtility.FormatBigNumber(offEarned_M)); }
-            if (offEarned_MR > 0) { labels.Add("mineral_rare_amount");   values.Add(CommonUtility.FormatBigNumber(offEarned_MR)); }
-            if (offEarned_ME > 0) { labels.Add("mineral_exotic_amount"); values.Add(CommonUtility.FormatBigNumber(offEarned_ME)); }
-            if (offEarned_MD > 0) { labels.Add("mineral_dark_amount");   values.Add(CommonUtility.FormatBigNumber(offEarned_MD)); }
-        }
-
-        // 온라인 미수집 섹션: 자원만 표시
-        if (hasOnline)
-        {
-            labels.Add("harvest_online_uncollected");
-            values.Add("");
-            if (onEarned_M  > 0) { labels.Add("mineral_amount");        values.Add(CommonUtility.FormatBigNumber(onEarned_M)); }
-            if (onEarned_MR > 0) { labels.Add("mineral_rare_amount");   values.Add(CommonUtility.FormatBigNumber(onEarned_MR)); }
-            if (onEarned_ME > 0) { labels.Add("mineral_exotic_amount"); values.Add(CommonUtility.FormatBigNumber(onEarned_ME)); }
-            if (onEarned_MD > 0) { labels.Add("mineral_dark_amount");   values.Add(CommonUtility.FormatBigNumber(onEarned_MD)); }
-        }
-
-        // 합계 섹션: 두 섹션 모두 있을 때만 표시
-        if (hasOffline && hasOnline)
-        {
-            labels.Add("harvest_total");
-            values.Add("");
-            if (totalEarned_M  > 0) { labels.Add("mineral_amount");        values.Add(CommonUtility.FormatBigNumber(totalEarned_M)); }
-            if (totalEarned_MR > 0) { labels.Add("mineral_rare_amount");   values.Add(CommonUtility.FormatBigNumber(totalEarned_MR)); }
-            if (totalEarned_ME > 0) { labels.Add("mineral_exotic_amount"); values.Add(CommonUtility.FormatBigNumber(totalEarned_ME)); }
-            if (totalEarned_MD > 0) { labels.Add("mineral_dark_amount");   values.Add(CommonUtility.FormatBigNumber(totalEarned_MD)); }
-        }
-
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("exploration_collect_available_title"),
-            "",
-            labels, values, null,
-            () => ShowGamePanels()
-        );
-    }
 
 
     // ZoneConfig 기반 적 스폰 시작

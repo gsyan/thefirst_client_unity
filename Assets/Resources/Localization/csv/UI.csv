@@ -1,5 +1,6 @@
 Key,Id,English(en),Korean(ko)
-empty_text,, , 
+empty_text,, ,
+ok,,OK,확인
 tab_fleet,,Fleet,함대
 tab_ship,,Ship,함선
 tab_exploration,,Exploration,탐사
@@ -27,19 +28,20 @@ ship_module_unlock,,Unlock Module,모듈 잠금 해제
 ship_module_levelup,,Level up Module,모듈 레벨업
 ship_module_subtype_manage,,Manage Module Type,모듈 타입 관리
 ship_module_researched_list,,Module Researched List,연구 완료 모듈 목록
-explroation_zone_list_name,,Zone,지역
-explroation_cleared,,Cleared,클리어
-explroation_toggle_auto,,Auto Exploration,자동 탐사
-explroation_wave_list_name,,Wave,웨이브
-explroation_safe_zone,,Safe Zone,안전 지역
-explroation_collected_minerals,,Collected Minerals,수집된 광물
-explroation_collect_mineral,,Collect Mineral,미네랄 수확
+exploration_zone_list_name,,Zone,지역
+exploration_cleared,,Cleared,클리어
+exploration_toggle_auto,,Auto Exploration,자동 탐사
+exploration_wave_list_name,,Wave,웨이브
+exploration_safe_zone,,Safe Zone,안전 지역
+exploration_collectable_minerals_max,,Max Collectable,수집 광물별 최대량
+exploration_collect_mineral,,Collect Mineral,미네랄 수확
 exploration_collect_available_title,,Harvest,수확
 exploration_elapsed_time,,Elapsed,경과 시간
+exploration_try_zone,,Enter Zone,존 입장
+exploration_zone_insufficient_ships,,Not enough ships,함선이 부족합니다
 harvest_offline_elapsed,,Offline,오프라인
 harvest_online_uncollected,,Online (Uncollected),온라인 미수집
 harvest_total,,Total,합계
-exploration_zone_insufficient_ships,,Not enough ships,함선이 부족합니다
 research_button_name,,Research,연구
 research_tech_name,,Tech,기술
 research_already,,Already Researched,연구 완료
@@ -150,5 +152,7 @@ tech_level_12,,Tech Level 12,기술레벨 12
 tech_level_13,,Tech Level 13,기술레벨 13
 tech_level_14,,Tech Level 14,기술레벨 14
 tech_level_15,,Tech Level 15,기술레벨 15
-exploration_try_zone,,Enter Zone,존 입장
+tech_level_on_reach,,[ On reaching Lv.{0} ],[ Lv.{0} 달성 시 ]
+tech_level_detail_title,,Tech Level Info,기술레벨 정보
+
 zone_enter_confirm,,Are you sure you want to enter this zone?,존에 입장 하시겠습니까?
