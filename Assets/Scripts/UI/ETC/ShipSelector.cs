@@ -104,7 +104,7 @@ public class ShipSelector : MonoBehaviour
     private void UpdateAtkText()
     {
         if (m_textAtk == null || Ship == null) return;
-        m_textAtk.text = $"<sprite name=\"IconAttack\"> {CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack_power)}";
+        m_textAtk.text = $"<sprite name=\"IconAttackMini\"> {CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack_power)}";
     }
 
     private void UpdateHpText()
