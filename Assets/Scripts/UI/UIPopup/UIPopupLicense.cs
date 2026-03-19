@@ -8,7 +8,6 @@ public class UIPopupLicense : UIPopupBase
     [SerializeField] private TMP_Text     m_titleText;
     [SerializeField] private TMP_Text     m_licenseText;
     [SerializeField] private ScrollRect   m_scrollView;
-    [SerializeField] private RectTransform m_scrollViewContent;  // Content RectTransform
     [SerializeField] private Button       m_closeButton;
     [SerializeField] private Button       m_backgroundButton;
 
@@ -102,11 +101,9 @@ public class UIPopupLicense : UIPopupBase
         m_onClose = onClose;
         base.ShowPopup();
 
-        // 텍스트 렌더링 후 Content 높이를 MessageBox preferred height로 강제 설정 후 스크롤 최상단 초기화
-        if (m_scrollViewContent != null && m_licenseText != null)
+        if (m_licenseText != null)
         {
-            Canvas.ForceUpdateCanvases();
-            m_scrollViewContent.sizeDelta = new Vector2(m_scrollViewContent.sizeDelta.x, m_licenseText.preferredHeight);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_licenseText.transform.parent as RectTransform);
             if (m_scrollView != null)
                 m_scrollView.verticalNormalizedPosition = 1f;
         }

@@ -175,6 +175,10 @@ MonoBehaviour:
     m_Key: exploration_zone_insufficient_ships
     m_Metadata:
       m_Items: []
+  - m_Id: 14282967706632192
+    m_Key: exploration_zone_enter_confirm
+    m_Metadata:
+      m_Items: []
   - m_Id: 13164879267364864
     m_Key: harvest_offline_elapsed
     m_Metadata:
@@ -205,6 +209,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2924654624636953
     m_Key: pvp_opponent_list_refresh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14291245362708480
+    m_Key: pvp_refresh_confirm
     m_Metadata:
       m_Items: []
   - m_Id: 2952446292656128
@@ -499,6 +507,10 @@ MonoBehaviour:
     m_Key: max_level
     m_Metadata:
       m_Items: []
+  - m_Id: 14264662300164096
+    m_Key: module_subtype_max_level_required
+    m_Metadata:
+      m_Items: []
   - m_Id: 4035192935022592
     m_Key: cost_text
     m_Metadata:
@@ -633,10 +645,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 13959242310352896
     m_Key: tech_level_detail_title
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11411921974460416
-    m_Key: zone_enter_confirm
     m_Metadata:
       m_Items: []
   m_Metadata:

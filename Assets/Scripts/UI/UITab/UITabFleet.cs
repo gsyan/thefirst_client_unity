@@ -1,10 +1,8 @@
-// 함대 탭 UI — Tech Level 행, Fleet Stats(2행 압축), 함선 선택 그리드, Formation 하단 바 + 교체 팝업 관리
-// 함선 추가 버튼은 ShipSelector 그리드의 마지막 셀로 통합
-using System.Collections.Generic;
+// 함대 탭 UI — Tech Level 행, Fleet Stats(2행 압축), 함선 선택 그리드(9칸 고정, 프리팹에 미리 배치), Formation 하단 바 + 교체 팝업 관리
+// 빈 슬롯은 잠금 아이콘으로 표시, 클릭 시 함선 추가 팝업 호출
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using NUnit.Framework.Constraints;
 
 public class UITabFleet : UITabBase
 {
@@ -19,12 +17,8 @@ public class UITabFleet : UITabBase
     [SerializeField] private TMP_Text m_textFleetStats2;
     [SerializeField] private Button   m_btnFleetStatsDetail;
 
-    [Header("함선 선택 그리드")]
-    [SerializeField] private RectTransform m_shipGridContainer1;
-    [SerializeField] private RectTransform m_shipGridContainer2;
-    [SerializeField] private RectTransform m_shipGridContainer3;
-    [SerializeField] private GameObject m_shipSelectorPrefab;
-    [SerializeField] private Button m_addShipButton;
+    [Header("함선 선택 그리드 (프리팹에 9개 미리 배치)")]
+    [SerializeField] private ShipSelector[] m_shipSelectors;
     
     [Header("함선 액션 버튼 (선택 시 활성)")]
     [SerializeField] private Button m_btnShipManage;    // 함선 관리 탭으로 이동
@@ -38,12 +32,6 @@ public class UITabFleet : UITabBase
     private SpaceFleet m_myFleet;
     private ShipSelector m_selectedShipSelector;
 
-    private readonly List<ShipSelector> m_shipSelectorPool = new();
-    private readonly List<ShipSelector> m_shipSelectorActive = new();
-    private Transform m_shipSelectorPoolHolder;
-
-    private Vector2 m_shipButtonSpacing = new Vector2(8f, 8f);
-
     public override void InitializeUITab()
     {
         InitializeUITabFleet();
@@ -56,11 +44,6 @@ public class UITabFleet : UITabBase
         m_myFleet = m_myCharacter.GetOwnedFleet();
         if (m_myFleet == null) return;
 
-        var poolHolderGO = new GameObject("_ShipSelectorPool");
-        poolHolderGO.transform.SetParent(transform, false);
-        m_shipSelectorPoolHolder = poolHolderGO.transform;
-
-        m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
         m_btnFormationChange.onClick.AddListener(OnFormationChangeClicked);
 
         if (m_btnShipManage != null) m_btnShipManage.onClick.AddListener(OnShipManageClicked);
@@ -76,6 +59,7 @@ public class UITabFleet : UITabBase
         EventManager.Subscribe_FleetUpdateHP(OnFleetHPUpdated);
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
         EventManager.Subscribe_TechLevelChanged(OnTechLevelChanged);
+        EventManager.Subscribe_ShipStatsChanged(OnShipStatsChanged);
     }
 
     public override void OnTabActivated()
@@ -235,7 +219,7 @@ public class UITabFleet : UITabBase
         {
             m_textFleetStats1.text =
                 $"<sprite name=\"IconAttack\"> {statsCur.attack_power:F0}  " +
-                $"<sprite name=\"IconHp\"> {statsCur.health_power:F0}/{statsOrg.health_power:F0}  " +
+                $"<sprite name=\"IconHp\"> {statsOrg.health_power:F0}  " +
                 $"<sprite name=\"IconSpeed\"> {statsCur.speed_power:F0}  " +
                 $"<sprite name=\"IconRepair\"> {statsCur.repair_power:F0}";
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_textFleetStats1.transform.parent as RectTransform);
@@ -250,7 +234,7 @@ public class UITabFleet : UITabBase
             {
                 m_textFleetStats2.text =
                     $"<sprite name=\"IconAircraftAttack\"> {statsCur.aircraft_attack_power:F0}  " +
-                    $"<sprite name=\"IconAircraft\"> {statsCur.aircraft_count:F0}/{statsOrg.aircraft_count:F0}  " +
+                    $"<sprite name=\"IconAircraft\"> {statsOrg.aircraft_count:F0}  " +
                     $"<sprite name=\"IconLaunch\"> {statsCur.aircraft_launch_count:F0}";
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_textFleetStats2.transform.parent as RectTransform);
             }
@@ -267,7 +251,7 @@ public class UITabFleet : UITabBase
         var sb = new System.Text.StringBuilder();
         sb.AppendLine($"<sprite name=\"IconAttack\"> (Attack)  {cur.attack_power:F0}");
         sb.AppendLine();
-        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {cur.health_power:F0} / {org.health_power:F0}");
+        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {org.health_power:F0}");
         sb.AppendLine();
         sb.AppendLine($"<sprite name=\"IconSpeed\"> (Speed)  {cur.speed_power:F0}");
         sb.AppendLine();
@@ -279,7 +263,7 @@ public class UITabFleet : UITabBase
             sb.AppendLine();
             sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.aircraft_attack_power:F0}");
             sb.AppendLine();
-            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {cur.aircraft_count:F0} / {org.aircraft_count:F0}");
+            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {org.aircraft_count:F0}");
             sb.AppendLine();
             sb.Append    ($"<sprite name=\"IconLaunch\"> (Aircraft Launch)  {cur.aircraft_launch_count:F0}");
         }
@@ -312,119 +296,53 @@ public class UITabFleet : UITabBase
 
     // ── ShipSelector 그리드 ────────────────────────────────────────────
 
-    private const int SHIPS_PER_ROW = 3;
-
     private void PopulateShipSelectorGrid()
     {
-        if (m_shipSelectorPrefab == null || m_myFleet == null) return;
+        if (m_shipSelectors == null || m_myFleet == null) return;
 
-        for (int i = 0; i < m_shipSelectorActive.Count; i++)
-        {
-            m_shipSelectorActive[i].gameObject.SetActive(false);
-            m_shipSelectorActive[i].transform.SetParent(m_shipSelectorPoolHolder, false);
-        }
-        m_shipSelectorPool.AddRange(m_shipSelectorActive);
-        m_shipSelectorActive.Clear();
         m_selectedShipSelector = null;
 
         int shipCount = m_myFleet.m_ships.Count;
         int maxShips  = DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet;
-        bool atMax    = shipCount >= maxShips;
 
-        int totalItems = shipCount + (atMax ? 0 : 1);
-        if (m_shipGridContainer1 != null) m_shipGridContainer1.gameObject.SetActive(totalItems > 0);
-        if (m_shipGridContainer2 != null) m_shipGridContainer2.gameObject.SetActive(totalItems > SHIPS_PER_ROW);
-        if (m_shipGridContainer3 != null) m_shipGridContainer3.gameObject.SetActive(totalItems > SHIPS_PER_ROW * 2);
-
-        for (int i = 0; i < shipCount; i++)
+        for (int i = 0; i < m_shipSelectors.Length; i++)
         {
-            SpaceShip ship = m_myFleet.m_ships[i];
-            RectTransform container = GetRowContainer(i);
-            if (container == null) continue;
+            if (m_shipSelectors[i] == null) continue;
 
-            ShipSelector selector = GetOrCreateShipSelector();
-            selector.transform.SetParent(container, false);
-            SetCellAnchor(selector.GetComponent<RectTransform>(), i % SHIPS_PER_ROW);
-
-            SpaceShip captured = ship;
-            selector.Initialize(ship, () => OnShipSelectorClicked(captured));
-            selector.gameObject.SetActive(true);
-            m_shipSelectorActive.Add(selector);
-        }
-
-        if (m_addShipButton != null)
-        {
-            if (atMax)
+            if (i < shipCount)
             {
-                m_addShipButton.gameObject.SetActive(false);
+                SpaceShip captured = m_myFleet.m_ships[i];
+                m_shipSelectors[i].Initialize(captured, () => OnShipSelectorClicked(captured));
             }
             else
             {
-                RectTransform addContainer = GetRowContainer(shipCount);
-                m_addShipButton.transform.SetParent(addContainer, false);
-                SetCellAnchor(m_addShipButton.GetComponent<RectTransform>(), shipCount % SHIPS_PER_ROW);
-                m_addShipButton.gameObject.SetActive(true);
-                m_addShipButton.transform.SetAsLastSibling();
+                bool canAdd = shipCount < maxShips;
+                m_shipSelectors[i].InitializeLocked(canAdd ? OnAddShipButtonClicked : null);
             }
         }
-    }
-
-    private void SetCellAnchor(RectTransform rt, int indexInRow)
-    {
-        float xMin = indexInRow / (float)SHIPS_PER_ROW;
-        float xMax = (indexInRow + 1) / (float)SHIPS_PER_ROW;
-        rt.anchorMin = new Vector2(xMin, 0f);
-        rt.anchorMax = new Vector2(xMax, 1f);
-        rt.offsetMin = new Vector2(m_shipButtonSpacing.x, m_shipButtonSpacing.y);
-        rt.offsetMax = new Vector2(-m_shipButtonSpacing.x, -m_shipButtonSpacing.y);
-    }
-
-    private RectTransform GetRowContainer(int itemIndex)
-    {
-        int row = itemIndex / SHIPS_PER_ROW;
-        if (row == 0) return m_shipGridContainer1;
-        if (row == 1) return m_shipGridContainer2;
-        if (row == 2) return m_shipGridContainer3;
-        return null;
-    }
-
-    private ShipSelector GetOrCreateShipSelector()
-    {
-        if (m_shipSelectorPool.Count > 0)
-        {
-            ShipSelector s = m_shipSelectorPool[^1];
-            m_shipSelectorPool.RemoveAt(m_shipSelectorPool.Count - 1);
-            return s;
-        }
-        var go = Instantiate(m_shipSelectorPrefab);
-        return go.GetComponent<ShipSelector>();
     }
 
     private void RefreshShipHealthDisplay()
     {
-        if (m_myFleet == null) return;
+        if (m_shipSelectors == null || m_myFleet == null) return;
 
-        bool needsRebuild = m_shipSelectorActive.Count != m_myFleet.m_ships.Count;
-        if (needsRebuild == false)
+        int shipCount = m_myFleet.m_ships.Count;
+
+        // 각 슬롯의 Ship 참조가 현재 함대와 다르면 전체 재구성
+        for (int i = 0; i < m_shipSelectors.Length; i++)
         {
-            for (int i = 0; i < m_shipSelectorActive.Count; i++)
+            if (m_shipSelectors[i] == null) continue;
+            SpaceShip expected = i < shipCount ? m_myFleet.m_ships[i] : null;
+            if (m_shipSelectors[i].Ship != expected)
             {
-                if (m_shipSelectorActive[i].Ship == null)
-                {
-                    needsRebuild = true;
-                    break;
-                }
+                PopulateShipSelectorGrid();
+                return;
             }
         }
 
-        if (needsRebuild == true)
-        {
-            PopulateShipSelectorGrid();
-            return;
-        }
-
-        for (int i = 0; i < m_shipSelectorActive.Count; i++)
-            m_shipSelectorActive[i].RefreshHealth();
+        for (int i = 0; i < shipCount && i < m_shipSelectors.Length; i++)
+            if (m_shipSelectors[i] != null)
+                m_shipSelectors[i].RefreshHealth();
     }
 
     private void UpdateShipActionButtons()
@@ -449,11 +367,11 @@ public class UITabFleet : UITabBase
         if (m_selectedShipSelector != null)
             m_selectedShipSelector.SetSelected(false);
 
-        for (int i = 0; i < m_shipSelectorActive.Count; i++)
+        for (int i = 0; i < m_shipSelectors.Length; i++)
         {
-            if (m_shipSelectorActive[i].Ship == ship)
+            if (m_shipSelectors[i] != null && m_shipSelectors[i].Ship == ship)
             {
-                m_selectedShipSelector = m_shipSelectorActive[i];
+                m_selectedShipSelector = m_shipSelectors[i];
                 m_selectedShipSelector.SetSelected(true);
                 break;
             }
@@ -475,11 +393,11 @@ public class UITabFleet : UITabBase
             m_selectedShipSelector.SetSelected(false);
 
         m_selectedShipSelector = null;
-        for (int i = 0; i < m_shipSelectorActive.Count; i++)
+        for (int i = 0; i < m_shipSelectors.Length; i++)
         {
-            if (m_shipSelectorActive[i].Ship == ship)
+            if (m_shipSelectors[i] != null && m_shipSelectors[i].Ship == ship)
             {
-                m_selectedShipSelector = m_shipSelectorActive[i];
+                m_selectedShipSelector = m_shipSelectors[i];
                 m_selectedShipSelector.SetSelected(true);
                 break;
             }
@@ -498,6 +416,19 @@ public class UITabFleet : UITabBase
     {
         UpdateFleetStatsDisplay();
         RefreshShipHealthDisplay();
+    }
+
+    private void OnShipStatsChanged(SpaceShip ship)
+    {
+        UpdateFleetStatsDisplay();
+        for (int i = 0; i < m_shipSelectors.Length; i++)
+        {
+            if (m_shipSelectors[i] != null && m_shipSelectors[i].Ship == ship)
+            {
+                m_shipSelectors[i].RefreshStats();
+                break;
+            }
+        }
     }
 
     // ── 함선 추가 ─────────────────────────────────────────────────────

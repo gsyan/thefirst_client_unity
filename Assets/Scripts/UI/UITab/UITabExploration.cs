@@ -446,7 +446,7 @@ public class UITabExploration : UITabBase
         ZoneConfig zone = m_selectedZone;
         UIManager.Instance.ShowConfirmPopup(
             zone.zoneName,
-            LocalizationManager.Instance.Get("zone_enter_confirm"),
+            LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
             null, null,
             onConfirm: () => TryEnterZoneWithAd(zone)
         );
@@ -460,18 +460,24 @@ public class UITabExploration : UITabBase
         sb.AppendLine(zone.zoneName);
         if (string.IsNullOrEmpty(zone.zoneDescription) == false)
             sb.AppendLine(zone.zoneDescription);
-        if (zone.killRewardMineral > 0)
-            sb.AppendLine($"Kill M: +{CommonUtility.FormatBigNumber(zone.killRewardMineral)}");
-        if (zone.killRewardMineralRare > 0)
-            sb.AppendLine($"Kill R: +{CommonUtility.FormatBigNumber(zone.killRewardMineralRare)}");
-        if (zone.mineralPerHour > 0)
-            sb.AppendLine($"M: {CommonUtility.FormatBigNumber(zone.mineralPerHour)}/h");
-        if (zone.mineralRarePerHour > 0)
-            sb.AppendLine($"R: {CommonUtility.FormatBigNumber(zone.mineralRarePerHour)}/h");
-        if (zone.mineralExoticPerHour > 0)
-            sb.AppendLine($"E: {CommonUtility.FormatBigNumber(zone.mineralExoticPerHour)}/h");
-        if (zone.mineralDarkPerHour > 0)
-            sb.AppendLine($"D: {CommonUtility.FormatBigNumber(zone.mineralDarkPerHour)}/h");
+        void AppendKill(string icon, float value)
+        {
+            if (value <= 0f) return;
+            sb.AppendLine($"<sprite name=\"IconDestroyEnemy\"> <sprite name=\"{icon}\"> +{CommonUtility.FormatBigNumber(value)}");
+        }
+        void AppendRate(string icon, float value)
+        {
+            if (value <= 0f) return;
+            sb.AppendLine($"<sprite name=\"{icon}\"> {CommonUtility.FormatBigNumber(value)}/h");
+        }
+        AppendKill("IconMineralMini",  zone.killRewardMineral);
+        AppendKill("IconMineralRMini", zone.killRewardMineralRare);
+        AppendKill("IconMineralEMini", zone.killRewardMineralExotic);
+        AppendKill("IconMineralDMini", zone.killRewardMineralDark);
+        AppendRate("IconMineralMini",  zone.mineralPerHour);
+        AppendRate("IconMineralRMini", zone.mineralRarePerHour);
+        AppendRate("IconMineralEMini", zone.mineralExoticPerHour);
+        AppendRate("IconMineralDMini", zone.mineralDarkPerHour);
         m_zoneDetailText.text = sb.ToString().TrimEnd();
     }
 

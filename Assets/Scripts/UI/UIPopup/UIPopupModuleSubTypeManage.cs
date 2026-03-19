@@ -171,23 +171,55 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         }
 
         bool isFree = m_sourceModule.IsSubTypeFree(m_selectedSubType);
-        if (m_costText != null)
+        bool canConfirm = true;
+
+        if (isFree == true)
         {
-            if (isFree == true)
-                m_costText.text = LocalizationManager.Instance.Get("free");
-            else
+            // 이미 unlock된 서브타입 → 자유 교체, 레벨/비용 조건 없음
+            if (m_costText != null) m_costText.text = LocalizationManager.Instance.Get("free");
+        }
+        else
+        {
+            // 신규 unlock → max level 조건 + 비용 동시 체크
+            int currentLevel = m_sourceModule.GetModuleLevel();
+            int maxLevel = DataManager.Instance.GetMaxModuleLevel(currentSubType);
+            bool isMaxLevel = currentLevel >= maxLevel;
+            if (isMaxLevel == false) canConfirm = false;
+
+            CostStruct cost = DataManager.Instance.m_dataTableResearch.GetSubTypeAddCost(m_selectedSubType);
+            long have = DataManager.Instance.m_currentCharacter?.m_characterInfo?.mineralRare ?? 0;
+            bool insufficient = have < cost.mineralRare;
+            if (insufficient == true) canConfirm = false;
+
+            var sb = new System.Text.StringBuilder();
+
+            // 현재 장착 서브타입 이름 조회 (researchId = loc key)
+            string subtypeName = currentSubType.ToString();
+            for (int i = 0; i < m_currentNodeList.Count; i++)
             {
-                CostStruct cost = DataManager.Instance.m_dataTableResearch.GetSubTypeAddCost(m_selectedSubType);
-                long have = DataManager.Instance.m_currentCharacter?.m_characterInfo?.mineralRare ?? 0;
-                bool insufficient = have < cost.mineralRare;
-                string valStr = CommonUtility.FormatBigNumber(cost.mineralRare);
-                m_costText.text = insufficient
-                    ? $"<sprite name=\"IconMineralRare\"> <color=red>{valStr}</color>"
-                    : $"<sprite name=\"IconMineralRare\"> {valStr}";
+                if (m_currentNodeList[i].moduleSubType == currentSubType)
+                {
+                    subtypeName = LocalizationManager.Instance.Get(m_currentNodeList[i].researchId);
+                    break;
+                }
             }
+            string levelMsg = LocalizationManager.Instance.Get(
+                "module_subtype_max_level_required",
+                new object[] { subtypeName, maxLevel, currentLevel });
+            sb.Append(isMaxLevel == true
+                ? levelMsg
+                : $"<color=red>{levelMsg}</color>");
+            sb.Append("\n\n");
+
+            string costLine = insufficient
+                ? $"<sprite name=\"IconMineralR\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineralRare)}</color>"
+                : $"<sprite name=\"IconMineralR\"> {CommonUtility.FormatBigNumber(cost.mineralRare)}";
+            sb.Append(costLine);
+
+            if (m_costText != null) m_costText.text = sb.ToString().TrimEnd();
         }
 
-        if (m_confirmButton != null) m_confirmButton.interactable = true;
+        if (m_confirmButton != null) m_confirmButton.interactable = canConfirm;
     }
 
     private void OnConfirmClicked()

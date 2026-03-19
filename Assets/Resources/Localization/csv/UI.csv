@@ -39,6 +39,7 @@ exploration_collect_available_title,,Harvest,수확
 exploration_elapsed_time,,Elapsed,경과 시간
 exploration_try_zone,,Enter Zone,존 입장
 exploration_zone_insufficient_ships,,Not enough ships,함선이 부족합니다
+exploration_zone_enter_confirm,,Are you sure you want to enter this zone?,존에 입장 하시겠습니까?
 harvest_offline_elapsed,,Offline,오프라인
 harvest_online_uncollected,,Online (Uncollected),온라인 미수집
 harvest_total,,Total,합계
@@ -47,11 +48,12 @@ research_tech_name,,Tech,기술
 research_already,,Already Researched,연구 완료
 pvp_opponent_list,,PVP List,상대방 목록
 pvp_opponent_list_refresh,,Refresh({0}/{1}),목록갱신({0}/{1})
+pvp_refresh_confirm,,Refresh opponent list? ({0} remaining),상대 목록을 갱신하시겠습니까? (잔여 {0}회)
 pvp_score_mine_head,,My PVP Info,내 PVP 정보
 pvp_score_mine,,Score,점수
 pvp_rank_mine,,Rank,랭크
 pvp_opponent_info,,Opponent Fleet Power,상대 함대 전력
-pvp_score_rank,,{0} (Rank {1}),{0} ({1}위)
+pvp_score_rank,,Score:{0} (Rank {1}),점수:{0} ({1}위)
 pvp_rank_title,,Rank List,순위표
 pvp_battle_result_win,,Victory,승리
 pvp_battle_result_lose,,Defeat,패배
@@ -120,6 +122,7 @@ popup_message_google_link,,Would you like to link your Google account?,구글 �
 popup_message_google_unlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
 free,,FREE,무료
 max_level,,Max Level,최고 레벨
+module_subtype_max_level_required,,"{0} must reach max level (Lv.{1} / now Lv.{2})","{0} 최고 레벨 도달 필요 (Lv.{1} / 현재 Lv.{2})"
 cost_text,,Cost,비용
 details_text,,Details,세부정보
 ship_module_select_body,,B,체
@@ -154,5 +157,3 @@ tech_level_14,,Tech Level 14,기술레벨 14
 tech_level_15,,Tech Level 15,기술레벨 15
 tech_level_on_reach,,[ On reaching Lv.{0} ],[ Lv.{0} 달성 시 ]
 tech_level_detail_title,,Tech Level Info,기술레벨 정보
-
-zone_enter_confirm,,Are you sure you want to enter this zone?,존에 입장 하시겠습니까?

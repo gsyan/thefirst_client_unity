@@ -71,7 +71,7 @@ MonoBehaviour:
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
     moduleType: 1
-    moduleSubType: 1010201
+    moduleSubType: 1020201
   - researchId: engine_t1_std_ver1
     prerequisiteIds: []
     researchCost:
@@ -94,7 +94,7 @@ MonoBehaviour:
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
     moduleType: 2
-    moduleSubType: 2010201
+    moduleSubType: 2020201
   - researchId: beam_t1_std_ver1
     prerequisiteIds: []
     researchCost:
@@ -117,7 +117,7 @@ MonoBehaviour:
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
     moduleType: 3
-    moduleSubType: 3010201
+    moduleSubType: 3020201
   - researchId: missile_t1_std_ver1
     prerequisiteIds: []
     researchCost:
@@ -140,7 +140,7 @@ MonoBehaviour:
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
     moduleType: 4
-    moduleSubType: 4010201
+    moduleSubType: 4020201
   - researchId: hanger_t1_std_ver1
     prerequisiteIds: []
     researchCost:
@@ -163,7 +163,7 @@ MonoBehaviour:
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
     moduleType: 5
-    moduleSubType: 5010201
+    moduleSubType: 5020201
   techLevelDataList:
   - researchId: tech_level_1
     prerequisiteIds: []

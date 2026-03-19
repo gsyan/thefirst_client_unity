@@ -29,7 +29,7 @@ public class UITabShip : UITabBase
     [SerializeField] private Button m_btnShipStatsDetail;
 
     [Header("모듈 디테일 카드")]
-    [SerializeField] private RectTransform m_moduleStatsContainer;
+    [SerializeField] private TMP_Text  m_moduleStatsText;
 
     [SerializeField] private Button    m_unlockModuleButton;
     [SerializeField] private Button    m_levelUpModuleButton;
@@ -44,7 +44,6 @@ public class UITabShip : UITabBase
     private SpaceShip  m_selectedShip;
     private ModuleBase m_selectedModule;
 
-    private readonly List<RowLabelValue> m_moduleStatRows = new();
 
     // 모듈 선택 버튼 풀 (단일 풀, 컨테이너 무관)
     private readonly List<ModuleSelector> m_moduleSelectorPool   = new();
@@ -63,17 +62,6 @@ public class UITabShip : UITabBase
         if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
         if (m_myFleet == null) return;
-
-        // m_moduleStatsContainer 내부 자식 캐싱
-        if (m_moduleStatsContainer != null)
-        {
-            m_moduleStatRows.Clear();
-            for (int i = 0; i < m_moduleStatsContainer.childCount; i++)
-            {
-                var row = m_moduleStatsContainer.GetChild(i).GetComponent<RowLabelValue>();
-                if (row != null) m_moduleStatRows.Add(row);
-            }
-        }
 
         var poolHolderGO = new GameObject("_ModuleSelectorPool");
         poolHolderGO.transform.SetParent(transform, false);
@@ -241,7 +229,7 @@ public class UITabShip : UITabBase
         {
             m_textShipStats1.text =
                 $"<sprite name=\"IconAttack\"> {statsCur.attack_power:F0}  " +
-                $"<sprite name=\"IconHp\"> {statsCur.health_power:F0}/{statsOrg.health_power:F0}  " +
+                $"<sprite name=\"IconHp\"> {statsOrg.health_power:F0}  " +
                 $"<sprite name=\"IconSpeed\"> {statsCur.speed_power:F0}  " +
                 $"<sprite name=\"IconRepair\"> {statsCur.repair_power:F0}";
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats1.transform.parent as RectTransform);
@@ -255,7 +243,7 @@ public class UITabShip : UITabBase
             {
                 m_textShipStats2.text =
                     $"<sprite name=\"IconAircraftAttack\"> {statsCur.aircraft_attack_power:F0}  " +
-                    $"<sprite name=\"IconAircraft\"> {statsCur.aircraft_count}/{statsOrg.aircraft_count}  " +
+                    $"<sprite name=\"IconAircraft\"> {statsOrg.aircraft_count}  " +
                     $"<sprite name=\"IconLaunch\"> {statsCur.aircraft_launch_count}";
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats2.transform.parent as RectTransform);
             }
@@ -272,7 +260,7 @@ public class UITabShip : UITabBase
         var sb = new System.Text.StringBuilder();
         sb.AppendLine($"<sprite name=\"IconAttack\"> (Attack)  {cur.attack_power:F0}");
         sb.AppendLine();
-        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {cur.health_power:F0} / {org.health_power:F0}");
+        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {org.health_power:F0}");
         sb.AppendLine();
         sb.AppendLine($"<sprite name=\"IconSpeed\"> (Speed)  {cur.speed_power:F0}");
         sb.AppendLine();
@@ -284,7 +272,7 @@ public class UITabShip : UITabBase
             sb.AppendLine();
             sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.aircraft_attack_power:F0}");
             sb.AppendLine();
-            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {cur.aircraft_count:F0} / {org.aircraft_count:F0}");
+            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {org.aircraft_count:F0}");
             sb.AppendLine();
             sb.Append    ($"<sprite name=\"IconLaunch\"> (Aircraft Launch)  {cur.aircraft_launch_count:F0}");
         }
@@ -537,11 +525,13 @@ public class UITabShip : UITabBase
         if (ship == null) return;
 
         ship.Apply_ChangeModule(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
+        EventManager.Trigger_ShipStatsChanged(ship);
 
         ShowResultMessage("Module Upgrade successful!", 3f);
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == upgradeData.shipId)
         {
+            UpdateShipHeader();
             PopulateModuleSelectButtons();
             ReselectReplacedModule(ship, upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex);
         }
@@ -551,18 +541,10 @@ public class UITabShip : UITabBase
     // 모듈 디테일 카드 갱신
     // ─────────────────────────────────────────────
 
-    private void HideAllModuleStatRows()
-    {
-        for (int i = 0; i < m_moduleStatRows.Count; i++)
-            m_moduleStatRows[i].Hide();
-    }
-
     private void UpdateModuleStatsDisplay()
     {
         if (bShow != true) return;
         if (m_selectedShip == null) return;
-
-        string localizationKeyModuleType = $"module_type_{m_selectedModule.GetModuleType()}";
 
         if (m_selectedModule is ModulePlaceholder)
         {
@@ -570,9 +552,11 @@ public class UITabShip : UITabBase
             m_levelUpModuleButton.gameObject.SetActive(false);
             m_subTypeManageButton.gameObject.SetActive(false);
 
-            HideAllModuleStatRows();
-            m_moduleStatRows[0].SetRow(localizationKeyModuleType + "_placeholder", "");
-            m_selectedModule.SetModuleStatRows(m_moduleStatRows);
+            if (m_moduleStatsText != null)
+            {
+                m_moduleStatsText.text = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType()}_placeholder");
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsText.transform.parent as RectTransform);
+            }
         }
         else
         {
@@ -607,9 +591,13 @@ public class UITabShip : UITabBase
 
             m_subTypeManageButton.interactable = true;
 
-            HideAllModuleStatRows();
-            m_moduleStatRows[0].SetRow(localizationKeyModuleType, "");
-            m_selectedModule.SetModuleStatRows(m_moduleStatRows);
+            if (m_moduleStatsText != null)
+            {
+                int level = m_selectedModule.GetModuleLevel();
+                string typeName = LocalizationManager.Instance.Get(m_selectedModule.GetModuleSubType().ToLocKey());
+                m_moduleStatsText.text = typeName + "\n\n" + m_selectedModule.GetDetailText(level, level);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsText.transform.parent as RectTransform);
+            }
         }
     }
 

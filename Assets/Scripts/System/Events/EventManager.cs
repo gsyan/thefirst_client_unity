@@ -1,3 +1,5 @@
+// 게임 전역 이벤트 허브 — 씬/컴포넌트 간 의존성 없이 발행/구독
+// 로그아웃 시 UnsubscribeAll()로 리플렉션 기반 일괄 해제
 using System;
 using System.Reflection;
 using UnityEngine;
@@ -152,6 +154,20 @@ public static class EventManager
         OnShipUpdateHP -= callback;
     }
     
+    public static event Action<SpaceShip> OnShipStatsChanged;
+    public static void Trigger_ShipStatsChanged(SpaceShip ship)
+    {
+        OnShipStatsChanged?.Invoke(ship);
+    }
+    public static void Subscribe_ShipStatsChanged(Action<SpaceShip> callback)
+    {
+        OnShipStatsChanged += callback;
+    }
+    public static void Unsubscribe_ShipStatsChanged(Action<SpaceShip> callback)
+    {
+        OnShipStatsChanged -= callback;
+    }
+
     # endregion Ship --------------------------------------------------------------------
     
 

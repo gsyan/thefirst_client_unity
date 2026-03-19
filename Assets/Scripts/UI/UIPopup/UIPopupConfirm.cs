@@ -29,7 +29,11 @@ public class UIPopupConfirm : UIPopupBase
     public void ShowPopupConfirm(string title, string message, string detailText, CostStruct cost, Action onConfirm, Action onCancel = null)
     {
         if (titleText != null) titleText.text = title;
-        if (bodyText != null) bodyText.text = BuildBodyText(message, detailText, cost);
+
+        bool canAfford = true;
+        if (bodyText != null) bodyText.text = BuildBodyText(message, detailText, cost, out canAfford);
+
+        if (confirmButton != null) confirmButton.interactable = canAfford;
 
         onCancelCallback = onCancel;
         onConfirmCallback = onConfirm;
@@ -37,7 +41,7 @@ public class UIPopupConfirm : UIPopupBase
         base.ShowPopup();
     }
 
-    private string BuildBodyText(string message, string detailText, CostStruct cost)
+    private string BuildBodyText(string message, string detailText, CostStruct cost, out bool canAfford)
     {
         var sb = new StringBuilder();
         sb.Append(message);
@@ -48,7 +52,7 @@ public class UIPopupConfirm : UIPopupBase
             sb.Append(detailText);
         }
 
-        string costText = BuildCostText(cost);
+        string costText = BuildCostText(cost, out canAfford);
         if (string.IsNullOrEmpty(costText) == false)
         {
             sb.Append(SEPARATOR);
@@ -58,8 +62,9 @@ public class UIPopupConfirm : UIPopupBase
         return sb.ToString();
     }
 
-    private string BuildCostText(CostStruct cost)
+    private string BuildCostText(CostStruct cost, out bool canAfford)
     {
+        canAfford = true;
         if (cost == null) return null;
         bool hasCost = cost.techLevel > 0 || cost.mineral > 0 || cost.mineralRare > 0 || cost.mineralExotic > 0 || cost.mineralDark > 0;
         if (hasCost == false) return null;
@@ -74,27 +79,32 @@ public class UIPopupConfirm : UIPopupBase
         if (cost.techLevel > 0)
         {
             bool ins = info != null && techLevel < cost.techLevel;
+            if (ins == true) canAfford = false;
             sb.Append($"<sprite name=\"IconTech\"> {C(ins, CommonUtility.FormatBigNumber(cost.techLevel))}\n\n");
         }
         if (cost.mineral > 0)
         {
             bool ins = info != null && info.mineral < cost.mineral;
+            if (ins == true) canAfford = false;
             sb.Append($"<sprite name=\"IconMineral\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}\n\n");
         }
         if (cost.mineralRare > 0)
         {
             bool ins = info != null && info.mineralRare < cost.mineralRare;
-            sb.Append($"<sprite name=\"IconMineralRare\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}\n\n");
+            if (ins == true) canAfford = false;
+            sb.Append($"<sprite name=\"IconMineralR\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}\n\n");
         }
         if (cost.mineralExotic > 0)
         {
             bool ins = info != null && info.mineralExotic < cost.mineralExotic;
-            sb.Append($"<sprite name=\"IconMineralExotic\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}\n\n");
+            if (ins == true) canAfford = false;
+            sb.Append($"<sprite name=\"IconMineralE\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}\n\n");
         }
         if (cost.mineralDark > 0)
         {
             bool ins = info != null && info.mineralDark < cost.mineralDark;
-            sb.Append($"<sprite name=\"IconMineralDark\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n\n");
+            if (ins == true) canAfford = false;
+            sb.Append($"<sprite name=\"IconMineralD\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n\n");
         }
 
         return sb.ToString().TrimEnd();

@@ -168,7 +168,7 @@ public class ModuleBase : MonoBehaviour
         CommonUtility.GetModuleStatRows(moduleType, subType, currentLevel, toLevel, out labels, out values);
     }
 
-    // 팝업용 아이콘+수치 문자열 반환 (from==to 이면 단일, 다르면 범위)
+    // 팝업용 아이콘+수치 문자열 반환 (fromLevel == toLevel이면 단순 현재 수치 표시, 다르면 "현재 → 다음" 비교 표시 용도)
     public virtual string GetDetailText(int fromLevel, int toLevel)
     {
         return CommonUtility.GetModuleDetailText(GetModuleType(), GetModuleSubType(), fromLevel, toLevel);

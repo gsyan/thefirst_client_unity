@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class UITabPvp : UITabBase
 {
     [Header("PvP UI Components")]
-    [SerializeField] private TMP_Text m_myScoreText;
-    [SerializeField] private TMP_Text m_myRankText;
+    [SerializeField] private TMP_Text m_myInfoText;
     [SerializeField] private Button m_refreshButton;
     [SerializeField] private TMP_Text m_refreshButtonText;
     [SerializeField] private PvpSelectCard[] m_opponentCards; // 고정 3슬롯
@@ -101,9 +100,14 @@ public class UITabPvp : UITabBase
 
     private void UpdateMyInfo()
     {
-        if (m_myScoreText != null) m_myScoreText.text = $"{m_myScore}";
-        if (m_myRankText != null) m_myRankText.text = m_myRank > 0 ? $"{m_myRank}" : "-";
-        if (m_refreshButtonText != null) m_refreshButtonText.text = LocalizationManager.Instance.Get("pvp_opponent_list_refresh", new object[] {m_refreshRemain, 5});
+        if (m_myInfoText != null)
+        {
+            string rankStr = m_myRank > 0 ? $"{m_myRank}" : "-";
+            m_myInfoText.text = LocalizationManager.Instance.Get("pvp_score_rank", m_myScore, rankStr);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_myInfoText.transform.parent as RectTransform);
+        }
+        if (m_refreshButtonText != null)
+            m_refreshButtonText.text = LocalizationManager.Instance.Get("pvp_opponent_list_refresh", new object[] { m_refreshRemain, 5 });
     }
 
     private void PopulateOpponentList(List<PvpOpponentInfo> opponents)
@@ -135,8 +139,14 @@ public class UITabPvp : UITabBase
             return;
         }
 
-        var request = new PvpRefreshRequest();
-        NetworkManager.Instance.PvpRefresh(request, OnPvpRefreshResponse);
+        string title = LocalizationManager.Instance.Get("pvp_opponent_list");
+        string message = LocalizationManager.Instance.Get("pvp_refresh_confirm", m_refreshRemain);
+        UIManager.Instance.ShowConfirmPopup(title, message, null, null,
+            onConfirm: () =>
+            {
+                var request = new PvpRefreshRequest();
+                NetworkManager.Instance.PvpRefresh(request, OnPvpRefreshResponse);
+            });
     }
 
     private void OnPvpRefreshResponse(ApiResponse<PvpRefreshResponse> response)

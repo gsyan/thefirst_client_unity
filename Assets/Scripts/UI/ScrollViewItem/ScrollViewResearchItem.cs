@@ -21,7 +21,7 @@ public class ScrollViewResearchItem : MonoBehaviour
     [SerializeField] private Color m_colorResearchable = new Color(0.3f, 0.3f, 0.3f, 1f);
     [SerializeField] private Color m_colorResearched = new Color(0.2f, 0.8f, 0.4f, 1f);
     [SerializeField] private Color m_colorCurrent = new Color(0.2f, 0.6f, 1f, 1f);    // 현재 장착 중 - 파란색
-    [SerializeField] private Color m_colorLocked = new Color(0.15f, 0.15f, 0.15f, 0.6f); // 기술레벨 부족 - 어둡게
+    [SerializeField] private Color m_colorLocked = new Color(0.15f, 0.15f, 0.15f, 1.0f); // 기술레벨 부족 - 어둡게
     [SerializeField] private Color m_colorSelected = new Color(1f, 0.8f, 0.2f, 1f);
     [SerializeField] private float m_outlineWidth = 4f;
 
@@ -60,7 +60,17 @@ public class ScrollViewResearchItem : MonoBehaviour
         else
             m_backgroundImage.color = m_colorResearchable;
 
-        if (m_outline != null)
-            m_outline.enabled = isSelected && baseState != EResearchNodeState.Locked;
+        // 풀 재사용 시 m_outline이 소실될 수 있으므로 방어적으로 재획득
+        if (m_outline == null)
+        {
+            m_outline = m_selectButton.GetComponent<UnityEngine.UI.Outline>();
+            if (m_outline == null)
+                m_outline = m_selectButton.gameObject.AddComponent<UnityEngine.UI.Outline>();
+            m_outline.effectColor    = m_colorSelected;
+            m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
+        }
+
+        m_outline.enabled = isSelected;
+        if (isSelected == true) m_backgroundImage.SetAllDirty();
     }
 }

@@ -1,5 +1,5 @@
 // 함대 내 함선 선택 UI 카드 컴포넌트
-// 선택 여부를 Outline, HP를 게이지 바(RectTransform 너비) + 수치 텍스트로 시각화, 함선 이름/ATK 표시
+// 선택 여부를 Outline, HP를 게이지 바(RectTransform 너비) + 수치 텍스트로 시각화, 함선 이름/ATK 표시, 잠금 슬롯 상태 지원
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +8,9 @@ using TMPro;
 public class ShipSelector : MonoBehaviour
 {
     [SerializeField] private Button m_button;
+
+    [SerializeField] private TMP_Text m_lockedText;             // locked text
+    [SerializeField] private GameObject m_activeContainer;      // unlocked ui group
     [SerializeField] private TMP_Text m_textName;   // 함선 이름 텍스트
     [SerializeField] private TMP_Text m_textAtk;    // ATK 수치 텍스트
     [SerializeField] private Image m_hpBarFill;     // HP 게이지 fill (Image.fillMethod = Horizontal)
@@ -23,6 +26,25 @@ public class ShipSelector : MonoBehaviour
 
     public SpaceShip Ship { get; private set; }
 
+    // 빈 슬롯(미구매 함선 자리) — onClick==null이면 버튼 비활성화
+    public void InitializeLocked(UnityEngine.Events.UnityAction onClick)
+    {
+        Ship = null;
+        if (m_healthLerpCoroutine != null) { StopCoroutine(m_healthLerpCoroutine); m_healthLerpCoroutine = null; }
+
+        m_button.onClick.RemoveAllListeners();
+        if (onClick != null)
+            m_button.onClick.AddListener(onClick);
+        m_button.interactable = onClick != null;
+
+        if (m_lockedText != null) m_lockedText.gameObject.SetActive(true);
+        if (m_activeContainer != null) m_activeContainer.SetActive(false);
+
+        m_outline = m_button.GetComponent<UnityEngine.UI.Outline>();
+        if (m_outline == null) m_outline = m_button.gameObject.AddComponent<UnityEngine.UI.Outline>();
+        m_outline.enabled = false;
+    }
+
     public void Initialize(SpaceShip ship, UnityEngine.Events.UnityAction onClick)
     {
         Ship = ship;
@@ -35,6 +57,10 @@ public class ShipSelector : MonoBehaviour
 
         m_button.onClick.RemoveAllListeners();
         m_button.onClick.AddListener(onClick);
+        m_button.interactable = true;
+
+        if (m_lockedText != null) m_lockedText.gameObject.SetActive(false);
+        if (m_activeContainer != null) m_activeContainer.SetActive(true);
 
         m_outline = m_button.GetComponent<UnityEngine.UI.Outline>();
         if (m_outline == null)
@@ -43,9 +69,22 @@ public class ShipSelector : MonoBehaviour
         m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
         m_outline.enabled        = false;
 
-        UpdateNameText();
+        RefreshStats();
         SetHealthImmediate();
-        UpdateAtkText();
+    }
+
+    // 모듈 레벨업 등 스탯 변경 시 외부에서 호출 (HP 제외)
+    public void RefreshStats()
+    {
+        if (Ship == null) return;
+
+        if (m_textName != null)
+            m_textName.text = Ship.m_shipInfo.shipName;
+
+        if (m_textAtk != null)
+            m_textAtk.text = $"<sprite name=\"IconAttackMini\"> {CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack_power)}";
+
+        // 향후 표시 해야할 스텟 추가 되면 여기 추가
     }
 
     // HP 변경 시 외부에서 호출
@@ -93,18 +132,6 @@ public class ShipSelector : MonoBehaviour
         rt.anchorMax = new Vector2(ratio, rt.anchorMax.y);
         rt.offsetMin = Vector2.zero;
         rt.offsetMax = Vector2.zero;
-    }
-
-    private void UpdateNameText()
-    {
-        if (m_textName == null || Ship == null) return;
-        m_textName.text = Ship.m_shipInfo.shipName;
-    }
-
-    private void UpdateAtkText()
-    {
-        if (m_textAtk == null || Ship == null) return;
-        m_textAtk.text = $"<sprite name=\"IconAttackMini\"> {CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack_power)}";
     }
 
     private void UpdateHpText()

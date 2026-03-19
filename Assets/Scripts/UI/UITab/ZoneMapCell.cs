@@ -145,13 +145,16 @@ public class ZoneMapCell : MonoBehaviour
     {
         if (m_resourceText == null || m_zoneConfig == null) return;
         var sb = new StringBuilder();
-        if (m_zoneConfig.mineralPerHour > 0)
-            sb.Append($"M:{CommonUtility.FormatBigNumber(m_zoneConfig.mineralPerHour)}/h");
-        if (m_zoneConfig.mineralRarePerHour > 0)
+        void AppendIfPositive(string icon, float value)
         {
+            if (value <= 0f) return;
             if (sb.Length > 0) sb.Append('\n');
-            sb.Append($"R:{CommonUtility.FormatBigNumber(m_zoneConfig.mineralRarePerHour)}/h");
+            sb.Append($"<sprite name=\"{icon}\"> {CommonUtility.FormatBigNumber(value)}/h");
         }
+        AppendIfPositive("IconMineralMini",  m_zoneConfig.mineralPerHour);
+        AppendIfPositive("IconMineralRMini", m_zoneConfig.mineralRarePerHour);
+        AppendIfPositive("IconMineralEMini", m_zoneConfig.mineralExoticPerHour);
+        AppendIfPositive("IconMineralDMini", m_zoneConfig.mineralDarkPerHour);
         m_resourceText.text = sb.ToString();
     }
 }

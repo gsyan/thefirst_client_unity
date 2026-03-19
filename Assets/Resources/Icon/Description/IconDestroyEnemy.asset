@@ -1,13 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!21 &-4017933843606890486
+--- !u!21 &-7002884734292897827
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: IconMineral Material
+  m_Name: IconDestroyEnemy Material
   m_Shader: {fileID: 4800000, guid: cf81c85f95fe47e1a27f6ae460cf182c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8d47d6ba5940b314a8e6f46005bcf0a3, type: 3}
+        m_Texture: {fileID: 2800000, guid: fe719dbba68b4a04a8595976322d0f9a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
-  m_Name: Icons
+  m_Name: IconDestroyEnemy
   m_EditorClassIdentifier: 
   m_Version: 1.1.0
   m_FaceInfo:
@@ -60,7 +60,7 @@ MonoBehaviour:
     m_FamilyName: 
     m_StyleName: 
     m_PointSize: 25
-    m_Scale: 0.8
+    m_Scale: 0.4
     m_UnitsPerEM: 0
     m_LineHeight: 0
     m_AscentLine: 0
@@ -77,14 +77,14 @@ MonoBehaviour:
     m_StrikethroughOffset: 0
     m_StrikethroughThickness: 0
     m_TabWidth: 0
-  m_Material: {fileID: -4017933843606890486}
-  spriteSheet: {fileID: 2800000, guid: 8d47d6ba5940b314a8e6f46005bcf0a3, type: 3}
+  m_Material: {fileID: -7002884734292897827}
+  spriteSheet: {fileID: 2800000, guid: fe719dbba68b4a04a8595976322d0f9a, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 0
     m_Scale: 1
-    m_Name: IconMineral
+    m_Name: IconDestroyEnemy
   m_GlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -101,31 +101,6 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-    sprite: {fileID: 21300000, guid: 8d47d6ba5940b314a8e6f46005bcf0a3, type: 3}
+    sprite: {fileID: 21300000, guid: fe719dbba68b4a04a8595976322d0f9a, type: 3}
   spriteInfoList: []
-  fallbackSpriteAssets:
-  - {fileID: 11400000, guid: 5978b6bb968d618409c6ebf226d39baf, type: 2}
-  - {fileID: 11400000, guid: 2dc6964888e79c744878aef92a9c238e, type: 2}
-  - {fileID: 11400000, guid: 323854be5724ffd4db9db3ce2b54a924, type: 2}
-  - {fileID: 11400000, guid: 26f5cc31f248fce4493686ea333e9268, type: 2}
-  - {fileID: 11400000, guid: 48f93c7721919bb4cab63201cc487e57, type: 2}
-  - {fileID: 11400000, guid: 9d51e9845cc89a14998045c4bd9a9fc9, type: 2}
-  - {fileID: 11400000, guid: 0993d807277ad3b4c9e78b070ea39d3b, type: 2}
-  - {fileID: 11400000, guid: 59c1c0c570515ec4f94ddcba1f1d0067, type: 2}
-  - {fileID: 11400000, guid: 94c16f5387a1a734ca7400533deba82c, type: 2}
-  - {fileID: 11400000, guid: 874604a730568634893c78e8a1008e96, type: 2}
-  - {fileID: 11400000, guid: 6351af8307af6af43be6c0df9750d755, type: 2}
-  - {fileID: 11400000, guid: 28ffc87a85fdaf94e90f7676834e56c8, type: 2}
-  - {fileID: 11400000, guid: 993432550aa587b47b0ed850e4f542da, type: 2}
-  - {fileID: 11400000, guid: 25f0b1a2be09f264bada5568f98c36be, type: 2}
-  - {fileID: 11400000, guid: 2eae54c65998e2f4cb17ae6026543059, type: 2}
-  - {fileID: 11400000, guid: 4be7b3ce4776f7443b72c7cb2a4e7f12, type: 2}
-  - {fileID: 11400000, guid: 27e97fa752bf43f4f9f9b41b049d1bb4, type: 2}
-  - {fileID: 11400000, guid: 55c314c810f4f424796c11f034adf380, type: 2}
-  - {fileID: 11400000, guid: 07d7fd44f0bbd574abb64d46d3a1d27d, type: 2}
-  - {fileID: 11400000, guid: 89006abc464885847902cb3591dbac3f, type: 2}
-  - {fileID: 11400000, guid: 00c5024ee797b024985df7e05a268d15, type: 2}
-  - {fileID: 11400000, guid: 0297ce48062eff0408d1d28455366ef0, type: 2}
-  - {fileID: 11400000, guid: ec111eda223c41c42ad38b591944cb3f, type: 2}
-  - {fileID: 11400000, guid: d3ea811a13aa8c64fb540a0909e3e1d5, type: 2}
-  - {fileID: 11400000, guid: 1944d77d1ac0c504a9f2287b22df3bda, type: 2}
+  fallbackSpriteAssets: []

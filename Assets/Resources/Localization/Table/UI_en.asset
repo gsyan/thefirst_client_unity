@@ -558,10 +558,6 @@ MonoBehaviour:
     m_Localized: Enter Zone
     m_Metadata:
       m_Items: []
-  - m_Id: 11411921974460416
-    m_Localized: Are you sure you want to enter this zone?
-    m_Metadata:
-      m_Items: []
   - m_Id: 11623322894598144
     m_Localized: Third-Party Licenses
     m_Metadata:
@@ -599,7 +595,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13164879321890818
-    m_Localized: '{0} (Rank {1})'
+    m_Localized: Score:{0} (Rank {1})
     m_Metadata:
       m_Items: []
   - m_Id: 13853203355271168
@@ -640,6 +636,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 13982624544325632
     m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14264662300164096
+    m_Localized: '{0} must reach max level (Lv.{1} / now Lv.{2})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14282967706632192
+    m_Localized: Are you sure you want to enter this zone?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14291245362708480
+    m_Localized: Refresh opponent list? ({0} remaining)
     m_Metadata:
       m_Items: []
   references:

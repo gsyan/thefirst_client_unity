@@ -281,6 +281,15 @@ public class DataManager : Singleton<DataManager>
         cost = moduleData.upgradeCost;
         return true;
     }
+
+    // level+1 데이터가 없으면 현재 레벨이 최대
+    public int GetMaxModuleLevel(EModuleSubType subType)
+    {
+        int level = 1;
+        while (m_dataTableModule.GetModuleDataFromTable(subType, level + 1) != null)
+            level++;
+        return level;
+    }
     #endregion
 
     #region Data Table Module Research ###############################################################
