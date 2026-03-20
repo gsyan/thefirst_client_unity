@@ -170,17 +170,23 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             return;
         }
 
+        int playerTechLevel = DataManager.Instance.m_currentCharacter?.GetTechLevel() ?? 0;
+        int requiredTechTier = m_selectedSubType.GetTechTier();
+        bool hasTechLevel = playerTechLevel >= requiredTechTier;
+
         bool isFree = m_sourceModule.IsSubTypeFree(m_selectedSubType);
-        bool canConfirm = true;
+        bool canConfirm = hasTechLevel;
+
+        var sb = new System.Text.StringBuilder();
 
         if (isFree == true)
         {
-            // 이미 unlock된 서브타입 → 자유 교체, 레벨/비용 조건 없음
-            if (m_costText != null) m_costText.text = LocalizationManager.Instance.Get("free");
+            // 이미 unlock된 서브타입 → 자유 교체, 비용 조건 없음
+            sb.Append(LocalizationManager.Instance.Get("free"));
         }
         else
         {
-            // 신규 unlock → max level 조건 + 비용 동시 체크
+            // 신규 unlock → max level 조건 + 기술레벨 + 비용 동시 체크
             int currentLevel = m_sourceModule.GetModuleLevel();
             int maxLevel = DataManager.Instance.GetMaxModuleLevel(currentSubType);
             bool isMaxLevel = currentLevel >= maxLevel;
@@ -190,8 +196,6 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             long have = DataManager.Instance.m_currentCharacter?.m_characterInfo?.mineralRare ?? 0;
             bool insufficient = have < cost.mineralRare;
             if (insufficient == true) canConfirm = false;
-
-            var sb = new System.Text.StringBuilder();
 
             // 현재 장착 서브타입 이름 조회 (researchId = loc key)
             string subtypeName = currentSubType.ToString();
@@ -211,13 +215,20 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
                 : $"<color=red>{levelMsg}</color>");
             sb.Append("\n\n");
 
+            // 기술 레벨 조건 (부족하면 빨간색)
+            string techLine = hasTechLevel
+                ? $"<sprite name=\"IconTech\"> Lv.{requiredTechTier}"
+                : $"<sprite name=\"IconTech\"> <color=red>Lv.{requiredTechTier}</color>";
+            sb.Append(techLine);
+            sb.Append("\n\n");
+
             string costLine = insufficient
                 ? $"<sprite name=\"IconMineralR\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineralRare)}</color>"
                 : $"<sprite name=\"IconMineralR\"> {CommonUtility.FormatBigNumber(cost.mineralRare)}";
             sb.Append(costLine);
-
-            if (m_costText != null) m_costText.text = sb.ToString().TrimEnd();
         }
+
+        if (m_costText != null) m_costText.text = sb.ToString().TrimEnd();
 
         if (m_confirmButton != null) m_confirmButton.interactable = canConfirm;
     }
