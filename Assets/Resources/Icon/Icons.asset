@@ -66,7 +66,7 @@ MonoBehaviour:
     m_AscentLine: 0
     m_CapLine: 0
     m_MeanLine: 0
-    m_Baseline: 50
+    m_Baseline: 0
     m_DescentLine: 0
     m_SuperscriptOffset: 0
     m_SuperscriptSize: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
       m_Width: 64
       m_Height: 64
       m_HorizontalBearingX: 0
-      m_HorizontalBearingY: 32
+      m_HorizontalBearingY: 40
       m_HorizontalAdvance: 64
     m_GlyphRect:
       m_X: 0
@@ -129,3 +129,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ec111eda223c41c42ad38b591944cb3f, type: 2}
   - {fileID: 11400000, guid: d3ea811a13aa8c64fb540a0909e3e1d5, type: 2}
   - {fileID: 11400000, guid: 1944d77d1ac0c504a9f2287b22df3bda, type: 2}
+  - {fileID: 11400000, guid: 10622a9d96dccb648b3347d5fc6efd77, type: 2}
+  - {fileID: 11400000, guid: 43e3b09293d84404e93eb727ed2d326d, type: 2}
+  - {fileID: 11400000, guid: e83c679f9a2c7e44abd8b36910db5633, type: 2}
