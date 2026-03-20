@@ -3808,7 +3808,7 @@ MonoBehaviour:
     1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 100,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 50.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3822,7 +3822,7 @@ MonoBehaviour:
     2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 55.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3836,7 +3836,7 @@ MonoBehaviour:
     3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 225,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 60.5,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3850,7 +3850,7 @@ MonoBehaviour:
     4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 338,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 66.6,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3864,7 +3864,7 @@ MonoBehaviour:
     5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 506,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 73.2,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3878,7 +3878,7 @@ MonoBehaviour:
     6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 759,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 80.5,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3892,7 +3892,7 @@ MonoBehaviour:
     7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1139,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 88.6,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3906,7 +3906,7 @@ MonoBehaviour:
     8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1709,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 97.4,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3920,7 +3920,7 @@ MonoBehaviour:
     9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 2563,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 107.2,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3934,7 +3934,7 @@ MonoBehaviour:
     10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 3844,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 117.9,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3948,7 +3948,7 @@ MonoBehaviour:
     1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 100,\r\n          \"mineralRare\": 600,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 200.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3962,7 +3962,7 @@ MonoBehaviour:
     2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 150,\r\n          \"mineralRare\": 900,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 220.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3976,7 +3976,7 @@ MonoBehaviour:
     3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 225,\r\n          \"mineralRare\": 1350,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 242.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -3990,7 +3990,7 @@ MonoBehaviour:
     4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 338,\r\n          \"mineralRare\": 2025,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 266.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4004,7 +4004,7 @@ MonoBehaviour:
     5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 506,\r\n          \"mineralRare\": 3038,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 293.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4018,7 +4018,7 @@ MonoBehaviour:
     6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 759,\r\n          \"mineralRare\": 4556,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 322.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4032,7 +4032,7 @@ MonoBehaviour:
     7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1139,\r\n          \"mineralRare\": 6834,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 354.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4046,7 +4046,7 @@ MonoBehaviour:
     8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1709,\r\n          \"mineralRare\": 10253,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 390.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4060,7 +4060,7 @@ MonoBehaviour:
     9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 2563,\r\n          \"mineralRare\": 15378,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 429.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4074,7 +4074,7 @@ MonoBehaviour:
     10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 3844,\r\n          \"mineralRare\": 23066,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 472.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 0.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4088,7 +4088,7 @@ MonoBehaviour:
     \"moduleLevel\": 1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
     0.0,\r\n        \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 10.0,\r\n        \"attackCoolTime\": 3.5,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4102,7 +4102,7 @@ MonoBehaviour:
     2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 15.0,\r\n        \"attackCoolTime\": 3.4,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4116,7 +4116,7 @@ MonoBehaviour:
     3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 225,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 20.0,\r\n        \"attackCoolTime\": 3.3,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4130,7 +4130,7 @@ MonoBehaviour:
     4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 338,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 25.0,\r\n        \"attackCoolTime\": 3.2,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4144,7 +4144,7 @@ MonoBehaviour:
     5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 506,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 30.0,\r\n        \"attackCoolTime\": 3.1,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4158,7 +4158,7 @@ MonoBehaviour:
     6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 759,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 35.0,\r\n        \"attackCoolTime\": 3.0,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4172,7 +4172,7 @@ MonoBehaviour:
     7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1139,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 40.0,\r\n        \"attackCoolTime\": 2.9,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4186,7 +4186,7 @@ MonoBehaviour:
     8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1709,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 45.0,\r\n        \"attackCoolTime\": 2.8,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4200,7 +4200,7 @@ MonoBehaviour:
     9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 2563,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 50.0,\r\n        \"attackCoolTime\": 2.7,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4214,7 +4214,7 @@ MonoBehaviour:
     10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 3844,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 55.0,\r\n        \"attackCoolTime\": 2.6,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4228,7 +4228,7 @@ MonoBehaviour:
     1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 100,\r\n          \"mineralRare\": 600,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 10.0,\r\n        \"attackCoolTime\": 3.5,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4242,7 +4242,7 @@ MonoBehaviour:
     2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 150,\r\n          \"mineralRare\": 900,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 15.0,\r\n        \"attackCoolTime\": 3.4,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4256,7 +4256,7 @@ MonoBehaviour:
     3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 225,\r\n          \"mineralRare\": 1350,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 20.0,\r\n        \"attackCoolTime\": 3.3,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4270,7 +4270,7 @@ MonoBehaviour:
     4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 338,\r\n          \"mineralRare\": 2025,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 25.0,\r\n        \"attackCoolTime\": 3.2,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4284,7 +4284,7 @@ MonoBehaviour:
     5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 506,\r\n          \"mineralRare\": 3038,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 30.0,\r\n        \"attackCoolTime\": 3.1,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4298,7 +4298,7 @@ MonoBehaviour:
     6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 759,\r\n          \"mineralRare\": 4556,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 35.0,\r\n        \"attackCoolTime\": 3.0,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4312,7 +4312,7 @@ MonoBehaviour:
     7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1139,\r\n          \"mineralRare\": 6834,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 40.0,\r\n        \"attackCoolTime\": 2.9,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4326,7 +4326,7 @@ MonoBehaviour:
     8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1709,\r\n          \"mineralRare\": 10253,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 45.0,\r\n        \"attackCoolTime\": 2.8,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4340,7 +4340,7 @@ MonoBehaviour:
     9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 2563,\r\n          \"mineralRare\": 15378,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 50.0,\r\n        \"attackCoolTime\": 2.7,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4354,7 +4354,7 @@ MonoBehaviour:
     10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 3844,\r\n          \"mineralRare\": 23066,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 55.0,\r\n        \"attackCoolTime\": 2.6,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n       
@@ -4368,7 +4368,7 @@ MonoBehaviour:
     \"moduleLevel\": 1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
     0.0,\r\n        \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 10.0,\r\n        \"attackCoolTime\": 3.5,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4382,7 +4382,7 @@ MonoBehaviour:
     2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 15.0,\r\n        \"attackCoolTime\": 3.4,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4396,7 +4396,7 @@ MonoBehaviour:
     3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 225,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 20.0,\r\n        \"attackCoolTime\": 3.3,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4410,7 +4410,7 @@ MonoBehaviour:
     4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 338,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 25.0,\r\n        \"attackCoolTime\": 3.2,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4424,7 +4424,7 @@ MonoBehaviour:
     5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 506,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 30.0,\r\n        \"attackCoolTime\": 3.1,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4438,7 +4438,7 @@ MonoBehaviour:
     6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 759,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 35.0,\r\n        \"attackCoolTime\": 3.0,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4452,7 +4452,7 @@ MonoBehaviour:
     7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1139,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 40.0,\r\n        \"attackCoolTime\": 2.9,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4466,7 +4466,7 @@ MonoBehaviour:
     8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1709,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 45.0,\r\n        \"attackCoolTime\": 2.8,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4480,7 +4480,7 @@ MonoBehaviour:
     9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 2563,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 50.0,\r\n        \"attackCoolTime\": 2.7,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4494,7 +4494,7 @@ MonoBehaviour:
     10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 3844,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 55.0,\r\n        \"attackCoolTime\": 2.6,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4508,7 +4508,7 @@ MonoBehaviour:
     1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 100,\r\n          \"mineralRare\": 600,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 10.0,\r\n        \"attackCoolTime\": 3.5,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4522,7 +4522,7 @@ MonoBehaviour:
     2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 150,\r\n          \"mineralRare\": 900,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 15.0,\r\n        \"attackCoolTime\": 3.4,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4536,7 +4536,7 @@ MonoBehaviour:
     3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 225,\r\n          \"mineralRare\": 1350,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 20.0,\r\n        \"attackCoolTime\": 3.3,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4550,7 +4550,7 @@ MonoBehaviour:
     4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 338,\r\n          \"mineralRare\": 2025,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 25.0,\r\n        \"attackCoolTime\": 3.2,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4564,7 +4564,7 @@ MonoBehaviour:
     5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 506,\r\n          \"mineralRare\": 3038,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 30.0,\r\n        \"attackCoolTime\": 3.1,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4578,7 +4578,7 @@ MonoBehaviour:
     6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 759,\r\n          \"mineralRare\": 4556,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 35.0,\r\n        \"attackCoolTime\": 3.0,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4592,7 +4592,7 @@ MonoBehaviour:
     7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1139,\r\n          \"mineralRare\": 6834,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 40.0,\r\n        \"attackCoolTime\": 2.9,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4606,7 +4606,7 @@ MonoBehaviour:
     8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1709,\r\n          \"mineralRare\": 10253,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 45.0,\r\n        \"attackCoolTime\": 2.8,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4620,7 +4620,7 @@ MonoBehaviour:
     9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 2563,\r\n          \"mineralRare\": 15378,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 50.0,\r\n        \"attackCoolTime\": 2.7,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4634,7 +4634,7 @@ MonoBehaviour:
     10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 3844,\r\n          \"mineralRare\": 23066,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 55.0,\r\n        \"attackCoolTime\": 2.6,\r\n       
     \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\": 300.0,\r\n        \"airCount\":
@@ -4648,7 +4648,7 @@ MonoBehaviour:
     \"moduleLevel\": 1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
     0.0,\r\n        \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 3.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4662,7 +4662,7 @@ MonoBehaviour:
     2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.9,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4676,7 +4676,7 @@ MonoBehaviour:
     3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 225,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.8,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4690,7 +4690,7 @@ MonoBehaviour:
     4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 338,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.7,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4704,7 +4704,7 @@ MonoBehaviour:
     5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 506,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.6,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4718,7 +4718,7 @@ MonoBehaviour:
     6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 759,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.5,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4732,7 +4732,7 @@ MonoBehaviour:
     7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1139,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.4,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4746,7 +4746,7 @@ MonoBehaviour:
     8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1709,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.3,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4760,7 +4760,7 @@ MonoBehaviour:
     9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 2563,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.2,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4774,7 +4774,7 @@ MonoBehaviour:
     10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 3844,\r\n          \"mineralRare\": 0,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.1,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4788,7 +4788,7 @@ MonoBehaviour:
     1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 100,\r\n          \"mineralRare\": 600,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 3.0,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4802,7 +4802,7 @@ MonoBehaviour:
     2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 150,\r\n          \"mineralRare\": 900,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.9,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4816,7 +4816,7 @@ MonoBehaviour:
     3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 225,\r\n          \"mineralRare\": 1350,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.8,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4830,7 +4830,7 @@ MonoBehaviour:
     4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 338,\r\n          \"mineralRare\": 2025,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.7,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4844,7 +4844,7 @@ MonoBehaviour:
     5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 506,\r\n          \"mineralRare\": 3038,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.6,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4858,7 +4858,7 @@ MonoBehaviour:
     6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 759,\r\n          \"mineralRare\": 4556,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.5,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4872,7 +4872,7 @@ MonoBehaviour:
     7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1139,\r\n          \"mineralRare\": 6834,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.4,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4886,7 +4886,7 @@ MonoBehaviour:
     8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 1709,\r\n          \"mineralRare\": 10253,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.3,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4900,7 +4900,7 @@ MonoBehaviour:
     9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 2563,\r\n          \"mineralRare\": 15378,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.2,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":
@@ -4914,7 +4914,7 @@ MonoBehaviour:
     10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n         
     \"mineral\": 3844,\r\n          \"mineralRare\": 23066,\r\n          \"mineralExotic\":
     0,\r\n          \"mineralDark\": 0\r\n        },\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repairPower\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attackPower\": 0.0,\r\n        \"attackCoolTime\": 2.1,\r\n       
     \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\":

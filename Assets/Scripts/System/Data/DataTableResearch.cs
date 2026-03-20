@@ -1,5 +1,5 @@
 // 연구 트리 ScriptableObject - 모듈 연구/기술레벨 노드, 모듈 해금/교체 비용 관리
-// CSV Import(에디터 전용): datatable_research.csv 기반 로드, "tech_level_N" 접두사로 분기 파싱
+// CSV: research_id = enum 이름 (module행) 또는 "tech_level_N" — 정수값 없이 이름 파싱으로 enum 자동 연결
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -32,17 +32,6 @@ public class TechLevelResearchData : ResearchNodeData
 [CreateAssetMenu(fileName = "DataTableResearch", menuName = "Custom/DataTableResearch")]
 public class DataTableResearch : ScriptableObject
 {
-    [Header("Module SubType Add Cost")]
-    // adv 모듈 추가 비용 — subType별 MR 비용, 슬롯 단위 최초 1회만 차감
-    public List<ModuleChangeCostEntry> subTypeAddCosts = new List<ModuleChangeCostEntry>
-    {
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.body_t1_adv_ver1,    cost = new CostStruct(0, 0, 5000, 0, 0) },
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.engine_t1_adv_ver1,  cost = new CostStruct(0, 0, 5000, 0, 0) },
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.beam_t1_adv_ver1,    cost = new CostStruct(0, 0, 5000, 0, 0) },
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.missile_t1_adv_ver1, cost = new CostStruct(0, 0, 5000, 0, 0) },
-        new ModuleChangeCostEntry { moduleSubType = EModuleSubType.hanger_t1_adv_ver1,  cost = new CostStruct(0, 0, 5000, 0, 0) },
-    };
-
     [Header("Research Data")]
     [SerializeField] private List<ModuleResearchData> researchDataList = new();
     [Header("Tech Level Upgrade Data")]
@@ -62,14 +51,6 @@ public class DataTableResearch : ScriptableObject
     {
         var data = GetResearchData(subType);
         return data?.researchCost ?? new CostStruct();
-    }
-
-    // 새 모듈 subType 추가 비용 반환 (없으면 기본값 MR 5000)
-    public CostStruct GetSubTypeAddCost(EModuleSubType newSubType)
-    {
-        if (subTypeAddCosts == null) return new CostStruct(0, 0, 5000, 0, 0);
-        var entry = subTypeAddCosts.Find(e => e.moduleSubType == newSubType);
-        return entry != null ? entry.cost : new CostStruct(0, 0, 5000, 0, 0);
     }
 
     // 선행 연구 조건을 모두 충족하는지 확인
@@ -142,9 +123,8 @@ public class DataTableResearch : ScriptableObject
             string researchId = GetCol(cols, col, "research_id");
             if (string.IsNullOrEmpty(researchId)) continue;
 
-            // tech_level: TechLevelResearchData에서만 유효 — ModuleResearchData는 서브타입 인코딩에서 파싱
             var cost = new CostStruct(
-                researchId.StartsWith("tech_level_") ? ParseCsvInt(GetCol(cols, col, "tech_level")) : 0,
+                0,
                 ParseCsvLong(GetCol(cols, col, "cost_m")),
                 ParseCsvLong(GetCol(cols, col, "cost_mr")),
                 ParseCsvLong(GetCol(cols, col, "cost_me")),
@@ -156,7 +136,7 @@ public class DataTableResearch : ScriptableObject
 
             var prereqs = ParseCsvStringList(GetCol(cols, col, "prerequisites"));
 
-            // "tech_level_N" 접두사: 기술레벨 업그레이드 데이터로 파싱
+            // "tech_level_N" 접두사: researchId 접미사에서 targetTechLevel 파싱
             if (researchId.StartsWith("tech_level_"))
             {
                 int.TryParse(researchId["tech_level_".Length..], out int targetLevel);
@@ -171,15 +151,13 @@ public class DataTableResearch : ScriptableObject
                 continue;
             }
 
-            // 일반 모듈 연구 데이터
-            if (!int.TryParse(GetCol(cols, col, "module_type"), out int typeInt)) continue;
-            if (!int.TryParse(GetCol(cols, col, "module_sub_type"), out int subTypeInt)) continue;
-
+            // 일반 모듈 연구 데이터 — researchId가 enum 이름과 동일하므로 이름으로 파싱
+            if (System.Enum.TryParse(researchId, out EModuleSubType moduleSubType) == false) continue;
             researchDataList.Add(new ModuleResearchData
             {
                 researchId      = researchId,
-                moduleType      = (EModuleType)typeInt,
-                moduleSubType   = (EModuleSubType)subTypeInt,
+                moduleType      = (EModuleType)((int)moduleSubType / 1000000),
+                moduleSubType   = moduleSubType,
                 prerequisiteIds = prereqs,
                 uiPosition      = uiPos,
                 researchCost    = cost,
@@ -237,7 +215,6 @@ public class DataTableResearch : ScriptableObject
         return float.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float r) ? r : 0f;
     }
 
-    private int ParseCsvInt(string s) { s = s.Trim(); return int.TryParse(s, out int r) ? r : 1; }
     private long ParseCsvLong(string s) { s = s.Replace(",", "").Trim(); return long.TryParse(s, out long r) ? r : 0L; }
 #endif
 
@@ -249,11 +226,16 @@ public class DataTableResearch : ScriptableObject
     {
         var exportData = new ResearchExportData
         {
-            subTypeAddCosts = subTypeAddCosts,
             researchDataList  = researchDataList,
             techLevelDataList = techLevelDataList,
         };
-        return Newtonsoft.Json.JsonConvert.SerializeObject(exportData, Newtonsoft.Json.Formatting.Indented);
+        // enum을 이름(String)으로 직렬화 — 정수값 변경에 독립적
+        var settings = new Newtonsoft.Json.JsonSerializerSettings
+        {
+            Formatting = Newtonsoft.Json.Formatting.Indented,
+            Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() },
+        };
+        return Newtonsoft.Json.JsonConvert.SerializeObject(exportData, settings);
     }
 
     public void ImportFromJson(string json)
@@ -261,7 +243,6 @@ public class DataTableResearch : ScriptableObject
         var importData = Newtonsoft.Json.JsonConvert.DeserializeObject<ResearchExportData>(json);
         if (importData != null)
         {
-            subTypeAddCosts = importData.subTypeAddCosts ?? subTypeAddCosts;
             researchDataList  = importData.researchDataList;
             techLevelDataList = importData.techLevelDataList ?? new List<TechLevelResearchData>();
 #if UNITY_EDITOR
@@ -273,9 +254,8 @@ public class DataTableResearch : ScriptableObject
     [System.Serializable]
     private class ResearchExportData
     {
-        public List<ModuleChangeCostEntry>  subTypeAddCosts;
-        public List<ModuleResearchData>     researchDataList;
-        public List<TechLevelResearchData>  techLevelDataList;
+        public List<ModuleResearchData>    researchDataList;
+        public List<TechLevelResearchData> techLevelDataList;
     }
 
     #endregion

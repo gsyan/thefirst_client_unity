@@ -487,6 +487,12 @@ public class UITabExploration : UITabBase
         EnterZone(zone);
         return;
 #endif
+        if (AdManager.s_devSkipAd == true)
+        {
+            EnterZone(zone);
+            return;
+        }
+
         bool adInstanceNull = AdManager.Instance == null;
         bool adReady = adInstanceNull == false && AdManager.Instance.IsRewardedAdReady;
 

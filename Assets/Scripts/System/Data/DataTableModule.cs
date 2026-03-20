@@ -281,7 +281,12 @@ public class DataTableModule : ScriptableObject
 
         var exportData = new { modules = modulesDict };
 
-        string json = JsonConvert.SerializeObject(exportData, Formatting.Indented);
+        var settings = new JsonSerializerSettings
+        {
+            Formatting = Formatting.Indented,
+            Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
+        };
+        string json = JsonConvert.SerializeObject(exportData, settings);
         exportedJson = json;
 
 #if UNITY_EDITOR

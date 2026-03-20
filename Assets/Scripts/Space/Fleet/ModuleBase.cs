@@ -121,7 +121,7 @@ public class ModuleBase : MonoBehaviour
             m_myShip = GetComponentInParent<SpaceShip>();
 
         if (m_myFleet == null && m_myShip != null)
-            m_myFleet = m_myShip.GetComponentInParent<SpaceFleet>();
+            m_myFleet = m_myShip.m_myFleet;
     }
 
     // 함대 이름 반환 (로그용)

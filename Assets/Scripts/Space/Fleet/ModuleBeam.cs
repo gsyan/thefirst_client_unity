@@ -74,11 +74,11 @@ public class ModuleBeam : ModuleBase
 
         m_lastAttackTime = 0f;
 
-        // 무기 서브 타입 초기화
-        InitializeSubType(moduleData);
-
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
+
+        // 무기 서브 타입 초기화
+        InitializeSubType(moduleData);
 
         // 부모 바디에 이 무기 등록
         if (m_parentBody != null)
@@ -94,7 +94,7 @@ public class ModuleBeam : ModuleBase
                 for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
-                    launcher.InitializeLauncherBeam(moduleData, i);
+                    launcher.InitializeLauncherBeam(moduleData, i, m_myFleet != null && m_myFleet.IsEnemy);
                     m_launchers.Add(launcher);
                 }
                 break;

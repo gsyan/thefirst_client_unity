@@ -192,7 +192,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             bool isMaxLevel = currentLevel >= maxLevel;
             if (isMaxLevel == false) canConfirm = false;
 
-            CostStruct cost = DataManager.Instance.m_dataTableResearch.GetSubTypeAddCost(m_selectedSubType);
+            CostStruct cost = DataManager.Instance.m_dataTableResearch.GetResearchCost(m_selectedSubType);
             long have = DataManager.Instance.m_currentCharacter?.m_characterInfo?.mineralRare ?? 0;
             bool insufficient = have < cost.mineralRare;
             if (insufficient == true) canConfirm = false;

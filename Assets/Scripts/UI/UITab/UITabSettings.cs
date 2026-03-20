@@ -25,6 +25,8 @@ public class UITabSettings : UITabBase
     [SerializeField] private Toggle   m_toggleMineralExotic;
     [SerializeField] private Toggle   m_toggleMineralDark;
 
+    [SerializeField] private Toggle   m_toggleRemoveAd;
+
     private SpaceFleet m_myFleet;
     private List<Locale> m_locales;
 
@@ -52,6 +54,18 @@ public class UITabSettings : UITabBase
 
         if (m_testMineralButton != null)
             m_testMineralButton.onClick.AddListener(OnTestMineralButtonClicked);
+
+        if (m_toggleRemoveAd != null)
+        {
+            AdManager.s_devSkipAd = PlayerPrefs.GetInt("DevSkipAd", 0) == 1;
+            m_toggleRemoveAd.SetIsOnWithoutNotify(AdManager.s_devSkipAd);
+            m_toggleRemoveAd.onValueChanged.AddListener(on =>
+            {
+                AdManager.s_devSkipAd = on;
+                PlayerPrefs.SetInt("DevSkipAd", on ? 1 : 0);
+                PlayerPrefs.Save();
+            });
+        }
 
         InitializeLanguageDropdown();
         RefreshGoogleLinkUI();

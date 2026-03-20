@@ -7,11 +7,16 @@ public class LauncherBeam : LauncherBase
 {
     private ModuleData m_moduleData;
 
-    [SerializeField] private Color m_beamColor = Color.cyan;
+    private Color m_beamColor;
 
-    public void InitializeLauncherBeam(ModuleData moduleData, int firePointIndex)
+    private static readonly Color k_allyColor = Color.cyan;
+    private static readonly Color k_enemyColor = new Color(1f, 0.2f, 0.2f); // 붉은색
+
+    public void InitializeLauncherBeam(ModuleData moduleData, int firePointIndex, bool isEnemy = false)
     {
         if (m_isInitialized == true) return;
+
+        m_beamColor = isEnemy ? k_enemyColor : k_allyColor;
 
         // 인덱스에 맞는 FirePoint 찾기
         m_firePoint = FindFirePointByIndex(firePointIndex);

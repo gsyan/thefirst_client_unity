@@ -15,15 +15,21 @@ public class UITabShip : UITabBase
     // 2행: 함재기 능력 — aircraft_count == 0 이면 숨김
     [SerializeField] private TMP_Text  m_textShipStats2;
 
-    [Header("모듈 맵 — 슬롯 컨테이너")]
+    [Header("모듈 맵 — 행 컨테이너 (레이블 + 셀렉터 포함)")]
     [SerializeField] private RectTransform m_moduleBodySelectButtonContainer;
     [SerializeField] private RectTransform m_moduleBeamSelectButtonContainer;
-    [SerializeField] private RectTransform m_moduleMissileSelectButtonContainer1;
-    [SerializeField] private RectTransform m_moduleMissileSelectButtonContainer2;
-    [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer1;
-    [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer2;
+    [SerializeField] private RectTransform m_moduleMissileSelectButtonContainer;
+    [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer;
     [SerializeField] private RectTransform m_moduleEngineSelectButtonContainer;
-    [SerializeField] private GameObject    m_moduleSelectButtonPrefab;
+
+    [SerializeField] private RectTransform m_moduleSelectRoot; // CSF 루트 (Select 또는 ModuleSelect)
+
+    [Header("모듈 맵 — 행 레이블 (sprite icon)")]
+    [SerializeField] private TMP_Text m_labelBody;
+    [SerializeField] private TMP_Text m_labelBeam;
+    [SerializeField] private TMP_Text m_labelMissile;
+    [SerializeField] private TMP_Text m_labelHanger;
+    [SerializeField] private TMP_Text m_labelEngine;
 
     [Header("함선 스탯 디테일")]
     [SerializeField] private Button m_btnShipStatsDetail;
@@ -45,10 +51,12 @@ public class UITabShip : UITabBase
     private ModuleBase m_selectedModule;
 
 
-    // 모듈 선택 버튼 풀 (단일 풀, 컨테이너 무관)
-    private readonly List<ModuleSelector> m_moduleSelectorPool   = new();
-    private readonly List<ModuleSelector> m_moduleSelectorActive = new();
-    private Transform m_selectorPoolHolder;
+    // 행별 셀렉터 캐시 (prefab에 미리 배치된 버튼들)
+    private ModuleSelector[] m_selectorsBody;
+    private ModuleSelector[] m_selectorsBeam;
+    private ModuleSelector[] m_selectorsMissile;
+    private ModuleSelector[] m_selectorsHanger;
+    private ModuleSelector[] m_selectorsEngine;
 
 
     public override void InitializeUITab()
@@ -63,9 +71,17 @@ public class UITabShip : UITabBase
         m_myFleet = m_myCharacter.GetOwnedFleet();
         if (m_myFleet == null) return;
 
-        var poolHolderGO = new GameObject("_ModuleSelectorPool");
-        poolHolderGO.transform.SetParent(transform, false);
-        m_selectorPoolHolder = poolHolderGO.transform;
+        m_selectorsBody    = m_moduleBodySelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
+        m_selectorsBeam    = m_moduleBeamSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
+        m_selectorsMissile = m_moduleMissileSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
+        m_selectorsHanger  = m_moduleHangerSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
+        m_selectorsEngine  = m_moduleEngineSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
+
+        if (m_labelBody    != null) m_labelBody.text    = "<sprite name=\"IconSpaceShip\">";
+        if (m_labelBeam    != null) m_labelBeam.text    = "<sprite name=\"IconBeam\">";
+        if (m_labelMissile != null) m_labelMissile.text = "<sprite name=\"IconMissile\">";
+        if (m_labelHanger  != null) m_labelHanger.text  = "<sprite name=\"IconAircraft\">";
+        if (m_labelEngine  != null) m_labelEngine.text  = "<sprite name=\"IconSpeed\">";
 
         if (m_btnPrevShip != null) m_btnPrevShip.onClick.AddListener(OnPrevShipClicked);
         if (m_btnNextShip != null) m_btnNextShip.onClick.AddListener(OnNextShipClicked);
@@ -97,6 +113,9 @@ public class UITabShip : UITabBase
         UpdateShipHeader();
         UpdateModuleStatsDisplay();
         PopulateModuleSelectButtons();
+
+        if (m_moduleSelectRoot != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleSelectRoot);
     }
 
     public override void OnTabDeactivated()
@@ -684,77 +703,78 @@ public class UITabShip : UITabBase
         if (m_selectedShip == null) return;
         if (m_selectedShip.m_moduleBodys.Count == 0) return;
 
-        for (int i = 0; i < m_moduleSelectorActive.Count; i++)
-        {
-            m_moduleSelectorActive[i].gameObject.SetActive(false);
-            m_moduleSelectorActive[i].transform.SetParent(m_selectorPoolHolder, false);
-        }
-        m_moduleSelectorPool.AddRange(m_moduleSelectorActive);
-        m_moduleSelectorActive.Clear();
-
-        if (m_moduleMissileSelectButtonContainer2 != null) m_moduleMissileSelectButtonContainer2.gameObject.SetActive(false);
-        if (m_moduleHangerSelectButtonContainer2  != null) m_moduleHangerSelectButtonContainer2.gameObject.SetActive(false);
-
         ModuleBody body = m_selectedShip.m_moduleBodys[0];
 
-        CreateModuleSelectButton(body, m_moduleBodySelectButtonContainer);
+        // Body 행: 슬롯 1개 고정
+        RefreshRow(EModuleType.body, body, m_selectorsBody, m_moduleBodySelectButtonContainer);
 
-        for (int i = 0; i < body.m_moduleSlots.Count; i++)
-        {
-            ModuleSlot slot = body.m_moduleSlots[i];
-            if (slot == null || slot.transform.childCount == 0) continue;
-
-            ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
-            if (module == null) continue;
-
-            RectTransform container = GetContainerForSlot(slot.m_moduleSlotInfo.moduleType, slot.m_moduleSlotInfo.slotIndex);
-            if (container == null) continue;
-
-            container.gameObject.SetActive(true);
-            CreateModuleSelectButton(module, container);
-        }
+        // 나머지 타입 행
+        RefreshRow(EModuleType.beam,    body, m_selectorsBeam,    m_moduleBeamSelectButtonContainer);
+        RefreshRow(EModuleType.missile, body, m_selectorsMissile, m_moduleMissileSelectButtonContainer);
+        RefreshRow(EModuleType.hanger,  body, m_selectorsHanger,  m_moduleHangerSelectButtonContainer);
+        RefreshRow(EModuleType.engine,  body, m_selectorsEngine,  m_moduleEngineSelectButtonContainer);
 
         UpdateModuleSelectButtonSelection();
     }
 
-    private RectTransform GetContainerForSlot(EModuleType moduleType, int slotIndex)
+    private void RefreshRow(EModuleType type, ModuleBody body, ModuleSelector[] selectors, RectTransform container)
     {
-        switch (moduleType)
-        {
-            case EModuleType.beam:    return m_moduleBeamSelectButtonContainer;
-            case EModuleType.engine:  return m_moduleEngineSelectButtonContainer;
-            case EModuleType.missile: return slotIndex < 2 ? m_moduleMissileSelectButtonContainer1 : m_moduleMissileSelectButtonContainer2;
-            case EModuleType.hanger:  return slotIndex < 2 ? m_moduleHangerSelectButtonContainer1  : m_moduleHangerSelectButtonContainer2;
-            default: return null;
-        }
-    }
+        if (selectors == null) return;
 
-    private void CreateModuleSelectButton(ModuleBase module, RectTransform container)
-    {
-        ModuleSelector selector;
-        if (m_moduleSelectorPool.Count > 0)
+        // 타입별 슬롯 수집
+        int slotCount;
+        ModuleBase[] modules;
+
+        if (type == EModuleType.body)
         {
-            selector = m_moduleSelectorPool[^1];
-            m_moduleSelectorPool.RemoveAt(m_moduleSelectorPool.Count - 1);
-            selector.gameObject.SetActive(true);
+            slotCount = 1;
+            modules = new ModuleBase[] { body };
         }
         else
         {
-            var go = Instantiate(m_moduleSelectButtonPrefab, container);
-            selector = go.GetComponent<ModuleSelector>();
+            var slots = body.m_moduleSlots.FindAll(s => s.m_moduleSlotInfo.moduleType == type);
+            slotCount = slots.Count;
+            modules = new ModuleBase[slotCount];
+            for (int i = 0; i < slotCount; i++)
+                modules[i] = slots[i].transform.childCount > 0
+                    ? slots[i].GetComponentInChildren<ModuleBase>()
+                    : null;
         }
 
-        selector.transform.SetParent(container, false);
-        selector.GetComponent<RectTransform>().sizeDelta = m_moduleSelectButtonPrefab.GetComponent<RectTransform>().sizeDelta;
-        ModuleBase captured = module;
-        selector.Initialize(module, () => OnModuleSelectorClicked(captured));
-        m_moduleSelectorActive.Add(selector);
+        // 슬롯이 없으면 행 전체 숨김
+        container.gameObject.SetActive(slotCount > 0);
+
+        for (int i = 0; i < selectors.Length; i++)
+        {
+            if (i >= slotCount || modules[i] == null)
+            {
+                selectors[i].gameObject.SetActive(false);
+                continue;
+            }
+
+            selectors[i].gameObject.SetActive(true);
+            ModuleBase captured = modules[i];
+            selectors[i].Initialize(captured, () => OnModuleSelectorClicked(captured));
+        }
     }
 
     private void UpdateModuleSelectButtonSelection()
     {
-        for (int i = 0; i < m_moduleSelectorActive.Count; i++)
-            m_moduleSelectorActive[i].SetSelected(m_moduleSelectorActive[i].Module == m_selectedModule);
+        UpdateRowSelection(m_selectorsBody);
+        UpdateRowSelection(m_selectorsBeam);
+        UpdateRowSelection(m_selectorsMissile);
+        UpdateRowSelection(m_selectorsHanger);
+        UpdateRowSelection(m_selectorsEngine);
+    }
+
+    private void UpdateRowSelection(ModuleSelector[] selectors)
+    {
+        if (selectors == null) return;
+        for (int i = 0; i < selectors.Length; i++)
+        {
+            if (selectors[i].gameObject.activeSelf)
+                selectors[i].SetSelected(selectors[i].Module == m_selectedModule);
+        }
     }
 
     private void OnModuleSelectorClicked(ModuleBase module)

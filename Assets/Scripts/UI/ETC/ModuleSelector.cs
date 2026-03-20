@@ -30,16 +30,9 @@ public class ModuleSelector : MonoBehaviour
         if (m_backgroundImage == null)
             m_backgroundImage = m_button.GetComponent<Image>();
 
-        if (module.GetModuleType() == EModuleType.body)
-            CommonUtility.SetUILocText(m_typeText, "ship_module_select_body");
-        else if (module.GetModuleType() == EModuleType.engine)
-            CommonUtility.SetUILocText(m_typeText, "ship_module_select_engine");
-        else if (module.GetModuleType() == EModuleType.beam)
-            CommonUtility.SetUILocText(m_typeText, "ship_module_select_beam");
-        else if (module.GetModuleType() == EModuleType.missile)
-            CommonUtility.SetUILocText(m_typeText, "ship_module_select_missile");
-        else if (module.GetModuleType() == EModuleType.hanger)
-            CommonUtility.SetUILocText(m_typeText, "ship_module_select_hanger");
+        // 슬롯 번호 표시 (행 레이블이 타입 아이콘을 담당)
+        if (m_typeText != null)
+            m_typeText.text = (module.GetModuleSlotIndex() + 1).ToString();
 
 
 

@@ -1,4 +1,5 @@
 // DataTableResearch 커스텀 에디터 - 연구 트리 데이터 Inspector UI 및 CSV/JSON Import/Export 툴
+// CSV 포맷: research_id(=enum이름 or tech_level_N), prerequisites, ui_pos_x/y, cost_m/mr/me/md
 
 #if UNITY_EDITOR
 using UnityEngine;
@@ -271,20 +272,20 @@ public class DataTableResearchEditor : Editor
     private string ExportToCsv()
     {
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("research_id,module_type,module_sub_type,prerequisites,ui_pos_x,ui_pos_y,tech_level,cost_m,cost_mr,cost_me,cost_md,description");
+        sb.AppendLine("research_id,prerequisites,ui_pos_x,ui_pos_y,cost_m,cost_mr,cost_me,cost_md");
 
-        // tech_level 행 먼저 출력
+        // tech_level 행: research_id 접미사에서 targetTechLevel 파싱
         foreach (var d in dataTable.TechLevelDataList)
         {
             string prereqs = d.prerequisiteIds != null ? string.Join("|", d.prerequisiteIds) : "";
-            sb.AppendLine($"{d.researchId},0,0,{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.techLevel},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark},");
+            sb.AppendLine($"{d.researchId},{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark}");
         }
 
-        // 모듈 연구 행
+        // 모듈 연구 행: research_id = enum 이름
         foreach (var d in dataTable.ResearchDataList)
         {
             string prereqs = d.prerequisiteIds != null ? string.Join("|", d.prerequisiteIds) : "";
-            sb.AppendLine($"{d.researchId},{(int)d.moduleType},{(int)d.moduleSubType},{prereqs},{d.uiPosition.x},{d.uiPosition.y},0,{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark},");
+            sb.AppendLine($"{d.researchId},{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark}");
         }
         return sb.ToString();
     }
