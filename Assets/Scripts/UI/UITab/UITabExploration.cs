@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 enum EEnterZoneState
 {
@@ -485,8 +484,7 @@ public class UITabExploration : UITabBase
     {
 #if UNITY_EDITOR
         EnterZone(zone);
-        return;
-#endif
+#else
         if (AdManager.s_devSkipAd == true)
         {
             EnterZone(zone);
@@ -523,6 +521,7 @@ public class UITabExploration : UITabBase
             ShowResultMessage("[광고] 광고 미준비 상태로 입장합니다");
             EnterZone(zone);
         }
+#endif
     }
 
     private void EnterZone(ZoneConfig zone)

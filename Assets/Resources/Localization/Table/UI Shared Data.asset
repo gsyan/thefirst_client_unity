@@ -267,8 +267,24 @@ MonoBehaviour:
     m_Key: rank_first_row_score
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636957
-    m_Key: settings_language_options
+  - m_Id: 15625537762230272
+    m_Key: settings_section_account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15625537795784704
+    m_Key: settings_section_general
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15625537795784705
+    m_Key: settings_section_info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15625537795784706
+    m_Key: settings_commander_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15625537795784707
+    m_Key: settings_language
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636956
@@ -315,40 +331,40 @@ MonoBehaviour:
     m_Key: level
     m_Metadata:
       m_Items: []
-  - m_Id: 46863080095744
-    m_Key: attack_power
+  - m_Id: 15678504414609408
+    m_Key: attack
     m_Metadata:
       m_Items: []
-  - m_Id: 47211509317632
-    m_Key: health_power
+  - m_Id: 15678504456552448
+    m_Key: health
     m_Metadata:
       m_Items: []
-  - m_Id: 48108159238144
-    m_Key: speed_power
+  - m_Id: 15678504456552449
+    m_Key: speed
     m_Metadata:
       m_Items: []
-  - m_Id: 1462580203618304
-    m_Key: repair_power
+  - m_Id: 15678504456552450
+    m_Key: repair
     m_Metadata:
       m_Items: []
-  - m_Id: 3367613497212928
-    m_Key: aircraft_attack_power
+  - m_Id: 15678504456552451
+    m_Key: air_attack
     m_Metadata:
       m_Items: []
-  - m_Id: 3367613539155968
-    m_Key: aircraft_health_power
+  - m_Id: 15678504456552452
+    m_Key: air_health
     m_Metadata:
       m_Items: []
-  - m_Id: 3367613539155969
-    m_Key: aircraft_speed_power
+  - m_Id: 15678504456552453
+    m_Key: air_speed
     m_Metadata:
       m_Items: []
-  - m_Id: 3367613539155970
-    m_Key: aircraft_count
+  - m_Id: 15678504460746752
+    m_Key: air_count
     m_Metadata:
       m_Items: []
-  - m_Id: 3367613539155971
-    m_Key: aircraft_launch_count
+  - m_Id: 15678504460746753
+    m_Key: air_launch_count
     m_Metadata:
       m_Items: []
   - m_Id: 728096982302720

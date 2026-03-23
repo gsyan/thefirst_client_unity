@@ -62,7 +62,11 @@ pvp_battle_result_rank,,Rank: {0} <voffset=6>→</voffset> {1},순위: {0}위 <v
 rank_first_row_ranking,,Rank,순위
 rank_first_row_name,,Name,이름
 rank_first_row_score,,Score,점수
-settings_language_options,,Language options,언어 변경
+settings_section_account,,Account,계정
+settings_section_general,,General,일반
+settings_section_info,,Info,기타
+settings_commander_name,,Commander,지휘관명
+settings_language,,Language,언어
 settings_logout,,Logout,로그아웃
 settings_google_link,,Link Google Account,구글 계정 연동
 settings_google_unlink,,Unlink Google Account,구글 연동 해제
@@ -74,15 +78,15 @@ camera_focus_enemy_fleet,,Enemy Fleet,적 함대
 camera_focus_center,,Center,중앙
 camera_focus_my_fleet,,My Fleet,내 함대
 level,,Level,레벨
-attack_power,,Att,공격
-health_power,,HP,체력
-speed_power,,Spd,이동
-repair_power,,Repair,정비
-aircraft_attack_power,,Att(Air),공격(함)
-aircraft_health_power,,HP(Air),체력(함)
-aircraft_speed_power,,Spd(Air),이동(함)
-aircraft_count,,Aircrafts,함재기수
-aircraft_launch_count,,Launch,발진수
+attack,,Att,공격
+health,,HP,체력
+speed,,Spd,이동
+repair,,Repair,정비
+air_attack,,Att(Air),공격(함)
+air_health,,HP(Air),체력(함)
+air_speed,,Spd(Air),이동(함)
+air_count,,Aircrafts,함재기수
+air_launch_count,,Launch,발진수
 formation_type_linear_horizontal,,Linear Horizontal,일자횡진
 formation_type_circle,,Circle,원형진
 formation_type_cross,,Cross,십자진

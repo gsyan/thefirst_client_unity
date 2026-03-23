@@ -36,9 +36,10 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         Application.logMessageReceived += OnLogReceived;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
         Application.logMessageReceived -= OnLogReceived;
+        base.OnDestroy();
     }
 
     private void OnLogReceived(string message, string stackTrace, LogType type)

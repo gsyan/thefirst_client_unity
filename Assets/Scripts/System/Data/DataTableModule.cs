@@ -35,7 +35,7 @@ public class ModuleData
     // Body ---------------------------------------------------------------------------
     [Header("Body Stats")]
     public float health = 0f;
-    public float repairPower = 0f;
+    public float repair = 0f;
 
     // Engine ---------------------------------------------------------------------------
     [Header("Engine Stats")]
@@ -43,27 +43,27 @@ public class ModuleData
 
     // Weapon ---------------------------------------------------------------------------
     [Header("Weapon Stats")]
-    public int attackFireCount = 0;   // 발사당 빔, 미사일, 함재기 수
-    public float attackPower = 0f;
-    public float attackCoolTime = 0f; // 발사 쿨타임 빔, 미사일, 함재기
+    public int attackFireCount = 0;     // 발사당 빔, 미사일, 함재기 수
+    public float attack = 0f;
+    public float attackCool = 0f;       // 발사 쿨다운 빔, 미사일, 함재기
     [Header("Weapon Projectile Stats")]
     public float projectileWidth = 0f;
     public float projectileSpeed = 0f;
 
     // Hanger ------------------------------------------------------------------------------------------------
     [Header("Hanger Stats")]
-    public int airCount = 5;             // 총 함재기 수
-    public float maintenanceTime = 10f;  // 돌아온 함재기 재출격 까지 정비 시간, 함재기당 재출격에 걸리는 시간
+    public int airCount = 5;                  // 총 함재기 수
+    public float airMaintenanceTime = 10f;    // 돌아온 함재기 재출격 까지 정비 시간, 함재기당 재출격에 걸리는 시간
     [Header("Aircraft Stats")]
-    public float aircraftLaunchStraightDistance = 100f;    // 함재기 출격시 직진 거리
-    public float aircraftHealth = 50f;    // 함재기 체력
-    public float aircraftAttackPower = 10f;   // 함재기 공격력
-    public float aircraftAttackRange = 100f;   // 함재기 공격 거리
-    public float aircraftAttackCooldown = 10f;   // 함재기 공격 쿨다운
-    public float aircraftSpeed = 200f;   // 함재기 이동력
-    public int aircraftAmmo = 10; // 함재기 탄약
-    public float aircraftDetectionRadius = 200f;   // 함재기 적 함재기 감지거리
-    public float aircraftAvoidanceRadius = 200f;   // 함재기 적 회피 거리
+    public float airLaunchDist = 100f;        // 함재기 출격시 직진 거리
+    public float airHealth = 50f;             // 함재기 체력
+    public float airAttack = 10f;             // 함재기 공격력
+    public float airAttackRange = 100f;       // 함재기 공격 거리
+    public float airAttackCool = 10f;         // 함재기 공격 쿨다운
+    public float airSpeed = 200f;             // 함재기 이동력
+    public int airAmmo = 10;                  // 함재기 탄약
+    public float airDetectRadius = 200f;      // 함재기 적 함재기 감지거리
+    public float airAvoidRadius = 200f;       // 함재기 적 회피 거리
 
 
     
@@ -435,24 +435,24 @@ public class DataTableModule : ScriptableObject
                 moduleSubType = moduleSubType,
                 moduleLevel = level,
                 health                          = ParseCsvFloat(GetCol(cols, col, "health")),
-                repairPower                     = ParseCsvFloat(GetCol(cols, col, "repair")),
+                repair                          = ParseCsvFloat(GetCol(cols, col, "repair")),
                 speed                           = ParseCsvFloat(GetCol(cols, col, "speed")),
-                attackPower                     = ParseCsvFloat(GetCol(cols, col, "attack")),
+                attack                          = ParseCsvFloat(GetCol(cols, col, "attack")),
                 attackFireCount                 = ParseCsvInt  (GetCol(cols, col, "attack_count")),
-                attackCoolTime                  = ParseCsvFloat(GetCol(cols, col, "attack_cool")),
+                attackCool                      = ParseCsvFloat(GetCol(cols, col, "attack_cool")),
                 projectileWidth                 = ParseCsvFloat(GetCol(cols, col, "projectile_width")),
                 projectileSpeed                 = ParseCsvFloat(GetCol(cols, col, "projectile_speed")),
-                airCount                        = ParseCsvInt  (GetCol(cols, col, "aircraft_count")),
-                maintenanceTime                 = ParseCsvFloat(GetCol(cols, col, "maintenance_time")),
-                aircraftLaunchStraightDistance  = ParseCsvFloat(GetCol(cols, col, "air_launch_straight")),
-                aircraftHealth                  = ParseCsvFloat(GetCol(cols, col, "air_health")),
-                aircraftAttackPower             = ParseCsvFloat(GetCol(cols, col, "attack_power_air")),
-                aircraftAttackRange             = ParseCsvFloat(GetCol(cols, col, "attack_range_air")),
-                aircraftAttackCooldown          = ParseCsvFloat(GetCol(cols, col, "attack_cool_air")),
-                aircraftSpeed                   = ParseCsvFloat(GetCol(cols, col, "speed_air")),
-                aircraftAmmo                    = ParseCsvInt  (GetCol(cols, col, "ammo_air")),
-                aircraftDetectionRadius         = ParseCsvFloat(GetCol(cols, col, "detect_radius_air")),
-                aircraftAvoidanceRadius         = ParseCsvFloat(GetCol(cols, col, "avoid_radius_air")),
+                airCount                        = ParseCsvInt  (GetCol(cols, col, "air_count")),
+                airMaintenanceTime              = ParseCsvFloat(GetCol(cols, col, "air_maintenance_time")),
+                airLaunchDist                   = ParseCsvFloat(GetCol(cols, col, "air_launch_dist")),
+                airHealth                       = ParseCsvFloat(GetCol(cols, col, "air_health")),
+                airAttack                       = ParseCsvFloat(GetCol(cols, col, "air_attack")),
+                airAttackRange                  = ParseCsvFloat(GetCol(cols, col, "air_attack_range")),
+                airAttackCool                   = ParseCsvFloat(GetCol(cols, col, "air_attack_cool")),
+                airSpeed                        = ParseCsvFloat(GetCol(cols, col, "air_speed")),
+                airAmmo                         = ParseCsvInt  (GetCol(cols, col, "air_ammo")),
+                airDetectRadius                 = ParseCsvFloat(GetCol(cols, col, "air_detect_radius")),
+                airAvoidRadius                  = ParseCsvFloat(GetCol(cols, col, "air_avoid_radius")),
                 upgradeCost = new CostStruct(0, // techLevel: 서브타입 인코딩에서 파싱
                     ParseCsvLong (GetCol(cols, col, "cost_m")),
                     ParseCsvLong (GetCol(cols, col, "cost_mr")),

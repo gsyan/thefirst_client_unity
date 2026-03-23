@@ -10,7 +10,7 @@ public class ModuleBeam : ModuleBase
 
     // 무기 전용 스탯
     [SerializeField] private int m_attackFireCount;
-    [SerializeField] private float m_attackCoolTime;
+    [SerializeField] private float m_attackCool;
 
     [SerializeField] private float m_lastAttackTime;
 
@@ -65,9 +65,9 @@ public class ModuleBeam : ModuleBase
         // 복원된 데이터로 스탯 설정
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
-        m_attackPower = moduleData.attackPower;
+        m_attack = moduleData.attack;
         m_attackFireCount = moduleData.attackFireCount;
-        m_attackCoolTime = moduleData.attackCoolTime;
+        m_attackCool = moduleData.attackCool;
 
         // 업그레이드 비용 설정
         m_upgradeCost = moduleData.upgradeCost;
@@ -76,6 +76,14 @@ public class ModuleBeam : ModuleBase
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
+
+        // Zone 적 함대일 때 체력·공격력에 배율 적용
+        if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
+        {
+            m_health    *= m_myFleet.m_beamMultiplier;
+            m_healthMax *= m_myFleet.m_beamMultiplier;
+            m_attack    *= m_myFleet.m_beamMultiplier;
+        }
 
         // 무기 서브 타입 초기화
         InitializeSubType(moduleData);
@@ -126,7 +134,7 @@ public class ModuleBeam : ModuleBase
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
             {
-                if (Time.time >= m_lastAttackTime + m_attackCoolTime)
+                if (Time.time >= m_lastAttackTime + m_attackCool)
                 {
                     ExecuteAttackOnTarget(m_currentTarget);
                     m_lastAttackTime = Time.time;
@@ -143,7 +151,7 @@ public class ModuleBeam : ModuleBase
         {
             if (launcher != null)
             {
-                launcher.FireAtTarget(target, m_attackPower, this);
+                launcher.FireAtTarget(target, m_attack, this);
             }
                 
         }
@@ -155,7 +163,7 @@ public class ModuleBeam : ModuleBase
 
         CapabilityProfile stats = new CapabilityProfile();
         stats.totalWeapons = 1;
-        stats.attack_power = m_attackPower * m_attackFireCount;// 공격력 × 발사 개수
+        stats.attack = m_attack * m_attackFireCount;// 공격력 × 발사 개수
         return stats;
     }
 
@@ -173,8 +181,8 @@ public class ModuleBeam : ModuleBase
         // 스탯 갱신
         m_healthMax = moduleData.health;
         m_health = Mathf.Min(m_health, m_healthMax);
-        m_attackPower = moduleData.attackPower;
-        m_attackCoolTime = moduleData.attackCoolTime;
+        m_attack = moduleData.attack;
+        m_attackCool = moduleData.attackCool;
         m_attackFireCount = moduleData.attackFireCount;
         m_upgradeCost = moduleData.upgradeCost;
     }
@@ -196,25 +204,13 @@ public class ModuleBeam : ModuleBase
     // 다음 공격까지 남은 시간
     public float GetRemainingCoolTime()
     {
-        float remaining = (m_lastAttackTime + m_attackCoolTime) - Time.time;
+        float remaining = (m_lastAttackTime + m_attackCool) - Time.time;
         return Mathf.Max(0f, remaining);
     }
     
     // 무기 스탯 Getter들
     public int GetAttackFireCount() { return m_attackFireCount; }
-    public float GetAttackCoolTime() { return m_attackCoolTime; }
-
-
-    public override void SetModuleStatRows(List<RowLabelValue> statRows)
-    {
-        EModuleSubType subType = GetModuleSubType();
-        int currentLevel = GetModuleLevel();
-        ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        if (moduleDataCurrent == null) return;
-
-        statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.attackPower:F0}");
-    }
+    public float GetAttackCoolTime() { return m_attackCool; }
 
 
     // 파괴 시 정리

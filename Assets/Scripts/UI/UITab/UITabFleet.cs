@@ -218,24 +218,24 @@ public class UITabFleet : UITabBase
         if (m_textFleetStats1 != null)
         {
             m_textFleetStats1.text =
-                $"<sprite name=\"IconAttack\"> {statsCur.attack_power:F0}  " +
-                $"<sprite name=\"IconHp\"> {statsOrg.health_power:F0}  " +
-                $"<sprite name=\"IconSpeed\"> {statsCur.speed_power:F0}  " +
-                $"<sprite name=\"IconRepair\"> {statsCur.repair_power:F0}";
+                $"<sprite name=\"IconAttack\"> {statsCur.attack:F0}  " +
+                $"<sprite name=\"IconHp\"> {statsOrg.health:F0}  " +
+                $"<sprite name=\"IconSpeed\"> {statsCur.speed:F0}  " +
+                $"<sprite name=\"IconRepair\"> {statsCur.repair:F0}";
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_textFleetStats1.transform.parent as RectTransform);
         }
 
         // 2행: 함재기 (보유 시만 표시)
         if (m_textFleetStats2 != null)
         {
-            bool hasAircraft = statsOrg.aircraft_count > 0;
+            bool hasAircraft = statsOrg.airCount > 0;
             m_textFleetStats2.gameObject.SetActive(hasAircraft);
             if (hasAircraft)
             {
                 m_textFleetStats2.text =
-                    $"<sprite name=\"IconAircraftAttack\"> {statsCur.aircraft_attack_power:F0}  " +
-                    $"<sprite name=\"IconAircraft\"> {statsOrg.aircraft_count:F0}  " +
-                    $"<sprite name=\"IconLaunch\"> {statsCur.aircraft_launch_count:F0}";
+                    $"<sprite name=\"IconAircraftAttack\"> {statsCur.airAttack:F0}  " +
+                    $"<sprite name=\"IconAircraft\"> {statsOrg.airCount:F0}  " +
+                    $"<sprite name=\"IconLaunch\"> {statsCur.airLaunchCount:F0}";
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_textFleetStats2.transform.parent as RectTransform);
             }
         }
@@ -249,23 +249,23 @@ public class UITabFleet : UITabBase
         CapabilityProfile cur = m_myFleet.GetFleetCapabilityProfile(true);
 
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"<sprite name=\"IconAttack\"> (Attack)  {cur.attack_power:F0}");
+        sb.AppendLine($"<sprite name=\"IconAttack\"> (Attack)  {cur.attack:F0}");
         sb.AppendLine();
-        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {org.health_power:F0}");
+        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {org.health:F0}");
         sb.AppendLine();
-        sb.AppendLine($"<sprite name=\"IconSpeed\"> (Speed)  {cur.speed_power:F0}");
+        sb.AppendLine($"<sprite name=\"IconSpeed\"> (Speed)  {cur.speed:F0}");
         sb.AppendLine();
-        sb.Append    ($"<sprite name=\"IconRepair\"> (Repair)  {cur.repair_power:F0}");
+        sb.Append    ($"<sprite name=\"IconRepair\"> (Repair)  {cur.repair:F0}");
 
-        if (org.aircraft_count > 0)
+        if (org.airCount > 0)
         {
             sb.AppendLine();
             sb.AppendLine();
-            sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.aircraft_attack_power:F0}");
+            sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.airAttack:F0}");
             sb.AppendLine();
-            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {org.aircraft_count:F0}");
+            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {org.airCount:F0}");
             sb.AppendLine();
-            sb.Append    ($"<sprite name=\"IconLaunch\"> (Aircraft Launch)  {cur.aircraft_launch_count:F0}");
+            sb.Append    ($"<sprite name=\"IconLaunch\"> (Aircraft Launch)  {cur.airLaunchCount:F0}");
         }
 
         UIManager.Instance.ShowAlertPopup("Fleet Stats", sb.ToString(), null);

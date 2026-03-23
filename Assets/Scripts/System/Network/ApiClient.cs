@@ -103,6 +103,7 @@ public class ApiClient
 
         if (request.result != UnityWebRequest.Result.Success)
         {
+            Debug.LogError($"[API Request] URL: {request.url}, Method: {request.method}");
             string errorText = request.downloadHandler?.text ?? request.error;
             Debug.LogError($"[API Error] Result: {request.result}, Error: {request.error}, ResponseCode: {request.responseCode}, Response: {errorText}");
             ServerErrorCode errorCode = GetHttpErrorCode(request.responseCode);

@@ -82,7 +82,7 @@ public class ShipSelector : MonoBehaviour
             m_textName.text = Ship.m_shipInfo.shipName;
 
         if (m_textAtk != null)
-            m_textAtk.text = $"<sprite name=\"IconAttackMini\"> {CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack_power)}";
+            m_textAtk.text = $"<sprite name=\"IconAttackMini\"> {CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}";
 
         // 향후 표시 해야할 스텟 추가 되면 여기 추가
     }
@@ -114,8 +114,8 @@ public class ShipSelector : MonoBehaviour
 
     private float GetHealthRatio()
     {
-        float maxHp = Ship.m_spaceShipStatsOrg.health_power;
-        return maxHp > 0f ? Mathf.Clamp01(Ship.m_spaceShipStatsCur.health_power / maxHp) : 0f;
+        float maxHp = Ship.m_spaceShipStatsOrg.health;
+        return maxHp > 0f ? Mathf.Clamp01(Ship.m_spaceShipStatsCur.health / maxHp) : 0f;
     }
 
     private void SetHealthImmediate()
@@ -137,8 +137,8 @@ public class ShipSelector : MonoBehaviour
     private void UpdateHpText()
     {
         if (m_textHp == null || Ship == null) return;
-        long cur = (long)Ship.m_spaceShipStatsCur.health_power;
-        long max = (long)Ship.m_spaceShipStatsOrg.health_power;
+        long cur = (long)Ship.m_spaceShipStatsCur.health;
+        long max = (long)Ship.m_spaceShipStatsOrg.health;
         m_textHp.text = $"{CommonUtility.FormatBigNumber(cur)} / {CommonUtility.FormatBigNumber(max)}";
     }
 

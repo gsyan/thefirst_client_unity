@@ -11,7 +11,7 @@ public class ModuleBase : MonoBehaviour
 
     [HideInInspector] public float m_health;
     [HideInInspector] public float m_healthMax;
-    [HideInInspector] public float m_attackPower;
+    [HideInInspector] public float m_attack;
 
     [HideInInspector] public CostStruct m_upgradeCost;
 
@@ -64,7 +64,7 @@ public class ModuleBase : MonoBehaviour
 
     public virtual void Attack(SpaceShip target)
     {
-        target.TakeDamage(m_attackPower);
+        target.TakeDamage(m_attack);
     }
 
     public virtual EModuleType GetModuleType()
@@ -143,29 +143,6 @@ public class ModuleBase : MonoBehaviour
     public SpaceShip GetMyShip()
     {
         return m_myShip;
-    }
-
-    // 모듈 타입별 stat row 표시 위임 (하위 클래스에서 override)
-    public virtual void SetModuleStatRows(List<RowLabelValue> statRows)
-    {
-        EModuleSubType subType = GetModuleSubType();
-        int currentLevel = GetModuleLevel();
-        ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        if (moduleDataCurrent == null) return;
-        statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.attackPower:F0}");
-        statRows[3].SetRow("health_power", $"{moduleDataCurrent.health:F0}");
-        statRows[4].SetRow("speed_power", $"{moduleDataCurrent.speed:F0}");
-        statRows[5].SetRow("repair_power", $"{moduleDataCurrent.repairPower:F0}");
-    }
-
-    public virtual void SetModuleStatRows(out List<string> labels, out List<string> values, bool showNext = false)
-    {
-        EModuleSubType subType = GetModuleSubType();
-        EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
-        int currentLevel = GetModuleLevel();
-        int toLevel = showNext ? currentLevel + 1 : currentLevel;
-        CommonUtility.GetModuleStatRows(moduleType, subType, currentLevel, toLevel, out labels, out values);
     }
 
     // 팝업용 아이콘+수치 문자열 반환 (fromLevel == toLevel이면 단순 현재 수치 표시, 다르면 "현재 → 다음" 비교 표시 용도)

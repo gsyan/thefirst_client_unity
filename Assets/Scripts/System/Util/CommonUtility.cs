@@ -119,19 +119,19 @@ public static class CommonUtility
         // 모듈 타입에 따라 능력치 설정
         if (moduleInfo.moduleType == EModuleType.beam || moduleInfo.moduleType == EModuleType.missile)
         {
-            stats.attack_power = moduleData.attackPower * moduleData.attackFireCount;// 공격력 × 발사 개수
+            stats.attack = moduleData.attack * moduleData.attackFireCount;// 공격력 × 발사 개수
             stats.totalWeapons = 1;
         }
         else if (moduleInfo.moduleType == EModuleType.hanger)
         {
-            stats.aircraft_attack_power = (int)moduleData.aircraftAttackPower;  // 함재기 공격력
-            stats.aircraft_count = moduleData.airCount;                         // 함재기 수
-            stats.aircraft_launch_count = moduleData.attackFireCount;           // 함재기 발진 수
+            stats.airAttack = (int)moduleData.airAttack;       // 함재기 공격력
+            stats.airCount = moduleData.airCount;              // 함재기 수
+            stats.airLaunchCount = moduleData.attackFireCount; // 함재기 발진 수
             stats.totalWeapons = 1;
         }
         else if (moduleInfo.moduleType == EModuleType.engine)
         {
-            stats.speed_power = moduleData.speed;
+            stats.speed = moduleData.speed;
             stats.totalEngines = 1;
         }
 
@@ -147,8 +147,8 @@ public static class CommonUtility
         ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodyInfo.moduleSubType, bodyInfo.moduleLevel);
         if (bodyData != null)
         {
-            stats.health_power = bodyData.health;
-            stats.repair_power = bodyData.repairPower;
+            stats.health = bodyData.health;
+            stats.repair = bodyData.repair;
         }
 
         return stats;
@@ -167,15 +167,15 @@ public static class CommonUtility
             CapabilityProfile shipStats = GetShipCapabilityProfile(shipInfo);
             stats.totalWeapons += shipStats.totalWeapons;
             stats.totalEngines += shipStats.totalEngines;
-            stats.attack_power += shipStats.attack_power;
-            stats.health_power += shipStats.health_power;
-            stats.speed_power += shipStats.speed_power;
-            stats.repair_power += shipStats.repair_power;
-            stats.aircraft_attack_power += shipStats.aircraft_attack_power;
-            stats.aircraft_count += shipStats.aircraft_count;
-            stats.aircraft_launch_count+= shipStats.aircraft_launch_count;
+            stats.attack += shipStats.attack;
+            stats.health += shipStats.health;
+            stats.speed += shipStats.speed;
+            stats.repair += shipStats.repair;
+            stats.airAttack += shipStats.airAttack;
+            stats.airCount += shipStats.airCount;
+            stats.airLaunchCount+= shipStats.airLaunchCount;
         }
-        stats.speed_power = stats.speed_power / fleetInfo.ships.Count;
+        stats.speed = stats.speed / fleetInfo.ships.Count;
 
         return stats;
     }
@@ -191,8 +191,8 @@ public static class CommonUtility
         {
             // Body 고유 능력치
             CapabilityProfile bodyStats = GetBodyCapabilityProfile(bodyInfo);
-            stats.health_power += bodyStats.health_power;
-            stats.repair_power += bodyStats.repair_power;
+            stats.health += bodyStats.health;
+            stats.repair += bodyStats.repair;
 
             // Engine 모듈들 합산
             if (bodyInfo.engines != null)
@@ -200,7 +200,7 @@ public static class CommonUtility
                 foreach (ModuleInfo moduleInfo in bodyInfo.engines)
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                    stats.speed_power += moduleStats.speed_power;
+                    stats.speed += moduleStats.speed;
                     
                     stats.totalEngines += moduleStats.totalEngines;
                 }
@@ -212,7 +212,7 @@ public static class CommonUtility
                 foreach (ModuleInfo moduleInfo in bodyInfo.beams)
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                    stats.attack_power += moduleStats.attack_power;
+                    stats.attack += moduleStats.attack;
                     
                     stats.totalWeapons += moduleStats.totalWeapons;
                 }
@@ -224,7 +224,7 @@ public static class CommonUtility
                 foreach (ModuleInfo moduleInfo in bodyInfo.missiles)
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                    stats.attack_power += moduleStats.attack_power;
+                    stats.attack += moduleStats.attack;
 
                     stats.totalWeapons += moduleStats.totalWeapons;
                 }
@@ -236,10 +236,9 @@ public static class CommonUtility
                 foreach (ModuleInfo moduleInfo in bodyInfo.hangers)
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                    stats.aircraft_attack_power += moduleStats.aircraft_attack_power;
-                    stats.aircraft_count += moduleStats.aircraft_count;
-                    stats.aircraft_launch_count+= moduleStats.aircraft_launch_count;
-
+                    stats.airAttack += moduleStats.airAttack;
+                    stats.airCount += moduleStats.airCount;
+                    stats.airLaunchCount+= moduleStats.airLaunchCount;
                     stats.totalWeapons += moduleStats.totalWeapons;
                 }
             }
@@ -283,7 +282,7 @@ public static class CommonUtility
         if (moduleType == EModuleType.body)
         {
             lines.Add($"<sprite name=\"IconHp\"> {V(cur.health, nxt?.health ?? 0f)}");
-            lines.Add($"<sprite name=\"IconRepair\"> {V(cur.repairPower, nxt?.repairPower ?? 0f)}");
+            lines.Add($"<sprite name=\"IconRepair\"> {V(cur.repair, nxt?.repair ?? 0f)}");
         }
         else if (moduleType == EModuleType.engine)
         {
@@ -291,13 +290,13 @@ public static class CommonUtility
         }
         else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
         {
-            lines.Add($"<sprite name=\"IconAttack\"> {V(cur.attackPower, nxt?.attackPower ?? 0f)}");
+            lines.Add($"<sprite name=\"IconAttack\"> {V(cur.attack, nxt?.attack ?? 0f)}");
         }
         else if (moduleType == EModuleType.hanger)
         {
-            lines.Add($"<sprite name=\"IconAircraftAttack\"> {V(cur.aircraftAttackPower, nxt?.aircraftAttackPower ?? 0f)}");
-            lines.Add($"<sprite name=\"IconAircraftHp\"> {V(cur.aircraftHealth, nxt?.aircraftHealth ?? 0f)}");
-            lines.Add($"<sprite name=\"IconAircraftSpeed\"> {V(cur.aircraftSpeed, nxt?.aircraftSpeed ?? 0f)}");
+            lines.Add($"<sprite name=\"IconAircraftAttack\"> {V(cur.airAttack, nxt?.airAttack ?? 0f)}");
+            lines.Add($"<sprite name=\"IconAircraftHp\"> {V(cur.airHealth, nxt?.airHealth ?? 0f)}");
+            lines.Add($"<sprite name=\"IconAircraftSpeed\"> {V(cur.airSpeed, nxt?.airSpeed ?? 0f)}");
             lines.Add($"<sprite name=\"IconAircraft\"> {V(cur.airCount, nxt?.airCount ?? 0f)}");
             lines.Add($"<sprite name=\"IconLaunch\"> {V(cur.attackFireCount, nxt?.attackFireCount ?? 0f)}");
         }
@@ -305,46 +304,7 @@ public static class CommonUtility
         return string.Join("\n\n", lines);
     }
 
-    // 모듈 타입+서브타입+레벨 범위로 stat label/value 리스트 생성 (모듈 인스턴스 없이 사용 가능)
-    // fromLevel == toLevel 이면 단일 값, 다르면 "from→to" 형식
-    public static void GetModuleStatRows(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel,
-        out List<string> labels, out List<string> values)
-    {
-        labels = new List<string>();
-        values = new List<string>();
-        bool showRange = fromLevel != toLevel;
-        ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, fromLevel);
-        ModuleData nxt = showRange ? DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, toLevel) : null;
-        if (cur == null) return;
-        if (showRange && nxt == null) return;
-
-        string V(float c, float n) => showRange ? $"{c:F0}<voffset=6>→</voffset>{n:F0}" : $"{c:F0}";
-        labels.Add("ship_module_type"); values.Add(subType.ToLocKey());
-        labels.Add("level"); values.Add(showRange ? $"{fromLevel}<voffset=6>→</voffset>{toLevel}" : $"{fromLevel}");
-
-        if (moduleType == EModuleType.body)
-        {
-            labels.Add("health_power"); values.Add(V(cur.health, nxt?.health ?? 0f));
-            labels.Add("repair_power"); values.Add(V(cur.repairPower, nxt?.repairPower ?? 0f));
-        }
-        else if (moduleType == EModuleType.engine)
-        {
-            labels.Add("speed_power"); values.Add(V(cur.speed, nxt?.speed ?? 0f));
-        }
-        else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
-        {
-            labels.Add("attack_power"); values.Add(V(cur.attackPower, nxt?.attackPower ?? 0f));
-        }
-        else if (moduleType == EModuleType.hanger)
-        {
-            labels.Add("aircraft_attack_power"); values.Add(V(cur.aircraftAttackPower, nxt?.aircraftAttackPower ?? 0f));
-            labels.Add("aircraft_health_power"); values.Add(V(cur.aircraftHealth, nxt?.aircraftHealth ?? 0f));
-            labels.Add("aircraft_speed_power"); values.Add(V(cur.aircraftSpeed, nxt?.aircraftSpeed ?? 0f));
-            labels.Add("aircraft_count"); values.Add(V(cur.airCount, nxt?.airCount ?? 0f));
-            labels.Add("aircraft_launch_count"); values.Add(V(cur.attackFireCount, nxt?.attackFireCount ?? 0f));
-        }
-    }
-
+    
     #endregion Module Type end -----------------------------------------------------------------------------------
 
 

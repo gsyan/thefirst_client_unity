@@ -14,13 +14,13 @@ public struct CapabilityProfile
     public int totalEngines;
 
     // 세부 전투 능력치
-    public float attack_power;          // 공격력
-    public float health_power;          // 체력
-    public float speed_power;           // 속력 (이동+회전 통합)
-    public float repair_power;          // 수리 능력
-    public int aircraft_attack_power;   // 함재기 공격력
-    public int aircraft_count;          // 함재기 수
-    public int aircraft_launch_count;   // 함재기 발진 수
+    public float attack;                // 공격력
+    public float health;                // 체력
+    public float speed;                 // 속력 (이동+회전 통합)
+    public float repair;                // 수리 능력
+    public int airAttack;               // 함재기 공격력
+    public int airCount;                // 함재기 수
+    public int airLaunchCount;          // 함재기 발진 수
 }
 
 public class SpaceShip : MonoBehaviour
@@ -247,14 +247,14 @@ public class SpaceShip : MonoBehaviour
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
 
-        if (m_spaceShipStatsCur.health_power <= 0.0f)
+        if (m_spaceShipStatsCur.health <= 0.0f)
             OnSpaceShipDestroyed();
     }
 
     // 함선이 살아있는지 확인
     public bool IsAlive()
     {
-        return m_spaceShipStatsCur.health_power > 0 && HasAliveBodies();
+        return m_spaceShipStatsCur.health > 0 && HasAliveBodies();
     }
 
     // 살아있는 바디가 있는지 확인
@@ -369,13 +369,13 @@ public class SpaceShip : MonoBehaviour
                 CapabilityProfile bodyStats = body.GetModuleCapabilityProfile(false);
                 stats.totalWeapons += bodyStats.totalWeapons;
                 stats.totalEngines += bodyStats.totalEngines;
-                stats.attack_power += bodyStats.attack_power;
-                stats.health_power += bodyStats.health_power;
-                stats.speed_power += bodyStats.speed_power;    
-                stats.repair_power += bodyStats.repair_power;
-                stats.aircraft_attack_power += bodyStats.aircraft_attack_power;
-                stats.aircraft_count += bodyStats.aircraft_count;
-                stats.aircraft_launch_count += bodyStats.aircraft_launch_count;
+                stats.attack += bodyStats.attack;
+                stats.health += bodyStats.health;
+                stats.speed += bodyStats.speed;    
+                stats.repair += bodyStats.repair;
+                stats.airAttack += bodyStats.airAttack;
+                stats.airCount += bodyStats.airCount;
+                stats.airLaunchCount += bodyStats.airLaunchCount;
             }
         }
         return stats;
@@ -777,7 +777,7 @@ public class SpaceShip : MonoBehaviour
             Vector3 direction = (targetWaypoint - currentPos).normalized;
 
             // 속도 계산 (목표 근처에서 감속)
-            float baseSpeed = m_spaceShipStatsCur.speed_power;
+            float baseSpeed = m_spaceShipStatsCur.speed;
             float speedMultiplier = 1f;
 
             // 마지막 웨이포인트 근처에서 감속
@@ -825,7 +825,7 @@ public class SpaceShip : MonoBehaviour
              else
                  finalDirection = directionToTarget;
 
-            float moveSpeed = m_spaceShipStatsCur.speed_power;
+            float moveSpeed = m_spaceShipStatsCur.speed;
             Vector3 newPosition = currentPos + finalDirection * moveSpeed * Time.deltaTime;
             transform.localPosition = newPosition;
 

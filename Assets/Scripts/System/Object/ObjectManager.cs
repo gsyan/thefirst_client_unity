@@ -141,9 +141,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         StartTutorialIfNeeded();
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetDestroyed);
+        base.OnDestroy();
     }
 
     private void OnMyFleetDestroyed()
@@ -442,7 +443,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             ships = enemyShips
         };
 
-        enemyFleet.InitializeSpaceFleet(enemyFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data);
+        enemyFleet.InitializeZoneEnemyFleet(enemyFleetInfo, m_currentZoneConfig);
         m_enemyFleets.Add(enemyFleet);
     }
 

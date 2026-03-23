@@ -60,12 +60,12 @@ public class LauncherBeam : LauncherBase
 
     private IEnumerator FireBeamCoroutine(ModuleBase target, float damage, ModuleBase sourceModuleBase)
     {
-        ParticleSystem muzzleEffect = ObjectManager.Instance.m_poolManager.GetParticleSystem_Play_AutoReturn(EPoolName.EFFECT_BEAM_MUZZLE, m_firePoint);
+        //ParticleSystem muzzleEffect = ObjectManager.Instance.m_poolManager.GetParticleSystem_Play_AutoReturn(EPoolName.EFFECT_BEAM_MUZZLE, m_firePoint);
 
-        if (m_audioSource != null && m_audioSource.clip != null)
-            m_audioSource.Play();
+        //if (m_audioSource != null && m_audioSource.clip != null)
+        //    m_audioSource.Play();
 
-        yield return new WaitForSeconds(muzzleEffect.main.duration);
+        //yield return new WaitForSeconds(muzzleEffect.main.duration);
         if (target == null) yield break;
 
         ProjectileBeam beam = ObjectManager.Instance.m_poolManager.Get<ProjectileBeam>(EPoolName.PROJECTILE_BEAM);

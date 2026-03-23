@@ -1,4 +1,4 @@
-// 설정 탭 UI — 로그아웃, 언어 설정, 구글 계정 연동/해제, 개발자 자원 추가 기능
+// 설정 탭 UI — 섹션(계정/일반/기타) 구조, 로그아웃, 언어 설정, 구글 계정 연동/해제, 개발자 자원 추가
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,17 +8,25 @@ using TMPro;
 
 public class UITabSettings : UITabBase
 {
-    [SerializeField] private Button m_logoutButton;
+    
+    [Header("계정")]
+    [SerializeField] private TMP_Text m_sectionAccountText;
+    [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private Button m_renameCharacterButton;
+    [SerializeField] private Button m_googleAccountButton;  // 연동/해제 공용 버튼
+    [SerializeField] private Button m_logoutButton;
+
+    [Header("General")]
+    [SerializeField] private TMP_Text m_sectionGeneralText;
+    [SerializeField] private TMP_Text m_languageText;
     [SerializeField] private TMP_Dropdown m_languageDropdown;
 
-    [Header("계정 연동")]
-    [SerializeField] private Button m_googleAccountButton;  // 연동/해제 공용 버튼
-
     [Header("라이센스")]
+    [SerializeField] private TMP_Text m_sectionInfolText;
     [SerializeField] private Button m_licenseButton;
 
     [Header("개발자 도구")]
+    [SerializeField] private GameObject m_devToolPanel;
     [SerializeField] private Button   m_testMineralButton;
     [SerializeField] private Toggle   m_toggleMineral;
     [SerializeField] private Toggle   m_toggleMineralRare;
@@ -39,6 +47,12 @@ public class UITabSettings : UITabBase
     {
         if (m_myFleet == null)
             m_myFleet = DataManager.Instance.m_currentCharacter.GetOwnedFleet();
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (m_devToolPanel != null) m_devToolPanel.SetActive(true);
+#else
+        if (m_devToolPanel != null) m_devToolPanel.SetActive(false);
+#endif
 
         if (m_logoutButton != null)
             m_logoutButton.onClick.AddListener(OnLogoutButtonClicked);
@@ -69,6 +83,28 @@ public class UITabSettings : UITabBase
 
         InitializeLanguageDropdown();
         RefreshGoogleLinkUI();
+        RefreshStaticLocText();
+    }
+
+    // 섹션 헤더·라벨 등 고정 문자열 로컬라이즈
+    private void RefreshStaticLocText()
+    {
+        CommonUtility.SetUILocText(m_sectionAccountText, "settings_section_account");
+        CommonUtility.SetUILocText(m_sectionGeneralText, "settings_section_general");
+        CommonUtility.SetUILocText(m_sectionInfolText,   "settings_section_info");
+        CommonUtility.SetUILocText(m_languageText,       "settings_language");
+
+        // 버튼 라벨
+        SetButtonLocText(m_renameCharacterButton, "settings_name_change");
+        SetButtonLocText(m_logoutButton,          "settings_logout");
+        SetButtonLocText(m_licenseButton,         "settings_license_title");
+    }
+
+    private void SetButtonLocText(Button btn, string key)
+    {
+        if (btn == null) return;
+        var label = btn.GetComponentInChildren<TMP_Text>();
+        if (label != null) CommonUtility.SetUILocText(label, key);
     }
 
     private void OnTestMineralButtonClicked()
@@ -110,6 +146,14 @@ public class UITabSettings : UITabBase
     public override void OnTabActivated()
     {
         RefreshGoogleLinkUI();
+        RefreshNameText();
+    }
+
+    private void RefreshNameText()
+    {
+        if (m_nameText == null) return;
+        m_nameText.text = DataManager.Instance.m_currentCharacter?.GetName() ?? string.Empty;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_nameText.transform.parent as RectTransform);
     }
 
     public override void OnTabDeactivated()
@@ -195,7 +239,7 @@ public class UITabSettings : UITabBase
 
     private void OnRenameCharacterButtonClicked()
     {
-        UIManager.Instance.ShowRenameCharacterPopup();
+        UIManager.Instance.ShowRenameCharacterPopup(onRenameSuccess: RefreshNameText);
     }
 
     private void OnLogoutButtonClicked()

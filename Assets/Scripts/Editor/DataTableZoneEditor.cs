@@ -16,9 +16,10 @@ public class DataTableZoneEditor : Editor
     private Dictionary<int, Dictionary<int, bool>> shipFoldouts = new Dictionary<int, Dictionary<int, bool>>();
     private Dictionary<int, bool> shipCountGroupFoldouts = new Dictionary<int, bool>(); // x값(함선개수) 그룹 폴드아웃
 
-    private readonly Color zoneColor = new Color(0.7f, 0.85f, 0.95f);
-    private readonly Color shipColor = new Color(0.85f, 0.95f, 0.85f);
-    private readonly Color slotColor = new Color(0.9f, 0.9f, 0.95f);
+    private readonly Color zoneColor       = new Color(0.7f, 0.85f, 0.95f);
+    private readonly Color shipColor       = new Color(0.85f, 0.95f, 0.85f);
+    private readonly Color slotColor       = new Color(0.9f, 0.9f, 0.95f);
+    private readonly Color multiplierColor = new Color(0.95f, 0.88f, 0.75f);
 
     // Body SubType 목록 캐싱
     private EModuleSubType[] bodySubTypes;
@@ -153,6 +154,12 @@ public class DataTableZoneEditor : Editor
                 string skyboxFolder = shipCount <= 5 ? "GalacticGreen" : "GalaxyFire";
                 Material skyboxMat = AssetDatabase.LoadAssetAtPath<Material>($"Assets/DeepSpaceSkyboxPack/{skyboxFolder}/Material/{skyboxFolder}Material.mat");
 
+                // 함선 1척 그룹: 1-1(0.1) ~ 1-20(1.0) 균등 성장, 1-21 이후 1.0 고정
+                // 나머지 그룹: 1.0 고정 (추후 테스트 후 조절)
+                float enemyMult = 1.0f;
+                if (shipCount == 1 && stage <= 20)
+                    enemyMult = Mathf.Lerp(0.1f, 1.0f, (stage - 1) / 19f);
+
                 var zone = new ZoneConfig
                 {
                     zoneName = $"{shipCount}-{stage}",
@@ -160,7 +167,7 @@ public class DataTableZoneEditor : Editor
                     shipCount = shipCount,
                     moduleLevel = moduleLevel,
                     skyboxMaterial = skyboxMat,
-                    zoneClearCount = stage * 2,
+                    zoneClearCount = 10,
                     delayBeforeSpawn = 3f,
                     enemyShipConfigs = new List<EnemyShipConfig>(),
                     killRewardMineral       = Mathf.Round(killMBase[idx] * stageMult * stageScaleFactor),
@@ -171,6 +178,11 @@ public class DataTableZoneEditor : Editor
                     mineralRarePerHour   = Mathf.Round(rareBase[idx] * stageMult * stageScaleFactor),
                     mineralExoticPerHour = 0,
                     mineralDarkPerHour   = 0,
+                    enemyBodyMultiplier    = enemyMult,
+                    enemyBeamMultiplier    = enemyMult,
+                    enemyMissileMultiplier = enemyMult,
+                    enemyHangerMultiplier  = enemyMult,
+                    enemyEngineMultiplier  = enemyMult,
                 };
 
                 for (int s = 0; s < shipCount; s++)
@@ -429,6 +441,21 @@ public class DataTableZoneEditor : Editor
             EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
             zone.zoneClearCount = EditorGUILayout.IntField("클리어 카운트 (라운드 수)", zone.zoneClearCount);
             zone.delayBeforeSpawn = EditorGUILayout.Slider("스폰 간격 (초)", zone.delayBeforeSpawn, 0f, 60f);
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.Space(5);
+
+            // 적 함대 스탯 배율
+            var origColor = GUI.backgroundColor;
+            GUI.backgroundColor = multiplierColor;
+            EditorGUILayout.BeginVertical("box");
+            GUI.backgroundColor = origColor;
+            EditorGUILayout.LabelField("적 함대 스탯 배율  (1.0 = 플레이어 동일)", EditorStyles.boldLabel);
+            zone.enemyBodyMultiplier    = EditorGUILayout.Slider("Body    (체력)",            zone.enemyBodyMultiplier,    0.1f, 2.0f);
+            zone.enemyBeamMultiplier    = EditorGUILayout.Slider("Beam    (공격력·체력)",     zone.enemyBeamMultiplier,    0.1f, 2.0f);
+            zone.enemyMissileMultiplier = EditorGUILayout.Slider("Missile (공격력·체력)",     zone.enemyMissileMultiplier, 0.1f, 2.0f);
+            zone.enemyHangerMultiplier  = EditorGUILayout.Slider("Hanger  (함재기 전 스탯)", zone.enemyHangerMultiplier,  0.1f, 2.0f);
+            zone.enemyEngineMultiplier  = EditorGUILayout.Slider("Engine  (속도·체력)",       zone.enemyEngineMultiplier,  0.1f, 2.0f);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);

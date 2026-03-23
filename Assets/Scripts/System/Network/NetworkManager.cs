@@ -35,7 +35,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     private bool m_heartbeatStarted = false;
     // 복귀 즉시 하트비트 중복 방지 (OnApplicationPause/OnApplicationFocus 동시 발동 대응)
     private float m_lastResumeHeartbeatTime = -999f;
-    private const float ResumeHeartbeatCooldown = 5f;
+    private const float ResumeHeartbeatCool = 5f;
 
     public void OnChangeScene()
     {
@@ -776,7 +776,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     private void HeartbeatOnResume()
     {
         if (m_heartbeatStarted == false) return;
-        if (Time.realtimeSinceStartup - m_lastResumeHeartbeatTime < ResumeHeartbeatCooldown) return;
+        if (Time.realtimeSinceStartup - m_lastResumeHeartbeatTime < ResumeHeartbeatCool) return;
         m_lastResumeHeartbeatTime = Time.realtimeSinceStartup;
         Heartbeat();
     }

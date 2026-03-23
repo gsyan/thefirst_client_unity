@@ -21,6 +21,11 @@ MonoBehaviour:
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs: []
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 0
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -48,6 +53,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.1
+    enemyBeamMultiplier: 0.1
+    enemyMissileMultiplier: 0.1
+    enemyHangerMultiplier: 0.1
+    enemyEngineMultiplier: 0.1
     killRewardMineral: 13
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -75,6 +85,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.14736842
+    enemyBeamMultiplier: 0.14736842
+    enemyMissileMultiplier: 0.14736842
+    enemyHangerMultiplier: 0.14736842
+    enemyEngineMultiplier: 0.14736842
     killRewardMineral: 14
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -102,6 +117,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.19473684
+    enemyBeamMultiplier: 0.19473684
+    enemyMissileMultiplier: 0.19473684
+    enemyHangerMultiplier: 0.19473684
+    enemyEngineMultiplier: 0.19473684
     killRewardMineral: 14
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -129,6 +149,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.24210526
+    enemyBeamMultiplier: 0.24210526
+    enemyMissileMultiplier: 0.24210526
+    enemyHangerMultiplier: 0.24210526
+    enemyEngineMultiplier: 0.24210526
     killRewardMineral: 14
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -156,6 +181,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.28947368
+    enemyBeamMultiplier: 0.28947368
+    enemyMissileMultiplier: 0.28947368
+    enemyHangerMultiplier: 0.28947368
+    enemyEngineMultiplier: 0.28947368
     killRewardMineral: 14
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -183,6 +213,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.33684212
+    enemyBeamMultiplier: 0.33684212
+    enemyMissileMultiplier: 0.33684212
+    enemyHangerMultiplier: 0.33684212
+    enemyEngineMultiplier: 0.33684212
     killRewardMineral: 14
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -210,6 +245,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.38421053
+    enemyBeamMultiplier: 0.38421053
+    enemyMissileMultiplier: 0.38421053
+    enemyHangerMultiplier: 0.38421053
+    enemyEngineMultiplier: 0.38421053
     killRewardMineral: 15
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -237,6 +277,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.43157893
+    enemyBeamMultiplier: 0.43157893
+    enemyMissileMultiplier: 0.43157893
+    enemyHangerMultiplier: 0.43157893
+    enemyEngineMultiplier: 0.43157893
     killRewardMineral: 15
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -264,6 +309,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.47894737
+    enemyBeamMultiplier: 0.47894737
+    enemyMissileMultiplier: 0.47894737
+    enemyHangerMultiplier: 0.47894737
+    enemyEngineMultiplier: 0.47894737
     killRewardMineral: 15
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -291,6 +341,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.5263158
+    enemyBeamMultiplier: 0.5263158
+    enemyMissileMultiplier: 0.5263158
+    enemyHangerMultiplier: 0.5263158
+    enemyEngineMultiplier: 0.5263158
     killRewardMineral: 15
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -318,6 +373,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.5736842
+    enemyBeamMultiplier: 0.5736842
+    enemyMissileMultiplier: 0.5736842
+    enemyHangerMultiplier: 0.5736842
+    enemyEngineMultiplier: 0.5736842
     killRewardMineral: 15
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -345,6 +405,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.6210526
+    enemyBeamMultiplier: 0.6210526
+    enemyMissileMultiplier: 0.6210526
+    enemyHangerMultiplier: 0.6210526
+    enemyEngineMultiplier: 0.6210526
     killRewardMineral: 16
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -372,6 +437,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.66842103
+    enemyBeamMultiplier: 0.66842103
+    enemyMissileMultiplier: 0.66842103
+    enemyHangerMultiplier: 0.66842103
+    enemyEngineMultiplier: 0.66842103
     killRewardMineral: 16
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -399,6 +469,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.7157895
+    enemyBeamMultiplier: 0.7157895
+    enemyMissileMultiplier: 0.7157895
+    enemyHangerMultiplier: 0.7157895
+    enemyEngineMultiplier: 0.7157895
     killRewardMineral: 16
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -426,6 +501,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.7631579
+    enemyBeamMultiplier: 0.7631579
+    enemyMissileMultiplier: 0.7631579
+    enemyHangerMultiplier: 0.7631579
+    enemyEngineMultiplier: 0.7631579
     killRewardMineral: 16
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -453,6 +533,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.8105264
+    enemyBeamMultiplier: 0.8105264
+    enemyMissileMultiplier: 0.8105264
+    enemyHangerMultiplier: 0.8105264
+    enemyEngineMultiplier: 0.8105264
     killRewardMineral: 16
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -480,6 +565,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.8578947
+    enemyBeamMultiplier: 0.8578947
+    enemyMissileMultiplier: 0.8578947
+    enemyHangerMultiplier: 0.8578947
+    enemyEngineMultiplier: 0.8578947
     killRewardMineral: 17
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -507,6 +597,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.9052631
+    enemyBeamMultiplier: 0.9052631
+    enemyMissileMultiplier: 0.9052631
+    enemyHangerMultiplier: 0.9052631
+    enemyEngineMultiplier: 0.9052631
     killRewardMineral: 17
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -534,6 +629,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 0.9526316
+    enemyBeamMultiplier: 0.9526316
+    enemyMissileMultiplier: 0.9526316
+    enemyHangerMultiplier: 0.9526316
+    enemyEngineMultiplier: 0.9526316
     killRewardMineral: 17
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -561,6 +661,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 17
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -588,6 +693,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 17
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -615,6 +725,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 18
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -642,6 +757,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 18
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -669,6 +789,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 18
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -696,6 +821,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 18
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -723,6 +853,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 19
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -750,6 +885,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 19
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -777,6 +917,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 19
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -804,6 +949,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 19
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -831,6 +981,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 19
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -869,6 +1024,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 25
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -907,6 +1067,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 25
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -945,6 +1110,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 26
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -983,6 +1153,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 26
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1021,6 +1196,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 27
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1059,6 +1239,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 27
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1097,6 +1282,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 27
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1135,6 +1325,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 28
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1173,6 +1368,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 28
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1211,6 +1411,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 28
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1249,6 +1454,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 29
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1287,6 +1497,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 29
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1325,6 +1540,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 30
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1363,6 +1583,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 30
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1401,6 +1626,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 30
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1439,6 +1669,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 31
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1477,6 +1712,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 31
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1515,6 +1755,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 32
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1553,6 +1798,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 32
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1591,6 +1841,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 32
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1629,6 +1884,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 33
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1667,6 +1927,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 33
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1705,6 +1970,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 34
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1743,6 +2013,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 34
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1781,6 +2056,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 34
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1819,6 +2099,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 35
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1857,6 +2142,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 35
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1895,6 +2185,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 35
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1933,6 +2228,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 36
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -1971,6 +2271,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 36
     killRewardMineralRare: 0
     killRewardMineralExotic: 0
@@ -2020,6 +2325,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 43
     killRewardMineralRare: 3
     killRewardMineralExotic: 0
@@ -2069,6 +2379,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 44
     killRewardMineralRare: 3
     killRewardMineralExotic: 0
@@ -2130,6 +2445,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 45
     killRewardMineralRare: 3
     killRewardMineralExotic: 0
@@ -2191,6 +2511,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 45
     killRewardMineralRare: 3
     killRewardMineralExotic: 0
@@ -2252,6 +2577,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 46
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2313,6 +2643,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 47
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2374,6 +2709,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 47
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2435,6 +2775,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 48
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2496,6 +2841,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 49
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2557,6 +2907,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 49
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2618,6 +2973,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 50
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2679,6 +3039,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 51
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2740,6 +3105,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 51
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2801,6 +3171,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 52
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2862,6 +3237,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 53
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2923,6 +3303,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 53
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -2984,6 +3369,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 54
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -3045,6 +3435,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 55
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -3106,6 +3501,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 55
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -3167,6 +3567,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 56
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -3228,6 +3633,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 57
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -3289,6 +3699,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 57
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -3350,6 +3765,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 58
     killRewardMineralRare: 4
     killRewardMineralExotic: 0
@@ -3411,6 +3831,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 59
     killRewardMineralRare: 5
     killRewardMineralExotic: 0
@@ -3472,6 +3897,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 59
     killRewardMineralRare: 5
     killRewardMineralExotic: 0
@@ -3533,6 +3963,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 60
     killRewardMineralRare: 5
     killRewardMineralExotic: 0
@@ -3594,6 +4029,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 61
     killRewardMineralRare: 5
     killRewardMineralExotic: 0
@@ -3655,6 +4095,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 61
     killRewardMineralRare: 5
     killRewardMineralExotic: 0
@@ -3716,6 +4161,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 62
     killRewardMineralRare: 5
     killRewardMineralExotic: 0
@@ -3777,6 +4227,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 63
     killRewardMineralRare: 5
     killRewardMineralExotic: 0
@@ -3837,6 +4292,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 73
     killRewardMineralRare: 7
     killRewardMineralExotic: 0
@@ -3897,6 +4357,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 74
     killRewardMineralRare: 7
     killRewardMineralExotic: 0
@@ -3973,6 +4438,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 76
     killRewardMineralRare: 8
     killRewardMineralExotic: 0
@@ -4049,6 +4519,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 77
     killRewardMineralRare: 8
     killRewardMineralExotic: 0
@@ -4125,6 +4600,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 78
     killRewardMineralRare: 8
     killRewardMineralExotic: 0
@@ -4201,6 +4681,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 79
     killRewardMineralRare: 8
     killRewardMineralExotic: 0
@@ -4277,6 +4762,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 80
     killRewardMineralRare: 8
     killRewardMineralExotic: 0
@@ -4353,6 +4843,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 81
     killRewardMineralRare: 8
     killRewardMineralExotic: 0
@@ -4429,6 +4924,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 82
     killRewardMineralRare: 8
     killRewardMineralExotic: 0
@@ -4505,6 +5005,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 84
     killRewardMineralRare: 8
     killRewardMineralExotic: 0
@@ -4581,6 +5086,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 85
     killRewardMineralRare: 8
     killRewardMineralExotic: 0
@@ -4657,6 +5167,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 86
     killRewardMineralRare: 9
     killRewardMineralExotic: 0
@@ -4733,6 +5248,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 87
     killRewardMineralRare: 9
     killRewardMineralExotic: 0
@@ -4809,6 +5329,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 88
     killRewardMineralRare: 9
     killRewardMineralExotic: 0
@@ -4885,6 +5410,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 89
     killRewardMineralRare: 9
     killRewardMineralExotic: 0
@@ -4961,6 +5491,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 90
     killRewardMineralRare: 9
     killRewardMineralExotic: 0
@@ -5037,6 +5572,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 92
     killRewardMineralRare: 9
     killRewardMineralExotic: 0
@@ -5113,6 +5653,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 93
     killRewardMineralRare: 9
     killRewardMineralExotic: 0
@@ -5189,6 +5734,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 94
     killRewardMineralRare: 9
     killRewardMineralExotic: 0
@@ -5265,6 +5815,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 95
     killRewardMineralRare: 9
     killRewardMineralExotic: 0
@@ -5341,6 +5896,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 96
     killRewardMineralRare: 10
     killRewardMineralExotic: 0
@@ -5417,6 +5977,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 97
     killRewardMineralRare: 10
     killRewardMineralExotic: 0
@@ -5493,6 +6058,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 98
     killRewardMineralRare: 10
     killRewardMineralExotic: 0
@@ -5569,6 +6139,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 100
     killRewardMineralRare: 10
     killRewardMineralExotic: 0
@@ -5645,6 +6220,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 101
     killRewardMineralRare: 10
     killRewardMineralExotic: 0
@@ -5721,6 +6301,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 102
     killRewardMineralRare: 10
     killRewardMineralExotic: 0
@@ -5797,6 +6382,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 103
     killRewardMineralRare: 10
     killRewardMineralExotic: 0
@@ -5873,6 +6463,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 104
     killRewardMineralRare: 10
     killRewardMineralExotic: 0
@@ -5949,6 +6544,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 105
     killRewardMineralRare: 11
     killRewardMineralExotic: 0
@@ -6025,6 +6625,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 106
     killRewardMineralRare: 11
     killRewardMineralExotic: 0
@@ -6096,6 +6701,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 120
     killRewardMineralRare: 13
     killRewardMineralExotic: 0
@@ -6167,6 +6777,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 122
     killRewardMineralRare: 14
     killRewardMineralExotic: 0
@@ -6258,6 +6873,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 124
     killRewardMineralRare: 14
     killRewardMineralExotic: 0
@@ -6349,6 +6969,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 126
     killRewardMineralRare: 14
     killRewardMineralExotic: 0
@@ -6460,6 +7085,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 127
     killRewardMineralRare: 14
     killRewardMineralExotic: 0
@@ -6571,6 +7201,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 129
     killRewardMineralRare: 14
     killRewardMineralExotic: 0
@@ -6682,6 +7317,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 131
     killRewardMineralRare: 15
     killRewardMineralExotic: 0
@@ -6793,6 +7433,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 133
     killRewardMineralRare: 15
     killRewardMineralExotic: 0
@@ -6904,6 +7549,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 135
     killRewardMineralRare: 15
     killRewardMineralExotic: 0
@@ -7015,6 +7665,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 137
     killRewardMineralRare: 15
     killRewardMineralExotic: 0
@@ -7126,6 +7781,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 139
     killRewardMineralRare: 15
     killRewardMineralExotic: 0
@@ -7237,6 +7897,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 140
     killRewardMineralRare: 16
     killRewardMineralExotic: 0
@@ -7348,6 +8013,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 142
     killRewardMineralRare: 16
     killRewardMineralExotic: 0
@@ -7459,6 +8129,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 144
     killRewardMineralRare: 16
     killRewardMineralExotic: 0
@@ -7570,6 +8245,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 146
     killRewardMineralRare: 16
     killRewardMineralExotic: 0
@@ -7681,6 +8361,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 148
     killRewardMineralRare: 16
     killRewardMineralExotic: 0
@@ -7792,6 +8477,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 150
     killRewardMineralRare: 17
     killRewardMineralExotic: 0
@@ -7903,6 +8593,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 152
     killRewardMineralRare: 17
     killRewardMineralExotic: 0
@@ -8014,6 +8709,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 154
     killRewardMineralRare: 17
     killRewardMineralExotic: 0
@@ -8125,6 +8825,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 155
     killRewardMineralRare: 17
     killRewardMineralExotic: 0
@@ -8236,6 +8941,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 157
     killRewardMineralRare: 17
     killRewardMineralExotic: 0
@@ -8347,6 +9057,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 159
     killRewardMineralRare: 18
     killRewardMineralExotic: 0
@@ -8458,6 +9173,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 161
     killRewardMineralRare: 18
     killRewardMineralExotic: 0
@@ -8569,6 +9289,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 163
     killRewardMineralRare: 18
     killRewardMineralExotic: 0
@@ -8680,6 +9405,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 165
     killRewardMineralRare: 18
     killRewardMineralExotic: 0
@@ -8791,6 +9521,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 167
     killRewardMineralRare: 19
     killRewardMineralExotic: 0
@@ -8902,6 +9637,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 168
     killRewardMineralRare: 19
     killRewardMineralExotic: 0
@@ -9013,6 +9753,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 170
     killRewardMineralRare: 19
     killRewardMineralExotic: 0
@@ -9124,6 +9869,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 172
     killRewardMineralRare: 19
     killRewardMineralExotic: 0
@@ -9235,6 +9985,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 174
     killRewardMineralRare: 19
     killRewardMineralExotic: 0
@@ -9317,6 +10072,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 200
     killRewardMineralRare: 23
     killRewardMineralExotic: 0
@@ -9399,6 +10159,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 203
     killRewardMineralRare: 24
     killRewardMineralExotic: 0
@@ -9505,6 +10270,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 206
     killRewardMineralRare: 24
     killRewardMineralExotic: 0
@@ -9611,6 +10381,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 209
     killRewardMineralRare: 24
     killRewardMineralExotic: 0
@@ -9741,6 +10516,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 212
     killRewardMineralRare: 25
     killRewardMineralExotic: 0
@@ -9871,6 +10651,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 216
     killRewardMineralRare: 25
     killRewardMineralExotic: 0
@@ -10001,6 +10786,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 219
     killRewardMineralRare: 26
     killRewardMineralExotic: 0
@@ -10131,6 +10921,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 222
     killRewardMineralRare: 26
     killRewardMineralExotic: 0
@@ -10261,6 +11056,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 225
     killRewardMineralRare: 26
     killRewardMineralExotic: 0
@@ -10391,6 +11191,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 228
     killRewardMineralRare: 27
     killRewardMineralExotic: 0
@@ -10521,6 +11326,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 231
     killRewardMineralRare: 27
     killRewardMineralExotic: 0
@@ -10651,6 +11461,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 234
     killRewardMineralRare: 27
     killRewardMineralExotic: 0
@@ -10781,6 +11596,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 237
     killRewardMineralRare: 28
     killRewardMineralExotic: 0
@@ -10911,6 +11731,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 240
     killRewardMineralRare: 28
     killRewardMineralExotic: 0
@@ -11041,6 +11866,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 243
     killRewardMineralRare: 28
     killRewardMineralExotic: 0
@@ -11171,6 +12001,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 247
     killRewardMineralRare: 29
     killRewardMineralExotic: 0
@@ -11301,6 +12136,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 250
     killRewardMineralRare: 29
     killRewardMineralExotic: 0
@@ -11431,6 +12271,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 253
     killRewardMineralRare: 29
     killRewardMineralExotic: 0
@@ -11561,6 +12406,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 256
     killRewardMineralRare: 30
     killRewardMineralExotic: 0
@@ -11691,6 +12541,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 259
     killRewardMineralRare: 30
     killRewardMineralExotic: 0
@@ -11821,6 +12676,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 262
     killRewardMineralRare: 31
     killRewardMineralExotic: 0
@@ -11951,6 +12811,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 265
     killRewardMineralRare: 31
     killRewardMineralExotic: 0
@@ -12081,6 +12946,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 268
     killRewardMineralRare: 31
     killRewardMineralExotic: 0
@@ -12211,6 +13081,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 271
     killRewardMineralRare: 32
     killRewardMineralExotic: 0
@@ -12341,6 +13216,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 274
     killRewardMineralRare: 32
     killRewardMineralExotic: 0
@@ -12471,6 +13351,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 278
     killRewardMineralRare: 32
     killRewardMineralExotic: 0
@@ -12601,6 +13486,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 281
     killRewardMineralRare: 33
     killRewardMineralExotic: 0
@@ -12731,6 +13621,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 284
     killRewardMineralRare: 33
     killRewardMineralExotic: 0
@@ -12861,6 +13756,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 287
     killRewardMineralRare: 33
     killRewardMineralExotic: 0
@@ -12991,6 +13891,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 290
     killRewardMineralRare: 34
     killRewardMineralExotic: 0
@@ -13084,6 +13989,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 333
     killRewardMineralRare: 40
     killRewardMineralExotic: 0
@@ -13177,6 +14087,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 339
     killRewardMineralRare: 41
     killRewardMineralExotic: 0
@@ -13298,6 +14213,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 344
     killRewardMineralRare: 41
     killRewardMineralExotic: 0
@@ -13419,6 +14339,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 349
     killRewardMineralRare: 42
     killRewardMineralExotic: 0
@@ -13568,6 +14493,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 354
     killRewardMineralRare: 42
     killRewardMineralExotic: 0
@@ -13717,6 +14647,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 359
     killRewardMineralRare: 43
     killRewardMineralExotic: 0
@@ -13894,6 +14829,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 364
     killRewardMineralRare: 44
     killRewardMineralExotic: 0
@@ -14071,6 +15011,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 370
     killRewardMineralRare: 44
     killRewardMineralExotic: 0
@@ -14248,6 +15193,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 375
     killRewardMineralRare: 45
     killRewardMineralExotic: 0
@@ -14425,6 +15375,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 380
     killRewardMineralRare: 46
     killRewardMineralExotic: 0
@@ -14602,6 +15557,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 385
     killRewardMineralRare: 46
     killRewardMineralExotic: 0
@@ -14779,6 +15739,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 390
     killRewardMineralRare: 47
     killRewardMineralExotic: 0
@@ -14956,6 +15921,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 395
     killRewardMineralRare: 47
     killRewardMineralExotic: 0
@@ -15133,6 +16103,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 401
     killRewardMineralRare: 48
     killRewardMineralExotic: 0
@@ -15310,6 +16285,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 406
     killRewardMineralRare: 49
     killRewardMineralExotic: 0
@@ -15487,6 +16467,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 411
     killRewardMineralRare: 49
     killRewardMineralExotic: 0
@@ -15664,6 +16649,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 416
     killRewardMineralRare: 50
     killRewardMineralExotic: 0
@@ -15841,6 +16831,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 421
     killRewardMineralRare: 51
     killRewardMineralExotic: 0
@@ -16018,6 +17013,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 426
     killRewardMineralRare: 51
     killRewardMineralExotic: 0
@@ -16195,6 +17195,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 432
     killRewardMineralRare: 52
     killRewardMineralExotic: 0
@@ -16372,6 +17377,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 437
     killRewardMineralRare: 52
     killRewardMineralExotic: 0
@@ -16549,6 +17559,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 442
     killRewardMineralRare: 53
     killRewardMineralExotic: 0
@@ -16726,6 +17741,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 447
     killRewardMineralRare: 54
     killRewardMineralExotic: 0
@@ -16903,6 +17923,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 452
     killRewardMineralRare: 54
     killRewardMineralExotic: 0
@@ -17080,6 +18105,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 457
     killRewardMineralRare: 55
     killRewardMineralExotic: 0
@@ -17257,6 +18287,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 463
     killRewardMineralRare: 56
     killRewardMineralExotic: 0
@@ -17434,6 +18469,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 468
     killRewardMineralRare: 56
     killRewardMineralExotic: 0
@@ -17611,6 +18651,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 473
     killRewardMineralRare: 57
     killRewardMineralExotic: 0
@@ -17788,6 +18833,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 478
     killRewardMineralRare: 57
     killRewardMineralExotic: 0
@@ -17965,6 +19015,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 483
     killRewardMineralRare: 58
     killRewardMineralExotic: 0
@@ -18069,6 +19124,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 533
     killRewardMineralRare: 67
     killRewardMineralExotic: 0
@@ -18173,6 +19233,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 542
     killRewardMineralRare: 68
     killRewardMineralExotic: 0
@@ -18309,6 +19374,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 550
     killRewardMineralRare: 69
     killRewardMineralExotic: 0
@@ -18445,6 +19515,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 558
     killRewardMineralRare: 70
     killRewardMineralExotic: 0
@@ -18613,6 +19688,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 566
     killRewardMineralRare: 71
     killRewardMineralExotic: 0
@@ -18781,6 +19861,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 575
     killRewardMineralRare: 72
     killRewardMineralExotic: 0
@@ -18981,6 +20066,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 583
     killRewardMineralRare: 73
     killRewardMineralExotic: 0
@@ -19181,6 +20271,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 591
     killRewardMineralRare: 74
     killRewardMineralExotic: 0
@@ -19381,6 +20476,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 600
     killRewardMineralRare: 75
     killRewardMineralExotic: 0
@@ -19581,6 +20681,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 608
     killRewardMineralRare: 76
     killRewardMineralExotic: 0
@@ -19781,6 +20886,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 616
     killRewardMineralRare: 77
     killRewardMineralExotic: 0
@@ -19981,6 +21091,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 624
     killRewardMineralRare: 78
     killRewardMineralExotic: 0
@@ -20181,6 +21296,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 633
     killRewardMineralRare: 79
     killRewardMineralExotic: 0
@@ -20381,6 +21501,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 641
     killRewardMineralRare: 80
     killRewardMineralExotic: 0
@@ -20581,6 +21706,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 649
     killRewardMineralRare: 81
     killRewardMineralExotic: 0
@@ -20781,6 +21911,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 657
     killRewardMineralRare: 82
     killRewardMineralExotic: 0
@@ -20981,6 +22116,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 666
     killRewardMineralRare: 83
     killRewardMineralExotic: 0
@@ -21181,6 +22321,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 674
     killRewardMineralRare: 84
     killRewardMineralExotic: 0
@@ -21381,6 +22526,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 682
     killRewardMineralRare: 85
     killRewardMineralExotic: 0
@@ -21581,6 +22731,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 691
     killRewardMineralRare: 86
     killRewardMineralExotic: 0
@@ -21781,6 +22936,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 699
     killRewardMineralRare: 87
     killRewardMineralExotic: 0
@@ -21981,6 +23141,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 707
     killRewardMineralRare: 88
     killRewardMineralExotic: 0
@@ -22181,6 +23346,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 715
     killRewardMineralRare: 89
     killRewardMineralExotic: 0
@@ -22381,6 +23551,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 724
     killRewardMineralRare: 90
     killRewardMineralExotic: 0
@@ -22581,6 +23756,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 732
     killRewardMineralRare: 91
     killRewardMineralExotic: 0
@@ -22781,6 +23961,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 740
     killRewardMineralRare: 93
     killRewardMineralExotic: 0
@@ -22981,6 +24166,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 749
     killRewardMineralRare: 94
     killRewardMineralExotic: 0
@@ -23181,6 +24371,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 757
     killRewardMineralRare: 95
     killRewardMineralExotic: 0
@@ -23381,6 +24576,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 765
     killRewardMineralRare: 96
     killRewardMineralExotic: 0
@@ -23581,6 +24781,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 773
     killRewardMineralRare: 97
     killRewardMineralExotic: 0
@@ -23696,6 +24901,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 1
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 867
     killRewardMineralRare: 107
     killRewardMineralExotic: 0
@@ -23811,6 +25021,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 2
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 880
     killRewardMineralRare: 108
     killRewardMineralExotic: 0
@@ -23962,6 +25177,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 3
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 894
     killRewardMineralRare: 110
     killRewardMineralExotic: 0
@@ -24113,6 +25333,11 @@ MonoBehaviour:
         slotIndex: 1
         moduleSubType: 3010101
         moduleLevel: 4
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 907
     killRewardMineralRare: 112
     killRewardMineralExotic: 0
@@ -24300,6 +25525,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 5
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 920
     killRewardMineralRare: 113
     killRewardMineralExotic: 0
@@ -24487,6 +25717,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 4010101
         moduleLevel: 6
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 934
     killRewardMineralRare: 115
     killRewardMineralExotic: 0
@@ -24710,6 +25945,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 7
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 947
     killRewardMineralRare: 117
     killRewardMineralExotic: 0
@@ -24933,6 +26173,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 8
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 961
     killRewardMineralRare: 118
     killRewardMineralExotic: 0
@@ -25156,6 +26401,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 974
     killRewardMineralRare: 120
     killRewardMineralExotic: 0
@@ -25379,6 +26629,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 988
     killRewardMineralRare: 122
     killRewardMineralExotic: 0
@@ -25602,6 +26857,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1001
     killRewardMineralRare: 123
     killRewardMineralExotic: 0
@@ -25825,6 +27085,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1015
     killRewardMineralRare: 125
     killRewardMineralExotic: 0
@@ -26048,6 +27313,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1028
     killRewardMineralRare: 127
     killRewardMineralExotic: 0
@@ -26271,6 +27541,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1041
     killRewardMineralRare: 128
     killRewardMineralExotic: 0
@@ -26494,6 +27769,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1055
     killRewardMineralRare: 130
     killRewardMineralExotic: 0
@@ -26717,6 +27997,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1068
     killRewardMineralRare: 131
     killRewardMineralExotic: 0
@@ -26940,6 +28225,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1082
     killRewardMineralRare: 133
     killRewardMineralExotic: 0
@@ -27163,6 +28453,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1095
     killRewardMineralRare: 135
     killRewardMineralExotic: 0
@@ -27386,6 +28681,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1109
     killRewardMineralRare: 136
     killRewardMineralExotic: 0
@@ -27609,6 +28909,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1122
     killRewardMineralRare: 138
     killRewardMineralExotic: 0
@@ -27832,6 +29137,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1136
     killRewardMineralRare: 140
     killRewardMineralExotic: 0
@@ -28055,6 +29365,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1149
     killRewardMineralRare: 141
     killRewardMineralExotic: 0
@@ -28278,6 +29593,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1163
     killRewardMineralRare: 143
     killRewardMineralExotic: 0
@@ -28501,6 +29821,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1176
     killRewardMineralRare: 145
     killRewardMineralExotic: 0
@@ -28724,6 +30049,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1189
     killRewardMineralRare: 146
     killRewardMineralExotic: 0
@@ -28947,6 +30277,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1203
     killRewardMineralRare: 148
     killRewardMineralExotic: 0
@@ -29170,6 +30505,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1216
     killRewardMineralRare: 150
     killRewardMineralExotic: 0
@@ -29393,6 +30733,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1230
     killRewardMineralRare: 151
     killRewardMineralExotic: 0
@@ -29616,6 +30961,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1243
     killRewardMineralRare: 153
     killRewardMineralExotic: 0
@@ -29839,6 +31189,11 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 5010101
         moduleLevel: 9
+    enemyBodyMultiplier: 1
+    enemyBeamMultiplier: 1
+    enemyMissileMultiplier: 1
+    enemyHangerMultiplier: 1
+    enemyEngineMultiplier: 1
     killRewardMineral: 1257
     killRewardMineralRare: 155
     killRewardMineralExotic: 0

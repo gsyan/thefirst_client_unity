@@ -41,13 +41,13 @@ public class PvpSelectCard : MonoBehaviour
     private string BuildStatText(CapabilityProfile stats, int shipCount)
     {
         // 1줄: Ships / HP / ATK
-        string line1 = $"<sprite name=\"IconShipsMini\"> {shipCount}  <sprite name=\"IconHpMini\"> {CommonUtility.FormatBigNumber(stats.health_power)}  <sprite name=\"IconAttackMini\"> {CommonUtility.FormatBigNumber(stats.attack_power)}";
+        string line1 = $"<sprite name=\"IconShipsMini\"> {shipCount}  <sprite name=\"IconHpMini\"> {CommonUtility.FormatBigNumber(stats.health)}  <sprite name=\"IconAttackMini\"> {CommonUtility.FormatBigNumber(stats.attack)}";
 
-        if (stats.aircraft_count <= 0)
+        if (stats.airCount <= 0)
             return line1;
 
         // 함재기 보유 시 2줄째에 추가
-        string line2 = $"<sprite name=\"IconAircraftMini\"> {stats.aircraft_count}";
+        string line2 = $"<sprite name=\"IconAircraftMini\"> {stats.airCount}";
         return $"{line1}\n{line2}";
     }
 }

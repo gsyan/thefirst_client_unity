@@ -59,38 +59,9 @@ public class ModulePlaceholder : ModuleBase
         // 플레이스홀더는 체력이나 공격력이 없음
         m_health = 0f;
         m_healthMax = 0f;
-        m_attackPower = 0f;
+        m_attack = 0f;
     }
     
-    // 플레이스홀더: 슬롯 타입에 맞는 레벨1 기준 수치 표시
-    public override void SetModuleStatRows(System.Collections.Generic.List<RowLabelValue> statRows)
-    {
-        EModuleType moduleType = GetModuleType();
-        EModuleSubType subType = CommonUtility.GetDefaultSubType(moduleType);
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, 1);
-        if (moduleData == null) return;
-
-        statRows[1].SetValues("1");
-
-
-        if (moduleType == EModuleType.engine)
-        {
-            statRows[2].SetRow("speed_power", $"{moduleData.speed:F0}");
-        }
-        else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
-        {
-            statRows[2].SetRow("attack_power", $"{moduleData.attackPower:F0}");
-        }
-        else if (moduleType == EModuleType.hanger)
-        {
-            statRows[2].SetRow("aircraft_attack_power", $"{moduleData.aircraftAttackPower:F0}");
-            statRows[3].SetRow("aircraft_health_power", $"{moduleData.aircraftHealth:F0}");
-            statRows[4].SetRow("aircraft_speed_power", $"{moduleData.aircraftSpeed:F0}");
-            statRows[5].SetRow("aircraft_count", $"{moduleData.airCount}");
-            statRows[6].SetRow("aircraft_launch_count", $"{moduleData.attackFireCount}");
-        }
-    }
-
     // 플레이스홀더: default subType 기준 Lv.1 수치 반환
     public override string GetDetailText(int fromLevel, int toLevel)
     {

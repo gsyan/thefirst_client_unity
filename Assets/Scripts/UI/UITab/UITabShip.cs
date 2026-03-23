@@ -247,23 +247,23 @@ public class UITabShip : UITabBase
         if (m_textShipStats1 != null)
         {
             m_textShipStats1.text =
-                $"<sprite name=\"IconAttack\"> {statsCur.attack_power:F0}  " +
-                $"<sprite name=\"IconHp\"> {statsOrg.health_power:F0}  " +
-                $"<sprite name=\"IconSpeed\"> {statsCur.speed_power:F0}  " +
-                $"<sprite name=\"IconRepair\"> {statsCur.repair_power:F0}";
+                $"<sprite name=\"IconAttack\"> {statsCur.attack:F0}  " +
+                $"<sprite name=\"IconHp\"> {statsOrg.health:F0}  " +
+                $"<sprite name=\"IconSpeed\"> {statsCur.speed:F0}  " +
+                $"<sprite name=\"IconRepair\"> {statsCur.repair:F0}";
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats1.transform.parent as RectTransform);
         }
 
         if (m_textShipStats2 != null)
         {
-            bool hasAircraft = statsOrg.aircraft_count > 0;
+            bool hasAircraft = statsOrg.airCount > 0;
             m_textShipStats2.gameObject.SetActive(hasAircraft);
             if (hasAircraft)
             {
                 m_textShipStats2.text =
-                    $"<sprite name=\"IconAircraftAttack\"> {statsCur.aircraft_attack_power:F0}  " +
-                    $"<sprite name=\"IconAircraft\"> {statsOrg.aircraft_count}  " +
-                    $"<sprite name=\"IconLaunch\"> {statsCur.aircraft_launch_count}";
+                    $"<sprite name=\"IconAircraftAttack\"> {statsCur.airAttack:F0}  " +
+                    $"<sprite name=\"IconAircraft\"> {statsOrg.airCount}  " +
+                    $"<sprite name=\"IconLaunch\"> {statsCur.airLaunchCount}";
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats2.transform.parent as RectTransform);
             }
         }
@@ -277,23 +277,23 @@ public class UITabShip : UITabBase
         CapabilityProfile cur = m_selectedShip.m_spaceShipStatsCur;
 
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"<sprite name=\"IconAttack\"> (Attack)  {cur.attack_power:F0}");
+        sb.AppendLine($"<sprite name=\"IconAttack\"> (Attack)  {cur.attack:F0}");
         sb.AppendLine();
-        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {org.health_power:F0}");
+        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {org.health:F0}");
         sb.AppendLine();
-        sb.AppendLine($"<sprite name=\"IconSpeed\"> (Speed)  {cur.speed_power:F0}");
+        sb.AppendLine($"<sprite name=\"IconSpeed\"> (Speed)  {cur.speed:F0}");
         sb.AppendLine();
-        sb.Append    ($"<sprite name=\"IconRepair\"> (Repair)  {cur.repair_power:F0}");
+        sb.Append    ($"<sprite name=\"IconRepair\"> (Repair)  {cur.repair:F0}");
 
-        if (org.aircraft_count > 0)
+        if (org.airCount > 0)
         {
             sb.AppendLine();
             sb.AppendLine();
-            sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.aircraft_attack_power:F0}");
+            sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.airAttack:F0}");
             sb.AppendLine();
-            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {org.aircraft_count:F0}");
+            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {org.airCount:F0}");
             sb.AppendLine();
-            sb.Append    ($"<sprite name=\"IconLaunch\"> (Aircraft Launch)  {cur.aircraft_launch_count:F0}");
+            sb.Append    ($"<sprite name=\"IconLaunch\"> (Aircraft Launch)  {cur.airLaunchCount:F0}");
         }
 
         UIManager.Instance.ShowAlertPopup(m_selectedShip.m_shipInfo.shipName, sb.ToString(), null);

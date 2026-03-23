@@ -22,18 +22,6 @@ MonoBehaviour:
     m_Localized: Fleet Status
     m_Metadata:
       m_Items: []
-  - m_Id: 46863080095744
-    m_Localized: Att
-    m_Metadata:
-      m_Items: []
-  - m_Id: 47211509317632
-    m_Localized: HP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 48108159238144
-    m_Localized: Spd
-    m_Metadata:
-      m_Items: []
   - m_Id: 63232261619717
     m_Localized: Ship Status
     m_Metadata:
@@ -158,10 +146,6 @@ MonoBehaviour:
     m_Localized: My Fleet
     m_Metadata:
       m_Items: []
-  - m_Id: 1462580203618304
-    m_Localized: Repair
-    m_Metadata:
-      m_Items: []
   - m_Id: 2924654586888192
     m_Localized: Fleet
     m_Metadata:
@@ -230,10 +214,6 @@ MonoBehaviour:
     m_Localized: Logout
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636957
-    m_Localized: Language options
-    m_Metadata:
-      m_Items: []
   - m_Id: 2929882979762176
     m_Localized: Module Researched List
     m_Metadata:
@@ -248,26 +228,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 3089099820761088
     m_Localized: Already Researched
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3367613497212928
-    m_Localized: Att(Air)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3367613539155968
-    m_Localized: HP(Air)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3367613539155969
-    m_Localized: Spd(Air)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3367613539155970
-    m_Localized: Aircrafts
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3367613539155971
-    m_Localized: Launch
     m_Metadata:
       m_Items: []
   - m_Id: 3370864741318656
@@ -648,6 +608,62 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 14291245362708480
     m_Localized: Refresh opponent list? ({0} remaining)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15625537762230272
+    m_Localized: Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15625537795784704
+    m_Localized: General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15625537795784705
+    m_Localized: Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15625537795784706
+    m_Localized: Commander
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15625537795784707
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15678504414609408
+    m_Localized: Att
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15678504456552448
+    m_Localized: HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15678504456552449
+    m_Localized: Spd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15678504456552450
+    m_Localized: Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15678504456552451
+    m_Localized: Att(Air)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15678504456552452
+    m_Localized: HP(Air)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15678504456552453
+    m_Localized: Spd(Air)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15678504460746752
+    m_Localized: Aircrafts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15678504460746753
+    m_Localized: Launch
     m_Metadata:
       m_Items: []
   references:

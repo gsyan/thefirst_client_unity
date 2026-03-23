@@ -38,24 +38,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 100
-      repairPower: 5
+      repair: 1
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_std_ver1 Lv.2
       moduleType: 1
       moduleSubType: 1010101
@@ -79,24 +79,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 150
-      repairPower: 7.5
+      repair: 1.5
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_std_ver1 Lv.3
       moduleType: 1
       moduleSubType: 1010101
@@ -120,24 +120,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 200
-      repairPower: 10
+      repair: 2
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_std_ver1 Lv.4
       moduleType: 1
       moduleSubType: 1010101
@@ -161,24 +161,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 250
-      repairPower: 12.5
+      repair: 2.5
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_std_ver1 Lv.5
       moduleType: 1
       moduleSubType: 1010101
@@ -202,24 +202,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 300
-      repairPower: 15
+      repair: 3
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_std_ver1 Lv.6
       moduleType: 1
       moduleSubType: 1010101
@@ -243,24 +243,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 350
-      repairPower: 17.5
+      repair: 3.5
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_std_ver1 Lv.7
       moduleType: 1
       moduleSubType: 1010101
@@ -284,24 +284,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 400
-      repairPower: 20
+      repair: 4
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_std_ver1 Lv.8
       moduleType: 1
       moduleSubType: 1010101
@@ -325,24 +325,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 450
-      repairPower: 22.5
+      repair: 4.5
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_std_ver1 Lv.9
       moduleType: 1
       moduleSubType: 1010101
@@ -366,24 +366,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 500
-      repairPower: 25
+      repair: 5
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_std_ver1 Lv.10
       moduleType: 1
       moduleSubType: 1010101
@@ -407,24 +407,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 0
       health: 550
-      repairPower: 27.5
+      repair: 5.5
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
   - subType: 1010201
     modules:
     - moduleName: body_t1_adv_ver1 Lv.1
@@ -454,24 +454,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 1000
-      repairPower: 50
+      repair: 10
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_adv_ver1 Lv.2
       moduleType: 1
       moduleSubType: 1010201
@@ -499,24 +499,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 1500
-      repairPower: 75
+      repair: 15
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_adv_ver1 Lv.3
       moduleType: 1
       moduleSubType: 1010201
@@ -544,24 +544,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 2000
-      repairPower: 100
+      repair: 20
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_adv_ver1 Lv.4
       moduleType: 1
       moduleSubType: 1010201
@@ -589,24 +589,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 2500
-      repairPower: 125
+      repair: 25
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_adv_ver1 Lv.5
       moduleType: 1
       moduleSubType: 1010201
@@ -634,24 +634,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 3000
-      repairPower: 150
+      repair: 30
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_adv_ver1 Lv.6
       moduleType: 1
       moduleSubType: 1010201
@@ -679,24 +679,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 3500
-      repairPower: 175
+      repair: 35
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_adv_ver1 Lv.7
       moduleType: 1
       moduleSubType: 1010201
@@ -724,24 +724,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 4000
-      repairPower: 200
+      repair: 40
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_adv_ver1 Lv.8
       moduleType: 1
       moduleSubType: 1010201
@@ -769,24 +769,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 4500
-      repairPower: 225
+      repair: 45
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_adv_ver1 Lv.9
       moduleType: 1
       moduleSubType: 1010201
@@ -814,24 +814,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 5000
-      repairPower: 250
+      repair: 50
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: body_t1_adv_ver1 Lv.10
       moduleType: 1
       moduleSubType: 1010201
@@ -859,24 +859,24 @@ MonoBehaviour:
       - moduleType: 5
         slotIndex: 1
       health: 5500
-      repairPower: 275
+      repair: 55
       speed: 0
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
   engineGroups:
   - subType: 2010101
     modules:
@@ -893,24 +893,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 50
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_std_ver1 Lv.2
       moduleType: 2
       moduleSubType: 2010101
@@ -924,24 +924,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 55
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_std_ver1 Lv.3
       moduleType: 2
       moduleSubType: 2010101
@@ -955,24 +955,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 60.5
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_std_ver1 Lv.4
       moduleType: 2
       moduleSubType: 2010101
@@ -986,24 +986,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 66.6
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_std_ver1 Lv.5
       moduleType: 2
       moduleSubType: 2010101
@@ -1017,24 +1017,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 73.2
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_std_ver1 Lv.6
       moduleType: 2
       moduleSubType: 2010101
@@ -1048,24 +1048,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 80.5
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_std_ver1 Lv.7
       moduleType: 2
       moduleSubType: 2010101
@@ -1079,24 +1079,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 88.6
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_std_ver1 Lv.8
       moduleType: 2
       moduleSubType: 2010101
@@ -1110,24 +1110,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 97.4
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_std_ver1 Lv.9
       moduleType: 2
       moduleSubType: 2010101
@@ -1141,24 +1141,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 107.2
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_std_ver1 Lv.10
       moduleType: 2
       moduleSubType: 2010101
@@ -1172,24 +1172,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 117.9
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
   - subType: 2010201
     modules:
     - moduleName: engine_t1_adv_ver1 Lv.1
@@ -1205,24 +1205,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 200
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_adv_ver1 Lv.2
       moduleType: 2
       moduleSubType: 2010201
@@ -1236,24 +1236,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 220
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_adv_ver1 Lv.3
       moduleType: 2
       moduleSubType: 2010201
@@ -1267,24 +1267,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 242
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_adv_ver1 Lv.4
       moduleType: 2
       moduleSubType: 2010201
@@ -1298,24 +1298,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 266
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_adv_ver1 Lv.5
       moduleType: 2
       moduleSubType: 2010201
@@ -1329,24 +1329,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 293
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_adv_ver1 Lv.6
       moduleType: 2
       moduleSubType: 2010201
@@ -1360,24 +1360,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 322
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_adv_ver1 Lv.7
       moduleType: 2
       moduleSubType: 2010201
@@ -1391,24 +1391,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 354
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_adv_ver1 Lv.8
       moduleType: 2
       moduleSubType: 2010201
@@ -1422,24 +1422,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 390
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_adv_ver1 Lv.9
       moduleType: 2
       moduleSubType: 2010201
@@ -1453,24 +1453,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 429
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: engine_t1_adv_ver1 Lv.10
       moduleType: 2
       moduleSubType: 2010201
@@ -1484,24 +1484,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 472
       attackFireCount: 0
-      attackPower: 0
-      attackCoolTime: 0
+      attack: 0
+      attackCool: 0
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
   beamGroups:
   - subType: 3010101
     modules:
@@ -1518,24 +1518,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 10
-      attackCoolTime: 3.5
+      attack: 10
+      attackCool: 3.5
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_std_ver1 Lv.2
       moduleType: 3
       moduleSubType: 3010101
@@ -1549,24 +1549,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 15
-      attackCoolTime: 3.4
+      attack: 15
+      attackCool: 3.4
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_std_ver1 Lv.3
       moduleType: 3
       moduleSubType: 3010101
@@ -1580,24 +1580,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 20
-      attackCoolTime: 3.3
+      attack: 20
+      attackCool: 3.3
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_std_ver1 Lv.4
       moduleType: 3
       moduleSubType: 3010101
@@ -1611,24 +1611,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 25
-      attackCoolTime: 3.2
+      attack: 25
+      attackCool: 3.2
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_std_ver1 Lv.5
       moduleType: 3
       moduleSubType: 3010101
@@ -1642,24 +1642,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 30
-      attackCoolTime: 3.1
+      attack: 30
+      attackCool: 3.1
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_std_ver1 Lv.6
       moduleType: 3
       moduleSubType: 3010101
@@ -1673,24 +1673,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 35
-      attackCoolTime: 3
+      attack: 35
+      attackCool: 3
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_std_ver1 Lv.7
       moduleType: 3
       moduleSubType: 3010101
@@ -1704,24 +1704,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 40
-      attackCoolTime: 2.9
+      attack: 40
+      attackCool: 2.9
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_std_ver1 Lv.8
       moduleType: 3
       moduleSubType: 3010101
@@ -1735,24 +1735,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 45
-      attackCoolTime: 2.8
+      attack: 45
+      attackCool: 2.8
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_std_ver1 Lv.9
       moduleType: 3
       moduleSubType: 3010101
@@ -1766,24 +1766,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 50
-      attackCoolTime: 2.7
+      attack: 50
+      attackCool: 2.7
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_std_ver1 Lv.10
       moduleType: 3
       moduleSubType: 3010101
@@ -1797,24 +1797,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 55
-      attackCoolTime: 2.6
+      attack: 55
+      attackCool: 2.6
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
   - subType: 3010201
     modules:
     - moduleName: beam_t1_adv_ver1 Lv.1
@@ -1830,24 +1830,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 10
-      attackCoolTime: 3.5
+      attack: 10
+      attackCool: 3.5
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_adv_ver1 Lv.2
       moduleType: 3
       moduleSubType: 3010201
@@ -1861,24 +1861,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 15
-      attackCoolTime: 3.4
+      attack: 15
+      attackCool: 3.4
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_adv_ver1 Lv.3
       moduleType: 3
       moduleSubType: 3010201
@@ -1892,24 +1892,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 20
-      attackCoolTime: 3.3
+      attack: 20
+      attackCool: 3.3
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_adv_ver1 Lv.4
       moduleType: 3
       moduleSubType: 3010201
@@ -1923,24 +1923,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 25
-      attackCoolTime: 3.2
+      attack: 25
+      attackCool: 3.2
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_adv_ver1 Lv.5
       moduleType: 3
       moduleSubType: 3010201
@@ -1954,24 +1954,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 30
-      attackCoolTime: 3.1
+      attack: 30
+      attackCool: 3.1
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_adv_ver1 Lv.6
       moduleType: 3
       moduleSubType: 3010201
@@ -1985,24 +1985,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 35
-      attackCoolTime: 3
+      attack: 35
+      attackCool: 3
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_adv_ver1 Lv.7
       moduleType: 3
       moduleSubType: 3010201
@@ -2016,24 +2016,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 40
-      attackCoolTime: 2.9
+      attack: 40
+      attackCool: 2.9
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_adv_ver1 Lv.8
       moduleType: 3
       moduleSubType: 3010201
@@ -2047,24 +2047,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 45
-      attackCoolTime: 2.8
+      attack: 45
+      attackCool: 2.8
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_adv_ver1 Lv.9
       moduleType: 3
       moduleSubType: 3010201
@@ -2078,24 +2078,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 50
-      attackCoolTime: 2.7
+      attack: 50
+      attackCool: 2.7
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: beam_t1_adv_ver1 Lv.10
       moduleType: 3
       moduleSubType: 3010201
@@ -2109,24 +2109,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 55
-      attackCoolTime: 2.6
+      attack: 55
+      attackCool: 2.6
       projectileWidth: 5
       projectileSpeed: 2000
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
   missileGroups:
   - subType: 4010101
     modules:
@@ -2143,24 +2143,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 10
-      attackCoolTime: 3.5
+      attack: 10
+      attackCool: 3.5
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_std_ver1 Lv.2
       moduleType: 4
       moduleSubType: 4010101
@@ -2174,24 +2174,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 15
-      attackCoolTime: 3.4
+      attack: 15
+      attackCool: 3.4
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_std_ver1 Lv.3
       moduleType: 4
       moduleSubType: 4010101
@@ -2205,24 +2205,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 20
-      attackCoolTime: 3.3
+      attack: 20
+      attackCool: 3.3
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_std_ver1 Lv.4
       moduleType: 4
       moduleSubType: 4010101
@@ -2236,24 +2236,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 25
-      attackCoolTime: 3.2
+      attack: 25
+      attackCool: 3.2
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_std_ver1 Lv.5
       moduleType: 4
       moduleSubType: 4010101
@@ -2267,24 +2267,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 30
-      attackCoolTime: 3.1
+      attack: 30
+      attackCool: 3.1
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_std_ver1 Lv.6
       moduleType: 4
       moduleSubType: 4010101
@@ -2298,24 +2298,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 35
-      attackCoolTime: 3
+      attack: 35
+      attackCool: 3
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_std_ver1 Lv.7
       moduleType: 4
       moduleSubType: 4010101
@@ -2329,24 +2329,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 40
-      attackCoolTime: 2.9
+      attack: 40
+      attackCool: 2.9
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_std_ver1 Lv.8
       moduleType: 4
       moduleSubType: 4010101
@@ -2360,24 +2360,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 45
-      attackCoolTime: 2.8
+      attack: 45
+      attackCool: 2.8
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_std_ver1 Lv.9
       moduleType: 4
       moduleSubType: 4010101
@@ -2391,24 +2391,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 50
-      attackCoolTime: 2.7
+      attack: 50
+      attackCool: 2.7
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_std_ver1 Lv.10
       moduleType: 4
       moduleSubType: 4010101
@@ -2422,24 +2422,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 55
-      attackCoolTime: 2.6
+      attack: 55
+      attackCool: 2.6
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
   - subType: 4010201
     modules:
     - moduleName: missile_t1_adv_ver1 Lv.1
@@ -2455,24 +2455,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 10
-      attackCoolTime: 3.5
+      attack: 10
+      attackCool: 3.5
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_adv_ver1 Lv.2
       moduleType: 4
       moduleSubType: 4010201
@@ -2486,24 +2486,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 15
-      attackCoolTime: 3.4
+      attack: 15
+      attackCool: 3.4
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_adv_ver1 Lv.3
       moduleType: 4
       moduleSubType: 4010201
@@ -2517,24 +2517,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 20
-      attackCoolTime: 3.3
+      attack: 20
+      attackCool: 3.3
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_adv_ver1 Lv.4
       moduleType: 4
       moduleSubType: 4010201
@@ -2548,24 +2548,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 25
-      attackCoolTime: 3.2
+      attack: 25
+      attackCool: 3.2
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_adv_ver1 Lv.5
       moduleType: 4
       moduleSubType: 4010201
@@ -2579,24 +2579,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 30
-      attackCoolTime: 3.1
+      attack: 30
+      attackCool: 3.1
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_adv_ver1 Lv.6
       moduleType: 4
       moduleSubType: 4010201
@@ -2610,24 +2610,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 35
-      attackCoolTime: 3
+      attack: 35
+      attackCool: 3
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_adv_ver1 Lv.7
       moduleType: 4
       moduleSubType: 4010201
@@ -2641,24 +2641,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 40
-      attackCoolTime: 2.9
+      attack: 40
+      attackCool: 2.9
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_adv_ver1 Lv.8
       moduleType: 4
       moduleSubType: 4010201
@@ -2672,24 +2672,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 45
-      attackCoolTime: 2.8
+      attack: 45
+      attackCool: 2.8
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_adv_ver1 Lv.9
       moduleType: 4
       moduleSubType: 4010201
@@ -2703,24 +2703,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 50
-      attackCoolTime: 2.7
+      attack: 50
+      attackCool: 2.7
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
     - moduleName: missile_t1_adv_ver1 Lv.10
       moduleType: 4
       moduleSubType: 4010201
@@ -2734,24 +2734,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 55
-      attackCoolTime: 2.6
+      attack: 55
+      attackCool: 2.6
       projectileWidth: 5
       projectileSpeed: 300
       airCount: 0
-      maintenanceTime: 0
-      aircraftLaunchStraightDistance: 0
-      aircraftHealth: 0
-      aircraftAttackPower: 0
-      aircraftAttackRange: 0
-      aircraftAttackCooldown: 0
-      aircraftSpeed: 0
-      aircraftAmmo: 0
-      aircraftDetectionRadius: 0
-      aircraftAvoidanceRadius: 0
+      airMaintenanceTime: 0
+      airLaunchDist: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
   hangerGroups:
   - subType: 5010101
     modules:
@@ -2768,24 +2768,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 3
+      attack: 0
+      attackCool: 3
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 15
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 30
-      aircraftAttackPower: 5
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 15
+      airLaunchDist: 100
+      airHealth: 30
+      airAttack: 5
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
     - moduleName: hanger_t1_std_ver1 Lv.2
       moduleType: 5
       moduleSubType: 5010101
@@ -2799,24 +2799,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 2.9
+      attack: 0
+      attackCool: 2.9
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 14.9
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 35
-      aircraftAttackPower: 6
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14.9
+      airLaunchDist: 100
+      airHealth: 35
+      airAttack: 6
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
     - moduleName: hanger_t1_std_ver1 Lv.3
       moduleType: 5
       moduleSubType: 5010101
@@ -2830,24 +2830,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 2.8
+      attack: 0
+      attackCool: 2.8
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 14.8
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 40
-      aircraftAttackPower: 7
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14.8
+      airLaunchDist: 100
+      airHealth: 40
+      airAttack: 7
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
     - moduleName: hanger_t1_std_ver1 Lv.4
       moduleType: 5
       moduleSubType: 5010101
@@ -2861,24 +2861,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 2.7
+      attack: 0
+      attackCool: 2.7
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 14.7
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 45
-      aircraftAttackPower: 8
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14.7
+      airLaunchDist: 100
+      airHealth: 45
+      airAttack: 8
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
     - moduleName: hanger_t1_std_ver1 Lv.5
       moduleType: 5
       moduleSubType: 5010101
@@ -2892,24 +2892,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 2.6
+      attack: 0
+      attackCool: 2.6
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 14.6
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 50
-      aircraftAttackPower: 9
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14.6
+      airLaunchDist: 100
+      airHealth: 50
+      airAttack: 9
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
     - moduleName: hanger_t1_std_ver1 Lv.6
       moduleType: 5
       moduleSubType: 5010101
@@ -2923,24 +2923,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 2.5
+      attack: 0
+      attackCool: 2.5
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 14.5
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 55
-      aircraftAttackPower: 10
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14.5
+      airLaunchDist: 100
+      airHealth: 55
+      airAttack: 10
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
     - moduleName: hanger_t1_std_ver1 Lv.7
       moduleType: 5
       moduleSubType: 5010101
@@ -2954,24 +2954,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 2.4
+      attack: 0
+      attackCool: 2.4
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 14.4
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 60
-      aircraftAttackPower: 11
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14.4
+      airLaunchDist: 100
+      airHealth: 60
+      airAttack: 11
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
     - moduleName: hanger_t1_std_ver1 Lv.8
       moduleType: 5
       moduleSubType: 5010101
@@ -2985,24 +2985,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 2.3
+      attack: 0
+      attackCool: 2.3
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 14.3
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 65
-      aircraftAttackPower: 12
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14.3
+      airLaunchDist: 100
+      airHealth: 65
+      airAttack: 12
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
     - moduleName: hanger_t1_std_ver1 Lv.9
       moduleType: 5
       moduleSubType: 5010101
@@ -3016,24 +3016,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 2.2
+      attack: 0
+      attackCool: 2.2
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 14.2
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 70
-      aircraftAttackPower: 13
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14.2
+      airLaunchDist: 100
+      airHealth: 70
+      airAttack: 13
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
     - moduleName: hanger_t1_std_ver1 Lv.10
       moduleType: 5
       moduleSubType: 5010101
@@ -3047,24 +3047,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 1
-      attackPower: 0
-      attackCoolTime: 2.1
+      attack: 0
+      attackCool: 2.1
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 5
-      maintenanceTime: 14.1
-      aircraftLaunchStraightDistance: 100
-      aircraftHealth: 75
-      aircraftAttackPower: 14
-      aircraftAttackRange: 100
-      aircraftAttackCooldown: 4
-      aircraftSpeed: 300
-      aircraftAmmo: 10
-      aircraftDetectionRadius: 200
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14.1
+      airLaunchDist: 100
+      airHealth: 75
+      airAttack: 14
+      airAttackRange: 100
+      airAttackCool: 4
+      airSpeed: 300
+      airAmmo: 10
+      airDetectRadius: 200
+      airAvoidRadius: 200
   - subType: 5010201
     modules:
     - moduleName: hanger_t1_adv_ver1 Lv.1
@@ -3080,24 +3080,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 3
+      attack: 0
+      attackCool: 3
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 14
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 80
-      aircraftAttackPower: 15
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 14
+      airLaunchDist: 90
+      airHealth: 80
+      airAttack: 15
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
     - moduleName: hanger_t1_adv_ver1 Lv.2
       moduleType: 5
       moduleSubType: 5010201
@@ -3111,24 +3111,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 2.9
+      attack: 0
+      attackCool: 2.9
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 13.9
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 85
-      aircraftAttackPower: 16
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 13.9
+      airLaunchDist: 90
+      airHealth: 85
+      airAttack: 16
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
     - moduleName: hanger_t1_adv_ver1 Lv.3
       moduleType: 5
       moduleSubType: 5010201
@@ -3142,24 +3142,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 2.8
+      attack: 0
+      attackCool: 2.8
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 13.8
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 90
-      aircraftAttackPower: 17
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 13.8
+      airLaunchDist: 90
+      airHealth: 90
+      airAttack: 17
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
     - moduleName: hanger_t1_adv_ver1 Lv.4
       moduleType: 5
       moduleSubType: 5010201
@@ -3173,24 +3173,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 2.7
+      attack: 0
+      attackCool: 2.7
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 13.7
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 95
-      aircraftAttackPower: 18
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 13.7
+      airLaunchDist: 90
+      airHealth: 95
+      airAttack: 18
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
     - moduleName: hanger_t1_adv_ver1 Lv.5
       moduleType: 5
       moduleSubType: 5010201
@@ -3204,24 +3204,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 2.6
+      attack: 0
+      attackCool: 2.6
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 13.6
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 100
-      aircraftAttackPower: 19
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 13.6
+      airLaunchDist: 90
+      airHealth: 100
+      airAttack: 19
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
     - moduleName: hanger_t1_adv_ver1 Lv.6
       moduleType: 5
       moduleSubType: 5010201
@@ -3235,24 +3235,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 2.5
+      attack: 0
+      attackCool: 2.5
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 13.5
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 105
-      aircraftAttackPower: 20
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 13.5
+      airLaunchDist: 90
+      airHealth: 105
+      airAttack: 20
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
     - moduleName: hanger_t1_adv_ver1 Lv.7
       moduleType: 5
       moduleSubType: 5010201
@@ -3266,24 +3266,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 2.4
+      attack: 0
+      attackCool: 2.4
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 13.4
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 110
-      aircraftAttackPower: 21
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 13.4
+      airLaunchDist: 90
+      airHealth: 110
+      airAttack: 21
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
     - moduleName: hanger_t1_adv_ver1 Lv.8
       moduleType: 5
       moduleSubType: 5010201
@@ -3297,24 +3297,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 2.3
+      attack: 0
+      attackCool: 2.3
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 13.3
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 115
-      aircraftAttackPower: 22
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 13.3
+      airLaunchDist: 90
+      airHealth: 115
+      airAttack: 22
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
     - moduleName: hanger_t1_adv_ver1 Lv.9
       moduleType: 5
       moduleSubType: 5010201
@@ -3328,24 +3328,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 2.2
+      attack: 0
+      attackCool: 2.2
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 13.2
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 120
-      aircraftAttackPower: 23
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 13.2
+      airLaunchDist: 90
+      airHealth: 120
+      airAttack: 23
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
     - moduleName: hanger_t1_adv_ver1 Lv.10
       moduleType: 5
       moduleSubType: 5010201
@@ -3359,24 +3359,24 @@ MonoBehaviour:
       description: 
       moduleSlots: []
       health: 0
-      repairPower: 0
+      repair: 0
       speed: 0
       attackFireCount: 2
-      attackPower: 0
-      attackCoolTime: 2.1
+      attack: 0
+      attackCool: 2.1
       projectileWidth: 0
       projectileSpeed: 0
       airCount: 10
-      maintenanceTime: 13.1
-      aircraftLaunchStraightDistance: 90
-      aircraftHealth: 125
-      aircraftAttackPower: 24
-      aircraftAttackRange: 120
-      aircraftAttackCooldown: 3
-      aircraftSpeed: 400
-      aircraftAmmo: 15
-      aircraftDetectionRadius: 300
-      aircraftAvoidanceRadius: 200
+      airMaintenanceTime: 13.1
+      airLaunchDist: 90
+      airHealth: 125
+      airAttack: 24
+      airAttackRange: 120
+      airAttackCool: 3
+      airSpeed: 400
+      airAmmo: 15
+      airDetectRadius: 300
+      airAvoidRadius: 200
   exportedJson: "{\r\n  \"modules\": {\r\n    \"1\": [\r\n      {\r\n        \"moduleName\":
     \"body_t1_std_ver1 Lv.1\",\r\n        \"moduleType\": \"body\",\r\n        \"moduleSubType\":
     \"body_t1_std_ver1\",\r\n        \"moduleLevel\": 1,\r\n        \"upgradeCost\":

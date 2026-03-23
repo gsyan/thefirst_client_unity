@@ -65,9 +65,9 @@ public class ModuleMissile : ModuleBase
         // 복원된 데이터로 스탯 설정
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
-        m_attackPower = moduleData.attackPower;
+        m_attack = moduleData.attack;
         m_attackFireCount = moduleData.attackFireCount;
-        m_attackCoolTime = moduleData.attackCoolTime;
+        m_attackCoolTime = moduleData.attackCool;
 
         // 업그레이드 비용 설정
         m_upgradeCost = moduleData.upgradeCost;
@@ -79,6 +79,14 @@ public class ModuleMissile : ModuleBase
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
+
+        // Zone 적 함대일 때 체력·공격력에 배율 적용
+        if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
+        {
+            m_health    *= m_myFleet.m_missileMultiplier;
+            m_healthMax *= m_myFleet.m_missileMultiplier;
+            m_attack    *= m_myFleet.m_missileMultiplier;
+        }
 
         // 부모 바디에 이 무기 등록
         if (m_parentBody != null)
@@ -142,7 +150,7 @@ public class ModuleMissile : ModuleBase
         foreach (var launcher in m_launchers)
         {
             if (launcher != null)
-                launcher.FireAtTarget(target, m_attackPower, this);
+                launcher.FireAtTarget(target, m_attack, this);
         }
     }
 
@@ -152,7 +160,7 @@ public class ModuleMissile : ModuleBase
 
         CapabilityProfile stats = new CapabilityProfile();
         stats.totalWeapons = 1;
-        stats.attack_power = m_attackPower * m_attackFireCount; // 공격력 × 발사 개수
+        stats.attack = m_attack * m_attackFireCount; // 공격력 × 발사 개수
         return stats;
     }
 
@@ -174,8 +182,8 @@ public class ModuleMissile : ModuleBase
         // 스탯 갱신
         m_healthMax = moduleData.health;
         m_health = Mathf.Min(m_health, m_healthMax);
-        m_attackPower = moduleData.attackPower;
-        m_attackCoolTime = moduleData.attackCoolTime;
+        m_attack = moduleData.attack;
+        m_attackCoolTime = moduleData.attackCool;
         m_attackFireCount = moduleData.attackFireCount;
         m_upgradeCost = moduleData.upgradeCost;
     }
@@ -204,17 +212,6 @@ public class ModuleMissile : ModuleBase
     // 무기 스탯 Getter들
     public int GetAttackFireCount() { return m_attackFireCount; }
     public float GetAttackCoolTime() { return m_attackCoolTime; }
-
-    public override void SetModuleStatRows(List<RowLabelValue> statRows)
-    {
-        EModuleSubType subType = GetModuleSubType();
-        int currentLevel = GetModuleLevel();
-        ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        if (moduleDataCurrent == null) return;
-
-        statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("attack_power", $"{moduleDataCurrent.attackPower:F0}");
-    }
 
     // 파괴 시 정리
     private void OnDestroy()

@@ -40,10 +40,17 @@ public class ZoneConfig
     public int shipCount = 1;      // 적 함선 개수
     public int moduleLevel = 1;    // 적 모듈 레벨
     public Material skyboxMaterial;  // 스카이박스 머티리얼
-    
+
     public int zoneClearCount = 10;
     public float delayBeforeSpawn = 3f;
     public List<EnemyShipConfig> enemyShipConfigs;
+
+    [Header("적 모듈 타입별 스탯 배율 (1.0 = 플레이어 동일)")]
+    [Range(0.1f, 2.0f)] public float enemyBodyMultiplier    = 1.0f;  // 함체 체력
+    [Range(0.1f, 2.0f)] public float enemyBeamMultiplier    = 1.0f;  // 빔 공격력·체력
+    [Range(0.1f, 2.0f)] public float enemyMissileMultiplier = 1.0f;  // 미사일 공격력·체력
+    [Range(0.1f, 2.0f)] public float enemyHangerMultiplier  = 1.0f;  // 함재기 공격력·체력
+    [Range(0.1f, 2.0f)] public float enemyEngineMultiplier  = 1.0f;  // 엔진 속도·체력
     
     [Header("적 함선 킬 보상 (즉시 지급)")]
     public float killRewardMineral = 0f;

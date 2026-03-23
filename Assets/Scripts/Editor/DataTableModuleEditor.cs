@@ -124,7 +124,7 @@ public class DataTableModuleEditor : Editor
                 moduleSubType = group.subType,
                 moduleLevel = group.modules.Count + 1,
                 health = 200f,
-                repairPower = 1f,
+                repair = 1f,
                 description = $"{group.subType} LV.{group.modules.Count + 1}"
             };
             group.modules.Add(moduleData);
@@ -180,7 +180,7 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.health = EditorGUILayout.FloatField("Health", module.health);
-        module.repairPower = EditorGUILayout.FloatField("Repair", module.repairPower);
+        module.repair = EditorGUILayout.FloatField("Repair", module.repair);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
@@ -325,9 +325,9 @@ public class DataTableModuleEditor : Editor
                 moduleSubType = group.subType,
                 moduleLevel = group.modules.Count + 1,
                 health = 0f,
-                attackPower = 25f,
+                attack = 25f,
                 attackFireCount = 1,
-                attackCoolTime = 2f,
+                attackCool = 2f,
                 description = $"{group.subType} LV{group.modules.Count + 1}"
             };
             group.modules.Add(module);
@@ -366,9 +366,9 @@ public class DataTableModuleEditor : Editor
         module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.attackPower = EditorGUILayout.FloatField("Attack Power", module.attackPower);
+        module.attack = EditorGUILayout.FloatField("Attack", module.attack);
         module.attackFireCount = EditorGUILayout.IntField("Fire Count", module.attackFireCount);
-        module.attackCoolTime = EditorGUILayout.FloatField("Cool Time", module.attackCoolTime);
+        module.attackCool = EditorGUILayout.FloatField("Cool", module.attackCool);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
         module.projectileWidth = EditorGUILayout.FloatField("Projectile Width", module.projectileWidth);
@@ -425,9 +425,9 @@ public class DataTableModuleEditor : Editor
                 moduleSubType = group.subType,
                 moduleLevel = group.modules.Count + 1,
                 health = 00f,
-                attackPower = 25f,
+                attack = 25f,
                 attackFireCount = 1,
-                attackCoolTime = 2f,
+                attackCool = 2f,
                 description = $"{group.subType} LV{group.modules.Count + 1}"
             };
             group.modules.Add(module);
@@ -466,9 +466,9 @@ public class DataTableModuleEditor : Editor
         module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.attackPower = EditorGUILayout.FloatField("Attack Power", module.attackPower);
+        module.attack = EditorGUILayout.FloatField("Attack", module.attack);
         module.attackFireCount = EditorGUILayout.IntField("Fire Count", module.attackFireCount);
-        module.attackCoolTime = EditorGUILayout.FloatField("Cool Time", module.attackCoolTime);
+        module.attackCool = EditorGUILayout.FloatField("Attack Cool", module.attackCool);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
         module.projectileWidth = EditorGUILayout.FloatField("Projectile Width", module.projectileWidth);
@@ -526,16 +526,16 @@ public class DataTableModuleEditor : Editor
                 moduleLevel = group.modules.Count + 1,
                 health = 0f,
                 airCount = 5,
-                attackCoolTime = 1f,
+                attackCool = 1f,
                 attackFireCount = 1,
-                maintenanceTime = 10f,
-                aircraftLaunchStraightDistance = 100f,
-                aircraftHealth = 50f,
-                aircraftAttackPower = 10f,
-                aircraftAttackRange = 100f,
-                aircraftAttackCooldown = 10f,
-                aircraftDetectionRadius = 200f,
-                aircraftAvoidanceRadius = 200f,
+                airMaintenanceTime = 10f,
+                airLaunchDist = 100f,
+                airHealth = 50f,
+                airAttack = 10f,
+                airAttackRange = 100f,
+                airAttackCool = 10f,
+                airDetectRadius = 200f,
+                airAvoidRadius = 200f,
                 description = $"{group.subType} LV{group.modules.Count + 1}"
             };
             group.modules.Add(module);
@@ -575,20 +575,20 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.airCount = EditorGUILayout.IntField("Aircraft Count", module.airCount);
-        module.attackCoolTime = EditorGUILayout.FloatField("Attack Cool", module.attackCoolTime);
+        module.attackCool = EditorGUILayout.FloatField("Attack Cool", module.attackCool);
         module.attackFireCount = EditorGUILayout.IntField("Attack Count", module.attackFireCount);
-        module.maintenanceTime = EditorGUILayout.FloatField("Maintenance Time", module.maintenanceTime);
+        module.airMaintenanceTime = EditorGUILayout.FloatField("Air Maintenance Time", module.airMaintenanceTime);
 
         EditorGUILayout.LabelField("Aircraft Stats", EditorStyles.boldLabel);
-        module.aircraftLaunchStraightDistance = EditorGUILayout.FloatField("Aircraft Launch Straight Distance", module.aircraftLaunchStraightDistance);
-        module.aircraftHealth = EditorGUILayout.FloatField("Aircraft Health", module.aircraftHealth);
-        module.aircraftAttackPower = EditorGUILayout.FloatField("Aircraft Attack Power", module.aircraftAttackPower);
-        module.aircraftAttackRange = EditorGUILayout.FloatField("Aircraft Attack Range", module.aircraftAttackRange);
-        module.aircraftAttackCooldown = EditorGUILayout.FloatField("Aircraft Attack Cooldown", module.aircraftAttackCooldown);
-        module.aircraftSpeed = EditorGUILayout.FloatField("Aircraft Speed", module.aircraftSpeed);
-        module.aircraftAmmo = EditorGUILayout.IntField("Aircraft Ammo", module.aircraftAmmo);
-        module.aircraftDetectionRadius = EditorGUILayout.FloatField("Aircraft Detection Radius", module.aircraftDetectionRadius);
-        module.aircraftAvoidanceRadius = EditorGUILayout.FloatField("Aircraft Avoidance Radius", module.aircraftAvoidanceRadius);
+        module.airLaunchDist = EditorGUILayout.FloatField("Aircraft Launch Dist", module.airLaunchDist);
+        module.airHealth = EditorGUILayout.FloatField("Aircraft Health", module.airHealth);
+        module.airAttack = EditorGUILayout.FloatField("Aircraft Attack Power", module.airAttack);
+        module.airAttackRange = EditorGUILayout.FloatField("Aircraft Attack Range", module.airAttackRange);
+        module.airAttackCool = EditorGUILayout.FloatField("Aircraft Attack Cool", module.airAttackCool);
+        module.airSpeed = EditorGUILayout.FloatField("Aircraft Speed", module.airSpeed);
+        module.airAmmo = EditorGUILayout.IntField("Aircraft Ammo", module.airAmmo);
+        module.airDetectRadius = EditorGUILayout.FloatField("Aircraft Detect Radius", module.airDetectRadius);
+        module.airAvoidRadius = EditorGUILayout.FloatField("Aircraft Avoid Radius", module.airAvoidRadius);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
@@ -650,7 +650,7 @@ public class DataTableModuleEditor : Editor
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("type,sub_type,level,health,repair,speed,attack,attack_count,attack_cool,projectile_width,projectile_speed,aircraft_count,maintenance_time,air_launch_straight,air_health,attack_power_air,attack_range_air,attack_cool_air,speed_air,ammo_air,detect_radius_air,avoid_radius_air,cost_m,cost_mr,cost_me,cost_md,description");
+        sb.AppendLine("type,sub_type,level,health,repair,speed,attack,attack_count,attack_cool,projectile_width,projectile_speed,air_count,air_maintenance_time,air_launch_dist,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,cost_m,cost_mr,cost_me,cost_md,description");
 
         var allGroups = new List<ModuleSubTypeGroup>();
         allGroups.AddRange(dataTableModule.BodyGroups);
@@ -666,13 +666,13 @@ public class DataTableModuleEditor : Editor
                 sb.AppendLine(string.Format(ic,
                     "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26}",
                     (int)d.moduleType, (int)d.moduleSubType, d.moduleLevel,
-                    d.health, d.repairPower, d.speed,
-                    d.attackPower, d.attackFireCount, d.attackCoolTime,
+                    d.health, d.repair, d.speed,
+                    d.attack, d.attackFireCount, d.attackCool,
                     d.projectileWidth, d.projectileSpeed,
-                    d.airCount, d.maintenanceTime, d.aircraftLaunchStraightDistance,
-                    d.aircraftHealth, d.aircraftAttackPower, d.aircraftAttackRange,
-                    d.aircraftAttackCooldown, d.aircraftSpeed, d.aircraftAmmo,
-                    d.aircraftDetectionRadius, d.aircraftAvoidanceRadius,
+                    d.airCount, d.airMaintenanceTime, d.airLaunchDist,
+                    d.airHealth, d.airAttack, d.airAttackRange,
+                    d.airAttackCool, d.airSpeed, d.airAmmo,
+                    d.airDetectRadius, d.airAvoidRadius,
                     d.upgradeCost.mineral, d.upgradeCost.mineralRare,
                     d.upgradeCost.mineralExotic, d.upgradeCost.mineralDark,
                     d.description));

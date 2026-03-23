@@ -77,7 +77,7 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual IEnumerator AircraftLifeCycle()
     {
-        while (m_aircraftInfo.health > 0)
+        while (m_aircraftInfo.airHealth > 0)
         {
             //DebugOverlay.Instance.SetText($"m_state: {m_state}");
 
@@ -111,7 +111,7 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual IEnumerator LaunchStraightPhase()
     {
-        Vector3 targetPos = m_launchStartPos + transform.up * m_aircraftInfo.launchStraightDistance + m_randomOffset;
+        Vector3 targetPos = m_launchStartPos + transform.up * m_aircraftInfo.airLaunchDist + m_randomOffset;
         while (true)
         {
             Vector3 toTarget = (targetPos - transform.position).normalized;
@@ -122,11 +122,11 @@ public abstract class AircraftBase : MonoBehaviour
             Vector3 avoidanceDir = CalculateAvoidance();
             Vector3 moveDir = toTarget + avoidanceDir;
             moveDir.Normalize();
-            transform.position += moveDir * m_aircraftInfo.moveSpeed * Time.deltaTime;
+            transform.position += moveDir * m_aircraftInfo.airSpeed * Time.deltaTime;
             if (moveDir != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.moveSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * Time.deltaTime);
             }
 
             
@@ -140,7 +140,7 @@ public abstract class AircraftBase : MonoBehaviour
     {
         Vector3 attackApproachPoint = Vector3.zero;
         if (m_targetModule != null)
-            attackApproachPoint = GetRelativeVirticalDonutPoint(m_targetModule.transform, m_aircraftInfo.attackRange * 0.8f, m_aircraftInfo.attackRange * 1.2f);
+            attackApproachPoint = GetRelativeVirticalDonutPoint(m_targetModule.transform, m_aircraftInfo.airAttackRange * 0.8f, m_aircraftInfo.airAttackRange * 1.2f);
 
         while (true)
         {
@@ -180,10 +180,10 @@ public abstract class AircraftBase : MonoBehaviour
             if (avoidanceDir.sqrMagnitude > 0.01f)
                 finalMoveDir = (targetDir + avoidanceDir).normalized;
 
-            transform.position += transform.forward * m_aircraftInfo.moveSpeed * Time.deltaTime;
+            transform.position += transform.forward * m_aircraftInfo.airSpeed * Time.deltaTime;
 
             Quaternion targetRotation = Quaternion.LookRotation(finalMoveDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * Time.deltaTime);
 
             yield return null;
         }
@@ -236,7 +236,7 @@ public abstract class AircraftBase : MonoBehaviour
 
         while (true)
         {
-            if (currentDogfightTarget == null || currentDogfightTarget.m_aircraftInfo.health <= 0)
+            if (currentDogfightTarget == null || currentDogfightTarget.m_aircraftInfo.airHealth <= 0)
             {
                 m_state = EAircraftState.MoveToTarget;
                 yield break;
@@ -244,17 +244,17 @@ public abstract class AircraftBase : MonoBehaviour
 
             Vector3 moveDir = (currentDogfightTarget.transform.position - transform.position).normalized;
 
-            transform.position += moveDir * m_aircraftInfo.moveSpeed * Time.deltaTime;
+            transform.position += moveDir * m_aircraftInfo.airSpeed * Time.deltaTime;
             if (moveDir != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.moveSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * Time.deltaTime);
             }
 
             float distance = Vector3.Distance(transform.position, currentDogfightTarget.transform.position);
-            if (distance <= m_aircraftInfo.attackRange && Time.time >= m_lastAttackTime + m_aircraftInfo.attackCooldown)
+            if (distance <= m_aircraftInfo.airAttackRange && Time.time >= m_lastAttackTime + m_aircraftInfo.airAttackCool)
             {
-                currentDogfightTarget.TakeDamage(m_aircraftInfo.attackPower);
+                currentDogfightTarget.TakeDamage(m_aircraftInfo.airAttack);
                 m_lastAttackTime = Time.time;
             }
 
@@ -267,8 +267,8 @@ public abstract class AircraftBase : MonoBehaviour
     {
         if (targetDirection.sqrMagnitude < 0.001f) return;
 
-        // moveSpeed를 각속도로 변환 (moveSpeed * 0.5 = 초당 회전 각도)
-        float angularSpeed = m_aircraftInfo.moveSpeed * 1.0f;
+        // moveSpeed를 각속도로 변환 (airSpeed * 0.5 = 초당 회전 각도)
+        float angularSpeed = m_aircraftInfo.airSpeed * 1.0f;
 
         // 목표 방향으로 회전 (한 번만)
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
@@ -303,7 +303,7 @@ public abstract class AircraftBase : MonoBehaviour
         while (true)
         {
             // 종료 조건: 탄약 소진 시 무조건 귀환
-            if (m_aircraftInfo.ammo <= 0)
+            if (m_aircraftInfo.airAmmo <= 0)
             {
                 m_state = EAircraftState.ReturnToCarrier;
                 yield break;
@@ -334,10 +334,10 @@ public abstract class AircraftBase : MonoBehaviour
             SmoothRotate(toTarget);
 
             // 이동
-            transform.position += m_currentDirection * m_aircraftInfo.moveSpeed * Time.deltaTime * 0.5f;
+            transform.position += m_currentDirection * m_aircraftInfo.airSpeed * Time.deltaTime * 0.5f;
 
             // 공격 처리
-            if (Time.time >= m_lastAttackTime + m_aircraftInfo.attackCooldown)
+            if (Time.time >= m_lastAttackTime + m_aircraftInfo.airAttackCool)
                 PerformAttack();
 
             yield return null;
@@ -385,7 +385,7 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual IEnumerator RepositionPhase()
     {
-        float repositionDistance = Random.Range(m_aircraftInfo.attackRange * m_repositionMinDistanceMultiplier, m_aircraftInfo.attackRange * m_repositionMaxDistanceMultiplier);
+        float repositionDistance = Random.Range(m_aircraftInfo.airAttackRange * m_repositionMinDistanceMultiplier, m_aircraftInfo.airAttackRange * m_repositionMaxDistanceMultiplier);
         Vector3 repositionDir = transform.forward;
 
         if (m_targetModule != null)
@@ -411,9 +411,9 @@ public abstract class AircraftBase : MonoBehaviour
 
         while (Vector3.Distance(transform.position, startPosition) < repositionDistance)
         {
-            transform.position += repositionDir * m_aircraftInfo.moveSpeed * Time.deltaTime;
+            transform.position += repositionDir * m_aircraftInfo.airSpeed * Time.deltaTime;
             Quaternion targetRotation = Quaternion.LookRotation(repositionDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * Time.deltaTime);
             yield return null;
         }
 
@@ -456,7 +456,7 @@ public abstract class AircraftBase : MonoBehaviour
             float distanceToCarrier = Vector3.Distance(transform.position, m_firePoint.position);
 
             // 목표를 지나쳤으면 도착으로 판정 (기존 로직 유지)
-            if (dotValue < 0.0f && distanceToCarrier < m_aircraftInfo.attackRange)
+            if (dotValue < 0.0f && distanceToCarrier < m_aircraftInfo.airAttackRange)
                 break;
 
             Vector3 targetDirection = toCarrier;
@@ -490,7 +490,7 @@ public abstract class AircraftBase : MonoBehaviour
             SmoothRotate(targetDirection);
 
             // 이동
-            transform.position += m_currentDirection * m_aircraftInfo.moveSpeed * Time.deltaTime;
+            transform.position += m_currentDirection * m_aircraftInfo.airSpeed * Time.deltaTime;
 
             yield return null;
 
@@ -553,7 +553,7 @@ public abstract class AircraftBase : MonoBehaviour
     protected Vector3 CalculateAvoidance()
     {
         Vector3 avoidanceDir = Vector3.zero;
-        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, m_aircraftInfo.avoidanceRadius);
+        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, m_aircraftInfo.airAvoidRadius);
 
         foreach (Collider col in nearbyObjects)
         {
@@ -574,12 +574,12 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected AircraftBase DetectEnemyAircraft()
     {
-        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, m_aircraftInfo.detectionRadius);
+        Collider[] nearbyObjects = Physics.OverlapSphere(transform.position, m_aircraftInfo.airDetectRadius);
 
         foreach (Collider col in nearbyObjects)
         {
             AircraftBase otherAircraft = col.GetComponent<AircraftBase>();
-            if (otherAircraft != null && otherAircraft.m_sourceModule != m_sourceModule && otherAircraft.m_aircraftInfo.health > 0)
+            if (otherAircraft != null && otherAircraft.m_sourceModule != m_sourceModule && otherAircraft.m_aircraftInfo.airHealth > 0)
                 return otherAircraft;
         }
 
@@ -593,17 +593,17 @@ public abstract class AircraftBase : MonoBehaviour
         SpaceShip targetShip = m_targetModule.GetSpaceShip();
         if (targetShip != null)
         {
-            targetShip.TakeDamage(m_aircraftInfo.attackPower);
-            m_aircraftInfo.ammo--;
+            targetShip.TakeDamage(m_aircraftInfo.airAttack);
+            m_aircraftInfo.airAmmo--;
             m_lastAttackTime = Time.time;
         }
     }
     public virtual void TakeDamage(float damage)
     {
-        m_aircraftInfo.health -= damage;
-        if (m_aircraftInfo.health <= 0)
+        m_aircraftInfo.airHealth -= damage;
+        if (m_aircraftInfo.airHealth <= 0)
         {
-            m_aircraftInfo.health = 0;
+            m_aircraftInfo.airHealth = 0;
             ReturnToPool();
         }
     }
@@ -611,7 +611,7 @@ public abstract class AircraftBase : MonoBehaviour
     // 목표 상실 시 타겟 재할당. 1순위: 모함 타겟, 2순위: 적 함대에서 직접 탐색
     private bool TryReassignTarget()
     {
-        if (m_aircraftInfo.ammo <= 0) return false;
+        if (m_aircraftInfo.airAmmo <= 0) return false;
 
         // 1순위: 모함의 현재 타겟
         if (m_moduleHanger != null)
@@ -675,8 +675,8 @@ public abstract class AircraftBase : MonoBehaviour
         if (m_targetModule == null)
             return;
 
-        float minRadius = m_aircraftInfo.attackRange * 0.8f;
-        float maxRadius = m_aircraftInfo.attackRange * 1.2f;
+        float minRadius = m_aircraftInfo.airAttackRange * 0.8f;
+        float maxRadius = m_aircraftInfo.airAttackRange * 1.2f;
 
         if(m_state == EAircraftState.MoveToTarget)
             DrawDonut(m_targetModule.transform, minRadius, maxRadius);

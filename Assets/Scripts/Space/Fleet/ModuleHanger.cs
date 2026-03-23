@@ -6,18 +6,18 @@ using System.Collections.Generic;
 [System.Serializable]
 public class AircraftInfo
 {
-    public float launchStraightDistance;
-    public float health;    
-    public float attackPower;
-    public float attackRange;
-    public float attackCooldown;
-    public float moveSpeed;
-    public int ammo;
-    public float detectionRadius;
-    public float avoidanceRadius;
+    public float airLaunchDist;
+    public float airHealth;
+    public float airAttack;
+    public float airAttackRange;
+    public float airAttackCool;
+    public float airSpeed;
+    public int airAmmo;
+    public float airDetectRadius;
+    public float airAvoidRadius;
 
-    public float healthMax;
-    public int ammoMax;
+    public float airHealthMax;
+    public int airAmmoMax;
     public float lastReturnTime;
     public bool isReady;
 
@@ -30,18 +30,18 @@ public class AircraftInfo
 
     public void UpdateAircraftInfo(ModuleData moduleData)
     {
-        this.launchStraightDistance = moduleData.aircraftLaunchStraightDistance;            
-        this.health = moduleData.aircraftHealth;
-        this.attackPower = moduleData.aircraftAttackPower;
-        this.attackRange = moduleData.aircraftAttackRange;
-        this.attackCooldown = moduleData.aircraftAttackCooldown;
-        this.moveSpeed = moduleData.aircraftSpeed;            
-        this.ammo = moduleData.aircraftAmmo;
-        this.detectionRadius = moduleData.aircraftDetectionRadius;
-        this.avoidanceRadius = moduleData.aircraftAvoidanceRadius;            
-        
-        this.healthMax = moduleData.aircraftHealth;
-        this.ammoMax = moduleData.aircraftAmmo;
+        this.airLaunchDist = moduleData.airLaunchDist;
+        this.airHealth = moduleData.airHealth;
+        this.airAttack = moduleData.airAttack;
+        this.airAttackRange = moduleData.airAttackRange;
+        this.airAttackCool = moduleData.airAttackCool;
+        this.airSpeed = moduleData.airSpeed;
+        this.airAmmo = moduleData.airAmmo;
+        this.airDetectRadius = moduleData.airDetectRadius;
+        this.airAvoidRadius = moduleData.airAvoidRadius;
+
+        this.airHealthMax = moduleData.airHealth;
+        this.airAmmoMax = moduleData.airAmmo;
     }
 }
 
@@ -49,11 +49,11 @@ public class ModuleHanger : ModuleBase
 {
     [SerializeField] private ModuleBody m_parentBody;
     public ModuleInfo m_moduleInfo; 
-
+    
+    [SerializeField] private float m_launchCool;
+    [SerializeField] private int m_launchCount;
     [SerializeField] private int m_airCount;
-    [SerializeField] private float m_attackCoolTime;
-    [SerializeField] private int m_attackFireCount;
-    [SerializeField] private float m_maintenanceTime;
+    [SerializeField] private float m_airMaintenanceTime;
 
     [SerializeField] private float m_lastLaunchTime;
     [SerializeField] private List<AircraftInfo> m_aircraftPool = new List<AircraftInfo>();
@@ -86,10 +86,10 @@ public class ModuleHanger : ModuleBase
 
         m_airCount = moduleData.airCount;
         //m_airCount = 1; // test
-        m_attackCoolTime = moduleData.attackCoolTime;
-        m_attackFireCount = moduleData.attackFireCount;
-        m_maintenanceTime = moduleData.maintenanceTime;
-        //m_maintenanceTime = 1; // test
+        m_launchCool = moduleData.attackCool;
+        m_launchCount = moduleData.attackFireCount;
+        m_airMaintenanceTime = moduleData.airMaintenanceTime;
+        //m_airMaintenanceTime = 1; // test
 
         // 업그레이드 비용 설정
         m_upgradeCost = moduleData.upgradeCost;
@@ -108,6 +108,23 @@ public class ModuleHanger : ModuleBase
         InitializeHangerSubType(moduleData);
 
         AutoDetectFleetInfo();
+
+        // Zone 적 함대일 때 격납고 체력·함재기 스탯에 배율 적용
+        if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
+        {
+            m_health    *= m_myFleet.m_hangerMultiplier;
+            m_healthMax *= m_myFleet.m_hangerMultiplier;
+            foreach (var info in m_aircraftPool)
+            {
+                info.airHealth      *= m_myFleet.m_hangerMultiplier;
+                info.airHealthMax   *= m_myFleet.m_hangerMultiplier;
+                info.airAttack      *= m_myFleet.m_hangerMultiplier;
+                info.airSpeed       *= m_myFleet.m_hangerMultiplier;
+                info.airAttackRange *= m_myFleet.m_hangerMultiplier;
+                info.airAmmo        = Mathf.Max(1, Mathf.RoundToInt(info.airAmmo    * m_myFleet.m_hangerMultiplier));
+                info.airAmmoMax     = Mathf.Max(1, Mathf.RoundToInt(info.airAmmoMax * m_myFleet.m_hangerMultiplier));
+            }
+        }
 
         if (m_parentBody != null)
             m_parentBody.AddHanger(this);
@@ -166,7 +183,7 @@ public class ModuleHanger : ModuleBase
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
             {
-                if (Time.time >= m_lastLaunchTime + m_attackCoolTime)
+                if (Time.time >= m_lastLaunchTime + m_launchCool)
                 {
                     ExecuteLaunchOnTarget(m_currentTarget);
                     m_lastLaunchTime = Time.time;
@@ -195,10 +212,10 @@ public class ModuleHanger : ModuleBase
                 if (aircraft.isReady == false)
                 {
                     float elapsedTime = Time.time - aircraft.lastReturnTime;
-                    if (elapsedTime >= m_maintenanceTime)
+                    if (elapsedTime >= m_airMaintenanceTime)
                     {
-                        aircraft.health = aircraft.healthMax;
-                        aircraft.ammo = aircraft.ammoMax;
+                        aircraft.airHealth = aircraft.airHealthMax;
+                        aircraft.airAmmo = aircraft.airAmmoMax;
                         aircraft.isReady = true;
                     }
                 }
@@ -283,9 +300,9 @@ public class ModuleHanger : ModuleBase
         int oldCapacity = m_airCount; // 이전 레벨의 총 함재기 수
 
         m_airCount = moduleData.airCount; // 새 레벨의 총 함재기 수
-        m_attackCoolTime = moduleData.attackCoolTime;
-        m_attackFireCount = moduleData.attackFireCount;
-        m_maintenanceTime = moduleData.maintenanceTime;
+        m_launchCool = moduleData.attackCool;
+        m_launchCount = moduleData.attackFireCount;
+        m_airMaintenanceTime = moduleData.airMaintenanceTime;
 
         m_upgradeCost = moduleData.upgradeCost;
 
@@ -342,9 +359,9 @@ public class ModuleHanger : ModuleBase
     
 
     public int GetHangarCapability() => m_airCount;
-    public float GetLaunchCool() => m_attackCoolTime;
-    public int GetLaunchCount() => m_attackFireCount;
-    public float GetMaintenanceTime() => m_maintenanceTime;
+    public float GetLaunchCool() => m_launchCool;
+    public int GetLaunchCount() => m_launchCount;
+    public float GetMaintenanceTime() => m_airMaintenanceTime;
 
     public void SetTarget(ModuleBody target)
     {
@@ -368,29 +385,12 @@ public class ModuleHanger : ModuleBase
         stats.totalWeapons = 1;
         // 함재기 데이터로부터 계산
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        stats.aircraft_attack_power = (int)(moduleData.aircraftAttackPower);
-        stats.aircraft_count = moduleData.airCount;
-        stats.aircraft_launch_count = moduleData.attackFireCount;
+        stats.airAttack = (int)(moduleData.airAttack);
+        stats.airCount = moduleData.airCount;
+        stats.airLaunchCount = moduleData.attackFireCount;
 
         return stats;
     }
-
-    // 모듈 타입별 stat row 표시 위임 (하위 클래스에서 override)
-    public override void SetModuleStatRows(List<RowLabelValue> statRows)
-    {
-        EModuleSubType subType = GetModuleSubType();
-        int currentLevel = GetModuleLevel();        
-        ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        if (moduleDataCurrent == null) return;
-
-        statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("aircraft_attack_power", $"{moduleDataCurrent.aircraftAttackPower:F0}");
-        statRows[3].SetRow("aircraft_health_power", $"{moduleDataCurrent.aircraftHealth:F0}");
-        statRows[4].SetRow("aircraft_speed_power", $"{moduleDataCurrent.aircraftSpeed:F0}");
-        statRows[5].SetRow("aircraft_count", $"{moduleDataCurrent.airCount:F0}");
-        statRows[6].SetRow("aircraft_launch_count", $"{moduleDataCurrent.attackFireCount:F0}");
-    }
-
 
     // 파괴 시 정리
     private void OnDestroy()

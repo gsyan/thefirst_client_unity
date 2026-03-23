@@ -73,9 +73,10 @@ public class UIPopupRanking : UIPopupBase
 
         if (type == RankingType.Pvp)
         {
-            // 캐시 유효하면 서버 재요청 없이 로컬 데이터 표시
+            // 캐시 유효하면 서버 재요청 없이 로컬 데이터 표시 (단, 내 이름은 항상 최신으로 덮어씀)
             if (m_pvpCache.Count > 0 && IsExpired(m_pvpNextUpdatedAt) == false)
             {
+                RefreshMyInfoName(m_pvpMyInfo);
                 ApplyMyInfo(m_pvpMyInfo);
                 m_rankingScrollView.RefreshVisible();
                 return;
@@ -88,6 +89,7 @@ public class UIPopupRanking : UIPopupBase
         {
             if (m_zoneCache.Count > 0 && IsExpired(m_zoneNextUpdatedAt) == false)
             {
+                RefreshMyInfoName(m_zoneMyInfo);
                 ApplyMyInfo(m_zoneMyInfo);
                 if (m_periodText != null) m_periodText.gameObject.SetActive(false);
                 m_rankingScrollView.RefreshVisible();
@@ -233,6 +235,13 @@ public class UIPopupRanking : UIPopupBase
     }
 
     // ── 유틸 ───────────────────────────────────────────────────────────────
+
+    // 캐시 히트 시 내 이름만 로컬 DataManager 기준으로 덮어씀 (이름 변경 즉시 반영)
+    private void RefreshMyInfoName(RankingEntry info)
+    {
+        if (info == null) return;
+        info.characterName = DataManager.Instance.m_currentCharacter?.GetName() ?? info.characterName;
+    }
 
     private void ApplyMyInfo(RankingEntry info)
     {

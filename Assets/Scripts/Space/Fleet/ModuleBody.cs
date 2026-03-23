@@ -15,7 +15,7 @@ public class ModuleBody : ModuleBase
     [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
     [HideInInspector] public List<ModuleHanger> m_hangers = new List<ModuleHanger>();
 
-    private float m_repairPower;
+    private float m_repair;
 
     
     public override void ApplyShipStateToModule()
@@ -67,7 +67,7 @@ public class ModuleBody : ModuleBase
         // 스탯 갱신
         m_healthMax = moduleData.health;
         m_health = Mathf.Min(m_health, m_healthMax);
-        m_repairPower = moduleData.repairPower;
+        m_repair = moduleData.repair;
         m_upgradeCost = moduleData.upgradeCost;
     }
 
@@ -98,13 +98,20 @@ public class ModuleBody : ModuleBase
         // 업그레이드 비용 설정
         m_upgradeCost = moduleData.upgradeCost;
         
-        m_attackPower = 0.0f; // Body는 직접 공격하지 않음
+        m_attack = 0.0f; // Body는 직접 공격하지 않음
 
         // Body 전용 능력치
-        m_repairPower = moduleData.repairPower;
+        m_repair = moduleData.repair;
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
+
+        // Zone 적 함대일 때 체력에 배율 적용
+        if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
+        {
+            m_health    *= m_myFleet.m_bodyMultiplier;
+            m_healthMax *= m_myFleet.m_bodyMultiplier;
+        }
 
         CollectAndSortModuleSlots();
 
@@ -551,8 +558,8 @@ public class ModuleBody : ModuleBase
         if (m_health <= 0) return stats;
 
         // Body 자체의 능력치
-        stats.health_power = m_health;
-        stats.repair_power = m_repairPower;
+        stats.health = m_health;
+        stats.repair = m_repair;
 
         // 모든 슬롯의 모듈들을 순회하며 능력치 합산
         foreach (ModuleSlot slot in m_moduleSlots)
@@ -565,12 +572,12 @@ public class ModuleBody : ModuleBase
                     CapabilityProfile moduleStats = module.GetModuleCapabilityProfile(false);
                     stats.totalWeapons += moduleStats.totalWeapons;
                     stats.totalEngines += moduleStats.totalEngines;
-                    stats.attack_power += moduleStats.attack_power;
-                    stats.health_power += moduleStats.health_power;
-                    stats.speed_power += moduleStats.speed_power;
-                    stats.aircraft_attack_power += moduleStats.aircraft_attack_power;
-                    stats.aircraft_count += moduleStats.aircraft_count;
-                    stats.aircraft_launch_count += moduleStats.aircraft_launch_count;
+                    stats.attack += moduleStats.attack;
+                    stats.health += moduleStats.health;
+                    stats.speed += moduleStats.speed;
+                    stats.airAttack += moduleStats.airAttack;
+                    stats.airCount += moduleStats.airCount;
+                    stats.airLaunchCount += moduleStats.airLaunchCount;
                 }
             }
         }
@@ -681,18 +688,5 @@ public class ModuleBody : ModuleBase
                 return null;
         }
     }
-
-    public override void SetModuleStatRows(List<RowLabelValue> statRows)
-    {
-        EModuleSubType subType = GetModuleSubType();
-        int currentLevel = GetModuleLevel();
-        ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        if (moduleDataCurrent == null) return;
-
-        statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("health_power", $"{moduleDataCurrent.health:F0}");
-        statRows[3].SetRow("repair_power", $"{moduleDataCurrent.repairPower:F0}");
-    }
-
 
 }

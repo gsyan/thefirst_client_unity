@@ -9,7 +9,7 @@ public class ModuleEngine : ModuleBase
     public ModuleInfo m_moduleInfo;
 
     // 엔진 전용 스탯
-    [SerializeField] private float m_movementSpeed;
+    [SerializeField] private float m_speed;
 
     public override void Start()
     {
@@ -35,7 +35,7 @@ public class ModuleEngine : ModuleBase
         if (bByInfo == true) return CommonUtility.GetModuleCapabilityProfile(m_moduleInfo);
 
         CapabilityProfile stats = new CapabilityProfile();
-        stats.speed_power = m_movementSpeed;
+        stats.speed = m_speed;
         stats.totalEngines = 1;
         return stats;
     }
@@ -73,7 +73,7 @@ public class ModuleEngine : ModuleBase
         // 스탯 갱신
         m_healthMax = moduleData.health;
         m_health = Mathf.Min(m_health, m_healthMax);
-        m_movementSpeed = moduleData.speed;
+        m_speed = moduleData.speed;
         m_upgradeCost = moduleData.upgradeCost;
     }
 
@@ -104,10 +104,10 @@ public class ModuleEngine : ModuleBase
         // 복원된 데이터로 스탯 설정
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
-        m_attackPower = 0.0f; // 엔진은 공격하지 않음
+        m_attack = 0.0f; // 엔진은 공격하지 않음
 
         // 엔진 전용 스탯 설정
-        m_movementSpeed = moduleData.speed;
+        m_speed = moduleData.speed;
 
         // 업그레이드 비용 설정
         m_upgradeCost = moduleData.upgradeCost;
@@ -115,22 +115,19 @@ public class ModuleEngine : ModuleBase
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
 
+        // Zone 적 함대일 때 체력·이동 속도에 배율 적용
+        if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
+        {
+            m_health    *= m_myFleet.m_engineMultiplier;
+            m_healthMax *= m_myFleet.m_engineMultiplier;
+            m_speed     *= m_myFleet.m_engineMultiplier;
+        }
+
         // 부모 바디에 이 엔진 등록
         if (m_parentBody != null)
         {
             m_parentBody.AddEngine(this);
         }
-    }
-
-    public override void SetModuleStatRows(List<RowLabelValue> statRows)
-    {
-        EModuleSubType subType = GetModuleSubType();
-        int currentLevel = GetModuleLevel();
-        ModuleData moduleDataCurrent = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
-        if (moduleDataCurrent == null) return;
-
-        statRows[1].SetRow("level", $"{currentLevel}");
-        statRows[2].SetRow("speed_power", $"{moduleDataCurrent.speed:F0}");
     }
 
     // 파괴 시 정리

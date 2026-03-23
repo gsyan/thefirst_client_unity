@@ -50,11 +50,32 @@ public class SpaceFleet : MonoBehaviour
     // 수리 설정
     public ERepairThreshold m_repairThreshold = ERepairThreshold.Full;
     public ERepairConcurrency m_repairConcurrency = ERepairConcurrency.One;
+
+    // 적 함대 모듈별 스탯 배율 (IsZoneEnemy일 때만 적용, 기본값 1.0)
+    public float m_bodyMultiplier    = 1.0f;
+    public float m_beamMultiplier    = 1.0f;
+    public float m_missileMultiplier = 1.0f;
+    public float m_hangerMultiplier  = 1.0f;
+    public float m_engineMultiplier  = 1.0f;
     
     private void Start()
     {
         if (m_fleetSource == EFleetSource.fleet_source_player || m_fleetSource == EFleetSource.fleet_source_player_remote)
             StartCoroutine(AutoRepair());
+    }
+
+    // Zone 적 전용 — 배율을 먼저 설정 후 기본 초기화 위임
+    public void InitializeZoneEnemyFleet(FleetInfo fleetInfo, ZoneConfig zoneConfig)
+    {
+        if (zoneConfig != null)
+        {
+            m_bodyMultiplier    = zoneConfig.enemyBodyMultiplier;
+            m_beamMultiplier    = zoneConfig.enemyBeamMultiplier;
+            m_missileMultiplier = zoneConfig.enemyMissileMultiplier;
+            m_hangerMultiplier  = zoneConfig.enemyHangerMultiplier;
+            m_engineMultiplier  = zoneConfig.enemyEngineMultiplier;
+        }
+        InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data);
     }
 
     public void InitializeSpaceFleet(FleetInfo fleetInfo, EFleetSide side = EFleetSide.fleet_side_player, EFleetSource source = EFleetSource.fleet_source_player, EFleetState fleetState = EFleetState.None)
@@ -73,7 +94,7 @@ public class SpaceFleet : MonoBehaviour
         }
         
         // 적함, 내함 공격 안하게
-        //if (isEnemy == true)
+        //if (IsEnemy == true)
             SetFleetState(EFleetState.Battle);
     }
     // smoothSpawn: true면 기함 뒤에서 스폰 후 이동, false면 즉시 진형 위치에 배치
@@ -450,7 +471,7 @@ public class SpaceFleet : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
 
             CapabilityProfile fleetStats = GetFleetCapabilityProfile(true);
-            float totalRepair = fleetStats.repair_power;
+            float totalRepair = fleetStats.repair;
             if (totalRepair <= 0f) continue;
 
             float threshold = GetRepairThresholdRatio();
@@ -540,16 +561,16 @@ public class SpaceFleet : MonoBehaviour
             CapabilityProfile shipStats = useCurrent ? ship.m_spaceShipStatsCur : ship.m_spaceShipStatsOrg;
             totalStats.totalWeapons += shipStats.totalWeapons;
             totalStats.totalEngines += shipStats.totalEngines;
-            totalStats.attack_power += shipStats.attack_power;
-            totalStats.health_power += shipStats.health_power;
-            totalStats.speed_power += shipStats.speed_power;            
-            totalStats.repair_power += shipStats.repair_power;            
-            totalStats.aircraft_attack_power += shipStats.aircraft_attack_power;
-            totalStats.aircraft_count += shipStats.aircraft_count;
-            totalStats.aircraft_launch_count += shipStats.aircraft_launch_count;
+            totalStats.attack += shipStats.attack;
+            totalStats.health += shipStats.health;
+            totalStats.speed += shipStats.speed;
+            totalStats.repair += shipStats.repair;
+            totalStats.airAttack += shipStats.airAttack;
+            totalStats.airCount += shipStats.airCount;
+            totalStats.airLaunchCount += shipStats.airLaunchCount;
         }
         // 일단 평균
-        totalStats.speed_power /= shipCount;
+        totalStats.speed /= shipCount;
 
         return totalStats;
     }

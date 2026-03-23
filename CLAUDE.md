@@ -30,7 +30,15 @@
 - switch 표현식(switch expression) 지양
 
 ## 프로젝트별 MD 참고 및 수정
-- 전체 기획 : 클라 프로젝트 루트/claude_md_files/game_design.md
+- 전체 기획 : 클라 프로젝트 루트/claude_md_files/game_design/
+    [overview.md] : 게임 개요, 재화 시스템 (4종 자원, 소모처 구조)
+    [combat.md] : 전투 배속 시스템 (GameSpeedController, 피치 연동)
+    [tab_fleet.md] : Fleet 탭 UI, 함선 시스템, 기술레벨 시스템, 자원 적립 캡
+    [tab_ship.md] : Ship 탭 UI, 모듈 시스템 (SubType 인코딩, 레벨업, 서브타입 추가)
+    [tab_exploration.md] : Exploration 탭 UI, 존 탐험 시스템, 존 보상 수치, 광고 입장 정책
+    [tab_pvp.md] : PVP 탭 UI (점수/순위, 대전 상대 카드, Refresh)
+    [tab_settings.md] : Settings 탭 UI (계정 관리, 언어, 라이센스, 개발자 도구)
+    
 - 서버 구조 및 운영 : 서버 프로젝트 루트/claude_md_files/server_structure_and_operation.md
 - 클라 구조 및 운영 : 클라 프로젝트 루트/claude_md_files/client_structure_and_operation.md
 - 젠킨스 설정 : 클라 프로젝트 루트/claude_md_files/jenkins-setup-tutorial.md
