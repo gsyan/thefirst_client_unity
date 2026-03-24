@@ -748,22 +748,22 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.DeleteAccountAsync(), onComplete));
     }
 
-    public void ClearZone(ZoneClearRequest request, System.Action<ApiResponse<ZoneClearResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ClearZoneAsync(request), onComplete));
-    }
-
     public void CollectZone(ZoneCollectRequest request, System.Action<ApiResponse<ZoneCollectResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.CollectZoneAsync(request), onComplete));
     }
 
-    public void KillZoneEnemy(ZoneKillRequest request, System.Action<ApiResponse<ZoneKillResponse>> onComplete)
+    public void DestroyZoneStageWave(DestroyZoneStageWaveRequest request, System.Action<ApiResponse<DestroyZoneStageWaveResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.KillZoneEnemyAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.DestroyZoneStageWaveAsync(request), onComplete));
+    }
+
+    public void ExitZone(ExitZoneRequest request)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ExitZoneAsync(request), null));
     }
 
     public void Heartbeat()

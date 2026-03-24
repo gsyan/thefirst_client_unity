@@ -198,6 +198,14 @@ public class UITabExploration : UITabBase
             kv.Value.gameObject.SetActive(visible);
         }
 
+        // 탐사 중인 존이 이 그룹에 속하면 → 탐사 중인 존을 선택으로 고정 (저장된 다른 선택 무시)
+        if (m_currentZone != null && ParseZoneGroup(m_currentZone.zoneName) == groupIndex)
+        {
+            m_selectedZonePerGroup[groupIndex] = m_currentZone;
+            ApplyZoneSelection(m_currentZone);
+            return;
+        }
+
         if (m_currentZoneCell != null)
         {
             bool inCurrentGroup = ParseZoneGroup(m_currentZoneCell.m_zoneConfig.zoneName) == groupIndex;
@@ -435,7 +443,7 @@ public class UITabExploration : UITabBase
         if (m_enterZoneState == EEnterZoneState.zone)
         {
             EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
-            EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
+            EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
             ObjectManager.Instance.StopEnemySpawning();
             ObjectManager.Instance.OrderAllAircraftReturn();
             ObjectManager.Instance.CleanupAllProjectiles();
@@ -534,12 +542,14 @@ public class UITabExploration : UITabBase
         m_currentZone = zone;
         CacheCurrentZoneCell();
         EventManager.Subscribe_WaveStarted(OnWaveStarted);
-        EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
+        EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilled);
 
         m_myFleet.StartFleetWarp(zone.skyboxMaterial, () =>
         {
             SetEnterZoneState(EEnterZoneState.zone);
             UIManager.Instance.ShowPanel("UIPanelCameraView");
+            bool isFirstClear = IsAlreadyCleared(zone) == false;
+            EventManager.TriggerZoneEntered(zone.zoneName, isFirstClear, zone.zoneClearCount);
             StartBattleInZone(zone);
         });
     }
@@ -566,23 +576,8 @@ public class UITabExploration : UITabBase
 
     private void StartBattleInZone(ZoneConfig zone)
     {
-        ObjectManager.Instance.StartSpawnEnemies(zone, (isVictory) =>
-        {
-            if (isVictory)
-            {
-                if (IsAlreadyCleared(zone))
-                    StartBattleInZone(zone);
-                else
-                {
-                    var request = new ZoneClearRequest { zoneName = zone.zoneName };
-                    NetworkManager.Instance.ClearZone(request, OnZoneClearResponse);
-                }
-            }
-            else
-            {
-                ReturnToSafeZone();
-            }
-        });
+        // 패배(함대 전멸) 시에만 콜백 호출 — 승리/클리어는 서버 응답으로 판정
+        ObjectManager.Instance.StartSpawnEnemies(zone, (_) => ReturnToSafeZone());
     }
 
     private bool IsAlreadyCleared(ZoneConfig zone)
@@ -591,20 +586,34 @@ public class UITabExploration : UITabBase
         return clearedZones != null && clearedZones.Contains(zone.zoneName);
     }
 
-    private void OnEnemyFleetKilledForReward()
+    // 적 함대 1개 전멸 시 호출 — 서버에 웨이브 처치 보고, 서버가 클리어 여부 판정
+    private void OnEnemyFleetKilled()
     {
         if (m_currentZone == null) return;
 
-        if (IsAlreadyCleared(m_currentZone) == false && m_currentZoneCell != null)
-            m_currentZoneCell.SetClearProgress(m_currentWave, m_zoneClearCount);
-
-        var request = new ZoneKillRequest { zoneName = m_currentZone.zoneName };
-        NetworkManager.Instance.KillZoneEnemy(request, OnZoneKillResponse);
+        var request = new DestroyZoneStageWaveRequest
+        {
+            zoneName = m_currentZone.zoneName,
+            waveIndex = m_currentWave - 1  // TriggerWaveStarted는 1-based
+        };
+        NetworkManager.Instance.DestroyZoneStageWave(request, OnDestroyZoneStageWaveResponse);
     }
 
-    private void OnZoneKillResponse(ApiResponse<ZoneKillResponse> response)
+    // 웨이브 처치 응답: 보상 처리 + 진행 UI 갱신 + 신규 클리어 판정 + 다음 웨이브 스폰
+    private void OnDestroyZoneStageWaveResponse(ApiResponse<DestroyZoneStageWaveResponse> response)
     {
-        if (response.errorCode != 0) return;
+        if (response.errorCode != 0)
+        {
+            ObjectManager.Instance.SpawnNextWave();
+            return;
+        }
+
+        if (IsAlreadyCleared(m_currentZone) == false && m_currentZoneCell != null)
+        {
+            m_currentZoneCell.SetClearProgress(m_currentWave, m_zoneClearCount);
+            EventManager.TriggerZoneWaveCleared(m_currentWave, m_zoneClearCount);
+        }
+
         var character = DataManager.Instance.m_currentCharacter;
         if (character != null && response.data.rewardInfo != null)
         {
@@ -613,12 +622,37 @@ public class UITabExploration : UITabBase
             character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
             character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
         }
+
+        // 신규 클리어 완료 — clearedZones 갱신 및 수확 시작 시각 기록
+        if (response.data.isZoneCleared == true && character != null)
+        {
+            character.m_characterInfo.collectDateTime = response.data.collectDateTime;
+
+            if (character.m_characterInfo.clearedZones == null)
+                character.m_characterInfo.clearedZones = new List<string>();
+
+            string newlyCleared = response.data.clearedZoneName;
+            if (character.m_characterInfo.clearedZones.Contains(newlyCleared) == false)
+                character.m_characterInfo.clearedZones.Add(newlyCleared);
+
+            if (m_zoneCells.TryGetValue(newlyCleared, out ZoneMapCell clearedCell))
+                clearedCell.SetState(EZoneState.Cleared, true);
+
+            UpdateZoneInfo();
+            CacheCurrentZoneCell();
+        }
+
+        ObjectManager.Instance.SpawnNextWave();
     }
 
     private void ReturnToSafeZone()
     {
         EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
-        EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilledForReward);
+        EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+
+        // 미완료 웨이브 카운트 초기화 (케이스2 포기 시)
+        if (m_currentZone != null && IsAlreadyCleared(m_currentZone) == false)
+            NetworkManager.Instance.ExitZone(new ExitZoneRequest { zoneName = m_currentZone.zoneName });
 
         ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
         if (zoneConfig == null) return;
@@ -654,41 +688,6 @@ public class UITabExploration : UITabBase
         });
     }
 
-    private void OnZoneClearResponse(ApiResponse<ZoneClearResponse> response)
-    {
-        if (response.errorCode != 0) return;
-
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-        {
-            character.m_characterInfo.collectDateTime = response.data.collectDateTime;
-
-            if (response.data.rewardInfo != null)
-            {
-                character.UpdateMineral(response.data.rewardInfo.remainMineral);
-                character.UpdateMineralRare(response.data.rewardInfo.remainMineralRare);
-                character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
-                character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
-            }
-
-            // clearedZones 목록에 추가
-            if (character.m_characterInfo.clearedZones == null)
-                character.m_characterInfo.clearedZones = new List<string>();
-            string newlyCleared = response.data.clearedZoneName;
-            if (character.m_characterInfo.clearedZones.Contains(newlyCleared) == false)
-                character.m_characterInfo.clearedZones.Add(newlyCleared);
-
-            // 방금 클리어된 셀 reveal
-            if (m_zoneCells.TryGetValue(newlyCleared, out ZoneMapCell clearedCell))
-                clearedCell.SetState(EZoneState.Cleared, true);
-        }
-
-        UpdateZoneInfo();
-        CacheCurrentZoneCell();
-
-        if (m_currentZone != null)
-            StartBattleInZone(m_currentZone);
-    }
 
     private void OnCollectZoneClicked()
     {

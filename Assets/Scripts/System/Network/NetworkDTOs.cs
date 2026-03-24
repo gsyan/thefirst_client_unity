@@ -407,20 +407,6 @@ public class ProgressListResponse
 
 #region Zone Battle Data Classes ##############################################################################
 [System.Serializable]
-public class ZoneClearRequest
-{
-    public string zoneName;  // 클리어한 zone 이름 (예: "2-5")
-}
-
-[System.Serializable]
-public class ZoneClearResponse
-{
-    public string clearedZoneName;  // 방금 클리어한 존 이름
-    public CostRemainInfo rewardInfo;  // 클리어 보상 (광물 등)
-    public string collectDateTime;  // 자원 수확 시작 시간 (ISO 8601 형식)
-}
-
-[System.Serializable]
 public class ZoneCollectRequest
 {
 
@@ -434,16 +420,29 @@ public class ZoneCollectResponse
 }
 
 [System.Serializable]
-public class ZoneKillRequest
+public class DestroyZoneStageWaveRequest
 {
-    public string zoneName;  // 킬이 발생한 존 이름 (예: "2-5")
+    public string zoneName;   // 존 이름 (예: "2-5")
+    public int waveIndex;     // 방금 처치한 웨이브 인덱스 (0-based, 서버 검증용)
 }
 
 [System.Serializable]
-public class ZoneKillResponse
+public class DestroyZoneStageWaveResponse
 {
-    public CostRemainInfo rewardInfo;  // 킬 즉시 보상
+    public CostRemainInfo rewardInfo;   // 킬 즉시 보상
+    public bool isZoneCleared;          // true = 이번 웨이브로 신규 클리어 완료
+    public string clearedZoneName;      // isZoneCleared == true 일 때만 유효
+    public string collectDateTime;      // isZoneCleared == true 일 때만 유효
 }
+
+[System.Serializable]
+public class ExitZoneRequest
+{
+    public string zoneName;
+}
+
+[System.Serializable]
+public class ExitZoneResponse { }
 #endregion
 
 #region Heartbeat Data Classes ################################################################################

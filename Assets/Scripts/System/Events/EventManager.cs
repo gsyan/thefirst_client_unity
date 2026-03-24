@@ -250,6 +250,35 @@ public static class EventManager
         OnMyFleetDestroyed -= callback;
     }
 
+    // 존 진입 (zoneName, isFirstClear, totalWaves)
+    public static event Action<string, bool, int> OnZoneEntered;
+    // 존 웨이브 처치 완료 (clearedCount, totalWaves)
+    public static event Action<int, int> OnZoneWaveCleared;
+    public static void TriggerZoneWaveCleared(int clearedCount, int totalWaves)
+    {
+        OnZoneWaveCleared?.Invoke(clearedCount, totalWaves);
+    }
+    public static void Subscribe_ZoneWaveCleared(Action<int, int> callback)
+    {
+        OnZoneWaveCleared += callback;
+    }
+    public static void Unsubscribe_ZoneWaveCleared(Action<int, int> callback)
+    {
+        OnZoneWaveCleared -= callback;
+    }
+    public static void TriggerZoneEntered(string zoneName, bool isFirstClear, int totalWaves)
+    {
+        OnZoneEntered?.Invoke(zoneName, isFirstClear, totalWaves);
+    }
+    public static void Subscribe_ZoneEntered(Action<string, bool, int> callback)
+    {
+        OnZoneEntered += callback;
+    }
+    public static void Unsubscribe_ZoneEntered(Action<string, bool, int> callback)
+    {
+        OnZoneEntered -= callback;
+    }
+
     // Zone 적 함대 격멸 (kill 보상용)
     public static event Action OnEnemyFleetKilled;
     public static void Trigger_EnemyFleetKilled()

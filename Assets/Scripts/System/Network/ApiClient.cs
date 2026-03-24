@@ -565,26 +565,6 @@ public class ApiClient
     #endregion
 
     #region Zone Battle API Methods -------------------------------------------------------------------------------
-    public async Task<ApiResponse<ZoneClearResponse>> ClearZoneAsync(ZoneClearRequest request)
-    {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneClearResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
-
-        string json = JsonConvert.SerializeObject(request);
-        Debug.Log($"Zone Clear Request: {json}");
-
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/clear", "POST");
-        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.SetRequestHeader("Content-Type", "application/json");
-        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
-
-        await SendRequestAsync(webRequest);
-
-        var response = JsonConvert.DeserializeObject<ApiResponse<ZoneClearResponse>>(webRequest.downloadHandler.text);
-        Debug.Log($"Zone Clear Response: {webRequest.downloadHandler.text}");
-        return response;
-    }
-
     public async Task<ApiResponse<ZoneCollectResponse>> CollectZoneAsync(ZoneCollectRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneCollectResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
@@ -605,20 +585,36 @@ public class ApiClient
         return response;
     }
 
-    public async Task<ApiResponse<ZoneKillResponse>> KillZoneEnemyAsync(ZoneKillRequest request)
+    public async Task<ApiResponse<DestroyZoneStageWaveResponse>> DestroyZoneStageWaveAsync(DestroyZoneStageWaveRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneKillResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<DestroyZoneStageWaveResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/kill", "POST");
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/destroy-wave", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
         webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(webRequest);
-        return JsonConvert.DeserializeObject<ApiResponse<ZoneKillResponse>>(webRequest.downloadHandler.text);
+        return JsonConvert.DeserializeObject<ApiResponse<DestroyZoneStageWaveResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<ExitZoneResponse>> ExitZoneAsync(ExitZoneRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ExitZoneResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/exit", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<ExitZoneResponse>>(webRequest.downloadHandler.text);
     }
     #endregion
 

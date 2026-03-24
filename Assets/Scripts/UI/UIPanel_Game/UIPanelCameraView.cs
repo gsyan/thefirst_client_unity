@@ -12,6 +12,11 @@ public class UIPanelCameraView : UIPanelBase
     [SerializeField] private Button m_speedButton;
     [SerializeField] private TextMeshProUGUI m_speedLabel;
 
+    [Header("존 진행 정보")]
+    [SerializeField] private TextMeshProUGUI m_zoneNameText;
+    [SerializeField] private GameObject m_waveProgressPanel;  // 미클리어 도전 중에만 활성화
+    [SerializeField] private RectTransform m_waveGauge;       // anchorMax.x 0~1 방식
+
     [Header("Viewport 연동 앵커 (0~1 범위)")]
     [SerializeField] private float m_anchorXA = 0.5f;    // UI 닫힘 앵커 중심 X
     [SerializeField] private float m_anchorXB = 0.25f;   // UI 열림 앵커 중심 X
@@ -25,6 +30,8 @@ public class UIPanelCameraView : UIPanelBase
         // start 에서 이벤트 등록 하면, 인스턴스 활성화 될때까지 이벤트 받지 못함. 그래서 여기로 이동
         EventManager.Subscribe_CameraViewportChanged(OnViewportChanged);
         EventManager.Subscribe_GameSpeedChanged(OnGameSpeedChanged);
+        EventManager.Subscribe_ZoneEntered(OnZoneEntered);
+        EventManager.Subscribe_ZoneWaveCleared(OnZoneWaveCleared);
     }
 
     void Start()
@@ -55,6 +62,8 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Unsubscribe_CameraFocusTargetChanged(OnCameraFocusTargetChanged);
         EventManager.Unsubscribe_CameraViewportChanged(OnViewportChanged);
         EventManager.Unsubscribe_GameSpeedChanged(OnGameSpeedChanged);
+        EventManager.Unsubscribe_ZoneEntered(OnZoneEntered);
+        EventManager.Unsubscribe_ZoneWaveCleared(OnZoneWaveCleared);
     }
 
     private void OnCameraViewCycleClicked()
@@ -88,6 +97,38 @@ public class UIPanelCameraView : UIPanelBase
     {
         // 패널이 뜰 때 현재 viewport 비율로 즉시 위치 동기화 (비활성 중 놓친 이벤트 보정)
         OnViewportChanged(m_lastViewportRatio);
+    }
+
+    private void OnZoneEntered(string zoneName, bool isFirstClear, int totalWaves)
+    {
+        if (m_zoneNameText != null)
+        {
+            string label = LocalizationManager.Instance.Get("exploration_zone_list_name");
+            m_zoneNameText.text = $"{label} {zoneName}";
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_zoneNameText.transform.parent as RectTransform);
+        }
+
+        if (m_waveProgressPanel != null)
+            m_waveProgressPanel.SetActive(isFirstClear);
+
+        SetWaveGauge(0f);
+    }
+
+    private void OnZoneWaveCleared(int clearedCount, int totalWaves)
+    {
+        if (m_waveProgressPanel == null || m_waveProgressPanel.activeSelf == false) return;
+        float ratio = totalWaves > 0 ? (float)clearedCount / totalWaves : 0f;
+        SetWaveGauge(ratio);
+        if (ratio >= 1f)
+            m_waveProgressPanel.SetActive(false);
+    }
+
+    private void SetWaveGauge(float ratio)
+    {
+        if (m_waveGauge == null) return;
+        m_waveGauge.anchorMax = new Vector2(ratio, m_waveGauge.anchorMax.y);
+        m_waveGauge.offsetMin = Vector2.zero;
+        m_waveGauge.offsetMax = Vector2.zero;
     }
 
     // viewport ratio (0=전체화면, 1=UI열림) — 앵커 중심 X만 이동, 크기 유지

@@ -386,31 +386,22 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     
 
-    // enemyShipConfigs를 반복 스폰 — zoneClearCount 라운드를 처치하면 클리어
+    // delayBeforeSpawn 후 웨이브 1개 스폰 — 클리어 판정은 서버가 담당
     private IEnumerator SpawnWaves()
     {
-        while (m_currentWaveIndex < m_currentZoneConfig.zoneClearCount)
-        {
-            // 라운드 시작 전 대기
-            if (m_currentZoneConfig.delayBeforeSpawn > 0)
-                yield return new WaitForSeconds(m_currentZoneConfig.delayBeforeSpawn);
+        if (m_currentZoneConfig.delayBeforeSpawn > 0)
+            yield return new WaitForSeconds(m_currentZoneConfig.delayBeforeSpawn);
 
-            SpawnEnemyFleetsFromConfigs(m_currentZoneConfig.enemyShipConfigs);
-            EventManager.TriggerWaveStarted(m_currentWaveIndex + 1, m_currentZoneConfig.zoneClearCount);
+        SpawnEnemyFleetsFromConfigs(m_currentZoneConfig.enemyShipConfigs);
+        EventManager.TriggerWaveStarted(m_currentWaveIndex + 1, m_currentZoneConfig.zoneClearCount);
+    }
 
-            // 적 함대 전멸 대기
-            yield return new WaitUntil(() => m_enemyFleets.Count == 0);
-
-            m_currentWaveIndex++;
-
-            if (m_currentWaveIndex >= m_currentZoneConfig.zoneClearCount)
-            {
-                var callback = m_onZoneBattleComplete;
-                m_onZoneBattleComplete = null;
-                callback?.Invoke(true);
-                yield break;
-            }
-        }
+    // UITabExploration이 서버 응답 후 호출 — 다음 웨이브 스폰
+    public void SpawnNextWave()
+    {
+        if (m_currentZoneConfig == null) return;
+        m_currentWaveIndex++;
+        m_spawnCoroutine = StartCoroutine(SpawnWaves());
     }
 
     // enemyShipConfigs 목록으로 적 함대 1개 생성 (함선 여러 척)

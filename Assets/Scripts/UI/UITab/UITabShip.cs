@@ -715,6 +715,9 @@ public class UITabShip : UITabBase
         RefreshRow(EModuleType.engine,  body, m_selectorsEngine,  m_moduleEngineSelectButtonContainer);
 
         UpdateModuleSelectButtonSelection();
+
+        if (m_moduleSelectRoot != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleSelectRoot);
     }
 
     private void RefreshRow(EModuleType type, ModuleBody body, ModuleSelector[] selectors, RectTransform container)

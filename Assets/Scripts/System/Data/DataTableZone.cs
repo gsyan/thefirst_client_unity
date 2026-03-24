@@ -131,6 +131,7 @@ public class DataTableZone : ScriptableObject
             serverData.Add(new
             {
                 zoneName = zone.zoneName,
+                zoneClearCount = zone.zoneClearCount,
                 killRewardMineral = zone.killRewardMineral,
                 killRewardMineralRare = zone.killRewardMineralRare,
                 killRewardMineralExotic = zone.killRewardMineralExotic,
