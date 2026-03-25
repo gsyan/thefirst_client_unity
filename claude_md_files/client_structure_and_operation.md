@@ -132,11 +132,11 @@ https://assetstore.unity.com/packages/3d/vehicles/space/ussn-freedom-class-dread
 ### US Space Navy Collection - $175 - MSGDI
 https://assetstore.unity.com/packages/3d/vehicles/space/us-space-navy-collection-195258
 - 크기 기준 함선 나열
-- Freedom class dreadnought ( 부분 모듈식이라 베리에이션 가능)
+- Freedom class dreadnought (scale 15, 15, 50 unity unit / 1000m) -> 1 unity unit = 20m 인격
 - Arizona class battleship, Missouri class battleship, Yorktown class carrier
 - Ticonderoga class battlecruiser, Charleston class cruiser
 - Farragut class destroyer
-- Congress class frigate
+- Congress class frigate (scale 2, 1, 4 unity unit / 80m)
 - 이외 USSN Modular Fighter Kit (example 4종)
 - 레이저, 미사일 포대 모듈 / 미사일 모델
 - 종합적으로 봤을때 끝판왕급. 이정도 에셋 몇개 있으면 충분할 정도

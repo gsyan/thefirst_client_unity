@@ -83,8 +83,7 @@ public class ModuleBody : ModuleBase
     // Body 초기화 (기존 모듈 재사용 가능)
     public void InitializeModuleBody(ModuleBodyInfo moduleBodyInfo, List<ModuleBase> savedModules)
     {
-        // 전투 중 모듈 제거가 원본 FleetInfo를 변경하지 않도록 깊은 복사
-        m_moduleBodyInfo = moduleBodyInfo;//DeepCopyBodyInfo(moduleBodyInfo);
+        m_moduleBodyInfo = moduleBodyInfo;
         m_moduleSlot = null;
         SetUnlockedSubTypes(moduleBodyInfo.unlockedSubTypes);
 
@@ -123,6 +122,25 @@ public class ModuleBody : ModuleBase
         CreateMissingModules(moduleBodyInfo);
     }
 
+    // 슬롯에 실제 모듈(Placeholder 제외)이 있는지 확인
+    private bool HasRealModule(ModuleSlot slot)
+    {
+        foreach (Transform child in slot.transform)
+        {
+            if (child.GetComponent<ModulePlaceholder>() == null)
+                return true;
+        }
+        return false;
+    }
+
+    // 슬롯의 Placeholder를 비활성화
+    private void DisablePlaceholderIfExists(ModuleSlot slot)
+    {
+        ModulePlaceholder placeholder = slot.GetComponentInChildren<ModulePlaceholder>(true);
+        if (placeholder != null)
+            placeholder.gameObject.SetActive(false);
+    }
+
     // 저장된 모듈을 슬롯에 재배치
     private void RestoreSavedModules(List<ModuleBase> savedModules)
     {
@@ -137,9 +155,10 @@ public class ModuleBody : ModuleBase
             // 새 body에서 같은 타입과 인덱스의 슬롯 찾기
             ModuleSlot targetSlot = FindModuleSlot(moduleType, oldSlotIndex);
 
-            if (targetSlot != null && targetSlot.transform.childCount == 0)
+            if (targetSlot != null && !HasRealModule(targetSlot))
             {
-                // 슬롯 찾음 - 모듈 배치
+                // 기존 placeholder 비활성화 후 모듈 배치
+                DisablePlaceholderIfExists(targetSlot);
                 module.transform.SetParent(targetSlot.transform);
                 module.transform.localPosition = Vector3.zero;
                 module.transform.localRotation = Quaternion.identity;
@@ -175,8 +194,11 @@ public class ModuleBody : ModuleBase
             foreach (var engineInfo in bodyInfo.engines)
             {
                 ModuleSlot slot = FindModuleSlot(engineInfo.moduleType, engineInfo.slotIndex);
-                if (slot != null && slot.transform.childCount == 0)
+                if (slot != null && !HasRealModule(slot))
+                {
+                    DisablePlaceholderIfExists(slot);
                     InitializeEngine(engineInfo);
+                }
             }
         }
 
@@ -186,8 +208,11 @@ public class ModuleBody : ModuleBase
             foreach (var beamInfo in bodyInfo.beams)
             {
                 ModuleSlot slot = FindModuleSlot(beamInfo.moduleType, beamInfo.slotIndex);
-                if (slot != null && slot.transform.childCount == 0)
+                if (slot != null && !HasRealModule(slot))
+                {
+                    DisablePlaceholderIfExists(slot);
                     InitializeBeam(beamInfo);
+                }
             }
         }
 
@@ -197,11 +222,13 @@ public class ModuleBody : ModuleBase
             foreach (var missileInfo in bodyInfo.missiles)
             {
                 ModuleSlot slot = FindModuleSlot(missileInfo.moduleType, missileInfo.slotIndex);
-                if (slot != null && slot.transform.childCount == 0)
+                if (slot != null && !HasRealModule(slot))
+                {
+                    DisablePlaceholderIfExists(slot);
                     InitializeMissile(missileInfo);
+                }
             }
         }
-
 
         // 행거 생성
         if (bodyInfo.hangers != null)
@@ -209,12 +236,15 @@ public class ModuleBody : ModuleBase
             foreach (var hangerInfo in bodyInfo.hangers)
             {
                 ModuleSlot slot = FindModuleSlot(hangerInfo.moduleType, hangerInfo.slotIndex);
-                if (slot != null && slot.transform.childCount == 0)
+                if (slot != null && !HasRealModule(slot))
+                {
+                    DisablePlaceholderIfExists(slot);
                     InitializeHanger(hangerInfo);
+                }
             }
         }
 
-        // 빈 슬롯에 Placeholder 배치
+        // 실제 모듈이 없는 슬롯의 Placeholder 초기화
         FillEmptySlotsWithPlaceholders();
     }
 
@@ -234,7 +264,7 @@ public class ModuleBody : ModuleBase
             return;
         }
 
-        if (targetSlot.transform.childCount > 0)
+        if (HasRealModule(targetSlot))
         {
             Debug.LogWarning($"InitializeEngine: Engine slot {moduleInfo.slotIndex} is already occupied");
             return;
@@ -256,7 +286,7 @@ public class ModuleBody : ModuleBase
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
-        if (targetSlot.transform.childCount > 0) return;
+        if (HasRealModule(targetSlot)) return;
         
         GameObject beamObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         beamObj.transform.SetParent(targetSlot.transform);
@@ -274,7 +304,7 @@ public class ModuleBody : ModuleBase
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
-        if (targetSlot.transform.childCount > 0) return;
+        if (HasRealModule(targetSlot)) return;
         
         GameObject missileObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         missileObj.transform.SetParent(targetSlot.transform);
@@ -302,7 +332,7 @@ public class ModuleBody : ModuleBase
             return;
         }
 
-        if (targetSlot.transform.childCount > 0)
+        if (HasRealModule(targetSlot))
         {
             Debug.LogWarning($"InitializeHanger: Hanger slot {moduleInfo.slotIndex} is already occupied");
             return;
@@ -338,28 +368,21 @@ public class ModuleBody : ModuleBase
 
     private void FillEmptySlotsWithPlaceholders()
     {
-        GameObject placeholderPrefab = ObjectManager.Instance.LoadModulePlaceholderPrefab();
-        if (placeholderPrefab == null)
-        {
-            Debug.LogError("ModulePlaceholder prefab not found. Skipping empty slot filling.");
-            return;
-        }
-
         foreach (ModuleSlot slot in m_moduleSlots)
         {
-            // 이미 모듈이 배치된 슬롯은 건너뜀
-            if (slot.transform.childCount > 0)
+            // 실제 모듈이 이미 있는 슬롯은 건너뜀
+            if (HasRealModule(slot))
                 continue;
 
-            // ModulePlaceholder 생성 및 배치
-            GameObject placeholderObj = Instantiate(placeholderPrefab, slot.transform.position, slot.transform.rotation);
-            placeholderObj.transform.SetParent(slot.transform);
-
-            // ModulePlaceholder 컴포넌트 추가 및 초기화
-            ModulePlaceholder modulePlaceholder = placeholderObj.GetComponent<ModulePlaceholder>();
+            // 프리팹에 내장된 Placeholder를 찾아 초기화
+            ModulePlaceholder modulePlaceholder = slot.GetComponentInChildren<ModulePlaceholder>(true);
             if (modulePlaceholder == null)
-                modulePlaceholder = placeholderObj.AddComponent<ModulePlaceholder>();
+            {
+                Debug.LogWarning($"FillEmptySlotsWithPlaceholders: No placeholder in slot {slot.m_moduleSlotInfo.slotIndex}");
+                continue;
+            }
 
+            modulePlaceholder.gameObject.SetActive(true);
             modulePlaceholder.InitializeModulePlaceholder(this, slot);
         }
     }

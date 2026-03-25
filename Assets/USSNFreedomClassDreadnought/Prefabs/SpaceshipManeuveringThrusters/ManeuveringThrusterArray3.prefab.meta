@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9107b4922c3e3394fb9eac18733918a3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195256
+  packageName: USSN Freedom Class Dreadnought
+  packageVersion: 1.0
+  assetPath: Assets/USSNFreedomClassDreadnought/Prefabs/SpaceshipManeuveringThrusters/ManeuveringThrusterArray3.prefab
+  uploadId: 433057

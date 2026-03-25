@@ -19,6 +19,7 @@ public class ModuleBeam : ModuleBase
 
     private ModuleBody m_currentTarget;
     private Coroutine m_autoAttackCoroutine;
+    private Animator m_animator;
 
 
     public override EModuleType GetModuleType()
@@ -91,6 +92,8 @@ public class ModuleBeam : ModuleBase
         // 부모 바디에 이 무기 등록
         if (m_parentBody != null)
             m_parentBody.AddBeam(this);
+
+        m_animator = GetComponentInChildren<Animator>();
     }
 
     private void InitializeSubType(ModuleData moduleData)
@@ -147,13 +150,13 @@ public class ModuleBeam : ModuleBase
     
     private void ExecuteAttackOnTarget(ModuleBody target)
     {
+        if (m_animator != null)
+            m_animator.SetTrigger("Fire");
+
         foreach (var launcher in m_launchers)
         {
             if (launcher != null)
-            {
                 launcher.FireAtTarget(target, m_attack, this);
-            }
-                
         }
     }
 

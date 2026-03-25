@@ -151,7 +151,7 @@ public class ProjectileBeam : ProjectileBase
         if (hitTarget != null)
         {
             hitTarget.TakeDamage(m_damage);
-            ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(EPoolName.EFFECT_BEAM_HIT, finalHitPoint);
+            //ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(EPoolName.EFFECT_BEAM_HIT, finalHitPoint);
         }
 
         // 3단계: 흩어지며 소멸 (TakeDamage→전멸→CleanupAllProjectiles 동기 체인으로 비활성화될 수 있음)
@@ -270,12 +270,12 @@ public class ProjectileBeam : ProjectileBase
             float t = (float)i / m_scatterParticleCount;
             emitParams.position = Vector3.Lerp(start, end, t);
             emitParams.startColor = m_beamColor;
-            emitParams.startSize = m_scatterParticleSize * Random.Range(0.5f, 1.5f);
+            emitParams.startSize = m_scatterParticleSize * Random.Range(0.02f, 0.1f);
 
             // 빔 방향에서 수직으로 흩어지게
             float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             Vector3 scatterDir = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, beamDir) * perpendicular;
-            emitParams.velocity = scatterDir * m_scatterParticleSpeed * Random.Range(0.5f, 1.5f);
+            emitParams.velocity = scatterDir * m_scatterParticleSpeed * Random.Range(0.02f, 0.1f);
 
             m_scatterParticle.Emit(emitParams, 1);
         }

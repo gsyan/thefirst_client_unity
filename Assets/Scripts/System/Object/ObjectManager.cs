@@ -748,7 +748,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         Vector3 fleetForward = m_myFleet.transform.forward;
 
         // 적 거리 설정
-        float spawnDistance = UnityEngine.Random.Range(600.0f, 700.0f);
+        float spawnDistance = 30.0f;
         
         // 최종 스폰 위치 계산
         Vector3 spawnPosition = fleetPosition +  fleetForward * spawnDistance;

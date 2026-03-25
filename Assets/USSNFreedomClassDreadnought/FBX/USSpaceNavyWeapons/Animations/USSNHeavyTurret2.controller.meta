@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 31c5c7d9e3f60ba43be4343867c1bc8c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195256
+  packageName: USSN Freedom Class Dreadnought
+  packageVersion: 1.0
+  assetPath: Assets/USSNFreedomClassDreadnought/FBX/USSpaceNavyWeapons/Animations/USSNHeavyTurret2.controller
+  uploadId: 433057

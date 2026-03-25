@@ -1,0 +1,423 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3639738690725301409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3840434697907597950}
+  - component: {fileID: 4207056978873660321}
+  m_Layer: 0
+  m_Name: USSNLightTurret2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3840434697907597950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3639738690725301409}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6647408292014970912}
+  - {fileID: 2652527543876095590}
+  - {fileID: 8692260222610839697}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &4207056978873660321
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3639738690725301409}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4a003e8f178272a47965d14d703135be, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1001 &2541458189808953741
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3840434697907597950}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.06638
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0111
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.000000021855694
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 25c502b3b2075f5479f356d20580ee94,
+        type: 3}
+      propertyPath: m_Name
+      value: USSNLightTurret2Barrel1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 25c502b3b2075f5479f356d20580ee94, type: 3}
+--- !u!4 &2652527543876095590 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 25c502b3b2075f5479f356d20580ee94,
+    type: 3}
+  m_PrefabInstance: {fileID: 2541458189808953741}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3109919651614400315
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2652527543876095590}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0060006
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0041012974
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.066757
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_Name
+      value: USSNLightTurret2Barrel2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c507bf1201af4e74a9e059339aca1929, type: 3}
+--- !u!1001 &4117214422577349532
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2652527543876095590}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0060006
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.004101297
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.066757
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c507bf1201af4e74a9e059339aca1929,
+        type: 3}
+      propertyPath: m_Name
+      value: USSNLightTurret2Barrel3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c507bf1201af4e74a9e059339aca1929, type: 3}
+--- !u!1001 &6614362757698731979
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3840434697907597950}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.000000021855694
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c8e91f9000419974896b725d00fb38ea,
+        type: 3}
+      propertyPath: m_Name
+      value: USSNLightTurret2Base
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c8e91f9000419974896b725d00fb38ea, type: 3}
+--- !u!4 &6647408292014970912 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c8e91f9000419974896b725d00fb38ea,
+    type: 3}
+  m_PrefabInstance: {fileID: 6614362757698731979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9163600261481463674
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3840434697907597950}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.06638
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0111
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.000000021855694
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_Name
+      value: USSNLightTurret2BarrelStatic
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5d1ad1024d22aa0438242fa237e30e4e, type: 3}
+--- !u!4 &8692260222610839697 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5d1ad1024d22aa0438242fa237e30e4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 9163600261481463674}
+  m_PrefabAsset: {fileID: 0}

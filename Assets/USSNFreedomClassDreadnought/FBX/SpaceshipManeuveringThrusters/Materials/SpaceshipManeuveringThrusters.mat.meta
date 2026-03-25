@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3f01152e6b1df3540b53117520a6251a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195256
+  packageName: USSN Freedom Class Dreadnought
+  packageVersion: 1.0
+  assetPath: Assets/USSNFreedomClassDreadnought/FBX/SpaceshipManeuveringThrusters/Materials/SpaceshipManeuveringThrusters.mat
+  uploadId: 433057
