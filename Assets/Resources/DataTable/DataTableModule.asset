@@ -1523,8 +1523,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 10
       attackCool: 3.5
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1554,8 +1554,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 15
       attackCool: 3.4
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
