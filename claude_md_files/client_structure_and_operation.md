@@ -115,43 +115,123 @@ ApiClient.PostAsync() / GetAsync()
 ---
 
 
-## 이팩트 에셋
-현재 검토 중인 에셋 목록. 최종 채택 전 단계.
-상세한 모듈화 - 성능 문제 체크!
----
-
-### URP VFX Mega Bundle — $79.99($159.99)
-https://assetstore.unity.com/packages/vfx/urp-vfx-ultra-bundle-257146
-
-### Super Realistic ARPG FX Bundle - 600+ Unique VFX! $175($350)
-https://assetstore.unity.com/packages/vfx/particles/spells/super-realistic-arpg-fx-bundle-600-unique-vfx-361334
-
-### Sci-Fi Effects - $35
-https://assetstore.unity.com/packages/vfx/particles/sci-fi-effects-20416
-
 ## 함선 모듈 에셋
 현재 검토 중인 에셋 목록. 최종 채택 전 단계.
 상세한 모듈화 - 드로우콜에 문제 생기지 않을지! 반드시 체크
+https://assetstore.unity.com/3d/vehicles/space
+https://assetstore.unity.com/ko-KR/publishers/1611 - 엄청난 내 취향 MSGDI
 ---
 
-### Ultimate Spaceships Creator — $95 - 여러가지, 함재기까지
-https://assetstore.unity.com/packages/3d/vehicles/space/ultimate-spaceships-creator-196802
+### USSN Freedom Class Dreadnought - $25 - MSGDI - ✅ 채택
+https://assetstore.unity.com/packages/3d/vehicles/space/ussn-freedom-class-dreadnought-195256
+- Freedom class dreadnought ( 부분 모듈식이라 베리에이션 가능)
+- US Space Navy Collection - $175 - MSGDI 의 구성을 따로 따로 파는 것중 하나
+- 이것을 우선 사서 와이프와 이것저것 시도를 해보고 괜찮으면 US Space Navy Collection - $175 을 구매할 예정
+- 기함의 최종 발전된 모습과 크기를 이것에 맞추고, 초기 모델은 이것의 일부를 떼서 크기 조정해서 쓸 예정
 
-### Spaceships Vol. #18 - 이건 뭔가 전투 함선 같은 느낌이 안듬
-https://assetstore.unity.com/packages/3d/vehicles/space/spaceships-vol-18-155565
-
-### Spaceship Pirate Fleet Collection I - $50 확실한 전투 함선
-https://assetstore.unity.com/packages/3d/vehicles/space/spaceship-pirate-fleet-collection-i-75094
-
-### US Space Navy Collection $175 - 너무 시싸서 keep
+### US Space Navy Collection - $175 - MSGDI
 https://assetstore.unity.com/packages/3d/vehicles/space/us-space-navy-collection-195258
+- 크기 기준 함선 나열
+- Freedom class dreadnought ( 부분 모듈식이라 베리에이션 가능)
+- Arizona class battleship, Missouri class battleship, Yorktown class carrier
+- Ticonderoga class battlecruiser, Charleston class cruiser
+- Farragut class destroyer
+- Congress class frigate
+- 이외 USSN Modular Fighter Kit (example 4종)
+- 레이저, 미사일 포대 모듈 / 미사일 모델
+- 종합적으로 봤을때 끝판왕급. 이정도 에셋 몇개 있으면 충분할 정도
+
+### Spaceship Capital Ship Modular Equipment - $12.50 - MSGDI
+https://assetstore.unity.com/packages/3d/vehicles/space/spaceship-capital-ship-modular-equipment-77852#content
+https://assetstore.unity.com/packages/3d/vehicles/space/spaceship-dreadnought-modular-equipment-82645
+https://assetstore.unity.com/packages/3d/vehicles/space/spaceship-cruiser-modular-equipment-75737
+https://assetstore.unity.com/packages/3d/vehicles/space/spaceship-destroyer-modular-equipment-72924
+- 종합 페키지에 이것이 없을 경우 추가 구매 가능
+
+### Spaceship Capital Ship Collection I - $75 - MSGDI
+https://assetstore.unity.com/packages/3d/vehicles/space/spaceship-capital-ship-collection-i-78939#content
+- 함선 4개 및 파츠 모듈 미사일
+
+### Spaceship Capital Ship Collection II - $67.50 - MSGDI
+https://assetstore.unity.com/packages/3d/vehicles/space/spaceship-capital-ship-collection-ii-110044
+- 함선 4개 및 파츠 모듈 미사일
+
+### Spaceship Pirate Fleet Collection I - $50 - MSGDI
+https://assetstore.unity.com/packages/3d/vehicles/space/spaceship-pirate-fleet-collection-i-75094
+- 함선 4개 및 파츠 모듈 미사일
+- 근데 이건 왜 싸지 오래되서?
+
+### Ultimate Spaceships Creator — $95 - Ebal Studios
+https://assetstore.unity.com/packages/3d/vehicles/space/ultimate-spaceships-creator-196802
+- Cockpit / Body Parts / Wing 파츠가 별개 메시로 분리되어 있음 → 파츠 조합으로 신규 함선 디자인 가능
+- 완성 함선 11종+ 제공 (Astro Eagle, Cosmic Shark, Force Badger 등)
+- 파괴 연출: 파츠별 Rigidbody 적용으로 분리 날아가는 연출 가능
+- URP / HDRP 지원
+
+### Sci-Fi Modular Capital Spaceship Galactic Leopard - $40 - Ebal Studios
+https://assetstore.unity.com/packages/3d/vehicles/space/sci-fi-modular-capital-spaceship-galactic-leopard-134390
+- Ultimate Spaceships Creator 에서 함선 부분만 때어낸 것 같음
+
+
+
+## 이팩트 에셋
+현재 검토 중인 에셋 목록. 최종 채택 전 단계.
+상세한 모듈화 - 성능 문제 체크!
+https://assetstore.unity.com/ko-KR/search#q=Sci-Fi&cf-ec_category=vfx,particles
+---
+
+### Sci-Fi Effects - $35 - FORGE3D - ✅ 채택
+https://assetstore.unity.com/packages/vfx/particles/sci-fi-effects-20416
+- Built-in / URP / HDRP 모두 호환, 2024년 4월 업데이트, 평점 5/5 (397개).
+- 리뷰에서 "코드 느림 → 이펙트만 쓰고 무기 발사 시스템 코드는 버려라" 는데, 우리는 어차피 이펙트만 쓸 거니까 문제없어.
+
+### Unique Lasers Volume 1 - $20 - Gabriel Aguiar Prod
+https://assetstore.unity.com/packages/vfx/particles/unique-lasers-volume-1-118909
+- URP / HDRP / Unity 6 모두 지원
+- 레이저 빔 14종, 발사점·탄착점·데칼 3박자 갖춤
+- 반사/바운스 기능 (충돌 시 튕김)
+- 색상·크기·발사점·끝점 커스터마이징 스크립트 포함
+- 평점 5/5 (12개 리뷰), 개발자 이메일 지원
+
+### 3D Lasers Pack - $14 - Hovl Studio
+https://assetstore.unity.com/packages/vfx/particles/3d-lasers-pack-131685
+- 다양한 레이저
+- 과하지 않은 레이저
+- 데칼이 아쉬운 정도. 그러나 데칼이 꼭 필요할까도 체크
+
+### AAA 스타일라이즈드 투사체 Vol.1 - $19 - Hovl Studio
+https://assetstore.unity.com/packages/vfx/particles/aaa-stylized-projectiles-vol-1-130378
+- 다양한 투사체(포톤)
+
+### Laser Beam-Urp Pack - $9.99 - Game HUB
+https://assetstore.unity.com/packages/vfx/laser-beam-urp-pack-358152
+- 다양한 레이저
+- 3D Lasers Pack - $14 에 비해서 뿅뿅하는 느낌 있음, 그러나 어떤건 괜찮다고 보여짐
+
+### Black Hole VFX - $15 - FlexUnit
+https://assetstore.unity.com/packages/vfx/black-hole-vfx-357960
+
+### Sci-fi Rocket Thruster VFX 06 - $6
+https://assetstore.unity.com/packages/vfx/particles/sci-fi-rocket-thruster-vfx-06-206949
+추진체 이팩트
+
+### Sci-Fi VFX - $19
+https://assetstore.unity.com/packages/vfx/particles/sci-fi-vfx-91983
+레이저 퀄리티 좋음
+구체 실드 이팩트 괜찮음
+방패 이팩트 괜찮음(다른모양으로도 된다면 좋을듯)
+
+### Sci-Fi and Magic Flashes
+https://assetstore.unity.com/packages/vfx/particles/spells/sci-fi-and-magic-flashes-75651
+발사, 탄착, 프로젝타일 느낌 괜찮음. 포토캐논 느낌
+
+
 
 
 ## 스카이박스 / 우주 배경 천체
-현재 검토 중인 에셋 목록. 최종 채택 전 단계.
 ---
 
-### [후보 A] Space Skybox Kit — $10
+### Space Skybox Kit — $10 (채택) - ✅ 채택
 https://assetstore-fallback.unity.com/packages/2d/textures-materials/space-skybox-kit-176564?utm_source=chatgpt.com#content
 
 - 큐브맵 16개 + 소행성 스프라이트 10개 + 행성 스프라이트 6개 + **PSD 원본 포함** (레이어 편집 가능)
