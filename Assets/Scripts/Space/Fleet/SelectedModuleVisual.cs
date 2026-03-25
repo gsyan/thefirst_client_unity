@@ -1,3 +1,5 @@
+// 선택된 모듈 위에 GridOverlay 메시를 동적 생성하여 그리드 선택 효과를 표시.
+// 원본 머티리얼/쉐이더와 무관하므로 신규 모델 도입 시 별도 작업 불필요.
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +8,10 @@ public class SelectedModuleVisual : MonoBehaviour
 {
     private SpaceShip m_myShip;
     private ModuleBase m_partsBase;
-    private Renderer[] m_renderers;
-    private MaterialPropertyBlock m_propertyBlock;
     [SerializeField] private bool m_isSelected = false;
-    private float m_calculatedGridSpacing = 3.0f;
+
+    private readonly List<GameObject> m_overlayObjects = new();
+    private Material m_overlayMaterial;
 
     public ModuleBase ModuleBase => m_partsBase;
 
@@ -19,109 +21,123 @@ public class SelectedModuleVisual : MonoBehaviour
         m_partsBase = partsBase;
 
         if (transform.childCount <= 0) return;
-        m_renderers = transform.GetChild(0).GetComponents<MeshRenderer>();
 
-        m_propertyBlock = new MaterialPropertyBlock();
-
-        // Calculate appropriate grid spacing based on object size
-        CalculateGridSpacing();
+        if (TryCreateOverlayMaterial() == true)
+            BuildOverlayRenderers();
     }
 
-    private void CalculateGridSpacing()
+    private bool TryCreateOverlayMaterial()
     {
-        if (m_renderers == null || m_renderers.Length == 0) return;
-
-        // Get mesh UV bounds to determine actual UV range
-        MeshFilter meshFilter = m_renderers[0].GetComponent<MeshFilter>();
-        if (meshFilter == null || meshFilter.sharedMesh == null)
+        Shader shader = Shader.Find("SpaceFleet/GridOverlay");
+        if (shader == null)
         {
-            m_calculatedGridSpacing = 0.3f; // Default fallback
-            return;
+            Debug.LogError("[SelectedModuleVisual] SpaceFleet/GridOverlay 쉐이더를 찾을 수 없습니다.");
+            return false;
         }
-
-        Mesh mesh = meshFilter.sharedMesh;
-
-        // Calculate UV range
-        Vector2[] uvs = mesh.uv;
-        if (uvs == null || uvs.Length == 0)
-        {
-            m_calculatedGridSpacing = 0.3f; // Default fallback
-            return;
-        }
-
-        Vector2 uvMin = uvs[0];
-        Vector2 uvMax = uvs[0];
-
-        foreach (Vector2 uv in uvs)
-        {
-            uvMin = Vector2.Min(uvMin, uv);
-            uvMax = Vector2.Max(uvMax, uv);
-        }
-
-        // UV range (how many times UV repeats)
-        Vector2 uvRange = uvMax - uvMin;
-        float maxUVRange = Mathf.Max(uvRange.x, uvRange.y);
-
-        // Target: 3-5 grid lines across the object
-        // If UV is 0~1 (range=1), spacing should be ~0.25 (4 grids)
-        // If UV is 0~5 (range=5), spacing should be ~1.25 (4 grids)
-        m_calculatedGridSpacing = maxUVRange / 4.0f;
-        m_calculatedGridSpacing = Mathf.Clamp(m_calculatedGridSpacing, 0.1f, 10.0f);
+        m_overlayMaterial = new(shader);
+        m_overlayMaterial.SetFloat("_GridSpacing", CalculateGridSpacing());
+        return true;
     }
 
+    // 월드 바운드 기준으로 4칸 그리드 간격 계산
+    private float CalculateGridSpacing()
+    {
+        if (transform.childCount <= 0) return 0.4f;
+
+        Renderer[] renderers = transform.GetChild(0).GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0) return 0.4f;
+
+        Bounds bounds = renderers[0].bounds;
+        foreach (var r in renderers)
+            bounds.Encapsulate(r.bounds);
+
+        float minSize = Mathf.Min(bounds.size.x, bounds.size.y, bounds.size.z);
+        return Mathf.Max(minSize / 4.0f, 0.05f);
+    }
+
+    private void BuildOverlayRenderers()
+    {
+        DestroyOverlayObjects();
+
+        MeshFilter[] meshFilters = transform.GetChild(0).GetComponentsInChildren<MeshFilter>();
+        foreach (var mf in meshFilters)
+        {
+            if (mf.sharedMesh == null) continue;
+
+            GameObject overlayObj = new GameObject("_GridOverlay");
+            overlayObj.transform.SetParent(mf.transform, false);
+            overlayObj.SetActive(m_isSelected);
+
+            overlayObj.AddComponent<MeshFilter>().sharedMesh = mf.sharedMesh;
+
+            var mr = overlayObj.AddComponent<MeshRenderer>();
+            // 서브메시 수만큼 같은 머티리얼로 채워야 모든 파트가 커버됨
+            int subMeshCount = mf.sharedMesh.subMeshCount;
+            Material[] mats = new Material[subMeshCount];
+            for (int i = 0; i < subMeshCount; i++)
+                mats[i] = m_overlayMaterial;
+            mr.sharedMaterials = mats;
+            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            mr.receiveShadows = false;
+
+            m_overlayObjects.Add(overlayObj);
+        }
+    }
+
+    private void DestroyOverlayObjects()
+    {
+        foreach (var obj in m_overlayObjects)
+        {
+            if (obj == null) continue;
+            if (Application.isPlaying)
+                Destroy(obj);
+            else
+                DestroyImmediate(obj);
+        }
+        m_overlayObjects.Clear();
+    }
 
     public void SetSelected(bool selected)
     {
         if (m_isSelected == selected) return;
-
         m_isSelected = selected;
-        UpdateMaterial();
+        ApplySelection();
+    }
+
+    private void ApplySelection()
+    {
+        foreach (var obj in m_overlayObjects)
+        {
+            if (obj != null)
+                obj.SetActive(m_isSelected);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        DestroyOverlayObjects();
+        if (m_overlayMaterial != null)
+        {
+            if (Application.isPlaying)
+                Destroy(m_overlayMaterial);
+            else
+                DestroyImmediate(m_overlayMaterial);
+        }
     }
 
 #if UNITY_EDITOR
     private void Update()
     {
-        if (m_propertyBlock == null)
-        {
-            if (transform.childCount > 0)
-            {
-                m_renderers = transform.GetChild(0).GetComponents<MeshRenderer>();
-                m_propertyBlock = new MaterialPropertyBlock();
-            }
-        }
-        // 에디터 모드에서 매 프레임 MaterialPropertyBlock 적용
-        if (!Application.isPlaying && m_renderers != null && m_propertyBlock != null)
-        {
-            UpdateMaterial();
-        }
+        if (Application.isPlaying == true) return;
+
+        // 에디터에서 m_isSelected 인스펙터 토글 시 오버레이 재생성하여 미리보기
+        if (m_overlayObjects.Count == 0 && transform.childCount > 0 && TryCreateOverlayMaterial() == true)
+            BuildOverlayRenderers();
+    }
+
+    private void OnValidate()
+    {
+        ApplySelection();
     }
 #endif
-
-    private void UpdateMaterial()
-    {
-        // Reset all effects first
-        m_propertyBlock.SetColor("_GridColor", Color.clear);
-        m_propertyBlock.SetFloat("_GridIntensity", 0f);
-
-        if (m_isSelected)
-        {
-            // Selected: Show grid only
-            m_propertyBlock.SetColor("_GridColor", Color.cyan);
-            m_propertyBlock.SetFloat("_GridIntensity", 1.0f);
-        }
-        
-        // Set grid properties
-        m_propertyBlock.SetFloat("_GridThickness", 1.0f);
-        m_propertyBlock.SetFloat("_GridSpacing", m_calculatedGridSpacing);
-        m_propertyBlock.SetFloat("_GridAnimationSpeed", 1.0f);
-
-        // Apply to this parts' renderers only
-        foreach (var renderer in m_renderers)
-        {
-            if (renderer != null)
-            {
-                renderer.SetPropertyBlock(m_propertyBlock);
-            }
-        }
-    }
 }
