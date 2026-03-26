@@ -2760,12 +2760,12 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 30
       airAttack: 5
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 10
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_std_ver1 Lv.2
       moduleType: 5
       moduleSubType: 5010101
@@ -2791,12 +2791,12 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 35
       airAttack: 6
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 10
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_std_ver1 Lv.3
       moduleType: 5
       moduleSubType: 5010101
@@ -2822,12 +2822,12 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 40
       airAttack: 7
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 10
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_std_ver1 Lv.4
       moduleType: 5
       moduleSubType: 5010101
@@ -2853,12 +2853,12 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 45
       airAttack: 8
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 10
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_std_ver1 Lv.5
       moduleType: 5
       moduleSubType: 5010101
@@ -2884,12 +2884,12 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 50
       airAttack: 9
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 10
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_std_ver1 Lv.6
       moduleType: 5
       moduleSubType: 5010101
@@ -2915,12 +2915,12 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 55
       airAttack: 10
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 10
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_std_ver1 Lv.7
       moduleType: 5
       moduleSubType: 5010101
@@ -2946,12 +2946,12 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 60
       airAttack: 11
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 10
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_std_ver1 Lv.8
       moduleType: 5
       moduleSubType: 5010101
@@ -2977,7 +2977,7 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 65
       airAttack: 12
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
@@ -3008,12 +3008,12 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 70
       airAttack: 13
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 20
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_std_ver1 Lv.10
       moduleType: 5
       moduleSubType: 5010101
@@ -3039,12 +3039,12 @@ MonoBehaviour:
       airLaunchDist: 5
       airHealth: 75
       airAttack: 14
-      airAttackRange: 10
+      airAttackRange: 4
       airAttackCool: 4
       airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 10
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
   - subType: 5010201
     modules:
     - moduleName: hanger_t1_adv_ver1 Lv.1
@@ -3072,12 +3072,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 80
       airAttack: 15
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_adv_ver1 Lv.2
       moduleType: 5
       moduleSubType: 5010201
@@ -3103,12 +3103,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 85
       airAttack: 16
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_adv_ver1 Lv.3
       moduleType: 5
       moduleSubType: 5010201
@@ -3134,12 +3134,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 90
       airAttack: 17
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_adv_ver1 Lv.4
       moduleType: 5
       moduleSubType: 5010201
@@ -3165,12 +3165,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 95
       airAttack: 18
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_adv_ver1 Lv.5
       moduleType: 5
       moduleSubType: 5010201
@@ -3196,12 +3196,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 100
       airAttack: 19
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_adv_ver1 Lv.6
       moduleType: 5
       moduleSubType: 5010201
@@ -3227,12 +3227,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 105
       airAttack: 20
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_adv_ver1 Lv.7
       moduleType: 5
       moduleSubType: 5010201
@@ -3258,12 +3258,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 110
       airAttack: 21
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_adv_ver1 Lv.8
       moduleType: 5
       moduleSubType: 5010201
@@ -3289,12 +3289,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 115
       airAttack: 22
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_adv_ver1 Lv.9
       moduleType: 5
       moduleSubType: 5010201
@@ -3320,12 +3320,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 120
       airAttack: 23
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
     - moduleName: hanger_t1_adv_ver1 Lv.10
       moduleType: 5
       moduleSubType: 5010201
@@ -3351,12 +3351,12 @@ MonoBehaviour:
       airLaunchDist: 4
       airHealth: 125
       airAttack: 24
-      airAttackRange: 12
+      airAttackRange: 4
       airAttackCool: 3
       airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 11
-      airAvoidRadius: 10
+      airDetectRadius: 4
+      airAvoidRadius: 4
   exportedJson: "{\r\n  \"modules\": {\r\n    \"1\": [\r\n      {\r\n        \"moduleName\":
     \"body_t1_std_ver1 Lv.1\",\r\n        \"moduleType\": \"body\",\r\n        \"moduleSubType\":
     \"body_t1_std_ver1\",\r\n        \"moduleLevel\": 1,\r\n        \"upgradeCost\":
