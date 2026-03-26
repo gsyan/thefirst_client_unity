@@ -50,17 +50,17 @@ MonoBehaviour:
   m_sourceModule: {fileID: 0}
   m_moduleHanger: {fileID: 0}
   m_aircraftInfo:
-    launchStraightDistance: 0
-    health: 0
-    attackPower: 0
-    attackRange: 0
-    attackCooldown: 0
-    moveSpeed: 0
-    ammo: 0
-    detectionRadius: 0
-    avoidanceRadius: 0
-    healthMax: 0
-    ammoMax: 0
+    airLaunchDist: 0
+    airHealth: 0
+    airAttack: 0
+    airAttackRange: 0
+    airAttackCool: 0
+    airSpeed: 0
+    airAmmo: 0
+    airDetectRadius: 0
+    airAvoidRadius: 0
+    airHealthMax: 0
+    airAmmoMax: 0
     lastReturnTime: 0
     isReady: 0
   m_carrierShip: {fileID: 0}
@@ -294,15 +294,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 837e1e6e756a2e3409044ad9863b721b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 837e1e6e756a2e3409044ad9863b721b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 837e1e6e756a2e3409044ad9863b721b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 0.056
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 837e1e6e756a2e3409044ad9863b721b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -310,7 +310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 837e1e6e756a2e3409044ad9863b721b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.84
+      value: -0.0259
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 837e1e6e756a2e3409044ad9863b721b, type: 3}
       propertyPath: m_LocalPosition.z

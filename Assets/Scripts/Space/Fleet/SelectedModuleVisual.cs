@@ -44,8 +44,9 @@ public class SelectedModuleVisual : MonoBehaviour
     {
         if (transform.childCount <= 0) return 0.4f;
 
-        Renderer[] renderers = transform.GetChild(0).GetComponentsInChildren<Renderer>();
-        if (renderers.Length == 0) return 0.4f;
+        var renderers = new List<Renderer>();
+        CollectOwnRenderers(transform, renderers);
+        if (renderers.Count == 0) return 0.4f;
 
         Bounds bounds = renderers[0].bounds;
         foreach (var r in renderers)
@@ -55,15 +56,38 @@ public class SelectedModuleVisual : MonoBehaviour
         return Mathf.Max(minSize / 4.0f, 0.05f);
     }
 
+    // ModuleBase가 있는 자식 = 별도 모듈 경계 → 탐색 중단
+    private void CollectOwnRenderers(Transform t, List<Renderer> result)
+    {
+        foreach (Transform child in t)
+        {
+            if (child.GetComponent<ModuleBase>() != null) continue;
+            Renderer r = child.GetComponent<Renderer>();
+            if (r != null) result.Add(r);
+            CollectOwnRenderers(child, result);
+        }
+    }
+
+    private void CollectOwnMeshFilters(Transform t, List<MeshFilter> result)
+    {
+        foreach (Transform child in t)
+        {
+            if (child.GetComponent<ModuleBase>() != null) continue;
+            if (child.name == "_GridOverlay") continue;
+            MeshFilter mf = child.GetComponent<MeshFilter>();
+            if (mf != null && mf.sharedMesh != null) result.Add(mf);
+            CollectOwnMeshFilters(child, result);
+        }
+    }
+
     private void BuildOverlayRenderers()
     {
         DestroyOverlayObjects();
 
-        MeshFilter[] meshFilters = transform.GetChild(0).GetComponentsInChildren<MeshFilter>();
+        var meshFilters = new List<MeshFilter>();
+        CollectOwnMeshFilters(transform, meshFilters);
         foreach (var mf in meshFilters)
         {
-            if (mf.sharedMesh == null) continue;
-
             GameObject overlayObj = new GameObject("_GridOverlay");
             overlayObj.transform.SetParent(mf.transform, false);
             overlayObj.SetActive(m_isSelected);

@@ -16,7 +16,7 @@ public class ModuleSlotEditor : Editor
     private const float DEFAULT_PITCH_THRESHOLD = 0.2f;
     private const float DEFAULT_PITCH_UP = 25f;
     private const float DEFAULT_PITCH_DOWN = -25f;
-    private const float DEFAULT_ZOOM = 200f;
+    private const float DEFAULT_ZOOM = 20f;
 
     private void OnEnable()
     {

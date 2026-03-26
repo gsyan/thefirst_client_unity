@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+// 미사일 모듈 — 자동 공격, 발사대 관리, 커버 애니메이터 제어
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +16,10 @@ public class ModuleMissile : ModuleBase
 
     // 발사대 관련
     [SerializeField] private List<LauncherBase> m_launchers = new List<LauncherBase>();
+
+    // 커버 애니메이터
+    private Animator m_coverAnimator;
+    private static readonly int HASH_IS_IN_COMBAT = Animator.StringToHash("IsInCombat");
 
     private ModuleBody m_currentTarget;
     private Coroutine m_autoAttackCoroutine;
@@ -91,18 +95,21 @@ public class ModuleMissile : ModuleBase
         // 부모 바디에 이 무기 등록
         if (m_parentBody != null)
             m_parentBody.AddMissile(this);
+
+        m_coverAnimator = GetComponentInChildren<Animator>(true);
     }
 
     private void InitializeSubType(ModuleData moduleData)
     {
+        EPoolName poolName = GetMissilePoolName(m_moduleInfo.moduleSubType);
         switch (m_moduleInfo.moduleSubType)
         {
             case EModuleSubType.missile_t1_std_ver1:
             case EModuleSubType.missile_t1_adv_ver1:
-                for(int i=0; i< moduleData.attackFireCount; i++)
+                for (int i = 0; i < moduleData.attackFireCount; i++)
                 {
                     LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
-                    launcher.InitializeLauncherMissile(moduleData, i);
+                    launcher.InitializeLauncherMissile(moduleData, i, poolName);
                     m_launchers.Add(launcher);
                 }
                 break;
@@ -111,6 +118,24 @@ public class ModuleMissile : ModuleBase
         }
     }
 
+    // 서브타입별 미사일 프리팹 풀 결정
+    private static EPoolName GetMissilePoolName(EModuleSubType subType)
+    {
+        switch (subType)
+        {
+            case EModuleSubType.missile_t1_std_ver1:  return EPoolName.PROJECTILE_MISSILE_SMALL;
+            case EModuleSubType.missile_t1_adv_ver1:  return EPoolName.PROJECTILE_MISSILE_SMALL;
+            default:                                  return EPoolName.PROJECTILE_MISSILE_SMALL;
+        }
+    }
+
+
+    public override void ApplyShipStateToModule()
+    {
+        base.ApplyShipStateToModule();
+        if (m_coverAnimator != null)
+            m_coverAnimator.SetBool(HASH_IS_IN_COMBAT, m_moduleState == EModuleState.Battle);
+    }
 
     public override void Start()
     {

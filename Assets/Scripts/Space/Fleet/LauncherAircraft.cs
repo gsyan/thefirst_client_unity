@@ -6,10 +6,12 @@ public class LauncherAircraft : LauncherBase
 {
     private ModuleHanger m_moduleHanger;
 
-    public void InitializeLauncherAircraft(ModuleHanger moduleHanger)
+    public void InitializeLauncherAircraft(ModuleHanger moduleHanger, int firePointIndex = 0)
     {
         if (m_isInitialized == true) return;
 
+        // 인덱스에 맞는 FirePoint 찾기
+        m_firePoint = FindFirePointByIndex(firePointIndex);
         if (m_firePoint == null)
             m_firePoint = transform;
 

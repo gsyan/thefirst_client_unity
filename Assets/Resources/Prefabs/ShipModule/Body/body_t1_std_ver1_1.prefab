@@ -157,9 +157,9 @@ MonoBehaviour:
     mineralExotic: 0
     mineralDark: 0
   m_unlockedSubTypes: 
-  m_parentBody: {fileID: 2611034611241413601}
+  m_parentBody: {fileID: 0}
   m_moduleInfo:
-    moduleType: 3
+    moduleType: 0
     moduleSubType: 0
     moduleLevel: 0
     bodyIndex: 0
@@ -1306,14 +1306,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2771775628752833002}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3438899635204634693}
   m_Father: {fileID: 6365369270559502687}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6668391219518429849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1330,8 +1330,8 @@ MonoBehaviour:
     moduleType: 5
     slotIndex: 0
   m_cameraRotationY: -30
-  m_cameraRotationX: 25
-  m_cameraZoom: 200
+  m_cameraRotationX: -25
+  m_cameraZoom: 5
 --- !u!1 &2806525806480397593
 GameObject:
   m_ObjectHideFlags: 0
@@ -1612,7 +1612,7 @@ MonoBehaviour:
     slotIndex: 0
   m_cameraRotationY: -30
   m_cameraRotationX: 25
-  m_cameraZoom: 200
+  m_cameraZoom: 5
 --- !u!1 &3432338946502859120
 GameObject:
   m_ObjectHideFlags: 0
@@ -1716,9 +1716,9 @@ MonoBehaviour:
     mineralExotic: 0
     mineralDark: 0
   m_unlockedSubTypes: 
-  m_parentBody: {fileID: 2611034611241413601}
+  m_parentBody: {fileID: 0}
   m_moduleInfo:
-    moduleType: 4
+    moduleType: 0
     moduleSubType: 0
     moduleLevel: 0
     bodyIndex: 0
@@ -1781,9 +1781,9 @@ MonoBehaviour:
     mineralExotic: 0
     mineralDark: 0
   m_unlockedSubTypes: 
-  m_parentBody: {fileID: 2611034611241413601}
+  m_parentBody: {fileID: 0}
   m_moduleInfo:
-    moduleType: 3
+    moduleType: 0
     moduleSubType: 0
     moduleLevel: 0
     bodyIndex: 0
@@ -2248,7 +2248,7 @@ Transform:
   m_GameObject: {fileID: 4785068585299335644}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: -0}
+  m_LocalPosition: {x: 0, y: 0.2373, z: 0.066}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2272,7 +2272,7 @@ MonoBehaviour:
     slotIndex: 0
   m_cameraRotationY: -30
   m_cameraRotationX: 25
-  m_cameraZoom: 200
+  m_cameraZoom: 5
 --- !u!1 &4808619818071555073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3264,14 +3264,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6596545524973854436}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6200426922061397348}
   m_Father: {fileID: 1039032061919805424}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!114 &5259985499372556439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3296,9 +3296,9 @@ MonoBehaviour:
     mineralExotic: 0
     mineralDark: 0
   m_unlockedSubTypes: 
-  m_parentBody: {fileID: 2611034611241413601}
+  m_parentBody: {fileID: 0}
   m_moduleInfo:
-    moduleType: 5
+    moduleType: 0
     moduleSubType: 0
     moduleLevel: 0
     bodyIndex: 0
@@ -4550,7 +4550,7 @@ MonoBehaviour:
     slotIndex: 1
   m_cameraRotationY: 30
   m_cameraRotationX: 25
-  m_cameraZoom: 200
+  m_cameraZoom: 5
 --- !u!1 &9158013678317773873
 GameObject:
   m_ObjectHideFlags: 0

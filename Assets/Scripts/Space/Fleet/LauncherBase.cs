@@ -35,6 +35,17 @@ public class LauncherBase : MonoBehaviour
             m_audioSource.pitch = pitch;
     }
 
+    protected Transform FindFirePointByIndex(int index)
+    {
+        FirePoint[] firePoints = GetComponentsInChildren<FirePoint>();
+        foreach (var fp in firePoints)
+        {
+            if (fp.Index == index)
+                return fp.transform;
+        }
+        return null;
+    }
+
     protected virtual void OnDestroy()
     {
         EventManager.Unsubscribe_GameSpeedChanged(OnGameSpeedChanged);

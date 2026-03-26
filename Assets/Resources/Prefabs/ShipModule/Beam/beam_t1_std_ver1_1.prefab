@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6476933363244175635}
-  - component: {fileID: 8146360634017863683}
   m_Layer: 0
   m_Name: beam_t1_std_ver1_1
   m_TagString: Untagged
@@ -33,42 +32,6 @@ Transform:
   - {fileID: 6327511474034998260}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8146360634017863683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 440988266904533195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c773602b9e2880845b1040b092848597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_classId: 0
-  m_moduleSlot: {fileID: 0}
-  m_health: 0
-  m_healthMax: 0
-  m_attack: 0
-  m_upgradeCost:
-    techLevel: 0
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
-  m_unlockedSubTypes: 
-  m_parentBody: {fileID: 0}
-  m_moduleInfo:
-    moduleType: 3
-    moduleSubType: 3010101
-    moduleLevel: 0
-    bodyIndex: 0
-    slotIndex: 0
-    unlockedSubTypes: 
-  m_attackFireCount: 0
-  m_attackCool: 0
-  m_lastAttackTime: 0
-  m_launchers: []
 --- !u!1 &5716770068826786973
 GameObject:
   m_ObjectHideFlags: 0

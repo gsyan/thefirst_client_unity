@@ -12,6 +12,10 @@ public class ProjectileMissile : ProjectileBase
     private float m_currentSpeed;
     private float m_initialFlightDuration;
     private Vector3 m_initialDirection;
+    private EPoolName m_poolName;
+    private Vector3 m_prevPosition;
+
+    public void SetPoolName(EPoolName poolName) { m_poolName = poolName; }
 
     public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData, Color color, ModuleBase sourceModuleBase)
     {
@@ -19,6 +23,7 @@ public class ProjectileMissile : ProjectileBase
         m_moduleData = moduleData;
         m_lifeTime = 0.0f;
         m_currentSpeed = 0.0f;
+        m_prevPosition = transform.position;
         m_initialFlightDuration = Random.Range(0.1f, 0.5f);
         m_initialDirection = transform.forward;
         if (m_lifeCycleCoroutine != null) StopCoroutine(m_lifeCycleCoroutine);
@@ -32,7 +37,7 @@ public class ProjectileMissile : ProjectileBase
             m_lifeTime += Time.deltaTime;
             if (m_lifeTime >= MAX_LIFE_TIME)
             {
-                ReturnToPool();
+                ReturnToPool(showHitEffect: false);
                 yield break;
             }
 
@@ -43,7 +48,9 @@ public class ProjectileMissile : ProjectileBase
             float dotProduct = Vector3.Dot(transform.forward, targetDirection);
             float applyDot = dotProduct * dotProduct;
             m_currentSpeed = m_moduleData.projectileSpeed * Mathf.Max(0.1f, applyDot);
-            
+
+            m_prevPosition = transform.position;
+
             if (m_lifeTime < m_initialFlightDuration)
             {
                 transform.position += m_initialDirection * m_currentSpeed * Time.deltaTime;
@@ -55,17 +62,17 @@ public class ProjectileMissile : ProjectileBase
                 transform.position += transform.forward * m_currentSpeed * Time.deltaTime;
             }
 
-            float distanceToTarget = Vector3.Distance(transform.position, m_saveTargetPosition);
-            if (distanceToTarget < 50f)
+            // 이전 위치→현재 위치 raycast로 충돌 감지 (터널링 방지)
+            Vector3 moveVec = transform.position - m_prevPosition;
+            if (Physics.Raycast(m_prevPosition, moveVec.normalized, out RaycastHit hit, moveVec.magnitude))
             {
-                if (m_target != null)
+                SpaceShip hitShip = hit.collider.GetComponentInParent<SpaceShip>();
+                if (hitShip != null && (m_sourceShip == null || hitShip.m_myFleet != m_sourceShip.m_myFleet))
                 {
-                    SpaceShip targetShip = m_target.GetSpaceShip();                    
-                    if (targetShip != null)
-                        targetShip.TakeDamage(m_damage);
+                    hitShip.TakeDamage(m_damage);
+                    ReturnToPool();
+                    yield break;
                 }
-                ReturnToPool();
-                yield break;
             }
 
             yield return null;
@@ -83,6 +90,6 @@ public class ProjectileMissile : ProjectileBase
         if (showHitEffect && gameObject.activeInHierarchy)
             ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(EPoolName.EFFECT_MISSILE_HIT, transform.position);
 
-        ObjectManager.Instance.m_poolManager.Return(EPoolName.PROJECTILE_MISSILE, this);
+        ObjectManager.Instance.m_poolManager.Return(m_poolName, this);
     }
 }

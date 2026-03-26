@@ -138,7 +138,7 @@ public class ModuleHanger : ModuleBase
                 for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
-                    launcher.InitializeLauncherAircraft(this);
+                    launcher.InitializeLauncherAircraft(this, i);
                     m_launchers.Add(launcher);
                 }
                 break;
@@ -146,7 +146,7 @@ public class ModuleHanger : ModuleBase
                 for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
-                    launcher.InitializeLauncherAircraft(this);
+                    launcher.InitializeLauncherAircraft(this, i);
                     m_launchers.Add(launcher);
                 }
                 break;

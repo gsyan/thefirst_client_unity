@@ -5,8 +5,9 @@ using System.Collections;
 public class LauncherMissile : LauncherBase
 {
     private ModuleData m_moduleData;
-    
-    public void InitializeLauncherMissile(ModuleData moduleData, int firePointIndex)
+    private EPoolName m_missilePoolName;
+
+    public void InitializeLauncherMissile(ModuleData moduleData, int firePointIndex, EPoolName missilePoolName)
     {
         if (m_isInitialized == true) return;
 
@@ -26,19 +27,9 @@ public class LauncherMissile : LauncherBase
         }
 
         m_moduleData = moduleData;
+        m_missilePoolName = missilePoolName;
 
         m_isInitialized = true;
-    }
-
-    private Transform FindFirePointByIndex(int index)
-    {
-        FirePoint[] firePoints = GetComponentsInChildren<FirePoint>();
-        foreach (var fp in firePoints)
-        {
-            if (fp.Index == index)
-                return fp.transform;
-        }
-        return null;
     }
 
     public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
@@ -57,10 +48,11 @@ public class LauncherMissile : LauncherBase
         //yield return new WaitForSeconds(muzzleEffect.main.duration * 0.5f);
         if (target == null) yield break;
 
-        ProjectileMissile missile = ObjectManager.Instance.m_poolManager.Get<ProjectileMissile>(EPoolName.PROJECTILE_MISSILE);
+        ProjectileMissile missile = ObjectManager.Instance.m_poolManager.Get<ProjectileMissile>(m_missilePoolName);
         if (missile == null) yield break;
         missile.transform.position = m_firePoint.position;
         missile.transform.rotation = m_firePoint.rotation;
+        missile.SetPoolName(m_missilePoolName);
 
         missile.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.black, sourceModuleBase);
     }

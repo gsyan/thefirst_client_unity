@@ -34,11 +34,23 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         else
             Debug.LogError("ProjectileBeamPrefab not found at Resources/Prefabs/Projectile/ProjectileBeam");
 
-        ProjectileMissile projectileMissilePrefab = Resources.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissile");
-        if (projectileMissilePrefab != null)
-            m_poolManager.CreatePool(EPoolName.PROJECTILE_MISSILE, projectileMissilePrefab, 1, 50);
+        ProjectileMissile projectileMissileSmallPrefab = Resources.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileSmall");
+        if (projectileMissileSmallPrefab != null)
+            m_poolManager.CreatePool(EPoolName.PROJECTILE_MISSILE_SMALL, projectileMissileSmallPrefab, 1, 50);
         else
-            Debug.LogError("ProjectileMisslePrefab not found at Resources/Prefabs/Projectile/ProjectileMissile");
+            Debug.LogError("ProjectileMissileSmall not found at Resources/Prefabs/Projectile/ProjectileMissileSmall");
+
+        ProjectileMissile projectileMissileMediumPrefab = Resources.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileMedium");
+        if (projectileMissileMediumPrefab != null)
+            m_poolManager.CreatePool(EPoolName.PROJECTILE_MISSILE_MEDIUM, projectileMissileMediumPrefab, 1, 50);
+        else
+            Debug.LogError("ProjectileMissileMedium not found at Resources/Prefabs/Projectile/ProjectileMissileMedium");
+
+        ProjectileMissile projectileMissileLargePrefab = Resources.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileLarge");
+        if (projectileMissileLargePrefab != null)
+            m_poolManager.CreatePool(EPoolName.PROJECTILE_MISSILE_LARGE, projectileMissileLargePrefab, 1, 50);
+        else
+            Debug.LogError("ProjectileMissileLarge not found at Resources/Prefabs/Projectile/ProjectileMissileLarge");
 
 
 
@@ -156,6 +168,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public void ForceEndBattle(bool isVictory)
     {
         GameSpeedController.Reset(); // timeScale 및 오디오 피치 복원
+        if (m_myFleet != null) m_myFleet.SetFleetState(EFleetState.None);
         StopEnemySpawning();
         OrderAllAircraftReturn();
         CleanupAllProjectiles();
@@ -261,6 +274,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_onZoneBattleComplete = onComplete;
 
         GameSpeedController.RestoreSpeed(); // 이전 전투 배속 복원
+        if (m_myFleet != null) m_myFleet.SetFleetState(EFleetState.Battle);
         m_spawnCoroutine = StartCoroutine(SpawnWaves());
     }
 
@@ -287,7 +301,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             fleetObj.transform.rotation = Quaternion.LookRotation(directionToPlayer);
 
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
-        enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote);
+        enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EFleetState.Battle);
+        m_myFleet.SetFleetState(EFleetState.Battle);
 
         m_enemyFleets.Add(enemyFleet);
     }

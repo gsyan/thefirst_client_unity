@@ -75,7 +75,7 @@ public class SpaceFleet : MonoBehaviour
             m_hangerMultiplier  = zoneConfig.enemyHangerMultiplier;
             m_engineMultiplier  = zoneConfig.enemyEngineMultiplier;
         }
-        InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data);
+        InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EFleetState.Battle);
     }
 
     public void InitializeSpaceFleet(FleetInfo fleetInfo, EFleetSide side = EFleetSide.fleet_side_player, EFleetSource source = EFleetSource.fleet_source_player, EFleetState fleetState = EFleetState.None)
@@ -93,9 +93,7 @@ public class SpaceFleet : MonoBehaviour
             UpdateShipFormation(m_fleetInfo.formation, false);
         }
         
-        // 적함, 내함 공격 안하게
-        //if (IsEnemy == true)
-            SetFleetState(EFleetState.Battle);
+        SetFleetState(fleetState);
     }
     // smoothSpawn: true면 기함 뒤에서 스폰 후 이동, false면 즉시 진형 위치에 배치
     public void CreateSpaceShipFromData(ShipInfo shipInfo, bool smoothSpawn = false)
@@ -304,7 +302,6 @@ public class SpaceFleet : MonoBehaviour
         }
 
         ApplyHealthRatio(healthRatio);
-        SetFleetState(EFleetState.Battle);
 
         if (m_fleetSource == EFleetSource.fleet_source_player || m_fleetSource == EFleetSource.fleet_source_player_remote)
             StartCoroutine(AutoRepair());

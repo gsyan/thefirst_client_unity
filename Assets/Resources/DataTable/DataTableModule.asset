@@ -27,8 +27,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -68,8 +66,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -109,8 +105,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -150,8 +144,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -191,8 +183,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -232,8 +222,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -273,8 +261,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -314,8 +300,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -355,8 +339,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -396,8 +378,6 @@ MonoBehaviour:
         mineralDark: 0
       description: 
       moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -1585,8 +1565,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 20
       attackCool: 3.3
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1616,8 +1596,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 25
       attackCool: 3.2
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1647,8 +1627,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 30
       attackCool: 3.1
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1678,8 +1658,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 35
       attackCool: 3
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1709,8 +1689,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 40
       attackCool: 2.9
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1740,8 +1720,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 45
       attackCool: 2.8
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1771,8 +1751,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 50
       attackCool: 2.7
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1802,8 +1782,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 55
       attackCool: 2.6
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1835,8 +1815,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 10
       attackCool: 3.5
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1866,8 +1846,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 15
       attackCool: 3.4
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1897,8 +1877,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 20
       attackCool: 3.3
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1928,8 +1908,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 25
       attackCool: 3.2
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1959,8 +1939,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 30
       attackCool: 3.1
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -1990,8 +1970,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 35
       attackCool: 3
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2021,8 +2001,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 40
       attackCool: 2.9
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2052,8 +2032,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 45
       attackCool: 2.8
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2083,8 +2063,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 50
       attackCool: 2.7
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2114,8 +2094,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 55
       attackCool: 2.6
-      projectileWidth: 5
-      projectileSpeed: 2000
+      projectileWidth: 0.1
+      projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2148,8 +2128,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 10
       attackCool: 3.5
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2179,8 +2159,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 15
       attackCool: 3.4
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2210,8 +2190,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 20
       attackCool: 3.3
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2241,8 +2221,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 25
       attackCool: 3.2
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2272,8 +2252,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 30
       attackCool: 3.1
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2303,8 +2283,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 35
       attackCool: 3
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2334,8 +2314,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 40
       attackCool: 2.9
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2365,8 +2345,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 45
       attackCool: 2.8
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2396,8 +2376,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 50
       attackCool: 2.7
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2427,8 +2407,8 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 55
       attackCool: 2.6
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2460,8 +2440,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 10
       attackCool: 3.5
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2491,8 +2471,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 15
       attackCool: 3.4
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2522,8 +2502,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 20
       attackCool: 3.3
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2553,8 +2533,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 25
       attackCool: 3.2
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2584,8 +2564,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 30
       attackCool: 3.1
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2615,8 +2595,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 35
       attackCool: 3
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2646,8 +2626,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 40
       attackCool: 2.9
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2677,8 +2657,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 45
       attackCool: 2.8
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2708,8 +2688,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 50
       attackCool: 2.7
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2739,8 +2719,8 @@ MonoBehaviour:
       attackFireCount: 2
       attack: 55
       attackCool: 2.6
-      projectileWidth: 5
-      projectileSpeed: 300
+      projectileWidth: 0.1
+      projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
       airLaunchDist: 0
@@ -2777,15 +2757,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 15
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 30
       airAttack: 5
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 10
+      airAvoidRadius: 10
     - moduleName: hanger_t1_std_ver1 Lv.2
       moduleType: 5
       moduleSubType: 5010101
@@ -2808,15 +2788,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.9
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 35
       airAttack: 6
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 10
+      airAvoidRadius: 10
     - moduleName: hanger_t1_std_ver1 Lv.3
       moduleType: 5
       moduleSubType: 5010101
@@ -2839,15 +2819,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.8
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 40
       airAttack: 7
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 10
+      airAvoidRadius: 10
     - moduleName: hanger_t1_std_ver1 Lv.4
       moduleType: 5
       moduleSubType: 5010101
@@ -2870,15 +2850,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.7
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 45
       airAttack: 8
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 10
+      airAvoidRadius: 10
     - moduleName: hanger_t1_std_ver1 Lv.5
       moduleType: 5
       moduleSubType: 5010101
@@ -2901,15 +2881,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.6
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 50
       airAttack: 9
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 10
+      airAvoidRadius: 10
     - moduleName: hanger_t1_std_ver1 Lv.6
       moduleType: 5
       moduleSubType: 5010101
@@ -2932,15 +2912,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.5
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 55
       airAttack: 10
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 10
+      airAvoidRadius: 10
     - moduleName: hanger_t1_std_ver1 Lv.7
       moduleType: 5
       moduleSubType: 5010101
@@ -2963,15 +2943,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.4
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 60
       airAttack: 11
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 10
+      airAvoidRadius: 10
     - moduleName: hanger_t1_std_ver1 Lv.8
       moduleType: 5
       moduleSubType: 5010101
@@ -2994,15 +2974,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.3
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 65
       airAttack: 12
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 10
+      airAvoidRadius: 10
     - moduleName: hanger_t1_std_ver1 Lv.9
       moduleType: 5
       moduleSubType: 5010101
@@ -3025,15 +3005,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.2
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 70
       airAttack: 13
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 20
+      airAvoidRadius: 10
     - moduleName: hanger_t1_std_ver1 Lv.10
       moduleType: 5
       moduleSubType: 5010101
@@ -3056,15 +3036,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.1
-      airLaunchDist: 100
+      airLaunchDist: 5
       airHealth: 75
       airAttack: 14
-      airAttackRange: 100
+      airAttackRange: 10
       airAttackCool: 4
-      airSpeed: 300
+      airSpeed: 10
       airAmmo: 10
-      airDetectRadius: 200
-      airAvoidRadius: 200
+      airDetectRadius: 10
+      airAvoidRadius: 10
   - subType: 5010201
     modules:
     - moduleName: hanger_t1_adv_ver1 Lv.1
@@ -3089,15 +3069,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 14
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 80
       airAttack: 15
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
     - moduleName: hanger_t1_adv_ver1 Lv.2
       moduleType: 5
       moduleSubType: 5010201
@@ -3120,15 +3100,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.9
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 85
       airAttack: 16
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
     - moduleName: hanger_t1_adv_ver1 Lv.3
       moduleType: 5
       moduleSubType: 5010201
@@ -3151,15 +3131,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.8
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 90
       airAttack: 17
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
     - moduleName: hanger_t1_adv_ver1 Lv.4
       moduleType: 5
       moduleSubType: 5010201
@@ -3182,15 +3162,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.7
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 95
       airAttack: 18
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
     - moduleName: hanger_t1_adv_ver1 Lv.5
       moduleType: 5
       moduleSubType: 5010201
@@ -3213,15 +3193,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.6
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 100
       airAttack: 19
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
     - moduleName: hanger_t1_adv_ver1 Lv.6
       moduleType: 5
       moduleSubType: 5010201
@@ -3244,15 +3224,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.5
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 105
       airAttack: 20
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
     - moduleName: hanger_t1_adv_ver1 Lv.7
       moduleType: 5
       moduleSubType: 5010201
@@ -3275,15 +3255,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.4
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 110
       airAttack: 21
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
     - moduleName: hanger_t1_adv_ver1 Lv.8
       moduleType: 5
       moduleSubType: 5010201
@@ -3306,15 +3286,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.3
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 115
       airAttack: 22
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
     - moduleName: hanger_t1_adv_ver1 Lv.9
       moduleType: 5
       moduleSubType: 5010201
@@ -3337,15 +3317,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.2
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 120
       airAttack: 23
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
     - moduleName: hanger_t1_adv_ver1 Lv.10
       moduleType: 5
       moduleSubType: 5010201
@@ -3368,15 +3348,15 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.1
-      airLaunchDist: 90
+      airLaunchDist: 4
       airHealth: 125
       airAttack: 24
-      airAttackRange: 120
+      airAttackRange: 12
       airAttackCool: 3
-      airSpeed: 400
+      airSpeed: 11
       airAmmo: 15
-      airDetectRadius: 300
-      airAvoidRadius: 200
+      airDetectRadius: 11
+      airAvoidRadius: 10
   exportedJson: "{\r\n  \"modules\": {\r\n    \"1\": [\r\n      {\r\n        \"moduleName\":
     \"body_t1_std_ver1 Lv.1\",\r\n        \"moduleType\": \"body\",\r\n        \"moduleSubType\":
     \"body_t1_std_ver1\",\r\n        \"moduleLevel\": 1,\r\n        \"upgradeCost\":

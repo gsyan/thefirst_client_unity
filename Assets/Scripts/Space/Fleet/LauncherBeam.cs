@@ -39,19 +39,6 @@ public class LauncherBeam : LauncherBase
         m_isInitialized = true;
     }
 
-    private Transform FindFirePointByIndex(int index)
-    {
-        FirePoint[] firePoints = GetComponentsInChildren<FirePoint>();
-        foreach (var fp in firePoints)
-        {
-            if (fp.Index == index)
-                return fp.transform;
-        }
-        return null;
-    }
-
-
-
     public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
     {
         if (m_isInitialized == false) return;
