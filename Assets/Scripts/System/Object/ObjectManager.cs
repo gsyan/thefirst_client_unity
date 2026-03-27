@@ -272,6 +272,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_totalSpawnedEnemies = 0;
         m_totalDestroyedEnemies = 0;
         m_onZoneBattleComplete = onComplete;
+        m_enemyFleetFocusPosition = GetEnemySpawnPosition(); // 웨이브 스폰 전 중앙 버튼 대비 미리 설정
 
         GameSpeedController.RestoreSpeed(); // 이전 전투 배속 복원
         if (m_myFleet != null) m_myFleet.SetFleetState(EFleetState.Battle);
@@ -292,6 +293,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_onPvpBattleComplete = onComplete;
 
         Vector3 spawnPosition = GetEnemySpawnPosition();
+        m_enemyFleetFocusPosition = spawnPosition; // 전투 시작과 동시에 중앙 버튼 대비 설정
         GameObject fleetObj = new GameObject("PvpEnemyFleet");
         fleetObj.transform.position = spawnPosition;
 

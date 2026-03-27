@@ -36,8 +36,8 @@ public class CameraController : MonoSingleton<CameraController>
     private float? m_targetZoom = null;
     private const float k_rotateLerpSpeed = 4f;
     private const float k_rotateArriveThreshold = 0.5f;
-    private const float k_zoomLerpSpeed = 4f;
-    private const float k_zoomArriveThreshold = 1f;
+    private const float k_zoomLerpSpeed = 8f;
+    private const float k_zoomArriveThreshold = 0.1f;
 
     // UIPanelSpace 활성화 시 true, 비활성화 시 false
     private bool m_shipSelectionEnabled = false;
@@ -420,6 +420,33 @@ public class CameraController : MonoSingleton<CameraController>
     public void SetZoom(float normalizedZoom)
     {
         m_currentZoom = Mathf.Lerp(m_minZoom, m_maxZoom, normalizedZoom);
+    }
+
+    // 줌 목표값을 직접 설정 (Lerp로 부드럽게 이동)
+    public void SetTargetZoom(float zoom)
+    {
+        m_targetZoom = Mathf.Clamp(zoom, m_minZoom, m_maxZoom);
+    }
+
+    // 현재 두 함대 거리·FoV·뷰포트 폭 기반으로 센터 모드 적정 줌 계산
+    public float CalcCenterZoom()
+    {
+        var objMgr = ObjectManager.Instance;
+        if (objMgr == null || objMgr.m_myFleet == null) return m_currentZoom;
+
+        float dist = Vector3.Distance(objMgr.m_myFleet.transform.position, objMgr.EnemyFleetFocusPosition);
+        float viewportWidth = GetViewportWidth(); // 0.5 = UI 열림, 1.0 = 전체화면
+        float aspect = m_targetCamera != null ? m_targetCamera.aspect : (16f / 9f);
+        float vFovRad = (m_targetCamera != null ? m_targetCamera.fieldOfView : 60f) * Mathf.Deg2Rad;
+
+        // 뷰포트 폭을 반영한 실효 수평 FoV
+        float hFovRad = 2f * Mathf.Atan(Mathf.Tan(vFovRad * 0.5f) * aspect * viewportWidth);
+
+        // 수직 앙각(rotationX)만큼 수평 거리가 줄어드는 보정
+        float cosX = Mathf.Max(Mathf.Cos(m_currentRotationX * Mathf.Deg2Rad), 0.1f);
+        float zoomNeeded = (dist * 0.5f) / (Mathf.Tan(hFovRad * 0.5f) * cosX);
+
+        return Mathf.Clamp(zoomNeeded * 1.3f, m_minZoom, m_maxZoom); // 1.3 여유 마진
     }
 
     private bool IsPointerOverUIObject()

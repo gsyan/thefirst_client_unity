@@ -41,9 +41,15 @@ public class UIPanelCameraView : UIPanelBase
 
         // 버튼 클릭 시 카메라 포커스 변경
         if (buttonGroup != null)
+        {
             buttonGroup.items[0].onSelected = () => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
-            buttonGroup.items[1].onSelected = () => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_center);
+            buttonGroup.items[1].onSelected = () =>
+            {
+                CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_center);
+                CameraController.Instance.SetTargetZoom(CameraController.Instance.CalcCenterZoom());
+            };
             buttonGroup.items[2].onSelected = () => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_enemy_fleet);
+        }
 
         buttonGroup.defaultIndex = (int)CameraController.Instance.FocusTarget;
         buttonGroup.Initialize();
@@ -143,5 +149,10 @@ public class UIPanelCameraView : UIPanelBase
         max.x = centerX;
         m_rectTransform.anchorMin = min;
         m_rectTransform.anchorMax = max;
+
+        // 센터 모드 중 뷰포트 변경 → 두 함대가 여전히 보이도록 줌 재계산
+        var cam = CameraController.Instance;
+        if (cam != null && cam.FocusTarget == ECameraFocusTarget.camera_focus_center)
+            cam.SetTargetZoom(cam.CalcCenterZoom());
     }
 }
