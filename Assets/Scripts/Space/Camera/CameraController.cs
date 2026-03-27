@@ -155,6 +155,7 @@ public class CameraController : MonoSingleton<CameraController>
     // 이전 프레임 터치 위치 저장 (방향 벡터 계산용)
     private Vector2 m_prevTouch0Position;
     private Vector2 m_prevTouch1Position;
+    private int m_prevTouchCount = 0; // 2터치→1터치 전환 감지용
 
     // 탭 판정 — 누를 때와 뗄 때 같은 콜라이더를 픽하면 선택
     private Collider m_tapHitCollider;
@@ -300,17 +301,23 @@ public class CameraController : MonoSingleton<CameraController>
             }
             else if (touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
             {
-                // 남은 손가락 위치를 드래그 기준점으로 재초기화 (한방 회전 방지)
-                Touch remaining = (touch0.phase == TouchPhase.Ended) ? touch1 : touch0;
-                m_startTouchPosition = remaining.position;
-                m_startRotationY = m_currentRotationY;
-                m_startRotationX = m_currentRotationX;
-                m_isDragging = true;
+                //m_isPanning = false;
             }
+
+            m_prevTouchCount = 2;
         }
         else if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
+
+            // 2터치 → 1터치 전환: 현재 손가락 위치를 새 기준점으로 즉시 초기화
+            if (m_prevTouchCount >= 2)
+            {
+                m_startTouchPosition = touch.position;
+                m_startRotationY = m_currentRotationY;
+                m_startRotationX = m_currentRotationX;
+                m_isDragging = true;
+            }
             if (touch.phase == TouchPhase.Began)
             {
                 inputDown = true;
@@ -341,6 +348,12 @@ public class CameraController : MonoSingleton<CameraController>
                 inputHeld = true;
                 inputPosition = touch.position;
             }
+
+            m_prevTouchCount = 1;
+        }
+        else
+        {
+            m_prevTouchCount = 0;
         }
     }
     
