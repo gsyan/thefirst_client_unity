@@ -10,8 +10,9 @@ public enum EAircraftState
     MoveToTarget,
     Dogfight,
     AttackShip,
-    Reposition,
-    ReturnToCarrier
+    //Reposition,
+    ReturnToApproach,
+    Docking
 }
 
 public abstract class AircraftBase : MonoBehaviour
@@ -33,7 +34,7 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected float m_repositionMaxDistanceMultiplier = 2.5f;
 
     // 이동 속도(airSpeed)와 회전 각속도를 분리 — 스케일 변경 후 airSpeed가 작아져도 회전은 독립적으로 조정
-    [SerializeField] protected float m_angularSpeedMultiplier = 20f;
+    protected float m_angularSpeedMultiplier = 40f;
 
     [SerializeField] protected float m_lastAttackTime;
 
@@ -85,23 +86,25 @@ public abstract class AircraftBase : MonoBehaviour
             switch (m_state)
             {
                 case EAircraftState.LaunchStraight:
-                    yield return LaunchStraightPhase();
+                    yield return Phase_LaunchStraight();
                     break;
                 case EAircraftState.MoveToTarget:
-                    yield return MoveToTargetPhase();
+                    yield return Phase_MoveToTarget();
                     break;
                 case EAircraftState.Dogfight:
-                    yield return DogfightPhase();
+                    yield return Phase_Dogfight();
                     break;
                 case EAircraftState.AttackShip:
-                    yield return AttackShipPhase();
-                    //yield return AttackShipPhase_OnlyShpere();
+                    yield return Phase_AttackShip();
                     break;
-                case EAircraftState.Reposition:
-                    yield return RepositionPhase();
+                // case EAircraftState.Reposition:
+                //     yield return Phase_Reposition();
+                //     break;
+                case EAircraftState.ReturnToApproach:
+                    yield return Phase_ReturnToApproach();
                     break;
-                case EAircraftState.ReturnToCarrier:
-                    yield return ReturnToCarrierPhase();
+                case EAircraftState.Docking:
+                    yield return Phase_Docking();
                     break;
             }
             yield return null;
@@ -110,7 +113,7 @@ public abstract class AircraftBase : MonoBehaviour
         ReturnToPool();
     }
 
-    protected virtual IEnumerator LaunchStraightPhase()
+    protected virtual IEnumerator Phase_LaunchStraight()
     {
         // 사출 시점 firePoint 위치·방향 캡처 (이후 함선 이동/회전과 무관하게 고정)
         Vector3 launchOrigin = m_firePoint != null ? m_firePoint.position : transform.position;
@@ -140,7 +143,7 @@ public abstract class AircraftBase : MonoBehaviour
         m_state = EAircraftState.MoveToTarget;
     }
 
-    protected virtual IEnumerator MoveToTargetPhase()
+    protected virtual IEnumerator Phase_MoveToTarget()
     {
         Vector3 attackApproachPoint = Vector3.zero;
         if (m_targetModule != null)
@@ -163,7 +166,7 @@ public abstract class AircraftBase : MonoBehaviour
                     m_state = EAircraftState.MoveToTarget;
                     yield break;
                 }
-                m_state = EAircraftState.ReturnToCarrier;
+                m_state = EAircraftState.ReturnToApproach;
                 yield break;
             }
 
@@ -230,7 +233,7 @@ public abstract class AircraftBase : MonoBehaviour
     }
 
 
-    protected virtual IEnumerator DogfightPhase()
+    protected virtual IEnumerator Phase_Dogfight()
     {
         AircraftBase currentDogfightTarget = DetectEnemyAircraft();
         if (currentDogfightTarget == null) {
@@ -267,29 +270,29 @@ public abstract class AircraftBase : MonoBehaviour
     }
 
     // 공통 SmoothRotate 함수 - 방향 업데이트와 회전을 함께 처리
-    private void SmoothRotate(Vector3 targetDirection)
+    // angularMultiplier: 1f = 기본 각속도, 높을수록 급격한 방향 전환
+    private void SmoothRotate(Vector3 targetDirection, float angularMultiplier = 1f)
     {
         if (targetDirection.sqrMagnitude < 0.001f) return;
 
-        // 이동 속도와 독립적인 각속도 (m_angularSpeedMultiplier로 인스펙터 조정)
-        float angularSpeed = m_aircraftInfo.airSpeed * m_angularSpeedMultiplier;
+        float angularSpeed = m_aircraftInfo.airSpeed * m_angularSpeedMultiplier * angularMultiplier;
 
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, angularSpeed * Time.deltaTime);
 
-        // 이동 방향은 실제 선체 방향과 동일하게
         m_currentDirection = transform.forward;
     }
 
-    protected virtual IEnumerator AttackShipPhase()
+    // biasAxis 방향으로 편향하여 회전 (격납고 바깥쪽 우회 경로용)
+    protected virtual IEnumerator Phase_AttackShip()
     {
         if (m_targetModule == null)
         {
             if (TryReassignTarget()) { m_state = EAircraftState.MoveToTarget; yield break; }
-            m_state = EAircraftState.ReturnToCarrier; yield break;
+            m_state = EAircraftState.ReturnToApproach; yield break;
         }
         SpaceShip targetShip = m_targetModule.GetSpaceShip();
-        if (targetShip == null) { m_state = EAircraftState.ReturnToCarrier; yield break; }
+        if (targetShip == null) { m_state = EAircraftState.ReturnToApproach; yield break; }
         
         ShieldGrid targetShieldGrid = targetShip.m_shieldGrid;
         if (targetShieldGrid == null || targetShieldGrid.m_vertices == null || targetShieldGrid.m_vertices.Count == 0)
@@ -308,7 +311,7 @@ public abstract class AircraftBase : MonoBehaviour
             // 종료 조건: 탄약 소진 시 무조건 귀환
             if (m_aircraftInfo.airAmmo <= 0)
             {
-                m_state = EAircraftState.ReturnToCarrier;
+                m_state = EAircraftState.ReturnToApproach;
                 yield break;
             }
             // 목표 상실 시 모함 타겟으로 재할당 시도
@@ -319,7 +322,7 @@ public abstract class AircraftBase : MonoBehaviour
                     m_state = EAircraftState.MoveToTarget;
                     yield break;
                 }
-                m_state = EAircraftState.ReturnToCarrier;
+                m_state = EAircraftState.ReturnToApproach;
                 yield break;
             }
 
@@ -386,100 +389,78 @@ public abstract class AircraftBase : MonoBehaviour
         return savedNeighbor;
     }
 
-    protected virtual IEnumerator RepositionPhase()
+    // 격납고 출입구 앞 접근 지점(approachPoint)까지 자유 비행, 완료 시 Docking으로 전환
+    protected virtual IEnumerator Phase_ReturnToApproach()
     {
-        float repositionDistance = Random.Range(m_aircraftInfo.airAttackRange * m_repositionMinDistanceMultiplier, m_aircraftInfo.airAttackRange * m_repositionMaxDistanceMultiplier);
-        Vector3 repositionDir = transform.forward;
-
-        if (m_targetModule != null)
-        {
-            // 적 함선으로부터 멀어지는 방향 벡터
-            Vector3 awayFromShipDir = (transform.position - m_targetModule.transform.position).normalized;
-
-            // 현재 진행 방향과 적 함선 반대 방향 사이의 각도 계산
-            float angleBetween = Vector3.Angle(transform.forward, awayFromShipDir);
-
-            // 회피 기동을 위해 0~90도 사이의 랜덤한 각도를 더해줌
-            // 단, 총 회전 각도가 90도를 넘지 않도록 제한
-            float randomTurnAngle = Random.Range(0f, 90f - Mathf.Clamp(angleBetween, 0, 90));
-
-            // 회전 방향 결정 (오른쪽 또는 왼쪽)
-            float turnDirection = (Random.value > 0.5f) ? 1f : -1f;
-
-            // 최종 회피 방향 계산
-            repositionDir = Quaternion.AngleAxis(randomTurnAngle * turnDirection, Vector3.up) * awayFromShipDir;
-        }
-
-        Vector3 repositionTarget = transform.position + repositionDir * repositionDistance;
-
-        while (true)
-        {
-            // 목표 지점을 지나쳤으면(dot < 0) 종료
-            if (Vector3.Dot(repositionDir, repositionTarget - transform.position) < 0f) break;
-
-            transform.position += repositionDir * m_aircraftInfo.airSpeed * Time.deltaTime;
-            Quaternion targetRotation = Quaternion.LookRotation(repositionDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * m_angularSpeedMultiplier * Time.deltaTime);
-            yield return null;
-        }
-
-        m_state = EAircraftState.MoveToTarget;
-    }
-
-    protected virtual IEnumerator ReturnToCarrierPhase()
-    {
+        Debug.Log("Phase_ReturnToApproach");
         if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null)
         {
-            ReturnToPool();
-            yield break;
+            if (TryFindNewHangerAndFirePoint() == false)
+            {
+                ReturnToPool();
+                yield break;
+            }
         }
 
         m_currentDirection = transform.forward.normalized;
-
-        // Phase 1: 격납고 출입구 앞 접근 지점으로 이동
-        // 사출 방향(m_firePoint.forward) 앞에 waypoint를 두고, 거기까지 자유 비행
         while (true)
         {
             yield return null;
 
             if (m_firePoint == null)
             {
-                if (TryFindNewHangerAndFirePoint()) continue;
-                ReturnToPool(); yield break;
+                if (TryFindNewHangerAndFirePoint() == false)
+                {
+                    ReturnToPool();
+                    yield break;
+                }
             }
 
             Vector3 approachPoint = m_firePoint.position + m_firePoint.forward * m_aircraftInfo.airLaunchDist;
-            Vector3 toApproach = approachPoint - transform.position;
-            // 목표 지점을 지나쳤으면(dot < 0) 종료
-            if (Vector3.Dot(transform.forward, toApproach) < 0f) break;
-
-            SmoothRotate(toApproach.normalized);
+            Vector3 toApproach = (approachPoint - transform.position).normalized;
+            SmoothRotate(toApproach, 10f);
             transform.position += m_currentDirection * m_aircraftInfo.airSpeed * Time.deltaTime;
-        }
 
-        // Phase 2: 출입구 방향(-m_firePoint.forward)으로 직진 진입
+            // firePoint 기준으로 함재기가 진입 방향(-forward) ±45도 콘 안에 들어오면 Docking 전환
+            Vector3 toDock = (m_firePoint.position - transform.position).normalized;
+            float dot = Vector3.Dot(-m_firePoint.forward, toDock);
+            if (dot >= 0.707f)
+            {
+                m_state = EAircraftState.Docking;
+                yield break;
+            }
+        }
+    }
+
+    // 출입구 방향(-m_firePoint.forward)으로 감속 진입, 완료 시 귀환 처리
+    protected virtual IEnumerator Phase_Docking()
+    {
+        Debug.Log("Phase_Docking");
+        const float k_dockingSpeedRatio = 0.4f;
         while (true)
         {
             yield return null;
 
             if (m_firePoint == null)
             {
-                if (TryFindNewHangerAndFirePoint()) continue;
-                ReturnToPool(); yield break;
+                if (TryFindNewHangerAndFirePoint() == false) { ReturnToPool(); yield break; }
+                continue;
             }
 
             // 격납고 진입 방향(-firePoint.forward) 기준으로 firePoint를 지나쳤으면 종료
-            Vector3 toFirePoint = m_firePoint.position - transform.position;
-            if (Vector3.Dot(-m_firePoint.forward, toFirePoint) < 0f) break;
+            Vector3 toDock = (m_firePoint.position - transform.position).normalized;
+            if (Vector3.Dot(-m_firePoint.forward, toDock) < 0f)
+            {
+                if (m_moduleHanger != null)
+                    m_moduleHanger.ReturnAircraft(m_aircraftInfo);
+                ReturnToPool();
+                yield break;
+            }
 
-            SmoothRotate(-m_firePoint.forward);
-            transform.position += m_currentDirection * m_aircraftInfo.airSpeed * Time.deltaTime;
+            SmoothRotate(toDock, 10f);
+            float speedMultiplier = Vector3.Distance(transform.position, m_firePoint.position) <= 1f ? k_dockingSpeedRatio : 1f;
+            transform.position += m_currentDirection * m_aircraftInfo.airSpeed * speedMultiplier * Time.deltaTime;
         }
-
-        if (m_moduleHanger != null)
-            m_moduleHanger.ReturnAircraft(m_aircraftInfo);
-
-        ReturnToPool();
     }
 
     // Body 교체 후 새로운 ModuleHanger와 firePoint를 찾는 메서드
@@ -622,7 +603,7 @@ public abstract class AircraftBase : MonoBehaviour
     public void ForceReturnToCarrier()
     {
         if (m_state == EAircraftState.None) return;
-        m_state = EAircraftState.ReturnToCarrier;
+        m_state = EAircraftState.ReturnToApproach;
     }
 
     protected virtual void ReturnToPool()
@@ -638,19 +619,11 @@ public abstract class AircraftBase : MonoBehaviour
         if (m_targetModule == null)
             return;
 
-        float minRadius = m_aircraftInfo.airAttackRange * 0.8f;
-        float maxRadius = m_aircraftInfo.airAttackRange * 1.2f;
-
         if(m_state == EAircraftState.MoveToTarget)
-            DrawDonut(m_targetModule.transform, minRadius, maxRadius);
-        else if (m_state == EAircraftState.AttackShip)
-        {
-            DrawAttackPhase();
-            //DrawAttackPhase_Sphere();
-        }
+            DrawDonut(m_targetModule.transform, m_aircraftInfo.airAttackRange);
     }
 
-    private void DrawDonut(Transform target, float minRadius, float maxRadius)
+    private void DrawDonut(Transform target, float radius)
     {
         // 1. 지금 이 함재기 → 타겟 방향 기준 로컬 좌표계 생성
         Vector3 forward = (target.position - transform.position).normalized;
@@ -662,10 +635,7 @@ public abstract class AircraftBase : MonoBehaviour
         Vector3 right = Vector3.Normalize(Vector3.Cross(worldUp, forward));
         Vector3 up = Vector3.Normalize(Vector3.Cross(forward, right));
 
-        // 2. 도넛의 두 반경 중간값을 사용해서 기본 원을 그림
-        float radius = (minRadius + maxRadius) * 0.5f;
-
-        // 3. 세그먼트 수
+        // 2. 세그먼트 수
         int segments = 64;
 
         Vector3 prevPoint = Vector3.zero;
@@ -697,52 +667,6 @@ public abstract class AircraftBase : MonoBehaviour
             prevPoint = worldPos;
         }
     }
-
-    private void DrawAttackPhase()
-    {
-        
-    }
-    // private void DrawAttackPhase_Sphere()
-    // {
-    //     if (m_state != EAircraftState.AttackShip || m_targetModule == null) return;
-
-    //     Vector3 toShip = m_targetModule.transform.position - transform.position;
-    //     float distance = toShip.magnitude;
-
-    //     // 1. 함재기 주위: 안전 거리 스피어 (빨강: 너무 가까우면 여기서 피함)
-    //     Gizmos.color = distance < m_safeDistance ? Color.red : Color.magenta;
-    //     Gizmos.DrawWireSphere(transform.position, m_safeDistance);
-
-    //     // 2. 목표 함선 주위: 이상적 선회 거리 (초록: 이 거리 유지 목표)
-    //     Gizmos.color = Color.green;
-    //     Gizmos.DrawWireSphere(m_targetModule.transform.position, m_idealDistance);
-
-    //     // 3. 함재기 ↔ 함선 연결선 (두께 있음 + 색상으로 상태 표시)
-    //     Gizmos.color = distance < m_safeDistance * 0.9f ? Color.red : 
-    //                 distance < m_safeDistance * 1.4f ? Color.yellow : Color.cyan;
-    //     Gizmos.DrawLine(transform.position, m_targetModule.transform.position);
-
-    //     // 4. 현재 진행 방향 화살표 (파랑)
-    //     Gizmos.color = Color.blue;
-    //     Gizmos.DrawRay(transform.position, m_currentDirection * 5f);  // 5m 길이
-
-    //     // 5. 현재 거리 표시 (Gizmos에 텍스트 없음 → SceneView에서 HandleUtility로 간단 라벨)
-    //     // #if UNITY_EDITOR
-    //     // UnityEditor.Handles.color = Gizmos.color;
-    //     // UnityEditor.Handles.Label(transform.position + Vector3.up * 2f, 
-    //     //                         $"{distance:F1}m", 
-    //     //                         UnityEditor.GUI.skin.label);
-    //     // #endif
-
-    //     // 6. 피함/접선 방향 (너무 가까울 때만 표시)
-    //     if (distance < m_safeDistance * 1.4f)
-    //     {
-    //         Vector3 tangent = Vector3.Cross(toShip.normalized, Vector3.up).normalized;
-    //         if (Vector3.Dot(tangent, m_currentDirection) < 0) tangent = -tangent;
-    //         Gizmos.color = Color.red;
-    //         Gizmos.DrawRay(transform.position, tangent * 8f);
-    //     }
-    // }
 
 #endif
 }

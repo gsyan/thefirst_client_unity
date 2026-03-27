@@ -9,6 +9,7 @@ public class ObjectPool<T> where T : Component
     private Transform m_parent;
     private int m_initialSize;
     private int m_maxSize;
+    private int m_totalCreated;
 
     public ObjectPool(T prefab, int initialSize = 10, int maxSize = 100, Transform parent = null)
     {
@@ -25,6 +26,7 @@ public class ObjectPool<T> where T : Component
     private T CreateNewObject()
     {
         T obj = Object.Instantiate(m_prefab, m_parent);
+        obj.gameObject.name = m_prefab.name + (++m_totalCreated);
         obj.gameObject.SetActive(false);
         m_pool.Enqueue(obj);
         return obj;
@@ -41,6 +43,7 @@ public class ObjectPool<T> where T : Component
         else
         {
             obj = Object.Instantiate(m_prefab, m_parent);
+            obj.gameObject.name = m_prefab.name + (++m_totalCreated);
         }
 
         obj.gameObject.SetActive(true);

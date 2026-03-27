@@ -2757,7 +2757,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 15
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 30
       airAttack: 5
       airAttackRange: 4
@@ -2788,7 +2788,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.9
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 35
       airAttack: 6
       airAttackRange: 4
@@ -2819,7 +2819,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.8
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 40
       airAttack: 7
       airAttackRange: 4
@@ -2850,7 +2850,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.7
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 45
       airAttack: 8
       airAttackRange: 4
@@ -2881,7 +2881,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.6
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 50
       airAttack: 9
       airAttackRange: 4
@@ -2912,7 +2912,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.5
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 55
       airAttack: 10
       airAttackRange: 4
@@ -2943,7 +2943,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.4
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 60
       airAttack: 11
       airAttackRange: 4
@@ -2974,7 +2974,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.3
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 65
       airAttack: 12
       airAttackRange: 4
@@ -3005,7 +3005,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.2
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 70
       airAttack: 13
       airAttackRange: 4
@@ -3036,7 +3036,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 5
       airMaintenanceTime: 14.1
-      airLaunchDist: 5
+      airLaunchDist: 1
       airHealth: 75
       airAttack: 14
       airAttackRange: 4
@@ -3069,7 +3069,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 14
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 80
       airAttack: 15
       airAttackRange: 4
@@ -3100,7 +3100,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.9
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 85
       airAttack: 16
       airAttackRange: 4
@@ -3131,7 +3131,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.8
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 90
       airAttack: 17
       airAttackRange: 4
@@ -3162,7 +3162,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.7
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 95
       airAttack: 18
       airAttackRange: 4
@@ -3193,7 +3193,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.6
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 100
       airAttack: 19
       airAttackRange: 4
@@ -3224,7 +3224,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.5
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 105
       airAttack: 20
       airAttackRange: 4
@@ -3255,7 +3255,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.4
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 110
       airAttack: 21
       airAttackRange: 4
@@ -3286,7 +3286,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.3
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 115
       airAttack: 22
       airAttackRange: 4
@@ -3317,7 +3317,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.2
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 120
       airAttack: 23
       airAttackRange: 4
@@ -3348,7 +3348,7 @@ MonoBehaviour:
       projectileSpeed: 0
       airCount: 10
       airMaintenanceTime: 13.1
-      airLaunchDist: 4
+      airLaunchDist: 1
       airHealth: 125
       airAttack: 24
       airAttackRange: 4
@@ -3363,14 +3363,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 100,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 100.0,\r\n        \"repair\": 1.0,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 100.0,\r\n        \"repair\": 1.0,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3382,14 +3381,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 150,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 150.0,\r\n        \"repair\": 1.5,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 150.0,\r\n        \"repair\": 1.5,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3401,14 +3399,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 225,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 200.0,\r\n        \"repair\": 2.0,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 200.0,\r\n        \"repair\": 2.0,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3420,14 +3417,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 338,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 250.0,\r\n        \"repair\": 2.5,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 250.0,\r\n        \"repair\": 2.5,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3439,14 +3435,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 506,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 300.0,\r\n        \"repair\": 3.0,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 300.0,\r\n        \"repair\": 3.0,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3458,14 +3453,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 759,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 350.0,\r\n        \"repair\": 3.5,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 350.0,\r\n        \"repair\": 3.5,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3477,14 +3471,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1139,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 400.0,\r\n        \"repair\": 4.0,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 400.0,\r\n        \"repair\": 4.0,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3496,14 +3489,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1709,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 450.0,\r\n        \"repair\": 4.5,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 450.0,\r\n        \"repair\": 4.5,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3515,14 +3507,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 2563,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 500.0,\r\n        \"repair\": 5.0,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 500.0,\r\n        \"repair\": 5.0,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3534,14 +3525,13 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 3844,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"engine\",\r\n            \"slotIndex\":
+    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    }\r\n        ],\r\n        \"health\": 550.0,\r\n        \"repair\": 5.5,\r\n       
-    \"speed\": 0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 550.0,\r\n        \"repair\": 5.5,\r\n        \"speed\":
+    0.0,\r\n        \"attackFireCount\": 0,\r\n        \"attack\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
@@ -3768,7 +3758,7 @@ MonoBehaviour:
     \"moduleLevel\": 1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 50.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3781,7 +3771,7 @@ MonoBehaviour:
     \"moduleLevel\": 2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 55.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3794,7 +3784,7 @@ MonoBehaviour:
     \"moduleLevel\": 3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 225,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 60.5,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3807,7 +3797,7 @@ MonoBehaviour:
     \"moduleLevel\": 4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 338,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 66.6,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3820,7 +3810,7 @@ MonoBehaviour:
     \"moduleLevel\": 5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 506,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 73.2,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3833,7 +3823,7 @@ MonoBehaviour:
     \"moduleLevel\": 6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 759,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 80.5,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3846,7 +3836,7 @@ MonoBehaviour:
     \"moduleLevel\": 7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 1139,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 88.6,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3859,7 +3849,7 @@ MonoBehaviour:
     \"moduleLevel\": 8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 1709,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 97.4,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3872,7 +3862,7 @@ MonoBehaviour:
     \"moduleLevel\": 9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 2563,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 107.2,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3885,7 +3875,7 @@ MonoBehaviour:
     \"moduleLevel\": 10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 3844,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 117.9,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3898,7 +3888,7 @@ MonoBehaviour:
     \"moduleLevel\": 1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 600,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3911,7 +3901,7 @@ MonoBehaviour:
     \"moduleLevel\": 2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 150,\r\n          \"mineralRare\": 900,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 220.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3924,7 +3914,7 @@ MonoBehaviour:
     \"moduleLevel\": 3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 225,\r\n          \"mineralRare\": 1350,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 242.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3937,7 +3927,7 @@ MonoBehaviour:
     \"moduleLevel\": 4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 338,\r\n          \"mineralRare\": 2025,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 266.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3950,7 +3940,7 @@ MonoBehaviour:
     \"moduleLevel\": 5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 506,\r\n          \"mineralRare\": 3038,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 293.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3963,7 +3953,7 @@ MonoBehaviour:
     \"moduleLevel\": 6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 759,\r\n          \"mineralRare\": 4556,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 322.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3976,7 +3966,7 @@ MonoBehaviour:
     \"moduleLevel\": 7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 1139,\r\n          \"mineralRare\": 6834,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 354.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3989,7 +3979,7 @@ MonoBehaviour:
     \"moduleLevel\": 8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 1709,\r\n          \"mineralRare\": 10253,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 390.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4002,7 +3992,7 @@ MonoBehaviour:
     \"moduleLevel\": 9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 2563,\r\n          \"mineralRare\": 15378,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 429.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4015,7 +4005,7 @@ MonoBehaviour:
     \"moduleLevel\": 10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 3844,\r\n          \"mineralRare\": 23066,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 472.0,\r\n        \"attackFireCount\":
     0,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4028,10 +4018,10 @@ MonoBehaviour:
     \"moduleLevel\": 1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 10.0,\r\n        \"attackCool\": 3.5,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4041,10 +4031,10 @@ MonoBehaviour:
     \"moduleLevel\": 2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 15.0,\r\n        \"attackCool\": 3.4,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4054,10 +4044,10 @@ MonoBehaviour:
     \"moduleLevel\": 3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 225,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 20.0,\r\n        \"attackCool\": 3.3,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4067,10 +4057,10 @@ MonoBehaviour:
     \"moduleLevel\": 4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 338,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 25.0,\r\n        \"attackCool\": 3.2,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4080,10 +4070,10 @@ MonoBehaviour:
     \"moduleLevel\": 5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 506,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 30.0,\r\n        \"attackCool\": 3.1,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4093,10 +4083,10 @@ MonoBehaviour:
     \"moduleLevel\": 6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 759,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 35.0,\r\n        \"attackCool\": 3.0,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4106,10 +4096,10 @@ MonoBehaviour:
     \"moduleLevel\": 7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 1139,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 40.0,\r\n        \"attackCool\": 2.9,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4119,10 +4109,10 @@ MonoBehaviour:
     \"moduleLevel\": 8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 1709,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 45.0,\r\n        \"attackCool\": 2.8,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4132,10 +4122,10 @@ MonoBehaviour:
     \"moduleLevel\": 9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 2563,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 50.0,\r\n        \"attackCool\": 2.7,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4145,10 +4135,10 @@ MonoBehaviour:
     \"moduleLevel\": 10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 3844,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 55.0,\r\n        \"attackCool\": 2.6,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4158,10 +4148,10 @@ MonoBehaviour:
     \"moduleLevel\": 1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 600,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 10.0,\r\n        \"attackCool\": 3.5,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4171,10 +4161,10 @@ MonoBehaviour:
     \"moduleLevel\": 2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 150,\r\n          \"mineralRare\": 900,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 15.0,\r\n        \"attackCool\": 3.4,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4184,10 +4174,10 @@ MonoBehaviour:
     \"moduleLevel\": 3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 225,\r\n          \"mineralRare\": 1350,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 20.0,\r\n        \"attackCool\": 3.3,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4197,10 +4187,10 @@ MonoBehaviour:
     \"moduleLevel\": 4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 338,\r\n          \"mineralRare\": 2025,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 25.0,\r\n        \"attackCool\": 3.2,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4210,10 +4200,10 @@ MonoBehaviour:
     \"moduleLevel\": 5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 506,\r\n          \"mineralRare\": 3038,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 30.0,\r\n        \"attackCool\": 3.1,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4223,10 +4213,10 @@ MonoBehaviour:
     \"moduleLevel\": 6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 759,\r\n          \"mineralRare\": 4556,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 35.0,\r\n        \"attackCool\": 3.0,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4236,10 +4226,10 @@ MonoBehaviour:
     \"moduleLevel\": 7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 1139,\r\n          \"mineralRare\": 6834,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 40.0,\r\n        \"attackCool\": 2.9,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4249,10 +4239,10 @@ MonoBehaviour:
     \"moduleLevel\": 8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 1709,\r\n          \"mineralRare\": 10253,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 45.0,\r\n        \"attackCool\": 2.8,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4262,10 +4252,10 @@ MonoBehaviour:
     \"moduleLevel\": 9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 2563,\r\n          \"mineralRare\": 15378,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 50.0,\r\n        \"attackCool\": 2.7,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4275,10 +4265,10 @@ MonoBehaviour:
     \"moduleLevel\": 10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 3844,\r\n          \"mineralRare\": 23066,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     2,\r\n        \"attack\": 55.0,\r\n        \"attackCool\": 2.6,\r\n        \"projectileWidth\":
-    5.0,\r\n        \"projectileSpeed\": 2000.0,\r\n        \"airCount\": 0,\r\n       
+    0.1,\r\n        \"projectileSpeed\": 200.0,\r\n        \"airCount\": 0,\r\n       
     \"airMaintenanceTime\": 0.0,\r\n        \"airLaunchDist\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
@@ -4289,10 +4279,10 @@ MonoBehaviour:
     {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 100,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 10.0,\r\n       
-    \"attackCool\": 3.5,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.5,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4302,10 +4292,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 150,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 15.0,\r\n       
-    \"attackCool\": 3.4,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.4,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4315,10 +4305,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 225,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 20.0,\r\n       
-    \"attackCool\": 3.3,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.3,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4328,10 +4318,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 338,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 25.0,\r\n       
-    \"attackCool\": 3.2,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.2,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4341,10 +4331,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 506,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 30.0,\r\n       
-    \"attackCool\": 3.1,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.1,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4354,10 +4344,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 759,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 35.0,\r\n       
-    \"attackCool\": 3.0,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.0,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4367,10 +4357,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1139,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 40.0,\r\n       
-    \"attackCool\": 2.9,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 2.9,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4380,10 +4370,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1709,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 45.0,\r\n       
-    \"attackCool\": 2.8,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 2.8,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4393,10 +4383,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 2563,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 50.0,\r\n       
-    \"attackCool\": 2.7,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 2.7,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4406,10 +4396,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 3844,\r\n         
     \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 55.0,\r\n       
-    \"attackCool\": 2.6,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 2.6,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4419,10 +4409,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 100,\r\n         
     \"mineralRare\": 600,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 10.0,\r\n       
-    \"attackCool\": 3.5,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.5,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4432,10 +4422,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 150,\r\n         
     \"mineralRare\": 900,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 15.0,\r\n       
-    \"attackCool\": 3.4,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.4,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4445,10 +4435,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 225,\r\n         
     \"mineralRare\": 1350,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 20.0,\r\n       
-    \"attackCool\": 3.3,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.3,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4458,10 +4448,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 338,\r\n         
     \"mineralRare\": 2025,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 25.0,\r\n       
-    \"attackCool\": 3.2,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.2,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4471,10 +4461,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 506,\r\n         
     \"mineralRare\": 3038,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 30.0,\r\n       
-    \"attackCool\": 3.1,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.1,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4484,10 +4474,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 759,\r\n         
     \"mineralRare\": 4556,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 35.0,\r\n       
-    \"attackCool\": 3.0,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 3.0,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4497,10 +4487,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1139,\r\n         
     \"mineralRare\": 6834,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 40.0,\r\n       
-    \"attackCool\": 2.9,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 2.9,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4510,10 +4500,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1709,\r\n         
     \"mineralRare\": 10253,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 45.0,\r\n       
-    \"attackCool\": 2.8,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 2.8,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4523,10 +4513,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 2563,\r\n         
     \"mineralRare\": 15378,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 50.0,\r\n       
-    \"attackCool\": 2.7,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 2.7,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4536,10 +4526,10 @@ MonoBehaviour:
     \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 3844,\r\n         
     \"mineralRare\": 23066,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
     0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 55.0,\r\n       
-    \"attackCool\": 2.6,\r\n        \"projectileWidth\": 5.0,\r\n        \"projectileSpeed\":
-    300.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"attackCool\": 2.6,\r\n        \"projectileWidth\": 0.1,\r\n        \"projectileSpeed\":
+    10.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
     \"airLaunchDist\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
@@ -4549,259 +4539,259 @@ MonoBehaviour:
     \"moduleLevel\": 1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
     0,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 0,\r\n         
     \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\":
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
     0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
     1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"projectileWidth\":
     0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
-    \"airMaintenanceTime\": 15.0,\r\n        \"airLaunchDist\": 100.0,\r\n       
-    \"airHealth\": 30.0,\r\n        \"airAttack\": 5.0,\r\n        \"airAttackRange\":
-    100.0,\r\n        \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 300.0,\r\n       
-    \"airAmmo\": 10,\r\n        \"airDetectRadius\": 200.0,\r\n        \"airAvoidRadius\":
-    200.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1
-    Lv.2\",\r\n        \"moduleType\": \"hanger\",\r\n        \"moduleSubType\":
-    \"hanger_t1_std_ver1\",\r\n        \"moduleLevel\": 2,\r\n        \"upgradeCost\":
-    {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 150,\r\n         
-    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.9,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 5,\r\n        \"airMaintenanceTime\": 14.9,\r\n       
-    \"airLaunchDist\": 100.0,\r\n        \"airHealth\": 35.0,\r\n        \"airAttack\":
-    6.0,\r\n        \"airAttackRange\": 100.0,\r\n        \"airAttackCool\": 4.0,\r\n       
-    \"airSpeed\": 300.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
-    200.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_std_ver1 Lv.3\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n        \"moduleLevel\": 3,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 225,\r\n         
-    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.8,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 5,\r\n        \"airMaintenanceTime\": 14.8,\r\n       
-    \"airLaunchDist\": 100.0,\r\n        \"airHealth\": 40.0,\r\n        \"airAttack\":
-    7.0,\r\n        \"airAttackRange\": 100.0,\r\n        \"airAttackCool\": 4.0,\r\n       
-    \"airSpeed\": 300.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
-    200.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_std_ver1 Lv.4\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n        \"moduleLevel\": 4,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 338,\r\n         
-    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.7,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 5,\r\n        \"airMaintenanceTime\": 14.7,\r\n       
-    \"airLaunchDist\": 100.0,\r\n        \"airHealth\": 45.0,\r\n        \"airAttack\":
-    8.0,\r\n        \"airAttackRange\": 100.0,\r\n        \"airAttackCool\": 4.0,\r\n       
-    \"airSpeed\": 300.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
-    200.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_std_ver1 Lv.5\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n        \"moduleLevel\": 5,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 506,\r\n         
-    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.6,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 5,\r\n        \"airMaintenanceTime\": 14.6,\r\n       
-    \"airLaunchDist\": 100.0,\r\n        \"airHealth\": 50.0,\r\n        \"airAttack\":
-    9.0,\r\n        \"airAttackRange\": 100.0,\r\n        \"airAttackCool\": 4.0,\r\n       
-    \"airSpeed\": 300.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
-    200.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_std_ver1 Lv.6\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n        \"moduleLevel\": 6,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 759,\r\n         
-    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.5,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 5,\r\n        \"airMaintenanceTime\": 14.5,\r\n       
-    \"airLaunchDist\": 100.0,\r\n        \"airHealth\": 55.0,\r\n        \"airAttack\":
-    10.0,\r\n        \"airAttackRange\": 100.0,\r\n        \"airAttackCool\": 4.0,\r\n       
-    \"airSpeed\": 300.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
-    200.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_std_ver1 Lv.7\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n        \"moduleLevel\": 7,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1139,\r\n         
-    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.4,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 5,\r\n        \"airMaintenanceTime\": 14.4,\r\n       
-    \"airLaunchDist\": 100.0,\r\n        \"airHealth\": 60.0,\r\n        \"airAttack\":
-    11.0,\r\n        \"airAttackRange\": 100.0,\r\n        \"airAttackCool\": 4.0,\r\n       
-    \"airSpeed\": 300.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
-    200.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_std_ver1 Lv.8\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n        \"moduleLevel\": 8,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1709,\r\n         
-    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.3,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 5,\r\n        \"airMaintenanceTime\": 14.3,\r\n       
-    \"airLaunchDist\": 100.0,\r\n        \"airHealth\": 65.0,\r\n        \"airAttack\":
-    12.0,\r\n        \"airAttackRange\": 100.0,\r\n        \"airAttackCool\": 4.0,\r\n       
-    \"airSpeed\": 300.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
-    200.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_std_ver1 Lv.9\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n        \"moduleLevel\": 9,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 2563,\r\n         
-    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.2,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 5,\r\n        \"airMaintenanceTime\": 14.2,\r\n       
-    \"airLaunchDist\": 100.0,\r\n        \"airHealth\": 70.0,\r\n        \"airAttack\":
-    13.0,\r\n        \"airAttackRange\": 100.0,\r\n        \"airAttackCool\": 4.0,\r\n       
-    \"airSpeed\": 300.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
-    200.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_std_ver1 Lv.10\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n        \"moduleLevel\": 10,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 3844,\r\n         
-    \"mineralRare\": 0,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 1,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.1,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 5,\r\n        \"airMaintenanceTime\": 14.1,\r\n       
-    \"airLaunchDist\": 100.0,\r\n        \"airHealth\": 75.0,\r\n        \"airAttack\":
-    14.0,\r\n        \"airAttackRange\": 100.0,\r\n        \"airAttackCool\": 4.0,\r\n       
-    \"airSpeed\": 300.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
-    200.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.1\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 1,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 100,\r\n         
-    \"mineralRare\": 600,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 3.0,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 14.0,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 80.0,\r\n        \"airAttack\":
-    15.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.2\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 2,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 150,\r\n         
-    \"mineralRare\": 900,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.9,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 13.9,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 85.0,\r\n        \"airAttack\":
-    16.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.3\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 3,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 225,\r\n         
-    \"mineralRare\": 1350,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.8,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 13.8,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 90.0,\r\n        \"airAttack\":
-    17.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.4\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 4,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 338,\r\n         
-    \"mineralRare\": 2025,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.7,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 13.7,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 95.0,\r\n        \"airAttack\":
-    18.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.5\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 5,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 506,\r\n         
-    \"mineralRare\": 3038,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.6,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 13.6,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 100.0,\r\n        \"airAttack\":
-    19.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.6\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 6,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 759,\r\n         
-    \"mineralRare\": 4556,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.5,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 13.5,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 105.0,\r\n        \"airAttack\":
-    20.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.7\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 7,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1139,\r\n         
-    \"mineralRare\": 6834,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.4,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 13.4,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 110.0,\r\n        \"airAttack\":
-    21.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.8\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 8,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 1709,\r\n         
-    \"mineralRare\": 10253,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.3,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 13.3,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 115.0,\r\n        \"airAttack\":
-    22.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.9\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 9,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 2563,\r\n         
-    \"mineralRare\": 15378,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.2,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 13.2,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 120.0,\r\n        \"airAttack\":
-    23.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      },\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1_adv_ver1 Lv.10\",\r\n        \"moduleType\": \"hanger\",\r\n       
-    \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n        \"moduleLevel\": 10,\r\n       
-    \"upgradeCost\": {\r\n          \"techLevel\": 0,\r\n          \"mineral\": 3844,\r\n         
-    \"mineralRare\": 23066,\r\n          \"mineralExotic\": 0,\r\n          \"mineralDark\":
-    0\r\n        },\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"attackFireCount\": 2,\r\n        \"attack\": 0.0,\r\n       
-    \"attackCool\": 2.1,\r\n        \"projectileWidth\": 0.0,\r\n        \"projectileSpeed\":
-    0.0,\r\n        \"airCount\": 10,\r\n        \"airMaintenanceTime\": 13.1,\r\n       
-    \"airLaunchDist\": 90.0,\r\n        \"airHealth\": 125.0,\r\n        \"airAttack\":
-    24.0,\r\n        \"airAttackRange\": 120.0,\r\n        \"airAttackCool\": 3.0,\r\n       
-    \"airSpeed\": 400.0,\r\n        \"airAmmo\": 15,\r\n        \"airDetectRadius\":
-    300.0,\r\n        \"airAvoidRadius\": 200.0\r\n      }\r\n    ]\r\n  }\r\n}"
+    \"airMaintenanceTime\": 15.0,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    30.0,\r\n        \"airAttack\": 5.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1 Lv.2\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n       
+    \"moduleLevel\": 2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 150,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.9,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
+    \"airMaintenanceTime\": 14.9,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    35.0,\r\n        \"airAttack\": 6.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1 Lv.3\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n       
+    \"moduleLevel\": 3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 225,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.8,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
+    \"airMaintenanceTime\": 14.8,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    40.0,\r\n        \"airAttack\": 7.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1 Lv.4\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n       
+    \"moduleLevel\": 4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 338,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.7,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
+    \"airMaintenanceTime\": 14.7,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    45.0,\r\n        \"airAttack\": 8.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1 Lv.5\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n       
+    \"moduleLevel\": 5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 506,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.6,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
+    \"airMaintenanceTime\": 14.6,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    50.0,\r\n        \"airAttack\": 9.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1 Lv.6\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n       
+    \"moduleLevel\": 6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 759,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.5,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
+    \"airMaintenanceTime\": 14.5,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    55.0,\r\n        \"airAttack\": 10.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1 Lv.7\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n       
+    \"moduleLevel\": 7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 1139,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.4,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
+    \"airMaintenanceTime\": 14.4,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    60.0,\r\n        \"airAttack\": 11.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1 Lv.8\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n       
+    \"moduleLevel\": 8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 1709,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.3,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
+    \"airMaintenanceTime\": 14.3,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    65.0,\r\n        \"airAttack\": 12.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 10.0,\r\n        \"airAvoidRadius\": 10.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1 Lv.9\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n       
+    \"moduleLevel\": 9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 2563,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.2,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
+    \"airMaintenanceTime\": 14.2,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    70.0,\r\n        \"airAttack\": 13.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_std_ver1 Lv.10\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_std_ver1\",\r\n       
+    \"moduleLevel\": 10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 3844,\r\n          \"mineralRare\": 0,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    1,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.1,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 5,\r\n       
+    \"airMaintenanceTime\": 14.1,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    75.0,\r\n        \"airAttack\": 14.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.1\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 1,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 100,\r\n          \"mineralRare\": 600,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 14.0,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    80.0,\r\n        \"airAttack\": 15.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.2\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 2,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 150,\r\n          \"mineralRare\": 900,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.9,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 13.9,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    85.0,\r\n        \"airAttack\": 16.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.3\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 3,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 225,\r\n          \"mineralRare\": 1350,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.8,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 13.8,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    90.0,\r\n        \"airAttack\": 17.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.4\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 4,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 338,\r\n          \"mineralRare\": 2025,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.7,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 13.7,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    95.0,\r\n        \"airAttack\": 18.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.5\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 5,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 506,\r\n          \"mineralRare\": 3038,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.6,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 13.6,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    100.0,\r\n        \"airAttack\": 19.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.6\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 6,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 759,\r\n          \"mineralRare\": 4556,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.5,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 13.5,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    105.0,\r\n        \"airAttack\": 20.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.7\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 7,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 1139,\r\n          \"mineralRare\": 6834,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.4,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 13.4,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    110.0,\r\n        \"airAttack\": 21.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.8\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 8,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 1709,\r\n          \"mineralRare\": 10253,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.3,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 13.3,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    115.0,\r\n        \"airAttack\": 22.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.9\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 9,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 2563,\r\n          \"mineralRare\": 15378,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.2,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 13.2,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    120.0,\r\n        \"airAttack\": 23.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"hanger_t1_adv_ver1 Lv.10\",\r\n       
+    \"moduleType\": \"hanger\",\r\n        \"moduleSubType\": \"hanger_t1_adv_ver1\",\r\n       
+    \"moduleLevel\": 10,\r\n        \"upgradeCost\": {\r\n          \"techLevel\":
+    0,\r\n          \"mineral\": 3844,\r\n          \"mineralRare\": 23066,\r\n         
+    \"mineralExotic\": 0,\r\n          \"mineralDark\": 0\r\n        },\r\n       
+    \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\":
+    0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"attackFireCount\":
+    2,\r\n        \"attack\": 0.0,\r\n        \"attackCool\": 2.1,\r\n        \"projectileWidth\":
+    0.0,\r\n        \"projectileSpeed\": 0.0,\r\n        \"airCount\": 10,\r\n       
+    \"airMaintenanceTime\": 13.1,\r\n        \"airLaunchDist\": 1.0,\r\n        \"airHealth\":
+    125.0,\r\n        \"airAttack\": 24.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 3.0,\r\n        \"airSpeed\": 11.0,\r\n        \"airAmmo\":
+    15,\r\n        \"airDetectRadius\": 4.0,\r\n        \"airAvoidRadius\": 4.0\r\n     
+    }\r\n    ]\r\n  }\r\n}"
