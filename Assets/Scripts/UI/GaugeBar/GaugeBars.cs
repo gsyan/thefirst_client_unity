@@ -196,8 +196,8 @@ public class GaugeBars : MonoBehaviour
             if (module == null || gaugeBar == null) continue;
 
             bool isInBounds = gaugeBar.IsInScreenBounds();
-            //bool isFullHealth = IsModuleAtFullHealth(module);
-            bool isFullHealth = false;
+            bool isFullHealth = IsModuleAtFullHealth(module);
+            //bool isFullHealth = false;
             bool shouldShow = isInBounds == true && isFullHealth == false;
 
             if (shouldShow == true && gaugeBar.gameObject.activeSelf == false)
