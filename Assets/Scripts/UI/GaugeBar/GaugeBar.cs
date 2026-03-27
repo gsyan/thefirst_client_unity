@@ -14,7 +14,7 @@ public class GaugeBar : MonoBehaviour
     private float m_smoothSpeed = 5f;
 
     private Transform m_targetTransform;
-    private Vector3 m_offsetFromTarget = new Vector3(0, 2f, 0);
+    private Vector3 m_offsetFromTarget = new Vector3(0, 0f, 0);
     private Camera m_mainCamera;
     private Canvas m_canvas;
     private RectTransform m_rectTransform;

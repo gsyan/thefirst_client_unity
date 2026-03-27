@@ -296,8 +296,6 @@ public class DataTableResearchEditor : Editor
         {
             case EModuleType.body:
                 return bodyColor;
-            case EModuleType.engine:
-                return engineColor;
             case EModuleType.beam:
                 return beamColor;
             case EModuleType.missile:

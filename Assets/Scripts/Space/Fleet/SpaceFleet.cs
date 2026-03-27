@@ -56,7 +56,6 @@ public class SpaceFleet : MonoBehaviour
     public float m_beamMultiplier    = 1.0f;
     public float m_missileMultiplier = 1.0f;
     public float m_hangerMultiplier  = 1.0f;
-    public float m_engineMultiplier  = 1.0f;
     
     private void Start()
     {
@@ -73,7 +72,6 @@ public class SpaceFleet : MonoBehaviour
             m_beamMultiplier    = zoneConfig.enemyBeamMultiplier;
             m_missileMultiplier = zoneConfig.enemyMissileMultiplier;
             m_hangerMultiplier  = zoneConfig.enemyHangerMultiplier;
-            m_engineMultiplier  = zoneConfig.enemyEngineMultiplier;
         }
         InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EFleetState.Battle);
     }
@@ -557,7 +555,6 @@ public class SpaceFleet : MonoBehaviour
             shipCount++;
             CapabilityProfile shipStats = useCurrent ? ship.m_spaceShipStatsCur : ship.m_spaceShipStatsOrg;
             totalStats.totalWeapons += shipStats.totalWeapons;
-            totalStats.totalEngines += shipStats.totalEngines;
             totalStats.attack += shipStats.attack;
             totalStats.health += shipStats.health;
             totalStats.speed += shipStats.speed;
@@ -570,19 +567,6 @@ public class SpaceFleet : MonoBehaviour
         totalStats.speed /= shipCount;
 
         return totalStats;
-    }
-
-    public int GetAverageShipLevel()
-    {
-        if (m_ships.Count == 0) return 0;
-
-        int totalLevel = 0;
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship == null) continue;
-            totalLevel += ship.GetAverageModuleLevel();
-        }
-        return totalLevel / m_ships.Count;
     }
 
     public void ClearAllSelectedModule()

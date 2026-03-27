@@ -468,7 +468,7 @@ public class ApiClient
         await SendRequestAsync(webRequest);
 
         var response = JsonConvert.DeserializeObject<ApiResponse<ModuleUnlockResponse>>(webRequest.downloadHandler.text);
-        Debug.Log($"Module Unlock Response: {webRequest.downloadHandler.text}");
+        Debug.Log($"Module Unlock Response: {webRequest.downloadHandler.text} ({(ServerErrorCode)response?.errorCode})");
         return response;
     }
 

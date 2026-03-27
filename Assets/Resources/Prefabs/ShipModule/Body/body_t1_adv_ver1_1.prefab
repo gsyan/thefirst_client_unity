@@ -1326,7 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 4
+    moduleType: 3
     slotIndex: 0
   m_cameraRotationY: -30
   m_cameraRotationX: 25
@@ -1548,7 +1548,6 @@ Transform:
   m_Children:
   - {fileID: 8049297648813774469}
   - {fileID: 4093633681696387084}
-  - {fileID: 3889669489284256503}
   - {fileID: 5333650010989934386}
   - {fileID: 1299270089410917842}
   - {fileID: 6791274779014047942}
@@ -1587,13 +1586,11 @@ MonoBehaviour:
     moduleSubType: 0
     moduleLevel: 0
     bodyIndex: 0
-    engines: []
     beams: []
     missiles: []
     hangers: []
     unlockedSubTypes: 
   m_moduleSlots: []
-  m_engines: []
   m_beams: []
   m_missiles: []
   m_hangers: []
@@ -1962,7 +1959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 3
+    moduleType: 2
     slotIndex: 0
   m_cameraRotationY: -30
   m_cameraRotationX: 25
@@ -2971,7 +2968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 3
+    moduleType: 2
     slotIndex: 1
   m_cameraRotationY: 30
   m_cameraRotationX: 25
@@ -3317,56 +3314,6 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
---- !u!1 &5966678029490934347
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3889669489284256503}
-  - component: {fileID: 8590299772016236934}
-  m_Layer: 0
-  m_Name: EngineSlot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &3889669489284256503
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5966678029490934347}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -1.53}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 992329172262420132}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &8590299772016236934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5966678029490934347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f0e75a46eb02684e89542c9843dedd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_moduleSlotInfo:
-    moduleType: 2
-    slotIndex: 0
-  m_cameraRotationY: 210
-  m_cameraRotationX: 25
-  m_cameraZoom: 200
 --- !u!1 &6078389986442100664
 GameObject:
   m_ObjectHideFlags: 0
@@ -3643,7 +3590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 4
+    moduleType: 3
     slotIndex: 1
   m_cameraRotationY: -30
   m_cameraRotationX: -25
@@ -3970,7 +3917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 5
+    moduleType: 4
     slotIndex: 1
   m_cameraRotationY: 30
   m_cameraRotationX: 25
@@ -4370,7 +4317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 5
+    moduleType: 4
     slotIndex: 0
   m_cameraRotationY: -30
   m_cameraRotationX: 25

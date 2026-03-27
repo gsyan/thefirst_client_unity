@@ -11,8 +11,7 @@ public struct CapabilityProfile
 {
     // 기존 능력치 (하위 호환성 유지 - deprecated)
     public int totalWeapons;
-    public int totalEngines;
-
+    
     // 세부 전투 능력치
     public float attack;                // 공격력
     public float health;                // 체력
@@ -75,58 +74,6 @@ public class SpaceShip : MonoBehaviour
         m_shipOutline.OutlineWidth = 5f;
         m_shipOutline.enabled = false; // 기본은 꺼둠
 
-    }
-
-    public int GetAverageModuleLevel()
-    {
-        if (m_shipInfo.bodies == null || m_shipInfo.bodies.Count == 0) return 0;
-        int totalLevel = 0;
-        int moduleCount = 0;
-
-        foreach (ModuleBodyInfo body in m_shipInfo.bodies)
-        {
-            totalLevel += body.moduleLevel;
-            moduleCount++;
-
-            if (body.engines != null)
-            {
-                foreach (ModuleInfo engine in body.engines)
-                {
-                    totalLevel += engine.moduleLevel;
-                    moduleCount++;
-                }
-            }
-
-            if (body.beams != null)
-            {
-                foreach (ModuleInfo beam in body.beams)
-                {
-                    totalLevel += beam.moduleLevel;
-                    moduleCount++;
-                }
-            }
-
-            if (body.missiles != null)
-            {
-                foreach (ModuleInfo missile in body.missiles)
-                {
-                    totalLevel += missile.moduleLevel;
-                    moduleCount++;
-                }
-            }
-
-            if (body.hangers != null)
-            {
-                foreach (ModuleInfo hanger in body.hangers)
-                {
-                    totalLevel += hanger.moduleLevel;
-                    moduleCount++;
-                }
-            }
-        }
-
-        if (moduleCount == 0) return 0;
-        return totalLevel / moduleCount;
     }
 
    // Body 초기화 (기존 모듈 재사용 가능)
@@ -368,7 +315,6 @@ public class SpaceShip : MonoBehaviour
             {
                 CapabilityProfile bodyStats = body.GetModuleCapabilityProfile(false);
                 stats.totalWeapons += bodyStats.totalWeapons;
-                stats.totalEngines += bodyStats.totalEngines;
                 stats.attack += bodyStats.attack;
                 stats.health += bodyStats.health;
                 stats.speed += bodyStats.speed;    
@@ -1047,7 +993,6 @@ public class SpaceShip : MonoBehaviour
             moduleSubType = moduleSubTypeNew,
             moduleLevel = moduleLevel,
             bodyIndex = bodyIndex,
-            engines = oldBody.m_moduleBodyInfo.engines,   // 새 배열 생성,
             beams = oldBody.m_moduleBodyInfo.beams,
             missiles = oldBody.m_moduleBodyInfo.missiles,
             hangers = oldBody.m_moduleBodyInfo.hangers

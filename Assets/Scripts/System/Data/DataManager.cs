@@ -138,17 +138,6 @@ public class DataManager : Singleton<DataManager>
                             moduleSubType = EModuleSubType.body_t1_std_ver1,
                             moduleLevel = 1,
                             bodyIndex = 0,
-                            engines = new List<ModuleInfo>
-                            {
-                                new ModuleInfo
-                                {
-                                    moduleType = EModuleType.engine,
-                                    moduleSubType = EModuleSubType.engine_t1_std_ver1,
-                                    moduleLevel = 1,
-                                    bodyIndex = 0,
-                                    slotIndex = 0
-                                }
-                            },
                             beams = new List<ModuleInfo>
                             {
                                 new ModuleInfo

@@ -36,7 +36,7 @@ MonoBehaviour:
     uiPosition: {x: 280, y: -40}
     moduleType: 1
     moduleSubType: 1010201
-  - researchId: engine_t1_std_ver1
+  - researchId: beam_t1_std_ver1
     prerequisiteIds: []
     researchCost:
       techLevel: 0
@@ -47,29 +47,6 @@ MonoBehaviour:
     uiPosition: {x: 80, y: -40}
     moduleType: 2
     moduleSubType: 2010101
-  - researchId: engine_t1_adv_ver1
-    prerequisiteIds:
-    - engine_t1_std_ver1
-    researchCost:
-      techLevel: 0
-      mineral: 0
-      mineralRare: 50000
-      mineralExotic: 0
-      mineralDark: 0
-    uiPosition: {x: 280, y: -40}
-    moduleType: 2
-    moduleSubType: 2010201
-  - researchId: beam_t1_std_ver1
-    prerequisiteIds: []
-    researchCost:
-      techLevel: 0
-      mineral: 0
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
-    uiPosition: {x: 80, y: -40}
-    moduleType: 3
-    moduleSubType: 3010101
   - researchId: beam_t1_adv_ver1
     prerequisiteIds:
     - beam_t1_std_ver1
@@ -80,8 +57,8 @@ MonoBehaviour:
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
-    moduleType: 3
-    moduleSubType: 3010201
+    moduleType: 2
+    moduleSubType: 2010201
   - researchId: missile_t1_std_ver1
     prerequisiteIds: []
     researchCost:
@@ -91,8 +68,8 @@ MonoBehaviour:
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 80, y: -40}
-    moduleType: 4
-    moduleSubType: 4010101
+    moduleType: 3
+    moduleSubType: 3010101
   - researchId: missile_t1_adv_ver1
     prerequisiteIds:
     - missile_t1_std_ver1
@@ -103,8 +80,8 @@ MonoBehaviour:
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
-    moduleType: 4
-    moduleSubType: 4010201
+    moduleType: 3
+    moduleSubType: 3010201
   - researchId: hanger_t1_std_ver1
     prerequisiteIds: []
     researchCost:
@@ -114,8 +91,8 @@ MonoBehaviour:
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 80, y: -40}
-    moduleType: 5
-    moduleSubType: 5010101
+    moduleType: 4
+    moduleSubType: 4010101
   - researchId: hanger_t1_adv_ver1
     prerequisiteIds:
     - hanger_t1_std_ver1
@@ -126,8 +103,8 @@ MonoBehaviour:
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
-    moduleType: 5
-    moduleSubType: 5010201
+    moduleType: 4
+    moduleSubType: 4010201
   techLevelDataList:
   - researchId: tech_level_1
     prerequisiteIds: []

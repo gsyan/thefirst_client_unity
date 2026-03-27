@@ -648,13 +648,11 @@ MonoBehaviour:
     moduleSubType: 0
     moduleLevel: 0
     bodyIndex: 0
-    engines: []
     beams: []
     missiles: []
     hangers: []
     unlockedSubTypes: 
   m_moduleSlots: []
-  m_engines: []
   m_beams: []
   m_missiles: []
   m_hangers: []
@@ -1327,7 +1325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 5
+    moduleType: 4
     slotIndex: 0
   m_cameraRotationY: -30
   m_cameraRotationX: -25
@@ -1608,7 +1606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 3
+    moduleType: 2
     slotIndex: 0
   m_cameraRotationY: -30
   m_cameraRotationX: 25
@@ -2268,7 +2266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 4
+    moduleType: 3
     slotIndex: 0
   m_cameraRotationY: -30
   m_cameraRotationX: 25
@@ -4546,7 +4544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moduleSlotInfo:
-    moduleType: 3
+    moduleType: 2
     slotIndex: 1
   m_cameraRotationY: 30
   m_cameraRotationX: 25

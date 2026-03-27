@@ -28,13 +28,14 @@ public class SelectedModuleVisual : MonoBehaviour
 
     private bool TryCreateOverlayMaterial()
     {
-        Shader shader = Shader.Find("SpaceFleet/GridOverlay");
+        // Resources 폴더 경유로 로드해야 Android 빌드 스트리핑 방지
+        Shader shader = Resources.Load<Shader>("Shaders/GridOverlay");
         if (shader == null)
         {
-            Debug.LogError("[SelectedModuleVisual] SpaceFleet/GridOverlay 쉐이더를 찾을 수 없습니다.");
+            Debug.LogError("[SelectedModuleVisual] Resources/Shaders/GridOverlay 쉐이더를 찾을 수 없습니다.");
             return false;
         }
-        m_overlayMaterial = new(shader);
+        m_overlayMaterial = new Material(shader);
         m_overlayMaterial.SetFloat("_GridSpacing", CalculateGridSpacing());
         return true;
     }

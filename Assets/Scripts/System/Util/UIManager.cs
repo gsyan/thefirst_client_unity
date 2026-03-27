@@ -422,6 +422,22 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupLicense(() => CloseCurrentPopup());
     }
 
+    // 모듈 레벨업 팝업 (다단계 레벨 선택)
+    public void ShowModuleLevelupPopup(EModuleSubType subType, EModuleType moduleType, int currentLevel, System.Action<int> onConfirm)
+    {
+        if (currentPopup != null)
+            CloseCurrentPopup();
+
+        UIPopupModuleLevelup popup = GetOrCreatePopup<UIPopupModuleLevelup>("UIPopupModuleLevelup");
+        if (popup == null) return;
+
+        currentPopup = popup;
+        popup.Show(subType, moduleType, currentLevel,
+            onConfirm: targetLevel => { onConfirm?.Invoke(targetLevel); CloseCurrentPopup(); },
+            onCancel:  () => CloseCurrentPopup()
+        );
+    }
+
     // 단순 알림 팝업 (확인 버튼만)
     public void ShowAlertPopup(string title, string message, System.Action onConfirm, string buttonText = null)
     {

@@ -10,12 +10,12 @@ public class ModuleBody : ModuleBase
     [HideInInspector] public ModuleBodyInfo m_moduleBodyInfo;
 
     [HideInInspector] public List<ModuleSlot> m_moduleSlots = new List<ModuleSlot>();
-    [HideInInspector] public List<ModuleEngine> m_engines = new List<ModuleEngine>();
     [HideInInspector] public List<ModuleBeam> m_beams = new List<ModuleBeam>();
     [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
     [HideInInspector] public List<ModuleHanger> m_hangers = new List<ModuleHanger>();
 
     private float m_repair;
+    private float m_speed;
 
     
     public override void ApplyShipStateToModule()
@@ -68,6 +68,7 @@ public class ModuleBody : ModuleBase
         m_healthMax = moduleData.health;
         m_health = Mathf.Min(m_health, m_healthMax);
         m_repair = moduleData.repair;
+        m_speed  = moduleData.speed;
         m_upgradeCost = moduleData.upgradeCost;
     }
 
@@ -101,6 +102,7 @@ public class ModuleBody : ModuleBase
 
         // Body 전용 능력치
         m_repair = moduleData.repair;
+        m_speed  = moduleData.speed;
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
@@ -188,20 +190,6 @@ public class ModuleBody : ModuleBase
     // 서버 정보에 있지만 재배치되지 못한 모듈들을 생성
     private void CreateMissingModules(ModuleBodyInfo bodyInfo)
     {
-        // 엔진 생성
-        if (bodyInfo.engines != null)
-        {
-            foreach (var engineInfo in bodyInfo.engines)
-            {
-                ModuleSlot slot = FindModuleSlot(engineInfo.moduleType, engineInfo.slotIndex);
-                if (slot != null && !HasRealModule(slot))
-                {
-                    DisablePlaceholderIfExists(slot);
-                    InitializeEngine(engineInfo);
-                }
-            }
-        }
-
         // Beam 생성
         if (bodyInfo.beams != null)
         {
@@ -246,38 +234,6 @@ public class ModuleBody : ModuleBase
 
         // 실제 모듈이 없는 슬롯의 Placeholder 초기화
         FillEmptySlotsWithPlaceholders();
-    }
-
-    private void InitializeEngine(ModuleInfo moduleInfo)
-    {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString(), moduleInfo.moduleLevel);
-        if (modulePrefab == null)
-        {
-            Debug.LogWarning($"InitializeEngine: Cannot find module prefab - Level: {moduleInfo.moduleLevel}");
-            return;
-        }
-
-        ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
-        if (targetSlot == null)
-        {
-            Debug.LogWarning($"InitializeEngine: Cannot find engine slot {moduleInfo.slotIndex}");
-            return;
-        }
-
-        if (HasRealModule(targetSlot))
-        {
-            Debug.LogWarning($"InitializeEngine: Engine slot {moduleInfo.slotIndex} is already occupied");
-            return;
-        }
-
-        GameObject engineObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
-        engineObj.transform.SetParent(targetSlot.transform);
-
-        ModuleEngine moduleEngine = engineObj.GetComponent<ModuleEngine>();
-        if (moduleEngine == null)
-            moduleEngine = engineObj.AddComponent<ModuleEngine>();
-
-        moduleEngine.InitializeModuleEngine(moduleInfo, this, targetSlot);
     }
 
     private void InitializeBeam(ModuleInfo moduleInfo)
@@ -387,16 +343,6 @@ public class ModuleBody : ModuleBase
         }
     }
 
-    // 엔진 추가
-    public void AddEngine(ModuleEngine engine)
-    {
-        if (m_moduleBodyInfo.engines.Contains(engine.m_moduleInfo) == false)
-            m_moduleBodyInfo.engines.Add(engine.m_moduleInfo);
-
-        if (!m_engines.Contains(engine))
-            m_engines.Add(engine);
-    }
-
     // Beam 추가
     public void AddBeam(ModuleBeam beam)
     {
@@ -427,14 +373,6 @@ public class ModuleBody : ModuleBase
             m_hangers.Add(hanger);
     }
 
-    // 엔진 제거
-    public void RemoveEngine(ModuleEngine engine, bool bRemoveFromInfo = false)
-    {
-        if( bRemoveFromInfo == true)
-            m_moduleBodyInfo.engines.Remove(engine.m_moduleInfo);
-        m_engines.Remove(engine);
-    }
-
     // 무기 제거
     public void RemoveBeam(ModuleBeam beam, bool bRemoveFromInfo = false)
     {
@@ -456,23 +394,6 @@ public class ModuleBody : ModuleBase
         if( bRemoveFromInfo == true)
             m_moduleBodyInfo.hangers.Remove(hanger.m_moduleInfo);
         m_hangers.Remove(hanger);
-    }
-
-    // ModuleBodyInfo 깊은 복사 (원본 FleetInfo 보호용)
-    private ModuleBodyInfo DeepCopyBodyInfo(ModuleBodyInfo source)
-    {
-        var copy = new ModuleBodyInfo
-        {
-            moduleType = source.moduleType,
-            moduleSubType = source.moduleSubType,
-            moduleLevel = source.moduleLevel,
-            bodyIndex = source.bodyIndex,
-            engines = CopyModuleInfoList(source.engines),
-            beams = CopyModuleInfoList(source.beams),
-            missiles = CopyModuleInfoList(source.missiles),
-            hangers = CopyModuleInfoList(source.hangers)
-        };
-        return copy;
     }
 
     private List<ModuleInfo> CopyModuleInfoList(List<ModuleInfo> source)
@@ -583,6 +504,7 @@ public class ModuleBody : ModuleBase
         // Body 자체의 능력치
         stats.health = m_health;
         stats.repair = m_repair;
+        stats.speed  = m_speed;
 
         // 모든 슬롯의 모듈들을 순회하며 능력치 합산
         foreach (ModuleSlot slot in m_moduleSlots)
@@ -594,7 +516,6 @@ public class ModuleBody : ModuleBase
                 {
                     CapabilityProfile moduleStats = module.GetModuleCapabilityProfile(false);
                     stats.totalWeapons += moduleStats.totalWeapons;
-                    stats.totalEngines += moduleStats.totalEngines;
                     stats.attack += moduleStats.attack;
                     stats.health += moduleStats.health;
                     stats.speed += moduleStats.speed;
@@ -635,9 +556,7 @@ public class ModuleBody : ModuleBase
                 EventManager.TriggerModuleReplaced(existingModule, null);
 
                 // 리스트에서 제거
-                if (existingModule is ModuleEngine engine)
-                    RemoveEngine(engine, bRemoveFromInfo: true);
-                else if (existingModule is ModuleBeam beam)
+                if (existingModule is ModuleBeam beam)
                     RemoveBeam(beam, bRemoveFromInfo: true);
                 else if (existingModule is ModuleMissile missile)
                     RemoveMissile(missile, bRemoveFromInfo: true);
@@ -652,6 +571,10 @@ public class ModuleBody : ModuleBase
         // 새 모듈 생성 (기존 모듈의 unlockedSubTypes 이어받기)
         int prefabLevel = 1;// 프리팹 레벨1만
         ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel, prefabLevel);
+
+        // 전투 중 추가 시 즉시 전함 상태 적용 (뚜껑 열림 등 애니메이터 반영)
+        if (newModule != null)
+            newModule.ApplyShipStateToModule();
 
         // 새 모듈 생성 이벤트 발행
         if (newModule != null)
@@ -677,13 +600,6 @@ public class ModuleBody : ModuleBase
         // 타입별 컴포넌트 추가 및 초기화
         switch (moduleType)
         {
-            case EModuleType.engine:
-                ModuleEngine moduleEngine = moduleObj.GetComponent<ModuleEngine>();
-                if (moduleEngine == null)
-                    moduleEngine = moduleObj.AddComponent<ModuleEngine>();
-                moduleEngine.InitializeModuleEngine(moduleInfo, this, targetSlot);
-                return moduleEngine;
-
             case EModuleType.beam:
                 ModuleBeam moduleBeam = moduleObj.GetComponent<ModuleBeam>();
                 if (moduleBeam == null)

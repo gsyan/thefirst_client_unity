@@ -20,7 +20,7 @@ public class UITabShip : UITabBase
     [SerializeField] private RectTransform m_moduleBeamSelectButtonContainer;
     [SerializeField] private RectTransform m_moduleMissileSelectButtonContainer;
     [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer;
-    [SerializeField] private RectTransform m_moduleEngineSelectButtonContainer;
+    
 
     [SerializeField] private RectTransform m_moduleSelectRoot; // CSF 루트 (Select 또는 ModuleSelect)
 
@@ -29,7 +29,7 @@ public class UITabShip : UITabBase
     [SerializeField] private TMP_Text m_labelBeam;
     [SerializeField] private TMP_Text m_labelMissile;
     [SerializeField] private TMP_Text m_labelHanger;
-    [SerializeField] private TMP_Text m_labelEngine;
+    
 
     [Header("함선 스탯 디테일")]
     [SerializeField] private Button m_btnShipStatsDetail;
@@ -56,7 +56,7 @@ public class UITabShip : UITabBase
     private ModuleSelector[] m_selectorsBeam;
     private ModuleSelector[] m_selectorsMissile;
     private ModuleSelector[] m_selectorsHanger;
-    private ModuleSelector[] m_selectorsEngine;
+    
 
 
     public override void InitializeUITab()
@@ -75,13 +75,11 @@ public class UITabShip : UITabBase
         m_selectorsBeam    = m_moduleBeamSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         m_selectorsMissile = m_moduleMissileSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         m_selectorsHanger  = m_moduleHangerSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
-        m_selectorsEngine  = m_moduleEngineSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
-
+        
         if (m_labelBody    != null) m_labelBody.text    = "<sprite name=\"IconSpaceShip\">";
         if (m_labelBeam    != null) m_labelBeam.text    = "<sprite name=\"IconBeam\">";
         if (m_labelMissile != null) m_labelMissile.text = "<sprite name=\"IconMissile\">";
         if (m_labelHanger  != null) m_labelHanger.text  = "<sprite name=\"IconAircraft\">";
-        if (m_labelEngine  != null) m_labelEngine.text  = "<sprite name=\"IconSpeed\">";
 
         if (m_btnPrevShip != null) m_btnPrevShip.onClick.AddListener(OnPrevShipClicked);
         if (m_btnNextShip != null) m_btnNextShip.onClick.AddListener(OnNextShipClicked);
@@ -405,28 +403,26 @@ public class UITabShip : UITabBase
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
-        if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out CostStruct cost) == false)
+        int currentLevel = m_selectedModule.GetModuleLevel();
+
+        // 다음 레벨 데이터 없으면 이미 최대 레벨
+        if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), currentLevel + 1) == null)
         {
-            ShowResultMessage("Failed to get upgrade cost", 3f);
+            ShowResultMessage(LocalizationManager.Instance.Get("max_level"), 2f);
             return;
         }
 
-        string moduleSubTypeName = LocalizationManager.Instance.Get($"{m_selectedModule.GetModuleSubType().ToLocKey()}");
-        int currentLevel = m_selectedModule.GetModuleLevel();
-        int targetLevel  = currentLevel + 1;
-        string detailText = m_selectedModule.GetDetailText(currentLevel, targetLevel);
-
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("ship_module_levelup"),
-            LocalizationManager.Instance.Get("popup_message_module_upgrade", new object[] { moduleSubTypeName, currentLevel, targetLevel }),
-            detailText, cost,
-            () => ExecuteUpgradeModule()
+        UIManager.Instance.ShowModuleLevelupPopup(
+            m_selectedModule.GetModuleSubType(),
+            m_selectedModule.GetModuleType(),
+            currentLevel,
+            OnModuleUpgradeConfirmed
         );
     }
 
-    private void ExecuteUpgradeModule()
+    private void OnModuleUpgradeConfirmed(int targetLevel)
     {
-        if (CanUpgrade(out string validationMessage) == false)
+        if (CanUpgradeToLevel(targetLevel, out string validationMessage) == false)
         {
             ShowResultMessage($"Upgrade failed: {validationMessage}", 3f);
             return;
@@ -440,13 +436,13 @@ public class UITabShip : UITabBase
             moduleSubType = m_selectedModule.GetModuleSubType(),
             slotIndex     = m_selectedModule.GetSlotIndex(),
             currentLevel  = m_selectedModule.GetModuleLevel(),
-            targetLevel   = m_selectedModule.GetModuleLevel() + 1
+            targetLevel   = targetLevel
         };
 
         NetworkManager.Instance.UpgradeModule(upgradeRequest, OnUpgradeResponse);
     }
 
-    private bool CanUpgrade(out string validationMessage)
+    private bool CanUpgradeToLevel(int targetLevel, out string validationMessage)
     {
         validationMessage = "";
 
@@ -456,9 +452,10 @@ public class UITabShip : UITabBase
             return false;
         }
 
-        ModuleData upgradeStats = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(
-            m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel() + 1);
-        if (upgradeStats == null)
+        // targetLevel 데이터 존재 여부 확인
+        ModuleData targetData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(
+            m_selectedModule.GetModuleSubType(), targetLevel);
+        if (targetData == null)
         {
             validationMessage = "Max level reached";
             return false;
@@ -471,36 +468,47 @@ public class UITabShip : UITabBase
             return false;
         }
 
-        if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel(), out CostStruct cost) == false)
-        {
-            validationMessage = "Failed to get upgrade cost";
-            return false;
-        }
-
         int requiredTechTier = m_selectedModule.GetModuleSubType().GetTechTier();
         if (character.GetTechLevel() < requiredTechTier)
         {
             validationMessage = $"Insufficient tech level (need {requiredTechTier}, current {character.GetTechLevel()})";
             return false;
         }
-        if (character.GetMineral() < cost.mineral)
+
+        // currentLevel → targetLevel 누적 비용 합산 후 검증
+        int fromLevel = m_selectedModule.GetModuleLevel();
+        long totalMineral = 0, totalMineralRare = 0, totalMineralExotic = 0, totalMineralDark = 0;
+        for (int lv = fromLevel; lv < targetLevel; lv++)
         {
-            validationMessage = $"Insufficient mineral (need {CommonUtility.FormatBigNumber(cost.mineral)}, have {CommonUtility.FormatBigNumber(character.GetMineral())})";
+            if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), lv, out CostStruct cost) == false)
+            {
+                validationMessage = "Failed to get upgrade cost";
+                return false;
+            }
+            totalMineral       += cost.mineral;
+            totalMineralRare   += cost.mineralRare;
+            totalMineralExotic += cost.mineralExotic;
+            totalMineralDark   += cost.mineralDark;
+        }
+
+        if (character.GetMineral() < totalMineral)
+        {
+            validationMessage = $"Insufficient mineral";
             return false;
         }
-        if (character.GetMineralRare() < cost.mineralRare)
+        if (character.GetMineralRare() < totalMineralRare)
         {
-            validationMessage = $"Insufficient mineralRare (need {CommonUtility.FormatBigNumber(cost.mineralRare)}, have {character.GetMineralRare()})";
+            validationMessage = $"Insufficient mineralRare";
             return false;
         }
-        if (character.GetMineralExotic() < cost.mineralExotic)
+        if (character.GetMineralExotic() < totalMineralExotic)
         {
-            validationMessage = $"Insufficient mineralExotic (need {CommonUtility.FormatBigNumber(cost.mineralExotic)}, have {CommonUtility.FormatBigNumber(character.GetMineralExotic())})";
+            validationMessage = $"Insufficient mineralExotic";
             return false;
         }
-        if (character.GetMineralDark() < cost.mineralDark)
+        if (character.GetMineralDark() < totalMineralDark)
         {
-            validationMessage = $"Insufficient mineralDark (need {CommonUtility.FormatBigNumber(cost.mineralDark)}, have {CommonUtility.FormatBigNumber(character.GetMineralDark())})";
+            validationMessage = $"Insufficient mineralDark";
             return false;
         }
 
@@ -712,7 +720,6 @@ public class UITabShip : UITabBase
         RefreshRow(EModuleType.beam,    body, m_selectorsBeam,    m_moduleBeamSelectButtonContainer);
         RefreshRow(EModuleType.missile, body, m_selectorsMissile, m_moduleMissileSelectButtonContainer);
         RefreshRow(EModuleType.hanger,  body, m_selectorsHanger,  m_moduleHangerSelectButtonContainer);
-        RefreshRow(EModuleType.engine,  body, m_selectorsEngine,  m_moduleEngineSelectButtonContainer);
 
         UpdateModuleSelectButtonSelection();
 
@@ -767,7 +774,6 @@ public class UITabShip : UITabBase
         UpdateRowSelection(m_selectorsBeam);
         UpdateRowSelection(m_selectorsMissile);
         UpdateRowSelection(m_selectorsHanger);
-        UpdateRowSelection(m_selectorsEngine);
     }
 
     private void UpdateRowSelection(ModuleSelector[] selectors)

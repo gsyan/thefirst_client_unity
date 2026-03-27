@@ -112,8 +112,8 @@ public class ProjectileBeam : ProjectileBase
             finalHitPoint = hit.point;
         }
 
-        // 1단계: 빔 연장 (빠르게 목표까지)
-        float totalDistance = Vector3.Distance(m_beamTailPos, finalHitPoint);
+        // 1단계: 빔 연장 (빠르게 목표까지) - 시각적으로 타겟 위치까지 도달
+        float totalDistance = Vector3.Distance(m_beamTailPos, targetPosition);
         float currentLength = 0f;
 
         while (currentLength < totalDistance)
@@ -250,8 +250,8 @@ public class ProjectileBeam : ProjectileBase
     }
 
     // 빔 경로를 따라 파티클 흩뿌리기
-    [SerializeField] private float m_scatterParticleSize = 5f;
-    [SerializeField] private float m_scatterParticleSpeed = 10f;
+    [SerializeField] private float m_scatterParticleSize = 0.1f;
+    [SerializeField] private float m_scatterParticleSpeed = 0.1f;
     private void EmitScatterParticles(Vector3 start, Vector3 end)
     {
         if (m_scatterParticle == null) return;
@@ -270,12 +270,12 @@ public class ProjectileBeam : ProjectileBase
             float t = (float)i / m_scatterParticleCount;
             emitParams.position = Vector3.Lerp(start, end, t);
             emitParams.startColor = m_beamColor;
-            emitParams.startSize = m_scatterParticleSize * Random.Range(0.02f, 0.1f);
+            emitParams.startSize = m_scatterParticleSize * Random.Range(1f, 2f);
 
             // 빔 방향에서 수직으로 흩어지게
             float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             Vector3 scatterDir = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, beamDir) * perpendicular;
-            emitParams.velocity = scatterDir * m_scatterParticleSpeed * Random.Range(0.02f, 0.1f);
+            emitParams.velocity = scatterDir * m_scatterParticleSpeed * Random.Range(1f, 2f);
 
             m_scatterParticle.Emit(emitParams, 1);
         }

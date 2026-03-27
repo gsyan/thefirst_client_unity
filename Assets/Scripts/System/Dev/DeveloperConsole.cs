@@ -68,7 +68,8 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         if (Input.GetKeyDown(toggleKey))
             ToggleConsole();
 
-        // 모바일: 3손가락 동시 터치 시 토글 (손가락 떼기 전 1회만 발동)
+        // 모바일: 3손가락 동시 터치 시 토글 (개발 빌드 전용)
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         if (Input.touchCount == 3)
         {
             if (m_threeFingersDown == false)
@@ -81,6 +82,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         {
             m_threeFingersDown = false;
         }
+#endif
 
         if (m_isConsoleVisible && inputField != null)
         {

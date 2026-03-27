@@ -15,11 +15,10 @@ public enum EModuleType
 {
     none            = 0,
     body            = 1,
-    engine          = 2,
-    beam            = 3,
-    missile         = 4,
-    hanger          = 5,
-    max             = 6
+    beam            = 2,
+    missile         = 3,
+    hanger          = 4,
+    max             = 5
 }
 // 7자리 인코딩: T_tt_gg_vv (type 1자리, tech 2자리, grade 2자리, ver 2자리)
 // 파싱: type=val/1000000, tech=(val/10000)%100, grade=(val/100)%100, ver=val%100
@@ -31,18 +30,15 @@ public enum EModuleSubType
     // Body SubType
     body_t1_std_ver1        = 1010101,
     body_t1_adv_ver1        = 1010201,
-    // Engine SubType
-    engine_t1_std_ver1      = 2010101,
-    engine_t1_adv_ver1      = 2010201,
     // Beam SubType
-    beam_t1_std_ver1        = 3010101,
-    beam_t1_adv_ver1        = 3010201,
+    beam_t1_std_ver1        = 2010101,
+    beam_t1_adv_ver1        = 2010201,
     // Missile SubType
-    missile_t1_std_ver1     = 4010101,
-    missile_t1_adv_ver1     = 4010201,
+    missile_t1_std_ver1     = 3010101,
+    missile_t1_adv_ver1     = 3010201,
     // Hanger SubType
-    hanger_t1_std_ver1      = 5010101,
-    hanger_t1_adv_ver1      = 5010201,
+    hanger_t1_std_ver1      = 4010101,
+    hanger_t1_adv_ver1      = 4010201,
 }
 
 // EModuleSubType 7자리 인코딩 파싱 유틸
@@ -60,8 +56,6 @@ public static class EModuleTypeExtensions
         {
             case EModuleType.body:
                 return new UnityEngine.Color(0.7f, 0.9f, 0.7f);
-            case EModuleType.engine:
-                return new UnityEngine.Color(0.7f, 0.7f, 0.9f);
             case EModuleType.beam:
                 return new UnityEngine.Color(0.9f, 0.7f, 0.7f);
             case EModuleType.missile:

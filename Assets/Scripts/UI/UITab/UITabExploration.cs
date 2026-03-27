@@ -1,4 +1,5 @@
 // 탐사 탭 — 그룹 탭(Z1~Z9) + 존 맵 셀(안개 reveal), 존 진입/재진입/킬 보상 처리
+// waveIndex mismatch(백그라운드 복귀 후 Redis TTL 만료) 시 waveIndex=0 재시도, 그 외 에러 시 안전지역 복귀
 using TMPro;
 using System;
 using System.Collections;
@@ -596,15 +597,31 @@ public class UITabExploration : UITabBase
             zoneName = m_currentZone.zoneName,
             waveIndex = m_currentWave - 1  // TriggerWaveStarted는 1-based
         };
-        NetworkManager.Instance.DestroyZoneStageWave(request, OnDestroyZoneStageWaveResponse);
+        NetworkManager.Instance.DestroyZoneStageWave(request,
+            r => OnDestroyZoneStageWaveResponse(r, isRetry: false));
     }
 
     // 웨이브 처치 응답: 보상 처리 + 진행 UI 갱신 + 신규 클리어 판정 + 다음 웨이브 스폰
-    private void OnDestroyZoneStageWaveResponse(ApiResponse<DestroyZoneStageWaveResponse> response)
+    private void OnDestroyZoneStageWaveResponse(ApiResponse<DestroyZoneStageWaveResponse> response, bool isRetry)
     {
         if (response.errorCode != 0)
         {
-            ObjectManager.Instance.SpawnNextWave();
+            // waveIndex 불일치(백그라운드 복귀 후 Redis TTL 만료) → waveIndex=0으로 1회 재시도
+            if (isRetry == false
+                && response.errorCode == (int)ServerErrorCode.ZONE_DESTROY_WAVE_FAIL_WAVE_INDEX_MISMATCH
+                && m_currentZone != null)
+            {
+                m_currentWave = 1;
+                var retryRequest = new DestroyZoneStageWaveRequest
+                {
+                    zoneName = m_currentZone.zoneName,
+                    waveIndex = 0
+                };
+                NetworkManager.Instance.DestroyZoneStageWave(retryRequest,
+                    r => OnDestroyZoneStageWaveResponse(r, isRetry: true));
+                return;
+            }
+            ReturnToSafeZone();
             return;
         }
 

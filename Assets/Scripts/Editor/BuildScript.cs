@@ -39,12 +39,16 @@ public static class BuildScript
         EditorUserBuildSettings.buildAppBundle = buildAAB;
         EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
 
+        // IS_SHIPPING=false(기본)이면 -isDev 인자가 전달됨 → DEVELOPMENT_BUILD 심볼 활성화
+        bool isDev = GetArg("-isDev") != null;
+        var buildOpts = isDev ? (BuildOptions.Development | BuildOptions.AllowDebugging) : BuildOptions.None;
+
         var options = new BuildPlayerOptions
         {
             scenes = GetEnabledScenes(),
             locationPathName = outputPath,
             target = BuildTarget.Android,
-            options = BuildOptions.None,
+            options = buildOpts,
         };
 
         var report = BuildPipeline.BuildPlayer(options);

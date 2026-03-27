@@ -4,8 +4,6 @@ tech_level_2,tech_level_1,280,-40,5000,0,0,0
 tech_level_3,tech_level_2,480,-40,15000,0,0,0
 body_t1_std_ver1,,80,-40,0,0,0,0
 body_t1_adv_ver1,body_t1_std_ver1,280,-40,0,50000,0,0
-engine_t1_std_ver1,,80,-40,0,0,0,0
-engine_t1_adv_ver1,engine_t1_std_ver1,280,-40,0,50000,0,0
 beam_t1_std_ver1,,80,-40,0,0,0,0
 beam_t1_adv_ver1,beam_t1_std_ver1,280,-40,0,50000,0,0
 missile_t1_std_ver1,,80,-40,0,0,0,0

@@ -1,8 +1,10 @@
+// 미사일 발사체 - 유도 비행, 터널링 방지 Raycast, 풀 반환 처리
 using UnityEngine;
 using System.Collections;
 
 public class ProjectileMissile : ProjectileBase
 {
+    private static int s_raycastMask = 0;
     private Vector3 m_saveTargetPosition;
     private Coroutine m_lifeCycleCoroutine;
     private float m_lifeTime;
@@ -64,7 +66,10 @@ public class ProjectileMissile : ProjectileBase
 
             // 이전 위치→현재 위치 raycast로 충돌 감지 (터널링 방지)
             Vector3 moveVec = transform.position - m_prevPosition;
-            if (Physics.Raycast(m_prevPosition, moveVec.normalized, out RaycastHit hit, moveVec.magnitude))
+            // Shield 레이어 제외 (방어막은 추후 별도 처리 예정)
+            if (s_raycastMask == 0)
+                s_raycastMask = ~LayerMask.GetMask("Shield");
+            if (Physics.Raycast(m_prevPosition, moveVec.normalized, out RaycastHit hit, moveVec.magnitude, s_raycastMask))
             {
                 SpaceShip hitShip = hit.collider.GetComponentInParent<SpaceShip>();
                 if (hitShip != null && (m_sourceShip == null || hitShip.m_myFleet != m_sourceShip.m_myFleet))

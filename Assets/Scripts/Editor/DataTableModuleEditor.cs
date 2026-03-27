@@ -57,7 +57,6 @@ public class DataTableModuleEditor : Editor
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         DrawBodyModuleSection();
-        DrawEngineModuleSection();
         DrawBeamModuleSection();
         DrawMissileModuleSection();
         DrawHangerModuleSection();
@@ -181,6 +180,7 @@ public class DataTableModuleEditor : Editor
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.health = EditorGUILayout.FloatField("Health", module.health);
         module.repair = EditorGUILayout.FloatField("Repair", module.repair);
+        module.speed = EditorGUILayout.FloatField("Speed", module.speed);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
@@ -192,98 +192,6 @@ public class DataTableModuleEditor : Editor
     }
     #endregion
     
-    #region Engine Modules
-    private void DrawEngineModuleSection()
-    {
-        EditorGUILayout.BeginVertical("box");
-
-        var originalColor = GUI.backgroundColor;
-        GUI.backgroundColor = engineColor;
-        showEngineModules = EditorGUILayout.Foldout(showEngineModules, $"Engine Modules ({dataTableModule.EngineModules.Count})", true, EditorStyles.foldoutHeader);
-        GUI.backgroundColor = originalColor;
-
-        if (showEngineModules)
-        {
-            foreach (var group in dataTableModule.EngineGroups)
-            {
-                DrawEngineSubTypeGroup(group);
-            }
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawEngineSubTypeGroup(ModuleSubTypeGroup group)
-    {
-        if (!engineSubTypeFoldouts.ContainsKey(group.subType))
-            engineSubTypeFoldouts[group.subType] = false;
-
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-
-        engineSubTypeFoldouts[group.subType] = EditorGUILayout.Foldout(engineSubTypeFoldouts[group.subType], $"{group.subType} ({group.modules.Count})", true);
-
-        if (GUILayout.Button("Add", GUILayout.Width(50)))
-        {
-            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(group.subType);
-            var module = new ModuleData
-            {
-                moduleName = $"{group.subType} LV{group.modules.Count + 1}",
-                moduleType = moduleType,
-                moduleSubType = group.subType,
-                moduleLevel = group.modules.Count + 1,
-                health = 0f,
-                speed = 5f,
-                description = $"{group.subType} LV{group.modules.Count + 1}"
-            };
-            group.modules.Add(module);
-            EditorUtility.SetDirty(dataTableModule);
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        if (engineSubTypeFoldouts[group.subType])
-        {
-            for (int i = 0; i < group.modules.Count; i++)
-            {
-                EditorGUILayout.BeginVertical("box");
-                DrawEngineModuleDetails(group.modules[i], group, i);
-                EditorGUILayout.EndVertical();
-            }
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawEngineModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
-    {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
-
-        if (GUILayout.Button("Remove", GUILayout.Width(70)))
-        {
-            group.modules.RemoveAt(index);
-            EditorUtility.SetDirty(dataTableModule);
-            return;
-        }
-        EditorGUILayout.EndHorizontal();
-
-        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
-
-        EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
-        module.speed = EditorGUILayout.FloatField("Speed", module.speed);
-
-        EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
-        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
-        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
-        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
-
-        module.description = EditorGUILayout.TextField("Description", module.description);
-    }
-    #endregion
-
     #region Beam Modules
     private void DrawBeamModuleSection()
     {

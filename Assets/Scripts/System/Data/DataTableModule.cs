@@ -190,8 +190,6 @@ public class DataTableModule : ScriptableObject
         ModuleSubTypeGroup group = null;
         if( data.moduleType == EModuleType.body)
             group = bodyGroups.Find(g => g.subType == data.moduleSubType);
-        else if( data.moduleType == EModuleType.engine)
-            group = engineGroups.Find(g => g.subType == data.moduleSubType);
         else if( data.moduleType == EModuleType.beam)
             group = beamGroups.Find(g => g.subType == data.moduleSubType);
         else if( data.moduleType == EModuleType.missile)
@@ -203,7 +201,6 @@ public class DataTableModule : ScriptableObject
         {
             group = new ModuleSubTypeGroup { subType = data.moduleSubType };
             if (data.moduleType == EModuleType.body)          bodyGroups.Add(group);
-            else if (data.moduleType == EModuleType.engine)   engineGroups.Add(group);
             else if (data.moduleType == EModuleType.beam)     beamGroups.Add(group);
             else if (data.moduleType == EModuleType.missile)  missileGroups.Add(group);
             else if (data.moduleType == EModuleType.hanger)   hangerGroups.Add(group);
@@ -233,7 +230,6 @@ public class DataTableModule : ScriptableObject
     {
         EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
         if (moduleType == EModuleType.body) return bodyGroups.Find(g => g.subType == subType);
-        if (moduleType == EModuleType.engine) return engineGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.beam) return beamGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.missile) return missileGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.hanger) return hangerGroups.Find(g => g.subType == subType);
@@ -248,8 +244,6 @@ public class DataTableModule : ScriptableObject
             EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
             if (moduleType == EModuleType.body)
                 bodyGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.engine)
-                engineGroups.Add(new ModuleSubTypeGroup { subType = subType });
             else if (moduleType == EModuleType.beam)
                 beamGroups.Add(new ModuleSubTypeGroup { subType = subType });
             else if (moduleType == EModuleType.missile)
@@ -273,7 +267,6 @@ public class DataTableModule : ScriptableObject
         var modulesDict = new Dictionary<int, List<object>>
         {
             { (int)EModuleType.body, BodyModules.modules.Cast<object>().ToList() },
-            { (int)EModuleType.engine, EngineModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.beam, BeamModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.missile, MissileModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.hanger, HangerModules.modules.Cast<object>().ToList() }
@@ -317,14 +310,6 @@ public class DataTableModule : ScriptableObject
                 {
                     var bodyList = modulesObj[bodyKey.ToString()].ToObject<List<ModuleData>>();
                     foreach (var module in bodyList)
-                        AddModuleDataToTable(module);
-                }
-
-                int engineKey = (int)EModuleType.engine;
-                if (modulesObj[engineKey.ToString()] != null)
-                {
-                    var engineList = modulesObj[engineKey.ToString()].ToObject<List<ModuleData>>();
-                    foreach (var module in engineList)
                         AddModuleDataToTable(module);
                 }
 

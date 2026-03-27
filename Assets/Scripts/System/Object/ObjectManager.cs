@@ -407,7 +407,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (m_currentZoneConfig.delayBeforeSpawn > 0)
             yield return new WaitForSeconds(m_currentZoneConfig.delayBeforeSpawn);
 
-        SpawnEnemyFleetsFromConfigs(m_currentZoneConfig.enemyShipConfigs);
+        var configs = m_currentZoneConfig.enemyShipConfigs;
+        if (configs != null && configs.Count > 0)
+        {
+            // 웨이브 인덱스가 범위 초과 시 마지막 템플릿 재사용
+            int idx = Mathf.Clamp(m_currentWaveIndex, 0, configs.Count - 1);
+            SpawnEnemyFleetFromTemplate(configs[idx], configs[idx].shipCount);
+        }
         EventManager.TriggerWaveStarted(m_currentWaveIndex + 1, m_currentZoneConfig.zoneClearCount);
     }
 
@@ -419,10 +425,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_spawnCoroutine = StartCoroutine(SpawnWaves());
     }
 
-    // enemyShipConfigs 목록으로 적 함대 1개 생성 (함선 여러 척)
-    private void SpawnEnemyFleetsFromConfigs(List<EnemyShipConfig> enemyShipConfigs)
+    // 웨이브 템플릿 1개를 template.shipCount만큼 복제해 적 함대 생성
+    private void SpawnEnemyFleetFromTemplate(EnemyShipConfig template, int shipCount)
     {
-        if (m_myFleet == null || enemyShipConfigs == null || enemyShipConfigs.Count == 0) return;
+        if (m_myFleet == null || template == null) return;
+        if (shipCount <= 0) shipCount = template.shipCount;
 
         Vector3 spawnPosition = GetEnemySpawnPosition();
         m_enemyFleetFocusPosition = spawnPosition;
@@ -437,9 +444,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
 
         List<ShipInfo> enemyShips = new List<ShipInfo>();
-        for (int i = 0; i < enemyShipConfigs.Count; i++)
+        for (int i = 0; i < shipCount; i++)
         {
-            enemyShips.Add(CreateShipInfoFromConfig(enemyShipConfigs[i], i));
+            enemyShips.Add(CreateShipInfoFromConfig(template, i));
         }
 
         FleetInfo enemyFleetInfo = new FleetInfo
@@ -462,15 +469,16 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             moduleSubType = config.bodySubType,
             moduleLevel = config.bodyLevel,
             bodyIndex = 0,
-            engines = new List<ModuleInfo>(),
             beams = new List<ModuleInfo>(),
             missiles = new List<ModuleInfo>(),
             hangers = new List<ModuleInfo>()
         };
 
-        // 슬롯 설정에 따라 모듈 추가
+        // 슬롯 설정에 따라 모듈 추가 (none = 빈 슬롯, 건너뜀)
         foreach (var slot in config.moduleSlots)
         {
+            if (slot.moduleSubType == EModuleSubType.none) continue;
+
             var moduleInfo = new ModuleInfo
             {
                 moduleType = slot.slotType,
@@ -482,9 +490,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
             switch (slot.slotType)
             {
-                case EModuleType.engine:
-                    bodyInfo.engines.Add(moduleInfo);
-                    break;
                 case EModuleType.beam:
                     bodyInfo.beams.Add(moduleInfo);
                     break;
@@ -495,19 +500,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                     bodyInfo.hangers.Add(moduleInfo);
                     break;
             }
-        }
-
-        // 기본 엔진이 없으면 추가
-        if (bodyInfo.engines.Count == 0)
-        {
-            bodyInfo.engines.Add(new ModuleInfo
-            {
-                moduleType = EModuleType.engine,
-                moduleSubType = EModuleSubType.engine_t1_std_ver1,
-                moduleLevel = 1,
-                bodyIndex = 0,
-                slotIndex = 0
-            });
         }
 
         return new ShipInfo

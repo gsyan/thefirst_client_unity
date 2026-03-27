@@ -18,7 +18,7 @@ public class GaugeBars : MonoBehaviour
     private SpaceShip m_spaceShip;
     private Dictionary<ModuleBase, GaugeBar> m_moduleGaugeBars = new Dictionary<ModuleBase, GaugeBar>();
     
-    [SerializeField] private Vector3 m_offsetFromTarget = new Vector3(0, 2f, 0);
+    [SerializeField] private Vector3 m_offsetFromTarget = new Vector3(0, 0f, 0);
     [SerializeField] private float m_smoothSpeed = 5f;
 
     void Awake()
@@ -139,7 +139,7 @@ public class GaugeBars : MonoBehaviour
             return new Color(0.8f, 0.2f, 0.2f);
         else if (module is ModuleMissile)
             return new Color(0.8f, 0.3f, 0.2f);
-        else if (module is ModuleEngine)
+        else if (module is ModuleHanger)
             return new Color(0.2f, 0.5f, 0.8f);
         else
             return Color.white;
@@ -177,10 +177,10 @@ public class GaugeBars : MonoBehaviour
                 currentHealth = missile.m_health;
                 maxHealth = missile.m_healthMax;
             }
-            else if (module is ModuleEngine engine)
+            else if (module is ModuleHanger hanger)
             {
-                currentHealth = engine.m_health;
-                maxHealth = engine.m_healthMax;
+                currentHealth = hanger.m_health;
+                maxHealth = hanger.m_healthMax;
             }
 
             gaugeBar.UpdateValue(currentHealth, maxHealth);
@@ -191,18 +191,33 @@ public class GaugeBars : MonoBehaviour
     {
         foreach (var kvp in m_moduleGaugeBars)
         {
+            ModuleBase module = kvp.Key;
             GaugeBar gaugeBar = kvp.Value;
-            if (gaugeBar == null) continue;
+            if (module == null || gaugeBar == null) continue;
 
             bool isInBounds = gaugeBar.IsInScreenBounds();
+            //bool isFullHealth = IsModuleAtFullHealth(module);
+            bool isFullHealth = false;
+            bool shouldShow = isInBounds == true && isFullHealth == false;
 
-            if (isInBounds == true
-                && gaugeBar.gameObject.activeSelf == false)
+            if (shouldShow == true && gaugeBar.gameObject.activeSelf == false)
                 gaugeBar.gameObject.SetActive(true);
-            else if (isInBounds == false
-                && gaugeBar.gameObject.activeSelf == true)
+            else if (shouldShow == false && gaugeBar.gameObject.activeSelf == true)
                 gaugeBar.gameObject.SetActive(false);
         }
+    }
+
+    private bool IsModuleAtFullHealth(ModuleBase module)
+    {
+        if (module is ModuleBody body)
+            return body.m_health >= body.m_healthMax;
+        else if (module is ModuleBeam beam)
+            return beam.m_health >= beam.m_healthMax;
+        else if (module is ModuleMissile missile)
+            return missile.m_health >= missile.m_healthMax;
+        else if (module is ModuleHanger hanger)
+            return hanger.m_health >= hanger.m_healthMax;
+        return true;
     }
 
     private void HideAllGaugeBars()

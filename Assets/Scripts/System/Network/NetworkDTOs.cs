@@ -50,7 +50,6 @@ public class ModuleBodyInfo
     public EModuleSubType moduleSubType;
     public int moduleLevel;
     public int bodyIndex;
-    public List<ModuleInfo> engines;
     public List<ModuleInfo> beams;
     public List<ModuleInfo> missiles;
     public List<ModuleInfo> hangers;

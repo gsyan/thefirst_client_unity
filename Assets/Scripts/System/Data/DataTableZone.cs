@@ -1,4 +1,5 @@
 // Zone 데이터 테이블 — 탐사 존별 라운드·보상·자원 수확 설정 ScriptableObject
+// enemyShipConfigs: 웨이브 템플릿 리스트 [waveIndex] — 해당 라운드에 shipCount만큼 복제 스폰
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -7,7 +8,7 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class EnemyModuleSlotConfig
 {
-    public EModuleType slotType;      // 슬롯 타입 (Engine, Beam, Missile, Hanger)
+    public EModuleType slotType;      // 슬롯 타입 (Beam, Missile, Hanger)
     public int slotIndex;              // 슬롯 인덱스
     public EModuleSubType moduleSubType; // 장착할 모듈의 SubType
     public int moduleLevel = 1;        // 장착할 모듈의 레벨
@@ -22,10 +23,11 @@ public class EnemyModuleSlotConfig
     }
 }
 
-// 개별 적 함선 설정
+// 웨이브 1개의 적 함선 템플릿 — shipCount만큼 복제 스폰
 [System.Serializable]
 public class EnemyShipConfig
 {
+    public int shipCount = 1;           // 이 웨이브에서 스폰할 함선 수
     public EModuleSubType bodySubType = EModuleSubType.body_t1_std_ver1;
     public int bodyLevel = 1;
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
@@ -43,6 +45,7 @@ public class ZoneConfig
 
     public int zoneClearCount = 10;
     public float delayBeforeSpawn = 3f;
+    // 웨이브별 함선 템플릿 [waveIndex] — SpawnEnemyFleetFromTemplate에서 shipCount만큼 복제
     public List<EnemyShipConfig> enemyShipConfigs;
 
     [Header("적 모듈 타입별 스탯 배율 (1.0 = 플레이어 동일)")]
@@ -50,7 +53,6 @@ public class ZoneConfig
     [Range(0.1f, 2.0f)] public float enemyBeamMultiplier    = 1.0f;  // 빔 공격력·체력
     [Range(0.1f, 2.0f)] public float enemyMissileMultiplier = 1.0f;  // 미사일 공격력·체력
     [Range(0.1f, 2.0f)] public float enemyHangerMultiplier  = 1.0f;  // 함재기 공격력·체력
-    [Range(0.1f, 2.0f)] public float enemyEngineMultiplier  = 1.0f;  // 엔진 속도·체력
     
     [Header("적 함선 킬 보상 (즉시 지급)")]
     public float killRewardMineral = 0f;

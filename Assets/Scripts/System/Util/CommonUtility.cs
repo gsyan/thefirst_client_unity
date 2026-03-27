@@ -129,12 +129,7 @@ public static class CommonUtility
             stats.airLaunchCount = moduleData.attackFireCount; // 함재기 발진 수
             stats.totalWeapons = 1;
         }
-        else if (moduleInfo.moduleType == EModuleType.engine)
-        {
-            stats.speed = moduleData.speed;
-            stats.totalEngines = 1;
-        }
-
+        
         return stats;
     }
 
@@ -149,6 +144,7 @@ public static class CommonUtility
         {
             stats.health = bodyData.health;
             stats.repair = bodyData.repair;
+            stats.speed  = bodyData.speed;
         }
 
         return stats;
@@ -166,7 +162,6 @@ public static class CommonUtility
         {
             CapabilityProfile shipStats = GetShipCapabilityProfile(shipInfo);
             stats.totalWeapons += shipStats.totalWeapons;
-            stats.totalEngines += shipStats.totalEngines;
             stats.attack += shipStats.attack;
             stats.health += shipStats.health;
             stats.speed += shipStats.speed;
@@ -193,18 +188,7 @@ public static class CommonUtility
             CapabilityProfile bodyStats = GetBodyCapabilityProfile(bodyInfo);
             stats.health += bodyStats.health;
             stats.repair += bodyStats.repair;
-
-            // Engine 모듈들 합산
-            if (bodyInfo.engines != null)
-            {
-                foreach (ModuleInfo moduleInfo in bodyInfo.engines)
-                {
-                    CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                    stats.speed += moduleStats.speed;
-                    
-                    stats.totalEngines += moduleStats.totalEngines;
-                }
-            }
+            stats.speed  += bodyStats.speed;
 
             // Beam 모듈들 합산
             if (bodyInfo.beams != null)
@@ -283,9 +267,6 @@ public static class CommonUtility
         {
             lines.Add($"<sprite name=\"IconHp\"> {V(cur.health, nxt?.health ?? 0f)}");
             lines.Add($"<sprite name=\"IconRepair\"> {V(cur.repair, nxt?.repair ?? 0f)}");
-        }
-        else if (moduleType == EModuleType.engine)
-        {
             lines.Add($"<sprite name=\"IconSpeed\"> {V(cur.speed, nxt?.speed ?? 0f)}");
         }
         else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
