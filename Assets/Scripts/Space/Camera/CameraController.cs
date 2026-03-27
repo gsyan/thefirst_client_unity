@@ -264,6 +264,7 @@ public class CameraController : MonoSingleton<CameraController>
 
             if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
             {
+                m_isDragging = false; // 핀치 진입 시 단일 터치 드래그 중단
                 m_lastPinchDistance = currentPinchDistance;
                 m_lastTwoTouchCenter = currentTouchCenter;
                 m_prevTouch0Position = touch0.position;
@@ -299,7 +300,12 @@ public class CameraController : MonoSingleton<CameraController>
             }
             else if (touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
             {
-                //m_isPanning = false;
+                // 남은 손가락 위치를 드래그 기준점으로 재초기화 (한방 회전 방지)
+                Touch remaining = (touch0.phase == TouchPhase.Ended) ? touch1 : touch0;
+                m_startTouchPosition = remaining.position;
+                m_startRotationY = m_currentRotationY;
+                m_startRotationX = m_currentRotationX;
+                m_isDragging = true;
             }
         }
         else if (Input.touchCount == 1)
