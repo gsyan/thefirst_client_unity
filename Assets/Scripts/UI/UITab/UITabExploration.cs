@@ -659,7 +659,7 @@ public class UITabExploration : UITabBase
             CacheCurrentZoneCell();
         }
 
-        ObjectManager.Instance.SpawnNextWave();
+        ObjectManager.Instance.SpawnNextWave(resetIndex: isRetry);
     }
 
     private void ReturnToSafeZone()

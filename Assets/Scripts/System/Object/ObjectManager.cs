@@ -419,11 +419,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         EventManager.TriggerWaveStarted(m_currentWaveIndex + 1, m_currentZoneConfig.zoneClearCount);
     }
 
-    // UITabExploration이 서버 응답 후 호출 — 다음 웨이브 스폰
-    public void SpawnNextWave()
+    // UITabExploration이 서버 응답 후 호출 — 다음 웨이브 스폰 (resetIndex: waveIndex 불일치 복구 시 0 리셋)
+    public void SpawnNextWave(bool resetIndex = false)
     {
         if (m_currentZoneConfig == null) return;
-        m_currentWaveIndex++;
+        if (resetIndex == true)
+            m_currentWaveIndex = 0;
+        else
+            m_currentWaveIndex++;
         m_spawnCoroutine = StartCoroutine(SpawnWaves());
     }
 
