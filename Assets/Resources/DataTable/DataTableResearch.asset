@@ -132,9 +132,86 @@ MonoBehaviour:
     - tech_level_2
     researchCost:
       techLevel: 0
-      mineral: 15000
+      mineral: 10000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 480, y: -40}
     targetTechLevel: 3
+  - researchId: tech_level_4
+    prerequisiteIds:
+    - tech_level_3
+    researchCost:
+      techLevel: 0
+      mineral: 20000
+      mineralRare: 5000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 680, y: -40}
+    targetTechLevel: 4
+  - researchId: tech_level_5
+    prerequisiteIds:
+    - tech_level_4
+    researchCost:
+      techLevel: 0
+      mineral: 40000
+      mineralRare: 10000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 880, y: -40}
+    targetTechLevel: 5
+  - researchId: tech_level_6
+    prerequisiteIds:
+    - tech_level_5
+    researchCost:
+      techLevel: 0
+      mineral: 80000
+      mineralRare: 20000
+      mineralExotic: 5000
+      mineralDark: 0
+    uiPosition: {x: 1080, y: -40}
+    targetTechLevel: 6
+  - researchId: tech_level_7
+    prerequisiteIds:
+    - tech_level_6
+    researchCost:
+      techLevel: 0
+      mineral: 160000
+      mineralRare: 40000
+      mineralExotic: 10000
+      mineralDark: 0
+    uiPosition: {x: 1280, y: -40}
+    targetTechLevel: 7
+  - researchId: tech_level_8
+    prerequisiteIds:
+    - tech_level_7
+    researchCost:
+      techLevel: 0
+      mineral: 320000
+      mineralRare: 80000
+      mineralExotic: 20000
+      mineralDark: 5000
+    uiPosition: {x: 1480, y: -40}
+    targetTechLevel: 8
+  - researchId: tech_level_9
+    prerequisiteIds:
+    - tech_level_8
+    researchCost:
+      techLevel: 0
+      mineral: 640000
+      mineralRare: 160000
+      mineralExotic: 40000
+      mineralDark: 10000
+    uiPosition: {x: 1680, y: -40}
+    targetTechLevel: 9
+  - researchId: tech_level_10
+    prerequisiteIds:
+    - tech_level_9
+    researchCost:
+      techLevel: 0
+      mineral: 1280000
+      mineralRare: 320000
+      mineralExotic: 80000
+      mineralDark: 20000
+    uiPosition: {x: 1880, y: -40}
+    targetTechLevel: 10

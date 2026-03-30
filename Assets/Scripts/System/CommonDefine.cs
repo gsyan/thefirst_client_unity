@@ -79,4 +79,11 @@ public enum EFormationType
     formation_type_cross,               // 십자 배치
     formation_type_x                    // X자 배치
 }
+
+public enum FormationMoveState
+{
+    Idle,       // 정지 (진형 이동 없음)
+    Moving,     // 목표 위치로 이동 중 (실드 트리거 회피 포함)
+    Arrived     // 목표 위치 도착 완료
+}
 #endregion

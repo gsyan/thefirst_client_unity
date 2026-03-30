@@ -66,6 +66,8 @@ public class SpaceShip : MonoBehaviour
         
         // ShieldGrid, 지금은 바디가 오직 하나...
         m_shieldGrid = m_moduleBodys[0].GetComponent<ShieldGrid>();
+        if (m_shieldGrid != null)
+            m_shieldGrid.InitFormationRelay(this);
         
         // Outline 미리 설정
         m_shipOutline = gameObject.AddComponent<Outline>();
@@ -428,442 +430,99 @@ public class SpaceShip : MonoBehaviour
     #endregion
 
 
-    #region Autonomous Formation Movement
-    private Vector3 m_targetPosition;
-    private bool m_isMovingToFormation = false;
-    private float m_detectionDistanceLimit = 6f;
+    #region Formation Movement
+    public FormationMoveState m_formationMoveState = FormationMoveState.Idle;
+    private Vector3 m_formationTarget;
+    private Vector3 m_avoidanceAccum;      // OnShieldTriggerStay에서 프레임마다 누적
+    private Coroutine m_formationCoroutine;
+    private const float ARRIVAL_THRESHOLD = 0.1f;
+    private const float SLOWDOWN_DISTANCE  = 0.5f;
 
-    // 사전 계획 경로 기반 이동 (새 시스템)
-    private FormationPathPlanner.PlannedPath m_plannedPath;
-    private int m_currentWaypointIndex;
-    private Coroutine m_pathFollowCoroutine;
-    private const float ARRIVAL_THRESHOLD = 0.5f;
-    private const float SLOWDOWN_DISTANCE = 3f;
+    [Header("Formation Avoidance")]
+    [Tooltip("이 값 이상이면 회피 시작 (침투 깊이 기준, 0~1)")]
+    private float m_avoidActivateThreshold = 0.001f;
+    [Tooltip("avoidWeight를 이 값으로 remap — 낮출수록 작은 겹침에도 강하게 회피")]
+    private float m_avoidWeightScale = 2f;
 
-    private float CalculateShipSize()
+    // fleet이 CalculateFormationTargets()로 계산한 목적지를 전달받아 이동 시작
+    public void MoveToFormation(Vector3 target)
     {
-        Renderer[] renderers = GetComponentsInChildren<Renderer>();
-        if (renderers.Length == 0)
-            return 1f; // 기본값
+        m_formationTarget = target;
+        m_formationMoveState = FormationMoveState.Moving;
 
-        Bounds combinedBounds = renderers[0].bounds;
-        for (int i = 1; i < renderers.Length; i++)
-            combinedBounds.Encapsulate(renderers[i].bounds);
-
-        // 가장 큰 축을 기준으로 크기 결정
-        return Mathf.Max(combinedBounds.size.x, combinedBounds.size.y, combinedBounds.size.z);
-    }
-
-    public Vector3 CalculateShipPosition(EFormationType formationType, float spacing = 0f)
-    {
-        var gameSettings = DataManager.Instance?.m_dataTableConfig?.gameSettings;
-        int positionIndex = (int)m_shipInfo.positionIndex;
-
-        // 함선 크기를 계산하여 spacing에 반영
-        float shipSize = CalculateShipSize();
-        float sizeAdjustment = shipSize * 1.0f; // 추가 간격
-
-        switch (formationType)
-        {
-            case EFormationType.formation_type_linear_horizontal:
-                return Calculateformation_type_linear_horizontalPosition(positionIndex, spacing + sizeAdjustment);
-            case EFormationType.formation_type_circle:
-                return CalculateCirclePosition(positionIndex, spacing + sizeAdjustment);
-            case EFormationType.formation_type_cross:
-                return CalculateCrossPosition(positionIndex, spacing + sizeAdjustment);
-            case EFormationType.formation_type_x:
-                return CalculateXPosition(positionIndex, spacing + sizeAdjustment);
-            default:
-                return Calculateformation_type_linear_horizontalPosition(positionIndex, spacing + sizeAdjustment);
-        }
-    }
-
-    private static Vector3 Calculateformation_type_linear_horizontalPosition(int positionIndex, float spacing)
-    {
-        if (positionIndex == 0)
-            return new Vector3(0, 0, 0);
-
-        int side = (positionIndex % 2 == 1) ? -1 : 1;
-        int distance = (positionIndex + 1) / 2;
-        float xOffset = side * distance * spacing;
-
-        return new Vector3(xOffset, 0, 0);
-    }
-
-    // private static Vector3 CalculateLinearVerticalPosition(int positionIndex, float spacing)
-    // {
-    //     if (positionIndex == 0)
-    //         return new Vector3(0, 0, 0);
-
-    //     int side = (positionIndex % 2 == 1) ? -1 : 1;
-    //     int distance = (positionIndex + 1) / 2;
-    //     float yOffset = side * distance * spacing;
-
-    //     return new Vector3(0, yOffset, 0);
-    // }
-
-    // private Vector3 CalculateLinearDepthPosition(int positionIndex, float spacing)
-    // {
-    //     if (m_myFleet == null)
-    //         return new Vector3(0, 0, positionIndex * spacing);
-
-    //     List<SpaceShip> sortedShips = new List<SpaceShip>(m_myFleet.m_ships);
-    //     sortedShips.Sort((a, b) => a.m_shipInfo.positionIndex.CompareTo(b.m_shipInfo.positionIndex));
-
-    //     float accumulatedZ = 0f;
-
-    //     foreach (SpaceShip ship in sortedShips)
-    //     {
-    //         if (ship == null) continue;
-    //         if (ship.m_shipInfo.positionIndex >= positionIndex) break;
-
-    //         Bounds shipBounds = ship.CalculateShipBounds();
-    //         accumulatedZ -= shipBounds.size.z + spacing;
-    //     }
-
-    //     return new Vector3(0, 0, accumulatedZ);
-    // }
-
-    // private static Vector3 CalculateGridPosition(int positionIndex, float spacing, int shipsPerRow = 3)
-    // {
-    //     int row = positionIndex / shipsPerRow;
-    //     int col = positionIndex % shipsPerRow;
-
-    //     return new Vector3(
-    //         col * spacing - (shipsPerRow - 1) * spacing * 0.5f,
-    //         row * spacing - row * spacing * 0.5f,
-    //         0
-    //     );
-    // }
-
-    // 기함 중심 원형 진형: 기함(0번)은 중심, 나머지는 기함 위쪽 기준 원형 배치
-    private Vector3 CalculateCirclePosition(int positionIndex, float spacing)
-    {
-        // 기함(0번)은 항상 중심
-        if (positionIndex == 0)
-            return Vector3.zero;
-
-        // Fleet에서 총 함선 수와 기함 정보 가져오기
-        int totalShips = m_myFleet != null ? m_myFleet.m_ships.Count : 1;
-        int circleShipCount = totalShips - 1; // 원에 배치할 함선 수 (기함 제외)
-
-        if (circleShipCount <= 0)
-            return Vector3.zero;
-
-        // 기함의 돌출 크기 (z축 오프셋용)
-        float flagshipForwardOffset = 0f;
-        if (m_myFleet != null)
-        {
-            SpaceShip flagship = m_myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
-            if (flagship != null)
-                flagshipForwardOffset = flagship.CalculateShipBounds().size.z;
-        }
-
-        // 원형 배치 계산
-        float radius = spacing * 1.5f;
-        int circleIndex = positionIndex - 1; // 0번 제외 인덱스
-
-        // 2대(좌우 배치): 180도, 0도 (왼쪽, 오른쪽)
-        // 3대 이상: 위쪽(90도) 기준 균등 배치
-        float angle;
-        if (circleShipCount == 2)
-        {
-            // 좌우 배치: 첫 번째는 왼쪽(180도), 두 번째는 오른쪽(0도)
-            angle = (circleIndex == 0) ? 180f : 0f;
-        }
-        else
-        {
-            // 위쪽(90도) 기준 균등 배치
-            float angleStep = 360f / circleShipCount;
-            angle = 90f + circleIndex * angleStep;
-        }
-
-        float radians = angle * Mathf.Deg2Rad;
-        return new Vector3(
-            Mathf.Cos(radians) * radius,
-            Mathf.Sin(radians) * radius,
-            flagshipForwardOffset // 기함 돌출 크기만큼 앞에 배치
-        );
-    }
-
-    private Vector3 CalculateCrossPosition(int positionIndex, float spacing)
-    {
-        // 기함의 돌출 크기 (z축 오프셋용)
-        float flagshipForwardOffset = 0f;
-        if (m_myFleet != null)
-        {
-            SpaceShip flagship = m_myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
-            if (flagship != null)
-                flagshipForwardOffset = flagship.CalculateShipBounds().size.z;
-        }
-
-        switch (positionIndex)
-        {
-            case 0: return new Vector3(0, 0, 0);
-            case 1: return new Vector3(-spacing, 0, -flagshipForwardOffset);
-            case 2: return new Vector3(spacing, 0, -flagshipForwardOffset);
-            case 3: return new Vector3(0, spacing, -flagshipForwardOffset);
-            case 4: return new Vector3(0, -spacing, -flagshipForwardOffset);
-            case 5: return new Vector3(-spacing * 2f, 0, -flagshipForwardOffset * 2);
-            case 6: return new Vector3(spacing * 2f, 0, -flagshipForwardOffset * 2);
-            case 7: return new Vector3(0, spacing * 2f, -flagshipForwardOffset * 2);
-            case 8: return new Vector3(0, -spacing * 2f, -flagshipForwardOffset * 2);
-            default:
-                int extraIndex = positionIndex - 9;
-                int arm = extraIndex / 2;
-                bool isHorizontal = (arm % 2) == 0;
-                bool isPositive = (extraIndex % 2) == 0;
-                float distance = (arm / 2 + 3) * spacing;
-                if (isHorizontal)
-                    return new Vector3(isPositive ? distance : -distance, 0, 0);
-                else
-                    return new Vector3(0, isPositive ? distance : -distance, 0);
-        }
-    }
-
-    private Vector3 CalculateXPosition(int positionIndex, float spacing)
-    {
-        // 기함의 돌출 크기 (z축 오프셋용)
-        float flagshipForwardOffset = 0f;
-        if (m_myFleet != null)
-        {
-            SpaceShip flagship = m_myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
-            if (flagship != null)
-                flagshipForwardOffset = flagship.CalculateShipBounds().size.z;
-        }
-
-        switch (positionIndex)
-        {
-            case 0: return new Vector3(0, 0, 0);
-            case 1: return new Vector3(-spacing, spacing, flagshipForwardOffset);
-            case 2: return new Vector3(spacing, spacing, flagshipForwardOffset);
-            case 3: return new Vector3(-spacing, -spacing, flagshipForwardOffset);
-            case 4: return new Vector3(spacing, -spacing, flagshipForwardOffset);
-            case 5: return new Vector3(-spacing * 2f, spacing * 2f, flagshipForwardOffset * 2);
-            case 6: return new Vector3(spacing * 2f, spacing * 2f, flagshipForwardOffset * 2);
-            case 7: return new Vector3(-spacing * 2f, -spacing * 2f, flagshipForwardOffset * 2);
-            case 8: return new Vector3(spacing * 2f, -spacing * 2f, flagshipForwardOffset * 2);
-            default:
-                int extraIndex = positionIndex - 9;
-                int layer = (extraIndex / 4) + 3;
-                int corner = extraIndex % 4;
-                float distance = layer * spacing;
-                switch (corner)
-                {
-                    case 0: return new Vector3(-distance, distance, 0);
-                    case 1: return new Vector3(distance, distance, 0);
-                    case 2: return new Vector3(-distance, -distance, 0);
-                    case 3: return new Vector3(distance, -distance, 0);
-                    default: return new Vector3(0, 0, 0);
-                }
-        }
-    }
-
-    public void MoveToFormationPosition(EFormationType formationType)
-    {
-        m_targetPosition = CalculateShipPosition(formationType);
-        if (m_isMovingToFormation == false)
-        {
-            m_isMovingToFormation = true;
-            StartCoroutine(AutonomousFormationMovement());
-        }
-    }
-
-    // 계획된 경로로 이동 (새 시스템)
-    public void FollowPlannedPath(FormationPathPlanner.PlannedPath path)
-    {
-        if (path == null) return;
-
-        // 기존 이동 중지
-        StopFormationMovement();
-
-        m_plannedPath = path;
-        m_currentWaypointIndex = 0;
-        m_isMovingToFormation = true;
-        m_pathFollowCoroutine = StartCoroutine(PlannedPathMovement());
+        if (m_formationCoroutine != null)
+            StopCoroutine(m_formationCoroutine);
+        m_formationCoroutine = StartCoroutine(FormationMovementLoop());
     }
 
     public void StopFormationMovement()
     {
-        m_isMovingToFormation = false;
-        if (m_pathFollowCoroutine != null)
+        m_formationMoveState = FormationMoveState.Idle;
+        if (m_formationCoroutine != null)
         {
-            StopCoroutine(m_pathFollowCoroutine);
-            m_pathFollowCoroutine = null;
+            StopCoroutine(m_formationCoroutine);
+            m_formationCoroutine = null;
         }
+        m_avoidanceAccum = Vector3.zero;
     }
 
-    private IEnumerator PlannedPathMovement()
+    // 실드 트리거 릴레이에서 호출 — 인덱스 우선권 기반 회피 벡터 누적
+    public void OnShieldTriggerStay(SpaceShip other, float penetrationDepth)
     {
-        // 출발 지연 대기
-        if (m_plannedPath.startDelay > 0f)
-            yield return new WaitForSeconds(m_plannedPath.startDelay);
+        if (m_formationMoveState != FormationMoveState.Moving) return;
+        if (other == null || other.m_myFleet != m_myFleet) return;
 
-        while (m_isMovingToFormation && m_currentWaypointIndex < m_plannedPath.waypoints.Count)
-        {
-            Vector3 targetWaypoint = m_plannedPath.waypoints[m_currentWaypointIndex];
-            Vector3 currentPos = transform.localPosition;
-            float distanceToWaypoint = Vector3.Distance(currentPos, targetWaypoint);
+        // 내 인덱스가 낮으면 우선권 있음 → 상대가 피함
+        if (m_shipInfo.positionIndex <= other.m_shipInfo.positionIndex) return;
 
-            // 웨이포인트 도달 체크
-            if (distanceToWaypoint < ARRIVAL_THRESHOLD)
-            {
-                m_currentWaypointIndex++;
+        Vector3 awayDir = (transform.localPosition - other.transform.localPosition);
+        float dist = awayDir.magnitude;
+        if (dist < 0.001f) return;
 
-                // 마지막 웨이포인트면 정확한 위치로 스냅
-                if (m_currentWaypointIndex >= m_plannedPath.waypoints.Count)
-                {
-                    transform.localPosition = m_plannedPath.endPos;
-                    break;
-                }
-                continue;
-            }
-
-            // 이동 방향 계산
-            Vector3 direction = (targetWaypoint - currentPos).normalized;
-
-            // 속도 계산 (목표 근처에서 감속)
-            float baseSpeed = m_spaceShipStatsCur.speed;
-            float speedMultiplier = 1f;
-
-            // 마지막 웨이포인트 근처에서 감속
-            if (m_currentWaypointIndex == m_plannedPath.waypoints.Count - 1)
-            {
-                speedMultiplier = Mathf.Clamp01(distanceToWaypoint / SLOWDOWN_DISTANCE);
-                speedMultiplier = Mathf.Max(speedMultiplier, 0.2f); // 최소 20% 속도 유지
-            }
-
-            float moveSpeed = baseSpeed * speedMultiplier;
-
-            // 이동 (오버슈팅 방지)
-            float moveDistance = moveSpeed * Time.deltaTime;
-            if (moveDistance > distanceToWaypoint)
-                moveDistance = distanceToWaypoint;
-
-            transform.localPosition = currentPos + direction * moveDistance;
-
-            yield return null;
-        }
-
-        m_isMovingToFormation = false;
-        m_pathFollowCoroutine = null;
+        // 침투 깊이 비례 회피 방향 누적 (depth=0이면 무시, depth클수록 강하게 밀어냄)
+        m_avoidanceAccum += awayDir.normalized * penetrationDepth;
     }
 
-    private IEnumerator AutonomousFormationMovement()
+    private IEnumerator FormationMovementLoop()
     {
-        while (m_isMovingToFormation == true)
+        while (m_formationMoveState == FormationMoveState.Moving)
         {
             Vector3 currentPos = transform.localPosition;
-            float distanceToTarget = Vector3.Distance(currentPos, m_targetPosition);
-            if (distanceToTarget < 0.1f)
+            Vector3 toTarget = m_formationTarget - currentPos;
+            float dist = toTarget.magnitude;
+
+            if (dist < ARRIVAL_THRESHOLD)
             {
-                transform.localPosition = m_targetPosition;
-                m_isMovingToFormation = false;
+                transform.localPosition = m_formationTarget;
+                m_formationMoveState = FormationMoveState.Arrived;
+                m_formationCoroutine = null;
                 yield break;
             }
 
-            Vector3 directionToTarget = (m_targetPosition - currentPos).normalized;
-            Vector3 directionToAvoidance = CalculateDirectionToAvoidance(currentPos, directionToTarget);
-            //Vector3 finalDirection = (directionToTarget + avoidanceVector).normalized;
-             Vector3 finalDirection;
-             if (directionToAvoidance.magnitude > 0.1f)
-                 finalDirection = directionToAvoidance.normalized;
-             else
-                 finalDirection = directionToTarget;
+            // 목표 방향 + 이번 프레임 누적 회피 벡터 혼합
+            Vector3 targetDir = toTarget.normalized;
+            Vector3 avoidDir  = m_avoidanceAccum;
+            m_avoidanceAccum  = Vector3.zero;
 
-            float moveSpeed = m_spaceShipStatsCur.speed;
-            Vector3 newPosition = currentPos + finalDirection * moveSpeed * Time.deltaTime;
-            transform.localPosition = newPosition;
+            // 침투 깊이가 클수록 회피 비율 증가 (0=목표 방향, 1=완전 회피)
+            float avoidWeight = Mathf.Clamp01(avoidDir.magnitude * m_avoidWeightScale);
+            if(m_shipInfo.positionIndex == 2)
+                Debug.Log($"avoidWeight :{avoidWeight}");
+
+            Vector3 finalDir = avoidWeight > m_avoidActivateThreshold
+                ? Vector3.Lerp(targetDir, avoidDir.normalized, avoidWeight).normalized
+                : targetDir;
+
+            // 목표 근처 감속 (최소 20% 속도 유지)
+            float speedMult = Mathf.Max(Mathf.Clamp01(dist / SLOWDOWN_DISTANCE), 0.2f);
+            float speed = m_spaceShipStatsCur.speed * speedMult;
+
+            // 오버슈팅 방지
+            float moveDist = Mathf.Min(speed * Time.deltaTime, dist);
+            transform.localPosition = currentPos + finalDir * moveDist;
 
             yield return null;
         }
-    }
-
-    private Vector3 CalculateDirectionToAvoidance(Vector3 currentPos, Vector3 moveDirection)
-    {
-        Vector3 directionToAvoidance = Vector3.zero;
-
-        Bounds shipBounds = CalculateShipBounds();
-        Vector3 shipSize = shipBounds.size;
-        float maxDimension = Mathf.Max(shipSize.x, shipSize.y, shipSize.z);
-        float castRadius = maxDimension * 0.5f;
-
-        float distanceToTarget = Vector3.Distance(currentPos, m_targetPosition);
-        float checkDistance = Mathf.Min(distanceToTarget, m_detectionDistanceLimit);
-
-        //int layerMask = ~(1 << DisplayFleet.LAYER_DISPLAY_FLEET);
-
-        RaycastHit[] hits = Physics.SphereCastAll(
-            transform.position
-            , castRadius
-            , moveDirection
-            , checkDistance
-            //, layerMask
-        );
-
-        // HashSet for fast O(1) duplicate check with Contains()
-        HashSet<SpaceShip> obstacleShips = new HashSet<SpaceShip>();
-        // List for sequential storage and iteration only
-        List<RaycastHit> obstacleHits = new List<RaycastHit>();
-
-        foreach (RaycastHit hit in hits)
-        {
-            SpaceShip otherShip = hit.collider.GetComponentInParent<SpaceShip>();
-            if (otherShip != null && otherShip != this)
-            {
-                if (obstacleShips.Contains(otherShip)) continue;
-                obstacleShips.Add(otherShip);
-            }
-            else if (otherShip == null)
-            {
-                obstacleHits.Add(hit);
-            }
-        }
-
-        foreach (SpaceShip otherShip in obstacleShips)
-        {
-            //Debug.DrawLine(transform.position, otherShip.transform.position, Color.red, 0.1f);
-
-            Vector3 toOther = otherShip.transform.position - transform.position;
-            float distance = toOther.magnitude;
-            float weight = 1f / (distance + 0.1f);
-
-            if (otherShip.m_myFleet == m_myFleet)
-            {
-                Vector3 toOtherDir = (otherShip.transform.localPosition - currentPos).normalized;
-                Vector3 lateralDir = Vector3.Cross(toOtherDir, m_myFleet.transform.forward).normalized;
-
-                directionToAvoidance += lateralDir * weight * 3f;
-
-                // float collisionDistance = castRadius * 1.2f;
-                // if (distance < collisionDistance)
-                // {
-                //     Vector3 awayFromOther = -toOtherDir;
-                //     avoidance += awayFromOther * weight * 4f;
-                // }
-                Vector3 awayFromOther = -toOtherDir;
-                directionToAvoidance += awayFromOther * weight * 1f;
-
-            }
-            else
-            {
-                Vector3 awayFromEnemy = currentPos - otherShip.transform.localPosition;
-                directionToAvoidance += awayFromEnemy.normalized * weight * 10f;
-                //Debug.DrawLine(transform.position, otherShip.transform.position, Color.magenta, 0.1f);
-            }
-        }
-
-        foreach (RaycastHit hit in obstacleHits)
-        {
-            Vector3 awayFromObstacle = currentPos - hit.collider.transform.position;
-            float weight = 1f / (hit.distance + 0.1f);
-            directionToAvoidance += awayFromObstacle.normalized * weight * 1.5f;
-        }
-
-        //if (avoidance.magnitude > 0.1f)
-        //Debug.DrawRay(transform.position, avoidance.normalized * 2f, Color.blue, 0.1f);
-
-        return directionToAvoidance;
     }
 
     public Bounds CalculateShipBounds()
@@ -948,8 +607,12 @@ public class SpaceShip : MonoBehaviour
     {
         if (moduleType == EModuleType.body)
         {
-            // Body 교체 처리
+            // Body 교체 처리 — 완료 후 relay 재설정 및 크기 변경 이벤트 발화
             ChangeModuleBody(bodyIndex, moduleType, moduleSubTypeNew, moduleNewLevel);
+            m_shieldGrid = m_moduleBodys.Count > 0 ? m_moduleBodys[0].GetComponent<ShieldGrid>() : null;
+            if (m_shieldGrid != null)
+                m_shieldGrid.InitFormationRelay(this);
+            EventManager.Trigger_ShipBodyChanged(this);
         }
         else
         {
@@ -1051,24 +714,23 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Bounds shipBounds = CalculateShipBounds();
+    // private void OnDrawGizmos()
+    // {
+    //     Bounds shipBounds = CalculateShipBounds();
 
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(shipBounds.center, shipBounds.size);
+    //     Gizmos.color = Color.yellow;
+    //     Gizmos.DrawWireCube(shipBounds.center, shipBounds.size);
 
-        if (m_targetPosition == Vector3.zero) return;
+    //     if (m_formationMoveState == FormationMoveState.Idle) return;
 
-        Vector3 shipSize = shipBounds.size;
-        float maxDimension = Mathf.Max(shipSize.x, shipSize.y, shipSize.z);
-        float castRadius = maxDimension * 0.5f;
+    //     Vector3 shipSize = shipBounds.size;
+    //     float castRadius = Mathf.Max(shipSize.x, shipSize.y, shipSize.z) * 0.5f;
 
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(m_targetPosition, castRadius);
+    //     Gizmos.color = Color.cyan;
+    //     Gizmos.DrawWireSphere(m_formationTarget, castRadius);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, m_targetPosition);
-    }
+    //     Gizmos.color = Color.green;
+    //     Gizmos.DrawLine(transform.position, m_formationTarget);
+    // }
     #endregion
 }

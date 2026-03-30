@@ -59,6 +59,7 @@ public class SpaceFleet : MonoBehaviour
     
     private void Start()
     {
+        EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
         if (m_fleetSource == EFleetSource.fleet_source_player || m_fleetSource == EFleetSource.fleet_source_player_remote)
             StartCoroutine(AutoRepair());
     }
@@ -130,18 +131,29 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChanged);
+    }
+
+    // 소속 함선의 Body 교체로 크기가 바뀌면 간격 재조정
+    private void OnShipBodyChanged(SpaceShip ship)
+    {
+        if (m_ships.Contains(ship) == true)
+            RefreshFormation();
+    }
+
     // 진형 재계획 (함선 추가/제거 시 호출)
     public void RefreshFormation()
     {
-        // 이동 중인 함선들 중지
+        // 이동 중인 함선들 중지 후 재계획
         foreach (var ship in m_ships)
         {
             if (ship != null)
                 ship.StopFormationMovement();
         }
 
-        // 진형 재계획 및 이동 시작
-        UpdateShipFormationWithPlannedPath(m_currentFormationType);
+        UpdateShipFormation(m_currentFormationType, smooth: true);
     }
 
     // shipId로 함선 찾기
@@ -178,65 +190,174 @@ public class SpaceFleet : MonoBehaviour
     public void UpdateShipFormation(EFormationType formationType = EFormationType.formation_type_linear_horizontal, bool smooth = true)
     {
         m_currentFormationType = formationType;
+        var targets = CalculateFormationTargets(formationType);
 
-        if (smooth)
+        foreach (var kv in targets)
         {
-            // 새 시스템: 사전 경로 계획 후 이동
-            UpdateShipFormationWithPlannedPath(formationType);
+            if (kv.Key == null) continue;
+            if (smooth == true)
+                kv.Key.MoveToFormation(kv.Value);
+            else
+                kv.Key.transform.localPosition = kv.Value;
         }
+    }
+
+    // 전체 함선 크기 누적 기반 진형 목적지 계산 (positionIndex 고정, 교환 없음)
+    public Dictionary<SpaceShip, Vector3> CalculateFormationTargets(EFormationType formationType)
+    {
+        var result = new Dictionary<SpaceShip, Vector3>();
+        var validShips = m_ships.FindAll(s => s != null);
+        if (validShips.Count == 0) return result;
+
+        // Renderer 반복 접근 방지용 바운드 캐시
+        var boundsCache = new Dictionary<SpaceShip, Bounds>();
+        foreach (var s in validShips)
+            boundsCache[s] = s.CalculateShipBounds();
+
+        SpaceShip flagship = validShips.Find(s => s.m_shipInfo.positionIndex == 0);
+
+        var preset = FormationPresetDB.Get(formationType);
+        if (preset == null)
+        {
+            Debug.LogWarning($"[SpaceFleet] 프리셋 없음: {formationType}");
+            return result;
+        }
+
+        if (preset.parseType == EFormationParseType.CubeGrid)
+            ParseCubeGrid(preset, validShips, flagship, boundsCache, result);
         else
+            ParseCircle(preset, validShips, flagship, boundsCache, result);
+
+        return result;
+    }
+
+    // 함선 간 최소 여백
+    private const float FORMATION_GAP = 2f;
+
+    // CubeGrid: 정수 격자 좌표 → 축별 누적 간격 변환
+    private void ParseCubeGrid(FormationPreset preset, List<SpaceShip> ships, SpaceShip flagship,
+        Dictionary<SpaceShip, Bounds> bc, Dictionary<SpaceShip, Vector3> result)
+    {
+        if (flagship != null) result[flagship] = Vector3.zero;
+
+        // positionIndex → SpaceShip 맵
+        var indexToShip = new Dictionary<int, SpaceShip>();
+        foreach (var s in ships)
+            indexToShip[s.m_shipInfo.positionIndex] = s;
+
+        // positionIndex → 슬롯 맵
+        var indexToSlot = new Dictionary<int, FormationSlot>();
+        foreach (var slot in preset.slots)
+            indexToSlot[slot.positionIndex] = slot;
+
+        // 각 축 최대 슬롯 번호
+        int maxAbsX = 0, maxAbsY = 0, maxAbsZ = 0;
+        foreach (var slot in preset.slots)
         {
-            foreach (SpaceShip ship in m_ships)
+            maxAbsX = Mathf.Max(maxAbsX, Mathf.Abs(slot.gridCoord.x));
+            maxAbsY = Mathf.Max(maxAbsY, Mathf.Abs(slot.gridCoord.y));
+            maxAbsZ = Mathf.Max(maxAbsZ, Mathf.Abs(slot.gridCoord.z));
+        }
+
+        // X축 누적 간격 (좌/우)
+        float[] cumX = new float[maxAbsX + 1];
+        // Y축 누적 간격 (상/하 — 적이 Z축에서 봤을 때 진형 형태가 보이도록)
+        float[] cumY = new float[maxAbsY + 1];
+        // Z축 누적 간격 (전방 돌출/후방 후퇴)
+        float[] cumZ = new float[maxAbsZ + 1];
+
+        float cursorX = flagship != null ? bc[flagship].size.x * 0.5f : 1f;
+        for (int n = 1; n <= maxAbsX; n++)
+        {
+            float maxHalf = 0f;
+            foreach (var slot in preset.slots)
             {
-                if (ship != null)
-                    ship.transform.localPosition = ship.CalculateShipPosition(formationType);
+                if (Mathf.Abs(slot.gridCoord.x) == n && indexToShip.TryGetValue(slot.positionIndex, out var s))
+                    maxHalf = Mathf.Max(maxHalf, bc[s].size.x * 0.5f);
             }
+            if (maxHalf < 0.1f) maxHalf = 1f;
+            cumX[n] = cursorX + FORMATION_GAP + maxHalf;
+            cursorX  = cumX[n] + maxHalf;
         }
-    }
 
-    // 새 진형 이동 시스템: Hungarian Algorithm + 경로 계획
-    private void UpdateShipFormationWithPlannedPath(EFormationType formationType)
-    {
-        // null이 아닌 함선만 필터링
-        List<SpaceShip> validShips = m_ships.FindAll(s => s != null);
-        if (validShips.Count == 0) return;
-
-        // 경로 계획 생성
-        var plannedPaths = FormationPathPlanner.PlanFormationChange(validShips, formationType);
-
-        // 디버그 시각화 (에디터에서만)
-        #if UNITY_EDITOR
-        FormationPathPlanner.DebugDrawPaths(plannedPaths, 5f);
-        #endif
-
-        // 각 함선에 계획된 경로 전달
-        foreach (var path in plannedPaths)
+        float cursorY = flagship != null ? bc[flagship].size.y * 0.5f : 1f;
+        for (int n = 1; n <= maxAbsY; n++)
         {
-            if (path.ship != null)
-                path.ship.FollowPlannedPath(path);
+            float maxHalf = 0f;
+            foreach (var slot in preset.slots)
+            {
+                if (Mathf.Abs(slot.gridCoord.y) == n && indexToShip.TryGetValue(slot.positionIndex, out var s))
+                    maxHalf = Mathf.Max(maxHalf, bc[s].size.y * 0.5f);
+            }
+            if (maxHalf < 0.1f) maxHalf = 1f;
+            cumY[n] = cursorY + FORMATION_GAP + maxHalf;
+            cursorY  = cumY[n] + maxHalf;
         }
-    }
 
-    // 기존 방식 (레거시, 필요시 사용)
-    private void UpdateShipFormationLegacy(EFormationType formationType)
-    {
-        List<SpaceShip> sortedShips = new List<SpaceShip>(m_ships);
-        sortedShips.Sort((a, b) => a.m_shipInfo.positionIndex.CompareTo(b.m_shipInfo.positionIndex));
-
-        for (int i = 0; i < sortedShips.Count; i++)
+        float cursorZ = flagship != null ? bc[flagship].size.z * 0.5f : 1f;
+        for (int n = 1; n <= maxAbsZ; n++)
         {
-            SpaceShip ship = sortedShips[i];
-            if (ship == null) continue;
-            float delay = i * 0.1f;
-            StartCoroutine(DelayedFormationMove(ship, formationType, delay));
+            float maxHalf = 0f;
+            foreach (var slot in preset.slots)
+            {
+                if (Mathf.Abs(slot.gridCoord.z) == n && indexToShip.TryGetValue(slot.positionIndex, out var s))
+                    maxHalf = Mathf.Max(maxHalf, bc[s].size.z * 0.5f);
+            }
+            if (maxHalf < 0.1f) maxHalf = 1f;
+            cumZ[n] = cursorZ + FORMATION_GAP + maxHalf;
+            cursorZ  = cumZ[n] + maxHalf;
+        }
+
+        // 각 함선에 위치 적용 (X=좌우, Y=상하, Z=전후)
+        foreach (var slot in preset.slots)
+        {
+            if (slot.positionIndex == 0) continue;
+            if (indexToShip.TryGetValue(slot.positionIndex, out var ship) == false) continue;
+
+            float x = slot.gridCoord.x != 0 ? cumX[Mathf.Abs(slot.gridCoord.x)] * Mathf.Sign(slot.gridCoord.x) : 0f;
+            float y = slot.gridCoord.y != 0 ? cumY[Mathf.Abs(slot.gridCoord.y)] * Mathf.Sign(slot.gridCoord.y) : 0f;
+            float z = slot.gridCoord.z != 0 ? cumZ[Mathf.Abs(slot.gridCoord.z)] * Mathf.Sign(slot.gridCoord.z) : 0f;
+            result[ship] = new Vector3(x, y, z);
         }
     }
 
-    private IEnumerator DelayedFormationMove(SpaceShip ship, EFormationType formationType, float delay)
+    // Circle: 각도(도) → 반지름 기반 원주 위치 변환
+    private void ParseCircle(FormationPreset preset, List<SpaceShip> ships, SpaceShip flagship,
+        Dictionary<SpaceShip, Bounds> bc, Dictionary<SpaceShip, Vector3> result)
     {
-        if (delay > 0)
-            yield return new WaitForSeconds(delay);
-        ship.MoveToFormationPosition(formationType);
+        if (flagship != null) result[flagship] = Vector3.zero;
+
+        var indexToShip = new Dictionary<int, SpaceShip>();
+        foreach (var s in ships)
+            indexToShip[s.m_shipInfo.positionIndex] = s;
+
+        var layout = preset.GetCircleLayout(ships.Count);
+        if (layout == null)
+        {
+            Debug.LogWarning($"[SpaceFleet] Circle 레이아웃 없음: shipCount={ships.Count}");
+            return;
+        }
+
+        // 반지름: 함선 사이즈 기반 자동 계산 (XY 평면 기준 — x/y 크기 사용)
+        var nonFlagship = ships.FindAll(s => s != flagship);
+        float maxSize = 0f;
+        foreach (var s in nonFlagship)
+            maxSize = Mathf.Max(maxSize, bc[s].size.x, bc[s].size.y);
+
+        int n = nonFlagship.Count;
+        float radiusBySpacing  = n > 1 ? n * (maxSize + FORMATION_GAP) / (2f * Mathf.PI) : maxSize + FORMATION_GAP;
+        float radiusByFlagship = (flagship != null ? bc[flagship].size.x * 0.5f : 1f) + FORMATION_GAP + maxSize * 0.5f;
+        float radius = Mathf.Max(radiusBySpacing, radiusByFlagship);
+
+        foreach (var slot in layout.slots)
+        {
+            if (slot.positionIndex == 0) continue;
+            if (indexToShip.TryGetValue(slot.positionIndex, out var ship) == false) continue;
+
+            // XY 평면 배치: 0°=상(Y+), 90°=우(X+), Z=프리셋 단위 전후 오프셋
+            float rad = slot.circleAngle * Mathf.Deg2Rad;
+            result[ship] = new Vector3(Mathf.Sin(rad) * radius, Mathf.Cos(rad) * radius, preset.circleZOffset);
+        }
     }
 
 

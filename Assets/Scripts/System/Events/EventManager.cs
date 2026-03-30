@@ -168,6 +168,21 @@ public static class EventManager
         OnShipStatsChanged -= callback;
     }
 
+    // Body 프리팹 교체로 물리적 크기가 변했을 때
+    public static event Action<SpaceShip> OnShipBodyChanged;
+    public static void Trigger_ShipBodyChanged(SpaceShip ship)
+    {
+        OnShipBodyChanged?.Invoke(ship);
+    }
+    public static void Subscribe_ShipBodyChanged(Action<SpaceShip> callback)
+    {
+        OnShipBodyChanged += callback;
+    }
+    public static void Unsubscribe_ShipBodyChanged(Action<SpaceShip> callback)
+    {
+        OnShipBodyChanged -= callback;
+    }
+
     # endregion Ship --------------------------------------------------------------------
     
 

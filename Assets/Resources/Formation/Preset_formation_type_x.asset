@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e78907e12e88ca4baca1d9d1628972d, type: 3}
+  m_Name: Preset_formation_type_x
+  m_EditorClassIdentifier: 
+  formationType: 3
+  parseType: 0
+  slots:
+  - positionIndex: 0
+    gridCoord: {x: 0, y: 0, z: 0}
+    circleAngle: 0
+    circleZOffset: 0
+  - positionIndex: 1
+    gridCoord: {x: 1, y: 1, z: 1}
+    circleAngle: 0
+    circleZOffset: 0
+  - positionIndex: 2
+    gridCoord: {x: -1, y: 1, z: 1}
+    circleAngle: 0
+    circleZOffset: 0
+  - positionIndex: 3
+    gridCoord: {x: 1, y: -1, z: 1}
+    circleAngle: 0
+    circleZOffset: 0
+  - positionIndex: 4
+    gridCoord: {x: -1, y: -1, z: 1}
+    circleAngle: 0
+    circleZOffset: 0
+  - positionIndex: 5
+    gridCoord: {x: 2, y: 2, z: 2}
+    circleAngle: 0
+    circleZOffset: 0
+  - positionIndex: 6
+    gridCoord: {x: -2, y: 2, z: 2}
+    circleAngle: 0
+    circleZOffset: 0
+  - positionIndex: 7
+    gridCoord: {x: 2, y: -2, z: 2}
+    circleAngle: 0
+    circleZOffset: 0
+  - positionIndex: 8
+    gridCoord: {x: -2, y: -2, z: 2}
+    circleAngle: 0
+    circleZOffset: 0
+  circleLayouts: []

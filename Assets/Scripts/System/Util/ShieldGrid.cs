@@ -188,6 +188,26 @@ public class ShieldGrid : MonoBehaviour
         m_meshCollider.sharedMesh = unitSphereMesh;
         m_meshCollider.convex = true;
         m_meshCollider.isTrigger = true;
+
+        // OnTriggerStay 발생 조건: Rigidbody 필요 → kinematic으로 물리 영향 차단 (프리팹에 저장됨)
+        var rb = m_colliderObject.AddComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.useGravity = false;
+    }
+
+    // 런타임 전용 — SpaceShip 로딩 시점에 호출하여 진형 충돌 릴레이 owner 설정
+    public void InitFormationRelay(SpaceShip owner)
+    {
+        Transform colliderChild = transform.Find("ShieldCollider");
+        if (colliderChild == null)
+        {
+            Debug.LogWarning($"[ShieldGrid] ShieldCollider 자식을 찾을 수 없음: {gameObject.name}");
+            return;
+        }
+
+        if (colliderChild.TryGetComponent<ShieldTriggerRelay>(out var relay) == false)
+            relay = colliderChild.gameObject.AddComponent<ShieldTriggerRelay>();
+        relay.owner = owner;
     }
 
     /// <summary>
@@ -641,4 +661,32 @@ public class ShieldCell
     public List<int> vertexIndices;
     public float hp = 100f;
     public bool isDestroyed = false;
+}
+
+// 실드 콜라이더(자식 오브젝트)의 OnTriggerStay를 부모 SpaceShip으로 전달
+[RequireComponent(typeof(Collider))]
+public class ShieldTriggerRelay : MonoBehaviour
+{
+    public SpaceShip owner;
+    private Collider m_collider;
+
+    private void Awake()
+    {
+        m_collider = GetComponent<Collider>();
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (owner == null) return;
+        SpaceShip otherShip = other.GetComponentInParent<SpaceShip>();
+        if (otherShip == null || otherShip == owner) return;
+
+        float depth = 0f;
+        if (m_collider != null)
+            Physics.ComputePenetration(m_collider, transform.position, transform.rotation,
+                other, other.transform.position, other.transform.rotation,
+                out _, out depth);
+
+        owner.OnShieldTriggerStay(otherShip, depth);
+    }
 }

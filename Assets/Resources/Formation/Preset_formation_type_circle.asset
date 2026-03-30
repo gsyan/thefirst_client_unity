@@ -1,0 +1,174 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e78907e12e88ca4baca1d9d1628972d, type: 3}
+  m_Name: Preset_formation_type_circle
+  m_EditorClassIdentifier: 
+  formationType: 1
+  parseType: 1
+  slots: []
+  circleLayouts:
+  - shipCount: 2
+    zOffset: 0
+    slots:
+    - positionIndex: 0
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 0
+    - positionIndex: 1
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 90
+  - shipCount: 3
+    zOffset: 0
+    slots:
+    - positionIndex: 0
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 0
+    - positionIndex: 1
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 90
+    - positionIndex: 2
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 270
+  - shipCount: 4
+    zOffset: 0
+    slots:
+    - positionIndex: 0
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 0
+    - positionIndex: 1
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 60
+    - positionIndex: 2
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 300
+    - positionIndex: 3
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 180
+  - shipCount: 5
+    zOffset: 0
+    slots:
+    - positionIndex: 0
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 0
+    - positionIndex: 1
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 45
+    - positionIndex: 2
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 315
+    - positionIndex: 3
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 135
+    - positionIndex: 4
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 225
+  - shipCount: 6
+    zOffset: 0
+    slots:
+    - positionIndex: 0
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 0
+    - positionIndex: 1
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 0
+    - positionIndex: 2
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 288
+    - positionIndex: 3
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 72
+    - positionIndex: 4
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 216
+    - positionIndex: 5
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 144
+  - shipCount: 7
+    zOffset: 0
+    slots:
+    - positionIndex: 0
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 0
+    - positionIndex: 1
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 30
+    - positionIndex: 2
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 330
+    - positionIndex: 3
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 90
+    - positionIndex: 4
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 270
+    - positionIndex: 5
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 150
+    - positionIndex: 6
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 210
+  - shipCount: 8
+    zOffset: 0
+    slots:
+    - positionIndex: 0
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 0
+    - positionIndex: 1
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 25.7
+    - positionIndex: 2
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 334.3
+    - positionIndex: 3
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 77.1
+    - positionIndex: 4
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 282.9
+    - positionIndex: 5
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 128.6
+    - positionIndex: 6
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 231.4
+    - positionIndex: 7
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 180
+  - shipCount: 9
+    zOffset: 0
+    slots:
+    - positionIndex: 0
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 0
+    - positionIndex: 1
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 22.5
+    - positionIndex: 2
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 337.5
+    - positionIndex: 3
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 67.5
+    - positionIndex: 4
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 292.5
+    - positionIndex: 5
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 112.5
+    - positionIndex: 6
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 247.5
+    - positionIndex: 7
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 157.5
+    - positionIndex: 8
+      gridCoord: {x: 0, y: 0, z: 0}
+      circleAngle: 202.5

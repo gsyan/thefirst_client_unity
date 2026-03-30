@@ -1,7 +1,14 @@
 research_id,prerequisites,ui_pos_x,ui_pos_y,cost_m,cost_mr,cost_me,cost_md
 tech_level_1,,80,-40,0,0,0,0
 tech_level_2,tech_level_1,280,-40,5000,0,0,0
-tech_level_3,tech_level_2,480,-40,15000,0,0,0
+tech_level_3,tech_level_2,480,-40,10000,0,0,0
+tech_level_4,tech_level_3,680,-40,20000,5000,0,0
+tech_level_5,tech_level_4,880,-40,40000,10000,0,0
+tech_level_6,tech_level_5,1080,-40,80000,20000,5000,0
+tech_level_7,tech_level_6,1280,-40,160000,40000,10000,0
+tech_level_8,tech_level_7,1480,-40,320000,80000,20000,5000
+tech_level_9,tech_level_8,1680,-40,640000,160000,40000,10000
+tech_level_10,tech_level_9,1880,-40,1280000,320000,80000,20000
 body_t1_std_ver1,,80,-40,0,0,0,0
 body_t1_adv_ver1,body_t1_std_ver1,280,-40,0,50000,0,0
 beam_t1_std_ver1,,80,-40,0,0,0,0
