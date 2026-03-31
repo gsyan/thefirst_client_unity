@@ -51,12 +51,12 @@ MonoBehaviour:
       mineralRare: 1400000
       mineralExotic: 0
       mineralDark: 0
-    - techLevel: 10
+    - techLevel: 12
       mineral: 320000
       mineralRare: 2500000
       mineralExotic: 0
       mineralDark: 0
-    - techLevel: 10
+    - techLevel: 14
       mineral: 640000
       mineralRare: 4000000
       mineralExotic: 0
@@ -81,9 +81,9 @@ MonoBehaviour:
     \"mineralRare\": 370000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
     0\r\n    },\r\n    {\r\n      \"techLevel\": 10,\r\n      \"mineral\": 160000,\r\n     
     \"mineralRare\": 1400000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 10,\r\n      \"mineral\": 320000,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 12,\r\n      \"mineral\": 320000,\r\n     
     \"mineralRare\": 2500000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"techLevel\": 10,\r\n      \"mineral\": 640000,\r\n     
+    0\r\n    },\r\n    {\r\n      \"techLevel\": 14,\r\n      \"mineral\": 640000,\r\n     
     \"mineralRare\": 4000000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
     0\r\n    }\r\n  ],\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\": 5,\r\n 
     \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\":
