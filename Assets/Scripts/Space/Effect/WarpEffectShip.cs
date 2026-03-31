@@ -126,6 +126,33 @@ public class WarpEffectShip : MonoBehaviour
         m_speedLineEffect = null;
     }
 
+    // 함선 추가 시 워프 진입 이펙트 — 목적지 도착까지 엔진 글로우 + 스피드라인 유지
+    public void StartApproachWarp()
+    {
+        if (m_warpCoroutine != null)
+            StopCoroutine(m_warpCoroutine);
+        m_warpCoroutine = StartCoroutine(ApproachWarpSequence());
+    }
+
+    private IEnumerator ApproachWarpSequence()
+    {
+        m_isWarping = true;
+        SetEngineGlow(m_warpGlowIntensity);
+        SetSpeedLinesActive(true);
+
+        // 함선이 목적지에 도착할 때까지 스피드라인 위치 동기화
+        while (m_spaceShip != null && m_spaceShip.m_formationMoveState == FormationMoveState.Moving)
+        {
+            UpdateSpeedLineTransform();
+            yield return null;
+        }
+
+        SetEngineGlow(m_normalGlowIntensity);
+        SetSpeedLinesActive(false);
+        m_isWarping = false;
+        m_warpCoroutine = null;
+    }
+
     // 워프 시작 (함선 개별 효과만)
     public void StartWarp(System.Action onWarpComplete = null)
     {

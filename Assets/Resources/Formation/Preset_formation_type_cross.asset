@@ -14,41 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   formationType: 2
   parseType: 0
+  gridGap: {x: 0, y: 0, z: 0}
+  zPlacement: 2
+  zIncludeHalfSize: 0
   slots:
   - positionIndex: 0
     gridCoord: {x: 0, y: 0, z: 0}
     circleAngle: 0
-    circleZOffset: 0
   - positionIndex: 1
-    gridCoord: {x: 1, y: 1, z: -1}
+    gridCoord: {x: 1, y: 1, z: 1}
     circleAngle: 0
-    circleZOffset: 0
   - positionIndex: 2
-    gridCoord: {x: -1, y: 1, z: -1}
+    gridCoord: {x: -1, y: 1, z: 1}
     circleAngle: 0
-    circleZOffset: 0
   - positionIndex: 3
-    gridCoord: {x: 1, y: -1, z: -1}
+    gridCoord: {x: 1, y: -1, z: 1}
     circleAngle: 0
-    circleZOffset: 0
   - positionIndex: 4
-    gridCoord: {x: -1, y: -1, z: -1}
+    gridCoord: {x: -1, y: -1, z: 1}
     circleAngle: 0
-    circleZOffset: 0
   - positionIndex: 5
-    gridCoord: {x: 2, y: 2, z: -2}
+    gridCoord: {x: 2, y: 2, z: 2}
     circleAngle: 0
-    circleZOffset: 0
   - positionIndex: 6
-    gridCoord: {x: -2, y: 2, z: -2}
+    gridCoord: {x: -2, y: 2, z: 2}
     circleAngle: 0
-    circleZOffset: 0
   - positionIndex: 7
-    gridCoord: {x: 2, y: -2, z: -2}
+    gridCoord: {x: 2, y: -2, z: 2}
     circleAngle: 0
-    circleZOffset: 0
   - positionIndex: 8
-    gridCoord: {x: -2, y: -2, z: -2}
+    gridCoord: {x: -2, y: -2, z: 2}
     circleAngle: 0
-    circleZOffset: 0
-  circleLayouts: []

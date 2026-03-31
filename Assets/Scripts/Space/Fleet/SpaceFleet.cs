@@ -102,6 +102,11 @@ public class SpaceFleet : MonoBehaviour
         spaceShip.InitializeSpaceShip(this, shipInfo);
         AddShip(spaceShip, smoothSpawn);
     }
+    // 함선 추가 시 스폰 오프셋 배율 (함선 z크기 * 배율 만큼 목적지 뒤에서 워프 진입)
+    private float m_spawnOffsetMultiplier = 20f;
+    // 워프 진입 시 이동 속도 배율
+    private float m_spawnApproachSpeedMult = 60f;
+
     public void AddShip(SpaceShip ship, bool placeInFormation = false)
     {
         if (ship == null) return;
@@ -109,25 +114,31 @@ public class SpaceFleet : MonoBehaviour
         ship.transform.SetParent(transform);
         ship.transform.localRotation = Quaternion.identity;
 
-        if (placeInFormation)
-        {
-            // 기함 찾기
-            SpaceShip flagship = m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
-            if (flagship != null)
-            {
-                // 새 함선을 기함 뒤쪽(z축 거리의 2배)에 배치
-                float flagshipLength = flagship.CalculateShipBounds().size.z;
-                Vector3 spawnPos = flagship.transform.localPosition + new Vector3(0, 0, -flagshipLength * 2f);
-                ship.transform.localPosition = spawnPos;
-            }
-            else
-            {
-                // 기함이 없으면 원점 뒤쪽에 배치
-                ship.transform.localPosition = new Vector3(0, 0, -20f);
-            }
+        if (placeInFormation == false) return;
 
-            // 모든 함선(기존 + 신규) 진형 재배치
-            RefreshFormation();
+        // 신규 함선의 진형 목적지 계산 (positionIndex 기반, 기존 함선 위치 불변)
+        var targets = CalculateFormationTargets(m_currentFormationType);
+
+        if (targets.TryGetValue(ship, out Vector3 newShipTarget))
+        {
+            // 목적지 뒤쪽(-Z)에 스폰 — 함선 z크기 * m_spawnOffsetMultiplier 만큼
+            float spawnOffsetZ = ship.CalculateShipBounds().size.z * m_spawnOffsetMultiplier;
+            ship.transform.localPosition = new Vector3(newShipTarget.x, newShipTarget.y, newShipTarget.z - spawnOffsetZ);
+
+            // 고속 워프 진입
+            ship.MoveToFormation(newShipTarget, m_spawnApproachSpeedMult);
+
+            if (ship.TryGetComponent(out WarpEffectShip warpEffect) == false)
+            {
+                warpEffect = ship.gameObject.AddComponent<WarpEffectShip>();
+                warpEffect.InitializeWarpEffect();
+            }
+            warpEffect.StartApproachWarp();
+        }
+        else
+        {
+            // 진형 슬롯 없으면 기본 위치
+            ship.transform.localPosition = new Vector3(0, 0, -20f);
         }
     }
 
@@ -212,7 +223,7 @@ public class SpaceFleet : MonoBehaviour
         // Renderer 반복 접근 방지용 바운드 캐시
         var boundsCache = new Dictionary<SpaceShip, Bounds>();
         foreach (var s in validShips)
-            boundsCache[s] = s.CalculateShipBounds();
+            boundsCache[s] = s.CalculateFormationBounds();
 
         SpaceShip flagship = validShips.Find(s => s.m_shipInfo.positionIndex == 0);
 
@@ -232,8 +243,6 @@ public class SpaceFleet : MonoBehaviour
     }
 
     // 함선 간 최소 여백
-    private const float FORMATION_GAP = 2f;
-
     // CubeGrid: 정수 격자 좌표 → 축별 누적 간격 변환
     private void ParseCubeGrid(FormationPreset preset, List<SpaceShip> ships, SpaceShip flagship,
         Dictionary<SpaceShip, Bounds> bc, Dictionary<SpaceShip, Vector3> result)
@@ -259,53 +268,70 @@ public class SpaceFleet : MonoBehaviour
             maxAbsZ = Mathf.Max(maxAbsZ, Mathf.Abs(slot.gridCoord.z));
         }
 
-        // X축 누적 간격 (좌/우)
-        float[] cumX = new float[maxAbsX + 1];
-        // Y축 누적 간격 (상/하 — 적이 Z축에서 봤을 때 진형 형태가 보이도록)
-        float[] cumY = new float[maxAbsY + 1];
-        // Z축 누적 간격 (전방 돌출/후방 후퇴)
-        float[] cumZ = new float[maxAbsZ + 1];
+        // X/Y: 열별 최대 반폭 사전 계산
+        var maxHalfX = new float[maxAbsX + 1];
+        var maxHalfY = new float[maxAbsY + 1];
+        // Z: Forward/Backward 별로 분리 (Center는 bounds 미사용)
+        var maxHalfZFwd = new float[maxAbsZ + 1];
+        var maxHalfZBwd = new float[maxAbsZ + 1];
+        foreach (var slot in preset.slots)
+        {
+            if (!indexToShip.TryGetValue(slot.positionIndex, out var s)) continue;
+            int ax = Mathf.Abs(slot.gridCoord.x);
+            int ay = Mathf.Abs(slot.gridCoord.y);
+            int az = Mathf.Abs(slot.gridCoord.z);
+            if (ax > 0) maxHalfX[ax] = Mathf.Max(maxHalfX[ax], bc[s].size.x * 0.5f);
+            if (ay > 0) maxHalfY[ay] = Mathf.Max(maxHalfY[ay], bc[s].size.y * 0.5f);
+            if (az > 0)
+            {
+                if (preset.zPlacement == EZPlacement.Forward)
+                    maxHalfZFwd[az] = Mathf.Max(maxHalfZFwd[az], bc[s].size.z * 0.5f);
+                else if (preset.zPlacement == EZPlacement.Backward)
+                    maxHalfZBwd[az] = Mathf.Max(maxHalfZBwd[az], bc[s].size.z * 0.5f);
+            }
+        }
 
+        // X축 누적 간격 (좌/우, bounds-based)
+        float[] cumX = new float[maxAbsX + 1];
         float cursorX = flagship != null ? bc[flagship].size.x * 0.5f : 1f;
         for (int n = 1; n <= maxAbsX; n++)
         {
-            float maxHalf = 0f;
-            foreach (var slot in preset.slots)
-            {
-                if (Mathf.Abs(slot.gridCoord.x) == n && indexToShip.TryGetValue(slot.positionIndex, out var s))
-                    maxHalf = Mathf.Max(maxHalf, bc[s].size.x * 0.5f);
-            }
-            if (maxHalf < 0.1f) maxHalf = 1f;
-            cumX[n] = cursorX + FORMATION_GAP + maxHalf;
-            cursorX  = cumX[n] + maxHalf;
+            float half = maxHalfX[n] < 0.1f ? 1f : maxHalfX[n];
+            cumX[n] = cursorX + preset.gridGap.x + half;
+            cursorX  = cumX[n] + half;
         }
 
+        // Y축 누적 간격 (상/하, bounds-based)
+        float[] cumY = new float[maxAbsY + 1];
         float cursorY = flagship != null ? bc[flagship].size.y * 0.5f : 1f;
         for (int n = 1; n <= maxAbsY; n++)
         {
-            float maxHalf = 0f;
-            foreach (var slot in preset.slots)
-            {
-                if (Mathf.Abs(slot.gridCoord.y) == n && indexToShip.TryGetValue(slot.positionIndex, out var s))
-                    maxHalf = Mathf.Max(maxHalf, bc[s].size.y * 0.5f);
-            }
-            if (maxHalf < 0.1f) maxHalf = 1f;
-            cumY[n] = cursorY + FORMATION_GAP + maxHalf;
-            cursorY  = cumY[n] + maxHalf;
+            float half = maxHalfY[n] < 0.1f ? 1f : maxHalfY[n];
+            cumY[n] = cursorY + preset.gridGap.y + half;
+            cursorY  = cumY[n] + half;
         }
 
-        float cursorZ = flagship != null ? bc[flagship].size.z * 0.5f : 1f;
+        // Z축: Forward/Backward bounds-based 누적, Center는 flagship halfZ 기준 고정 레이어
+        float flagshipHalfZ = flagship != null ? bc[flagship].size.z * 0.5f : 1f;
+        float[] cumZFwd = new float[maxAbsZ + 1];
+        float cursorZFwd = flagshipHalfZ;
         for (int n = 1; n <= maxAbsZ; n++)
         {
-            float maxHalf = 0f;
-            foreach (var slot in preset.slots)
-            {
-                if (Mathf.Abs(slot.gridCoord.z) == n && indexToShip.TryGetValue(slot.positionIndex, out var s))
-                    maxHalf = Mathf.Max(maxHalf, bc[s].size.z * 0.5f);
-            }
-            if (maxHalf < 0.1f) maxHalf = 1f;
-            cumZ[n] = cursorZ + FORMATION_GAP + maxHalf;
-            cursorZ  = cumZ[n] + maxHalf;
+            float half = maxHalfZFwd[n] < 0.1f ? 1f : maxHalfZFwd[n];
+            cumZFwd[n] = preset.zIncludeHalfSize == false
+                ? cursorZFwd + preset.gridGap.z
+                : cursorZFwd + preset.gridGap.z + half;
+            cursorZFwd  = cumZFwd[n] + half;
+        }
+        float[] cumZBwd = new float[maxAbsZ + 1];
+        float cursorZBwd = flagshipHalfZ;
+        for (int n = 1; n <= maxAbsZ; n++)
+        {
+            float half = maxHalfZBwd[n] < 0.1f ? 1f : maxHalfZBwd[n];
+            cumZBwd[n] = preset.zIncludeHalfSize == false
+                ? cursorZBwd + preset.gridGap.z
+                : cursorZBwd + preset.gridGap.z + half;
+            cursorZBwd  = cumZBwd[n] + half;
         }
 
         // 각 함선에 위치 적용 (X=좌우, Y=상하, Z=전후)
@@ -316,7 +342,18 @@ public class SpaceFleet : MonoBehaviour
 
             float x = slot.gridCoord.x != 0 ? cumX[Mathf.Abs(slot.gridCoord.x)] * Mathf.Sign(slot.gridCoord.x) : 0f;
             float y = slot.gridCoord.y != 0 ? cumY[Mathf.Abs(slot.gridCoord.y)] * Mathf.Sign(slot.gridCoord.y) : 0f;
-            float z = slot.gridCoord.z != 0 ? cumZ[Mathf.Abs(slot.gridCoord.z)] * Mathf.Sign(slot.gridCoord.z) : 0f;
+            float z;
+            int gz = slot.gridCoord.z;
+            if (preset.zPlacement == EZPlacement.Forward)
+                z = cumZFwd[Mathf.Abs(gz)];
+            else if (preset.zPlacement == EZPlacement.Backward)
+                z = -cumZBwd[Mathf.Abs(gz)];
+            else // Center
+            {
+                if (gz == 0)      z = 0f;
+                else if (gz > 0)  z =  flagshipHalfZ + (gz - 1) * preset.gridGap.z;
+                else              z = -flagshipHalfZ - (Mathf.Abs(gz) - 1) * preset.gridGap.z;
+            }
             result[ship] = new Vector3(x, y, z);
         }
     }
@@ -331,32 +368,46 @@ public class SpaceFleet : MonoBehaviour
         foreach (var s in ships)
             indexToShip[s.m_shipInfo.positionIndex] = s;
 
-        var layout = preset.GetCircleLayout(ships.Count);
-        if (layout == null)
-        {
-            Debug.LogWarning($"[SpaceFleet] Circle 레이아웃 없음: shipCount={ships.Count}");
-            return;
-        }
-
         // 반지름: 함선 사이즈 기반 자동 계산 (XY 평면 기준 — x/y 크기 사용)
         var nonFlagship = ships.FindAll(s => s != flagship);
         float maxSize = 0f;
+        float maxHalfZ = 0f;
         foreach (var s in nonFlagship)
-            maxSize = Mathf.Max(maxSize, bc[s].size.x, bc[s].size.y);
+        {
+            maxSize  = Mathf.Max(maxSize,  bc[s].size.x, bc[s].size.y);
+            maxHalfZ = Mathf.Max(maxHalfZ, bc[s].size.z * 0.5f);
+        }
 
+        // 반지름은 현재 함선 수가 아닌 프리셋 최대 슬롯 수 기준 — 함선 추가 시 원 크기 변화 방지
+        int nForRadius = 0;
+        foreach (var slot in preset.slots)
+            if (slot.positionIndex != 0) nForRadius++;
         int n = nonFlagship.Count;
-        float radiusBySpacing  = n > 1 ? n * (maxSize + FORMATION_GAP) / (2f * Mathf.PI) : maxSize + FORMATION_GAP;
-        float radiusByFlagship = (flagship != null ? bc[flagship].size.x * 0.5f : 1f) + FORMATION_GAP + maxSize * 0.5f;
+        float radiusBySpacing  = nForRadius > 1 ? nForRadius * (maxSize + preset.gridGap.x) / (2f * Mathf.PI) : maxSize + preset.gridGap.x;
+        float radiusByFlagship = (flagship != null ? bc[flagship].size.x * 0.5f : 1f) + preset.gridGap.x + maxSize * 0.5f;
         float radius = Mathf.Max(radiusBySpacing, radiusByFlagship);
 
-        foreach (var slot in layout.slots)
+        // Z: zPlacement + zIncludeHalfSize 로 단일 Z값 계산 (Circle은 모든 함선이 동일 Z)
+        float flagshipHalfZ = flagship != null ? bc[flagship].size.z * 0.5f : 1f;
+        float circleZ;
+        if (preset.zPlacement == EZPlacement.Forward)
+            circleZ = preset.zIncludeHalfSize == true
+                ? flagshipHalfZ + preset.gridGap.z + maxHalfZ
+                : flagshipHalfZ + preset.gridGap.z;
+        else if (preset.zPlacement == EZPlacement.Backward)
+            circleZ = preset.zIncludeHalfSize == true
+                ? -(flagshipHalfZ + preset.gridGap.z + maxHalfZ)
+                : -(flagshipHalfZ + preset.gridGap.z);
+        else // Center: gridGap.z를 직접 Z 오프셋으로 사용
+            circleZ = preset.gridGap.z;
+
+        foreach (var slot in preset.slots)
         {
             if (slot.positionIndex == 0) continue;
             if (indexToShip.TryGetValue(slot.positionIndex, out var ship) == false) continue;
 
-            // XY 평면 배치: 0°=상(Y+), 90°=우(X+), Z=프리셋 단위 전후 오프셋
             float rad = slot.circleAngle * Mathf.Deg2Rad;
-            result[ship] = new Vector3(Mathf.Sin(rad) * radius, Mathf.Cos(rad) * radius, preset.circleZOffset);
+            result[ship] = new Vector3(Mathf.Sin(rad) * radius, Mathf.Cos(rad) * radius, circleZ);
         }
     }
 

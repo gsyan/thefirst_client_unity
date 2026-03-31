@@ -215,3 +215,47 @@ MonoBehaviour:
       mineralDark: 20000
     uiPosition: {x: 1880, y: -40}
     targetTechLevel: 10
+  - researchId: tech_level_11
+    prerequisiteIds:
+    - tech_level_10
+    researchCost:
+      techLevel: 0
+      mineral: 2560000
+      mineralRare: 640000
+      mineralExotic: 160000
+      mineralDark: 40000
+    uiPosition: {x: 2080, y: -40}
+    targetTechLevel: 11
+  - researchId: tech_level_12
+    prerequisiteIds:
+    - tech_level_11
+    researchCost:
+      techLevel: 0
+      mineral: 5120000
+      mineralRare: 1280000
+      mineralExotic: 320000
+      mineralDark: 80000
+    uiPosition: {x: 2280, y: -40}
+    targetTechLevel: 12
+  - researchId: tech_level_13
+    prerequisiteIds:
+    - tech_level_12
+    researchCost:
+      techLevel: 0
+      mineral: 10240000
+      mineralRare: 2560000
+      mineralExotic: 640000
+      mineralDark: 160000
+    uiPosition: {x: 2480, y: -40}
+    targetTechLevel: 13
+  - researchId: tech_level_14
+    prerequisiteIds:
+    - tech_level_13
+    researchCost:
+      techLevel: 0
+      mineral: 20480000
+      mineralRare: 5120000
+      mineralExotic: 1280000
+      mineralDark: 320000
+    uiPosition: {x: 2680, y: -40}
+    targetTechLevel: 14

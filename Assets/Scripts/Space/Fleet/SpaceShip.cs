@@ -435,6 +435,7 @@ public class SpaceShip : MonoBehaviour
     private Vector3 m_formationTarget;
     private Vector3 m_avoidanceAccum;      // OnShieldTriggerStay에서 프레임마다 누적
     private Coroutine m_formationCoroutine;
+    private float m_movementSpeedMult = 1f; // 스폰 진입 시 빠른 속도 배율
     private const float ARRIVAL_THRESHOLD = 0.1f;
     private const float SLOWDOWN_DISTANCE  = 0.5f;
 
@@ -445,9 +446,11 @@ public class SpaceShip : MonoBehaviour
     private float m_avoidWeightScale = 2f;
 
     // fleet이 CalculateFormationTargets()로 계산한 목적지를 전달받아 이동 시작
-    public void MoveToFormation(Vector3 target)
+    // speedMult: 1.0 = 일반, 10+ = 스폰 워프 진입용 고속
+    public void MoveToFormation(Vector3 target, float speedMult = 1f)
     {
         m_formationTarget = target;
+        m_movementSpeedMult = speedMult;
         m_formationMoveState = FormationMoveState.Moving;
 
         if (m_formationCoroutine != null)
@@ -506,16 +509,13 @@ public class SpaceShip : MonoBehaviour
 
             // 침투 깊이가 클수록 회피 비율 증가 (0=목표 방향, 1=완전 회피)
             float avoidWeight = Mathf.Clamp01(avoidDir.magnitude * m_avoidWeightScale);
-            if(m_shipInfo.positionIndex == 2)
-                Debug.Log($"avoidWeight :{avoidWeight}");
-
             Vector3 finalDir = avoidWeight > m_avoidActivateThreshold
                 ? Vector3.Lerp(targetDir, avoidDir.normalized, avoidWeight).normalized
                 : targetDir;
 
-            // 목표 근처 감속 (최소 20% 속도 유지)
+            // 목표 근처 감속 (최소 20% 속도 유지), 스폰 진입 시 m_movementSpeedMult 배율 적용
             float speedMult = Mathf.Max(Mathf.Clamp01(dist / SLOWDOWN_DISTANCE), 0.2f);
-            float speed = m_spaceShipStatsCur.speed * speedMult;
+            float speed = m_spaceShipStatsCur.speed * speedMult * m_movementSpeedMult;
 
             // 오버슈팅 방지
             float moveDist = Mathf.Min(speed * Time.deltaTime, dist);
@@ -535,6 +535,10 @@ public class SpaceShip : MonoBehaviour
 
         return bounds;
     }
+
+    // 진형 배치 전용 — 실드 기준 (gridGap = 실드 사이 실제 간격)
+    public Bounds CalculateFormationBounds()
+        => new Bounds(transform.position, m_shieldGrid.GetFormationExtents() * 2f);
 
     // 모듈 교체 후 ModuleVisual 갱신 (효율적으로)
     public void RefreshSelectedModuleVisuals()

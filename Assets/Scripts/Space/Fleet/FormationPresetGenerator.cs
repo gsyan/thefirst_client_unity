@@ -72,6 +72,9 @@ public static class FormationPresetGenerator
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
         preset.formationType = EFormationType.formation_type_linear_horizontal;
         preset.parseType     = EFormationParseType.CubeGrid;
+        preset.gridGap = new Vector3(0.1f, 1f, 1f);
+        preset.zPlacement = EZPlacement.Center;
+        preset.zIncludeHalfSize = true;
         preset.slots         = LinearSlots();
         Save(preset, EFormationType.formation_type_linear_horizontal, ref created, ref skipped);
     }
@@ -89,17 +92,20 @@ public static class FormationPresetGenerator
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
         preset.formationType = EFormationType.formation_type_cross;
         preset.parseType = EFormationParseType.CubeGrid;
+        preset.gridGap = new Vector3(0f, 0f, 0f);
+        preset.zPlacement = EZPlacement.Backward;
+        preset.zIncludeHalfSize = false;
         preset.slots = new FormationSlot[]
         {
             new FormationSlot { positionIndex = 0, gridCoord = new Vector3Int( 0,  0, 0) },
-            new FormationSlot { positionIndex = 1, gridCoord = new Vector3Int(+1, +1, -1) },
-            new FormationSlot { positionIndex = 2, gridCoord = new Vector3Int(-1, +1, -1) },
-            new FormationSlot { positionIndex = 3, gridCoord = new Vector3Int(+1, -1, -1) },
-            new FormationSlot { positionIndex = 4, gridCoord = new Vector3Int(-1, -1, -1) },
-            new FormationSlot { positionIndex = 5, gridCoord = new Vector3Int(+2, +2, -2) },
-            new FormationSlot { positionIndex = 6, gridCoord = new Vector3Int(-2, +2, -2) },
-            new FormationSlot { positionIndex = 7, gridCoord = new Vector3Int(+2, -2, -2) },
-            new FormationSlot { positionIndex = 8, gridCoord = new Vector3Int(-2, -2, -2) },
+            new FormationSlot { positionIndex = 1, gridCoord = new Vector3Int(+1, +1, 1) },
+            new FormationSlot { positionIndex = 2, gridCoord = new Vector3Int(-1, +1, 1) },
+            new FormationSlot { positionIndex = 3, gridCoord = new Vector3Int(+1, -1, 1) },
+            new FormationSlot { positionIndex = 4, gridCoord = new Vector3Int(-1, -1, 1) },
+            new FormationSlot { positionIndex = 5, gridCoord = new Vector3Int(+2, +2, 2) },
+            new FormationSlot { positionIndex = 6, gridCoord = new Vector3Int(-2, +2, 2) },
+            new FormationSlot { positionIndex = 7, gridCoord = new Vector3Int(+2, -2, 2) },
+            new FormationSlot { positionIndex = 8, gridCoord = new Vector3Int(-2, -2, 2) },
         };
         Save(preset, EFormationType.formation_type_cross, ref created, ref skipped);
     }
@@ -115,6 +121,9 @@ public static class FormationPresetGenerator
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
         preset.formationType = EFormationType.formation_type_x;
         preset.parseType = EFormationParseType.CubeGrid;
+        preset.gridGap = new Vector3(0f, 0f, 0f);
+        preset.zPlacement = EZPlacement.Forward;
+        preset.zIncludeHalfSize = false;
         preset.slots = new FormationSlot[]
         {
             new FormationSlot { positionIndex = 0, gridCoord = new Vector3Int( 0,  0, 0) },
@@ -131,93 +140,29 @@ public static class FormationPresetGenerator
     }
 
     // ────────────────────────────────────────────────────────────
-    // Circle: 함선 수별 각도 데이터
-    //   0° = 전방, 90° = 우, 180° = 후방, 270° = 좌
-    //   홀수 positionIndex = 오른쪽(x>0), 짝수 = 왼쪽(x<0)
+    // Circle: 원주 위 고정 각도 배치 (함선 수 무관, positionIndex별 고정 각도)
+    //   0°=전방(Y+), 90°=우(X+), 180°=후방, 270°=좌
+    //   1=전방, 2=좌, 3=우, 4=후방, 5=우전, 6=좌전, 7=우후, 8=좌후
     // ────────────────────────────────────────────────────────────
     static void CreateCircle(ref int created, ref int skipped)
     {
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
-        preset.formationType = EFormationType.formation_type_circle;
-        preset.parseType = EFormationParseType.Circle;
-        preset.circleLayouts = new CircleLayoutByCount[]
+        preset.formationType    = EFormationType.formation_type_circle;
+        preset.parseType        = EFormationParseType.Circle;
+        preset.gridGap          = new Vector3(1f, 1f, 0f);
+        preset.zPlacement       = EZPlacement.Forward;
+        preset.zIncludeHalfSize = true;
+        preset.slots = new FormationSlot[]
         {
-            // 2척
-            new CircleLayoutByCount { shipCount = 2, slots = new FormationSlot[]
-            {
-                new FormationSlot { positionIndex = 0, circleAngle =   0f },
-                new FormationSlot { positionIndex = 1, circleAngle =  90f },
-            }},
-            // 3척
-            new CircleLayoutByCount { shipCount = 3, slots = new FormationSlot[]
-            {
-                new FormationSlot { positionIndex = 0, circleAngle =   0f },
-                new FormationSlot { positionIndex = 1, circleAngle =  90f },
-                new FormationSlot { positionIndex = 2, circleAngle = 270f },
-            }},
-            // 4척
-            new CircleLayoutByCount { shipCount = 4, slots = new FormationSlot[]
-            {
-                new FormationSlot { positionIndex = 0, circleAngle =   0f },
-                new FormationSlot { positionIndex = 1, circleAngle =  60f },
-                new FormationSlot { positionIndex = 2, circleAngle = 300f },
-                new FormationSlot { positionIndex = 3, circleAngle = 180f },
-            }},
-            // 5척
-            new CircleLayoutByCount { shipCount = 5, slots = new FormationSlot[]
-            {
-                new FormationSlot { positionIndex = 0, circleAngle =   0f },
-                new FormationSlot { positionIndex = 1, circleAngle =  45f },
-                new FormationSlot { positionIndex = 2, circleAngle = 315f },
-                new FormationSlot { positionIndex = 3, circleAngle = 135f },
-                new FormationSlot { positionIndex = 4, circleAngle = 225f },
-            }},
-            // 6척
-            new CircleLayoutByCount { shipCount = 6, slots = new FormationSlot[]
-            {
-                new FormationSlot { positionIndex = 0, circleAngle =   0f },
-                new FormationSlot { positionIndex = 1, circleAngle =   0f },
-                new FormationSlot { positionIndex = 2, circleAngle = 288f },
-                new FormationSlot { positionIndex = 3, circleAngle =  72f },
-                new FormationSlot { positionIndex = 4, circleAngle = 216f },
-                new FormationSlot { positionIndex = 5, circleAngle = 144f },
-            }},
-            // 7척
-            new CircleLayoutByCount { shipCount = 7, slots = new FormationSlot[]
-            {
-                new FormationSlot { positionIndex = 0, circleAngle =   0f },
-                new FormationSlot { positionIndex = 1, circleAngle =  30f },
-                new FormationSlot { positionIndex = 2, circleAngle = 330f },
-                new FormationSlot { positionIndex = 3, circleAngle =  90f },
-                new FormationSlot { positionIndex = 4, circleAngle = 270f },
-                new FormationSlot { positionIndex = 5, circleAngle = 150f },
-                new FormationSlot { positionIndex = 6, circleAngle = 210f },
-            }},
-            // 8척
-            new CircleLayoutByCount { shipCount = 8, slots = new FormationSlot[]
-            {
-                new FormationSlot { positionIndex = 0, circleAngle =   0f   },
-                new FormationSlot { positionIndex = 1, circleAngle =  25.7f },
-                new FormationSlot { positionIndex = 2, circleAngle = 334.3f },
-                new FormationSlot { positionIndex = 3, circleAngle =  77.1f },
-                new FormationSlot { positionIndex = 4, circleAngle = 282.9f },
-                new FormationSlot { positionIndex = 5, circleAngle = 128.6f },
-                new FormationSlot { positionIndex = 6, circleAngle = 231.4f },
-                new FormationSlot { positionIndex = 7, circleAngle = 180f   },
-            }},
-            // 9척
-            new CircleLayoutByCount { shipCount = 9, slots = new FormationSlot[]
-            {
-                new FormationSlot { positionIndex = 0, circleAngle =   0f   },
-                new FormationSlot { positionIndex = 1, circleAngle =  22.5f },
-                new FormationSlot { positionIndex = 2, circleAngle = 337.5f },
-                new FormationSlot { positionIndex = 3, circleAngle =  67.5f },
-                new FormationSlot { positionIndex = 4, circleAngle = 292.5f },
-                new FormationSlot { positionIndex = 5, circleAngle = 112.5f },
-                new FormationSlot { positionIndex = 6, circleAngle = 247.5f },
-                new FormationSlot { positionIndex = 7, circleAngle = 157.5f },
-                new FormationSlot { positionIndex = 8, circleAngle = 202.5f },
-            }},
+            new FormationSlot { positionIndex = 0, circleAngle =   0f },
+            new FormationSlot { positionIndex = 1, circleAngle =   0f },
+            new FormationSlot { positionIndex = 2, circleAngle = 270f },
+            new FormationSlot { positionIndex = 3, circleAngle =  90f },
+            new FormationSlot { positionIndex = 4, circleAngle = 180f },
+            new FormationSlot { positionIndex = 5, circleAngle =  45f },
+            new FormationSlot { positionIndex = 6, circleAngle = 315f },
+            new FormationSlot { positionIndex = 7, circleAngle = 135f },
+            new FormationSlot { positionIndex = 8, circleAngle = 225f },
         };
         Save(preset, EFormationType.formation_type_circle, ref created, ref skipped);
     }

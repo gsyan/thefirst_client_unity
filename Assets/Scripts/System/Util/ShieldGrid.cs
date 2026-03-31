@@ -71,7 +71,7 @@ public class ShieldGrid : MonoBehaviour
     public List<ShieldCell> m_cells = new List<ShieldCell>();
 
     private BoundingBox m_boundBox;
-    private Vector3 m_extents;
+    [SerializeField, HideInInspector] private Vector3 m_extents;
 
     // 충돌체 관련
     private GameObject m_colliderObject;
@@ -194,6 +194,9 @@ public class ShieldGrid : MonoBehaviour
         rb.isKinematic = true;
         rb.useGravity = false;
     }
+
+    // 진형 배치 계산용 — 실드 콜라이더의 실제 반크기 반환 (boundScale/axisScale 적용됨)
+    public Vector3 GetFormationExtents() => m_extents;
 
     // 런타임 전용 — SpaceShip 로딩 시점에 호출하여 진형 충돌 릴레이 owner 설정
     public void InitFormationRelay(SpaceShip owner)
@@ -641,14 +644,17 @@ public class ShieldGrid : MonoBehaviour
                 Gizmos.DrawSphere(cell.center, 0.03f);
         }
 
-        // 타원체 바운드
-        if (m_extents != Vector3.zero)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.matrix = Matrix4x4.TRS(m_boundBox.center, m_boundBox.rotation, m_extents * 2f);
-            Gizmos.DrawWireSphere(Vector3.zero, 0.5f);
-            Gizmos.matrix = Matrix4x4.identity;
-        }
+        // // 타원체 바운드 (m_boundBox는 비직렬화 — rotation이 zero면 identity로 대체)
+        // if (m_extents != Vector3.zero)
+        // {
+        //     Quaternion rot = m_boundBox.rotation;
+        //     if (rot.x == 0f && rot.y == 0f && rot.z == 0f && rot.w == 0f)
+        //         rot = Quaternion.identity;
+        //     Gizmos.color = Color.green;
+        //     Gizmos.matrix = Matrix4x4.TRS(m_boundBox.center, rot, m_extents * 2f);
+        //     Gizmos.DrawWireSphere(Vector3.zero, 0.5f);
+        //     Gizmos.matrix = Matrix4x4.identity;
+        // }
     }
 #endif
 }
@@ -669,24 +675,50 @@ public class ShieldTriggerRelay : MonoBehaviour
 {
     public SpaceShip owner;
     private Collider m_collider;
+    // 현재 겹치는 콜라이더 목록 (OnTriggerStay/Exit에서만 관리)
+    private readonly HashSet<Collider> m_overlapping = new();
+    // GetComponentInParent 반복 호출 방지용 캐시
+    private readonly Dictionary<Collider, SpaceShip> m_shipCache = new();
 
     private void Awake()
     {
         m_collider = GetComponent<Collider>();
     }
 
+    // 물리 콜백: 겹침 목록만 기록, 무거운 작업 없음
     private void OnTriggerStay(Collider other)
     {
-        if (owner == null) return;
-        SpaceShip otherShip = other.GetComponentInParent<SpaceShip>();
-        if (otherShip == null || otherShip == owner) return;
+        m_overlapping.Add(other);
+    }
 
-        float depth = 0f;
-        if (m_collider != null)
+    private void OnTriggerExit(Collider other)
+    {
+        m_overlapping.Remove(other);
+        m_shipCache.Remove(other);
+    }
+
+    // Update: 진형 이동 중일 때만 ComputePenetration 수행
+    private void Update()
+    {
+        if (owner == null || owner.m_formationMoveState != FormationMoveState.Moving) return;
+        if (m_collider == null || m_overlapping.Count == 0) return;
+
+        foreach (Collider other in m_overlapping)
+        {
+            if (other == null) continue;
+
+            if (m_shipCache.TryGetValue(other, out SpaceShip otherShip) == false)
+            {
+                otherShip = other.GetComponentInParent<SpaceShip>();
+                m_shipCache[other] = otherShip;
+            }
+            if (otherShip == null || otherShip == owner) continue;
+
             Physics.ComputePenetration(m_collider, transform.position, transform.rotation,
                 other, other.transform.position, other.transform.rotation,
-                out _, out depth);
+                out _, out float depth);
 
-        owner.OnShieldTriggerStay(otherShip, depth);
+            owner.OnShieldTriggerStay(otherShip, depth);
+        }
     }
 }

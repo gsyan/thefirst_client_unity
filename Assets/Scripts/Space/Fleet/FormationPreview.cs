@@ -16,16 +16,13 @@ public class FormationPreview : MonoBehaviour
     public float m_circleRadius = 5f;
     [Tooltip("슬롯 구체 반지름")]
     public float m_slotRadius = 0.6f;
-    [Tooltip("Circle 미리보기 시 함선 수 (2~9)")]
-    [Range(2, 9)]
-    public int m_previewShipCount = 5;
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (m_preset == null) return;
 
-        FormationSlot[] slots = GetPreviewSlots();
+        FormationSlot[] slots = m_preset.slots;
         if (slots == null || slots.Length == 0) return;
 
         foreach (var slot in slots)
@@ -65,15 +62,6 @@ public class FormationPreview : MonoBehaviour
         // CubeGrid 격자 가이드선
         if (m_preset.parseType == EFormationParseType.CubeGrid)
             DrawGridGuide();
-    }
-
-    private FormationSlot[] GetPreviewSlots()
-    {
-        if (m_preset.parseType == EFormationParseType.CubeGrid)
-            return m_preset.slots;
-
-        var layout = m_preset.GetCircleLayout(m_previewShipCount);
-        return layout?.slots;
     }
 
     private Vector3 ComputeSlotWorldPos(FormationSlot slot)
