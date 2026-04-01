@@ -11,6 +11,9 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     [Header("Volume Reference")]
     [SerializeField] private Volume m_volume;
 
+    [Header("Skybox")]
+    [SerializeField] private Material m_initialSkyboxMaterial;  // 게임 시작 시 즉시 적용할 기본 스카이박스
+
     [Header("Warp Settings")]
     [SerializeField] private float m_warpChromaticAberration = 0.6f;
     [SerializeField] private float m_warpBloomIntensity = 2f;
@@ -99,16 +102,15 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         // 런타임 인스턴스 생성 (원본 에셋 보호)
         if (RenderSettings.skybox != null && m_skyboxBlendInstance == null)
         {
-            var originalSkybox = RenderSettings.skybox;
-            m_skyboxBlendInstance = new Material(originalSkybox);
+            m_skyboxBlendInstance = new Material(RenderSettings.skybox);
             RenderSettings.skybox = m_skyboxBlendInstance;
-            // 생성 즉시 A/B 슬롯에 원본 텍스처 복사 → 첫 프레임 흰색 방지
-            CopyFaceTextures(originalSkybox, FaceNames, FaceNamesA);
-            CopyFaceTextures(originalSkybox, FaceNames, FaceNamesB);
-            m_skyboxBlendInstance.SetFloat(BlendID, 0f);
         }
-        
+
         m_initialized = true;
+
+        // 첫 프레임 흰색 방지 — 초기 스카이박스를 즉시 A/B 슬롯에 반영
+        if (m_initialSkyboxMaterial != null)
+            SetSkyboxImmediate(m_initialSkyboxMaterial);
     }
 
     // 워프 강도 설정 (0 = 평상시, 1 = 워프 최대)
