@@ -190,6 +190,8 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
 
         var dbgTex = mat.GetTexture("_FrontTex");
         Debug.Log($"[WarpPP] _FrontTex={(dbgTex != null ? dbgTex.name : "NULL")}");
+        foreach (var propName in mat.GetTexturePropertyNames())
+            Debug.Log($"[WarpPP] prop: {propName}");
 
         CopyFaceTextures(mat, FaceNames, FaceNamesA);
         CopyFaceTextures(mat, FaceNames, FaceNamesB);
