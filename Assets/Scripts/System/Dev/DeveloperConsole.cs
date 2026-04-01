@@ -61,28 +61,10 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             UpdateLogDisplay();
     }
 
-    private bool m_threeFingersDown = false;
-
     private void Update()
     {
         if (Input.GetKeyDown(toggleKey))
             ToggleConsole();
-
-        // 모바일: 3손가락 동시 터치 시 토글 (개발 빌드 전용)
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-        if (Input.touchCount == 3)
-        {
-            if (m_threeFingersDown == false)
-            {
-                m_threeFingersDown = true;
-                ToggleConsole();
-            }
-        }
-        else
-        {
-            m_threeFingersDown = false;
-        }
-#endif
 
         if (m_isConsoleVisible && inputField != null)
         {
@@ -285,7 +267,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         submitButton.onClick.AddListener(() => ExecuteCommand());
     }
 
-    private void ToggleConsole()
+    public void ToggleConsole()
     {
         SetConsoleVisible(!m_isConsoleVisible);
     }

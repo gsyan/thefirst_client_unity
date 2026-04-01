@@ -27,6 +27,7 @@ public class UITabSettings : UITabBase
 
     [Header("개발자 도구")]
     [SerializeField] private GameObject m_devToolPanel;
+    [SerializeField] private Button   m_devConsoleButton;
     [SerializeField] private Button   m_testMineralButton;
     [SerializeField] private Toggle   m_toggleMineral;
     [SerializeField] private Toggle   m_toggleMineralRare;
@@ -65,6 +66,9 @@ public class UITabSettings : UITabBase
 
         if (m_licenseButton != null)
             m_licenseButton.onClick.AddListener(() => UIManager.Instance.ShowLicensePopup());
+
+        if (m_devConsoleButton != null)
+            m_devConsoleButton.onClick.AddListener(() => DeveloperConsole.Instance?.ToggleConsole());
 
         if (m_testMineralButton != null)
             m_testMineralButton.onClick.AddListener(OnTestMineralButtonClicked);
