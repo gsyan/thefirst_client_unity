@@ -48,10 +48,6 @@ public class CameraController : MonoSingleton<CameraController>
     public ECameraFocusTarget FocusTarget => m_focusTarget;
 
     // LayerMask
-    private const int m_layerShip = 30;
-    private LayerMask m_layerMaskShip = 1 << m_layerShip;
-    private const int m_layerShipModule = 31;
-    private LayerMask m_layerMaskShipModule = 1 << m_layerShipModule;
     private const int m_layerShield = 13;
     private LayerMask m_layerMaskShield = 1 << m_layerShield;
 
