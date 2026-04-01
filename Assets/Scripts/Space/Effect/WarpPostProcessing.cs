@@ -188,6 +188,9 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         Debug.Log($"[WarpPP] SetSkyboxImmediate mat={(mat != null ? mat.name : "NULL")}, instance={(m_skyboxBlendInstance != null ? m_skyboxBlendInstance.name : "NULL")}");
         if (m_skyboxBlendInstance == null || mat == null) return;
 
+        var dbgTex = mat.GetTexture("_FrontTex");
+        Debug.Log($"[WarpPP] _FrontTex={(dbgTex != null ? dbgTex.name : "NULL")}");
+
         CopyFaceTextures(mat, FaceNames, FaceNamesA);
         CopyFaceTextures(mat, FaceNames, FaceNamesB);
         m_skyboxBlendInstance.SetFloat(BlendID, 0f);
