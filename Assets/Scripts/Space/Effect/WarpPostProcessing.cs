@@ -99,8 +99,13 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         // 런타임 인스턴스 생성 (원본 에셋 보호)
         if (RenderSettings.skybox != null && m_skyboxBlendInstance == null)
         {
-            m_skyboxBlendInstance = new Material(RenderSettings.skybox);
+            var originalSkybox = RenderSettings.skybox;
+            m_skyboxBlendInstance = new Material(originalSkybox);
             RenderSettings.skybox = m_skyboxBlendInstance;
+            // 생성 즉시 A/B 슬롯에 원본 텍스처 복사 → 첫 프레임 흰색 방지
+            CopyFaceTextures(originalSkybox, FaceNames, FaceNamesA);
+            CopyFaceTextures(originalSkybox, FaceNames, FaceNamesB);
+            m_skyboxBlendInstance.SetFloat(BlendID, 0f);
         }
         
         m_initialized = true;

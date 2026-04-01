@@ -38,27 +38,7 @@ MonoBehaviour:
       scale: 40
   - shipCount: 0
     skyboxMaterial: {fileID: 2100000, guid: 2b89375c7fe982640ae5dbc683ec794a, type: 2}
-    spaceDecors:
-    - type: 1
-      spriteIndex: 3
-      orbitRadius: 1110
-      orbitPeriod: 206116
-      scale: 5.5
-    - type: 1
-      spriteIndex: 7
-      orbitRadius: 2673
-      orbitPeriod: 770858
-      scale: 9
-    - type: 1
-      spriteIndex: 2
-      orbitRadius: 5655
-      orbitPeriod: 2371799
-      scale: 22
-    - type: 1
-      spriteIndex: 1
-      orbitRadius: 14077
-      orbitPeriod: 9314740
-      scale: 40
+    spaceDecors: []
   - shipCount: 2
     skyboxMaterial: {fileID: 2100000, guid: e09c50448265b284c98f1b4ab1b3d814, type: 2}
     spaceDecors:
@@ -263,7 +243,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
-    fleetPosition: {x: 386.59442, y: 0, z: -50.35631}
+    fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-1
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
