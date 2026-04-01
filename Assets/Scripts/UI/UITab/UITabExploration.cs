@@ -77,14 +77,14 @@ public class UITabExploration : UITabBase
         UpdateZoneInfo();
         SetEnterZoneState(EEnterZoneState.safe);
 
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null)
-        {
-            // 게임 시작 시 항상 Zone-0 스카이박스로 즉시 초기화
-            var zone0Group = m_datatableZone.GetGroupConfig(0);
-            if (zone0Group != null)
-                pp.SetSkyboxImmediate(zone0Group.skyboxMaterial);
-        }
+        // var pp = WarpPostProcessing.Instance;
+        // if (pp != null)
+        // {
+        //     // 게임 시작 시 항상 Zone-0 스카이박스로 즉시 초기화
+        //     var zone0Group = m_datatableZone.GetGroupConfig(0);
+        //     if (zone0Group != null)
+        //         pp.SetSkyboxImmediate(zone0Group.skyboxMaterial);
+        // }
     }
 
     private void SetupGroupTabs()
