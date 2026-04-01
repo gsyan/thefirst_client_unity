@@ -196,21 +196,30 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         CopyFaceTextures(mat, FaceNames, FaceNamesA);
         CopyFaceTextures(mat, FaceNames, FaceNamesB);
         m_skyboxBlendInstance.SetFloat(BlendID, 0f);
+
+        var checkA = m_skyboxBlendInstance.GetTexture("_FrontTexA");
+        Debug.Log($"[WarpPP] SetSkyboxImmediate 완료 — blend._FrontTexA={(checkA != null ? checkA.name : "NULL")}");
     }
 
     // 텍스처 로드 완료까지 대기 후 즉시 적용 (모바일 비동기 로드 대응)
     public void ApplyInitialSkyboxWhenReady(Material mat)
     {
         if (mat == null) return;
+        Debug.Log("[Skybox] ApplyInitialSkyboxWhenReady mat != null ");
         StartCoroutine(InitialSkyboxCoroutine(mat));
     }
 
     private System.Collections.IEnumerator InitialSkyboxCoroutine(Material mat)
     {
+        Debug.Log($"[Skybox] 코루틴 시작 mat={mat.name} instanceID={mat.GetInstanceID()}");
         int frame = 0;
         while (true)
         {
-            if (mat.GetTexture("_FrontTex") != null)
+            var tex = mat.GetTexture("_FrontTex");
+            if (frame == 0 || frame == 1 || frame == 5 || frame == 30)
+                Debug.Log($"[Skybox] frame={frame} _FrontTex={(tex != null ? tex.name : "NULL")}");
+
+            if (tex != null)
             {
                 Debug.Log($"[Skybox] 텍스처 로드 완료 — {frame}프레임 대기");
                 SetSkyboxImmediate(mat);
