@@ -62,13 +62,8 @@ public class UITabExploration : UITabBase
 
     private void InitializeUITabExploration()
     {
-        Debug.Log("[Skybox] InitializeUITabExploration 진입");
         m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null)
-        {
-            Debug.Log($"[Skybox] 조기 리턴 — character={(m_myCharacter != null ? "OK" : "NULL")}");
-            return;
-        }
+        if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
         m_collectMineralButton.onClick.AddListener(OnCollectZoneClicked);
@@ -82,15 +77,13 @@ public class UITabExploration : UITabBase
         UpdateZoneInfo();
         SetEnterZoneState(EEnterZoneState.safe);
 
-        // 텍스처 로드 완료 후 적용 — WarpPostProcessing(항상 active)에서 코루틴 실행
         var pp = WarpPostProcessing.Instance;
-        Debug.Log($"[Skybox] pp={(pp != null ? "OK" : "NULL")}");
         if (pp != null)
         {
-            var zone0Mat = m_datatableZone.GetGroupConfig(0)?.skyboxMaterial;
-            Debug.Log($"[Skybox] zone0Mat={(zone0Mat != null ? zone0Mat.name : "NULL")}");
-            pp.ApplyInitialSkyboxWhenReady(zone0Mat);
-            Debug.Log("[Skybox] ApplyInitialSkyboxWhenReady 호출 완료");
+            // 게임 시작 시 항상 Zone-0 스카이박스로 즉시 초기화
+            var zone0Group = m_datatableZone.GetGroupConfig(0);
+            if (zone0Group != null)
+                pp.SetSkyboxImmediate(zone0Group.skyboxMaterial);
         }
     }
 

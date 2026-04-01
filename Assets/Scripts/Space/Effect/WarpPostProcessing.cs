@@ -11,9 +11,6 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     [Header("Volume Reference")]
     [SerializeField] private Volume m_volume;
 
-    [Header("Skybox")]
-    [SerializeField] private Material m_skyboxBlendSource;  // MatSkyBoxBlend 원본 (복사 원본, 수정 안 함)
-
     [Header("Warp Settings")]
     [SerializeField] private float m_warpChromaticAberration = 0.6f;
     [SerializeField] private float m_warpBloomIntensity = 2f;
@@ -53,13 +50,13 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     private static readonly string[] FaceNamesA = { "_FrontTexA", "_BackTexA", "_LeftTexA", "_RightTexA", "_UpTexA", "_DownTexA" };
     private static readonly string[] FaceNamesB = { "_FrontTexB", "_BackTexB", "_LeftTexB", "_RightTexB", "_UpTexB", "_DownTexB" };
     private static readonly string[] FaceNames = { "_FrontTex", "_BackTex", "_LeftTex", "_RightTex", "_UpTex", "_DownTex" };
-    private Material m_skyboxBlendInstance;  // 런타임 복사본
+    private Material m_skyboxBlendInstance;  // 런타임 인스턴스 (에셋 보호용)
 
     // Warp sequence
     private Coroutine m_warpCoroutine;
     private bool m_isWarping = false;
     private System.Collections.Generic.List<WarpEffectShip> m_warpEffects;
-    
+
     public bool IsWarping => m_isWarping;
 
     protected override void OnInitialize()
@@ -99,14 +96,12 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         if (m_mainCamera != null)
             m_originalFOV = m_mainCamera.fieldOfView;
 
-        Material source = m_skyboxBlendSource != null ? m_skyboxBlendSource : RenderSettings.skybox;
-        Debug.Log($"[WarpPP] source={(source != null ? source.name : "NULL")}, RenderSettings.skybox={(RenderSettings.skybox != null ? RenderSettings.skybox.name : "NULL")}");
-        if (source != null && m_skyboxBlendInstance == null)
+        // 런타임 인스턴스 생성 (원본 에셋 보호)
+        if (RenderSettings.skybox != null && m_skyboxBlendInstance == null)
         {
-            m_skyboxBlendInstance = new Material(source);
+            m_skyboxBlendInstance = new Material(RenderSettings.skybox);
             RenderSettings.skybox = m_skyboxBlendInstance;
         }
-        Debug.Log($"[WarpPP] m_skyboxBlendInstance={(m_skyboxBlendInstance != null ? m_skyboxBlendInstance.name : "NULL")}");
 
         m_initialized = true;
     }
@@ -153,14 +148,9 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     {
         if (m_skyboxBlendInstance == null || targetSkyboxMaterial == null) return;
 
-        // 현재 RenderSettings가 직접 설정된 경우 → A슬롯에 캡처 후 블렌드 인스턴스로 전환
-        if (RenderSettings.skybox != m_skyboxBlendInstance && RenderSettings.skybox != null)
-            CopyFaceTextures(RenderSettings.skybox, FaceNames, FaceNamesA);
-
-        RenderSettings.skybox = m_skyboxBlendInstance;
-
-        // B슬롯에 타겟 스카이박스
+        // m_skyboxBlendInstance B슬롯에 타겟 스카이박스
         CopyFaceTextures(targetSkyboxMaterial, FaceNames, FaceNamesB);
+
         m_skyboxBlendInstance.SetFloat(BlendID, 0f);
     }
 
@@ -189,38 +179,11 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     public void SetSkyboxImmediate(Material mat)
     {
         if (!m_initialized) Initialize();
-        Debug.Log($"[WarpPP] SetSkyboxImmediate mat={(mat != null ? mat.name : "NULL")}, instance={(m_skyboxBlendInstance != null ? m_skyboxBlendInstance.name : "NULL")}");
         if (m_skyboxBlendInstance == null || mat == null) return;
-
-        var dbgTex = mat.GetTexture("_FrontTex");
-        Debug.Log($"[WarpPP] _FrontTex={(dbgTex != null ? dbgTex.name : "NULL")}");
-        foreach (var propName in mat.GetTexturePropertyNames())
-            Debug.Log($"[WarpPP] prop: {propName}");
 
         CopyFaceTextures(mat, FaceNames, FaceNamesA);
         CopyFaceTextures(mat, FaceNames, FaceNamesB);
         m_skyboxBlendInstance.SetFloat(BlendID, 0f);
-
-        var checkA = m_skyboxBlendInstance.GetTexture("_FrontTexA");
-        Debug.Log($"[WarpPP] SetSkyboxImmediate 완료 — blend._FrontTexA={(checkA != null ? checkA.name : "NULL")}");
-    }
-
-    // 텍스처 로드 완료까지 대기 후 즉시 적용 (모바일 비동기 로드 대응)
-    public void ApplyInitialSkyboxWhenReady(Material mat)
-    {
-        if (mat == null) return;
-        Debug.Log("[Skybox] ApplyInitialSkyboxWhenReady mat != null ");
-        StartCoroutine(InitialSkyboxCoroutine(mat));
-    }
-
-    private System.Collections.IEnumerator InitialSkyboxCoroutine(Material mat)
-    {
-        Debug.Log($"[Skybox] 코루틴 시작 mat={mat.name}");
-        // GetTexture 방식 실패 시 RenderSettings.skybox 직접 설정으로 폴백
-        yield return null;
-        Debug.Log("[Skybox] RenderSettings.skybox 직접 설정");
-        RenderSettings.skybox = mat;
-        DynamicGI.UpdateEnvironment();
     }
 
     // 블렌드 완료 (B를 새 기준으로 설정)
@@ -389,6 +352,7 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         base.OnDestroy();
         ResetToOriginal();
 
+        // 런타임 인스턴스 정리
         if (m_skyboxBlendInstance != null)
         {
             Destroy(m_skyboxBlendInstance);
