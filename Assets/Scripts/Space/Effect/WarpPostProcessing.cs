@@ -100,11 +100,13 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
             m_originalFOV = m_mainCamera.fieldOfView;
 
         Material source = m_skyboxBlendSource != null ? m_skyboxBlendSource : RenderSettings.skybox;
+        Debug.Log($"[WarpPP] source={(source != null ? source.name : "NULL")}, RenderSettings.skybox={(RenderSettings.skybox != null ? RenderSettings.skybox.name : "NULL")}");
         if (source != null && m_skyboxBlendInstance == null)
         {
             m_skyboxBlendInstance = new Material(source);
             RenderSettings.skybox = m_skyboxBlendInstance;
         }
+        Debug.Log($"[WarpPP] m_skyboxBlendInstance={(m_skyboxBlendInstance != null ? m_skyboxBlendInstance.name : "NULL")}");
 
         m_initialized = true;
     }
@@ -183,6 +185,7 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     public void SetSkyboxImmediate(Material mat)
     {
         if (!m_initialized) Initialize();
+        Debug.Log($"[WarpPP] SetSkyboxImmediate mat={(mat != null ? mat.name : "NULL")}, instance={(m_skyboxBlendInstance != null ? m_skyboxBlendInstance.name : "NULL")}");
         if (m_skyboxBlendInstance == null || mat == null) return;
 
         CopyFaceTextures(mat, FaceNames, FaceNamesA);

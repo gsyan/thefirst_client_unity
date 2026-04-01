@@ -4146,7 +4146,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 718982502038462991}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -4159,7 +4159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: DevCommand
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11170,12 +11170,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1220234976705808299}
-  m_Father: {fileID: 4222467505321706982}
+  m_Father: {fileID: 2663737723366718151}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.87670946, y: 0.91400003}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0.000015258789}
+  m_SizeDelta: {x: 0, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1410023819430913452
 CanvasRenderer:
@@ -11192,7 +11192,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2222964252713730565}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -15149,12 +15149,13 @@ RectTransform:
   - {fileID: 6889592918437865818}
   - {fileID: 4631797562521478978}
   - {fileID: 1973619549907235920}
+  - {fileID: 1405030478899838735}
   m_Father: {fileID: 4222467505321706982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.7, y: 0.8}
+  m_AnchorMin: {x: 0.7, y: 0.5755501}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -35.2397}
-  m_SizeDelta: {x: 0, y: 70.4795}
+  m_AnchoredPosition: {x: 0, y: 70.260284}
+  m_SizeDelta: {x: 0, y: -140.52051}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5978720603992618944
 MonoBehaviour:
@@ -26821,7 +26822,6 @@ RectTransform:
   - {fileID: 7759490378649101494}
   - {fileID: 4697832924050070047}
   - {fileID: 7283977580670508097}
-  - {fileID: 1405030478899838735}
   - {fileID: 2663737723366718151}
   m_Father: {fileID: 8544373851307538701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
