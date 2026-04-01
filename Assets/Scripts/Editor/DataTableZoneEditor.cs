@@ -205,17 +205,6 @@ public class DataTableZoneEditor : Editor
         // 헤더: zone,step,kill_mineral,...,wave_count,wave_term,body_ratio,beam_ratio,missile_ratio,hanger_ratio
         config.zones.Clear();
 
-        // Zone-0: 안전지역 (CSV에 없음, 항상 고정)
-        Material safeZoneSkybox = AssetDatabase.LoadAssetAtPath<Material>("Assets/DeepSpaceSkyboxPack/DiverseSpace/Material/DiverseSpaceMaterial.mat");
-        config.zones.Add(new ZoneConfig
-        {
-            zoneName = "Zone-0",
-            zoneDescription = "안전지역",
-            shipCount = 0,
-            moduleLevel = 0,
-            skyboxMaterial = safeZoneSkybox,
-        });
-
         string[] zoneLines = File.ReadAllLines(zoneCSV);
         int imported = 0;
         for (int i = 1; i < zoneLines.Length; i++)
@@ -227,7 +216,25 @@ public class DataTableZoneEditor : Editor
 
             if (!int.TryParse(col[0], out int shipCount) || !int.TryParse(col[1], out int stage)) continue;
 
-            // 헤더: zone,step,kill_mineral,kill_mineral_r,kill_mineral_e,kill_mineral_d,hour_mineral,hour_mineral_r,hour_mineral_e,hour_mineral_d,wave_term,body_ratio,beam_ratio,missile_ratio,hanger_ratio
+            // 헤더: zone,step,...,hanger_ratio,skybox
+            int skyboxNum = (col.Length > 15 && int.TryParse(col[15], out int sn)) ? sn : 1;
+            Material skyboxMat = AssetDatabase.LoadAssetAtPath<Material>($"Assets/Space Skybox Kit/Skyboxes/Skybox {skyboxNum}/Skybox/Skybox.mat");
+
+            // zone=0 행 → Zone-0 안전지역 (전투 없음)
+            if (shipCount == 0)
+            {
+                config.zones.Add(new ZoneConfig
+                {
+                    zoneName = "Zone-0",
+                    zoneDescription = "안전지역",
+                    shipCount = 0,
+                    moduleLevel = 0,
+                    skyboxMaterial = skyboxMat,
+                });
+                continue;
+            }
+
+            // 헤더: zone,step,kill_mineral,kill_mineral_r,kill_mineral_e,kill_mineral_d,hour_mineral,hour_mineral_r,hour_mineral_e,hour_mineral_d,wave_term,body_ratio,beam_ratio,missile_ratio,hanger_ratio,skybox
             float.TryParse(col[2],  out float killM);
             float.TryParse(col[3],  out float killMR);
             float.TryParse(col[4],  out float killME);
@@ -243,8 +250,6 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col[14], out float hangerR);
 
             int moduleLevel = Mathf.Min(stage, shipCount);
-            string skyboxFolder = shipCount <= 5 ? "GalacticGreen" : "GalaxyFire";
-            Material skyboxMat = AssetDatabase.LoadAssetAtPath<Material>($"Assets/DeepSpaceSkyboxPack/{skyboxFolder}/Material/{skyboxFolder}Material.mat");
             enemyMap.TryGetValue((shipCount, stage), out var waveTemplates);
 
             var zone = new ZoneConfig

@@ -55,6 +55,7 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     // Warp sequence
     private Coroutine m_warpCoroutine;
     private bool m_isWarping = false;
+    private System.Collections.Generic.List<WarpEffectShip> m_warpEffects;
     
     public bool IsWarping => m_isWarping;
 
@@ -175,6 +176,17 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         m_skyboxBlendInstance.SetFloat(BlendID, Mathf.Clamp01(t));
     }
 
+    // 블렌드 없이 즉시 스카이박스 교체 (A·B 슬롯 동시 설정, blend=0)
+    public void SetSkyboxImmediate(Material mat)
+    {
+        if (!m_initialized) Initialize();
+        if (m_skyboxBlendInstance == null || mat == null) return;
+
+        CopyFaceTextures(mat, FaceNames, FaceNamesA);
+        CopyFaceTextures(mat, FaceNames, FaceNamesB);
+        m_skyboxBlendInstance.SetFloat(BlendID, 0f);
+    }
+
     // 블렌드 완료 (B를 새 기준으로 설정)
     public void FinalizeSkyboxBlend()
     {
@@ -189,11 +201,14 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
 
     #region Warp Sequence
 
-    // 함대 단위 워프 시퀀스 시작
-    public void StartWarpSequence(Material targetSkyboxMaterial, System.Action onWarpComplete = null)
+    // 함대 단위 워프 시퀀스 시작 — warpEffects: 함선별 글로우/스피드라인 제어 대상
+    public void StartWarpSequence(Material targetSkyboxMaterial,
+        System.Collections.Generic.List<WarpEffectShip> warpEffects,
+        System.Action onWarpComplete = null)
     {
         if (m_isWarping) return;
 
+        m_warpEffects = warpEffects;
         SetSkyboxBlendTarget(targetSkyboxMaterial);
 
         if (m_warpCoroutine != null)
@@ -214,16 +229,24 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         m_isWarping = false;
         SetWarpIntensity(0f);
         FinalizeSkyboxBlend();
+
+        if (m_warpEffects != null)
+        {
+            foreach (var we in m_warpEffects)
+                if (we != null) we.StopWarp();
+            m_warpEffects = null;
+        }
     }
 
     private System.Collections.IEnumerator WarpSequenceCoroutine(System.Action onWarpComplete)
     {
         m_isWarping = true;
 
-        // Warp 시작 시점: 적 스폰 중지, 함재기 귀환 명령, 안전지역 -> zone 
+        // Warp 시작 시점: 적 스폰 중지, 함재기 귀환 명령
         ObjectManager.Instance.StopEnemySpawning();
         ObjectManager.Instance.OrderAllAircraftReturn();
 
+        // Phase 1: 차지 — 엔진 글로우 증가
         float elapsed = 0f;
         while (elapsed < m_warpChargeTime)
         {
@@ -232,13 +255,18 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
             float easedT = EaseOutQuad(t);
 
             SetWarpIntensity(easedT * m_chargePhaseMaxIntensity);
+            SetShipGlow(easedT);
 
             yield return null;
         }
 
-        // Phase 2: 워프 중 (PP: chargeMax → 1.0, Skybox 블렌드)
+        // Phase 2: 워프 중 — 스피드라인 On, PP/Skybox 블렌드
+        SetShipSpeedLines(true);
+        // 스피드라인이 시작되면 적/투사체 정리
+        ObjectManager.Instance.CleanupAllProjectiles();
+        ObjectManager.Instance.RemoveAllEnemyFleets();
+
         elapsed = 0f;
-        bool cleanedUp = false;
         while (elapsed < m_warpDuration)
         {
             elapsed += Time.deltaTime;
@@ -248,18 +276,15 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
             SetWarpIntensity(intensity);
             SetSkyboxBlend(intensity);
 
-            // 워프 중반에 잔여 오브젝트 1회 정리
-            if (t > 0.5f && cleanedUp == false)
-            {
-                cleanedUp = true;
-                ObjectManager.Instance.CleanupAllProjectiles();
-                ObjectManager.Instance.RemoveAllEnemyFleets();
-            }
+            // 엔진 글로우 펄스
+            float pulse = 1f + Mathf.Sin(elapsed * 20f) * 0.2f;
+            SetShipGlowAbsolute(pulse);
 
             yield return null;
         }
 
-        // Phase 3: 워프 종료 (PP 감소)
+        // Phase 3: 워프 종료 — 스피드라인 Off, PP 감소, 글로우 복원
+        SetShipSpeedLines(false);
         elapsed = 0f;
         while (elapsed < m_warpExitTime)
         {
@@ -268,6 +293,7 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
             float easedT = EaseInQuad(t);
 
             SetWarpIntensity(1f - easedT);
+            SetShipGlow(1f - easedT);
 
             yield return null;
         }
@@ -275,11 +301,46 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         // 완료 처리
         FinalizeSkyboxBlend();
         SetWarpIntensity(0f);
+        SetShipGlow(0f);
 
         m_isWarping = false;
         m_warpCoroutine = null;
+        m_warpEffects = null;
 
         onWarpComplete?.Invoke();
+    }
+
+    // t=0: 노멀 글로우, t=1: 워프 글로우
+    private void SetShipGlow(float t)
+    {
+        if (m_warpEffects == null) return;
+        foreach (var we in m_warpEffects)
+        {
+            if (we == null) continue;
+            float glow = Mathf.Lerp(we.NormalGlowIntensity, we.WarpGlowIntensity, t);
+            we.SetEngineGlow(glow);
+        }
+    }
+
+    // 워프 중 펄스 — 워프 글로우에 배율 적용
+    private void SetShipGlowAbsolute(float multiplier)
+    {
+        if (m_warpEffects == null) return;
+        foreach (var we in m_warpEffects)
+        {
+            if (we == null) continue;
+            we.SetEngineGlow(we.WarpGlowIntensity * multiplier);
+        }
+    }
+
+    private void SetShipSpeedLines(bool active)
+    {
+        if (m_warpEffects == null) return;
+        foreach (var we in m_warpEffects)
+        {
+            if (we == null) continue;
+            we.SetSpeedLinesActive(active);
+        }
     }
 
     private float EaseOutQuad(float t) => 1f - (1f - t) * (1f - t);

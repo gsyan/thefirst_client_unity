@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d488ea516064b7641b0d3bf6ccb65d60
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176564
+  packageName: Space Skybox Kit
+  packageVersion: 1.1
+  assetPath: Assets/Space Skybox Kit/Scripts/MouseLook.cs
+  uploadId: 469805

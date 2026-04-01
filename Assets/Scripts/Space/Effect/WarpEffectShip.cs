@@ -153,18 +153,7 @@ public class WarpEffectShip : MonoBehaviour
         m_warpCoroutine = null;
     }
 
-    // 워프 시작 (함선 개별 효과만)
-    public void StartWarp(System.Action onWarpComplete = null)
-    {
-        if (m_isWarping) return;
-
-        if (m_warpCoroutine != null)
-            StopCoroutine(m_warpCoroutine);
-
-        m_warpCoroutine = StartCoroutine(WarpSequence(onWarpComplete));
-    }
-
-    // 워프 중단
+    // 워프 중단 (긴급 중단 / WarpPostProcessing.StopWarpSequence 호출 시)
     public void StopWarp()
     {
         if (m_warpCoroutine != null)
@@ -184,66 +173,12 @@ public class WarpEffectShip : MonoBehaviour
         ReturnSpeedLineToPool();
     }
 
-    // 워프 시퀀스 (함선 개별 효과만)
-    private IEnumerator WarpSequence(System.Action onWarpComplete)
-    {
-        m_isWarping = true;
-
-        // Phase 1: 워프 차지
-        float elapsed = 0f;
-        while (elapsed < m_warpChargeTime)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / m_warpChargeTime;
-            float easedT = EaseOutQuad(t);
-
-            float glow = Mathf.Lerp(m_normalGlowIntensity, m_warpGlowIntensity, easedT);
-            SetEngineGlow(glow);
-
-            yield return null;
-        }
-
-        // 스피드라인 시작
-        SetSpeedLinesActive(true);
-
-        // Phase 2: 워프 중
-        elapsed = 0f;
-        while (elapsed < m_warpDuration)
-        {
-            elapsed += Time.deltaTime;
-
-            // 엔진 글로우 펄스
-            float pulse = 1f + Mathf.Sin(elapsed * 20f) * 0.2f;
-            SetEngineGlow(m_warpGlowIntensity * pulse);
-
-            yield return null;
-        }
-
-        // Phase 3: 워프 종료
-        elapsed = 0f;
-        while (elapsed < m_warpExitTime)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / m_warpExitTime;
-            float easedT = EaseInQuad(t);
-
-            float glow = Mathf.Lerp(m_warpGlowIntensity, m_normalGlowIntensity, easedT);
-            SetEngineGlow(glow);
-
-            yield return null;
-        }
-
-        // 스피드라인 종료
-        SetSpeedLinesActive(false);
-
-        m_isWarping = false;
-        m_warpCoroutine = null;
-
-        onWarpComplete?.Invoke();
-    }
+    // WarpPostProcessing에서 Phase별 직접 제어용
+    public float NormalGlowIntensity => m_normalGlowIntensity;
+    public float WarpGlowIntensity   => m_warpGlowIntensity;
 
     // 엔진 글로우 설정
-    private void SetEngineGlow(float intensity)
+    public void SetEngineGlow(float intensity)
     {
         m_currentGlowIntensity = intensity;
 
@@ -258,7 +193,7 @@ public class WarpEffectShip : MonoBehaviour
     }
 
     // 스피드 라인 On/Off
-    private void SetSpeedLinesActive(bool active)
+    public void SetSpeedLinesActive(bool active)
     {
         if (!m_useSpeedLines) return;
 
@@ -297,9 +232,6 @@ public class WarpEffectShip : MonoBehaviour
         ReturnSpeedLineToPool();
         m_speedLineFadeCoroutine = null;
     }
-
-    private float EaseOutQuad(float t) => 1f - (1f - t) * (1f - t);
-    private float EaseInQuad(float t) => t * t;
 
     public bool IsWarping => m_isWarping;
 

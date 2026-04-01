@@ -80,10 +80,10 @@ public class UITabExploration : UITabBase
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
         {
-            var cleared = m_myCharacter.m_characterInfo.clearedZones;
-            if (cleared == null || cleared.Count == 0) return;
-            var lastZone = m_datatableZone.GetZoneByName(cleared[cleared.Count - 1]);
-            if (lastZone != null) pp.SetSkyboxBlendTarget(lastZone.skyboxMaterial);
+            // 게임 시작 시 항상 Zone-0 스카이박스로 즉시 초기화
+            var zone0 = m_datatableZone.GetZone(0);
+            if (zone0 != null)
+                pp.SetSkyboxImmediate(zone0.skyboxMaterial);
         }
     }
 

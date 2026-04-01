@@ -1,0 +1,4 @@
+To use a skybox open up the skybox folder and click and drag the skybox onto the scene view or
+in the lighting tab replace the skybox material with the skybox you wish to use.
+
+If you like and enjoy this asset please leave a review.

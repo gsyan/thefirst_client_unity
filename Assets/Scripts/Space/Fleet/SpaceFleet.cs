@@ -762,26 +762,17 @@ public class SpaceFleet : MonoBehaviour
         m_isFleetWarping = true;
         EnsureWarpEffects();
 
-        // 글로벌 효과 (Skybox, PP) - 함대 단위로 1회만 호출
+        // PP가 글로우/스피드라인까지 통합 제어 — warpEffects 리스트를 함께 전달
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
         {
-            pp.StartWarpSequence(skyBoxMaterial, () =>
+            pp.StartWarpSequence(skyBoxMaterial, m_warpEffects, () =>
             {
                 m_isFleetWarping = false;
                 onWarpComplete?.Invoke();
             });
         }
-
-        // 함선별 개별 효과 (엔진 글로우, 스피드라인)
-        foreach (var warpEffect in m_warpEffects)
-        {
-            if (warpEffect != null)
-                warpEffect.StartWarp();
-        }
-
-        // PP가 없는 경우 즉시 완료
-        if (pp == null)
+        else
         {
             m_isFleetWarping = false;
             onWarpComplete?.Invoke();

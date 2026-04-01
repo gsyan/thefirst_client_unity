@@ -105,3 +105,5 @@ InitTestScene*.unity*
 # PSD 소스파일 (에셋 원본, 빌드 불필요)
 *.rar
 *.rar.meta
+*.psd
+*.psd.meta
