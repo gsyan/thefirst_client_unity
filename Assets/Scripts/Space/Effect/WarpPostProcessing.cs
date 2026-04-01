@@ -153,11 +153,15 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     {
         if (m_skyboxBlendInstance == null || targetSkyboxMaterial == null) return;
 
-        // m_skyboxBlendInstance B슬롯에 타겟 스카이박스
-        CopyFaceTextures(targetSkyboxMaterial, FaceNames, FaceNamesB);
+        // 현재 RenderSettings가 직접 설정된 경우 → A슬롯에 캡처 후 블렌드 인스턴스로 전환
+        if (RenderSettings.skybox != m_skyboxBlendInstance && RenderSettings.skybox != null)
+            CopyFaceTextures(RenderSettings.skybox, FaceNames, FaceNamesA);
 
+        RenderSettings.skybox = m_skyboxBlendInstance;
+
+        // B슬롯에 타겟 스카이박스
+        CopyFaceTextures(targetSkyboxMaterial, FaceNames, FaceNamesB);
         m_skyboxBlendInstance.SetFloat(BlendID, 0f);
-        
     }
 
     // 소스 머티리얼의 A슬롯 텍스처를 대상 슬롯에 복사
@@ -211,23 +215,12 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
 
     private System.Collections.IEnumerator InitialSkyboxCoroutine(Material mat)
     {
-        Debug.Log($"[Skybox] 코루틴 시작 mat={mat.name} instanceID={mat.GetInstanceID()}");
-        int frame = 0;
-        while (true)
-        {
-            var tex = mat.GetTexture("_FrontTex");
-            if (frame == 0 || frame == 1 || frame == 5 || frame == 30)
-                Debug.Log($"[Skybox] frame={frame} _FrontTex={(tex != null ? tex.name : "NULL")}");
-
-            if (tex != null)
-            {
-                Debug.Log($"[Skybox] 텍스처 로드 완료 — {frame}프레임 대기");
-                SetSkyboxImmediate(mat);
-                yield break;
-            }
-            frame++;
-            yield return null;
-        }
+        Debug.Log($"[Skybox] 코루틴 시작 mat={mat.name}");
+        // GetTexture 방식 실패 시 RenderSettings.skybox 직접 설정으로 폴백
+        yield return null;
+        Debug.Log("[Skybox] RenderSettings.skybox 직접 설정");
+        RenderSettings.skybox = mat;
+        DynamicGI.UpdateEnvironment();
     }
 
     // 블렌드 완료 (B를 새 기준으로 설정)
