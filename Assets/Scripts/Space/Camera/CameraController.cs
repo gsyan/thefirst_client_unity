@@ -503,6 +503,14 @@ public class CameraController : MonoSingleton<CameraController>
         EventManager.TriggerCameraFocusTargetChanged(ECameraFocusTarget.camera_focus_my_fleet);
     }
 
+    // 카메라를 현재 타겟 위치로 즉시 스냅 (스테이지 입장 등 순간이동 시 사용)
+    public void SnapToTarget()
+    {
+        if (m_currentTarget != null)
+            m_targetPosition = m_currentTarget.position;
+        m_interpolatedTargetPosition = m_targetPosition;
+    }
+
     // Vector3 위치를 타겟으로 설정 (고정된 위치용)
     public void SetTargetPosition(Vector3 position)
     {

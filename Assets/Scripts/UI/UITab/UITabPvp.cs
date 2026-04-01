@@ -274,12 +274,13 @@ public class UITabPvp : UITabBase
 
         ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
         if (zoneConfig == null) return;
+        Material safeSkybox = m_datatableZone.GetGroupConfig(0)?.skyboxMaterial;
 
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
-            pp.SetSkyboxBlendTarget(zoneConfig.skyboxMaterial);
+            pp.SetSkyboxBlendTarget(safeSkybox);
 
-        m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
+        m_myFleet.StartFleetWarp(safeSkybox, () =>
         {
             if (m_myFleet.IsFleetAlive() == false)
                 m_myFleet.RebuildFleet(0.1f);

@@ -1,8 +1,31 @@
 // Zone 데이터 테이블 — 탐사 존별 라운드·보상·자원 수확 설정 ScriptableObject
+// ZoneGroupConfig: 함선개수(x) 그룹 단위로 공유하는 배경 데코·아군 함대 위치
 // enemyShipConfigs: 웨이브 템플릿 리스트 [waveIndex] — 해당 라운드에 shipCount만큼 복제 스폰
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+
+public enum SpaceDecorType { Asteroid, Planet }
+
+// 배경 데코 1개 배치 설정 — 원점(항성) 기준 공전, 초기 각도는 런타임에 랜덤 배정
+[System.Serializable]
+public class SpaceDecorConfig
+{
+    public SpaceDecorType type;
+    public int spriteIndex;     // 1-based (Planet: 1~7, 단 6 없음)
+    public float orbitRadius;   // 원점으로부터의 공전 반지름
+    public float orbitPeriod;   // 공전 주기 (초, 0이면 정지)
+    public float scale;         // 크기
+}
+
+// Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 skybox·행성 세트를 공유
+[System.Serializable]
+public class ZoneGroupConfig
+{
+    public int shipCount;                  // 그룹 키 (0 = 안전구역 Zone-0)
+    public Material skyboxMaterial;        // 이 Zone의 스카이박스
+    public SpaceDecorConfig[] spaceDecors; // 행성 배치 세트
+}
 
 // 각 슬롯에 장착할 모듈 설정
 [System.Serializable]
@@ -41,7 +64,7 @@ public class ZoneConfig
     public string zoneDescription;
     public int shipCount = 1;      // 적 함선 개수
     public int moduleLevel = 1;    // 적 모듈 레벨
-    public Material skyboxMaterial;  // 스카이박스 머티리얼
+    // skyboxMaterial은 ZoneGroupConfig로 이동 (Zone 공유)
 
     public int zoneClearCount = 10;
     public float delayBeforeSpawn = 3f;
@@ -49,6 +72,7 @@ public class ZoneConfig
     public List<EnemyShipConfig> enemyShipConfigs;
 
     [Header("적 모듈 타입별 스탯 배율 (1.0 = 플레이어 동일)")]
+
     [Range(0.1f, 2.0f)] public float enemyBodyMultiplier    = 1.0f;  // 함체 체력
     [Range(0.1f, 2.0f)] public float enemyBeamMultiplier    = 1.0f;  // 빔 공격력·체력
     [Range(0.1f, 2.0f)] public float enemyMissileMultiplier = 1.0f;  // 미사일 공격력·체력
@@ -66,6 +90,9 @@ public class ZoneConfig
     public float mineralExoticPerHour = 0f;
     public float mineralDarkPerHour = 0f;
 
+    [Header("아군 함대 위치 (절대 좌표)")]
+    public Vector3 fleetPosition;   // 이 존 진입 시 아군 함대가 배치될 월드 좌표
+
     // 실제 계산용 (시간당 → 초당 변환)
     public float MineralPerSecond => mineralPerHour / 3600f;
     public float MineralRarePerSecond => mineralRarePerHour / 3600f;
@@ -78,7 +105,19 @@ public class ZoneConfig
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
 public class DataTableZone : ScriptableObject
 {
+    // 함선개수(x) 그룹별 행성 세트 — 같은 그룹의 모든 스테이지가 공유
+    public List<ZoneGroupConfig> zoneGroups = new List<ZoneGroupConfig>();
     public List<ZoneConfig> zones = new List<ZoneConfig>();
+
+    // shipCount로 그룹 설정 조회 (0 = Zone-0 안전구역)
+    public ZoneGroupConfig GetGroupConfig(int shipCount)
+    {
+        for (int i = 0; i < zoneGroups.Count; i++)
+        {
+            if (zoneGroups[i].shipCount == shipCount) return zoneGroups[i];
+        }
+        return null;
+    }
 
     public ZoneConfig GetZone(int index)
     {

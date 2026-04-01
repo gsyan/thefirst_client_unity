@@ -81,9 +81,9 @@ public class UITabExploration : UITabBase
         if (pp != null)
         {
             // 게임 시작 시 항상 Zone-0 스카이박스로 즉시 초기화
-            var zone0 = m_datatableZone.GetZone(0);
-            if (zone0 != null)
-                pp.SetSkyboxImmediate(zone0.skyboxMaterial);
+            var zone0Group = m_datatableZone.GetGroupConfig(0);
+            if (zone0Group != null)
+                pp.SetSkyboxImmediate(zone0Group.skyboxMaterial);
         }
     }
 
@@ -536,17 +536,22 @@ public class UITabExploration : UITabBase
     private void EnterZone(ZoneConfig zone)
     {
         SetEnterZoneState(EEnterZoneState.warp);
+        var zoneGroup = m_datatableZone.GetGroupConfig(zone.shipCount);
+        Material skybox = zoneGroup?.skyboxMaterial;
+
         var pp = WarpPostProcessing.Instance;
         if (pp != null && zone != null)
-            pp.SetSkyboxBlendTarget(zone.skyboxMaterial);
+            pp.SetSkyboxBlendTarget(skybox);
 
         m_currentZone = zone;
         CacheCurrentZoneCell();
         EventManager.Subscribe_WaveStarted(OnWaveStarted);
         EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilled);
 
-        m_myFleet.StartFleetWarp(zone.skyboxMaterial, () =>
+        m_myFleet.StartFleetWarp(skybox, () =>
         {
+            ObjectManager.Instance.SetMyFleetPosition(zone.fleetPosition);
+            CameraController.Instance.SnapToTarget();
             SetEnterZoneState(EEnterZoneState.zone);
             UIManager.Instance.ShowPanel("UIPanelCameraView");
             bool isFirstClear = IsAlreadyCleared(zone) == false;
@@ -577,6 +582,8 @@ public class UITabExploration : UITabBase
 
     private void StartBattleInZone(ZoneConfig zone)
     {
+        var groupConfig = m_datatableZone.GetGroupConfig(zone.shipCount);
+        ObjectManager.Instance.StartSpawnDeco(groupConfig?.spaceDecors);
         // 패배(함대 전멸) 시에만 콜백 호출 — 승리/클리어는 서버 응답으로 판정
         ObjectManager.Instance.StartSpawnEnemies(zone, (_) => ReturnToSafeZone());
     }
@@ -673,16 +680,21 @@ public class UITabExploration : UITabBase
 
         ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
         if (zoneConfig == null) return;
+        var safeGroup = m_datatableZone.GetGroupConfig(0);
+        Material safeSkybox = safeGroup?.skyboxMaterial;
 
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
-            pp.SetSkyboxBlendTarget(zoneConfig.skyboxMaterial);
+            pp.SetSkyboxBlendTarget(safeSkybox);
 
         UIManager.Instance.HidePanel("UIPanelCameraView");
         CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
-        m_myFleet.StartFleetWarp(zoneConfig.skyboxMaterial, () =>
+        m_myFleet.StartFleetWarp(safeSkybox, () =>
         {
+            ObjectManager.Instance.SetMyFleetPosition(zoneConfig.fleetPosition);
+            CameraController.Instance.SnapToTarget();
+            ObjectManager.Instance.StartSpawnDeco(null); // 안전지역 — 행성 없음
             m_currentZone = null;
             if (m_currentZoneCell != null)
             {

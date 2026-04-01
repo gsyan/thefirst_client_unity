@@ -1,4 +1,4 @@
-// 게임 오브젝트(함대, 투사체, 이펙트) 생성·관리 및 Zone 전투(라운드 스폰·클리어) 제어
+// 게임 오브젝트(함대, 투사체, 이펙트, 배경 데코) 생성·관리 및 Zone 전투(라운드 스폰·클리어) 제어
 //using Mono.Cecil;
 using NUnit.Framework.Constraints;
 using System;
@@ -103,6 +103,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     [HideInInspector] public List<SpaceFleet> m_enemyFleets = new List<SpaceFleet>();
     [HideInInspector] public List<SpaceMineral> m_mineralList = new List<SpaceMineral>();
 
+    [Header("배경 데코 Sprite (Asteroid 1~10, Planet 1~7 순서대로 할당)")]
+    public Sprite[] m_asteroidSprites;
+    public Sprite[] m_planetSprites;
+    private readonly List<GameObject> m_activeDecors = new();
+
     // 카메라 포커스용 — 실제 적 함대 위치 우선, 없으면 마지막 스폰 위치 반환
     // TODO: 향후 존 config에 적 위치 데이터 추가 시 이 필드를 config 값으로 대체
     private Vector3 m_enemyFleetFocusPosition;
@@ -173,6 +178,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         OrderAllAircraftReturn();
         CleanupAllProjectiles();
         RemoveAllEnemyFleets();
+        ClearDecors();
 
         if (m_isPvpBattle)
         {
@@ -309,6 +315,53 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_enemyFleets.Add(enemyFleet);
     }
 
+    // 존 배경 데코 생성 — 그룹 공유 행성 세트를 절대 좌표로 스폰
+    public void StartSpawnDeco(SpaceDecorConfig[] decors)
+    {
+        ClearDecors();
+        if (decors == null || decors.Length == 0) return;
+
+        Camera cam = Camera.main;
+        foreach (SpaceDecorConfig config in decors)
+        {
+            Sprite sprite = GetDecorSprite(config);
+            if (sprite == null) continue;
+
+            GameObject go = new GameObject($"Decor_{config.type}_{config.spriteIndex}");
+            go.transform.localScale = Vector3.one * config.scale;
+
+            SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = sprite;
+
+            // 초기 위치·공전은 SpaceDecorItem.Initialize에서 랜덤 각도로 설정
+            SpaceDecorItem item = go.AddComponent<SpaceDecorItem>();
+            item.Initialize(UnityEngine.Random.Range(-5f, 5f), cam, config.orbitRadius, config.orbitPeriod);
+
+            m_activeDecors.Add(go);
+        }
+    }
+
+    private Sprite GetDecorSprite(SpaceDecorConfig config)
+    {
+        int idx = config.spriteIndex - 1;
+        if (config.type == SpaceDecorType.Planet)
+        {
+            if (m_planetSprites == null || idx < 0 || idx >= m_planetSprites.Length) return null;
+            return m_planetSprites[idx];
+        }
+        // Asteroid: 향후 3D 오브젝트로 처리 예정
+        return null;
+    }
+
+    private void ClearDecors()
+    {
+        foreach (GameObject go in m_activeDecors)
+        {
+            if (go != null) Destroy(go);
+        }
+        m_activeDecors.Clear();
+    }
+
     public void RemoveEnemyFleet(SpaceFleet fleet)
     {
         if (fleet == null) return;
@@ -399,6 +452,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         // 카메라가 함대를 타겟으로 설정
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+    }
+
+    // 워프 완료 시점에 호출 — 아군 함대를 존별 지정 위치로 텔레포트
+    public void SetMyFleetPosition(Vector3 position)
+    {
+        if (m_myFleet == null) return;
+        m_myFleet.transform.position = position;
     }
 
     

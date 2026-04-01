@@ -12,12 +12,242 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c9101299ec6be468207b8b27aaf65e, type: 3}
   m_Name: DataTableZone
   m_EditorClassIdentifier: 
+  zoneGroups:
+  - shipCount: 1
+    skyboxMaterial: {fileID: 2100000, guid: 1fe1faf551eff7540888233964ae8c07, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 3
+      orbitRadius: 1127
+      orbitPeriod: 211136
+      scale: 5.5
+    - type: 1
+      spriteIndex: 7
+      orbitRadius: 2724
+      orbitPeriod: 792811
+      scale: 9
+    - type: 1
+      spriteIndex: 2
+      orbitRadius: 4687
+      orbitPeriod: 1789302
+      scale: 22
+    - type: 1
+      spriteIndex: 1
+      orbitRadius: 12649
+      orbitPeriod: 7933692
+      scale: 40
+  - shipCount: 0
+    skyboxMaterial: {fileID: 2100000, guid: 2b89375c7fe982640ae5dbc683ec794a, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 3
+      orbitRadius: 1110
+      orbitPeriod: 206116
+      scale: 5.5
+    - type: 1
+      spriteIndex: 7
+      orbitRadius: 2673
+      orbitPeriod: 770858
+      scale: 9
+    - type: 1
+      spriteIndex: 2
+      orbitRadius: 5655
+      orbitPeriod: 2371799
+      scale: 22
+    - type: 1
+      spriteIndex: 1
+      orbitRadius: 14077
+      orbitPeriod: 9314740
+      scale: 40
+  - shipCount: 2
+    skyboxMaterial: {fileID: 2100000, guid: e09c50448265b284c98f1b4ab1b3d814, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 5
+      orbitRadius: 1350
+      orbitPeriod: 276521
+      scale: 5.5
+    - type: 1
+      spriteIndex: 2
+      orbitRadius: 2853
+      orbitPeriod: 849821
+      scale: 9
+    - type: 1
+      spriteIndex: 7
+      orbitRadius: 5912
+      orbitPeriod: 2535236
+      scale: 22
+    - type: 1
+      spriteIndex: 1
+      orbitRadius: 13782
+      orbitPeriod: 9023714
+      scale: 40
+  - shipCount: 3
+    skyboxMaterial: {fileID: 2100000, guid: badcbeaf674407f47871aebf243690a3, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 3
+      orbitRadius: 1024
+      orbitPeriod: 182674
+      scale: 5.5
+    - type: 1
+      spriteIndex: 7
+      orbitRadius: 2416
+      orbitPeriod: 662188
+      scale: 9
+    - type: 1
+      spriteIndex: 2
+      orbitRadius: 4786
+      orbitPeriod: 1846709
+      scale: 22
+    - type: 1
+      spriteIndex: 5
+      orbitRadius: 12270
+      orbitPeriod: 7579979
+      scale: 40
+  - shipCount: 4
+    skyboxMaterial: {fileID: 2100000, guid: 35abe7312286223429ee5d0467d4e882, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 5
+      orbitRadius: 1058
+      orbitPeriod: 191874
+      scale: 5.5
+    - type: 1
+      spriteIndex: 2
+      orbitRadius: 2789
+      orbitPeriod: 821277
+      scale: 9
+    - type: 1
+      spriteIndex: 7
+      orbitRadius: 5280
+      orbitPeriod: 2139962
+      scale: 22
+    - type: 1
+      spriteIndex: 4
+      orbitRadius: 12420
+      orbitPeriod: 7719488
+      scale: 40
+  - shipCount: 5
+    skyboxMaterial: {fileID: 2100000, guid: 2366ba7f489058249ab3210586c96ad3, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 3
+      orbitRadius: 1092
+      orbitPeriod: 201224
+      scale: 5.5
+    - type: 1
+      spriteIndex: 7
+      orbitRadius: 2351
+      orbitPeriod: 635948
+      scale: 9
+    - type: 1
+      spriteIndex: 2
+      orbitRadius: 5775
+      orbitPeriod: 2447279
+      scale: 22
+    - type: 1
+      spriteIndex: 4
+      orbitRadius: 13923
+      orbitPeriod: 9162246
+      scale: 40
+  - shipCount: 6
+    skyboxMaterial: {fileID: 2100000, guid: 153c4d8c0bd5e3c478f382f84bc27052, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 5
+      orbitRadius: 1126
+      orbitPeriod: 210721
+      scale: 5.5
+    - type: 1
+      spriteIndex: 1
+      orbitRadius: 2724
+      orbitPeriod: 793060
+      scale: 9
+    - type: 1
+      spriteIndex: 2
+      orbitRadius: 4649
+      orbitPeriod: 1767679
+      scale: 22
+    - type: 1
+      spriteIndex: 4
+      orbitRadius: 15108
+      orbitPeriod: 10356365
+      scale: 40
+  - shipCount: 7
+    skyboxMaterial: {fileID: 2100000, guid: 06c959ac6fffe2d40abab9e4d0a61dbf, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 3
+      orbitRadius: 1160
+      orbitPeriod: 220362
+      scale: 5.5
+    - type: 1
+      spriteIndex: 7
+      orbitRadius: 3097
+      orbitPeriod: 961326
+      scale: 9
+    - type: 1
+      spriteIndex: 2
+      orbitRadius: 5143
+      orbitPeriod: 2056896
+      scale: 22
+    - type: 1
+      spriteIndex: 4
+      orbitRadius: 13451
+      orbitPeriod: 8700341
+      scale: 40
+  - shipCount: 8
+    skyboxMaterial: {fileID: 2100000, guid: 085092440773a7c4a8bf84a52de08042, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 5
+      orbitRadius: 1194
+      orbitPeriod: 230146
+      scale: 5.5
+    - type: 1
+      spriteIndex: 1
+      orbitRadius: 2660
+      orbitPeriod: 765173
+      scale: 9
+    - type: 1
+      spriteIndex: 3
+      orbitRadius: 5637
+      orbitPeriod: 2360364
+      scale: 22
+    - type: 1
+      spriteIndex: 4
+      orbitRadius: 13746
+      orbitPeriod: 8987725
+      scale: 40
+  - shipCount: 9
+    skyboxMaterial: {fileID: 2100000, guid: 8775bb68282374549a795ba8ad6f7790, type: 2}
+    spaceDecors:
+    - type: 1
+      spriteIndex: 3
+      orbitRadius: 1228
+      orbitPeriod: 240071
+      scale: 5.5
+    - type: 1
+      spriteIndex: 2
+      orbitRadius: 3033
+      orbitPeriod: 931571
+      scale: 9
+    - type: 1
+      spriteIndex: 7
+      orbitRadius: 6131
+      orbitPeriod: 2677442
+      scale: 22
+    - type: 1
+      spriteIndex: 4
+      orbitRadius: 13064
+      orbitPeriod: 8328036
+      scale: 40
   zones:
   - zoneName: Zone-0
     zoneDescription: "\uC548\uC804\uC9C0\uC5ED"
     shipCount: 0
     moduleLevel: 0
-    skyboxMaterial: {fileID: 2100000, guid: a4be220830e90ea4eb88b48b7fd376ce, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs: []
@@ -33,11 +263,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 386.59442, y: 0, z: -50.35631}
   - zoneName: 1-1
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -253,11 +483,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 740.1233, y: 0, z: 137.46825}
   - zoneName: 1-2
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -473,11 +703,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -438.33142, y: 0, z: 512.82074}
   - zoneName: 1-3
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -693,11 +923,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -133.59271, y: 0, z: -377.7161}
   - zoneName: 1-4
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -913,11 +1143,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1640.3577, y: 0, z: 361.34937}
   - zoneName: 1-5
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -1133,11 +1363,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1320.4739, y: 0, z: -1069.5072}
   - zoneName: 1-6
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -1353,11 +1583,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 13.602364, y: 0, z: -1795.5331}
   - zoneName: 1-7
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -1573,11 +1803,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1735.5526, y: 0, z: -1362.677}
   - zoneName: 1-8
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -1793,11 +2023,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2116.5251, y: 0, z: 499.98117}
   - zoneName: 1-9
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -2013,11 +2243,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 873.80994, y: 0, z: 1850.2089}
   - zoneName: 1-10
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -2233,11 +2463,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -900.30414, y: 0, z: 1833.8322}
   - zoneName: 1-11
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -2453,11 +2683,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2539.9553, y: 0, z: -2939.7615}
   - zoneName: 1-12
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -2673,11 +2903,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -337.76584, y: 0, z: -3999.7156}
   - zoneName: 1-13
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -2893,11 +3123,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1676.0057, y: 0, z: -2770.3616}
   - zoneName: 1-14
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -3113,11 +3343,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3427.367, y: 0, z: -1442.6353}
   - zoneName: 1-15
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -3333,11 +3563,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3293.1428, y: 0, z: 770.76013}
   - zoneName: 1-16
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -3553,11 +3783,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2038.551, y: 0, z: 2359.433}
   - zoneName: 1-17
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -3773,11 +4003,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 258.82907, y: 0, z: 3064.966}
   - zoneName: 1-18
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -3993,11 +4223,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1908.5966, y: 0, z: 3154.8284}
   - zoneName: 1-19
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -4213,11 +4443,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3386.7075, y: 0, z: 1425.5216}
   - zoneName: 1-20
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -4433,11 +4663,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2998.5005, y: 0, z: -701.80005}
   - zoneName: 1-21
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -4653,11 +4883,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 5689.753, y: 0, z: 87.8817}
   - zoneName: 1-22
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -4873,11 +5103,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 8255, y: 0, z: 6194.627}
   - zoneName: 1-23
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -5093,11 +5323,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2455.1982, y: 0, z: 7973.2666}
   - zoneName: 1-24
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -5313,11 +5543,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1737.0748, y: 0, z: 5077.948}
   - zoneName: 1-25
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -5533,11 +5763,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -5448.9893, y: 0, z: 3831.76}
   - zoneName: 1-26
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -5753,11 +5983,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -6437.4927, y: 0, z: -99.43091}
   - zoneName: 1-27
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -5973,11 +6203,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -4984.1655, y: 0, z: -3740.1633}
   - zoneName: 1-28
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -6193,11 +6423,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2149.4316, y: 0, z: -6980.284}
   - zoneName: 1-29
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -6413,11 +6643,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2123.7231, y: 0, z: -6208.2266}
   - zoneName: 1-30
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 1
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -6633,11 +6863,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4749.1685, y: 0, z: -3339.643}
   - zoneName: 2-1
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 2
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -6853,11 +7083,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -485.10297, y: 0, z: -636.43756}
   - zoneName: 2-2
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -7073,11 +7303,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 876.20746, y: 0, z: -112.48153}
   - zoneName: 2-3
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -7293,11 +7523,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -306.9162, y: 0, z: 734.2549}
   - zoneName: 2-4
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -7513,11 +7743,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 390.89078, y: 0, z: 2199.6338}
   - zoneName: 2-5
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -7733,11 +7963,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1392.0619, y: 0, z: 1581.6598}
   - zoneName: 2-6
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -7953,11 +8183,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1777.0851, y: 0, z: -86.30664}
   - zoneName: 2-7
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -8173,11 +8403,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1004.3834, y: 0, z: -1393.0754}
   - zoneName: 2-8
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -8393,11 +8623,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 467.87418, y: 0, z: -1671.5001}
   - zoneName: 2-9
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -8613,11 +8843,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1603.254, y: 0, z: -678.3567}
   - zoneName: 2-10
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -8833,11 +9063,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1602.2406, y: 0, z: 869.75525}
   - zoneName: 2-11
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -9053,11 +9283,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1199.2354, y: 0, z: 3160.9907}
   - zoneName: 2-12
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -9273,11 +9503,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -940.84174, y: 0, z: 3457.158}
   - zoneName: 2-13
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -9493,11 +9723,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -4028.6506, y: 0, z: 3236.346}
   - zoneName: 2-14
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -9713,11 +9943,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3295.4932, y: 0, z: 159.79532}
   - zoneName: 2-15
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -9933,11 +10163,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3493.1553, y: 0, z: -2287.9434}
   - zoneName: 2-16
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -10153,11 +10383,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1721.1193, y: 0, z: -4536.592}
   - zoneName: 2-17
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -10373,11 +10603,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1284.3291, y: 0, z: -4719.3203}
   - zoneName: 2-18
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -10593,11 +10823,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2587.633, y: 0, z: -2078.7292}
   - zoneName: 2-19
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -10813,11 +11043,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4560.1553, y: 0, z: -221.11827}
   - zoneName: 2-20
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -11033,11 +11263,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3543.4456, y: 0, z: 2320.883}
   - zoneName: 2-21
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -11253,11 +11483,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -9895.932, y: 0, z: -4028.9277}
   - zoneName: 2-22
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -11473,11 +11703,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -4152.9106, y: 0, z: -6685.6255}
   - zoneName: 2-23
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -11693,11 +11923,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 479.05612, y: 0, z: -6598.071}
   - zoneName: 2-24
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -11913,11 +12143,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4799.9565, y: 0, z: -5689.5044}
   - zoneName: 2-25
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -12133,11 +12363,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 9954.185, y: 0, z: -2453.6968}
   - zoneName: 2-26
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -12353,11 +12583,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 6847.846, y: 0, z: 2787.9604}
   - zoneName: 2-27
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -12573,11 +12803,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4952.152, y: 0, z: 7972.3022}
   - zoneName: 2-28
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -12793,11 +13023,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -880.4528, y: 0, z: 12126.558}
   - zoneName: 2-29
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -13013,11 +13243,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -4653.548, y: 0, z: 5515.9644}
   - zoneName: 2-30
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 2
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -13233,11 +13463,11 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -9689.791, y: 0, z: 2388.5256}
   - zoneName: 3-1
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 3
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -13453,11 +13683,11 @@ MonoBehaviour:
     mineralRarePerHour: 117
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -23.905128, y: 0, z: -424.1708}
   - zoneName: 3-2
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 3
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -13673,11 +13903,11 @@ MonoBehaviour:
     mineralRarePerHour: 118
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 425.5563, y: 0, z: 214.72516}
   - zoneName: 3-3
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -13893,11 +14123,11 @@ MonoBehaviour:
     mineralRarePerHour: 120
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -341.60095, y: 0, z: 223.75584}
   - zoneName: 3-4
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -14113,11 +14343,11 @@ MonoBehaviour:
     mineralRarePerHour: 122
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1538.8115, y: 0, z: -263.9982}
   - zoneName: 3-5
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -14333,11 +14563,11 @@ MonoBehaviour:
     mineralRarePerHour: 124
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -776.7648, y: 0, z: -1410.7964}
   - zoneName: 3-6
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -14553,11 +14783,11 @@ MonoBehaviour:
     mineralRarePerHour: 126
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 607.25433, y: 0, z: -1459.4072}
   - zoneName: 3-7
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -14773,11 +15003,11 @@ MonoBehaviour:
     mineralRarePerHour: 128
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1339.6033, y: 0, z: -383.60413}
   - zoneName: 3-8
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -14993,11 +15223,11 @@ MonoBehaviour:
     mineralRarePerHour: 129
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1033.9955, y: 0, z: 736.1583}
   - zoneName: 3-9
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -15213,11 +15443,11 @@ MonoBehaviour:
     mineralRarePerHour: 131
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 102.303085, y: 0, z: 1875.4673}
   - zoneName: 3-10
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -15433,11 +15663,11 @@ MonoBehaviour:
     mineralRarePerHour: 133
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -929.291, y: 0, z: 827.7852}
   - zoneName: 3-11
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -15653,11 +15883,11 @@ MonoBehaviour:
     mineralRarePerHour: 135
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3753.579, y: 0, z: 1500.7598}
   - zoneName: 3-12
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -15873,11 +16103,11 @@ MonoBehaviour:
     mineralRarePerHour: 137
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2075.5806, y: 0, z: 3295.018}
   - zoneName: 3-13
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -16093,11 +16323,11 @@ MonoBehaviour:
     mineralRarePerHour: 138
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -195.56067, y: 0, z: 2950.0942}
   - zoneName: 3-14
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -16313,11 +16543,11 @@ MonoBehaviour:
     mineralRarePerHour: 140
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1790.9559, y: 0, z: 2150.139}
   - zoneName: 3-15
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -16533,11 +16763,11 @@ MonoBehaviour:
     mineralRarePerHour: 142
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2693.717, y: 0, z: 681.98694}
   - zoneName: 3-16
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -16753,11 +16983,11 @@ MonoBehaviour:
     mineralRarePerHour: 144
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3297.0603, y: 0, z: -1318.2341}
   - zoneName: 3-17
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -16973,11 +17203,11 @@ MonoBehaviour:
     mineralRarePerHour: 146
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1666.1545, y: 0, z: -2645.0479}
   - zoneName: 3-18
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -17193,11 +17423,11 @@ MonoBehaviour:
     mineralRarePerHour: 147
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 218.60332, y: 0, z: -3297.7075}
   - zoneName: 3-19
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -17413,11 +17643,11 @@ MonoBehaviour:
     mineralRarePerHour: 149
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2251.3318, y: 0, z: -2702.8445}
   - zoneName: 3-20
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -17633,11 +17863,11 @@ MonoBehaviour:
     mineralRarePerHour: 151
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3850.8762, y: 0, z: -974.9535}
   - zoneName: 3-21
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -17853,11 +18083,11 @@ MonoBehaviour:
     mineralRarePerHour: 153
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 881.07825, y: 0, z: -6554.535}
   - zoneName: 3-22
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -18073,11 +18303,11 @@ MonoBehaviour:
     mineralRarePerHour: 155
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 7587.265, y: 0, z: -7951.8438}
   - zoneName: 3-23
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -18293,11 +18523,11 @@ MonoBehaviour:
     mineralRarePerHour: 156
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 8968.238, y: 0, z: -1636.9269}
   - zoneName: 3-24
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -18513,11 +18743,11 @@ MonoBehaviour:
     mineralRarePerHour: 158
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 8210.94, y: 0, z: 3943.8914}
   - zoneName: 3-25
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -18733,11 +18963,11 @@ MonoBehaviour:
     mineralRarePerHour: 160
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4564.507, y: 0, z: 8461.623}
   - zoneName: 3-26
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -18953,11 +19183,11 @@ MonoBehaviour:
     mineralRarePerHour: 162
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -925.03107, y: 0, z: 6881.4927}
   - zoneName: 3-27
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -19173,11 +19403,11 @@ MonoBehaviour:
     mineralRarePerHour: 164
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -5369.2944, y: 0, z: 5627.298}
   - zoneName: 3-28
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -19393,11 +19623,11 @@ MonoBehaviour:
     mineralRarePerHour: 166
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -6933.0747, y: 0, z: 1265.4565}
   - zoneName: 3-29
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -19613,11 +19843,11 @@ MonoBehaviour:
     mineralRarePerHour: 167
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -7943.8867, y: 0, z: -3815.623}
   - zoneName: 3-30
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 3
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -19833,11 +20063,11 @@ MonoBehaviour:
     mineralRarePerHour: 169
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2633.7258, y: 0, z: -4882.3647}
   - zoneName: 4-1
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 4
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -20053,11 +20283,11 @@ MonoBehaviour:
     mineralRarePerHour: 233
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 318.6009, y: 0, z: -533.10345}
   - zoneName: 4-2
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 4
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -20273,11 +20503,11 @@ MonoBehaviour:
     mineralRarePerHour: 237
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 322.78094, y: 0, z: 579.06616}
   - zoneName: 4-3
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 4
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -20493,11 +20723,11 @@ MonoBehaviour:
     mineralRarePerHour: 241
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -590.3843, y: 0, z: -8.903388}
   - zoneName: 4-4
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -20713,11 +20943,11 @@ MonoBehaviour:
     mineralRarePerHour: 244
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 643.62585, y: 0, z: -1135.4576}
   - zoneName: 4-5
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -20933,11 +21163,11 @@ MonoBehaviour:
     mineralRarePerHour: 248
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1594.2742, y: 0, z: -253.22191}
   - zoneName: 4-6
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -21153,11 +21383,11 @@ MonoBehaviour:
     mineralRarePerHour: 251
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1469.651, y: 0, z: 1342.1425}
   - zoneName: 4-7
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -21373,11 +21603,11 @@ MonoBehaviour:
     mineralRarePerHour: 255
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -105.124306, y: 0, z: 1569.421}
   - zoneName: 4-8
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -21593,11 +21823,11 @@ MonoBehaviour:
     mineralRarePerHour: 259
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1850.7737, y: 0, z: 1283.4166}
   - zoneName: 4-9
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -21813,11 +22043,11 @@ MonoBehaviour:
     mineralRarePerHour: 262
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1728.7682, y: 0, z: -518.30237}
   - zoneName: 4-10
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -22033,11 +22263,11 @@ MonoBehaviour:
     mineralRarePerHour: 266
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -769.30225, y: 0, z: -1915.4193}
   - zoneName: 4-11
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -22253,11 +22483,11 @@ MonoBehaviour:
     mineralRarePerHour: 270
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3753.5425, y: 0, z: -1801.5247}
   - zoneName: 4-12
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -22473,11 +22703,11 @@ MonoBehaviour:
     mineralRarePerHour: 273
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3649.8906, y: 0, z: 667.3231}
   - zoneName: 4-13
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -22693,11 +22923,11 @@ MonoBehaviour:
     mineralRarePerHour: 277
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2523.8398, y: 0, z: 2646.6995}
   - zoneName: 4-14
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -22913,11 +23143,11 @@ MonoBehaviour:
     mineralRarePerHour: 280
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 429.58023, y: 0, z: 3202.9912}
   - zoneName: 4-15
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -23133,11 +23363,11 @@ MonoBehaviour:
     mineralRarePerHour: 284
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1923.7999, y: 0, z: 3563.767}
   - zoneName: 4-16
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -23353,11 +23583,11 @@ MonoBehaviour:
     mineralRarePerHour: 288
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3223.603, y: 0, z: 1547.1792}
   - zoneName: 4-17
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -23573,11 +23803,11 @@ MonoBehaviour:
     mineralRarePerHour: 291
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -4141.1978, y: 0, z: -757.152}
   - zoneName: 4-18
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -23793,11 +24023,11 @@ MonoBehaviour:
     mineralRarePerHour: 295
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2926.9563, y: 0, z: -3069.4417}
   - zoneName: 4-19
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -24013,11 +24243,11 @@ MonoBehaviour:
     mineralRarePerHour: 299
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -495.2896, y: 0, z: -3692.9226}
   - zoneName: 4-20
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -24233,11 +24463,11 @@ MonoBehaviour:
     mineralRarePerHour: 302
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1602.2932, y: 0, z: -2968.1855}
   - zoneName: 4-21
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -24453,11 +24683,11 @@ MonoBehaviour:
     mineralRarePerHour: 306
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 9809.335, y: 0, z: -1176.7644}
   - zoneName: 4-22
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -24673,11 +24903,11 @@ MonoBehaviour:
     mineralRarePerHour: 309
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 8590.102, y: 0, z: 4792.8335}
   - zoneName: 4-23
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -24893,11 +25123,11 @@ MonoBehaviour:
     mineralRarePerHour: 313
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3148.6257, y: 0, z: 6801.551}
   - zoneName: 4-24
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -25113,11 +25343,11 @@ MonoBehaviour:
     mineralRarePerHour: 317
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1301.9955, y: 0, z: 6600.1655}
   - zoneName: 4-25
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -25333,11 +25563,11 @@ MonoBehaviour:
     mineralRarePerHour: 320
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -7684.886, y: 0, z: 7126.4414}
   - zoneName: 4-26
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -25553,11 +25783,11 @@ MonoBehaviour:
     mineralRarePerHour: 324
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -8060.1226, y: 0, z: 966.9237}
   - zoneName: 4-27
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -25773,11 +26003,11 @@ MonoBehaviour:
     mineralRarePerHour: 327
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -6860.86, y: 0, z: -3828.0088}
   - zoneName: 4-28
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -25993,11 +26223,11 @@ MonoBehaviour:
     mineralRarePerHour: 331
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3925.922, y: 0, z: -8480.625}
   - zoneName: 4-29
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -26213,11 +26443,11 @@ MonoBehaviour:
     mineralRarePerHour: 335
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1235.413, y: 0, z: -6262.6616}
   - zoneName: 4-30
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 4
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -26433,11 +26663,11 @@ MonoBehaviour:
     mineralRarePerHour: 338
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 6261.6904, y: 0, z: -5806.662}
   - zoneName: 5-1
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 5
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -26653,11 +26883,11 @@ MonoBehaviour:
     mineralRarePerHour: 400
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 404.75305, y: 0, z: -189.13892}
   - zoneName: 5-2
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 5
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -26873,11 +27103,11 @@ MonoBehaviour:
     mineralRarePerHour: 406
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -41.27454, y: 0, z: 476.21417}
   - zoneName: 5-3
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 5
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -27093,11 +27323,11 @@ MonoBehaviour:
     mineralRarePerHour: 412
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -328.80945, y: 0, z: -229.83804}
   - zoneName: 5-4
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 5
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -27313,11 +27543,11 @@ MonoBehaviour:
     mineralRarePerHour: 419
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1110.9769, y: 0, z: 1294.277}
   - zoneName: 5-5
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -27533,11 +27763,11 @@ MonoBehaviour:
     mineralRarePerHour: 425
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -263.17642, y: 0, z: 1381.3806}
   - zoneName: 5-6
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -27753,11 +27983,11 @@ MonoBehaviour:
     mineralRarePerHour: 431
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1675.4397, y: 0, z: 882.79407}
   - zoneName: 5-7
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -27973,11 +28203,11 @@ MonoBehaviour:
     mineralRarePerHour: 437
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1406.0612, y: 0, z: -615.57025}
   - zoneName: 5-8
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -28193,11 +28423,11 @@ MonoBehaviour:
     mineralRarePerHour: 443
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -472.5959, y: 0, z: -1772.6924}
   - zoneName: 5-9
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -28413,11 +28643,11 @@ MonoBehaviour:
     mineralRarePerHour: 450
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 844.24915, y: 0, z: -1140.9026}
   - zoneName: 5-10
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -28633,11 +28863,11 @@ MonoBehaviour:
     mineralRarePerHour: 456
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1622.4844, y: 0, z: -58.66024}
   - zoneName: 5-11
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -28853,11 +29083,11 @@ MonoBehaviour:
     mineralRarePerHour: 462
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1107.691, y: 0, z: -3639.0413}
   - zoneName: 5-12
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -29073,11 +29303,11 @@ MonoBehaviour:
     mineralRarePerHour: 468
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4018.618, y: 0, z: -3035.974}
   - zoneName: 5-13
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -29293,11 +29523,11 @@ MonoBehaviour:
     mineralRarePerHour: 474
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3940.6914, y: 0, z: -73.61661}
   - zoneName: 5-14
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -29513,11 +29743,11 @@ MonoBehaviour:
     mineralRarePerHour: 481
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2320.3381, y: 0, z: 1620.4845}
   - zoneName: 5-15
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -29733,11 +29963,11 @@ MonoBehaviour:
     mineralRarePerHour: 487
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 994.8533, y: 0, z: 2877.8008}
   - zoneName: 5-16
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -29953,11 +30183,11 @@ MonoBehaviour:
     mineralRarePerHour: 493
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -789.96765, y: 0, z: 2595.242}
   - zoneName: 5-17
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -30173,11 +30403,11 @@ MonoBehaviour:
     mineralRarePerHour: 499
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2389.3237, y: 0, z: 1805.0801}
   - zoneName: 5-18
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -30393,11 +30623,11 @@ MonoBehaviour:
     mineralRarePerHour: 506
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2804.2751, y: 0, z: 52.386143}
   - zoneName: 5-19
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -30613,11 +30843,11 @@ MonoBehaviour:
     mineralRarePerHour: 512
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2664.7466, y: 0, z: -1861.011}
   - zoneName: 5-20
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -30833,11 +31063,11 @@ MonoBehaviour:
     mineralRarePerHour: 518
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1249.5334, y: 0, z: -3614.5095}
   - zoneName: 5-21
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -31053,11 +31283,11 @@ MonoBehaviour:
     mineralRarePerHour: 524
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2947.635, y: 0, z: 7545.718}
   - zoneName: 5-22
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -31273,11 +31503,11 @@ MonoBehaviour:
     mineralRarePerHour: 530
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2404.742, y: 0, z: 9190.799}
   - zoneName: 5-23
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -31493,11 +31723,11 @@ MonoBehaviour:
     mineralRarePerHour: 537
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -9508.638, y: 0, z: 7793.1123}
   - zoneName: 5-24
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -31713,11 +31943,11 @@ MonoBehaviour:
     mineralRarePerHour: 543
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -10517.899, y: 0, z: 613.35504}
   - zoneName: 5-25
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -31933,11 +32163,11 @@ MonoBehaviour:
     mineralRarePerHour: 549
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -10484.279, y: 0, z: -6721.116}
   - zoneName: 5-26
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -32153,11 +32383,11 @@ MonoBehaviour:
     mineralRarePerHour: 555
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3592.2769, y: 0, z: -9195.946}
   - zoneName: 5-27
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -32373,11 +32603,11 @@ MonoBehaviour:
     mineralRarePerHour: 561
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2120.936, y: 0, z: -8106.1045}
   - zoneName: 5-28
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -32593,11 +32823,11 @@ MonoBehaviour:
     mineralRarePerHour: 568
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4955.471, y: 0, z: -4061.4187}
   - zoneName: 5-29
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -32813,11 +33043,11 @@ MonoBehaviour:
     mineralRarePerHour: 574
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 10043.8955, y: 0, z: -585.71246}
   - zoneName: 5-30
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 5
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 42eaf2c5dbb13dc498f15df5a5b05fda, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -33033,11 +33263,11 @@ MonoBehaviour:
     mineralRarePerHour: 580
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 10384.983, y: 0, z: 6657.459}
   - zoneName: 6-1
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 6
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -33253,11 +33483,11 @@ MonoBehaviour:
     mineralRarePerHour: 667
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 646.34595, y: 0, z: 102.87075}
   - zoneName: 6-2
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 6
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -33473,11 +33703,11 @@ MonoBehaviour:
     mineralRarePerHour: 677
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -424.7479, y: 0, z: 523.71204}
   - zoneName: 6-3
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 6
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -33693,11 +33923,11 @@ MonoBehaviour:
     mineralRarePerHour: 687
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -212.10544, y: 0, z: -553.8014}
   - zoneName: 6-4
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 6
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -33913,11 +34143,11 @@ MonoBehaviour:
     mineralRarePerHour: 698
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1453.6649, y: 0, z: 553.08}
   - zoneName: 6-5
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 6
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -34133,11 +34363,11 @@ MonoBehaviour:
     mineralRarePerHour: 708
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1156.0525, y: 0, z: -683.6359}
   - zoneName: 6-6
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -34353,11 +34583,11 @@ MonoBehaviour:
     mineralRarePerHour: 718
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -206.80035, y: 0, z: -1476.45}
   - zoneName: 6-7
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -34573,11 +34803,11 @@ MonoBehaviour:
     mineralRarePerHour: 729
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1199.0961, y: 0, z: -1265.5618}
   - zoneName: 6-8
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -34793,11 +35023,11 @@ MonoBehaviour:
     mineralRarePerHour: 739
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1992.7825, y: 0, z: 170.27464}
   - zoneName: 6-9
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -35013,11 +35243,11 @@ MonoBehaviour:
     mineralRarePerHour: 749
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1175.3597, y: 0, z: 1763.2028}
   - zoneName: 6-10
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -35233,11 +35463,11 @@ MonoBehaviour:
     mineralRarePerHour: 760
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -477.28738, y: 0, z: 1491.855}
   - zoneName: 6-11
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -35453,11 +35683,11 @@ MonoBehaviour:
     mineralRarePerHour: 770
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1692.8187, y: 0, z: -2873.649}
   - zoneName: 6-12
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -35673,11 +35903,11 @@ MonoBehaviour:
     mineralRarePerHour: 780
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 349.8938, y: 0, z: -3634.8599}
   - zoneName: 6-13
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -35893,11 +36123,11 @@ MonoBehaviour:
     mineralRarePerHour: 791
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2516.4758, y: 0, z: -2844.5215}
   - zoneName: 6-14
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -36113,11 +36343,11 @@ MonoBehaviour:
     mineralRarePerHour: 801
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3069.9683, y: 0, z: -680.6862}
   - zoneName: 6-15
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -36333,11 +36563,11 @@ MonoBehaviour:
     mineralRarePerHour: 811
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3492.4265, y: 0, z: 1518.4324}
   - zoneName: 6-16
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -36553,11 +36783,11 @@ MonoBehaviour:
     mineralRarePerHour: 822
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1954.1406, y: 0, z: 3317.2593}
   - zoneName: 6-17
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -36773,11 +37003,11 @@ MonoBehaviour:
     mineralRarePerHour: 832
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -350.32306, y: 0, z: 3639.325}
   - zoneName: 6-18
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -36993,11 +37223,11 @@ MonoBehaviour:
     mineralRarePerHour: 843
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2301.5056, y: 0, z: 2601.5261}
   - zoneName: 6-19
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -37213,11 +37443,11 @@ MonoBehaviour:
     mineralRarePerHour: 853
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3088.7095, y: 0, z: 684.8406}
   - zoneName: 6-20
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -37433,11 +37663,11 @@ MonoBehaviour:
     mineralRarePerHour: 863
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3569.7827, y: 0, z: -1552.0646}
   - zoneName: 6-21
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -37653,11 +37883,11 @@ MonoBehaviour:
     mineralRarePerHour: 874
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -9701.601, y: 0, z: 7005.815}
   - zoneName: 6-22
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -37873,11 +38103,11 @@ MonoBehaviour:
     mineralRarePerHour: 884
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -7393.6577, y: 0, z: -21.399157}
   - zoneName: 6-23
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -38093,11 +38323,11 @@ MonoBehaviour:
     mineralRarePerHour: 894
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -8301.285, y: 0, z: -6068.023}
   - zoneName: 6-24
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -38313,11 +38543,11 @@ MonoBehaviour:
     mineralRarePerHour: 905
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2041.6549, y: 0, z: -6346.005}
   - zoneName: 6-25
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -38533,11 +38763,11 @@ MonoBehaviour:
     mineralRarePerHour: 915
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1871.8539, y: 0, z: -5704.7446}
   - zoneName: 6-26
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -38753,11 +38983,11 @@ MonoBehaviour:
     mineralRarePerHour: 925
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 9024.829, y: 0, z: -6517.0967}
   - zoneName: 6-27
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -38973,11 +39203,11 @@ MonoBehaviour:
     mineralRarePerHour: 936
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 7442.8164, y: 0, z: 21.540312}
   - zoneName: 6-28
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -39193,11 +39423,11 @@ MonoBehaviour:
     mineralRarePerHour: 946
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 6587.121, y: 0, z: 4815.014}
   - zoneName: 6-29
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -39413,11 +39643,11 @@ MonoBehaviour:
     mineralRarePerHour: 956
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1808.751, y: 0, z: 5622.075}
   - zoneName: 6-30
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 6
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -39633,11 +39863,11 @@ MonoBehaviour:
     mineralRarePerHour: 967
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2726.8215, y: 0, z: 8310.386}
   - zoneName: 7-1
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 7
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -39853,11 +40083,11 @@ MonoBehaviour:
     mineralRarePerHour: 1067
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 341.46106, y: 0, z: 319.90054}
   - zoneName: 7-2
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 7
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -40073,11 +40303,11 @@ MonoBehaviour:
     mineralRarePerHour: 1083
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -455.10458, y: 0, z: 137.9867}
   - zoneName: 7-3
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 7
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -40293,11 +40523,11 @@ MonoBehaviour:
     mineralRarePerHour: 1100
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 180.79424, y: 0, z: -774.90625}
   - zoneName: 7-4
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 7
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -40513,11 +40743,11 @@ MonoBehaviour:
     mineralRarePerHour: 1116
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -42.002357, y: 0, z: -2361.6062}
   - zoneName: 7-5
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 7
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -40733,11 +40963,11 @@ MonoBehaviour:
     mineralRarePerHour: 1133
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1819.6315, y: 0, z: -1504.8146}
   - zoneName: 7-6
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 7
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -40953,11 +41183,11 @@ MonoBehaviour:
     mineralRarePerHour: 1149
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1811.3768, y: 0, z: 379.677}
   - zoneName: 7-7
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -41173,11 +41403,11 @@ MonoBehaviour:
     mineralRarePerHour: 1166
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 895.4726, y: 0, z: 1777.8816}
   - zoneName: 7-8
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -41393,11 +41623,11 @@ MonoBehaviour:
     mineralRarePerHour: 1183
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -879.77673, y: 0, z: 1913.1799}
   - zoneName: 7-9
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -41613,11 +41843,11 @@ MonoBehaviour:
     mineralRarePerHour: 1199
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1945.0419, y: 0, z: 480.4883}
   - zoneName: 7-10
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -41833,11 +42063,11 @@ MonoBehaviour:
     mineralRarePerHour: 1216
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1086.2976, y: 0, z: -835.12775}
   - zoneName: 7-11
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -42053,11 +42283,11 @@ MonoBehaviour:
     mineralRarePerHour: 1232
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3462.8552, y: 0, z: -740.28485}
   - zoneName: 7-12
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -42273,11 +42503,11 @@ MonoBehaviour:
     mineralRarePerHour: 1249
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2440.6455, y: 0, z: -2716.9927}
   - zoneName: 7-13
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -42493,11 +42723,11 @@ MonoBehaviour:
     mineralRarePerHour: 1265
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -457.10788, y: 0, z: -4398.541}
   - zoneName: 7-14
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -42713,11 +42943,11 @@ MonoBehaviour:
     mineralRarePerHour: 1282
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1790.5723, y: 0, z: -3093.0054}
   - zoneName: 7-15
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -42933,11 +43163,11 @@ MonoBehaviour:
     mineralRarePerHour: 1298
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3448.6716, y: 0, z: -1530.6199}
   - zoneName: 7-16
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -43153,11 +43383,11 @@ MonoBehaviour:
     mineralRarePerHour: 1315
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3913.018, y: 0, z: 836.5204}
   - zoneName: 7-17
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -43373,11 +43603,11 @@ MonoBehaviour:
     mineralRarePerHour: 1331
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2329.3523, y: 0, z: 2593.097}
   - zoneName: 7-18
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -43593,11 +43823,11 @@ MonoBehaviour:
     mineralRarePerHour: 1348
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 439.66174, y: 0, z: 4230.6787}
   - zoneName: 7-19
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -43813,11 +44043,11 @@ MonoBehaviour:
     mineralRarePerHour: 1365
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2248.9321, y: 0, z: 3884.7656}
   - zoneName: 7-20
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -44033,11 +44263,11 @@ MonoBehaviour:
     mineralRarePerHour: 1381
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3297.8052, y: 0, z: 1463.6616}
   - zoneName: 7-21
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -44253,11 +44483,11 @@ MonoBehaviour:
     mineralRarePerHour: 1398
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -6005.572, y: 0, z: -4980.458}
   - zoneName: 7-22
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -44473,11 +44703,11 @@ MonoBehaviour:
     mineralRarePerHour: 1414
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1444.9852, y: 0, z: -5656.163}
   - zoneName: 7-23
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -44693,11 +44923,11 @@ MonoBehaviour:
     mineralRarePerHour: 1431
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2700.5188, y: 0, z: -6796.761}
   - zoneName: 7-24
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -44913,11 +45143,11 @@ MonoBehaviour:
     mineralRarePerHour: 1447
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 8534.006, y: 0, z: -5401.4146}
   - zoneName: 7-25
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -45133,11 +45363,11 @@ MonoBehaviour:
     mineralRarePerHour: 1464
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 7076.396, y: 0, z: 453.78192}
   - zoneName: 7-26
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -45353,11 +45583,11 @@ MonoBehaviour:
     mineralRarePerHour: 1480
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 8569.0205, y: 0, z: 7106.34}
   - zoneName: 7-27
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -45573,11 +45803,11 @@ MonoBehaviour:
     mineralRarePerHour: 1497
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1753.151, y: 0, z: 6862.438}
   - zoneName: 7-28
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -45793,11 +46023,11 @@ MonoBehaviour:
     mineralRarePerHour: 1514
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3777.467, y: 0, z: 9507.253}
   - zoneName: 7-29
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -46013,11 +46243,11 @@ MonoBehaviour:
     mineralRarePerHour: 1530
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -7975.8506, y: 0, z: 5048.144}
   - zoneName: 7-30
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 7
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -46233,11 +46463,11 @@ MonoBehaviour:
     mineralRarePerHour: 1547
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -11359.875, y: 0, z: -728.4632}
   - zoneName: 8-1
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 8
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -46453,11 +46683,11 @@ MonoBehaviour:
     mineralRarePerHour: 1733
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 151.96962, y: 0, z: 670.1104}
   - zoneName: 8-2
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 8
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -46673,11 +46903,11 @@ MonoBehaviour:
     mineralRarePerHour: 1760
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -651.3057, y: 0, z: -201.89215}
   - zoneName: 8-3
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 8
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -46893,11 +47123,11 @@ MonoBehaviour:
     mineralRarePerHour: 1787
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 434.03854, y: 0, z: -401.60864}
   - zoneName: 8-4
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 8
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -47113,11 +47343,11 @@ MonoBehaviour:
     mineralRarePerHour: 1814
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1660.0564, y: 0, z: 564.89124}
   - zoneName: 8-5
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 8
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -47333,11 +47563,11 @@ MonoBehaviour:
     mineralRarePerHour: 1841
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 654.3492, y: 0, z: 1819.638}
   - zoneName: 8-6
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 8
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -47553,11 +47783,11 @@ MonoBehaviour:
     mineralRarePerHour: 1868
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1000.3095, y: 0, z: 1622.8188}
   - zoneName: 8-7
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 8
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -47773,11 +48003,11 @@ MonoBehaviour:
     mineralRarePerHour: 1895
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1861.7661, y: 0, z: 226.01244}
   - zoneName: 8-8
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -47993,11 +48223,11 @@ MonoBehaviour:
     mineralRarePerHour: 1922
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1289.6165, y: 0, z: -1267.6084}
   - zoneName: 8-9
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -48213,11 +48443,11 @@ MonoBehaviour:
     mineralRarePerHour: 1949
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 162.5417, y: 0, z: -1563.412}
   - zoneName: 8-10
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -48433,11 +48663,11 @@ MonoBehaviour:
     mineralRarePerHour: 1975
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1667.5986, y: 0, z: -1067.9485}
   - zoneName: 8-11
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -48653,11 +48883,11 @@ MonoBehaviour:
     mineralRarePerHour: 2002
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3825.152, y: 0, z: 2714.8193}
   - zoneName: 8-12
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -48873,11 +49103,11 @@ MonoBehaviour:
     mineralRarePerHour: 2029
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -4504.1274, y: 0, z: -49.96628}
   - zoneName: 8-13
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -49093,11 +49323,11 @@ MonoBehaviour:
     mineralRarePerHour: 2056
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2527.1914, y: 0, z: -1879.2943}
   - zoneName: 8-14
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -49313,11 +49543,11 @@ MonoBehaviour:
     mineralRarePerHour: 2083
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -953.6664, y: 0, z: -3049.7893}
   - zoneName: 8-15
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -49533,11 +49763,11 @@ MonoBehaviour:
     mineralRarePerHour: 2110
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1488.8214, y: 0, z: -4414.8677}
   - zoneName: 8-16
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -49753,11 +49983,11 @@ MonoBehaviour:
     mineralRarePerHour: 2137
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2816.77, y: 0, z: -1999.1425}
   - zoneName: 8-17
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -49973,11 +50203,11 @@ MonoBehaviour:
     mineralRarePerHour: 2164
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3871.3687, y: 0, z: 42.948067}
   - zoneName: 8-18
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -50193,11 +50423,11 @@ MonoBehaviour:
     mineralRarePerHour: 2191
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2515.4502, y: 0, z: 1870.5634}
   - zoneName: 8-19
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -50413,11 +50643,11 @@ MonoBehaviour:
     mineralRarePerHour: 2217
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1374.861, y: 0, z: 4396.752}
   - zoneName: 8-20
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -50633,11 +50863,11 @@ MonoBehaviour:
     mineralRarePerHour: 2244
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1239.7777, y: 0, z: 3676.3752}
   - zoneName: 8-21
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -50853,11 +51083,11 @@ MonoBehaviour:
     mineralRarePerHour: 2271
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4887.758, y: 0, z: -10400.019}
   - zoneName: 8-22
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -51073,11 +51303,11 @@ MonoBehaviour:
     mineralRarePerHour: 2298
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 9688.14, y: 0, z: -5332.1777}
   - zoneName: 8-23
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -51293,11 +51523,11 @@ MonoBehaviour:
     mineralRarePerHour: 2325
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 11689.361, y: 0, z: 1470.9875}
   - zoneName: 8-24
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -51513,11 +51743,11 @@ MonoBehaviour:
     mineralRarePerHour: 2352
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 5398.802, y: 0, z: 5064.917}
   - zoneName: 8-25
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -51733,11 +51963,11 @@ MonoBehaviour:
     mineralRarePerHour: 2379
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1558.6196, y: 0, z: 8149.237}
   - zoneName: 8-26
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -51953,11 +52183,11 @@ MonoBehaviour:
     mineralRarePerHour: 2406
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -5232.2876, y: 0, z: 11133.1045}
   - zoneName: 8-27
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -52173,11 +52403,11 @@ MonoBehaviour:
     mineralRarePerHour: 2433
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -6338.2656, y: 0, z: 3488.4685}
   - zoneName: 8-28
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -52393,11 +52623,11 @@ MonoBehaviour:
     mineralRarePerHour: 2460
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -6515.074, y: 0, z: -819.8582}
   - zoneName: 8-29
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -52613,11 +52843,11 @@ MonoBehaviour:
     mineralRarePerHour: 2486
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -4880.2554, y: 0, z: -4578.4385}
   - zoneName: 8-30
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 8
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -52833,11 +53063,11 @@ MonoBehaviour:
     mineralRarePerHour: 2513
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1567.8557, y: 0, z: -8197.5205}
   - zoneName: 9-1
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.1"
     shipCount: 9
     moduleLevel: 1
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -53053,11 +53283,11 @@ MonoBehaviour:
     mineralRarePerHour: 2833
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -177.45477, y: 0, z: 454.86588}
   - zoneName: 9-2
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.2"
     shipCount: 9
     moduleLevel: 2
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -53273,11 +53503,11 @@ MonoBehaviour:
     mineralRarePerHour: 2877
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -293.3818, y: 0, z: -366.358}
   - zoneName: 9-3
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.3"
     shipCount: 9
     moduleLevel: 3
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -53493,11 +53723,11 @@ MonoBehaviour:
     mineralRarePerHour: 2921
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 794.5649, y: 0, z: -121.414696}
   - zoneName: 9-4
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.4"
     shipCount: 9
     moduleLevel: 4
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -53713,11 +53943,11 @@ MonoBehaviour:
     mineralRarePerHour: 2965
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -932.69006, y: 0, z: 1168.1857}
   - zoneName: 9-5
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.5"
     shipCount: 9
     moduleLevel: 5
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -53933,11 +54163,11 @@ MonoBehaviour:
     mineralRarePerHour: 3009
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1979.8463, y: 0, z: -1.1316342}
   - zoneName: 9-6
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.6"
     shipCount: 9
     moduleLevel: 6
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -54153,11 +54383,11 @@ MonoBehaviour:
     mineralRarePerHour: 3053
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1469.7059, y: 0, z: -1845.1151}
   - zoneName: 9-7
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.7"
     shipCount: 9
     moduleLevel: 7
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -54373,11 +54603,11 @@ MonoBehaviour:
     mineralRarePerHour: 3097
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 480.01065, y: 0, z: -2097.5347}
   - zoneName: 9-8
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.8"
     shipCount: 9
     moduleLevel: 8
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -54593,11 +54823,11 @@ MonoBehaviour:
     mineralRarePerHour: 3141
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1684.5754, y: 0, z: -810.0626}
   - zoneName: 9-9
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -54813,11 +55043,11 @@ MonoBehaviour:
     mineralRarePerHour: 3185
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2127.7363, y: 0, z: 1026.1625}
   - zoneName: 9-10
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -55033,11 +55263,11 @@ MonoBehaviour:
     mineralRarePerHour: 3229
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 431.8574, y: 0, z: 1897.0878}
   - zoneName: 9-11
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -55253,11 +55483,11 @@ MonoBehaviour:
     mineralRarePerHour: 3273
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -591.143, y: 0, z: 4676.6265}
   - zoneName: 9-12
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -55473,11 +55703,11 @@ MonoBehaviour:
     mineralRarePerHour: 3317
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2826.1216, y: 0, z: 3009.0725}
   - zoneName: 9-13
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -55693,11 +55923,11 @@ MonoBehaviour:
     mineralRarePerHour: 3361
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3866.3672, y: 0, z: 737.2557}
   - zoneName: 9-14
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -55913,11 +56143,11 @@ MonoBehaviour:
     mineralRarePerHour: 3405
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -3288.133, y: 0, z: -1547.5719}
   - zoneName: 9-15
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -56133,11 +56363,11 @@ MonoBehaviour:
     mineralRarePerHour: 3449
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -2028.799, y: 0, z: -3691.012}
   - zoneName: 9-16
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -56353,11 +56583,11 @@ MonoBehaviour:
     mineralRarePerHour: 3493
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 670.43243, y: 0, z: -5303.905}
   - zoneName: 9-17
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -56573,11 +56803,11 @@ MonoBehaviour:
     mineralRarePerHour: 3537
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 3535.8408, y: 0, z: -3764.735}
   - zoneName: 9-18
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -56793,11 +57023,11 @@ MonoBehaviour:
     mineralRarePerHour: 3581
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4150.732, y: 0, z: -791.48016}
   - zoneName: 9-19
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -57013,11 +57243,11 @@ MonoBehaviour:
     mineralRarePerHour: 3625
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4299.191, y: 0, z: 2023.4307}
   - zoneName: 9-20
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -57233,11 +57463,11 @@ MonoBehaviour:
     mineralRarePerHour: 3669
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 2384.4124, y: 0, z: 4337.981}
   - zoneName: 9-21
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -57453,11 +57683,11 @@ MonoBehaviour:
     mineralRarePerHour: 3713
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 8510.201, y: 0, z: 1604.2804}
   - zoneName: 9-22
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -57673,11 +57903,11 @@ MonoBehaviour:
     mineralRarePerHour: 3757
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 6507.2305, y: 0, z: 6899.438}
   - zoneName: 9-23
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -57893,11 +58123,11 @@ MonoBehaviour:
     mineralRarePerHour: 3801
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 1212.5695, y: 0, z: 9433.825}
   - zoneName: 9-24
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -58113,11 +58343,11 @@ MonoBehaviour:
     mineralRarePerHour: 3845
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -4921.853, y: 0, z: 8999.008}
   - zoneName: 9-25
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -58333,11 +58563,11 @@ MonoBehaviour:
     mineralRarePerHour: 3889
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -8167.46, y: 0, z: 3864.9797}
   - zoneName: 9-26
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -58553,11 +58783,11 @@ MonoBehaviour:
     mineralRarePerHour: 3932
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -7259.316, y: 0, z: -1368.4718}
   - zoneName: 9-27
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -58773,11 +59003,11 @@ MonoBehaviour:
     mineralRarePerHour: 3976
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -5019.8657, y: 0, z: -5322.425}
   - zoneName: 9-28
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -58993,11 +59223,11 @@ MonoBehaviour:
     mineralRarePerHour: 4020
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: -1121.4515, y: 0, z: -8724.923}
   - zoneName: 9-29
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -59213,11 +59443,11 @@ MonoBehaviour:
     mineralRarePerHour: 4064
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 4613.8794, y: 0, z: -8435.914}
   - zoneName: 9-30
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
     shipCount: 9
     moduleLevel: 9
-    skyboxMaterial: {fileID: 2100000, guid: 69e10e886d52d20478f9ed5424126be8, type: 2}
     zoneClearCount: 10
     delayBeforeSpawn: 3
     enemyShipConfigs:
@@ -59433,3 +59663,4 @@ MonoBehaviour:
     mineralRarePerHour: 4108
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    fleetPosition: {x: 9755.004, y: 0, z: -4616.234}
