@@ -12,7 +12,7 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     [SerializeField] private Volume m_volume;
 
     [Header("Skybox")]
-    [SerializeField] private Material m_initialSkyboxMaterial;  // 게임 시작 시 즉시 적용할 기본 스카이박스
+    [SerializeField] private Material m_skyboxBlendSource;  // MatSkyBoxBlend 원본 (복사 원본, 수정 안 함)
 
     [Header("Warp Settings")]
     [SerializeField] private float m_warpChromaticAberration = 0.6f;
@@ -53,7 +53,7 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     private static readonly string[] FaceNamesA = { "_FrontTexA", "_BackTexA", "_LeftTexA", "_RightTexA", "_UpTexA", "_DownTexA" };
     private static readonly string[] FaceNamesB = { "_FrontTexB", "_BackTexB", "_LeftTexB", "_RightTexB", "_UpTexB", "_DownTexB" };
     private static readonly string[] FaceNames = { "_FrontTex", "_BackTex", "_LeftTex", "_RightTex", "_UpTex", "_DownTex" };
-    private Material m_skyboxBlendInstance;  // 런타임 인스턴스 (에셋 보호용)
+    private Material m_skyboxBlendInstance;  // 런타임 복사본
 
     // Warp sequence
     private Coroutine m_warpCoroutine;
@@ -99,18 +99,14 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         if (m_mainCamera != null)
             m_originalFOV = m_mainCamera.fieldOfView;
 
-        // 런타임 인스턴스 생성 (원본 에셋 보호)
-        if (RenderSettings.skybox != null && m_skyboxBlendInstance == null)
+        Material source = m_skyboxBlendSource != null ? m_skyboxBlendSource : RenderSettings.skybox;
+        if (source != null && m_skyboxBlendInstance == null)
         {
-            m_skyboxBlendInstance = new Material(RenderSettings.skybox);
+            m_skyboxBlendInstance = new Material(source);
             RenderSettings.skybox = m_skyboxBlendInstance;
         }
 
         m_initialized = true;
-
-        // 첫 프레임 흰색 방지 — 초기 스카이박스를 즉시 A/B 슬롯에 반영
-        if (m_initialSkyboxMaterial != null)
-            SetSkyboxImmediate(m_initialSkyboxMaterial);
     }
 
     // 워프 강도 설정 (0 = 평상시, 1 = 워프 최대)
@@ -360,7 +356,6 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         base.OnDestroy();
         ResetToOriginal();
 
-        // 런타임 인스턴스 정리
         if (m_skyboxBlendInstance != null)
         {
             Destroy(m_skyboxBlendInstance);
