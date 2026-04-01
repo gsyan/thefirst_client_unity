@@ -198,6 +198,29 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         m_skyboxBlendInstance.SetFloat(BlendID, 0f);
     }
 
+    // 텍스처 로드 완료까지 대기 후 즉시 적용 (모바일 비동기 로드 대응)
+    public void ApplyInitialSkyboxWhenReady(Material mat)
+    {
+        if (mat == null) return;
+        StartCoroutine(InitialSkyboxCoroutine(mat));
+    }
+
+    private System.Collections.IEnumerator InitialSkyboxCoroutine(Material mat)
+    {
+        int frame = 0;
+        while (true)
+        {
+            if (mat.GetTexture("_FrontTex") != null)
+            {
+                Debug.Log($"[Skybox] 텍스처 로드 완료 — {frame}프레임 대기");
+                SetSkyboxImmediate(mat);
+                yield break;
+            }
+            frame++;
+            yield return null;
+        }
+    }
+
     // 블렌드 완료 (B를 새 기준으로 설정)
     public void FinalizeSkyboxBlend()
     {

@@ -77,33 +77,13 @@ public class UITabExploration : UITabBase
         UpdateZoneInfo();
         SetEnterZoneState(EEnterZoneState.safe);
 
-        // 텍스처 로드 완료 후 적용 (모바일 비동기 로드 대응)
-        StartCoroutine(ApplyInitialSkyboxWhenReady());
+        // 텍스처 로드 완료 후 적용 — WarpPostProcessing(항상 active)에서 코루틴 실행
+        var pp = WarpPostProcessing.Instance;
+        if (pp != null)
+            pp.ApplyInitialSkyboxWhenReady(m_datatableZone.GetGroupConfig(0)?.skyboxMaterial);
     }
 
-    private System.Collections.IEnumerator ApplyInitialSkyboxWhenReady()
-    {
-        var zone0Group = m_datatableZone.GetGroupConfig(0);
-        if (zone0Group == null || zone0Group.skyboxMaterial == null) yield break;
-
-        int frame = 0;
-        while (m_enterZoneState == EEnterZoneState.safe)
-        {
-            if (zone0Group.skyboxMaterial.GetTexture("_FrontTex") != null)
-            {
-                Debug.Log($"[Skybox] 텍스처 로드 완료 — {frame}프레임 대기");
-                var pp = WarpPostProcessing.Instance;
-                if (pp != null)
-                    pp.SetSkyboxImmediate(zone0Group.skyboxMaterial);
-                yield break;
-            }
-            frame++;
-            yield return null;
-        }
-        Debug.Log($"[Skybox] 안전지역 벗어남 — {frame}프레임 대기 후 미적용");
-    }
-
-    private void SetupGroupTabs()
+private void SetupGroupTabs()
     {
         if (m_groupTabButtons == null) return;
         for (int i = 0; i < m_groupTabButtons.Length; i++)
