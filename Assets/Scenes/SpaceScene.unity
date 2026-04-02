@@ -489,7 +489,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_volume: {fileID: 725481648}
-  m_skyboxBlendSource: {fileID: 2100000, guid: 20d1eba6a48cc874ea9edbb16fdb482e, type: 2}
   m_warpChromaticAberration: 0.6
   m_warpBloomIntensity: 2
   m_warpSaturation: 20

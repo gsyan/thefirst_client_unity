@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class EffectBase : MonoBehaviour
 {
-    [SerializeField] protected EPoolName m_poolName;
+    // EPoolName 문자열 - enum 직렬화 시 중간 삽입에 의한 인덱스 밀림 방지
+    [SerializeField] protected string m_poolName;
 
     public virtual void ReturnToPool_Effect()
     {
-        if (ObjectManager.Instance != null)
-            ObjectManager.Instance.m_poolManager.Return(m_poolName, this);
+        if (ObjectManager.Instance != null && System.Enum.TryParse(m_poolName, out EPoolName poolName))
+            ObjectManager.Instance.m_poolManager.Return(poolName, this);
     }
     
     public virtual void Play()

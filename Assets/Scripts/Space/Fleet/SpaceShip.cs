@@ -273,7 +273,7 @@ public class SpaceShip : MonoBehaviour
 
         // 폭발 이펙트 생성 (풀에서 가져와서 재생 후 자동 반환)
         ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(
-            EPoolName.EFFECT_SHIP_EXPLOSION,
+            EPoolName.EFFECT_EXPLOSION_SHIP,
             transform.position
         );
     }

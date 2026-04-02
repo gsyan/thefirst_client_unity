@@ -101,11 +101,18 @@ public class ModuleBeam : ModuleBase
         switch (m_moduleInfo.moduleSubType)
         {
             case EModuleSubType.beam_t1_std_ver1:
-            case EModuleSubType.beam_t1_adv_ver1:
                 for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
                     launcher.InitializeLauncherBeam(moduleData, i, m_myFleet != null && m_myFleet.IsEnemy);
+                    m_launchers.Add(launcher);
+                }
+                break;
+            case EModuleSubType.beam_t1_adv_ver1:
+                for(int i=0; i< moduleData.attackFireCount; i++)
+                {
+                    LauncherBeamInstant launcher = gameObject.AddComponent<LauncherBeamInstant>();
+                    launcher.InitializeLauncherBeamInstant(moduleData, i, m_myFleet != null && m_myFleet.IsEnemy);
                     m_launchers.Add(launcher);
                 }
                 break;

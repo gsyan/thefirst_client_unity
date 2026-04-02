@@ -229,10 +229,8 @@ namespace FORGE3D
             if (AnimateUV)
             {
                 animateUVTime += Time.deltaTime;
-
-                if (animateUVTime > 1.0f)
-                    animateUVTime = 0f;
-                var v = animateUVTime * UVTime + initialBeamOffset;
+                // 0.5 중심으로 ±amplitude 진동 (UVTime=주파수, 0.05f=진폭)
+                var v = 0.5f + Mathf.Sin(animateUVTime * Mathf.Abs(UVTime)) * 0.05f;
                 lineRenderer.material.SetVector("_Offset", new Vector2(v, 0));
             }
 

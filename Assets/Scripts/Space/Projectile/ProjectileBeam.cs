@@ -28,7 +28,7 @@ public class ProjectileBeam : ProjectileBase
     private Coroutine m_lifeCycleCoroutine;
     private float m_lifeTime;
     private const float MAX_LIFE_TIME = 5f;
-    private static readonly WaitForSeconds s_scatterWait = new WaitForSeconds(0.5f);
+    //private static readonly WaitForSeconds s_scatterWait = new WaitForSeconds(0.5f);
 
     [SerializeField] private float m_beamHoldTime = 0.3f; // 히트 후 빔이 유지되는 시간
     [SerializeField] private float m_beamDissolveTime = 0.4f; // 빔이 사라지는 시간
@@ -204,7 +204,7 @@ public class ProjectileBeam : ProjectileBase
         m_lineRenderer.enabled = false;
 
         // 파티클이 완전히 사라질 때까지 대기
-        yield return s_scatterWait;
+        yield return new WaitForSeconds(0.5f);
 
         ReturnToPool();
     }

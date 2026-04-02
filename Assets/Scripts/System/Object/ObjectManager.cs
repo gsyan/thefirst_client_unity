@@ -34,6 +34,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         else
             Debug.LogError("ProjectileBeamPrefab not found at Resources/Prefabs/Projectile/ProjectileBeam");
 
+        ProjectileBeamInstant projectileBeamInstantPrefab = Resources.Load<ProjectileBeamInstant>("Prefabs/Projectile/ProjectileBeamInstant");
+        if (projectileBeamInstantPrefab != null)
+            m_poolManager.CreatePool(EPoolName.PROJECTILE_BEAM_INSTANT, projectileBeamInstantPrefab, 1, 20);
+        else
+            Debug.LogWarning("ProjectileBeamInstant not found at Resources/Prefabs/Projectile/ProjectileBeamInstant");
+
         ProjectileMissile projectileMissileSmallPrefab = Resources.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileSmall");
         if (projectileMissileSmallPrefab != null)
             m_poolManager.CreatePool(EPoolName.PROJECTILE_MISSILE_SMALL, projectileMissileSmallPrefab, 1, 50);
@@ -54,11 +60,16 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
 
 
+
+
         ParticleSystem effectBeamMuzzlePrefab = Resources.Load<ParticleSystem>("Prefabs/Effect/EffectBeamMuzzle");
         if (effectBeamMuzzlePrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_MUZZLE, effectBeamMuzzlePrefab, 5, 20);
         else
             Debug.LogError("EffectBeamMuzzlePrefab not found at Resources/Prefabs/Effect/EffectBeamMuzzle");
+
+
+
 
         EffectBase effectBeamHeadPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectBeamHead");
         if (effectBeamHeadPrefab != null)
@@ -78,17 +89,27 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         else
             Debug.LogError("effectMissileHitPrefab not found at Resources/Prefabs/Effect/EffectMissileHit");
 
-        EffectBase effectShipExplosionPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectShipExplosion");
-        if (effectShipExplosionPrefab != null)
-            m_poolManager.CreatePool(EPoolName.EFFECT_SHIP_EXPLOSION, effectShipExplosionPrefab, 3, 10);
+        // EffectBase effectShipExplosionPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectShipExplosion");
+        // if (effectShipExplosionPrefab != null)
+        //     m_poolManager.CreatePool(EPoolName.EFFECT_SHIP_EXPLOSION, effectShipExplosionPrefab, 3, 10);
+        // else
+        //     Debug.LogError("effectShipExplosionPrefab not found at Resources/Prefabs/Effect/EffectShipExplosion");
+
+        EffectBase effectExplosionShipPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectExplosionShip");
+        if (effectExplosionShipPrefab != null)
+            m_poolManager.CreatePool(EPoolName.EFFECT_EXPLOSION_SHIP, effectExplosionShipPrefab, 3, 10);
         else
-            Debug.LogError("effectShipExplosionPrefab not found at Resources/Prefabs/Effect/EffectShipExplosion");
+            Debug.LogError("EffectExplosionShip not found at Resources/Prefabs/Effect/EffectExplosionShip");
 
         EffectBase effectWarpSpeedLinesPrefab = Resources.Load<EffectBase>("Prefabs/Effect/WarpSpeedLines");
         if (effectWarpSpeedLinesPrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_WARP_SPEEDLINES, effectWarpSpeedLinesPrefab, 5, 20);
         else
             Debug.LogError("WarpSpeedLines not found at Resources/Prefabs/Effect/WarpSpeedLines");
+
+
+
+
 
         AircraftStandard aircraftStandardPrefab = Resources.Load<AircraftStandard>("Prefabs/Aircraft/AircraftStandard");
         if (aircraftStandardPrefab != null)
@@ -107,10 +128,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public Sprite[] m_asteroidSprites;
     public Sprite[] m_planetSprites;
     private readonly List<GameObject> m_activeDecors = new();
-
-    // 카메라 포커스용 — GetEnemySpawnPosition() 기준 고정 목표지점
-    private Vector3 m_enemyFleetFocusPosition;
-    public Vector3 EnemyFleetFocusPosition => m_enemyFleetFocusPosition;
 
     // Zone 전투 관련
     private ZoneConfig m_currentZoneConfig;
@@ -269,8 +286,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_totalSpawnedEnemies = 0;
         m_totalDestroyedEnemies = 0;
         m_onZoneBattleComplete = onComplete;
-        m_enemyFleetFocusPosition = GetEnemySpawnPosition(); // 웨이브 스폰 전 중앙 버튼 대비 미리 설정
-
+        
         GameSpeedController.RestoreSpeed(); // 이전 전투 배속 복원
         if (m_myFleet != null) m_myFleet.SetFleetState(EFleetState.Battle);
         m_spawnCoroutine = StartCoroutine(SpawnWaves());
@@ -290,7 +306,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_onPvpBattleComplete = onComplete;
 
         Vector3 spawnPosition = GetEnemySpawnPosition();
-        m_enemyFleetFocusPosition = spawnPosition; // 전투 시작과 동시에 중앙 버튼 대비 설정
         GameObject fleetObj = new GameObject("PvpEnemyFleet");
         fleetObj.transform.position = spawnPosition;
 
@@ -490,7 +505,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (shipCount <= 0) shipCount = template.shipCount;
 
         Vector3 spawnPosition = GetEnemySpawnPosition();
-        m_enemyFleetFocusPosition = spawnPosition;
         GameObject fleetObj = new GameObject($"EnemyFleet_{m_currentWaveIndex}");
         fleetObj.transform.position = spawnPosition;
 
@@ -804,7 +818,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         return new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), 0, UnityEngine.Random.Range(-10.0f, 10.0f));
     }
 
-    private Vector3 GetEnemySpawnPosition()
+    public Vector3 GetEnemySpawnPosition()
     {
         // 내 함대의 위치와 방향 가져오기
         if (m_myFleet == null || m_myFleet.transform == null) return Vector3.zero;

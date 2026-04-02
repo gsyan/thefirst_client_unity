@@ -79,7 +79,7 @@ public class CameraController : MonoSingleton<CameraController>
         {
             var objMgr = ObjectManager.Instance;
             if (objMgr != null && objMgr.m_myFleet != null)
-                m_targetPosition = (objMgr.m_myFleet.transform.position + objMgr.EnemyFleetFocusPosition) * 0.5f;
+                m_targetPosition = (objMgr.m_myFleet.transform.position + objMgr.GetEnemySpawnPosition()) * 0.5f;
         }
         
 
@@ -430,7 +430,7 @@ public class CameraController : MonoSingleton<CameraController>
         var objMgr = ObjectManager.Instance;
         if (objMgr == null || objMgr.m_myFleet == null) return m_currentZoom;
 
-        float dist = Vector3.Distance(objMgr.m_myFleet.transform.position, objMgr.EnemyFleetFocusPosition);
+        float dist = Vector3.Distance(objMgr.m_myFleet.transform.position, objMgr.GetEnemySpawnPosition());
         float viewportWidth = GetViewportWidth(); // 0.5 = UI 열림, 1.0 = 전체화면
         float aspect = m_targetCamera != null ? m_targetCamera.aspect : (16f / 9f);
         float vFovRad = (m_targetCamera != null ? m_targetCamera.fieldOfView : 60f) * Mathf.Deg2Rad;
@@ -500,10 +500,29 @@ public class CameraController : MonoSingleton<CameraController>
     }
 
     // 카메라를 현재 타겟 위치로 즉시 스냅 (스테이지 입장 등 순간이동 시 사용)
+    // my_fleet: m_currentTarget이 없으면 함대 transform으로 재연결 후 스냅
+    // center/enemy: EnemyFleetFocusPosition 기준으로 스냅 (적 없어도 스폰 위치 사용)
     public void SnapToTarget()
     {
-        if (m_currentTarget != null)
-            m_targetPosition = m_currentTarget.position;
+        var objMgr = ObjectManager.Instance;
+        var myFleet = objMgr != null ? objMgr.m_myFleet : null;
+        switch (m_focusTarget)
+        {
+            case ECameraFocusTarget.camera_focus_my_fleet:
+                if (m_currentTarget == null && myFleet != null)
+                    m_currentTarget = myFleet.transform;
+                if (m_currentTarget != null)
+                    m_targetPosition = m_currentTarget.position;
+                break;
+            case ECameraFocusTarget.camera_focus_enemy_fleet:
+                if (objMgr != null)
+                    m_targetPosition = objMgr.GetEnemySpawnPosition();
+                break;
+            case ECameraFocusTarget.camera_focus_center:
+                if (objMgr != null && myFleet != null)
+                    m_targetPosition = (myFleet.transform.position + objMgr.GetEnemySpawnPosition()) * 0.5f;
+                break;
+        }
         m_interpolatedTargetPosition = m_targetPosition;
     }
 
@@ -570,7 +589,7 @@ public class CameraController : MonoSingleton<CameraController>
                     m_currentTargetBackup = m_currentTarget;
                     m_currentTarget = null;
                 }
-                m_targetPosition = objMgr.EnemyFleetFocusPosition;
+                m_targetPosition = objMgr.GetEnemySpawnPosition();
                 break;
             case ECameraFocusTarget.camera_focus_center:
                 if (m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
@@ -578,7 +597,7 @@ public class CameraController : MonoSingleton<CameraController>
                     m_currentTargetBackup = m_currentTarget;
                     m_currentTarget = null;
                 }
-                m_targetPosition = (myFleet.transform.position + objMgr.EnemyFleetFocusPosition) * 0.5f;
+                m_targetPosition = (myFleet.transform.position + objMgr.GetEnemySpawnPosition()) * 0.5f;
                 break;
             case ECameraFocusTarget.camera_focus_my_fleet:
                 if (m_currentTargetBackup == null)
