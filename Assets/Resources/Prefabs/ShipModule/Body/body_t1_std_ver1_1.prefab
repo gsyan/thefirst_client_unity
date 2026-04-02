@@ -4810,6 +4810,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
       objectReference: {fileID: 2100000, guid: 9944690f1cde48e43a932bb00f0369e9, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 3bf0df5f8ccd322489c464b58c56e8a1, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5755194533795287477, guid: e411236eee6978a43b12c5b8ff1fb429, type: 3}
     - target: {fileID: 919132149155446097, guid: 3bf0df5f8ccd322489c464b58c56e8a1, type: 3}
       propertyPath: m_Name
       value: hangar_roundB
@@ -4930,6 +4934,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
       objectReference: {fileID: 2100000, guid: 9944690f1cde48e43a932bb00f0369e9, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 3bf0df5f8ccd322489c464b58c56e8a1, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5755194533795287477, guid: e411236eee6978a43b12c5b8ff1fb429, type: 3}
     - target: {fileID: 919132149155446097, guid: 3bf0df5f8ccd322489c464b58c56e8a1, type: 3}
       propertyPath: m_Name
       value: hangar_roundB
@@ -5050,6 +5058,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
       objectReference: {fileID: 2100000, guid: 9944690f1cde48e43a932bb00f0369e9, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 3bf0df5f8ccd322489c464b58c56e8a1, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5755194533795287477, guid: e411236eee6978a43b12c5b8ff1fb429, type: 3}
     - target: {fileID: 919132149155446097, guid: 3bf0df5f8ccd322489c464b58c56e8a1, type: 3}
       propertyPath: m_Name
       value: hangar_roundB
@@ -5262,6 +5274,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
       objectReference: {fileID: 2100000, guid: 9944690f1cde48e43a932bb00f0369e9, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 3bf0df5f8ccd322489c464b58c56e8a1, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5755194533795287477, guid: e411236eee6978a43b12c5b8ff1fb429, type: 3}
     - target: {fileID: 919132149155446097, guid: 3bf0df5f8ccd322489c464b58c56e8a1, type: 3}
       propertyPath: m_Name
       value: hangar_roundB
