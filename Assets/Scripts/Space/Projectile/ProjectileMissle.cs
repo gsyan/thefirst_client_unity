@@ -62,6 +62,14 @@ public class ProjectileMissile : ProjectileBase
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, ROTATION_SPEED * Time.deltaTime);
                 transform.position += transform.forward * m_currentSpeed * Time.deltaTime;
+
+                // 이동 후 타겟 위치를 지나쳤으면 폭파
+                Vector3 toTarget = m_saveTargetPosition - transform.position;
+                if (Vector3.Dot(transform.forward, toTarget) < 0f)
+                {
+                    ReturnToPool();
+                    yield break;
+                }
             }
 
             // 이전 위치→현재 위치 raycast로 충돌 감지 (터널링 방지)
