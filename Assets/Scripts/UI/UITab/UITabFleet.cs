@@ -155,47 +155,57 @@ public class UITabFleet : UITabBase
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
-        TechLevelResearchData nextNode = GetNextTechLevelNode(character);
-        if (nextNode == null) return;
+        if (GetNextTechLevelNode(character) == null) return;
 
-        string targetLevelStr = nextNode.targetTechLevel.ToString();
-        string detailText = $"<sprite name=\"IconTech\"> Lv.{targetLevelStr}";
-
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("research_tech_name"),
-            LocalizationManager.Instance.Get("popup_message_tech_research", new object[] { targetLevelStr }),
-            detailText,
-            nextNode.researchCost,
-            onConfirm: () =>
-            {
-                if (character.CheckEnoughCostStruct(nextNode.researchCost) == false)
-                {
-                    ShowResultMessage(LocalizationManager.Instance.Get("error_insufficient_resources"), 3f);
-                    return;
-                }
-                var request = new TechLevelResearchRequest { researchId = nextNode.researchId };
-                NetworkManager.Instance.ResearchTechLevel(request, OnTechLevelResearchResponse);
-            }
-        );
+        int currentLevel = character.GetTechLevel();
+        UIManager.Instance.ShowTechLevelupPopup(currentLevel, targetLevel =>
+        {
+            ResearchTechLevelsSequentially(currentLevel + 1, targetLevel);
+        });
     }
 
-    private void OnTechLevelResearchResponse(ApiResponse<TechLevelResearchResponse> response)
+    // currentLevel+1 ~ toLevel 까지 순차적으로 API 호출
+    private void ResearchTechLevelsSequentially(int fromLevel, int toLevel)
     {
-        if (response.errorCode == 0)
-        {
-            if (response.data.costRemainInfo != null)
-                DataManager.Instance.m_currentCharacter.UpdateAllMinerals(response.data.costRemainInfo);
-            if (response.data.researchedIds != null)
-                DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
+        var techList = DataManager.Instance.m_dataTableResearch.TechLevelDataList;
+        var node = techList.Find(n => n.targetTechLevel == fromLevel);
+        if (node == null) return;
 
-            ShowResultMessage(LocalizationManager.Instance.Get("research_complete"), 3f);
-            UpdateTechLevelDisplay();
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character.CheckEnoughCostStruct(node.researchCost) == false)
+        {
+            ShowResultMessage(LocalizationManager.Instance.Get("error_insufficient_resources"), 3f);
+            return;
         }
-        else
+
+        var request = new TechLevelResearchRequest { researchId = node.researchId };
+        NetworkManager.Instance.ResearchTechLevel(request, response =>
+        {
+            OnSequentialTechLevelResponse(response, fromLevel, toLevel);
+        });
+    }
+
+    private void OnSequentialTechLevelResponse(ApiResponse<TechLevelResearchResponse> response, int completedLevel, int toLevel)
+    {
+        if (response.errorCode != 0)
         {
             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
             ShowResultMessage($"Research failed: {errorMessage}", 3f);
+            return;
         }
+
+        if (response.data.costRemainInfo != null)
+            DataManager.Instance.m_currentCharacter.UpdateAllMinerals(response.data.costRemainInfo);
+        if (response.data.researchedIds != null)
+            DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
+
+        UpdateTechLevelDisplay();
+
+        int nextLevel = completedLevel + 1;
+        if (nextLevel <= toLevel)
+            ResearchTechLevelsSequentially(nextLevel, toLevel);
+        else
+            ShowResultMessage(LocalizationManager.Instance.Get("research_complete"), 3f);
     }
 
     private void OnTechLevelChanged(int techLevel)

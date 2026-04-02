@@ -422,17 +422,38 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupLicense(() => CloseCurrentPopup());
     }
 
-    // 모듈 레벨업 팝업 (다단계 레벨 선택)
+    // 모듈/기술레벨 공용 레벨업 팝업
+    private UIPopupLevelup GetOrCreateLevelupPopup()
+    {
+        UIPopupLevelup popup = GetOrCreatePopup<UIPopupLevelup>("UIPopupLevelup");
+        if (popup == null) return null;
+        currentPopup = popup;
+        return popup;
+    }
+
+    public void ShowTechLevelupPopup(int currentTechLevel, System.Action<int> onConfirm)
+    {
+        if (currentPopup != null)
+            CloseCurrentPopup();
+
+        UIPopupLevelup popup = GetOrCreateLevelupPopup();
+        if (popup == null) return;
+
+        popup.ShowTechLevel(currentTechLevel,
+            onConfirm: targetLevel => { onConfirm?.Invoke(targetLevel); CloseCurrentPopup(); },
+            onCancel:  () => CloseCurrentPopup()
+        );
+    }
+
     public void ShowModuleLevelupPopup(EModuleSubType subType, EModuleType moduleType, int currentLevel, System.Action<int> onConfirm)
     {
         if (currentPopup != null)
             CloseCurrentPopup();
 
-        UIPopupModuleLevelup popup = GetOrCreatePopup<UIPopupModuleLevelup>("UIPopupModuleLevelup");
+        UIPopupLevelup popup = GetOrCreateLevelupPopup();
         if (popup == null) return;
 
-        currentPopup = popup;
-        popup.Show(subType, moduleType, currentLevel,
+        popup.ShowModule(subType, moduleType, currentLevel,
             onConfirm: targetLevel => { onConfirm?.Invoke(targetLevel); CloseCurrentPopup(); },
             onCancel:  () => CloseCurrentPopup()
         );

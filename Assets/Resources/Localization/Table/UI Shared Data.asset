@@ -123,6 +123,10 @@ MonoBehaviour:
     m_Key: ship_module_levelup
     m_Metadata:
       m_Items: []
+  - m_Id: 19274147397763072
+    m_Key: tech_level_levelup
+    m_Metadata:
+      m_Items: []
   - m_Id: 11055826416304128
     m_Key: ship_module_subtype_manage
     m_Metadata:

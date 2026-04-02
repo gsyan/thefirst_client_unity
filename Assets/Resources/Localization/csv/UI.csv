@@ -26,6 +26,7 @@ ship_module_status,,Module Status,모듈 정보
 ship_module_type,,Type,타입
 ship_module_unlock,,Unlock Module,모듈 잠금 해제
 ship_module_levelup,,Level up Module,모듈 레벨업
+tech_level_levelup,,Tech Level Up,기술레벨 업그레이드
 ship_module_subtype_manage,,Manage Module Type,모듈 타입 관리
 ship_module_researched_list,,Module Researched List,연구 완료 모듈 목록
 exploration_zone_list_name,,Zone,지역
