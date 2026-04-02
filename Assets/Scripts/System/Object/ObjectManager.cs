@@ -108,18 +108,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public Sprite[] m_planetSprites;
     private readonly List<GameObject> m_activeDecors = new();
 
-    // 카메라 포커스용 — 실제 적 함대 위치 우선, 없으면 마지막 스폰 위치 반환
-    // TODO: 향후 존 config에 적 위치 데이터 추가 시 이 필드를 config 값으로 대체
+    // 카메라 포커스용 — GetEnemySpawnPosition() 기준 고정 목표지점
     private Vector3 m_enemyFleetFocusPosition;
-    public Vector3 EnemyFleetFocusPosition
-    {
-        get
-        {
-            if (m_enemyFleets.Count > 0 && m_enemyFleets[0] != null)
-                return m_enemyFleets[0].transform.position;
-            return m_enemyFleetFocusPosition;
-        }
-    }
+    public Vector3 EnemyFleetFocusPosition => m_enemyFleetFocusPosition;
 
     // Zone 전투 관련
     private ZoneConfig m_currentZoneConfig;
@@ -309,7 +300,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             fleetObj.transform.rotation = Quaternion.LookRotation(directionToPlayer);
 
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
-        enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EFleetState.Battle);
+        // Move 상태로 초기화 — 워프 완료 후 StartEnemyFleetWarpIn 내부에서 Battle로 전환
+        enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EFleetState.Move);
+        enemyFleet.StartEnemyFleetWarpIn();
         m_myFleet.SetFleetState(EFleetState.Battle);
 
         m_enemyFleets.Add(enemyFleet);
@@ -756,7 +749,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             // Find random alive enemy ship
             foreach (SpaceFleet fleet in m_enemyFleets)
             {
-                if (fleet != null && fleet.IsFleetAlive() == true)
+                if (fleet != null && fleet.IsFleetAlive() == true && fleet.m_fleetState == EFleetState.Battle)
                 {
                     SpaceShip enemyShip = fleet.GetRandomAliveShip();
                     if (enemyShip != null)

@@ -1233,6 +1233,7 @@ MonoBehaviour:
   m_prevButton: {fileID: 500025159933820831}
   m_nextButton: {fileID: 4216249416583385435}
   m_bodyText: {fileID: 2544851973035186441}
+  m_layoutRoot: {fileID: 7857001690955692453}
   m_confirmButton: {fileID: 3116320435018880307}
   m_cancelButton: {fileID: 1640683066758061305}
 --- !u!1 &6491892800196426420

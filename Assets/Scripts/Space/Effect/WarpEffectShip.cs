@@ -114,6 +114,9 @@ public class WarpEffectShip : MonoBehaviour
         localSize = new Vector3(Mathf.Abs(localSize.x), Mathf.Abs(localSize.y), Mathf.Abs(localSize.z));
 
         shape.scale = localSize;
+
+        // 파티클 생성 기준점을 함선 z 크기만큼 앞으로 오프셋
+        shape.position = new Vector3(0, 0, localSize.z);
     }
 
     // 스피드 라인 이펙트 - 풀에 반환
@@ -150,6 +153,30 @@ public class WarpEffectShip : MonoBehaviour
         SetEngineGlow(m_normalGlowIntensity);
         SetSpeedLinesActive(false);
         m_isWarping = false;
+        m_warpCoroutine = null;
+    }
+
+    // 적 함대 스폰 시 fleet 오브젝트 이동 중 워프 이펙트 유지 — StopWarp() 호출 시 종료
+    public void StartEnemyFleetWarpIn()
+    {
+        if (m_warpCoroutine != null) StopCoroutine(m_warpCoroutine);
+        m_warpCoroutine = StartCoroutine(EnemyFleetWarpInSequence());
+    }
+
+    private IEnumerator EnemyFleetWarpInSequence()
+    {
+        m_isWarping = true;
+        SetEngineGlow(m_warpGlowIntensity);
+        SetSpeedLinesActive(true);
+
+        while (m_isWarping == true)
+        {
+            UpdateSpeedLineTransform();
+            yield return null;
+        }
+
+        SetEngineGlow(m_normalGlowIntensity);
+        SetSpeedLinesActive(false);
         m_warpCoroutine = null;
     }
 

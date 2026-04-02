@@ -19,6 +19,7 @@ public class UIPopupModuleLevelup : UIPopupBase
 
     [Header("스탯 + 비용 (단일 텍스트)")]
     [SerializeField] private TMP_Text m_bodyText;
+    [SerializeField] private RectTransform m_layoutRoot;
 
     [Header("하단 버튼")]
     [SerializeField] private Button m_confirmButton;
@@ -64,6 +65,8 @@ public class UIPopupModuleLevelup : UIPopupBase
 
         UpdateDisplay();
         base.ShowPopup();
+        if (m_layoutRoot != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 
     // ─────────────────────────────────────────────
