@@ -392,7 +392,7 @@ public abstract class AircraftBase : MonoBehaviour
     // 격납고 출입구 앞 접근 지점(approachPoint)까지 자유 비행, 완료 시 Docking으로 전환
     protected virtual IEnumerator Phase_ReturnToApproach()
     {
-        Debug.Log("Phase_ReturnToApproach");
+        //Debug.Log("Phase_ReturnToApproach");
         if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null)
         {
             if (TryFindNewHangerAndFirePoint() == false)
@@ -435,7 +435,7 @@ public abstract class AircraftBase : MonoBehaviour
     // 출입구 방향(-m_firePoint.forward)으로 감속 진입, 완료 시 귀환 처리
     protected virtual IEnumerator Phase_Docking()
     {
-        Debug.Log("Phase_Docking");
+        //Debug.Log("Phase_Docking");
         const float k_dockingSpeedRatio = 0.4f;
         while (true)
         {
