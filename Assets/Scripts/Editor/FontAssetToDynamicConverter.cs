@@ -21,16 +21,10 @@ public static class FontAssetToDynamicConverter
             TMP_FontAsset fontAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(path);
             if (fontAsset == null) continue;
 
-            if (fontAsset.atlasPopulationMode == AtlasPopulationMode.Dynamic)
-            {
-                Debug.Log($"[FontConverter] 이미 Dynamic: {path}");
-                continue;
-            }
-
             fontAsset.atlasPopulationMode = AtlasPopulationMode.Dynamic;
 
-            // 내장된 Static 아틀라스 데이터 제거
-            fontAsset.ClearFontAssetData(setAtlasSizeToZero: false);
+            // 내장된 Static 아틀라스 텍스처 데이터 제거 (파일 크기 축소 핵심)
+            fontAsset.ClearFontAssetData(setAtlasSizeToZero: true);
 
             EditorUtility.SetDirty(fontAsset);
             Debug.Log($"[FontConverter] Dynamic 변환 완료: {path}");
