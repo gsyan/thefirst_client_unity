@@ -132,8 +132,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // Zone 전투 관련
     private ZoneConfig m_currentZoneConfig;
     private int m_currentWaveIndex;
-    private int m_totalSpawnedEnemies;
-    private int m_totalDestroyedEnemies;
     private System.Action<bool> m_onZoneBattleComplete;
     private Coroutine m_spawnCoroutine;
 
@@ -213,11 +211,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             return;
         }
 
-        // test 용
-        PassTutorial(); return;
-
-        // UI 초기화 후 약간의 딜레이 후 시작
-        StartCoroutine(StartTutorial());
+        bool bTest = true;
+        if (bTest == true)
+            PassTutorial();
+        else
+            // UI 초기화 후 약간의 딜레이 후 시작
+            StartCoroutine(StartTutorial());
     }
 
     private IEnumerator StartTutorial()
@@ -283,8 +282,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         m_currentZoneConfig = zoneConfig;
         m_currentWaveIndex = 0;
-        m_totalSpawnedEnemies = 0;
-        m_totalDestroyedEnemies = 0;
         m_onZoneBattleComplete = onComplete;
         
         GameSpeedController.RestoreSpeed(); // 이전 전투 배속 복원
@@ -374,7 +371,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         if (fleet == null) return;
 
-        int shipCount = fleet.m_fleetInfo.ships.Count;
         m_enemyFleets.Remove(fleet);
         Destroy(fleet.gameObject);
 
@@ -388,7 +384,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // Zone 전투 중이면 파괴된 적 카운트 증가 + 킬 보상 이벤트 발화 (클리어 체크는 코루틴의 WaitUntil이 담당)
         if (m_currentZoneConfig != null)
         {
-            m_totalDestroyedEnemies += shipCount;
             EventManager.Trigger_EnemyFleetKilled();
         }
     }
@@ -404,8 +399,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         m_currentZoneConfig = null;
         m_currentWaveIndex = 0;
-        m_totalSpawnedEnemies = 0;
-        m_totalDestroyedEnemies = 0;
         //m_onZoneBattleComplete = null;
     }
 

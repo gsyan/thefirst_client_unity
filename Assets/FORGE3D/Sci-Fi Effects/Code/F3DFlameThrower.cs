@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 namespace FORGE3D
 {
@@ -41,7 +42,7 @@ namespace FORGE3D
         void Update()
         {
             // Despawn on mouse
-            if (Input.GetMouseButtonUp(0))
+            if (Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 if (!despawn)
                 {

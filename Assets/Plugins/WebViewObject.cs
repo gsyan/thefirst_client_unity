@@ -277,14 +277,6 @@ public class WebViewObject : MonoBehaviour
                     StartCoroutine(CallOnRequestFileChooserPermissionsResult(grantedCount == permissions.Count));
                 }
             };
-            callbacks.PermissionDeniedAndDontAskAgain += (permission) =>
-            {
-                deniedCount++;
-                if (grantedCount + deniedCount == permissions.Count)
-                {
-                    StartCoroutine(CallOnRequestFileChooserPermissionsResult(grantedCount == permissions.Count));
-                }
-            };
             Permission.RequestUserPermissions(permissions.ToArray(), callbacks);
 #else
             StartCoroutine(RequestFileChooserPermissionsCoroutine(permissions.ToArray()));
@@ -827,6 +819,7 @@ public class WebViewObject : MonoBehaviour
             return;
 #endif
 
+#pragma warning disable CS0162
         mMarginLeft = left;
         mMarginTop = top;
         mMarginRight = right;
@@ -928,6 +921,7 @@ public class WebViewObject : MonoBehaviour
 #elif UNITY_ANDROID
         webView.Call("SetMargins", (int)ml, (int)mt, (int)mr, (int)mb);
 #endif
+#pragma warning restore CS0162
     }
 
     public void SetVisibility(bool v)

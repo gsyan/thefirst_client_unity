@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class DeveloperConsole : MonoSingleton<DeveloperConsole>
 {
@@ -12,7 +13,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
     #endregion
 
     [Header("Console Settings")]
-    public KeyCode toggleKey = KeyCode.BackQuote;
+    public Key toggleKey = Key.Backquote;
     public int maxLogLines = 100;
 
     [Header("UI References")]
@@ -63,20 +64,22 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
 
     private void Update()
     {
-        if (Input.GetKeyDown(toggleKey))
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current[toggleKey].wasPressedThisFrame == true)
             ToggleConsole();
 
-        if (m_isConsoleVisible && inputField != null)
+        if (m_isConsoleVisible == true && inputField != null)
         {
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            if (Keyboard.current[Key.Enter].wasPressedThisFrame == true || Keyboard.current[Key.NumpadEnter].wasPressedThisFrame == true)
             {
                 ExecuteCommand();
             }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            else if (Keyboard.current[Key.UpArrow].wasPressedThisFrame == true)
             {
                 NavigateCommandHistory(-1);
             }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            else if (Keyboard.current[Key.DownArrow].wasPressedThisFrame == true)
             {
                 NavigateCommandHistory(1);
             }

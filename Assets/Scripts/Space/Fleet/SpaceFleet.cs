@@ -532,6 +532,10 @@ public class SpaceFleet : MonoBehaviour
         }
         m_ships.Clear();
 
+        // AddShip 이후 SetFleetData 호출로 m_fleetInfo가 DataManager와 분리될 수 있으므로 동기화
+        if (DataManager.Instance != null && DataManager.Instance.m_currentFleetInfo != null)
+            m_fleetInfo = DataManager.Instance.m_currentFleetInfo;
+
         if (m_fleetInfo.ships != null && m_fleetInfo.ships.Count > 0)
         {
             for (int i = 0; i < m_fleetInfo.ships.Count; i++)
@@ -549,6 +553,10 @@ public class SpaceFleet : MonoBehaviour
     // 파괴된 함선만 복구 (퇴각용, 살아있는 함선은 현재 체력 유지)
     public void RestoreDestroyedShips(float healthRatio = 0.1f)
     {
+        // AddShip 이후 SetFleetData 호출로 m_fleetInfo가 DataManager와 분리될 수 있으므로 동기화
+        if (DataManager.Instance != null && DataManager.Instance.m_currentFleetInfo != null)
+            m_fleetInfo = DataManager.Instance.m_currentFleetInfo;
+
         HashSet<long> aliveShipIds = new HashSet<long>();
         foreach (SpaceShip ship in m_ships)
         {

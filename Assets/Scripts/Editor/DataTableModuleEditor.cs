@@ -20,7 +20,6 @@ public class DataTableModuleEditor : Editor
     private Dictionary<ModuleData, bool> moduleSlotFoldouts = new Dictionary<ModuleData, bool>();
 
     private bool showBodyModules = false;
-    private bool showEngineModules = false;
     private bool showBeamModules = false;
     private bool showMissileModules = false;
     private bool showHangerModules = false;

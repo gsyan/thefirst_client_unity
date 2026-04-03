@@ -172,6 +172,9 @@ https://assetstore.unity.com/packages/3d/vehicles/space/ultimate-spaceships-crea
 https://assetstore.unity.com/packages/3d/vehicles/space/sci-fi-modular-capital-spaceship-galactic-leopard-134390
 - Ultimate Spaceships Creator 에서 함선 부분만 때어낸 것 같음
 
+### Sci-Fi Space Stations Creator - $75 - Ebal Studios
+https://assetstore.unity.com/packages/3d/vehicles/space/sci-fi-space-stations-creator-280237
+
 
 
 ## 이팩트 에셋

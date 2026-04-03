@@ -1,22 +1,24 @@
 // [DEV] 숫자키 1~5로 폭발 이펙트 테스트 — 적 기함 위치에서 생성, 한 사이클 후 자동 소멸
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class EffectTestInput : MonoBehaviour
 {
     [SerializeField] private GameObject[] m_explosionPrefabs; // 1~5키 순서로 할당
 
-    private static readonly KeyCode[] s_keys =
+    private static readonly Key[] s_keys =
     {
-        KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5,
-        KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0
+        Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5,
+        Key.Digit6, Key.Digit7, Key.Digit8, Key.Digit9, Key.Digit0
     };
 
     private void Update()
     {
+        if (Keyboard.current == null) return;
         for (int i = 0; i < s_keys.Length; i++)
         {
-            if (Input.GetKeyDown(s_keys[i]) == false) continue;
+            if (Keyboard.current[s_keys[i]].wasPressedThisFrame == false) continue;
             if (i >= m_explosionPrefabs.Length || m_explosionPrefabs[i] == null) break;
 
             SpawnAtEnemyFlagship(m_explosionPrefabs[i]);

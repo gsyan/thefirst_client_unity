@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 namespace FORGE3D
 {
     public class F3DPlayerController : MonoBehaviour
@@ -24,12 +25,12 @@ namespace FORGE3D
                 if (Turret[i])
                 {
                     // Simulating proper player input 
-                    if (Input.GetMouseButtonDown(0))
+                    if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
                         Turret[i].PlayAnimation();
-                    else if (Input.GetMouseButtonDown(1))
+                    else if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame)
                         Turret[i].PlayAnimationLoop();
-                    else if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
-                        Turret[i].StopAnimation(); 
+                    else if (Mouse.current != null && (Mouse.current.leftButton.wasReleasedThisFrame || Mouse.current.rightButton.wasReleasedThisFrame))
+                        Turret[i].StopAnimation();
                     // Update the turret with the new target position
                     Turret[i].SetNewTarget(GetNewTargetPos());
                 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 namespace FORGE3D
 {
@@ -25,14 +26,14 @@ namespace FORGE3D
         void CheckForFire()
         {
             // Fire turret
-            if (!isFiring && Input.GetKeyDown(KeyCode.Mouse0))
+            if (isFiring == false && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
             {
                 isFiring = true;
                 fxController.Fire();
             }
 
             // Stop firing
-            if (isFiring && Input.GetKeyUp(KeyCode.Mouse0))
+            if (isFiring == true && Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 isFiring = false;
                 fxController.Stop();
@@ -42,7 +43,8 @@ namespace FORGE3D
         void CheckForTurn()
         {
             // Construct a ray pointing from screen mouse position into world space
-            Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Vector2 mousePos = Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
+            Ray cameraRay = Camera.main.ScreenPointToRay(mousePos);
 
             // Raycast
             if (Physics.Raycast(cameraRay, out hitInfo, 500f))

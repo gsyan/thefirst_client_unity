@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 namespace FORGE3D
@@ -35,7 +36,7 @@ namespace FORGE3D
         // Processes input for launching missile
         private void ProcessInput()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
             {
                 var randomSocketId = Random.Range(0, socket.Length);
                 var tMissile = F3DPoolManager.Pools["GeneratedPool"].Spawn(missilePrefab,
@@ -53,17 +54,18 @@ namespace FORGE3D
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Keyboard.current == null) return;
+            if (Keyboard.current[Key.Digit1].wasPressedThisFrame)
             {
                 missileType = F3DMissile.MissileType.Unguided;
                 missileTypeLabel.text = "Missile type: Unguided";
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            else if (Keyboard.current[Key.Digit2].wasPressedThisFrame)
             {
                 missileType = F3DMissile.MissileType.Guided;
                 missileTypeLabel.text = "Missile type: Guided";
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            else if (Keyboard.current[Key.Digit3].wasPressedThisFrame)
             {
                 missileType = F3DMissile.MissileType.Predictive;
                 missileTypeLabel.text = "Missile type: Predictive";

@@ -13,7 +13,7 @@ public class F3DPoolManagerEditor : Editor
     [MenuItem("Window/FORGE3D/Pool Manager")]
     public static void OpenPoolManager()
     {
-        F3DPoolManager manager = GameObject.FindObjectOfType<F3DPoolManager>();
+        F3DPoolManager manager = FindFirstObjectByType<F3DPoolManager>();
         if (manager != null)
         {
             Selection.activeGameObject = manager.gameObject;

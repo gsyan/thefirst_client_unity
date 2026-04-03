@@ -71,7 +71,6 @@ MonoBehaviour:
   m_repositionMaxDistanceMultiplier: 2.5
   m_lastAttackTime: 0
   m_state: 0
-  m_launchStartPos: {x: 0, y: 0, z: 0}
   m_randomOffset: {x: 0, y: 0, z: 0}
   m_currentDirection: {x: 0, y: 0, z: 0}
 --- !u!1001 &1710123585173938838

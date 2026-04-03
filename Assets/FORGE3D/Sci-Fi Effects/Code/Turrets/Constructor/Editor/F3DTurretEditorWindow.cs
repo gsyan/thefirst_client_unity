@@ -87,7 +87,7 @@ namespace FORGE3D
 
         void UpdateAllCurrentTurrels()
         {
-            F3DTurretConstructor[] editors = GameObject.FindObjectsOfType<F3DTurretConstructor>();
+            F3DTurretConstructor[] editors = FindObjectsByType<F3DTurretConstructor>(FindObjectsSortMode.None);
             int i;
             for (i = 0; i < editors.Length; i++)
             {
@@ -3079,7 +3079,7 @@ namespace FORGE3D
         void DeleteCurrentTurret()
         {
             F3DTurretScriptable tempDB = db; 
-            F3DTurretConstructor[] editors = GameObject.FindObjectsOfType<F3DTurretConstructor>();
+            F3DTurretConstructor[] editors = GameObject.FindObjectsByType<F3DTurretConstructor>(FindObjectsSortMode.None);
             int i;
             for (i = 0; i < editors.Length; i++)
             {
@@ -3128,7 +3128,7 @@ namespace FORGE3D
         void DeleteTurret(int val)
         {
             F3DTurretScriptable tempDB = db; 
-            F3DTurretConstructor[] editors = GameObject.FindObjectsOfType<F3DTurretConstructor>();
+            F3DTurretConstructor[] editors = GameObject.FindObjectsByType<F3DTurretConstructor>(FindObjectsSortMode.None);
             int i;
             for (i = 0; i < editors.Length; i++)
             {
@@ -3734,7 +3734,7 @@ namespace FORGE3D
 
         void UpdateAllTemplatesOnEditors()
         { 
-            F3DTurretConstructor[] editors = GameObject.FindObjectsOfType<F3DTurretConstructor>();
+            F3DTurretConstructor[] editors = GameObject.FindObjectsByType<F3DTurretConstructor>(FindObjectsSortMode.None);
             int i;
             for (i = 0; i < editors.Length; i++)
             {
