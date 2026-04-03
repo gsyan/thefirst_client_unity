@@ -18,7 +18,7 @@ pipeline {
         KEY_ALIAS      = credentials('android-key-alias')
         KEY_ALIAS_PASS = credentials('android-key-alias-pass')
 
-        UNITY_PATH            = 'C:/Program Files/Unity/Hub/Editor/6000.0.66f1/Editor/Unity.exe'
+        UNITY_PATH            = 'C:/Program Files/Unity/Hub/Editor/6000.3.12f1/Editor/Unity.exe'
         PROJECT_PATH          = "${WORKSPACE}"
         OUTPUT_APK            = "${WORKSPACE}/build/thefirst.apk"
         OUTPUT_AAB            = "${WORKSPACE}/build/thefirst.aab"

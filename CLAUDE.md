@@ -21,7 +21,7 @@
 - 주석 1~2줄로 제한
 
 ## 코딩 규칙 Unity 프로젝트
-- Unity 6000.0.66f1+ 기준으로 작성할 것, - C# 코드는 Unity 스타일에 맞출 것
+- Unity 6000.3.12f1+ 기준으로 작성할 것, - C# 코드는 Unity 스타일에 맞출 것
 - 항상 성능과 GC Alloc을 고려할 것
 - **[주의]코딩중 using UnityEditor.ShaderGraph; 를 사용하게되면 android 빌드 실패함
 - Update 남용 금지, 이벤트 또는 코루틴 우선 (public static class EventManager 참고할 것)
