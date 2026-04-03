@@ -100,6 +100,7 @@ InitTestScene*.unity*
 
 # DataTable build output (Burst 등 빌드 산출물)
 /[Aa]ssets/Resources/DataTable/build/
+/[Aa]ssets/Resources/DataTable/build.meta
 
 # Claude Code local settings
 .claude/
