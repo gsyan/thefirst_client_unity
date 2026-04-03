@@ -103,7 +103,6 @@ public class UITabShip : UITabBase
         if (m_selectedModule == null)
             m_selectedModule = m_selectedShip.m_moduleBodys[0];
 
-        m_selectedShip.m_shipOutline.enabled = true;
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
         EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, m_selectedModule);
 
@@ -150,11 +149,7 @@ public class UITabShip : UITabBase
     {
         if (ship == null || ship == m_selectedShip) return;
 
-        if (m_selectedShip != null)
-            m_selectedShip.m_shipOutline.enabled = false;
-
         m_selectedShip = ship;
-        m_selectedShip.m_shipOutline.enabled = true;
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
 
         if (m_myFleet != null) m_myFleet.ClearAllSelectedModule();
@@ -186,11 +181,7 @@ public class UITabShip : UITabBase
     {
         if (m_selectedShip == ship) return;
 
-        if (m_selectedShip != null)
-            m_selectedShip.m_shipOutline.enabled = false;
-
         m_selectedShip = ship;
-        m_selectedShip.m_shipOutline.enabled = true;
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
 
         if (m_myFleet != null) m_myFleet.ClearAllSelectedModule();

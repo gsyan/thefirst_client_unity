@@ -69,11 +69,20 @@ public class UITabFleet : UITabBase
         UpdateFleetStatsDisplay();
         UpdateCurrentFormationText();
         RefreshShipHealthDisplay();
+
+        // Fleet 탭 진입 시 선택된 함선 아웃라인 활성화
+        if (m_selectedShipSelector != null && m_selectedShipSelector.Ship != null)
+            m_selectedShipSelector.Ship.m_shipOutline.enabled = true;
     }
 
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
+
+        // Fleet 탭 벗어날 때 모든 함선 아웃라인 비활성화
+        if (m_myFleet == null) return;
+        for (int i = 0; i < m_myFleet.m_ships.Count; i++)
+            m_myFleet.m_ships[i].m_shipOutline.enabled = false;
     }
 
     // ── Tech Level ────────────────────────────────────────────────────
@@ -375,7 +384,11 @@ public class UITabFleet : UITabBase
     private void OnShipSelectorClicked(SpaceShip ship)
     {
         if (m_selectedShipSelector != null)
+        {
             m_selectedShipSelector.SetSelected(false);
+            if (m_selectedShipSelector.Ship != null)
+                m_selectedShipSelector.Ship.m_shipOutline.enabled = false;
+        }
 
         for (int i = 0; i < m_shipSelectors.Length; i++)
         {
@@ -383,6 +396,7 @@ public class UITabFleet : UITabBase
             {
                 m_selectedShipSelector = m_shipSelectors[i];
                 m_selectedShipSelector.SetSelected(true);
+                m_selectedShipSelector.Ship.m_shipOutline.enabled = true;
                 break;
             }
         }

@@ -118,10 +118,12 @@ public class SpaceFleet : MonoBehaviour
         while (true)
         {
             Vector3 toTarget = finalPos - transform.position;
-            float dist = toTarget.magnitude;
+            float dotForward = Vector3.Dot(transform.forward, toTarget); // 전방 잔여 거리
+            float speed = warpStopped == false ? warpSpeed : normalSpeed;
+            float moveDist = speed * Time.deltaTime;
 
-            // 1유닛 전 워프 이펙트 종료, 이후 기본 속도로 진입
-            if (warpStopped == false && dist <= WARP_STOP_DIST)
+            // 배속 시 WARP_STOP_DIST를 프레임 단위로 점프할 수 있으므로 도달 여부도 함께 체크
+            if (warpStopped == false && (dotForward <= WARP_STOP_DIST || dotForward <= moveDist))
             {
                 foreach (SpaceShip ship in m_ships)
                 {
@@ -131,15 +133,12 @@ public class SpaceFleet : MonoBehaviour
                 warpStopped = true;
             }
 
-            float speed = warpStopped == false ? warpSpeed : normalSpeed;
-            float moveDist = speed * Time.deltaTime;
-
-            if (dist <= moveDist)
+            if (dotForward <= moveDist)
             {
                 transform.position = finalPos;
                 break;
             }
-            transform.position += toTarget.normalized * moveDist;
+            transform.position += transform.forward * moveDist;
             yield return null;
         }
 
