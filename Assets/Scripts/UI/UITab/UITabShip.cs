@@ -372,6 +372,7 @@ public class UITabShip : UITabBase
         if (targetShip == null) return;
 
         targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
+        EventManager.Trigger_ShipStatsChanged(targetShip);
         ShowResultMessage("Module unlock successful!", 3f);
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
