@@ -832,7 +832,7 @@ public class SpaceFleet : MonoBehaviour
     private bool m_isFleetWarping = false;
 
     // 함대 워프 시작 (모든 함선 동시에)
-    public void StartFleetWarp(Material skyBoxMaterial, System.Action onWarpComplete = null)
+    public void StartFleetWarp(Material skyBoxMaterial, System.Action onWarpComplete = null, float targetRotation = 0f)
     {
         if (m_isFleetWarping) return;
 
@@ -847,7 +847,7 @@ public class SpaceFleet : MonoBehaviour
             {
                 m_isFleetWarping = false;
                 onWarpComplete?.Invoke();
-            });
+            }, targetRotation);
         }
         else
         {

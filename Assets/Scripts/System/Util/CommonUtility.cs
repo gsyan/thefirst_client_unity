@@ -235,17 +235,10 @@ public static class CommonUtility
     #endregion Fleet Utility end -----------------------------------------------------------------------------------
 
     #region Module Type begin -----------------------------------------------------------------------------------
-    // 7자리 인코딩: T_tt_gg_vv → type=val/1000000
-    public static EModuleType GetModuleTypeFromSubType(EModuleSubType subType)
-    {
-        if (subType == EModuleSubType.none) return EModuleType.none;
-        int typeValue = (int)subType / 1000000;
-        return (EModuleType)typeValue;
-    }
-    // 기본 SubType: t1(01), std(01), ver1(01)
+    // 기본 SubType: t1(01), m1(01)
     public static EModuleSubType GetDefaultSubType(EModuleType moduleType)
     {
-        EModuleSubType defaultSubType = (EModuleSubType)((int)moduleType * 1000000 + 10101);
+        EModuleSubType defaultSubType = (EModuleSubType)((int)moduleType * 10000 + 101);
         return defaultSubType;
     }
 

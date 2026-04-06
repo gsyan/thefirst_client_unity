@@ -101,16 +101,6 @@ module_type_engine,,Engine,엔진
 module_type_beam,,Beam,빔
 module_type_missile,,Missile,미사일
 module_type_hanger,,Hanger,격납고
-body_t1_std_ver1,,T1 Body.Std,T1 함체.std
-body_t1_adv_ver1,,T1 Body.Adv,T1 함체.adv
-engine_t1_std_ver1,,T1 Engine.Std,T1 엔진.std
-engine_t1_adv_ver1,,T1 Engine.Adv,T1 엔진.adv
-beam_t1_std_ver1,,T1 Beam.Std,T1 빔.std
-beam_t1_adv_ver1,,T1 Beam.Adv,T1 빔.adv
-missile_t1_std_ver1,,T1 Missile.Std,T1 미사일.std
-missile_t1_adv_ver1,,T1 Missile.Adv,T1 미사일.adv
-hanger_t1_std_ver1,,T1 Hanger.Std,T1 격납고.std
-hanger_t1_adv_ver1,,T1 Hanger.Adv,T1 격납고.adv
 cancel,,Cancel,취소
 confirm,,Confirm,확인
 tech_level,,Tech Lv,기술레벨

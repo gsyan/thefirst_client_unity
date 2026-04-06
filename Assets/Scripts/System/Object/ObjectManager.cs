@@ -124,11 +124,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     [HideInInspector] public List<SpaceFleet> m_enemyFleets = new List<SpaceFleet>();
     [HideInInspector] public List<SpaceMineral> m_mineralList = new List<SpaceMineral>();
 
-    [Header("배경 데코 Sprite (Asteroid 1~10, Planet 1~7 순서대로 할당)")]
-    public Sprite[] m_asteroidSprites;
-    public Sprite[] m_planetSprites;
-    private readonly List<GameObject> m_activeDecors = new();
-
     // Zone 전투 관련
     private ZoneConfig m_currentZoneConfig;
     private int m_currentWaveIndex;
@@ -184,7 +179,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         OrderAllAircraftReturn();
         CleanupAllProjectiles();
         RemoveAllEnemyFleets();
-        ClearDecors();
 
         if (m_isPvpBattle)
         {
@@ -318,53 +312,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_myFleet.SetFleetState(EFleetState.Battle);
 
         m_enemyFleets.Add(enemyFleet);
-    }
-
-    // 존 배경 데코 생성 — 그룹 공유 행성 세트를 절대 좌표로 스폰
-    public void StartSpawnDeco(SpaceDecorConfig[] decors)
-    {
-        ClearDecors();
-        if (decors == null || decors.Length == 0) return;
-
-        Camera cam = Camera.main;
-        foreach (SpaceDecorConfig config in decors)
-        {
-            Sprite sprite = GetDecorSprite(config);
-            if (sprite == null) continue;
-
-            GameObject go = new GameObject($"Decor_{config.type}_{config.spriteIndex}");
-            go.transform.localScale = Vector3.one * config.scale;
-
-            SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-            sr.sprite = sprite;
-
-            // 초기 위치·공전은 SpaceDecorItem.Initialize에서 랜덤 각도로 설정
-            SpaceDecorItem item = go.AddComponent<SpaceDecorItem>();
-            item.Initialize(UnityEngine.Random.Range(-5f, 5f), cam, config.orbitRadius, config.orbitPeriod);
-
-            m_activeDecors.Add(go);
-        }
-    }
-
-    private Sprite GetDecorSprite(SpaceDecorConfig config)
-    {
-        int idx = config.spriteIndex - 1;
-        if (config.type == SpaceDecorType.Planet)
-        {
-            if (m_planetSprites == null || idx < 0 || idx >= m_planetSprites.Length) return null;
-            return m_planetSprites[idx];
-        }
-        // Asteroid: 향후 3D 오브젝트로 처리 예정
-        return null;
-    }
-
-    private void ClearDecors()
-    {
-        foreach (GameObject go in m_activeDecors)
-        {
-            if (go != null) Destroy(go);
-        }
-        m_activeDecors.Clear();
     }
 
     public void RemoveEnemyFleet(SpaceFleet fleet)
@@ -684,17 +631,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     
     
     // 프리팹 경로 생성 (에디터에서도 사용 가능)
-    public static string GetShipModulePrefabPath(string moduleTypeName, string modulePrefabName, int moduleLevel)
+    public static string GetShipModulePrefabPath(string moduleTypeName, string modulePrefabName)
     {
-        // 현재 프리팹은 레벨 1만 존재
-        // module level 1
-        moduleLevel = 1;
-        return $"Prefabs/ShipModule/{moduleTypeName}/{modulePrefabName}_{moduleLevel}";
+        return $"Prefabs/ShipModule/{moduleTypeName}/{modulePrefabName}";
     }
 
-    public GameObject LoadShipModulePrefab(string moduleTypeName, string modulePrefabName, int moduleLevel = 1)
+    public GameObject LoadShipModulePrefab(string moduleTypeName, string modulePrefabName)
     {
-        string path = GetShipModulePrefabPath(moduleTypeName, modulePrefabName, moduleLevel);
+        string path = GetShipModulePrefabPath(moduleTypeName, modulePrefabName);
         return Resources.Load<GameObject>(path);
     }
 

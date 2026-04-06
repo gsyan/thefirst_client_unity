@@ -135,7 +135,7 @@ public class DataManager : Singleton<DataManager>
                         new ModuleBodyInfo
                         {
                             moduleType = EModuleType.body,
-                            moduleSubType = EModuleSubType.body_t1_std_ver1,
+                            moduleSubType = EModuleSubType.body_t1_m1,
                             moduleLevel = 1,
                             bodyIndex = 0,
                             beams = new List<ModuleInfo>
@@ -143,7 +143,7 @@ public class DataManager : Singleton<DataManager>
                                 new ModuleInfo
                                 {
                                     moduleType = EModuleType.beam,
-                                    moduleSubType = EModuleSubType.beam_t1_std_ver1,
+                                    moduleSubType = EModuleSubType.beam_t1_m1,
                                     moduleLevel = 1,
                                     bodyIndex = 0,
                                     slotIndex = 0

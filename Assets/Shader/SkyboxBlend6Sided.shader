@@ -7,6 +7,7 @@ Shader "SpaceFleet/SkyboxBlend6Sided"
         _TintB ("Tint B", Color) = (0.5, 0.5, 0.5, 0.5)
         _ExposureA ("Exposure A", Range(0, 8)) = 1
         _ExposureB ("Exposure B", Range(0, 8)) = 1
+        _Rotation ("Rotation", Range(0, 360)) = 0
 
         [NoScaleOffset] _FrontTexA ("Front A [+Z]", 2D) = "grey" {}
         [NoScaleOffset] _BackTexA ("Back A [-Z]", 2D) = "grey" {}
@@ -31,6 +32,16 @@ Shader "SpaceFleet/SkyboxBlend6Sided"
     half4 _TintB;
     half _ExposureA;
     half _ExposureB;
+    float _Rotation;
+
+    float4 RotateAroundYInDegrees(float4 vertex, float degrees)
+    {
+        float alpha = degrees * UNITY_PI / 180.0;
+        float sina, cosa;
+        sincos(alpha, sina, cosa);
+        float2x2 m = float2x2(cosa, -sina, sina, cosa);
+        return float4(mul(m, vertex.xz), vertex.yw).xzyw;
+    }
 
     struct appdata_t
     {
@@ -51,7 +62,7 @@ Shader "SpaceFleet/SkyboxBlend6Sided"
         v2f o;
         UNITY_SETUP_INSTANCE_ID(v);
         UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-        o.vertex = UnityObjectToClipPos(v.vertex);
+        o.vertex = UnityObjectToClipPos(RotateAroundYInDegrees(v.vertex, _Rotation));
         o.texcoord = v.texcoord;
         return o;
     }

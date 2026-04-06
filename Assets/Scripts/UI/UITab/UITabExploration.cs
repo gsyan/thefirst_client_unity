@@ -82,8 +82,9 @@ public class UITabExploration : UITabBase
         {
             // 게임 시작 시 항상 Zone-0 스카이박스로 즉시 초기화
             var zone0Group = m_datatableZone.GetGroupConfig(0);
+            var zone0 = m_datatableZone.GetZone(0);
             if (zone0Group != null)
-                pp.SetSkyboxImmediate(zone0Group.skyboxMaterial);
+                pp.SetSkyboxImmediate(zone0Group.skyboxMaterial, zone0?.skyboxRotation ?? 0f);
         }
     }
 
@@ -538,10 +539,11 @@ private void SetupGroupTabs()
         SetEnterZoneState(EEnterZoneState.warp);
         var zoneGroup = m_datatableZone.GetGroupConfig(zone.shipCount);
         Material skybox = zoneGroup?.skyboxMaterial;
+        float rotation = zone.skyboxRotation;
 
         var pp = WarpPostProcessing.Instance;
         if (pp != null && zone != null)
-            pp.SetSkyboxBlendTarget(skybox);
+            pp.SetSkyboxBlendTarget(skybox, rotation);
 
         m_currentZone = zone;
         CacheCurrentZoneCell();
@@ -582,8 +584,6 @@ private void SetupGroupTabs()
 
     private void StartBattleInZone(ZoneConfig zone)
     {
-        var groupConfig = m_datatableZone.GetGroupConfig(zone.shipCount);
-        ObjectManager.Instance.StartSpawnDeco(groupConfig?.spaceDecors);
         // 패배(함대 전멸) 시에만 콜백 호출 — 승리/클리어는 서버 응답으로 판정
         ObjectManager.Instance.StartSpawnEnemies(zone, (_) => ReturnToSafeZone());
     }
@@ -682,10 +682,11 @@ private void SetupGroupTabs()
         if (zoneConfig == null) return;
         var safeGroup = m_datatableZone.GetGroupConfig(0);
         Material safeSkybox = safeGroup?.skyboxMaterial;
+        float safeRotation = zoneConfig.skyboxRotation;
 
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
-            pp.SetSkyboxBlendTarget(safeSkybox);
+            pp.SetSkyboxBlendTarget(safeSkybox, safeRotation);
 
         UIManager.Instance.HidePanel("UIPanelCameraView");
         CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
@@ -694,7 +695,7 @@ private void SetupGroupTabs()
         {
             ObjectManager.Instance.SetMyFleetPosition(zoneConfig.fleetPosition);
             CameraController.Instance.SnapToTarget();
-            ObjectManager.Instance.StartSpawnDeco(null); // 안전지역 — 행성 없음
+
             m_currentZone = null;
             if (m_currentZoneCell != null)
             {

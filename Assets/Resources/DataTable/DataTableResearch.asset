@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DataTableResearch
   m_EditorClassIdentifier: 
   researchDataList:
-  - researchId: body_t1_std_ver1
+  - researchId: body_t1_m1
     prerequisiteIds: []
     researchCost:
       techLevel: 0
@@ -23,20 +23,164 @@ MonoBehaviour:
       mineralDark: 0
     uiPosition: {x: 80, y: -40}
     moduleType: 1
-    moduleSubType: 1010101
-  - researchId: body_t1_adv_ver1
+    moduleSubType: 10101
+  - researchId: body_t2_m1
     prerequisiteIds:
-    - body_t1_std_ver1
+    - body_t1_m1
     researchCost:
       techLevel: 0
-      mineral: 0
-      mineralRare: 50000
+      mineral: 3000
+      mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
     moduleType: 1
-    moduleSubType: 1010201
-  - researchId: beam_t1_std_ver1
+    moduleSubType: 10201
+  - researchId: body_t3_m1
+    prerequisiteIds:
+    - body_t2_m1
+    researchCost:
+      techLevel: 0
+      mineral: 6000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 480, y: -40}
+    moduleType: 1
+    moduleSubType: 10301
+  - researchId: body_t4_m1
+    prerequisiteIds:
+    - body_t3_m1
+    researchCost:
+      techLevel: 0
+      mineral: 12000
+      mineralRare: 3000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 680, y: -40}
+    moduleType: 1
+    moduleSubType: 10401
+  - researchId: body_t5_m1
+    prerequisiteIds:
+    - body_t4_m1
+    researchCost:
+      techLevel: 0
+      mineral: 24000
+      mineralRare: 6000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 880, y: -40}
+    moduleType: 1
+    moduleSubType: 10501
+  - researchId: body_t6_m1
+    prerequisiteIds:
+    - body_t5_m1
+    researchCost:
+      techLevel: 0
+      mineral: 48000
+      mineralRare: 12000
+      mineralExotic: 3000
+      mineralDark: 0
+    uiPosition: {x: 1080, y: -40}
+    moduleType: 1
+    moduleSubType: 10601
+  - researchId: body_t7_m1
+    prerequisiteIds:
+    - body_t6_m1
+    researchCost:
+      techLevel: 0
+      mineral: 96000
+      mineralRare: 24000
+      mineralExotic: 6000
+      mineralDark: 0
+    uiPosition: {x: 1280, y: -40}
+    moduleType: 1
+    moduleSubType: 10701
+  - researchId: body_t8_m1
+    prerequisiteIds:
+    - body_t7_m1
+    researchCost:
+      techLevel: 0
+      mineral: 192000
+      mineralRare: 48000
+      mineralExotic: 12000
+      mineralDark: 3000
+    uiPosition: {x: 1480, y: -40}
+    moduleType: 1
+    moduleSubType: 10801
+  - researchId: body_t9_m1
+    prerequisiteIds:
+    - body_t8_m1
+    researchCost:
+      techLevel: 0
+      mineral: 384000
+      mineralRare: 96000
+      mineralExotic: 24000
+      mineralDark: 6000
+    uiPosition: {x: 1680, y: -40}
+    moduleType: 1
+    moduleSubType: 10901
+  - researchId: body_t10_m1
+    prerequisiteIds:
+    - body_t9_m1
+    researchCost:
+      techLevel: 0
+      mineral: 768000
+      mineralRare: 192000
+      mineralExotic: 48000
+      mineralDark: 12000
+    uiPosition: {x: 1880, y: -40}
+    moduleType: 1
+    moduleSubType: 11001
+  - researchId: body_t11_m1
+    prerequisiteIds:
+    - body_t10_m1
+    researchCost:
+      techLevel: 0
+      mineral: 1536000
+      mineralRare: 384000
+      mineralExotic: 96000
+      mineralDark: 24000
+    uiPosition: {x: 2080, y: -40}
+    moduleType: 1
+    moduleSubType: 11101
+  - researchId: body_t12_m1
+    prerequisiteIds:
+    - body_t11_m1
+    researchCost:
+      techLevel: 0
+      mineral: 3072000
+      mineralRare: 768000
+      mineralExotic: 192000
+      mineralDark: 48000
+    uiPosition: {x: 2280, y: -40}
+    moduleType: 1
+    moduleSubType: 11201
+  - researchId: body_t13_m1
+    prerequisiteIds:
+    - body_t12_m1
+    researchCost:
+      techLevel: 0
+      mineral: 6144000
+      mineralRare: 1536000
+      mineralExotic: 384000
+      mineralDark: 96000
+    uiPosition: {x: 2480, y: -40}
+    moduleType: 1
+    moduleSubType: 11301
+  - researchId: body_t14_m1
+    prerequisiteIds:
+    - body_t13_m1
+    researchCost:
+      techLevel: 0
+      mineral: 12288000
+      mineralRare: 3072000
+      mineralExotic: 768000
+      mineralDark: 192000
+    uiPosition: {x: 2680, y: -40}
+    moduleType: 1
+    moduleSubType: 11401
+  - researchId: beam_t1_m1
     prerequisiteIds: []
     researchCost:
       techLevel: 0
@@ -46,20 +190,164 @@ MonoBehaviour:
       mineralDark: 0
     uiPosition: {x: 80, y: -40}
     moduleType: 2
-    moduleSubType: 2010101
-  - researchId: beam_t1_adv_ver1
+    moduleSubType: 20101
+  - researchId: beam_t2_m1
     prerequisiteIds:
-    - beam_t1_std_ver1
+    - beam_t1_m1
     researchCost:
       techLevel: 0
-      mineral: 0
-      mineralRare: 50000
+      mineral: 3000
+      mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
     moduleType: 2
-    moduleSubType: 2010201
-  - researchId: missile_t1_std_ver1
+    moduleSubType: 20201
+  - researchId: beam_t3_m1
+    prerequisiteIds:
+    - beam_t2_m1
+    researchCost:
+      techLevel: 0
+      mineral: 6000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 480, y: -40}
+    moduleType: 2
+    moduleSubType: 20301
+  - researchId: beam_t4_m1
+    prerequisiteIds:
+    - beam_t3_m1
+    researchCost:
+      techLevel: 0
+      mineral: 12000
+      mineralRare: 3000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 680, y: -40}
+    moduleType: 2
+    moduleSubType: 20401
+  - researchId: beam_t5_m1
+    prerequisiteIds:
+    - beam_t4_m1
+    researchCost:
+      techLevel: 0
+      mineral: 24000
+      mineralRare: 6000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 880, y: -40}
+    moduleType: 2
+    moduleSubType: 20501
+  - researchId: beam_t6_m1
+    prerequisiteIds:
+    - beam_t5_m1
+    researchCost:
+      techLevel: 0
+      mineral: 48000
+      mineralRare: 12000
+      mineralExotic: 3000
+      mineralDark: 0
+    uiPosition: {x: 1080, y: -40}
+    moduleType: 2
+    moduleSubType: 20601
+  - researchId: beam_t7_m1
+    prerequisiteIds:
+    - beam_t6_m1
+    researchCost:
+      techLevel: 0
+      mineral: 96000
+      mineralRare: 24000
+      mineralExotic: 6000
+      mineralDark: 0
+    uiPosition: {x: 1280, y: -40}
+    moduleType: 2
+    moduleSubType: 20701
+  - researchId: beam_t8_m1
+    prerequisiteIds:
+    - beam_t7_m1
+    researchCost:
+      techLevel: 0
+      mineral: 192000
+      mineralRare: 48000
+      mineralExotic: 12000
+      mineralDark: 3000
+    uiPosition: {x: 1480, y: -40}
+    moduleType: 2
+    moduleSubType: 20801
+  - researchId: beam_t9_m1
+    prerequisiteIds:
+    - beam_t8_m1
+    researchCost:
+      techLevel: 0
+      mineral: 384000
+      mineralRare: 96000
+      mineralExotic: 24000
+      mineralDark: 6000
+    uiPosition: {x: 1680, y: -40}
+    moduleType: 2
+    moduleSubType: 20901
+  - researchId: beam_t10_m1
+    prerequisiteIds:
+    - beam_t9_m1
+    researchCost:
+      techLevel: 0
+      mineral: 768000
+      mineralRare: 192000
+      mineralExotic: 48000
+      mineralDark: 12000
+    uiPosition: {x: 1880, y: -40}
+    moduleType: 2
+    moduleSubType: 21001
+  - researchId: beam_t11_m1
+    prerequisiteIds:
+    - beam_t10_m1
+    researchCost:
+      techLevel: 0
+      mineral: 1536000
+      mineralRare: 384000
+      mineralExotic: 96000
+      mineralDark: 24000
+    uiPosition: {x: 2080, y: -40}
+    moduleType: 2
+    moduleSubType: 21101
+  - researchId: beam_t12_m1
+    prerequisiteIds:
+    - beam_t11_m1
+    researchCost:
+      techLevel: 0
+      mineral: 3072000
+      mineralRare: 768000
+      mineralExotic: 192000
+      mineralDark: 48000
+    uiPosition: {x: 2280, y: -40}
+    moduleType: 2
+    moduleSubType: 21201
+  - researchId: beam_t13_m1
+    prerequisiteIds:
+    - beam_t12_m1
+    researchCost:
+      techLevel: 0
+      mineral: 6144000
+      mineralRare: 1536000
+      mineralExotic: 384000
+      mineralDark: 96000
+    uiPosition: {x: 2480, y: -40}
+    moduleType: 2
+    moduleSubType: 21301
+  - researchId: beam_t14_m1
+    prerequisiteIds:
+    - beam_t13_m1
+    researchCost:
+      techLevel: 0
+      mineral: 12288000
+      mineralRare: 3072000
+      mineralExotic: 768000
+      mineralDark: 192000
+    uiPosition: {x: 2680, y: -40}
+    moduleType: 2
+    moduleSubType: 21401
+  - researchId: missile_t1_m1
     prerequisiteIds: []
     researchCost:
       techLevel: 0
@@ -69,20 +357,164 @@ MonoBehaviour:
       mineralDark: 0
     uiPosition: {x: 80, y: -40}
     moduleType: 3
-    moduleSubType: 3010101
-  - researchId: missile_t1_adv_ver1
+    moduleSubType: 30101
+  - researchId: missile_t2_m1
     prerequisiteIds:
-    - missile_t1_std_ver1
+    - missile_t1_m1
     researchCost:
       techLevel: 0
-      mineral: 0
-      mineralRare: 50000
+      mineral: 3000
+      mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
     moduleType: 3
-    moduleSubType: 3010201
-  - researchId: hanger_t1_std_ver1
+    moduleSubType: 30201
+  - researchId: missile_t3_m1
+    prerequisiteIds:
+    - missile_t2_m1
+    researchCost:
+      techLevel: 0
+      mineral: 6000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 480, y: -40}
+    moduleType: 3
+    moduleSubType: 30301
+  - researchId: missile_t4_m1
+    prerequisiteIds:
+    - missile_t3_m1
+    researchCost:
+      techLevel: 0
+      mineral: 12000
+      mineralRare: 3000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 680, y: -40}
+    moduleType: 3
+    moduleSubType: 30401
+  - researchId: missile_t5_m1
+    prerequisiteIds:
+    - missile_t4_m1
+    researchCost:
+      techLevel: 0
+      mineral: 24000
+      mineralRare: 6000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 880, y: -40}
+    moduleType: 3
+    moduleSubType: 30501
+  - researchId: missile_t6_m1
+    prerequisiteIds:
+    - missile_t5_m1
+    researchCost:
+      techLevel: 0
+      mineral: 48000
+      mineralRare: 12000
+      mineralExotic: 3000
+      mineralDark: 0
+    uiPosition: {x: 1080, y: -40}
+    moduleType: 3
+    moduleSubType: 30601
+  - researchId: missile_t7_m1
+    prerequisiteIds:
+    - missile_t6_m1
+    researchCost:
+      techLevel: 0
+      mineral: 96000
+      mineralRare: 24000
+      mineralExotic: 6000
+      mineralDark: 0
+    uiPosition: {x: 1280, y: -40}
+    moduleType: 3
+    moduleSubType: 30701
+  - researchId: missile_t8_m1
+    prerequisiteIds:
+    - missile_t7_m1
+    researchCost:
+      techLevel: 0
+      mineral: 192000
+      mineralRare: 48000
+      mineralExotic: 12000
+      mineralDark: 3000
+    uiPosition: {x: 1480, y: -40}
+    moduleType: 3
+    moduleSubType: 30801
+  - researchId: missile_t9_m1
+    prerequisiteIds:
+    - missile_t8_m1
+    researchCost:
+      techLevel: 0
+      mineral: 384000
+      mineralRare: 96000
+      mineralExotic: 24000
+      mineralDark: 6000
+    uiPosition: {x: 1680, y: -40}
+    moduleType: 3
+    moduleSubType: 30901
+  - researchId: missile_t10_m1
+    prerequisiteIds:
+    - missile_t9_m1
+    researchCost:
+      techLevel: 0
+      mineral: 768000
+      mineralRare: 192000
+      mineralExotic: 48000
+      mineralDark: 12000
+    uiPosition: {x: 1880, y: -40}
+    moduleType: 3
+    moduleSubType: 31001
+  - researchId: missile_t11_m1
+    prerequisiteIds:
+    - missile_t10_m1
+    researchCost:
+      techLevel: 0
+      mineral: 1536000
+      mineralRare: 384000
+      mineralExotic: 96000
+      mineralDark: 24000
+    uiPosition: {x: 2080, y: -40}
+    moduleType: 3
+    moduleSubType: 31101
+  - researchId: missile_t12_m1
+    prerequisiteIds:
+    - missile_t11_m1
+    researchCost:
+      techLevel: 0
+      mineral: 3072000
+      mineralRare: 768000
+      mineralExotic: 192000
+      mineralDark: 48000
+    uiPosition: {x: 2280, y: -40}
+    moduleType: 3
+    moduleSubType: 31201
+  - researchId: missile_t13_m1
+    prerequisiteIds:
+    - missile_t12_m1
+    researchCost:
+      techLevel: 0
+      mineral: 6144000
+      mineralRare: 1536000
+      mineralExotic: 384000
+      mineralDark: 96000
+    uiPosition: {x: 2480, y: -40}
+    moduleType: 3
+    moduleSubType: 31301
+  - researchId: missile_t14_m1
+    prerequisiteIds:
+    - missile_t13_m1
+    researchCost:
+      techLevel: 0
+      mineral: 12288000
+      mineralRare: 3072000
+      mineralExotic: 768000
+      mineralDark: 192000
+    uiPosition: {x: 2680, y: -40}
+    moduleType: 3
+    moduleSubType: 31401
+  - researchId: hanger_t1_m1
     prerequisiteIds: []
     researchCost:
       techLevel: 0
@@ -92,19 +524,163 @@ MonoBehaviour:
       mineralDark: 0
     uiPosition: {x: 80, y: -40}
     moduleType: 4
-    moduleSubType: 4010101
-  - researchId: hanger_t1_adv_ver1
+    moduleSubType: 40101
+  - researchId: hanger_t2_m1
     prerequisiteIds:
-    - hanger_t1_std_ver1
+    - hanger_t1_m1
     researchCost:
       techLevel: 0
-      mineral: 0
-      mineralRare: 50000
+      mineral: 3000
+      mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 280, y: -40}
     moduleType: 4
-    moduleSubType: 4010201
+    moduleSubType: 40201
+  - researchId: hanger_t3_m1
+    prerequisiteIds:
+    - hanger_t2_m1
+    researchCost:
+      techLevel: 0
+      mineral: 6000
+      mineralRare: 0
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 480, y: -40}
+    moduleType: 4
+    moduleSubType: 40301
+  - researchId: hanger_t4_m1
+    prerequisiteIds:
+    - hanger_t3_m1
+    researchCost:
+      techLevel: 0
+      mineral: 12000
+      mineralRare: 3000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 680, y: -40}
+    moduleType: 4
+    moduleSubType: 40401
+  - researchId: hanger_t5_m1
+    prerequisiteIds:
+    - hanger_t4_m1
+    researchCost:
+      techLevel: 0
+      mineral: 24000
+      mineralRare: 6000
+      mineralExotic: 0
+      mineralDark: 0
+    uiPosition: {x: 880, y: -40}
+    moduleType: 4
+    moduleSubType: 40501
+  - researchId: hanger_t6_m1
+    prerequisiteIds:
+    - hanger_t5_m1
+    researchCost:
+      techLevel: 0
+      mineral: 48000
+      mineralRare: 12000
+      mineralExotic: 3000
+      mineralDark: 0
+    uiPosition: {x: 1080, y: -40}
+    moduleType: 4
+    moduleSubType: 40601
+  - researchId: hanger_t7_m1
+    prerequisiteIds:
+    - hanger_t6_m1
+    researchCost:
+      techLevel: 0
+      mineral: 96000
+      mineralRare: 24000
+      mineralExotic: 6000
+      mineralDark: 0
+    uiPosition: {x: 1280, y: -40}
+    moduleType: 4
+    moduleSubType: 40701
+  - researchId: hanger_t8_m1
+    prerequisiteIds:
+    - hanger_t7_m1
+    researchCost:
+      techLevel: 0
+      mineral: 192000
+      mineralRare: 48000
+      mineralExotic: 12000
+      mineralDark: 3000
+    uiPosition: {x: 1480, y: -40}
+    moduleType: 4
+    moduleSubType: 40801
+  - researchId: hanger_t9_m1
+    prerequisiteIds:
+    - hanger_t8_m1
+    researchCost:
+      techLevel: 0
+      mineral: 384000
+      mineralRare: 96000
+      mineralExotic: 24000
+      mineralDark: 6000
+    uiPosition: {x: 1680, y: -40}
+    moduleType: 4
+    moduleSubType: 40901
+  - researchId: hanger_t10_m1
+    prerequisiteIds:
+    - hanger_t9_m1
+    researchCost:
+      techLevel: 0
+      mineral: 768000
+      mineralRare: 192000
+      mineralExotic: 48000
+      mineralDark: 12000
+    uiPosition: {x: 1880, y: -40}
+    moduleType: 4
+    moduleSubType: 41001
+  - researchId: hanger_t11_m1
+    prerequisiteIds:
+    - hanger_t10_m1
+    researchCost:
+      techLevel: 0
+      mineral: 1536000
+      mineralRare: 384000
+      mineralExotic: 96000
+      mineralDark: 24000
+    uiPosition: {x: 2080, y: -40}
+    moduleType: 4
+    moduleSubType: 41101
+  - researchId: hanger_t12_m1
+    prerequisiteIds:
+    - hanger_t11_m1
+    researchCost:
+      techLevel: 0
+      mineral: 3072000
+      mineralRare: 768000
+      mineralExotic: 192000
+      mineralDark: 48000
+    uiPosition: {x: 2280, y: -40}
+    moduleType: 4
+    moduleSubType: 41201
+  - researchId: hanger_t13_m1
+    prerequisiteIds:
+    - hanger_t12_m1
+    researchCost:
+      techLevel: 0
+      mineral: 6144000
+      mineralRare: 1536000
+      mineralExotic: 384000
+      mineralDark: 96000
+    uiPosition: {x: 2480, y: -40}
+    moduleType: 4
+    moduleSubType: 41301
+  - researchId: hanger_t14_m1
+    prerequisiteIds:
+    - hanger_t13_m1
+    researchCost:
+      techLevel: 0
+      mineral: 12288000
+      mineralRare: 3072000
+      mineralExotic: 768000
+      mineralDark: 192000
+    uiPosition: {x: 2680, y: -40}
+    moduleType: 4
+    moduleSubType: 41401
   techLevelDataList:
   - researchId: tech_level_1
     prerequisiteIds: []
@@ -121,7 +697,7 @@ MonoBehaviour:
     - tech_level_1
     researchCost:
       techLevel: 0
-      mineral: 5000
+      mineral: 3000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
@@ -132,7 +708,7 @@ MonoBehaviour:
     - tech_level_2
     researchCost:
       techLevel: 0
-      mineral: 10000
+      mineral: 6000
       mineralRare: 0
       mineralExotic: 0
       mineralDark: 0
@@ -143,8 +719,8 @@ MonoBehaviour:
     - tech_level_3
     researchCost:
       techLevel: 0
-      mineral: 20000
-      mineralRare: 5000
+      mineral: 12000
+      mineralRare: 3000
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 680, y: -40}
@@ -154,8 +730,8 @@ MonoBehaviour:
     - tech_level_4
     researchCost:
       techLevel: 0
-      mineral: 40000
-      mineralRare: 10000
+      mineral: 24000
+      mineralRare: 6000
       mineralExotic: 0
       mineralDark: 0
     uiPosition: {x: 880, y: -40}
@@ -165,9 +741,9 @@ MonoBehaviour:
     - tech_level_5
     researchCost:
       techLevel: 0
-      mineral: 80000
-      mineralRare: 20000
-      mineralExotic: 5000
+      mineral: 48000
+      mineralRare: 12000
+      mineralExotic: 3000
       mineralDark: 0
     uiPosition: {x: 1080, y: -40}
     targetTechLevel: 6
@@ -176,9 +752,9 @@ MonoBehaviour:
     - tech_level_6
     researchCost:
       techLevel: 0
-      mineral: 160000
-      mineralRare: 40000
-      mineralExotic: 10000
+      mineral: 96000
+      mineralRare: 24000
+      mineralExotic: 6000
       mineralDark: 0
     uiPosition: {x: 1280, y: -40}
     targetTechLevel: 7
@@ -187,10 +763,10 @@ MonoBehaviour:
     - tech_level_7
     researchCost:
       techLevel: 0
-      mineral: 320000
-      mineralRare: 80000
-      mineralExotic: 20000
-      mineralDark: 5000
+      mineral: 192000
+      mineralRare: 48000
+      mineralExotic: 12000
+      mineralDark: 3000
     uiPosition: {x: 1480, y: -40}
     targetTechLevel: 8
   - researchId: tech_level_9
@@ -198,10 +774,10 @@ MonoBehaviour:
     - tech_level_8
     researchCost:
       techLevel: 0
-      mineral: 640000
-      mineralRare: 160000
-      mineralExotic: 40000
-      mineralDark: 10000
+      mineral: 384000
+      mineralRare: 96000
+      mineralExotic: 24000
+      mineralDark: 6000
     uiPosition: {x: 1680, y: -40}
     targetTechLevel: 9
   - researchId: tech_level_10
@@ -209,10 +785,10 @@ MonoBehaviour:
     - tech_level_9
     researchCost:
       techLevel: 0
-      mineral: 1280000
-      mineralRare: 320000
-      mineralExotic: 80000
-      mineralDark: 20000
+      mineral: 768000
+      mineralRare: 192000
+      mineralExotic: 48000
+      mineralDark: 12000
     uiPosition: {x: 1880, y: -40}
     targetTechLevel: 10
   - researchId: tech_level_11
@@ -220,10 +796,10 @@ MonoBehaviour:
     - tech_level_10
     researchCost:
       techLevel: 0
-      mineral: 2560000
-      mineralRare: 640000
-      mineralExotic: 160000
-      mineralDark: 40000
+      mineral: 1536000
+      mineralRare: 384000
+      mineralExotic: 96000
+      mineralDark: 24000
     uiPosition: {x: 2080, y: -40}
     targetTechLevel: 11
   - researchId: tech_level_12
@@ -231,10 +807,10 @@ MonoBehaviour:
     - tech_level_11
     researchCost:
       techLevel: 0
-      mineral: 5120000
-      mineralRare: 1280000
-      mineralExotic: 320000
-      mineralDark: 80000
+      mineral: 3072000
+      mineralRare: 768000
+      mineralExotic: 192000
+      mineralDark: 48000
     uiPosition: {x: 2280, y: -40}
     targetTechLevel: 12
   - researchId: tech_level_13
@@ -242,10 +818,10 @@ MonoBehaviour:
     - tech_level_12
     researchCost:
       techLevel: 0
-      mineral: 10240000
-      mineralRare: 2560000
-      mineralExotic: 640000
-      mineralDark: 160000
+      mineral: 6144000
+      mineralRare: 1536000
+      mineralExotic: 384000
+      mineralDark: 96000
     uiPosition: {x: 2480, y: -40}
     targetTechLevel: 13
   - researchId: tech_level_14
@@ -253,9 +829,9 @@ MonoBehaviour:
     - tech_level_13
     researchCost:
       techLevel: 0
-      mineral: 20480000
-      mineralRare: 5120000
-      mineralExotic: 1280000
-      mineralDark: 320000
+      mineral: 12288000
+      mineralRare: 3072000
+      mineralExotic: 768000
+      mineralDark: 192000
     uiPosition: {x: 2680, y: -40}
     targetTechLevel: 14

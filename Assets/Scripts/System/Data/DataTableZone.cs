@@ -1,30 +1,16 @@
 // Zone 데이터 테이블 — 탐사 존별 라운드·보상·자원 수확 설정 ScriptableObject
-// ZoneGroupConfig: 함선개수(x) 그룹 단위로 공유하는 배경 데코·아군 함대 위치
+// ZoneGroupConfig: 함선개수(x) 그룹 단위로 공유하는 스카이박스 설정
 // enemyShipConfigs: 웨이브 템플릿 리스트 [waveIndex] — 해당 라운드에 shipCount만큼 복제 스폰
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public enum SpaceDecorType { Asteroid, Planet }
-
-// 배경 데코 1개 배치 설정 — 원점(항성) 기준 공전, 초기 각도는 런타임에 랜덤 배정
-[System.Serializable]
-public class SpaceDecorConfig
-{
-    public SpaceDecorType type;
-    public int spriteIndex;     // 1-based (Planet: 1~7, 단 6 없음)
-    public float orbitRadius;   // 원점으로부터의 공전 반지름
-    public float orbitPeriod;   // 공전 주기 (초, 0이면 정지)
-    public float scale;         // 크기
-}
-
-// Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 skybox·행성 세트를 공유
+// Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 skybox를 공유
 [System.Serializable]
 public class ZoneGroupConfig
 {
-    public int shipCount;                  // 그룹 키 (0 = 안전구역 Zone-0)
-    public Material skyboxMaterial;        // 이 Zone의 스카이박스
-    public SpaceDecorConfig[] spaceDecors; // 행성 배치 세트
+    public int shipCount;           // 그룹 키 (0 = 안전구역 Zone-0)
+    public Material skyboxMaterial; // 이 Zone의 스카이박스
 }
 
 // 각 슬롯에 장착할 모듈 설정
@@ -51,7 +37,7 @@ public class EnemyModuleSlotConfig
 public class EnemyShipConfig
 {
     public int shipCount = 1;           // 이 웨이브에서 스폰할 함선 수
-    public EModuleSubType bodySubType = EModuleSubType.body_t1_std_ver1;
+    public EModuleSubType bodySubType = EModuleSubType.body_t1_m1;
     public int bodyLevel = 1;
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
 }
@@ -89,6 +75,9 @@ public class ZoneConfig
     public float mineralRarePerHour = 0f;
     public float mineralExoticPerHour = 0f;
     public float mineralDarkPerHour = 0f;
+
+    [Header("스카이박스 회전 (스테이지별)")]
+    [Range(0f, 360f)] public float skyboxRotation = 0f;
 
     [Header("아군 함대 위치 (절대 좌표)")]
     public Vector3 fleetPosition;   // 이 존 진입 시 아군 함대가 배치될 월드 좌표

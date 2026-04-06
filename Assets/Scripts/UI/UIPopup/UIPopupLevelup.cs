@@ -62,7 +62,7 @@ public class UIPopupLevelup : UIPopupBase
         if (m_titleText != null)
             m_titleText.text = LocalizationManager.Instance.Get("ship_module_levelup");
         if (m_subjectNameText != null)
-            m_subjectNameText.text = LocalizationManager.Instance.Get($"{subType.ToLocKey()}") + "\n<color=#666666>─────────────</color>";
+            m_subjectNameText.text = subType.GetLocalizedName() + "\n<color=#666666>─────────────</color>";
 
         ShowInternal(currentLevel, onConfirm, onCancel);
     }

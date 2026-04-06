@@ -370,46 +370,6 @@ MonoBehaviour:
     m_Localized: Commander
     m_Metadata:
       m_Items: []
-  - m_Id: 10726916994498560
-    m_Localized: T1 Body.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441600
-    m_Localized: T1 Body.Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441601
-    m_Localized: T1 Engine.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441602
-    m_Localized: T1 Engine.Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441603
-    m_Localized: T1 Beam.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441604
-    m_Localized: T1 Beam.Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441605
-    m_Localized: T1 Missile.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441606
-    m_Localized: T1 Missile.Adv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441607
-    m_Localized: T1 Hanger.Std
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441608
-    m_Localized: T1 Hanger.Adv
-    m_Metadata:
-      m_Items: []
   - m_Id: 10728497219502080
     m_Localized: Research
     m_Metadata:

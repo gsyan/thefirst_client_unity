@@ -104,8 +104,8 @@ public class ModuleMissile : ModuleBase
         EPoolName poolName = GetMissilePoolName(m_moduleInfo.moduleSubType);
         switch (m_moduleInfo.moduleSubType)
         {
-            case EModuleSubType.missile_t1_std_ver1:
-            case EModuleSubType.missile_t1_adv_ver1:
+            case EModuleSubType.missile_t1_m1:
+            case EModuleSubType.missile_t2_m1:
                 for (int i = 0; i < moduleData.attackFireCount; i++)
                 {
                     LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
@@ -123,8 +123,8 @@ public class ModuleMissile : ModuleBase
     {
         switch (subType)
         {
-            case EModuleSubType.missile_t1_std_ver1:  return EPoolName.PROJECTILE_MISSILE_SMALL;
-            case EModuleSubType.missile_t1_adv_ver1:  return EPoolName.PROJECTILE_MISSILE_SMALL;
+            case EModuleSubType.missile_t1_m1:  return EPoolName.PROJECTILE_MISSILE_SMALL;
+            case EModuleSubType.missile_t2_m1:  return EPoolName.PROJECTILE_MISSILE_SMALL;
             default:                                  return EPoolName.PROJECTILE_MISSILE_SMALL;
         }
     }

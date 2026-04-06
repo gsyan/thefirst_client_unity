@@ -238,7 +238,7 @@ public class ModuleBody : ModuleBase
 
     private void InitializeBeam(ModuleInfo moduleInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString(), moduleInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString());
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
@@ -256,7 +256,7 @@ public class ModuleBody : ModuleBase
 
     private void InitializeMissile(ModuleInfo moduleInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString(), moduleInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString());
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
@@ -274,7 +274,7 @@ public class ModuleBody : ModuleBase
 
     private void InitializeHanger(ModuleInfo moduleInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString(), moduleInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString());
         if (modulePrefab == null)
         {
             Debug.LogWarning($"InitializeHanger: Cannot find module prefab - Level: {moduleInfo.moduleLevel}");
@@ -569,8 +569,7 @@ public class ModuleBody : ModuleBase
         }
 
         // 새 모듈 생성 (기존 모듈의 unlockedSubTypes 이어받기)
-        int prefabLevel = 1;// 프리팹 레벨1만
-        ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel, prefabLevel);
+        ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel);
 
         // 전투 중 추가 시 즉시 전함 상태 적용 (뚜껑 열림 등 애니메이터 반영)
         if (newModule != null)
@@ -583,9 +582,9 @@ public class ModuleBody : ModuleBase
         return newModule != null;
     }
 
-    private ModuleBase CreateAndPlaceModule(ModuleSlot targetSlot, EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel, int prefabLevel)
+    private ModuleBase CreateAndPlaceModule(ModuleSlot targetSlot, EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleType.ToString(), moduleSubType.ToString(), prefabLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleType.ToString(), moduleSubType.ToString());
         if (modulePrefab == null) return null;
         GameObject moduleObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         moduleObj.transform.SetParent(targetSlot.transform);

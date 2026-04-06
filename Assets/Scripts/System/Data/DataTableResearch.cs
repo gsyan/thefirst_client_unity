@@ -156,7 +156,7 @@ public class DataTableResearch : ScriptableObject
             researchDataList.Add(new ModuleResearchData
             {
                 researchId      = researchId,
-                moduleType      = (EModuleType)((int)moduleSubType / 1000000),
+                moduleType      = (EModuleType)moduleSubType.GetModuleType(),
                 moduleSubType   = moduleSubType,
                 prerequisiteIds = prereqs,
                 uiPosition      = uiPos,

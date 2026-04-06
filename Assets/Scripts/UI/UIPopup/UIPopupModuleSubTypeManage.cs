@@ -26,6 +26,8 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
     private Action<EModuleSubType> m_onConfirm;
 
+    private ScrollRect m_scrollRect;
+
     // 노드/라인 풀
     private readonly List<RectTransform> m_nodePool = new List<RectTransform>();
     private readonly List<RectTransform> m_linePool = new List<RectTransform>();
@@ -39,6 +41,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
     protected override void Awake()
     {
         base.Awake();
+        m_scrollRect = GetComponentInChildren<ScrollRect>(true);
         if (m_confirmButton != null) m_confirmButton.onClick.AddListener(OnConfirmClicked);
         if (m_closeButton != null) m_closeButton.onClick.AddListener(HidePopup);
     }
@@ -46,10 +49,12 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
     // sourceModule: 현재 선택된 모듈 / onConfirm: 교체 대상 subType 전달 콜백
     public void ShowPopup(ModuleBase sourceModule, Action<EModuleSubType> onConfirm)
     {
+        base.ShowPopup();
+
         m_sourceModule = sourceModule;
         m_onConfirm = onConfirm;
         m_selectedSubType = EModuleSubType.none;
-
+        
         if (m_titleText != null)
         {
             string typeKey = $"module_type_{sourceModule.GetModuleType().ToLocKey()}";
@@ -58,7 +63,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
         BuildTree();
         UpdateInfoPanel();
-        base.ShowPopup();
+        ScrollToCurrentSubType();
     }
 
     private void BuildTree()
@@ -76,7 +81,9 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
         EModuleType moduleType = m_sourceModule.GetModuleType();
         var allNodes = DataManager.Instance.m_dataTableResearch.GetResearchDataByType(moduleType);
-        float maxAbsX = 0f, maxAbsY = 0f;
+        // 배치된 노드들의 실제 바운딩박스 (노드 크기 포함)
+        float boundsMinX = float.MaxValue, boundsMaxX = float.MinValue;
+        float boundsMinY = float.MaxValue, boundsMaxY = float.MinValue;
 
         // 해당 모듈 타입의 전체 서브타입 노드 표시 (연구 여부와 무관)
         for (int i = 0; i < allNodes.Count; i++)
@@ -96,13 +103,23 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             {
                 string nodeId = node.researchId;
                 EModuleSubType subType = node.moduleSubType;
-                item.InitializeScrollViewResearchItem(node.researchId, () => OnNodeClicked(nodeId, subType));
+                // 서브타입 이름은 코드에서 동적 생성 (CSV 키 불필요)
+                string displayName = subType.GetLocalizedName();
+                item.InitializeScrollViewResearchItem(displayName, () => OnNodeClicked(nodeId, subType), false);
                 m_spawnedItems[node.researchId] = item;
             }
 
             m_spawnedNodes[node.researchId] = rect;
-            if (Mathf.Abs(node.uiPosition.x) > maxAbsX) maxAbsX = Mathf.Abs(node.uiPosition.x);
-            if (Mathf.Abs(node.uiPosition.y) > maxAbsY) maxAbsY = Mathf.Abs(node.uiPosition.y);
+
+            Vector2 halfSize = rect.sizeDelta * 0.5f;
+            float nodeMinX = node.uiPosition.x - halfSize.x;
+            float nodeMaxX = node.uiPosition.x + halfSize.x;
+            float nodeMinY = node.uiPosition.y - halfSize.y;
+            float nodeMaxY = node.uiPosition.y + halfSize.y;
+            if (nodeMinX < boundsMinX) boundsMinX = nodeMinX;
+            if (nodeMaxX > boundsMaxX) boundsMaxX = nodeMaxX;
+            if (nodeMinY < boundsMinY) boundsMinY = nodeMinY;
+            if (nodeMaxY > boundsMaxY) boundsMaxY = nodeMaxY;
         }
 
         // 연결선 생성
@@ -119,11 +136,62 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         }
 
         // Content 크기 갱신
-        RectTransform contentRect = m_contentContainer?.GetComponent<RectTransform>();
-        if (contentRect != null)
-            contentRect.sizeDelta = new Vector2(maxAbsX * 2f, maxAbsY * 2f);
+        RectTransform contentRect = m_contentContainer as RectTransform;
+        if (contentRect == null && m_contentContainer != null)
+            contentRect = m_contentContainer.GetComponent<RectTransform>();
+        if (contentRect != null && boundsMaxX > boundsMinX)
+            contentRect.sizeDelta = new Vector2(boundsMaxX - boundsMinX + 10, boundsMaxY - boundsMinY + 10);
 
         RefreshNodeColors();
+    }
+
+    // 현재 장착 서브타입 노드를 스크롤 중앙에 배치
+    private void ScrollToCurrentSubType()
+    {
+        if (m_scrollRect == null) return;
+
+        EModuleSubType currentSubType = m_sourceModule.GetModuleSubType();
+        RectTransform targetRect = null;
+
+        for (int i = 0; i < m_currentNodeList.Count; i++)
+        {
+            if (m_currentNodeList[i].moduleSubType == currentSubType)
+            {
+                m_spawnedNodes.TryGetValue(m_currentNodeList[i].researchId, out targetRect);
+                break;
+            }
+        }
+
+        if (targetRect == null) return;
+
+        Canvas.ForceUpdateCanvases();
+
+        RectTransform content = m_scrollRect.content;
+        RectTransform viewport = m_scrollRect.viewport != null
+            ? m_scrollRect.viewport
+            : (RectTransform)m_scrollRect.transform;
+
+        Vector2 childLocal = (Vector2)content.InverseTransformPoint(targetRect.position);
+
+        if (m_scrollRect.horizontal == true)
+        {
+            float scrollable = content.rect.width - viewport.rect.width;
+            if (scrollable > 0f)
+            {
+                float offset = childLocal.x - content.rect.xMin - viewport.rect.width * 0.5f;
+                m_scrollRect.horizontalNormalizedPosition = Mathf.Clamp01(offset / scrollable);
+            }
+        }
+
+        if (m_scrollRect.vertical == true)
+        {
+            float scrollable = content.rect.height - viewport.rect.height;
+            if (scrollable > 0f)
+            {
+                float offset = content.rect.yMax - childLocal.y - viewport.rect.height * 0.5f;
+                m_scrollRect.verticalNormalizedPosition = 1f - Mathf.Clamp01(offset / scrollable);
+            }
+        }
     }
 
     private void OnNodeClicked(string nodeId, EModuleSubType subType)
@@ -197,16 +265,8 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             bool insufficient = have < cost.mineralRare;
             if (insufficient == true) canConfirm = false;
 
-            // 현재 장착 서브타입 이름 조회 (researchId = loc key)
-            string subtypeName = currentSubType.ToString();
-            for (int i = 0; i < m_currentNodeList.Count; i++)
-            {
-                if (m_currentNodeList[i].moduleSubType == currentSubType)
-                {
-                    subtypeName = LocalizationManager.Instance.Get(m_currentNodeList[i].researchId);
-                    break;
-                }
-            }
+            // 현재 장착 서브타입 이름 (동적 생성)
+            string subtypeName = currentSubType.GetLocalizedName();
             string levelMsg = LocalizationManager.Instance.Get(
                 "module_subtype_max_level_required",
                 new object[] { subtypeName, maxLevel, currentLevel });

@@ -16,13 +16,10 @@ public class DataTableZoneEditor : Editor
     private Dictionary<int, bool> zoneFoldouts = new Dictionary<int, bool>();
     private Dictionary<int, Dictionary<int, bool>> shipFoldouts = new Dictionary<int, Dictionary<int, bool>>();
     private Dictionary<int, bool> shipCountGroupFoldouts = new Dictionary<int, bool>(); // x값(함선개수) 그룹 폴드아웃
-    private Dictionary<int, bool> decorFoldouts = new Dictionary<int, bool>();          // 행성 배치 세트 폴드아웃
-
     private readonly Color zoneColor       = new Color(0.7f, 0.85f, 0.95f);
     private readonly Color shipColor       = new Color(0.85f, 0.95f, 0.85f);
     private readonly Color slotColor       = new Color(0.9f, 0.9f, 0.95f);
     private readonly Color multiplierColor = new Color(0.95f, 0.88f, 0.75f);
-    private readonly Color decorColor      = new Color(0.88f, 0.95f, 0.88f);
 
     // Body SubType 목록 캐싱
     private EModuleSubType[] bodySubTypes;
@@ -39,7 +36,7 @@ public class DataTableZoneEditor : Editor
         var bodyTypes = new List<EModuleSubType>();
         foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
-            if (CommonUtility.GetModuleTypeFromSubType(subType) == EModuleType.body)
+            if ((EModuleType)subType.GetModuleType() == EModuleType.body)
                 bodyTypes.Add(subType);
         }
         bodySubTypes = bodyTypes.ToArray();
@@ -108,31 +105,6 @@ public class DataTableZoneEditor : Editor
             ValidateAllShips();
         }
         EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space(4);
-        if (GUILayout.Button("Generate All Planets & Fleet Positions"))
-        {
-            if (EditorUtility.DisplayDialog("Generate All",
-                "모든 존 그룹의 행성과 함선 포지션을 재생성합니다.\n기존 설정이 덮어써집니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
-            {
-                for (int gi = 0; gi < config.zoneGroups.Count; gi++)
-                {
-                    var group = config.zoneGroups[gi];
-                    if (group.shipCount == 0) // 안전지역 — 행성 없음, 함대 원점 고정
-                    {
-                        group.spaceDecors = null;
-                        foreach (var z in config.zones)
-                            if (z.shipCount == 0) z.fleetPosition = Vector3.zero;
-                        continue;
-                    }
-                    int seed = group.shipCount * 137 + gi;
-                    group.spaceDecors = GenerateDefaultPlanets(seed);
-                    GenerateFleetPositionsForGroup(group.shipCount, group.spaceDecors, seed);
-                }
-                EditorUtility.SetDirty(config);
-                Debug.Log($"[DataTableZone] {config.zoneGroups.Count}개 그룹 행성 + 포지션 생성 완료");
-            }
-        }
 
         EditorGUILayout.EndVertical();
     }
@@ -358,7 +330,7 @@ public class DataTableZoneEditor : Editor
             {
                 if (group.Key == 0)
                 {
-                    // x-y 형식이 아닌 zone들 (Zone-0 포함) — 행성 세트는 groupConfig(shipCount=0)로 관리
+                    // x-y 형식이 아닌 zone들 (Zone-0 포함) — 스카이박스는 groupConfig(shipCount=0)로 관리
                     foreach (var (index, zone) in group.Value)
                     {
                         DrawZone(index);
@@ -416,7 +388,7 @@ public class DataTableZoneEditor : Editor
         {
             EditorGUI.indentLevel++;
 
-            // 그룹 공유 설정 (행성 세트)
+            // 그룹 공유 설정 (스카이박스)
             DrawZoneGroupConfig(shipCount);
             EditorGUILayout.Space(5);
 
@@ -432,10 +404,9 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.Space(5);
     }
 
-    // ZoneGroupConfig 편집 UI (행성 세트)
+    // ZoneGroupConfig 편집 UI (스카이박스)
     private void DrawZoneGroupConfig(int shipCount)
     {
-        // 해당 shipCount의 groupConfig 조회 또는 자동 생성
         ZoneGroupConfig groupConfig = null;
         for (int i = 0; i < config.zoneGroups.Count; i++)
         {
@@ -449,7 +420,7 @@ public class DataTableZoneEditor : Editor
         if (groupConfig == null)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.HelpBox("이 그룹의 행성 설정이 없습니다.", MessageType.Info);
+            EditorGUILayout.HelpBox("이 그룹의 스카이박스 설정이 없습니다.", MessageType.Info);
             if (GUILayout.Button("생성", GUILayout.Width(50)))
             {
                 groupConfig = new ZoneGroupConfig { shipCount = shipCount };
@@ -462,115 +433,6 @@ public class DataTableZoneEditor : Editor
 
         groupConfig.skyboxMaterial = (Material)EditorGUILayout.ObjectField(
             "Skybox Material", groupConfig.skyboxMaterial, typeof(Material), false);
-        EditorGUILayout.Space(3);
-
-        if (!decorFoldouts.ContainsKey(shipCount))
-            decorFoldouts[shipCount] = false;
-
-        decorFoldouts[shipCount] = EditorGUILayout.Foldout(
-            decorFoldouts[shipCount],
-            $"행성 배치 세트 ({groupConfig.spaceDecors?.Length ?? 0}개)", true);
-
-        if (decorFoldouts[shipCount])
-            DrawSpaceDecors(groupConfig);
-    }
-
-    // T = 30일 × (radius / 6000)^1.5
-    // 30 — 공전 궤도의 반지름 6000일 때의 공전 주기(일). 이게 T0
-    // 6000 — 기준이 되는 공전 궤도의 반지름 단위. 이게 r0
-    private const float orbitBasePeriodDays = 30f; // 기준 반지름에서의 공전 주기(일)
-    private const float orbitBaseRadius     = 6000f; // 기준 반지름 (Unity unit)
-
-    // 케플러 T = orbitBasePeriodDays * (r/orbitBaseRadius)^1.5 기반 행성 4개 생성
-    // seed로 존마다 다른 배치, 크기는 고정 (내행성 소형 암석 / 외행성 대형 가스)
-    private SpaceDecorConfig[] GenerateDefaultPlanets(int seed)
-    {
-        var rng = new System.Random(seed);
-        // (공전 궤도 기준 반지름, 고정 크기, 행성 스프라이트 인덱스 풀)
-        var templates = new (float baseRadius, float scale, int[] spritePool)[]
-        {
-            (1200f,  5.5f, new[] { 3, 4, 5 }),   // 내행성1 — 소형 암석
-            (2700f,  9f,   new[] { 1, 2, 7 }),   // 내행성2 — 중형 암석
-            (5400f, 22f,   new[] { 2, 3, 7 }),   // 외행성1 — 대형 가스
-            (13500f, 40f,  new[] { 1, 4, 5 }),   // 외행성2 — 초대형 가스
-        };
-
-        var result = new SpaceDecorConfig[templates.Length];
-        var usedSprites = new System.Collections.Generic.HashSet<int>();
-
-        for (int i = 0; i < templates.Length; i++)
-        {
-            var (baseRadius, scale, spritePool) = templates[i];
-
-            // 반지름 ±15% 편차 (seed 기반, 존마다 다름)
-            float radius = baseRadius * (0.85f + (float)rng.NextDouble() * 0.30f);
-            // T(일) = 30 * (r/6000)^1.5
-            float periodDays = orbitBasePeriodDays * Mathf.Pow(radius / orbitBaseRadius, 1.5f);
-            float periodSeconds = periodDays * 86400f;
-
-            // 중복 없는 스프라이트 선택 (seed 기반)
-            int spriteIndex = spritePool[rng.Next(spritePool.Length)];
-            for (int attempt = 0; attempt < 10 && usedSprites.Contains(spriteIndex); attempt++)
-                spriteIndex = spritePool[rng.Next(spritePool.Length)];
-            usedSprites.Add(spriteIndex);
-
-            result[i] = new SpaceDecorConfig
-            {
-                type        = SpaceDecorType.Planet,
-                spriteIndex = spriteIndex,
-                orbitRadius = Mathf.Round(radius),
-                orbitPeriod = Mathf.Round(periodSeconds),
-                scale       = scale,
-            };
-        }
-        return result;
-    }
-
-    // 행성 궤도 사이 안전 밴드에 30개 포지션 생성 → 해당 shipCount ZoneConfig에 순서대로 할당
-    // 밴드: core(3) / 내1~내2 사이(7) / 내2~외1 사이(10) / 외1~외2 사이(10)
-    private void GenerateFleetPositionsForGroup(int shipCount, SpaceDecorConfig[] planets, int seed)
-    {
-        // 실제 생성된 궤도 반지름 오름차순 정렬
-        float[] r = new float[planets.Length];
-        for (int i = 0; i < planets.Length; i++) r[i] = planets[i].orbitRadius;
-        System.Array.Sort(r);
-
-        // 안전 밴드: 행성 궤도와 겹치지 않는 구간 (궤도 ±12~18% 여유)
-        var bands = new (float rMin, float rMax, int count)[]
-        {
-            (r[0] * 0.35f, r[0] * 0.70f,  3),   // core — 항성 근처
-            (r[0] * 1.18f, r[1] * 0.82f,  7),   // 내행성1 ~ 내행성2 사이
-            (r[1] * 1.12f, r[2] * 0.88f, 10),   // 내행성2 ~ 외행성1 사이
-            (r[2] * 1.10f, r[3] * 0.90f, 10),   // 외행성1 ~ 외행성2 사이
-        };
-
-        var rng = new System.Random(seed + 9999);
-        var positions = new Vector3[30];
-        int posIdx = 0;
-
-        foreach (var (rMin, rMax, count) in bands)
-        {
-            if (rMax <= rMin) continue; // 궤도가 너무 가까워 밴드 불성립 시 스킵
-            float angleStep = 360f / count;
-            float angleOffset = (float)(rng.NextDouble() * 360f); // 존마다 다른 시작 각도
-            for (int j = 0; j < count && posIdx < 30; j++)
-            {
-                float radius = rMin + (float)rng.NextDouble() * (rMax - rMin);
-                float angleRad = (angleOffset + angleStep * j) * Mathf.Deg2Rad;
-                positions[posIdx++] = new Vector3(
-                    radius * Mathf.Cos(angleRad),
-                    0f,
-                    radius * Mathf.Sin(angleRad));
-            }
-        }
-
-        // 해당 shipCount ZoneConfig에 순서대로 할당
-        int fillIdx = 0;
-        for (int i = 0; i < config.zones.Count && fillIdx < 30; i++)
-        {
-            if (config.zones[i].shipCount == shipCount)
-                config.zones[i].fleetPosition = positions[fillIdx++];
-        }
     }
 
     private void DrawZone(int zoneIndex)
@@ -656,7 +518,7 @@ public class DataTableZoneEditor : Editor
 
             // 아군 함대 위치
             EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.LabelField("아군 함대 위치 (절대 좌표)", EditorStyles.boldLabel);
+            zone.skyboxRotation = EditorGUILayout.Slider("Skybox Rotation", zone.skyboxRotation, 0f, 360f);
             zone.fleetPosition = EditorGUILayout.Vector3Field("Fleet Position", zone.fleetPosition);
             EditorGUILayout.EndVertical();
 
@@ -669,7 +531,7 @@ public class DataTableZoneEditor : Editor
             {
                 if (zone.enemyShipConfigs == null)
                     zone.enemyShipConfigs = new List<EnemyShipConfig>();
-                var ship = new EnemyShipConfig { bodySubType = EModuleSubType.body_t1_std_ver1, bodyLevel = 1 };
+                var ship = new EnemyShipConfig { bodySubType = EModuleSubType.body_t1_m1, bodyLevel = 1 };
                 RefreshShipModuleSlots(ship);
                 zone.enemyShipConfigs.Add(ship);
                 EditorUtility.SetDirty(config);
@@ -825,91 +687,15 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private string FormatOrbitPeriod(float seconds)
-    {
-        if (seconds <= 0f) return "정지";
-        float days = seconds / 86400f;
-        if (days < 1f)   return $"약 {seconds / 3600f:F1}시간";
-        if (days < 365f) return $"약 {days:F1}일";
-        return $"약 {days / 365f:F2}년";
-    }
-
     private EModuleSubType[] GetSubTypesForModuleType(EModuleType moduleType)
     {
         var subTypes = new List<EModuleSubType> { EModuleSubType.none };
         foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
-            if (CommonUtility.GetModuleTypeFromSubType(subType) == moduleType)
+            if ((EModuleType)subType.GetModuleType() == moduleType)
                 subTypes.Add(subType);
         }
         return subTypes.ToArray();
-    }
-
-    private void DrawSpaceDecors(ZoneGroupConfig groupConfig)
-    {
-        groupConfig.spaceDecors = DrawSpaceDecorsInternal(groupConfig.spaceDecors);
-    }
-
-    // 배열을 받아 편집 UI를 그리고 수정된 배열을 반환
-    private SpaceDecorConfig[] DrawSpaceDecorsInternal(SpaceDecorConfig[] decors)
-    {
-        var origColor = GUI.backgroundColor;
-        GUI.backgroundColor = decorColor;
-        EditorGUILayout.BeginVertical("box");
-        GUI.backgroundColor = origColor;
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("", EditorStyles.boldLabel);
-        if (GUILayout.Button("+ Add", GUILayout.Width(60)))
-        {
-            var list = decors != null ? new List<SpaceDecorConfig>(decors) : new List<SpaceDecorConfig>();
-            list.Add(new SpaceDecorConfig { type = SpaceDecorType.Planet, spriteIndex = 1, scale = 10f });
-            decors = list.ToArray();
-            EditorUtility.SetDirty(config);
-        }
-        EditorGUILayout.EndHorizontal();
-
-        if (decors != null && decors.Length > 0)
-        {
-            var list = new List<SpaceDecorConfig>(decors);
-            int deleteIndex = -1;
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                var decor = list[i];
-                EditorGUILayout.BeginVertical("box");
-
-                EditorGUILayout.BeginHorizontal();
-                decor.type = (SpaceDecorType)EditorGUILayout.EnumPopup("Type", decor.type);
-                if (GUILayout.Button("X", GUILayout.Width(22))) deleteIndex = i;
-                EditorGUILayout.EndHorizontal();
-
-                int maxIndex = decor.type == SpaceDecorType.Asteroid ? 10 : 7;
-                decor.spriteIndex = EditorGUILayout.IntSlider("Sprite Index", decor.spriteIndex, 1, maxIndex);
-                decor.orbitRadius = EditorGUILayout.FloatField("Orbit Radius", decor.orbitRadius);
-
-                float days = decor.orbitPeriod / 86400f;
-                float newDays = EditorGUILayout.FloatField("Orbit Period (days)", days);
-                if (!Mathf.Approximately(newDays, days))
-                    decor.orbitPeriod = newDays * 86400f;
-                EditorGUILayout.LabelField("", FormatOrbitPeriod(decor.orbitPeriod), EditorStyles.miniLabel);
-                decor.scale = EditorGUILayout.FloatField("Scale", decor.scale);
-
-                list[i] = decor;
-                EditorGUILayout.EndVertical();
-            }
-
-            if (deleteIndex >= 0)
-            {
-                list.RemoveAt(deleteIndex);
-                EditorUtility.SetDirty(config);
-            }
-
-            decors = list.ToArray();
-        }
-
-        EditorGUILayout.EndVertical();
-        return decors;
     }
 
     // Body 프리팹에서 슬롯 정보 추출
@@ -917,12 +703,8 @@ public class DataTableZoneEditor : Editor
     {
         ship.moduleSlots = new List<EnemyModuleSlotConfig>();
 
-        string prefabPath = ObjectManager.GetShipModulePrefabPath(
-            EModuleType.body.ToString(),
-            ship.bodySubType.ToString(),
-            ship.bodyLevel);
+        string prefabPath = ObjectManager.GetShipModulePrefabPath(EModuleType.body.ToString(), ship.bodySubType.ToString());
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
-
         if (prefab == null)
         {
             Debug.LogWarning($"Prefab not found: {prefabPath}");

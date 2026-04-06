@@ -46,16 +46,14 @@
 ## 모듈 시스템
 
 ### SubType 7자리 인코딩 — 확정
-X  XX  XX  XX
-│  │   │   └── ver    (01~99)
-│  │   └────── grade  (01=std, 02=adv)
-│  └────────── tech   (01=t1, 02=t2...)
-└───────────── type   (1=body, 2=engine, 3=beam, 4=missile, 5=hanger)
+X  XX  XX  
+│   │   └───── model  (01=m1, 02=m2)
+│   └───────── tech   (01=t1, 02=t2...)
+└───────────── type   (1=body, 2=beam, 3=missile, 4=hanger)
 
-body_t1_std_ver1 = 1010101
-body_t1_adv_ver1 = 1010201
-engine_t1_std_ver1 = 2010101
-파싱: `type=val/1000000, tech=(val/10000)%100, grade=(val/100)%100, ver=val%100`
+body_t1_m1 = 10101
+body_t1_m2 = 10102
+파싱: `type=val/10000, tech=(val/100)%100, model=val%100`
 
 ### 모듈 진행 구조 — 설계 확정
 [슬롯 unlock]  슬롯 타입별 고정 비용 → 기본(std Lv.1) 모듈 자동 장착
@@ -104,4 +102,4 @@ engine_t1_std_ver1 = 2010101
 - std→adv 추가: 5,000 MR / 슬롯
 - 추가 시 레벨 리셋: adv Lv.1로 시작 (adv max > std max 성능 보장)
 - 등록 이력: ShipModuleLevel 레코드 존재 여부로 판단 (신규 테이블 불필요)
-- 현재 모든 서브타입 tech tier = 1 (`body_t1_std_ver1 = 1010101` 등)
+- 현재 모든 서브타입 tech tier = 1 (`body_t1_m1 = 10101` 등)

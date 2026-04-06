@@ -423,46 +423,6 @@ MonoBehaviour:
     m_Key: module_type_hanger
     m_Metadata:
       m_Items: []
-  - m_Id: 10726916994498560
-    m_Key: body_t1_std_ver1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441600
-    m_Key: body_t1_adv_ver1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441601
-    m_Key: engine_t1_std_ver1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441602
-    m_Key: engine_t1_adv_ver1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441603
-    m_Key: beam_t1_std_ver1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441604
-    m_Key: beam_t1_adv_ver1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441605
-    m_Key: missile_t1_std_ver1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441606
-    m_Key: missile_t1_adv_ver1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441607
-    m_Key: hanger_t1_std_ver1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441608
-    m_Key: hanger_t1_adv_ver1
-    m_Metadata:
-      m_Items: []
   - m_Id: 705451700125696
     m_Key: cancel
     m_Metadata:

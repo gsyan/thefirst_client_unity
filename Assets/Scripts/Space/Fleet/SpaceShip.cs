@@ -81,7 +81,7 @@ public class SpaceShip : MonoBehaviour
    // Body 초기화 (기존 모듈 재사용 가능)
     private ModuleBody InitSpaceShipBody(ModuleBodyInfo bodyInfo, List<ModuleBase> savedModules)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType.ToString(), bodyInfo.moduleLevel);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType.ToString());
         if (modulePrefab == null)
         {
             Debug.LogError("No prefab");
@@ -597,12 +597,12 @@ public class SpaceShip : MonoBehaviour
 
         // Outline 갱신 (새로 생성된 모듈들을 포함하도록)
         if (m_shipOutline != null)
-            m_shipOutline.RefreshOutline();
+             m_shipOutline.RefreshOutline();
 
         // 모듈 selectedModuleVisual 갱신 (새로 생성된 모듈들을 포함하도록)
         RefreshSelectedModuleVisuals();
 
-        Debug.Log($"Module unlocked: Ship={m_shipInfo.id}, Body={bodyIndex}, Slot={slotIndex}, Type={moduleType}");
+        //Debug.Log($"Module unlocked: Ship={m_shipInfo.id}, Body={bodyIndex}, Slot={slotIndex}, Type={moduleType}");
     }
 
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)

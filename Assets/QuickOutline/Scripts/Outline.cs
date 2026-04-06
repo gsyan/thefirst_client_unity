@@ -313,10 +313,9 @@ public class Outline : MonoBehaviour {
   // 새로 생성된 자식 오브젝트를 포함하여 Outline 갱신
   public void RefreshOutline() {
     // 1. 기존 renderer들의 outline material 제거
-    foreach (var renderer in renderers) {
-      if (renderer == null)
-        continue;
-
+    foreach (var renderer in renderers)
+    {
+      if (renderer == null) continue;
       var materials = renderer.sharedMaterials.ToList();
       materials.Remove(outlineMaskMaterial);
       materials.Remove(outlineFillMaterial);
@@ -332,15 +331,15 @@ public class Outline : MonoBehaviour {
     // 4. 새로운 자식들을 포함하여 다시 로드
     LoadSmoothNormals();
 
-    // 5. 새로운 renderer들에 outline material 추가
-    foreach (var renderer in renderers) {
-      if (renderer == null)
-        continue;
+    // // 5. 새로운 renderer들에 outline material 추가
+    // foreach (var renderer in renderers) {
+    //   if (renderer == null)
+    //     continue;
 
-      var materials = renderer.sharedMaterials.ToList();
-      materials.Add(outlineMaskMaterial);
-      materials.Add(outlineFillMaterial);
-      renderer.materials = materials.ToArray();
-    }
+    //   var materials = renderer.sharedMaterials.ToList();
+    //   materials.Add(outlineMaskMaterial);
+    //   materials.Add(outlineFillMaterial);
+    //   renderer.materials = materials.ToArray();
+    // }
   }
 }

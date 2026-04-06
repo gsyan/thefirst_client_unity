@@ -27,12 +27,18 @@ public class ScrollViewResearchItem : MonoBehaviour
 
     private UnityEngine.UI.Outline m_outline;
 
-    // string locKey 기반 (범용)
-    public void InitializeScrollViewResearchItem(string locKey, UnityEngine.Events.UnityAction onSelect)
+    // displayName: 이미 로컬라이즈된 표시명 (동적 생성 지원)
+    public void InitializeScrollViewResearchItem(string displayName, UnityEngine.Events.UnityAction onSelect, bool isLocKey = true)
     {
         m_selectButton.onClick.RemoveAllListeners();
         m_selectButton.onClick.AddListener(onSelect);
-        if (m_nameText != null) CommonUtility.SetUILocText(m_nameText, locKey);
+        if (m_nameText != null)
+        {
+            if (isLocKey == true)
+                CommonUtility.SetUILocText(m_nameText, displayName);
+            else
+                m_nameText.text = displayName;
+        }
 
         if (m_backgroundImage == null)
             m_backgroundImage = m_selectButton.GetComponent<Image>();

@@ -47,10 +47,15 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
 
     // Skybox blend (6 Sided)
     private static readonly int BlendID = Shader.PropertyToID("_Blend");
+    private static readonly int RotationID = Shader.PropertyToID("_Rotation");
     private static readonly string[] FaceNamesA = { "_FrontTexA", "_BackTexA", "_LeftTexA", "_RightTexA", "_UpTexA", "_DownTexA" };
     private static readonly string[] FaceNamesB = { "_FrontTexB", "_BackTexB", "_LeftTexB", "_RightTexB", "_UpTexB", "_DownTexB" };
     private static readonly string[] FaceNames = { "_FrontTex", "_BackTex", "_LeftTex", "_RightTex", "_UpTex", "_DownTex" };
     private Material m_skyboxBlendInstance;  // 런타임 인스턴스 (에셋 보호용)
+
+    // Skybox rotation 전환
+    private float m_rotationFrom;
+    private float m_rotationTo;
 
     // Warp sequence
     private Coroutine m_warpCoroutine;
@@ -144,13 +149,14 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     #region Skybox Blend
 
     // 블렌드 대상 스카이박스 설정 (워프 시작 시 호출)
-    public void SetSkyboxBlendTarget(Material targetSkyboxMaterial)
+    public void SetSkyboxBlendTarget(Material targetSkyboxMaterial, float targetRotation = 0f)
     {
         if (m_skyboxBlendInstance == null || targetSkyboxMaterial == null) return;
 
-        // m_skyboxBlendInstance B슬롯에 타겟 스카이박스
         CopyFaceTextures(targetSkyboxMaterial, FaceNames, FaceNamesB);
 
+        m_rotationFrom = m_skyboxBlendInstance.GetFloat(RotationID);
+        m_rotationTo = targetRotation;
         m_skyboxBlendInstance.SetFloat(BlendID, 0f);
     }
 
@@ -167,16 +173,18 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         }
     }
 
-    // 블렌드 값 설정 (0 = A, 1 = B)
+    // 블렌드 값 설정 (0 = A, 1 = B) — rotation도 함께 Lerp
     public void SetSkyboxBlend(float t)
     {
         if (m_skyboxBlendInstance == null) return;
 
-        m_skyboxBlendInstance.SetFloat(BlendID, Mathf.Clamp01(t));
+        t = Mathf.Clamp01(t);
+        m_skyboxBlendInstance.SetFloat(BlendID, t);
+        m_skyboxBlendInstance.SetFloat(RotationID, Mathf.Lerp(m_rotationFrom, m_rotationTo, t));
     }
 
     // 블렌드 없이 즉시 스카이박스 교체 (A·B 슬롯 동시 설정, blend=0)
-    public void SetSkyboxImmediate(Material mat)
+    public void SetSkyboxImmediate(Material mat, float rotation = 0f)
     {
         if (!m_initialized) Initialize();
         if (m_skyboxBlendInstance == null || mat == null) return;
@@ -184,6 +192,9 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         CopyFaceTextures(mat, FaceNames, FaceNamesA);
         CopyFaceTextures(mat, FaceNames, FaceNamesB);
         m_skyboxBlendInstance.SetFloat(BlendID, 0f);
+        m_skyboxBlendInstance.SetFloat(RotationID, rotation);
+        m_rotationFrom = rotation;
+        m_rotationTo = rotation;
     }
 
     // 블렌드 완료 (B를 새 기준으로 설정)
@@ -191,9 +202,10 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     {
         if (m_skyboxBlendInstance == null) return;
 
-        // m_skyboxBlendInstance B 슬롯 을 A 슬롯에 설정
         CopyFaceTextures(m_skyboxBlendInstance, FaceNamesB, FaceNamesA);
         m_skyboxBlendInstance.SetFloat(BlendID, 0f);
+        m_skyboxBlendInstance.SetFloat(RotationID, m_rotationTo);
+        m_rotationFrom = m_rotationTo;
     }
 
     #endregion
@@ -203,12 +215,12 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     // 함대 단위 워프 시퀀스 시작 — warpEffects: 함선별 글로우/스피드라인 제어 대상
     public void StartWarpSequence(Material targetSkyboxMaterial,
         System.Collections.Generic.List<WarpEffectShip> warpEffects,
-        System.Action onWarpComplete = null)
+        System.Action onWarpComplete = null, float targetRotation = 0f)
     {
         if (m_isWarping) return;
 
         m_warpEffects = warpEffects;
-        SetSkyboxBlendTarget(targetSkyboxMaterial);
+        SetSkyboxBlendTarget(targetSkyboxMaterial, targetRotation);
 
         if (m_warpCoroutine != null)
             StopCoroutine(m_warpCoroutine);

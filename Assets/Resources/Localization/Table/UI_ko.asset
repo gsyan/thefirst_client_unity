@@ -372,46 +372,6 @@ MonoBehaviour:
     m_Localized: "\uC9C0\uD718\uAD00"
     m_Metadata:
       m_Items: []
-  - m_Id: 10726916994498560
-    m_Localized: "T1 \uD568\uCCB4.std"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441600
-    m_Localized: "T1 \uD568\uCCB4.adv"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441601
-    m_Localized: "T1 \uC5D4\uC9C4.std"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441602
-    m_Localized: "T1 \uC5D4\uC9C4.adv"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441603
-    m_Localized: "T1 \uBE54.std"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441604
-    m_Localized: "T1 \uBE54.adv"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441605
-    m_Localized: "T1 \uBBF8\uC0AC\uC77C.std"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441606
-    m_Localized: "T1 \uBBF8\uC0AC\uC77C.adv"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441607
-    m_Localized: "T1 \uACA9\uB0A9\uACE0.std"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10726917036441608
-    m_Localized: "T1 \uACA9\uB0A9\uACE0.adv"
-    m_Metadata:
-      m_Items: []
   - m_Id: 10728497219502080
     m_Localized: "\uC5F0\uAD6C"
     m_Metadata:

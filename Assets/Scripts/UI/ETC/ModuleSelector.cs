@@ -11,6 +11,7 @@ public class ModuleSelector : MonoBehaviour
     [SerializeField] private TMP_Text m_typeText;
 
     [Header("상태별 색상")]
+    [SerializeField] private Color m_colorNotExist = new Color(0.2f, 0.2f, 0.2f, 1f);  // 현재 함체에는 없음
     [SerializeField] private Color m_colorLocked   = new Color(0.8f, 0.2f, 0.2f, 1f);  // placeholder
     [SerializeField] private Color m_colorUnlocked = new Color(0.2f, 0.8f, 0.4f, 1f);  // 일반 모듈
     [SerializeField] private Color m_colorSelected = new Color(1f,   0.8f, 0.2f, 1f);  // 선택 테두리
@@ -26,6 +27,7 @@ public class ModuleSelector : MonoBehaviour
 
         m_button.onClick.RemoveAllListeners();
         m_button.onClick.AddListener(onClick);
+        m_button.interactable = true;
 
         if (m_backgroundImage == null)
             m_backgroundImage = m_button.GetComponent<Image>();
@@ -46,6 +48,23 @@ public class ModuleSelector : MonoBehaviour
         m_outline.effectColor = m_colorSelected;
         m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
         m_outline.enabled = false;
+    }
+
+    // 현재 함체에 해당 슬롯이 없는 경우: 시각적 유지, 기능 비활성화
+    public void SetNotExist()
+    {
+        Module = null;
+        m_button.onClick.RemoveAllListeners();
+        m_button.interactable = false;
+
+        if (m_backgroundImage != null)
+            m_backgroundImage.color = m_colorNotExist;
+
+        if (m_typeText != null)
+            m_typeText.text = "";
+
+        if (m_outline != null)
+            m_outline.enabled = false;
     }
 
     public void SetSelected(bool selected)

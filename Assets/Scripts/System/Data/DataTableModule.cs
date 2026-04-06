@@ -16,8 +16,8 @@ public class ModuleData
 {
     [Header("Basic Info")]
     public string moduleName = "Module";
-    public EModuleType moduleType = EModuleType.none;
     public EModuleSubType moduleSubType = EModuleSubType.none;
+    // moduleType은 moduleSubType에서 유추: (EModuleType)moduleSubType.GetModuleType()
     public int moduleLevel = 1;
 
     // common ---------------------------------------------------------------------------
@@ -187,23 +187,24 @@ public class DataTableModule : ScriptableObject
 
     public void AddModuleDataToTable(ModuleData data)
     {
+        EModuleType moduleType = (EModuleType)data.moduleSubType.GetModuleType();
         ModuleSubTypeGroup group = null;
-        if( data.moduleType == EModuleType.body)
+        if (moduleType == EModuleType.body)
             group = bodyGroups.Find(g => g.subType == data.moduleSubType);
-        else if( data.moduleType == EModuleType.beam)
+        else if (moduleType == EModuleType.beam)
             group = beamGroups.Find(g => g.subType == data.moduleSubType);
-        else if( data.moduleType == EModuleType.missile)
+        else if (moduleType == EModuleType.missile)
             group = missileGroups.Find(g => g.subType == data.moduleSubType);
-        else if( data.moduleType == EModuleType.hanger)
+        else if (moduleType == EModuleType.hanger)
             group = hangerGroups.Find(g => g.subType == data.moduleSubType);
 
         if (group == null)
         {
             group = new ModuleSubTypeGroup { subType = data.moduleSubType };
-            if (data.moduleType == EModuleType.body)          bodyGroups.Add(group);
-            else if (data.moduleType == EModuleType.beam)     beamGroups.Add(group);
-            else if (data.moduleType == EModuleType.missile)  missileGroups.Add(group);
-            else if (data.moduleType == EModuleType.hanger)   hangerGroups.Add(group);
+            if (moduleType == EModuleType.body)          bodyGroups.Add(group);
+            else if (moduleType == EModuleType.beam)     beamGroups.Add(group);
+            else if (moduleType == EModuleType.missile)  missileGroups.Add(group);
+            else if (moduleType == EModuleType.hanger)   hangerGroups.Add(group);
         }
         group.modules.Add(data);
 #if UNITY_EDITOR
@@ -228,7 +229,7 @@ public class DataTableModule : ScriptableObject
 
     private ModuleSubTypeGroup FindGroup(EModuleSubType subType)
     {
-        EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
+        EModuleType moduleType = (EModuleType)subType.GetModuleType();
         if (moduleType == EModuleType.body) return bodyGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.beam) return beamGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.missile) return missileGroups.Find(g => g.subType == subType);
@@ -241,7 +242,7 @@ public class DataTableModule : ScriptableObject
         foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
         {
             if (subType == EModuleSubType.none) continue;
-            EModuleType moduleType = CommonUtility.GetModuleTypeFromSubType(subType);
+            EModuleType moduleType = (EModuleType)subType.GetModuleType();
             if (moduleType == EModuleType.body)
                 bodyGroups.Add(new ModuleSubTypeGroup { subType = subType });
             else if (moduleType == EModuleType.beam)
@@ -354,9 +355,9 @@ public class DataTableModule : ScriptableObject
     #region Validation & Utility
 
 #if UNITY_EDITOR
-    private ModuleSlotInfo[] ExtractModuleSlotsFromPrefab(EModuleSubType subType, int level)
+    private ModuleSlotInfo[] ExtractModuleSlotsFromPrefab(EModuleSubType subType)
     {
-        string prefabPath = $"Prefabs/ShipModule/Body/{subType}_{level}";
+        string prefabPath = $"Prefabs/ShipModule/Body/{subType}";
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
         if (prefab == null) return null;
         
@@ -406,17 +407,14 @@ public class DataTableModule : ScriptableObject
 
             string[] cols = ParseCsvLine(line);
 
-            if (!int.TryParse(GetCol(cols, col, "type"), out int typeInt)) continue;
             if (!int.TryParse(GetCol(cols, col, "sub_type"), out int subTypeInt)) continue;
             if (!int.TryParse(GetCol(cols, col, "level"), out int level)) continue;
 
-            EModuleType moduleType = (EModuleType)typeInt;
             EModuleSubType moduleSubType = (EModuleSubType)subTypeInt;
 
             var module = new ModuleData
             {
                 moduleName = $"{moduleSubType} Lv.{level}",
-                moduleType = moduleType,
                 moduleSubType = moduleSubType,
                 moduleLevel = level,
                 health                          = ParseCsvFloat(GetCol(cols, col, "health")),
@@ -447,8 +445,8 @@ public class DataTableModule : ScriptableObject
             };
 
             // body 모듈만 prefab에서 슬롯 정보 추출 (레벨1 프리팹 기준으로 모든 레벨 공통 적용)
-            if (moduleType == EModuleType.body)
-                module.moduleSlots = ExtractModuleSlotsFromPrefab(moduleSubType, 1);// 프리팹 레벨1만
+            if (moduleSubType.GetModuleType() == (int)EModuleType.body)
+                module.moduleSlots = ExtractModuleSlotsFromPrefab(moduleSubType);
 
             AddModuleDataToTable(module);
         }

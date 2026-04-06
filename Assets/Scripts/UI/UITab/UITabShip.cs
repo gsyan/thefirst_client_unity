@@ -1,4 +1,5 @@
 // 함선/모듈 관리 UI — 헤더(함선 네비게이터+스탯2행), 모듈 맵, 모듈 디테일 카드
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -21,8 +22,6 @@ public class UITabShip : UITabBase
     [SerializeField] private RectTransform m_moduleMissileSelectButtonContainer;
     [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer;
     
-
-    [SerializeField] private RectTransform m_moduleSelectRoot; // CSF 루트 (Select 또는 ModuleSelect)
 
     [Header("모듈 맵 — 행 레이블 (sprite icon)")]
     [SerializeField] private TMP_Text m_labelBody;
@@ -110,9 +109,6 @@ public class UITabShip : UITabBase
         UpdateShipHeader();
         UpdateModuleStatsDisplay();
         PopulateModuleSelectButtons();
-
-        if (m_moduleSelectRoot != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleSelectRoot);
     }
 
     public override void OnTabDeactivated()
@@ -597,9 +593,7 @@ public class UITabShip : UITabBase
                 }
                 else if (DataManager.Instance.GetModuleUpgradeCost(subType, m_selectedModule.GetModuleLevel(), out CostStruct cost))
                 {
-                    string costStr = $"{CommonUtility.FormatBigNumber(cost.mineral)} M";
-                    if (cost.mineralRare > 0) costStr += $" / {CommonUtility.FormatBigNumber(cost.mineralRare)} MR";
-                    m_levelUpModuleButtonText.text = $"{LocalizationManager.Instance.Get("ship_module_levelup")} ({costStr})";
+                    m_levelUpModuleButtonText.text = $"{LocalizationManager.Instance.Get("ship_module_levelup")}";
                 }
                 else
                 {
@@ -612,7 +606,7 @@ public class UITabShip : UITabBase
             if (m_moduleStatsText != null)
             {
                 int level = m_selectedModule.GetModuleLevel();
-                string typeName = LocalizationManager.Instance.Get(m_selectedModule.GetModuleSubType().ToLocKey());
+                string typeName = m_selectedModule.GetModuleSubType().GetLocalizedName();
                 m_moduleStatsText.text = typeName + "\n\n" + m_selectedModule.GetDetailText(level, level);
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsText.transform.parent as RectTransform);
             }
@@ -713,9 +707,6 @@ public class UITabShip : UITabBase
         RefreshRow(EModuleType.hanger,  body, m_selectorsHanger,  m_moduleHangerSelectButtonContainer);
 
         UpdateModuleSelectButtonSelection();
-
-        if (m_moduleSelectRoot != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleSelectRoot);
     }
 
     private void RefreshRow(EModuleType type, ModuleBody body, ModuleSelector[] selectors, RectTransform container)
@@ -742,18 +733,15 @@ public class UITabShip : UITabBase
                     : null;
         }
 
-        // 슬롯이 없으면 행 전체 숨김
-        container.gameObject.SetActive(slotCount > 0);
-
         for (int i = 0; i < selectors.Length; i++)
         {
             if (i >= slotCount || modules[i] == null)
             {
-                selectors[i].gameObject.SetActive(false);
+                // 슬롯이 없는 경우: 시각적으로 유지하되 기능 비활성화
+                selectors[i].SetNotExist();
                 continue;
             }
 
-            selectors[i].gameObject.SetActive(true);
             ModuleBase captured = modules[i];
             selectors[i].Initialize(captured, () => OnModuleSelectorClicked(captured));
         }
