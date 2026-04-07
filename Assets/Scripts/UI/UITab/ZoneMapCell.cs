@@ -9,7 +9,7 @@ public class ZoneMapCell : MonoBehaviour
 {
     [SerializeField] private Button m_button;
     [SerializeField] private Image m_bgImage;               // 배경 이미지 (outline 부착 대상)
-    [SerializeField] private TMP_Text m_zoneNameText;
+    [SerializeField] private TMP_Text m_zoneStageNameText;
     [SerializeField] private TMP_Text m_resourceText;       // 자원 수치 (클리어 시 중앙 표시)
     [SerializeField] private CanvasGroup m_fogCanvasGroup;  // 안개 overlay (alpha로 제어)
     [SerializeField] private Image m_progressFill;          // 클리어 진행률 (Filled type)
@@ -21,17 +21,17 @@ public class ZoneMapCell : MonoBehaviour
     private UnityEngine.UI.Outline m_outline;
     private Coroutine m_revealCoroutine;
 
-    public ZoneConfig m_zoneConfig { get; private set; }
+    public ZoneStageConfig m_zoneStageConfig { get; private set; }
 
-    public void Initialize(ZoneConfig zoneConfig, UnityEngine.Events.UnityAction onClick, EZoneState state)
+    public void Initialize(ZoneStageConfig zoneStageConfig, UnityEngine.Events.UnityAction onClick, EZoneState state)
     {
-        m_zoneConfig = zoneConfig;
+        m_zoneStageConfig = zoneStageConfig;
 
         m_button.onClick.RemoveAllListeners();
         m_button.onClick.AddListener(onClick);
 
-        if (m_zoneNameText != null)
-            m_zoneNameText.text = zoneConfig.zoneName;
+        if (m_zoneStageNameText != null)
+            m_zoneStageNameText.text = zoneStageConfig.zoneName;
 
         var outlineTarget = m_bgImage != null ? m_bgImage.gameObject : m_button.gameObject;
         m_outline = outlineTarget.GetComponent<UnityEngine.UI.Outline>();
@@ -70,14 +70,6 @@ public class ZoneMapCell : MonoBehaviour
             m_progressFill.gameObject.SetActive(state == EZoneState.Current);
             if (state == EZoneState.Current) ApplyProgressRatio(0f);
         }
-    }
-
-    // 웨이브 진행에 따라 안개 서서히 걷힘
-    public void SetClearProgress(int clearedWaves, int zoneClearCount)
-    {
-        float ratio = zoneClearCount > 0 ? Mathf.Clamp01((float)clearedWaves / zoneClearCount) : 0f;
-        ApplyProgressRatio(ratio);
-        SetFogAlpha(Mathf.Lerp(1f, 0.1f, ratio));
     }
 
     private void ApplyProgressRatio(float ratio)
@@ -143,7 +135,7 @@ public class ZoneMapCell : MonoBehaviour
 
     private void RefreshResourceText()
     {
-        if (m_resourceText == null || m_zoneConfig == null) return;
+        if (m_resourceText == null || m_zoneStageConfig == null) return;
         var sb = new StringBuilder();
         void AppendIfPositive(string icon, float value)
         {
@@ -151,10 +143,10 @@ public class ZoneMapCell : MonoBehaviour
             if (sb.Length > 0) sb.Append('\n');
             sb.Append($"<sprite name=\"{icon}\"> {CommonUtility.FormatBigNumber(value)}/h");
         }
-        AppendIfPositive("IconMineralMini",  m_zoneConfig.mineralPerHour);
-        AppendIfPositive("IconMineralRMini", m_zoneConfig.mineralRarePerHour);
-        AppendIfPositive("IconMineralEMini", m_zoneConfig.mineralExoticPerHour);
-        AppendIfPositive("IconMineralDMini", m_zoneConfig.mineralDarkPerHour);
+        AppendIfPositive("IconMineralMini",  m_zoneStageConfig.mineralPerHour);
+        AppendIfPositive("IconMineralRMini", m_zoneStageConfig.mineralRarePerHour);
+        AppendIfPositive("IconMineralEMini", m_zoneStageConfig.mineralExoticPerHour);
+        AppendIfPositive("IconMineralDMini", m_zoneStageConfig.mineralDarkPerHour);
         m_resourceText.text = sb.ToString();
     }
 }

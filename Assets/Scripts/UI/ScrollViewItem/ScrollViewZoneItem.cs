@@ -22,17 +22,17 @@ public class ScrollViewZoneItem : MonoBehaviour
     [SerializeField] private float m_outlineWidth  = 4f;
     
     private UnityEngine.UI.Outline m_outline;
-    public ZoneConfig m_zoneConfig { get; private set; }
+    public ZoneStageConfig m_zoneStageConfig { get; private set; }
     private EZoneState m_state;
 
-    public void InitializeScrollViewZoneItem(ZoneConfig zoneConfig, UnityEngine.Events.UnityAction actionEnter, EZoneState state)
+    public void InitializeScrollViewZoneItem(ZoneStageConfig zoneStageConfig, UnityEngine.Events.UnityAction actionEnter, EZoneState state)
     {
-        m_zoneConfig = zoneConfig;
+        m_zoneStageConfig = zoneStageConfig;
 
         m_enterButton.onClick.RemoveAllListeners();
         m_enterButton.onClick.AddListener(actionEnter);
 
-        m_zoneText.text = zoneConfig.zoneName;
+        m_zoneText.text = zoneStageConfig.zoneName;
 
         m_outline = m_enterButton.GetComponent<UnityEngine.UI.Outline>();
         if (m_outline == null)
@@ -58,7 +58,7 @@ public class ScrollViewZoneItem : MonoBehaviour
 
         if (m_greenImage == null) return;
 
-        // Cleared: 버튼 전체 덮음 / Current: 완전히 숨김 (웨이브 시작 시 SetClearProgress로 채워짐)
+        // Cleared: 버튼 전체 덮음 / 그 외: 숨김
         ApplyImageRatio(state == EZoneState.Cleared ? 1f : 0f);
     }
 
@@ -66,14 +66,6 @@ public class ScrollViewZoneItem : MonoBehaviour
     {
         if (m_outline != null)
             m_outline.enabled = selected;
-    }
-
-    // 클리어된 웨이브 수 / 존 클리어 기준으로 진행률 표시
-    public void SetClearProgress(int clearedWaves, int zoneClearCount)
-    {
-        if (m_greenImage == null) return;
-        float ratio = zoneClearCount > 0 ? Mathf.Clamp01((float)clearedWaves / zoneClearCount) : 0f;
-        ApplyImageRatio(ratio);
     }
 
     // ShipSelector.ApplyHealthRatio 와 동일한 방식 — 아래서부터 ratio 만큼 채움

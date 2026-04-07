@@ -41,17 +41,15 @@ public class UITabExploration : UITabBase
     private float m_totalMineralRarePerHour;
     private float m_totalMineralExoticPerHour;
     private float m_totalMineralDarkPerHour;
-    private ZoneConfig m_currentZone;
-    private ZoneConfig m_selectedZone;      // 현재 그룹에서 선택된 존
+    private ZoneStageConfig m_currentZoneStage;
+    private ZoneStageConfig m_selectedZone;      // 현재 그룹에서 선택된 존
     private ZoneMapCell m_currentZoneCell;
-    private readonly Dictionary<string, ZoneMapCell> m_zoneCells = new Dictionary<string, ZoneMapCell>();
-    private readonly Dictionary<int, ZoneConfig> m_selectedZonePerGroup = new(); // 그룹별 선택 존 기억
+    private readonly Dictionary<string, ZoneMapCell> m_zoneStageCells = new Dictionary<string, ZoneMapCell>();
+    private readonly Dictionary<int, ZoneStageConfig> m_selectedZoneStagePerGroup = new(); // 그룹별 선택 존 기억
 
-    private int m_selectedGroupIndex = 1;
+    private int m_selectedZoneIndex = 1;
     private EEnterZoneState m_enterZoneState;
     private bool m_isFleetWiped;
-    private int m_currentWave;
-    private int m_zoneClearCount;
     private Coroutine m_mineralUpdateCoroutine;
     private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
 
@@ -81,10 +79,9 @@ public class UITabExploration : UITabBase
         if (pp != null)
         {
             // 게임 시작 시 항상 Zone-0 스카이박스로 즉시 초기화
-            var zone0Group = m_datatableZone.GetGroupConfig(0);
             var zone0 = m_datatableZone.GetZone(0);
-            if (zone0Group != null)
-                pp.SetSkyboxImmediate(zone0Group.skyboxMaterial, zone0?.skyboxRotation ?? 0f);
+            if (zone0 != null)
+                pp.SetSkyboxImmediate(zone0.skyboxMaterial);
         }
     }
 
@@ -104,11 +101,11 @@ private void SetupGroupTabs()
     private void OnGroupTabClicked(int groupIndex)
     {
         // 이전 그룹 선택 셀 outline 해제
-        if (m_selectedZonePerGroup.TryGetValue(m_selectedGroupIndex, out ZoneConfig prevZone) &&
-            m_zoneCells.TryGetValue(prevZone.zoneName, out ZoneMapCell prevCell))
+        if (m_selectedZoneStagePerGroup.TryGetValue(m_selectedZoneIndex, out ZoneStageConfig prevZoneStage) &&
+            m_zoneStageCells.TryGetValue(prevZoneStage.zoneName, out ZoneMapCell prevCell))
             prevCell.SetSelected(false);
 
-        m_selectedGroupIndex = groupIndex;
+        m_selectedZoneIndex = groupIndex;
         ShowGroupMap(groupIndex);
         UpdateGroupTabVisual();
     }
@@ -119,7 +116,7 @@ private void SetupGroupTabs()
         for (int i = 0; i < m_groupTabButtons.Length; i++)
         {
             if (m_groupTabButtons[i] == null) continue;
-            bool selected = (i + 1) == m_selectedGroupIndex;
+            bool selected = (i + 1) == m_selectedZoneIndex;
             var colors = m_groupTabButtons[i].colors;
             colors.normalColor  = selected ? k_tabActiveColor : k_tabInactiveColor;
             colors.selectedColor = colors.normalColor;
@@ -140,13 +137,13 @@ private void SetupGroupTabs()
             int columns = grid.constraintCount > 0 ? grid.constraintCount : 5;
 
             // 그룹 1 기준 존 수로 행 수 계산 (그룹마다 동일 개수 전제)
-            int zonesInGroup = 0;
-            for (int i = 1; i < m_datatableZone.ZoneCount; i++)
+            int stagesInZone = 0;
+            for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
             {
-                ZoneConfig z = m_datatableZone.GetZone(i);
-                if (z != null && ParseZoneGroup(z.zoneName) == 1) zonesInGroup++;
+                ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
+                if (zs != null && ParseZoneGroup(zs.zoneName) == 1) stagesInZone++;
             }
-            int rows = zonesInGroup > 0 ? Mathf.CeilToInt((float)zonesInGroup / columns) : 5;
+            int rows = stagesInZone > 0 ? Mathf.CeilToInt((float)stagesInZone / columns) : 5;
 
             float availW = m_zoneCellContainer.rect.width  - grid.padding.left  - grid.padding.right  - grid.spacing.x * (columns - 1);
             float availH = m_zoneCellContainer.rect.height - grid.padding.top   - grid.padding.bottom - grid.spacing.y * (rows    - 1);
@@ -160,64 +157,64 @@ private void SetupGroupTabs()
         if (clearedZoneNames != null && clearedZoneNames.Count > 0)
         {
             int group = ParseZoneGroup(clearedZoneNames[^1]);
-            if (group > 0) m_selectedGroupIndex = group;
+            if (group > 0) m_selectedZoneIndex = group;
         }
 
-        for (int i = 1; i < m_datatableZone.ZoneCount; i++)
+        for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
         {
-            ZoneConfig zone = m_datatableZone.GetZone(i);
-            if (zone == null) continue;
+            ZoneStageConfig zoneStage = m_datatableZone.GetZoneStage(i);
+            if (zoneStage == null) continue;
 
             var go = Instantiate(m_zoneMapCellPrefab, m_zoneCellContainer);
-            go.name = zone.zoneName;
+            go.name = zoneStage.zoneName;
             var cell = go.GetComponent<ZoneMapCell>();
 
             EZoneState state;
-            bool isCleared = clearedZoneNames != null && clearedZoneNames.Contains(zone.zoneName);
+            bool isCleared = clearedZoneNames != null && clearedZoneNames.Contains(zoneStage.zoneName);
             if (isCleared)
                 state = EZoneState.Cleared;
-            else if (myShipCount >= ParseZoneGroup(zone.zoneName))
+            else if (myShipCount >= ParseZoneGroup(zoneStage.zoneName))
                 state = EZoneState.Current;
             else
                 state = EZoneState.Locked;
 
-            ZoneConfig captured = zone;
+            ZoneStageConfig captured = zoneStage;
             cell.Initialize(captured, () => OnTryZoneClicked(captured), state);
             go.SetActive(false); // ShowGroupMap에서 표시
-            m_zoneCells[zone.zoneName] = cell;
+            m_zoneStageCells[zoneStage.zoneName] = cell;
         }
 
         UpdateGroupTabVisual();
-        ShowGroupMap(m_selectedGroupIndex);
+        ShowGroupMap(m_selectedZoneIndex);
     }
 
     // 선택된 그룹(X)의 셀만 활성화, 이전 선택 존 복원 또는 기본값 선택
-    private void ShowGroupMap(int groupIndex)
+    private void ShowGroupMap(int zoneIndex)
     {
-        foreach (var kv in m_zoneCells)
+        foreach (var kv in m_zoneStageCells)
         {
-            bool visible = ParseZoneGroup(kv.Key) == groupIndex;
+            bool visible = ParseZoneGroup(kv.Key) == zoneIndex;
             kv.Value.gameObject.SetActive(visible);
         }
 
         // 탐사 중인 존이 이 그룹에 속하면 → 탐사 중인 존을 선택으로 고정 (저장된 다른 선택 무시)
-        if (m_currentZone != null && ParseZoneGroup(m_currentZone.zoneName) == groupIndex)
+        if (m_currentZoneStage != null && ParseZoneGroup(m_currentZoneStage.zoneName) == zoneIndex)
         {
-            m_selectedZonePerGroup[groupIndex] = m_currentZone;
-            ApplyZoneSelection(m_currentZone);
+            m_selectedZoneStagePerGroup[zoneIndex] = m_currentZoneStage;
+            ApplyZoneSelection(m_currentZoneStage);
             return;
         }
 
         if (m_currentZoneCell != null)
         {
-            bool inCurrentGroup = ParseZoneGroup(m_currentZoneCell.m_zoneConfig.zoneName) == groupIndex;
+            bool inCurrentGroup = ParseZoneGroup(m_currentZoneCell.m_zoneStageConfig.zoneName) == zoneIndex;
             m_currentZoneCell.SetSelected(inCurrentGroup);
         }
 
         // 저장된 선택 존 복원, 없으면 기본값(미클리어 최고 스테이지 or 전체 클리어 시 최고)
-        ZoneConfig toSelect = m_selectedZonePerGroup.TryGetValue(groupIndex, out ZoneConfig saved)
+        ZoneStageConfig toSelect = m_selectedZoneStagePerGroup.TryGetValue(zoneIndex, out ZoneStageConfig saved)
             ? saved
-            : GetDefaultZoneForGroup(groupIndex);
+            : GetDefaultZoneStageForZone(zoneIndex);
 
         if (toSelect != null)
             ApplyZoneSelection(toSelect);
@@ -281,7 +278,7 @@ private void SetupGroupTabs()
 
         if (clearedZoneNames != null && clearedZoneNames.Count > 0)
         {
-            var clearedZones = m_datatableZone.GetZonesByNames(clearedZoneNames);
+            var clearedZones = m_datatableZone.GetZoneStagesByNames(clearedZoneNames);
             foreach (var z in clearedZones)
             {
                 m_totalMineralPerHour      += z.mineralPerHour;
@@ -351,12 +348,6 @@ private void SetupGroupTabs()
         m_safeZoneButton.gameObject.SetActive(enterZoneState == EEnterZoneState.zone);
     }
 
-    private void OnWaveStarted(int currentWave, int zoneClearCount)
-    {
-        m_currentWave = currentWave;
-        m_zoneClearCount = zoneClearCount;
-    }
-
     private void OnMyFleetWiped()
     {
         m_isFleetWiped = true;
@@ -377,43 +368,43 @@ private void SetupGroupTabs()
     }
 
     // 셀 클릭 — 선택 및 디테일 표시만 (입장 안함)
-    private void OnTryZoneClicked(ZoneConfig zone)
+    private void OnTryZoneClicked(ZoneStageConfig zoneStage)
     {
         // 이전 선택 셀 outline 해제
-        if (m_selectedZone != null && m_zoneCells.TryGetValue(m_selectedZone.zoneName, out ZoneMapCell prevCell))
+        if (m_selectedZone != null && m_zoneStageCells.TryGetValue(m_selectedZone.zoneName, out ZoneMapCell prevCell))
             prevCell.SetSelected(false);
 
-        m_selectedZonePerGroup[m_selectedGroupIndex] = zone;
-        ApplyZoneSelection(zone);
+        m_selectedZoneStagePerGroup[m_selectedZoneIndex] = zoneStage;
+        ApplyZoneSelection(zoneStage);
     }
 
-    private void ApplyZoneSelection(ZoneConfig zone)
+    private void ApplyZoneSelection(ZoneStageConfig zoneStage)
     {
-        m_selectedZone = zone;
-        if (m_zoneCells.TryGetValue(zone.zoneName, out ZoneMapCell cell))
+        m_selectedZone = zoneStage;
+        if (m_zoneStageCells.TryGetValue(zoneStage.zoneName, out ZoneMapCell cell))
             cell.SetSelected(true);
-        RefreshZoneDetailText(zone);
+        RefreshZoneStageDetailText(zoneStage);
     }
 
     // 그룹 내 기본 선택: 미클리어 최고 스테이지, 전부 클리어 시 최고 스테이지
-    private ZoneConfig GetDefaultZoneForGroup(int groupIndex)
+    private ZoneStageConfig GetDefaultZoneStageForZone(int zoneIndex)
     {
-        var clearedZones = m_myCharacter?.m_characterInfo.clearedZones;
-        ZoneConfig highest = null;
-        ZoneConfig lowestUncleared = null;
+        var clearedZoneStages = m_myCharacter?.m_characterInfo.clearedZones;
+        ZoneStageConfig highest = null;
+        ZoneStageConfig lowestUncleared = null;
 
-        for (int i = 1; i < m_datatableZone.ZoneCount; i++)
+        for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
         {
-            ZoneConfig zone = m_datatableZone.GetZone(i);
-            if (zone == null || ParseZoneGroup(zone.zoneName) != groupIndex) continue;
+            ZoneStageConfig zoneStage = m_datatableZone.GetZoneStage(i);
+            if (zoneStage == null || ParseZoneGroup(zoneStage.zoneName) != zoneIndex) continue;
 
-            int stage = ParseZoneStage(zone.zoneName);
+            int stage = ParseZoneStage(zoneStage.zoneName);
             if (highest == null || stage > ParseZoneStage(highest.zoneName))
-                highest = zone;
+                highest = zoneStage;
 
-            bool isCleared = clearedZones != null && clearedZones.Contains(zone.zoneName);
+            bool isCleared = clearedZoneStages != null && clearedZoneStages.Contains(zoneStage.zoneName);
             if (isCleared == false && (lowestUncleared == null || stage < ParseZoneStage(lowestUncleared.zoneName)))
-                lowestUncleared = zone;
+                lowestUncleared = zoneStage;
         }
 
         return lowestUncleared ?? highest;
@@ -433,7 +424,7 @@ private void SetupGroupTabs()
     {
         if (m_selectedZone == null) return;
         if (m_enterZoneState == EEnterZoneState.warp) return;
-        if (m_enterZoneState == EEnterZoneState.zone && m_currentZone != null && m_currentZone.zoneName == m_selectedZone.zoneName) return;
+        if (m_enterZoneState == EEnterZoneState.zone && m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZone.zoneName) return;
 
         int requiredShips = ParseZoneGroup(m_selectedZone.zoneName);
         if (requiredShips > 0 && m_myFleet.m_ships.Count < requiredShips)
@@ -444,7 +435,6 @@ private void SetupGroupTabs()
 
         if (m_enterZoneState == EEnterZoneState.zone)
         {
-            EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
             ObjectManager.Instance.StopEnemySpawning();
             ObjectManager.Instance.OrderAllAircraftReturn();
@@ -452,23 +442,23 @@ private void SetupGroupTabs()
             ObjectManager.Instance.RemoveAllEnemyFleets();
         }
 
-        ZoneConfig zone = m_selectedZone;
+        ZoneStageConfig zoneStage = m_currentZoneStage;
         UIManager.Instance.ShowConfirmPopup(
-            zone.zoneName,
+            zoneStage.zoneName,
             LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
             null, null,
-            onConfirm: () => TryEnterZoneWithAd(zone)
+            onConfirm: () => TryEnterZoneWithAd(zoneStage)
         );
     }
 
     // 선택된 존 정보를 m_zoneDetailText에 표시
-    private void RefreshZoneDetailText(ZoneConfig zone)
+    private void RefreshZoneStageDetailText(ZoneStageConfig zoneStage)
     {
-        if (m_zoneDetailText == null || zone == null) return;
+        if (m_zoneDetailText == null || zoneStage == null) return;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine(zone.zoneName);
-        if (string.IsNullOrEmpty(zone.zoneDescription) == false)
-            sb.AppendLine(zone.zoneDescription);
+        sb.AppendLine(zoneStage.zoneName);
+        if (string.IsNullOrEmpty(zoneStage.zoneDescription) == false)
+            sb.AppendLine(zoneStage.zoneDescription);
         void AppendKill(string icon, float value)
         {
             if (value <= 0f) return;
@@ -479,25 +469,25 @@ private void SetupGroupTabs()
             if (value <= 0f) return;
             sb.AppendLine($"<sprite name=\"{icon}\"> {CommonUtility.FormatBigNumber(value)}/h");
         }
-        AppendKill("IconMineralMini",  zone.killRewardMineral);
-        AppendKill("IconMineralRMini", zone.killRewardMineralRare);
-        AppendKill("IconMineralEMini", zone.killRewardMineralExotic);
-        AppendKill("IconMineralDMini", zone.killRewardMineralDark);
-        AppendRate("IconMineralMini",  zone.mineralPerHour);
-        AppendRate("IconMineralRMini", zone.mineralRarePerHour);
-        AppendRate("IconMineralEMini", zone.mineralExoticPerHour);
-        AppendRate("IconMineralDMini", zone.mineralDarkPerHour);
+        AppendKill("IconMineralMini",  zoneStage.killRewardMineral);
+        AppendKill("IconMineralRMini", zoneStage.killRewardMineralRare);
+        AppendKill("IconMineralEMini", zoneStage.killRewardMineralExotic);
+        AppendKill("IconMineralDMini", zoneStage.killRewardMineralDark);
+        AppendRate("IconMineralMini",  zoneStage.mineralPerHour);
+        AppendRate("IconMineralRMini", zoneStage.mineralRarePerHour);
+        AppendRate("IconMineralEMini", zoneStage.mineralExoticPerHour);
+        AppendRate("IconMineralDMini", zoneStage.mineralDarkPerHour);
         m_zoneDetailText.text = sb.ToString().TrimEnd();
     }
 
-    private void TryEnterZoneWithAd(ZoneConfig zone)
+    private void TryEnterZoneWithAd(ZoneStageConfig zonestage)
     {
 #if UNITY_EDITOR
-        EnterZone(zone);
+        EnterZone(zonestage);
 #else
         if (AdManager.s_devSkipAd == true)
         {
-            EnterZone(zone);
+            EnterZone(zonestage);
             return;
         }
 
@@ -510,12 +500,12 @@ private void SetupGroupTabs()
             {
                 if (result == EAdResult.Rewarded)
                 {
-                    EnterZone(zone);
+                    EnterZone(zonestage);
                 }
                 else if (result == EAdResult.Failed)
                 {
                     ShowResultMessage("[광고] 광고 오류로 입장합니다");
-                    EnterZone(zone);
+                    EnterZone(zonestage);
                 }
                 else if (result == EAdResult.UserClosed)
                 {
@@ -529,36 +519,35 @@ private void SetupGroupTabs()
             if (adInstanceNull == false)
                 AdManager.Instance.RequestLoad();
             ShowResultMessage("[광고] 광고 미준비 상태로 입장합니다");
-            EnterZone(zone);
+            EnterZone(zonestage);
         }
 #endif
     }
 
-    private void EnterZone(ZoneConfig zone)
+    private void EnterZone(ZoneStageConfig zoneStage)
     {
         SetEnterZoneState(EEnterZoneState.warp);
-        var zoneGroup = m_datatableZone.GetGroupConfig(zone.shipCount);
-        Material skybox = zoneGroup?.skyboxMaterial;
-        float rotation = zone.skyboxRotation;
+        var zone = m_datatableZone.GetZone(zoneStage.zoneIndex);
+        Material skybox = zone?.skyboxMaterial;
+        float rotation = zoneStage.skyboxRotation;
 
         var pp = WarpPostProcessing.Instance;
-        if (pp != null && zone != null)
+        if (pp != null && zoneStage != null)
             pp.SetSkyboxBlendTarget(skybox, rotation);
 
-        m_currentZone = zone;
+        m_currentZoneStage = zoneStage;
         CacheCurrentZoneCell();
-        EventManager.Subscribe_WaveStarted(OnWaveStarted);
         EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilled);
 
         m_myFleet.StartFleetWarp(skybox, () =>
         {
-            ObjectManager.Instance.SetMyFleetPosition(zone.fleetPosition);
+            ObjectManager.Instance.SetMyFleetPosition(zoneStage.fleetPosition);
             CameraController.Instance.SnapToTarget();
             SetEnterZoneState(EEnterZoneState.zone);
             UIManager.Instance.ShowPanel("UIPanelCameraView");
-            bool isFirstClear = IsAlreadyCleared(zone) == false;
-            EventManager.TriggerZoneEntered(zone.zoneName, isFirstClear, zone.zoneClearCount);
-            StartBattleInZone(zone);
+            bool isFirstClear = IsAlreadyCleared(zoneStage) == false;
+            EventManager.TriggerZoneEntered(zoneStage.zoneName, isFirstClear);
+            StartBattleInZone(zoneStage);
         });
     }
 
@@ -568,74 +557,51 @@ private void SetupGroupTabs()
         if (m_currentZoneCell != null)
         {
             m_currentZoneCell.SetSelected(false);
-            if (IsAlreadyCleared(m_currentZoneCell.m_zoneConfig) == false)
+            if (IsAlreadyCleared(m_currentZoneCell.m_zoneStageConfig) == false)
                 m_currentZoneCell.SetState(EZoneState.Current, false);
         }
 
         m_currentZoneCell = null;
-        if (m_currentZone == null) return;
+        if (m_currentZoneStage == null) return;
 
-        if (m_zoneCells.TryGetValue(m_currentZone.zoneName, out ZoneMapCell cell))
+        if (m_zoneStageCells.TryGetValue(m_currentZoneStage.zoneName, out ZoneMapCell cell))
             m_currentZoneCell = cell;
 
         if (m_currentZoneCell != null)
             m_currentZoneCell.SetSelected(true);
     }
 
-    private void StartBattleInZone(ZoneConfig zone)
+    private void StartBattleInZone(ZoneStageConfig zoneStage)
     {
         // 패배(함대 전멸) 시에만 콜백 호출 — 승리/클리어는 서버 응답으로 판정
-        ObjectManager.Instance.StartSpawnEnemies(zone, (_) => ReturnToSafeZone());
+        ObjectManager.Instance.StartSpawnEnemies(zoneStage, (_) => ReturnToSafeZone());
     }
 
-    private bool IsAlreadyCleared(ZoneConfig zone)
+    private bool IsAlreadyCleared(ZoneStageConfig zoneStage)
     {
         var clearedZones = m_myCharacter.m_characterInfo.clearedZones;
-        return clearedZones != null && clearedZones.Contains(zone.zoneName);
+        return clearedZones != null && clearedZones.Contains(zoneStage.zoneName);
     }
 
-    // 적 함대 1개 전멸 시 호출 — 서버에 웨이브 처치 보고, 서버가 클리어 여부 판정
+    // 적 함대 전멸 시 호출 — 서버에 클리어 보고 후 자동 안전지역 텔레포트
     private void OnEnemyFleetKilled()
     {
-        if (m_currentZone == null) return;
+        if (m_currentZoneStage == null) return;
 
-        var request = new DestroyZoneStageWaveRequest
+        var request = new ClearZoneStageRequest
         {
-            zoneName = m_currentZone.zoneName,
-            waveIndex = m_currentWave - 1  // TriggerWaveStarted는 1-based
+            zoneName = m_currentZoneStage.zoneName,
         };
-        NetworkManager.Instance.DestroyZoneStageWave(request,
-            r => OnDestroyZoneStageWaveResponse(r, isRetry: false));
+        NetworkManager.Instance.ClearZoneStage(request, OnClearZoneStageResponse);
     }
 
-    // 웨이브 처치 응답: 보상 처리 + 진행 UI 갱신 + 신규 클리어 판정 + 다음 웨이브 스폰
-    private void OnDestroyZoneStageWaveResponse(ApiResponse<DestroyZoneStageWaveResponse> response, bool isRetry)
+    // 클리어 응답: 보상 처리 + 신규 클리어 판정 + 자동 안전지역 텔레포트
+    private void OnClearZoneStageResponse(ApiResponse<ClearZoneStageResponse> response)
     {
         if (response.errorCode != 0)
         {
-            // waveIndex 불일치(백그라운드 복귀 후 Redis TTL 만료) → waveIndex=0으로 1회 재시도
-            if (isRetry == false
-                && response.errorCode == (int)ServerErrorCode.ZONE_DESTROY_WAVE_FAIL_WAVE_INDEX_MISMATCH
-                && m_currentZone != null)
-            {
-                m_currentWave = 1;
-                var retryRequest = new DestroyZoneStageWaveRequest
-                {
-                    zoneName = m_currentZone.zoneName,
-                    waveIndex = 0
-                };
-                NetworkManager.Instance.DestroyZoneStageWave(retryRequest,
-                    r => OnDestroyZoneStageWaveResponse(r, isRetry: true));
-                return;
-            }
             ReturnToSafeZone();
             return;
-        }
-
-        if (IsAlreadyCleared(m_currentZone) == false && m_currentZoneCell != null)
-        {
-            m_currentZoneCell.SetClearProgress(m_currentWave, m_zoneClearCount);
-            EventManager.TriggerZoneWaveCleared(m_currentWave, m_zoneClearCount);
         }
 
         var character = DataManager.Instance.m_currentCharacter;
@@ -659,48 +625,41 @@ private void SetupGroupTabs()
             if (character.m_characterInfo.clearedZones.Contains(newlyCleared) == false)
                 character.m_characterInfo.clearedZones.Add(newlyCleared);
 
-            if (m_zoneCells.TryGetValue(newlyCleared, out ZoneMapCell clearedCell))
+            if (m_zoneStageCells.TryGetValue(newlyCleared, out ZoneMapCell clearedCell))
                 clearedCell.SetState(EZoneState.Cleared, true);
 
             UpdateZoneInfo();
             CacheCurrentZoneCell();
         }
 
-        ObjectManager.Instance.SpawnNextWave(resetIndex: isRetry);
+        // 클리어 후 자동 안전지역 텔레포트
+        ReturnToSafeZone();
     }
 
     private void ReturnToSafeZone()
     {
-        EventManager.Unsubscribe_WaveStarted(OnWaveStarted);
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
 
-        // 미완료 웨이브 카운트 초기화 (케이스2 포기 시)
-        if (m_currentZone != null && IsAlreadyCleared(m_currentZone) == false)
-            NetworkManager.Instance.ExitZone(new ExitZoneRequest { zoneName = m_currentZone.zoneName });
-
-        ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
-        if (zoneConfig == null) return;
-        var safeGroup = m_datatableZone.GetGroupConfig(0);
-        Material safeSkybox = safeGroup?.skyboxMaterial;
-        float safeRotation = zoneConfig.skyboxRotation;
-
+        Material safeSkybox = m_datatableZone.GetZone(0).skyboxMaterial;
+        ZoneStageConfig zoneStageConfig = m_datatableZone.GetZoneStage(0);
+        
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
-            pp.SetSkyboxBlendTarget(safeSkybox, safeRotation);
+            pp.SetSkyboxBlendTarget(safeSkybox, zoneStageConfig.skyboxRotation);
 
         UIManager.Instance.HidePanel("UIPanelCameraView");
         CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
         m_myFleet.StartFleetWarp(safeSkybox, () =>
         {
-            ObjectManager.Instance.SetMyFleetPosition(zoneConfig.fleetPosition);
+            ObjectManager.Instance.SetMyFleetPosition(zoneStageConfig.fleetPosition);
             CameraController.Instance.SnapToTarget();
 
-            m_currentZone = null;
+            m_currentZoneStage = null;
             if (m_currentZoneCell != null)
             {
                 m_currentZoneCell.SetSelected(false);
-                if (IsAlreadyCleared(m_currentZoneCell.m_zoneConfig) == false)
+                if (IsAlreadyCleared(m_currentZoneCell.m_zoneStageConfig) == false)
                     m_currentZoneCell.SetState(EZoneState.Current, false);
                 m_currentZoneCell = null;
             }

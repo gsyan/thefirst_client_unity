@@ -1,4 +1,4 @@
-zone,step,kill_mineral,kill_mineral_r,kill_mineral_e,kill_mineral_d,hour_mineral,hour_mineral_r,hour_mineral_e,hour_mineral_d,wave_term,body_ratio,beam_ratio,missile_ratio,hanger_ratio
+zone,stage,kill_mineral,kill_mineral_r,kill_mineral_e,kill_mineral_d,hour_mineral,hour_mineral_r,hour_mineral_e,hour_mineral_d,wave_term,body_ratio,beam_ratio,missile_ratio,hanger_ratio
 0,0,0,0,0,0,0,0,0,0,0,1,1,1,1
 1,1,13,0,0,0,200,0,0,0,3,0.1,0.1,0.1,0.1
 1,2,14,0,0,0,203,0,0,0,3,0.1474,0.1474,0.1474,0.1474

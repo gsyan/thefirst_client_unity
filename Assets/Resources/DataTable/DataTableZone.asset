@@ -53,6 +53,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-1
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -233,6 +234,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-2
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -413,6 +415,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-3
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -593,6 +596,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-4
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -773,6 +777,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-5
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -953,6 +958,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-6
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -1133,6 +1139,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-7
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -1313,6 +1320,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-8
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -1493,6 +1501,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-9
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -1673,6 +1682,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-10
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -1853,6 +1863,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-11
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -2033,6 +2044,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-12
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -2213,6 +2225,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-13
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -2393,6 +2406,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-14
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -2573,6 +2587,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-15
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -2753,6 +2768,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-16
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -2933,6 +2949,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-17
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -3113,6 +3130,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-18
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -3293,6 +3311,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-19
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -3473,6 +3492,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-20
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -3653,6 +3673,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-21
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -3833,6 +3854,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-22
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -4013,6 +4035,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-23
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -4193,6 +4216,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-24
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -4373,6 +4397,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-25
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -4553,6 +4578,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-26
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -4733,6 +4759,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-27
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -4913,6 +4940,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-28
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -5093,6 +5121,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-29
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -5273,6 +5302,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-30
     zoneDescription: "\uD568\uC120 1\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -5453,6 +5483,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-1
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -5633,6 +5664,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-2
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -5813,6 +5845,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-3
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -5993,6 +6026,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-4
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -6173,6 +6207,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-5
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -6353,6 +6388,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-6
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -6533,6 +6569,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-7
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -6713,6 +6750,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-8
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -6893,6 +6931,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-9
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -7073,6 +7112,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-10
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -7253,6 +7293,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-11
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -7433,6 +7474,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-12
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -7613,6 +7655,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-13
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -7793,6 +7836,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-14
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -7973,6 +8017,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-15
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -8153,6 +8198,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-16
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -8333,6 +8379,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-17
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -8513,6 +8560,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-18
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -8693,6 +8741,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-19
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -8873,6 +8922,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-20
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -9053,6 +9103,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-21
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -9233,6 +9284,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-22
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -9413,6 +9465,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-23
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -9593,6 +9646,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-24
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -9773,6 +9827,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-25
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -9953,6 +10008,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-26
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -10133,6 +10189,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-27
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -10313,6 +10370,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-28
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -10493,6 +10551,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-29
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -10673,6 +10732,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-30
     zoneDescription: "\uD568\uC120 2\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -10853,6 +10913,7 @@ MonoBehaviour:
     mineralRarePerHour: 0
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-1
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -11033,6 +11094,7 @@ MonoBehaviour:
     mineralRarePerHour: 117
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-2
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -11213,6 +11275,7 @@ MonoBehaviour:
     mineralRarePerHour: 118
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-3
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -11393,6 +11456,7 @@ MonoBehaviour:
     mineralRarePerHour: 120
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-4
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -11573,6 +11637,7 @@ MonoBehaviour:
     mineralRarePerHour: 122
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-5
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -11753,6 +11818,7 @@ MonoBehaviour:
     mineralRarePerHour: 124
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-6
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -11933,6 +11999,7 @@ MonoBehaviour:
     mineralRarePerHour: 126
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-7
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -12113,6 +12180,7 @@ MonoBehaviour:
     mineralRarePerHour: 128
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-8
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -12293,6 +12361,7 @@ MonoBehaviour:
     mineralRarePerHour: 129
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-9
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -12473,6 +12542,7 @@ MonoBehaviour:
     mineralRarePerHour: 131
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-10
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -12653,6 +12723,7 @@ MonoBehaviour:
     mineralRarePerHour: 133
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-11
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -12833,6 +12904,7 @@ MonoBehaviour:
     mineralRarePerHour: 135
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-12
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -13013,6 +13085,7 @@ MonoBehaviour:
     mineralRarePerHour: 137
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-13
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -13193,6 +13266,7 @@ MonoBehaviour:
     mineralRarePerHour: 138
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-14
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -13373,6 +13447,7 @@ MonoBehaviour:
     mineralRarePerHour: 140
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-15
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -13553,6 +13628,7 @@ MonoBehaviour:
     mineralRarePerHour: 142
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-16
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -13733,6 +13809,7 @@ MonoBehaviour:
     mineralRarePerHour: 144
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-17
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -13913,6 +13990,7 @@ MonoBehaviour:
     mineralRarePerHour: 146
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-18
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -14093,6 +14171,7 @@ MonoBehaviour:
     mineralRarePerHour: 147
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-19
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -14273,6 +14352,7 @@ MonoBehaviour:
     mineralRarePerHour: 149
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-20
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -14453,6 +14533,7 @@ MonoBehaviour:
     mineralRarePerHour: 151
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-21
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -14633,6 +14714,7 @@ MonoBehaviour:
     mineralRarePerHour: 153
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-22
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -14813,6 +14895,7 @@ MonoBehaviour:
     mineralRarePerHour: 155
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-23
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -14993,6 +15076,7 @@ MonoBehaviour:
     mineralRarePerHour: 156
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-24
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -15173,6 +15257,7 @@ MonoBehaviour:
     mineralRarePerHour: 158
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-25
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -15353,6 +15438,7 @@ MonoBehaviour:
     mineralRarePerHour: 160
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-26
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -15533,6 +15619,7 @@ MonoBehaviour:
     mineralRarePerHour: 162
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-27
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -15713,6 +15800,7 @@ MonoBehaviour:
     mineralRarePerHour: 164
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-28
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -15893,6 +15981,7 @@ MonoBehaviour:
     mineralRarePerHour: 166
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-29
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -16073,6 +16162,7 @@ MonoBehaviour:
     mineralRarePerHour: 167
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-30
     zoneDescription: "\uD568\uC120 3\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -16253,6 +16343,7 @@ MonoBehaviour:
     mineralRarePerHour: 169
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-1
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -16433,6 +16524,7 @@ MonoBehaviour:
     mineralRarePerHour: 233
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-2
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -16613,6 +16705,7 @@ MonoBehaviour:
     mineralRarePerHour: 237
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-3
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -16793,6 +16886,7 @@ MonoBehaviour:
     mineralRarePerHour: 241
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-4
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -16973,6 +17067,7 @@ MonoBehaviour:
     mineralRarePerHour: 244
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-5
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -17153,6 +17248,7 @@ MonoBehaviour:
     mineralRarePerHour: 248
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-6
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -17333,6 +17429,7 @@ MonoBehaviour:
     mineralRarePerHour: 251
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-7
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -17513,6 +17610,7 @@ MonoBehaviour:
     mineralRarePerHour: 255
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-8
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -17693,6 +17791,7 @@ MonoBehaviour:
     mineralRarePerHour: 259
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-9
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -17873,6 +17972,7 @@ MonoBehaviour:
     mineralRarePerHour: 262
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-10
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -18053,6 +18153,7 @@ MonoBehaviour:
     mineralRarePerHour: 266
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-11
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -18233,6 +18334,7 @@ MonoBehaviour:
     mineralRarePerHour: 270
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-12
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -18413,6 +18515,7 @@ MonoBehaviour:
     mineralRarePerHour: 273
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-13
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -18593,6 +18696,7 @@ MonoBehaviour:
     mineralRarePerHour: 277
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-14
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -18773,6 +18877,7 @@ MonoBehaviour:
     mineralRarePerHour: 280
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-15
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -18953,6 +19058,7 @@ MonoBehaviour:
     mineralRarePerHour: 284
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-16
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -19133,6 +19239,7 @@ MonoBehaviour:
     mineralRarePerHour: 288
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-17
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -19313,6 +19420,7 @@ MonoBehaviour:
     mineralRarePerHour: 291
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-18
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -19493,6 +19601,7 @@ MonoBehaviour:
     mineralRarePerHour: 295
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-19
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -19673,6 +19782,7 @@ MonoBehaviour:
     mineralRarePerHour: 299
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-20
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -19853,6 +19963,7 @@ MonoBehaviour:
     mineralRarePerHour: 302
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-21
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -20033,6 +20144,7 @@ MonoBehaviour:
     mineralRarePerHour: 306
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-22
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -20213,6 +20325,7 @@ MonoBehaviour:
     mineralRarePerHour: 309
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-23
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -20393,6 +20506,7 @@ MonoBehaviour:
     mineralRarePerHour: 313
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-24
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -20573,6 +20687,7 @@ MonoBehaviour:
     mineralRarePerHour: 317
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-25
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -20753,6 +20868,7 @@ MonoBehaviour:
     mineralRarePerHour: 320
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-26
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -20933,6 +21049,7 @@ MonoBehaviour:
     mineralRarePerHour: 324
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-27
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -21113,6 +21230,7 @@ MonoBehaviour:
     mineralRarePerHour: 327
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-28
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -21293,6 +21411,7 @@ MonoBehaviour:
     mineralRarePerHour: 331
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-29
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -21473,6 +21592,7 @@ MonoBehaviour:
     mineralRarePerHour: 335
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-30
     zoneDescription: "\uD568\uC120 4\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -21653,6 +21773,7 @@ MonoBehaviour:
     mineralRarePerHour: 338
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-1
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -21833,6 +21954,7 @@ MonoBehaviour:
     mineralRarePerHour: 400
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-2
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -22013,6 +22135,7 @@ MonoBehaviour:
     mineralRarePerHour: 406
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-3
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -22193,6 +22316,7 @@ MonoBehaviour:
     mineralRarePerHour: 412
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-4
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -22373,6 +22497,7 @@ MonoBehaviour:
     mineralRarePerHour: 419
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-5
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -22553,6 +22678,7 @@ MonoBehaviour:
     mineralRarePerHour: 425
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-6
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -22733,6 +22859,7 @@ MonoBehaviour:
     mineralRarePerHour: 431
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-7
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -22913,6 +23040,7 @@ MonoBehaviour:
     mineralRarePerHour: 437
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-8
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -23093,6 +23221,7 @@ MonoBehaviour:
     mineralRarePerHour: 443
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-9
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -23273,6 +23402,7 @@ MonoBehaviour:
     mineralRarePerHour: 450
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-10
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -23453,6 +23583,7 @@ MonoBehaviour:
     mineralRarePerHour: 456
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-11
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -23633,6 +23764,7 @@ MonoBehaviour:
     mineralRarePerHour: 462
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-12
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -23813,6 +23945,7 @@ MonoBehaviour:
     mineralRarePerHour: 468
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-13
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -23993,6 +24126,7 @@ MonoBehaviour:
     mineralRarePerHour: 474
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-14
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -24173,6 +24307,7 @@ MonoBehaviour:
     mineralRarePerHour: 481
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-15
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -24353,6 +24488,7 @@ MonoBehaviour:
     mineralRarePerHour: 487
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-16
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -24533,6 +24669,7 @@ MonoBehaviour:
     mineralRarePerHour: 493
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-17
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -24713,6 +24850,7 @@ MonoBehaviour:
     mineralRarePerHour: 499
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-18
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -24893,6 +25031,7 @@ MonoBehaviour:
     mineralRarePerHour: 506
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-19
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -25073,6 +25212,7 @@ MonoBehaviour:
     mineralRarePerHour: 512
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-20
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -25253,6 +25393,7 @@ MonoBehaviour:
     mineralRarePerHour: 518
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-21
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -25433,6 +25574,7 @@ MonoBehaviour:
     mineralRarePerHour: 524
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-22
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -25613,6 +25755,7 @@ MonoBehaviour:
     mineralRarePerHour: 530
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-23
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -25793,6 +25936,7 @@ MonoBehaviour:
     mineralRarePerHour: 537
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-24
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -25973,6 +26117,7 @@ MonoBehaviour:
     mineralRarePerHour: 543
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-25
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -26153,6 +26298,7 @@ MonoBehaviour:
     mineralRarePerHour: 549
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-26
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -26333,6 +26479,7 @@ MonoBehaviour:
     mineralRarePerHour: 555
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-27
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -26513,6 +26660,7 @@ MonoBehaviour:
     mineralRarePerHour: 561
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-28
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -26693,6 +26841,7 @@ MonoBehaviour:
     mineralRarePerHour: 568
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-29
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -26873,6 +27022,7 @@ MonoBehaviour:
     mineralRarePerHour: 574
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-30
     zoneDescription: "\uD568\uC120 5\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -27053,6 +27203,7 @@ MonoBehaviour:
     mineralRarePerHour: 580
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-1
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -27233,6 +27384,7 @@ MonoBehaviour:
     mineralRarePerHour: 667
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-2
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -27413,6 +27565,7 @@ MonoBehaviour:
     mineralRarePerHour: 677
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-3
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -27593,6 +27746,7 @@ MonoBehaviour:
     mineralRarePerHour: 687
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-4
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -27773,6 +27927,7 @@ MonoBehaviour:
     mineralRarePerHour: 698
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-5
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -27953,6 +28108,7 @@ MonoBehaviour:
     mineralRarePerHour: 708
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-6
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -28133,6 +28289,7 @@ MonoBehaviour:
     mineralRarePerHour: 718
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-7
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -28313,6 +28470,7 @@ MonoBehaviour:
     mineralRarePerHour: 729
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-8
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -28493,6 +28651,7 @@ MonoBehaviour:
     mineralRarePerHour: 739
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-9
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -28673,6 +28832,7 @@ MonoBehaviour:
     mineralRarePerHour: 749
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-10
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -28853,6 +29013,7 @@ MonoBehaviour:
     mineralRarePerHour: 760
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-11
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -29033,6 +29194,7 @@ MonoBehaviour:
     mineralRarePerHour: 770
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-12
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -29213,6 +29375,7 @@ MonoBehaviour:
     mineralRarePerHour: 780
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-13
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -29393,6 +29556,7 @@ MonoBehaviour:
     mineralRarePerHour: 791
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-14
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -29573,6 +29737,7 @@ MonoBehaviour:
     mineralRarePerHour: 801
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-15
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -29753,6 +29918,7 @@ MonoBehaviour:
     mineralRarePerHour: 811
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-16
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -29933,6 +30099,7 @@ MonoBehaviour:
     mineralRarePerHour: 822
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-17
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -30113,6 +30280,7 @@ MonoBehaviour:
     mineralRarePerHour: 832
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-18
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -30293,6 +30461,7 @@ MonoBehaviour:
     mineralRarePerHour: 843
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-19
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -30473,6 +30642,7 @@ MonoBehaviour:
     mineralRarePerHour: 853
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-20
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -30653,6 +30823,7 @@ MonoBehaviour:
     mineralRarePerHour: 863
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-21
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -30833,6 +31004,7 @@ MonoBehaviour:
     mineralRarePerHour: 874
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-22
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -31013,6 +31185,7 @@ MonoBehaviour:
     mineralRarePerHour: 884
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-23
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -31193,6 +31366,7 @@ MonoBehaviour:
     mineralRarePerHour: 894
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-24
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -31373,6 +31547,7 @@ MonoBehaviour:
     mineralRarePerHour: 905
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-25
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -31553,6 +31728,7 @@ MonoBehaviour:
     mineralRarePerHour: 915
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-26
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -31733,6 +31909,7 @@ MonoBehaviour:
     mineralRarePerHour: 925
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-27
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -31913,6 +32090,7 @@ MonoBehaviour:
     mineralRarePerHour: 936
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-28
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -32093,6 +32271,7 @@ MonoBehaviour:
     mineralRarePerHour: 946
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-29
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -32273,6 +32452,7 @@ MonoBehaviour:
     mineralRarePerHour: 956
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-30
     zoneDescription: "\uD568\uC120 6\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -32453,6 +32633,7 @@ MonoBehaviour:
     mineralRarePerHour: 967
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-1
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -32633,6 +32814,7 @@ MonoBehaviour:
     mineralRarePerHour: 1067
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-2
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -32813,6 +32995,7 @@ MonoBehaviour:
     mineralRarePerHour: 1083
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-3
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -32993,6 +33176,7 @@ MonoBehaviour:
     mineralRarePerHour: 1100
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-4
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -33173,6 +33357,7 @@ MonoBehaviour:
     mineralRarePerHour: 1116
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-5
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -33353,6 +33538,7 @@ MonoBehaviour:
     mineralRarePerHour: 1133
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-6
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -33533,6 +33719,7 @@ MonoBehaviour:
     mineralRarePerHour: 1149
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-7
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -33713,6 +33900,7 @@ MonoBehaviour:
     mineralRarePerHour: 1166
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-8
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -33893,6 +34081,7 @@ MonoBehaviour:
     mineralRarePerHour: 1183
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-9
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -34073,6 +34262,7 @@ MonoBehaviour:
     mineralRarePerHour: 1199
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-10
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -34253,6 +34443,7 @@ MonoBehaviour:
     mineralRarePerHour: 1216
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-11
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -34433,6 +34624,7 @@ MonoBehaviour:
     mineralRarePerHour: 1232
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-12
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -34613,6 +34805,7 @@ MonoBehaviour:
     mineralRarePerHour: 1249
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-13
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -34793,6 +34986,7 @@ MonoBehaviour:
     mineralRarePerHour: 1265
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-14
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -34973,6 +35167,7 @@ MonoBehaviour:
     mineralRarePerHour: 1282
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-15
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -35153,6 +35348,7 @@ MonoBehaviour:
     mineralRarePerHour: 1298
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-16
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -35333,6 +35529,7 @@ MonoBehaviour:
     mineralRarePerHour: 1315
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-17
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -35513,6 +35710,7 @@ MonoBehaviour:
     mineralRarePerHour: 1331
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-18
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -35693,6 +35891,7 @@ MonoBehaviour:
     mineralRarePerHour: 1348
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-19
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -35873,6 +36072,7 @@ MonoBehaviour:
     mineralRarePerHour: 1365
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-20
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -36053,6 +36253,7 @@ MonoBehaviour:
     mineralRarePerHour: 1381
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-21
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -36233,6 +36434,7 @@ MonoBehaviour:
     mineralRarePerHour: 1398
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-22
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -36413,6 +36615,7 @@ MonoBehaviour:
     mineralRarePerHour: 1414
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-23
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -36593,6 +36796,7 @@ MonoBehaviour:
     mineralRarePerHour: 1431
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-24
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -36773,6 +36977,7 @@ MonoBehaviour:
     mineralRarePerHour: 1447
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-25
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -36953,6 +37158,7 @@ MonoBehaviour:
     mineralRarePerHour: 1464
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-26
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -37133,6 +37339,7 @@ MonoBehaviour:
     mineralRarePerHour: 1480
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-27
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -37313,6 +37520,7 @@ MonoBehaviour:
     mineralRarePerHour: 1497
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-28
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -37493,6 +37701,7 @@ MonoBehaviour:
     mineralRarePerHour: 1514
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-29
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -37673,6 +37882,7 @@ MonoBehaviour:
     mineralRarePerHour: 1530
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-30
     zoneDescription: "\uD568\uC120 7\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -37853,6 +38063,7 @@ MonoBehaviour:
     mineralRarePerHour: 1547
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-1
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -38033,6 +38244,7 @@ MonoBehaviour:
     mineralRarePerHour: 1733
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-2
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -38213,6 +38425,7 @@ MonoBehaviour:
     mineralRarePerHour: 1760
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-3
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -38393,6 +38606,7 @@ MonoBehaviour:
     mineralRarePerHour: 1787
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-4
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -38573,6 +38787,7 @@ MonoBehaviour:
     mineralRarePerHour: 1814
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-5
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -38753,6 +38968,7 @@ MonoBehaviour:
     mineralRarePerHour: 1841
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-6
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -38933,6 +39149,7 @@ MonoBehaviour:
     mineralRarePerHour: 1868
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-7
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -39113,6 +39330,7 @@ MonoBehaviour:
     mineralRarePerHour: 1895
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-8
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -39293,6 +39511,7 @@ MonoBehaviour:
     mineralRarePerHour: 1922
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-9
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -39473,6 +39692,7 @@ MonoBehaviour:
     mineralRarePerHour: 1949
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-10
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -39653,6 +39873,7 @@ MonoBehaviour:
     mineralRarePerHour: 1975
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-11
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -39833,6 +40054,7 @@ MonoBehaviour:
     mineralRarePerHour: 2002
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-12
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -40013,6 +40235,7 @@ MonoBehaviour:
     mineralRarePerHour: 2029
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-13
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -40193,6 +40416,7 @@ MonoBehaviour:
     mineralRarePerHour: 2056
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-14
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -40373,6 +40597,7 @@ MonoBehaviour:
     mineralRarePerHour: 2083
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-15
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -40553,6 +40778,7 @@ MonoBehaviour:
     mineralRarePerHour: 2110
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-16
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -40733,6 +40959,7 @@ MonoBehaviour:
     mineralRarePerHour: 2137
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-17
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -40913,6 +41140,7 @@ MonoBehaviour:
     mineralRarePerHour: 2164
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-18
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -41093,6 +41321,7 @@ MonoBehaviour:
     mineralRarePerHour: 2191
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-19
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -41273,6 +41502,7 @@ MonoBehaviour:
     mineralRarePerHour: 2217
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-20
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -41453,6 +41683,7 @@ MonoBehaviour:
     mineralRarePerHour: 2244
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-21
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -41633,6 +41864,7 @@ MonoBehaviour:
     mineralRarePerHour: 2271
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-22
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -41813,6 +42045,7 @@ MonoBehaviour:
     mineralRarePerHour: 2298
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-23
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -41993,6 +42226,7 @@ MonoBehaviour:
     mineralRarePerHour: 2325
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-24
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -42173,6 +42407,7 @@ MonoBehaviour:
     mineralRarePerHour: 2352
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-25
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -42353,6 +42588,7 @@ MonoBehaviour:
     mineralRarePerHour: 2379
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-26
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -42533,6 +42769,7 @@ MonoBehaviour:
     mineralRarePerHour: 2406
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-27
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -42713,6 +42950,7 @@ MonoBehaviour:
     mineralRarePerHour: 2433
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-28
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -42893,6 +43131,7 @@ MonoBehaviour:
     mineralRarePerHour: 2460
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-29
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -43073,6 +43312,7 @@ MonoBehaviour:
     mineralRarePerHour: 2486
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-30
     zoneDescription: "\uD568\uC120 8\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -43253,6 +43493,7 @@ MonoBehaviour:
     mineralRarePerHour: 2513
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-1
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.1"
@@ -43433,6 +43674,7 @@ MonoBehaviour:
     mineralRarePerHour: 2833
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-2
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.2"
@@ -43613,6 +43855,7 @@ MonoBehaviour:
     mineralRarePerHour: 2877
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-3
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.3"
@@ -43793,6 +44036,7 @@ MonoBehaviour:
     mineralRarePerHour: 2921
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-4
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.4"
@@ -43973,6 +44217,7 @@ MonoBehaviour:
     mineralRarePerHour: 2965
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-5
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.5"
@@ -44153,6 +44398,7 @@ MonoBehaviour:
     mineralRarePerHour: 3009
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-6
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.6"
@@ -44333,6 +44579,7 @@ MonoBehaviour:
     mineralRarePerHour: 3053
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-7
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.7"
@@ -44513,6 +44760,7 @@ MonoBehaviour:
     mineralRarePerHour: 3097
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-8
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.8"
@@ -44693,6 +44941,7 @@ MonoBehaviour:
     mineralRarePerHour: 3141
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-9
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -44873,6 +45122,7 @@ MonoBehaviour:
     mineralRarePerHour: 3185
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-10
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -45053,6 +45303,7 @@ MonoBehaviour:
     mineralRarePerHour: 3229
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-11
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -45233,6 +45484,7 @@ MonoBehaviour:
     mineralRarePerHour: 3273
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-12
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -45413,6 +45665,7 @@ MonoBehaviour:
     mineralRarePerHour: 3317
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-13
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -45593,6 +45846,7 @@ MonoBehaviour:
     mineralRarePerHour: 3361
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-14
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -45773,6 +46027,7 @@ MonoBehaviour:
     mineralRarePerHour: 3405
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-15
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -45953,6 +46208,7 @@ MonoBehaviour:
     mineralRarePerHour: 3449
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-16
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -46133,6 +46389,7 @@ MonoBehaviour:
     mineralRarePerHour: 3493
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-17
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -46313,6 +46570,7 @@ MonoBehaviour:
     mineralRarePerHour: 3537
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-18
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -46493,6 +46751,7 @@ MonoBehaviour:
     mineralRarePerHour: 3581
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-19
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -46673,6 +46932,7 @@ MonoBehaviour:
     mineralRarePerHour: 3625
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-20
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -46853,6 +47113,7 @@ MonoBehaviour:
     mineralRarePerHour: 3669
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-21
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -47033,6 +47294,7 @@ MonoBehaviour:
     mineralRarePerHour: 3713
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-22
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -47213,6 +47475,7 @@ MonoBehaviour:
     mineralRarePerHour: 3757
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-23
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -47393,6 +47656,7 @@ MonoBehaviour:
     mineralRarePerHour: 3801
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-24
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -47573,6 +47837,7 @@ MonoBehaviour:
     mineralRarePerHour: 3845
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-25
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -47753,6 +48018,7 @@ MonoBehaviour:
     mineralRarePerHour: 3889
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-26
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -47933,6 +48199,7 @@ MonoBehaviour:
     mineralRarePerHour: 3932
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-27
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -48113,6 +48380,7 @@ MonoBehaviour:
     mineralRarePerHour: 3976
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-28
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -48293,6 +48561,7 @@ MonoBehaviour:
     mineralRarePerHour: 4020
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-29
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -48473,6 +48742,7 @@ MonoBehaviour:
     mineralRarePerHour: 4064
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-30
     zoneDescription: "\uD568\uC120 9\uCC99, \uBAA8\uB4C8 Lv.9"
@@ -48653,4 +48923,5 @@ MonoBehaviour:
     mineralRarePerHour: 4108
     mineralExoticPerHour: 0
     mineralDarkPerHour: 0
+    skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}

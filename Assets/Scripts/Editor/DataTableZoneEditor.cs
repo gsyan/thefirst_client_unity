@@ -10,12 +10,12 @@ using System.IO;
 [CustomEditor(typeof(DataTableZone))]
 public class DataTableZoneEditor : Editor
 {
-    private DataTableZone config;
+    private DataTableZone m_dataTableZone;
     private Vector2 scrollPosition;
 
     private Dictionary<int, bool> zoneFoldouts = new Dictionary<int, bool>();
     private Dictionary<int, Dictionary<int, bool>> shipFoldouts = new Dictionary<int, Dictionary<int, bool>>();
-    private Dictionary<int, bool> shipCountGroupFoldouts = new Dictionary<int, bool>(); // x값(함선개수) 그룹 폴드아웃
+    private Dictionary<int, bool> zoneGroupFoldouts = new Dictionary<int, bool>(); // x값(그룹) 폴드아웃
     private readonly Color zoneColor       = new Color(0.7f, 0.85f, 0.95f);
     private readonly Color shipColor       = new Color(0.85f, 0.95f, 0.85f);
     private readonly Color slotColor       = new Color(0.9f, 0.9f, 0.95f);
@@ -27,7 +27,7 @@ public class DataTableZoneEditor : Editor
 
     private void OnEnable()
     {
-        config = (DataTableZone)target;
+        m_dataTableZone = (DataTableZone)target;
         CacheBodySubTypes();
     }
 
@@ -45,7 +45,7 @@ public class DataTableZoneEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        if (config == null) return;
+        if (m_dataTableZone == null) return;
 
         serializedObject.Update();
 
@@ -61,7 +61,7 @@ public class DataTableZoneEditor : Editor
 
         if (GUI.changed)
         {
-            EditorUtility.SetDirty(config);
+            EditorUtility.SetDirty(m_dataTableZone);
             serializedObject.ApplyModifiedProperties();
         }
     }
@@ -71,16 +71,16 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.BeginHorizontal("box");
         GUILayout.Label("Datatable Zone", EditorStyles.largeLabel);
         GUILayout.FlexibleSpace();
-        GUILayout.Label($"Zones: {config.zones.Count}", EditorStyles.miniLabel);
+        GUILayout.Label($"Zones: {m_dataTableZone.zoneStageList.Count}", EditorStyles.miniLabel);
 
         if (GUILayout.Button("+ Add Zone", GUILayout.Width(100)))
         {
-            config.zones.Add(new ZoneConfig
+            m_dataTableZone.zoneStageList.Add(new ZoneStageConfig
             {
-                zoneName = $"Zone {config.zones.Count + 1}",
+                zoneName = $"ZoneStage {m_dataTableZone.zoneStageList.Count + 1}",
                 zoneDescription = "New Zone"
             });
-            EditorUtility.SetDirty(config);
+            EditorUtility.SetDirty(m_dataTableZone);
         }
         EditorGUILayout.EndHorizontal();
     }
@@ -121,40 +121,38 @@ public class DataTableZoneEditor : Editor
             return;
         }
 
-        // --- enemy CSV 파싱 (zone,step → 함선 목록) ---
-        // 헤더: zone,step,wave,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count
-        var enemyMap = new Dictionary<(int zone, int step), List<EnemyShipConfig>>();
+        // --- enemy CSV 파싱 (zone,stage → 함선 목록) ---
+        // 헤더: zone,stage,ship_index,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio
+        var enemyMap = new Dictionary<(int zone, int stage), List<EnemyShipConfig>>();
         string[] enemyLines = File.ReadAllLines(enemyCSV);
         for (int i = 1; i < enemyLines.Length; i++)
         {
             string line = enemyLines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
-            if (col.Length < 8) continue;
-
-            if (!int.TryParse(col[0], out int ez) || !int.TryParse(col[1], out int es)) continue;
-
-            var key = (ez, es);
+            
+            // key 값 찾기
+            int.TryParse(col[0],  out int zoneIndex);
+            int.TryParse(col[1],  out int stageIndex);
+            var key = (zoneIndex, stageIndex);
             if (!enemyMap.ContainsKey(key))
                 enemyMap[key] = new List<EnemyShipConfig>();
 
-            // 헤더: zone,step,wave,ship_count,body_type,body_level,beam_type,beam_level,beam_count,...
+            // 함선 인덱스, 함체 정보
+            int.TryParse(col[2], out int ship_index);
+            System.Enum.TryParse(col[3], out EModuleSubType bodyType);
+            int.TryParse(col[4], out int bodyLv);
             var ship = new EnemyShipConfig();
-            if (col.Length > 3 && int.TryParse(col[3], out int sc))
-                ship.shipCount = sc;
-            if (col.Length > 4 && System.Enum.TryParse(col[4], out EModuleSubType bodyType))
-                ship.bodySubType = bodyType;
-            if (col.Length > 5 && int.TryParse(col[5], out int bodyLv))
-                ship.bodyLevel = bodyLv;
-
+            ship.shipIndex = ship_index;
+            ship.bodySubType = bodyType;
+            ship.bodyLevel = bodyLv;
+            // 함체 정보로 모듈 정보
             RefreshShipModuleSlots(ship);
-
+            
             // beam 장착: beam_type, beam_level, beam_count (count 빈 값 = 1)
-            if (col.Length > 8 && !string.IsNullOrEmpty(col[6]) &&
-                System.Enum.TryParse(col[6], out EModuleSubType beamType) &&
-                int.TryParse(col[7], out int beamLv))
+            if ( string.IsNullOrEmpty(col[5]) == false && System.Enum.TryParse(col[5], out EModuleSubType beamType) && int.TryParse(col[6], out int beamLv))
             {
-                int beamCount = string.IsNullOrEmpty(col[8]) ? 1 : (int.TryParse(col[8], out int bc) ? bc : 1);
+                int beamCount = string.IsNullOrEmpty(col[7]) ? 1 : (int.TryParse(col[7], out int bc) ? bc : 1);
                 int filled = 0;
                 foreach (var slot in ship.moduleSlots.Where(s => s.slotType == EModuleType.beam).OrderBy(s => s.slotIndex))
                 {
@@ -166,11 +164,9 @@ public class DataTableZoneEditor : Editor
             }
 
             // missile 장착: missile_type, missile_level, missile_count (count 빈 값 = 1)
-            if (col.Length > 11 && !string.IsNullOrEmpty(col[9]) &&
-                System.Enum.TryParse(col[9], out EModuleSubType missileType) &&
-                int.TryParse(col[10], out int missileLv))
+            if (string.IsNullOrEmpty(col[8]) == false && System.Enum.TryParse(col[8], out EModuleSubType missileType) && int.TryParse(col[9], out int missileLv))
             {
-                int missileCount = string.IsNullOrEmpty(col[11]) ? 1 : (int.TryParse(col[11], out int mc) ? mc : 1);
+                int missileCount = string.IsNullOrEmpty(col[10]) ? 1 : (int.TryParse(col[10], out int mc) ? mc : 1);
                 int filled = 0;
                 foreach (var slot in ship.moduleSlots.Where(s => s.slotType == EModuleType.missile).OrderBy(s => s.slotIndex))
                 {
@@ -182,11 +178,9 @@ public class DataTableZoneEditor : Editor
             }
 
             // hanger 장착: hanger_type, hanger_level, hanger_count (count 빈 값 = 1)
-            if (col.Length > 14 && !string.IsNullOrEmpty(col[12]) &&
-                System.Enum.TryParse(col[12], out EModuleSubType hangerType) &&
-                int.TryParse(col[13], out int hangerLv))
+            if (string.IsNullOrEmpty(col[11]) == false && System.Enum.TryParse(col[11], out EModuleSubType hangerType) && int.TryParse(col[12], out int hangerLv))
             {
-                int hangerCount = string.IsNullOrEmpty(col[14]) ? 1 : (int.TryParse(col[14], out int hc) ? hc : 1);
+                int hangerCount = string.IsNullOrEmpty(col[13]) ? 1 : (int.TryParse(col[13], out int hc) ? hc : 1);
                 int filled = 0;
                 foreach (var slot in ship.moduleSlots.Where(s => s.slotType == EModuleType.hanger).OrderBy(s => s.slotIndex))
                 {
@@ -201,8 +195,8 @@ public class DataTableZoneEditor : Editor
         }
 
         // --- zone CSV 파싱 ---
-        // 헤더: zone,step,kill_mineral,...,wave_count,wave_term,body_ratio,beam_ratio,missile_ratio,hanger_ratio
-        config.zones.Clear();
+        // 헤더: zone,stage,kill_mineral,kill_mineral_r,kill_mineral_e,kill_mineral_d,hour_mineral,hour_mineral_r,hour_mineral_e,hour_mineral_d,wave_term
+        m_dataTableZone.zoneStageList.Clear();
 
         string[] zoneLines = File.ReadAllLines(zoneCSV);
         int imported = 0;
@@ -211,24 +205,22 @@ public class DataTableZoneEditor : Editor
             string line = zoneLines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
-            if (col.Length < 15) continue;
+            if (col.Length < 11) continue;
 
-            if (!int.TryParse(col[0], out int shipCount) || !int.TryParse(col[1], out int stage)) continue;
+            if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stage)) continue;
 
             // zone=0 행 → Zone-0 안전지역 (전투 없음)
-            if (shipCount == 0)
+            if (zoneIndex == 0)
             {
-                config.zones.Add(new ZoneConfig
+                m_dataTableZone.zoneStageList.Add(new ZoneStageConfig
                 {
                     zoneName = "Zone-0",
                     zoneDescription = "안전지역",
-                    shipCount = 0,
-                    moduleLevel = 0,
+                    zoneIndex = 0,
                 });
                 continue;
             }
 
-            // 헤더: zone,step,kill_mineral,kill_mineral_r,kill_mineral_e,kill_mineral_d,hour_mineral,hour_mineral_r,hour_mineral_e,hour_mineral_d,wave_term,body_ratio,beam_ratio,missile_ratio,hanger_ratio
             float.TryParse(col[2],  out float killM);
             float.TryParse(col[3],  out float killMR);
             float.TryParse(col[4],  out float killME);
@@ -243,16 +235,13 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col[13], out float missileR);
             float.TryParse(col[14], out float hangerR);
 
-            int moduleLevel = Mathf.Min(stage, shipCount);
-            enemyMap.TryGetValue((shipCount, stage), out var waveTemplates);
+            enemyMap.TryGetValue((zoneIndex, stage), out var waveTemplates);
 
-            var zone = new ZoneConfig
+            var zoneStage = new ZoneStageConfig
             {
-                zoneName              = $"{shipCount}-{stage}",
-                zoneDescription       = $"함선 {shipCount}척, 모듈 Lv.{moduleLevel}",
-                shipCount             = shipCount,
-                moduleLevel           = moduleLevel,
-                zoneClearCount        = waveTemplates != null ? waveTemplates.Count : 10,
+                zoneName              = $"{zoneIndex}-{stage}",
+                zoneDescription       = $"Zone {zoneIndex}-{stage}",
+                zoneIndex             = zoneIndex,
                 delayBeforeSpawn      = waveTerm > 0 ? waveTerm : 3f,
                 killRewardMineral     = killM,
                 killRewardMineralRare = killMR,
@@ -262,19 +251,15 @@ public class DataTableZoneEditor : Editor
                 mineralRarePerHour    = hourMR,
                 mineralExoticPerHour  = hourME,
                 mineralDarkPerHour    = hourMD,
-                enemyBodyMultiplier    = bodyR > 0 ? bodyR : 1f,
-                enemyBeamMultiplier    = beamR > 0 ? beamR : 1f,
-                enemyMissileMultiplier = missileR > 0 ? missileR : 1f,
-                enemyHangerMultiplier  = hangerR > 0 ? hangerR : 1f,
                 enemyShipConfigs      = waveTemplates ?? new List<EnemyShipConfig>(),
             };
 
-            config.zones.Add(zone);
+            m_dataTableZone.zoneStageList.Add(zoneStage);
             imported++;
         }
 
-        EditorUtility.SetDirty(config);
-        EditorUtility.DisplayDialog("Import Complete", $"Zone-0 포함 총 {config.zones.Count}개 임포트 완료\n(zone CSV: {imported}행)", "OK");
+        EditorUtility.SetDirty(m_dataTableZone);
+        EditorUtility.DisplayDialog("Import Complete", $"Zone-0 포함 총 {m_dataTableZone.zoneStageList.Count}개 임포트 완료\n(zone CSV: {imported}행)", "OK");
     }
 
 
@@ -283,7 +268,7 @@ public class DataTableZoneEditor : Editor
         int totalShips = 0;
         int invalidShips = 0;
 
-        foreach (var zone in config.zones)
+        foreach (var zone in m_dataTableZone.zoneStageList)
         {
             if (zone.enemyShipConfigs == null) continue;
             foreach (var ship in zone.enemyShipConfigs)
@@ -299,7 +284,7 @@ public class DataTableZoneEditor : Editor
 
         if (invalidShips > 0)
         {
-            EditorUtility.SetDirty(config);
+            EditorUtility.SetDirty(m_dataTableZone);
             EditorUtility.DisplayDialog("Validation", $"Total: {totalShips} ships\nFixed: {invalidShips} ships with missing slots", "OK");
         }
         else
@@ -310,91 +295,50 @@ public class DataTableZoneEditor : Editor
 
     private void DrawZoneList()
     {
-        // x-y 형식인 경우 x(함선 개수)로 그룹핑
-        var groupedZones = new Dictionary<int, List<(int index, ZoneConfig zone)>>();
+        // x-y 형식인 경우 x(그룹 인덱스)로 그룹핑
+        var tempZoneList = new Dictionary<int, List<(int index, ZoneStageConfig zoneStage)>>();
 
-        for (int i = 0; i < config.zones.Count; i++)
+        for (int i = 0; i < m_dataTableZone.zoneStageList.Count; i++)
         {
-            var zone = config.zones[i];
-            int shipCount = ParseShipCountFromZoneName(zone.zoneName);
+            var zoneStage = m_dataTableZone.zoneStageList[i];
+            int zoneIndex = zoneStage.zoneIndex;//ParseZoneIndexFromZoneName(zoneStage.zoneName);
 
-            if (!groupedZones.ContainsKey(shipCount))
-                groupedZones[shipCount] = new List<(int, ZoneConfig)>();
-            groupedZones[shipCount].Add((i, zone));
+            if (!tempZoneList.ContainsKey(zoneIndex))
+                tempZoneList[zoneIndex] = new List<(int, ZoneStageConfig)>();
+            tempZoneList[zoneIndex].Add((i, zoneStage));
         }
 
-        // 그룹이 있으면 그룹별로 표시, 없으면 기존 방식
-        if (groupedZones.Count > 1 || (groupedZones.Count == 1 && !groupedZones.ContainsKey(0)))
-        {
-            foreach (var group in groupedZones.OrderBy(g => g.Key))
-            {
-                if (group.Key == 0)
-                {
-                    // x-y 형식이 아닌 zone들 (Zone-0 포함) — 스카이박스는 groupConfig(shipCount=0)로 관리
-                    foreach (var (index, zone) in group.Value)
-                    {
-                        DrawZone(index);
-                        EditorGUILayout.Space(3);
-                    }
-                    DrawZoneGroupConfig(0);
-                    EditorGUILayout.Space(5);
-                }
-                else
-                {
-                    DrawShipCountGroup(group.Key, group.Value);
-                }
-            }
-        }
-        else
-        {
-            // 기존 방식
-            for (int zoneIndex = 0; zoneIndex < config.zones.Count; zoneIndex++)
-            {
-                DrawZone(zoneIndex);
-                EditorGUILayout.Space(5);
-            }
-        }
+        foreach (var zone in tempZoneList.OrderBy(g => g.Key))
+            DrawZoneGroup(zone.Key, zone.Value);
     }
 
-    // zone 이름에서 함선 개수(x) 파싱 (x-y 형식)
-    private int ParseShipCountFromZoneName(string zoneName)
+    // 그룹 인덱스별 그룹 그리기
+    private void DrawZoneGroup(int zoneIndex, List<(int index, ZoneStageConfig zoneStage)> zoneStageList)
     {
-        if (string.IsNullOrEmpty(zoneName)) return 0;
-
-        int dashIndex = zoneName.IndexOf('-');
-        if (dashIndex > 0 && int.TryParse(zoneName.Substring(0, dashIndex), out int shipCount))
-            return shipCount;
-
-        return 0;
-    }
-
-    // 함선 개수별 그룹 그리기
-    private void DrawShipCountGroup(int shipCount, List<(int index, ZoneConfig zone)> zones)
-    {
-        if (!shipCountGroupFoldouts.ContainsKey(shipCount))
-            shipCountGroupFoldouts[shipCount] = false;
+        if (!zoneGroupFoldouts.ContainsKey(zoneIndex))
+            zoneGroupFoldouts[zoneIndex] = false;
 
         var originalColor = GUI.backgroundColor;
         GUI.backgroundColor = new Color(0.8f, 0.8f, 0.95f);
         EditorGUILayout.BeginVertical("box");
         GUI.backgroundColor = originalColor;
 
-        shipCountGroupFoldouts[shipCount] = EditorGUILayout.Foldout(
-            shipCountGroupFoldouts[shipCount],
-            $"Zone{shipCount}  ({shipCount}-1 ~ {shipCount}-{zones.Count})",
+        zoneGroupFoldouts[zoneIndex] = EditorGUILayout.Foldout(
+            zoneGroupFoldouts[zoneIndex],
+            $"Zone{zoneIndex}  ({zoneIndex}-1 ~ {zoneIndex}-{zoneStageList.Count})",
             true, EditorStyles.foldoutHeader);
 
-        if (shipCountGroupFoldouts[shipCount])
+        if (zoneGroupFoldouts[zoneIndex])
         {
             EditorGUI.indentLevel++;
 
             // 그룹 공유 설정 (스카이박스)
-            DrawZoneGroupConfig(shipCount);
+            DrawZoneConfig(zoneIndex);
             EditorGUILayout.Space(5);
 
-            foreach (var (index, zone) in zones)
+            foreach (var (stageIndex, zoneStage) in zoneStageList)
             {
-                DrawZone(index);
+                DrawZoneStage(stageIndex);
                 EditorGUILayout.Space(3);
             }
             EditorGUI.indentLevel--;
@@ -404,42 +348,42 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.Space(5);
     }
 
-    // ZoneGroupConfig 편집 UI (스카이박스)
-    private void DrawZoneGroupConfig(int shipCount)
+    // ZoneConfig 편집 UI (스카이박스)
+    private void DrawZoneConfig(int zoneIndex)
     {
-        ZoneGroupConfig groupConfig = null;
-        for (int i = 0; i < config.zoneGroups.Count; i++)
+        ZoneConfig zoneConfig = null;
+        for (int i = 0; i < m_dataTableZone.zoneList.Count; i++)
         {
-            if (config.zoneGroups[i].shipCount == shipCount)
+            if (m_dataTableZone.zoneList[i].zoneIndex == zoneIndex)
             {
-                groupConfig = config.zoneGroups[i];
+                zoneConfig = m_dataTableZone.zoneList[i];
                 break;
             }
         }
 
-        if (groupConfig == null)
+        if (zoneConfig == null)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.HelpBox("이 그룹의 스카이박스 설정이 없습니다.", MessageType.Info);
             if (GUILayout.Button("생성", GUILayout.Width(50)))
             {
-                groupConfig = new ZoneGroupConfig { shipCount = shipCount };
-                config.zoneGroups.Add(groupConfig);
-                EditorUtility.SetDirty(config);
+                zoneConfig = new ZoneConfig { zoneIndex = zoneIndex };
+                m_dataTableZone.zoneList.Add(zoneConfig);
+                EditorUtility.SetDirty(m_dataTableZone);
             }
             EditorGUILayout.EndHorizontal();
             return;
         }
 
-        groupConfig.skyboxMaterial = (Material)EditorGUILayout.ObjectField(
-            "Skybox Material", groupConfig.skyboxMaterial, typeof(Material), false);
+        zoneConfig.skyboxMaterial = (Material)EditorGUILayout.ObjectField(
+            "Skybox Material", zoneConfig.skyboxMaterial, typeof(Material), false);
     }
 
-    private void DrawZone(int zoneIndex)
+    private void DrawZoneStage(int stageIntegratedIndex)
     {
-        var zone = config.zones[zoneIndex];
-        if (!zoneFoldouts.ContainsKey(zoneIndex))
-            zoneFoldouts[zoneIndex] = false;
+        var zoneStage = m_dataTableZone.zoneStageList[stageIntegratedIndex];
+        if (!zoneFoldouts.ContainsKey(stageIntegratedIndex))
+            zoneFoldouts[stageIntegratedIndex] = false;
 
         var originalColor = GUI.backgroundColor;
         GUI.backgroundColor = zoneColor;
@@ -448,47 +392,47 @@ public class DataTableZoneEditor : Editor
 
         // Zone Header
         EditorGUILayout.BeginHorizontal();
-        int waveTemplateCount = zone.enemyShipConfigs?.Count ?? 0;
-        zoneFoldouts[zoneIndex] = EditorGUILayout.Foldout(zoneFoldouts[zoneIndex],
-            $"Zone {zoneIndex}: {zone.zoneName} (Waves: {zone.zoneClearCount}, Templates: {waveTemplateCount}, Ships/Wave: {zone.shipCount})", true, EditorStyles.foldoutHeader);
+        int shipCount = zoneStage.enemyShipConfigs?.Count ?? 0;
+        zoneFoldouts[stageIntegratedIndex] = EditorGUILayout.Foldout(zoneFoldouts[stageIntegratedIndex],
+            $"Zone {stageIntegratedIndex}: {zoneStage.zoneName} (Ships: {shipCount})", true, EditorStyles.foldoutHeader);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
-            if (EditorUtility.DisplayDialog("Delete Zone", $"Delete '{zone.zoneName}'?", "Delete", "Cancel"))
+            if (EditorUtility.DisplayDialog("Delete Zone", $"Delete '{zoneStage.zoneName}'?", "Delete", "Cancel"))
             {
-                config.zones.RemoveAt(zoneIndex);
-                EditorUtility.SetDirty(config);
+                m_dataTableZone.zoneStageList.RemoveAt(stageIntegratedIndex);
+                EditorUtility.SetDirty(m_dataTableZone);
                 return;
             }
         }
         EditorGUILayout.EndHorizontal();
 
-        if (zoneFoldouts[zoneIndex])
+        if (zoneFoldouts[stageIntegratedIndex])
         {
             EditorGUI.indentLevel++;
 
             // Zone Info
             EditorGUILayout.BeginVertical("box");
-            zone.zoneName = EditorGUILayout.TextField("Zone Name", zone.zoneName);
-            zone.zoneDescription = EditorGUILayout.TextField("Description", zone.zoneDescription);
+            zoneStage.zoneName = EditorGUILayout.TextField("Zone Name", zoneStage.zoneName);
+            zoneStage.zoneDescription = EditorGUILayout.TextField("Description", zoneStage.zoneDescription);
             EditorGUILayout.EndVertical();
 
             // 킬 보상
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("킬 보상", EditorStyles.boldLabel);
-            zone.killRewardMineral = EditorGUILayout.FloatField("Mineral", zone.killRewardMineral);
-            zone.killRewardMineralRare = EditorGUILayout.FloatField("MineralRare", zone.killRewardMineralRare);
-            zone.killRewardMineralExotic = EditorGUILayout.FloatField("MineralExotic", zone.killRewardMineralExotic);
-            zone.killRewardMineralDark = EditorGUILayout.FloatField("MineralDark", zone.killRewardMineralDark);
+            zoneStage.killRewardMineral = EditorGUILayout.FloatField("Mineral", zoneStage.killRewardMineral);
+            zoneStage.killRewardMineralRare = EditorGUILayout.FloatField("MineralRare", zoneStage.killRewardMineralRare);
+            zoneStage.killRewardMineralExotic = EditorGUILayout.FloatField("MineralExotic", zoneStage.killRewardMineralExotic);
+            zoneStage.killRewardMineralDark = EditorGUILayout.FloatField("MineralDark", zoneStage.killRewardMineralDark);
             EditorGUILayout.EndVertical();
 
             // 시간당 자원 수확량
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("시간당 자원 수확량 (클리어 후)", EditorStyles.boldLabel);
-            zone.mineralPerHour = EditorGUILayout.FloatField("Mineral/hour", zone.mineralPerHour);
-            zone.mineralRarePerHour = EditorGUILayout.FloatField("MineralRare/hour", zone.mineralRarePerHour);
-            zone.mineralExoticPerHour = EditorGUILayout.FloatField("MineralExotic/hour", zone.mineralExoticPerHour);
-            zone.mineralDarkPerHour = EditorGUILayout.FloatField("MineralDark/hour", zone.mineralDarkPerHour);
+            zoneStage.mineralPerHour = EditorGUILayout.FloatField("Mineral/hour", zoneStage.mineralPerHour);
+            zoneStage.mineralRarePerHour = EditorGUILayout.FloatField("MineralRare/hour", zoneStage.mineralRarePerHour);
+            zoneStage.mineralExoticPerHour = EditorGUILayout.FloatField("MineralExotic/hour", zoneStage.mineralExoticPerHour);
+            zoneStage.mineralDarkPerHour = EditorGUILayout.FloatField("MineralDark/hour", zoneStage.mineralDarkPerHour);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);
@@ -496,53 +440,38 @@ public class DataTableZoneEditor : Editor
             // 전투 설정
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
-            zone.zoneClearCount = EditorGUILayout.IntField("클리어 카운트 (라운드 수)", zone.zoneClearCount);
-            zone.delayBeforeSpawn = EditorGUILayout.Slider("스폰 간격 (초)", zone.delayBeforeSpawn, 0f, 60f);
-            EditorGUILayout.EndVertical();
-
-            EditorGUILayout.Space(5);
-
-            // 적 함대 스탯 배율
-            var origColor = GUI.backgroundColor;
-            GUI.backgroundColor = multiplierColor;
-            EditorGUILayout.BeginVertical("box");
-            GUI.backgroundColor = origColor;
-            EditorGUILayout.LabelField("적 함대 스탯 배율  (1.0 = 플레이어 동일)", EditorStyles.boldLabel);
-            zone.enemyBodyMultiplier    = EditorGUILayout.Slider("Body    (체력)",            zone.enemyBodyMultiplier,    0.1f, 2.0f);
-            zone.enemyBeamMultiplier    = EditorGUILayout.Slider("Beam    (공격력·체력)",     zone.enemyBeamMultiplier,    0.1f, 2.0f);
-            zone.enemyMissileMultiplier = EditorGUILayout.Slider("Missile (공격력·체력)",     zone.enemyMissileMultiplier, 0.1f, 2.0f);
-            zone.enemyHangerMultiplier  = EditorGUILayout.Slider("Hanger  (함재기 전 스탯)", zone.enemyHangerMultiplier,  0.1f, 2.0f);
+            zoneStage.delayBeforeSpawn = EditorGUILayout.Slider("스폰 지연 (초)", zoneStage.delayBeforeSpawn, 0f, 60f);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);
 
             // 아군 함대 위치
             EditorGUILayout.BeginVertical("box");
-            zone.skyboxRotation = EditorGUILayout.Slider("Skybox Rotation", zone.skyboxRotation, 0f, 360f);
-            zone.fleetPosition = EditorGUILayout.Vector3Field("Fleet Position", zone.fleetPosition);
+            zoneStage.skyboxRotation = EditorGUILayout.Slider("Skybox Rotation", zoneStage.skyboxRotation, 0f, 360f);
+            zoneStage.fleetPosition = EditorGUILayout.Vector3Field("Fleet Position", zoneStage.fleetPosition);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);
 
-            // 웨이브별 함선 템플릿 (각 Wave에서 shipCount만큼 복제 스폰)
+            // 적 함대 구성 함선 템플릿 (전체가 한 함대로 스폰)
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField($"웨이브별 함선 템플릿 ({zone.enemyShipConfigs?.Count ?? 0} / {zone.zoneClearCount} waves)", EditorStyles.boldLabel);
-            if (GUILayout.Button("+ Add Wave", GUILayout.Width(100)))
+            EditorGUILayout.LabelField($"함선 템플릿 ({zoneStage.enemyShipConfigs?.Count ?? 0})", EditorStyles.boldLabel);
+            if (GUILayout.Button("+ Add Ship", GUILayout.Width(100)))
             {
-                if (zone.enemyShipConfigs == null)
-                    zone.enemyShipConfigs = new List<EnemyShipConfig>();
+                if (zoneStage.enemyShipConfigs == null)
+                    zoneStage.enemyShipConfigs = new List<EnemyShipConfig>();
                 var ship = new EnemyShipConfig { bodySubType = EModuleSubType.body_t1_m1, bodyLevel = 1 };
                 RefreshShipModuleSlots(ship);
-                zone.enemyShipConfigs.Add(ship);
-                EditorUtility.SetDirty(config);
+                zoneStage.enemyShipConfigs.Add(ship);
+                EditorUtility.SetDirty(m_dataTableZone);
             }
             EditorGUILayout.EndHorizontal();
 
-            if (zone.enemyShipConfigs != null)
+            if (zoneStage.enemyShipConfigs != null)
             {
-                for (int waveIndex = 0; waveIndex < zone.enemyShipConfigs.Count; waveIndex++)
+                for (int shipIndex = 0; shipIndex < zoneStage.enemyShipConfigs.Count; shipIndex++)
                 {
-                    DrawWaveTemplate(zoneIndex, waveIndex, zone.enemyShipConfigs[waveIndex]);
+                    DrawShips(stageIntegratedIndex, shipIndex, zoneStage.enemyShipConfigs[shipIndex]);
                 }
             }
 
@@ -552,12 +481,12 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawWaveTemplate(int zoneIndex, int waveIndex, EnemyShipConfig ship)
+    private void DrawShips(int stageIndex, int shipIndex, EnemyShipConfig ship)
     {
-        if (!shipFoldouts.ContainsKey(zoneIndex))
-            shipFoldouts[zoneIndex] = new Dictionary<int, bool>();
-        if (!shipFoldouts[zoneIndex].ContainsKey(waveIndex))
-            shipFoldouts[zoneIndex][waveIndex] = false;
+        if (!shipFoldouts.ContainsKey(stageIndex))
+            shipFoldouts[stageIndex] = new Dictionary<int, bool>();
+        if (!shipFoldouts[stageIndex].ContainsKey(shipIndex))
+            shipFoldouts[stageIndex][shipIndex] = false;
 
         var originalColor = GUI.backgroundColor;
         GUI.backgroundColor = shipColor;
@@ -567,27 +496,27 @@ public class DataTableZoneEditor : Editor
         // Wave Header
         EditorGUILayout.BeginHorizontal();
         string slotInfo = ship.moduleSlots != null ? $", Slots: {ship.moduleSlots.Count}" : "";
-        shipFoldouts[zoneIndex][waveIndex] = EditorGUILayout.Foldout(
-            shipFoldouts[zoneIndex][waveIndex],
-            $"Wave {waveIndex + 1}: {ship.shipCount}척 / {ship.bodySubType} Lv.{ship.bodyLevel}{slotInfo}", true);
+        shipFoldouts[stageIndex][shipIndex] = EditorGUILayout.Foldout(
+            shipFoldouts[stageIndex][shipIndex],
+            $"Ship {shipIndex + 1}: / {ship.bodySubType} Lv.{ship.bodyLevel}{slotInfo}", true);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
-            config.zones[zoneIndex].enemyShipConfigs.RemoveAt(waveIndex);
-            EditorUtility.SetDirty(config);
+            m_dataTableZone.zoneStageList[stageIndex].enemyShipConfigs.RemoveAt(shipIndex);
+            EditorUtility.SetDirty(m_dataTableZone);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
             return;
         }
         EditorGUILayout.EndHorizontal();
 
-        if (shipFoldouts[zoneIndex][waveIndex])
+        if (shipFoldouts[stageIndex][shipIndex])
         {
             EditorGUI.indentLevel++;
 
-            // 스폰 함선 수
-            int newShipCount = EditorGUILayout.IntSlider("Ship Count", ship.shipCount, 1, 9);
-            if (newShipCount != ship.shipCount) { ship.shipCount = newShipCount; EditorUtility.SetDirty(config); }
+            // // 스폰 함선 수
+            // int newShipCount = EditorGUILayout.IntSlider("Ship Count", ship.shipCount, 1, 9);
+            // if (newShipCount != ship.shipCount) { ship.shipCount = newShipCount; EditorUtility.SetDirty(config); }
 
             // Body Type + Level
             EditorGUILayout.LabelField("Body", EditorStyles.boldLabel);
@@ -597,14 +526,14 @@ public class DataTableZoneEditor : Editor
             if (newBodyIndex != bodyIndex)
             {
                 ship.bodySubType = bodySubTypes[newBodyIndex];
-                EditorUtility.SetDirty(config);
+                EditorUtility.SetDirty(m_dataTableZone);
             }
 
             int newLevel = EditorGUILayout.IntSlider("Body Level", ship.bodyLevel, 1, 10);
             if (newLevel != ship.bodyLevel)
             {
                 ship.bodyLevel = newLevel;
-                EditorUtility.SetDirty(config);
+                EditorUtility.SetDirty(m_dataTableZone);
             }
 
 
@@ -619,6 +548,20 @@ public class DataTableZoneEditor : Editor
             {
                 EditorGUILayout.HelpBox("No module slots found. Click 'Refresh Slots' to load from prefab.", MessageType.Warning);
             }
+
+            EditorGUILayout.Space(5);
+
+            // // 스탯 배율 (웨이브 템플릿별)
+            // var origColor = GUI.backgroundColor;
+            // GUI.backgroundColor = multiplierColor;
+            // EditorGUILayout.BeginVertical("box");
+            // GUI.backgroundColor = origColor;
+            // EditorGUILayout.LabelField("스탯 배율  (1.0 = 플레이어 동일)", EditorStyles.boldLabel);
+            // ship.enemyBodyMultiplier    = EditorGUILayout.Slider("Body    (체력)",            ship.enemyBodyMultiplier,    0.1f, 3.0f);
+            // ship.enemyBeamMultiplier    = EditorGUILayout.Slider("Beam    (공격력·체력)",     ship.enemyBeamMultiplier,    0.1f, 3.0f);
+            // ship.enemyMissileMultiplier = EditorGUILayout.Slider("Missile (공격력·체력)",     ship.enemyMissileMultiplier, 0.1f, 3.0f);
+            // ship.enemyHangerMultiplier  = EditorGUILayout.Slider("Hanger  (함재기 전 스탯)", ship.enemyHangerMultiplier,  0.1f, 3.0f);
+            // EditorGUILayout.EndVertical();
 
             EditorGUI.indentLevel--;
         }
@@ -668,7 +611,7 @@ public class DataTableZoneEditor : Editor
             if (newIndex != currentIndex)
             {
                 slot.moduleSubType = subTypes[newIndex];
-                EditorUtility.SetDirty(config);
+                EditorUtility.SetDirty(m_dataTableZone);
             }
 
             // 둘째 줄: Level — 비어있으면 비활성화
@@ -677,7 +620,7 @@ public class DataTableZoneEditor : Editor
             if (newLevel != slot.moduleLevel)
             {
                 slot.moduleLevel = newLevel;
-                EditorUtility.SetDirty(config);
+                EditorUtility.SetDirty(m_dataTableZone);
             }
             EditorGUI.EndDisabledGroup();
 

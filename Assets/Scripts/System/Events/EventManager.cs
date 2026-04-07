@@ -235,21 +235,6 @@ public static class EventManager
         OnCameraViewportChanged -= callback;
     }
 
-    // Wave Started (1-based currentWave, zoneClearCount)
-    public static event Action<int, int> OnWaveStarted;
-    public static void TriggerWaveStarted(int currentWave, int zoneClearCount)
-    {
-        OnWaveStarted?.Invoke(currentWave, zoneClearCount);
-    }
-    public static void Subscribe_WaveStarted(Action<int, int> callback)
-    {
-        OnWaveStarted += callback;
-    }
-    public static void Unsubscribe_WaveStarted(Action<int, int> callback)
-    {
-        OnWaveStarted -= callback;
-    }
-
     // 플레이어 함대 전멸
     public static event Action OnMyFleetDestroyed;
     public static void Trigger_MyFleetDestroyed()
@@ -265,31 +250,17 @@ public static class EventManager
         OnMyFleetDestroyed -= callback;
     }
 
-    // 존 진입 (zoneName, isFirstClear, totalWaves)
-    public static event Action<string, bool, int> OnZoneEntered;
-    // 존 웨이브 처치 완료 (clearedCount, totalWaves)
-    public static event Action<int, int> OnZoneWaveCleared;
-    public static void TriggerZoneWaveCleared(int clearedCount, int totalWaves)
+    // 존 진입 (zoneName, isFirstClear)
+    public static event Action<string, bool> OnZoneEntered;
+    public static void TriggerZoneEntered(string zoneName, bool isFirstClear)
     {
-        OnZoneWaveCleared?.Invoke(clearedCount, totalWaves);
+        OnZoneEntered?.Invoke(zoneName, isFirstClear);
     }
-    public static void Subscribe_ZoneWaveCleared(Action<int, int> callback)
-    {
-        OnZoneWaveCleared += callback;
-    }
-    public static void Unsubscribe_ZoneWaveCleared(Action<int, int> callback)
-    {
-        OnZoneWaveCleared -= callback;
-    }
-    public static void TriggerZoneEntered(string zoneName, bool isFirstClear, int totalWaves)
-    {
-        OnZoneEntered?.Invoke(zoneName, isFirstClear, totalWaves);
-    }
-    public static void Subscribe_ZoneEntered(Action<string, bool, int> callback)
+    public static void Subscribe_ZoneEntered(Action<string, bool> callback)
     {
         OnZoneEntered += callback;
     }
-    public static void Unsubscribe_ZoneEntered(Action<string, bool, int> callback)
+    public static void Unsubscribe_ZoneEntered(Action<string, bool> callback)
     {
         OnZoneEntered -= callback;
     }

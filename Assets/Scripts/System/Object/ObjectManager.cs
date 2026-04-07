@@ -125,8 +125,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     [HideInInspector] public List<SpaceMineral> m_mineralList = new List<SpaceMineral>();
 
     // Zone 전투 관련
-    private ZoneConfig m_currentZoneConfig;
-    private int m_currentWaveIndex;
+    private ZoneStageConfig m_currentZoneStageConfig;
     private System.Action<bool> m_onZoneBattleComplete;
     private Coroutine m_spawnCoroutine;
 
@@ -191,7 +190,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         {
             var callback = m_onZoneBattleComplete;
             m_onZoneBattleComplete = null;
-            m_currentZoneConfig = null;
+            m_currentZoneStageConfig = null;
             callback?.Invoke(isVictory);
         }
     }
@@ -261,26 +260,24 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
 
 
-    // ZoneConfig 기반 적 스폰 시작
-    public void StartSpawnEnemies(ZoneConfig zoneConfig, System.Action<bool> onComplete)
+    // ZoneConfig 기반 적 함대 스폰 — 모든 템플릿을 한 번에 스폰
+    public void StartSpawnEnemies(ZoneStageConfig zoneStageConfig, System.Action<bool> onComplete)
     {
-        if (zoneConfig == null || zoneConfig.enemyShipConfigs == null || zoneConfig.enemyShipConfigs.Count == 0)
+        if (zoneStageConfig == null || zoneStageConfig.enemyShipConfigs == null || zoneStageConfig.enemyShipConfigs.Count == 0)
         {
             onComplete?.Invoke(true);
             return;
         }
 
-        // 기존 스폰 중이면 중지
         if (m_spawnCoroutine != null)
             StopCoroutine(m_spawnCoroutine);
 
-        m_currentZoneConfig = zoneConfig;
-        m_currentWaveIndex = 0;
+        m_currentZoneStageConfig = zoneStageConfig;
         m_onZoneBattleComplete = onComplete;
-        
-        GameSpeedController.RestoreSpeed(); // 이전 전투 배속 복원
+
+        GameSpeedController.RestoreSpeed();
         if (m_myFleet != null) m_myFleet.SetFleetState(EFleetState.Battle);
-        m_spawnCoroutine = StartCoroutine(SpawnWaves());
+        m_spawnCoroutine = StartCoroutine(SpawnEnemyFleetCoroutine());
     }
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
@@ -328,8 +325,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             return;
         }
 
-        // Zone 전투 중이면 파괴된 적 카운트 증가 + 킬 보상 이벤트 발화 (클리어 체크는 코루틴의 WaitUntil이 담당)
-        if (m_currentZoneConfig != null)
+        // Zone 전투: 모든 적 함대가 전멸하면 클리어 이벤트 발화
+        if (m_currentZoneStageConfig != null && m_enemyFleets.Count == 0)
         {
             EventManager.Trigger_EnemyFleetKilled();
         }
@@ -344,9 +341,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             m_spawnCoroutine = null;
         }
 
-        m_currentZoneConfig = null;
-        m_currentWaveIndex = 0;
-        //m_onZoneBattleComplete = null;
+        m_currentZoneStageConfig = null;
     }
 
     // 모든 적 함대 제거
@@ -411,41 +406,27 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     
 
-    // delayBeforeSpawn 후 웨이브 1개 스폰 — 클리어 판정은 서버가 담당
-    private IEnumerator SpawnWaves()
+    // delayBeforeSpawn 후 모든 템플릿을 한 번에 스폰 — 전멸 시 RemoveEnemyFleet에서 클리어 이벤트 발화
+    private IEnumerator SpawnEnemyFleetCoroutine()
     {
-        if (m_currentZoneConfig.delayBeforeSpawn > 0)
-            yield return new WaitForSeconds(m_currentZoneConfig.delayBeforeSpawn);
+        if (m_currentZoneStageConfig.delayBeforeSpawn > 0)
+            yield return new WaitForSeconds(m_currentZoneStageConfig.delayBeforeSpawn);
 
-        var configs = m_currentZoneConfig.enemyShipConfigs;
-        if (configs != null && configs.Count > 0)
-        {
-            // 웨이브 인덱스가 범위 초과 시 마지막 템플릿 재사용
-            int idx = Mathf.Clamp(m_currentWaveIndex, 0, configs.Count - 1);
-            SpawnEnemyFleetFromTemplate(configs[idx], configs[idx].shipCount);
-        }
-        EventManager.TriggerWaveStarted(m_currentWaveIndex + 1, m_currentZoneConfig.zoneClearCount);
+        var configs = m_currentZoneStageConfig.enemyShipConfigs;
+        
+        if (configs == null || configs.Count == 0) yield break;
+
+        SpawnEnemyFleet(configs);
     }
 
-    // UITabExploration이 서버 응답 후 호출 — 다음 웨이브 스폰 (resetIndex: waveIndex 불일치 복구 시 0 리셋)
-    public void SpawnNextWave(bool resetIndex = false)
+    // 함대 생성
+    private void SpawnEnemyFleet(List<EnemyShipConfig> enemyShipConfigs)
     {
-        if (m_currentZoneConfig == null) return;
-        if (resetIndex == true)
-            m_currentWaveIndex = 0;
-        else
-            m_currentWaveIndex++;
-        m_spawnCoroutine = StartCoroutine(SpawnWaves());
-    }
-
-    // 웨이브 템플릿 1개를 template.shipCount만큼 복제해 적 함대 생성
-    private void SpawnEnemyFleetFromTemplate(EnemyShipConfig template, int shipCount)
-    {
-        if (m_myFleet == null || template == null) return;
-        if (shipCount <= 0) shipCount = template.shipCount;
-
+        if (m_myFleet == null || enemyShipConfigs == null) return;
+        int shipCount = enemyShipConfigs.Count;
+        
         Vector3 spawnPosition = GetEnemySpawnPosition();
-        GameObject fleetObj = new GameObject($"EnemyFleet_{m_currentWaveIndex}");
+        GameObject fleetObj = new GameObject($"EnemyFleet");
         fleetObj.transform.position = spawnPosition;
 
         Vector3 directionToPlayer = m_myFleet.transform.position - spawnPosition;
@@ -458,17 +439,17 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         List<ShipInfo> enemyShips = new List<ShipInfo>();
         for (int i = 0; i < shipCount; i++)
         {
-            enemyShips.Add(CreateShipInfoFromConfig(template, i));
+            enemyShips.Add(CreateShipInfoFromConfig(enemyShipConfigs[i], i));
         }
 
         FleetInfo enemyFleetInfo = new FleetInfo
         {
-            fleetName = $"EnemyFleet_{m_currentWaveIndex}",
+            fleetName = $"EnemyFleet",
             formation = EFormationType.formation_type_linear_horizontal,
             ships = enemyShips
         };
 
-        enemyFleet.InitializeZoneEnemyFleet(enemyFleetInfo, m_currentZoneConfig);
+        enemyFleet.InitializeZoneEnemyFleet(enemyFleetInfo, m_currentZoneStageConfig);
         m_enemyFleets.Add(enemyFleet);
     }
 

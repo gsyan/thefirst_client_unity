@@ -64,15 +64,15 @@ public class SpaceFleet : MonoBehaviour
             StartCoroutine(AutoRepair());
     }
 
-    // Zone 적 전용 — 배율을 먼저 설정 후 기본 초기화 위임
-    public void InitializeZoneEnemyFleet(FleetInfo fleetInfo, ZoneConfig zoneConfig)
+    // Zone 적 전용 — 웨이브 템플릿의 배율을 먼저 설정 후 기본 초기화 위임
+    public void InitializeZoneEnemyFleet(FleetInfo fleetInfo, ZoneStageConfig zoneStageConfig)
     {
-        if (zoneConfig != null)
+        if (zoneStageConfig != null)
         {
-            m_bodyMultiplier    = zoneConfig.enemyBodyMultiplier;
-            m_beamMultiplier    = zoneConfig.enemyBeamMultiplier;
-            m_missileMultiplier = zoneConfig.enemyMissileMultiplier;
-            m_hangerMultiplier  = zoneConfig.enemyHangerMultiplier;
+            m_bodyMultiplier    = zoneStageConfig.enemyBodyMultiplier;
+            m_beamMultiplier    = zoneStageConfig.enemyBeamMultiplier;
+            m_missileMultiplier = zoneStageConfig.enemyMissileMultiplier;
+            m_hangerMultiplier  = zoneStageConfig.enemyHangerMultiplier;
         }
         // Move 상태로 초기화 — 워프 완료 후 Battle로 전환
         InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EFleetState.Move);

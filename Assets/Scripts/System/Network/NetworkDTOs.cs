@@ -419,29 +419,21 @@ public class ZoneCollectResponse
 }
 
 [System.Serializable]
-public class DestroyZoneStageWaveRequest
+public class ClearZoneStageRequest
 {
     public string zoneName;   // 존 이름 (예: "2-5")
-    public int waveIndex;     // 방금 처치한 웨이브 인덱스 (0-based, 서버 검증용)
 }
 
 [System.Serializable]
-public class DestroyZoneStageWaveResponse
+public class ClearZoneStageResponse
 {
-    public CostRemainInfo rewardInfo;   // 킬 즉시 보상
-    public bool isZoneCleared;          // true = 이번 웨이브로 신규 클리어 완료
+    public CostRemainInfo rewardInfo;   // 킬 보상
+    public bool isZoneCleared;          // true = 신규 클리어 완료
     public string clearedZoneName;      // isZoneCleared == true 일 때만 유효
     public string collectDateTime;      // isZoneCleared == true 일 때만 유효
 }
 
-[System.Serializable]
-public class ExitZoneRequest
-{
-    public string zoneName;
-}
 
-[System.Serializable]
-public class ExitZoneResponse { }
 #endregion
 
 #region Heartbeat Data Classes ################################################################################

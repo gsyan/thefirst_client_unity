@@ -1,18 +1,16 @@
 // Zone 데이터 테이블 — 탐사 존별 라운드·보상·자원 수확 설정 ScriptableObject
-// ZoneGroupConfig: 함선개수(x) 그룹 단위로 공유하는 스카이박스 설정
-// enemyShipConfigs: 웨이브 템플릿 리스트 [waveIndex] — 해당 라운드에 shipCount만큼 복제 스폰
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
 // Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 skybox를 공유
 [System.Serializable]
-public class ZoneGroupConfig
+public class ZoneConfig
 {
-    public int shipCount;           // 그룹 키 (0 = 안전구역 Zone-0)
+    public int zoneIndex;          // 그룹 키 (0 = 안전구역 Zone-0, X-Y의 X값)
     public Material skyboxMaterial; // 이 Zone의 스카이박스
-}
 
+}
 // 각 슬롯에 장착할 모듈 설정
 [System.Serializable]
 public class EnemyModuleSlotConfig
@@ -32,38 +30,28 @@ public class EnemyModuleSlotConfig
     }
 }
 
-// 웨이브 1개의 적 함선 템플릿 — shipCount만큼 복제 스폰
+// 웨이브 1개의 적 함선 템플릿 — shipCount만큼 복제 스폰, 배율 포함
 [System.Serializable]
 public class EnemyShipConfig
 {
-    public int shipCount = 1;           // 이 웨이브에서 스폰할 함선 수
-    public EModuleSubType bodySubType = EModuleSubType.body_t1_m1;
-    public int bodyLevel = 1;
+    public int shipIndex;
+    public EModuleSubType bodySubType;
+    public int bodyLevel;
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
 }
 
 // Zone 설정
 [System.Serializable]
-public class ZoneConfig
+public class ZoneStageConfig
 {
     public string zoneName;
     public string zoneDescription;
-    public int shipCount = 1;      // 적 함선 개수
-    public int moduleLevel = 1;    // 적 모듈 레벨
-    // skyboxMaterial은 ZoneGroupConfig로 이동 (Zone 공유)
+    public int zoneIndex = 1;      // 그룹 키 (X-Y의 X, 스카이박스 공유 단위)
 
-    public int zoneClearCount = 10;
     public float delayBeforeSpawn = 3f;
-    // 웨이브별 함선 템플릿 [waveIndex] — SpawnEnemyFleetFromTemplate에서 shipCount만큼 복제
+    // 적 함대를 구성하는 함선 템플릿 목록 — 모든 템플릿이 한 함대로 동시 스폰
     public List<EnemyShipConfig> enemyShipConfigs;
 
-    [Header("적 모듈 타입별 스탯 배율 (1.0 = 플레이어 동일)")]
-
-    [Range(0.1f, 2.0f)] public float enemyBodyMultiplier    = 1.0f;  // 함체 체력
-    [Range(0.1f, 2.0f)] public float enemyBeamMultiplier    = 1.0f;  // 빔 공격력·체력
-    [Range(0.1f, 2.0f)] public float enemyMissileMultiplier = 1.0f;  // 미사일 공격력·체력
-    [Range(0.1f, 2.0f)] public float enemyHangerMultiplier  = 1.0f;  // 함재기 공격력·체력
-    
     [Header("적 함선 킬 보상 (즉시 지급)")]
     public float killRewardMineral = 0f;
     public float killRewardMineralRare = 0f;
@@ -88,90 +76,91 @@ public class ZoneConfig
     public float MineralExoticPerSecond => mineralExoticPerHour / 3600f;
     public float MineralDarkPerSecond => mineralDarkPerHour / 3600f;
 
-
+    [Header("스탯 배율 (1.0 = 플레이어 동일)")]
+    [Range(0.1f, 3.0f)] public float enemyBodyMultiplier    = 1.0f;
+    [Range(0.1f, 3.0f)] public float enemyBeamMultiplier    = 1.0f;
+    [Range(0.1f, 3.0f)] public float enemyMissileMultiplier = 1.0f;
+    [Range(0.1f, 3.0f)] public float enemyHangerMultiplier  = 1.0f;
 }
 
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
 public class DataTableZone : ScriptableObject
 {
     // 함선개수(x) 그룹별 행성 세트 — 같은 그룹의 모든 스테이지가 공유
-    public List<ZoneGroupConfig> zoneGroups = new List<ZoneGroupConfig>();
-    public List<ZoneConfig> zones = new List<ZoneConfig>();
+    public List<ZoneConfig> zoneList = new List<ZoneConfig>();
+    public List<ZoneStageConfig> zoneStageList = new List<ZoneStageConfig>();
 
-    // shipCount로 그룹 설정 조회 (0 = Zone-0 안전구역)
-    public ZoneGroupConfig GetGroupConfig(int shipCount)
+    // groupIndex로 그룹 설정 조회 (0 = Zone-0 안전구역)
+    public ZoneConfig GetZone(int zoneIndex)
     {
-        for (int i = 0; i < zoneGroups.Count; i++)
-        {
-            if (zoneGroups[i].shipCount == shipCount) return zoneGroups[i];
-        }
-        return null;
-    }
-
-    public ZoneConfig GetZone(int index)
-    {
-        if (index < 0 || index >= zones.Count)
+        if (zoneIndex < 0 || zoneIndex >= zoneList.Count)
             return null;
-        return zones[index];
+        return zoneList[zoneIndex];
     }
 
-    public ZoneConfig GetZoneByName(string zoneName)
+    public ZoneStageConfig GetZoneStage(int zoneStageIndex)
+    {
+        if (zoneStageIndex < 0 || zoneStageIndex >= zoneStageList.Count)
+            return null;
+        return zoneStageList[zoneStageIndex];
+    }
+
+    public ZoneStageConfig GetZoneStageByName(string zoneName)
     {
         if (string.IsNullOrEmpty(zoneName)) return null;
-        for (int i = 0; i < zones.Count; i++)
+        for (int i = 0; i < zoneStageList.Count; i++)
         {
-            if (zones[i].zoneName == zoneName)
-                return zones[i];
+            if (zoneStageList[i].zoneName == zoneName)
+                return zoneStageList[i];
         }
         return null;
     }
 
-    public int GetZoneIndex(string zoneName)
+    public int GetZoneStageIndex(string zoneName)
     {
         if (string.IsNullOrEmpty(zoneName)) return -1;
-        for (int i = 0; i < zones.Count; i++)
+        for (int i = 0; i < zoneStageList.Count; i++)
         {
-            if (zones[i].zoneName == zoneName)
+            if (zoneStageList[i].zoneName == zoneName)
                 return i;
         }
         return -1;
     }
 
     // 이름 목록으로 ZoneConfig 반환 (순서 무관, Zone-0 제외)
-    public List<ZoneConfig> GetZonesByNames(List<string> zoneNames)
+    public List<ZoneStageConfig> GetZoneStagesByNames(List<string> zoneNames)
     {
-        var result = new List<ZoneConfig>();
+        var result = new List<ZoneStageConfig>();
         if (zoneNames == null) return result;
         for (int i = 0; i < zoneNames.Count; i++)
         {
-            var zone = GetZoneByName(zoneNames[i]);
+            var zone = GetZoneStageByName(zoneNames[i]);
             if (zone != null) result.Add(zone);
         }
         return result;
     }
 
-    public int ZoneCount => zones.Count;
+    public int ZoneStageCount => zoneStageList.Count;
 
     // 서버용 export (필요한 필드만)
     public string ExportToJson()
     {
         var serverData = new List<object>();
-        foreach (var zone in zones)
+        foreach (var zoneStage in zoneStageList)
         {
             serverData.Add(new
             {
-                zoneName = zone.zoneName,
-                zoneClearCount = zone.zoneClearCount,
-                killRewardMineral = zone.killRewardMineral,
-                killRewardMineralRare = zone.killRewardMineralRare,
-                killRewardMineralExotic = zone.killRewardMineralExotic,
-                killRewardMineralDark = zone.killRewardMineralDark,
-                mineralPerHour = zone.mineralPerHour,
-                mineralRarePerHour = zone.mineralRarePerHour,
-                mineralExoticPerHour = zone.mineralExoticPerHour,
-                mineralDarkPerHour = zone.mineralDarkPerHour
+                zoneName = zoneStage.zoneName,
+                killRewardMineral = zoneStage.killRewardMineral,
+                killRewardMineralRare = zoneStage.killRewardMineralRare,
+                killRewardMineralExotic = zoneStage.killRewardMineralExotic,
+                killRewardMineralDark = zoneStage.killRewardMineralDark,
+                mineralPerHour = zoneStage.mineralPerHour,
+                mineralRarePerHour = zoneStage.mineralRarePerHour,
+                mineralExoticPerHour = zoneStage.mineralExoticPerHour,
+                mineralDarkPerHour = zoneStage.mineralDarkPerHour
             });
         }
-        return JsonConvert.SerializeObject(new { zones = serverData }, Formatting.Indented);
+        return JsonConvert.SerializeObject(new { zoneStages = serverData }, Formatting.Indented);
     }
 }

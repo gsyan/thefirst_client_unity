@@ -585,37 +585,23 @@ public class ApiClient
         return response;
     }
 
-    public async Task<ApiResponse<DestroyZoneStageWaveResponse>> DestroyZoneStageWaveAsync(DestroyZoneStageWaveRequest request)
+    public async Task<ApiResponse<ClearZoneStageResponse>> ClearZoneStageAsync(ClearZoneStageRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<DestroyZoneStageWaveResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ClearZoneStageResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/destroy-wave", "POST");
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/clear-stage", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
         webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(webRequest);
-        return JsonConvert.DeserializeObject<ApiResponse<DestroyZoneStageWaveResponse>>(webRequest.downloadHandler.text);
+        return JsonConvert.DeserializeObject<ApiResponse<ClearZoneStageResponse>>(webRequest.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<ExitZoneResponse>> ExitZoneAsync(ExitZoneRequest request)
-    {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ExitZoneResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
-
-        string json = JsonConvert.SerializeObject(request);
-
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/exit", "POST");
-        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.SetRequestHeader("Content-Type", "application/json");
-        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
-
-        await SendRequestAsync(webRequest);
-        return JsonConvert.DeserializeObject<ApiResponse<ExitZoneResponse>>(webRequest.downloadHandler.text);
-    }
+    
     #endregion
 
     #region Heartbeat API Methods ---------------------------------------------------------------------------------

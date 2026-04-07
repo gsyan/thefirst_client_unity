@@ -754,16 +754,10 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.CollectZoneAsync(request), onComplete));
     }
 
-    public void DestroyZoneStageWave(DestroyZoneStageWaveRequest request, System.Action<ApiResponse<DestroyZoneStageWaveResponse>> onComplete)
+    public void ClearZoneStage(ClearZoneStageRequest request, System.Action<ApiResponse<ClearZoneStageResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.DestroyZoneStageWaveAsync(request), onComplete));
-    }
-
-    public void ExitZone(ExitZoneRequest request)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ExitZoneAsync(request), null));
+        StartCoroutine(RunAsync(() => m_apiClient.ClearZoneStageAsync(request), onComplete));
     }
 
     public void Heartbeat()

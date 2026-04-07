@@ -274,7 +274,7 @@ public class UITabPvp : UITabBase
 
         ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
         if (zoneConfig == null) return;
-        Material safeSkybox = m_datatableZone.GetGroupConfig(0)?.skyboxMaterial;
+        Material safeSkybox = m_datatableZone.GetZone(0).skyboxMaterial;
 
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
