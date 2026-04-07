@@ -78,12 +78,12 @@ public class ModuleBeam : ModuleBase
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
 
-        // Zone 적 함대일 때 체력·공격력에 배율 적용
+        // Zone 적 함선일 때 체력·공격력에 배율 적용
         if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_myFleet.m_beamMultiplier;
-            m_healthMax *= m_myFleet.m_beamMultiplier;
-            m_attack    *= m_myFleet.m_beamMultiplier;
+            m_health    *= m_myShip.m_beamMultiplier;
+            m_healthMax *= m_myShip.m_beamMultiplier;
+            m_attack    *= m_myShip.m_beamMultiplier;
         }
 
         // 무기 서브 타입 초기화

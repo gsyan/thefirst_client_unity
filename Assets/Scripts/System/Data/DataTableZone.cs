@@ -30,7 +30,7 @@ public class EnemyModuleSlotConfig
     }
 }
 
-// 웨이브 1개의 적 함선 템플릿 — shipCount만큼 복제 스폰, 배율 포함
+// 웨이브 1개의 적 함선 템플릿 — 함선별 모듈·스탯 배율 설정
 [System.Serializable]
 public class EnemyShipConfig
 {
@@ -38,13 +38,19 @@ public class EnemyShipConfig
     public EModuleSubType bodySubType;
     public int bodyLevel;
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
+
+    [Header("스탯 배율 (1.0 = 플레이어 동일)")]
+    [Range(0.1f, 3.0f)] public float bodyMultiplier    = 1.0f;
+    [Range(0.1f, 3.0f)] public float beamMultiplier    = 1.0f;
+    [Range(0.1f, 3.0f)] public float missileMultiplier = 1.0f;
+    [Range(0.1f, 3.0f)] public float hangerMultiplier  = 1.0f;
 }
 
 // Zone 설정
 [System.Serializable]
 public class ZoneStageConfig
 {
-    public string zoneName;
+    public string zoneName; // [server]
     public string zoneDescription;
     public int zoneIndex = 1;      // 그룹 키 (X-Y의 X, 스카이박스 공유 단위)
 
@@ -52,17 +58,11 @@ public class ZoneStageConfig
     // 적 함대를 구성하는 함선 템플릿 목록 — 모든 템플릿이 한 함대로 동시 스폰
     public List<EnemyShipConfig> enemyShipConfigs;
 
-    [Header("적 함선 킬 보상 (즉시 지급)")]
-    public float killRewardMineral = 0f;
-    public float killRewardMineralRare = 0f;
-    public float killRewardMineralExotic = 0f;
-    public float killRewardMineralDark = 0f;
-
     [Header("시간당 자원 수확량 (클리어 후)")]
-    public float mineralPerHour = 0f;
-    public float mineralRarePerHour = 0f;
-    public float mineralExoticPerHour = 0f;
-    public float mineralDarkPerHour = 0f;
+    public float mineralPerHour = 0f;       // [server]
+    public float mineralRarePerHour = 0f;   // [server]
+    public float mineralExoticPerHour = 0f; // [server]
+    public float mineralDarkPerHour = 0f;   // [server]
 
     [Header("스카이박스 회전 (스테이지별)")]
     [Range(0f, 360f)] public float skyboxRotation = 0f;
@@ -75,12 +75,7 @@ public class ZoneStageConfig
     public float MineralRarePerSecond => mineralRarePerHour / 3600f;
     public float MineralExoticPerSecond => mineralExoticPerHour / 3600f;
     public float MineralDarkPerSecond => mineralDarkPerHour / 3600f;
-
-    [Header("스탯 배율 (1.0 = 플레이어 동일)")]
-    [Range(0.1f, 3.0f)] public float enemyBodyMultiplier    = 1.0f;
-    [Range(0.1f, 3.0f)] public float enemyBeamMultiplier    = 1.0f;
-    [Range(0.1f, 3.0f)] public float enemyMissileMultiplier = 1.0f;
-    [Range(0.1f, 3.0f)] public float enemyHangerMultiplier  = 1.0f;
+    
 }
 
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
@@ -151,10 +146,6 @@ public class DataTableZone : ScriptableObject
             serverData.Add(new
             {
                 zoneName = zoneStage.zoneName,
-                killRewardMineral = zoneStage.killRewardMineral,
-                killRewardMineralRare = zoneStage.killRewardMineralRare,
-                killRewardMineralExotic = zoneStage.killRewardMineralExotic,
-                killRewardMineralDark = zoneStage.killRewardMineralDark,
                 mineralPerHour = zoneStage.mineralPerHour,
                 mineralRarePerHour = zoneStage.mineralRarePerHour,
                 mineralExoticPerHour = zoneStage.mineralExoticPerHour,

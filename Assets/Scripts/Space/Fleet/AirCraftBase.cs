@@ -43,6 +43,8 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected Coroutine m_lifeCycleCoroutine;
 
     [SerializeField] protected Vector3 m_currentDirection;         // ★ 현재 진행 방향 (normalized, velocity처럼 사용)
+
+    [SerializeField] protected HangerFlightPath m_flightPath;     // 함체 HangerSlot에 정의된 사출/귀환 경로
     
     public virtual void InitializeAirCraft(Transform firePointTransform, ModuleBase target, AircraftInfo aircraftInfo, ModuleHanger moduleHanger, Color color, ModuleBase sourceModuleBase)
     {
@@ -51,6 +53,7 @@ public abstract class AircraftBase : MonoBehaviour
         m_aircraftInfo = aircraftInfo;
         m_moduleHanger = moduleHanger;
         m_sourceModule = sourceModuleBase;
+        m_flightPath = ResolveFlightPath();
 
         //m_aircraftInfo.attackPower = 0f; // test
         //m_aircraftInfo.moveSpeed = 100f; // test
@@ -115,29 +118,54 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual IEnumerator Phase_LaunchStraight()
     {
-        // 사출 시점 firePoint 위치·방향 캡처 (이후 함선 이동/회전과 무관하게 고정)
-        Vector3 launchOrigin = m_firePoint != null ? m_firePoint.position : transform.position;
-        Vector3 launchDir = m_firePoint != null ? m_firePoint.forward : transform.forward;
-        Vector3 targetPos = launchOrigin + launchDir * m_aircraftInfo.airLaunchDist + m_randomOffset;
-        while (true)
-        {
-            Vector3 toTarget = (targetPos - transform.position).normalized;
-            float dotValue = Vector3.Dot(transform.forward, toTarget);
-            if(dotValue < 0.0f)
-                break;
-                        
-            Vector3 avoidanceDir = CalculateAvoidance();
-            Vector3 moveDir = toTarget + avoidanceDir;
-            moveDir.Normalize();
-            transform.position += moveDir * m_aircraftInfo.airSpeed * Time.deltaTime;
-            if (moveDir != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * m_angularSpeedMultiplier * Time.deltaTime);
-            }
+        Transform launchContainer = m_flightPath != null ? m_flightPath.LaunchPath : null;
 
-            
-            yield return null;
+        if (launchContainer != null && launchContainer.childCount > 0)
+        {
+            // 함체에 정의된 사출 경로 WP를 순서대로 통과
+            for (int i = 0; i < launchContainer.childCount; i++)
+            {
+                Transform wp = launchContainer.GetChild(i);
+                while (true)
+                {
+                    Vector3 toWp = (wp.position - transform.position).normalized;
+                    if (Vector3.Dot(transform.forward, toWp) < 0f)
+                        break;
+
+                    Vector3 avoidanceDir = CalculateAvoidance();
+                    Vector3 moveDir = (toWp + avoidanceDir).normalized;
+                    transform.position += moveDir * m_aircraftInfo.airSpeed * Time.deltaTime;
+                    if (moveDir != Vector3.zero)
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(moveDir);
+                        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * m_angularSpeedMultiplier * Time.deltaTime);
+                    }
+                    yield return null;
+                }
+            }
+        }
+        else
+        {
+            // fallback: HangerFlightPath 미설정 시 기존 방식
+            Vector3 launchOrigin = m_firePoint != null ? m_firePoint.position : transform.position;
+            Vector3 launchDir    = m_firePoint != null ? m_firePoint.forward  : transform.forward;
+            Vector3 targetPos    = launchOrigin + launchDir * m_aircraftInfo.airLaunchDist + m_randomOffset;
+            while (true)
+            {
+                Vector3 toTarget = (targetPos - transform.position).normalized;
+                if (Vector3.Dot(transform.forward, toTarget) < 0f)
+                    break;
+
+                Vector3 avoidanceDir = CalculateAvoidance();
+                Vector3 moveDir = (toTarget + avoidanceDir).normalized;
+                transform.position += moveDir * m_aircraftInfo.airSpeed * Time.deltaTime;
+                if (moveDir != Vector3.zero)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(moveDir);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * m_angularSpeedMultiplier * Time.deltaTime);
+                }
+                yield return null;
+            }
         }
 
         m_state = EAircraftState.MoveToTarget;
@@ -389,10 +417,9 @@ public abstract class AircraftBase : MonoBehaviour
         return savedNeighbor;
     }
 
-    // 격납고 출입구 앞 접근 지점(approachPoint)까지 자유 비행, 완료 시 Docking으로 전환
+    // 격납고 출입구 앞 접근 지점까지 ReturnPath WP를 따라 비행, 완료 시 Docking으로 전환
     protected virtual IEnumerator Phase_ReturnToApproach()
     {
-        //Debug.Log("Phase_ReturnToApproach");
         if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null)
         {
             if (TryFindNewHangerAndFirePoint() == false)
@@ -403,31 +430,61 @@ public abstract class AircraftBase : MonoBehaviour
         }
 
         m_currentDirection = transform.forward.normalized;
-        while (true)
-        {
-            yield return null;
 
-            if (m_firePoint == null)
+        Transform returnContainer = m_flightPath != null ? m_flightPath.ReturnPath : null;
+
+        if (returnContainer != null && returnContainer.childCount > 0)
+        {
+            // ReturnPath WP를 순서대로 통과
+            for (int i = 0; i < returnContainer.childCount; i++)
             {
-                if (TryFindNewHangerAndFirePoint() == false)
+                Transform wp = returnContainer.GetChild(i);
+                while (true)
                 {
-                    ReturnToPool();
-                    yield break;
+                    yield return null;
+
+                    if (m_firePoint == null)
+                    {
+                        if (TryFindNewHangerAndFirePoint() == false) { ReturnToPool(); yield break; }
+                        returnContainer = m_flightPath != null ? m_flightPath.ReturnPath : null;
+                        if (returnContainer == null) break;
+                    }
+
+                    Vector3 toWp = (wp.position - transform.position).normalized;
+                    SmoothRotate(toWp, 10f);
+                    transform.position += m_currentDirection * m_aircraftInfo.airSpeed * Time.deltaTime;
+
+                    if (Vector3.Dot(transform.forward, toWp) < 0f)
+                        break;
                 }
             }
 
-            Vector3 approachPoint = m_firePoint.position + m_firePoint.forward * m_aircraftInfo.airLaunchDist;
-            Vector3 toApproach = (approachPoint - transform.position).normalized;
-            SmoothRotate(toApproach, 10f);
-            transform.position += m_currentDirection * m_aircraftInfo.airSpeed * Time.deltaTime;
-
-            // firePoint 기준으로 함재기가 진입 방향(-forward) ±45도 콘 안에 들어오면 Docking 전환
-            Vector3 toDock = (m_firePoint.position - transform.position).normalized;
-            float dot = Vector3.Dot(-m_firePoint.forward, toDock);
-            if (dot >= 0.707f)
+            // 마지막 WP 통과 → Docking 전환
+            m_state = EAircraftState.Docking;
+        }
+        else
+        {
+            // fallback: ReturnPath 미설정 시 기존 방식
+            while (true)
             {
-                m_state = EAircraftState.Docking;
-                yield break;
+                yield return null;
+
+                if (m_firePoint == null)
+                {
+                    if (TryFindNewHangerAndFirePoint() == false) { ReturnToPool(); yield break; }
+                }
+
+                Vector3 approachPoint = m_firePoint.position + m_firePoint.forward * m_aircraftInfo.airLaunchDist;
+                Vector3 toApproach = (approachPoint - transform.position).normalized;
+                SmoothRotate(toApproach, 10f);
+                transform.position += m_currentDirection * m_aircraftInfo.airSpeed * Time.deltaTime;
+
+                Vector3 toDock = (m_firePoint.position - transform.position).normalized;
+                if (Vector3.Dot(-m_firePoint.forward, toDock) >= 0.707f)
+                {
+                    m_state = EAircraftState.Docking;
+                    yield break;
+                }
             }
         }
     }
@@ -463,6 +520,13 @@ public abstract class AircraftBase : MonoBehaviour
         }
     }
 
+    // m_sourceModule(ModuleHanger)의 슬롯(함체)에서 HangerFlightPath를 탐색해 캐시
+    private HangerFlightPath ResolveFlightPath()
+    {
+        if (m_sourceModule == null || m_sourceModule.m_moduleSlot == null) return null;
+        return m_sourceModule.m_moduleSlot.GetComponentInChildren<HangerFlightPath>();
+    }
+
     // Body 교체 후 새로운 ModuleHanger와 firePoint를 찾는 메서드
     private bool TryFindNewHangerAndFirePoint()
     {
@@ -485,6 +549,7 @@ public abstract class AircraftBase : MonoBehaviour
                         m_moduleHanger = newHanger;
                         m_sourceModule = newHanger;
                         m_firePoint = launcher.GetFirePoint();
+                        m_flightPath = ResolveFlightPath();
                         return true;
                     }
                 }

@@ -601,7 +601,22 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<ClearZoneStageResponse>>(webRequest.downloadHandler.text);
     }
 
-    
+    public async Task<ApiResponse<ZoneCheckEverClearedResponse>> CheckEverClearedAsync(ZoneCheckEverClearedRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneCheckEverClearedResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/check-ever-cleared", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<ZoneCheckEverClearedResponse>>(webRequest.downloadHandler.text);
+    }
+
     #endregion
 
     #region Heartbeat API Methods ---------------------------------------------------------------------------------

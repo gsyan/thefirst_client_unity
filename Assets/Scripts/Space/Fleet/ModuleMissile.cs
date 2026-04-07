@@ -84,12 +84,12 @@ public class ModuleMissile : ModuleBase
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
 
-        // Zone 적 함대일 때 체력·공격력에 배율 적용
+        // Zone 적 함선일 때 체력·공격력에 배율 적용
         if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_myFleet.m_missileMultiplier;
-            m_healthMax *= m_myFleet.m_missileMultiplier;
-            m_attack    *= m_myFleet.m_missileMultiplier;
+            m_health    *= m_myShip.m_missileMultiplier;
+            m_healthMax *= m_myShip.m_missileMultiplier;
+            m_attack    *= m_myShip.m_missileMultiplier;
         }
 
         // 부모 바디에 이 무기 등록

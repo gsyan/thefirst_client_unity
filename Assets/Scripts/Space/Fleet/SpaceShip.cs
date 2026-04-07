@@ -34,6 +34,12 @@ public class SpaceShip : MonoBehaviour
     public EShipState m_shipState;
     [HideInInspector] public Outline m_shipOutline;
 
+    // Zone 적 전용 — 함선별 스탯 배율 (InitializeSpaceShip 전에 세팅, 기본값 1.0)
+    public float m_bodyMultiplier    = 1.0f;
+    public float m_beamMultiplier    = 1.0f;
+    public float m_missileMultiplier = 1.0f;
+    public float m_hangerMultiplier  = 1.0f;
+
     private GaugeBars m_gaugeBars;
     public ShieldGrid m_shieldGrid;
 

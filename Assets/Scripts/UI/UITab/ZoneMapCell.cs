@@ -12,8 +12,7 @@ public class ZoneMapCell : MonoBehaviour
     [SerializeField] private TMP_Text m_zoneStageNameText;
     [SerializeField] private TMP_Text m_resourceText;       // 자원 수치 (클리어 시 중앙 표시)
     [SerializeField] private CanvasGroup m_fogCanvasGroup;  // 안개 overlay (alpha로 제어)
-    [SerializeField] private Image m_progressFill;          // 클리어 진행률 (Filled type)
-
+    
     [Header("선택 외곽선")]
     [SerializeField] private Color m_colorSelected = new(1f, 0.8f, 0.2f, 1f);
     [SerializeField] private float m_outlineWidth = 4f;
@@ -44,9 +43,6 @@ public class ZoneMapCell : MonoBehaviour
         // 안개가 클릭을 막지 않도록
         if (m_fogCanvasGroup != null) m_fogCanvasGroup.blocksRaycasts = false;
 
-        // ProgressFill 초기 비활성화 (프리팹 의존 없이 코드로 보장)
-        if (m_progressFill != null) m_progressFill.gameObject.SetActive(false);
-
         SetState(state, false);
     }
 
@@ -64,23 +60,6 @@ public class ZoneMapCell : MonoBehaviour
             m_resourceText.gameObject.SetActive(cleared);
             if (cleared) RefreshResourceText();
         }
-
-        if (m_progressFill != null)
-        {
-            m_progressFill.gameObject.SetActive(state == EZoneState.Current);
-            if (state == EZoneState.Current) ApplyProgressRatio(0f);
-        }
-    }
-
-    private void ApplyProgressRatio(float ratio)
-    {
-        if (m_progressFill == null) return;
-        RectTransform rt = m_progressFill.rectTransform;
-        // Y 앵커는 프리팹 설정 유지, X만 변경
-        rt.anchorMin = new Vector2(0f, rt.anchorMin.y);
-        rt.anchorMax = new Vector2(ratio, rt.anchorMax.y);
-        rt.offsetMin = Vector2.zero;
-        rt.offsetMax = Vector2.zero;
     }
 
     public void SetSelected(bool selected)

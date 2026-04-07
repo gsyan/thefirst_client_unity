@@ -50,12 +50,6 @@ public class SpaceFleet : MonoBehaviour
     // 수리 설정
     public ERepairThreshold m_repairThreshold = ERepairThreshold.Full;
     public ERepairConcurrency m_repairConcurrency = ERepairConcurrency.One;
-
-    // 적 함대 모듈별 스탯 배율 (IsZoneEnemy일 때만 적용, 기본값 1.0)
-    public float m_bodyMultiplier    = 1.0f;
-    public float m_beamMultiplier    = 1.0f;
-    public float m_missileMultiplier = 1.0f;
-    public float m_hangerMultiplier  = 1.0f;
     
     private void Start()
     {
@@ -64,18 +58,37 @@ public class SpaceFleet : MonoBehaviour
             StartCoroutine(AutoRepair());
     }
 
-    // Zone 적 전용 — 웨이브 템플릿의 배율을 먼저 설정 후 기본 초기화 위임
-    public void InitializeZoneEnemyFleet(FleetInfo fleetInfo, ZoneStageConfig zoneStageConfig)
+    // Zone 적 전용 — 함선별 배율을 InitializeSpaceShip 전에 세팅해야 모듈 초기화 시 반영됨
+    public void InitializeZoneEnemyFleet(FleetInfo fleetInfo, List<EnemyShipConfig> enemyShipConfigs)
     {
-        if (zoneStageConfig != null)
+        m_fleetInfo   = fleetInfo;
+        m_fleetSide   = EFleetSide.fleet_side_enemy;
+        m_fleetSource = EFleetSource.fleet_source_zone_data;
+
+        if (fleetInfo.ships != null)
         {
-            m_bodyMultiplier    = zoneStageConfig.enemyBodyMultiplier;
-            m_beamMultiplier    = zoneStageConfig.enemyBeamMultiplier;
-            m_missileMultiplier = zoneStageConfig.enemyMissileMultiplier;
-            m_hangerMultiplier  = zoneStageConfig.enemyHangerMultiplier;
+            for (int i = 0; i < fleetInfo.ships.Count; i++)
+            {
+                var shipInfo = fleetInfo.ships[i];
+                GameObject shipGo = new GameObject(shipInfo.shipName);
+                SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
+
+                // 배율 먼저 세팅 — InitializeSpaceShip 내부 모듈 초기화가 이 값을 참조
+                if (i < enemyShipConfigs.Count)
+                {
+                    spaceShip.m_bodyMultiplier    = enemyShipConfigs[i].bodyMultiplier;
+                    spaceShip.m_beamMultiplier    = enemyShipConfigs[i].beamMultiplier;
+                    spaceShip.m_missileMultiplier = enemyShipConfigs[i].missileMultiplier;
+                    spaceShip.m_hangerMultiplier  = enemyShipConfigs[i].hangerMultiplier;
+                }
+
+                spaceShip.InitializeSpaceShip(this, shipInfo);
+                AddShip(spaceShip, false);
+            }
+            UpdateShipFormation(fleetInfo.formation, false);
         }
-        // Move 상태로 초기화 — 워프 완료 후 Battle로 전환
-        InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EFleetState.Move);
+
+        SetFleetState(EFleetState.Move);
         StartEnemyFleetWarpIn();
     }
 

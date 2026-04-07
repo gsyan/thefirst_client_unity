@@ -109,20 +109,20 @@ public class ModuleHanger : ModuleBase
 
         AutoDetectFleetInfo();
 
-        // Zone 적 함대일 때 격납고 체력·함재기 스탯에 배율 적용
+        // Zone 적 함선일 때 격납고 체력·함재기 스탯에 배율 적용
         if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_myFleet.m_hangerMultiplier;
-            m_healthMax *= m_myFleet.m_hangerMultiplier;
+            m_health    *= m_myShip.m_hangerMultiplier;
+            m_healthMax *= m_myShip.m_hangerMultiplier;
             foreach (var info in m_aircraftPool)
             {
-                info.airHealth      *= m_myFleet.m_hangerMultiplier;
-                info.airHealthMax   *= m_myFleet.m_hangerMultiplier;
-                info.airAttack      *= m_myFleet.m_hangerMultiplier;
-                info.airSpeed       *= m_myFleet.m_hangerMultiplier;
-                info.airAttackRange *= m_myFleet.m_hangerMultiplier;
-                info.airAmmo        = Mathf.Max(1, Mathf.RoundToInt(info.airAmmo    * m_myFleet.m_hangerMultiplier));
-                info.airAmmoMax     = Mathf.Max(1, Mathf.RoundToInt(info.airAmmoMax * m_myFleet.m_hangerMultiplier));
+                info.airHealth      *= m_myShip.m_hangerMultiplier;
+                info.airHealthMax   *= m_myShip.m_hangerMultiplier;
+                info.airAttack      *= m_myShip.m_hangerMultiplier;
+                info.airSpeed       *= m_myShip.m_hangerMultiplier;
+                info.airAttackRange *= m_myShip.m_hangerMultiplier;
+                info.airAmmo        = Mathf.Max(1, Mathf.RoundToInt(info.airAmmo    * m_myShip.m_hangerMultiplier));
+                info.airAmmoMax     = Mathf.Max(1, Mathf.RoundToInt(info.airAmmoMax * m_myShip.m_hangerMultiplier));
             }
         }
 

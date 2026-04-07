@@ -173,7 +173,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public void ForceEndBattle(bool isVictory)
     {
         GameSpeedController.Reset(); // timeScale 및 오디오 피치 복원
-        if (m_myFleet != null) m_myFleet.SetFleetState(EFleetState.None);
+        if (m_myFleet != null)
+            m_myFleet.SetFleetState(EFleetState.None);
         StopEnemySpawning();
         OrderAllAircraftReturn();
         CleanupAllProjectiles();
@@ -449,7 +450,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             ships = enemyShips
         };
 
-        enemyFleet.InitializeZoneEnemyFleet(enemyFleetInfo, m_currentZoneStageConfig);
+        enemyFleet.InitializeZoneEnemyFleet(enemyFleetInfo, enemyShipConfigs);
         m_enemyFleets.Add(enemyFleet);
     }
 

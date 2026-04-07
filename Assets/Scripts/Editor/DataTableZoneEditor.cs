@@ -191,6 +191,14 @@ public class DataTableZoneEditor : Editor
                 }
             }
 
+            float.TryParse(col[14], out float bodyR);
+            float.TryParse(col[15], out float beamR);
+            float.TryParse(col[16], out float missileR);
+            float.TryParse(col[17], out float hangerR);
+            ship.bodyMultiplier    = bodyR;
+            ship.beamMultiplier    = beamR;
+            ship.missileMultiplier = missileR;
+            ship.hangerMultiplier  = hangerR;
             enemyMap[key].Add(ship);
         }
 
@@ -205,8 +213,7 @@ public class DataTableZoneEditor : Editor
             string line = zoneLines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
-            if (col.Length < 11) continue;
-
+            
             if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stage)) continue;
 
             // zone=0 행 → Zone-0 안전지역 (전투 없음)
@@ -221,19 +228,12 @@ public class DataTableZoneEditor : Editor
                 continue;
             }
 
-            float.TryParse(col[2],  out float killM);
-            float.TryParse(col[3],  out float killMR);
-            float.TryParse(col[4],  out float killME);
-            float.TryParse(col[5],  out float killMD);
-            float.TryParse(col[6],  out float hourM);
-            float.TryParse(col[7],  out float hourMR);
-            float.TryParse(col[8],  out float hourME);
-            float.TryParse(col[9],  out float hourMD);
-            float.TryParse(col[10], out float waveTerm);
-            float.TryParse(col[11], out float bodyR);
-            float.TryParse(col[12], out float beamR);
-            float.TryParse(col[13], out float missileR);
-            float.TryParse(col[14], out float hangerR);
+            float.TryParse(col[2],  out float hourM);
+            float.TryParse(col[3],  out float hourMR);
+            float.TryParse(col[4],  out float hourME);
+            float.TryParse(col[5],  out float hourMD);
+            float.TryParse(col[6], out float waveTerm);
+            
 
             enemyMap.TryGetValue((zoneIndex, stage), out var waveTemplates);
 
@@ -243,10 +243,6 @@ public class DataTableZoneEditor : Editor
                 zoneDescription       = $"Zone {zoneIndex}-{stage}",
                 zoneIndex             = zoneIndex,
                 delayBeforeSpawn      = waveTerm > 0 ? waveTerm : 3f,
-                killRewardMineral     = killM,
-                killRewardMineralRare = killMR,
-                killRewardMineralExotic = killME,
-                killRewardMineralDark = killMD,
                 mineralPerHour        = hourM,
                 mineralRarePerHour    = hourMR,
                 mineralExoticPerHour  = hourME,
@@ -417,15 +413,6 @@ public class DataTableZoneEditor : Editor
             zoneStage.zoneDescription = EditorGUILayout.TextField("Description", zoneStage.zoneDescription);
             EditorGUILayout.EndVertical();
 
-            // 킬 보상
-            EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.LabelField("킬 보상", EditorStyles.boldLabel);
-            zoneStage.killRewardMineral = EditorGUILayout.FloatField("Mineral", zoneStage.killRewardMineral);
-            zoneStage.killRewardMineralRare = EditorGUILayout.FloatField("MineralRare", zoneStage.killRewardMineralRare);
-            zoneStage.killRewardMineralExotic = EditorGUILayout.FloatField("MineralExotic", zoneStage.killRewardMineralExotic);
-            zoneStage.killRewardMineralDark = EditorGUILayout.FloatField("MineralDark", zoneStage.killRewardMineralDark);
-            EditorGUILayout.EndVertical();
-
             // 시간당 자원 수확량
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("시간당 자원 수확량 (클리어 후)", EditorStyles.boldLabel);
@@ -551,17 +538,17 @@ public class DataTableZoneEditor : Editor
 
             EditorGUILayout.Space(5);
 
-            // // 스탯 배율 (웨이브 템플릿별)
-            // var origColor = GUI.backgroundColor;
-            // GUI.backgroundColor = multiplierColor;
-            // EditorGUILayout.BeginVertical("box");
-            // GUI.backgroundColor = origColor;
-            // EditorGUILayout.LabelField("스탯 배율  (1.0 = 플레이어 동일)", EditorStyles.boldLabel);
-            // ship.enemyBodyMultiplier    = EditorGUILayout.Slider("Body    (체력)",            ship.enemyBodyMultiplier,    0.1f, 3.0f);
-            // ship.enemyBeamMultiplier    = EditorGUILayout.Slider("Beam    (공격력·체력)",     ship.enemyBeamMultiplier,    0.1f, 3.0f);
-            // ship.enemyMissileMultiplier = EditorGUILayout.Slider("Missile (공격력·체력)",     ship.enemyMissileMultiplier, 0.1f, 3.0f);
-            // ship.enemyHangerMultiplier  = EditorGUILayout.Slider("Hanger  (함재기 전 스탯)", ship.enemyHangerMultiplier,  0.1f, 3.0f);
-            // EditorGUILayout.EndVertical();
+            // 스탯 배율 (함선별)
+            var origColor = GUI.backgroundColor;
+            GUI.backgroundColor = multiplierColor;
+            EditorGUILayout.BeginVertical("box");
+            GUI.backgroundColor = origColor;
+            EditorGUILayout.LabelField("스탯 배율  (1.0 = 플레이어 동일)", EditorStyles.boldLabel);
+            ship.bodyMultiplier    = EditorGUILayout.Slider("Body    (체력)",            ship.bodyMultiplier,    0.1f, 3.0f);
+            ship.beamMultiplier    = EditorGUILayout.Slider("Beam    (공격력·체력)",     ship.beamMultiplier,    0.1f, 3.0f);
+            ship.missileMultiplier = EditorGUILayout.Slider("Missile (공격력·체력)",     ship.missileMultiplier, 0.1f, 3.0f);
+            ship.hangerMultiplier  = EditorGUILayout.Slider("Hanger  (함재기 전 스탯)", ship.hangerMultiplier,  0.1f, 3.0f);
+            EditorGUILayout.EndVertical();
 
             EditorGUI.indentLevel--;
         }

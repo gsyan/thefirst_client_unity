@@ -107,11 +107,11 @@ public class ModuleBody : ModuleBase
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
 
-        // Zone 적 함대일 때 체력에 배율 적용
+        // Zone 적 함선일 때 체력에 배율 적용
         if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_myFleet.m_bodyMultiplier;
-            m_healthMax *= m_myFleet.m_bodyMultiplier;
+            m_health    *= m_myShip.m_bodyMultiplier;
+            m_healthMax *= m_myShip.m_bodyMultiplier;
         }
 
         CollectAndSortModuleSlots();
@@ -124,12 +124,13 @@ public class ModuleBody : ModuleBase
         CreateMissingModules(moduleBodyInfo);
     }
 
-    // 슬롯에 실제 모듈(Placeholder 제외)이 있는지 확인
+    // 슬롯에 실제 모듈(Beam/Missile/Hanger)이 배치된 경우만 true
     private bool HasRealModule(ModuleSlot slot)
     {
         foreach (Transform child in slot.transform)
         {
-            if (child.GetComponent<ModulePlaceholder>() == null)
+            ModuleBase module = child.GetComponent<ModuleBase>();
+            if (module != null && module is ModulePlaceholder == false)
                 return true;
         }
         return false;

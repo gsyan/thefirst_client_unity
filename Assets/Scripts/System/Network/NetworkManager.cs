@@ -760,6 +760,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClearZoneStageAsync(request), onComplete));
     }
 
+    public void CheckEverCleared(ZoneCheckEverClearedRequest request, System.Action<ApiResponse<ZoneCheckEverClearedResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.CheckEverClearedAsync(request), onComplete));
+    }
+
     public void Heartbeat()
     {
         if (m_bConnected == false) return;

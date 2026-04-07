@@ -42,7 +42,7 @@ public class UITabExploration : UITabBase
     private float m_totalMineralExoticPerHour;
     private float m_totalMineralDarkPerHour;
     private ZoneStageConfig m_currentZoneStage;
-    private ZoneStageConfig m_selectedZone;      // 현재 그룹에서 선택된 존
+    private ZoneStageConfig m_selectedZoneStage;      // 현재 그룹에서 선택된 존
     private ZoneMapCell m_currentZoneCell;
     private readonly Dictionary<string, ZoneMapCell> m_zoneStageCells = new Dictionary<string, ZoneMapCell>();
     private readonly Dictionary<int, ZoneStageConfig> m_selectedZoneStagePerGroup = new(); // 그룹별 선택 존 기억
@@ -179,7 +179,7 @@ private void SetupGroupTabs()
                 state = EZoneState.Locked;
 
             ZoneStageConfig captured = zoneStage;
-            cell.Initialize(captured, () => OnTryZoneClicked(captured), state);
+            cell.Initialize(captured, () => OnTryZoneStageClicked(captured), state);
             go.SetActive(false); // ShowGroupMap에서 표시
             m_zoneStageCells[zoneStage.zoneName] = cell;
         }
@@ -201,7 +201,7 @@ private void SetupGroupTabs()
         if (m_currentZoneStage != null && ParseZoneGroup(m_currentZoneStage.zoneName) == zoneIndex)
         {
             m_selectedZoneStagePerGroup[zoneIndex] = m_currentZoneStage;
-            ApplyZoneSelection(m_currentZoneStage);
+            ApplyZoneStageSelection(m_currentZoneStage);
             return;
         }
 
@@ -217,7 +217,7 @@ private void SetupGroupTabs()
             : GetDefaultZoneStageForZone(zoneIndex);
 
         if (toSelect != null)
-            ApplyZoneSelection(toSelect);
+            ApplyZoneStageSelection(toSelect);
     }
 
     public override void OnTabActivated()
@@ -368,22 +368,26 @@ private void SetupGroupTabs()
     }
 
     // 셀 클릭 — 선택 및 디테일 표시만 (입장 안함)
-    private void OnTryZoneClicked(ZoneStageConfig zoneStage)
+    private void OnTryZoneStageClicked(ZoneStageConfig zoneStage)
     {
         // 이전 선택 셀 outline 해제
-        if (m_selectedZone != null && m_zoneStageCells.TryGetValue(m_selectedZone.zoneName, out ZoneMapCell prevCell))
+        if (m_selectedZoneStage != null && m_zoneStageCells.TryGetValue(m_selectedZoneStage.zoneName, out ZoneMapCell prevCell))
             prevCell.SetSelected(false);
 
         m_selectedZoneStagePerGroup[m_selectedZoneIndex] = zoneStage;
-        ApplyZoneSelection(zoneStage);
+        ApplyZoneStageSelection(zoneStage);
     }
 
-    private void ApplyZoneSelection(ZoneStageConfig zoneStage)
+    private void ApplyZoneStageSelection(ZoneStageConfig zoneStage)
     {
-        m_selectedZone = zoneStage;
+        m_selectedZoneStage = zoneStage;
         if (m_zoneStageCells.TryGetValue(zoneStage.zoneName, out ZoneMapCell cell))
             cell.SetSelected(true);
         RefreshZoneStageDetailText(zoneStage);
+
+        // 클리어된 존(isRestored=false)은 입장 버튼 비활성화
+        if (m_zoneTryButton != null)
+            m_zoneTryButton.interactable = IsAlreadyCleared(zoneStage) == false;
     }
 
     // 그룹 내 기본 선택: 미클리어 최고 스테이지, 전부 클리어 시 최고 스테이지
@@ -422,16 +426,9 @@ private void SetupGroupTabs()
     // 존 입장 버튼 클릭 — 선택된 존으로 입장 시도
     private void OnZoneTryButtonClicked()
     {
-        if (m_selectedZone == null) return;
+        if (m_selectedZoneStage == null) return;
         if (m_enterZoneState == EEnterZoneState.warp) return;
-        if (m_enterZoneState == EEnterZoneState.zone && m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZone.zoneName) return;
-
-        int requiredShips = ParseZoneGroup(m_selectedZone.zoneName);
-        if (requiredShips > 0 && m_myFleet.m_ships.Count < requiredShips)
-        {
-            ShowResultMessage(LocalizationManager.Instance.Get("zone_insufficient_ships"), 3f);
-            return;
-        }
+        if (m_enterZoneState == EEnterZoneState.zone && m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZoneStage.zoneName) return;
 
         if (m_enterZoneState == EEnterZoneState.zone)
         {
@@ -442,12 +439,12 @@ private void SetupGroupTabs()
             ObjectManager.Instance.RemoveAllEnemyFleets();
         }
 
-        ZoneStageConfig zoneStage = m_currentZoneStage;
+        ZoneStageConfig zoneStage = m_selectedZoneStage;
         UIManager.Instance.ShowConfirmPopup(
             zoneStage.zoneName,
             LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
             null, null,
-            onConfirm: () => TryEnterZoneWithAd(zoneStage)
+            onConfirm: () => CheckEverClearedThenEnter(zoneStage)
         );
     }
 
@@ -469,10 +466,6 @@ private void SetupGroupTabs()
             if (value <= 0f) return;
             sb.AppendLine($"<sprite name=\"{icon}\"> {CommonUtility.FormatBigNumber(value)}/h");
         }
-        AppendKill("IconMineralMini",  zoneStage.killRewardMineral);
-        AppendKill("IconMineralRMini", zoneStage.killRewardMineralRare);
-        AppendKill("IconMineralEMini", zoneStage.killRewardMineralExotic);
-        AppendKill("IconMineralDMini", zoneStage.killRewardMineralDark);
         AppendRate("IconMineralMini",  zoneStage.mineralPerHour);
         AppendRate("IconMineralRMini", zoneStage.mineralRarePerHour);
         AppendRate("IconMineralEMini", zoneStage.mineralExoticPerHour);
@@ -480,14 +473,27 @@ private void SetupGroupTabs()
         m_zoneDetailText.text = sb.ToString().TrimEnd();
     }
 
-    private void TryEnterZoneWithAd(ZoneStageConfig zonestage)
+    // 서버에 클리어 이력 조회 후 결과에 따라 광고 여부 결정
+    private void CheckEverClearedThenEnter(ZoneStageConfig zoneStage)
+    {
+        var request = new ZoneCheckEverClearedRequest { zoneName = zoneStage.zoneName };
+        NetworkManager.Instance.CheckEverCleared(request, response =>
+        {
+            if (response.errorCode == 0 && response.data.everCleared == true)
+                EnterZoneStage(zoneStage);
+            else
+                TryEnterZoneStageWithAd(zoneStage);
+        });
+    }
+
+    private void TryEnterZoneStageWithAd(ZoneStageConfig zonestage)
     {
 #if UNITY_EDITOR
-        EnterZone(zonestage);
+        EnterZoneStage(zonestage);
 #else
         if (AdManager.s_devSkipAd == true)
         {
-            EnterZone(zonestage);
+            EnterZoneStage(zonestage);
             return;
         }
 
@@ -500,12 +506,12 @@ private void SetupGroupTabs()
             {
                 if (result == EAdResult.Rewarded)
                 {
-                    EnterZone(zonestage);
+                    EnterZoneStage(zonestage);
                 }
                 else if (result == EAdResult.Failed)
                 {
                     ShowResultMessage("[광고] 광고 오류로 입장합니다");
-                    EnterZone(zonestage);
+                    EnterZoneStage(zonestage);
                 }
                 else if (result == EAdResult.UserClosed)
                 {
@@ -519,12 +525,12 @@ private void SetupGroupTabs()
             if (adInstanceNull == false)
                 AdManager.Instance.RequestLoad();
             ShowResultMessage("[광고] 광고 미준비 상태로 입장합니다");
-            EnterZone(zonestage);
+            EnterZoneStage(zonestage);
         }
 #endif
     }
 
-    private void EnterZone(ZoneStageConfig zoneStage)
+    private void EnterZoneStage(ZoneStageConfig zoneStage)
     {
         SetEnterZoneState(EEnterZoneState.warp);
         var zone = m_datatableZone.GetZone(zoneStage.zoneIndex);
@@ -600,6 +606,7 @@ private void SetupGroupTabs()
     {
         if (response.errorCode != 0)
         {
+            Debug.LogWarning($"[Zone] ClearZoneStage 에러: {ErrorCodeMapping.GetMessage(response.errorCode)} ({response.errorCode})");
             ReturnToSafeZone();
             return;
         }
@@ -630,10 +637,50 @@ private void SetupGroupTabs()
 
             UpdateZoneInfo();
             CacheCurrentZoneCell();
+            SelectNextZoneStage(newlyCleared);
         }
 
         // 클리어 후 자동 안전지역 텔레포트
         ReturnToSafeZone();
+    }
+
+    // 클리어한 존의 다음 스테이지를 m_selectedZoneStagePerGroup에 저장
+    private void SelectNextZoneStage(string clearedZoneName)
+    {
+        int group = ParseZoneGroup(clearedZoneName);
+        int stage = ParseZoneStage(clearedZoneName);
+
+        ZoneStageConfig nextStage = null;
+        for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
+        {
+            ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
+            if (zs == null) continue;
+            if (ParseZoneGroup(zs.zoneName) == group && ParseZoneStage(zs.zoneName) == stage + 1)
+            {
+                nextStage = zs;
+                break;
+            }
+        }
+
+        // 같은 그룹 내 다음 스테이지 없으면 다음 그룹 첫 스테이지
+        if (nextStage == null)
+        {
+            int nextGroup = group + 1;
+            for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
+            {
+                ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
+                if (zs != null && ParseZoneGroup(zs.zoneName) == nextGroup)
+                {
+                    nextStage = zs;
+                    break;
+                }
+            }
+            if (nextStage != null)
+                m_selectedZoneIndex = nextGroup;
+        }
+
+        if (nextStage == null) return;
+        m_selectedZoneStagePerGroup[ParseZoneGroup(nextStage.zoneName)] = nextStage;
     }
 
     private void ReturnToSafeZone()
@@ -664,6 +711,9 @@ private void SetupGroupTabs()
                 m_currentZoneCell = null;
             }
             SetEnterZoneState(EEnterZoneState.safe);
+            m_myFleet.SetFleetState(EFleetState.None); // 전투 상태 해제 → 미사일 커버 닫힘
+            UpdateGroupTabVisual();
+            ShowGroupMap(m_selectedZoneIndex);
 
             if (m_isFleetWiped)
             {

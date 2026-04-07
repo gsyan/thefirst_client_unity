@@ -81,8 +81,19 @@ zone 7-X~    : MD 필드 존재, 현재 값 0 (미사용)
 
 ### 존 입장 조건
 - 구현 완료: zone X-Y 진입 시 함선 X척 이상 필요
-  - 클라: OnTryZoneClicked에서 ParseZoneRequiredShips로 체크 → 부족 시 메시지 표시
   - 서버: clearZone에서 activeFleet의 ship count 검증 → ZONE_CLEAR_FAIL_INSUFFICIENT_SHIPS
+- 구현 완료: 클리어된 존(isRestored=false)은 재입장 불가
+  - 클라: 선택 시 Enter 버튼 비활성화 (ApplyZoneStageSelection)
+  - 서버: clearZoneStage에서 이중 차단 → ZONE_ALREADY_CLEARED(111303)
+
+### 적 수복 시스템 — 구현 완료
+- 대상: zone 2 이상의 클리어된 스테이지
+- 주기: 24시간마다 클리어된 zone 2+ 스테이지 중 랜덤 1개가 비클리어(isRestored=true) 상태로 전환
+- 타이머 세팅: zone 2+ 최초 클리어 시 `zone_meta.enemy_restore_time` = now
+- 수복 체크: 접속 시 `CharacterService.getCharacterInfoDto()`에서 서버 처리 후 반환
+- 랭킹 보장: Redis 점수는 `cleared_zone` 전체(isRestored 포함) max 기준 → 수복 후에도 최고 기록 유지
+- 수복된 존은 재클리어 가능 → 케이스2 처리 (isRestored=false 복구, 클리어 보상 없음)
+- DB 구조: `cleared_zone.is_restored` + `cleared_zone.restored_at` (관리용) + `zone_meta` 테이블
 
 ### 광고(리워드) 존 입장 원칙
 - 존 입장 시 리워드 광고를 시청하는 것이 기본 흐름

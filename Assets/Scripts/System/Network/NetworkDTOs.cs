@@ -433,6 +433,17 @@ public class ClearZoneStageResponse
     public string collectDateTime;      // isZoneCleared == true 일 때만 유효
 }
 
+[System.Serializable]
+public class ZoneCheckEverClearedRequest
+{
+    public string zoneName;  // 클리어 이력 조회할 존 이름 (예: "2-5")
+}
+
+[System.Serializable]
+public class ZoneCheckEverClearedResponse
+{
+    public bool everCleared;  // true = 한 번이라도 클리어한 적 있음 (isRestored 무관)
+}
 
 #endregion
 
