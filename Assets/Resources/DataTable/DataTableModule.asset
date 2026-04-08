@@ -13289,7 +13289,7 @@ MonoBehaviour:
       airAttack: 10
       airAttackRange: 4
       airAttackCool: 4
-      airSpeed: 10
+      airSpeed: 5
       airAmmo: 10
       airDetectRadius: 2
       airAvoidRadius: 2
