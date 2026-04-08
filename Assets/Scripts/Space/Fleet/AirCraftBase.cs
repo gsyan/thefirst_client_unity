@@ -42,6 +42,9 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected Vector3 m_currentDirection;         // ★ 현재 진행 방향 (normalized, velocity처럼 사용)
 
     [SerializeField] protected HangerFlightPath m_flightPath;     // 함체 HangerSlot에 정의된 사출/귀환 경로
+
+    [SerializeField] protected Transform[] m_firePointBeamList;
+    [SerializeField] protected Transform[] m_firePointMissileList;
     
     public virtual void InitializeAirCraft(Transform firePointTransform, ModuleBase target, AircraftInfo aircraftInfo, ModuleHanger moduleHanger, Color color, ModuleBase sourceModuleBase)
     {

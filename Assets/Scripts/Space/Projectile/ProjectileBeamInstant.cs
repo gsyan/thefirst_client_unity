@@ -32,9 +32,9 @@ public class ProjectileBeamInstant : ProjectileBase
     }
 
     public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage,
-                                              ModuleData moduleData, Color color, ModuleBase sourceModuleBase)
+                                              ModuleData moduleData, Color color, ModuleBase sourceModuleBase, Vector3 initialDirection)
     {
-        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase);
+        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection);
 
         m_uvTime = Random.Range(0f, 100f);
 

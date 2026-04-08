@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6529970621643671318}
   - component: {fileID: 72292740101445287}
   - component: {fileID: 1791466959139912408}
+  - component: {fileID: 6012690154806080439}
   m_Layer: 0
   m_Name: BurstRight
   m_TagString: Untagged
@@ -90,6 +91,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6012690154806080439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814654448680304363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0858ff131624914cb2f39b5825fc1bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BurstNozzle
 --- !u!1 &3320501927089806159
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +114,7 @@ GameObject:
   - component: {fileID: 7900762753941709490}
   - component: {fileID: 3907696960660697859}
   - component: {fileID: 3451632834810863484}
+  - component: {fileID: 1225223090902553010}
   m_Layer: 0
   m_Name: BurstUp
   m_TagString: Untagged
@@ -180,6 +194,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1225223090902553010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3320501927089806159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0858ff131624914cb2f39b5825fc1bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BurstNozzle
 --- !u!1 &3811834469385311067
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,6 +307,7 @@ GameObject:
   - component: {fileID: 464027688484114518}
   - component: {fileID: 6768706601434104295}
   - component: {fileID: 4914274516095888792}
+  - component: {fileID: 4148627241439082488}
   m_Layer: 0
   m_Name: BurstDown
   m_TagString: Untagged
@@ -360,6 +387,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4148627241439082488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5026405916425038251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0858ff131624914cb2f39b5825fc1bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BurstNozzle
 --- !u!1 &8245935007800375645
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,6 +410,7 @@ GameObject:
   - component: {fileID: 3593482205265068192}
   - component: {fileID: 7656494802956701969}
   - component: {fileID: 8330833701976931694}
+  - component: {fileID: 8071674711699800337}
   m_Layer: 0
   m_Name: BurstLeft
   m_TagString: Untagged
@@ -450,6 +490,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8071674711699800337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245935007800375645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0858ff131624914cb2f39b5825fc1bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BurstNozzle
 --- !u!1 &8494355853903263280
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,6 +512,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3789071250557114362}
   - component: {fileID: -3404183073599902465}
+  - component: {fileID: 1101851170485672799}
   m_Layer: 0
   m_Name: ProjectileMissileSmall
   m_TagString: Untagged
@@ -501,10 +554,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_burstTail: {fileID: 3811834469385311067}
-  m_burstUp: {fileID: 3320501927089806159}
-  m_burstDown: {fileID: 5026405916425038251}
-  m_burstLeft: {fileID: 8245935007800375645}
-  m_burstRight: {fileID: 1814654448680304363}
+  m_burstUp: {fileID: 1225223090902553010}
+  m_burstDown: {fileID: 4148627241439082488}
+  m_burstLeft: {fileID: 8071674711699800337}
+  m_burstRight: {fileID: 6012690154806080439}
+--- !u!54 &1101851170485672799
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8494355853903263280}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 10
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1001 &5018971639325204546
 PrefabInstance:
   m_ObjectHideFlags: 0

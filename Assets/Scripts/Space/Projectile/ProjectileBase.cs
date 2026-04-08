@@ -12,7 +12,7 @@ public abstract class ProjectileBase : MonoBehaviour
     protected SpaceShip m_sourceShip = null;
 
     public virtual void InitializeProjectile(Transform firePointTransform, ModuleBase targetTransform, float damage, ModuleData moduleData,
-                          Color color, ModuleBase sourceModuleBase)
+                          Color color, ModuleBase sourceModuleBase, Vector3 initialDirection)
     {
         m_firePointTransform = firePointTransform;
         m_target = targetTransform;

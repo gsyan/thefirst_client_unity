@@ -55,9 +55,9 @@ public class ProjectileBeam : ProjectileBase
     }
 
     public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
-                          Color color, ModuleBase sourceModuleBase)
+                          Color color, ModuleBase sourceModuleBase, Vector3 initialDirection)
     {
-        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase);
+        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection);
         
         m_beamHeadPos = m_firePointTransform.position;
         m_beamTailPos = m_firePointTransform.position;

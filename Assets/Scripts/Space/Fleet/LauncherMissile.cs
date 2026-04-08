@@ -54,7 +54,8 @@ public class LauncherMissile : LauncherBase
         missile.transform.rotation = m_firePoint.rotation;
         missile.SetPoolName(m_missilePoolName);
 
-        missile.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.black, sourceModuleBase);
+        // 함선 발사대: 발사구 위쪽 방향으로 콜드런치
+        missile.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.black, sourceModuleBase, m_firePoint.forward);
     }
 
 }

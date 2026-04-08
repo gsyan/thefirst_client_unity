@@ -89,17 +89,18 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         else
             Debug.LogError("effectMissileHitPrefab not found at Resources/Prefabs/Effect/EffectMissileHit");
 
-        // EffectBase effectShipExplosionPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectShipExplosion");
-        // if (effectShipExplosionPrefab != null)
-        //     m_poolManager.CreatePool(EPoolName.EFFECT_SHIP_EXPLOSION, effectShipExplosionPrefab, 3, 10);
-        // else
-        //     Debug.LogError("effectShipExplosionPrefab not found at Resources/Prefabs/Effect/EffectShipExplosion");
-
         EffectBase effectExplosionShipPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectExplosionShip");
         if (effectExplosionShipPrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_EXPLOSION_SHIP, effectExplosionShipPrefab, 3, 10);
         else
             Debug.LogError("EffectExplosionShip not found at Resources/Prefabs/Effect/EffectExplosionShip");
+
+        EffectBase effectExplosionMissileSmallPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectExplosionMissileSmall");
+        if (effectExplosionMissileSmallPrefab != null)
+            m_poolManager.CreatePool(EPoolName.EFFECT_EXPLOSION_MISSILE_SMALL, effectExplosionMissileSmallPrefab, 3, 10);
+        else
+            Debug.LogError("EffectExplosionShip not found at Resources/Prefabs/Effect/EffectExplosionShip");
+
 
         EffectBase effectWarpSpeedLinesPrefab = Resources.Load<EffectBase>("Prefabs/Effect/WarpSpeedLines");
         if (effectWarpSpeedLinesPrefab != null)

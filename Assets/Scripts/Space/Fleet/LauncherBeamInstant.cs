@@ -42,6 +42,6 @@ public class LauncherBeamInstant : LauncherBase
         if (beam == null) yield break;
 
         beam.transform.position = m_firePoint.position;
-        beam.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.white, sourceModuleBase);
+        beam.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.white, sourceModuleBase, m_firePoint.forward);
     }
 }
