@@ -45,7 +45,10 @@ public abstract class AircraftBase : MonoBehaviour
 
     [SerializeField] protected Transform[] m_firePointBeamList;
     [SerializeField] protected Transform[] m_firePointMissileList;
-    
+
+    protected ModuleData m_moduleData;
+    protected EPoolName m_missilePoolName = EPoolName.PROJECTILE_MISSILE_SMALL;
+
     public virtual void InitializeAirCraft(Transform firePointTransform, ModuleBase target, AircraftInfo aircraftInfo, ModuleHanger moduleHanger, Color color, ModuleBase sourceModuleBase)
     {
         m_firePoint = firePointTransform;
@@ -54,6 +57,8 @@ public abstract class AircraftBase : MonoBehaviour
         m_moduleHanger = moduleHanger;
         m_sourceModule = sourceModuleBase;
         m_flightPath = ResolveFlightPath();
+        // 미사일 발사 전용 — projectileSpeed만 사용 (함재기 속도 * 2)
+        m_moduleData = new ModuleData { projectileSpeed = aircraftInfo.airSpeed * 2f };
 
         //m_aircraftInfo.attackPower = 0f; // test
         //m_aircraftInfo.moveSpeed = 100f; // test
@@ -100,9 +105,6 @@ public abstract class AircraftBase : MonoBehaviour
                 case EAircraftState.AttackShip:
                     yield return Phase_AttackShip();
                     break;
-                // case EAircraftState.Reposition:
-                //     yield return Phase_Reposition();
-                //     break;
                 case EAircraftState.ReturnToApproach:
                     yield return Phase_ReturnToApproach();
                     break;
@@ -535,15 +537,17 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual void PerformAttack()
     {
-        if (m_targetModule == null) return;
+        if (m_targetModule == null || m_moduleData == null) return;
 
-        SpaceShip targetShip = m_targetModule.GetSpaceShip();
-        if (targetShip != null)
-        {
-            targetShip.TakeDamage(m_aircraftInfo.airAttack);
-            m_aircraftInfo.airAmmo--;
-            m_lastAttackTime = Time.time;
-        }
+        ProjectileMissile missile = ObjectManager.Instance.m_poolManager.Get<ProjectileMissile>(m_missilePoolName);
+        if (missile == null) return;
+
+        missile.transform.SetPositionAndRotation(m_firePointMissileList[0].position, m_firePointMissileList[0].rotation);
+        missile.SetPoolName(m_missilePoolName);
+        missile.InitializeProjectile(m_firePointMissileList[0], m_targetModule, m_aircraftInfo.airAttack, m_moduleData, Color.black, m_sourceModule, -m_firePointMissileList[0].up);
+
+        m_aircraftInfo.airAmmo--;
+        m_lastAttackTime = Time.time;
     }
     public virtual void TakeDamage(float damage)
     {

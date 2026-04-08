@@ -23,7 +23,7 @@ public class ProjectileMissile : ProjectileBase
     private const float COLD_LAUNCH_DOT_THRESHOLD = 0.85f;
     private const float BURST_TAIL_DOT_THRESHOLD = 0.95f;
 
-    private ModuleData m_moduleData;
+    private float m_missileSpeed;
     private float m_initialFlightDuration;
     private EPoolName m_poolName;
     private Vector3 m_prevPosition;
@@ -47,7 +47,7 @@ public class ProjectileMissile : ProjectileBase
     public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData, Color color, ModuleBase sourceModuleBase, Vector3 initialDirection)
     {
         base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection);
-        m_moduleData = moduleData;
+        m_missileSpeed = moduleData.projectileSpeed;
         m_lifeTime = 0.0f;
         m_prevPosition = transform.position;
         m_initialFlightDuration = Random.Range(0.5f, 0.6f);
@@ -159,7 +159,7 @@ public class ProjectileMissile : ProjectileBase
 
         if (m_burstTail.activeSelf == true)
         {
-            Vector3 desiredVelocity = toTarget * m_moduleData.projectileSpeed;
+            Vector3 desiredVelocity = toTarget * m_missileSpeed;
             m_rb.linearVelocity = Vector3.Lerp(m_rb.linearVelocity, desiredVelocity, HOMING_TURN_RATE * Time.deltaTime);
         }
 
