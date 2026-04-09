@@ -9,7 +9,7 @@ public class PoolManager
     private Transform m_poolRoot;
     private MonoBehaviour m_owner;
 
-    public void Initialize(MonoBehaviour owner)
+    public void InitializePoolManager(MonoBehaviour owner)
     {
         m_owner = owner;
         GameObject poolRootObj = new GameObject("PoolRoot");
@@ -113,109 +113,128 @@ public class PoolManager
         return -1;
     }
 
-    public ParticleSystem GetParticleSystem_Play_AutoReturn(EPoolName poolName, Vector3 position)
-    {
-        ParticleSystem ps = Get<ParticleSystem>(poolName);
-        if (ps == null) return null;
-        ps.transform.position = position;
-        ps.Play();
-        m_owner.StartCoroutine(AutoReturnParticle(poolName, ps));
-        return ps;
-    }
+    // // duration 후 자동 반환
+    // public EffectBase SpawnEffect_SetPosition(EPoolName poolName, Vector3 position)
+    // {
+    //     EffectBase effect = Get<EffectBase>(poolName);
+    //     if (effect == null) return null;
+    //     effect.transform.position = position;
+    //     effect.PlayEffect();
+    //     // 여기
 
-    private IEnumerator AutoReturnParticle(EPoolName poolName, ParticleSystem ps)
-    {
-        yield return new WaitForSeconds(ps.main.duration);
+    //     return effect;
+    // }
 
-        if (ps == null || ps.gameObject == null)
-        {
-            Debug.LogWarning($"[PoolManager] ParticleSystem was destroyed during playback for pool: {poolName}");
-            yield break;
-        }
+    // public void ReturnEffect(EPoolName poolName, EffectBase effect)
+    // {
+    //     if (effect == null) return;        
+    //     effect.ReturnEffect();
+    // }
 
-        ps.Stop();
-        Return(poolName, ps);
-    }
+    // public EffectBase SpawnEffect_SetPosition_AutoReturn(EPoolName poolName, Vector3 position)
+    // {
+    //     EffectBase effect = Get<EffectBase>(poolName);
+    //     if (effect == null) return null;
+    //     effect.transform.position = position;
+    //     effect.PlayEffect();
 
-    public ParticleSystem GetParticleSystem_Play_AutoReturn(EPoolName poolName, Transform parent)
-    {
-        ParticleSystem ps = Get<ParticleSystem>(poolName);
-        if (ps == null) return null;
+    //     if (effect.GetComponent<ParticleSystem>().main.loop != true)
+    //         m_owner.StartCoroutine(AutoReturnEffect(poolName, effect));
 
-        Transform originalParent = ps.transform.parent;
-        ps.transform.SetParent(parent);
-        ps.transform.localPosition = Vector3.zero;
-        ps.Play();
-        m_owner.StartCoroutine(AutoReturnParticleWithParent(poolName, ps, originalParent));
-        return ps;
-    }
+    //     return effect;
+    // }
+    // private IEnumerator AutoReturnEffect(EPoolName poolName, ParticleSystem ps)
+    // {
+    //     yield return new WaitForSeconds(ps.main.duration);
 
-    private IEnumerator AutoReturnParticleWithParent(EPoolName poolName, ParticleSystem ps, Transform originalParent)
-    {
-        yield return new WaitForSeconds(ps.main.duration);
+    //     if (ps == null || ps.gameObject == null)
+    //     {
+    //         Debug.LogWarning($"[PoolManager] ParticleSystem was destroyed during playback for pool: {poolName}");
+    //         yield break;
+    //     }
 
-        if (ps == null || ps.gameObject == null)
-        {
-            Debug.LogWarning($"[PoolManager] ParticleSystem was destroyed during playback for pool: {poolName}");
-            yield break;
-        }
+    //     ps.Stop();
+    //     Return(poolName, ps);
+    // }
 
-        ps.Stop();
-        ps.transform.SetParent(originalParent);
-        Return(poolName, ps);
-    }
+    // public ParticleSystem SpawnEffect_SetParent_AutoReturn(EPoolName poolName, Transform parent)
+    // {
+    //     ParticleSystem ps = Get<ParticleSystem>(poolName);
+    //     if (ps == null) return null;
 
-    public EffectBase GetEffect_Play_AutoReturn(EPoolName poolName, Vector3 position)
-    {
-        EffectBase effect = Get<EffectBase>(poolName);
-        if (effect == null) return null;
-        effect.transform.position = position;
-        effect.Play();
-        m_owner.StartCoroutine(AutoReturnEffect(poolName, effect));
-        return effect;
-    }
+    //     Transform originalParent = ps.transform.parent;
+    //     ps.transform.SetParent(parent);
+    //     ps.transform.localPosition = Vector3.zero;
+    //     ps.Play();
+    //     m_owner.StartCoroutine(AutoReturnEffectOriginParent(poolName, ps, originalParent));
+    //     return ps;
+    // }
+    // private IEnumerator AutoReturnEffectOriginParent(EPoolName poolName, ParticleSystem ps, Transform originalParent)
+    // {
+    //     yield return new WaitForSeconds(ps.main.duration);
 
-    private IEnumerator AutoReturnEffect(EPoolName poolName, EffectBase effect)
-    {
-        float ddd = effect.GetParticleSystem().main.duration;
-        yield return new WaitForSeconds(effect.GetParticleSystem().main.duration);
+    //     if (ps == null || ps.gameObject == null)
+    //     {
+    //         Debug.LogWarning($"[PoolManager] ParticleSystem was destroyed during playback for pool: {poolName}");
+    //         yield break;
+    //     }
 
-        if (effect == null || effect.gameObject == null)
-        {
-            Debug.LogWarning($"[PoolManager] EffectBase was destroyed during playback for pool: {poolName}");
-            yield break;
-        }
+    //     ps.Stop();
+    //     ps.transform.SetParent(originalParent);
+    //     Return(poolName, ps);
+    // }
 
-        effect.Stop();
-        Return(poolName, effect);
-    }
+    // public EffectBase GetEffect_Play_AutoReturn(EPoolName poolName, Vector3 position)
+    // {
+    //     EffectBase effect = Get<EffectBase>(poolName);
+    //     if (effect == null) return null;
+    //     effect.transform.position = position;
+    //     effect.PlayEffect();
+    //     m_owner.StartCoroutine(AutoReturnEffect(poolName, effect));
+    //     return effect;
+    // }
 
-    public EffectBase GetEffect_Play_AutoReturn(EPoolName poolName, Transform parent)
-    {
-        EffectBase effect = Get<EffectBase>(poolName);
-        if (effect == null) return null;
+    // private IEnumerator AutoReturnEffect(EPoolName poolName, EffectBase effect)
+    // {
+    //     float ddd = effect.GetParticleSystem().main.duration;
+    //     yield return new WaitForSeconds(effect.GetParticleSystem().main.duration);
 
-        Transform originalParent = effect.transform.parent;
-        effect.transform.SetParent(parent);
-        effect.transform.localPosition = Vector3.zero;
-        effect.Play();
-        m_owner.StartCoroutine(AutoReturnEffectWithParent(poolName, effect, originalParent));
-        return effect;
-    }
+    //     if (effect == null || effect.gameObject == null)
+    //     {
+    //         Debug.LogWarning($"[PoolManager] EffectBase was destroyed during playback for pool: {poolName}");
+    //         yield break;
+    //     }
 
-    private IEnumerator AutoReturnEffectWithParent(EPoolName poolName, EffectBase effect, Transform originalParent)
-    {
-        yield return new WaitForSeconds(effect.GetParticleSystem().main.duration);
+    //     effect.StopEffect();
+    //     Return(poolName, effect);
+    // }
 
-        if (effect == null || effect.gameObject == null)
-        {
-            Debug.LogWarning($"[PoolManager] EffectBase was destroyed during playback for pool: {poolName}");
-            yield break;
-        }
+    // public EffectBase GetEffect_Play_AutoReturn(EPoolName poolName, Transform parent)
+    // {
+    //     EffectBase effect = Get<EffectBase>(poolName);
+    //     if (effect == null) return null;
 
-        effect.Stop();
-        effect.transform.SetParent(originalParent);
-        Return(poolName, effect);
-    }
+    //     Transform originalParent = effect.transform.parent;
+    //     effect.transform.SetParent(parent);
+    //     effect.transform.localPosition = Vector3.zero;
+    //     effect.PlayEffect();
+    //     m_owner.StartCoroutine(AutoReturnEffectWithParent(poolName, effect, originalParent));
+    //     return effect;
+    // }
+
+    // private IEnumerator AutoReturnEffectWithParent(EPoolName poolName, EffectBase effect, Transform originalParent)
+    // {
+    //     yield return new WaitForSeconds(effect.GetParticleSystem().main.duration);
+
+    //     if (effect == null || effect.gameObject == null)
+    //     {
+    //         Debug.LogWarning($"[PoolManager] EffectBase was destroyed during playback for pool: {poolName}");
+    //         yield break;
+    //     }
+
+    //     effect.StopEffect();
+    //     effect.transform.SetParent(originalParent);
+    //     Return(poolName, effect);
+    // }
 
 }

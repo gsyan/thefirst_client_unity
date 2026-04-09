@@ -26,7 +26,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private void InitializePools()
     {
-        m_poolManager.Initialize(this);
+        m_poolManager.InitializePoolManager(this);
 
         ProjectileBeam projectileBeamPrefab = Resources.Load<ProjectileBeam>("Prefabs/Projectile/ProjectileBeam");
         if (projectileBeamPrefab != null)
@@ -59,29 +59,18 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             Debug.LogError("ProjectileMissileLarge not found at Resources/Prefabs/Projectile/ProjectileMissileLarge");
 
 
+        EffectBase effectPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectBeamHead");
+        if (effectPrefab == null) Debug.LogError("Not found at Resources/Prefabs/Effect/EffectBeamHead");
+        m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_HEAD, effectPrefab, 5, 20);
 
+        effectPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectBeamHit");
+        if (effectPrefab == null) Debug.LogError("Not found at Resources/Prefabs/Effect/EffectBeamHit");
+        m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_HIT, effectPrefab, 5, 20);
 
-
-        ParticleSystem effectBeamMuzzlePrefab = Resources.Load<ParticleSystem>("Prefabs/Effect/EffectBeamMuzzle");
-        if (effectBeamMuzzlePrefab != null)
-            m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_MUZZLE, effectBeamMuzzlePrefab, 5, 20);
-        else
-            Debug.LogError("EffectBeamMuzzlePrefab not found at Resources/Prefabs/Effect/EffectBeamMuzzle");
-
-
-
-
-        EffectBase effectBeamHeadPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectBeamHead");
-        if (effectBeamHeadPrefab != null)
-            m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_HEAD, effectBeamHeadPrefab, 5, 20);
-        else
-            Debug.LogError("EffectBeamHeadPrefab not found at Resources/Prefabs/Effect/EffectBeamHead");
-
-        EffectBase effectBeamHitPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectBeamHit");
-        if (effectBeamHitPrefab != null)
-            m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_HIT, effectBeamHitPrefab, 5, 20);
-        else
-            Debug.LogError("EffectHitBeamPrefab not found at Resources/Prefabs/Effect/EffectBeamHit");
+        effectPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectBeamMuzzle");
+        if (effectPrefab == null) Debug.LogError("Not found at Resources/Prefabs/Effect/EffectBeamMuzzle");
+        m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_MUZZLE, effectPrefab, 5, 20);
+        
 
         EffectBase effectMissileHitPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectMissileHit");
         if (effectMissileHitPrefab != null)

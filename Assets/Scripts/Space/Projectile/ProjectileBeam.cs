@@ -7,12 +7,14 @@ public class ProjectileBeam : ProjectileBase
     [SerializeField] private float m_beamWidth = 0.1f;
     [SerializeField] private float m_beamSpeed = 20f;
     
-
     [SerializeField] private Color m_beamColor = Color.cyan;
     [SerializeField] private float m_uvScrollSpeed = 2f;
     [SerializeField] private ParticleSystem m_scatterParticle; // 빔 소멸 시 흩어지는 파티클
     [SerializeField] private int m_scatterParticleCount = 20; // 흩어지는 파티클 개수
+
     private EffectBase m_headEffect;
+    private EffectBase m_muzzleEffect;
+    private EffectBase m_hitEffect;
 
     
     private Vector3 m_direction;
@@ -93,8 +95,15 @@ public class ProjectileBeam : ProjectileBase
         if (m_headEffect == null)
         {
             m_headEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_BEAM_HEAD);
-            m_headEffect.Play();
             m_headEffect.transform.position = m_firePointTransform.position;
+            m_headEffect.PlayEffect();
+        }
+        
+        if (m_muzzleEffect == null)
+        {
+            m_muzzleEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_BEAM_MUZZLE);    
+            m_muzzleEffect.transform.position = m_firePointTransform.position;
+            m_muzzleEffect.PlayEffect();
         }
         
         if (m_lifeCycleCoroutine != null)
@@ -129,7 +138,7 @@ public class ProjectileBeam : ProjectileBase
                 if (myFleet != null && targetFleet != null && myFleet == targetFleet)
                     hitTarget = null; // 아군이면 무시
             }
-            finalHitPoint = hit.point;
+            finalHitPoint = hit.point;   
         }
 
         // 1단계: 빔 연장 (빠르게 목표까지) - 시각적으로 타겟 위치까지 도달
@@ -166,12 +175,14 @@ public class ProjectileBeam : ProjectileBase
             yield return null;
         }
 
-        // 2단계: 히트 처리
-        if (hitTarget != null)
-        {
+        // 2단계: 데미지 처리
+        if (hitTarget != null)        
             hitTarget.TakeDamage(m_damage);
-            //ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(EPoolName.EFFECT_BEAM_HIT, finalHitPoint);
-        }
+        
+        if( m_hitEffect == null)
+            m_hitEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_BEAM_HIT);
+            m_hitEffect.transform.position = finalHitPoint;
+
 
         // 3단계: 흩어지며 소멸 (TakeDamage→전멸→CleanupAllProjectiles 동기 체인으로 비활성화될 수 있음)
         if (!gameObject.activeInHierarchy) yield break;
@@ -181,13 +192,6 @@ public class ProjectileBeam : ProjectileBase
     // 빔이 흩어지며 사라지는 코루틴
     private IEnumerator BeamScatterAndReturn()
     {
-        // 헤드 이펙트 먼저 제거
-        if (m_headEffect != null)
-        {
-            m_headEffect.ReturnToPool_Effect();
-            m_headEffect = null;
-        }
-
         // 1단계: 히트 후 빔 유지 (잠시 머무름)
         float holdTimer = 0f;
         while (holdTimer < m_beamHoldTime)
@@ -203,8 +207,21 @@ public class ProjectileBeam : ProjectileBase
         // LineRenderer 비활성화
         m_lineRenderer.enabled = false;
 
+        if (m_muzzleEffect != null)
+        {
+            m_muzzleEffect.ReturnEffect();
+            m_muzzleEffect = null;
+        }
+
+        if (m_hitEffect != null)
+        {
+            m_hitEffect.ReturnEffect();
+            m_hitEffect = null;    
+        }
+
         // 파티클이 완전히 사라질 때까지 대기
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
+
 
         ReturnToPool();
     }
@@ -307,8 +324,14 @@ public class ProjectileBeam : ProjectileBase
 
         if (m_headEffect != null)
         {
-            m_headEffect.ReturnToPool_Effect();
+            m_headEffect.ReturnEffect();
             m_headEffect = null;
+        }
+
+        if (m_muzzleEffect != null)
+        {
+            m_muzzleEffect.ReturnEffect();
+            m_muzzleEffect = null;
         }
 
         if (m_scatterParticle != null)

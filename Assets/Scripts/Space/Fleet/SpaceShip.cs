@@ -201,9 +201,20 @@ public class SpaceShip : MonoBehaviour
 
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
-
-        if (m_spaceShipStatsCur.health <= 0.0f)
-            OnSpaceShipDestroyed();
+        
+        if (IsAlive() == true) return;
+        // 코루틴 중지
+        StopAllCoroutines();        
+        // SpaceFleet에서 자신을 제거
+        SpaceFleet parentFleet = GetComponentInParent<SpaceFleet>();
+        if (parentFleet != null)
+            parentFleet.RemoveShip(this);        
+        // 폭발 이펙트 생성
+        EffectBase effect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_EXPLOSION_SHIP);
+        effect.transform.position = transform.position;
+        effect.PlayEffect();
+        // 파괴 처리
+        Destroy(gameObject);
     }
 
     // 함선이 살아있는지 확인
@@ -255,33 +266,6 @@ public class SpaceShip : MonoBehaviour
     {
         m_spaceShipStatsOrg = GetShipCapabilityProfile(true);
         m_spaceShipStatsCur = GetShipCapabilityProfile(false);
-    }
-
-    // ModuleBody에서 호출되는 파괴 체크 메서드
-    public void CheckForDestruction()
-    {
-        if (IsAlive() == true) return;
-
-        // SpaceFleet에서 자신을 제거
-        SpaceFleet parentFleet = GetComponentInParent<SpaceFleet>();
-        if (parentFleet != null)
-            parentFleet.RemoveShip(this);
-
-        OnSpaceShipDestroyed();
-        Destroy(gameObject);
-    }
-
-    // 함선 파괴 시 호출
-    virtual protected void OnSpaceShipDestroyed()
-    {
-        // 코루틴 중지
-        StopAllCoroutines();
-
-        // 폭발 이펙트 생성 (풀에서 가져와서 재생 후 자동 반환)
-        ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(
-            EPoolName.EFFECT_EXPLOSION_SHIP,
-            transform.position
-        );
     }
 
     // 인덱스로 바디 찾기

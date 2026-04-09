@@ -105,16 +105,8 @@ public class ProjectileMissile : ProjectileBase
         if (s_raycastMask == 0)
             s_raycastMask = ~LayerMask.GetMask("Shield");
 
-#if UNITY_EDITOR
-        Debug.DrawRay(m_prevPosition, moveVec, Color.red, 0.5f);
-#endif
-
         if (Physics.Raycast(m_prevPosition, moveVec.normalized, out RaycastHit hit, moveVec.magnitude, s_raycastMask))
         {
-#if UNITY_EDITOR
-            Debug.DrawRay(m_prevPosition, moveVec.normalized * hit.distance, Color.yellow, 1f);
-            Debug.DrawLine(hit.point, hit.point + hit.normal * 0.3f, Color.cyan, 1f);
-#endif
             SpaceShip hitShip = hit.collider.GetComponentInParent<SpaceShip>();
             if (hitShip != null && (m_sourceShip == null || hitShip.m_myFleet != m_sourceShip.m_myFleet))
             {
@@ -223,7 +215,9 @@ public class ProjectileMissile : ProjectileBase
         if (showHitEffect && gameObject.activeInHierarchy)
         {
             Vector3 effectPos = hitPosition == default ? transform.position : hitPosition;
-            ObjectManager.Instance.m_poolManager.GetEffect_Play_AutoReturn(EPoolName.EFFECT_EXPLOSION_MISSILE_SMALL, effectPos);
+            EffectBase effect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_EXPLOSION_MISSILE_SMALL);
+            effect.transform.position = effectPos;
+            effect.PlayEffect();
         }
 
         ObjectManager.Instance.m_poolManager.Return(m_poolName, this);

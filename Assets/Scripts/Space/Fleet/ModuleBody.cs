@@ -486,11 +486,6 @@ public class ModuleBody : ModuleBase
                         module.gameObject.SetActive(false);
                 }
             }
-
-            // 상위 SpaceShip에 자신의 파괴를 알림
-            SpaceShip parentShip = GetComponentInParent<SpaceShip>();
-            if (parentShip != null)
-                parentShip.CheckForDestruction();
         }
     }
 

@@ -124,8 +124,8 @@ public class WarpEffectShip : MonoBehaviour
     {
         if (m_speedLineEffect == null) return;
 
-        m_speedLineEffect.Stop();
-        m_speedLineEffect.ReturnToPool_Effect();
+        m_speedLineEffect.StopEffect();
+        m_speedLineEffect.ReturnEffect();
         m_speedLineEffect = null;
     }
 
@@ -234,7 +234,7 @@ public class WarpEffectShip : MonoBehaviour
 
             GetSpeedLineFromPool();
             if (m_speedLineEffect != null)
-                m_speedLineEffect.Play();
+                m_speedLineEffect.PlayEffect();
         }
         else
         {
