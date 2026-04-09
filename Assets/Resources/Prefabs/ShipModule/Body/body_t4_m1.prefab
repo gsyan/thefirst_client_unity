@@ -927,6 +927,8 @@ MonoBehaviour:
   m_beams: []
   m_missiles: []
   m_hangers: []
+  m_cameraMinZoom: 6
+  m_cameraMaxZoom: 22
 --- !u!114 &8408283221782546455
 MonoBehaviour:
   m_ObjectHideFlags: 0

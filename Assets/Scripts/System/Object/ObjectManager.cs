@@ -126,9 +126,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
     {
-        DataManager.Instance.RestoreCurrentCharacterInfo();
-        DataManager.Instance.RestoreCurrentFleetInfo();
-
         SpawnFleet();
 
         NetworkManager.Instance.OnChangeScene();
@@ -377,6 +374,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private void SpawnFleet()
     {
+        // 서버에서 받은 함대 정보가 없으면 스폰하지 않음
+        if (DataManager.Instance.m_currentFleetInfo == null) return;
+
         GameObject fleetObj = new GameObject("MyFleet");
         m_myFleet = fleetObj.AddComponent<SpaceFleet>();
         m_myFleet.InitializeSpaceFleet(DataManager.Instance.m_currentFleetInfo);
@@ -386,6 +386,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         // 카메라가 함대를 타겟으로 설정
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+
+        // 기함을 초기 선택 상태로 설정 (줌 범위 적용 및 UI 초기화)
+        SpaceShip flagship = m_myFleet.GetFlagship();
+        if (flagship != null)
+            EventManager.Trigger_SpaceShipSelected(flagship);
     }
 
     // 워프 완료 시점에 호출 — 아군 함대를 존별 지정 위치로 텔레포트
@@ -703,7 +708,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (character != null)
         {
             character.UpdateMineral(character.m_characterInfo.mineral + mineralAmount);
-            DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
         }
 
         m_mineralList.Remove(mineral);

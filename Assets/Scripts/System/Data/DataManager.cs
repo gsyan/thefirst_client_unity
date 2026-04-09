@@ -1,7 +1,5 @@
 // 게임 전반의 런타임 데이터(캐릭터, 함대, 계정 상태, 데이터 테이블)를 관리하는 싱글톤
-using System;
 using UnityEngine;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
 public class DataManager : Singleton<DataManager>
@@ -12,8 +10,6 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableModule();
         LoadDataTableModuleResearch();
         LoadDataTableConfig();
-        LoadCharacterInfoFromPlayerPrefs();
-        LoadFleetDataFromPlayerPrefs();
     }
     #endregion
 
@@ -25,70 +21,13 @@ public class DataManager : Singleton<DataManager>
     private const string CHARACTER_DATA_KEY = "CurrentCharacterData";
     public Character m_currentCharacter;
 
+    // 서버에서 받은 캐릭터 정보 설정 — 로컬 저장 없음
     public void SetCharacterInfo(CharacterInfo characterInfo)
     {
         if (m_currentCharacter == null)
             m_currentCharacter = new Character(characterInfo);
-        
+
         m_currentCharacter.UpdateCharacterInfo(characterInfo);
-
-        SaveCharacterInfoToPlayerPrefs();
-    }
-
-    public void RestoreCurrentCharacterInfo()
-    {
-        if (m_currentCharacter == null)
-        {
-            LoadCharacterInfoFromPlayerPrefs();
-            if (m_currentCharacter == null)
-            {
-                var defaultCharacterInfo = new CharacterInfo
-                {
-                    characterId = 1,
-                    characterName = "DefaultCharacter"
-                    , mineral = 0
-                    , mineralRare = 0
-                    , mineralExotic = 0
-                    , mineralDark = 0                                        
-                };
-                m_currentCharacter = new Character(defaultCharacterInfo);
-                SaveCharacterInfoToPlayerPrefs();
-            }
-        }
-    }
-
-    public void SaveCharacterInfoToPlayerPrefs()
-    {
-        if (m_currentCharacter != null)
-        {
-            string json = JsonConvert.SerializeObject(m_currentCharacter.GetInfo());
-            PlayerPrefs.SetString(CHARACTER_DATA_KEY, json);
-            PlayerPrefs.Save();
-        }
-        else
-        {
-            PlayerPrefs.DeleteKey(CHARACTER_DATA_KEY);
-            PlayerPrefs.Save();
-        }
-    }
-
-    public void LoadCharacterInfoFromPlayerPrefs()
-    {
-        if (PlayerPrefs.HasKey(CHARACTER_DATA_KEY))
-        {
-            string json = PlayerPrefs.GetString(CHARACTER_DATA_KEY);
-            try
-            {
-                var characterInfo = JsonConvert.DeserializeObject<CharacterInfo>(json);
-                m_currentCharacter = new Character(characterInfo);
-            }
-            // bk: checked)
-            catch (Exception e)
-            {
-                Debug.LogError($"Failed to load character data from PlayerPrefs: {e.Message}");
-                m_currentCharacter = null;
-            }
-        }
     }
 
     public void ClearCharacterData()
@@ -103,97 +42,10 @@ public class DataManager : Singleton<DataManager>
     private const string FLEET_DATA_KEY = "CurrentFleetData";
     public FleetInfo m_currentFleetInfo;
 
+    // 서버에서 받은 함대 정보 설정 — 로컬 저장 없음
     public void SetFleetData(FleetInfo fleetInfo)
     {
         m_currentFleetInfo = fleetInfo;
-        SaveFleetInfoToPlayerPrefs();
-    }
-
-    public void RestoreCurrentFleetInfo()
-    {
-        if (m_currentFleetInfo != null) return;
-        LoadFleetDataFromPlayerPrefs();
-        if (m_currentFleetInfo != null) return;
-        var defaultFleetInfo = new FleetInfo
-        {
-            id = 0,
-            fleetName = "DefaultFleet",
-            description = "Default Fleet",
-            isActive = true,
-            formation = EFormationType.formation_type_linear_horizontal,
-            ships = new List<ShipInfo>
-            {
-                new ShipInfo
-                {
-                    id = 0,
-                    fleetId = 0,
-                    shipName = "DefaultShip",
-                    positionIndex = 0,
-                    description = "Default Ship",
-                    bodies = new List<ModuleBodyInfo>
-                    {
-                        new ModuleBodyInfo
-                        {
-                            moduleType = EModuleType.body,
-                            moduleSubType = EModuleSubType.body_t1_m1,
-                            moduleLevel = 1,
-                            bodyIndex = 0,
-                            beams = new List<ModuleInfo>
-                            {
-                                new ModuleInfo
-                                {
-                                    moduleType = EModuleType.beam,
-                                    moduleSubType = EModuleSubType.beam_t1_m1,
-                                    moduleLevel = 1,
-                                    bodyIndex = 0,
-                                    slotIndex = 0
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        };
-        m_currentFleetInfo = defaultFleetInfo;
-        SaveFleetInfoToPlayerPrefs();
-    }
-
-    private void SaveFleetInfoToPlayerPrefs()
-    {
-        if (m_currentFleetInfo != null)
-        {
-            string json = JsonConvert.SerializeObject(m_currentFleetInfo);
-            PlayerPrefs.SetString(FLEET_DATA_KEY, json);
-            PlayerPrefs.Save();
-            Debug.Log("Fleet data saved to PlayerPrefs");
-        }
-        else
-        {
-            PlayerPrefs.DeleteKey(FLEET_DATA_KEY);
-            PlayerPrefs.Save();
-            Debug.Log("Fleet data cleared from PlayerPrefs");
-        }
-    }
-
-    public void LoadFleetDataFromPlayerPrefs()
-    {
-        if (PlayerPrefs.HasKey(FLEET_DATA_KEY))
-        {
-            string json = PlayerPrefs.GetString(FLEET_DATA_KEY);
-            try
-            {
-                m_currentFleetInfo = JsonConvert.DeserializeObject<FleetInfo>(json);
-            }
-            // bk: checked)
-            catch (Exception e)
-            {
-                Debug.LogError($"Failed to load fleet data from PlayerPrefs: {e.Message}");
-                Debug.LogWarning("Clearing outdated fleet data from PlayerPrefs");
-                PlayerPrefs.DeleteKey(FLEET_DATA_KEY);
-                PlayerPrefs.Save();
-                m_currentFleetInfo = null;
-            }
-        }
     }
 
     public void ClearFleetData()
@@ -201,7 +53,6 @@ public class DataManager : Singleton<DataManager>
         m_currentFleetInfo = null;
         PlayerPrefs.DeleteKey(FLEET_DATA_KEY);
         PlayerPrefs.Save();
-        Debug.Log("Fleet data cleared");
     }
 
     public ShipInfo GetShipAtPosition(int positionIndex)

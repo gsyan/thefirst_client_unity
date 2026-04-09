@@ -95,8 +95,7 @@ public class SpaceFleet : MonoBehaviour
     // 적 함대 스폰 시 fleet 오브젝트를 기함 크기 기준 오프셋만큼 뒤에서 시작, 진형 유지하며 전진
     public void StartEnemyFleetWarpIn()
     {
-        SpaceShip flagship = m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
-        if (flagship == null && m_ships.Count > 0) flagship = m_ships[0];
+        SpaceShip flagship = GetFlagship();
         if (flagship == null) return;
 
         // 기함 z 크기 * 플레이어 스폰과 동일한 배율로 뒤 오프셋
@@ -269,6 +268,14 @@ public class SpaceFleet : MonoBehaviour
         return ship.FindModule(bodyIndex, moduleType, slotIndex);
     }
 
+    // 기함 반환 (positionIndex == 0, 없으면 첫 번째 함선)
+    public SpaceShip GetFlagship()
+    {
+        SpaceShip flagship = m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
+        if (flagship == null && m_ships.Count > 0) flagship = m_ships[0];
+        return flagship;
+    }
+
     // 살아있는 첫 번째 함선 반환
     public SpaceShip GetFirstAliveShip()
     {
@@ -307,7 +314,7 @@ public class SpaceFleet : MonoBehaviour
         foreach (var s in validShips)
             boundsCache[s] = s.CalculateFormationBounds();
 
-        SpaceShip flagship = validShips.Find(s => s.m_shipInfo.positionIndex == 0);
+        SpaceShip flagship = GetFlagship();
 
         var preset = FormationPresetDB.Get(formationType);
         if (preset == null)

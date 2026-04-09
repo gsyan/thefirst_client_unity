@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-// 카메라 뷰포트 및 중심점 타겟
+// 카메라 뷰포트, 중심점 타겟, 함선 크기 기반 줌 범위 자동 적용
 public enum ECameraFocusTarget
 {
     camera_focus_my_fleet,      // 우리 함대
@@ -20,15 +20,15 @@ public class CameraController : MonoSingleton<CameraController>
     public Camera m_targetCamera;
     private float m_rotationSpeed = 0.1f;
     private float m_zoomSpeed = 3f;
-    private float m_minZoom = 4f;
-    private float m_maxZoom = 40f; // 카메라 줌
+    [SerializeField] private float m_minZoom = 4f;
+    [SerializeField] private float m_maxZoom = 40f; // 카메라 줌
 
     // Current camera state
     private Transform m_currentTarget; // (Optional) 움직이는 타겟을 따라가기 위한 Transform
     private Transform m_currentTargetBackup; // (Optional) 움직이는 타겟을 따라가기 위한 Transform
     private Vector3 m_targetPosition; // 카메라가 바라보는 목표 위치
     private Vector3 m_interpolatedTargetPosition; // 부드럽게 보간된 타겟 위치
-    private float m_currentZoom;
+    [SerializeField] private float m_currentZoom;
     public float CurrentZoom => m_currentZoom;
     private float m_currentRotationY = 200f;
     private float m_currentRotationX = 30f;
@@ -54,6 +54,9 @@ public class CameraController : MonoSingleton<CameraController>
     private const int m_layerShield = 13;
     private LayerMask m_layerMaskShield = 1 << m_layerShield;
 
+    // 현재 줌 범위를 적용한 대상 함선
+    private SpaceShip m_zoomRangeSourceShip = null;
+
     protected override bool ShouldDontDestroyOnLoad => false;
 
     protected override void OnInitialize()
@@ -65,9 +68,49 @@ public class CameraController : MonoSingleton<CameraController>
             if (m_targetCamera == null)
                 m_targetCamera = FindFirstObjectByType<Camera>();
         }
-        
+
         m_currentZoom = (m_minZoom + m_maxZoom) / 2f;
         EnhancedTouchSupport.Enable();
+
+        EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelectedForZoom);
+        EventManager.Subscribe_ShipBodyChanged(OnShipBodyChangedForZoom);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_SpaceShipSelected(OnSpaceShipSelectedForZoom);
+        EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChangedForZoom);
+    }
+
+    // 함선 선택 시 해당 함선 기준 줌 범위 적용 (내 함대만)
+    private void OnSpaceShipSelectedForZoom(SpaceShip ship)
+    {
+        if (ship == null || ship.m_myFleet == null || ship.m_myFleet.IsEnemy == true) return;
+        ApplyZoomRangeFromShip(ship);
+    }
+
+    // Body 교체 시 현재 줌 범위 기준 함선이면 갱신
+    private void OnShipBodyChangedForZoom(SpaceShip ship)
+    {
+        if (ship != m_zoomRangeSourceShip) return;
+        ApplyZoomRangeFromShip(ship);
+    }
+
+    // 함선의 첫 번째 ModuleBody에서 줌 범위를 읽어 적용
+    public void ApplyZoomRangeFromShip(SpaceShip ship)
+    {
+        if (ship == null || ship.m_moduleBodys == null || ship.m_moduleBodys.Count == 0) return;
+        ModuleBody body = ship.m_moduleBodys[0];
+        if (body == null) return;
+
+        m_zoomRangeSourceShip = ship;
+        m_minZoom = body.m_cameraMinZoom;
+        m_maxZoom = body.m_cameraMaxZoom;
+
+        // 현재 줌이 새 범위를 벗어나면 clamp
+        float clampedZoom = Mathf.Clamp(m_currentZoom, m_minZoom, m_maxZoom);
+        if (Mathf.Abs(clampedZoom - m_currentZoom) > 0.01f)
+            SetTargetZoom(clampedZoom);
     }
 
     public void UpdateCameraTransform()
@@ -594,6 +637,9 @@ public class CameraController : MonoSingleton<CameraController>
                     m_currentTarget = null;
                 }
                 m_targetPosition = objMgr.GetEnemySpawnPosition();
+                // 적 기함 크기 기준 줌 범위 적용
+                if (objMgr.m_enemyFleets.Count > 0)
+                    ApplyZoomRangeFromShip(objMgr.m_enemyFleets[0].GetFlagship());
                 break;
             case ECameraFocusTarget.camera_focus_center:
                 if (m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
@@ -613,6 +659,8 @@ public class CameraController : MonoSingleton<CameraController>
                     SetTargetOfCameraController(m_currentTargetBackup);
                     m_currentTargetBackup = null;
                 }
+                // 현재 선택된 함선(또는 기함) 기준 줌 범위 복원
+                ApplyZoomRangeFromShip(m_zoomRangeSourceShip != null ? m_zoomRangeSourceShip : myFleet.GetFlagship());
                 break;
         }
 

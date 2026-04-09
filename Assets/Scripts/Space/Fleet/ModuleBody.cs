@@ -14,6 +14,10 @@ public class ModuleBody : ModuleBase
     [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
     [HideInInspector] public List<ModuleHanger> m_hangers = new List<ModuleHanger>();
 
+    // 이 함체를 선택하거나 기함으로 볼 때 적용할 카메라 줌 범위 (프리팹에서 설정)
+    [SerializeField] public float m_cameraMinZoom = 4f;
+    [SerializeField] public float m_cameraMaxZoom = 20f;
+
     private float m_repair;
     private float m_speed;
 

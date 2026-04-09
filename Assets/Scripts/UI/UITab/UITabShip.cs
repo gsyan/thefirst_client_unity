@@ -363,7 +363,6 @@ public class UITabShip : UITabBase
             character.UpdateMineralRare(unlockData.costRemainInfo.remainMineralRare);
             character.UpdateMineralExotic(unlockData.costRemainInfo.remainMineralExotic);
             character.UpdateMineralDark(unlockData.costRemainInfo.remainMineralDark);
-            DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
         }
 
         SpaceFleet fleet = character.GetOwnedFleet();
@@ -516,7 +515,6 @@ public class UITabShip : UITabBase
                 character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
                 character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
                 character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
-                DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
             }
 
             UpdateModuleAfterUpgrade(response.data);

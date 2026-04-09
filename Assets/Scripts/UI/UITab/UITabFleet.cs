@@ -493,8 +493,7 @@ public class UITabFleet : UITabBase
                 m_myCharacter.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
                 m_myCharacter.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
                 m_myCharacter.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
-                DataManager.Instance.SaveCharacterInfoToPlayerPrefs();
-
+                
                 if (response.data.updatedFleetInfo != null)
                     DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
 
