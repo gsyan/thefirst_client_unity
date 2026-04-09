@@ -57,7 +57,7 @@ public class ProjectileBeam : ProjectileBase
     }
 
     public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
-                          Color color, ModuleBase sourceModuleBase, Vector3 initialDirection)
+                          Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed = 1f)
     {
         base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection);
         
@@ -176,16 +176,19 @@ public class ProjectileBeam : ProjectileBase
         }
 
         // 2단계: 데미지 처리
-        if (hitTarget != null)        
+        if (hitTarget != null)
             hitTarget.TakeDamage(m_damage);
-        
-        if( m_hitEffect == null)
+
+        // TakeDamage→전멸→CleanupAllProjectiles 동기 체인으로 이미 ReturnToPool 됐을 수 있음
+        if (gameObject.activeInHierarchy == false) yield break;
+
+        if (m_hitEffect == null)
+        {
             m_hitEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_BEAM_HIT);
             m_hitEffect.transform.position = finalHitPoint;
+        }
 
-
-        // 3단계: 흩어지며 소멸 (TakeDamage→전멸→CleanupAllProjectiles 동기 체인으로 비활성화될 수 있음)
-        if (!gameObject.activeInHierarchy) yield break;
+        // 3단계: 흩어지며 소멸
         yield return StartCoroutine(BeamScatterAndReturn());
     }
 
@@ -332,6 +335,12 @@ public class ProjectileBeam : ProjectileBase
         {
             m_muzzleEffect.ReturnEffect();
             m_muzzleEffect = null;
+        }
+
+        if (m_hitEffect != null)
+        {
+            m_hitEffect.ReturnEffect();
+            m_hitEffect = null;
         }
 
         if (m_scatterParticle != null)

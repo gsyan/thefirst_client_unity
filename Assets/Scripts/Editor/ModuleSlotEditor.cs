@@ -45,12 +45,42 @@ public class ModuleSlotEditor : Editor
         EditorGUILayout.PropertyField(m_cameraRotationX, new GUIContent("Rotation X (Pitch)"));
         EditorGUILayout.PropertyField(m_cameraZoom, new GUIContent("Zoom"));
 
+        if (GUILayout.Button("Capture from Scene View"))
+        {
+            CaptureFromSceneView((ModuleSlot)target);
+        }
+
         if (GUILayout.Button("Reset to Default"))
         {
             ResetCameraValues((ModuleSlot)target);
         }
 
         serializedObject.ApplyModifiedProperties();
+    }
+
+    private void CaptureFromSceneView(ModuleSlot slot)
+    {
+        SceneView sceneView = SceneView.lastActiveSceneView;
+        if (sceneView == null)
+        {
+            Debug.LogWarning("[ModuleSlotEditor] 활성화된 SceneView가 없음");
+            return;
+        }
+
+        // SceneView 카메라 forward → CameraController 구면좌표계 역산
+        // CameraController: camera = target + (sin(Y)*cos(X), sin(X), cos(Y)*cos(X)) * zoom
+        // → forward = (-sin(Y)*cos(X), -sin(X), -cos(Y)*cos(X))
+        Vector3 fwd = sceneView.camera.transform.rotation * Vector3.forward;
+        float rotX = -Mathf.Asin(Mathf.Clamp(fwd.y, -1f, 1f)) * Mathf.Rad2Deg;
+        float rotY = Mathf.Atan2(-fwd.x, -fwd.z) * Mathf.Rad2Deg;
+        float zoom = Vector3.Distance(sceneView.camera.transform.position, sceneView.pivot);
+
+        Undo.RecordObject(slot, "Capture Camera from Scene View");
+        slot.m_cameraRotationY = Mathf.Round(rotY * 10f) / 10f;
+        slot.m_cameraRotationX = Mathf.Round(rotX * 10f) / 10f;
+        slot.m_cameraZoom = Mathf.Round(zoom * 10f) / 10f;
+
+        EditorUtility.SetDirty(slot);
     }
 
     private void ResetCameraValues(ModuleSlot slot)

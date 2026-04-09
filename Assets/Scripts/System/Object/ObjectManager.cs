@@ -733,21 +733,22 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     public Vector3 GetEnemySpawnPosition()
     {
-        // 내 함대의 위치와 방향 가져오기
         if (m_myFleet == null || m_myFleet.transform == null) return Vector3.zero;
 
-        Vector3 fleetPosition = m_myFleet.transform.position;
-        Vector3 fleetForward = m_myFleet.transform.forward;
+        // 내 함선 중 z 사이즈가 가장 큰 것의 절반을 기준 오프셋으로 사용
+        float maxHalfZ = 0f;
+        foreach (SpaceShip ship in m_myFleet.m_ships)
+        {
+            if (ship == null) continue;
+            float halfZ = ship.CalculateShipBounds().size.z * 0.5f;
+            if (halfZ > maxHalfZ) maxHalfZ = halfZ;
+        }
 
-        // 적 거리 설정
-        float spawnDistance = 30.0f;
-        
-        // 최종 스폰 위치 계산
-        Vector3 spawnPosition = fleetPosition +  fleetForward * spawnDistance;
-        
-        // Y 위치는 0으로 고정
-        spawnPosition.y = 0;
-        
+        SpaceShip flagship = m_myFleet.GetFlagship();
+        Vector3 basePos = flagship != null ? flagship.transform.position : m_myFleet.transform.position;
+        Vector3 spawnPosition = basePos + m_myFleet.transform.forward * (maxHalfZ + 30f);
+        spawnPosition.y = 0f;
+
         return spawnPosition;
     }
 

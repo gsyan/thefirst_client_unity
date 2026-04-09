@@ -449,6 +449,9 @@ public class CameraController : MonoSingleton<CameraController>
 
     public void ZoomCamera(float deltaZoom)
     {
+        // 유저 직접 줌 입력 시 자동 줌 목표 취소
+        m_targetZoom = null;
+
         if (m_targetCamera != null && m_targetCamera.orthographic)
         {
             m_targetCamera.orthographicSize = Mathf.Clamp(

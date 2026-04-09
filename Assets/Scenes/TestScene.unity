@@ -148,9 +148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d139b4b0e7149684ba55a36addb884cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectTestInput
-  m_shipInfos:
-  - bodyPrefab: {fileID: 1475157236054319144, guid: cb4cceb4acb6edb4f8dbb1f1bc719ecc, type: 3}
   m_mode: 1
+  m_shipInfos:
+  - bodyPrefab: {fileID: 1475157236054319144, guid: ea8c5b219298dcd49a1481db78afe0a0, type: 3}
+  m_spawnFormation: 0
   m_explosionPrefabs:
   - {fileID: 100002, guid: c2a7f489da0e751408fc04fc4c842cfa, type: 3}
   - {fileID: 100014, guid: d96258cdf841f5e4d8af97dce9661d8c, type: 3}
@@ -158,7 +159,6 @@ MonoBehaviour:
   - {fileID: 100000, guid: 5c66aaebaed6ae54183b4e93cfbc6397, type: 3}
   - {fileID: 100000, guid: 8ad1fc2e554132d43a423025630d864d, type: 3}
   - {fileID: 192552, guid: b927b2f8c04fc4f4aac5d7b91c6a8280, type: 3}
-  m_spawnFormation: 0
 --- !u!4 &412880705
 Transform:
   m_ObjectHideFlags: 0

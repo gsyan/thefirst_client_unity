@@ -9,4 +9,7 @@ public class ModuleSlot : MonoBehaviour
     public float m_cameraRotationY = 0f;
     public float m_cameraRotationX = 0f;
     public float m_cameraZoom = 20f;
+
+    // 미사일 슬롯 전용: Eject 단계 초기 사출 속도 (슬롯 방향에 따라 조정)
+    public float m_missileEjectSpeed = 1f;
 }

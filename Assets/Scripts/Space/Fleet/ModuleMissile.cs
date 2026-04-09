@@ -102,6 +102,7 @@ public class ModuleMissile : ModuleBase
     private void InitializeSubType(ModuleData moduleData)
     {
         EPoolName poolName = GetMissilePoolName(m_moduleInfo.moduleSubType);
+        float ejectSpeed = m_moduleSlot != null ? m_moduleSlot.m_missileEjectSpeed : 1f;
         switch (m_moduleInfo.moduleSubType)
         {
             case EModuleSubType.missile_t1_m1:
@@ -109,7 +110,7 @@ public class ModuleMissile : ModuleBase
                 for (int i = 0; i < moduleData.attackFireCount; i++)
                 {
                     LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
-                    launcher.InitializeLauncherMissile(moduleData, i, poolName);
+                    launcher.InitializeLauncherMissile(moduleData, i, poolName, ejectSpeed);
                     m_launchers.Add(launcher);
                 }
                 break;

@@ -16,7 +16,7 @@ public class ProjectileMissile : ProjectileBase
     private float m_lifeTime;
     private const float MAX_LIFE_TIME = 10f;
 
-    private const float EJECT_SPEED = 1f;
+    private float m_ejectSpeed = 1f;
     private const float STEERING_ROTATION_SPEED = 160f;
     private const float HOMING_TURN_RATE = 4f;
 
@@ -44,18 +44,18 @@ public class ProjectileMissile : ProjectileBase
 
     public void SetPoolName(EPoolName poolName) { m_poolName = poolName; }
 
-    public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData, Color color, ModuleBase sourceModuleBase, Vector3 initialDirection)
+    public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData, Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed = 1f)
     {
         base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection);
         m_missileSpeed = moduleData.projectileSpeed;
+        m_ejectSpeed = ejectSpeed;
         m_lifeTime = 0.0f;
         m_prevPosition = transform.position;
         m_initialFlightDuration = Random.Range(0.5f, 0.6f);
 
         m_phase = EFlightPhase.Eject;
 
-
-        m_rb.linearVelocity = initialDirection.normalized * EJECT_SPEED;
+        m_rb.linearVelocity = initialDirection.normalized * m_ejectSpeed;
         m_rb.angularVelocity = Vector3.zero;
 
         SetBurstSideAll(false);
