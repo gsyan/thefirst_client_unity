@@ -19,7 +19,7 @@ Shader "SpaceFleet/EngineFlame"
             "RenderPipeline"="UniversalPipeline"
         }
 
-        Blend SrcAlpha One  // Additive blending for glow
+        Blend SrcAlpha One
         ZWrite Off
         Cull Back
 
@@ -32,14 +32,17 @@ Shader "SpaceFleet/EngineFlame"
             #pragma target 3.0
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_instancing
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl"
 
             struct Attributes
             {
                 float4 positionOS : POSITION;
                 float3 normalOS : NORMAL;
                 float2 uv : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             struct Varyings
@@ -48,19 +51,23 @@ Shader "SpaceFleet/EngineFlame"
                 float3 positionWS : TEXCOORD0;
                 float3 normalWS : TEXCOORD1;
                 float2 uv : TEXCOORD2;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            CBUFFER_START(UnityPerMaterial)
-                float4 _Color;
-                float _GlowIntensity;
-                float _PulseSpeed;
-                float _PulseAmplitude;
-            CBUFFER_END
-
+            // GPU Instancing용 인스턴스별 프로퍼티 (MPB와 호환)
+            UNITY_INSTANCING_BUFFER_START(Props)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+                UNITY_DEFINE_INSTANCED_PROP(float, _GlowIntensity)
+                UNITY_DEFINE_INSTANCED_PROP(float, _PulseSpeed)
+                UNITY_DEFINE_INSTANCED_PROP(float, _PulseAmplitude)
+            UNITY_INSTANCING_BUFFER_END(Props)
 
             Varyings vert(Attributes input)
             {
                 Varyings output;
+
+                UNITY_SETUP_INSTANCE_ID(input);
+                UNITY_TRANSFER_INSTANCE_ID(input, output);
 
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
                 VertexNormalInputs normalInput = GetVertexNormalInputs(input.normalOS);
@@ -75,19 +82,19 @@ Shader "SpaceFleet/EngineFlame"
 
             float4 frag(Varyings input) : SV_Target
             {
-                // Pulse effect (breathing)
-                float time = _Time.y;
-                float pulse = sin(time * _PulseSpeed) * _PulseAmplitude + (1.0 - _PulseAmplitude);
-                pulse = max(pulse, 0.5); // Prevent pulse from going below 0.5 to avoid color shift
+                UNITY_SETUP_INSTANCE_ID(input);
 
-                // HDR 범위로 출력 (Bloom을 위해)
-                float intensity = _GlowIntensity * pulse;
+                float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+                float glowIntensity = UNITY_ACCESS_INSTANCED_PROP(Props, _GlowIntensity);
+                float pulseSpeed = UNITY_ACCESS_INSTANCED_PROP(Props, _PulseSpeed);
+                float pulseAmplitude = UNITY_ACCESS_INSTANCED_PROP(Props, _PulseAmplitude);
 
-                // HDR 색상 출력 (1.0 이상의 값으로 Bloom threshold를 넘김)
-                float3 finalColor = _Color.rgb * intensity;
+                float pulse = sin(_Time.y * pulseSpeed) * pulseAmplitude + (1.0 - pulseAmplitude);
+                pulse = max(pulse, 0.5);
 
-                float alpha = 1.0;
-                return float4(finalColor, alpha);
+                float3 finalColor = color.rgb * glowIntensity * pulse;
+
+                return float4(finalColor, 1.0);
             }
             ENDHLSL
         }
