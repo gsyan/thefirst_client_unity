@@ -7,7 +7,6 @@ pipeline {
         string(name: 'VERSION_MINOR', defaultValue: '1', description: '마이너 버전')
         string(name: 'VERSION_PATCH', defaultValue: '18', description: '패치 버전')
         booleanParam(name: 'IS_SHIPPING',          defaultValue: false, description: '배포용 빌드 (체크 시 개발자 도구/콘솔 비활성화, 미체크 = 개발 빌드)')
-        booleanParam(name: 'AUTOCONNECT_PROFILER', defaultValue: false, description: 'Profiler 자동 연결 (Development 빌드에만 유효, 배포 빌드 무시)')
         booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드')
         booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드')
         booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드')
@@ -43,7 +42,6 @@ pipeline {
                             string(name: 'VERSION_MINOR', defaultValue: "${params.VERSION_MINOR}", description: '마이너 버전'),
                             string(name: 'VERSION_PATCH', defaultValue: "${params.VERSION_PATCH}", description: '패치 버전'),
                             booleanParam(name: 'IS_SHIPPING',          defaultValue: false, description: '배포용 빌드 (체크 시 개발자 도구/콘솔 비활성화, 미체크 = 개발 빌드)'),
-                            booleanParam(name: 'AUTOCONNECT_PROFILER', defaultValue: false, description: 'Profiler 자동 연결 (Development 빌드에만 유효, 배포 빌드 무시)'),
                             booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드'),
                             booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드'),
                             booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드'),
@@ -60,8 +58,7 @@ pipeline {
             }
             steps {
                 script {
-                    def devFlag      = params.IS_SHIPPING ? "" : "-isDev"
-                    def profilerFlag = (!params.IS_SHIPPING && params.AUTOCONNECT_PROFILER) ? "-autoConnectProfiler" : ""
+                    def devFlag = params.IS_SHIPPING ? "" : "-isDev"
                     bat """
                         "${env.UNITY_PATH}" ^
                           -batchmode -quit -nographics ^
@@ -70,7 +67,6 @@ pipeline {
                           -outputPath "${env.OUTPUT_APK}" ^
                           -versionName "${env.VERSION_NAME}" ^
                           ${devFlag} ^
-                          ${profilerFlag} ^
                           -logFile "${env.WORKSPACE}/build/unity_build_apk.log"
                     """
                 }
@@ -91,8 +87,7 @@ pipeline {
             }
             steps {
                 script {
-                    def devFlag      = params.IS_SHIPPING ? "" : "-isDev"
-                    def profilerFlag = (!params.IS_SHIPPING && params.AUTOCONNECT_PROFILER) ? "-autoConnectProfiler" : ""
+                    def devFlag = params.IS_SHIPPING ? "" : "-isDev"
                     bat """
                         "${env.UNITY_PATH}" ^
                           -batchmode -quit -nographics ^
@@ -102,7 +97,6 @@ pipeline {
                           -versionName "${env.VERSION_NAME}" ^
                           -buildAAB ^
                           ${devFlag} ^
-                          ${profilerFlag} ^
                           -logFile "${env.WORKSPACE}/build/unity_build_aab.log"
                     """
                 }
