@@ -43,6 +43,7 @@
 - 클라 구조 및 운영 : 클라 프로젝트 루트/claude_md_files/client_structure_and_operation.md
 - 젠킨스 설정 : 클라 프로젝트 루트/claude_md_files/jenkins-setup-tutorial.md
 - **[작업중] 진형 이동 시스템 재설계** : 클라 프로젝트 루트/claude_md_files/formation_movement_redesign.md
+- **[작업중] 렌더링 최적화** : 클라 프로젝트 루트/claude_md_files/rendering_optimization.md
 
 ## 주의 사항
 - 모든 파일(generated 파일 제외)엔 최상단에 1~3줄 요약이 있어야 해. 없다면 추가
