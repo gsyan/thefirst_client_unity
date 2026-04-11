@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EffectTestInput
   m_mode: 1
   m_shipInfos:
-  - bodyPrefab: {fileID: 1475157236054319144, guid: ea8c5b219298dcd49a1481db78afe0a0, type: 3}
+  - bodyPrefab: {fileID: 1475157236054319144, guid: 4f501dd23dae74644a807dc75897fbab, type: 3}
   m_spawnFormation: 0
   m_explosionPrefabs:
   - {fileID: 100002, guid: c2a7f489da0e751408fc04fc4c842cfa, type: 3}
