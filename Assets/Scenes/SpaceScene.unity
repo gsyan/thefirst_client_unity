@@ -270,6 +270,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_targetCamera: {fileID: 0}
+  m_minZoom: 4
+  m_maxZoom: 40
+  m_currentZoom: 0
 --- !u!1 &451708792
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,7 +567,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: ab09877e2e707104187f6f83e2f62510, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 10fc4df2da32a41aaa32d77bc913491c, type: 2}
 --- !u!4 &725481649
 Transform:
   m_ObjectHideFlags: 0
@@ -726,15 +729,6 @@ MonoBehaviour:
   m_myFleet: {fileID: 0}
   m_enemyFleets: []
   m_mineralList: []
-  m_asteroidSprites: []
-  m_planetSprites:
-  - {fileID: 21300000, guid: 3cd42a586d242634f8307bcf222d27f0, type: 3}
-  - {fileID: 21300000, guid: 327ee506fc9c87a46904d6351ffbca30, type: 3}
-  - {fileID: 21300000, guid: f7b190388c23e3c4e9322dc547807a6f, type: 3}
-  - {fileID: 21300000, guid: b2f58506ff537744f88ff5f5389e54d5, type: 3}
-  - {fileID: 21300000, guid: af67ceaf0b5268043819fb98ba794d60, type: 3}
-  - {fileID: 0}
-  - {fileID: 21300000, guid: 7ceca0ab1f2bd4740ae9425f0c5322fe, type: 3}
 --- !u!4 &2008579212
 Transform:
   m_ObjectHideFlags: 0
