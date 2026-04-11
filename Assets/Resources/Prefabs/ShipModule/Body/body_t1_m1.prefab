@@ -5602,6 +5602,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 31e24a7c041d6da49881222a15278670, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 31e24a7c041d6da49881222a15278670, type: 3}
       propertyPath: m_Name
       value: USSNFreedomClassDreadnoughtBridge1
