@@ -1,5 +1,4 @@
 // 함체 프리팹의 지정된 MeshRenderer들을 에디터에서 미리 합쳐 드로우콜을 줄이는 툴
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -15,42 +14,36 @@ public class CombineMeshTargetEditor : Editor
     {
         DrawDefaultInspector();
 
-        CombineMeshTarget t = (CombineMeshTarget)target;
-
         EditorGUILayout.Space(8);
 
         if (GUILayout.Button("Combine Meshes", GUILayout.Height(30)))
-            CombineThis(t);
+            CombineThis();
     }
 
     // ── 단일 처리 ──────────────────────────────────────────
 
-    void CombineThis(CombineMeshTarget target)
+    void CombineThis()
     {
         EnsureFolderExists("Assets", "GeneratedMeshes");
         EnsureFolderExists("Assets/GeneratedMeshes", "Combined");
 
-        // Prefab Editor에서 직접 열린 경우 PrefabStage에서 경로 획득
-        string path = AssetDatabase.GetAssetPath(PrefabUtility.GetCorrespondingObjectFromSource(target.gameObject));
-        if (string.IsNullOrEmpty(path))
+        // Prefab Editor 전용 — 디스크 재로드 없이 라이브 Stage 오브젝트를 직접 사용
+        var stage = PrefabStageUtility.GetCurrentPrefabStage();
+        if (stage == null)
         {
-            var stage = PrefabStageUtility.GetCurrentPrefabStage();
-            if (stage != null)
-                path = stage.assetPath;
-        }
-        if (string.IsNullOrEmpty(path))
-        {
-            Debug.LogWarning("[CombineMeshTarget] 프리팹 에셋 경로를 찾을 수 없습니다.");
+            Debug.LogWarning("[CombineMeshTarget] Prefab Editor 에서만 사용 가능합니다.");
             return;
         }
 
-        GameObject prefab = PrefabUtility.LoadPrefabContents(path);
-        CombineMeshTarget prefabTarget = prefab.GetComponent<CombineMeshTarget>();
+        GameObject stageRoot = stage.prefabContentsRoot;
+        if (stageRoot.TryGetComponent(out CombineMeshTarget stageTarget) == false)
+        {
+            Debug.LogWarning("[CombineMeshTarget] PrefabStage 루트에서 CombineMeshTarget을 찾을 수 없습니다.");
+            return;
+        }
+        if (CombinePrefab(stageRoot, stageTarget, stage.assetPath))
+            Debug.Log($"[CombineMeshTarget] {stageRoot.name} 완료");
 
-        if (CombinePrefab(prefab, prefabTarget, path))
-            Debug.Log($"[CombineMeshTarget] {prefab.name} 완료");
-
-        PrefabUtility.UnloadPrefabContents(prefab);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
@@ -84,18 +77,11 @@ public class CombineMeshTargetEditor : Editor
         combinedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         combinedMesh.CombineMeshes(combines, mergeSubMeshes: true, useMatrices: true);
 
+        // 기존 파일 삭제 후 재생성 — CopySerialized+SaveAssetIfDirty는 dirty 마킹 누락 시 간헐적으로 저장 안 됨
         string meshPath = $"{MeshSaveFolder}/{prefab.name}_Combined.mesh";
-        Mesh existing = AssetDatabase.LoadAssetAtPath<Mesh>(meshPath);
-        if (existing != null)
-        {
-            EditorUtility.CopySerialized(combinedMesh, existing);
-            AssetDatabase.SaveAssetIfDirty(existing);
-            combinedMesh = existing;
-        }
-        else
-        {
-            AssetDatabase.CreateAsset(combinedMesh, meshPath);
-        }
+        if (AssetDatabase.LoadAssetAtPath<Mesh>(meshPath) != null)
+            AssetDatabase.DeleteAsset(meshPath);
+        AssetDatabase.CreateAsset(combinedMesh, meshPath);
 
         // 기존 오브젝트 삭제 후 재생성 (첫 번째 자식 위치 보장)
         Transform existing2 = prefab.transform.Find(CombinedHullName);

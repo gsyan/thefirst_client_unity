@@ -102,8 +102,8 @@ InitTestScene*.unity*
 /[Aa]ssets/Resources/DataTable/build/
 /[Aa]ssets/Resources/DataTable/build.meta
 
-# Claude Code local settings
-.claude/
+# Claude Code - 로컬 개인 설정만 무시, 프로젝트 공용 설정(settings.json, 훅 등)은 커밋
+.claude/settings.local.json
 
 .vsconfig
 .vscode/
