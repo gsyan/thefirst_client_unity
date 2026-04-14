@@ -463,11 +463,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5901f548b0ce84b4c9ba5bc23c7d6dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_burstTail: {fileID: 0}
-  m_burstUp: {fileID: 0}
-  m_burstDown: {fileID: 0}
-  m_burstLeft: {fileID: 0}
-  m_burstRight: {fileID: 0}
+  m_burstTail: {fileID: 8794876944766148218}
+  m_burstUp: {fileID: 6124389276253266715}
+  m_burstDown: {fileID: 3297036175119449407}
+  m_burstLeft: {fileID: 7556193475762178709}
+  m_burstRight: {fileID: 3381466072787555101}
 --- !u!54 &2521153806921643253
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -478,7 +478,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 10
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -490,10 +490,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &8794876944766148218
 GameObject:

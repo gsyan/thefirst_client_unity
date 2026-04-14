@@ -9,6 +9,7 @@ public class ModuleSlotEditor : Editor
     SerializedProperty m_cameraRotationY;
     SerializedProperty m_cameraRotationX;
     SerializedProperty m_cameraZoom;
+    SerializedProperty m_missileEjectSpeed;
 
     private const float DEFAULT_YAW_FRONT = 0f;
     private const float DEFAULT_YAW_REAR = 180f;
@@ -24,6 +25,7 @@ public class ModuleSlotEditor : Editor
         m_cameraRotationY = serializedObject.FindProperty("m_cameraRotationY");
         m_cameraRotationX = serializedObject.FindProperty("m_cameraRotationX");
         m_cameraZoom = serializedObject.FindProperty("m_cameraZoom");
+        m_missileEjectSpeed = serializedObject.FindProperty("m_missileEjectSpeed");
     }
 
     public override void OnInspectorGUI()
@@ -37,6 +39,15 @@ public class ModuleSlotEditor : Editor
         // Module Slot Index
         var slotIndexProp = m_moduleSlotInfo.FindPropertyRelative("slotIndex");
         EditorGUILayout.PropertyField(slotIndexProp);
+
+        // 미사일 슬롯일 때만 Eject Speed 표시
+        var moduleType = (EModuleType)moduleTypeProp.intValue;
+        if (moduleType == EModuleType.missile)
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Missile Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(m_missileEjectSpeed, new GUIContent("Eject Speed"));
+        }
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Camera Target", EditorStyles.boldLabel);

@@ -6,17 +6,19 @@ using Unity.VisualScripting;
 public class LauncherBeam : LauncherBase
 {
     private ModuleData m_moduleData;
+    private Vector3 m_slotScale = Vector3.one;
 
     private Color m_beamColor;
 
     private static readonly Color k_allyColor = Color.cyan;
     private static readonly Color k_enemyColor = new Color(1f, 0.2f, 0.2f); // 붉은색
 
-    public void InitializeLauncherBeam(ModuleData moduleData, int firePointIndex, bool isEnemy = false)
+    public void InitializeLauncherBeam(ModuleData moduleData, int firePointIndex, bool isEnemy, Vector3 slotScale)
     {
         if (m_isInitialized == true) return;
 
         m_beamColor = isEnemy ? k_enemyColor : k_allyColor;
+        m_slotScale = slotScale;
 
         // 인덱스에 맞는 FirePoint 찾기
         m_firePoint = FindFirePointByIndex(firePointIndex);
@@ -59,7 +61,7 @@ public class LauncherBeam : LauncherBase
         if (beam == null) yield break;
         beam.transform.position = m_firePoint.position;
 
-        beam.InitializeProjectile(m_firePoint, target, damage, m_moduleData, m_beamColor, sourceModuleBase, m_firePoint.forward);
+        beam.InitializeProjectile(m_firePoint, target, damage, m_moduleData, m_beamColor, sourceModuleBase, m_firePoint.forward, 1f, m_slotScale.x);
     }
 
 }

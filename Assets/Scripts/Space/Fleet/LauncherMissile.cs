@@ -7,8 +7,9 @@ public class LauncherMissile : LauncherBase
     private ModuleData m_moduleData;
     private EPoolName m_missilePoolName;
     private float m_ejectSpeed = 1f;
+    private Vector3 m_slotScale = Vector3.one;
 
-    public void InitializeLauncherMissile(ModuleData moduleData, int firePointIndex, EPoolName missilePoolName, float ejectSpeed = 1f)
+    public void InitializeLauncherMissile(ModuleData moduleData, int firePointIndex, EPoolName missilePoolName, float ejectSpeed, Vector3 slotScale)
     {
         if (m_isInitialized == true) return;
 
@@ -30,6 +31,7 @@ public class LauncherMissile : LauncherBase
         m_moduleData = moduleData;
         m_missilePoolName = missilePoolName;
         m_ejectSpeed = ejectSpeed;
+        m_slotScale = slotScale;
 
         m_isInitialized = true;
     }
@@ -54,10 +56,11 @@ public class LauncherMissile : LauncherBase
         if (missile == null) yield break;
         missile.transform.position = m_firePoint.position;
         missile.transform.rotation = m_firePoint.rotation;
+        missile.transform.localScale = m_slotScale;
         missile.SetPoolName(m_missilePoolName);
 
         // 함선 발사대: 발사구 위쪽 방향으로 콜드런치
-        missile.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.black, sourceModuleBase, m_firePoint.forward, m_ejectSpeed);
+        missile.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.black, sourceModuleBase, m_firePoint.forward, m_ejectSpeed, 1f);
     }
 
 }

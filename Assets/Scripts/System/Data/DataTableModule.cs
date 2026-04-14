@@ -47,7 +47,6 @@ public class ModuleData
     public float attack = 0f;
     public float attackCool = 0f;       // 발사 쿨다운 빔, 미사일, 함재기
     [Header("Weapon Projectile Stats")]
-    public float projectileWidth = 0f;
     public float projectileSpeed = 0f;
 
     // Hanger ------------------------------------------------------------------------------------------------
@@ -423,7 +422,6 @@ public class DataTableModule : ScriptableObject
                 attack                          = ParseCsvFloat(GetCol(cols, col, "attack")),
                 attackFireCount                 = ParseCsvInt  (GetCol(cols, col, "attack_count")),
                 attackCool                      = ParseCsvFloat(GetCol(cols, col, "attack_cool")),
-                projectileWidth                 = ParseCsvFloat(GetCol(cols, col, "projectile_width")),
                 projectileSpeed                 = ParseCsvFloat(GetCol(cols, col, "projectile_speed")),
                 airCount                        = ParseCsvInt  (GetCol(cols, col, "air_count")),
                 airMaintenanceTime              = ParseCsvFloat(GetCol(cols, col, "air_maintenance_time")),

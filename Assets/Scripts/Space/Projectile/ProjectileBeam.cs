@@ -57,15 +57,15 @@ public class ProjectileBeam : ProjectileBase
     }
 
     public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
-                          Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed = 1f)
+                          Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed, float projectileWidth)
     {
-        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection);
-        
+        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection, ejectSpeed, projectileWidth);
+
         m_beamHeadPos = m_firePointTransform.position;
         m_beamTailPos = m_firePointTransform.position;
-        m_beamWidth = moduleData.projectileWidth;
-        m_beamSpeed = moduleData.projectileSpeed;        
-        m_beamColor = color;        
+        m_beamWidth = projectileWidth;
+        m_beamSpeed = moduleData.projectileSpeed;
+        m_beamColor = color;
         
 
         if (m_lineRenderer == null)

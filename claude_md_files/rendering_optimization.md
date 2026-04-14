@@ -88,7 +88,7 @@
   - 지정 오브젝트 하위를 재귀적으로 MeshFilter 수집해 합침
 - **HullMeshCombineEditor.cs** (`Assets/Scripts/Editor/`)
   - `CombineMeshTarget` Custom Inspector에 **Combine Meshes** 버튼
-  - 합쳐진 메시 → `Assets/GeneratedMeshes/HullCombined/{prefab명}_Combined.mesh` 저장
+  - 합쳐진 메시 → `Assets/GeneratedMeshes/Combined/{prefab명}_Combined.mesh` 저장
   - 프리팹에 `Combined` 오브젝트 생성 (첫 번째 자식, MeshFilter + MeshRenderer + MeshCollider)
   - 원본 FBX MeshRenderer 비활성화
   - Prefab Editor에서 직접 열어도 동작 (PrefabStageUtility로 경로 획득)

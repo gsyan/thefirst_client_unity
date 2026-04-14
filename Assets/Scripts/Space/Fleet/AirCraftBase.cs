@@ -544,7 +544,7 @@ public abstract class AircraftBase : MonoBehaviour
 
         missile.transform.SetPositionAndRotation(m_firePointMissileList[0].position, m_firePointMissileList[0].rotation);
         missile.SetPoolName(m_missilePoolName);
-        missile.InitializeProjectile(m_firePointMissileList[0], m_targetModule, m_aircraftInfo.airAttack, m_moduleData, Color.black, m_sourceModule, -m_firePointMissileList[0].up);
+        missile.InitializeProjectile(m_firePointMissileList[0], m_targetModule, m_aircraftInfo.airAttack, m_moduleData, Color.black, m_sourceModule, -m_firePointMissileList[0].up, 1f, 1f);
 
         m_aircraftInfo.airAmmo--;
         m_lastAttackTime = Time.time;

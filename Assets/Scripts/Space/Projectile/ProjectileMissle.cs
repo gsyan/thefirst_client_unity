@@ -45,9 +45,9 @@ public class ProjectileMissile : ProjectileBase
     public void SetPoolName(EPoolName poolName) { m_poolName = poolName; }
 
     public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
-     Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed = 1f)
+     Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed, float projectileWidth)
     {
-        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection);
+        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection, ejectSpeed, projectileWidth);
         m_missileSpeed = moduleData.projectileSpeed;
         m_ejectSpeed = ejectSpeed;
         m_lifeTime = 0.0f;

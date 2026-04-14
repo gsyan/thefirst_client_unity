@@ -18,7 +18,7 @@ public class ModuleMissile : ModuleBase
     [SerializeField] private List<LauncherBase> m_launchers = new List<LauncherBase>();
 
     // 커버 애니메이터
-    private Animator m_coverAnimator;
+    //private Animator m_coverAnimator;
     private static readonly int HASH_IS_IN_COMBAT = Animator.StringToHash("IsInCombat");
 
     private ModuleBody m_currentTarget;
@@ -96,13 +96,14 @@ public class ModuleMissile : ModuleBase
         if (m_parentBody != null)
             m_parentBody.AddMissile(this);
 
-        m_coverAnimator = GetComponentInChildren<Animator>(true);
+        //m_coverAnimator = GetComponentInChildren<Animator>(true);
     }
 
     private void InitializeSubType(ModuleData moduleData)
     {
         EPoolName poolName = GetMissilePoolName(m_moduleInfo.moduleSubType);
         float ejectSpeed = m_moduleSlot != null ? m_moduleSlot.m_missileEjectSpeed : 1f;
+        Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
         switch (m_moduleInfo.moduleSubType)
         {
             case EModuleSubType.missile_t1_m1:
@@ -110,7 +111,7 @@ public class ModuleMissile : ModuleBase
                 for (int i = 0; i < moduleData.attackFireCount; i++)
                 {
                     LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
-                    launcher.InitializeLauncherMissile(moduleData, i, poolName, ejectSpeed);
+                    launcher.InitializeLauncherMissile(moduleData, i, poolName, ejectSpeed, slotScale);
                     m_launchers.Add(launcher);
                 }
                 break;
@@ -124,9 +125,9 @@ public class ModuleMissile : ModuleBase
     {
         switch (subType)
         {
-            case EModuleSubType.missile_t1_m1:  return EPoolName.PROJECTILE_MISSILE_SMALL;
-            case EModuleSubType.missile_t2_m1:  return EPoolName.PROJECTILE_MISSILE_SMALL;
-            default:                                  return EPoolName.PROJECTILE_MISSILE_SMALL;
+            case EModuleSubType.missile_t1_m1:  return EPoolName.PROJECTILE_MISSILE_MEDIUM;
+            case EModuleSubType.missile_t2_m1:  return EPoolName.PROJECTILE_MISSILE_MEDIUM;
+            default:                                  return EPoolName.PROJECTILE_MISSILE_MEDIUM;
         }
     }
 
@@ -134,8 +135,8 @@ public class ModuleMissile : ModuleBase
     public override void ApplyShipStateToModule()
     {
         base.ApplyShipStateToModule();
-        if (m_coverAnimator != null)
-            m_coverAnimator.SetBool(HASH_IS_IN_COMBAT, m_moduleState == EModuleState.Battle);
+        // if (m_coverAnimator != null)
+        //     m_coverAnimator.SetBool(HASH_IS_IN_COMBAT, m_moduleState == EModuleState.Battle);
     }
 
     public override void Start()

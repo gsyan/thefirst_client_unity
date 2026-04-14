@@ -98,6 +98,7 @@ public class ModuleBeam : ModuleBase
 
     private void InitializeSubType(ModuleData moduleData)
     {
+        Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
         switch (m_moduleInfo.moduleSubType)
         {
             case EModuleSubType.beam_t1_m1:
@@ -105,7 +106,7 @@ public class ModuleBeam : ModuleBase
                 for(int i=0; i< moduleData.attackFireCount; i++)
                 {
                     LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
-                    launcher.InitializeLauncherBeam(moduleData, i, m_myFleet != null && m_myFleet.IsEnemy);
+                    launcher.InitializeLauncherBeam(moduleData, i, m_myFleet != null && m_myFleet.IsEnemy, slotScale);
                     m_launchers.Add(launcher);
                 }
                 break;

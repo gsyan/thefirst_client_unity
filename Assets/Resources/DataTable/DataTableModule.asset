@@ -38,7 +38,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -74,7 +73,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -110,7 +108,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -146,7 +143,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -182,7 +178,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -218,7 +213,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -254,7 +248,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -290,7 +283,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -326,7 +318,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -362,7 +353,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -402,7 +392,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -440,7 +429,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -478,7 +466,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -516,7 +503,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -554,7 +540,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -592,7 +577,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -630,7 +614,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -668,7 +651,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -706,7 +688,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -744,7 +725,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -784,7 +764,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -822,7 +801,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -860,7 +838,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -898,7 +875,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -936,7 +912,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -974,7 +949,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1012,7 +986,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1050,7 +1023,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1088,7 +1060,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1126,7 +1097,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1168,7 +1138,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1208,7 +1177,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1248,7 +1216,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1288,7 +1255,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1328,7 +1294,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1368,7 +1333,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1408,7 +1372,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1448,7 +1411,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1488,7 +1450,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1528,7 +1489,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1572,7 +1532,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1614,7 +1573,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1656,7 +1614,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1698,7 +1655,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1740,7 +1696,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1782,7 +1737,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1824,7 +1778,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1866,7 +1819,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1908,7 +1860,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1950,7 +1901,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -1994,7 +1944,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2036,7 +1985,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2078,7 +2026,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2120,7 +2067,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2162,7 +2108,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2204,7 +2149,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2246,7 +2190,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2288,7 +2231,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2330,7 +2272,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2372,7 +2313,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2404,7 +2344,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2434,7 +2373,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2464,7 +2402,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2494,7 +2431,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2524,7 +2460,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2554,7 +2489,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2584,7 +2518,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2614,7 +2547,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2644,7 +2576,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2674,7 +2605,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2706,7 +2636,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2736,7 +2665,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2766,7 +2694,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2796,7 +2723,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2826,7 +2752,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2856,7 +2781,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2886,7 +2810,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2916,7 +2839,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2946,7 +2868,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -2976,7 +2897,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3008,7 +2928,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3038,7 +2957,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3068,7 +2986,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3098,7 +3015,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3128,7 +3044,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3158,7 +3073,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3188,7 +3102,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3218,7 +3131,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3248,7 +3160,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3278,7 +3189,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3310,7 +3220,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3340,7 +3249,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3370,7 +3278,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3400,7 +3307,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3430,7 +3336,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3460,7 +3365,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3490,7 +3394,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3520,7 +3423,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3550,7 +3452,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3580,7 +3481,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3612,7 +3512,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3642,7 +3541,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3672,7 +3570,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3702,7 +3599,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3732,7 +3628,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3762,7 +3657,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3792,7 +3686,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3822,7 +3715,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3852,7 +3744,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3882,7 +3773,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3914,7 +3804,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3944,7 +3833,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -3974,7 +3862,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4004,7 +3891,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4034,7 +3920,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4064,7 +3949,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4094,7 +3978,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4124,7 +4007,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4154,7 +4036,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4184,7 +4065,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4216,7 +4096,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4246,7 +4125,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4276,7 +4154,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4306,7 +4183,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4336,7 +4212,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4366,7 +4241,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4396,7 +4270,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4426,7 +4299,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4456,7 +4328,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4486,7 +4357,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4518,7 +4388,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4548,7 +4417,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4578,7 +4446,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4608,7 +4475,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4638,7 +4504,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4668,7 +4533,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4698,7 +4562,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4728,7 +4591,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4758,7 +4620,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4788,7 +4649,6 @@ MonoBehaviour:
       attackFireCount: 0
       attack: 0
       attackCool: 0
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 0
       airMaintenanceTime: 0
@@ -4822,7 +4682,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 10
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -4852,7 +4711,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 11
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -4882,7 +4740,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 12
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -4912,7 +4769,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 13
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -4942,7 +4798,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 14
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -4972,7 +4827,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 15
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5002,7 +4856,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 16
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5032,7 +4885,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 17
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5062,7 +4914,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 18
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5092,7 +4943,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 19
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5124,7 +4974,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 20
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5154,7 +5003,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 22
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5184,7 +5032,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 24
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5214,7 +5061,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 26
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5244,7 +5090,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 28
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5274,7 +5119,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 30
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5304,7 +5148,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 32
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5334,7 +5177,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 34
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5364,7 +5206,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 36
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5394,7 +5235,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 38
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5426,7 +5266,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 40
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5456,7 +5295,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 44
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5486,7 +5324,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 48
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5516,7 +5353,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 52
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5546,7 +5382,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 56
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5576,7 +5411,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 60
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5606,7 +5440,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 64
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5636,7 +5469,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 68
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5666,7 +5498,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 72
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5696,7 +5527,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 76
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5728,7 +5558,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 80
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5758,7 +5587,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 88
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5788,7 +5616,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 96
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5818,7 +5645,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 104
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5848,7 +5674,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 112
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5878,7 +5703,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 120
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5908,7 +5732,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 128
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5938,7 +5761,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 136
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5968,7 +5790,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 144
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -5998,7 +5819,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 152
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6030,7 +5850,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 160
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6060,7 +5879,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 176
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6090,7 +5908,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 192
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6120,7 +5937,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 208
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6150,7 +5966,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 224
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6180,7 +5995,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 240
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6210,7 +6024,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 256
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6240,7 +6053,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 272
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6270,7 +6082,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 288
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6300,7 +6111,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 304
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6332,7 +6142,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 320
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6362,7 +6171,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 352
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6392,7 +6200,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 384
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6422,7 +6229,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 416
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6452,7 +6258,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 448
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6482,7 +6287,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 480
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6512,7 +6316,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 512
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6542,7 +6345,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 544
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6572,7 +6374,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 576
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6602,7 +6403,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 608
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6634,7 +6434,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 640
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6664,7 +6463,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 704
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6694,7 +6492,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 768
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6724,7 +6521,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 832
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6754,7 +6550,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 896
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6784,7 +6579,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 960
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6814,7 +6608,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1024
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6844,7 +6637,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1088
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6874,7 +6666,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1152
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6904,7 +6695,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1216
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6936,7 +6726,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1280
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6966,7 +6755,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1408
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -6996,7 +6784,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1536
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7026,7 +6813,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1664
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7056,7 +6842,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1792
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7086,7 +6871,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1920
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7116,7 +6900,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2048
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7146,7 +6929,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2176
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7176,7 +6958,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2304
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7206,7 +6987,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2432
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7238,7 +7018,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2560
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7268,7 +7047,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2816
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7298,7 +7076,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 3072
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7328,7 +7105,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 3328
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7358,7 +7134,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 3584
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7388,7 +7163,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 3840
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7418,7 +7192,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 4096
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7448,7 +7221,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 4352
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7478,7 +7250,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 4608
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7508,7 +7279,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 4864
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7540,7 +7310,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 5120
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7570,7 +7339,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 5632
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7600,7 +7368,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 6144
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7630,7 +7397,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 6656
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7660,7 +7426,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 7168
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7690,7 +7455,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 7680
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7720,7 +7484,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 8192
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7750,7 +7513,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 8704
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7780,7 +7542,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 9216
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7810,7 +7571,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 9728
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7842,7 +7602,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 10240
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7872,7 +7631,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 11264
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7902,7 +7660,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 12288
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7932,7 +7689,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 13312
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7962,7 +7718,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 14336
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -7992,7 +7747,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 15360
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8022,7 +7776,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 16384
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8052,7 +7805,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 17408
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8082,7 +7834,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 18432
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8112,7 +7863,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 19456
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8144,7 +7894,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 20480
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8174,7 +7923,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 22528
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8204,7 +7952,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 24576
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8234,7 +7981,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 26624
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8264,7 +8010,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 28672
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8294,7 +8039,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 30720
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8324,7 +8068,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 32768
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8354,7 +8097,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 34816
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8384,7 +8126,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 36864
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8414,7 +8155,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 38912
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8446,7 +8186,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 40960
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8476,7 +8215,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 45056
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8506,7 +8244,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 49152
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8536,7 +8273,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 53248
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8566,7 +8302,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 57344
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8596,7 +8331,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 61440
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8626,7 +8360,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 65536
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8656,7 +8389,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 69632
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8686,7 +8418,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 73728
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8716,7 +8447,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 77824
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8748,7 +8478,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 81920
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8778,7 +8507,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 90112
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8808,7 +8536,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 98304
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8838,7 +8565,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 106496
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8868,7 +8594,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 114688
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8898,7 +8623,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 122880
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8928,7 +8652,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 131072
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8958,7 +8681,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 139264
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -8988,7 +8710,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 147456
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -9018,7 +8739,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 155648
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 200
       airCount: 0
       airMaintenanceTime: 0
@@ -9051,7 +8771,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 10
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9081,7 +8800,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 11
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9111,7 +8829,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 12
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9141,7 +8858,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 13
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9171,7 +8887,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 14
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9201,7 +8916,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 15
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9231,7 +8945,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 16
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9261,7 +8974,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 17
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9291,7 +9003,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 18
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9321,7 +9032,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 19
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9353,7 +9063,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 20
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9383,7 +9092,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 22
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9413,7 +9121,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 24
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9443,7 +9150,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 26
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9473,7 +9179,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 28
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9503,7 +9208,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 30
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9533,7 +9237,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 32
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9563,7 +9266,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 34
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9593,7 +9295,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 36
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9623,7 +9324,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 38
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9655,7 +9355,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 40
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9685,7 +9384,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 44
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9715,7 +9413,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 48
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9745,7 +9442,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 52
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9775,7 +9471,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 56
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9805,7 +9500,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 60
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9835,7 +9529,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 64
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9865,7 +9558,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 68
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9895,7 +9587,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 72
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9925,7 +9616,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 76
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9957,7 +9647,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 80
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -9987,7 +9676,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 88
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10017,7 +9705,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 96
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10047,7 +9734,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 104
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10077,7 +9763,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 112
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10107,7 +9792,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 120
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10137,7 +9821,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 128
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10167,7 +9850,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 136
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10197,7 +9879,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 144
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10227,7 +9908,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 152
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10259,7 +9939,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 160
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10289,7 +9968,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 176
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10319,7 +9997,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 192
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10349,7 +10026,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 208
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10379,7 +10055,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 224
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10409,7 +10084,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 240
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10439,7 +10113,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 256
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10469,7 +10142,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 272
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10499,7 +10171,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 288
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10529,7 +10200,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 304
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10561,7 +10231,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 320
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10591,7 +10260,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 352
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10621,7 +10289,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 384
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10651,7 +10318,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 416
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10681,7 +10347,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 448
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10711,7 +10376,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 480
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10741,7 +10405,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 512
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10771,7 +10434,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 544
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10801,7 +10463,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 576
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10831,7 +10492,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 608
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10863,7 +10523,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 640
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10893,7 +10552,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 704
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10923,7 +10581,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 768
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10953,7 +10610,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 832
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -10983,7 +10639,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 896
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11013,7 +10668,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 960
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11043,7 +10697,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1024
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11073,7 +10726,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1088
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11103,7 +10755,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1152
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11133,7 +10784,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1216
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11165,7 +10815,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1280
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11195,7 +10844,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1408
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11225,7 +10873,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1536
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11255,7 +10902,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1664
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11285,7 +10931,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1792
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11315,7 +10960,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 1920
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11345,7 +10989,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2048
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11375,7 +11018,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2176
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11405,7 +11047,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2304
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11435,7 +11076,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2432
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11467,7 +11107,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2560
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11497,7 +11136,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 2816
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11527,7 +11165,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 3072
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11557,7 +11194,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 3328
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11587,7 +11223,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 3584
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11617,7 +11252,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 3840
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11647,7 +11281,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 4096
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11677,7 +11310,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 4352
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11707,7 +11339,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 4608
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11737,7 +11368,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 4864
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11769,7 +11399,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 5120
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11799,7 +11428,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 5632
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11829,7 +11457,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 6144
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11859,7 +11486,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 6656
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11889,7 +11515,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 7168
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11919,7 +11544,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 7680
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11949,7 +11573,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 8192
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -11979,7 +11602,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 8704
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12009,7 +11631,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 9216
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12039,7 +11660,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 9728
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12071,7 +11691,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 10240
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12101,7 +11720,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 11264
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12131,7 +11749,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 12288
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12161,7 +11778,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 13312
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12191,7 +11807,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 14336
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12221,7 +11836,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 15360
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12251,7 +11865,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 16384
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12281,7 +11894,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 17408
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12311,7 +11923,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 18432
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12341,7 +11952,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 19456
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12373,7 +11983,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 20480
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12403,7 +12012,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 22528
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12433,7 +12041,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 24576
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12463,7 +12070,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 26624
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12493,7 +12099,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 28672
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12523,7 +12128,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 30720
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12553,7 +12157,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 32768
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12583,7 +12186,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 34816
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12613,7 +12215,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 36864
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12643,7 +12244,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 38912
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12675,7 +12275,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 40960
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12705,7 +12304,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 45056
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12735,7 +12333,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 49152
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12765,7 +12362,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 53248
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12795,7 +12391,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 57344
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12825,7 +12420,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 61440
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12855,7 +12449,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 65536
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12885,7 +12478,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 69632
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12915,7 +12507,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 73728
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12945,7 +12536,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 77824
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -12977,7 +12567,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 81920
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13007,7 +12596,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 90112
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13037,7 +12625,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 98304
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13067,7 +12654,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 106496
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13097,7 +12683,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 114688
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13127,7 +12712,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 122880
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13157,7 +12741,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 131072
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13187,7 +12770,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 139264
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13217,7 +12799,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 147456
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13247,7 +12828,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 155648
       attackCool: 3
-      projectileWidth: 0.1
       projectileSpeed: 10
       airCount: 0
       airMaintenanceTime: 0
@@ -13280,7 +12860,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13310,7 +12889,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13340,7 +12918,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13370,7 +12947,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13400,7 +12976,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13430,7 +13005,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13460,7 +13034,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13490,7 +13063,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13520,7 +13092,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13550,7 +13121,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13582,7 +13152,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13612,7 +13181,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13642,7 +13210,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13672,7 +13239,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13702,7 +13268,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13732,7 +13297,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13762,7 +13326,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13792,7 +13355,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13822,7 +13384,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13852,7 +13413,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13884,7 +13444,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13914,7 +13473,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13944,7 +13502,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -13974,7 +13531,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14004,7 +13560,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14034,7 +13589,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14064,7 +13618,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14094,7 +13647,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14124,7 +13676,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14154,7 +13705,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14186,7 +13736,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14216,7 +13765,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14246,7 +13794,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14276,7 +13823,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14306,7 +13852,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14336,7 +13881,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14366,7 +13910,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14396,7 +13939,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14426,7 +13968,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14456,7 +13997,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14488,7 +14028,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14518,7 +14057,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14548,7 +14086,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14578,7 +14115,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14608,7 +14144,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14638,7 +14173,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14668,7 +14202,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14698,7 +14231,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14728,7 +14260,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14758,7 +14289,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14790,7 +14320,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14820,7 +14349,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14850,7 +14378,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14880,7 +14407,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14910,7 +14436,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14940,7 +14465,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -14970,7 +14494,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15000,7 +14523,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15030,7 +14552,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15060,7 +14581,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15092,7 +14612,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15122,7 +14641,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15152,7 +14670,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15182,7 +14699,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15212,7 +14728,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15242,7 +14757,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15272,7 +14786,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15302,7 +14815,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15332,7 +14844,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15362,7 +14873,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15394,7 +14904,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15424,7 +14933,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15454,7 +14962,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15484,7 +14991,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15514,7 +15020,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15544,7 +15049,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15574,7 +15078,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15604,7 +15107,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15634,7 +15136,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15664,7 +15165,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15696,7 +15196,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15726,7 +15225,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15756,7 +15254,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15786,7 +15283,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15816,7 +15312,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15846,7 +15341,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15876,7 +15370,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15906,7 +15399,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15936,7 +15428,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15966,7 +15457,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -15998,7 +15488,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16028,7 +15517,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16058,7 +15546,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16088,7 +15575,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16118,7 +15604,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16148,7 +15633,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16178,7 +15662,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16208,7 +15691,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16238,7 +15720,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16268,7 +15749,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16300,7 +15780,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16330,7 +15809,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16360,7 +15838,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16390,7 +15867,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16420,7 +15896,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16450,7 +15925,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16480,7 +15954,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16510,7 +15983,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16540,7 +16012,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16570,7 +16041,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16602,7 +16072,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16632,7 +16101,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16662,7 +16130,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16692,7 +16159,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16722,7 +16188,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16752,7 +16217,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16782,7 +16246,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16812,7 +16275,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16842,7 +16304,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16872,7 +16333,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16904,7 +16364,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16934,7 +16393,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16964,7 +16422,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -16994,7 +16451,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17024,7 +16480,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17054,7 +16509,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17084,7 +16538,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17114,7 +16567,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17144,7 +16596,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17174,7 +16625,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17206,7 +16656,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17236,7 +16685,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17266,7 +16714,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17296,7 +16743,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17326,7 +16772,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17356,7 +16801,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17386,7 +16830,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17416,7 +16859,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17446,7 +16888,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15
@@ -17476,7 +16917,6 @@ MonoBehaviour:
       attackFireCount: 1
       attack: 0
       attackCool: 3
-      projectileWidth: 0
       projectileSpeed: 0
       airCount: 3
       airMaintenanceTime: 15

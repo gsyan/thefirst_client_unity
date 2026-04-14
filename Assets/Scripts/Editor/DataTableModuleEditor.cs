@@ -274,7 +274,6 @@ public class DataTableModuleEditor : Editor
         module.attackCool = EditorGUILayout.FloatField("Cool", module.attackCool);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.projectileWidth = EditorGUILayout.FloatField("Projectile Width", module.projectileWidth);
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
@@ -372,7 +371,6 @@ public class DataTableModuleEditor : Editor
         module.attackCool = EditorGUILayout.FloatField("Attack Cool", module.attackCool);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.projectileWidth = EditorGUILayout.FloatField("Projectile Width", module.projectileWidth);
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
@@ -549,7 +547,7 @@ public class DataTableModuleEditor : Editor
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("sub_type,level,health,repair,speed,attack,attack_count,attack_cool,projectile_width,projectile_speed,air_count,air_maintenance_time,air_launch_dist,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,cost_m,cost_mr,cost_me,cost_md,description");
+        sb.AppendLine("sub_type,level,health,repair,speed,attack,attack_count,attack_cool,projectile_speed,air_count,air_maintenance_time,air_launch_dist,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,cost_m,cost_mr,cost_me,cost_md,description");
 
         var allGroups = new List<ModuleSubTypeGroup>();
         allGroups.AddRange(dataTableModule.BodyGroups);
@@ -563,11 +561,11 @@ public class DataTableModuleEditor : Editor
             foreach (var d in group.modules)
             {
                 sb.AppendLine(string.Format(ic,
-                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25}",
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24}",
                     (int)d.moduleSubType, d.moduleLevel,
                     d.health, d.repair, d.speed,
                     d.attack, d.attackFireCount, d.attackCool,
-                    d.projectileWidth, d.projectileSpeed,
+                    d.projectileSpeed,
                     d.airCount, d.airMaintenanceTime, d.airLaunchDist,
                     d.airHealth, d.airAttack, d.airAttackRange,
                     d.airAttackCool, d.airSpeed, d.airAmmo,
