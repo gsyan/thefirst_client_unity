@@ -205,6 +205,8 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
     {
         EModuleSubType currentSubType = m_sourceModule.GetModuleSubType();
         int playerTechLevel = DataManager.Instance.m_currentCharacter?.GetTechLevel() ?? 0;
+        ModuleResearchData currentNode = DataManager.Instance.m_dataTableResearch.GetResearchData(currentSubType);
+        string currentResearchId = currentNode?.researchId ?? "";
 
         for (int i = 0; i < m_currentNodeList.Count; i++)
         {
@@ -214,14 +216,20 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             bool isSelected = node.moduleSubType == m_selectedSubType;
             EResearchNodeState state;
 
+            bool isDirectNextStep = string.IsNullOrEmpty(currentResearchId) == false
+                && node.prerequisiteIds != null
+                && node.prerequisiteIds.Contains(currentResearchId);
+
             if (node.moduleSubType.GetTechTier() > playerTechLevel)
                 state = EResearchNodeState.Locked;       // 어둠 = 기술레벨 부족
             else if (node.moduleSubType == currentSubType)
                 state = EResearchNodeState.Current;      // 파랑 = 현재 장착
             else if (m_sourceModule.IsSubTypeFree(node.moduleSubType))
-                state = EResearchNodeState.Researched;   // 초록 = 비용 없음
+                state = EResearchNodeState.Researched;   // 초록 = 비용 없음 (이미 해금)
+            else if (isDirectNextStep == true)
+                state = EResearchNodeState.Researchable; // 회색 = MR 비용 (직접 다음 단계)
             else
-                state = EResearchNodeState.Researchable; // 회색 = MR 비용
+                state = EResearchNodeState.Locked;       // 어둠 = 직접 다음 단계 아님
 
             item.SetNodeState(state, isSelected);
         }
@@ -254,19 +262,39 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         }
         else
         {
-            // 신규 unlock → max level 조건 + 기술레벨 + 비용 동시 체크
+            // 신규 unlock → 직접 다음 단계 + max level 조건 + 기술레벨 + 비용 동시 체크
+            ModuleResearchData currentNode = DataManager.Instance.m_dataTableResearch.GetResearchData(currentSubType);
+            ModuleResearchData selectedNode = DataManager.Instance.m_dataTableResearch.GetResearchData(m_selectedSubType);
+            bool isDirectNextStep = selectedNode != null && currentNode != null
+                && selectedNode.prerequisiteIds != null
+                && selectedNode.prerequisiteIds.Contains(currentNode.researchId);
+            if (isDirectNextStep == false) canConfirm = false;
+
+            // 선택된 서브타입의 prerequisite 서브타입 (레벨 조건 표시 기준)
+            EModuleSubType prereqSubType = currentSubType;
+            if (selectedNode?.prerequisiteIds != null && selectedNode.prerequisiteIds.Count > 0)
+            {
+                string prereqId = selectedNode.prerequisiteIds[0];
+                var prereqNode = DataManager.Instance.m_dataTableResearch.ResearchDataList.Find(r => r.researchId == prereqId);
+                if (prereqNode != null) prereqSubType = prereqNode.moduleSubType;
+            }
+
             int currentLevel = m_sourceModule.GetModuleLevel();
-            int maxLevel = DataManager.Instance.GetMaxModuleLevel(currentSubType);
+            int maxLevel = DataManager.Instance.GetMaxModuleLevel(prereqSubType);
             bool isMaxLevel = currentLevel >= maxLevel;
             if (isMaxLevel == false) canConfirm = false;
 
             CostStruct cost = DataManager.Instance.m_dataTableResearch.GetResearchCost(m_selectedSubType);
-            long have = DataManager.Instance.m_currentCharacter?.m_characterInfo?.mineralRare ?? 0;
-            bool insufficient = have < cost.mineralRare;
+            var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
+            bool insM  = (info?.mineral      ?? 0) < cost.mineral;
+            bool insMR = (info?.mineralRare  ?? 0) < cost.mineralRare;
+            bool insME = (info?.mineralExotic?? 0) < cost.mineralExotic;
+            bool insMD = (info?.mineralDark  ?? 0) < cost.mineralDark;
+            bool insufficient = insM || insMR || insME || insMD;
             if (insufficient == true) canConfirm = false;
 
-            // 현재 장착 서브타입 이름 (동적 생성)
-            string subtypeName = currentSubType.GetLocalizedName();
+            // prerequisite 서브타입 이름 기준으로 레벨 조건 표시
+            string subtypeName = prereqSubType.GetLocalizedName();
             string levelMsg = LocalizationManager.Instance.Get(
                 "module_subtype_max_level_required",
                 new object[] { subtypeName, maxLevel, currentLevel });
@@ -282,13 +310,34 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             sb.Append(techLine);
             sb.Append("\n\n");
 
-            string costLine = insufficient
-                ? $"<sprite name=\"IconMineralR\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineralRare)}</color>"
-                : $"<sprite name=\"IconMineralR\"> {CommonUtility.FormatBigNumber(cost.mineralRare)}";
-            sb.Append(costLine);
+            // 4종 재화 비용 — 한 줄로 이어서 표시, 0이면 생략
+            var costSb = new System.Text.StringBuilder();
+            if (cost.mineral > 0)
+                costSb.Append(insM ? $"<sprite name=\"IconMineral\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineral)}</color>" : $"<sprite name=\"IconMineral\"> {CommonUtility.FormatBigNumber(cost.mineral)}");
+            if (cost.mineralRare > 0)
+            {
+                if (costSb.Length > 0) costSb.Append("  ");
+                costSb.Append(insMR ? $"<sprite name=\"IconMineralR\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineralRare)}</color>" : $"<sprite name=\"IconMineralR\"> {CommonUtility.FormatBigNumber(cost.mineralRare)}");
+            }
+            if (cost.mineralExotic > 0)
+            {
+                if (costSb.Length > 0) costSb.Append("  ");
+                costSb.Append(insME ? $"<sprite name=\"IconMineralE\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineralExotic)}</color>" : $"<sprite name=\"IconMineralE\"> {CommonUtility.FormatBigNumber(cost.mineralExotic)}");
+            }
+            if (cost.mineralDark > 0)
+            {
+                if (costSb.Length > 0) costSb.Append("  ");
+                costSb.Append(insMD ? $"<sprite name=\"IconMineralD\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineralDark)}</color>" : $"<sprite name=\"IconMineralD\"> {CommonUtility.FormatBigNumber(cost.mineralDark)}");
+            }
+            if (costSb.Length > 0) sb.Append(costSb);
         }
 
-        if (m_costText != null) m_costText.text = sb.ToString().TrimEnd();
+        if (m_costText != null)
+        {
+            m_costText.text = sb.ToString().TrimEnd();
+            // 텍스트 변경 후 부모 레이아웃 갱신
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_costText.transform.parent as RectTransform);
+        }
 
         if (m_confirmButton != null) m_confirmButton.interactable = canConfirm;
     }

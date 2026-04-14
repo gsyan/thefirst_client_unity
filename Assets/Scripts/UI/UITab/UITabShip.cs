@@ -574,33 +574,23 @@ public class UITabShip : UITabBase
         else
         {
             m_unlockModuleButton.gameObject.SetActive(false);
-            m_levelUpModuleButton.gameObject.SetActive(true);
-            m_subTypeManageButton.gameObject.SetActive(true);
 
             EModuleSubType subType    = m_selectedModule.GetModuleSubType();
             int nextLevel             = m_selectedModule.GetModuleLevel() + 1;
             ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
             bool isMaxLevel           = moduleDataNext == null;
 
-            m_levelUpModuleButton.interactable = !isMaxLevel;
+            // MAX 레벨이면 서브타입 변경 버튼, 아니면 레벨업 버튼
+            m_levelUpModuleButton.gameObject.SetActive(!isMaxLevel);
+            m_subTypeManageButton.gameObject.SetActive(isMaxLevel);
 
-            if (m_levelUpModuleButtonText != null)
+            if (!isMaxLevel && m_levelUpModuleButtonText != null)
             {
-                if (isMaxLevel)
-                {
-                    CommonUtility.SetUILocText(m_levelUpModuleButtonText, "max_level");
-                }
-                else if (DataManager.Instance.GetModuleUpgradeCost(subType, m_selectedModule.GetModuleLevel(), out CostStruct cost))
-                {
+                if (DataManager.Instance.GetModuleUpgradeCost(subType, m_selectedModule.GetModuleLevel(), out CostStruct cost))
                     m_levelUpModuleButtonText.text = $"{LocalizationManager.Instance.Get("ship_module_levelup")}";
-                }
                 else
-                {
                     CommonUtility.SetUILocText(m_levelUpModuleButtonText, "ship_module_levelup");
-                }
             }
-
-            m_subTypeManageButton.interactable = true;
 
             if (m_moduleStatsText != null)
             {
