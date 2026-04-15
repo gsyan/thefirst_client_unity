@@ -80,31 +80,31 @@ public class UIPopupConfirm : UIPopupBase
         {
             bool ins = info != null && techLevel < cost.techLevel;
             if (ins == true) canAfford = false;
-            sb.Append($"<sprite name=\"gears\"> {C(ins, CommonUtility.FormatBigNumber(cost.techLevel))}\n\n");
+            sb.Append($"{CommonUtility.Sprite("gears")} {C(ins, CommonUtility.FormatBigNumber(cost.techLevel))}\n\n");
         }
         if (cost.mineral > 0)
         {
             bool ins = info != null && info.mineral < cost.mineral;
             if (ins == true) canAfford = false;
-            sb.Append($"<sprite name=\"IconMineral\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}\n\n");
+            sb.Append($"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}\n\n");
         }
         if (cost.mineralRare > 0)
         {
             bool ins = info != null && info.mineralRare < cost.mineralRare;
             if (ins == true) canAfford = false;
-            sb.Append($"<sprite name=\"IconMineralR\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}\n\n");
+            sb.Append($"{CommonUtility.Sprite("minerals")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}\n\n");
         }
         if (cost.mineralExotic > 0)
         {
             bool ins = info != null && info.mineralExotic < cost.mineralExotic;
             if (ins == true) canAfford = false;
-            sb.Append($"<sprite name=\"IconMineralE\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}\n\n");
+            sb.Append($"{CommonUtility.Sprite("emerald")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}\n\n");
         }
         if (cost.mineralDark > 0)
         {
             bool ins = info != null && info.mineralDark < cost.mineralDark;
             if (ins == true) canAfford = false;
-            sb.Append($"<sprite name=\"IconMineralD\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n\n");
+            sb.Append($"{CommonUtility.Sprite("fire-gem")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n\n");
         }
 
         return sb.ToString().TrimEnd();

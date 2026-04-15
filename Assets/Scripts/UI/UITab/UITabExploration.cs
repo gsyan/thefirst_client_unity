@@ -345,7 +345,9 @@ private void SetupGroupTabs()
     private void SetEnterZoneState(EEnterZoneState enterZoneState)
     {
         m_enterZoneState = enterZoneState;
-        m_safeZoneButton.gameObject.SetActive(enterZoneState == EEnterZoneState.zone);
+        bool inZone = enterZoneState == EEnterZoneState.zone;
+        if (m_safeZoneButton != null) m_safeZoneButton.gameObject.SetActive(inZone);
+        if (m_zoneTryButton  != null) m_zoneTryButton.gameObject.SetActive(!inZone);
     }
 
     private void OnMyFleetWiped()
@@ -428,6 +430,7 @@ private void SetupGroupTabs()
     {
         if (m_selectedZoneStage == null) return;
         if (m_enterZoneState == EEnterZoneState.warp) return;
+        UIManager.Instance.HideCurrentPanel();
         if (m_enterZoneState == EEnterZoneState.zone && m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZoneStage.zoneName) return;
 
         if (m_enterZoneState == EEnterZoneState.zone)

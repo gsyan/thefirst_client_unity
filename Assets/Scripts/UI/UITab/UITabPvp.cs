@@ -172,15 +172,15 @@ public class UITabPvp : UITabBase
         string message = LocalizationManager.Instance.Get("pvp_opponent_info", new object[] { opponent.pvpScore, opponent.rank });
 
         var sb = new System.Text.StringBuilder();
-        sb.Append($"<sprite name=\"IconShips\"> {shipCount}");
+        sb.Append($"{CommonUtility.Sprite("spiky-field")} {shipCount}");
         sb.Append("\n\n");
-        sb.Append($"<sprite name=\"IconHp\"> {CommonUtility.FormatBigNumber(stats.health)}");
+        sb.Append($"{CommonUtility.Sprite("techno-heart")} {CommonUtility.FormatBigNumber(stats.health)}");
         sb.Append("\n\n");
-        sb.Append($"<sprite name=\"bubbling-beam\"> {CommonUtility.FormatBigNumber(stats.attack)}");
+        sb.Append($"{CommonUtility.Sprite("bubbling-beam")} {CommonUtility.FormatBigNumber(stats.attack)}");
         if (stats.airCount > 0)
         {
             sb.Append("\n\n");
-            sb.Append($"\n<sprite name=\"IconAircraft\"> {stats.airCount}");
+            sb.Append($"\n{CommonUtility.Sprite("jet-fighter")} {stats.airCount}");
         }
         
         UIManager.Instance.ShowConfirmPopup(title, message, sb.ToString(), null,

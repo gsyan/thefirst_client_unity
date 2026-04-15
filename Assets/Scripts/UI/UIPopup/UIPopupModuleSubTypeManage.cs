@@ -305,29 +305,29 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
             // 기술 레벨 조건 (부족하면 빨간색)
             string techLine = hasTechLevel
-                ? $"<sprite name=\"gears\"> Lv.{requiredTechTier}"
-                : $"<sprite name=\"gears\"> <color=red>Lv.{requiredTechTier}</color>";
+                ? $"{CommonUtility.Sprite("gears")} Lv.{requiredTechTier}"
+                : $"{CommonUtility.Sprite("gears")} <color=red>Lv.{requiredTechTier}</color>";
             sb.Append(techLine);
             sb.Append("\n\n");
 
             // 4종 재화 비용 — 한 줄로 이어서 표시, 0이면 생략
             var costSb = new System.Text.StringBuilder();
             if (cost.mineral > 0)
-                costSb.Append(insM ? $"<sprite name=\"IconMineral\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineral)}</color>" : $"<sprite name=\"IconMineral\"> {CommonUtility.FormatBigNumber(cost.mineral)}");
+                costSb.Append(insM ? $"{CommonUtility.Sprite("crystal-growth")} <color=red>{CommonUtility.FormatBigNumber(cost.mineral)}</color>" : $"{CommonUtility.Sprite("crystal-growth")} {CommonUtility.FormatBigNumber(cost.mineral)}");
             if (cost.mineralRare > 0)
             {
                 if (costSb.Length > 0) costSb.Append("  ");
-                costSb.Append(insMR ? $"<sprite name=\"IconMineralR\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineralRare)}</color>" : $"<sprite name=\"IconMineralR\"> {CommonUtility.FormatBigNumber(cost.mineralRare)}");
+                costSb.Append(insMR ? $"{CommonUtility.Sprite("minerals")} <color=red>{CommonUtility.FormatBigNumber(cost.mineralRare)}</color>" : $"{CommonUtility.Sprite("minerals")} {CommonUtility.FormatBigNumber(cost.mineralRare)}");
             }
             if (cost.mineralExotic > 0)
             {
                 if (costSb.Length > 0) costSb.Append("  ");
-                costSb.Append(insME ? $"<sprite name=\"IconMineralE\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineralExotic)}</color>" : $"<sprite name=\"IconMineralE\"> {CommonUtility.FormatBigNumber(cost.mineralExotic)}");
+                costSb.Append(insME ? $"{CommonUtility.Sprite("emerald")} <color=red>{CommonUtility.FormatBigNumber(cost.mineralExotic)}</color>" : $"{CommonUtility.Sprite("emerald")} {CommonUtility.FormatBigNumber(cost.mineralExotic)}");
             }
             if (cost.mineralDark > 0)
             {
                 if (costSb.Length > 0) costSb.Append("  ");
-                costSb.Append(insMD ? $"<sprite name=\"IconMineralD\"> <color=red>{CommonUtility.FormatBigNumber(cost.mineralDark)}</color>" : $"<sprite name=\"IconMineralD\"> {CommonUtility.FormatBigNumber(cost.mineralDark)}");
+                costSb.Append(insMD ? $"{CommonUtility.Sprite("fire-gem")} <color=red>{CommonUtility.FormatBigNumber(cost.mineralDark)}</color>" : $"{CommonUtility.Sprite("fire-gem")} {CommonUtility.FormatBigNumber(cost.mineralDark)}");
             }
             if (costSb.Length > 0) sb.Append(costSb);
         }

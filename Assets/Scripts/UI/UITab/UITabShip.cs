@@ -23,13 +23,6 @@ public class UITabShip : UITabBase
     [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer;
     
 
-    [Header("모듈 맵 — 행 레이블 (sprite icon)")]
-    [SerializeField] private TMP_Text m_labelBody;
-    [SerializeField] private TMP_Text m_labelBeam;
-    [SerializeField] private TMP_Text m_labelMissile;
-    [SerializeField] private TMP_Text m_labelHanger;
-    
-
     [Header("함선 스탯 디테일")]
     [SerializeField] private Button m_btnShipStatsDetail;
 
@@ -75,11 +68,6 @@ public class UITabShip : UITabBase
         m_selectorsMissile = m_moduleMissileSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         m_selectorsHanger  = m_moduleHangerSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         
-        if (m_labelBody    != null) m_labelBody.text    = "<sprite name=\"IconSpaceShip\">";
-        if (m_labelBeam    != null) m_labelBeam.text    = "<sprite name=\"IconBeam\">";
-        if (m_labelMissile != null) m_labelMissile.text = "<sprite name=\"IconMissile\">";
-        if (m_labelHanger  != null) m_labelHanger.text  = "<sprite name=\"IconAircraft\">";
-
         if (m_btnPrevShip != null) m_btnPrevShip.onClick.AddListener(OnPrevShipClicked);
         if (m_btnNextShip != null) m_btnNextShip.onClick.AddListener(OnNextShipClicked);
 
@@ -232,10 +220,10 @@ public class UITabShip : UITabBase
         if (m_textShipStats1 != null)
         {
             m_textShipStats1.text =
-                $"<sprite name=\"bubbling-beam\"> {statsCur.attack:F0}  " +
-                $"<sprite name=\"IconHp\"> {statsOrg.health:F0}  " +
-                $"<sprite name=\"IconSpeed\"> {statsCur.speed:F0}  " +
-                $"<sprite name=\"IconRepair\"> {statsCur.repair:F0}";
+                $"{CommonUtility.Sprite("bubbling-beam")} {statsCur.attack:F0}  " +
+                $"{CommonUtility.Sprite("techno-heart")} {statsOrg.health:F0}  " +
+                $"{CommonUtility.Sprite("rocket-thruster")} {statsCur.speed:F0}  " +
+                $"{CommonUtility.Sprite("auto-repair")} {statsCur.repair:F0}";
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats1.transform.parent as RectTransform);
         }
 
@@ -246,8 +234,8 @@ public class UITabShip : UITabBase
             if (hasAircraft)
             {
                 m_textShipStats2.text =
-                    $"<sprite name=\"IconAircraftAttack\"> {statsCur.airAttack:F0}  " +
-                    $"<sprite name=\"IconAircraft\"> {statsOrg.airCount}";
+                    $"{CommonUtility.Sprite("strafe")} {statsCur.airAttack:F0}  " +
+                    $"{CommonUtility.Sprite("jet-fighter")} {statsOrg.airCount}";
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats2.transform.parent as RectTransform);
             }
         }
@@ -261,21 +249,16 @@ public class UITabShip : UITabBase
         CapabilityProfile cur = m_selectedShip.m_spaceShipStatsCur;
 
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"<sprite name=\"bubbling-beam\"> (Attack)  {cur.attack:F0}");
-        sb.AppendLine();
-        sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {org.health:F0}");
-        sb.AppendLine();
-        sb.AppendLine($"<sprite name=\"IconSpeed\"> (Speed)  {cur.speed:F0}");
-        sb.AppendLine();
-        sb.Append    ($"<sprite name=\"IconRepair\"> (Repair)  {cur.repair:F0}");
+        sb.AppendLine($"{CommonUtility.Sprite("bubbling-beam")} (Attack)  {cur.attack:F0}");
+        sb.AppendLine($"{CommonUtility.Sprite("techno-heart")} (HP)  {org.health:F0}");
+        sb.AppendLine($"{CommonUtility.Sprite("rocket-thruster")} (Speed)  {cur.speed:F0}");
+        sb.Append    ($"{CommonUtility.Sprite("auto-repair")} (Repair)  {cur.repair:F0}");
 
         if (org.airCount > 0)
         {
             sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.airAttack:F0}");
-            sb.AppendLine();
-            sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {org.airCount:F0}");
+            sb.AppendLine($"{CommonUtility.Sprite("strafe")} (Aircraft Attack)  {cur.airAttack:F0}");
+            sb.AppendLine($"{CommonUtility.Sprite("jet-fighter")} (Aircraft Count)  {org.airCount:F0}");
         }
 
         UIManager.Instance.ShowAlertPopup(m_selectedShip.m_shipInfo.shipName, sb.ToString(), null);

@@ -255,21 +255,20 @@ public static class CommonUtility
 
         if (moduleType == EModuleType.body)
         {
-            lines.Add($"<sprite name=\"IconHp\"> {V(cur.health, nxt?.health ?? 0f)}");
-            lines.Add($"<sprite name=\"IconRepair\"> {V(cur.repair, nxt?.repair ?? 0f)}");
-            lines.Add($"<sprite name=\"IconSpeed\"> {V(cur.speed, nxt?.speed ?? 0f)}");
+            lines.Add($"{Sprite("techno-heart")} {V(cur.health, nxt?.health ?? 0f)}");
+            lines.Add($"{Sprite("auto-repair")} {V(cur.repair, nxt?.repair ?? 0f)}");
+            lines.Add($"{Sprite("rocket-thruster")} {V(cur.speed, nxt?.speed ?? 0f)}");
         }
         else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
         {
-            lines.Add($"<sprite name=\"bubbling-beam\"> {V(cur.attack, nxt?.attack ?? 0f)}");
+            lines.Add($"{Sprite("bubbling-beam")} {V(cur.attack, nxt?.attack ?? 0f)}");
         }
         else if (moduleType == EModuleType.hanger)
         {
-            lines.Add($"<sprite name=\"IconAircraftAttack\"> {V(cur.airAttack, nxt?.airAttack ?? 0f)}");
-            lines.Add($"<sprite name=\"IconAircraftHp\"> {V(cur.airHealth, nxt?.airHealth ?? 0f)}");
-            lines.Add($"<sprite name=\"IconAircraftSpeed\"> {V(cur.airSpeed, nxt?.airSpeed ?? 0f)}");
-            lines.Add($"<sprite name=\"IconAircraft\"> {V(cur.airCount, nxt?.airCount ?? 0f)}");
-            lines.Add($"<sprite name=\"IconLaunch\"> {V(cur.attackFireCount, nxt?.attackFireCount ?? 0f)}");
+            lines.Add($"{Sprite("strafe")} {V(cur.airAttack, nxt?.airAttack ?? 0f)}");
+            lines.Add($"{Sprite("heart-wings")} {V(cur.airHealth, nxt?.airHealth ?? 0f)}");
+            lines.Add($"{Sprite("light-fighter")} {V(cur.airSpeed, nxt?.airSpeed ?? 0f)}");
+            lines.Add($"{Sprite("jet-fighter")} {V(cur.airCount, nxt?.airCount ?? 0f)}");
         }
 
         return string.Join("\n\n", lines);

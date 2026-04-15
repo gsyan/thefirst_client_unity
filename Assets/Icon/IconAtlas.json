@@ -801,9 +801,34 @@
       }
     },
     {
-      "filename": "magnifying-glass",
+      "filename": "light-fighter",
       "frame": {
         "x": 662,
+        "y": 398,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "magnifying-glass",
+      "frame": {
+        "x": 794,
         "y": 398,
         "w": 128,
         "h": 128
@@ -828,7 +853,7 @@
     {
       "filename": "mine-wagon",
       "frame": {
-        "x": 794,
+        "x": 926,
         "y": 398,
         "w": 128,
         "h": 128
@@ -853,7 +878,7 @@
     {
       "filename": "minerals",
       "frame": {
-        "x": 926,
+        "x": 1058,
         "y": 398,
         "w": 128,
         "h": 128
@@ -878,8 +903,8 @@
     {
       "filename": "missile-pod",
       "frame": {
-        "x": 1058,
-        "y": 398,
+        "x": 2,
+        "y": 530,
         "w": 128,
         "h": 128
       },
@@ -903,7 +928,7 @@
     {
       "filename": "missile-swarm",
       "frame": {
-        "x": 2,
+        "x": 134,
         "y": 530,
         "w": 128,
         "h": 128
@@ -928,7 +953,7 @@
     {
       "filename": "padlock",
       "frame": {
-        "x": 134,
+        "x": 266,
         "y": 530,
         "w": 128,
         "h": 128
@@ -953,7 +978,7 @@
     {
       "filename": "pause-button",
       "frame": {
-        "x": 266,
+        "x": 398,
         "y": 530,
         "w": 128,
         "h": 128
@@ -978,7 +1003,7 @@
     {
       "filename": "perspective-dice-six-faces-random",
       "frame": {
-        "x": 398,
+        "x": 530,
         "y": 530,
         "w": 128,
         "h": 128
@@ -1003,7 +1028,7 @@
     {
       "filename": "plain-arrow",
       "frame": {
-        "x": 530,
+        "x": 662,
         "y": 530,
         "w": 128,
         "h": 128
@@ -1028,7 +1053,7 @@
     {
       "filename": "plain-circle",
       "frame": {
-        "x": 662,
+        "x": 794,
         "y": 530,
         "w": 128,
         "h": 128
@@ -1053,7 +1078,7 @@
     {
       "filename": "plain-square",
       "frame": {
-        "x": 794,
+        "x": 926,
         "y": 530,
         "w": 128,
         "h": 128
@@ -1078,7 +1103,7 @@
     {
       "filename": "play-button",
       "frame": {
-        "x": 926,
+        "x": 1058,
         "y": 530,
         "w": 128,
         "h": 128
@@ -1103,8 +1128,8 @@
     {
       "filename": "podium",
       "frame": {
-        "x": 1058,
-        "y": 530,
+        "x": 2,
+        "y": 662,
         "w": 128,
         "h": 128
       },
@@ -1128,7 +1153,7 @@
     {
       "filename": "pokecog",
       "frame": {
-        "x": 2,
+        "x": 134,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1153,7 +1178,7 @@
     {
       "filename": "position-marker",
       "frame": {
-        "x": 134,
+        "x": 266,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1178,7 +1203,7 @@
     {
       "filename": "rocket-flight",
       "frame": {
-        "x": 266,
+        "x": 398,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1203,7 +1228,7 @@
     {
       "filename": "rocket-thruster",
       "frame": {
-        "x": 398,
+        "x": 530,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1228,7 +1253,7 @@
     {
       "filename": "rocket",
       "frame": {
-        "x": 530,
+        "x": 662,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1253,7 +1278,7 @@
     {
       "filename": "satellite",
       "frame": {
-        "x": 662,
+        "x": 794,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1278,7 +1303,7 @@
     {
       "filename": "share",
       "frame": {
-        "x": 794,
+        "x": 926,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1303,7 +1328,7 @@
     {
       "filename": "sinusoidal-beam",
       "frame": {
-        "x": 926,
+        "x": 1058,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1328,8 +1353,8 @@
     {
       "filename": "slashed-shield",
       "frame": {
-        "x": 1058,
-        "y": 662,
+        "x": 2,
+        "y": 794,
         "w": 128,
         "h": 128
       },
@@ -1353,7 +1378,7 @@
     {
       "filename": "solar-system",
       "frame": {
-        "x": 2,
+        "x": 134,
         "y": 794,
         "w": 128,
         "h": 128
@@ -1378,7 +1403,7 @@
     {
       "filename": "speaker-off",
       "frame": {
-        "x": 134,
+        "x": 266,
         "y": 794,
         "w": 128,
         "h": 128
@@ -1403,7 +1428,7 @@
     {
       "filename": "speaker",
       "frame": {
-        "x": 266,
+        "x": 398,
         "y": 794,
         "w": 128,
         "h": 128
@@ -1428,7 +1453,7 @@
     {
       "filename": "spiky-field",
       "frame": {
-        "x": 398,
+        "x": 530,
         "y": 794,
         "w": 128,
         "h": 128
@@ -1453,7 +1478,7 @@
     {
       "filename": "split-cross",
       "frame": {
-        "x": 530,
+        "x": 662,
         "y": 794,
         "w": 128,
         "h": 128
@@ -1478,7 +1503,7 @@
     {
       "filename": "star-gate",
       "frame": {
-        "x": 662,
+        "x": 794,
         "y": 794,
         "w": 128,
         "h": 128
@@ -1503,7 +1528,7 @@
     {
       "filename": "strafe",
       "frame": {
-        "x": 794,
+        "x": 926,
         "y": 794,
         "w": 128,
         "h": 128
@@ -1528,7 +1553,7 @@
     {
       "filename": "striking-balls",
       "frame": {
-        "x": 926,
+        "x": 1058,
         "y": 794,
         "w": 128,
         "h": 128
@@ -1553,31 +1578,6 @@
     {
       "filename": "talk",
       "frame": {
-        "x": 1058,
-        "y": 794,
-        "w": 128,
-        "h": 128
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 128
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 128
-      },
-      "pivot": {
-        "x": 0.0,
-        "y": 0.0
-      }
-    },
-    {
-      "filename": "targeting",
-      "frame": {
         "x": 2,
         "y": 926,
         "w": 128,
@@ -1601,7 +1601,7 @@
       }
     },
     {
-      "filename": "techno-heart",
+      "filename": "targeting",
       "frame": {
         "x": 134,
         "y": 926,
@@ -1626,9 +1626,34 @@
       }
     },
     {
-      "filename": "trash-can",
+      "filename": "techno-heart",
       "frame": {
         "x": 266,
+        "y": 926,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "trash-can",
+      "frame": {
+        "x": 398,
         "y": 926,
         "w": 128,
         "h": 128

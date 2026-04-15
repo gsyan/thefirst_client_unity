@@ -74,7 +74,7 @@ public class UIPopupLevelup : UIPopupBase
         if (m_titleText != null)
             m_titleText.text = LocalizationManager.Instance.Get("tech_level_levelup");
         if (m_subjectNameText != null)
-            m_subjectNameText.text = $"<sprite name=\"gears\"> Tech Level\n<color=#666666>─────────────</color>";
+            m_subjectNameText.text = $"{CommonUtility.Sprite("gears")} Tech Level\n<color=#666666>─────────────</color>";
 
         ShowInternal(currentTechLevel, onConfirm, onCancel);
     }
@@ -174,8 +174,8 @@ public class UIPopupLevelup : UIPopupBase
             int currentShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(m_currentLevel);
             int targetShips  = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(m_targetLevel);
 
-            sb.Append($"<sprite name=\"IconMineralCap\">  {currentCap}h → {targetCap}h\n\n");
-            sb.Append($"<sprite name=\"IconShips\"> {currentShips} → {targetShips}");
+            sb.Append($"{CommonUtility.Sprite("clockwork")}  {currentCap}h → {targetCap}h\n\n");
+            sb.Append($"{CommonUtility.Sprite("spiky-field")} {currentShips} → {targetShips}");
         }
 
         // 비용 (공통)
@@ -188,22 +188,22 @@ public class UIPopupLevelup : UIPopupBase
             if (cost.mineral > 0)
             {
                 bool ins = info != null && info.mineral < cost.mineral;
-                costSb.Append($"<sprite name=\"IconMineral\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}\n\n");
+                costSb.Append($"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}\n\n");
             }
             if (cost.mineralRare > 0)
             {
                 bool ins = info != null && info.mineralRare < cost.mineralRare;
-                costSb.Append($"<sprite name=\"IconMineralR\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}\n\n");
+                costSb.Append($"{CommonUtility.Sprite("minerals")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}\n\n");
             }
             if (cost.mineralExotic > 0)
             {
                 bool ins = info != null && info.mineralExotic < cost.mineralExotic;
-                costSb.Append($"<sprite name=\"IconMineralE\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}\n\n");
+                costSb.Append($"{CommonUtility.Sprite("emerald")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}\n\n");
             }
             if (cost.mineralDark > 0)
             {
                 bool ins = info != null && info.mineralDark < cost.mineralDark;
-                costSb.Append($"<sprite name=\"IconMineralD\"> {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n\n");
+                costSb.Append($"{CommonUtility.Sprite("fire-gem")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n\n");
             }
 
             string costStr = costSb.ToString().TrimEnd();

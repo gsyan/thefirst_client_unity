@@ -120,7 +120,7 @@ public class ZoneMapCell : MonoBehaviour
         {
             if (value <= 0f) return;
             if (sb.Length > 0) sb.Append('\n');
-            sb.Append($"<sprite name=\"{icon}\"> {CommonUtility.FormatBigNumber(value)}/h");
+            sb.Append($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(value)}/h");
         }
         AppendIfPositive("IconMineralMini",  m_zoneStageConfig.mineralPerHour);
         AppendIfPositive("IconMineralRMini", m_zoneStageConfig.mineralRarePerHour);
