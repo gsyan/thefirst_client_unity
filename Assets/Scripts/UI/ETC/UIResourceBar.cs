@@ -49,10 +49,10 @@ public class UIResourceBar : MonoBehaviour
     private void RefreshText()
     {
         m_resourceText.text =
-            $"<sprite name=\"IconMineral\"> {CommonUtility.FormatBigNumber(m_mineral)}   " +
-            $"<sprite name=\"IconMineralR\"> {CommonUtility.FormatBigNumber(m_mineralRare)}   " +
-            $"<sprite name=\"IconMineralE\"> {CommonUtility.FormatBigNumber(m_mineralExotic)}   " +
-            $"<sprite name=\"IconMineralD\"> {CommonUtility.FormatBigNumber(m_mineralDark)}";
+            $"{CommonUtility.Sprite("crystal-growth")} {CommonUtility.FormatBigNumber(m_mineral)}   " +
+            $"{CommonUtility.Sprite("minerals")} {CommonUtility.FormatBigNumber(m_mineralRare)}   " +
+            $"{CommonUtility.Sprite("emerald")} {CommonUtility.FormatBigNumber(m_mineralExotic)}   " +
+            $"{CommonUtility.Sprite("fire-gem")} {CommonUtility.FormatBigNumber(m_mineralDark)}";
     }
 
     public void OnMineralChanged(long mineral)       { m_mineral       = mineral;       RefreshText(); }

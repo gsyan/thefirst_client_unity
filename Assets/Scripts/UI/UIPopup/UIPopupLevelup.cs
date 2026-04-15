@@ -74,7 +74,7 @@ public class UIPopupLevelup : UIPopupBase
         if (m_titleText != null)
             m_titleText.text = LocalizationManager.Instance.Get("tech_level_levelup");
         if (m_subjectNameText != null)
-            m_subjectNameText.text = $"<sprite name=\"IconTech\"> Tech Level\n<color=#666666>─────────────</color>";
+            m_subjectNameText.text = $"<sprite name=\"gears\"> Tech Level\n<color=#666666>─────────────</color>";
 
         ShowInternal(currentTechLevel, onConfirm, onCancel);
     }

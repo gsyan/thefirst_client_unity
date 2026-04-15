@@ -521,7 +521,6 @@ public class ModuleBody : ModuleBase
                     stats.speed += moduleStats.speed;
                     stats.airAttack += moduleStats.airAttack;
                     stats.airCount += moduleStats.airCount;
-                    stats.airLaunchCount += moduleStats.airLaunchCount;
                 }
             }
         }

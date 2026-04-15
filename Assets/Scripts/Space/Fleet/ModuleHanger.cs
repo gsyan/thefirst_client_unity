@@ -51,7 +51,6 @@ public class ModuleHanger : ModuleBase
     public ModuleInfo m_moduleInfo; 
     
     [SerializeField] private float m_launchCool;
-    [SerializeField] private int m_launchCount;
     [SerializeField] private int m_airCount;
     [SerializeField] private float m_airMaintenanceTime;
 
@@ -87,7 +86,6 @@ public class ModuleHanger : ModuleBase
         m_airCount = moduleData.airCount;
         //m_airCount = 1; // test
         m_launchCool = moduleData.attackCool;
-        m_launchCount = moduleData.attackFireCount;
         m_airMaintenanceTime = moduleData.airMaintenanceTime;
         //m_airMaintenanceTime = 1; // test
 
@@ -104,8 +102,10 @@ public class ModuleHanger : ModuleBase
             m_aircraftPool.Add(aircraftInfo);
         }
 
-        // 서브 타입 초기화
-        InitializeHangerSubType(moduleData);
+        // 런처 설정
+        LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
+        launcher.InitializeLauncherAircraft(this, 0);
+        m_launchers.Add(launcher);
 
         AutoDetectFleetInfo();
 
@@ -128,31 +128,6 @@ public class ModuleHanger : ModuleBase
 
         if (m_parentBody != null)
             m_parentBody.AddHanger(this);
-    }
-
-    private void InitializeHangerSubType(ModuleData moduleData)
-    {
-        switch (m_moduleInfo.moduleSubType)
-        {
-            case EModuleSubType.hanger_t1_m1:
-                for(int i=0; i< moduleData.attackFireCount; i++)
-                {
-                    LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
-                    launcher.InitializeLauncherAircraft(this, i);
-                    m_launchers.Add(launcher);
-                }
-                break;
-            case EModuleSubType.hanger_t2_m1:
-                for(int i=0; i< moduleData.attackFireCount; i++)
-                {
-                    LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
-                    launcher.InitializeLauncherAircraft(this, i);
-                    m_launchers.Add(launcher);
-                }
-                break;
-            default:
-                break;
-        }
     }
 
     public override void Start()
@@ -301,7 +276,6 @@ public class ModuleHanger : ModuleBase
 
         m_airCount = moduleData.airCount; // 새 레벨의 총 함재기 수
         m_launchCool = moduleData.attackCool;
-        m_launchCount = moduleData.attackFireCount;
         m_airMaintenanceTime = moduleData.airMaintenanceTime;
 
         m_upgradeCost = moduleData.upgradeCost;
@@ -360,7 +334,6 @@ public class ModuleHanger : ModuleBase
 
     public int GetHangarCapability() => m_airCount;
     public float GetLaunchCool() => m_launchCool;
-    public int GetLaunchCount() => m_launchCount;
     public float GetMaintenanceTime() => m_airMaintenanceTime;
 
     public void SetTarget(ModuleBody target)
@@ -387,7 +360,6 @@ public class ModuleHanger : ModuleBase
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
         stats.airAttack = (int)(moduleData.airAttack);
         stats.airCount = moduleData.airCount;
-        stats.airLaunchCount = moduleData.attackFireCount;
 
         return stats;
     }

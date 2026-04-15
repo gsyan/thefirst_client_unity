@@ -305,8 +305,8 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
             // 기술 레벨 조건 (부족하면 빨간색)
             string techLine = hasTechLevel
-                ? $"<sprite name=\"IconTech\"> Lv.{requiredTechTier}"
-                : $"<sprite name=\"IconTech\"> <color=red>Lv.{requiredTechTier}</color>";
+                ? $"<sprite name=\"gears\"> Lv.{requiredTechTier}"
+                : $"<sprite name=\"gears\"> <color=red>Lv.{requiredTechTier}</color>";
             sb.Append(techLine);
             sb.Append("\n\n");
 

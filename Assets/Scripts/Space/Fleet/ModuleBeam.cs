@@ -87,7 +87,7 @@ public class ModuleBeam : ModuleBase
         }
 
         // 무기 서브 타입 초기화
-        InitializeSubType(moduleData);
+        InitializeByModuleSlot(moduleData);
 
         // 부모 바디에 이 무기 등록
         if (m_parentBody != null)
@@ -96,30 +96,14 @@ public class ModuleBeam : ModuleBase
         m_animator = GetComponentInChildren<Animator>();
     }
 
-    private void InitializeSubType(ModuleData moduleData)
+    private void InitializeByModuleSlot(ModuleData moduleData)
     {
         Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
-        switch (m_moduleInfo.moduleSubType)
+        for(int i=0; i< moduleData.attackFireCount; i++)
         {
-            case EModuleSubType.beam_t1_m1:
-            case EModuleSubType.beam_t2_m1:
-                for(int i=0; i< moduleData.attackFireCount; i++)
-                {
-                    LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
-                    launcher.InitializeLauncherBeam(moduleData, i, m_myFleet != null && m_myFleet.IsEnemy, slotScale);
-                    m_launchers.Add(launcher);
-                }
-                break;
-            //case EModuleSubType.beam_t2_m2:
-            //     for(int i=0; i< moduleData.attackFireCount; i++)
-            //     {
-            //         LauncherBeamInstant launcher = gameObject.AddComponent<LauncherBeamInstant>();
-            //         launcher.InitializeLauncherBeamInstant(moduleData, i, m_myFleet != null && m_myFleet.IsEnemy);
-            //         m_launchers.Add(launcher);
-            //     }
-            //     break;
-            default:
-                break;
+            LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
+            launcher.InitializeLauncherBeam(moduleData, i, m_myFleet != null && m_myFleet.IsEnemy, slotScale);
+            m_launchers.Add(launcher);
         }
     }
 

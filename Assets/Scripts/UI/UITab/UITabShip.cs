@@ -232,7 +232,7 @@ public class UITabShip : UITabBase
         if (m_textShipStats1 != null)
         {
             m_textShipStats1.text =
-                $"<sprite name=\"IconAttack\"> {statsCur.attack:F0}  " +
+                $"<sprite name=\"bubbling-beam\"> {statsCur.attack:F0}  " +
                 $"<sprite name=\"IconHp\"> {statsOrg.health:F0}  " +
                 $"<sprite name=\"IconSpeed\"> {statsCur.speed:F0}  " +
                 $"<sprite name=\"IconRepair\"> {statsCur.repair:F0}";
@@ -247,8 +247,7 @@ public class UITabShip : UITabBase
             {
                 m_textShipStats2.text =
                     $"<sprite name=\"IconAircraftAttack\"> {statsCur.airAttack:F0}  " +
-                    $"<sprite name=\"IconAircraft\"> {statsOrg.airCount}  " +
-                    $"<sprite name=\"IconLaunch\"> {statsCur.airLaunchCount}";
+                    $"<sprite name=\"IconAircraft\"> {statsOrg.airCount}";
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats2.transform.parent as RectTransform);
             }
         }
@@ -262,7 +261,7 @@ public class UITabShip : UITabBase
         CapabilityProfile cur = m_selectedShip.m_spaceShipStatsCur;
 
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"<sprite name=\"IconAttack\"> (Attack)  {cur.attack:F0}");
+        sb.AppendLine($"<sprite name=\"bubbling-beam\"> (Attack)  {cur.attack:F0}");
         sb.AppendLine();
         sb.AppendLine($"<sprite name=\"IconHp\"> (HP)  {org.health:F0}");
         sb.AppendLine();
@@ -277,8 +276,6 @@ public class UITabShip : UITabBase
             sb.AppendLine($"<sprite name=\"IconAircraftAttack\"> (Aircraft Attack)  {cur.airAttack:F0}");
             sb.AppendLine();
             sb.AppendLine($"<sprite name=\"IconAircraft\"> (Aircraft)  {org.airCount:F0}");
-            sb.AppendLine();
-            sb.Append    ($"<sprite name=\"IconLaunch\"> (Aircraft Launch)  {cur.airLaunchCount:F0}");
         }
 
         UIManager.Instance.ShowAlertPopup(m_selectedShip.m_shipInfo.shipName, sb.ToString(), null);

@@ -79,7 +79,7 @@ public class ModuleMissile : ModuleBase
         m_lastAttackTime = 0f;
 
         // 무기 서브 타입 초기화
-        InitializeSubType(moduleData);
+        InitializeByModuleSlot(moduleData);
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
@@ -99,24 +99,16 @@ public class ModuleMissile : ModuleBase
         //m_coverAnimator = GetComponentInChildren<Animator>(true);
     }
 
-    private void InitializeSubType(ModuleData moduleData)
+    private void InitializeByModuleSlot(ModuleData moduleData)
     {
         EPoolName poolName = GetMissilePoolName(m_moduleInfo.moduleSubType);
         float ejectSpeed = m_moduleSlot != null ? m_moduleSlot.m_missileEjectSpeed : 1f;
         Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
-        switch (m_moduleInfo.moduleSubType)
+        for (int i = 0; i < moduleData.attackFireCount; i++)
         {
-            case EModuleSubType.missile_t1_m1:
-            case EModuleSubType.missile_t2_m1:
-                for (int i = 0; i < moduleData.attackFireCount; i++)
-                {
-                    LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
-                    launcher.InitializeLauncherMissile(moduleData, i, poolName, ejectSpeed, slotScale);
-                    m_launchers.Add(launcher);
-                }
-                break;
-            default:
-                break;
+            LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
+            launcher.InitializeLauncherMissile(moduleData, i, poolName, ejectSpeed, slotScale);
+            m_launchers.Add(launcher);
         }
     }
 

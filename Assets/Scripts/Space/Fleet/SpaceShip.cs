@@ -19,7 +19,6 @@ public struct CapabilityProfile
     public float repair;                // 수리 능력
     public int airAttack;               // 함재기 공격력
     public int airCount;                // 함재기 수
-    public int airLaunchCount;          // 함재기 발진 수
 }
 
 public class SpaceShip : MonoBehaviour
@@ -313,7 +312,6 @@ public class SpaceShip : MonoBehaviour
                 stats.repair += bodyStats.repair;
                 stats.airAttack += bodyStats.airAttack;
                 stats.airCount += bodyStats.airCount;
-                stats.airLaunchCount += bodyStats.airLaunchCount;
             }
         }
         return stats;

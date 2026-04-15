@@ -126,7 +126,6 @@ public static class CommonUtility
         {
             stats.airAttack = (int)moduleData.airAttack;       // 함재기 공격력
             stats.airCount = moduleData.airCount;              // 함재기 수
-            stats.airLaunchCount = moduleData.attackFireCount; // 함재기 발진 수
             stats.totalWeapons = 1;
         }
         
@@ -168,7 +167,6 @@ public static class CommonUtility
             stats.repair += shipStats.repair;
             stats.airAttack += shipStats.airAttack;
             stats.airCount += shipStats.airCount;
-            stats.airLaunchCount+= shipStats.airLaunchCount;
         }
         stats.speed = stats.speed / fleetInfo.ships.Count;
 
@@ -222,7 +220,6 @@ public static class CommonUtility
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
                     stats.airAttack += moduleStats.airAttack;
                     stats.airCount += moduleStats.airCount;
-                    stats.airLaunchCount+= moduleStats.airLaunchCount;
                     stats.totalWeapons += moduleStats.totalWeapons;
                 }
             }
@@ -264,7 +261,7 @@ public static class CommonUtility
         }
         else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
         {
-            lines.Add($"<sprite name=\"IconAttack\"> {V(cur.attack, nxt?.attack ?? 0f)}");
+            lines.Add($"<sprite name=\"bubbling-beam\"> {V(cur.attack, nxt?.attack ?? 0f)}");
         }
         else if (moduleType == EModuleType.hanger)
         {
@@ -310,6 +307,12 @@ public static class CommonUtility
     public static string FormatBigNumber(long value)
     {
         return FormatBigNumber((float)value);
+    }
+
+    // 텍스트 내 스프라이트 크기 조정 (기본 130%)
+    public static string Sprite(string name, float sizePercent = 150f)
+    {
+        return $"<size={sizePercent:F0}%><sprite name=\"{name}\"></size>";
     }
 
     // label 에 localization

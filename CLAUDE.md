@@ -41,14 +41,11 @@
     
 - 서버 구조 및 운영 : 서버 프로젝트 루트/claude_md_files/server_structure_and_operation.md
 - 클라 구조 및 운영 : 클라 프로젝트 루트/claude_md_files/client_structure_and_operation.md
+- 클라 사용 asset store list : 클라 프로젝트 루트/claude_md_files/asset_store_list.md
 - 젠킨스 설정 : 클라 프로젝트 루트/claude_md_files/jenkins-setup-tutorial.md
 - **[작업중] 진형 이동 시스템 재설계** : 클라 프로젝트 루트/claude_md_files/formation_movement_redesign.md
 - **[작업중] 렌더링 최적화** : 클라 프로젝트 루트/claude_md_files/rendering_optimization.md
 
 ## 주의 사항
-- 모든 파일(generated 파일 제외)엔 최상단에 1~3줄 요약이 있어야 해. 없다면 추가
-- 작업 진행 후 최상단 요약 수정 필요가 있다면 수정
+- `DataTableZone`, `DataTableModule` 등은 서버와 반드시 동기화
 - 외부 라이센스 표시는 아주 중요한 일, UIPopupLicense 으로 하고 있으니 추가할 것들이 생기면 실시간으로 추가
-
-## 주의 사항 잠정적 유예 ( 현재 지키지 않아도 되는 것, 향후 복구를 위해 남겨둔 것)
-- ~~localization 을 위한 csv 수정, 생성은 직접 하지 말고, 이용자에게 부탁할 것~~ → 잠정 유예: csv 직접 수정 허용

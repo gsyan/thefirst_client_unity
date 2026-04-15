@@ -176,7 +176,7 @@ public class UITabPvp : UITabBase
         sb.Append("\n\n");
         sb.Append($"<sprite name=\"IconHp\"> {CommonUtility.FormatBigNumber(stats.health)}");
         sb.Append("\n\n");
-        sb.Append($"<sprite name=\"IconAttack\"> {CommonUtility.FormatBigNumber(stats.attack)}");
+        sb.Append($"<sprite name=\"bubbling-beam\"> {CommonUtility.FormatBigNumber(stats.attack)}");
         if (stats.airCount > 0)
         {
             sb.Append("\n\n");

@@ -830,7 +830,6 @@ public class SpaceFleet : MonoBehaviour
             totalStats.repair += shipStats.repair;
             totalStats.airAttack += shipStats.airAttack;
             totalStats.airCount += shipStats.airCount;
-            totalStats.airLaunchCount += shipStats.airLaunchCount;
         }
         // 일단 평균
         totalStats.speed /= shipCount;

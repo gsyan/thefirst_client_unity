@@ -7,14 +7,13 @@ using TMPro;
 
 public class ShipSelector : MonoBehaviour
 {
-    [SerializeField] private Button m_button;
-
-    [SerializeField] private TMP_Text m_lockedText;             // locked text
-    [SerializeField] private GameObject m_activeContainer;      // unlocked ui group
-    [SerializeField] private TMP_Text m_textName;   // 함선 이름 텍스트
-    [SerializeField] private TMP_Text m_textAtk;    // ATK 수치 텍스트
-    [SerializeField] private Image m_hpBarFill;     // HP 게이지 fill (Image.fillMethod = Horizontal)
-    [SerializeField] private TMP_Text m_textHp;     // HP 수치 텍스트
+    [SerializeField] private Button m_lockedButton;    // locked Button
+    [SerializeField] private Button m_selectButton;    // selected Button
+    [SerializeField] private Button m_btnShipManage;   // 함선 관리 탭으로 이동
+    [SerializeField] private TMP_Text m_textName;      // 함선 이름 텍스트
+    [SerializeField] private TMP_Text m_textAtk;       // ATK 수치 텍스트
+    [SerializeField] private Image m_hpBarFill;        // HP 게이지 fill (Image.fillMethod = Horizontal)
+    [SerializeField] private TMP_Text m_textHp;        // HP 수치 텍스트
 
     [Header("선택 외곽선")]
     [SerializeField] private Color m_colorSelected = new Color(1f, 0.8f, 0.2f, 1f);
@@ -27,25 +26,30 @@ public class ShipSelector : MonoBehaviour
     public SpaceShip Ship { get; private set; }
 
     // 빈 슬롯(미구매 함선 자리) — onClick==null이면 버튼 비활성화
-    public void InitializeLocked(UnityEngine.Events.UnityAction onClick)
+    public void InitializeShipSelectorLocked(UnityEngine.Events.UnityAction onClick)
     {
         Ship = null;
         if (m_healthLerpCoroutine != null) { StopCoroutine(m_healthLerpCoroutine); m_healthLerpCoroutine = null; }
 
-        m_button.onClick.RemoveAllListeners();
-        if (onClick != null)
-            m_button.onClick.AddListener(onClick);
-        m_button.interactable = onClick != null;
+        // 실제 표시되는 m_lockedButton에 onClick 연결
+        if (m_lockedButton != null)
+        {
+            m_lockedButton.onClick.RemoveAllListeners();
+            if (onClick != null)
+                m_lockedButton.onClick.AddListener(onClick);
+            m_lockedButton.interactable = onClick != null;
+        }
 
-        if (m_lockedText != null) m_lockedText.gameObject.SetActive(true);
-        if (m_activeContainer != null) m_activeContainer.SetActive(false);
+        if (m_lockedButton != null)   m_lockedButton.gameObject.SetActive(true);
+        if (m_selectButton != null)   m_selectButton.gameObject.SetActive(false);
+        if (m_btnShipManage != null)  m_btnShipManage.gameObject.SetActive(false);
 
-        m_outline = m_button.GetComponent<UnityEngine.UI.Outline>();
-        if (m_outline == null) m_outline = m_button.gameObject.AddComponent<UnityEngine.UI.Outline>();
+        m_outline = m_selectButton.GetComponent<UnityEngine.UI.Outline>();
+        if (m_outline == null) m_outline = m_selectButton.gameObject.AddComponent<UnityEngine.UI.Outline>();
         m_outline.enabled = false;
     }
 
-    public void Initialize(SpaceShip ship, UnityEngine.Events.UnityAction onClick)
+    public void InitializeShipSelector(SpaceShip ship, UnityEngine.Events.UnityAction onClick, UnityEngine.Events.UnityAction onManage)
     {
         Ship = ship;
 
@@ -55,16 +59,23 @@ public class ShipSelector : MonoBehaviour
             m_healthLerpCoroutine = null;
         }
 
-        m_button.onClick.RemoveAllListeners();
-        m_button.onClick.AddListener(onClick);
-        m_button.interactable = true;
+        m_selectButton.onClick.RemoveAllListeners();
+        m_selectButton.onClick.AddListener(onClick);
+        m_selectButton.interactable = true;
 
-        if (m_lockedText != null) m_lockedText.gameObject.SetActive(false);
-        if (m_activeContainer != null) m_activeContainer.SetActive(true);
+        if (m_btnShipManage != null)
+        {
+            m_btnShipManage.onClick.RemoveAllListeners();
+            m_btnShipManage.onClick.AddListener(onManage);
+            m_btnShipManage.gameObject.SetActive(false);
+        }
 
-        m_outline = m_button.GetComponent<UnityEngine.UI.Outline>();
+        if (m_lockedButton != null) m_lockedButton.gameObject.SetActive(false);
+        if (m_selectButton != null) m_selectButton.gameObject.SetActive(true);
+
+        m_outline = m_selectButton.GetComponent<UnityEngine.UI.Outline>();
         if (m_outline == null)
-            m_outline = m_button.gameObject.AddComponent<UnityEngine.UI.Outline>();
+            m_outline = m_selectButton.gameObject.AddComponent<UnityEngine.UI.Outline>();
         m_outline.effectColor    = m_colorSelected;
         m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
         m_outline.enabled        = false;
@@ -82,7 +93,7 @@ public class ShipSelector : MonoBehaviour
             m_textName.text = Ship.m_shipInfo.shipName;
 
         if (m_textAtk != null)
-            m_textAtk.text = $"<sprite name=\"IconAttackMini\"> {CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}";
+            m_textAtk.text = $"{CommonUtility.Sprite("bubbling-beam")} {CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}";
 
         // 향후 표시 해야할 스텟 추가 되면 여기 추가
     }
@@ -110,6 +121,8 @@ public class ShipSelector : MonoBehaviour
     {
         if (m_outline != null)
             m_outline.enabled = selected;
+        if (m_btnShipManage != null)
+            m_btnShipManage.gameObject.SetActive(selected);
     }
 
     private float GetHealthRatio()

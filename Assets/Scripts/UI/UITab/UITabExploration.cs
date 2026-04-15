@@ -305,7 +305,7 @@ private void SetupGroupTabs()
         {
             if (rate <= 0f) return;
             if (sb.Length > 0) sb.Append("   ");
-            sb.Append($"<sprite name=\"{icon}\"> {CommonUtility.FormatBigNumber(rate * capHours)}");
+            sb.Append($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(rate * capHours)}");
         }
         AppendIfPositive("IconMineral",  m_totalMineralPerHour);
         AppendIfPositive("IconMineralR", m_totalMineralRarePerHour);
@@ -456,15 +456,10 @@ private void SetupGroupTabs()
         sb.AppendLine(zoneStage.zoneName);
         if (string.IsNullOrEmpty(zoneStage.zoneDescription) == false)
             sb.AppendLine(zoneStage.zoneDescription);
-        void AppendKill(string icon, float value)
-        {
-            if (value <= 0f) return;
-            sb.AppendLine($"<sprite name=\"IconDestroyEnemy\"> <sprite name=\"{icon}\"> +{CommonUtility.FormatBigNumber(value)}");
-        }
         void AppendRate(string icon, float value)
         {
             if (value <= 0f) return;
-            sb.AppendLine($"<sprite name=\"{icon}\"> {CommonUtility.FormatBigNumber(value)}/h");
+            sb.AppendLine($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(value)}/h");
         }
         AppendRate("IconMineralMini",  zoneStage.mineralPerHour);
         AppendRate("IconMineralRMini", zoneStage.mineralRarePerHour);

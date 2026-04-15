@@ -80,7 +80,7 @@ public class UIPopupConfirm : UIPopupBase
         {
             bool ins = info != null && techLevel < cost.techLevel;
             if (ins == true) canAfford = false;
-            sb.Append($"<sprite name=\"IconTech\"> {C(ins, CommonUtility.FormatBigNumber(cost.techLevel))}\n\n");
+            sb.Append($"<sprite name=\"gears\"> {C(ins, CommonUtility.FormatBigNumber(cost.techLevel))}\n\n");
         }
         if (cost.mineral > 0)
         {

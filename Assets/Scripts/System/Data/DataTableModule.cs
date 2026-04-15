@@ -62,10 +62,7 @@ public class ModuleData
     public float airSpeed = 200f;             // 함재기 이동력
     public int airAmmo = 10;                  // 함재기 탄약
     public float airDetectRadius = 200f;      // 함재기 적 함재기 감지거리
-    public float airAvoidRadius = 200f;       // 함재기 적 회피 거리
-
-
-    
+    public float airAvoidRadius = 200f;       // 함재기 적 회피 거리    
 }
 
 [System.Serializable]
