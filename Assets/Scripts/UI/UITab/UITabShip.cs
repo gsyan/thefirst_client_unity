@@ -576,7 +576,7 @@ public class UITabShip : UITabBase
             {
                 int level = m_selectedModule.GetModuleLevel();
                 string typeName = m_selectedModule.GetModuleSubType().GetLocalizedName();
-                m_moduleStatsText.text = typeName + "\n\n" + m_selectedModule.GetDetailText(level, level);
+                m_moduleStatsText.text = typeName + "\n" + m_selectedModule.GetDetailText(level, level);
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsText.transform.parent as RectTransform);
             }
         }

@@ -44,8 +44,8 @@ public class UIStationInfoBar : MonoBehaviour
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        int storageCap   = 3 + (currentLevel / 2);
-        int maxShips     = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(currentLevel);
+        int storageCap   = (int)DataManager.Instance.m_dataTableResearch.GetStackTime(currentLevel);
+        int maxShips     = DataManager.Instance.m_dataTableResearch.GetShipCount(currentLevel);
         TechLevelResearchData nextNode = GetNextTechLevelNode(character);
 
         var sb = new System.Text.StringBuilder();
@@ -53,8 +53,8 @@ public class UIStationInfoBar : MonoBehaviour
 
         if (nextNode != null)
         {
-            int nextCap      = 3 + (nextNode.targetTechLevel / 2);
-            int nextMaxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(nextNode.targetTechLevel);
+            int nextCap      = (int)DataManager.Instance.m_dataTableResearch.GetStackTime(nextNode.targetTechLevel);
+            int nextMaxShips = DataManager.Instance.m_dataTableResearch.GetShipCount(nextNode.targetTechLevel);
             sb.AppendLine();
             sb.AppendLine(LocalizationManager.Instance.Get("tech_level_on_reach", new object[] { nextNode.targetTechLevel }));
             sb.AppendLine($"{CommonUtility.Sprite("clockwork")} (Resource Cap)  {nextCap}h");

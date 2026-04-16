@@ -1,5 +1,5 @@
 // DataTableResearch 커스텀 에디터 - 연구 트리 데이터 Inspector UI 및 CSV/JSON Import/Export 툴
-// CSV 포맷: research_id(=enum이름 or tech_level_N), prerequisites, ui_pos_x/y, cost_m/mr/me/md
+// CSV 분리: datatable_research_tech.csv (기술레벨, stack_time/ship_count), datatable_research_subtype.csv (모듈 서브타입)
 
 #if UNITY_EDITOR
 using UnityEngine;
@@ -211,6 +211,8 @@ public class DataTableResearchEditor : Editor
                 EditorGUILayout.LabelField("Cost MR", data.researchCost.mineralRare.ToString());
                 EditorGUILayout.LabelField("Cost ME", data.researchCost.mineralExotic.ToString());
                 EditorGUILayout.LabelField("Cost MD", data.researchCost.mineralDark.ToString());
+                data.stackTime = EditorGUILayout.FloatField("Stack Time (h)", data.stackTime);
+                data.shipCount = EditorGUILayout.IntField("Ship Count",       data.shipCount);
                 EditorGUI.indentLevel--;
                 EditorGUILayout.EndVertical();
             }
@@ -232,62 +234,71 @@ public class DataTableResearchEditor : Editor
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("CSV Import/Export", EditorStyles.boldLabel);
 
+        string basePath = Application.dataPath + "/Resources/DataTable/Research/";
+        string techCsvPath    = basePath + "datatable_research_tech.csv";
+        string subtypeCsvPath = basePath + "datatable_research_subtype.csv";
+
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Import from CSV"))
+        if (GUILayout.Button("Import Tech CSV"))
         {
-            string csvPath = Application.dataPath + "/Resources/DataTable/Research/datatable_research.csv";
-            if (System.IO.File.Exists(csvPath) == false)
+            if (System.IO.File.Exists(techCsvPath) == false)
             {
-                EditorUtility.DisplayDialog("Error", $"CSV 파일을 찾을 수 없습니다:\n{csvPath}", "OK");
+                EditorUtility.DisplayDialog("Error", $"파일 없음:\n{techCsvPath}", "OK");
             }
-            else if (EditorUtility.DisplayDialog("Import from CSV",
-                "CSV 파일을 읽어 연구 데이터를 갱신합니다.\n기존 데이터는 모두 삭제됩니다.\n\n계속하시겠습니까?", "Import", "Cancel"))
+            else if (EditorUtility.DisplayDialog("Import Tech CSV",
+                "datatable_research_tech.csv 를 읽어 기술레벨 데이터를 갱신합니다.", "Import", "Cancel"))
             {
-                string csvText = System.IO.File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
-                dataTable.LoadFromCsv(csvText);
+                string csvText = System.IO.File.ReadAllText(techCsvPath, System.Text.Encoding.UTF8);
+                dataTable.LoadTechFromCsv(csvText);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-                EditorUtility.DisplayDialog("Complete", $"CSV Import 완료!\n모듈: {dataTable.ResearchDataList.Count}개, 기술레벨: {dataTable.TechLevelDataList.Count}개", "OK");
+                EditorUtility.DisplayDialog("Complete", $"Tech CSV Import 완료!\n기술레벨: {dataTable.TechLevelDataList.Count}개", "OK");
             }
         }
 
-        if (GUILayout.Button("Export to CSV"))
+        if (GUILayout.Button("Import Subtype CSV"))
         {
-            string dirPath = Application.dataPath + "/Resources/DataTable/Research";
-            if (System.IO.Directory.Exists(dirPath) == false)
-                System.IO.Directory.CreateDirectory(dirPath);
+            if (System.IO.File.Exists(subtypeCsvPath) == false)
+            {
+                EditorUtility.DisplayDialog("Error", $"파일 없음:\n{subtypeCsvPath}", "OK");
+            }
+            else if (EditorUtility.DisplayDialog("Import Subtype CSV",
+                "datatable_research_subtype.csv 를 읽어 모듈 연구 데이터를 갱신합니다.", "Import", "Cancel"))
+            {
+                string csvText = System.IO.File.ReadAllText(subtypeCsvPath, System.Text.Encoding.UTF8);
+                dataTable.LoadSubtypeFromCsv(csvText);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                EditorUtility.DisplayDialog("Complete", $"Subtype CSV Import 완료!\n모듈: {dataTable.ResearchDataList.Count}개", "OK");
+            }
+        }
 
-            string csvPath = dirPath + "/datatable_research.csv";
-            string csv = ExportToCsv();
-            System.IO.File.WriteAllText(csvPath, csv, System.Text.Encoding.UTF8);
-            AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("Complete", $"CSV Export 완료!\n{csvPath}", "OK");
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Import Both CSVs"))
+        {
+            bool techOk    = System.IO.File.Exists(techCsvPath);
+            bool subtypeOk = System.IO.File.Exists(subtypeCsvPath);
+            if (techOk == false || subtypeOk == false)
+            {
+                EditorUtility.DisplayDialog("Error", $"파일 없음:\n{(techOk ? "" : techCsvPath + "\n")}{(subtypeOk ? "" : subtypeCsvPath)}", "OK");
+            }
+            else if (EditorUtility.DisplayDialog("Import Both CSVs",
+                "두 CSV 파일을 모두 읽어 전체 연구 데이터를 갱신합니다.\n기존 데이터는 삭제됩니다.", "Import", "Cancel"))
+            {
+                dataTable.LoadTechFromCsv(System.IO.File.ReadAllText(techCsvPath, System.Text.Encoding.UTF8));
+                dataTable.LoadSubtypeFromCsv(System.IO.File.ReadAllText(subtypeCsvPath, System.Text.Encoding.UTF8));
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                EditorUtility.DisplayDialog("Complete", $"Import 완료!\n기술레벨: {dataTable.TechLevelDataList.Count}개, 모듈: {dataTable.ResearchDataList.Count}개", "OK");
+            }
         }
 
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.EndVertical();
-    }
-
-    private string ExportToCsv()
-    {
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine("research_id,prerequisites,ui_pos_x,ui_pos_y,cost_m,cost_mr,cost_me,cost_md");
-
-        // tech_level 행: research_id 접미사에서 targetTechLevel 파싱
-        foreach (var d in dataTable.TechLevelDataList)
-        {
-            string prereqs = d.prerequisiteIds != null ? string.Join("|", d.prerequisiteIds) : "";
-            sb.AppendLine($"{d.researchId},{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark}");
-        }
-
-        // 모듈 연구 행: research_id = enum 이름
-        foreach (var d in dataTable.ResearchDataList)
-        {
-            string prereqs = d.prerequisiteIds != null ? string.Join("|", d.prerequisiteIds) : "";
-            sb.AppendLine($"{d.researchId},{prereqs},{d.uiPosition.x},{d.uiPosition.y},{d.researchCost.mineral},{d.researchCost.mineralRare},{d.researchCost.mineralExotic},{d.researchCost.mineralDark}");
-        }
-        return sb.ToString();
     }
 
     private Color GetColorForModuleType(EModuleType moduleType)

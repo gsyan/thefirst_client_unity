@@ -240,7 +240,7 @@ public static class CommonUtility
     }
 
     // 모듈 스탯을 아이콘+수치 문자열로 반환 (팝업 detailText용)
-    public static string GetModuleDetailText(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel)
+    public static string GetModuleDetailText(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel, string separator = " ")
     {
         bool showRange = fromLevel != toLevel;
         ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, fromLevel);
@@ -249,29 +249,29 @@ public static class CommonUtility
         if (showRange && nxt == null) return string.Empty;
 
         string V(float c, float n) => showRange ? $"{c:F0} → {n:F0}" : $"{c:F0}";
-        string levelStr = showRange ? $"Lv. {fromLevel} → {toLevel}" : $"Lv. {fromLevel}";
+        string levelStr = showRange ? $"{Sprite("progression")} {fromLevel} → {toLevel}" : $"{Sprite("progression")} {fromLevel}";
 
-        var lines = new List<string> { levelStr };
+        var stats = new List<string> { levelStr };
 
         if (moduleType == EModuleType.body)
         {
-            lines.Add($"{Sprite("techno-heart")} {V(cur.health, nxt?.health ?? 0f)}");
-            lines.Add($"{Sprite("auto-repair")} {V(cur.repair, nxt?.repair ?? 0f)}");
-            lines.Add($"{Sprite("rocket-thruster")} {V(cur.speed, nxt?.speed ?? 0f)}");
+            stats.Add($"{Sprite("techno-heart")} {V(cur.health, nxt?.health ?? 0f)}");
+            stats.Add($"{Sprite("auto-repair")} {V(cur.repair, nxt?.repair ?? 0f)}");
+            stats.Add($"{Sprite("rocket-thruster")} {V(cur.speed, nxt?.speed ?? 0f)}");
         }
         else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
         {
-            lines.Add($"{Sprite("bubbling-beam")} {V(cur.attack, nxt?.attack ?? 0f)}");
+            stats.Add($"{Sprite("bubbling-beam")} {V(cur.attack, nxt?.attack ?? 0f)}");
         }
         else if (moduleType == EModuleType.hanger)
         {
-            lines.Add($"{Sprite("strafe")} {V(cur.airAttack, nxt?.airAttack ?? 0f)}");
-            lines.Add($"{Sprite("heart-wings")} {V(cur.airHealth, nxt?.airHealth ?? 0f)}");
-            lines.Add($"{Sprite("light-fighter")} {V(cur.airSpeed, nxt?.airSpeed ?? 0f)}");
-            lines.Add($"{Sprite("jet-fighter")} {V(cur.airCount, nxt?.airCount ?? 0f)}");
+            stats.Add($"{Sprite("strafe")} {V(cur.airAttack, nxt?.airAttack ?? 0f)}");
+            stats.Add($"{Sprite("heart-wings")} {V(cur.airHealth, nxt?.airHealth ?? 0f)}");
+            stats.Add($"{Sprite("light-fighter")} {V(cur.airSpeed, nxt?.airSpeed ?? 0f)}");
+            stats.Add($"{Sprite("jet-fighter")} {V(cur.airCount, nxt?.airCount ?? 0f)}");
         }
 
-        return string.Join("\n\n", lines);
+        return string.Join(separator, stats);
     }
 
     

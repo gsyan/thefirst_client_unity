@@ -1,19 +1,10 @@
-// 함대 탭 UI — Tech Level 행, Fleet Stats(2행 압축), 함선 선택 그리드(9칸 고정, 프리팹에 미리 배치), Formation 하단 바 + 교체 팝업 관리
-// 빈 슬롯은 잠금 아이콘으로 표시, 클릭 시 함선 추가 팝업 호출
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class UITabFleet : UITabBase
 {
-    [Header("Tech Level 행")]
-    [SerializeField] private TMP_Text m_textTechLevelInfo;
-    [SerializeField] private Button   m_btnTechLevelDetail;
-    [SerializeField] private Button   m_btnTechLevel;
-    [SerializeField] private TMP_Text m_textTechLevelButton;
-
-
-    [Header("함선 선택 그리드 (프리팹에 9개 미리 배치)")]
+    [Header("함선 선택 UI 부모")]
     [SerializeField] private GameObject m_shipSelectorsObj;
     private ShipSelector[] m_shipSelectors;
     
@@ -46,8 +37,6 @@ public class UITabFleet : UITabBase
         m_btnFormationChange.onClick.AddListener(OnFormationChangeClicked);
 
         if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
-        if (m_btnTechLevelDetail != null) m_btnTechLevelDetail.onClick.AddListener(OnTechLevelDetailClicked);
-        if (m_btnTechLevel != null) m_btnTechLevel.onClick.AddListener(OnTechLevelButtonClicked);
         PopulateShipSelectorGrid();
         UpdateShipActionButtons();
 
@@ -88,59 +77,8 @@ public class UITabFleet : UITabBase
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        int storageCap = 3 + (currentLevel / 2);  // 기술레벨이 높을수록 자원 보관 가능 시간 증가
-        int maxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(currentLevel);
-        TechLevelResearchData nextNode = GetNextTechLevelNode(character);
-
-        // 기술레벨 요약: 레벨 / 자원 보관 캡 / 최대 함선 수
-        if (m_textTechLevelInfo != null)
-        {
-            m_textTechLevelInfo.text = $"{CommonUtility.Sprite("gears")} {currentLevel} {CommonUtility.Sprite("IconMineralCap")} {storageCap}h {CommonUtility.Sprite("IconShips")} {maxShips}";
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_textTechLevelInfo.transform.parent as RectTransform);
-        }
-
-        if (m_btnTechLevel != null)
-        {
-            m_btnTechLevel.interactable = nextNode != null;
-            if (m_textTechLevelButton != null)
-            {
-                // string.Format 을 사용하지 않고 직접 조합 — Smart String이 {1}을 소모하는 문제 우회
-                m_textTechLevelButton.text = nextNode != null
-                    ? $"Lv.{currentLevel} <voffset=6>→</voffset> {nextNode.targetTechLevel}"
-                    : LocalizationManager.Instance.Get("max_level");
-            }
-        }
-    }
-
-    private void OnTechLevelDetailClicked()
-    {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
-        int currentLevel = character.GetTechLevel();
-        int storageCap = 3 + (currentLevel / 2);
-        int maxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(currentLevel);
-        TechLevelResearchData nextNode = GetNextTechLevelNode(character);
-
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"{CommonUtility.Sprite("IconMineralCap")} (Resource Cap)  {storageCap}h");
-        sb.AppendLine();
-        sb.Append    ($"{CommonUtility.Sprite("IconShips")} (Max Ships)  {maxShips}");
-
-        if (nextNode != null)
-        {
-            int nextCap = 3 + (nextNode.targetTechLevel / 2);
-            int nextMaxShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(nextNode.targetTechLevel);
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine(LocalizationManager.Instance.Get("tech_level_on_reach", new object[] { nextNode.targetTechLevel }));
-            sb.AppendLine();
-            sb.AppendLine($"{CommonUtility.Sprite("IconMineralCap")} (Resource Cap)  {nextCap}h");
-            sb.AppendLine();
-            sb.Append    ($"{CommonUtility.Sprite("IconShips")} (Max Ships)  {nextMaxShips}");
-        }
-
-        UIManager.Instance.ShowAlertPopup(LocalizationManager.Instance.Get("tech_level_detail_title"), sb.ToString(), null);
+        int storageCap = (int)DataManager.Instance.m_dataTableResearch.GetStackTime(currentLevel);
+        int maxShips = DataManager.Instance.m_dataTableResearch.GetShipCount(currentLevel);
     }
 
     private TechLevelResearchData GetNextTechLevelNode(Character character)
@@ -450,8 +388,9 @@ public class UITabFleet : UITabBase
         if (currentShipCount >= gameSettings.maxShipsPerFleet) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
         CostStruct cost = gameSettings.GetAddShipCost(currentShipCount);
-        var techLevel = m_myCharacter.GetTechLevel();
-        if (techLevel < cost.techLevel) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
+        int techLevel = m_myCharacter.GetTechLevel();
+        int maxShipsAtTech = DataManager.Instance.m_dataTableResearch.GetShipCount(techLevel);
+        if (currentShipCount >= maxShipsAtTech) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
         if (m_myCharacter.m_characterInfo.mineral < cost.mineral) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL;
         if (m_myCharacter.m_characterInfo.mineralRare < cost.mineralRare) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL_RARE;
         if (m_myCharacter.m_characterInfo.mineralExotic < cost.mineralExotic) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL_EXOTIC;

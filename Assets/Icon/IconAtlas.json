@@ -76,9 +76,34 @@
       }
     },
     {
-      "filename": "auto-repair",
+      "filename": "arrow-scope",
       "frame": {
         "x": 398,
+        "y": 2,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "auto-repair",
+      "frame": {
+        "x": 530,
         "y": 2,
         "w": 128,
         "h": 128
@@ -103,7 +128,7 @@
     {
       "filename": "big-gear",
       "frame": {
-        "x": 530,
+        "x": 662,
         "y": 2,
         "w": 128,
         "h": 128
@@ -128,7 +153,7 @@
     {
       "filename": "bubble-field",
       "frame": {
-        "x": 662,
+        "x": 794,
         "y": 2,
         "w": 128,
         "h": 128
@@ -153,7 +178,7 @@
     {
       "filename": "bubbling-beam",
       "frame": {
-        "x": 794,
+        "x": 926,
         "y": 2,
         "w": 128,
         "h": 128
@@ -178,7 +203,7 @@
     {
       "filename": "bullseye",
       "frame": {
-        "x": 926,
+        "x": 1058,
         "y": 2,
         "w": 128,
         "h": 128
@@ -203,8 +228,8 @@
     {
       "filename": "cancel",
       "frame": {
-        "x": 1058,
-        "y": 2,
+        "x": 2,
+        "y": 134,
         "w": 128,
         "h": 128
       },
@@ -228,7 +253,32 @@
     {
       "filename": "circle",
       "frame": {
-        "x": 2,
+        "x": 134,
+        "y": 134,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "clockwise-rotation",
+      "frame": {
+        "x": 266,
         "y": 134,
         "w": 128,
         "h": 128
@@ -253,7 +303,32 @@
     {
       "filename": "clockwork",
       "frame": {
-        "x": 134,
+        "x": 398,
+        "y": 134,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "coal-wagon",
+      "frame": {
+        "x": 530,
         "y": 134,
         "w": 128,
         "h": 128
@@ -278,7 +353,7 @@
     {
       "filename": "cog",
       "frame": {
-        "x": 266,
+        "x": 662,
         "y": 134,
         "w": 128,
         "h": 128
@@ -303,7 +378,7 @@
     {
       "filename": "companion-cube",
       "frame": {
-        "x": 398,
+        "x": 794,
         "y": 134,
         "w": 128,
         "h": 128
@@ -328,7 +403,7 @@
     {
       "filename": "confirmed",
       "frame": {
-        "x": 530,
+        "x": 926,
         "y": 134,
         "w": 128,
         "h": 128
@@ -353,7 +428,7 @@
     {
       "filename": "crystal-growth",
       "frame": {
-        "x": 662,
+        "x": 1058,
         "y": 134,
         "w": 128,
         "h": 128
@@ -378,8 +453,8 @@
     {
       "filename": "defense-satellite",
       "frame": {
-        "x": 794,
-        "y": 134,
+        "x": 2,
+        "y": 266,
         "w": 128,
         "h": 128
       },
@@ -403,8 +478,8 @@
     {
       "filename": "drill",
       "frame": {
-        "x": 926,
-        "y": 134,
+        "x": 134,
+        "y": 266,
         "w": 128,
         "h": 128
       },
@@ -428,8 +503,8 @@
     {
       "filename": "emerald",
       "frame": {
-        "x": 1058,
-        "y": 134,
+        "x": 266,
+        "y": 266,
         "w": 128,
         "h": 128
       },
@@ -453,7 +528,7 @@
     {
       "filename": "envelope",
       "frame": {
-        "x": 2,
+        "x": 398,
         "y": 266,
         "w": 128,
         "h": 128
@@ -478,7 +553,7 @@
     {
       "filename": "expander",
       "frame": {
-        "x": 134,
+        "x": 530,
         "y": 266,
         "w": 128,
         "h": 128
@@ -503,7 +578,7 @@
     {
       "filename": "fast-forward-button",
       "frame": {
-        "x": 266,
+        "x": 662,
         "y": 266,
         "w": 128,
         "h": 128
@@ -528,7 +603,7 @@
     {
       "filename": "fire-gem",
       "frame": {
-        "x": 398,
+        "x": 794,
         "y": 266,
         "w": 128,
         "h": 128
@@ -553,7 +628,7 @@
     {
       "filename": "forward-field",
       "frame": {
-        "x": 530,
+        "x": 926,
         "y": 266,
         "w": 128,
         "h": 128
@@ -578,7 +653,7 @@
     {
       "filename": "gears",
       "frame": {
-        "x": 662,
+        "x": 1058,
         "y": 266,
         "w": 128,
         "h": 128
@@ -603,8 +678,8 @@
     {
       "filename": "heart-battery",
       "frame": {
-        "x": 794,
-        "y": 266,
+        "x": 2,
+        "y": 398,
         "w": 128,
         "h": 128
       },
@@ -628,8 +703,8 @@
     {
       "filename": "heart-wings",
       "frame": {
-        "x": 926,
-        "y": 266,
+        "x": 134,
+        "y": 398,
         "w": 128,
         "h": 128
       },
@@ -653,8 +728,8 @@
     {
       "filename": "hearts",
       "frame": {
-        "x": 1058,
-        "y": 266,
+        "x": 266,
+        "y": 398,
         "w": 128,
         "h": 128
       },
@@ -678,7 +753,7 @@
     {
       "filename": "hypersonic-bolt",
       "frame": {
-        "x": 2,
+        "x": 398,
         "y": 398,
         "w": 128,
         "h": 128
@@ -703,7 +778,7 @@
     {
       "filename": "infinity",
       "frame": {
-        "x": 134,
+        "x": 530,
         "y": 398,
         "w": 128,
         "h": 128
@@ -728,7 +803,7 @@
     {
       "filename": "info",
       "frame": {
-        "x": 266,
+        "x": 662,
         "y": 398,
         "w": 128,
         "h": 128
@@ -753,7 +828,7 @@
     {
       "filename": "jet-fighter",
       "frame": {
-        "x": 398,
+        "x": 794,
         "y": 398,
         "w": 128,
         "h": 128
@@ -778,7 +853,32 @@
     {
       "filename": "laser-blast",
       "frame": {
-        "x": 530,
+        "x": 926,
+        "y": 398,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "laser-sparks",
+      "frame": {
+        "x": 1058,
         "y": 398,
         "w": 128,
         "h": 128
@@ -803,8 +903,33 @@
     {
       "filename": "light-fighter",
       "frame": {
-        "x": 662,
-        "y": 398,
+        "x": 2,
+        "y": 530,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "look-at",
+      "frame": {
+        "x": 134,
+        "y": 530,
         "w": 128,
         "h": 128
       },
@@ -828,8 +953,8 @@
     {
       "filename": "magnifying-glass",
       "frame": {
-        "x": 794,
-        "y": 398,
+        "x": 266,
+        "y": 530,
         "w": 128,
         "h": 128
       },
@@ -853,8 +978,8 @@
     {
       "filename": "mine-wagon",
       "frame": {
-        "x": 926,
-        "y": 398,
+        "x": 398,
+        "y": 530,
         "w": 128,
         "h": 128
       },
@@ -878,8 +1003,8 @@
     {
       "filename": "minerals",
       "frame": {
-        "x": 1058,
-        "y": 398,
+        "x": 530,
+        "y": 530,
         "w": 128,
         "h": 128
       },
@@ -903,7 +1028,7 @@
     {
       "filename": "missile-pod",
       "frame": {
-        "x": 2,
+        "x": 662,
         "y": 530,
         "w": 128,
         "h": 128
@@ -928,7 +1053,32 @@
     {
       "filename": "missile-swarm",
       "frame": {
-        "x": 134,
+        "x": 794,
+        "y": 530,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "padlock-open",
+      "frame": {
+        "x": 926,
         "y": 530,
         "w": 128,
         "h": 128
@@ -953,7 +1103,7 @@
     {
       "filename": "padlock",
       "frame": {
-        "x": 266,
+        "x": 1058,
         "y": 530,
         "w": 128,
         "h": 128
@@ -978,8 +1128,8 @@
     {
       "filename": "pause-button",
       "frame": {
-        "x": 398,
-        "y": 530,
+        "x": 2,
+        "y": 662,
         "w": 128,
         "h": 128
       },
@@ -1003,8 +1153,8 @@
     {
       "filename": "perspective-dice-six-faces-random",
       "frame": {
-        "x": 530,
-        "y": 530,
+        "x": 134,
+        "y": 662,
         "w": 128,
         "h": 128
       },
@@ -1028,8 +1178,8 @@
     {
       "filename": "plain-arrow",
       "frame": {
-        "x": 662,
-        "y": 530,
+        "x": 266,
+        "y": 662,
         "w": 128,
         "h": 128
       },
@@ -1053,8 +1203,8 @@
     {
       "filename": "plain-circle",
       "frame": {
-        "x": 794,
-        "y": 530,
+        "x": 398,
+        "y": 662,
         "w": 128,
         "h": 128
       },
@@ -1078,8 +1228,8 @@
     {
       "filename": "plain-square",
       "frame": {
-        "x": 926,
-        "y": 530,
+        "x": 530,
+        "y": 662,
         "w": 128,
         "h": 128
       },
@@ -1103,8 +1253,8 @@
     {
       "filename": "play-button",
       "frame": {
-        "x": 1058,
-        "y": 530,
+        "x": 662,
+        "y": 662,
         "w": 128,
         "h": 128
       },
@@ -1128,7 +1278,7 @@
     {
       "filename": "podium",
       "frame": {
-        "x": 2,
+        "x": 794,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1153,7 +1303,7 @@
     {
       "filename": "pokecog",
       "frame": {
-        "x": 134,
+        "x": 926,
         "y": 662,
         "w": 128,
         "h": 128
@@ -1178,156 +1328,6 @@
     {
       "filename": "position-marker",
       "frame": {
-        "x": 266,
-        "y": 662,
-        "w": 128,
-        "h": 128
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 128
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 128
-      },
-      "pivot": {
-        "x": 0.0,
-        "y": 0.0
-      }
-    },
-    {
-      "filename": "rocket-flight",
-      "frame": {
-        "x": 398,
-        "y": 662,
-        "w": 128,
-        "h": 128
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 128
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 128
-      },
-      "pivot": {
-        "x": 0.0,
-        "y": 0.0
-      }
-    },
-    {
-      "filename": "rocket-thruster",
-      "frame": {
-        "x": 530,
-        "y": 662,
-        "w": 128,
-        "h": 128
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 128
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 128
-      },
-      "pivot": {
-        "x": 0.0,
-        "y": 0.0
-      }
-    },
-    {
-      "filename": "rocket",
-      "frame": {
-        "x": 662,
-        "y": 662,
-        "w": 128,
-        "h": 128
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 128
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 128
-      },
-      "pivot": {
-        "x": 0.0,
-        "y": 0.0
-      }
-    },
-    {
-      "filename": "satellite",
-      "frame": {
-        "x": 794,
-        "y": 662,
-        "w": 128,
-        "h": 128
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 128
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 128
-      },
-      "pivot": {
-        "x": 0.0,
-        "y": 0.0
-      }
-    },
-    {
-      "filename": "share",
-      "frame": {
-        "x": 926,
-        "y": 662,
-        "w": 128,
-        "h": 128
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 128
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 128
-      },
-      "pivot": {
-        "x": 0.0,
-        "y": 0.0
-      }
-    },
-    {
-      "filename": "sinusoidal-beam",
-      "frame": {
         "x": 1058,
         "y": 662,
         "w": 128,
@@ -1351,9 +1351,209 @@
       }
     },
     {
-      "filename": "slashed-shield",
+      "filename": "progression",
       "frame": {
         "x": 2,
+        "y": 794,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "radar-sweep",
+      "frame": {
+        "x": 134,
+        "y": 794,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "rocket-flight",
+      "frame": {
+        "x": 266,
+        "y": 794,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "rocket-thruster",
+      "frame": {
+        "x": 398,
+        "y": 794,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "rocket",
+      "frame": {
+        "x": 530,
+        "y": 794,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "satellite",
+      "frame": {
+        "x": 662,
+        "y": 794,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "share",
+      "frame": {
+        "x": 794,
+        "y": 794,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "sinusoidal-beam",
+      "frame": {
+        "x": 926,
+        "y": 794,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "slashed-shield",
+      "frame": {
+        "x": 1058,
         "y": 794,
         "w": 128,
         "h": 128
@@ -1378,8 +1578,33 @@
     {
       "filename": "solar-system",
       "frame": {
+        "x": 2,
+        "y": 926,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "spaceship",
+      "frame": {
         "x": 134,
-        "y": 794,
+        "y": 926,
         "w": 128,
         "h": 128
       },
@@ -1404,7 +1629,7 @@
       "filename": "speaker-off",
       "frame": {
         "x": 266,
-        "y": 794,
+        "y": 926,
         "w": 128,
         "h": 128
       },
@@ -1429,7 +1654,7 @@
       "filename": "speaker",
       "frame": {
         "x": 398,
-        "y": 794,
+        "y": 926,
         "w": 128,
         "h": 128
       },
@@ -1454,7 +1679,7 @@
       "filename": "spiky-field",
       "frame": {
         "x": 530,
-        "y": 794,
+        "y": 926,
         "w": 128,
         "h": 128
       },
@@ -1479,7 +1704,7 @@
       "filename": "split-cross",
       "frame": {
         "x": 662,
-        "y": 794,
+        "y": 926,
         "w": 128,
         "h": 128
       },
@@ -1504,7 +1729,7 @@
       "filename": "star-gate",
       "frame": {
         "x": 794,
-        "y": 794,
+        "y": 926,
         "w": 128,
         "h": 128
       },
@@ -1529,7 +1754,7 @@
       "filename": "strafe",
       "frame": {
         "x": 926,
-        "y": 794,
+        "y": 926,
         "w": 128,
         "h": 128
       },
@@ -1554,7 +1779,7 @@
       "filename": "striking-balls",
       "frame": {
         "x": 1058,
-        "y": 794,
+        "y": 926,
         "w": 128,
         "h": 128
       },
@@ -1579,7 +1804,7 @@
       "filename": "talk",
       "frame": {
         "x": 2,
-        "y": 926,
+        "y": 1058,
         "w": 128,
         "h": 128
       },
@@ -1604,7 +1829,7 @@
       "filename": "targeting",
       "frame": {
         "x": 134,
-        "y": 926,
+        "y": 1058,
         "w": 128,
         "h": 128
       },
@@ -1629,7 +1854,32 @@
       "filename": "techno-heart",
       "frame": {
         "x": 266,
-        "y": 926,
+        "y": 1058,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "trade",
+      "frame": {
+        "x": 398,
+        "y": 1058,
         "w": 128,
         "h": 128
       },
@@ -1653,8 +1903,58 @@
     {
       "filename": "trash-can",
       "frame": {
-        "x": 398,
-        "y": 926,
+        "x": 530,
+        "y": 1058,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "up-card",
+      "frame": {
+        "x": 662,
+        "y": 1058,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    },
+    {
+      "filename": "upgrade",
+      "frame": {
+        "x": 794,
+        "y": 1058,
         "w": 128,
         "h": 128
       },
@@ -1683,7 +1983,7 @@
     "format": "RGBA8888",
     "size": {
       "w": 1188,
-      "h": 1056
+      "h": 1188
     },
     "scale": "1"
   }

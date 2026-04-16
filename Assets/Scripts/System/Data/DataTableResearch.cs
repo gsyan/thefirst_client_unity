@@ -1,5 +1,5 @@
 // 연구 트리 ScriptableObject - 모듈 연구/기술레벨 노드, 모듈 해금/교체 비용 관리
-// CSV: research_id = enum 이름 (module행) 또는 "tech_level_N" — 정수값 없이 이름 파싱으로 enum 자동 연결
+// CSV 분리: datatable_research_tech.csv (기술레벨), datatable_research_subtype.csv (모듈 서브타입)
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -27,6 +27,8 @@ public class ModuleResearchData : ResearchNodeData
 public class TechLevelResearchData : ResearchNodeData
 {
     public int targetTechLevel; // 이 연구를 완료하면 달성되는 기술레벨
+    public float stackTime;     // 이 기술레벨의 자원 보관 가능 시간(h)
+    public int shipCount;       // 이 기술레벨에서의 최대 함선 수
 }
 
 [CreateAssetMenu(fileName = "DataTableResearch", menuName = "Custom/DataTableResearch")]
@@ -81,6 +83,20 @@ public class DataTableResearch : ScriptableObject
         return data?.researchCost ?? new CostStruct();
     }
 
+    // 해당 기술레벨의 자원 보관 캡 시간(h) 반환
+    public float GetStackTime(int techLevel)
+    {
+        var data = techLevelDataList.Find(r => r.targetTechLevel == techLevel);
+        return data?.stackTime ?? 3f;
+    }
+
+    // 해당 기술레벨에서 허용되는 최대 함선 수 반환
+    public int GetShipCount(int techLevel)
+    {
+        var data = techLevelDataList.Find(r => r.targetTechLevel == techLevel);
+        return data?.shipCount ?? 1;
+    }
+
     #endregion
 
     #region Validation
@@ -101,10 +117,54 @@ public class DataTableResearch : ScriptableObject
     #region CSV Import/Export
 
 #if UNITY_EDITOR
-    public void LoadFromCsv(string csvText)
+    // datatable_research_tech.csv 임포트 — stack_time, ship_count 컬럼 포함
+    public void LoadTechFromCsv(string csvText)
+    {
+        techLevelDataList.Clear();
+
+        string[] lines = csvText.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.None);
+        if (lines.Length < 2) return;
+
+        string[] headers = ParseCsvLine(lines[0].Trim());
+        var col = new Dictionary<string, int>();
+        for (int i = 0; i < headers.Length; i++)
+            col[headers[i].Trim()] = i;
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+
+            string[] cols = ParseCsvLine(line);
+            string researchId = GetCol(cols, col, "research_id");
+            if (string.IsNullOrEmpty(researchId) || researchId.StartsWith("tech_level_") == false) continue;
+
+            int.TryParse(researchId["tech_level_".Length..], out int targetLevel);
+            var cost = new CostStruct(
+                ParseCsvLong(GetCol(cols, col, "cost_m")),
+                ParseCsvLong(GetCol(cols, col, "cost_mr")),
+                ParseCsvLong(GetCol(cols, col, "cost_me")),
+                ParseCsvLong(GetCol(cols, col, "cost_md")));
+
+            techLevelDataList.Add(new TechLevelResearchData
+            {
+                researchId      = researchId,
+                targetTechLevel = targetLevel,
+                prerequisiteIds = ParseCsvStringList(GetCol(cols, col, "prerequisites")),
+                researchCost    = cost,
+                stackTime       = ParseCsvFloat(GetCol(cols, col, "stack_time")),
+                shipCount       = (int)ParseCsvFloat(GetCol(cols, col, "ship_count")),
+            });
+        }
+
+        Debug.Log($"[DataTableResearch] Tech CSV Import 완료: 기술레벨 {techLevelDataList.Count}개");
+        UnityEditor.EditorUtility.SetDirty(this);
+    }
+
+    // datatable_research_subtype.csv 임포트 — ui_pos_x/y 컬럼 포함
+    public void LoadSubtypeFromCsv(string csvText)
     {
         researchDataList.Clear();
-        techLevelDataList.Clear();
 
         string[] lines = csvText.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.None);
         if (lines.Length < 2) return;
@@ -124,7 +184,6 @@ public class DataTableResearch : ScriptableObject
             if (string.IsNullOrEmpty(researchId)) continue;
 
             var cost = new CostStruct(
-                0,
                 ParseCsvLong(GetCol(cols, col, "cost_m")),
                 ParseCsvLong(GetCol(cols, col, "cost_mr")),
                 ParseCsvLong(GetCol(cols, col, "cost_me")),
@@ -134,37 +193,19 @@ public class DataTableResearch : ScriptableObject
                 ParseCsvFloat(GetCol(cols, col, "ui_pos_x")),
                 ParseCsvFloat(GetCol(cols, col, "ui_pos_y")));
 
-            var prereqs = ParseCsvStringList(GetCol(cols, col, "prerequisites"));
-
-            // "tech_level_N" 접두사: researchId 접미사에서 targetTechLevel 파싱
-            if (researchId.StartsWith("tech_level_"))
-            {
-                int.TryParse(researchId["tech_level_".Length..], out int targetLevel);
-                techLevelDataList.Add(new TechLevelResearchData
-                {
-                    researchId      = researchId,
-                    targetTechLevel = targetLevel,
-                    prerequisiteIds = prereqs,
-                    uiPosition      = uiPos,
-                    researchCost    = cost,
-                });
-                continue;
-            }
-
-            // 일반 모듈 연구 데이터 — researchId가 enum 이름과 동일하므로 이름으로 파싱
             if (System.Enum.TryParse(researchId, out EModuleSubType moduleSubType) == false) continue;
             researchDataList.Add(new ModuleResearchData
             {
                 researchId      = researchId,
                 moduleType      = (EModuleType)moduleSubType.GetModuleType(),
                 moduleSubType   = moduleSubType,
-                prerequisiteIds = prereqs,
+                prerequisiteIds = ParseCsvStringList(GetCol(cols, col, "prerequisites")),
                 uiPosition      = uiPos,
                 researchCost    = cost,
             });
         }
 
-        Debug.Log($"[DataTableResearch] CSV Import 완료: 모듈 {researchDataList.Count}개, 기술레벨 {techLevelDataList.Count}개");
+        Debug.Log($"[DataTableResearch] Subtype CSV Import 완료: 모듈 {researchDataList.Count}개");
         UnityEditor.EditorUtility.SetDirty(this);
     }
 

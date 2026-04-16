@@ -17,7 +17,7 @@ public class UIPopupConfirm : UIPopupBase
     private Action onCancelCallback;
     private Action onConfirmCallback;
 
-    private const string SEPARATOR = "\n\n<color=#666666>─────────────</color>\n\n";
+    private const string SEPARATOR = "\n<color=#666666>─────────────</color>\n";
 
     protected override void Awake()
     {
@@ -66,45 +66,38 @@ public class UIPopupConfirm : UIPopupBase
     {
         canAfford = true;
         if (cost == null) return null;
-        bool hasCost = cost.techLevel > 0 || cost.mineral > 0 || cost.mineralRare > 0 || cost.mineralExotic > 0 || cost.mineralDark > 0;
+        bool hasCost = cost.mineral > 0 || cost.mineralRare > 0 || cost.mineralExotic > 0 || cost.mineralDark > 0;
         if (hasCost == false) return null;
 
         var ch = DataManager.Instance.m_currentCharacter;
-        var techLevel = ch.GetTechLevel();
         var info = ch?.m_characterInfo;
         var sb = new StringBuilder();
 
         string C(bool insufficient, string val) => insufficient ? $"<color=red>{val}</color>" : val;
 
-        if (cost.techLevel > 0)
-        {
-            bool ins = info != null && techLevel < cost.techLevel;
-            if (ins == true) canAfford = false;
-            sb.Append($"{CommonUtility.Sprite("gears")} {C(ins, CommonUtility.FormatBigNumber(cost.techLevel))}\n\n");
-        }
         if (cost.mineral > 0)
         {
             bool ins = info != null && info.mineral < cost.mineral;
             if (ins == true) canAfford = false;
-            sb.Append($"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}\n\n");
+            sb.Append($"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}");
         }
         if (cost.mineralRare > 0)
         {
             bool ins = info != null && info.mineralRare < cost.mineralRare;
             if (ins == true) canAfford = false;
-            sb.Append($"{CommonUtility.Sprite("minerals")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}\n\n");
+            sb.Append($" {CommonUtility.Sprite("minerals")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}");
         }
         if (cost.mineralExotic > 0)
         {
             bool ins = info != null && info.mineralExotic < cost.mineralExotic;
             if (ins == true) canAfford = false;
-            sb.Append($"{CommonUtility.Sprite("emerald")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}\n\n");
+            sb.Append($" {CommonUtility.Sprite("emerald")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}");
         }
         if (cost.mineralDark > 0)
         {
             bool ins = info != null && info.mineralDark < cost.mineralDark;
             if (ins == true) canAfford = false;
-            sb.Append($"{CommonUtility.Sprite("fire-gem")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n\n");
+            sb.Append($" {CommonUtility.Sprite("fire-gem")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n");
         }
 
         return sb.ToString().TrimEnd();

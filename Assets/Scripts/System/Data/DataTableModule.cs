@@ -431,7 +431,7 @@ public class DataTableModule : ScriptableObject
                 airAmmo                         = ParseCsvInt  (GetCol(cols, col, "air_ammo")),
                 airDetectRadius                 = ParseCsvFloat(GetCol(cols, col, "air_detect_radius")),
                 airAvoidRadius                  = ParseCsvFloat(GetCol(cols, col, "air_avoid_radius")),
-                upgradeCost = new CostStruct(0, // techLevel: 서브타입 인코딩에서 파싱
+                upgradeCost = new CostStruct(
                     ParseCsvLong (GetCol(cols, col, "cost_m")),
                     ParseCsvLong (GetCol(cols, col, "cost_mr")),
                     ParseCsvLong (GetCol(cols, col, "cost_me")),

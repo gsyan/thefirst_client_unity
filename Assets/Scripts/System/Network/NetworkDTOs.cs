@@ -95,7 +95,6 @@ public class ModuleChangeCostEntry
 [System.Serializable]
 public class CostStruct
 {
-    public int techLevel;
     public long mineral;
     public long mineralRare;
     public long mineralExotic;
@@ -103,15 +102,13 @@ public class CostStruct
 
     public CostStruct()
     {
-        this.techLevel = 0;
         this.mineral = 0;
         this.mineralRare = 0;
         this.mineralExotic = 0;
         this.mineralDark = 0;
     }
-    public CostStruct(int techLevel, long mineral, long mineralRare, long mineralExotic, long mineralDark)
+    public CostStruct(long mineral, long mineralRare, long mineralExotic, long mineralDark)
     {
-        this.techLevel = techLevel;
         this.mineral = mineral;
         this.mineralRare = mineralRare;
         this.mineralExotic = mineralExotic;

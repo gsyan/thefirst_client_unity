@@ -250,6 +250,12 @@ public static class EventManager
         OnMyFleetDestroyed -= callback;
     }
 
+    // 존 상태 변경 (safe / warp / zone)
+    public static event Action<EEnterZoneState> OnEnterZoneStateChanged;
+    public static void TriggerEnterZoneStateChanged(EEnterZoneState state) { OnEnterZoneStateChanged?.Invoke(state); }
+    public static void Subscribe_EnterZoneStateChanged(Action<EEnterZoneState> callback)   { OnEnterZoneStateChanged += callback; }
+    public static void Unsubscribe_EnterZoneStateChanged(Action<EEnterZoneState> callback) { OnEnterZoneStateChanged -= callback; }
+
     // 존 진입 (zoneName, isFirstClear)
     public static event Action<string, bool> OnZoneEntered;
     public static void TriggerZoneEntered(string zoneName, bool isFirstClear)

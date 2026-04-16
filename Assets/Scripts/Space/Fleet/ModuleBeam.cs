@@ -99,6 +99,7 @@ public class ModuleBeam : ModuleBase
     private void InitializeByModuleSlot(ModuleData moduleData)
     {
         Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
+        slotScale *= 0.1f;
         for(int i=0; i< moduleData.attackFireCount; i++)
         {
             LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();

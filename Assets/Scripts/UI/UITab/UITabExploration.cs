@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-enum EEnterZoneState
+public enum EEnterZoneState
 {
     safe,
     warp,
@@ -307,10 +307,10 @@ private void SetupGroupTabs()
             if (sb.Length > 0) sb.Append("   ");
             sb.Append($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(rate * capHours)}");
         }
-        AppendIfPositive("IconMineral",  m_totalMineralPerHour);
-        AppendIfPositive("IconMineralR", m_totalMineralRarePerHour);
-        AppendIfPositive("IconMineralE", m_totalMineralExoticPerHour);
-        AppendIfPositive("IconMineralD", m_totalMineralDarkPerHour);
+        AppendIfPositive("crystal-growth",  m_totalMineralPerHour);
+        AppendIfPositive("minerals", m_totalMineralRarePerHour);
+        AppendIfPositive("emerald", m_totalMineralExoticPerHour);
+        AppendIfPositive("fire-gem", m_totalMineralDarkPerHour);
 
         string label = LocalizationManager.Instance.Get("exploration_collectable_minerals_max");
         m_harvestLimitText.text = $"{label}({sb} )";
@@ -348,6 +348,7 @@ private void SetupGroupTabs()
         bool inZone = enterZoneState == EEnterZoneState.zone;
         if (m_safeZoneButton != null) m_safeZoneButton.gameObject.SetActive(inZone);
         if (m_zoneTryButton  != null) m_zoneTryButton.gameObject.SetActive(!inZone);
+        EventManager.TriggerEnterZoneStateChanged(enterZoneState);
     }
 
     private void OnMyFleetWiped()
@@ -430,7 +431,6 @@ private void SetupGroupTabs()
     {
         if (m_selectedZoneStage == null) return;
         if (m_enterZoneState == EEnterZoneState.warp) return;
-        UIManager.Instance.HideCurrentPanel();
         if (m_enterZoneState == EEnterZoneState.zone && m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZoneStage.zoneName) return;
 
         if (m_enterZoneState == EEnterZoneState.zone)
@@ -464,10 +464,10 @@ private void SetupGroupTabs()
             if (value <= 0f) return;
             sb.AppendLine($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(value)}/h");
         }
-        AppendRate("IconMineralMini",  zoneStage.mineralPerHour);
-        AppendRate("IconMineralRMini", zoneStage.mineralRarePerHour);
-        AppendRate("IconMineralEMini", zoneStage.mineralExoticPerHour);
-        AppendRate("IconMineralDMini", zoneStage.mineralDarkPerHour);
+        AppendRate("crystal-growth",  zoneStage.mineralPerHour);
+        AppendRate("minerals", zoneStage.mineralRarePerHour);
+        AppendRate("emerald", zoneStage.mineralExoticPerHour);
+        AppendRate("fire-gem", zoneStage.mineralDarkPerHour);
         m_zoneDetailText.text = sb.ToString().TrimEnd();
     }
 
@@ -530,6 +530,7 @@ private void SetupGroupTabs()
 
     private void EnterZoneStage(ZoneStageConfig zoneStage)
     {
+        if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
         SetEnterZoneState(EEnterZoneState.warp);
         var zone = m_datatableZone.GetZone(zoneStage.zoneIndex);
         Material skybox = zone?.skyboxMaterial;

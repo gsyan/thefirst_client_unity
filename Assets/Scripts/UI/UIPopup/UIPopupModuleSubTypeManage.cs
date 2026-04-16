@@ -281,7 +281,8 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
             int currentLevel = m_sourceModule.GetModuleLevel();
             int maxLevel = DataManager.Instance.GetMaxModuleLevel(prereqSubType);
-            bool isMaxLevel = currentLevel >= maxLevel;
+            // 현재 서브타입이 prerequisite과 일치해야 하고, 그 레벨이 맥스여야 함
+            bool isMaxLevel = currentSubType == prereqSubType && currentLevel >= maxLevel;
             if (isMaxLevel == false) canConfirm = false;
 
             CostStruct cost = DataManager.Instance.m_dataTableResearch.GetResearchCost(m_selectedSubType);
@@ -301,14 +302,14 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             sb.Append(isMaxLevel == true
                 ? levelMsg
                 : $"<color=red>{levelMsg}</color>");
-            sb.Append("\n\n");
+            sb.Append("\n");
 
             // 기술 레벨 조건 (부족하면 빨간색)
             string techLine = hasTechLevel
                 ? $"{CommonUtility.Sprite("gears")} Lv.{requiredTechTier}"
                 : $"{CommonUtility.Sprite("gears")} <color=red>Lv.{requiredTechTier}</color>";
             sb.Append(techLine);
-            sb.Append("\n\n");
+            sb.Append("\n");
 
             // 4종 재화 비용 — 한 줄로 이어서 표시, 0이면 생략
             var costSb = new System.Text.StringBuilder();

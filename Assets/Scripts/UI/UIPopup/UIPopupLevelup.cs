@@ -152,29 +152,29 @@ public class UIPopupLevelup : UIPopupBase
 
     private string BuildBodyText(CostStruct cost)
     {
-        const string SEPARATOR = "\n\n<color=#666666>─────────────</color>\n\n";
+        const string SEPARATOR = "\n<color=#666666>─────────────</color>\n";
         var sb = new StringBuilder();
 
         if (m_mode == Mode.Module)
         {
             // 스탯 비교 (레벨 헤더 첫 줄 제거)
-            string full = CommonUtility.GetModuleDetailText(m_moduleType, m_subType, m_currentLevel, m_targetLevel);
+            string full = CommonUtility.GetModuleDetailText(m_moduleType, m_subType, m_currentLevel, m_targetLevel, "\n");
             if (string.IsNullOrEmpty(full) == false)
             {
-                int sep = full.IndexOf("\n\n", StringComparison.Ordinal);
-                string statsOnly = sep >= 0 ? full.Substring(sep + 2) : full;
+                int sep = full.IndexOf("\n", StringComparison.Ordinal);
+                string statsOnly = sep >= 0 ? full.Substring(sep + 1) : full;
                 sb.Append(statsOnly);
             }
         }
         else
         {
             // 기술레벨: 해금 정보 (현재 → 목표)
-            int currentCap  = 3 + (m_currentLevel / 2);
-            int targetCap   = 3 + (m_targetLevel  / 2);
-            int currentShips = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(m_currentLevel);
-            int targetShips  = DataManager.Instance.m_dataTableConfig.gameSettings.GetMaxShipsAtTechLevel(m_targetLevel);
+            int currentCap   = (int)DataManager.Instance.m_dataTableResearch.GetStackTime(m_currentLevel);
+            int targetCap    = (int)DataManager.Instance.m_dataTableResearch.GetStackTime(m_targetLevel);
+            int currentShips = DataManager.Instance.m_dataTableResearch.GetShipCount(m_currentLevel);
+            int targetShips  = DataManager.Instance.m_dataTableResearch.GetShipCount(m_targetLevel);
 
-            sb.Append($"{CommonUtility.Sprite("clockwork")}  {currentCap}h → {targetCap}h\n\n");
+            sb.Append($"{CommonUtility.Sprite("clockwork")}  {currentCap}h → {targetCap}h\n");
             sb.Append($"{CommonUtility.Sprite("spiky-field")} {currentShips} → {targetShips}");
         }
 
@@ -188,22 +188,22 @@ public class UIPopupLevelup : UIPopupBase
             if (cost.mineral > 0)
             {
                 bool ins = info != null && info.mineral < cost.mineral;
-                costSb.Append($"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}\n\n");
+                costSb.Append($" {CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}");
             }
             if (cost.mineralRare > 0)
             {
                 bool ins = info != null && info.mineralRare < cost.mineralRare;
-                costSb.Append($"{CommonUtility.Sprite("minerals")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}\n\n");
+                costSb.Append($" {CommonUtility.Sprite("minerals")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}");
             }
             if (cost.mineralExotic > 0)
             {
                 bool ins = info != null && info.mineralExotic < cost.mineralExotic;
-                costSb.Append($"{CommonUtility.Sprite("emerald")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}\n\n");
+                costSb.Append($" {CommonUtility.Sprite("emerald")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}");
             }
             if (cost.mineralDark > 0)
             {
                 bool ins = info != null && info.mineralDark < cost.mineralDark;
-                costSb.Append($"{CommonUtility.Sprite("fire-gem")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n\n");
+                costSb.Append($" {CommonUtility.Sprite("fire-gem")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n");
             }
 
             string costStr = costSb.ToString().TrimEnd();

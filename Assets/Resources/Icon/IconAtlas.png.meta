@@ -5,6 +5,42 @@ TextureImporter:
   - first:
       213: -8063262221651079987
     second: light-fighter
+  - first:
+      213: -7839681648887862895
+    second: arrow-scope
+  - first:
+      213: -7282550818784154770
+    second: clockwise-rotation
+  - first:
+      213: 8836209848129099634
+    second: coal-wagon
+  - first:
+      213: 8824830103250282602
+    second: laser-sparks
+  - first:
+      213: -8787292298069094380
+    second: look-at
+  - first:
+      213: 6354538412098567316
+    second: padlock-open
+  - first:
+      213: 7222625600475512717
+    second: progression
+  - first:
+      213: -5080862505014717018
+    second: radar-sweep
+  - first:
+      213: -4332573901666615362
+    second: spaceship
+  - first:
+      213: 4560171775223805744
+    second: trade
+  - first:
+      213: 7435589603982311959
+    second: up-card
+  - first:
+      213: 7096138885364736195
+    second: upgrade
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -117,7 +153,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2
-        y: 926
+        y: 1058
         width: 128
         height: 128
       alignment: 0
@@ -139,7 +175,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 134
-        y: 926
+        y: 1058
         width: 128
         height: 128
       alignment: 0
@@ -161,7 +197,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 266
-        y: 926
+        y: 1058
         width: 128
         height: 128
       alignment: 0
@@ -179,11 +215,33 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: auto-repair
+      name: arrow-scope
       rect:
         serializedVersion: 2
         x: 398
-        y: 926
+        y: 1058
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 199e3e5a31bd33390800000000000000
+      internalID: -7839681648887862895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: auto-repair
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 1058
         width: 128
         height: 128
       alignment: 0
@@ -204,8 +262,8 @@ TextureImporter:
       name: big-gear
       rect:
         serializedVersion: 2
-        x: 530
-        y: 926
+        x: 662
+        y: 1058
         width: 128
         height: 128
       alignment: 0
@@ -226,8 +284,8 @@ TextureImporter:
       name: bubble-field
       rect:
         serializedVersion: 2
-        x: 662
-        y: 926
+        x: 794
+        y: 1058
         width: 128
         height: 128
       alignment: 0
@@ -248,8 +306,8 @@ TextureImporter:
       name: bubbling-beam
       rect:
         serializedVersion: 2
-        x: 794
-        y: 926
+        x: 926
+        y: 1058
         width: 128
         height: 128
       alignment: 0
@@ -270,8 +328,8 @@ TextureImporter:
       name: bullseye
       rect:
         serializedVersion: 2
-        x: 926
-        y: 926
+        x: 1058
+        y: 1058
         width: 128
         height: 128
       alignment: 0
@@ -292,7 +350,7 @@ TextureImporter:
       name: cancel
       rect:
         serializedVersion: 2
-        x: 1058
+        x: 2
         y: 926
         width: 128
         height: 128
@@ -314,8 +372,8 @@ TextureImporter:
       name: circle
       rect:
         serializedVersion: 2
-        x: 2
-        y: 794
+        x: 134
+        y: 926
         width: 128
         height: 128
       alignment: 0
@@ -333,11 +391,33 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: clockwise-rotation
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 926
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6be3ab6d9e2fea90800000000000000
+      internalID: -7282550818784154770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: clockwork
       rect:
         serializedVersion: 2
-        x: 134
-        y: 794
+        x: 398
+        y: 926
         width: 128
         height: 128
       alignment: 0
@@ -355,11 +435,33 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: coal-wagon
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 926
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2771b866a0680aa70800000000000000
+      internalID: 8836209848129099634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: cog
       rect:
         serializedVersion: 2
-        x: 266
-        y: 794
+        x: 662
+        y: 926
         width: 128
         height: 128
       alignment: 0
@@ -380,8 +482,8 @@ TextureImporter:
       name: companion-cube
       rect:
         serializedVersion: 2
-        x: 398
-        y: 794
+        x: 794
+        y: 926
         width: 128
         height: 128
       alignment: 0
@@ -402,8 +504,8 @@ TextureImporter:
       name: confirmed
       rect:
         serializedVersion: 2
-        x: 530
-        y: 794
+        x: 926
+        y: 926
         width: 128
         height: 128
       alignment: 0
@@ -424,8 +526,8 @@ TextureImporter:
       name: crystal-growth
       rect:
         serializedVersion: 2
-        x: 662
-        y: 794
+        x: 1058
+        y: 926
         width: 128
         height: 128
       alignment: 0
@@ -446,7 +548,7 @@ TextureImporter:
       name: defense-satellite
       rect:
         serializedVersion: 2
-        x: 794
+        x: 2
         y: 794
         width: 128
         height: 128
@@ -468,7 +570,7 @@ TextureImporter:
       name: drill
       rect:
         serializedVersion: 2
-        x: 926
+        x: 134
         y: 794
         width: 128
         height: 128
@@ -490,7 +592,7 @@ TextureImporter:
       name: emerald
       rect:
         serializedVersion: 2
-        x: 1058
+        x: 266
         y: 794
         width: 128
         height: 128
@@ -512,8 +614,8 @@ TextureImporter:
       name: envelope
       rect:
         serializedVersion: 2
-        x: 2
-        y: 662
+        x: 398
+        y: 794
         width: 128
         height: 128
       alignment: 0
@@ -534,8 +636,8 @@ TextureImporter:
       name: expander
       rect:
         serializedVersion: 2
-        x: 134
-        y: 662
+        x: 530
+        y: 794
         width: 128
         height: 128
       alignment: 0
@@ -556,8 +658,8 @@ TextureImporter:
       name: fast-forward-button
       rect:
         serializedVersion: 2
-        x: 266
-        y: 662
+        x: 662
+        y: 794
         width: 128
         height: 128
       alignment: 0
@@ -578,8 +680,8 @@ TextureImporter:
       name: fire-gem
       rect:
         serializedVersion: 2
-        x: 398
-        y: 662
+        x: 794
+        y: 794
         width: 128
         height: 128
       alignment: 0
@@ -600,8 +702,8 @@ TextureImporter:
       name: forward-field
       rect:
         serializedVersion: 2
-        x: 530
-        y: 662
+        x: 926
+        y: 794
         width: 128
         height: 128
       alignment: 0
@@ -622,8 +724,8 @@ TextureImporter:
       name: gears
       rect:
         serializedVersion: 2
-        x: 662
-        y: 662
+        x: 1058
+        y: 794
         width: 128
         height: 128
       alignment: 0
@@ -644,7 +746,7 @@ TextureImporter:
       name: heart-battery
       rect:
         serializedVersion: 2
-        x: 794
+        x: 2
         y: 662
         width: 128
         height: 128
@@ -666,7 +768,7 @@ TextureImporter:
       name: heart-wings
       rect:
         serializedVersion: 2
-        x: 926
+        x: 134
         y: 662
         width: 128
         height: 128
@@ -688,7 +790,7 @@ TextureImporter:
       name: hearts
       rect:
         serializedVersion: 2
-        x: 1058
+        x: 266
         y: 662
         width: 128
         height: 128
@@ -710,8 +812,8 @@ TextureImporter:
       name: hypersonic-bolt
       rect:
         serializedVersion: 2
-        x: 2
-        y: 530
+        x: 398
+        y: 662
         width: 128
         height: 128
       alignment: 0
@@ -732,8 +834,8 @@ TextureImporter:
       name: infinity
       rect:
         serializedVersion: 2
-        x: 134
-        y: 530
+        x: 530
+        y: 662
         width: 128
         height: 128
       alignment: 0
@@ -754,8 +856,8 @@ TextureImporter:
       name: info
       rect:
         serializedVersion: 2
-        x: 266
-        y: 530
+        x: 662
+        y: 662
         width: 128
         height: 128
       alignment: 0
@@ -776,8 +878,8 @@ TextureImporter:
       name: jet-fighter
       rect:
         serializedVersion: 2
-        x: 398
-        y: 530
+        x: 794
+        y: 662
         width: 128
         height: 128
       alignment: 0
@@ -798,8 +900,8 @@ TextureImporter:
       name: laser-blast
       rect:
         serializedVersion: 2
-        x: 530
-        y: 530
+        x: 926
+        y: 662
         width: 128
         height: 128
       alignment: 0
@@ -817,10 +919,32 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: laser-sparks
+      rect:
+        serializedVersion: 2
+        x: 1058
+        y: 662
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6828631938187a70800000000000000
+      internalID: 8824830103250282602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: light-fighter
       rect:
         serializedVersion: 2
-        x: 662
+        x: 2
         y: 530
         width: 128
         height: 128
@@ -839,10 +963,32 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: look-at
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 530
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 410d01446344d0680800000000000000
+      internalID: -8787292298069094380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: magnifying-glass
       rect:
         serializedVersion: 2
-        x: 794
+        x: 266
         y: 530
         width: 128
         height: 128
@@ -864,7 +1010,7 @@ TextureImporter:
       name: mine-wagon
       rect:
         serializedVersion: 2
-        x: 926
+        x: 398
         y: 530
         width: 128
         height: 128
@@ -886,7 +1032,7 @@ TextureImporter:
       name: minerals
       rect:
         serializedVersion: 2
-        x: 1058
+        x: 530
         y: 530
         width: 128
         height: 128
@@ -908,8 +1054,8 @@ TextureImporter:
       name: missile-pod
       rect:
         serializedVersion: 2
-        x: 2
-        y: 398
+        x: 662
+        y: 530
         width: 128
         height: 128
       alignment: 0
@@ -930,8 +1076,8 @@ TextureImporter:
       name: missile-swarm
       rect:
         serializedVersion: 2
-        x: 134
-        y: 398
+        x: 794
+        y: 530
         width: 128
         height: 128
       alignment: 0
@@ -949,11 +1095,33 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: padlock-open
+      rect:
+        serializedVersion: 2
+        x: 926
+        y: 530
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49cb5bc940bdf2850800000000000000
+      internalID: 6354538412098567316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: padlock
       rect:
         serializedVersion: 2
-        x: 266
-        y: 398
+        x: 1058
+        y: 530
         width: 128
         height: 128
       alignment: 0
@@ -974,7 +1142,7 @@ TextureImporter:
       name: pause-button
       rect:
         serializedVersion: 2
-        x: 398
+        x: 2
         y: 398
         width: 128
         height: 128
@@ -996,7 +1164,7 @@ TextureImporter:
       name: perspective-dice-six-faces-random
       rect:
         serializedVersion: 2
-        x: 530
+        x: 134
         y: 398
         width: 128
         height: 128
@@ -1018,7 +1186,7 @@ TextureImporter:
       name: plain-arrow
       rect:
         serializedVersion: 2
-        x: 662
+        x: 266
         y: 398
         width: 128
         height: 128
@@ -1040,7 +1208,7 @@ TextureImporter:
       name: plain-circle
       rect:
         serializedVersion: 2
-        x: 794
+        x: 398
         y: 398
         width: 128
         height: 128
@@ -1062,7 +1230,7 @@ TextureImporter:
       name: plain-square
       rect:
         serializedVersion: 2
-        x: 926
+        x: 530
         y: 398
         width: 128
         height: 128
@@ -1084,7 +1252,7 @@ TextureImporter:
       name: play-button
       rect:
         serializedVersion: 2
-        x: 1058
+        x: 662
         y: 398
         width: 128
         height: 128
@@ -1106,8 +1274,8 @@ TextureImporter:
       name: podium
       rect:
         serializedVersion: 2
-        x: 2
-        y: 266
+        x: 794
+        y: 398
         width: 128
         height: 128
       alignment: 0
@@ -1128,8 +1296,8 @@ TextureImporter:
       name: pokecog
       rect:
         serializedVersion: 2
-        x: 134
-        y: 266
+        x: 926
+        y: 398
         width: 128
         height: 128
       alignment: 0
@@ -1150,8 +1318,8 @@ TextureImporter:
       name: position-marker
       rect:
         serializedVersion: 2
-        x: 266
-        y: 266
+        x: 1058
+        y: 398
         width: 128
         height: 128
       alignment: 0
@@ -1169,10 +1337,54 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: progression
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 266
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8f3cfd67bbeb3460800000000000000
+      internalID: 7222625600475512717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: radar-sweep
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 266
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a51ff3a8762d79b0800000000000000
+      internalID: -5080862505014717018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: rocket-flight
       rect:
         serializedVersion: 2
-        x: 398
+        x: 266
         y: 266
         width: 128
         height: 128
@@ -1194,7 +1406,7 @@ TextureImporter:
       name: rocket-thruster
       rect:
         serializedVersion: 2
-        x: 530
+        x: 398
         y: 266
         width: 128
         height: 128
@@ -1216,7 +1428,7 @@ TextureImporter:
       name: rocket
       rect:
         serializedVersion: 2
-        x: 662
+        x: 530
         y: 266
         width: 128
         height: 128
@@ -1238,7 +1450,7 @@ TextureImporter:
       name: satellite
       rect:
         serializedVersion: 2
-        x: 794
+        x: 662
         y: 266
         width: 128
         height: 128
@@ -1260,7 +1472,7 @@ TextureImporter:
       name: share
       rect:
         serializedVersion: 2
-        x: 926
+        x: 794
         y: 266
         width: 128
         height: 128
@@ -1282,7 +1494,7 @@ TextureImporter:
       name: sinusoidal-beam
       rect:
         serializedVersion: 2
-        x: 1058
+        x: 926
         y: 266
         width: 128
         height: 128
@@ -1304,8 +1516,8 @@ TextureImporter:
       name: slashed-shield
       rect:
         serializedVersion: 2
-        x: 2
-        y: 134
+        x: 1058
+        y: 266
         width: 128
         height: 128
       alignment: 0
@@ -1326,7 +1538,7 @@ TextureImporter:
       name: solar-system
       rect:
         serializedVersion: 2
-        x: 134
+        x: 2
         y: 134
         width: 128
         height: 128
@@ -1340,6 +1552,28 @@ TextureImporter:
       bones: []
       spriteID: eeb835be19c73e5b0800000000000000
       internalID: -5340287766971053074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spaceship
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 134
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebf780ccdfa9fd3c0800000000000000
+      internalID: -4332573901666615362
       vertices: []
       indices: 
       edges: []
@@ -1565,7 +1799,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: trash-can
+      name: trade
       rect:
         serializedVersion: 2
         x: 398
@@ -1580,8 +1814,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
+      spriteID: 0373af8911cf84f30800000000000000
+      internalID: 4560171775223805744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: trash-can
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 2
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
       spriteID: ef2c2389e8ca1f910800000000000000
       internalID: 1869465048774263550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: up-card
+      rect:
+        serializedVersion: 2
+        x: 662
+        y: 2
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71204f07955803760800000000000000
+      internalID: 7435589603982311959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: upgrade
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 2
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c0600328bc8a7260800000000000000
+      internalID: 7096138885364736195
       vertices: []
       indices: 
       edges: []
@@ -1603,6 +1903,7 @@ TextureImporter:
       abstract-009: 3233206125770316662
       afterburn: 1210314768644648127
       annexation: -8533813596044418402
+      arrow-scope: -7839681648887862895
       auto-repair: 1548077816834123552
       big-gear: -5976800496605292585
       bubble-field: -2267976663571161642
@@ -1610,7 +1911,9 @@ TextureImporter:
       bullseye: 8849094592964623904
       cancel: 473119435147847706
       circle: 4635883900927747720
+      clockwise-rotation: -7282550818784154770
       clockwork: -8174778717607433973
+      coal-wagon: 8836209848129099634
       cog: 8624290179142622877
       companion-cube: -857951231028892028
       confirmed: 1030372662537722121
@@ -1632,13 +1935,16 @@ TextureImporter:
       info: 3164007730830291572
       jet-fighter: -1818801668722357492
       laser-blast: 4048694945931571227
+      laser-sparks: 8824830103250282602
       light-fighter: -8063262221651079987
+      look-at: -8787292298069094380
       magnifying-glass: 3145916821374736307
       mine-wagon: 7446335726198058215
       minerals: -1174087744658850188
       missile-pod: 1465832008391116245
       missile-swarm: -993960319847486669
       padlock: -9033089913884776463
+      padlock-open: 6354538412098567316
       pause-button: 774381798563900573
       perspective-dice-six-faces-random: 2203722019562206077
       plain-arrow: -4623197971780985875
@@ -1648,6 +1954,8 @@ TextureImporter:
       podium: 3660724231151588106
       pokecog: -2478251469189000974
       position-marker: 8605588233672878101
+      progression: 7222625600475512717
+      radar-sweep: -5080862505014717018
       rocket: 1757870167479203429
       rocket-flight: 4606175742939712696
       rocket-thruster: -1865453343855098358
@@ -1656,6 +1964,7 @@ TextureImporter:
       sinusoidal-beam: 6626325309679867323
       slashed-shield: 1812547604066278406
       solar-system: -5340287766971053074
+      spaceship: -4332573901666615362
       speaker: 958056637114364770
       speaker-off: -7988476035842856287
       spiky-field: 3569798210696043710
@@ -1666,7 +1975,10 @@ TextureImporter:
       talk: 3755086770594445456
       targeting: 1789261202582162877
       techno-heart: -8525150602799218171
+      trade: 4560171775223805744
       trash-can: 1869465048774263550
+      up-card: 7435589603982311959
+      upgrade: 7096138885364736195
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

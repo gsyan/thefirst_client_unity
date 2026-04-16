@@ -211,6 +211,13 @@ public class TabSystem : MonoBehaviour
         Debug.LogWarning($"Tab with name '{tabName}' not found");
     }
 
+    // 열린 탭 전체 닫기 (3D 뷰 복귀)
+    public void CloseAllTabs()
+    {
+        if (!m_bInitialized || currentActiveTab < 0) return;
+        buttonGroup.Deselect();
+    }
+
     public int GetCurrentActiveTab() => currentActiveTab;
 
     public string GetCurrentActiveTabName()

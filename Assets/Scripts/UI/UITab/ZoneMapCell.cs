@@ -122,10 +122,10 @@ public class ZoneMapCell : MonoBehaviour
             if (sb.Length > 0) sb.Append('\n');
             sb.Append($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(value)}/h");
         }
-        AppendIfPositive("IconMineralMini",  m_zoneStageConfig.mineralPerHour);
-        AppendIfPositive("IconMineralRMini", m_zoneStageConfig.mineralRarePerHour);
-        AppendIfPositive("IconMineralEMini", m_zoneStageConfig.mineralExoticPerHour);
-        AppendIfPositive("IconMineralDMini", m_zoneStageConfig.mineralDarkPerHour);
+        AppendIfPositive("crystal-growth",  m_zoneStageConfig.mineralPerHour);
+        AppendIfPositive("minerals", m_zoneStageConfig.mineralRarePerHour);
+        AppendIfPositive("emerald", m_zoneStageConfig.mineralExoticPerHour);
+        AppendIfPositive("fire-gem", m_zoneStageConfig.mineralDarkPerHour);
         m_resourceText.text = sb.ToString();
     }
 }

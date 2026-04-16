@@ -173,13 +173,13 @@ public class UITabPvp : UITabBase
 
         var sb = new System.Text.StringBuilder();
         sb.Append($"{CommonUtility.Sprite("spiky-field")} {shipCount}");
-        sb.Append("\n\n");
+        sb.Append("\n");
         sb.Append($"{CommonUtility.Sprite("techno-heart")} {CommonUtility.FormatBigNumber(stats.health)}");
-        sb.Append("\n\n");
+        sb.Append("\n");
         sb.Append($"{CommonUtility.Sprite("bubbling-beam")} {CommonUtility.FormatBigNumber(stats.attack)}");
         if (stats.airCount > 0)
         {
-            sb.Append("\n\n");
+            sb.Append("\n");
             sb.Append($"\n{CommonUtility.Sprite("jet-fighter")} {stats.airCount}");
         }
         
