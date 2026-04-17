@@ -34,7 +34,7 @@ public class EnemyModuleSlotConfig
 [System.Serializable]
 public class EnemyShipConfig
 {
-    public int shipIndex;
+    public bool isFlagShip; // true = 기함(슬롯 0 전용), false = 일반(슬롯 0 제외)
     public EModuleSubType bodySubType;
     public int bodyLevel;
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
@@ -55,7 +55,9 @@ public class ZoneStageConfig
     public int zoneIndex = 1;      // 그룹 키 (X-Y의 X, 스카이박스 공유 단위)
 
     public float delayBeforeSpawn = 3f;
-    // 적 함대를 구성하는 함선 템플릿 목록 — 모든 템플릿이 한 함대로 동시 스폰
+    public float shipSpawnInterval = 1.5f;   // 함선 간 스폰 딜레이
+    public int maxConcurrentEnemyShips = 3;  // 동시에 존재 가능한 최대 적 함선 수 (슬롯 수)
+    // 적 함선 템플릿 큐 — 순서대로 1척씩 스폰, 개수 제한 없음
     public List<EnemyShipConfig> enemyShipConfigs;
 
     [Header("시간당 자원 수확량 (클리어 후)")]

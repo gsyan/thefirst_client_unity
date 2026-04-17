@@ -137,7 +137,7 @@ public class TestScene : MonoBehaviour
         GameObject shipGo = new GameObject(shipInfo.shipName);
         SpaceShip ship = shipGo.AddComponent<SpaceShip>();
         ship.InitializeSpaceShip(fleet, shipInfo);
-        fleet.AddShip(ship, placeInFormation: false);
+        fleet.AddShip(ship, bWarp: false);
     }
 
     // effect 모드용 — 기함 앞에서 이펙트 스폰

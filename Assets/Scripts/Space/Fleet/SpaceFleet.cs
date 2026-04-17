@@ -58,40 +58,6 @@ public class SpaceFleet : MonoBehaviour
             StartCoroutine(AutoRepair());
     }
 
-    // Zone 적 전용 — 함선별 배율을 InitializeSpaceShip 전에 세팅해야 모듈 초기화 시 반영됨
-    public void InitializeZoneEnemyFleet(FleetInfo fleetInfo, List<EnemyShipConfig> enemyShipConfigs)
-    {
-        m_fleetInfo   = fleetInfo;
-        m_fleetSide   = EFleetSide.fleet_side_enemy;
-        m_fleetSource = EFleetSource.fleet_source_zone_data;
-
-        if (fleetInfo.ships != null)
-        {
-            for (int i = 0; i < fleetInfo.ships.Count; i++)
-            {
-                var shipInfo = fleetInfo.ships[i];
-                GameObject shipGo = new GameObject(shipInfo.shipName);
-                SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
-
-                // 배율 먼저 세팅 — InitializeSpaceShip 내부 모듈 초기화가 이 값을 참조
-                if (i < enemyShipConfigs.Count)
-                {
-                    spaceShip.m_bodyMultiplier    = enemyShipConfigs[i].bodyMultiplier;
-                    spaceShip.m_beamMultiplier    = enemyShipConfigs[i].beamMultiplier;
-                    spaceShip.m_missileMultiplier = enemyShipConfigs[i].missileMultiplier;
-                    spaceShip.m_hangerMultiplier  = enemyShipConfigs[i].hangerMultiplier;
-                }
-
-                spaceShip.InitializeSpaceShip(this, shipInfo);
-                AddShip(spaceShip, false);
-            }
-            UpdateShipFormation(fleetInfo.formation, false);
-        }
-
-        SetFleetState(EFleetState.Move);
-        StartEnemyFleetWarpIn();
-    }
-
     // 적 함대 스폰 시 fleet 오브젝트를 기함 크기 기준 오프셋만큼 뒤에서 시작, 진형 유지하며 전진
     public void StartEnemyFleetWarpIn()
     {
@@ -120,7 +86,7 @@ public class SpaceFleet : MonoBehaviour
         StartCoroutine(EnemyFleetWarpInMove(finalPos, warpSpeed, normalSpeed));
     }
 
-    private const float WARP_STOP_DIST = 1f; // 목표 1유닛 전에 워프 이펙트 종료
+    private const float WARP_STOP_DIST = 2f; // 목표 1유닛 전에 워프 이펙트 종료
 
     // fleet 오브젝트를 finalPos까지 이동, 1유닛 전 워프 종료 → 기본속도로 마저 이동 → Battle 전환
     private IEnumerator EnemyFleetWarpInMove(Vector3 finalPos, float warpSpeed, float normalSpeed)
@@ -158,6 +124,21 @@ public class SpaceFleet : MonoBehaviour
         SetFleetState(EFleetState.Battle);
     }
 
+    // Zone 적 함선을 순차적으로 받아들이기 위한 빈 함대 초기화
+    public void InitializeAsZoneEnemyFleetShell(string fleetName, EFormationType formation)
+    {
+        m_fleetSide   = EFleetSide.fleet_side_enemy;
+        m_fleetSource = EFleetSource.fleet_source_zone_data;
+        m_fleetInfo   = new FleetInfo
+        {
+            fleetName = fleetName,
+            formation = formation,
+            ships     = new List<ShipInfo>()
+        };
+        m_currentFormationType = formation;
+        SetFleetState(EFleetState.Battle);
+    }
+
     public void InitializeSpaceFleet(FleetInfo fleetInfo, EFleetSide side = EFleetSide.fleet_side_player, EFleetSource source = EFleetSource.fleet_source_player, EFleetState fleetState = EFleetState.None)
     {
         m_fleetInfo = fleetInfo;
@@ -175,27 +156,31 @@ public class SpaceFleet : MonoBehaviour
         
         SetFleetState(fleetState);
     }
-    // smoothSpawn: true면 기함 뒤에서 스폰 후 이동, false면 즉시 진형 위치에 배치
-    public void CreateSpaceShipFromData(ShipInfo shipInfo, bool smoothSpawn = false)
+    // bWarp: true면 뒤에서 스폰 후 이동, false면 즉시 진형 위치에 배치
+    public void CreateSpaceShipFromData(ShipInfo shipInfo, bool bWarp = false)
     {
         GameObject shipGo = new GameObject($"{shipInfo.shipName}");
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
         spaceShip.InitializeSpaceShip(this, shipInfo);
-        AddShip(spaceShip, smoothSpawn);
+        AddShip(spaceShip, bWarp: bWarp);
     }
     // 함선 추가 시 스폰 오프셋 배율 (함선 z크기 * 배율 만큼 목적지 뒤에서 워프 진입)
     private float m_spawnOffsetMultiplier = 20f;
     // 워프 진입 시 이동 속도 배율
     private float m_spawnApproachSpeedMult = 60f;
 
-    public void AddShip(SpaceShip ship, bool placeInFormation = false)
+    public void AddShip(SpaceShip ship, bool bWarp = false)
     {
         if (ship == null) return;
         m_ships.Add(ship);
         ship.transform.SetParent(transform);
         ship.transform.localRotation = Quaternion.identity;
 
-        if (placeInFormation == false) return;
+        if (bWarp == false)
+        {
+            ship.ApplyFleetStateToShip();
+            return;
+        }
 
         // 신규 함선의 진형 목적지 계산 (positionIndex 기반, 기존 함선 위치 불변)
         var targets = CalculateFormationTargets(m_currentFormationType);
@@ -206,7 +191,7 @@ public class SpaceFleet : MonoBehaviour
             float spawnOffsetZ = ship.CalculateShipBounds().size.z * m_spawnOffsetMultiplier;
             ship.transform.localPosition = new Vector3(newShipTarget.x, newShipTarget.y, newShipTarget.z - spawnOffsetZ);
 
-            // 고속 워프 진입
+            // 고속 워프 진입 — Moving 상태로 전환되므로 ApplyFleetStateToShip은 Arrived에서 호출됨
             ship.MoveToFormation(newShipTarget, m_spawnApproachSpeedMult);
 
             if (ship.TryGetComponent(out WarpEffectShip warpEffect) == false)
@@ -525,9 +510,15 @@ public class SpaceFleet : MonoBehaviour
     public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
     {
         if (ship == null) return;
+        int positionIndex = ship.m_shipInfo.positionIndex;
         m_ships.Remove(ship);
 
-        if (IsFleetAlive() == false)
+        if (IsZoneEnemy)
+        {
+            // 슬롯 반환 → CheckZoneClear 판정 → RemoveEnemyFleet으로 파괴
+            ObjectManager.Instance.OnZoneEnemyShipSlotFreed(positionIndex);
+        }
+        else if (IsFleetAlive() == false)
         {
             if (IsEnemy)
                 ObjectManager.Instance.RemoveEnemyFleet(this);
@@ -653,6 +644,22 @@ public class SpaceFleet : MonoBehaviour
             int randomIndex = Random.Range(0, aliveShips.Count);
             return aliveShips[randomIndex];
         }
+
+        return null;
+    }
+
+    // 워프 진입이 완료된 함선만 대상 — 워핑 중인 함선은 제외
+    public SpaceShip GetRandomAliveShipWarpDone()
+    {
+        List<SpaceShip> candidates = new();
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship != null && ship.IsAlive() == true && ship.IsWarping == false)
+                candidates.Add(ship);
+        }
+
+        if (candidates.Count > 0)
+            return candidates[Random.Range(0, candidates.Count)];
 
         return null;
     }

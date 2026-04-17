@@ -56,7 +56,25 @@ public class WarpEffectShip : MonoBehaviour
             m_spaceShip = GetComponent<SpaceShip>();
 
         CollectEngineRenderers();
+        RefreshShipBounds();
 
+        EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
+    }
+
+    // 함체 교체 이벤트 — bounds 및 파티클 Shape 갱신
+    private void OnShipBodyChanged(SpaceShip ship)
+    {
+        if (ship != m_spaceShip) return;
+
+        CollectEngineRenderers();
+        RefreshShipBounds();
+
+        if (m_speedLineEffect != null)
+            ApplyShipBoundsToParticle(m_speedLineEffect);
+    }
+
+    private void RefreshShipBounds()
+    {
         m_shipBounds = CommonUtility.CalculateRendererBounds(transform, excludeParticles: true, excludeTrails: true, excludeDisabled: false);
     }
 
@@ -112,11 +130,15 @@ public class WarpEffectShip : MonoBehaviour
 
         Vector3 localSize = transform.InverseTransformVector(m_shipBounds.size);
         localSize = new Vector3(Mathf.Abs(localSize.x), Mathf.Abs(localSize.y), Mathf.Abs(localSize.z));
-
         shape.scale = localSize;
 
+        var emission = ps.emission;
+        float sizeRef = Mathf.Max(localSize.x, localSize.y);
+        // 기본 emission.rateOverTime = 20, 기본 함체 크기 1.5정도, 곱하기 함체 사이즈에 보정, 맥스 40
+        emission.rateOverTime = Mathf.Min(20.0f * (sizeRef / 1.5f), 40.0f);
+
         // 파티클 생성 기준점을 함선 z 크기만큼 앞으로 오프셋
-        shape.position = new Vector3(0, 0, localSize.z);
+        //shape.position = new Vector3(0, 0, localSize.z * 0.5f);
     }
 
     // 스피드 라인 이펙트 - 풀에 반환
@@ -264,6 +286,8 @@ public class WarpEffectShip : MonoBehaviour
 
     private void OnDestroy()
     {
+        EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChanged);
+
         if (m_speedLineFadeCoroutine != null)
             m_speedLineFadeCoroutine = null;
 

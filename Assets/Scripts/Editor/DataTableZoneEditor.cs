@@ -122,7 +122,8 @@ public class DataTableZoneEditor : Editor
         }
 
         // --- enemy CSV 파싱 (zone,stage → 함선 목록) ---
-        // 헤더: zone,stage,ship_index,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio
+        // 헤더: zone_stage,stage,flag_ship,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio
+        // flag_ship: 1=기함(슬롯0 전용), 0=일반(슬롯0 제외)
         var enemyMap = new Dictionary<(int zone, int stage), List<EnemyShipConfig>>();
         string[] enemyLines = File.ReadAllLines(enemyCSV);
         for (int i = 1; i < enemyLines.Length; i++)
@@ -138,12 +139,12 @@ public class DataTableZoneEditor : Editor
             if (!enemyMap.ContainsKey(key))
                 enemyMap[key] = new List<EnemyShipConfig>();
 
-            // 함선 인덱스, 함체 정보
-            int.TryParse(col[2], out int ship_index);
+            // 기함 여부, 함체 정보 (flag_ship: 1=기함, 0=일반)
+            int.TryParse(col[2], out int flagShip);
             System.Enum.TryParse(col[3], out EModuleSubType bodyType);
             int.TryParse(col[4], out int bodyLv);
             var ship = new EnemyShipConfig();
-            ship.shipIndex = ship_index;
+            ship.isFlagShip = (flagShip == 1);
             ship.bodySubType = bodyType;
             ship.bodyLevel = bodyLv;
             // 함체 정보로 모듈 정보
@@ -203,7 +204,7 @@ public class DataTableZoneEditor : Editor
         }
 
         // --- zone CSV 파싱 ---
-        // 헤더: zone,stage,kill_mineral,kill_mineral_r,kill_mineral_e,kill_mineral_d,hour_mineral,hour_mineral_r,hour_mineral_e,hour_mineral_d,wave_term
+        // 헤더: zone,stage,hour_mineral,hour_mineral_r,hour_mineral_e,hour_mineral_d,spawn_delay,ship_spawn_interval,max_concurrent_enemy_ships
         m_dataTableZone.zoneStageList.Clear();
 
         string[] zoneLines = File.ReadAllLines(zoneCSV);
@@ -213,7 +214,7 @@ public class DataTableZoneEditor : Editor
             string line = zoneLines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
-            
+
             if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stage)) continue;
 
             // zone=0 행 → Zone-0 안전지역 (전투 없음)
@@ -228,26 +229,29 @@ public class DataTableZoneEditor : Editor
                 continue;
             }
 
-            float.TryParse(col[2],  out float hourM);
-            float.TryParse(col[3],  out float hourMR);
-            float.TryParse(col[4],  out float hourME);
-            float.TryParse(col[5],  out float hourMD);
-            float.TryParse(col[6], out float waveTerm);
-            
+            float.TryParse(col[2], out float hourM);
+            float.TryParse(col[3], out float hourMR);
+            float.TryParse(col[4], out float hourME);
+            float.TryParse(col[5], out float hourMD);
+            float.TryParse(col[6], out float spawnDelay);
+            float.TryParse(col[7], out float shipSpawnInterval);
+            int.TryParse(col[8],   out int maxConcurrent);
 
             enemyMap.TryGetValue((zoneIndex, stage), out var waveTemplates);
 
             var zoneStage = new ZoneStageConfig
             {
-                zoneName              = $"{zoneIndex}-{stage}",
-                zoneDescription       = $"Zone {zoneIndex}-{stage}",
-                zoneIndex             = zoneIndex,
-                delayBeforeSpawn      = waveTerm > 0 ? waveTerm : 3f,
-                mineralPerHour        = hourM,
-                mineralRarePerHour    = hourMR,
-                mineralExoticPerHour  = hourME,
-                mineralDarkPerHour    = hourMD,
-                enemyShipConfigs      = waveTemplates ?? new List<EnemyShipConfig>(),
+                zoneName                  = $"{zoneIndex}-{stage}",
+                zoneDescription           = $"Zone {zoneIndex}-{stage}",
+                zoneIndex                 = zoneIndex,
+                delayBeforeSpawn          = spawnDelay > 0 ? spawnDelay : 3f,
+                shipSpawnInterval         = shipSpawnInterval > 0 ? shipSpawnInterval : 1.5f,
+                maxConcurrentEnemyShips   = maxConcurrent > 0 ? maxConcurrent : 3,
+                mineralPerHour            = hourM,
+                mineralRarePerHour        = hourMR,
+                mineralExoticPerHour      = hourME,
+                mineralDarkPerHour        = hourMD,
+                enemyShipConfigs          = waveTemplates ?? new List<EnemyShipConfig>(),
             };
 
             m_dataTableZone.zoneStageList.Add(zoneStage);
@@ -427,7 +431,9 @@ public class DataTableZoneEditor : Editor
             // 전투 설정
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
-            zoneStage.delayBeforeSpawn = EditorGUILayout.Slider("스폰 지연 (초)", zoneStage.delayBeforeSpawn, 0f, 60f);
+            zoneStage.delayBeforeSpawn      = EditorGUILayout.Slider("첫 스폰 지연 (초)", zoneStage.delayBeforeSpawn, 0f, 60f);
+            zoneStage.shipSpawnInterval     = EditorGUILayout.Slider("함선 간 스폰 딜레이 (초)", zoneStage.shipSpawnInterval, 0f, 30f);
+            zoneStage.maxConcurrentEnemyShips = EditorGUILayout.IntSlider("최대 동시 적 함선 수", zoneStage.maxConcurrentEnemyShips, 1, 9);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);
@@ -482,10 +488,11 @@ public class DataTableZoneEditor : Editor
 
         // Wave Header
         EditorGUILayout.BeginHorizontal();
+        string flagLabel = ship.isFlagShip ? "[기함] " : "";
         string slotInfo = ship.moduleSlots != null ? $", Slots: {ship.moduleSlots.Count}" : "";
         shipFoldouts[stageIndex][shipIndex] = EditorGUILayout.Foldout(
             shipFoldouts[stageIndex][shipIndex],
-            $"Ship {shipIndex + 1}: / {ship.bodySubType} Lv.{ship.bodyLevel}{slotInfo}", true);
+            $"Ship {shipIndex + 1}: {flagLabel}{ship.bodySubType} Lv.{ship.bodyLevel}{slotInfo}", true);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
@@ -501,9 +508,8 @@ public class DataTableZoneEditor : Editor
         {
             EditorGUI.indentLevel++;
 
-            // // 스폰 함선 수
-            // int newShipCount = EditorGUILayout.IntSlider("Ship Count", ship.shipCount, 1, 9);
-            // if (newShipCount != ship.shipCount) { ship.shipCount = newShipCount; EditorUtility.SetDirty(config); }
+            bool newIsFlagShip = EditorGUILayout.Toggle("기함 (슬롯 0 전용)", ship.isFlagShip);
+            if (newIsFlagShip != ship.isFlagShip) { ship.isFlagShip = newIsFlagShip; EditorUtility.SetDirty(m_dataTableZone); }
 
             // Body Type + Level
             EditorGUILayout.LabelField("Body", EditorStyles.boldLabel);

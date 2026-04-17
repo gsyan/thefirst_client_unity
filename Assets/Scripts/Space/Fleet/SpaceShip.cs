@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using UnityEngine;
 
 
@@ -57,8 +58,6 @@ public class SpaceShip : MonoBehaviour
     public void InitializeSpaceShip(SpaceFleet fleet, ShipInfo shipInfo)
     {
         m_myFleet = fleet;
-        ApplyFleetStateToShip();
-
         m_shipInfo = shipInfo;
         if (shipInfo.bodies == null || shipInfo.bodies.Count == 0) return;
         foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
@@ -111,6 +110,9 @@ public class SpaceShip : MonoBehaviour
 
     public void ApplyFleetStateToShip()
     {
+        // 진형 이동 중이면 도착 후 FormationMovementLoop에서 재호출됨
+        if (m_formationMoveState == FormationMoveState.Moving) return;
+
         switch (m_myFleet.m_fleetState)
         {
             case EFleetState.None:
@@ -424,8 +426,9 @@ public class SpaceShip : MonoBehaviour
     private Vector3 m_avoidanceAccum;      // OnShieldTriggerStay에서 프레임마다 누적
     private Coroutine m_formationCoroutine;
     private float m_movementSpeedMult = 1f; // 스폰 진입 시 빠른 속도 배율
-    private const float ARRIVAL_THRESHOLD = 0.1f;
-    private const float SLOWDOWN_DISTANCE  = 0.5f;
+    public bool m_bWarp = false; // true = 워핑 진입 중, false = 워프 종료
+    public bool IsWarping => m_bWarp == true && m_formationMoveState == FormationMoveState.Moving;
+    private const float WARP_STOP_DIST = 2f; // 워프 이펙트 종료 & 속도 리셋 거리
 
     [Header("Formation Avoidance")]
     [Tooltip("이 값 이상이면 회피 시작 (침투 깊이 기준, 0~1)")]
@@ -439,6 +442,7 @@ public class SpaceShip : MonoBehaviour
     {
         m_formationTarget = target;
         m_movementSpeedMult = speedMult;
+        m_bWarp = true;
         m_formationMoveState = FormationMoveState.Moving;
 
         if (m_formationCoroutine != null)
@@ -476,34 +480,52 @@ public class SpaceShip : MonoBehaviour
 
     private IEnumerator FormationMovementLoop()
     {
+        // 로컬 스페이스 기준 — 진입 방향은 항상 로컬 +Z
+        Vector3 WarpStopPos = m_formationTarget + (-Vector3.forward * WARP_STOP_DIST);
         while (m_formationMoveState == FormationMoveState.Moving)
         {
             Vector3 currentPos = transform.localPosition;
-            Vector3 toTarget = m_formationTarget - currentPos;
-            float dist = toTarget.magnitude;
-
-            if (dist < ARRIVAL_THRESHOLD)
+            float dist = (m_formationTarget - currentPos).magnitude;
+            Vector3 toTarget = (m_formationTarget - currentPos).normalized;
+            if (m_bWarp == true)
             {
-                transform.localPosition = m_formationTarget;
-                m_formationMoveState = FormationMoveState.Arrived;
-                m_formationCoroutine = null;
-                yield break;
+                Vector3 toWarpStop = (WarpStopPos - currentPos).normalized;
+                float dot = Vector3.Dot(Vector3.forward, toWarpStop);
+                // 워프 종료 지점 — 이펙트 끄고 속도 즉시 일반으로 리셋
+                if (m_bWarp == true && dot <= 0)
+                {
+                    m_bWarp = false;
+                    m_movementSpeedMult = 1f;
+                    if (TryGetComponent(out WarpEffectShip warpEffect))
+                        warpEffect.StopWarp();
+                }
+            }
+            else
+            {
+                float dot_arrival = Vector3.Dot(Vector3.forward, toTarget);
+                if (dot_arrival <= 0)
+                {
+                    transform.localPosition = m_formationTarget;
+                    m_formationMoveState = FormationMoveState.Arrived;
+                    m_formationCoroutine = null;
+                    // 진형 도달 후 함대 상태 적용 (워프 진입 시 전투 개시 방지)
+                    ApplyFleetStateToShip();
+                    yield break;
+                }    
             }
 
             // 목표 방향 + 이번 프레임 누적 회피 벡터 혼합
-            Vector3 targetDir = toTarget.normalized;
             Vector3 avoidDir  = m_avoidanceAccum;
             m_avoidanceAccum  = Vector3.zero;
 
             // 침투 깊이가 클수록 회피 비율 증가 (0=목표 방향, 1=완전 회피)
             float avoidWeight = Mathf.Clamp01(avoidDir.magnitude * m_avoidWeightScale);
             Vector3 finalDir = avoidWeight > m_avoidActivateThreshold
-                ? Vector3.Lerp(targetDir, avoidDir.normalized, avoidWeight).normalized
-                : targetDir;
+                ? Vector3.Lerp(toTarget, avoidDir.normalized, avoidWeight).normalized
+                : toTarget;
 
-            // 목표 근처 감속 (최소 20% 속도 유지), 스폰 진입 시 m_movementSpeedMult 배율 적용
-            float speedMult = Mathf.Max(Mathf.Clamp01(dist / SLOWDOWN_DISTANCE), 0.2f);
-            float speed = m_spaceShipStatsCur.speed * speedMult * m_movementSpeedMult;
+            // 워프 중에는 풀스피드, 워프 종료 후 바로 평속
+            float speed = m_spaceShipStatsCur.speed * m_movementSpeedMult;
 
             // 오버슈팅 방지
             float moveDist = Mathf.Min(speed * Time.deltaTime, dist);

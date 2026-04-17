@@ -41,7 +41,7 @@ public class PvpSelectCard : MonoBehaviour
     private string BuildStatText(CapabilityProfile stats, int shipCount)
     {
         // 1줄: Ships / HP / ATK
-        string line1 = $"{CommonUtility.Sprite("spiky-field")} {shipCount}  {CommonUtility.Sprite("techno-heart")} {CommonUtility.FormatBigNumber(stats.health)}  {CommonUtility.Sprite("bubbling-beam")} {CommonUtility.FormatBigNumber(stats.attack)}";
+        string line1 = $"{CommonUtility.Sprite("spaceship")} {shipCount}  {CommonUtility.Sprite("techno-heart")} {CommonUtility.FormatBigNumber(stats.health)}  {CommonUtility.Sprite("bubbling-beam")} {CommonUtility.FormatBigNumber(stats.attack)}";
 
         if (stats.airCount <= 0)
             return line1;
