@@ -190,24 +190,25 @@ public class UITabSettings : UITabBase
             LocalizationManager.Instance.Get("settings_google_link"),
             LocalizationManager.Instance.Get("popup_message_google_link"),
             null, null,
-            onConfirm: () =>
-            {
-                NetworkManager.Instance.LinkGoogle((response) =>
-                {
-                    if ((ServerErrorCode)response.errorCode == ServerErrorCode.SUCCESS)
-                    {
-                        DataManager.Instance.m_isGoogleLinked = true;
-                        RefreshGoogleLinkUI();
-                        ShowResultMessage(LocalizationManager.Instance.Get("settings_google_link_success"));
-                    }
-                    else
-                    {
-                        ShowResultMessage(ErrorCodeMapping.GetMessage(response.errorCode));
-                    }
-                });
-            },
+            onConfirm: ExecuteLinkGoogle,
             onCancel: null
         );
+    }
+
+    private void ExecuteLinkGoogle()
+    {
+        NetworkManager.Instance.LinkGoogle((response) =>
+        {
+            if ((ServerErrorCode)response.errorCode == ServerErrorCode.SUCCESS)
+            {
+                DataManager.Instance.m_isGoogleLinked = true;
+                RefreshGoogleLinkUI();
+            }
+            else
+            {
+                ShowErrorMessage(ErrorCodeMapping.GetMessage(response.errorCode));
+            }
+        });
     }
 
     private void ShowUnlinkGoogleConfirm()
@@ -216,29 +217,30 @@ public class UITabSettings : UITabBase
             LocalizationManager.Instance.Get("settings_google_unlink"),
             LocalizationManager.Instance.Get("popup_message_google_unlink"),
             null, null,
-            onConfirm: () =>
-            {
-                NetworkManager.Instance.UnlinkGoogle((response) =>
-                {
-                    if ((ServerErrorCode)response.errorCode == ServerErrorCode.SUCCESS)
-                    {
-                        DataManager.Instance.m_isGoogleLinked = false;
-                        if (string.IsNullOrEmpty(response.data?.guestId) == false)
-                        {
-                            PlayerPrefs.SetString("GuestId", response.data.guestId);
-                            PlayerPrefs.Save();
-                        }
-                        RefreshGoogleLinkUI();
-                        ShowResultMessage(LocalizationManager.Instance.Get("settings_google_unlink_success"));
-                    }
-                    else
-                    {
-                        ShowResultMessage(ErrorCodeMapping.GetMessage(response.errorCode));
-                    }
-                });
-            },
+            onConfirm: ExecuteUnlinkGoogle,
             onCancel: null
         );
+    }
+
+    private void ExecuteUnlinkGoogle()
+    {
+        NetworkManager.Instance.UnlinkGoogle((response) =>
+        {
+            if ((ServerErrorCode)response.errorCode == ServerErrorCode.SUCCESS)
+            {
+                DataManager.Instance.m_isGoogleLinked = false;
+                if (string.IsNullOrEmpty(response.data?.guestId) == false)
+                {
+                    PlayerPrefs.SetString("GuestId", response.data.guestId);
+                    PlayerPrefs.Save();
+                }
+                RefreshGoogleLinkUI();
+            }
+            else
+            {
+                ShowErrorMessage(ErrorCodeMapping.GetMessage(response.errorCode));
+            }
+        });
     }
 
     private void OnRenameCharacterButtonClicked()
@@ -252,14 +254,16 @@ public class UITabSettings : UITabBase
             LocalizationManager.Instance.Get("settings_logout"),
             LocalizationManager.Instance.Get("popup_message_logout"),
             null, null,
-            onConfirm: () =>
-            {
-                NetworkManager.Instance.Logout();
-                EventManager.UnsubscribeAll();
-                LoadingManager.LoadSceneWithLoading("MainScene");
-            },
+            onConfirm: ExecuteLogout,
             onCancel: null
         );
+    }
+
+    private void ExecuteLogout()
+    {
+        NetworkManager.Instance.Logout();
+        EventManager.UnsubscribeAll();
+        LoadingManager.LoadSceneWithLoading("MainScene");
     }
 
 }

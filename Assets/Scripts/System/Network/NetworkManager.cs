@@ -674,10 +674,10 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.UnlockModuleAsync(request), onComplete));
     }
 
-    public void UpgradeModule(ModuleUpgradeRequest request, System.Action<ApiResponse<ModuleUpgradeResponse>> onComplete)
+    public void LevelUpModule(ModuleLevelUpRequest request, System.Action<ApiResponse<ModuleLevelUpResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.UpgradeModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.LevelUpModuleAsync(request), onComplete));
     }
 
     public void ResearchTechLevel(TechLevelResearchRequest request, System.Action<ApiResponse<TechLevelResearchResponse>> onComplete)

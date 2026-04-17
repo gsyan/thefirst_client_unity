@@ -71,8 +71,8 @@ public class UITabShip : UITabBase
         if (m_btnPrevShip != null) m_btnPrevShip.onClick.AddListener(OnPrevShipClicked);
         if (m_btnNextShip != null) m_btnNextShip.onClick.AddListener(OnNextShipClicked);
 
-        m_unlockModuleButton.onClick.AddListener(OnUnlockModuleClicked);
-        m_levelUpModuleButton.onClick.AddListener(OnLevelUpModuleClicked);
+        m_unlockModuleButton.onClick.AddListener(OnModuleUnlockClicked);
+        m_levelUpModuleButton.onClick.AddListener(OnModuleLevelUpClicked);
         m_subTypeManageButton.onClick.AddListener(OnSubTypeManageClicked);
         if (m_btnShipStatsDetail != null) m_btnShipStatsDetail.onClick.AddListener(OnShipStatsDetailClicked);
 
@@ -250,9 +250,9 @@ public class UITabShip : UITabBase
 
         var sb = new System.Text.StringBuilder();
         sb.AppendLine($"{CommonUtility.Sprite("bubbling-beam")} (Attack)  {cur.attack:F0}");
-        sb.AppendLine($"{CommonUtility.Sprite("techno-heart")} (HP)  {org.health:F0}");
+        sb.Append($"{CommonUtility.Sprite("techno-heart")} (HP)  {org.health:F0}" );
+        sb.AppendLine($"{CommonUtility.Sprite("auto-repair")} (Repair)  {cur.repair:F0}");
         sb.AppendLine($"{CommonUtility.Sprite("rocket-thruster")} (Speed)  {cur.speed:F0}");
-        sb.Append    ($"{CommonUtility.Sprite("auto-repair")} (Repair)  {cur.repair:F0}");
 
         if (org.airCount > 0)
         {
@@ -268,23 +268,23 @@ public class UITabShip : UITabBase
     // 모듈 해금
     // ─────────────────────────────────────────────
 
-    private void OnUnlockModuleClicked()
+    private void OnModuleUnlockClicked()
     {
         if (m_myCharacter == null)
         {
-            ShowResultMessage("Character data not available", 3f);
+            ShowErrorMessage("Character data not available");
             return;
         }
 
         if (m_selectedShip == null || m_selectedModule == null)
         {
-            ShowResultMessage("No ship or module selected", 3f);
+            ShowErrorMessage("No ship or module selected");
             return;
         }
 
         if ((m_selectedModule is ModulePlaceholder) == false)
         {
-            ShowResultMessage("Selected module is not a placeholder", 3f);
+            ShowErrorMessage("Selected module is not a placeholder");
             return;
         }
 
@@ -297,17 +297,17 @@ public class UITabShip : UITabBase
             LocalizationManager.Instance.Get("ship_module_unlock"),
             LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
             detailText, cost,
-            () => ExecuteUnlockModule()
+            () => ExecuteModuleUnlock()
         );
     }
 
-    private void ExecuteUnlockModule()
+    private void ExecuteModuleUnlock()
     {
         int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
         long playerMineral = m_myCharacter.GetMineral();
         if (playerMineral < unlockPrice)
         {
-            ShowResultMessage($"Insufficient mineral (need {CommonUtility.FormatBigNumber(unlockPrice)}, have {CommonUtility.FormatBigNumber(playerMineral)})", 3f);
+            ShowErrorMessage($"Insufficient mineral (need {CommonUtility.FormatBigNumber(unlockPrice)}, have {CommonUtility.FormatBigNumber(playerMineral)})");
             return;
         }
 
@@ -319,18 +319,18 @@ public class UITabShip : UITabBase
             slotIndex  = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex
         };
 
-        NetworkManager.Instance.UnlockModule(unlockRequest, OnUnlockModuleResponse);
+        NetworkManager.Instance.UnlockModule(unlockRequest, OnModuleUnlockResponse);
     }
 
-    private void OnUnlockModuleResponse(ApiResponse<ModuleUnlockResponse> response)
+    private void OnModuleUnlockResponse(ApiResponse<ModuleUnlockResponse> response)
     {
         if (response.errorCode == 0)
-            UpdateModuleAfterUnlock(response.data);
+            UpdateAfterModuleUnlock(response.data);
         else
-            ShowResultMessage($"Module unlock failed: {ErrorCodeMapping.GetMessage(response.errorCode)}", 3f);
+            ShowErrorMessage($"Module unlock failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
     }
 
-    private void UpdateModuleAfterUnlock(ModuleUnlockResponse unlockData)
+    private void UpdateAfterModuleUnlock(ModuleUnlockResponse unlockData)
     {
         if (unlockData == null) return;
 
@@ -352,7 +352,6 @@ public class UITabShip : UITabBase
 
         targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
         EventManager.Trigger_ShipStatsChanged(targetShip);
-        ShowResultMessage("Module unlock successful!", 3f);
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
         {
@@ -365,7 +364,7 @@ public class UITabShip : UITabBase
     // 모듈 레벨업
     // ─────────────────────────────────────────────
 
-    private void OnLevelUpModuleClicked()
+    private void OnModuleLevelUpClicked()
     {
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
@@ -375,7 +374,7 @@ public class UITabShip : UITabBase
         // 다음 레벨 데이터 없으면 이미 최대 레벨
         if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), currentLevel + 1) == null)
         {
-            ShowResultMessage(LocalizationManager.Instance.Get("max_level"), 2f);
+            ShowErrorMessage(LocalizationManager.Instance.Get("max_level"));
             return;
         }
 
@@ -383,19 +382,19 @@ public class UITabShip : UITabBase
             m_selectedModule.GetModuleSubType(),
             m_selectedModule.GetModuleType(),
             currentLevel,
-            OnModuleUpgradeConfirmed
+            ExecuteModuleLevelUp
         );
     }
 
-    private void OnModuleUpgradeConfirmed(int targetLevel)
+    private void ExecuteModuleLevelUp(int targetLevel)
     {
-        if (CanUpgradeToLevel(targetLevel, out string validationMessage) == false)
+        if (CanLevelup(targetLevel, out string validationMessage) == false)
         {
-            ShowResultMessage($"Upgrade failed: {validationMessage}", 3f);
+            ShowErrorMessage($"Levelup failed: {validationMessage}");
             return;
         }
 
-        var upgradeRequest = new ModuleUpgradeRequest
+        var levelUpRequest = new ModuleLevelUpRequest
         {
             shipId        = m_selectedShip.m_shipInfo.id,
             bodyIndex     = m_selectedModule.GetModuleBodyIndex(),
@@ -406,10 +405,10 @@ public class UITabShip : UITabBase
             targetLevel   = targetLevel
         };
 
-        NetworkManager.Instance.UpgradeModule(upgradeRequest, OnUpgradeResponse);
+        NetworkManager.Instance.LevelUpModule(levelUpRequest, OnLevelUpResponse);
     }
 
-    private bool CanUpgradeToLevel(int targetLevel, out string validationMessage)
+    private bool CanLevelup(int targetLevel, out string validationMessage)
     {
         validationMessage = "";
 
@@ -447,7 +446,7 @@ public class UITabShip : UITabBase
         long totalMineral = 0, totalMineralRare = 0, totalMineralExotic = 0, totalMineralDark = 0;
         for (int lv = fromLevel; lv < targetLevel; lv++)
         {
-            if (DataManager.Instance.GetModuleUpgradeCost(m_selectedModule.GetModuleSubType(), lv, out CostStruct cost) == false)
+            if (DataManager.Instance.GetModuleLevelUpCost(m_selectedModule.GetModuleSubType(), lv, out CostStruct cost) == false)
             {
                 validationMessage = "Failed to get upgrade cost";
                 return false;
@@ -482,7 +481,7 @@ public class UITabShip : UITabBase
         return true;
     }
 
-    private void OnUpgradeResponse(ApiResponse<ModuleUpgradeResponse> response)
+    private void OnLevelUpResponse(ApiResponse<ModuleLevelUpResponse> response)
     {
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
@@ -497,19 +496,18 @@ public class UITabShip : UITabBase
                 character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
             }
 
-            UpdateModuleAfterUpgrade(response.data);
+            ApplyModuleLevelUp(response.data);
             UpdateModuleStatsDisplay();
-            ShowResultMessage("Upgrade successful!", 3f);
         }
         else
         {
             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
             Debug.LogError($"Upgrade failed: {errorMessage}");
-            ShowResultMessage($"Upgrade failed: {errorMessage}", 3f);
+            ShowErrorMessage($"Upgrade failed: {errorMessage}");
         }
     }
 
-    private void UpdateModuleAfterUpgrade(ModuleUpgradeResponse upgradeData)
+    private void ApplyModuleLevelUp(ModuleLevelUpResponse upgradeData)
     {
         if (upgradeData == null) return;
         if (m_myFleet == null) return;
@@ -517,10 +515,9 @@ public class UITabShip : UITabBase
         SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
         if (ship == null) return;
 
-        ship.Apply_ChangeModule(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
+        ship.ApplyModuleChange(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
         EventManager.Trigger_ShipStatsChanged(ship);
 
-        ShowResultMessage("Module Upgrade successful!", 3f);
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == upgradeData.shipId)
         {
@@ -566,7 +563,7 @@ public class UITabShip : UITabBase
 
             if (!isMaxLevel && m_levelUpModuleButtonText != null)
             {
-                if (DataManager.Instance.GetModuleUpgradeCost(subType, m_selectedModule.GetModuleLevel(), out CostStruct cost))
+                if (DataManager.Instance.GetModuleLevelUpCost(subType, m_selectedModule.GetModuleLevel(), out CostStruct cost))
                     m_levelUpModuleButtonText.text = $"{LocalizationManager.Instance.Get("ship_module_levelup")}";
                 else
                     CommonUtility.SetUILocText(m_levelUpModuleButtonText, "ship_module_levelup");
@@ -614,18 +611,18 @@ public class UITabShip : UITabBase
             moduleSubTypeNew     = newSubType
         };
 
-        NetworkManager.Instance.ChangeModule(changeRequest, OnChangeModuleResponse);
+        NetworkManager.Instance.ChangeModule(changeRequest, OnModuleChangeResponse);
     }
 
-    private void OnChangeModuleResponse(ApiResponse<ModuleChangeResponse> response)
+    private void OnModuleChangeResponse(ApiResponse<ModuleChangeResponse> response)
     {
         if (response.errorCode == 0)
-            UpdateModuleAfterChange(response.data);
+            ApplyModuleChange(response.data);
         else
-            ShowResultMessage($"Module change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}", 3f);
+            ShowErrorMessage($"Module change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
     }
 
-    private void UpdateModuleAfterChange(ModuleChangeResponse changeData)
+    private void ApplyModuleChange(ModuleChangeResponse changeData)
     {
         if (changeData == null) return;
         if (m_myFleet == null) return;
@@ -633,7 +630,7 @@ public class UITabShip : UITabBase
         SpaceShip ship = m_myFleet.FindShip(changeData.shipId);
         if (ship == null) return;
 
-        ship.Apply_ChangeModule(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel, changeData.newUnlockedSubTypes);
+        ship.ApplyModuleChange(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel, changeData.newUnlockedSubTypes);
 
         if (changeData.costRemainInfo != null)
         {
@@ -647,7 +644,6 @@ public class UITabShip : UITabBase
             }
         }
 
-        ShowResultMessage("Module change successful!", 3f);
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
         {
@@ -656,10 +652,7 @@ public class UITabShip : UITabBase
         }
     }
 
-    // ─────────────────────────────────────────────
     // 모듈 선택 버튼 생성 / 갱신
-    // ─────────────────────────────────────────────
-
     private void PopulateModuleSelectButtons()
     {
         if (m_selectedShip == null) return;

@@ -396,6 +396,7 @@ public class DataTableModule : ScriptableObject
         for (int i = 0; i < headers.Length; i++)
             col[headers[i].Trim()] = i;
 
+        ModuleSlotInfo[] moduleSlotInfo = null;
         for (int i = 1; i < lines.Length; i++)
         {
             string line = lines[i].Trim();
@@ -440,8 +441,12 @@ public class DataTableModule : ScriptableObject
             };
 
             // body 모듈만 prefab에서 슬롯 정보 추출 (레벨1 프리팹 기준으로 모든 레벨 공통 적용)
-            if (moduleSubType.GetModuleType() == (int)EModuleType.body)
-                module.moduleSlots = ExtractModuleSlotsFromPrefab(moduleSubType);
+            if (moduleSubType.GetModuleType() == (int)EModuleType.body && module.moduleLevel == 1)
+            {
+                moduleSlotInfo = null;
+                moduleSlotInfo = ExtractModuleSlotsFromPrefab(moduleSubType);
+            }
+            module.moduleSlots = moduleSlotInfo;
 
             AddModuleDataToTable(module);
         }

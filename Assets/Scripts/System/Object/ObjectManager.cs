@@ -729,17 +729,21 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (m_myFleet == null || m_myFleet.transform == null) return Vector3.zero;
 
         // 내 함선 중 z 사이즈가 가장 큰 것의 절반을 기준 오프셋으로 사용
+        float maxZ = 0f;
         float maxHalfZ = 0f;
         foreach (SpaceShip ship in m_myFleet.m_ships)
         {
             if (ship == null) continue;
-            float halfZ = ship.CalculateShipBounds().size.z * 0.5f;
-            if (halfZ > maxHalfZ) maxHalfZ = halfZ;
+            float sizeZ = ship.CalculateShipBounds().size.z;
+            if (sizeZ > maxZ)
+            {
+                maxZ = sizeZ;  
+                maxHalfZ = maxZ * 0.5f;
+            } 
         }
 
-        SpaceShip flagship = m_myFleet.GetFlagship();
-        Vector3 basePos = flagship != null ? flagship.transform.position : m_myFleet.transform.position;
-        Vector3 spawnPosition = basePos + m_myFleet.transform.forward * (maxHalfZ + 30f);
+        Vector3 basePos = m_myFleet.transform.position;
+        Vector3 spawnPosition = basePos + m_myFleet.transform.forward * (maxHalfZ + maxZ * 5f);
         spawnPosition.y = 0f;
 
         return spawnPosition;

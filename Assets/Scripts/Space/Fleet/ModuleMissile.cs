@@ -102,7 +102,7 @@ public class ModuleMissile : ModuleBase
     private void InitializeByModuleSlot(ModuleData moduleData)
     {
         EPoolName poolName = GetMissilePoolName(m_moduleInfo.moduleSubType);
-        float ejectSpeed = m_moduleSlot != null ? m_moduleSlot.m_missileEjectSpeed : 1f;
+        float ejectSpeed = m_moduleSlot != null ? m_moduleSlot.m_missileEjectSpeed * m_moduleSlot.transform.lossyScale.x : 1f;
         Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
         for (int i = 0; i < moduleData.attackFireCount; i++)
         {

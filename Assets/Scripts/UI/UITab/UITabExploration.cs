@@ -447,7 +447,7 @@ private void SetupGroupTabs()
             zoneStage.zoneName,
             LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
             null, null,
-            onConfirm: () => CheckEverClearedThenEnter(zoneStage)
+            onConfirm: () => ExecuteEnterZone(zoneStage)
         );
     }
 
@@ -472,7 +472,7 @@ private void SetupGroupTabs()
     }
 
     // 서버에 클리어 이력 조회 후 결과에 따라 광고 여부 결정
-    private void CheckEverClearedThenEnter(ZoneStageConfig zoneStage)
+    private void ExecuteEnterZone(ZoneStageConfig zoneStage)
     {
         var request = new ZoneCheckEverClearedRequest { zoneName = zoneStage.zoneName };
         NetworkManager.Instance.CheckEverCleared(request, response =>
@@ -508,12 +508,11 @@ private void SetupGroupTabs()
                 }
                 else if (result == EAdResult.Failed)
                 {
-                    ShowResultMessage("[광고] 광고 오류로 입장합니다");
                     EnterZoneStage(zonestage);
                 }
                 else if (result == EAdResult.UserClosed)
                 {
-                    ShowResultMessage("[광고] 광고를 시청해야 입장할 수 있습니다");
+                    ShowErrorMessage("[광고] 광고를 시청해야 입장할 수 있습니다");
                 }
             });
         }
@@ -522,7 +521,7 @@ private void SetupGroupTabs()
             // 광고 미준비 → 입장 허용 후 즉시 재로드 요청
             if (adInstanceNull == false)
                 AdManager.Instance.RequestLoad();
-            ShowResultMessage("[광고] 광고 미준비 상태로 입장합니다");
+            Debug.Log("[Ad] 광고 미준비 상태로 입장");
             EnterZoneStage(zonestage);
         }
 #endif

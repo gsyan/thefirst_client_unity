@@ -116,7 +116,7 @@ public class UITabFleet : UITabBase
         var character = DataManager.Instance.m_currentCharacter;
         if (character.CheckEnoughCostStruct(node.researchCost) == false)
         {
-            ShowResultMessage(LocalizationManager.Instance.Get("error_insufficient_resources"), 3f);
+            ShowErrorMessage(LocalizationManager.Instance.Get("error_insufficient_resources"));
             return;
         }
 
@@ -132,7 +132,7 @@ public class UITabFleet : UITabBase
         if (response.errorCode != 0)
         {
             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            ShowResultMessage($"Research failed: {errorMessage}", 3f);
+            ShowErrorMessage($"Research failed: {errorMessage}");
             return;
         }
 
@@ -146,8 +146,6 @@ public class UITabFleet : UITabBase
         int nextLevel = completedLevel + 1;
         if (nextLevel <= toLevel)
             ResearchTechLevelsSequentially(nextLevel, toLevel);
-        else
-            ShowResultMessage(LocalizationManager.Instance.Get("research_complete"), 3f);
     }
 
     private void OnTechLevelChanged(int techLevel)
@@ -341,18 +339,18 @@ public class UITabFleet : UITabBase
             LocalizationManager.Instance.Get("fleet_add_ship_name"),
             LocalizationManager.Instance.Get("popup_message_add_ship"),
             null, cost,
-            AddShip
+            ExecuteAddShip
         );
     }
 
-    private void AddShip()
+    private void ExecuteAddShip()
     {
         if (m_myCharacter == null) return;
 
         ServerErrorCode errorCode = CanAddShip();
         if (errorCode != ServerErrorCode.SUCCESS)
         {
-            ShowResultMessage($"{errorCode}", 3f);
+            ShowErrorMessage($"{errorCode}");
             return;
         }
 

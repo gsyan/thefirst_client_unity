@@ -59,9 +59,10 @@ public class UIFleetInfoBar : MonoBehaviour
 
         var sb = new StringBuilder();
         sb.AppendLine($"{CommonUtility.Sprite("bubbling-beam")} (Attack)  {cur.attack:F0}");
-        sb.AppendLine($"{CommonUtility.Sprite("techno-heart")} (HP)  {org.health:F0}");
+        sb.Append($"{CommonUtility.Sprite("techno-heart")} (HP)  {org.health:F0} ");
+        sb.AppendLine($"{CommonUtility.Sprite("auto-repair")} (Repair)  {cur.repair:F0}");
         sb.AppendLine($"{CommonUtility.Sprite("rocket-thruster")} (Speed)  {cur.speed:F0}");
-        sb.Append    ($"{CommonUtility.Sprite("auto-repair")} (Repair)  {cur.repair:F0}");
+        
 
         if (org.airCount > 0)
         {

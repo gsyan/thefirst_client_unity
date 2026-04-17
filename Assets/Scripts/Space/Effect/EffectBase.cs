@@ -14,9 +14,6 @@ public class EffectBase : MonoBehaviour
         // 루프가 아니라면 한번만 재생
         if (ps.main.loop == false)
             StartCoroutine(ReturnEffectAfterDuration(ps));
-        else
-            Debug.Log($"name : {this.name}");
-
     }
     
     public virtual void PlayEffectOnce()

@@ -54,7 +54,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         m_sourceModule = sourceModule;
         m_onConfirm = onConfirm;
         m_selectedSubType = EModuleSubType.none;
-        
+
         if (m_titleText != null)
         {
             string typeKey = $"module_type_{sourceModule.GetModuleType().ToLocKey()}";
@@ -62,8 +62,10 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         }
 
         BuildTree();
+        TryAutoSelectNextStep();
+        RefreshNodeColors();
         UpdateInfoPanel();
-        ScrollToCurrentSubType();
+        ScrollToSelectedOrCurrent();
     }
 
     private void BuildTree()
@@ -145,17 +147,38 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         RefreshNodeColors();
     }
 
-    // 현재 장착 서브타입 노드를 스크롤 중앙에 배치
-    private void ScrollToCurrentSubType()
+    // 현재 서브타입의 직접 다음 단계가 있으면 자동 선택
+    private void TryAutoSelectNextStep()
+    {
+        EModuleSubType currentSubType = m_sourceModule.GetModuleSubType();
+        ModuleResearchData currentNode = DataManager.Instance.m_dataTableResearch.GetResearchData(currentSubType);
+        string currentResearchId = currentNode?.researchId ?? "";
+        if (string.IsNullOrEmpty(currentResearchId) == true) return;
+
+        for (int i = 0; i < m_currentNodeList.Count; i++)
+        {
+            var node = m_currentNodeList[i];
+            if (node.prerequisiteIds != null && node.prerequisiteIds.Contains(currentResearchId))
+            {
+                m_selectedSubType = node.moduleSubType;
+                break;
+            }
+        }
+    }
+
+    // 선택된 노드(없으면 현재 장착 노드)를 스크롤 중앙에 배치
+    private void ScrollToSelectedOrCurrent()
     {
         if (m_scrollRect == null) return;
 
-        EModuleSubType currentSubType = m_sourceModule.GetModuleSubType();
+        EModuleSubType targetSubType = m_selectedSubType != EModuleSubType.none
+            ? m_selectedSubType
+            : m_sourceModule.GetModuleSubType();
         RectTransform targetRect = null;
 
         for (int i = 0; i < m_currentNodeList.Count; i++)
         {
-            if (m_currentNodeList[i].moduleSubType == currentSubType)
+            if (m_currentNodeList[i].moduleSubType == targetSubType)
             {
                 m_spawnedNodes.TryGetValue(m_currentNodeList[i].researchId, out targetRect);
                 break;
@@ -201,6 +224,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         UpdateInfoPanel();
     }
 
+    // 노드 배경색 및 선택 아웃라인 갱신
     private void RefreshNodeColors()
     {
         EModuleSubType currentSubType = m_sourceModule.GetModuleSubType();

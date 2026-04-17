@@ -81,7 +81,7 @@ public class UITabPvp : UITabBase
     {
         if (response == null || response.errorCode != 0)
         {
-            ShowResultMessage("상대 목록을 불러올 수 없습니다.");
+            ShowErrorMessage("상대 목록을 불러올 수 없습니다.");
             return;
         }
 
@@ -135,25 +135,27 @@ public class UITabPvp : UITabBase
     {
         if (m_refreshRemain <= 0)
         {
-            ShowResultMessage("오늘 갱신 횟수를 모두 사용했습니다.");
+            ShowErrorMessage("오늘 갱신 횟수를 모두 사용했습니다.");
             return;
         }
 
         string title = LocalizationManager.Instance.Get("pvp_opponent_list");
         string message = LocalizationManager.Instance.Get("pvp_refresh_confirm", m_refreshRemain);
         UIManager.Instance.ShowConfirmPopup(title, message, null, null,
-            onConfirm: () =>
-            {
-                var request = new PvpRefreshRequest();
-                NetworkManager.Instance.PvpRefresh(request, OnPvpRefreshResponse);
-            });
+            onConfirm: ExecuteRefresh);
+    }
+
+    private void ExecuteRefresh()
+    {
+        var request = new PvpRefreshRequest();
+        NetworkManager.Instance.PvpRefresh(request, OnPvpRefreshResponse);
     }
 
     private void OnPvpRefreshResponse(ApiResponse<PvpRefreshResponse> response)
     {
         if (response == null || response.errorCode != 0)
         {
-            ShowResultMessage("갱신에 실패했습니다.");
+            ShowErrorMessage("갱신에 실패했습니다.");
             return;
         }
 
@@ -172,7 +174,7 @@ public class UITabPvp : UITabBase
         string message = LocalizationManager.Instance.Get("pvp_opponent_info", new object[] { opponent.pvpScore, opponent.rank });
 
         var sb = new System.Text.StringBuilder();
-        sb.Append($"{CommonUtility.Sprite("spiky-field")} {shipCount}");
+        sb.Append($"{CommonUtility.Sprite("spaceship")} {shipCount}");
         sb.Append("\n");
         sb.Append($"{CommonUtility.Sprite("techno-heart")} {CommonUtility.FormatBigNumber(stats.health)}");
         sb.Append("\n");
@@ -184,11 +186,11 @@ public class UITabPvp : UITabBase
         }
         
         UIManager.Instance.ShowConfirmPopup(title, message, sb.ToString(), null,
-            () => RequestPvpBattleStart(opponent));
+            () => ExecuteAttack(opponent));
     }
 
     // 서버에 전투 시작 요청
-    private void RequestPvpBattleStart(PvpOpponentInfo opponent)
+    private void ExecuteAttack(PvpOpponentInfo opponent)
     {
         var request = new PvpBattleStartRequest { opponentCharacterId = opponent.characterId };
         NetworkManager.Instance.PvpBattleStart(request, OnBattleStartResponse);
@@ -199,7 +201,7 @@ public class UITabPvp : UITabBase
     {
         if (response == null || response.errorCode != 0)
         {
-            ShowResultMessage("전투를 시작할 수 없습니다.");
+            ShowErrorMessage("전투를 시작할 수 없습니다.");
             return;
         }
 
@@ -242,7 +244,7 @@ public class UITabPvp : UITabBase
     {
         if (response == null || response.errorCode != 0)
         {
-            ShowResultMessage("전투 결과 처리 실패");
+            ShowErrorMessage("전투 결과 처리 실패");
             ReturnFromBattle();
             return;
         }

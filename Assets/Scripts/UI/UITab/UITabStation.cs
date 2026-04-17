@@ -55,11 +55,16 @@ public class UITabStation : UITabBase
         TechLevelResearchData nextNode = GetNextTechLevelNode(character);
 
         // 기술레벨 요약: 레벨 / 자원 보관 캡 / 최대 함선 수
+        if (m_techLevelText != null)
+            m_techLevelText.text = $"Lv.{currentLevel}";
+
         if (m_techLevelInfoText != null)
-            m_techLevelInfoText.text = $"{CommonUtility.Sprite("clockwork")} {storageCap}h {CommonUtility.Sprite("spiky-field")} {maxShips}";
+            m_techLevelInfoText.text = $"{CommonUtility.Sprite("mine-wagon")} {storageCap}h {CommonUtility.Sprite("spaceship")} {maxShips}";
 
         if (m_techLevelUpButton != null)
-            m_techLevelUpButton.interactable = nextNode != null;
+            m_techLevelUpButton.gameObject.SetActive(nextNode != null);
+        
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_techLevelText.transform.parent as RectTransform);
     }
 
     private TechLevelResearchData GetNextTechLevelNode(Character character)
@@ -97,7 +102,7 @@ public class UITabStation : UITabBase
         var character = DataManager.Instance.m_currentCharacter;
         if (character.CheckEnoughCostStruct(node.researchCost) == false)
         {
-            ShowResultMessage(LocalizationManager.Instance.Get("error_insufficient_resources"), 3f);
+            ShowErrorMessage(LocalizationManager.Instance.Get("error_insufficient_resources"));
             return;
         }
 
@@ -113,7 +118,7 @@ public class UITabStation : UITabBase
         if (response.errorCode != 0)
         {
             string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            ShowResultMessage($"Research failed: {errorMessage}", 3f);
+            ShowErrorMessage($"Research failed: {errorMessage}");
             return;
         }
 
@@ -127,8 +132,6 @@ public class UITabStation : UITabBase
         int nextLevel = completedLevel + 1;
         if (nextLevel <= toLevel)
             ResearchTechLevelsSequentially(nextLevel, toLevel);
-        else
-            ShowResultMessage(LocalizationManager.Instance.Get("research_complete"), 3f);
     }
 
     private void OnTechLevelChanged(int techLevel)

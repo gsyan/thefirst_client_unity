@@ -262,7 +262,7 @@ public class ChangeFormationResponse
 }
 
 [System.Serializable]
-public class ModuleUpgradeRequest
+public class ModuleLevelUpRequest
 {
     public long shipId;
     public int bodyIndex;
@@ -274,7 +274,7 @@ public class ModuleUpgradeRequest
 }
 
 [System.Serializable]
-public class ModuleUpgradeResponse
+public class ModuleLevelUpResponse
 {
     public long shipId;
     public int bodyIndex;

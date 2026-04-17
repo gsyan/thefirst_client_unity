@@ -412,14 +412,14 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<ChangeFormationResponse>>(webRequest.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<ModuleUpgradeResponse>> UpgradeModuleAsync(ModuleUpgradeRequest request)
+    public async Task<ApiResponse<ModuleLevelUpResponse>> LevelUpModuleAsync(ModuleLevelUpRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleUpgradeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleLevelUpResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
-        Debug.Log($"Module Upgrade Request: {json}");
+        Debug.Log($"Module LevelUp Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/upgrade-module", "POST");
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/levelup-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -427,8 +427,8 @@ public class ApiClient
 
         await SendRequestAsync(webRequest);
 
-        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleUpgradeResponse>>(webRequest.downloadHandler.text);
-        Debug.Log($"Module Upgrade Response: {webRequest.downloadHandler.text}");
+        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleLevelUpResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Module LevelUp Response: {webRequest.downloadHandler.text}");
         return response;
     }
 

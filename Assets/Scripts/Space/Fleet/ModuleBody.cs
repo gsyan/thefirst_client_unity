@@ -169,6 +169,7 @@ public class ModuleBody : ModuleBase
                 module.transform.SetParent(targetSlot.transform);
                 module.transform.localPosition = Vector3.zero;
                 module.transform.localRotation = Quaternion.identity;
+                module.transform.localScale = Vector3.one;
                 module.gameObject.SetActive(true);
 
                 // 모듈의 슬롯 참조 업데이트
@@ -251,6 +252,7 @@ public class ModuleBody : ModuleBase
         
         GameObject beamObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         beamObj.transform.SetParent(targetSlot.transform);
+        beamObj.transform.localScale = Vector3.one;
 
         ModuleBeam moduleBeam = beamObj.GetComponent<ModuleBeam>();
         if (moduleBeam == null)
@@ -269,6 +271,7 @@ public class ModuleBody : ModuleBase
         
         GameObject missileObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         missileObj.transform.SetParent(targetSlot.transform);
+        missileObj.transform.localScale = Vector3.one;
 
         ModuleMissile moduleMissile = missileObj.GetComponent<ModuleMissile>();
         if (moduleMissile == null)
@@ -301,6 +304,7 @@ public class ModuleBody : ModuleBase
 
         GameObject hangerObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         hangerObj.transform.SetParent(targetSlot.transform);
+        hangerObj.transform.localScale = Vector3.one;
 
         ModuleHanger moduleHanger = hangerObj.GetComponent<ModuleHanger>();
         if (moduleHanger == null)
@@ -587,6 +591,7 @@ public class ModuleBody : ModuleBase
         if (modulePrefab == null) return null;
         GameObject moduleObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         moduleObj.transform.SetParent(targetSlot.transform);
+        moduleObj.transform.localScale = Vector3.one;
         ModuleInfo moduleInfo = new ModuleInfo
         {
             moduleType = moduleType,

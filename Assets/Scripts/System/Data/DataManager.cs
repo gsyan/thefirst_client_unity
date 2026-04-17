@@ -112,7 +112,7 @@ public class DataManager : Singleton<DataManager>
             Debug.LogError("DataTableModule is not exist");
     }
 
-    public bool GetModuleUpgradeCost(EModuleSubType subType, int moduleLevel, out CostStruct cost)
+    public bool GetModuleLevelUpCost(EModuleSubType subType, int moduleLevel, out CostStruct cost)
     {
         cost = new CostStruct();
         ModuleData moduleData = m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);

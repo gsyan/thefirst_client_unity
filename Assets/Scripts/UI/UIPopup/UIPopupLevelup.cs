@@ -174,8 +174,8 @@ public class UIPopupLevelup : UIPopupBase
             int currentShips = DataManager.Instance.m_dataTableResearch.GetShipCount(m_currentLevel);
             int targetShips  = DataManager.Instance.m_dataTableResearch.GetShipCount(m_targetLevel);
 
-            sb.Append($"{CommonUtility.Sprite("clockwork")}  {currentCap}h → {targetCap}h\n");
-            sb.Append($"{CommonUtility.Sprite("spiky-field")} {currentShips} → {targetShips}");
+            sb.Append($"{CommonUtility.Sprite("mine-wagon")}  {currentCap}h → {targetCap}h\n");
+            sb.Append($"{CommonUtility.Sprite("spaceship")} {currentShips} → {targetShips}");
         }
 
         // 비용 (공통)
@@ -262,7 +262,7 @@ public class UIPopupLevelup : UIPopupBase
         {
             for (int lv = fromLevel; lv < toLevel; lv++)
             {
-                if (DataManager.Instance.GetModuleUpgradeCost(m_subType, lv, out CostStruct c) == false) break;
+                if (DataManager.Instance.GetModuleLevelUpCost(m_subType, lv, out CostStruct c) == false) break;
                 total.mineral       += c.mineral;
                 total.mineralRare   += c.mineralRare;
                 total.mineralExotic += c.mineralExotic;
