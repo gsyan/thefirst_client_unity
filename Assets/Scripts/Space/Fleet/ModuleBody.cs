@@ -116,6 +116,7 @@ public class ModuleBody : ModuleBase
         {
             m_health    *= m_myShip.m_bodyMultiplier;
             m_healthMax *= m_myShip.m_bodyMultiplier;
+            m_repair    *= m_myShip.m_bodyMultiplier;
         }
 
         CollectAndSortModuleSlots();

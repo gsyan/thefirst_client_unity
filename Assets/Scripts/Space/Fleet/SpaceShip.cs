@@ -428,7 +428,7 @@ public class SpaceShip : MonoBehaviour
     private float m_movementSpeedMult = 1f; // 스폰 진입 시 빠른 속도 배율
     public bool m_bWarp = false; // true = 워핑 진입 중, false = 워프 종료
     public bool IsWarping => m_bWarp == true && m_formationMoveState == FormationMoveState.Moving;
-    private const float WARP_STOP_DIST = 2f; // 워프 이펙트 종료 & 속도 리셋 거리
+    private const float WARP_STOP_DIST = 3f; // 워프 이펙트 종료 & 속도 리셋 거리
 
     [Header("Formation Avoidance")]
     [Tooltip("이 값 이상이면 회피 시작 (침투 깊이 기준, 0~1)")]

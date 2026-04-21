@@ -33,10 +33,17 @@ public class CameraController : MonoSingleton<CameraController>
     private float m_currentRotationY = 200f;
     private float m_currentRotationX = 30f;
 
-    // 모듈 포커싱용 목표 회전각/줌 (null이면 비활성)
-    private float? m_targetRotationY = null;
-    private float? m_targetRotationX = null;
-    private float? m_targetZoom = null;
+    // 모듈 포커싱용 목표 회전각/줌
+    private bool m_hasTargetRotationY = false;
+    private float m_targetRotationY = 0f;
+    private bool m_hasTargetRotationX = false;
+    private float m_targetRotationX = 0f;
+    private bool m_hasTargetZoom = false;
+    private float m_targetZoom = 0f;
+    // center 모드 기준 줌: 두 함대가 보이는 최솟값
+    private bool m_isCenterMode = false;
+    private float m_centerModeBaseZoom = 0f;
+    private const float k_centerModeExtraZoom = 20f;
     private const float k_rotateLerpSpeed = 4f;
     private const float k_rotateArriveThreshold = 0.5f;
     private const float k_zoomLerpSpeed = 8f;
@@ -131,31 +138,31 @@ public class CameraController : MonoSingleton<CameraController>
         
 
         // 목표 회전각으로 부드럽게 보간
-        if (m_targetRotationY.HasValue == true)
+        if (m_hasTargetRotationY == true)
         {
-            m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_targetRotationY.Value, k_rotateLerpSpeed * Time.deltaTime);
-            if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, m_targetRotationY.Value)) < k_rotateArriveThreshold)
+            m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_targetRotationY, k_rotateLerpSpeed * Time.deltaTime);
+            if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, m_targetRotationY)) < k_rotateArriveThreshold)
             {
-                m_currentRotationY = m_targetRotationY.Value;
-                m_targetRotationY = null;
+                m_currentRotationY = m_targetRotationY;
+                m_hasTargetRotationY = false;
             }
         }
-        if (m_targetRotationX.HasValue == true)
+        if (m_hasTargetRotationX == true)
         {
-            m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_targetRotationX.Value, k_rotateLerpSpeed * Time.deltaTime);
-            if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationX, m_targetRotationX.Value)) < k_rotateArriveThreshold)
+            m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_targetRotationX, k_rotateLerpSpeed * Time.deltaTime);
+            if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationX, m_targetRotationX)) < k_rotateArriveThreshold)
             {
-                m_currentRotationX = m_targetRotationX.Value;
-                m_targetRotationX = null;
+                m_currentRotationX = m_targetRotationX;
+                m_hasTargetRotationX = false;
             }
         }
-        if (m_targetZoom.HasValue == true)
+        if (m_hasTargetZoom == true)
         {
-            m_currentZoom = Mathf.Lerp(m_currentZoom, m_targetZoom.Value, k_zoomLerpSpeed * Time.deltaTime);
-            if (Mathf.Abs(m_currentZoom - m_targetZoom.Value) < k_zoomArriveThreshold)
+            m_currentZoom = Mathf.Lerp(m_currentZoom, m_targetZoom, k_zoomLerpSpeed * Time.deltaTime);
+            if (Mathf.Abs(m_currentZoom - m_targetZoom) < k_zoomArriveThreshold)
             {
-                m_currentZoom = m_targetZoom.Value;
-                m_targetZoom = null;
+                m_currentZoom = m_targetZoom;
+                m_hasTargetZoom = false;
             }
         }
 
@@ -233,9 +240,9 @@ public class CameraController : MonoSingleton<CameraController>
             m_startTouchPosition = inputPosition;
             m_startRotationY = m_currentRotationY;
             m_startRotationX = m_currentRotationX;
-            m_targetRotationY = null;
-            m_targetRotationX = null;
-            m_targetZoom = null;
+            m_hasTargetRotationY = false;
+            m_hasTargetRotationX = false;
+            m_hasTargetZoom = false;
         }
         else if (inputUp)
         {
@@ -428,8 +435,11 @@ public class CameraController : MonoSingleton<CameraController>
     public void FocusOnModuleIfHidden(ModuleSlot moduleSlot)
     {
         if (moduleSlot == null) return;
+        m_hasTargetRotationY = true;
         m_targetRotationY = moduleSlot.m_cameraRotationY;
+        m_hasTargetRotationX = true;
         m_targetRotationX = moduleSlot.m_cameraRotationX;
+        m_hasTargetZoom = true;
         m_targetZoom = Mathf.Clamp(moduleSlot.m_cameraZoom, m_minZoom, m_maxZoom);
     }
 
@@ -449,8 +459,15 @@ public class CameraController : MonoSingleton<CameraController>
 
     public void ZoomCamera(float deltaZoom)
     {
-        // 유저 직접 줌 입력 시 자동 줌 목표 취소
-        m_targetZoom = null;
+        m_hasTargetZoom = false;
+
+        if (m_isCenterMode == true)
+        {
+            float cMin = m_centerModeBaseZoom;
+            float cMax = m_centerModeBaseZoom + k_centerModeExtraZoom;
+            m_currentZoom = Mathf.Clamp(m_currentZoom + deltaZoom * m_zoomSpeed, cMin, cMax);
+            return;
+        }
 
         if (m_targetCamera != null && m_targetCamera.orthographic)
         {
@@ -472,7 +489,37 @@ public class CameraController : MonoSingleton<CameraController>
     // 줌 목표값을 직접 설정 (Lerp로 부드럽게 이동)
     public void SetTargetZoom(float zoom)
     {
+        m_hasTargetZoom = true;
         m_targetZoom = Mathf.Clamp(zoom, m_minZoom, m_maxZoom);
+    }
+
+    // center 모드 진입: 기준 줌 계산 후 m_isCenterMode 활성화
+    public void EnterCenterMode()
+    {
+        float baseZoom = CalcCenterZoom();
+        m_isCenterMode = true;
+        m_centerModeBaseZoom = baseZoom;
+        m_hasTargetZoom = true;
+        m_targetZoom = baseZoom;
+    }
+
+    // center 모드 뷰포트 변경 시 기준 줌 갱신
+    public void RefreshCenterModeZoom()
+    {
+        if (m_isCenterMode == false) return;
+        float baseZoom = CalcCenterZoom();
+        m_centerModeBaseZoom = baseZoom;
+        if (m_currentZoom < baseZoom)
+        {
+            m_hasTargetZoom = true;
+            m_targetZoom = baseZoom;
+        }
+    }
+
+    public void ExitCenterMode()
+    {
+        m_isCenterMode = false;
+        m_centerModeBaseZoom = 0f;
     }
 
     // 현재 두 함대 거리·FoV·뷰포트 폭 기반으로 센터 모드 적정 줌 계산
@@ -482,18 +529,19 @@ public class CameraController : MonoSingleton<CameraController>
         if (objMgr == null || objMgr.m_myFleet == null) return m_currentZoom;
 
         float dist = Vector3.Distance(objMgr.m_myFleet.transform.position, objMgr.GetEnemySpawnPosition());
-        float viewportWidth = GetViewportWidth(); // 0.5 = UI 열림, 1.0 = 전체화면
+        // camera.aspect는 rect.width를 이미 반영 (pixelWidth/pixelHeight 기준)
         float aspect = m_targetCamera != null ? m_targetCamera.aspect : (16f / 9f);
         float vFovRad = (m_targetCamera != null ? m_targetCamera.fieldOfView : 60f) * Mathf.Deg2Rad;
 
-        // 뷰포트 폭을 반영한 실효 수평 FoV
-        float hFovRad = 2f * Mathf.Atan(Mathf.Tan(vFovRad * 0.5f) * aspect * viewportWidth);
+        float hFovRad = 2f * Mathf.Atan(Mathf.Tan(vFovRad * 0.5f) * aspect);
 
         // 수직 앙각(rotationX)만큼 수평 거리가 줄어드는 보정
         float cosX = Mathf.Max(Mathf.Cos(m_currentRotationX * Mathf.Deg2Rad), 0.1f);
         float zoomNeeded = (dist * 0.5f) / (Mathf.Tan(hFovRad * 0.5f) * cosX);
 
-        return Mathf.Clamp(zoomNeeded * 1.3f, m_minZoom, m_maxZoom); // 1.3 여유 마진
+        // center 모드는 함선 zoom 범위 제한(m_maxZoom)과 무관하게 두 함대가 보이는 값을 우선
+        float rawZoom = zoomNeeded * 1.3f;
+        return Mathf.Max(rawZoom, m_minZoom);
     }
 
     private bool IsPointerOverUIObject()
@@ -639,6 +687,7 @@ public class CameraController : MonoSingleton<CameraController>
                     m_currentTargetBackup = m_currentTarget;
                     m_currentTarget = null;
                 }
+                ExitCenterMode();
                 m_targetPosition = objMgr.GetEnemySpawnPosition();
                 // 적 기함 크기 기준 줌 범위 적용
                 if (objMgr.m_enemyFleets.Count > 0)
@@ -651,8 +700,10 @@ public class CameraController : MonoSingleton<CameraController>
                     m_currentTarget = null;
                 }
                 m_targetPosition = (myFleet.transform.position + objMgr.GetEnemySpawnPosition()) * 0.5f;
+                EnterCenterMode();
                 break;
             case ECameraFocusTarget.camera_focus_my_fleet:
+                ExitCenterMode();
                 if (m_currentTargetBackup == null)
                 {
                     m_currentTarget = myFleet.transform;

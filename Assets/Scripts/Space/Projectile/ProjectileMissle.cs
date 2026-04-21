@@ -18,10 +18,10 @@ public class ProjectileMissile : ProjectileBase
 
     private float m_ejectSpeed = 1f;
     private const float STEERING_ROTATION_SPEED = 160f;
-    private const float HOMING_TURN_RATE = 4f;
 
     private const float COLD_LAUNCH_DOT_THRESHOLD = 0.85f;
     private const float BURST_TAIL_DOT_THRESHOLD = 0.95f;
+    private const float STEERING_BRAKE_RATE = 4f; // 콜드런치 속도 감속 계수
 
     private float m_missileSpeed;
     private float m_initialFlightDuration;
@@ -52,11 +52,11 @@ public class ProjectileMissile : ProjectileBase
         m_ejectSpeed = ejectSpeed;
         m_lifeTime = 0.0f;
         m_prevPosition = transform.position;
-        m_initialFlightDuration = Random.Range(0.5f, 0.6f);
+        m_initialFlightDuration = Random.Range(0.05f, 0.05f);
 
         m_phase = EFlightPhase.Eject;
 
-        m_rb.linearVelocity = initialDirection.normalized * m_ejectSpeed;
+        m_rb.linearVelocity = initialDirection.normalized * m_ejectSpeed * 5;
         m_rb.angularVelocity = Vector3.zero;
 
         SetBurstSideAll(false);
@@ -135,6 +135,8 @@ public class ProjectileMissile : ProjectileBase
         m_rb.MoveRotation(newRot);
         UpdateBurstDirectional(toTarget);
 
+        m_rb.linearVelocity = Vector3.Lerp(m_rb.linearVelocity, Vector3.zero, STEERING_BRAKE_RATE * Time.deltaTime);
+
         if (Vector3.Dot(transform.forward, toTarget) >= COLD_LAUNCH_DOT_THRESHOLD)
             m_phase = EFlightPhase.Homing;
     }
@@ -152,8 +154,8 @@ public class ProjectileMissile : ProjectileBase
 
         if (m_burstTail.activeSelf == true)
         {
-            Vector3 desiredVelocity = toTarget * m_missileSpeed;
-            m_rb.linearVelocity = Vector3.Lerp(m_rb.linearVelocity, desiredVelocity, HOMING_TURN_RATE * Time.deltaTime);
+            float currentSpeed = m_rb.linearVelocity.magnitude;
+            m_rb.linearVelocity = toTarget * (currentSpeed + m_missileSpeed * Time.deltaTime);
         }
 
         if (Vector3.Dot(transform.forward, toTarget) < 0f)
