@@ -446,7 +446,7 @@ private void SetupGroupTabs()
         UIManager.Instance.ShowConfirmPopup(
             zoneStage.zoneName,
             LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
-            null, null,
+            null, null, null,
             onConfirm: () => ExecuteEnterZone(zoneStage)
         );
     }

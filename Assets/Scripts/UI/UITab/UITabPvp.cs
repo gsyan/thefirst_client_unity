@@ -141,7 +141,7 @@ public class UITabPvp : UITabBase
 
         string title = LocalizationManager.Instance.Get("pvp_opponent_list");
         string message = LocalizationManager.Instance.Get("pvp_refresh_confirm", m_refreshRemain);
-        UIManager.Instance.ShowConfirmPopup(title, message, null, null,
+        UIManager.Instance.ShowConfirmPopup(title, message, null, null, null,
             onConfirm: ExecuteRefresh);
     }
 
@@ -185,7 +185,7 @@ public class UITabPvp : UITabBase
             sb.Append($"\n{CommonUtility.Sprite("jet-fighter")} {stats.airCount}");
         }
         
-        UIManager.Instance.ShowConfirmPopup(title, message, sb.ToString(), null,
+        UIManager.Instance.ShowConfirmPopup(title, message, sb.ToString(), null, null,
             () => ExecuteAttack(opponent));
     }
 

@@ -296,7 +296,7 @@ public class UITabShip : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_unlock"),
             LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
-            detailText, cost,
+            detailText, null, cost,
             () => ExecuteModuleUnlock()
         );
     }

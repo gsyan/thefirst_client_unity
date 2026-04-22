@@ -333,12 +333,15 @@ public class UITabFleet : UITabBase
         if (m_myCharacter == null) return;
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
-        CostStruct cost = gameSettings.GetAddShipCost(m_myFleet.m_ships.Count);
+        int currentShipCount = m_myFleet.m_ships.Count;
+        CostStruct cost = gameSettings.GetAddShipCost(currentShipCount);
+        int requiredTechLevel = DataManager.Instance.m_dataTableResearch.GetRequiredTechLevel(currentShipCount + 1);
+        var require = new RequireStruct(requiredTechLevel);
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("fleet_add_ship_name"),
             LocalizationManager.Instance.Get("popup_message_add_ship"),
-            null, cost,
+            null, require, cost,
             ExecuteAddShip
         );
     }

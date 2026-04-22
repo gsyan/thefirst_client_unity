@@ -26,14 +26,14 @@ public class UIPopupConfirm : UIPopupBase
         if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
     }
 
-    public void ShowPopupConfirm(string title, string message, string detailText, CostStruct cost, Action onConfirm, Action onCancel = null)
+    public void ShowPopupConfirm(string title, string message, string detailText, RequireStruct require, CostStruct cost, Action onConfirm, Action onCancel = null)
     {
         if (titleText != null) titleText.text = title;
 
-        bool canAfford = true;
-        if (bodyText != null) bodyText.text = BuildBodyText(message, detailText, cost, out canAfford);
+        bool canConfirm = true;
+        if (bodyText != null) bodyText.text = BuildBodyText(message, detailText, require, cost, out canConfirm);
 
-        if (confirmButton != null) confirmButton.interactable = canAfford;
+        if (confirmButton != null) confirmButton.interactable = canConfirm;
 
         onCancelCallback = onCancel;
         onConfirmCallback = onConfirm;
@@ -41,7 +41,7 @@ public class UIPopupConfirm : UIPopupBase
         base.ShowPopup();
     }
 
-    private string BuildBodyText(string message, string detailText, CostStruct cost, out bool canAfford)
+    private string BuildBodyText(string message, string detailText, RequireStruct require, CostStruct cost, out bool canConfirm)
     {
         var sb = new StringBuilder();
         sb.Append(message);
@@ -52,14 +52,38 @@ public class UIPopupConfirm : UIPopupBase
             sb.Append(detailText);
         }
 
-        string costText = BuildCostText(cost, out canAfford);
+        canConfirm = true;
+
+        string requireText = BuildRequireText(require, out bool requireMet);
+        if (string.IsNullOrEmpty(requireText) == false)
+        {
+            sb.Append(SEPARATOR);
+            sb.Append(requireText);
+            if (requireMet == false) canConfirm = false;
+        }
+
+        string costText = BuildCostText(cost, out bool canAfford);
         if (string.IsNullOrEmpty(costText) == false)
         {
             sb.Append(SEPARATOR);
             sb.Append(costText);
+            if (canAfford == false) canConfirm = false;
         }
 
         return sb.ToString();
+    }
+
+    private string BuildRequireText(RequireStruct require, out bool requireMet)
+    {
+        requireMet = true;
+        if (require == null || require.techLevel <= 0) return null;
+
+        var ch = DataManager.Instance.m_currentCharacter;
+        int currentTechLevel = ch != null ? ch.GetTechLevel() : 0;
+        requireMet = currentTechLevel >= require.techLevel;
+
+        string text = LocalizationManager.Instance.Get("require_level_compare", CommonUtility.Sprite("gears"), require.techLevel, currentTechLevel);
+        return requireMet ? text : $"<color=red>{text}</color>";
     }
 
     private string BuildCostText(CostStruct cost, out bool canAfford)

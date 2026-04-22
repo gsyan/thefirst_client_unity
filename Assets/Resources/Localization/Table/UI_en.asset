@@ -231,7 +231,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3370864741318656
-    m_Localized: ' '
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 3668074850811904
@@ -628,6 +628,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 19274147397763072
     m_Localized: Tech Level Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26465664587661312
+    m_Localized: Error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26480402604359680
+    m_Localized: '{0} Lv.{1} Required (Current: Lv.{2})'
     m_Metadata:
       m_Items: []
   references:

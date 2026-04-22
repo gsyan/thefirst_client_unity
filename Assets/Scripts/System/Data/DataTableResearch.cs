@@ -97,6 +97,19 @@ public class DataTableResearch : ScriptableObject
         return data?.shipCount ?? 1;
     }
 
+    // shipCount번째 함선을 허용하는 최소 기술레벨 반환
+    public int GetRequiredTechLevel(int shipCount)
+    {
+        int minLevel = int.MaxValue;
+        for (int i = 0; i < techLevelDataList.Count; i++)
+        {
+            var data = techLevelDataList[i];
+            if (data.shipCount >= shipCount && data.targetTechLevel < minLevel)
+                minLevel = data.targetTechLevel;
+        }
+        return minLevel == int.MaxValue ? 1 : minLevel;
+    }
+
     #endregion
 
     #region Validation

@@ -1,5 +1,5 @@
 Key,Id,English(en),Korean(ko)
-empty_text,, ,
+empty_text,,,
 ok,,OK,확인
 tab_fleet,,Fleet,함대
 tab_ship,,Ship,함선
@@ -117,7 +117,7 @@ popup_message_google_link,,Would you like to link your Google account?,구글 �
 popup_message_google_unlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
 free,,FREE,무료
 max_level,,Max Level,최고 레벨
-module_subtype_max_level_required,,"{0} must reach max level (Lv.{1} / now Lv.{2})","{0} 최고 레벨 도달 필요 (Lv.{1} / 현재 Lv.{2})"
+module_subtype_max_level_required,,{0} must reach max level (Lv.{1} / now Lv.{2}),{0} 최고 레벨 도달 필요 (Lv.{1} / 현재 Lv.{2})
 cost_text,,Cost,비용
 details_text,,Details,세부정보
 ship_module_select_body,,B,체
@@ -152,3 +152,5 @@ tech_level_14,,Tech Level 14,기술레벨 14
 tech_level_15,,Tech Level 15,기술레벨 15
 tech_level_on_reach,,[ On reaching Lv.{0} ],[ Lv.{0} 달성 시 ]
 tech_level_detail_title,,Tech Level Info,기술레벨 정보
+error_message_title,,Error,오류
+require_level_compare,,{0} Lv.{1} Required (Current: Lv.{2}),{0} Lv.{1} 필요 (현재 Lv.{2})
