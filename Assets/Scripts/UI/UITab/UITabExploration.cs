@@ -1,7 +1,6 @@
 // 탐사 탭 — 그룹 탭(Z1~Z9) + 존 맵 셀(안개 reveal), 존 진입/재진입/킬 보상 처리
 // waveIndex mismatch(백그라운드 복귀 후 Redis TTL 만료) 시 waveIndex=0 재시도, 그 외 에러 시 안전지역 복귀
 using TMPro;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +8,9 @@ using UnityEngine.UI;
 
 public enum EEnterZoneState
 {
-    safe,
-    warp,
-    zone,
+    idle,   // Zone0 또는 현재 스테이지에서 대기
+    warp,   // 워프 이동 중
+    battle, // 전투 진행 중
 }
 
 public class UITabExploration : UITabBase
@@ -35,7 +34,6 @@ public class UITabExploration : UITabBase
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
-    private bool m_hasClearedZone;
     private ZoneStageConfig m_currentZoneStage;
     private ZoneStageConfig m_selectedZoneStage;      // 현재 그룹에서 선택된 존
     private ZoneMapCell m_currentZoneCell;
@@ -45,7 +43,6 @@ public class UITabExploration : UITabBase
     private int m_selectedZoneIndex = 1;
     private EEnterZoneState m_enterZoneState;
     private bool m_isFleetWiped;
-    private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
 
     public override void InitializeUITab()
     {
@@ -59,7 +56,7 @@ public class UITabExploration : UITabBase
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
         
-        m_safeZoneButton.onClick.AddListener(ReturnToSafeZone);
+        m_safeZoneButton.onClick.AddListener(RetreatToPreviousStage);
         if (m_zoneTryButton != null) m_zoneTryButton.onClick.AddListener(OnZoneTryButtonClicked);
 
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
@@ -67,7 +64,7 @@ public class UITabExploration : UITabBase
         SetupGroupTabs();
         InitializeZoneMap();
         //UpdateZoneInfo();
-        SetEnterZoneState(EEnterZoneState.safe);
+        SetEnterZoneState(EEnterZoneState.idle);
 
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
@@ -76,6 +73,34 @@ public class UITabExploration : UITabBase
             var zone0 = m_datatableZone.GetZone(0);
             if (zone0 != null)
                 pp.SetSkyboxImmediate(zone0.skyboxMaterial);
+        }
+
+        SetInitialFleetPosition();
+    }
+
+    // 접속 시 clearedZones 기반으로 아군 함대 초기 위치 설정
+    private void SetInitialFleetPosition()
+    {
+        if (ObjectManager.Instance == null || m_myFleet == null) return;
+
+        var clearedZones = m_myCharacter.m_characterInfo != null ? m_myCharacter.m_characterInfo.clearedZones : null;
+        ZoneStageConfig targetStage;
+
+        if (clearedZones == null || clearedZones.Count == 0)
+        {
+            targetStage = m_datatableZone.GetZoneStage(0);
+        }
+        else
+        {
+            targetStage = m_datatableZone.GetZoneStageByName(clearedZones[^1]);
+            if (targetStage == null)
+                targetStage = m_datatableZone.GetZoneStage(0);
+        }
+
+        if (targetStage != null)
+        {
+            ObjectManager.Instance.SetMyFleetPosition(targetStage.fleetPosition);
+            CameraController.Instance.SnapToTarget();
         }
     }
 
@@ -102,6 +127,15 @@ private void SetupGroupTabs()
         m_selectedZoneIndex = groupIndex;
         ShowGroupMap(groupIndex);
         UpdateGroupTabVisual();
+
+        // 갤럭시 뷰에서 해당 Zone으로 카메라 포커스
+        var zoneConfig = m_datatableZone.GetZone(groupIndex);
+        if (zoneConfig != null && CameraController.Instance != null)
+            CameraController.Instance.FocusOnZoneAnchor(
+                zoneConfig.galaxyCameraTarget,
+                zoneConfig.galaxyCameraZoom,
+                zoneConfig.galaxyCameraRotX,
+                zoneConfig.galaxyCameraRotY);
     }
 
     private void UpdateGroupTabVisual()
@@ -216,12 +250,28 @@ private void SetupGroupTabs()
 
     public override void OnTabActivated()
     {
-        //UpdateZoneInfo();
+        if (m_datatableZone == null) return;
+
+        // Zone1 앵커 기준으로 갤럭시 뷰 진입
+        var zone1 = m_datatableZone.GetZone(1);
+        if (zone1 != null && CameraController.Instance != null)
+            CameraController.Instance.EnterGalaxyView(
+                zone1.galaxyCameraTarget,
+                zone1.galaxyCameraZoom,
+                zone1.galaxyCameraRotX,
+                zone1.galaxyCameraRotY);
+
+        SetOtherTabsVisible(false, includeSelf: true);
     }
 
     public override void OnTabDeactivated()
     {
-        
+        if (CameraController.Instance != null)
+            CameraController.Instance.ExitGalaxyView();
+
+        SetOtherTabsVisible(true, includeSelf: true);
+        // 탭 버튼 복원 후 현재 상태 기반으로 Station 탭 가시성 재적용
+        EventManager.TriggerEnterZoneStateChanged(m_enterZoneState);
     }
 
     // private void UpdateZoneInfo()
@@ -249,7 +299,7 @@ private void SetupGroupTabs()
     private void SetEnterZoneState(EEnterZoneState enterZoneState)
     {
         m_enterZoneState = enterZoneState;
-        bool inZone = enterZoneState == EEnterZoneState.zone;
+        bool inZone = enterZoneState == EEnterZoneState.battle;
         if (m_safeZoneButton != null) m_safeZoneButton.gameObject.SetActive(inZone);
         if (m_zoneTryButton  != null) m_zoneTryButton.gameObject.SetActive(!inZone);
         EventManager.TriggerEnterZoneStateChanged(enterZoneState);
@@ -335,9 +385,9 @@ private void SetupGroupTabs()
     {
         if (m_selectedZoneStage == null) return;
         if (m_enterZoneState == EEnterZoneState.warp) return;
-        if (m_enterZoneState == EEnterZoneState.zone && m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZoneStage.zoneName) return;
+        if (m_enterZoneState == EEnterZoneState.battle && m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZoneStage.zoneName) return;
 
-        if (m_enterZoneState == EEnterZoneState.zone)
+        if (m_enterZoneState == EEnterZoneState.battle)
         {
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
             ObjectManager.Instance.StopEnemySpawning();
@@ -440,7 +490,7 @@ private void SetupGroupTabs()
         {
             ObjectManager.Instance.SetMyFleetPosition(zoneStage.fleetPosition);
             CameraController.Instance.SnapToTarget();
-            SetEnterZoneState(EEnterZoneState.zone);
+            SetEnterZoneState(EEnterZoneState.battle);
             UIManager.Instance.ShowPanel("UIPanelCameraView");
             bool isFirstClear = IsAlreadyCleared(zoneStage) == false;
             EventManager.TriggerZoneEntered(zoneStage.zoneName, isFirstClear);
@@ -471,7 +521,7 @@ private void SetupGroupTabs()
     private void StartBattleInZone(ZoneStageConfig zoneStage)
     {
         // 패배(함대 전멸) 시에만 콜백 호출 — 승리/클리어는 서버 응답으로 판정
-        ObjectManager.Instance.StartSpawnEnemies(zoneStage, (_) => ReturnToSafeZone());
+        ObjectManager.Instance.StartSpawnEnemies(zoneStage, (_) => RetreatToPreviousStage());
     }
 
     private bool IsAlreadyCleared(ZoneStageConfig zoneStage)
@@ -493,13 +543,13 @@ private void SetupGroupTabs()
         NetworkManager.Instance.ClearZoneStage(request, OnClearZoneStageResponse);
     }
 
-    // 클리어 응답: 보상 처리 + 신규 클리어 판정 + 보상 팝업 → 안전지역 텔레포트
+    // 클리어 응답: 보상 처리 + 신규 클리어 판정 + 보상 팝업 → 그 자리 idle 유지
     private void OnClearZoneStageResponse(ApiResponse<ClearZoneStageResponse> response)
     {
         if (response.errorCode != 0)
         {
             Debug.LogWarning($"[Zone] ClearZoneStage 에러: {ErrorCodeMapping.GetMessage(response.errorCode)} ({response.errorCode})");
-            ReturnToSafeZone();
+            StayInCurrentStage();
             return;
         }
 
@@ -507,11 +557,9 @@ private void SetupGroupTabs()
         int mineralBefore = (character != null && character.m_characterInfo != null) ? character.m_characterInfo.mineral : 0;
 
         if (character != null && response.data.rewardInfo != null)
-        {
             character.UpdateMineral(response.data.rewardInfo.mineralRemain);
-        }
 
-        // 신규 클리어 완료 — clearedZones 갱신 및 수확 시작 시각 기록
+        // 신규 클리어 완료 — clearedZones 갱신
         if (response.data.isZoneCleared == true && character != null)
         {
             character.m_characterInfo.collectDateTime = response.data.collectDateTime;
@@ -530,7 +578,6 @@ private void SetupGroupTabs()
             SelectNextZoneStage(newlyCleared);
         }
 
-        // 광물 획득 팝업 → 확인 또는 5초 후 안전지역 텔레포트
         int mineralGained = 0;
         if (character != null && character.m_characterInfo != null)
             mineralGained = character.m_characterInfo.mineral - mineralBefore;
@@ -540,12 +587,18 @@ private void SetupGroupTabs()
             string title = LocalizationManager.Instance.Get("exploration_battle_victory");
             string rewardText = LocalizationManager.Instance.Get("exploration_battle_mineral_reward", mineralGained);
             string msg = $"{CommonUtility.Sprite("crystal-growth")} {rewardText}";
-            UIManager.Instance.ShowPopupAlert(title, msg, ReturnToSafeZone, autoCloseSec: 5f);
+            UIManager.Instance.StartCoroutine(ShowRewardPopupDelayed(title, msg, 2f));
         }
         else
         {
-            ReturnToSafeZone();
+            StayInCurrentStage();
         }
+    }
+
+    private IEnumerator ShowRewardPopupDelayed(string title, string msg, float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        UIManager.Instance.ShowPopupAlert(title, msg, StayInCurrentStage, autoCloseSec: 5f);
     }
 
     // 클리어한 존의 다음 스테이지를 m_selectedZoneStagePerGroup에 저장
@@ -587,35 +640,55 @@ private void SetupGroupTabs()
         m_selectedZoneStagePerGroup[ParseZoneGroup(nextStage.zoneName)] = nextStage;
     }
 
-    private void ReturnToSafeZone()
+    // 패배 시: 직전 클리어 스테이지(없으면 Zone0)로 워프 후퇴
+    private void RetreatToPreviousStage()
     {
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+        ObjectManager.Instance.StopEnemySpawning();
+        ObjectManager.Instance.OrderAllAircraftReturn();
+        ObjectManager.Instance.CleanupAllProjectiles();
+        ObjectManager.Instance.RemoveAllEnemyFleets();
 
-        Material safeSkybox = m_datatableZone.GetZone(0).skyboxMaterial;
-        ZoneStageConfig zoneStageConfig = m_datatableZone.GetZoneStage(0);
-        
+        ZoneStageConfig retreatStage = FindPreviousClearedStage();
+
+        Material skybox;
+        float skyboxRotation;
+        Vector3 retreatPosition;
+
+        if (retreatStage != null)
+        {
+            var zone = m_datatableZone.GetZone(retreatStage.zoneIndex);
+            skybox = zone?.skyboxMaterial;
+            skyboxRotation = retreatStage.skyboxRotation;
+            retreatPosition = retreatStage.fleetPosition;
+        }
+        else
+        {
+            // Zone1-1에서 패배 → Zone0으로
+            var zone0Stage = m_datatableZone.GetZoneStage(0);
+            var zone0 = m_datatableZone.GetZone(0);
+            skybox = zone0?.skyboxMaterial;
+            skyboxRotation = zone0Stage?.skyboxRotation ?? 0f;
+            retreatPosition = zone0Stage?.fleetPosition ?? Vector3.zero;
+        }
+
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
-            pp.SetSkyboxBlendTarget(safeSkybox, zoneStageConfig.skyboxRotation);
+            pp.SetSkyboxBlendTarget(skybox, skyboxRotation);
 
         UIManager.Instance.HidePanel("UIPanelCameraView");
         CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
-        m_myFleet.StartFleetWarp(safeSkybox, () =>
+        m_myFleet.StartFleetWarp(skybox, () =>
         {
-            ObjectManager.Instance.SetMyFleetPosition(zoneStageConfig.fleetPosition);
+            ObjectManager.Instance.SetMyFleetPosition(retreatPosition);
             CameraController.Instance.SnapToTarget();
 
-            m_currentZoneStage = null;
-            if (m_currentZoneCell != null)
-            {
-                m_currentZoneCell.SetSelected(false);
-                if (IsAlreadyCleared(m_currentZoneCell.m_zoneStageConfig) == false)
-                    m_currentZoneCell.SetState(EZoneState.Current, false);
-                m_currentZoneCell = null;
-            }
-            SetEnterZoneState(EEnterZoneState.safe);
-            m_myFleet.SetFleetState(EFleetState.None); // 전투 상태 해제 → 미사일 커버 닫힘
+            m_currentZoneStage = retreatStage;
+            CacheCurrentZoneCell();
+
+            SetEnterZoneState(EEnterZoneState.idle);
+            m_myFleet.SetFleetState(EFleetState.None);
             UpdateGroupTabVisual();
             ShowGroupMap(m_selectedZoneIndex);
 
@@ -629,5 +702,54 @@ private void SetupGroupTabs()
                 m_myFleet.RestoreDestroyedShips(0.1f);
             }
         });
+    }
+
+    // 클리어 후: 워프 없이 현재 스테이지에 그대로 idle 대기
+    private void StayInCurrentStage()
+    {
+        EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+        ObjectManager.Instance.StopEnemySpawning();
+        ObjectManager.Instance.OrderAllAircraftReturn();
+        ObjectManager.Instance.CleanupAllProjectiles();
+        ObjectManager.Instance.RemoveAllEnemyFleets();
+
+        UIManager.Instance.HidePanel("UIPanelCameraView");
+
+        SetEnterZoneState(EEnterZoneState.idle);
+        m_myFleet.SetFleetState(EFleetState.None);
+        UpdateGroupTabVisual();
+        ShowGroupMap(m_selectedZoneIndex);
+    }
+
+    // 현재 스테이지 기준 직전 클리어 스테이지 탐색
+    private ZoneStageConfig FindPreviousClearedStage()
+    {
+        if (m_currentZoneStage == null) return null;
+
+        int group = ParseZoneGroup(m_currentZoneStage.zoneName);
+        int stage = ParseZoneStage(m_currentZoneStage.zoneName);
+        var cleared = m_myCharacter?.m_characterInfo.clearedZones;
+        if (cleared == null || cleared.Count == 0) return null;
+
+        // 같은 Zone 내 직전 스테이지
+        if (stage > 1)
+        {
+            string prevName = $"{group}-{stage - 1}";
+            if (cleared.Contains(prevName))
+                return m_datatableZone.GetZoneStageByName(prevName);
+        }
+
+        // 이전 Zone의 마지막 클리어 스테이지
+        if (group > 1)
+        {
+            for (int s = 30; s >= 1; s--)
+            {
+                string name = $"{group - 1}-{s}";
+                if (cleared.Contains(name))
+                    return m_datatableZone.GetZoneStageByName(name);
+            }
+        }
+
+        return null; // Zone1-1에서 패배 → Zone0으로
     }
 }

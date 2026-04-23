@@ -108,7 +108,7 @@ public class UIPanelSpace : UIPanelBase
 
     private void OnEnterZoneStateChanged(EEnterZoneState state)
     {
-        SetStationTabButtonVisible(state == EEnterZoneState.safe);
+        SetStationTabButtonVisible(state == EEnterZoneState.idle);
     }
 
     private void SetStationTabButtonVisible(bool visible)
@@ -121,9 +121,6 @@ public class UIPanelSpace : UIPanelBase
 
     private void OnTabSelectionChanged(int tabIndex)
     {
-        bool isFleetTab = tabIndex >= 0 && m_tabSystem.tabs[tabIndex].tabName == "tab_fleet";
-        SetTabNavVisible(!isFleetTab);
-
         bool shouldShrinkCamera = tabIndex == m_moduleTabIndex || tabIndex == m_stationTabIndex;
         if (shouldShrinkCamera == m_isUIOpen) return;
 

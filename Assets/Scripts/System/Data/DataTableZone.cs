@@ -7,9 +7,14 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class ZoneConfig
 {
-    public int zoneIndex;          // 그룹 키 (0 = 안전구역 Zone-0, X-Y의 X값)
+    public int zoneIndex;           // 그룹 키 (0 = 안전구역 Zone-0, X-Y의 X값)
     public Material skyboxMaterial; // 이 Zone의 스카이박스
 
+    [Header("갤럭시 뷰 카메라 앵커 (탐사 탭 그룹 선택 시)")]
+    public Vector3 galaxyCameraTarget; // 카메라가 바라볼 월드 좌표
+    public float   galaxyCameraZoom;   // 줌값 (100~400 범위 권장)
+    public float   galaxyCameraRotX;   // 앙각 (0~80)
+    public float   galaxyCameraRotY;   // 수평 회전
 }
 // 각 슬롯에 장착할 모듈 설정
 [System.Serializable]

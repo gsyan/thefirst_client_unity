@@ -206,7 +206,7 @@ public static class EventManager
         OnMyFleetDestroyed -= callback;
     }
 
-    // 존 상태 변경 (safe / warp / zone)
+    // 존 상태 변경 (idle / warp / battle)
     public static event Action<EEnterZoneState> OnEnterZoneStateChanged;
     public static void TriggerEnterZoneStateChanged(EEnterZoneState state) { OnEnterZoneStateChanged?.Invoke(state); }
     public static void Subscribe_EnterZoneStateChanged(Action<EEnterZoneState> callback)   { OnEnterZoneStateChanged += callback; }

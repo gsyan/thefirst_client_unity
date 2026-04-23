@@ -53,6 +53,12 @@ public class CameraController : MonoSingleton<CameraController>
     private bool m_shipSelectionEnabled = false;
     public void SetShipSelectionEnabled(bool enabled) { m_shipSelectionEnabled = enabled; }
 
+    // 갤럭시 뷰 (탐사 탭)
+    private bool m_isGalaxyView = false;
+    private float m_savedMaxZoom = 40f;
+    private Transform m_savedTarget = null;
+    private Vector3 m_savedTargetPosition = Vector3.zero;
+
     // 카메라 중심점 타겟
     private ECameraFocusTarget m_focusTarget = ECameraFocusTarget.camera_focus_my_fleet;
     public ECameraFocusTarget FocusTarget => m_focusTarget;
@@ -639,6 +645,57 @@ public class CameraController : MonoSingleton<CameraController>
     public Vector3 GetTargetPosition()
     {
         return m_targetPosition;
+    }
+
+    // 갤럭시 뷰 진입 — maxZoom 제한 임시 해제 후 지정 파라미터로 Lerp
+    public void EnterGalaxyView(Vector3 targetPos, float zoom, float rotX, float rotY)
+    {
+        if (m_isGalaxyView == true) return;
+        m_isGalaxyView = true;
+
+        m_savedMaxZoom = m_maxZoom;
+        m_savedTarget = m_currentTarget;
+        m_savedTargetPosition = m_targetPosition;
+        m_maxZoom = 1000f;
+
+        m_currentTarget = null;
+        m_targetPosition = targetPos;
+
+        m_hasTargetZoom = true;
+        m_targetZoom = Mathf.Clamp(zoom, m_minZoom, m_maxZoom);
+        m_hasTargetRotationX = true;
+        m_targetRotationX = Mathf.Clamp(rotX, -80f, 80f);
+        m_hasTargetRotationY = true;
+        m_targetRotationY = rotY;
+    }
+
+    // Zone 그룹 탭 선택 시 해당 앵커로 포커스 (갤럭시 뷰 중에만 동작)
+    public void FocusOnZoneAnchor(Vector3 zoneWorldPos, float zoom, float rotX, float rotY)
+    {
+        if (m_isGalaxyView == false) return;
+
+        m_targetPosition = zoneWorldPos;
+        m_hasTargetZoom = true;
+        m_targetZoom = Mathf.Clamp(zoom, m_minZoom, m_maxZoom);
+        m_hasTargetRotationX = true;
+        m_targetRotationX = Mathf.Clamp(rotX, -80f, 80f);
+        m_hasTargetRotationY = true;
+        m_targetRotationY = rotY;
+    }
+
+    // 갤럭시 뷰 종료 — maxZoom 복원, 함선 뷰로 복귀
+    public void ExitGalaxyView()
+    {
+        if (m_isGalaxyView == false) return;
+        m_isGalaxyView = false;
+
+        m_maxZoom = m_savedMaxZoom;
+        m_currentTarget = m_savedTarget;
+        m_targetPosition = m_savedTargetPosition;
+
+        float clampedZoom = Mathf.Clamp(m_currentZoom, m_minZoom, m_maxZoom);
+        if (Mathf.Abs(clampedZoom - m_currentZoom) > 0.01f)
+            SetTargetZoom(clampedZoom);
     }
 
     // 카메라 중심점 전환 (적함대, 중간, 우리함대)

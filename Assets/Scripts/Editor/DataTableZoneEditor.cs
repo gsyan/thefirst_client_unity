@@ -1,5 +1,5 @@
 // DataTableZone 에디터 - 존 데이터 편집 GUI
-// CSV Import: datatable_zone.csv + datatable_zone_enemy.csv → ScriptableObject
+// CSV Import: datatable_zone_stage.csv + datatable_zone_enemy.csv → ScriptableObject
 #if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
@@ -94,7 +94,7 @@ public class DataTableZoneEditor : Editor
         if (GUILayout.Button("Import from CSV"))
         {
             if (EditorUtility.DisplayDialog("Import from CSV",
-                "datatable_zone.csv + datatable_zone_enemy.csv에서 전체 데이터를 가져옵니다.\n기존 데이터가 삭제됩니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
+                "datatable_zone.csv + datatable_zone_stage.csv + datatable_zone_enemy.csv에서 전체 데이터를 가져옵니다.\n기존 데이터가 삭제됩니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
             {
                 ImportFromCSV();
             }
@@ -109,16 +109,63 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    // datatable_zone.csv + datatable_zone_enemy.csv → ScriptableObject 전체 교체
+    // datatable_zone.csv + datatable_zone_stage.csv + datatable_zone_enemy.csv → ScriptableObject 전체 교체
     private void ImportFromCSV()
     {
-        string zoneCSV  = "Assets/Resources/DataTable/Zone/datatable_zone.csv";
-        string enemyCSV = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
+        string zoneCommonCSV = "Assets/Resources/DataTable/Zone/datatable_zone.csv";
+        string zoneCSV       = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
+        string enemyCSV      = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
 
-        if (!File.Exists(zoneCSV) || !File.Exists(enemyCSV))
+        if (!File.Exists(zoneCommonCSV) || !File.Exists(zoneCSV) || !File.Exists(enemyCSV))
         {
-            EditorUtility.DisplayDialog("Error", $"CSV 파일을 찾을 수 없습니다.\n{zoneCSV}\n{enemyCSV}", "OK");
+            EditorUtility.DisplayDialog("Error", $"CSV 파일을 찾을 수 없습니다.\n{zoneCommonCSV}\n{zoneCSV}\n{enemyCSV}", "OK");
             return;
+        }
+
+        // --- datatable_zone.csv 파싱 → zoneList ---
+        // 헤더: zone_index,skybox,cam_target_x,cam_target_y,cam_target_z,cam_zoom,cam_rot_x,cam_rot_y
+        m_dataTableZone.zoneList.Clear();
+        string[] zoneCommonLines = File.ReadAllLines(zoneCommonCSV);
+        for (int i = 1; i < zoneCommonLines.Length; i++)
+        {
+            string line = zoneCommonLines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+            string[] col = line.Split(',');
+
+            if (!int.TryParse(col[0], out int zoneIndex)) continue;
+
+            float.TryParse(col[2], out float cx);
+            float.TryParse(col[3], out float cy);
+            float.TryParse(col[4], out float cz);
+            float.TryParse(col[5], out float zoom);
+            float.TryParse(col[6], out float rotX);
+            float.TryParse(col[7], out float rotY);
+
+            Material skybox = null;
+            string skyboxName = col[1].Trim();
+            if (!string.IsNullOrEmpty(skyboxName))
+            {
+                string[] guids = AssetDatabase.FindAssets($"t:Material {skyboxName}");
+                foreach (string guid in guids)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(guid);
+                    if (System.IO.Path.GetFileNameWithoutExtension(path) == skyboxName)
+                    {
+                        skybox = AssetDatabase.LoadAssetAtPath<Material>(path);
+                        break;
+                    }
+                }
+            }
+
+            m_dataTableZone.zoneList.Add(new ZoneConfig
+            {
+                zoneIndex           = zoneIndex,
+                skyboxMaterial      = skybox,
+                galaxyCameraTarget  = new Vector3(cx, cy, cz),
+                galaxyCameraZoom    = zoom,
+                galaxyCameraRotX    = rotX,
+                galaxyCameraRotY    = rotY,
+            });
         }
 
         // --- enemy CSV 파싱 (zone,stage → 함선 목록) ---
@@ -253,7 +300,9 @@ public class DataTableZoneEditor : Editor
         }
 
         EditorUtility.SetDirty(m_dataTableZone);
-        EditorUtility.DisplayDialog("Import Complete", $"Zone-0 포함 총 {m_dataTableZone.zoneStageList.Count}개 임포트 완료\n(zone CSV: {imported}행)", "OK");
+        EditorUtility.DisplayDialog("Import Complete",
+            $"ZoneConfig: {m_dataTableZone.zoneList.Count}개\n" +
+            $"ZoneStage: {m_dataTableZone.zoneStageList.Count}개 (zone CSV: {imported}행)", "OK");
     }
 
 
@@ -342,7 +391,7 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.Space(5);
     }
 
-    // ZoneConfig 편집 UI (스카이박스)
+    // ZoneConfig 편집 UI (스카이박스 + 갤럭시 카메라 앵커)
     private void DrawZoneConfig(int zoneIndex)
     {
         ZoneConfig zoneConfig = null;
@@ -369,8 +418,19 @@ public class DataTableZoneEditor : Editor
             return;
         }
 
+        EditorGUI.BeginChangeCheck();
+
         zoneConfig.skyboxMaterial = (Material)EditorGUILayout.ObjectField(
             "Skybox Material", zoneConfig.skyboxMaterial, typeof(Material), false);
+
+        EditorGUILayout.LabelField("갤럭시 뷰 카메라 앵커", EditorStyles.boldLabel);
+        zoneConfig.galaxyCameraTarget = EditorGUILayout.Vector3Field("  Camera Target", zoneConfig.galaxyCameraTarget);
+        zoneConfig.galaxyCameraZoom   = EditorGUILayout.FloatField("  Camera Zoom", zoneConfig.galaxyCameraZoom);
+        zoneConfig.galaxyCameraRotX   = EditorGUILayout.Slider("  Rot X (앙각)", zoneConfig.galaxyCameraRotX, -80f, 80f);
+        zoneConfig.galaxyCameraRotY   = EditorGUILayout.FloatField("  Rot Y (수평)", zoneConfig.galaxyCameraRotY);
+
+        if (EditorGUI.EndChangeCheck())
+            EditorUtility.SetDirty(m_dataTableZone);
     }
 
     private void DrawZoneStage(int stageIntegratedIndex)

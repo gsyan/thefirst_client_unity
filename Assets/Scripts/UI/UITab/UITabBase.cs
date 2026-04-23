@@ -28,6 +28,19 @@ public class UITabBase : MonoBehaviour
     {
     }
 
+    // includeSelf=true 이면 자신의 탭 버튼도 포함해 숨김/표시
+    protected void SetOtherTabsVisible(bool visible, bool includeSelf = false)
+    {
+        if (m_tabSystemParent == null) return;
+        for (int i = 0; i < m_tabSystemParent.tabs.Count; i++)
+        {
+            var tab = m_tabSystemParent.tabs[i];
+            if (tab.tabButton == null) continue;
+            if (includeSelf == false && tab.tabPanel == gameObject) continue;
+            tab.tabButton.gameObject.SetActive(visible);
+        }
+    }
+
     // 에러/실패 메시지 — UIPopupAlert로 표시 (확인 버튼 필요)
     protected void ShowErrorMessage(string message)
     {
