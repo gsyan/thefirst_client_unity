@@ -71,6 +71,6 @@ public class UIFleetInfoBar : MonoBehaviour
             sb.Append    ($"{CommonUtility.Sprite("jet-fighter")} (Aircraft)  {org.airCount:F0}");
         }
 
-        UIManager.Instance.ShowAlertPopup("Fleet Stats", sb.ToString(), null);
+        UIManager.Instance.ShowPopupAlert("Fleet Stats", sb.ToString(), null);
     }
 }

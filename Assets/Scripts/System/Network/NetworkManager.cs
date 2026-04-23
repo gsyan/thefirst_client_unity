@@ -88,13 +88,13 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
         CancelInvoke(nameof(CheckConnection));
 
-        UIManager.Instance.ShowAlertPopup(title, message, () => {
+        UIManager.Instance.ShowPopupAlert(title, message, () => {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif
-        }, "Exit");
+        });
     }
 
     // Check if internet is actually working

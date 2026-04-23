@@ -155,6 +155,14 @@ public class ProjectileBeam : ProjectileBase
                 yield break;
             }
 
+            // 함선 회전 시 발사구 위치 추적
+            if (m_firePointTransform != null)
+            {
+                m_beamTailPos = m_firePointTransform.position;
+                if (m_muzzleEffect != null)
+                    m_muzzleEffect.transform.position = m_beamTailPos;
+            }
+
             float frameMove = m_beamSpeed * Time.deltaTime;
             currentLength = Mathf.Min(currentLength + frameMove, totalDistance);
             m_beamHeadPos = m_beamTailPos + m_direction * currentLength;
@@ -200,6 +208,13 @@ public class ProjectileBeam : ProjectileBase
         while (holdTimer < m_beamHoldTime)
         {
             holdTimer += Time.deltaTime;
+            if (m_firePointTransform != null)
+            {
+                m_beamTailPos = m_firePointTransform.position;
+                m_lineRenderer.SetPosition(1, m_beamTailPos);
+                if (m_muzzleEffect != null)
+                    m_muzzleEffect.transform.position = m_beamTailPos;
+            }
             yield return null;
         }
 

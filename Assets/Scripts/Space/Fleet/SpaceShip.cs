@@ -107,7 +107,10 @@ public class SpaceShip : MonoBehaviour
 
     private ModuleBody m_currentTargetBody;
     private Coroutine m_findTargetModuleBodyCoroutine;
-
+    private Coroutine m_rotationCoroutine;
+    private Coroutine m_returnRotationCoroutine;
+    private const float k_angularSpeedMult = 2f;
+    
     public void ApplyFleetStateToShip()
     {
         // 진형 이동 중이면 도착 후 FormationMovementLoop에서 재호출됨
@@ -125,8 +128,15 @@ public class SpaceShip : MonoBehaviour
                 break;
             case EFleetState.Battle:
                 m_shipState = EShipState.Battle;
+                if (m_returnRotationCoroutine != null)
+                {
+                    StopCoroutine(m_returnRotationCoroutine);
+                    m_returnRotationCoroutine = null;
+                }
                 if (m_findTargetModuleBodyCoroutine == null)
                     m_findTargetModuleBodyCoroutine = StartCoroutine(FindTargetModuleBody());
+                if (m_rotationCoroutine == null)
+                    m_rotationCoroutine = StartCoroutine(RotateTowardTarget());
                 break;
             default:
                 m_shipState = EShipState.None;
@@ -147,6 +157,15 @@ public class SpaceShip : MonoBehaviour
             StopCoroutine(m_findTargetModuleBodyCoroutine);
             m_findTargetModuleBodyCoroutine = null;
         }
+        if (m_rotationCoroutine != null)
+        {
+            StopCoroutine(m_rotationCoroutine);
+            m_rotationCoroutine = null;
+        }
+        // 전투 종료 후 함대 전방으로 복귀
+        if (m_returnRotationCoroutine != null)
+            StopCoroutine(m_returnRotationCoroutine);
+        m_returnRotationCoroutine = StartCoroutine(ReturnToFleetForward());
     }
 
     private IEnumerator FindTargetModuleBody()
@@ -186,6 +205,48 @@ public class SpaceShip : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private IEnumerator RotateTowardTarget()
+    {
+        while (true)
+        {
+            if (m_currentTargetBody != null && m_currentTargetBody.m_health > 0)
+            {
+                Vector3 toTarget = m_currentTargetBody.transform.position - transform.position;
+                if (toTarget.sqrMagnitude > 0.001f)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(toTarget.normalized);
+                    float angularSpeed = m_spaceShipStatsCur.speed * k_angularSpeedMult;
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, angularSpeed * Time.deltaTime);
+                }
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator ReturnToFleetForward()
+    {
+        Vector3 fleetForward = m_myFleet != null ? m_myFleet.transform.forward : Vector3.forward;
+        Quaternion targetRotation = Quaternion.LookRotation(fleetForward);
+        while (true)
+        {
+            float angularSpeed = m_spaceShipStatsCur.speed * k_angularSpeedMult;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, angularSpeed * Time.deltaTime);
+            if (Quaternion.Angle(transform.rotation, targetRotation) < 0.5f)
+            {
+                transform.rotation = targetRotation;
+                m_returnRotationCoroutine = null;
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
+    public bool IsFacingTarget(Vector3 targetPos, float angleThreshold)
+    {
+        Vector3 toTarget = (targetPos - transform.position).normalized;
+        return Vector3.Angle(transform.forward, toTarget) <= angleThreshold;
     }
 
     virtual public void TakeDamage(float attackPower)

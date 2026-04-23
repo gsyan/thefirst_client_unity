@@ -380,7 +380,7 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 단순 알림 팝업 (확인 버튼만) - Overlay 레이어: 다른 팝업 위에 쌓임
-    public void ShowAlertPopup(string title, string message, System.Action onConfirm, string buttonText = null)
+    public void ShowPopupAlert(string title, string message, System.Action onConfirm, float autoCloseSec = 0f)
     {
         UIPopupAlert popup = GetOrCreatePopup<UIPopupAlert>("UIPopupAlert", EPopupLayer.Overlay);
         if (popup == null) return;
@@ -389,7 +389,7 @@ public class UIManager : MonoSingleton<UIManager>
 
         void WrappedConfirm() { onConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Overlay); }
 
-        popup.ShowPopupAlert(title, message, WrappedConfirm, buttonText);
+        popup.ShowPopupAlert(title, message, WrappedConfirm, autoCloseSec);
     }
 
     // PvP 전체 랭킹 팝업

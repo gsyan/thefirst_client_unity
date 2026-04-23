@@ -183,6 +183,14 @@ MonoBehaviour:
     m_Key: exploration_zone_enter_confirm
     m_Metadata:
       m_Items: []
+  - m_Id: 26943208810217472
+    m_Key: exploration_battle_victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26943208852160512
+    m_Key: exploration_battle_mineral_reward
+    m_Metadata:
+      m_Items: []
   - m_Id: 13164879267364864
     m_Key: harvest_offline_elapsed
     m_Metadata:

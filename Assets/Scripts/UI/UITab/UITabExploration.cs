@@ -493,7 +493,7 @@ private void SetupGroupTabs()
         NetworkManager.Instance.ClearZoneStage(request, OnClearZoneStageResponse);
     }
 
-    // 클리어 응답: 보상 처리 + 신규 클리어 판정 + 자동 안전지역 텔레포트
+    // 클리어 응답: 보상 처리 + 신규 클리어 판정 + 보상 팝업 → 안전지역 텔레포트
     private void OnClearZoneStageResponse(ApiResponse<ClearZoneStageResponse> response)
     {
         if (response.errorCode != 0)
@@ -504,6 +504,8 @@ private void SetupGroupTabs()
         }
 
         var character = DataManager.Instance.m_currentCharacter;
+        int mineralBefore = (character != null && character.m_characterInfo != null) ? character.m_characterInfo.mineral : 0;
+
         if (character != null && response.data.rewardInfo != null)
         {
             character.UpdateMineral(response.data.rewardInfo.mineralRemain);
@@ -528,8 +530,22 @@ private void SetupGroupTabs()
             SelectNextZoneStage(newlyCleared);
         }
 
-        // 클리어 후 자동 안전지역 텔레포트
-        ReturnToSafeZone();
+        // 광물 획득 팝업 → 확인 또는 5초 후 안전지역 텔레포트
+        int mineralGained = 0;
+        if (character != null && character.m_characterInfo != null)
+            mineralGained = character.m_characterInfo.mineral - mineralBefore;
+
+        if (mineralGained > 0)
+        {
+            string title = LocalizationManager.Instance.Get("exploration_battle_victory");
+            string rewardText = LocalizationManager.Instance.Get("exploration_battle_mineral_reward", mineralGained);
+            string msg = $"{CommonUtility.Sprite("crystal-growth")} {rewardText}";
+            UIManager.Instance.ShowPopupAlert(title, msg, ReturnToSafeZone, autoCloseSec: 5f);
+        }
+        else
+        {
+            ReturnToSafeZone();
+        }
     }
 
     // 클리어한 존의 다음 스테이지를 m_selectedZoneStagePerGroup에 저장

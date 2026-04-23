@@ -662,6 +662,14 @@ MonoBehaviour:
     m_Localized: Nothing to recover
     m_Metadata:
       m_Items: []
+  - m_Id: 26943208810217472
+    m_Localized: Battle Victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26943208852160512
+    m_Localized: Mineral +{0}
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

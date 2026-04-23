@@ -31,6 +31,6 @@ public class UITabBase : MonoBehaviour
     // 에러/실패 메시지 — UIPopupAlert로 표시 (확인 버튼 필요)
     protected void ShowErrorMessage(string message)
     {
-        UIManager.Instance.ShowAlertPopup(LocalizationManager.Instance.Get("error_message_title"), message, null);
+        UIManager.Instance.ShowPopupAlert(LocalizationManager.Instance.Get("error_message_title"), message, null);
     }
 }

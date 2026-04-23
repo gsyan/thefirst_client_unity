@@ -263,7 +263,7 @@ public class UITabShip : UITabBase
             sb.AppendLine($"{CommonUtility.Sprite("jet-fighter")} (Aircraft Count)  {org.airCount:F0}");
         }
 
-        UIManager.Instance.ShowAlertPopup(m_selectedShip.m_shipInfo.shipName, sb.ToString(), null);
+        UIManager.Instance.ShowPopupAlert(m_selectedShip.m_shipInfo.shipName, sb.ToString(), null);
     }
 
     // ─────────────────────────────────────────────

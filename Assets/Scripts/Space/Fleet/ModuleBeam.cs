@@ -20,6 +20,7 @@ public class ModuleBeam : ModuleBase
     private ModuleBody m_currentTarget;
     private Coroutine m_autoAttackCoroutine;
     private Animator m_animator;
+    private const float k_beamFireAngle = 5f;
 
 
     public override EModuleType GetModuleType()
@@ -134,8 +135,14 @@ public class ModuleBeam : ModuleBase
             {
                 if (Time.time >= m_lastAttackTime + m_attackCool)
                 {
-                    ExecuteAttackOnTarget(m_currentTarget);
-                    m_lastAttackTime = Time.time;
+                    bool isFacing = true;
+                    if (m_myShip != null)
+                        isFacing = m_myShip.IsFacingTarget(m_currentTarget.transform.position, k_beamFireAngle);
+                    if (isFacing == true)
+                    {
+                        ExecuteAttackOnTarget(m_currentTarget);
+                        m_lastAttackTime = Time.time;
+                    }
                 }
             }
 

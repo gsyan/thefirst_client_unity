@@ -58,7 +58,7 @@ public class UIStationInfoBar : MonoBehaviour
             sb.Append    ($"{CommonUtility.Sprite("spaceship")} (Max Ships)  {nextMaxShips}");
         }
 
-        UIManager.Instance.ShowAlertPopup(
+        UIManager.Instance.ShowPopupAlert(
             LocalizationManager.Instance.Get("tech_level_detail_title"),
             sb.ToString(),
             null

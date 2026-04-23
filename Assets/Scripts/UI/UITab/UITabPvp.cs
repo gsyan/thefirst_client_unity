@@ -263,7 +263,7 @@ public class UITabPvp : UITabBase
         string title = LocalizationManager.Instance.Get(titleKey);
         string scoreLine = LocalizationManager.Instance.Get("pvp_battle_result_score", scoreStr, m_myScore);
         string rankLine = LocalizationManager.Instance.Get("pvp_battle_result_rank", oldRank, m_myRank);
-        UIManager.Instance.ShowAlertPopup(title, $"{scoreLine}\n{rankLine}", ReturnFromBattle);
+        UIManager.Instance.ShowPopupAlert(title, $"{scoreLine}\n{rankLine}", ReturnFromBattle);
     }
 
     // 전투 종료 후 워프 복귀
