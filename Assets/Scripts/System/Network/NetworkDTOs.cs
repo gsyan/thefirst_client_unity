@@ -55,6 +55,10 @@ public class ModuleBodyInfo
     public List<ModuleInfo> hangers;
     // 이 body 슬롯에서 subTypeAddCost를 납부해 비용 없이 교체 가능한 서브타입 목록
     public List<EModuleSubType> unlockedSubTypes;
+    // 이 슬롯에 투자한 재화 이력 (리셋 시 100% 환급)
+    public int investedMineral;
+    public int investedPvpMineral;
+    public int investedTempMineral;
 }
 
 [System.Serializable]
@@ -67,6 +71,10 @@ public class ModuleInfo
     public int slotIndex;
     // 이 슬롯에서 subTypeAddCost를 납부해 비용 없이 교체 가능한 서브타입 목록
     public List<EModuleSubType> unlockedSubTypes;
+    // 이 슬롯에 투자한 재화 이력 (리셋 시 100% 환급)
+    public int investedMineral;
+    public int investedPvpMineral;
+    public int investedTempMineral;
 }
 
 [System.Serializable]
@@ -87,33 +95,8 @@ public class ModuleSlotInfo
 [System.Serializable]
 public class ModuleChangeCostEntry
 {
-    public EModuleSubType moduleSubType; // 적용 대상 새 모듈 subType
-    public CostStruct cost;
-    // 모듈 교체(적용) 비용 항목 — subType별 MR/ME/MD 비용 정의
-}
-
-[System.Serializable]
-public class CostStruct
-{
-    public long mineral;
-    public long mineralRare;
-    public long mineralExotic;
-    public long mineralDark;
-
-    public CostStruct()
-    {
-        this.mineral = 0;
-        this.mineralRare = 0;
-        this.mineralExotic = 0;
-        this.mineralDark = 0;
-    }
-    public CostStruct(long mineral, long mineralRare, long mineralExotic, long mineralDark)
-    {
-        this.mineral = mineral;
-        this.mineralRare = mineralRare;
-        this.mineralExotic = mineralExotic;
-        this.mineralDark = mineralDark;
-    }
+    public EModuleSubType moduleSubType;
+    public int mineralCost;
 }
 
 [System.Serializable]
@@ -121,10 +104,11 @@ public class CharacterInfo
 {
     public long characterId;
     public string characterName;
-    public long mineral;
-    public long mineralRare;
-    public long mineralExotic;
-    public long mineralDark;
+    public int mineral;
+    public int pvpMineral;
+    public string pvpMineralExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
+    public int tempMineral;
+    public string tempMineralExpiry;  // ISO 8601 — IAP 구매, 만료 시 소멸
     public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
     public string collectDateTime;  // 마지막 자원 수확 시간 (ISO 8601 형식)
     public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
@@ -330,6 +314,9 @@ public class ModuleUnlockResponse
     public EModuleSubType moduleSubType;
     public int slotIndex;
     public CostRemainInfo costRemainInfo;
+    public int investedMineral;
+    public int investedPvpMineral;
+    public int investedTempMineral;
 }
 
 [System.Serializable]
@@ -348,15 +335,45 @@ public class TechLevelResearchResponse
 [System.Serializable]
 public class CostRemainInfo
 {
-    public long mineralCost;
-    public long mineralRareCost;
-    public long mineralExoticCost;
-    public long mineralDarkCost;
+    public int mineralCost;
+    public int mineralRemain;
+    public int pvpMineralCost;
+    public int pvpMineralRemain;
+    public int tempMineralCost;
+    public int tempMineralRemain;
+}
 
-    public long remainMineral;
-    public long remainMineralRare;
-    public long remainMineralExotic;
-    public long remainMineralDark;
+[System.Serializable]
+public class ModuleResetRequest
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public int slotIndex;
+}
+
+[System.Serializable]
+public class ModuleResetResponse
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public int slotIndex;
+    public CostRemainInfo costRemainInfo;
+}
+
+[System.Serializable]
+public class ShipResetRemoveRequest
+{
+    public long shipId;
+}
+
+[System.Serializable]
+public class ShipResetRemoveResponse
+{
+    public long removedShipId;
+    public CostRemainInfo costRemainInfo;
+    public FleetInfo updatedFleetInfo;
 }
 
 [System.Serializable]
@@ -403,19 +420,6 @@ public class ProgressListResponse
 
 #region Zone Battle Data Classes ##############################################################################
 [System.Serializable]
-public class ZoneCollectRequest
-{
-
-}
-
-[System.Serializable]
-public class ZoneCollectResponse
-{
-    public string collectDateTime;  // 수확 시간 (ISO 8601 형식)
-    public CostRemainInfo rewardInfo;  // 보상 (remainMineral = 최종 잔액)
-}
-
-[System.Serializable]
 public class ClearZoneStageRequest
 {
     public string zoneName;   // 존 이름 (예: "2-5")
@@ -428,18 +432,6 @@ public class ClearZoneStageResponse
     public bool isZoneCleared;          // true = 신규 클리어 완료
     public string clearedZoneName;      // isZoneCleared == true 일 때만 유효
     public string collectDateTime;      // isZoneCleared == true 일 때만 유효
-}
-
-[System.Serializable]
-public class ZoneCheckEverClearedRequest
-{
-    public string zoneName;  // 클리어 이력 조회할 존 이름 (예: "2-5")
-}
-
-[System.Serializable]
-public class ZoneCheckEverClearedResponse
-{
-    public bool everCleared;  // true = 한 번이라도 클리어한 적 있음 (isRestored 무관)
 }
 
 #endregion

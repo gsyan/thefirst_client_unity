@@ -70,6 +70,7 @@ public class ModuleHanger : ModuleBase
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
         SetUnlockedSubTypes(moduleInfo.unlockedSubTypes);
+        SetInvestedMinerals(moduleInfo.investedMineral, moduleInfo.investedPvpMineral, moduleInfo.investedTempMineral);
 
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
         if (moduleData == null)
@@ -90,7 +91,7 @@ public class ModuleHanger : ModuleBase
         //m_airMaintenanceTime = 1; // test
 
         // 업그레이드 비용 설정
-        m_upgradeCost = moduleData.upgradeCost;
+        m_mineralCostLevelup = moduleData.mineralCost;
 
         m_lastLaunchTime = 0f;
 
@@ -278,7 +279,7 @@ public class ModuleHanger : ModuleBase
         m_launchCool = moduleData.attackCool;
         m_airMaintenanceTime = moduleData.airMaintenanceTime;
 
-        m_upgradeCost = moduleData.upgradeCost;
+        m_mineralCostLevelup = moduleData.mineralCost;
 
         // 함재기 풀 재조정 (데이터상 총 함재기 수 비교)
         int newCapacity = m_airCount;

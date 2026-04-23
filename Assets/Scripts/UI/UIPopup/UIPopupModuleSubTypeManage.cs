@@ -309,13 +309,10 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             bool isMaxLevel = currentSubType == prereqSubType && currentLevel >= maxLevel;
             if (isMaxLevel == false) canConfirm = false;
 
-            CostStruct cost = DataManager.Instance.m_dataTableResearch.GetResearchCost(m_selectedSubType);
+            long mineralCost = DataManager.Instance.m_dataTableResearch.GetResearchCost(m_selectedSubType);
             var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-            bool insM  = (info?.mineral      ?? 0) < cost.mineral;
-            bool insMR = (info?.mineralRare  ?? 0) < cost.mineralRare;
-            bool insME = (info?.mineralExotic?? 0) < cost.mineralExotic;
-            bool insMD = (info?.mineralDark  ?? 0) < cost.mineralDark;
-            bool insufficient = insM || insMR || insME || insMD;
+            bool insM  = (info?.mineral ?? 0) < mineralCost;
+            bool insufficient = insM;
             if (insufficient == true) canConfirm = false;
 
             // prerequisite 서브타입 이름 기준으로 레벨 조건 표시
@@ -337,23 +334,8 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
             // 4종 재화 비용 — 한 줄로 이어서 표시, 0이면 생략
             var costSb = new System.Text.StringBuilder();
-            if (cost.mineral > 0)
-                costSb.Append(insM ? $"{CommonUtility.Sprite("crystal-growth")} <color=red>{CommonUtility.FormatBigNumber(cost.mineral)}</color>" : $"{CommonUtility.Sprite("crystal-growth")} {CommonUtility.FormatBigNumber(cost.mineral)}");
-            if (cost.mineralRare > 0)
-            {
-                if (costSb.Length > 0) costSb.Append("  ");
-                costSb.Append(insMR ? $"{CommonUtility.Sprite("minerals")} <color=red>{CommonUtility.FormatBigNumber(cost.mineralRare)}</color>" : $"{CommonUtility.Sprite("minerals")} {CommonUtility.FormatBigNumber(cost.mineralRare)}");
-            }
-            if (cost.mineralExotic > 0)
-            {
-                if (costSb.Length > 0) costSb.Append("  ");
-                costSb.Append(insME ? $"{CommonUtility.Sprite("emerald")} <color=red>{CommonUtility.FormatBigNumber(cost.mineralExotic)}</color>" : $"{CommonUtility.Sprite("emerald")} {CommonUtility.FormatBigNumber(cost.mineralExotic)}");
-            }
-            if (cost.mineralDark > 0)
-            {
-                if (costSb.Length > 0) costSb.Append("  ");
-                costSb.Append(insMD ? $"{CommonUtility.Sprite("fire-gem")} <color=red>{CommonUtility.FormatBigNumber(cost.mineralDark)}</color>" : $"{CommonUtility.Sprite("fire-gem")} {CommonUtility.FormatBigNumber(cost.mineralDark)}");
-            }
+            if (mineralCost > 0)
+                costSb.Append(insM ? $"{CommonUtility.Sprite("crystal-growth")} <color=red>{CommonUtility.FormatBigNumber(mineralCost)}</color>" : $"{CommonUtility.Sprite("crystal-growth")} {CommonUtility.FormatBigNumber(mineralCost)}");
             if (costSb.Length > 0) sb.Append(costSb);
         }
 

@@ -30,9 +30,8 @@ public class UITabSettings : UITabBase
     [SerializeField] private Button   m_devConsoleButton;
     [SerializeField] private Button   m_testMineralButton;
     [SerializeField] private Toggle   m_toggleMineral;
-    [SerializeField] private Toggle   m_toggleMineralRare;
-    [SerializeField] private Toggle   m_toggleMineralExotic;
-    [SerializeField] private Toggle   m_toggleMineralDark;
+    [SerializeField] private Toggle   m_toggleMineralPvp;
+    [SerializeField] private Toggle   m_toggleMineralTemp;
 
     [SerializeField] private Toggle   m_toggleRemoveAd;
 
@@ -113,11 +112,10 @@ public class UITabSettings : UITabBase
 
     private void OnTestMineralButtonClicked()
     {
-        string mineral       = (m_toggleMineral       != null && m_toggleMineral.isOn       == true) ? "1000000" : "0";
-        string mineralRare   = (m_toggleMineralRare   != null && m_toggleMineralRare.isOn   == true) ? "1000000" : "0";
-        string mineralExotic = (m_toggleMineralExotic != null && m_toggleMineralExotic.isOn == true) ? "1000000" : "0";
-        string mineralDark   = (m_toggleMineralDark   != null && m_toggleMineralDark.isOn   == true) ? "1000000" : "0";
-        DeveloperConsole.ExecuteCommandStatic($"addminerals {mineral} {mineralRare} {mineralExotic} {mineralDark}");
+        string mineral       = (m_toggleMineral       != null && m_toggleMineral.isOn       == true) ? "100" : "0";
+        string mineralPvp    = (m_toggleMineralPvp    != null && m_toggleMineralPvp.isOn == true) ? "100" : "0";
+        string mineralTemp   = (m_toggleMineralTemp   != null && m_toggleMineralTemp.isOn   == true) ? "100" : "0";
+        DeveloperConsole.ExecuteCommandStatic($"addminerals {mineral} {mineralPvp} {mineralTemp}");
     }
 
     private void InitializeLanguageDropdown()
@@ -189,7 +187,7 @@ public class UITabSettings : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("settings_google_link"),
             LocalizationManager.Instance.Get("popup_message_google_link"),
-            null, null, null,
+            null, null, 0,
             onConfirm: ExecuteLinkGoogle,
             onCancel: null
         );
@@ -216,7 +214,7 @@ public class UITabSettings : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("settings_google_unlink"),
             LocalizationManager.Instance.Get("popup_message_google_unlink"),
-            null, null, null,
+            null, null, 0,
             onConfirm: ExecuteUnlinkGoogle,
             onCancel: null
         );
@@ -253,7 +251,7 @@ public class UITabSettings : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("settings_logout"),
             LocalizationManager.Instance.Get("popup_message_logout"),
-            null, null, null,
+            null, null, 0,
             onConfirm: ExecuteLogout,
             onCancel: null
         );

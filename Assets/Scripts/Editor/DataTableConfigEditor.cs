@@ -26,11 +26,6 @@ public class DataTableConfigEditor : Editor
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Reset Tools", EditorStyles.boldLabel);
 
-        if (GUILayout.Button("Reset AddShipCosts to Default"))
-        {
-            ResetAddShipCosts();
-        }
-
         if (GUILayout.Button("Reset All GameSettings to Default"))
         {
             if (EditorUtility.DisplayDialog("Reset All", "모든 GameSettings를 초기화하시겠습니까?", "Yes", "No"))
@@ -74,16 +69,6 @@ public class DataTableConfigEditor : Editor
             EditorUtility.SetDirty(dataTableConfig);
             EditorUtility.DisplayDialog("Import Successful", "Game Settings imported successfully!", "OK");
         }
-    }
-
-    private void ResetAddShipCosts()
-    {
-        // GameSettings 기본값에서 가져옴 (중복 방지)
-        dataTableConfig.gameSettings.addShipCosts = new GameSettings().addShipCosts;
-
-        EditorUtility.SetDirty(dataTableConfig);
-        AssetDatabase.SaveAssets();
-        Debug.Log("AddShipCosts reset to default!");
     }
 
     private void ResetAllGameSettings()

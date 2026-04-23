@@ -40,7 +40,7 @@ public class UITabFleet : UITabBase
         PopulateShipSelectorGrid();
         UpdateShipActionButtons();
 
-        EventManager.Subscribe_AddShip(OnShipAdded);
+        EventManager.Subscribe_FleetShipCountChanged(OnShipCountChanged);
         EventManager.Subscribe_FleetUpdateHP(OnFleetHPUpdated);
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
         EventManager.Subscribe_TechLevelChanged(OnTechLevelChanged);
@@ -77,7 +77,7 @@ public class UITabFleet : UITabBase
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        int storageCap = (int)DataManager.Instance.m_dataTableResearch.GetStackTime(currentLevel);
+        
         int maxShips = DataManager.Instance.m_dataTableResearch.GetShipCount(currentLevel);
     }
 
@@ -114,7 +114,7 @@ public class UITabFleet : UITabBase
         if (node == null) return;
 
         var character = DataManager.Instance.m_currentCharacter;
-        if (character.CheckEnoughCostStruct(node.researchCost) == false)
+        if (character.CheckEnoughMineral(node.mineralCost) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("error_insufficient_resources"));
             return;
@@ -304,7 +304,7 @@ public class UITabFleet : UITabBase
         UpdateShipActionButtons();
     }
 
-    private void OnShipAdded()
+    private void OnShipCountChanged()
     {
         PopulateShipSelectorGrid();
     }
@@ -334,14 +334,13 @@ public class UITabFleet : UITabBase
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         int currentShipCount = m_myFleet.m_ships.Count;
-        CostStruct cost = gameSettings.GetAddShipCost(currentShipCount);
         int requiredTechLevel = DataManager.Instance.m_dataTableResearch.GetRequiredTechLevel(currentShipCount + 1);
         var require = new RequireStruct(requiredTechLevel);
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("fleet_add_ship_name"),
             LocalizationManager.Instance.Get("popup_message_add_ship"),
-            null, require, cost,
+            null, require, gameSettings.addShipCost,
             ExecuteAddShip
         );
     }
@@ -363,10 +362,7 @@ public class UITabFleet : UITabBase
         {
             if (response.errorCode == 0)
             {
-                m_myCharacter.UpdateMineral(response.data.costRemainInfo.remainMineral);
-                m_myCharacter.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
-                m_myCharacter.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
-                m_myCharacter.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
+                m_myCharacter.UpdateMineral(response.data.costRemainInfo.mineralRemain);
                 
                 if (response.data.updatedFleetInfo != null)
                     DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
@@ -374,7 +370,7 @@ public class UITabFleet : UITabBase
                 if (response.data.newShipInfo != null && m_myCharacter.m_ownedFleet != null)
                     ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(response.data.newShipInfo, true);
 
-                EventManager.Trigger_AddShip();
+                EventManager.Trigger_FleetShipCountChanged();
             }
         });
     }
@@ -388,14 +384,10 @@ public class UITabFleet : UITabBase
         int currentShipCount = m_myCharacter.m_ownedFleet.m_ships.Count;
         if (currentShipCount >= gameSettings.maxShipsPerFleet) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
-        CostStruct cost = gameSettings.GetAddShipCost(currentShipCount);
         int techLevel = m_myCharacter.GetTechLevel();
         int maxShipsAtTech = DataManager.Instance.m_dataTableResearch.GetShipCount(techLevel);
         if (currentShipCount >= maxShipsAtTech) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
-        if (m_myCharacter.m_characterInfo.mineral < cost.mineral) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL;
-        if (m_myCharacter.m_characterInfo.mineralRare < cost.mineralRare) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL_RARE;
-        if (m_myCharacter.m_characterInfo.mineralExotic < cost.mineralExotic) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL_EXOTIC;
-        if (m_myCharacter.m_characterInfo.mineralDark < cost.mineralDark) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL_DARK;
+        if (m_myCharacter.m_characterInfo.mineral < gameSettings.addShipCost) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL;
 
         return ServerErrorCode.SUCCESS;
     }

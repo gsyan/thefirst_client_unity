@@ -50,7 +50,6 @@ public class UITabStation : UITabBase
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        int storageCap = (int)DataManager.Instance.m_dataTableResearch.GetStackTime(currentLevel);
         int maxShips = DataManager.Instance.m_dataTableResearch.GetShipCount(currentLevel);
         TechLevelResearchData nextNode = GetNextTechLevelNode(character);
 
@@ -59,7 +58,7 @@ public class UITabStation : UITabBase
             m_techLevelText.text = $"Lv.{currentLevel}";
 
         if (m_techLevelInfoText != null)
-            m_techLevelInfoText.text = $"{CommonUtility.Sprite("mine-wagon")} {storageCap}h {CommonUtility.Sprite("spaceship")} {maxShips}";
+            m_techLevelInfoText.text = $"{CommonUtility.Sprite("spaceship")} {maxShips}";
 
         if (m_techLevelUpButton != null)
             m_techLevelUpButton.gameObject.SetActive(nextNode != null);
@@ -100,7 +99,7 @@ public class UITabStation : UITabBase
         if (node == null) return;
 
         var character = DataManager.Instance.m_currentCharacter;
-        if (character.CheckEnoughCostStruct(node.researchCost) == false)
+        if (character.CheckEnoughMineral(node.mineralCost) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("error_insufficient_resources"));
             return;

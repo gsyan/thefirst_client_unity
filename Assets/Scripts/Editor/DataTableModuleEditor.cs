@@ -179,11 +179,8 @@ public class DataTableModuleEditor : Editor
         module.speed = EditorGUILayout.FloatField("Speed", module.speed);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
-        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
-        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
-        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
-
+        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
+        
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
     #endregion
@@ -277,11 +274,8 @@ public class DataTableModuleEditor : Editor
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
-        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
-        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
-        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
-
+        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
+        
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
     #endregion
@@ -374,10 +368,7 @@ public class DataTableModuleEditor : Editor
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
-        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
-        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
-        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
+        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
 
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -488,10 +479,7 @@ public class DataTableModuleEditor : Editor
         module.airAvoidRadius = EditorGUILayout.FloatField("Aircraft Avoid Radius", module.airAvoidRadius);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.upgradeCost.mineral = EditorGUILayout.LongField("Mineral", module.upgradeCost.mineral);
-        module.upgradeCost.mineralRare = EditorGUILayout.LongField("MineralRare", module.upgradeCost.mineralRare);
-        module.upgradeCost.mineralExotic = EditorGUILayout.LongField("MineralExotic", module.upgradeCost.mineralExotic);
-        module.upgradeCost.mineralDark = EditorGUILayout.LongField("MineralDark", module.upgradeCost.mineralDark);
+        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
 
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -570,8 +558,7 @@ public class DataTableModuleEditor : Editor
                     d.airHealth, d.airAttack, d.airAttackRange,
                     d.airAttackCool, d.airSpeed, d.airAmmo,
                     d.airDetectRadius, d.airAvoidRadius,
-                    d.upgradeCost.mineral, d.upgradeCost.mineralRare,
-                    d.upgradeCost.mineralExotic, d.upgradeCost.mineralDark,
+                    d.mineralCost, 
                     d.description));
             }
         }

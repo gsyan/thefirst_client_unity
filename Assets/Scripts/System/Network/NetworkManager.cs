@@ -33,6 +33,8 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     // 하트비트 간격 (초) — 서버에서 lastOnlineAt 갱신용
     private const float HeartbeatInterval = 30f;
     private bool m_heartbeatStarted = false;
+    private int m_heartbeatFailCount = 0;
+    private const int HeartbeatMaxFail = 3;
     // 복귀 즉시 하트비트 중복 방지 (OnApplicationPause/OnApplicationFocus 동시 발동 대응)
     private float m_lastResumeHeartbeatTime = -999f;
     private const float ResumeHeartbeatCool = 5f;
@@ -58,6 +60,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void StartHeartbeat()
     {
         m_heartbeatStarted = true;
+        m_heartbeatFailCount = 0;
         CancelInvoke(nameof(Heartbeat));
         InvokeRepeating(nameof(Heartbeat), HeartbeatInterval, HeartbeatInterval);
     }
@@ -700,6 +703,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     //     StartCoroutine(RunAsync(() => m_apiClient.AddModuleBodyAsync(request), onComplete));
     // }
 
+    public void ResetModule(ModuleResetRequest request, System.Action<ApiResponse<ModuleResetResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ResetModuleAsync(request), onComplete));
+    }
+
+    public void ResetAndRemoveShip(ShipResetRemoveRequest request, System.Action<ApiResponse<ShipResetRemoveResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ResetAndRemoveShipAsync(request), onComplete));
+    }
+
     public void RemoveModuleBody(ModuleBodyRemoveRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
     {
         if (m_bConnected == false) return;
@@ -748,23 +763,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.DeleteAccountAsync(), onComplete));
     }
 
-    public void CollectZone(ZoneCollectRequest request, System.Action<ApiResponse<ZoneCollectResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.CollectZoneAsync(request), onComplete));
-    }
-
     public void ClearZoneStage(ClearZoneStageRequest request, System.Action<ApiResponse<ClearZoneStageResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.ClearZoneStageAsync(request), onComplete));
     }
 
-    public void CheckEverCleared(ZoneCheckEverClearedRequest request, System.Action<ApiResponse<ZoneCheckEverClearedResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.CheckEverClearedAsync(request), onComplete));
-    }
 
     public void Heartbeat()
     {
@@ -783,6 +787,23 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     private void OnHeartbeatResponse(ApiResponse<HeartbeatResponse> response)
     {
+        if (response.errorCode == 0)
+        {
+            m_heartbeatFailCount = 0;
+            return;
+        }
+
+        m_heartbeatFailCount++;
+        Debug.LogWarning($"Heartbeat failed ({m_heartbeatFailCount}/{HeartbeatMaxFail}) errorCode={response.errorCode}");
+
+        if (m_heartbeatFailCount >= HeartbeatMaxFail)
+        {
+            Debug.LogError("Heartbeat max failures reached. Returning to MainScene.");
+            CancelInvoke(nameof(Heartbeat));
+            m_heartbeatStarted = false;
+            m_heartbeatFailCount = 0;
+            LoadingManager.LoadSceneWithLoading("MainScene");
+        }
     }
 
     // 백그라운드 전환 시 하트비트 중단, 복귀 시 재개 (StartHeartbeat 이후에만 동작)

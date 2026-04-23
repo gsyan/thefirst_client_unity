@@ -48,65 +48,21 @@ public static class EventManager
         OnMineralChanged -= callback;
     }
 
-    // mineral rare
-    public static event Action<long> OnMineralRareChanged;
-    public static void TriggerMineralRareChange(long mineral)
-    {
-        OnMineralRareChanged?.Invoke(mineral);
-    }
-    public static void Subscribe_MineralRareChanged(Action<long> callback)
-    {
-        OnMineralRareChanged += callback;
-    }
-    public static void Unsubscribe_MineralRareChanged(Action<long> callback)
-    {
-        OnMineralRareChanged -= callback;
-    }
-    
-    // mineral Exotic
-    public static event Action<long> OnMineralExoticChanged;
-    public static void TriggerMineralExoticChange(long mineral)
-    {
-        OnMineralExoticChanged?.Invoke(mineral);
-    }
-    public static void Subscribe_MineralExoticChanged(Action<long> callback)
-    {
-        OnMineralExoticChanged += callback;
-    }
-    public static void Unsubscribe_MineralExoticChanged(Action<long> callback)
-    {
-        OnMineralExoticChanged -= callback;
-    }
-
-    // mineral Dark
-    public static event Action<long> OnMineralDarkChanged;
-    public static void TriggerMineralDarkChange(long mineral)
-    {
-        OnMineralDarkChanged?.Invoke(mineral);
-    }
-    public static void Subscribe_MineralDarkChanged(Action<long> callback)
-    {
-        OnMineralDarkChanged += callback;
-    }
-    public static void Unsubscribe_MineralDarkChanged(Action<long> callback)
-    {
-        OnMineralDarkChanged -= callback;
-    }
     #endregion Character Tech, Mineral ----------------------------------------------------------------------
     
-    # region Fleet AddShip / HP----------------------------------------------------------------------
-    public static event Action OnFleetAddShip;
-    public static void Trigger_AddShip()
+    # region Fleet ShipCount / HP----------------------------------------------------------------------
+    public static event Action OnFleetShipCountChanged;
+    public static void Trigger_FleetShipCountChanged()
     {
-        OnFleetAddShip?.Invoke();
+        OnFleetShipCountChanged?.Invoke();
     }
-    public static void Subscribe_AddShip(Action callback)
+    public static void Subscribe_FleetShipCountChanged(Action callback)
     {
-        OnFleetAddShip += callback;
+        OnFleetShipCountChanged += callback;
     }
-    public static void Unsubscribe_AddShip(Action callback)
+    public static void Unsubscribe_FleetShipCountChanged(Action callback)
     {
-        OnFleetAddShip -= callback;
+        OnFleetShipCountChanged -= callback;
     }
 
     public static event Action OnFleetUpdateHP;

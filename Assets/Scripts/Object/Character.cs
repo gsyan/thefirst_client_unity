@@ -34,23 +34,15 @@ public class Character
         return m_characterInfo?.mineral ?? 0;
     }
 
-    public long GetMineralRare()
+    public int GetPvpMineral()
     {
-        return m_characterInfo?.mineralRare ?? 0;
+        return m_characterInfo?.pvpMineral ?? 0;
     }
 
-    public long GetMineralExotic()
+    public int GetTempMineral()
     {
-        return m_characterInfo?.mineralExotic ?? 0;
+        return m_characterInfo?.tempMineral ?? 0;
     }
-
-    public long GetMineralDark()
-    {
-        return m_characterInfo?.mineralDark ?? 0;
-    }
-
-    // 오프라인 캡(초) — DataTableResearch.GetStackTime() 기반 (서버 calcOfflineCapSeconds와 동일)
-    public float GetOfflineCapSeconds() => DataManager.Instance.m_dataTableResearch.GetStackTime(GetTechLevel()) * 3600f;
 
     // 완료된 tech_level_N ID 중 최댓값을 기술레벨로 반환 (기본값 1)
     public int GetTechLevel()
@@ -81,52 +73,47 @@ public class Character
         m_characterInfo.nameChangeCount = nameChangeCount;
     }
 
-    public void UpdateMineral(long mineral)
+    public void UpdateMineral(int mineral)
     {
         if (m_characterInfo == null) return;
         m_characterInfo.mineral = mineral;
         EventManager.TriggerMineralChange(mineral);
     }
 
-    public void UpdateMineralRare(long mineralRare)
+    public void UpdatePvpMineral(int pvpMineral)
     {
         if (m_characterInfo == null) return;
-        m_characterInfo.mineralRare = mineralRare;
-        EventManager.TriggerMineralRareChange(mineralRare);
+        m_characterInfo.pvpMineral = pvpMineral;
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
-    public void UpdateMineralExotic(long mineralExotic)
+    public void UpdateTempMineral(int tempMineral)
     {
         if (m_characterInfo == null) return;
-        m_characterInfo.mineralExotic = mineralExotic;
-        EventManager.TriggerMineralExoticChange(mineralExotic);
-    }
-
-    public void UpdateMineralDark(long mineralDark)
-    {
-        if (m_characterInfo == null) return;
-        m_characterInfo.mineralDark = mineralDark;
-        EventManager.TriggerMineralDarkChange(mineralDark);
+        m_characterInfo.tempMineral = tempMineral;
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
     public void UpdateAllMinerals(CostRemainInfo costRemainInfo)
     {
         if (m_characterInfo == null || costRemainInfo == null) return;
-
-        UpdateMineral(costRemainInfo.remainMineral);
-        UpdateMineralRare(costRemainInfo.remainMineralRare);
-        UpdateMineralExotic(costRemainInfo.remainMineralExotic);
-        UpdateMineralDark(costRemainInfo.remainMineralDark);
+        m_characterInfo.mineral = costRemainInfo.mineralRemain;
+        m_characterInfo.pvpMineral = costRemainInfo.pvpMineralRemain;
+        m_characterInfo.tempMineral = costRemainInfo.tempMineralRemain;
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
-    public bool CheckEnoughCostStruct(CostStruct cost)
+    // 소비 우선순위: M → PM(만료임박) → TM(만료임박) — 서버 자동 처리이므로 합산만 제공
+    public long GetTotalMineral()
     {
-        if (cost == null) return true;
-        if (m_characterInfo.mineral < cost.mineral) return false;
-        if (m_characterInfo.mineralRare < cost.mineralRare) return false;
-        if (m_characterInfo.mineralExotic < cost.mineralExotic) return false;
-        if (m_characterInfo.mineralDark < cost.mineralDark) return false;
-        return true;
+        if (m_characterInfo == null) return 0;
+        return (long)m_characterInfo.mineral + m_characterInfo.pvpMineral + m_characterInfo.tempMineral;
+    }
+
+    public bool CheckEnoughMineral(long cost)
+    {
+        if (m_characterInfo == null) return false;
+        return GetTotalMineral() >= cost;
     }
 
 

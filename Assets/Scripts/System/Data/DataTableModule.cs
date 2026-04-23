@@ -21,8 +21,7 @@ public class ModuleData
     public int moduleLevel = 1;
 
     // common ---------------------------------------------------------------------------
-    [Header("Upgrade Costs")]
-    public CostStruct upgradeCost = new CostStruct();
+    public int mineralCost;
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -432,12 +431,8 @@ public class DataTableModule : ScriptableObject
                 airAmmo                         = ParseCsvInt  (GetCol(cols, col, "air_ammo")),
                 airDetectRadius                 = ParseCsvFloat(GetCol(cols, col, "air_detect_radius")),
                 airAvoidRadius                  = ParseCsvFloat(GetCol(cols, col, "air_avoid_radius")),
-                upgradeCost = new CostStruct(
-                    ParseCsvLong (GetCol(cols, col, "cost_m")),
-                    ParseCsvLong (GetCol(cols, col, "cost_mr")),
-                    ParseCsvLong (GetCol(cols, col, "cost_me")),
-                    ParseCsvLong (GetCol(cols, col, "cost_md"))),
-                description = GetCol(cols, col, "description")
+                mineralCost                     = ParseCsvInt(GetCol(cols, col, "cost_m")),
+                description                     = GetCol(cols, col, "description")
             };
 
             // body 모듈만 prefab에서 슬롯 정보 추출 (레벨1 프리팹 기준으로 모든 레벨 공통 적용)

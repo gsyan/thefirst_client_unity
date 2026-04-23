@@ -209,9 +209,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 튜토리얼 시작 (완료 시 StartGameplay 호출)
         TutorialManager.Instance.StartTutorial("Tutorial_FirstPlay", (tutorialId) =>
         {
-            // 스토리 튜토리얼 완료 → 자원 패널 표시
-            UIManager.Instance.ShowPanel("UIPanelMineral");
-
+            // 스토리 튜토리얼 완료
             TutorialManager.Instance.StartTutorial("Tutorial_Mineral", (tutorialId) =>
             {
                 // 자원 튜토리얼 완료 → 메인 패널 표시
@@ -239,7 +237,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     private void ShowGamePanels()
     {
         NetworkManager.Instance.StartHeartbeat();
-        UIManager.Instance.ShowPanel("UIPanelMineral");
         UIManager.Instance.ShowMainPanel();
     }
 
@@ -747,44 +744,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         }
         return null;
     }
-
-    public void SendExploration()
-    {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
-        SpaceMineral mineral = GetAvailableMineral();
-        if (mineral == null) return;
-
-        StartCoroutine(ExploreMineral(mineral));
-    }
-
-    private IEnumerator ExploreMineral(SpaceMineral mineral)
-    {
-        yield return new WaitForSeconds(5.0f);
-        Int64 mineralAmount = UnityEngine.Random.Range(10, 50);
-
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-        {
-            character.UpdateMineral(character.m_characterInfo.mineral + mineralAmount);
-        }
-
-        m_mineralList.Remove(mineral);
-        Destroy(mineral.gameObject);
-    }
-
-    private SpaceMineral GetAvailableMineral()
-    {
-        foreach(var mineral in m_mineralList)
-        {
-            if (mineral.m_spaceMineralState != ESpaceMineralState.None) continue;
-            mineral.m_spaceMineralState = ESpaceMineralState.Occupied;
-            return mineral;
-        }
-        return null;
-    }
-
 
     private Vector3 RandomPosition()
     {

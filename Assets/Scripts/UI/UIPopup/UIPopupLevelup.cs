@@ -132,11 +132,11 @@ public class UIPopupLevelup : UIPopupBase
         if (m_levelFromText != null) m_levelFromText.text = m_currentLevel.ToString();
         if (m_levelToText   != null) m_levelToText.text   = m_targetLevel.ToString();
 
-        CostStruct total = CalculateCumulativeCost(m_currentLevel, m_targetLevel);
-        bool canAfford   = CheckCanAfford(total);
+        long totalCost = CalculateCumulativeCost(m_currentLevel, m_targetLevel);
+        bool canAfford = CheckCanAfford(totalCost);
 
         if (m_bodyText != null)
-            m_bodyText.text = BuildBodyText(total);
+            m_bodyText.text = BuildBodyText(totalCost);
 
         if (m_prevButton != null)
             m_prevButton.interactable = m_targetLevel > m_minTargetLevel;
@@ -150,14 +150,13 @@ public class UIPopupLevelup : UIPopupBase
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 
-    private string BuildBodyText(CostStruct cost)
+    private string BuildBodyText(long mineralCost)
     {
         const string SEPARATOR = "\n<color=#666666>─────────────</color>\n";
         var sb = new StringBuilder();
 
         if (m_mode == Mode.Module)
         {
-            // 스탯 비교 (레벨 헤더 첫 줄 제거)
             string full = CommonUtility.GetModuleDetailText(m_moduleType, m_subType, m_currentLevel, m_targetLevel, "\n");
             if (string.IsNullOrEmpty(full) == false)
             {
@@ -168,65 +167,29 @@ public class UIPopupLevelup : UIPopupBase
         }
         else
         {
-            // 기술레벨: 해금 정보 (현재 → 목표)
-            int currentCap   = (int)DataManager.Instance.m_dataTableResearch.GetStackTime(m_currentLevel);
-            int targetCap    = (int)DataManager.Instance.m_dataTableResearch.GetStackTime(m_targetLevel);
             int currentShips = DataManager.Instance.m_dataTableResearch.GetShipCount(m_currentLevel);
             int targetShips  = DataManager.Instance.m_dataTableResearch.GetShipCount(m_targetLevel);
-
-            sb.Append($"{CommonUtility.Sprite("mine-wagon")}  {currentCap}h → {targetCap}h\n");
             sb.Append($"{CommonUtility.Sprite("spaceship")} {currentShips} → {targetShips}");
         }
 
-        // 비용 (공통)
-        if (cost != null)
+        if (mineralCost > 0)
         {
             var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-            string C(bool ins, string val) => ins ? $"<color=red>{val}</color>" : val;
-
-            var costSb = new StringBuilder();
-            if (cost.mineral > 0)
-            {
-                bool ins = info != null && info.mineral < cost.mineral;
-                costSb.Append($" {CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}");
-            }
-            if (cost.mineralRare > 0)
-            {
-                bool ins = info != null && info.mineralRare < cost.mineralRare;
-                costSb.Append($" {CommonUtility.Sprite("minerals")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}");
-            }
-            if (cost.mineralExotic > 0)
-            {
-                bool ins = info != null && info.mineralExotic < cost.mineralExotic;
-                costSb.Append($" {CommonUtility.Sprite("emerald")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}");
-            }
-            if (cost.mineralDark > 0)
-            {
-                bool ins = info != null && info.mineralDark < cost.mineralDark;
-                costSb.Append($" {CommonUtility.Sprite("fire-gem")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n");
-            }
-
-            string costStr = costSb.ToString().TrimEnd();
-            if (string.IsNullOrEmpty(costStr) == false)
-            {
-                if (sb.Length > 0) sb.Append(SEPARATOR);
-                sb.Append(costStr);
-            }
+            bool ins = info != null && info.mineral < mineralCost;
+            string C(bool i, string val) => i ? $"<color=red>{val}</color>" : val;
+            string costStr = $"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(mineralCost))}";
+            if (sb.Length > 0) sb.Append(SEPARATOR);
+            sb.Append(costStr);
         }
 
         return sb.ToString();
     }
 
-    private bool CheckCanAfford(CostStruct cost)
+    private bool CheckCanAfford(long mineralCost)
     {
-        if (cost == null) return true;
         var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
         if (info == null) return false;
-
-        return info.mineral       >= cost.mineral
-            && info.mineralRare   >= cost.mineralRare
-            && info.mineralExotic >= cost.mineralExotic
-            && info.mineralDark   >= cost.mineralDark;
+        return info.mineral >= mineralCost;
     }
 
     // ─────────────────────────────────────────────
@@ -255,30 +218,21 @@ public class UIPopupLevelup : UIPopupBase
         }
     }
 
-    private CostStruct CalculateCumulativeCost(int fromLevel, int toLevel)
+    private long CalculateCumulativeCost(int fromLevel, int toLevel)
     {
-        var total = new CostStruct();
+        long total = 0;
         if (m_mode == Mode.Module)
         {
             for (int lv = fromLevel; lv < toLevel; lv++)
             {
-                if (DataManager.Instance.GetModuleLevelUpCost(m_subType, lv, out CostStruct c) == false) break;
-                total.mineral       += c.mineral;
-                total.mineralRare   += c.mineralRare;
-                total.mineralExotic += c.mineralExotic;
-                total.mineralDark   += c.mineralDark;
+                if (DataManager.Instance.GetModuleLevelUpCost(m_subType, lv, out long c) == false) break;
+                total += c;
             }
         }
         else
         {
             for (int lv = fromLevel; lv < toLevel; lv++)
-            {
-                CostStruct c = DataManager.Instance.m_dataTableResearch.GetTechLevelUpgradeCost(lv);
-                total.mineral       += c.mineral;
-                total.mineralRare   += c.mineralRare;
-                total.mineralExotic += c.mineralExotic;
-                total.mineralDark   += c.mineralDark;
-            }
+                total += DataManager.Instance.m_dataTableResearch.GetTechLevelUpgradeCost(lv);
         }
         return total;
     }

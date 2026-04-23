@@ -415,7 +415,7 @@ public abstract class AircraftBase : MonoBehaviour
                 : Vector3.Dot(transform.forward, toWp) < 0f;
             if (wpReached)
             {
-                Debug.Log($"{gameObject.name} wp currentIndex:{currentIndex} done");
+                //Debug.Log($"{gameObject.name} wp currentIndex:{currentIndex} done");
                 currentIndex++;
                 continue;
             }
@@ -427,7 +427,7 @@ public abstract class AircraftBase : MonoBehaviour
         }
 
         m_state = EAircraftState.Docking;
-        Debug.Log($"{gameObject.name} m_state:{m_state}");
+        //Debug.Log($"{gameObject.name} m_state:{m_state}");
     }
 
     // 출입구 방향(-m_firePoint.forward)으로 감속 진입, 완료 시 귀환 처리

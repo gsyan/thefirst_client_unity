@@ -60,24 +60,14 @@ public class ZoneStageConfig
     // 적 함선 템플릿 큐 — 순서대로 1척씩 스폰, 개수 제한 없음
     public List<EnemyShipConfig> enemyShipConfigs;
 
-    [Header("시간당 자원 수확량 (클리어 후)")]
-    public float mineralPerHour = 0f;       // [server]
-    public float mineralRarePerHour = 0f;   // [server]
-    public float mineralExoticPerHour = 0f; // [server]
-    public float mineralDarkPerHour = 0f;   // [server]
+    [Header("클리어시 광물 획득량")]
+    public int mineralClearReward = 0;   // [server]
 
     [Header("스카이박스 회전 (스테이지별)")]
     [Range(0f, 360f)] public float skyboxRotation = 0f;
 
     [Header("아군 함대 위치 (절대 좌표)")]
     public Vector3 fleetPosition;   // 이 존 진입 시 아군 함대가 배치될 월드 좌표
-
-    // 실제 계산용 (시간당 → 초당 변환)
-    public float MineralPerSecond => mineralPerHour / 3600f;
-    public float MineralRarePerSecond => mineralRarePerHour / 3600f;
-    public float MineralExoticPerSecond => mineralExoticPerHour / 3600f;
-    public float MineralDarkPerSecond => mineralDarkPerHour / 3600f;
-    
 }
 
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
@@ -148,10 +138,7 @@ public class DataTableZone : ScriptableObject
             serverData.Add(new
             {
                 zoneName = zoneStage.zoneName,
-                mineralPerHour = zoneStage.mineralPerHour,
-                mineralRarePerHour = zoneStage.mineralRarePerHour,
-                mineralExoticPerHour = zoneStage.mineralExoticPerHour,
-                mineralDarkPerHour = zoneStage.mineralDarkPerHour
+                mineralClearReward = zoneStage.mineralClearReward
             });
         }
         return JsonConvert.SerializeObject(new { zoneStages = serverData }, Formatting.Indented);

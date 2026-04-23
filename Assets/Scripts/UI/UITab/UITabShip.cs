@@ -21,7 +21,7 @@ public class UITabShip : UITabBase
     [SerializeField] private RectTransform m_moduleBeamSelectButtonContainer;
     [SerializeField] private RectTransform m_moduleMissileSelectButtonContainer;
     [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer;
-    
+
 
     [Header("함선 스탯 디테일")]
     [SerializeField] private Button m_btnShipStatsDetail;
@@ -31,8 +31,9 @@ public class UITabShip : UITabBase
 
     [SerializeField] private Button    m_unlockModuleButton;
     [SerializeField] private Button    m_levelUpModuleButton;
-    [SerializeField] private TMP_Text  m_levelUpModuleButtonText;
+    //[SerializeField] private TMP_Text  m_levelUpModuleButtonText;
     [SerializeField] private Button    m_subTypeManageButton;
+    [SerializeField] private Button    m_btnResetModule;
 
     private bool bShow = false;
 
@@ -75,6 +76,7 @@ public class UITabShip : UITabBase
         m_levelUpModuleButton.onClick.AddListener(OnModuleLevelUpClicked);
         m_subTypeManageButton.onClick.AddListener(OnSubTypeManageClicked);
         if (m_btnShipStatsDetail != null) m_btnShipStatsDetail.onClick.AddListener(OnShipStatsDetailClicked);
+        if (m_btnResetModule != null) m_btnResetModule.onClick.AddListener(OnResetModuleClicked);
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
         EventManager.Subscribe_ShipUpdateHP(UpdateShipHeader);
@@ -289,14 +291,13 @@ public class UITabShip : UITabBase
         }
 
         int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
-        CostStruct cost = new CostStruct { mineral = unlockPrice };
         string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
         string detailText = m_selectedModule.GetDetailText(1, 1);
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_unlock"),
             LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
-            detailText, null, cost,
+            detailText, null, unlockPrice,
             () => ExecuteModuleUnlock()
         );
     }
@@ -338,19 +339,15 @@ public class UITabShip : UITabBase
         if (character == null) return;
 
         if (unlockData.costRemainInfo != null)
-        {
-            character.UpdateMineral(unlockData.costRemainInfo.remainMineral);
-            character.UpdateMineralRare(unlockData.costRemainInfo.remainMineralRare);
-            character.UpdateMineralExotic(unlockData.costRemainInfo.remainMineralExotic);
-            character.UpdateMineralDark(unlockData.costRemainInfo.remainMineralDark);
-        }
+            character.UpdateAllMinerals(unlockData.costRemainInfo);
 
         SpaceFleet fleet = character.GetOwnedFleet();
         if (fleet == null) return;
         SpaceShip targetShip = fleet.FindShip(unlockData.shipId);
         if (targetShip == null) return;
 
-        targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
+        targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex,
+            unlockData.investedMineral, unlockData.investedPvpMineral, unlockData.investedTempMineral);
         EventManager.Trigger_ShipStatsChanged(targetShip);
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
@@ -443,38 +440,20 @@ public class UITabShip : UITabBase
 
         // currentLevel → targetLevel 누적 비용 합산 후 검증
         int fromLevel = m_selectedModule.GetModuleLevel();
-        long totalMineral = 0, totalMineralRare = 0, totalMineralExotic = 0, totalMineralDark = 0;
+        long totalMineral = 0;
         for (int lv = fromLevel; lv < targetLevel; lv++)
         {
-            if (DataManager.Instance.GetModuleLevelUpCost(m_selectedModule.GetModuleSubType(), lv, out CostStruct cost) == false)
+            if (DataManager.Instance.GetModuleLevelUpCost(m_selectedModule.GetModuleSubType(), lv, out long mineralCost) == false)
             {
                 validationMessage = "Failed to get upgrade cost";
                 return false;
             }
-            totalMineral       += cost.mineral;
-            totalMineralRare   += cost.mineralRare;
-            totalMineralExotic += cost.mineralExotic;
-            totalMineralDark   += cost.mineralDark;
+            totalMineral += mineralCost;
         }
 
         if (character.GetMineral() < totalMineral)
         {
             validationMessage = $"Insufficient mineral";
-            return false;
-        }
-        if (character.GetMineralRare() < totalMineralRare)
-        {
-            validationMessage = $"Insufficient mineralRare";
-            return false;
-        }
-        if (character.GetMineralExotic() < totalMineralExotic)
-        {
-            validationMessage = $"Insufficient mineralExotic";
-            return false;
-        }
-        if (character.GetMineralDark() < totalMineralDark)
-        {
-            validationMessage = $"Insufficient mineralDark";
             return false;
         }
 
@@ -489,12 +468,7 @@ public class UITabShip : UITabBase
         if (response.errorCode == 0)
         {
             if (response.data.costRemainInfo != null)
-            {
-                character.UpdateMineral(response.data.costRemainInfo.remainMineral);
-                character.UpdateMineralRare(response.data.costRemainInfo.remainMineralRare);
-                character.UpdateMineralExotic(response.data.costRemainInfo.remainMineralExotic);
-                character.UpdateMineralDark(response.data.costRemainInfo.remainMineralDark);
-            }
+                character.UpdateAllMinerals(response.data.costRemainInfo);
 
             ApplyModuleLevelUp(response.data);
             UpdateModuleStatsDisplay();
@@ -515,7 +489,32 @@ public class UITabShip : UITabBase
         SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
         if (ship == null) return;
 
+        // 레벨업 전 모듈의 투자 광물 및 레벨 저장
+        ModuleBase prevModule    = ship.FindModule(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.slotIndex);
+        int prevLevel            = 0;
+        int prevInvMineral       = 0;
+        int prevInvPvpMineral    = 0;
+        int prevInvTempMineral   = 0;
+        if (prevModule != null)
+        {
+            prevLevel          = prevModule.GetModuleLevel();
+            prevInvMineral     = prevModule.m_investedMineral;
+            prevInvPvpMineral  = prevModule.m_investedPvpMineral;
+            prevInvTempMineral = prevModule.m_investedTempMineral;
+        }
+
         ship.ApplyModuleChange(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
+
+        // 레벨업 비용을 계산해 투자 광물에 누적
+        int addedMineral = 0;
+        for (int lv = prevLevel; lv < upgradeData.newLevel; lv++)
+        {
+            if (DataManager.Instance.GetModuleLevelUpCost(upgradeData.moduleSubType, lv, out long cost) == true)
+                addedMineral += (int)cost;
+        }
+        ship.SetModuleInvestedMinerals(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.slotIndex,
+            prevInvMineral + addedMineral, prevInvPvpMineral, prevInvTempMineral);
+
         EventManager.Trigger_ShipStatsChanged(ship);
 
 
@@ -541,6 +540,7 @@ public class UITabShip : UITabBase
             m_unlockModuleButton.gameObject.SetActive(true);
             m_levelUpModuleButton.gameObject.SetActive(false);
             m_subTypeManageButton.gameObject.SetActive(false);
+            if (m_btnResetModule != null) m_btnResetModule.gameObject.SetActive(false);
 
             if (m_moduleStatsText != null)
             {
@@ -561,19 +561,41 @@ public class UITabShip : UITabBase
             m_levelUpModuleButton.gameObject.SetActive(!isMaxLevel);
             m_subTypeManageButton.gameObject.SetActive(isMaxLevel);
 
-            if (!isMaxLevel && m_levelUpModuleButtonText != null)
+            if (m_btnResetModule != null)
             {
-                if (DataManager.Instance.GetModuleLevelUpCost(subType, m_selectedModule.GetModuleLevel(), out CostStruct cost))
-                    m_levelUpModuleButtonText.text = $"{LocalizationManager.Instance.Get("ship_module_levelup")}";
-                else
-                    CommonUtility.SetUILocText(m_levelUpModuleButtonText, "ship_module_levelup");
+                m_btnResetModule.gameObject.SetActive(true);
+                // 기함 body이고 이미 T1 레벨1이면 리셋 불필요 → 비활성화
+                bool isFlagshipBody = m_selectedShip.m_shipInfo.positionIndex == 0
+                                   && m_selectedModule.GetModuleType() == EModuleType.body;
+                bool isDefaultBody  = m_selectedModule.GetModuleSubType() == EModuleSubType.body_t1_m1
+                                   && m_selectedModule.GetModuleLevel() == 1;
+                m_btnResetModule.interactable = !(isFlagshipBody && isDefaultBody);
             }
+
+            // if (!isMaxLevel && m_levelUpModuleButtonText != null)
+            // {
+            //     if (DataManager.Instance.GetModuleLevelUpCost(subType, m_selectedModule.GetModuleLevel(), out long cost))
+            //         m_levelUpModuleButtonText.text = $"{LocalizationManager.Instance.Get("ship_module_levelup")}";
+            //     else
+            //         CommonUtility.SetUILocText(m_levelUpModuleButtonText, "ship_module_levelup");
+            // }
 
             if (m_moduleStatsText != null)
             {
                 int level = m_selectedModule.GetModuleLevel();
                 string typeName = m_selectedModule.GetModuleSubType().GetLocalizedName();
-                m_moduleStatsText.text = typeName + "\n" + m_selectedModule.GetDetailText(level, level);
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine(typeName);
+                sb.Append(m_selectedModule.GetDetailText(level, level));
+                if (m_selectedModule.HasInvestedMineral())
+                {
+                    sb.AppendLine();
+                    sb.Append(BuildRefundText(
+                        m_selectedModule.m_investedMineral,
+                        m_selectedModule.m_investedPvpMineral,
+                        m_selectedModule.m_investedTempMineral));
+                }
+                m_moduleStatsText.text = sb.ToString();
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsText.transform.parent as RectTransform);
             }
         }
@@ -636,12 +658,7 @@ public class UITabShip : UITabBase
         {
             var character = DataManager.Instance.m_currentCharacter;
             if (character != null)
-            {
-                character.UpdateMineral(changeData.costRemainInfo.remainMineral);
-                character.UpdateMineralRare(changeData.costRemainInfo.remainMineralRare);
-                character.UpdateMineralExotic(changeData.costRemainInfo.remainMineralExotic);
-                character.UpdateMineralDark(changeData.costRemainInfo.remainMineralDark);
-            }
+                character.UpdateAllMinerals(changeData.costRemainInfo);
         }
 
 
@@ -732,6 +749,193 @@ public class UITabShip : UITabBase
         if (m_selectedShip == null || module == null) return;
         CameraController.Instance.FocusOnModuleIfHidden(module.m_moduleSlot);
         EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, module);
+    }
+
+    // ─────────────────────────────────────────────
+    // 모듈 리셋
+    // ─────────────────────────────────────────────
+
+    private void OnResetModuleClicked()
+    {
+        if (m_selectedShip == null || m_selectedModule == null) return;
+        if (m_selectedModule is ModulePlaceholder) return;
+
+        if (m_selectedModule.GetModuleType() == EModuleType.body)
+        {
+            // 기함이 아닌 경우 함선 전체 리셋
+            if (m_selectedShip.m_shipInfo.positionIndex != 0)
+            {
+                OnResetShipClicked();
+                return;
+            }
+            // 기함 body 리셋 — T1 레벨1로 되돌리기 (투자 광물 환급)
+        }
+
+        int m   = m_selectedModule.m_investedMineral;
+        int pm  = m_selectedModule.m_investedPvpMineral;
+        int tm  = m_selectedModule.m_investedTempMineral;
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine(LocalizationManager.Instance.Get("ship_module_reset_confirm"));
+        sb.AppendLine();
+        sb.AppendLine(BuildRefundText(m, pm, tm));
+
+        UIManager.Instance.ShowConfirmPopup(
+            LocalizationManager.Instance.Get("ship_module_reset"),
+            sb.ToString(),
+            null, null, 0,
+            ExecuteResetModule
+        );
+    }
+
+    private void ExecuteResetModule()
+    {
+        if (m_selectedShip == null || m_selectedModule == null) return;
+
+        int slotIndex = m_selectedModule.GetModuleType() == EModuleType.body
+            ? 0
+            : m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+
+        var req = new ModuleResetRequest
+        {
+            shipId    = m_selectedShip.m_shipInfo.id,
+            bodyIndex = m_selectedModule.GetModuleBodyIndex(),
+            moduleType = m_selectedModule.GetModuleType(),
+            slotIndex  = slotIndex
+        };
+        NetworkManager.Instance.ResetModule(req, OnResetModuleResponse);
+    }
+
+    private void OnResetModuleResponse(ApiResponse<ModuleResetResponse> response)
+    {
+        if (response.errorCode != 0)
+        {
+            ShowErrorMessage($"Reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+            return;
+        }
+
+        var data = response.data;
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character != null && data.costRemainInfo != null)
+            character.UpdateAllMinerals(data.costRemainInfo);
+
+        SpaceFleet fleet = character?.GetOwnedFleet();
+        if (fleet == null) return;
+        SpaceShip targetShip = fleet.FindShip(data.shipId);
+        if (targetShip == null) return;
+
+        if (data.moduleType == EModuleType.body)
+        {
+            // 기함 body 리셋 — T1 레벨1로 복귀
+            targetShip.ApplyModuleChange(data.bodyIndex, EModuleType.body, EModuleSubType.body_t1_m1, 0, 1);
+        }
+        else
+        {
+            targetShip.Apply_ResetModuleToPlaceholder(data.bodyIndex, data.moduleType, data.slotIndex);
+        }
+        EventManager.Trigger_ShipStatsChanged(targetShip);
+
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == data.shipId)
+        {
+            PopulateModuleSelectButtons();
+            ReselectReplacedModule(targetShip, data.bodyIndex, data.moduleType, EModuleSubType.none, data.slotIndex);
+        }
+    }
+
+    // ─────────────────────────────────────────────
+    // 함선 리셋 + 삭제
+    // ─────────────────────────────────────────────
+
+    private void OnResetShipClicked()
+    {
+        if (m_selectedShip == null) return;
+        if (m_selectedShip.m_shipInfo.positionIndex == 0)
+        {
+            ShowErrorMessage(LocalizationManager.Instance.Get("ship_reset_flagship_forbidden"));
+            return;
+        }
+
+        int totalM = 0, totalPm = 0, totalTm = 0;
+        foreach (var body in m_selectedShip.m_moduleBodys)
+        {
+            totalM  += body.m_investedMineral;
+            totalPm += body.m_investedPvpMineral;
+            totalTm += body.m_investedTempMineral;
+            foreach (var slot in body.m_moduleSlots)
+            {
+                if (slot.transform.childCount == 0) continue;
+                ModuleBase mod = slot.GetComponentInChildren<ModuleBase>();
+                if (mod == null || mod is ModulePlaceholder) continue;
+                totalM  += mod.m_investedMineral;
+                totalPm += mod.m_investedPvpMineral;
+                totalTm += mod.m_investedTempMineral;
+            }
+        }
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine(LocalizationManager.Instance.Get("ship_reset_confirm"));
+        sb.AppendLine();
+        sb.AppendLine(BuildRefundText(totalM, totalPm, totalTm));
+
+        UIManager.Instance.ShowConfirmPopup(
+            LocalizationManager.Instance.Get("ship_reset"),
+            sb.ToString(),
+            null, null, 0,
+            ExecuteResetShip
+        );
+    }
+
+    private void ExecuteResetShip()
+    {
+        if (m_selectedShip == null) return;
+        var req = new ShipResetRemoveRequest { shipId = m_selectedShip.m_shipInfo.id };
+        NetworkManager.Instance.ResetAndRemoveShip(req, OnResetShipResponse);
+    }
+
+    private void OnResetShipResponse(ApiResponse<ShipResetRemoveResponse> response)
+    {
+        if (response.errorCode != 0)
+        {
+            ShowErrorMessage($"Ship reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+            return;
+        }
+
+        var data = response.data;
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character != null && data.costRemainInfo != null)
+            character.UpdateAllMinerals(data.costRemainInfo);
+
+        if (data.updatedFleetInfo != null)
+            DataManager.Instance.SetFleetData(data.updatedFleetInfo);
+
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
+        if (fleet != null)
+        {
+            SpaceShip removed = fleet.FindShip(data.removedShipId);
+            if (removed != null)
+                fleet.RemoveShip(removed, refreshFormation: true);
+            m_myFleet = fleet;
+        }
+
+        EventManager.Trigger_FleetShipCountChanged();
+
+        m_selectedShip   = null;
+        m_selectedModule = null;
+        if (m_myFleet != null && m_myFleet.m_ships.Count > 0)
+            SelectShip(m_myFleet.m_ships[0]);
+    }
+
+    // 회수 자원 문자열 생성 (투자분 있는 재화만 스프라이트로 표시)
+    private string BuildRefundText(int m, int pm, int tm)
+    {
+        if (m == 0 && pm == 0 && tm == 0)
+            return LocalizationManager.Instance.Get("ship_reset_no_refund");
+
+        var sb = new System.Text.StringBuilder();
+        if (m  > 0) sb.Append($"{CommonUtility.Sprite("crystal-growth")} {CommonUtility.FormatBigNumber(m)}  ");
+        if (pm > 0) sb.Append($"{CommonUtility.Sprite("fire-gem")} {CommonUtility.FormatBigNumber(pm)}  ");
+        if (tm > 0) sb.Append($"{CommonUtility.Sprite("emerald")} {CommonUtility.FormatBigNumber(tm)}");
+        return sb.ToString().TrimEnd();
     }
 
     // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택

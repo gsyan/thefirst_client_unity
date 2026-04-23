@@ -73,7 +73,7 @@ public class ModuleBody : ModuleBase
         m_health = Mathf.Min(m_health, m_healthMax);
         m_repair = moduleData.repair;
         m_speed  = moduleData.speed;
-        m_upgradeCost = moduleData.upgradeCost;
+        m_mineralCostLevelup = moduleData.mineralCost;
     }
 
     public override int GetModuleBodyIndex()
@@ -91,6 +91,7 @@ public class ModuleBody : ModuleBase
         m_moduleBodyInfo = moduleBodyInfo;
         m_moduleSlot = null;
         SetUnlockedSubTypes(moduleBodyInfo.unlockedSubTypes);
+        SetInvestedMinerals(moduleBodyInfo.investedMineral, moduleBodyInfo.investedPvpMineral, moduleBodyInfo.investedTempMineral);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType, moduleBodyInfo.moduleLevel);
@@ -100,7 +101,7 @@ public class ModuleBody : ModuleBase
         m_health = moduleData.health;
         m_healthMax = moduleData.health;        
         // 업그레이드 비용 설정
-        m_upgradeCost = moduleData.upgradeCost;
+        m_mineralCostLevelup = moduleData.mineralCost;
         
         m_attack = 0.0f; // Body는 직접 공격하지 않음
 
@@ -539,6 +540,31 @@ public class ModuleBody : ModuleBase
         return m_healthMax > 0 ? m_health / m_healthMax : 0f;
     }
 
+    // 슬롯의 모듈을 플레이스홀더로 복귀 (언락 리셋용)
+    public bool ResetModuleToPlaceholder(EModuleType moduleType, int slotIndex)
+    {
+        ModuleSlot targetSlot = FindModuleSlot(moduleType, slotIndex);
+        if (targetSlot == null)
+        {
+            Debug.LogError($"ResetModuleToPlaceholder: Cannot find slot - moduleType: {moduleType}, slotIndex: {slotIndex}");
+            return false;
+        }
+
+        ModuleBase existingModule = targetSlot.GetComponentInChildren<ModuleBase>();
+        if (existingModule != null && (existingModule is ModulePlaceholder) == false)
+        {
+            EventManager.TriggerModuleReplaced(existingModule, null);
+            if (existingModule is ModuleBeam beam)             RemoveBeam(beam, bRemoveFromInfo: true);
+            else if (existingModule is ModuleMissile missile)  RemoveMissile(missile, bRemoveFromInfo: true);
+            else if (existingModule is ModuleHanger hanger)    RemoveHanger(hanger, bRemoveFromInfo: true);
+            DestroyImmediate(existingModule.gameObject);
+            // placeholder는 파괴하지 않았으므로 FillEmptySlotsWithPlaceholders가 재활성화함
+        }
+
+        FillEmptySlotsWithPlaceholders();
+        return true;
+    }
+
     // 슬롯의 모듈을 교체
     public bool ReplaceModuleInSlot(EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel, int slotIndex)
     {
@@ -556,19 +582,24 @@ public class ModuleBody : ModuleBase
             ModuleBase existingModule = targetSlot.GetComponentInChildren<ModuleBase>();
             if (existingModule != null)
             {
-                // 삭제 전 이벤트 발행 (existingModule 아직 유효)
                 EventManager.TriggerModuleReplaced(existingModule, null);
 
-                // 리스트에서 제거
-                if (existingModule is ModuleBeam beam)
-                    RemoveBeam(beam, bRemoveFromInfo: true);
-                else if (existingModule is ModuleMissile missile)
-                    RemoveMissile(missile, bRemoveFromInfo: true);
-                else if (existingModule is ModuleHanger hanger)
-                    RemoveHanger(hanger, bRemoveFromInfo: true);
+                if (existingModule is ModulePlaceholder)
+                {
+                    // placeholder는 리셋 시 재사용을 위해 비활성화만 함
+                    existingModule.gameObject.SetActive(false);
+                }
+                else
+                {
+                    if (existingModule is ModuleBeam beam)
+                        RemoveBeam(beam, bRemoveFromInfo: true);
+                    else if (existingModule is ModuleMissile missile)
+                        RemoveMissile(missile, bRemoveFromInfo: true);
+                    else if (existingModule is ModuleHanger hanger)
+                        RemoveHanger(hanger, bRemoveFromInfo: true);
 
-                // 게임 오브젝트 즉시 삭제 (같은 프레임 내에서 새 모듈을 생성하므로 DestroyImmediate 사용)
-                DestroyImmediate(existingModule.gameObject);
+                    DestroyImmediate(existingModule.gameObject);
+                }
             }
         }
 

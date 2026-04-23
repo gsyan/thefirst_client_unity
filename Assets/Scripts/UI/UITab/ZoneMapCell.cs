@@ -58,7 +58,6 @@ public class ZoneMapCell : MonoBehaviour
         if (m_resourceText != null)
         {
             m_resourceText.gameObject.SetActive(cleared);
-            if (cleared) RefreshResourceText();
         }
     }
 
@@ -78,7 +77,6 @@ public class ZoneMapCell : MonoBehaviour
             if (m_resourceText != null)
             {
                 m_resourceText.gameObject.SetActive(true);
-                RefreshResourceText();
             }
             return;
         }
@@ -103,29 +101,11 @@ public class ZoneMapCell : MonoBehaviour
         if (m_resourceText != null)
         {
             m_resourceText.gameObject.SetActive(true);
-            RefreshResourceText();
         }
     }
 
     private void SetFogAlpha(float alpha)
     {
         if (m_fogCanvasGroup != null) m_fogCanvasGroup.alpha = alpha;
-    }
-
-    private void RefreshResourceText()
-    {
-        if (m_resourceText == null || m_zoneStageConfig == null) return;
-        var sb = new StringBuilder();
-        void AppendIfPositive(string icon, float value)
-        {
-            if (value <= 0f) return;
-            if (sb.Length > 0) sb.Append('\n');
-            sb.Append($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(value)}/h");
-        }
-        AppendIfPositive("crystal-growth",  m_zoneStageConfig.mineralPerHour);
-        AppendIfPositive("minerals", m_zoneStageConfig.mineralRarePerHour);
-        AppendIfPositive("emerald", m_zoneStageConfig.mineralExoticPerHour);
-        AppendIfPositive("fire-gem", m_zoneStageConfig.mineralDarkPerHour);
-        m_resourceText.text = sb.ToString();
     }
 }

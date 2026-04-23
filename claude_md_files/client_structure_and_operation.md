@@ -48,7 +48,7 @@ UIManager (MonoBehaviour)
 - `Prefabs/UI/Panel_Main/` 에서 패널 프리팹 동적 로드
 - 주요 패널: `UIPanelFirst`, `UIPanelLoginType`, `UIPanelLogin`, `UIPanelLoginEmail`
 ### UISpace (SpaceScene)
-- 주요 패널: `UIPanelSpace`, `UIPanelMineral`, `UIPanelCameraView`
+- 주요 패널: `UIPanelSpace`, `UIPanelCameraView`
 - 탭 시스템: `UITabFleet`, `UITabExploration`, `UITabPvp`, `UITabResearch`, `UITabShip`, `UITabSettings`
 ### UIPopup 계층
 - `UIPopupBase` 상속

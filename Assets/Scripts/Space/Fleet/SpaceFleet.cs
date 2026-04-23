@@ -525,9 +525,11 @@ public class SpaceFleet : MonoBehaviour
             else
                 EventManager.Trigger_MyFleetDestroyed();
         }
-        else if (refreshFormation)
+        else
         {
-            RefreshFormation();
+            Destroy(ship.gameObject);
+            if (refreshFormation)
+                RefreshFormation();
         }
     }
 

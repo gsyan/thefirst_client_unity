@@ -100,21 +100,7 @@ public class DataTableTotalEditor : EditorWindow
             var settings = dataTableConfig.gameSettings;
             EditorGUILayout.LabelField($"Version: {settings.version}");
             EditorGUILayout.LabelField($"Max Ships Per Fleet: {settings.maxShipsPerFleet}");
-
-            // 함선 추가 비용 배열 표시
-            if (settings.addShipCosts != null && settings.addShipCosts.Length > 0)
-            {
-                EditorGUILayout.LabelField("Ship Add Costs:");
-                for (int i = 0; i < settings.addShipCosts.Length; i++)
-                {
-                    var cost = settings.addShipCosts[i];
-                    string costText = $"  Ship {i}: M:{cost.mineral}";
-                    if (cost.mineralRare > 0) costText += $", R:{cost.mineralRare}";
-                    if (cost.mineralExotic > 0) costText += $", E:{cost.mineralExotic}";
-                    if (cost.mineralDark > 0) costText += $", D:{cost.mineralDark}";
-                    EditorGUILayout.LabelField(costText);
-                }
-            }
+            EditorGUILayout.LabelField($"Add Ships Cost: {settings.addShipCost}");
 
             EditorGUILayout.EndVertical();
         }

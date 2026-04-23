@@ -12,7 +12,7 @@ public class ResearchNodeData
 {
     public string researchId; // 고유 식별자 겸 로컬라이제이션 키
     public List<string> prerequisiteIds = new List<string>();
-    public CostStruct researchCost = new CostStruct();
+    public int mineralCost;
     [Newtonsoft.Json.JsonIgnore] public Vector2 uiPosition;
 }
 
@@ -27,7 +27,6 @@ public class ModuleResearchData : ResearchNodeData
 public class TechLevelResearchData : ResearchNodeData
 {
     public int targetTechLevel; // 이 연구를 완료하면 달성되는 기술레벨
-    public float stackTime;     // 이 기술레벨의 자원 보관 가능 시간(h)
     public int shipCount;       // 이 기술레벨에서의 최대 함선 수
 }
 
@@ -49,10 +48,10 @@ public class DataTableResearch : ScriptableObject
         return researchDataList.Find(r => r.moduleSubType == subType);
     }
 
-    public CostStruct GetResearchCost(EModuleSubType subType)
+    public long GetResearchCost(EModuleSubType subType)
     {
         var data = GetResearchData(subType);
-        return data?.researchCost ?? new CostStruct();
+        return data?.mineralCost ?? 0;
     }
 
     // 선행 연구 조건을 모두 충족하는지 확인
@@ -77,17 +76,10 @@ public class DataTableResearch : ScriptableObject
     }
 
     // currentLevel → currentLevel+1 업그레이드 비용 반환
-    public CostStruct GetTechLevelUpgradeCost(int currentLevel)
+    public long GetTechLevelUpgradeCost(int currentLevel)
     {
         var data = techLevelDataList.Find(r => r.targetTechLevel == currentLevel + 1);
-        return data?.researchCost ?? new CostStruct();
-    }
-
-    // 해당 기술레벨의 자원 보관 캡 시간(h) 반환
-    public float GetStackTime(int techLevel)
-    {
-        var data = techLevelDataList.Find(r => r.targetTechLevel == techLevel);
-        return data?.stackTime ?? 3f;
+        return data?.mineralCost ?? 0;
     }
 
     // 해당 기술레벨에서 허용되는 최대 함선 수 반환
@@ -153,19 +145,12 @@ public class DataTableResearch : ScriptableObject
             if (string.IsNullOrEmpty(researchId) || researchId.StartsWith("tech_level_") == false) continue;
 
             int.TryParse(researchId["tech_level_".Length..], out int targetLevel);
-            var cost = new CostStruct(
-                ParseCsvLong(GetCol(cols, col, "cost_m")),
-                ParseCsvLong(GetCol(cols, col, "cost_mr")),
-                ParseCsvLong(GetCol(cols, col, "cost_me")),
-                ParseCsvLong(GetCol(cols, col, "cost_md")));
-
             techLevelDataList.Add(new TechLevelResearchData
             {
                 researchId      = researchId,
                 targetTechLevel = targetLevel,
                 prerequisiteIds = ParseCsvStringList(GetCol(cols, col, "prerequisites")),
-                researchCost    = cost,
-                stackTime       = ParseCsvFloat(GetCol(cols, col, "stack_time")),
+                mineralCost     = (int)ParseCsvFloat(GetCol(cols, col, "cost_m")),
                 shipCount       = (int)ParseCsvFloat(GetCol(cols, col, "ship_count")),
             });
         }
@@ -196,12 +181,6 @@ public class DataTableResearch : ScriptableObject
             string researchId = GetCol(cols, col, "research_id");
             if (string.IsNullOrEmpty(researchId)) continue;
 
-            var cost = new CostStruct(
-                ParseCsvLong(GetCol(cols, col, "cost_m")),
-                ParseCsvLong(GetCol(cols, col, "cost_mr")),
-                ParseCsvLong(GetCol(cols, col, "cost_me")),
-                ParseCsvLong(GetCol(cols, col, "cost_md")));
-
             var uiPos = new Vector2(
                 ParseCsvFloat(GetCol(cols, col, "ui_pos_x")),
                 ParseCsvFloat(GetCol(cols, col, "ui_pos_y")));
@@ -214,7 +193,7 @@ public class DataTableResearch : ScriptableObject
                 moduleSubType   = moduleSubType,
                 prerequisiteIds = ParseCsvStringList(GetCol(cols, col, "prerequisites")),
                 uiPosition      = uiPos,
-                researchCost    = cost,
+                mineralCost     = (int)ParseCsvLong(GetCol(cols, col, "cost_m")),
             });
         }
 

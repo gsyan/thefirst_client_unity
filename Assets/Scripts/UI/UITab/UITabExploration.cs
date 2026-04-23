@@ -21,7 +21,6 @@ public class UITabExploration : UITabBase
     [SerializeField] private TMP_Text m_harvestLimitText;  // 시간당 수확량 합계 텍스트
 
     [SerializeField] private Button m_safeZoneButton;
-    [SerializeField] private Button m_collectMineralButton;
     [SerializeField] private DataTableZone m_datatableZone;
 
     [Header("존 맵")]
@@ -37,10 +36,6 @@ public class UITabExploration : UITabBase
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
     private bool m_hasClearedZone;
-    private float m_totalMineralPerHour;
-    private float m_totalMineralRarePerHour;
-    private float m_totalMineralExoticPerHour;
-    private float m_totalMineralDarkPerHour;
     private ZoneStageConfig m_currentZoneStage;
     private ZoneStageConfig m_selectedZoneStage;      // 현재 그룹에서 선택된 존
     private ZoneMapCell m_currentZoneCell;
@@ -50,7 +45,6 @@ public class UITabExploration : UITabBase
     private int m_selectedZoneIndex = 1;
     private EEnterZoneState m_enterZoneState;
     private bool m_isFleetWiped;
-    private Coroutine m_mineralUpdateCoroutine;
     private readonly WaitForSeconds m_updateInterval = new WaitForSeconds(1f);
 
     public override void InitializeUITab()
@@ -64,7 +58,7 @@ public class UITabExploration : UITabBase
         if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
-        m_collectMineralButton.onClick.AddListener(OnCollectZoneClicked);
+        
         m_safeZoneButton.onClick.AddListener(ReturnToSafeZone);
         if (m_zoneTryButton != null) m_zoneTryButton.onClick.AddListener(OnZoneTryButtonClicked);
 
@@ -72,7 +66,7 @@ public class UITabExploration : UITabBase
 
         SetupGroupTabs();
         InitializeZoneMap();
-        UpdateZoneInfo();
+        //UpdateZoneInfo();
         SetEnterZoneState(EEnterZoneState.safe);
 
         var pp = WarpPostProcessing.Instance;
@@ -222,125 +216,35 @@ private void SetupGroupTabs()
 
     public override void OnTabActivated()
     {
-        UpdateZoneInfo();
-        StartMineralUpdateCoroutine();
+        //UpdateZoneInfo();
     }
 
     public override void OnTabDeactivated()
     {
-        StopMineralUpdateCoroutine();
+        
     }
 
-    private void StartMineralUpdateCoroutine()
-    {
-        StopMineralUpdateCoroutine();
-        m_mineralUpdateCoroutine = StartCoroutine(MineralUpdateRoutine());
-    }
+    // private void UpdateZoneInfo()
+    // {
+    //     if (m_datatableZone == null || m_myCharacter == null) return;
+    //     var clearedZoneNames = m_myCharacter.m_characterInfo.clearedZones;
+    //     m_hasClearedZone = false;
+    //     if (clearedZoneNames != null && clearedZoneNames.Count > 0)
+    //     {
+    //         var clearedZones = m_datatableZone.GetZoneStagesByNames(clearedZoneNames);
+    //         foreach (var z in clearedZones)
+    //         {
+    //             m_totalMineralPerHour      += z.mineralPerHour;
+    //             m_totalMineralRarePerHour  += z.mineralRarePerHour;
+    //             m_totalMineralExoticPerHour += z.mineralExoticPerHour;
+    //             m_totalMineralDarkPerHour  += z.mineralDarkPerHour;
+    //         }
+    //         m_hasClearedZone = clearedZones.Count > 0;
+    //     }
 
-    private void StopMineralUpdateCoroutine()
-    {
-        if (m_mineralUpdateCoroutine != null)
-        {
-            StopCoroutine(m_mineralUpdateCoroutine);
-            m_mineralUpdateCoroutine = null;
-        }
-    }
-
-    // 1초마다 자원 누적량 UI 갱신
-    private IEnumerator MineralUpdateRoutine()
-    {
-        while (true)
-        {
-            yield return m_updateInterval;
-            UpdateHarvestGauge();
-        }
-    }
-
-    // elapsed / cap 비율로 게이지 갱신 (1초마다 호출)
-    private void UpdateHarvestGauge()
-    {
-        if (m_hasClearedZone == false) { SetHarvestGauge(0f); return; }
-        float elapsed = GetElapsedSecondsFromCollect();
-        float cap = m_myCharacter.GetOfflineCapSeconds();
-        SetHarvestGauge(Mathf.Clamp01(elapsed / cap));
-    }
-
-    private void UpdateZoneInfo()
-    {
-        if (m_datatableZone == null || m_myCharacter == null) return;
-        var clearedZoneNames = m_myCharacter.m_characterInfo.clearedZones;
-
-        m_totalMineralPerHour = 0f;
-        m_totalMineralRarePerHour = 0f;
-        m_totalMineralExoticPerHour = 0f;
-        m_totalMineralDarkPerHour = 0f;
-        m_hasClearedZone = false;
-
-        if (clearedZoneNames != null && clearedZoneNames.Count > 0)
-        {
-            var clearedZones = m_datatableZone.GetZoneStagesByNames(clearedZoneNames);
-            foreach (var z in clearedZones)
-            {
-                m_totalMineralPerHour      += z.mineralPerHour;
-                m_totalMineralRarePerHour  += z.mineralRarePerHour;
-                m_totalMineralExoticPerHour += z.mineralExoticPerHour;
-                m_totalMineralDarkPerHour  += z.mineralDarkPerHour;
-            }
-            m_hasClearedZone = clearedZones.Count > 0;
-        }
-
-        UpdateHarvestGauge();
-        UpdateHarvestCapText();
-    }
-
-    // 게이지 100%일 때 수확 가능한 최대량 표시 (0인 자원 생략)
-    private void UpdateHarvestCapText()
-    {
-        if (m_harvestLimitText == null) return;
-        if (m_hasClearedZone == false) { m_harvestLimitText.text = ""; return; }
-
-        float capHours = m_myCharacter.GetOfflineCapSeconds() / 3600f;
-        var sb = new System.Text.StringBuilder();
-        void AppendIfPositive(string icon, float rate)
-        {
-            if (rate <= 0f) return;
-            if (sb.Length > 0) sb.Append("   ");
-            sb.Append($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(rate * capHours)}");
-        }
-        AppendIfPositive("crystal-growth",  m_totalMineralPerHour);
-        AppendIfPositive("minerals", m_totalMineralRarePerHour);
-        AppendIfPositive("emerald", m_totalMineralExoticPerHour);
-        AppendIfPositive("fire-gem", m_totalMineralDarkPerHour);
-
-        string label = LocalizationManager.Instance.Get("exploration_collectable_minerals_max");
-        m_harvestLimitText.text = $"{label}({sb} )";
-    }
-
-    // 게이지 fill + % 텍스트 갱신
-    private void SetHarvestGauge(float ratio)
-    {
-        if (m_harvestGaugeFill != null)
-        {
-            RectTransform rt = m_harvestGaugeFill.rectTransform;
-            rt.anchorMax = new Vector2(ratio, rt.anchorMax.y);
-            rt.offsetMin = Vector2.zero;
-            rt.offsetMax = Vector2.zero;
-        }
-        if (m_harvestGaugeText != null)
-            m_harvestGaugeText.text = $"{ratio * 100f:F1}%";
-    }
-
-    private float GetElapsedSecondsFromCollect()
-    {
-        string collectDateTimeStr = m_myCharacter.m_characterInfo.collectDateTime;
-        if (string.IsNullOrEmpty(collectDateTimeStr)) return 0f;
-        if (DateTime.TryParse(collectDateTimeStr, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime collectDateTime))
-        {
-            TimeSpan elapsed = DateTime.UtcNow - collectDateTime;
-            return (float)elapsed.TotalSeconds;
-        }
-        return 0f;
-    }
+    //     UpdateHarvestGauge();
+    //     UpdateHarvestCapText();
+    // }
 
     private void SetEnterZoneState(EEnterZoneState enterZoneState)
     {
@@ -446,7 +350,7 @@ private void SetupGroupTabs()
         UIManager.Instance.ShowConfirmPopup(
             zoneStage.zoneName,
             LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
-            null, null, null,
+            null, null, 0,
             onConfirm: () => ExecuteEnterZone(zoneStage)
         );
     }
@@ -462,26 +366,15 @@ private void SetupGroupTabs()
         void AppendRate(string icon, float value)
         {
             if (value <= 0f) return;
-            sb.AppendLine($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(value)}/h");
+            sb.AppendLine($"{CommonUtility.Sprite(icon)} {CommonUtility.FormatBigNumber(value)}");
         }
-        AppendRate("crystal-growth",  zoneStage.mineralPerHour);
-        AppendRate("minerals", zoneStage.mineralRarePerHour);
-        AppendRate("emerald", zoneStage.mineralExoticPerHour);
-        AppendRate("fire-gem", zoneStage.mineralDarkPerHour);
+        AppendRate("crystal-growth",  zoneStage.mineralClearReward);
         m_zoneDetailText.text = sb.ToString().TrimEnd();
     }
 
-    // 서버에 클리어 이력 조회 후 결과에 따라 광고 여부 결정
     private void ExecuteEnterZone(ZoneStageConfig zoneStage)
     {
-        var request = new ZoneCheckEverClearedRequest { zoneName = zoneStage.zoneName };
-        NetworkManager.Instance.CheckEverCleared(request, response =>
-        {
-            if (response.errorCode == 0 && response.data.everCleared == true)
-                EnterZoneStage(zoneStage);
-            else
-                TryEnterZoneStageWithAd(zoneStage);
-        });
+        TryEnterZoneStageWithAd(zoneStage);
     }
 
     private void TryEnterZoneStageWithAd(ZoneStageConfig zonestage)
@@ -590,6 +483,7 @@ private void SetupGroupTabs()
     // 적 함대 전멸 시 호출 — 서버에 클리어 보고 후 자동 안전지역 텔레포트
     private void OnEnemyFleetKilled()
     {
+        Debug.Log("OnEnemyFleetKilled");
         if (m_currentZoneStage == null) return;
 
         var request = new ClearZoneStageRequest
@@ -612,10 +506,7 @@ private void SetupGroupTabs()
         var character = DataManager.Instance.m_currentCharacter;
         if (character != null && response.data.rewardInfo != null)
         {
-            character.UpdateMineral(response.data.rewardInfo.remainMineral);
-            character.UpdateMineralRare(response.data.rewardInfo.remainMineralRare);
-            character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
-            character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
+            character.UpdateMineral(response.data.rewardInfo.mineralRemain);
         }
 
         // 신규 클리어 완료 — clearedZones 갱신 및 수확 시작 시각 기록
@@ -633,7 +524,6 @@ private void SetupGroupTabs()
             if (m_zoneStageCells.TryGetValue(newlyCleared, out ZoneMapCell clearedCell))
                 clearedCell.SetState(EZoneState.Cleared, true);
 
-            UpdateZoneInfo();
             CacheCurrentZoneCell();
             SelectNextZoneStage(newlyCleared);
         }
@@ -723,28 +613,5 @@ private void SetupGroupTabs()
                 m_myFleet.RestoreDestroyedShips(0.1f);
             }
         });
-    }
-
-
-    private void OnCollectZoneClicked()
-    {
-        NetworkManager.Instance.CollectZone(new ZoneCollectRequest(), OnZoneCollectResponse);
-    }
-
-    private void OnZoneCollectResponse(ApiResponse<ZoneCollectResponse> response)
-    {
-        if (response.errorCode != 0) return;
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-        {
-            character.m_characterInfo.collectDateTime = response.data.collectDateTime;
-            if (response.data.rewardInfo != null)
-            {
-                character.UpdateMineral(response.data.rewardInfo.remainMineral);
-                character.UpdateMineralRare(response.data.rewardInfo.remainMineralRare);
-                character.UpdateMineralExotic(response.data.rewardInfo.remainMineralExotic);
-                character.UpdateMineralDark(response.data.rewardInfo.remainMineralDark);
-            }
-        }
     }
 }

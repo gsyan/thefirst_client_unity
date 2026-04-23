@@ -458,11 +458,10 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
-        // mineral/rare/exotic/dark 를 한 번에 추가 (0이면 해당 타입 스킵)
-        // usage: addminerals [mineral] [mineralRare] [mineralExotic] [mineralDark]
-        RegisterCommand("addminerals", "Add all minerals at once (usage: addminerals [mineral] [rare] [exotic] [dark])", (args) =>
+        // usage: addminerals [mineral] [pvpMineral] [tempMineral] — 0이면 해당 타입 스킵
+        RegisterCommand("addminerals", "Add minerals (usage: addminerals [mineral] [pvpMineral] [tempMineral])", (args) =>
         {
-            if (args.Length < 4) return;
+            if (args.Length < 3) return;
             if (NetworkManager.Instance == null) return;
             NetworkManager.Instance.ExecuteDevCommand("addminerals", args, (response) =>
             {
@@ -577,20 +576,16 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 }
                 break;
             case "mineral":
-                if (long.TryParse(value, out long mineral))
+                if (int.TryParse(value, out int mineral))
                     DataManager.Instance.m_currentCharacter.UpdateMineral(mineral);
                 break;
-            case "mineralrare":
-                if (long.TryParse(value, out long mineralRare))
-                    DataManager.Instance.m_currentCharacter.UpdateMineralRare(mineralRare);
+            case "pvpmineral":
+                if (int.TryParse(value, out int pvpMineral))
+                    DataManager.Instance.m_currentCharacter.UpdatePvpMineral(pvpMineral);
                 break;
-            case "mineralexotic":
-                if (long.TryParse(value, out long mineralExotic))
-                    DataManager.Instance.m_currentCharacter.UpdateMineralExotic(mineralExotic);
-                break;
-            case "mineraldark":
-                if (long.TryParse(value, out long mineralDark))
-                    DataManager.Instance.m_currentCharacter.UpdateMineralDark(mineralDark);
+            case "tempmineral":
+                if (int.TryParse(value, out int tempMineral))
+                    DataManager.Instance.m_currentCharacter.UpdateTempMineral(tempMineral);
                 break;
         }
     }

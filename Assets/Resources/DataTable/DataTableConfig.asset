@@ -15,64 +15,13 @@ MonoBehaviour:
   gameSettings:
     version: 0.0.1
     maxShipsPerFleet: 9
-    addShipCosts:
-    - mineral: 0
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
-    - mineral: 5000
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
-    - mineral: 10000
-      mineralRare: 0
-      mineralExotic: 0
-      mineralDark: 0
-    - mineral: 20000
-      mineralRare: 60000
-      mineralExotic: 0
-      mineralDark: 0
-    - mineral: 40000
-      mineralRare: 170000
-      mineralExotic: 0
-      mineralDark: 0
-    - mineral: 80000
-      mineralRare: 370000
-      mineralExotic: 0
-      mineralDark: 0
-    - mineral: 160000
-      mineralRare: 1400000
-      mineralExotic: 0
-      mineralDark: 0
-    - mineral: 320000
-      mineralRare: 2500000
-      mineralExotic: 0
-      mineralDark: 0
-    - mineral: 640000
-      mineralRare: 4000000
-      mineralExotic: 0
-      mineralDark: 0
+    addShipCost: 10
     pvpListCount: 3
     pvpListRefreshCount: 5
     pvpRankScoreInit: 1000
     pvpRankScorePenalty: 1
-    moduleUnlockPrice: 5000
+    moduleUnlockPrice: 1
   exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"maxShipsPerFleet\": 9,\r\n 
-    \"addShipCosts\": [\r\n    {\r\n      \"mineral\": 0,\r\n      \"mineralRare\":
-    0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\": 0\r\n    },\r\n   
-    {\r\n      \"mineral\": 5000,\r\n      \"mineralRare\": 0,\r\n      \"mineralExotic\":
-    0,\r\n      \"mineralDark\": 0\r\n    },\r\n    {\r\n      \"mineral\": 10000,\r\n     
-    \"mineralRare\": 0,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"mineral\": 20000,\r\n      \"mineralRare\": 60000,\r\n     
-    \"mineralExotic\": 0,\r\n      \"mineralDark\": 0\r\n    },\r\n    {\r\n     
-    \"mineral\": 40000,\r\n      \"mineralRare\": 170000,\r\n      \"mineralExotic\":
-    0,\r\n      \"mineralDark\": 0\r\n    },\r\n    {\r\n      \"mineral\": 80000,\r\n     
-    \"mineralRare\": 370000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    },\r\n    {\r\n      \"mineral\": 160000,\r\n      \"mineralRare\":
-    1400000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\": 0\r\n    },\r\n   
-    {\r\n      \"mineral\": 320000,\r\n      \"mineralRare\": 2500000,\r\n      \"mineralExotic\":
-    0,\r\n      \"mineralDark\": 0\r\n    },\r\n    {\r\n      \"mineral\": 640000,\r\n     
-    \"mineralRare\": 4000000,\r\n      \"mineralExotic\": 0,\r\n      \"mineralDark\":
-    0\r\n    }\r\n  ],\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\": 5,\r\n 
-    \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\":
-    5000\r\n}"
+    \"addShipCost\": 10,\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\":
+    5,\r\n  \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\":
+    1\r\n}"

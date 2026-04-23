@@ -29,17 +29,20 @@ public class FleetButtonHPDisplay : MonoBehaviour
             if (root.childCount > 1)
                 m_hpBarFills[i] = root.GetChild(1).GetComponent<Image>();
         }
+
+        EventManager.Subscribe_FleetUpdateHP(RefreshHPBars);
+        EventManager.Subscribe_FleetShipCountChanged(RefreshHPBars);
     }
 
     private void OnEnable()
     {
-        EventManager.Subscribe_FleetUpdateHP(RefreshHPBars);
         RefreshHPBars();
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         EventManager.Unsubscribe_FleetUpdateHP(RefreshHPBars);
+        EventManager.Unsubscribe_FleetShipCountChanged(RefreshHPBars);
     }
 
     private void RefreshHPBars()

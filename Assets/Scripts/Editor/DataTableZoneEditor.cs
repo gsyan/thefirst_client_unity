@@ -229,13 +229,10 @@ public class DataTableZoneEditor : Editor
                 continue;
             }
 
-            float.TryParse(col[2], out float hourM);
-            float.TryParse(col[3], out float hourMR);
-            float.TryParse(col[4], out float hourME);
-            float.TryParse(col[5], out float hourMD);
-            float.TryParse(col[6], out float spawnDelay);
-            float.TryParse(col[7], out float shipSpawnInterval);
-            int.TryParse(col[8],   out int maxConcurrent);
+            int.TryParse(col[2], out int clearReward);
+            float.TryParse(col[3], out float spawnDelay);
+            float.TryParse(col[4], out float shipSpawnInterval);
+            int.TryParse(col[5],   out int maxConcurrent);
 
             enemyMap.TryGetValue((zoneIndex, stage), out var waveTemplates);
 
@@ -247,10 +244,7 @@ public class DataTableZoneEditor : Editor
                 delayBeforeSpawn          = spawnDelay > 0 ? spawnDelay : 3f,
                 shipSpawnInterval         = shipSpawnInterval > 0 ? shipSpawnInterval : 1.5f,
                 maxConcurrentEnemyShips   = maxConcurrent > 0 ? maxConcurrent : 3,
-                mineralPerHour            = hourM,
-                mineralRarePerHour        = hourMR,
-                mineralExoticPerHour      = hourME,
-                mineralDarkPerHour        = hourMD,
+                mineralClearReward        = clearReward,                
                 enemyShipConfigs          = waveTemplates ?? new List<EnemyShipConfig>(),
             };
 
@@ -419,11 +413,8 @@ public class DataTableZoneEditor : Editor
 
             // 시간당 자원 수확량
             EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.LabelField("시간당 자원 수확량 (클리어 후)", EditorStyles.boldLabel);
-            zoneStage.mineralPerHour = EditorGUILayout.FloatField("Mineral/hour", zoneStage.mineralPerHour);
-            zoneStage.mineralRarePerHour = EditorGUILayout.FloatField("MineralRare/hour", zoneStage.mineralRarePerHour);
-            zoneStage.mineralExoticPerHour = EditorGUILayout.FloatField("MineralExotic/hour", zoneStage.mineralExoticPerHour);
-            zoneStage.mineralDarkPerHour = EditorGUILayout.FloatField("MineralDark/hour", zoneStage.mineralDarkPerHour);
+            EditorGUILayout.LabelField("클리어 자원 획득량", EditorStyles.boldLabel);
+            zoneStage.mineralClearReward = EditorGUILayout.IntField("Mineral Reward", zoneStage.mineralClearReward);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);

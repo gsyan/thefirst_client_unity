@@ -1,5 +1,4 @@
-// 게임 전역 설정 ScriptableObject — 함선 추가 비용(addShipCosts), PvP 설정, 모듈 해금 비용 관리
-// addShipCosts[currentShipCount]: 함선 추가 시점 비용, 현재 M+MR만 사용 (ME/MD는 추후 콘텐츠 전용)
+// 게임 전역 설정 ScriptableObject — 함선 추가 비용(addShipCost), PvP 설정, 모듈 해금 비용 관리
 // 기술레벨별 최대 함선 수(ship_count)는 DataTableResearch.GetShipCount()에서 조회
 using UnityEngine;
 using Newtonsoft.Json;
@@ -17,45 +16,16 @@ public class GameSettings
     [Header("Fleet Settings")]
     public int maxShipsPerFleet = 9;
 
-    [Tooltip("함선 추가 시 필요한 Mineral 비용 (함선 개수별 차등 적용)")]
-    public CostStruct[] addShipCosts = new CostStruct[]
-    {
-        new CostStruct(0, 0, 0, 0),       // idx 0: 초기 함선 (무료)
-        new CostStruct(5000, 0, 0, 0),    // idx 1: 2번째
-        new CostStruct(10000, 0, 0, 0),   // idx 2: 3번째
-        new CostStruct(20000, 60000, 0, 0),  // idx 3: 4번째
-        new CostStruct(40000, 170000, 0, 0), // idx 4: 5번째
-        new CostStruct(80000, 370000, 0, 0), // idx 5: 6번째
-        new CostStruct(160000, 1400000, 0, 0), // idx 6: 7번째
-        new CostStruct(320000, 2500000, 0, 0), // idx 7: 8번째
-        new CostStruct(640000, 4000000, 0, 0), // idx 8: 9번째
-    };
+    [Tooltip("함선 추가 시 필요한 Mineral 비용")]
+    public int addShipCost = 10;
 
-    // 현재 함선 개수에 따른 다음 함선 추가 비용 반환
-    public CostStruct GetAddShipCost(int currentShipCount)
-    {
-        // 기본값
-        CostStruct defaultCost = new CostStruct(5000, 0, 0, 0);
-
-        // 배열 유효성 체크
-        if (addShipCosts == null || addShipCosts.Length == 0)
-            return defaultCost;
-
-        // 배열 범위 체크
-        if (currentShipCount < addShipCosts.Length)
-            return addShipCosts[currentShipCount];
-
-        // 배열 범위를 초과하면 마지막 값 사용
-        return addShipCosts[^1];
-    }
-
-    [Header("Pvp Settings")]
+[Header("Pvp Settings")]
     public int pvpListCount = 3;
     public int pvpListRefreshCount = 5;    
     public int pvpRankScoreInit = 1000;
     public int pvpRankScorePenalty = 1;
     
-    public int moduleUnlockPrice = 5000;
+    public int moduleUnlockPrice = 1;
 
 
 }

@@ -112,13 +112,13 @@ public class DataManager : Singleton<DataManager>
             Debug.LogError("DataTableModule is not exist");
     }
 
-    public bool GetModuleLevelUpCost(EModuleSubType subType, int moduleLevel, out CostStruct cost)
+    public bool GetModuleLevelUpCost(EModuleSubType subType, int moduleLevel, out long mineralCost)
     {
-        cost = new CostStruct();
+        mineralCost = 0;
         ModuleData moduleData = m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
         if (moduleData == null) return false;
 
-        cost = moduleData.upgradeCost;
+        mineralCost = moduleData.mineralCost;
         return true;
     }
 
@@ -148,9 +148,9 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    public CostStruct GetModuleResearchCost(EModuleSubType subType)
+    public long GetModuleResearchCost(EModuleSubType subType)
     {
-        if (m_dataTableResearch == null) return new CostStruct();
+        if (m_dataTableResearch == null) return 0;
         return m_dataTableResearch.GetResearchCost(subType);
     }
     #endregion

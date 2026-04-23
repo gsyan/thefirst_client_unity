@@ -366,7 +366,7 @@ public class UIManager : MonoSingleton<UIManager>
     // ---------------------------------------------------------------------------------
 
     // 확인 팝업: detailText(null 허용), cost(null 허용)
-    public void ShowConfirmPopup(string title, string message, string detailText, RequireStruct require, CostStruct cost, System.Action onConfirm, System.Action onCancel = null)
+    public void ShowConfirmPopup(string title, string message, string detailText, RequireStruct require, long mineralCost, System.Action onConfirm, System.Action onCancel = null)
     {
         UIPopupConfirm popup = GetOrCreatePopup<UIPopupConfirm>("UIPopupConfirm", EPopupLayer.Normal);
         if (popup == null) return;
@@ -376,7 +376,7 @@ public class UIManager : MonoSingleton<UIManager>
         void WrappedConfirm() { onConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Normal); }
         void WrappedCancel()  { onCancel?.Invoke();  CloseTopPopup(EPopupLayer.Normal); }
 
-        popup.ShowPopupConfirm(title, message, detailText, require, cost, WrappedConfirm, WrappedCancel);
+        popup.ShowPopupConfirm(title, message, detailText, require, mineralCost, WrappedConfirm, WrappedCancel);
     }
 
     // 단순 알림 팝업 (확인 버튼만) - Overlay 레이어: 다른 팝업 위에 쌓임

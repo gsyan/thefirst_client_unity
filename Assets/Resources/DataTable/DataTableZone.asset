@@ -41,10 +41,7 @@ MonoBehaviour:
     shipSpawnInterval: 1.5
     maxConcurrentEnemyShips: 3
     enemyShipConfigs: []
-    mineralPerHour: 0
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 0
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-1
@@ -254,10 +251,7 @@ MonoBehaviour:
       beamMultiplier: 0.1
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-2
@@ -467,10 +461,7 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-3
@@ -680,10 +671,7 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-4
@@ -893,10 +881,7 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-5
@@ -1106,10 +1091,7 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-6
@@ -1319,10 +1301,7 @@ MonoBehaviour:
       beamMultiplier: 0.3368
       missileMultiplier: 0.3368
       hangerMultiplier: 0.3368
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-7
@@ -1532,10 +1511,7 @@ MonoBehaviour:
       beamMultiplier: 0.3842
       missileMultiplier: 0.3842
       hangerMultiplier: 0.3842
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-8
@@ -1745,10 +1721,7 @@ MonoBehaviour:
       beamMultiplier: 0.4316
       missileMultiplier: 0.4316
       hangerMultiplier: 0.4316
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-9
@@ -1958,10 +1931,7 @@ MonoBehaviour:
       beamMultiplier: 0.4789
       missileMultiplier: 0.4789
       hangerMultiplier: 0.4789
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-10
@@ -2171,10 +2141,7 @@ MonoBehaviour:
       beamMultiplier: 0.5263
       missileMultiplier: 0.5263
       hangerMultiplier: 0.5263
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-11
@@ -2384,10 +2351,7 @@ MonoBehaviour:
       beamMultiplier: 0.5737
       missileMultiplier: 0.5737
       hangerMultiplier: 0.5737
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-12
@@ -2597,10 +2561,7 @@ MonoBehaviour:
       beamMultiplier: 0.6211
       missileMultiplier: 0.6211
       hangerMultiplier: 0.6211
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-13
@@ -2810,10 +2771,7 @@ MonoBehaviour:
       beamMultiplier: 0.6684
       missileMultiplier: 0.6684
       hangerMultiplier: 0.6684
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-14
@@ -3023,10 +2981,7 @@ MonoBehaviour:
       beamMultiplier: 0.7158
       missileMultiplier: 0.7158
       hangerMultiplier: 0.7158
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-15
@@ -3236,10 +3191,7 @@ MonoBehaviour:
       beamMultiplier: 0.7632
       missileMultiplier: 0.7632
       hangerMultiplier: 0.7632
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-16
@@ -3449,10 +3401,7 @@ MonoBehaviour:
       beamMultiplier: 0.8105
       missileMultiplier: 0.8105
       hangerMultiplier: 0.8105
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-17
@@ -3662,10 +3611,7 @@ MonoBehaviour:
       beamMultiplier: 0.8579
       missileMultiplier: 0.8579
       hangerMultiplier: 0.8579
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-18
@@ -3875,10 +3821,7 @@ MonoBehaviour:
       beamMultiplier: 0.9053
       missileMultiplier: 0.9053
       hangerMultiplier: 0.9053
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-19
@@ -4088,10 +4031,7 @@ MonoBehaviour:
       beamMultiplier: 0.9526
       missileMultiplier: 0.9526
       hangerMultiplier: 0.9526
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-20
@@ -4301,10 +4241,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-21
@@ -4514,10 +4451,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-22
@@ -4727,10 +4661,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-23
@@ -4940,10 +4871,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-24
@@ -5153,10 +5081,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-25
@@ -5366,10 +5291,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-26
@@ -5579,10 +5501,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-27
@@ -5792,10 +5711,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-28
@@ -6005,10 +5921,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-29
@@ -6218,10 +6131,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 1-30
@@ -6431,10 +6341,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-1
@@ -6644,10 +6551,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-2
@@ -6857,10 +6761,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-3
@@ -7070,10 +6971,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-4
@@ -7283,10 +7181,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-5
@@ -7496,10 +7391,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-6
@@ -7709,10 +7601,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-7
@@ -7922,10 +7811,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-8
@@ -8135,10 +8021,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-9
@@ -8348,10 +8231,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-10
@@ -8561,10 +8441,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-11
@@ -8774,10 +8651,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-12
@@ -8987,10 +8861,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-13
@@ -9200,10 +9071,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-14
@@ -9413,10 +9281,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-15
@@ -9626,10 +9491,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-16
@@ -9839,10 +9701,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-17
@@ -10052,10 +9911,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-18
@@ -10265,10 +10121,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-19
@@ -10478,10 +10331,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-20
@@ -10691,10 +10541,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-21
@@ -10904,10 +10751,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-22
@@ -11117,10 +10961,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-23
@@ -11330,10 +11171,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-24
@@ -11543,10 +11381,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-25
@@ -11756,10 +11591,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-26
@@ -11969,10 +11801,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-27
@@ -12182,10 +12011,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-28
@@ -12395,10 +12221,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-29
@@ -12608,10 +12431,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 2-30
@@ -12821,10 +12641,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 0
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-1
@@ -13034,10 +12851,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-2
@@ -13247,10 +13061,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-3
@@ -13460,10 +13271,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-4
@@ -13673,10 +13481,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-5
@@ -13886,10 +13691,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-6
@@ -14099,10 +13901,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-7
@@ -14312,10 +14111,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-8
@@ -14525,10 +14321,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-9
@@ -14738,10 +14531,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-10
@@ -14951,10 +14741,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-11
@@ -15164,10 +14951,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-12
@@ -15377,10 +15161,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-13
@@ -15590,10 +15371,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-14
@@ -15803,10 +15581,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-15
@@ -16016,10 +15791,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-16
@@ -16229,10 +16001,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-17
@@ -16442,10 +16211,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-18
@@ -16655,10 +16421,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-19
@@ -16868,10 +16631,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-20
@@ -17081,10 +16841,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-21
@@ -17294,10 +17051,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-22
@@ -17507,10 +17261,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-23
@@ -17720,10 +17471,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-24
@@ -17933,10 +17681,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-25
@@ -18146,10 +17891,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-26
@@ -18359,10 +18101,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-27
@@ -18572,10 +18311,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-28
@@ -18785,10 +18521,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-29
@@ -18998,10 +18731,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 3-30
@@ -19211,10 +18941,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-1
@@ -19424,10 +19151,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-2
@@ -19637,10 +19361,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-3
@@ -19850,10 +19571,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-4
@@ -20063,10 +19781,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-5
@@ -20276,10 +19991,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-6
@@ -20489,10 +20201,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-7
@@ -20702,10 +20411,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-8
@@ -20915,10 +20621,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-9
@@ -21128,10 +20831,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-10
@@ -21341,10 +21041,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-11
@@ -21554,10 +21251,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-12
@@ -21767,10 +21461,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-13
@@ -21980,10 +21671,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-14
@@ -22193,10 +21881,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-15
@@ -22406,10 +22091,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-16
@@ -22619,10 +22301,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-17
@@ -22832,10 +22511,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-18
@@ -23045,10 +22721,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-19
@@ -23258,10 +22931,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-20
@@ -23471,10 +23141,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-21
@@ -23684,10 +23351,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-22
@@ -23897,10 +23561,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-23
@@ -24110,10 +23771,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-24
@@ -24323,10 +23981,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-25
@@ -24536,10 +24191,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-26
@@ -24749,10 +24401,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-27
@@ -24962,10 +24611,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-28
@@ -25175,10 +24821,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-29
@@ -25388,10 +25031,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 4-30
@@ -25601,10 +25241,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 0
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-1
@@ -25814,10 +25451,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-2
@@ -26027,10 +25661,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-3
@@ -26240,10 +25871,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-4
@@ -26453,10 +26081,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-5
@@ -26666,10 +26291,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-6
@@ -26879,10 +26501,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-7
@@ -27092,10 +26711,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-8
@@ -27305,10 +26921,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-9
@@ -27518,10 +27131,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-10
@@ -27731,10 +27341,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-11
@@ -27944,10 +27551,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-12
@@ -28157,10 +27761,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-13
@@ -28370,10 +27971,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-14
@@ -28583,10 +28181,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-15
@@ -28796,10 +28391,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-16
@@ -29009,10 +28601,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-17
@@ -29222,10 +28811,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-18
@@ -29435,10 +29021,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-19
@@ -29648,10 +29231,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-20
@@ -29861,10 +29441,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-21
@@ -30074,10 +29651,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-22
@@ -30287,10 +29861,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-23
@@ -30500,10 +30071,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-24
@@ -30713,10 +30281,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-25
@@ -30926,10 +30491,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-26
@@ -31139,10 +30701,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-27
@@ -31352,10 +30911,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-28
@@ -31565,10 +31121,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-29
@@ -31778,10 +31331,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 5-30
@@ -31991,10 +31541,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-1
@@ -32204,10 +31751,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-2
@@ -32417,10 +31961,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-3
@@ -32630,10 +32171,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-4
@@ -32843,10 +32381,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-5
@@ -33056,10 +32591,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-6
@@ -33269,10 +32801,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-7
@@ -33482,10 +33011,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-8
@@ -33695,10 +33221,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-9
@@ -33908,10 +33431,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-10
@@ -34121,10 +33641,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-11
@@ -34334,10 +33851,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-12
@@ -34547,10 +34061,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-13
@@ -34760,10 +34271,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-14
@@ -34973,10 +34481,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-15
@@ -35186,10 +34691,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-16
@@ -35399,10 +34901,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-17
@@ -35612,10 +35111,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-18
@@ -35825,10 +35321,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-19
@@ -36038,10 +35531,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-20
@@ -36251,10 +35741,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-21
@@ -36464,10 +35951,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-22
@@ -36677,10 +36161,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-23
@@ -36890,10 +36371,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-24
@@ -37103,10 +36581,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-25
@@ -37316,10 +36791,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-26
@@ -37529,10 +37001,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-27
@@ -37742,10 +37211,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-28
@@ -37955,10 +37421,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-29
@@ -38168,10 +37631,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 6-30
@@ -38381,10 +37841,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 0
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-1
@@ -38594,10 +38051,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-2
@@ -38807,10 +38261,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-3
@@ -39020,10 +38471,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-4
@@ -39233,10 +38681,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-5
@@ -39446,10 +38891,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-6
@@ -39659,10 +39101,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-7
@@ -39872,10 +39311,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-8
@@ -40085,10 +39521,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-9
@@ -40298,10 +39731,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-10
@@ -40511,10 +39941,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-11
@@ -40724,10 +40151,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-12
@@ -40937,10 +40361,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-13
@@ -41150,10 +40571,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-14
@@ -41363,10 +40781,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-15
@@ -41576,10 +40991,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-16
@@ -41789,10 +41201,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-17
@@ -42002,10 +41411,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-18
@@ -42215,10 +41621,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-19
@@ -42428,10 +41831,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-20
@@ -42641,10 +42041,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-21
@@ -42854,10 +42251,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-22
@@ -43067,10 +42461,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-23
@@ -43280,10 +42671,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-24
@@ -43493,10 +42881,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-25
@@ -43706,10 +43091,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-26
@@ -43919,10 +43301,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-27
@@ -44132,10 +43511,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-28
@@ -44345,10 +43721,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-29
@@ -44558,10 +43931,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 7-30
@@ -44771,10 +44141,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-1
@@ -44984,10 +44351,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-2
@@ -45197,10 +44561,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-3
@@ -45410,10 +44771,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-4
@@ -45623,10 +44981,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-5
@@ -45836,10 +45191,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-6
@@ -46049,10 +45401,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-7
@@ -46262,10 +45611,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-8
@@ -46475,10 +45821,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-9
@@ -46688,10 +46031,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-10
@@ -46901,10 +46241,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-11
@@ -47114,10 +46451,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-12
@@ -47327,10 +46661,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-13
@@ -47540,10 +46871,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-14
@@ -47753,10 +47081,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-15
@@ -47966,10 +47291,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-16
@@ -48179,10 +47501,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-17
@@ -48392,10 +47711,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-18
@@ -48605,10 +47921,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-19
@@ -48818,10 +48131,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-20
@@ -49031,10 +48341,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-21
@@ -49244,10 +48551,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-22
@@ -49457,10 +48761,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-23
@@ -49670,10 +48971,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-24
@@ -49883,10 +49181,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-25
@@ -50096,10 +49391,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-26
@@ -50309,10 +49601,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-27
@@ -50522,10 +49811,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-28
@@ -50735,10 +50021,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-29
@@ -50948,10 +50231,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 8-30
@@ -51161,10 +50441,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-1
@@ -51374,10 +50651,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-2
@@ -51587,10 +50861,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-3
@@ -51800,10 +51071,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-4
@@ -52013,10 +51281,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-5
@@ -52226,10 +51491,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-6
@@ -52439,10 +51701,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-7
@@ -52652,10 +51911,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-8
@@ -52865,10 +52121,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-9
@@ -53078,10 +52331,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-10
@@ -53291,10 +52541,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-11
@@ -53504,10 +52751,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-12
@@ -53717,10 +52961,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-13
@@ -53930,10 +53171,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-14
@@ -54143,10 +53381,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-15
@@ -54356,10 +53591,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-16
@@ -54569,10 +53801,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-17
@@ -54782,10 +54011,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-18
@@ -54995,10 +54221,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-19
@@ -55208,10 +54431,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-20
@@ -55421,10 +54641,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-21
@@ -55634,10 +54851,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-22
@@ -55847,10 +55061,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-23
@@ -56060,10 +55271,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-24
@@ -56273,10 +55481,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-25
@@ -56486,10 +55691,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-26
@@ -56699,10 +55901,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-27
@@ -56912,10 +56111,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-28
@@ -57125,10 +56321,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-29
@@ -57338,10 +56531,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}
   - zoneName: 9-30
@@ -57551,9 +56741,6 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    mineralPerHour: 100
-    mineralRarePerHour: 100
-    mineralExoticPerHour: 100
-    mineralDarkPerHour: 100
+    mineralClearReward: 10
     skyboxRotation: 0
     fleetPosition: {x: 0, y: 0, z: 0}

@@ -13,14 +13,31 @@ public class ModuleBase : MonoBehaviour
     [HideInInspector] public float m_healthMax;
     [HideInInspector] public float m_attack;
 
-    [HideInInspector] public CostStruct m_upgradeCost;
+    [HideInInspector] public long m_mineralCostLevelup;
 
     // 이 슬롯에서 subTypeAddCost 납부 이력 (비용 없이 교체 가능한 서브타입 목록)
     [HideInInspector] public List<EModuleSubType> m_unlockedSubTypes = new List<EModuleSubType>();
 
+    // 리셋 시 환급할 투자 이력
+    [HideInInspector] public int m_investedMineral;
+    [HideInInspector] public int m_investedPvpMineral;
+    [HideInInspector] public int m_investedTempMineral;
+
     public void SetUnlockedSubTypes(List<EModuleSubType> list)
     {
         m_unlockedSubTypes = list ?? new List<EModuleSubType>();
+    }
+
+    public void SetInvestedMinerals(int mineral, int pvpMineral, int tempMineral)
+    {
+        m_investedMineral    = mineral;
+        m_investedPvpMineral = pvpMineral;
+        m_investedTempMineral = tempMineral;
+    }
+
+    public bool HasInvestedMineral()
+    {
+        return m_investedMineral > 0 || m_investedPvpMineral > 0 || m_investedTempMineral > 0;
     }
 
     public bool IsSubTypeFree(EModuleSubType subType)

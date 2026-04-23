@@ -294,6 +294,13 @@ public class SpaceShip : MonoBehaviour
         return body.FindModule(moduleType, slotIndex);
     }
 
+    public void SetModuleInvestedMinerals(int bodyIndex, EModuleType moduleType, int slotIndex, int mineral, int pvpMineral, int tempMineral)
+    {
+        ModuleBase module = FindModule(bodyIndex, moduleType, slotIndex);
+        if (module == null) return;
+        module.SetInvestedMinerals(mineral, pvpMineral, tempMineral);
+    }
+
     // 함선의 능력치 프로파일 계산
     // bByInfo = true: Info 기반 계산 (최대 스펙)
     // bByInfo = false: 실제 상태 기반 계산 (현재 체력/상태 반영)
@@ -583,7 +590,8 @@ public class SpaceShip : MonoBehaviour
     }
 
     // module unlock (외부 호출용 - 모듈 해금 UI에서 사용)
-    public void Apply_UnlockModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex)
+    public void Apply_UnlockModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex,
+                                    int investedMineral = 0, int investedPvpMineral = 0, int investedTempMineral = 0)
     {
         ModuleBody body = FindModuleBodyByIndex(bodyIndex);
         if (body == null)
@@ -592,14 +600,22 @@ public class SpaceShip : MonoBehaviour
             return;
         }
 
-        int moduleLevel = 1; // 해금 시 기본 레벨 1
+        int moduleLevel = 1;
 
-        // 슬롯에서 placeholder를 실제 모듈로 교체
         bool success = body.ReplaceModuleInSlot(moduleType, moduleSubType, moduleLevel, slotIndex);
         if (!success)
         {
             Debug.LogError($"Failed to unlock module: moduleType={moduleType}, slotIndex={slotIndex}");
             return;
+        }
+
+        // 언락 비용을 invested minerals에 반영
+        ModuleSlot slot = body.FindModuleSlot(moduleType, slotIndex);
+        if (slot != null)
+        {
+            ModuleBase newModule = slot.GetComponentInChildren<ModuleBase>();
+            if (newModule != null)
+                newModule.SetInvestedMinerals(investedMineral, investedPvpMineral, investedTempMineral);
         }
 
         // 함선 스탯 업데이트
@@ -613,6 +629,18 @@ public class SpaceShip : MonoBehaviour
         RefreshSelectedModuleVisuals();
 
         //Debug.Log($"Module unlocked: Ship={m_shipInfo.id}, Body={bodyIndex}, Slot={slotIndex}, Type={moduleType}");
+    }
+
+    // 모듈을 플레이스홀더 상태로 복귀 (리셋용)
+    public void Apply_ResetModuleToPlaceholder(int bodyIndex, EModuleType moduleType, int slotIndex)
+    {
+        ModuleBody body = FindModuleBodyByIndex(bodyIndex);
+        if (body == null) return;
+
+        body.ResetModuleToPlaceholder(moduleType, slotIndex);
+        UpdateShipStats();
+        if (m_shipOutline != null) m_shipOutline.RefreshOutline();
+        RefreshSelectedModuleVisuals();
     }
 
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)

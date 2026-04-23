@@ -48,14 +48,13 @@ public class UIStationInfoBar : MonoBehaviour
         TechLevelResearchData nextNode = GetNextTechLevelNode(character);
 
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"{CommonUtility.Sprite("gears")} {currentLevel}  {CommonUtility.Sprite("mine-wagon")} {FormatHours(DataManager.Instance.m_dataTableResearch.GetStackTime(currentLevel))}  {CommonUtility.Sprite("spaceship")} {maxShips}");
+        sb.AppendLine($"{CommonUtility.Sprite("gears")} {currentLevel}  {CommonUtility.Sprite("spaceship")} {maxShips}");
 
         if (nextNode != null)
         {
             int nextMaxShips = DataManager.Instance.m_dataTableResearch.GetShipCount(nextNode.targetTechLevel);
             sb.AppendLine();
             sb.AppendLine(LocalizationManager.Instance.Get("tech_level_on_reach", new object[] { nextNode.targetTechLevel }));
-            sb.AppendLine($"{CommonUtility.Sprite("mine-wagon")} (Resource Cap)  {FormatHours(DataManager.Instance.m_dataTableResearch.GetStackTime(nextNode.targetTechLevel))}");
             sb.Append    ($"{CommonUtility.Sprite("spaceship")} (Max Ships)  {nextMaxShips}");
         }
 

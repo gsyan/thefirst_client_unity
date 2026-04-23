@@ -638,6 +638,30 @@ MonoBehaviour:
     m_Localized: '{0} Lv.{1} Required (Current: Lv.{2})'
     m_Metadata:
       m_Items: []
+  - m_Id: 26803779546251264
+    m_Localized: Reset Module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971520
+    m_Localized: Reset this module and recover invested resources?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971521
+    m_Localized: Reset Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971522
+    m_Localized: Reset this ship and recover all invested resources?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971523
+    m_Localized: The flagship cannot be reset.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971524
+    m_Localized: Nothing to recover
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -635,6 +635,30 @@ MonoBehaviour:
     m_Key: require_level_compare
     m_Metadata:
       m_Items: []
+  - m_Id: 26803779546251264
+    m_Key: ship_module_reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971520
+    m_Key: ship_module_reset_confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971521
+    m_Key: ship_reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971522
+    m_Key: ship_reset_confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971523
+    m_Key: ship_reset_flagship_forbidden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26803779604971524
+    m_Key: ship_reset_no_refund
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

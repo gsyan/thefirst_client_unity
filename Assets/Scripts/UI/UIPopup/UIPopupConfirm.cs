@@ -26,12 +26,12 @@ public class UIPopupConfirm : UIPopupBase
         if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
     }
 
-    public void ShowPopupConfirm(string title, string message, string detailText, RequireStruct require, CostStruct cost, Action onConfirm, Action onCancel = null)
+    public void ShowPopupConfirm(string title, string message, string detailText, RequireStruct require, long mineralCost, Action onConfirm, Action onCancel = null)
     {
         if (titleText != null) titleText.text = title;
 
         bool canConfirm = true;
-        if (bodyText != null) bodyText.text = BuildBodyText(message, detailText, require, cost, out canConfirm);
+        if (bodyText != null) bodyText.text = BuildBodyText(message, detailText, require, mineralCost, out canConfirm);
 
         if (confirmButton != null) confirmButton.interactable = canConfirm;
 
@@ -41,7 +41,7 @@ public class UIPopupConfirm : UIPopupBase
         base.ShowPopup();
     }
 
-    private string BuildBodyText(string message, string detailText, RequireStruct require, CostStruct cost, out bool canConfirm)
+    private string BuildBodyText(string message, string detailText, RequireStruct require, long mineralCost, out bool canConfirm)
     {
         var sb = new StringBuilder();
         sb.Append(message);
@@ -62,7 +62,7 @@ public class UIPopupConfirm : UIPopupBase
             if (requireMet == false) canConfirm = false;
         }
 
-        string costText = BuildCostText(cost, out bool canAfford);
+        string costText = BuildCostText(mineralCost, out bool canAfford);
         if (string.IsNullOrEmpty(costText) == false)
         {
             sb.Append(SEPARATOR);
@@ -86,45 +86,17 @@ public class UIPopupConfirm : UIPopupBase
         return requireMet ? text : $"<color=red>{text}</color>";
     }
 
-    private string BuildCostText(CostStruct cost, out bool canAfford)
+    private string BuildCostText(long mineralCost, out bool canAfford)
     {
         canAfford = true;
-        if (cost == null) return null;
-        bool hasCost = cost.mineral > 0 || cost.mineralRare > 0 || cost.mineralExotic > 0 || cost.mineralDark > 0;
-        if (hasCost == false) return null;
+        if (mineralCost <= 0) return null;
 
-        var ch = DataManager.Instance.m_currentCharacter;
-        var info = ch?.m_characterInfo;
-        var sb = new StringBuilder();
+        var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
+        bool ins = info != null && info.mineral < mineralCost;
+        if (ins == true) canAfford = false;
 
         string C(bool insufficient, string val) => insufficient ? $"<color=red>{val}</color>" : val;
-
-        if (cost.mineral > 0)
-        {
-            bool ins = info != null && info.mineral < cost.mineral;
-            if (ins == true) canAfford = false;
-            sb.Append($"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(cost.mineral))}");
-        }
-        if (cost.mineralRare > 0)
-        {
-            bool ins = info != null && info.mineralRare < cost.mineralRare;
-            if (ins == true) canAfford = false;
-            sb.Append($" {CommonUtility.Sprite("minerals")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralRare))}");
-        }
-        if (cost.mineralExotic > 0)
-        {
-            bool ins = info != null && info.mineralExotic < cost.mineralExotic;
-            if (ins == true) canAfford = false;
-            sb.Append($" {CommonUtility.Sprite("emerald")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralExotic))}");
-        }
-        if (cost.mineralDark > 0)
-        {
-            bool ins = info != null && info.mineralDark < cost.mineralDark;
-            if (ins == true) canAfford = false;
-            sb.Append($" {CommonUtility.Sprite("fire-gem")} {C(ins, CommonUtility.FormatBigNumber(cost.mineralDark))}\n");
-        }
-
-        return sb.ToString().TrimEnd();
+        return $"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(mineralCost))}";
     }
 
     private void OnConfirmClicked()

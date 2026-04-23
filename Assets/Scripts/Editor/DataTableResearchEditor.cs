@@ -177,10 +177,7 @@ public class DataTableResearchEditor : Editor
 
             // 연구 비용 (Tech Level은 서브타입 인코딩에서 파싱 — 별도 입력 불필요)
             EditorGUILayout.LabelField("Research Cost", EditorStyles.boldLabel);
-            researchData.researchCost.mineral = EditorGUILayout.LongField("Mineral", researchData.researchCost.mineral);
-            researchData.researchCost.mineralRare = EditorGUILayout.LongField("Mineral Rare", researchData.researchCost.mineralRare);
-            researchData.researchCost.mineralExotic = EditorGUILayout.LongField("Mineral Exotic", researchData.researchCost.mineralExotic);
-            researchData.researchCost.mineralDark = EditorGUILayout.LongField("Mineral Dark", researchData.researchCost.mineralDark);
+            researchData.mineralCost = EditorGUILayout.IntField("Mineral", researchData.mineralCost);
 
             EditorGUI.indentLevel--;
         }
@@ -207,11 +204,7 @@ public class DataTableResearchEditor : Editor
                 EditorGUI.indentLevel++;
                 EditorGUILayout.IntField("Target Tech Level", data.targetTechLevel);
                 EditorGUILayout.LabelField("Prerequisites", string.Join(", ", data.prerequisiteIds));
-                EditorGUILayout.LabelField("Cost M",  data.researchCost.mineral.ToString());
-                EditorGUILayout.LabelField("Cost MR", data.researchCost.mineralRare.ToString());
-                EditorGUILayout.LabelField("Cost ME", data.researchCost.mineralExotic.ToString());
-                EditorGUILayout.LabelField("Cost MD", data.researchCost.mineralDark.ToString());
-                data.stackTime = EditorGUILayout.FloatField("Stack Time (h)", data.stackTime);
+                EditorGUILayout.LabelField("Cost M",  data.mineralCost.ToString());
                 data.shipCount = EditorGUILayout.IntField("Ship Count",       data.shipCount);
                 EditorGUI.indentLevel--;
                 EditorGUILayout.EndVertical();

@@ -511,6 +511,46 @@ public class ApiClient
     //     return response;
     // }
 
+    public async Task<ApiResponse<ModuleResetResponse>> ResetModuleAsync(ModuleResetRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleResetResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"Module Reset Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/reset-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleResetResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Module Reset Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
+    public async Task<ApiResponse<ShipResetRemoveResponse>> ResetAndRemoveShipAsync(ShipResetRemoveRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ShipResetRemoveResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"Ship ResetRemove Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/reset-ship", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ShipResetRemoveResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Ship ResetRemove Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
     public async Task<ApiResponse<ShipInfo>> RemoveModuleBodyAsync(ModuleBodyRemoveRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ShipInfo>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
@@ -565,26 +605,6 @@ public class ApiClient
     #endregion
 
     #region Zone Battle API Methods -------------------------------------------------------------------------------
-    public async Task<ApiResponse<ZoneCollectResponse>> CollectZoneAsync(ZoneCollectRequest request)
-    {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneCollectResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
-
-        string json = JsonConvert.SerializeObject(request);
-        Debug.Log($"Zone Collect Request: {json}");
-
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/collect", "POST");
-        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.SetRequestHeader("Content-Type", "application/json");
-        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
-
-        await SendRequestAsync(webRequest);
-
-        var response = JsonConvert.DeserializeObject<ApiResponse<ZoneCollectResponse>>(webRequest.downloadHandler.text);
-        Debug.Log($"Zone Collect Response: {webRequest.downloadHandler.text}");
-        return response;
-    }
-
     public async Task<ApiResponse<ClearZoneStageResponse>> ClearZoneStageAsync(ClearZoneStageRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ClearZoneStageResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
@@ -601,21 +621,6 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<ClearZoneStageResponse>>(webRequest.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<ZoneCheckEverClearedResponse>> CheckEverClearedAsync(ZoneCheckEverClearedRequest request)
-    {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneCheckEverClearedResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
-
-        string json = JsonConvert.SerializeObject(request);
-
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/check-ever-cleared", "POST");
-        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.SetRequestHeader("Content-Type", "application/json");
-        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
-
-        await SendRequestAsync(webRequest);
-        return JsonConvert.DeserializeObject<ApiResponse<ZoneCheckEverClearedResponse>>(webRequest.downloadHandler.text);
-    }
 
     #endregion
 
