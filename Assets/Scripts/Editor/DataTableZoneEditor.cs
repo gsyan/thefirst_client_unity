@@ -251,7 +251,7 @@ public class DataTableZoneEditor : Editor
         }
 
         // --- zone CSV 파싱 ---
-        // 헤더: zone,stage,hour_mineral,hour_mineral_r,hour_mineral_e,hour_mineral_d,spawn_delay,ship_spawn_interval,max_concurrent_enemy_ships
+        // 헤더: zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,max_concurrent_enemy_ships,fleet_pos_x,fleet_pos_y,fleet_pos_z
         m_dataTableZone.zoneStageList.Clear();
 
         string[] zoneLines = File.ReadAllLines(zoneCSV);
@@ -264,6 +264,10 @@ public class DataTableZoneEditor : Editor
 
             if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stage)) continue;
 
+            float.TryParse(col.Length > 6 ? col[6] : "0", out float fpx);
+            float.TryParse(col.Length > 7 ? col[7] : "0", out float fpy);
+            float.TryParse(col.Length > 8 ? col[8] : "0", out float fpz);
+
             // zone=0 행 → Zone-0 안전지역 (전투 없음)
             if (zoneIndex == 0)
             {
@@ -272,6 +276,7 @@ public class DataTableZoneEditor : Editor
                     zoneName = "Zone-0",
                     zoneDescription = "안전지역",
                     zoneIndex = 0,
+                    fleetPosition = new Vector3(fpx, fpy, fpz),
                 });
                 continue;
             }
@@ -291,7 +296,8 @@ public class DataTableZoneEditor : Editor
                 delayBeforeSpawn          = spawnDelay > 0 ? spawnDelay : 3f,
                 shipSpawnInterval         = shipSpawnInterval > 0 ? shipSpawnInterval : 1.5f,
                 maxConcurrentEnemyShips   = maxConcurrent > 0 ? maxConcurrent : 3,
-                mineralClearReward        = clearReward,                
+                mineralClearReward        = clearReward,
+                fleetPosition             = new Vector3(fpx, fpy, fpz),
                 enemyShipConfigs          = waveTemplates ?? new List<EnemyShipConfig>(),
             };
 

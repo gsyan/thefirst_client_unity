@@ -10,8 +10,8 @@
 ## 존 탐험 시스템
 
 ### 존 구조 — 확정
-- 이름 형식: **X-Y** (X=함선 개수 그룹, Y=스테이지, 1~30)
-- 총 91개 존: Zone-0(안전지역) + 1-1 ~ 9-10 (스테이지 10 기준 / 실제 구현 30 스테이지)
+- 이름 형식: **X-Y** (X=함선 개수 그룹, Y=스테이지, 1~5)
+- 총 46개 존: Zone-0(안전지역) + 1-1 ~ 9-5
 - 랭킹: 클리어 존 이름을 숫자 점수로 변환해 Redis 저장 (RankingService.java)
 
 ### 자원 획득 방식 — 확정
@@ -19,24 +19,9 @@
 - 자동 적립 없음, 수확 버튼 없음
 - PM/TM은 존 탐사와 무관 (PVP/구매 전용)
 
-### 존 보상 수치 (DataTableZoneEditor.cs GenerateDefaultZones — 수치 재검토 필요)
-- maxStages = 30, stageScaleFactor = 10/30 (총 자원량 유지 보정)
-- stageMult = Mathf.Lerp(1.0, 1.45, (stage-1)/(maxStages-1)) (stage1=1.0x, stage30=1.45x)
-- 아래 수치는 stage1 기준 실효값, MineralRare 폐기로 kill M 수치 재검토 필요
-
-| x(함선수) | kill M (스테이지 클리어 보상) |
-|----------|------------------------------|
-| 1        | 13                           |
-| 2        | 25                           |
-| 3        | 43                           |
-| 4        | 73                           |
-| 5        | 120                          |
-| 6        | 200                          |
-| 7        | 333                          |
-| 8        | 533                          |
-| 9        | 867                          |
-
-각 값 × stageMult로 stage별 보정 적용 (stage30 기준 약 1.45배).
+### 존 보상 수치
+- 실제 수치는 `Assets/Resources/DataTable/Zone/datatable_zone_stage.csv` 기준
+- stage는 1~5, zone 그룹(x)이 높을수록 보상 증가
 
 ### 존 입장 조건
 - 구현 완료: zone X-Y 진입 시 함선 X척 이상 필요
