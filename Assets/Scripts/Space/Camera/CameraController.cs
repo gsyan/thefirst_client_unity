@@ -699,7 +699,7 @@ public class CameraController : MonoSingleton<CameraController>
         m_currentTarget = m_savedTarget;
         m_targetPosition = m_savedTargetPosition;
 
-        RestorePreGalaxyViewCamera();
+        RestoreFleetView();
     }
 
     // 갤럭시 뷰 종료하면서 카메라를 이전 함선 위치 대신 지정 위치로 이동, 회전·줌 복원
@@ -710,10 +710,10 @@ public class CameraController : MonoSingleton<CameraController>
         m_currentTarget = null;
         m_targetPosition = position;
 
-        RestorePreGalaxyViewCamera();
+        RestoreFleetView();
     }
 
-    private void RestorePreGalaxyViewCamera()
+    private void RestoreFleetView()
     {
         m_hasTargetRotationX = true;
         m_targetRotationX = m_savedRotationX;

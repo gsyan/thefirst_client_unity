@@ -409,6 +409,7 @@ public class UITabExploration : UITabBase
         CameraController.Instance.ExitGalaxyViewMoveTo(zoneStage.fleetPosition);
 
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
+        SetOtherTabsVisible(false, includeSelf: true);
 
         // 최종 위치·방향을 설정 → StartFleetWarpIn이 transform.forward 기준으로 뒤에서 접근
         ObjectManager.Instance.SetMyFleetPosition(zoneStage.fleetPosition, zoneStage.fleetRotationY);
@@ -416,6 +417,7 @@ public class UITabExploration : UITabBase
         var cam = CameraController.Instance;
         m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
+            SetOtherTabsVisible(true, includeSelf: true);
             cam.SetTargetOfCameraController(m_myFleet.transform);
             SetEnterZoneState(EEnterZoneState.battle);
             UIManager.Instance.ShowPanel("UIPanelCameraView");
@@ -591,11 +593,13 @@ public class UITabExploration : UITabBase
         CameraController.Instance.ExitGalaxyViewMoveTo(retreatPosition);
 
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
+        SetOtherTabsVisible(false, includeSelf: true);
 
         ObjectManager.Instance.SetMyFleetPosition(retreatPosition, retreatRotationY);
 
         m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
+            SetOtherTabsVisible(true, includeSelf: true);
             CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 
             m_currentZoneStage = retreatStage;
