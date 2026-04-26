@@ -445,37 +445,7 @@ public class DataTableZoneEditor : Editor
         if (zoneConfig.celestialBodies == null)
             zoneConfig.celestialBodies = new System.Collections.Generic.List<CelestialBodyConfig>();
 
-        for (int ci = 0; ci < zoneConfig.celestialBodies.Count; ci++)
-        {
-            CelestialBodyConfig body = zoneConfig.celestialBodies[ci];
-            string bodyLabel = body.isStar ? $"  ★ Star_{ci}" : $"  ● Planet_{ci}";
-
-            EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(bodyLabel, EditorStyles.boldLabel);
-            body.isStar = EditorGUILayout.ToggleLeft("항성", body.isStar, GUILayout.Width(55));
-            if (GUILayout.Button("X", GUILayout.Width(22)))
-            {
-                zoneConfig.celestialBodies.RemoveAt(ci);
-                EditorUtility.SetDirty(m_dataTableZone);
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
-                break;
-            }
-            EditorGUILayout.EndHorizontal();
-
-            body.position = EditorGUILayout.Vector3Field("    Position", body.position);
-            body.scale    = EditorGUILayout.Vector3Field("    Scale",    body.scale);
-            body.material = (Material)EditorGUILayout.ObjectField("    Material", body.material, typeof(Material), false);
-            EditorGUILayout.EndVertical();
-        }
-
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("+ 행성 추가"))
-            zoneConfig.celestialBodies.Add(new CelestialBodyConfig { isStar = false, scale = Vector3.one * 20f });
-        if (GUILayout.Button("+ 항성 추가"))
-            zoneConfig.celestialBodies.Add(new CelestialBodyConfig { isStar = true,  scale = Vector3.one * 50f });
-        EditorGUILayout.EndHorizontal();
+        CelestialBodyEditorGUI.DrawCelestialBodyList(zoneConfig.celestialBodies, m_dataTableZone);
 
         if (EditorGUI.EndChangeCheck())
             EditorUtility.SetDirty(m_dataTableZone);

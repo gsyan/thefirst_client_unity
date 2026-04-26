@@ -96,37 +96,7 @@ public class ZonePreviewComponentEditor : Editor
             if (zone.celestialBodies == null)
                 zone.celestialBodies = new List<CelestialBodyConfig>();
 
-            for (int i = 0; i < zone.celestialBodies.Count; i++)
-            {
-                CelestialBodyConfig body = zone.celestialBodies[i];
-                string label = body.isStar ? $"★ Star_{i}" : $"● Planet_{i}";
-
-                EditorGUILayout.BeginVertical("box");
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
-                body.isStar = EditorGUILayout.ToggleLeft("항성", body.isStar, GUILayout.Width(55));
-                if (GUILayout.Button("X", GUILayout.Width(22)))
-                {
-                    zone.celestialBodies.RemoveAt(i);
-                    EditorUtility.SetDirty(table);
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.EndVertical();
-                    break;
-                }
-                EditorGUILayout.EndHorizontal();
-
-                body.position = EditorGUILayout.Vector3Field("Position", body.position);
-                body.scale    = EditorGUILayout.Vector3Field("Scale",    body.scale);
-                body.material = (Material)EditorGUILayout.ObjectField("Material", body.material, typeof(Material), false);
-                EditorGUILayout.EndVertical();
-            }
-
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("+ 행성 추가"))
-                zone.celestialBodies.Add(new CelestialBodyConfig { isStar = false, scale = Vector3.one * 20f });
-            if (GUILayout.Button("+ 항성 추가"))
-                zone.celestialBodies.Add(new CelestialBodyConfig { isStar = true,  scale = Vector3.one * 50f });
-            EditorGUILayout.EndHorizontal();
+            CelestialBodyEditorGUI.DrawCelestialBodyList(zone.celestialBodies, table);
 
             EditorGUI.indentLevel--;
         }

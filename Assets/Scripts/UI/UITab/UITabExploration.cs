@@ -21,15 +21,13 @@ public class UITabExploration : UITabBase
     [Header("존 스테이지 버튼 (World Space)")]
     [SerializeField] private RectTransform m_zoneButtonRoot;       // Screen Space 오버레이 루트 (stretch 전체)
     [SerializeField] private UIZoneStageButton m_zoneStageButtonPrefab;
-    [SerializeField] private TMP_Text m_zoneDetailText;
-    [SerializeField] private Button m_zoneTryButton;
-
+    
     [Header("그룹 탭")]
     [SerializeField] private Button[] m_groupTabButtons;           // Z1~Z9 그룹 탭 버튼
 
     private static readonly Color k_tabActiveColor   = new Color(1f, 0.8f, 0.2f, 1f);
     private static readonly Color k_tabInactiveColor = Color.white;
-    private static readonly WaitForSeconds k_warpCameraLeadTime = new(1f);
+
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
@@ -55,7 +53,6 @@ public class UITabExploration : UITabBase
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
         m_safeZoneButton.onClick.AddListener(RetreatToPreviousStage);
-        if (m_zoneTryButton != null) m_zoneTryButton.onClick.AddListener(OnZoneTryButtonClicked);
 
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
 
@@ -174,13 +171,11 @@ public class UITabExploration : UITabBase
             bool isCleared = clearedZoneNames != null && clearedZoneNames.Contains(zoneStage.zoneName);
             if (isCleared == true)
                 state = EZoneState.Cleared;
-            else if (myShipCount >= ParseZoneGroup(zoneStage.zoneName))
-                state = EZoneState.Current;
             else
-                state = EZoneState.Locked;
+                state = EZoneState.NotCleared;
 
             ZoneStageConfig captured = zoneStage;
-            btn.Initialize(captured, () => OnZoneStageButtonClicked(captured), state, worldCam);
+            btn.Initialize(captured, () => OnZoneStageButtonClicked(captured), () => OnEnterZoneFromButton(captured), state, worldCam);
             btn.gameObject.SetActive(false);
             m_zoneStageButtons[zoneStage.zoneName] = btn;
         }
@@ -248,7 +243,6 @@ public class UITabExploration : UITabBase
         m_enterZoneState = enterZoneState;
         bool inZone = enterZoneState == EEnterZoneState.battle;
         if (m_safeZoneButton != null) m_safeZoneButton.gameObject.SetActive(inZone);
-        if (m_zoneTryButton  != null) m_zoneTryButton.gameObject.SetActive(!inZone);
         EventManager.TriggerEnterZoneStateChanged(enterZoneState);
     }
 
@@ -281,13 +275,35 @@ public class UITabExploration : UITabBase
 
     private void ApplyZoneStageSelection(ZoneStageConfig zoneStage)
     {
+        if (m_selectedZoneStage != null &&
+            m_zoneStageButtons.TryGetValue(m_selectedZoneStage.zoneName, out UIZoneStageButton prev))
+            prev.SetSelected(false);
+
         m_selectedZoneStage = zoneStage;
         if (m_zoneStageButtons.TryGetValue(zoneStage.zoneName, out UIZoneStageButton btn))
             btn.SetSelected(true);
-        RefreshZoneStageDetailText(zoneStage);
+    }
 
-        if (m_zoneTryButton != null)
-            m_zoneTryButton.interactable = IsAlreadyCleared(zoneStage) == false;
+    private void OnEnterZoneFromButton(ZoneStageConfig zoneStage)
+    {
+        if (zoneStage == null) return;
+        if (m_enterZoneState == EEnterZoneState.warp) return;
+        if (m_enterZoneState == EEnterZoneState.battle)
+        {
+            if (m_currentZoneStage != null && m_currentZoneStage.zoneName == zoneStage.zoneName) return;
+            EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+            ObjectManager.Instance.StopEnemySpawning();
+            ObjectManager.Instance.OrderAllAircraftReturn();
+            ObjectManager.Instance.CleanupAllProjectiles();
+            ObjectManager.Instance.RemoveAllEnemyFleets();
+        }
+
+        UIManager.Instance.ShowConfirmPopup(
+            zoneStage.zoneName,
+            LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
+            null, null, 0,
+            onConfirm: () => ExecuteEnterZone(zoneStage)
+        );
     }
 
     private ZoneStageConfig GetDefaultZoneStageForZone(int zoneIndex)
@@ -344,17 +360,6 @@ public class UITabExploration : UITabBase
         );
     }
 
-    private void RefreshZoneStageDetailText(ZoneStageConfig zoneStage)
-    {
-        if (m_zoneDetailText == null || zoneStage == null) return;
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine(zoneStage.zoneName);
-        if (string.IsNullOrEmpty(zoneStage.zoneDescription) == false)
-            sb.AppendLine(zoneStage.zoneDescription);
-        if (zoneStage.mineralClearReward > 0)
-            sb.AppendLine($"{CommonUtility.Sprite("crystal-growth")} {CommonUtility.FormatBigNumber(zoneStage.mineralClearReward)}");
-        m_zoneDetailText.text = sb.ToString().TrimEnd();
-    }
 
     private void ExecuteEnterZone(ZoneStageConfig zoneStage)
     {
@@ -432,8 +437,8 @@ public class UITabExploration : UITabBase
         if (m_currentZoneStageButton != null)
         {
             m_currentZoneStageButton.SetSelected(false);
-            if (IsAlreadyCleared(m_currentZoneStageButton.ZoneStageConfig) == false)
-                m_currentZoneStageButton.SetState(EZoneState.Current);
+            // if (IsAlreadyCleared(m_currentZoneStageButton.ZoneStageConfig) == false)
+            //     m_currentZoneStageButton.SetState(EZoneState.Current);
         }
 
         m_currentZoneStageButton = null;

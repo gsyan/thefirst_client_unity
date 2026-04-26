@@ -125,8 +125,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
     {
-        m_celestialBodySpawner = gameObject.AddComponent<CelestialBodySpawner>();
-        m_celestialBodySpawner.SpawnAll();
+        m_celestialBodySpawner = GetComponent<CelestialBodySpawner>();
+        if (m_celestialBodySpawner != null)
+            m_celestialBodySpawner.SpawnAll();
 
         SpawnFleet();
 

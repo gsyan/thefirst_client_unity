@@ -11,6 +11,14 @@ public class ZonePreviewComponent : MonoBehaviour
     private const string PREVIEW_ROOT_NAME  = "ZonePreView";
     private const string CAMERA_TARGET_NAME = "CameraTarget";
 
+    private void Awake()
+    {
+        // 플레이 진입 시 씬에 남아 있는 프리뷰 오브젝트 제거
+        Transform existing = transform.Find(PREVIEW_ROOT_NAME);
+        if (existing != null)
+            Destroy(existing.gameObject);
+    }
+
     public void RefreshPreview()
     {
         ClearPreview();
@@ -30,7 +38,7 @@ public class ZonePreviewComponent : MonoBehaviour
         for (int i = 0; i < zone.celestialBodies.Count; i++)
         {
             CelestialBodyConfig body = zone.celestialBodies[i];
-            string objName = body.isStar ? $"Star_{i}" : $"Planet_{i}";
+            string objName = $"Planet_{i}";
 
             GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             sphere.name = objName;
@@ -81,8 +89,6 @@ public class ZonePreviewComponent : MonoBehaviour
             zone.galaxyCameraTarget = camTarget.position;
 
         // ZonePreView 모든 자식 → celestialBodies 재구성 (CameraTarget 제외)
-        // 이름이 "Star_"로 시작하면 항성, 아니면 행성
-        // Renderer.sharedMaterial로 material도 보존
         zone.celestialBodies.Clear();
         foreach (Transform child in root)
         {
@@ -90,7 +96,6 @@ public class ZonePreviewComponent : MonoBehaviour
             Renderer rend = child.GetComponent<Renderer>();
             zone.celestialBodies.Add(new CelestialBodyConfig
             {
-                isStar   = child.name.StartsWith("Star_"),
                 position = child.position,
                 scale    = child.localScale,
                 material = rend != null ? rend.sharedMaterial : null,

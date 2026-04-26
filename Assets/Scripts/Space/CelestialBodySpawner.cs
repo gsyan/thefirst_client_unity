@@ -6,6 +6,11 @@ public class CelestialBodySpawner : MonoBehaviour
 {
     private const string ROOT_NAME = "CelestialBodies";
 
+    // LOD0 임계값: 화면 높이의 6% 이상이면 대기권 포함, 미만이면 행성만
+    private const float LOD_ATM_THRESHOLD  = 0.06f;
+    // Cull 임계값: 화면 높이의 0.5% 미만이면 컬링
+    private const float LOD_CULL_THRESHOLD = 0.005f;
+
     private GameObject m_root;
     private readonly List<GameObject> m_spawnedBodies = new List<GameObject>();
 
@@ -39,21 +44,49 @@ public class CelestialBodySpawner : MonoBehaviour
 
     private GameObject SpawnBody(CelestialBodyConfig cfg, int zoneIndex, int bodyIndex)
     {
-        string bodyName = cfg.isStar ? $"Star_z{zoneIndex}_{bodyIndex}" : $"Planet_z{zoneIndex}_{bodyIndex}";
-
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        go.name = bodyName;
+        go.name = $"Planet_z{zoneIndex}_{bodyIndex}";
         go.transform.SetParent(m_root.transform);
         go.transform.position   = cfg.position;
         go.transform.localScale = cfg.scale;
 
-        // 천체는 물리 상호작용 불필요
         Destroy(go.GetComponent<Collider>());
 
+        Renderer planetRenderer = go.GetComponent<Renderer>();
         if (cfg.material != null)
-            go.GetComponent<Renderer>().sharedMaterial = cfg.material;
+            planetRenderer.sharedMaterial = cfg.material;
+
+        if (cfg.atmosphereMaterial != null)
+        {
+            Renderer atmRenderer = SpawnAtmosphere(go.transform, cfg);
+            AddLODGroup(go, planetRenderer, atmRenderer);
+        }
 
         return go;
+    }
+
+    private Renderer SpawnAtmosphere(Transform parent, CelestialBodyConfig cfg)
+    {
+        GameObject atm = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        atm.name = "Atmosphere";
+        atm.transform.SetParent(parent);
+        atm.transform.localPosition = Vector3.zero;
+        atm.transform.localScale    = Vector3.one * cfg.atmosphereScale;
+
+        Destroy(atm.GetComponent<Collider>());
+        Renderer r = atm.GetComponent<Renderer>();
+        r.sharedMaterial = cfg.atmosphereMaterial;
+        return r;
+    }
+
+    private void AddLODGroup(GameObject go, Renderer planetRenderer, Renderer atmRenderer)
+    {
+        LODGroup lodGroup = go.AddComponent<LODGroup>();
+        LOD[] lods = new LOD[2];
+        lods[0] = new LOD(LOD_ATM_THRESHOLD,  new Renderer[] { planetRenderer, atmRenderer });
+        lods[1] = new LOD(LOD_CULL_THRESHOLD, new Renderer[] { planetRenderer });
+        lodGroup.SetLODs(lods);
+        lodGroup.RecalculateBounds();
     }
 
     public void ClearAll()

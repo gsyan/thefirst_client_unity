@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-// 행성 또는 항성 하나의 배치 정보
+// 행성 하나의 배치 정보
 [System.Serializable]
 public class CelestialBodyConfig
 {
-    public bool    isStar    = false;
-    public Vector3 position;
-    public Vector3 scale     = new Vector3(20f, 20f, 20f);
+    public Vector3  position;
+    public Vector3  scale              = new Vector3(20f, 20f, 20f);
     public Material material;
+    public Material atmosphereMaterial;             // null이면 대기 구체 생성 안 함
+    public float    atmosphereScale    = 1.01f;     // 행성 대비 대기 구체 크기 비율
 }
 
 // Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 skybox를 공유
@@ -87,6 +88,13 @@ public class ZoneStageConfig
     [Header("아군 함대 위치/방향 (절대 좌표)")]
     public Vector3 fleetPosition;
     [Range(0f, 360f)] public float fleetRotationY;
+
+    [Header("갤럭시 뷰 UI — 꺾인 연결선 설정 (스크린 픽셀)")]
+    public Vector2 diagonalOffset = new Vector2(50f, 60f); // 점 → 꺾임점 오프셋
+    public bool    labelAboveLine = false;                  // 레이블을 선 위(true)/아래(false)에 배치
+
+    [Header("갤럭시 뷰 UI — 마커 레이블 오프셋 (스크린 픽셀)")]
+    public Vector2 labelScreenOffset = new Vector2(80f, 60f);
 }
 
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
