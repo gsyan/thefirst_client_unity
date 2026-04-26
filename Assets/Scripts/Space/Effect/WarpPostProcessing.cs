@@ -132,12 +132,12 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         //     m_lensDistortion.intensity.value = Mathf.Lerp(m_originalLensDistortion, m_warpLensDistortion, t);
 
         // FOV 감소 (외곽이 날아가는 느낌)
-        if (m_mainCamera != null)
-            m_mainCamera.fieldOfView = Mathf.Lerp(m_originalFOV, m_originalFOV - m_warpFOV, t);
+        // if (m_mainCamera != null)
+        //     m_mainCamera.fieldOfView = Mathf.Lerp(m_originalFOV, m_originalFOV - m_warpFOV, t);
 
         // Radial Blur (방사형 모션 블러)
-        if (RadialBlurFeature.Instance != null)
-            RadialBlurFeature.Instance.SetIntensity(m_warpRadialBlurIntensity * t);
+        // if (RadialBlurFeature.Instance != null)
+        //     RadialBlurFeature.Instance.SetIntensity(m_warpRadialBlurIntensity * t);
     }
 
     // 즉시 원본으로 복원

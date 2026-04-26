@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
+// 행성 또는 항성 하나의 배치 정보
+[System.Serializable]
+public class CelestialBodyConfig
+{
+    public bool    isStar    = false;
+    public Vector3 position;
+    public Vector3 scale     = new Vector3(20f, 20f, 20f);
+    public Material material;
+}
+
 // Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 skybox를 공유
 [System.Serializable]
 public class ZoneConfig
@@ -11,10 +21,13 @@ public class ZoneConfig
     public Material skyboxMaterial; // 이 Zone의 스카이박스
 
     [Header("갤럭시 뷰 카메라 앵커 (탐사 탭 그룹 선택 시)")]
-    public Vector3 galaxyCameraTarget; // 카메라가 바라볼 월드 좌표
+    public Vector3 galaxyCameraTarget;
     public float   galaxyCameraZoom;   // 줌값 (100~400 범위 권장)
     public float   galaxyCameraRotX;   // 앙각 (0~80)
     public float   galaxyCameraRotY;   // 수평 회전
+
+    [Header("천체 배치 (ZonePreviewComponent로 시각 편집)")]
+    public List<CelestialBodyConfig> celestialBodies = new List<CelestialBodyConfig>();
 }
 // 각 슬롯에 장착할 모듈 설정
 [System.Serializable]
@@ -71,8 +84,9 @@ public class ZoneStageConfig
     [Header("스카이박스 회전 (스테이지별)")]
     [Range(0f, 360f)] public float skyboxRotation = 0f;
 
-    [Header("아군 함대 위치 (절대 좌표)")]
-    public Vector3 fleetPosition;   // 이 존 진입 시 아군 함대가 배치될 월드 좌표
+    [Header("아군 함대 위치/방향 (절대 좌표)")]
+    public Vector3 fleetPosition;
+    [Range(0f, 360f)] public float fleetRotationY;
 }
 
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]

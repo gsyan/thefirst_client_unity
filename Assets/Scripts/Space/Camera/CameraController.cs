@@ -30,7 +30,7 @@ public class CameraController : MonoSingleton<CameraController>
     private Vector3 m_interpolatedTargetPosition; // 부드럽게 보간된 타겟 위치
     [SerializeField] private float m_currentZoom;
     public float CurrentZoom => m_currentZoom;
-    private float m_currentRotationY = 200f;
+    private float m_currentRotationY = 20f;
     private float m_currentRotationX = 30f;
 
     // 모듈 포커싱용 목표 회전각/줌
@@ -48,6 +48,7 @@ public class CameraController : MonoSingleton<CameraController>
     private const float k_rotateArriveThreshold = 0.5f;
     private const float k_zoomLerpSpeed = 8f;
     private const float k_zoomArriveThreshold = 0.1f;
+    private const float k_positionLerpSpeed = 10f; // 줌(8f)보다 빠르게 — 위치가 먼저 도착해야 커브 방지
 
     // UIPanelSpace 활성화 시 true, 비활성화 시 false
     private bool m_shipSelectionEnabled = false;
@@ -55,9 +56,12 @@ public class CameraController : MonoSingleton<CameraController>
 
     // 갤럭시 뷰 (탐사 탭)
     private bool m_isGalaxyView = false;
-    private float m_savedMaxZoom = 40f;
+
     private Transform m_savedTarget = null;
     private Vector3 m_savedTargetPosition = Vector3.zero;
+    private float m_savedRotationX = 0f;
+    private float m_savedRotationY = 0f;
+    private float m_savedZoom = 0f;
 
     // 카메라 중심점 타겟
     private ECameraFocusTarget m_focusTarget = ECameraFocusTarget.camera_focus_my_fleet;
@@ -172,12 +176,10 @@ public class CameraController : MonoSingleton<CameraController>
             }
         }
 
-        // 타겟 위치를 부드럽게 보간 (Lerp 속도 조절 가능)
-        float lerpSpeed = 5f * Time.deltaTime; // 속도 조절 파라미터
-        m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, lerpSpeed);
+        m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, k_positionLerpSpeed * Time.deltaTime);
 
-        // 1. 회전 각도를 라디안으로 변환
-        float radiansY = m_currentRotationY * Mathf.Deg2Rad;
+        // 1. 회전 각도를 라디안으로 변환 (RotY=0 → +Z 방향 기준, +180° 오프셋)
+        float radiansY = (m_currentRotationY + 180f) * Mathf.Deg2Rad;
         float radiansX = m_currentRotationX * Mathf.Deg2Rad;
         // 2. 구면 좌표계(Spherical Coordinates)로 카메라 위치 계산
         float horizontalDistance = m_currentZoom * Mathf.Cos(radiansX);
@@ -465,6 +467,8 @@ public class CameraController : MonoSingleton<CameraController>
 
     public void ZoomCamera(float deltaZoom)
     {
+        if (m_isGalaxyView == true) return;
+
         m_hasTargetZoom = false;
 
         if (m_isCenterMode == true)
@@ -594,7 +598,7 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_currentTarget == null && m_targetPosition == Vector3.zero)
         {
             m_targetPosition = target.position;
-            m_interpolatedTargetPosition = target.position;
+            //m_interpolatedTargetPosition = target.position;
         }
 
         m_currentTarget = target;
@@ -647,34 +651,37 @@ public class CameraController : MonoSingleton<CameraController>
         return m_targetPosition;
     }
 
-    // 갤럭시 뷰 진입 — maxZoom 제한 임시 해제 후 지정 파라미터로 Lerp
+    // 갤럭시 뷰 진입 — 위치 즉시 스냅 후 줌/회전만 보간 (경로 커브로 인한 지형 관통 방지)
     public void EnterGalaxyView(Vector3 targetPos, float zoom, float rotX, float rotY)
     {
         if (m_isGalaxyView == true) return;
         m_isGalaxyView = true;
 
-        m_savedMaxZoom = m_maxZoom;
         m_savedTarget = m_currentTarget;
         m_savedTargetPosition = m_targetPosition;
-        m_maxZoom = 1000f;
+        m_savedRotationX = m_currentRotationX;
+        m_savedRotationY = m_currentRotationY;
+        m_savedZoom = m_currentZoom;
 
         m_currentTarget = null;
         m_targetPosition = targetPos;
+        //m_interpolatedTargetPosition = targetPos; // 위치 즉시 스냅
 
         m_hasTargetZoom = true;
-        m_targetZoom = Mathf.Clamp(zoom, m_minZoom, m_maxZoom);
+        m_targetZoom = zoom;
         m_hasTargetRotationX = true;
         m_targetRotationX = Mathf.Clamp(rotX, -80f, 80f);
         m_hasTargetRotationY = true;
         m_targetRotationY = rotY;
     }
 
-    // Zone 그룹 탭 선택 시 해당 앵커로 포커스 (갤럭시 뷰 중에만 동작)
+    // Zone 그룹 탭 선택 시 해당 앵커로 포커스 (갤럭시 뷰 중에만 동작) — 위치 즉시 스냅
     public void FocusOnZoneAnchor(Vector3 zoneWorldPos, float zoom, float rotX, float rotY)
     {
         if (m_isGalaxyView == false) return;
 
         m_targetPosition = zoneWorldPos;
+        //m_interpolatedTargetPosition = zoneWorldPos; // 위치 즉시 스냅
         m_hasTargetZoom = true;
         m_targetZoom = Mathf.Clamp(zoom, m_minZoom, m_maxZoom);
         m_hasTargetRotationX = true;
@@ -683,19 +690,36 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetRotationY = rotY;
     }
 
-    // 갤럭시 뷰 종료 — maxZoom 복원, 함선 뷰로 복귀
+    // 갤럭시 뷰 종료 — 함선 뷰로 복귀, 진입 전 회전·줌 복원
     public void ExitGalaxyView()
     {
         if (m_isGalaxyView == false) return;
         m_isGalaxyView = false;
 
-        m_maxZoom = m_savedMaxZoom;
         m_currentTarget = m_savedTarget;
         m_targetPosition = m_savedTargetPosition;
 
-        float clampedZoom = Mathf.Clamp(m_currentZoom, m_minZoom, m_maxZoom);
-        if (Mathf.Abs(clampedZoom - m_currentZoom) > 0.01f)
-            SetTargetZoom(clampedZoom);
+        RestorePreGalaxyViewCamera();
+    }
+
+    // 갤럭시 뷰 종료하면서 카메라를 이전 함선 위치 대신 지정 위치로 이동, 회전·줌 복원
+    public void ExitGalaxyViewMoveTo(Vector3 position)
+    {
+        if (m_isGalaxyView == false) return;
+        m_isGalaxyView = false;
+        m_currentTarget = null;
+        m_targetPosition = position;
+
+        RestorePreGalaxyViewCamera();
+    }
+
+    private void RestorePreGalaxyViewCamera()
+    {
+        m_hasTargetRotationX = true;
+        m_targetRotationX = m_savedRotationX;
+        m_hasTargetRotationY = true;
+        m_targetRotationY = m_savedRotationY;
+        SetTargetZoom(Mathf.Clamp(m_savedZoom, m_minZoom, m_maxZoom));
     }
 
     // 카메라 중심점 전환 (적함대, 중간, 우리함대)

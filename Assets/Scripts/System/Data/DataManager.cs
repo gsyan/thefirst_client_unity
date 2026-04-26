@@ -10,6 +10,7 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableModule();
         LoadDataTableModuleResearch();
         LoadDataTableConfig();
+        LoadDataTableZone();
     }
     #endregion
 
@@ -152,6 +153,17 @@ public class DataManager : Singleton<DataManager>
     {
         if (m_dataTableResearch == null) return 0;
         return m_dataTableResearch.GetResearchCost(subType);
+    }
+    #endregion
+
+    #region Data Table Zone ###############################################################
+    public DataTableZone m_dataTableZone;
+
+    private void LoadDataTableZone()
+    {
+        m_dataTableZone = Resources.Load<DataTableZone>("DataTable/DataTableZone");
+        if (m_dataTableZone == null)
+            Debug.LogError("DataTableZone is not exist");
     }
     #endregion
 

@@ -19,60 +19,94 @@ MonoBehaviour:
     galaxyCameraZoom: 800
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies: []
   - zoneIndex: 1
     skyboxMaterial: {fileID: 2100000, guid: 1fe1faf551eff7540888233964ae8c07, type: 2}
     galaxyCameraTarget: {x: -2000, y: 0, z: 2000}
-    galaxyCameraZoom: 800
+    galaxyCameraZoom: 1000
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies:
+    - isStar: 1
+      position: {x: -2000, y: 0, z: 2000}
+      scale: {x: 300, y: 300, z: 300}
+      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+    - isStar: 0
+      position: {x: -3832, y: 0, z: 2000}
+      scale: {x: 80, y: 80, z: 80}
+      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+    - isStar: 0
+      position: {x: -3232, y: 0, z: 2556}
+      scale: {x: 80, y: 80, z: 80}
+      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+    - isStar: 0
+      position: {x: -2309, y: 0, z: 3070}
+      scale: {x: 80, y: 80, z: 80}
+      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+    - isStar: 0
+      position: {x: -1054, y: 0, z: 1369}
+      scale: {x: 80, y: 80, z: 80}
+      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+    - isStar: 0
+      position: {x: -427, y: 0, z: 2292}
+      scale: {x: 80, y: 80, z: 80}
+      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   - zoneIndex: 2
     skyboxMaterial: {fileID: 2100000, guid: e09c50448265b284c98f1b4ab1b3d814, type: 2}
     galaxyCameraTarget: {x: 0, y: 0, z: 2000}
     galaxyCameraZoom: 800
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies: []
   - zoneIndex: 3
     skyboxMaterial: {fileID: 2100000, guid: badcbeaf674407f47871aebf243690a3, type: 2}
     galaxyCameraTarget: {x: 2000, y: 0, z: 2000}
     galaxyCameraZoom: 800
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies: []
   - zoneIndex: 4
     skyboxMaterial: {fileID: 2100000, guid: 35abe7312286223429ee5d0467d4e882, type: 2}
     galaxyCameraTarget: {x: 2000, y: 0, z: 0}
     galaxyCameraZoom: 800
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies: []
   - zoneIndex: 5
     skyboxMaterial: {fileID: 2100000, guid: 2366ba7f489058249ab3210586c96ad3, type: 2}
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 800
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies: []
   - zoneIndex: 6
     skyboxMaterial: {fileID: 2100000, guid: 153c4d8c0bd5e3c478f382f84bc27052, type: 2}
     galaxyCameraTarget: {x: -2000, y: 0, z: 0}
     galaxyCameraZoom: 800
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies: []
   - zoneIndex: 7
     skyboxMaterial: {fileID: 2100000, guid: 06c959ac6fffe2d40abab9e4d0a61dbf, type: 2}
     galaxyCameraTarget: {x: -2000, y: 0, z: -2000}
     galaxyCameraZoom: 800
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies: []
   - zoneIndex: 8
     skyboxMaterial: {fileID: 2100000, guid: 085092440773a7c4a8bf84a52de08042, type: 2}
     galaxyCameraTarget: {x: 0, y: 0, z: -2000}
     galaxyCameraZoom: 800
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies: []
   - zoneIndex: 9
     skyboxMaterial: {fileID: 2100000, guid: 8775bb68282374549a795ba8ad6f7790, type: 2}
     galaxyCameraTarget: {x: 2000, y: 0, z: -2000}
     galaxyCameraZoom: 800
     galaxyCameraRotX: 45
     galaxyCameraRotY: 200
+    celestialBodies: []
   zoneStageList:
   - zoneName: Zone-0
     zoneDescription: "\uC548\uC804\uC9C0\uC5ED"
@@ -83,13 +117,13 @@ MonoBehaviour:
     enemyShipConfigs: []
     mineralClearReward: 0
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -4000, y: 0, z: 2000}
   - zoneName: 1-1
     zoneDescription: Zone 1-1
     zoneIndex: 1
     delayBeforeSpawn: 1
     shipSpawnInterval: 1.5
-    maxConcurrentEnemyShips: 10
+    maxConcurrentEnemyShips: 9
     enemyShipConfigs:
     - isFlagShip: 0
       bodySubType: 10101
@@ -293,7 +327,7 @@ MonoBehaviour:
       hangerMultiplier: 0.1
     mineralClearReward: 10
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -2400, y: 0, z: 2000}
   - zoneName: 1-2
     zoneDescription: Zone 1-2
     zoneIndex: 1
@@ -503,7 +537,7 @@ MonoBehaviour:
       hangerMultiplier: 0.1474
     mineralClearReward: 20
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -2200, y: 0, z: 2000}
   - zoneName: 1-3
     zoneDescription: Zone 1-3
     zoneIndex: 1
@@ -713,7 +747,7 @@ MonoBehaviour:
       hangerMultiplier: 0.1947
     mineralClearReward: 30
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -2000, y: 0, z: 2000}
   - zoneName: 1-4
     zoneDescription: Zone 1-4
     zoneIndex: 1
@@ -923,7 +957,7 @@ MonoBehaviour:
       hangerMultiplier: 0.2421
     mineralClearReward: 40
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -1800, y: 0, z: 2000}
   - zoneName: 1-5
     zoneDescription: Zone 1-5
     zoneIndex: 1
@@ -1133,7 +1167,7 @@ MonoBehaviour:
       hangerMultiplier: 0.2895
     mineralClearReward: 50
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -1600, y: 0, z: 2000}
   - zoneName: 2-1
     zoneDescription: Zone 2-1
     zoneIndex: 2
@@ -1343,7 +1377,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 60
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -400, y: 0, z: 2000}
   - zoneName: 2-2
     zoneDescription: Zone 2-2
     zoneIndex: 2
@@ -1553,7 +1587,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 70
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -200, y: 0, z: 2000}
   - zoneName: 2-3
     zoneDescription: Zone 2-3
     zoneIndex: 2
@@ -1763,7 +1797,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 80
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 0, y: 0, z: 2000}
   - zoneName: 2-4
     zoneDescription: Zone 2-4
     zoneIndex: 2
@@ -1973,7 +2007,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 90
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 200, y: 0, z: 2000}
   - zoneName: 2-5
     zoneDescription: Zone 2-5
     zoneIndex: 2
@@ -2183,7 +2217,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 100
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 400, y: 0, z: 2000}
   - zoneName: 3-1
     zoneDescription: Zone 3-1
     zoneIndex: 3
@@ -2393,7 +2427,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 110
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 1600, y: 0, z: 2000}
   - zoneName: 3-2
     zoneDescription: Zone 3-2
     zoneIndex: 3
@@ -2603,7 +2637,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 120
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 1800, y: 0, z: 2000}
   - zoneName: 3-3
     zoneDescription: Zone 3-3
     zoneIndex: 3
@@ -2813,7 +2847,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 130
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 2000, y: 0, z: 2000}
   - zoneName: 3-4
     zoneDescription: Zone 3-4
     zoneIndex: 3
@@ -3023,7 +3057,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 140
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 2200, y: 0, z: 2000}
   - zoneName: 3-5
     zoneDescription: Zone 3-5
     zoneIndex: 3
@@ -3233,7 +3267,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 150
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 2400, y: 0, z: 2000}
   - zoneName: 4-1
     zoneDescription: Zone 4-1
     zoneIndex: 4
@@ -3443,7 +3477,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 160
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 1600, y: 0, z: 0}
   - zoneName: 4-2
     zoneDescription: Zone 4-2
     zoneIndex: 4
@@ -3653,7 +3687,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 170
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 1800, y: 0, z: 0}
   - zoneName: 4-3
     zoneDescription: Zone 4-3
     zoneIndex: 4
@@ -3863,7 +3897,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 180
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 2000, y: 0, z: 0}
   - zoneName: 4-4
     zoneDescription: Zone 4-4
     zoneIndex: 4
@@ -4073,7 +4107,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 190
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 2200, y: 0, z: 0}
   - zoneName: 4-5
     zoneDescription: Zone 4-5
     zoneIndex: 4
@@ -4283,7 +4317,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 200
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 2400, y: 0, z: 0}
   - zoneName: 5-1
     zoneDescription: Zone 5-1
     zoneIndex: 5
@@ -4493,7 +4527,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 210
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -400, y: 0, z: 0}
   - zoneName: 5-2
     zoneDescription: Zone 5-2
     zoneIndex: 5
@@ -4703,7 +4737,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 220
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -200, y: 0, z: 0}
   - zoneName: 5-3
     zoneDescription: Zone 5-3
     zoneIndex: 5
@@ -5123,7 +5157,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 240
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 200, y: 0, z: 0}
   - zoneName: 5-5
     zoneDescription: Zone 5-5
     zoneIndex: 5
@@ -5333,7 +5367,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 250
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 400, y: 0, z: 0}
   - zoneName: 6-1
     zoneDescription: Zone 6-1
     zoneIndex: 6
@@ -5543,7 +5577,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 260
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -2400, y: 0, z: 0}
   - zoneName: 6-2
     zoneDescription: Zone 6-2
     zoneIndex: 6
@@ -5753,7 +5787,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 270
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -2200, y: 0, z: 0}
   - zoneName: 6-3
     zoneDescription: Zone 6-3
     zoneIndex: 6
@@ -5963,7 +5997,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 280
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -2000, y: 0, z: 0}
   - zoneName: 6-4
     zoneDescription: Zone 6-4
     zoneIndex: 6
@@ -6173,7 +6207,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 290
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -1800, y: 0, z: 0}
   - zoneName: 6-5
     zoneDescription: Zone 6-5
     zoneIndex: 6
@@ -6383,7 +6417,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 300
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -1600, y: 0, z: 0}
   - zoneName: 7-1
     zoneDescription: Zone 7-1
     zoneIndex: 7
@@ -6593,7 +6627,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 310
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -2400, y: 0, z: -2000}
   - zoneName: 7-2
     zoneDescription: Zone 7-2
     zoneIndex: 7
@@ -6803,7 +6837,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 320
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -2200, y: 0, z: -2000}
   - zoneName: 7-3
     zoneDescription: Zone 7-3
     zoneIndex: 7
@@ -7013,7 +7047,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 330
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -2000, y: 0, z: -2000}
   - zoneName: 7-4
     zoneDescription: Zone 7-4
     zoneIndex: 7
@@ -7223,7 +7257,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 340
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -1800, y: 0, z: -2000}
   - zoneName: 7-5
     zoneDescription: Zone 7-5
     zoneIndex: 7
@@ -7433,7 +7467,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 350
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -1600, y: 0, z: -2000}
   - zoneName: 8-1
     zoneDescription: Zone 8-1
     zoneIndex: 8
@@ -7643,7 +7677,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 360
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -400, y: 0, z: -2000}
   - zoneName: 8-2
     zoneDescription: Zone 8-2
     zoneIndex: 8
@@ -7853,7 +7887,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 370
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: -200, y: 0, z: -2000}
   - zoneName: 8-3
     zoneDescription: Zone 8-3
     zoneIndex: 8
@@ -8063,7 +8097,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 380
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 0, y: 0, z: -2000}
   - zoneName: 8-4
     zoneDescription: Zone 8-4
     zoneIndex: 8
@@ -8273,7 +8307,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 390
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 200, y: 0, z: -2000}
   - zoneName: 8-5
     zoneDescription: Zone 8-5
     zoneIndex: 8
@@ -8483,7 +8517,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 400
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 400, y: 0, z: -2000}
   - zoneName: 9-1
     zoneDescription: Zone 9-1
     zoneIndex: 9
@@ -8693,7 +8727,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 410
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 1600, y: 0, z: -2000}
   - zoneName: 9-2
     zoneDescription: Zone 9-2
     zoneIndex: 9
@@ -8903,7 +8937,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 420
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 1800, y: 0, z: -2000}
   - zoneName: 9-3
     zoneDescription: Zone 9-3
     zoneIndex: 9
@@ -9113,7 +9147,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 430
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 2000, y: 0, z: -2000}
   - zoneName: 9-4
     zoneDescription: Zone 9-4
     zoneIndex: 9
@@ -9323,7 +9357,7 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 440
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 2200, y: 0, z: -2000}
   - zoneName: 9-5
     zoneDescription: Zone 9-5
     zoneIndex: 9
@@ -9533,4 +9567,4 @@ MonoBehaviour:
       hangerMultiplier: 1
     mineralClearReward: 450
     skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetPosition: {x: 2400, y: 0, z: -2000}

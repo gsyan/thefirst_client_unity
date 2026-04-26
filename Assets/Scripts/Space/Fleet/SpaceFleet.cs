@@ -58,18 +58,21 @@ public class SpaceFleet : MonoBehaviour
             StartCoroutine(AutoRepair());
     }
 
-    // 적 함대 스폰 시 fleet 오브젝트를 기함 크기 기준 오프셋만큼 뒤에서 시작, 진형 유지하며 전진
-    public void StartEnemyFleetWarpIn()
+    // fleet 오브젝트를 현재 위치 뒤에서 targetPos까지 워프 이펙트로 진입, 도착 시 콜백
+    // onArrived 미지정 시 기본으로 Battle 상태 전환 (기존 적 함대 스폰 동작 유지)
+    public void StartFleetWarpIn(System.Action onArrived = null)
     {
         SpaceShip flagship = GetFlagship();
-        if (flagship == null) return;
+        if (flagship == null)
+        {
+            (onArrived ?? (() => SetFleetState(EFleetState.Battle)))?.Invoke();
+            return;
+        }
 
-        // 기함 z 크기 * 플레이어 스폰과 동일한 배율로 뒤 오프셋
         float offsetDist = flagship.CalculateShipBounds().size.z * m_spawnOffsetMultiplier;
         Vector3 finalPos  = transform.position;
         transform.position = finalPos - transform.forward * offsetDist;
 
-        // 각 함선에 워프 이펙트 — fleet 오브젝트가 이동하는 동안 유지
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
@@ -78,29 +81,28 @@ public class SpaceFleet : MonoBehaviour
                 warpEffect = ship.gameObject.AddComponent<WarpEffectShip>();
                 warpEffect.InitializeWarpEffect();
             }
-            warpEffect.StartEnemyFleetWarpIn();
+            warpEffect.StartFleetWarpIn();
         }
 
         float warpSpeed = flagship.m_spaceShipStatsCur.speed * m_spawnApproachSpeedMult;
         float normalSpeed = flagship.m_spaceShipStatsCur.speed;
-        StartCoroutine(EnemyFleetWarpInMove(finalPos, warpSpeed, normalSpeed));
+        System.Action arrived = onArrived ?? (() => SetFleetState(EFleetState.Battle));
+        StartCoroutine(FleetWarpInMove(finalPos, warpSpeed, normalSpeed, arrived));
     }
 
-    private const float WARP_STOP_DIST = 2f; // 목표 1유닛 전에 워프 이펙트 종료
+    private const float WARP_STOP_DIST = 2f;
 
-    // fleet 오브젝트를 finalPos까지 이동, 1유닛 전 워프 종료 → 기본속도로 마저 이동 → Battle 전환
-    private IEnumerator EnemyFleetWarpInMove(Vector3 finalPos, float warpSpeed, float normalSpeed)
+    private IEnumerator FleetWarpInMove(Vector3 finalPos, float warpSpeed, float normalSpeed, System.Action onArrived)
     {
         bool warpStopped = false;
 
         while (true)
         {
             Vector3 toTarget = finalPos - transform.position;
-            float dotForward = Vector3.Dot(transform.forward, toTarget); // 전방 잔여 거리
+            float dotForward = Vector3.Dot(transform.forward, toTarget);
             float speed = warpStopped == false ? warpSpeed : normalSpeed;
             float moveDist = speed * Time.deltaTime;
 
-            // 배속 시 WARP_STOP_DIST를 프레임 단위로 점프할 수 있으므로 도달 여부도 함께 체크
             if (warpStopped == false && (dotForward <= WARP_STOP_DIST || dotForward <= moveDist))
             {
                 foreach (SpaceShip ship in m_ships)
@@ -120,8 +122,7 @@ public class SpaceFleet : MonoBehaviour
             yield return null;
         }
 
-        // 도착 — Battle 전환, 아군 FindTargetModuleBody가 자연히 적을 탐색함
-        SetFleetState(EFleetState.Battle);
+        onArrived?.Invoke();
     }
 
     // Zone 적 함선을 순차적으로 받아들이기 위한 빈 함대 초기화

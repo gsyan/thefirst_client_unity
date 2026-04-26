@@ -251,7 +251,7 @@ public class DataTableZoneEditor : Editor
         }
 
         // --- zone CSV 파싱 ---
-        // 헤더: zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,max_concurrent_enemy_ships,fleet_pos_x,fleet_pos_y,fleet_pos_z
+        // 헤더: zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,max_concurrent_enemy_ships,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y
         m_dataTableZone.zoneStageList.Clear();
 
         string[] zoneLines = File.ReadAllLines(zoneCSV);
@@ -267,6 +267,7 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col.Length > 6 ? col[6] : "0", out float fpx);
             float.TryParse(col.Length > 7 ? col[7] : "0", out float fpy);
             float.TryParse(col.Length > 8 ? col[8] : "0", out float fpz);
+            float.TryParse(col.Length > 9 ? col[9] : "0", out float frotY);
 
             // zone=0 행 → Zone-0 안전지역 (전투 없음)
             if (zoneIndex == 0)
@@ -277,6 +278,7 @@ public class DataTableZoneEditor : Editor
                     zoneDescription = "안전지역",
                     zoneIndex = 0,
                     fleetPosition = new Vector3(fpx, fpy, fpz),
+                    fleetRotationY = frotY,
                 });
                 continue;
             }
@@ -298,6 +300,7 @@ public class DataTableZoneEditor : Editor
                 maxConcurrentEnemyShips   = maxConcurrent > 0 ? maxConcurrent : 3,
                 mineralClearReward        = clearReward,
                 fleetPosition             = new Vector3(fpx, fpy, fpz),
+                fleetRotationY            = frotY,
                 enemyShipConfigs          = waveTemplates ?? new List<EnemyShipConfig>(),
             };
 
@@ -435,6 +438,45 @@ public class DataTableZoneEditor : Editor
         zoneConfig.galaxyCameraRotX   = EditorGUILayout.Slider("  Rot X (앙각)", zoneConfig.galaxyCameraRotX, -80f, 80f);
         zoneConfig.galaxyCameraRotY   = EditorGUILayout.FloatField("  Rot Y (수평)", zoneConfig.galaxyCameraRotY);
 
+        // 천체 배치
+        EditorGUILayout.Space(4);
+        EditorGUILayout.LabelField("천체 배치", EditorStyles.boldLabel);
+
+        if (zoneConfig.celestialBodies == null)
+            zoneConfig.celestialBodies = new System.Collections.Generic.List<CelestialBodyConfig>();
+
+        for (int ci = 0; ci < zoneConfig.celestialBodies.Count; ci++)
+        {
+            CelestialBodyConfig body = zoneConfig.celestialBodies[ci];
+            string bodyLabel = body.isStar ? $"  ★ Star_{ci}" : $"  ● Planet_{ci}";
+
+            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(bodyLabel, EditorStyles.boldLabel);
+            body.isStar = EditorGUILayout.ToggleLeft("항성", body.isStar, GUILayout.Width(55));
+            if (GUILayout.Button("X", GUILayout.Width(22)))
+            {
+                zoneConfig.celestialBodies.RemoveAt(ci);
+                EditorUtility.SetDirty(m_dataTableZone);
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
+                break;
+            }
+            EditorGUILayout.EndHorizontal();
+
+            body.position = EditorGUILayout.Vector3Field("    Position", body.position);
+            body.scale    = EditorGUILayout.Vector3Field("    Scale",    body.scale);
+            body.material = (Material)EditorGUILayout.ObjectField("    Material", body.material, typeof(Material), false);
+            EditorGUILayout.EndVertical();
+        }
+
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("+ 행성 추가"))
+            zoneConfig.celestialBodies.Add(new CelestialBodyConfig { isStar = false, scale = Vector3.one * 20f });
+        if (GUILayout.Button("+ 항성 추가"))
+            zoneConfig.celestialBodies.Add(new CelestialBodyConfig { isStar = true,  scale = Vector3.one * 50f });
+        EditorGUILayout.EndHorizontal();
+
         if (EditorGUI.EndChangeCheck())
             EditorUtility.SetDirty(m_dataTableZone);
     }
@@ -499,6 +541,7 @@ public class DataTableZoneEditor : Editor
             EditorGUILayout.BeginVertical("box");
             zoneStage.skyboxRotation = EditorGUILayout.Slider("Skybox Rotation", zoneStage.skyboxRotation, 0f, 360f);
             zoneStage.fleetPosition = EditorGUILayout.Vector3Field("Fleet Position", zoneStage.fleetPosition);
+            zoneStage.fleetRotationY = EditorGUILayout.Slider("Fleet Rotation Y", zoneStage.fleetRotationY, 0f, 360f);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);

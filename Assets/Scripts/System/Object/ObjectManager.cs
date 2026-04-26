@@ -103,6 +103,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
     #endregion
 
+    private CelestialBodySpawner m_celestialBodySpawner;
+
     [HideInInspector] public SpaceFleet m_myFleet;
     [HideInInspector] public List<SpaceFleet> m_enemyFleets = new List<SpaceFleet>();
     [HideInInspector] public List<SpaceMineral> m_mineralList = new List<SpaceMineral>();
@@ -123,6 +125,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
     {
+        m_celestialBodySpawner = gameObject.AddComponent<CelestialBodySpawner>();
+        m_celestialBodySpawner.SpawnAll();
+
         SpawnFleet();
 
         NetworkManager.Instance.OnChangeScene();
@@ -296,9 +301,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             fleetObj.transform.rotation = Quaternion.LookRotation(directionToPlayer);
 
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
-        // Move 상태로 초기화 — 워프 완료 후 StartEnemyFleetWarpIn 내부에서 Battle로 전환
         enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EFleetState.Move);
-        enemyFleet.StartEnemyFleetWarpIn();
+        enemyFleet.StartFleetWarpIn();
         m_myFleet.SetFleetState(EFleetState.Battle);
 
         m_enemyFleets.Add(enemyFleet);
@@ -395,10 +399,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
 
     // 워프 완료 시점에 호출 — 아군 함대를 존별 지정 위치로 텔레포트
-    public void SetMyFleetPosition(Vector3 position)
+    public void SetMyFleetPosition(Vector3 position, float rotationY = 0f)
     {
         if (m_myFleet == null) return;
         m_myFleet.transform.position = position;
+        m_myFleet.transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
     }
 
     

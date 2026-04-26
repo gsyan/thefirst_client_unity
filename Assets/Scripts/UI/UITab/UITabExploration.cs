@@ -29,12 +29,13 @@ public class UITabExploration : UITabBase
 
     private static readonly Color k_tabActiveColor   = new Color(1f, 0.8f, 0.2f, 1f);
     private static readonly Color k_tabInactiveColor = Color.white;
+    private static readonly WaitForSeconds k_warpCameraLeadTime = new(1f);
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
     private ZoneStageConfig m_currentZoneStage;
     private ZoneStageConfig m_selectedZoneStage;
-    private UIZoneStageButton m_currentZoneButton;
+    private UIZoneStageButton m_currentZoneStageButton;
     private readonly Dictionary<string, UIZoneStageButton> m_zoneStageButtons = new Dictionary<string, UIZoneStageButton>();
     private readonly Dictionary<int, ZoneStageConfig> m_selectedZoneStagePerGroup = new();
 
@@ -93,7 +94,7 @@ public class UITabExploration : UITabBase
 
         if (targetStage != null)
         {
-            ObjectManager.Instance.SetMyFleetPosition(targetStage.fleetPosition);
+            ObjectManager.Instance.SetMyFleetPosition(targetStage.fleetPosition, targetStage.fleetRotationY);
             CameraController.Instance.SnapToTarget();
         }
     }
@@ -204,10 +205,10 @@ public class UITabExploration : UITabBase
             return;
         }
 
-        if (m_currentZoneButton != null)
+        if (m_currentZoneStageButton != null)
         {
-            bool inCurrentGroup = ParseZoneGroup(m_currentZoneButton.ZoneStageConfig.zoneName) == zoneIndex;
-            m_currentZoneButton.SetSelected(inCurrentGroup);
+            bool inCurrentGroup = ParseZoneGroup(m_currentZoneStageButton.ZoneStageConfig.zoneName) == zoneIndex;
+            m_currentZoneStageButton.SetSelected(inCurrentGroup);
         }
 
         ZoneStageConfig toSelect = m_selectedZoneStagePerGroup.TryGetValue(zoneIndex, out ZoneStageConfig saved)
@@ -324,10 +325,9 @@ public class UITabExploration : UITabBase
     {
         if (m_selectedZoneStage == null) return;
         if (m_enterZoneState == EEnterZoneState.warp) return;
-        if (m_enterZoneState == EEnterZoneState.battle && m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZoneStage.zoneName) return;
-
         if (m_enterZoneState == EEnterZoneState.battle)
         {
+            if(m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZoneStage.zoneName) return;
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
             ObjectManager.Instance.StopEnemySpawning();
             ObjectManager.Instance.OrderAllAircraftReturn();
@@ -399,24 +399,24 @@ public class UITabExploration : UITabBase
 
     private void EnterZoneStage(ZoneStageConfig zoneStage)
     {
-        if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
         SetEnterZoneState(EEnterZoneState.warp);
-        var zone = m_datatableZone.GetZone(zoneStage.zoneIndex);
-        Material skybox = zone?.skyboxMaterial;
-        float rotation = zoneStage.skyboxRotation;
-
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null && zoneStage != null)
-            pp.SetSkyboxBlendTarget(skybox, rotation);
 
         m_currentZoneStage = zoneStage;
-        CacheCurrentZoneButton();
+        RefreshCurrentZoneStageButton();
         EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilled);
 
-        m_myFleet.StartFleetWarp(skybox, () =>
+        // 카메라를 먼저 목표 위치로 이동 (갤럭시뷰 종료 포함)
+        CameraController.Instance.ExitGalaxyViewMoveTo(zoneStage.fleetPosition);
+
+        if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
+
+        // 최종 위치·방향을 설정 → StartFleetWarpIn이 transform.forward 기준으로 뒤에서 접근
+        ObjectManager.Instance.SetMyFleetPosition(zoneStage.fleetPosition, zoneStage.fleetRotationY);
+
+        var cam = CameraController.Instance;
+        m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
-            ObjectManager.Instance.SetMyFleetPosition(zoneStage.fleetPosition);
-            CameraController.Instance.SnapToTarget();
+            cam.SetTargetOfCameraController(m_myFleet.transform);
             SetEnterZoneState(EEnterZoneState.battle);
             UIManager.Instance.ShowPanel("UIPanelCameraView");
             bool isFirstClear = IsAlreadyCleared(zoneStage) == false;
@@ -425,23 +425,23 @@ public class UITabExploration : UITabBase
         });
     }
 
-    private void CacheCurrentZoneButton()
+    private void RefreshCurrentZoneStageButton()
     {
-        if (m_currentZoneButton != null)
+        if (m_currentZoneStageButton != null)
         {
-            m_currentZoneButton.SetSelected(false);
-            if (IsAlreadyCleared(m_currentZoneButton.ZoneStageConfig) == false)
-                m_currentZoneButton.SetState(EZoneState.Current);
+            m_currentZoneStageButton.SetSelected(false);
+            if (IsAlreadyCleared(m_currentZoneStageButton.ZoneStageConfig) == false)
+                m_currentZoneStageButton.SetState(EZoneState.Current);
         }
 
-        m_currentZoneButton = null;
+        m_currentZoneStageButton = null;
         if (m_currentZoneStage == null) return;
 
         if (m_zoneStageButtons.TryGetValue(m_currentZoneStage.zoneName, out UIZoneStageButton btn))
-            m_currentZoneButton = btn;
+            m_currentZoneStageButton = btn;
 
-        if (m_currentZoneButton != null)
-            m_currentZoneButton.SetSelected(true);
+        if (m_currentZoneStageButton != null)
+            m_currentZoneStageButton.SetSelected(true);
     }
 
     private void StartBattleInZone(ZoneStageConfig zoneStage)
@@ -496,7 +496,7 @@ public class UITabExploration : UITabBase
             if (m_zoneStageButtons.TryGetValue(newlyCleared, out UIZoneStageButton clearedBtn))
                 clearedBtn.SetState(EZoneState.Cleared);
 
-            CacheCurrentZoneButton();
+            RefreshCurrentZoneStageButton();
             SelectNextZoneStage(newlyCleared);
         }
 
@@ -570,40 +570,36 @@ public class UITabExploration : UITabBase
 
         ZoneStageConfig retreatStage = FindPreviousClearedStage();
 
-        Material skybox;
-        float skyboxRotation;
         Vector3 retreatPosition;
+        float retreatRotationY;
 
         if (retreatStage != null)
         {
-            var zone = m_datatableZone.GetZone(retreatStage.zoneIndex);
-            skybox = zone?.skyboxMaterial;
-            skyboxRotation = retreatStage.skyboxRotation;
             retreatPosition = retreatStage.fleetPosition;
+            retreatRotationY = retreatStage.fleetRotationY;
         }
         else
         {
             var zone0Stage = m_datatableZone.GetZoneStage(0);
-            var zone0 = m_datatableZone.GetZone(0);
-            skybox = zone0?.skyboxMaterial;
-            skyboxRotation = zone0Stage?.skyboxRotation ?? 0f;
             retreatPosition = zone0Stage?.fleetPosition ?? Vector3.zero;
+            retreatRotationY = zone0Stage?.fleetRotationY ?? 0f;
         }
 
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null)
-            pp.SetSkyboxBlendTarget(skybox, skyboxRotation);
-
         UIManager.Instance.HidePanel("UIPanelCameraView");
-        CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
-        m_myFleet.StartFleetWarp(skybox, () =>
+        // 카메라를 먼저 후퇴 위치로 이동 (갤럭시뷰 종료 포함 — 이후 CloseAllTabs→ExitGalaxyView 중복 호출 방지)
+        CameraController.Instance.ExitGalaxyViewMoveTo(retreatPosition);
+
+        if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
+
+        ObjectManager.Instance.SetMyFleetPosition(retreatPosition, retreatRotationY);
+
+        m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
-            ObjectManager.Instance.SetMyFleetPosition(retreatPosition);
-            CameraController.Instance.SnapToTarget();
+            CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 
             m_currentZoneStage = retreatStage;
-            CacheCurrentZoneButton();
+            RefreshCurrentZoneStageButton();
 
             SetEnterZoneState(EEnterZoneState.idle);
             m_myFleet.SetFleetState(EFleetState.None);

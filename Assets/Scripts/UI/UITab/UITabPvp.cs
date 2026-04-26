@@ -212,6 +212,7 @@ public class UITabPvp : UITabBase
         if (pp != null)
             pp.SetSkyboxBlendTarget(m_pvpBattleSkybox);
 
+        // TODO: StartFleetWarp 제거 → SetMyFleetPosition + StartFleetWarpIn 방식으로 교체 (UITabExploration 참고)
         m_myFleet.StartFleetWarp(m_pvpBattleSkybox, () =>
         {
             UIManager.Instance.ShowPanel("UIPanelCameraView");
@@ -282,6 +283,7 @@ public class UITabPvp : UITabBase
         if (pp != null)
             pp.SetSkyboxBlendTarget(safeSkybox);
 
+        // TODO: StartFleetWarp 제거 → SetMyFleetPosition + StartFleetWarpIn 방식으로 교체 (UITabExploration 참고)
         m_myFleet.StartFleetWarp(safeSkybox, () =>
         {
             if (m_myFleet.IsFleetAlive() == false)

@@ -178,14 +178,14 @@ public class WarpEffectShip : MonoBehaviour
         m_warpCoroutine = null;
     }
 
-    // 적 함대 스폰 시 fleet 오브젝트 이동 중 워프 이펙트 유지 — StopWarp() 호출 시 종료
-    public void StartEnemyFleetWarpIn()
+    // fleet 오브젝트 이동 중 워프 이펙트 유지 — StopWarp() 호출 시 종료
+    public void StartFleetWarpIn()
     {
         if (m_warpCoroutine != null) StopCoroutine(m_warpCoroutine);
-        m_warpCoroutine = StartCoroutine(EnemyFleetWarpInSequence());
+        m_warpCoroutine = StartCoroutine(FleetWarpInSequence());
     }
 
-    private IEnumerator EnemyFleetWarpInSequence()
+    private IEnumerator FleetWarpInSequence()
     {
         m_isWarping = true;
         SetEngineGlow(m_warpGlowIntensity);
