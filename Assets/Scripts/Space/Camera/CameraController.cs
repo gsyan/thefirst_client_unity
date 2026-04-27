@@ -93,8 +93,10 @@ public class CameraController : MonoSingleton<CameraController>
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChangedForZoom);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         EventManager.Unsubscribe_SpaceShipSelected(OnSpaceShipSelectedForZoom);
         EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChangedForZoom);
     }

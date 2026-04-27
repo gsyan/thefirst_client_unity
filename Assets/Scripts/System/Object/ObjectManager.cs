@@ -164,7 +164,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         GameSpeedController.Reset(); // timeScale 및 오디오 피치 복원
         if (m_myFleet != null)
-            m_myFleet.SetFleetState(EFleetState.None);
+            m_myFleet.SetFleetState(EUnitState.Idle);
         StopEnemySpawning();
         OrderAllAircraftReturn();
         CleanupAllProjectiles();
@@ -275,7 +275,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_enemyFleets.Add(m_activeZoneEnemyFleet);
 
         GameSpeedController.RestoreSpeed();
-        if (m_myFleet != null) m_myFleet.SetFleetState(EFleetState.Battle);
+        if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.Battle);
         m_spawnCoroutine = StartCoroutine(SpawnEnemyFleetCoroutine());
     }
 
@@ -302,9 +302,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             fleetObj.transform.rotation = Quaternion.LookRotation(directionToPlayer);
 
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
-        enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EFleetState.Move);
+        enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EUnitState.Move);
         enemyFleet.StartFleetWarpIn();
-        m_myFleet.SetFleetState(EFleetState.Battle);
+        m_myFleet.SetFleetState(EUnitState.Battle);
 
         m_enemyFleets.Add(enemyFleet);
     }
@@ -740,7 +740,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             // Find random alive enemy ship
             foreach (SpaceFleet fleet in m_enemyFleets)
             {
-                if (fleet != null && fleet.IsFleetAlive() == true && fleet.m_fleetState == EFleetState.Battle)
+                if (fleet != null && fleet.IsFleetAlive() == true && fleet.m_fleetState == EUnitState.Battle)
                 {
                     SpaceShip enemyShip = fleet.GetRandomAliveShipWarpDone();
                     if (enemyShip != null)

@@ -129,7 +129,7 @@ public class ModuleMissile : ModuleBase
     {
         base.ApplyShipStateToModule();
         // if (m_coverAnimator != null)
-        //     m_coverAnimator.SetBool(HASH_IS_IN_COMBAT, m_moduleState == EModuleState.Battle);
+        //     m_coverAnimator.SetBool(HASH_IS_IN_COMBAT, m_moduleState == EUnitState.Battle);
     }
 
     public override void Start()
@@ -150,7 +150,7 @@ public class ModuleMissile : ModuleBase
     {
         while (true)
         {
-            if( m_moduleState != EModuleState.Battle ) yield return null;
+            if( m_moduleState != EUnitState.Battle ) yield return null;
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
             {

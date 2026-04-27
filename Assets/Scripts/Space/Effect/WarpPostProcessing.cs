@@ -11,18 +11,6 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
     [Header("Volume Reference")]
     [SerializeField] private Volume m_volume;
 
-    [Header("Warp Settings")]
-    [SerializeField] private float m_warpChromaticAberration = 0.6f;
-    [SerializeField] private float m_warpBloomIntensity = 2f;
-    [SerializeField] private float m_warpSaturation = 20f;
-    [SerializeField] private float m_warpLensDistortion = -0.5f;  // 음수 = 화면 외곽 안으로 (FOV 증가 느낌)
-
-    [Header("FOV Settings")]
-    [SerializeField] private float m_warpFOV = 15f;  // 워프 시 FOV 감소량
-
-    [Header("Radial Blur Settings")]
-    [SerializeField] private float m_warpRadialBlurIntensity = 0.1f;  // 워프 시 방사형 블러 강도
-
     [Header("Warp Sequence Timing")]
     [SerializeField] private float m_warpChargeTime = 0.5f;
     [SerializeField] private float m_warpDuration = 3f;
@@ -117,27 +105,6 @@ public class WarpPostProcessing : MonoSingleton<WarpPostProcessing>
         if (!m_initialized) Initialize();
 
         t = Mathf.Clamp01(t);
-
-        // if (m_chromaticAberration != null)
-        //     m_chromaticAberration.intensity.value = Mathf.Lerp(m_originalChromaticAberration, m_warpChromaticAberration, t);
-
-        // if (m_bloom != null)
-        //     m_bloom.intensity.value = Mathf.Lerp(m_originalBloomIntensity, m_warpBloomIntensity, t);
-
-        // if (m_colorAdjustments != null)
-        //     m_colorAdjustments.saturation.value = Mathf.Lerp(m_originalSaturation, m_warpSaturation, t);
-
-        // 외곽 날아가는 효과 (음수 = 안으로, 양수 = 바깥으로)
-        // if (m_lensDistortion != null)
-        //     m_lensDistortion.intensity.value = Mathf.Lerp(m_originalLensDistortion, m_warpLensDistortion, t);
-
-        // FOV 감소 (외곽이 날아가는 느낌)
-        // if (m_mainCamera != null)
-        //     m_mainCamera.fieldOfView = Mathf.Lerp(m_originalFOV, m_originalFOV - m_warpFOV, t);
-
-        // Radial Blur (방사형 모션 블러)
-        // if (RadialBlurFeature.Instance != null)
-        //     RadialBlurFeature.Instance.SetIntensity(m_warpRadialBlurIntensity * t);
     }
 
     // 즉시 원본으로 복원

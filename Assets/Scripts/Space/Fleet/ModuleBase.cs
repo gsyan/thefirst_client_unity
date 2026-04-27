@@ -49,7 +49,7 @@ public class ModuleBase : MonoBehaviour
     protected SpaceFleet m_myFleet;
     protected SpaceShip m_myShip;
 
-    protected EModuleState m_moduleState;
+    protected EUnitState m_moduleState;
 
     public virtual void Start()
     {
@@ -60,15 +60,16 @@ public class ModuleBase : MonoBehaviour
     {
         switch (m_myShip.m_shipState)
         {
-            case EShipState.None:
-            case EShipState.Move:
-                m_moduleState = EModuleState.None;
+            case EUnitState.Idle:
+            case EUnitState.Move:
+            case EUnitState.Warp:
+                m_moduleState = EUnitState.Idle;
                 break;
-            case EShipState.Battle:
-                m_moduleState = EModuleState.Battle;
+            case EUnitState.Battle:
+                m_moduleState = EUnitState.Battle;
                 break;
             default:
-                m_moduleState = EModuleState.None;
+                m_moduleState = EUnitState.Idle;
                 break;
         }
     }

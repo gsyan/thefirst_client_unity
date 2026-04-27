@@ -206,11 +206,22 @@ public static class EventManager
         OnMyFleetDestroyed -= callback;
     }
 
-    // 존 상태 변경 (idle / warp / battle)
-    public static event Action<EEnterZoneState> OnEnterZoneStateChanged;
-    public static void TriggerEnterZoneStateChanged(EEnterZoneState state) { OnEnterZoneStateChanged?.Invoke(state); }
-    public static void Subscribe_EnterZoneStateChanged(Action<EEnterZoneState> callback)   { OnEnterZoneStateChanged += callback; }
-    public static void Unsubscribe_EnterZoneStateChanged(Action<EEnterZoneState> callback) { OnEnterZoneStateChanged -= callback; }
+    // 플레이어 함대 상태 변경 (SpaceFleet.SetFleetState에서 발행)
+    public static event Action<EUnitState> OnMyFleetStateChanged;
+    public static void TriggerMyFleetStateChanged(EUnitState state) { OnMyFleetStateChanged?.Invoke(state); }
+    public static void Subscribe_MyFleetStateChanged(Action<EUnitState> callback)   { OnMyFleetStateChanged += callback; }
+    public static void Unsubscribe_MyFleetStateChanged(Action<EUnitState> callback) { OnMyFleetStateChanged -= callback; }
+
+    // 탐사 탭 열림/닫힘
+    public static event Action OnExplorationTabOpened;
+    public static void TriggerExplorationTabOpened() { OnExplorationTabOpened?.Invoke(); }
+    public static void Subscribe_ExplorationTabOpened(Action callback)   { OnExplorationTabOpened += callback; }
+    public static void Unsubscribe_ExplorationTabOpened(Action callback) { OnExplorationTabOpened -= callback; }
+
+    public static event Action OnExplorationTabClosed;
+    public static void TriggerExplorationTabClosed() { OnExplorationTabClosed?.Invoke(); }
+    public static void Subscribe_ExplorationTabClosed(Action callback)   { OnExplorationTabClosed += callback; }
+    public static void Unsubscribe_ExplorationTabClosed(Action callback) { OnExplorationTabClosed -= callback; }
 
     // 존 진입 (zoneName, isFirstClear)
     public static event Action<string, bool> OnZoneEntered;

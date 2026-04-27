@@ -21,25 +21,10 @@ public enum EPoolName
     AIRCRAFT_STANDARD
 }
 
-public enum EFleetState
+public enum EUnitState
 {
-    None,
+    Idle,
     Move,
+    Warp,
     Battle,
-    Max
-}
-
-public enum EShipState
-{
-    None,
-    Move,
-    Battle,
-    Max
-}
-
-public enum EModuleState
-{
-    None,
-    Battle,
-    Max
 }

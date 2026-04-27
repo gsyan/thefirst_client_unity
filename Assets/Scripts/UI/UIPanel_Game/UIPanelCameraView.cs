@@ -22,6 +22,9 @@ public class UIPanelCameraView : UIPanelBase
     private RectTransform m_rectTransform;
     private float m_lastViewportRatio = 0f; // 패널 비활성 중 놓친 이벤트 대비
 
+    private EUnitState m_fleetState = EUnitState.Idle;
+    private bool m_isExplorationOpen = false;
+
     void Awake()
     {
         m_rectTransform = GetComponent<RectTransform>();
@@ -29,6 +32,9 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Subscribe_CameraViewportChanged(OnViewportChanged);
         EventManager.Subscribe_GameSpeedChanged(OnGameSpeedChanged);
         EventManager.Subscribe_ZoneEntered(OnZoneEntered);
+        EventManager.Subscribe_MyFleetStateChanged(OnFleetStateChanged);
+        EventManager.Subscribe_ExplorationTabOpened(OnExplorationTabOpened);
+        EventManager.Subscribe_ExplorationTabClosed(OnExplorationTabClosed);
     }
 
     void Start()
@@ -62,6 +68,35 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Unsubscribe_CameraViewportChanged(OnViewportChanged);
         EventManager.Unsubscribe_GameSpeedChanged(OnGameSpeedChanged);
         EventManager.Unsubscribe_ZoneEntered(OnZoneEntered);
+        EventManager.Unsubscribe_MyFleetStateChanged(OnFleetStateChanged);
+        EventManager.Unsubscribe_ExplorationTabOpened(OnExplorationTabOpened);
+        EventManager.Unsubscribe_ExplorationTabClosed(OnExplorationTabClosed);
+    }
+
+    private void OnFleetStateChanged(EUnitState state)
+    {
+        m_fleetState = state;
+        RefreshVisibility();
+    }
+
+    private void OnExplorationTabOpened()
+    {
+        m_isExplorationOpen = true;
+        RefreshVisibility();
+    }
+
+    private void OnExplorationTabClosed()
+    {
+        m_isExplorationOpen = false;
+        RefreshVisibility();
+    }
+
+    private void RefreshVisibility()
+    {
+        if (m_fleetState == EUnitState.Battle && m_isExplorationOpen == false)
+            UIManager.Instance.ShowPanel(panelName);
+        else
+            UIManager.Instance.HidePanel(panelName);
     }
 
     private void OnCameraViewCycleClicked()

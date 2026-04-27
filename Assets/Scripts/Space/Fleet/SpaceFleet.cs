@@ -38,7 +38,7 @@ public class SpaceFleet : MonoBehaviour
     public FleetInfo m_fleetInfo;
     public EFleetSide m_fleetSide = EFleetSide.fleet_side_player;
     public EFleetSource m_fleetSource = EFleetSource.fleet_source_player;
-    public EFleetState m_fleetState = EFleetState.None;
+    public EUnitState m_fleetState = EUnitState.Idle;
 
     // 편의 프로퍼티
     public bool IsEnemy => m_fleetSide == EFleetSide.fleet_side_enemy;
@@ -65,7 +65,7 @@ public class SpaceFleet : MonoBehaviour
         SpaceShip flagship = GetFlagship();
         if (flagship == null)
         {
-            (onArrived ?? (() => SetFleetState(EFleetState.Battle)))?.Invoke();
+            (onArrived ?? (() => SetFleetState(EUnitState.Battle)))?.Invoke();
             return;
         }
 
@@ -86,7 +86,7 @@ public class SpaceFleet : MonoBehaviour
 
         float warpSpeed = flagship.m_spaceShipStatsCur.speed * m_spawnApproachSpeedMult;
         float normalSpeed = flagship.m_spaceShipStatsCur.speed;
-        System.Action arrived = onArrived ?? (() => SetFleetState(EFleetState.Battle));
+        System.Action arrived = onArrived ?? (() => SetFleetState(EUnitState.Battle));
         StartCoroutine(FleetWarpInMove(finalPos, warpSpeed, normalSpeed, arrived));
     }
 
@@ -137,10 +137,10 @@ public class SpaceFleet : MonoBehaviour
             ships     = new List<ShipInfo>()
         };
         m_currentFormationType = formation;
-        SetFleetState(EFleetState.Battle);
+        SetFleetState(EUnitState.Battle);
     }
 
-    public void InitializeSpaceFleet(FleetInfo fleetInfo, EFleetSide side = EFleetSide.fleet_side_player, EFleetSource source = EFleetSource.fleet_source_player, EFleetState fleetState = EFleetState.None)
+    public void InitializeSpaceFleet(FleetInfo fleetInfo, EFleetSide side = EFleetSide.fleet_side_player, EFleetSource source = EFleetSource.fleet_source_player, EUnitState fleetState = EUnitState.Idle)
     {
         m_fleetInfo = fleetInfo;
         m_fleetSide = side;
@@ -703,7 +703,7 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
-    public void SetFleetState(EFleetState fleetState)
+    public void SetFleetState(EUnitState fleetState)
     {
         m_fleetState = fleetState;
         foreach (SpaceShip ship in m_ships)
@@ -711,6 +711,8 @@ public class SpaceFleet : MonoBehaviour
             if (ship != null && ship.IsAlive())
                 ship.ApplyFleetStateToShip();
         }
+        if (m_fleetSide == EFleetSide.fleet_side_player)
+            EventManager.TriggerMyFleetStateChanged(fleetState);
     }
 
     // 함선의 전체 체력 비율 계산 (모든 바디의 합산)

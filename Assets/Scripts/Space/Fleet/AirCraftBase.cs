@@ -434,7 +434,6 @@ public abstract class AircraftBase : MonoBehaviour
     protected virtual IEnumerator Phase_Docking()
     {
         //Debug.Log("Phase_Docking");
-        const float k_dockingSpeedRatio = 0.4f;
         m_currentDirection = transform.forward.normalized;
         while (true)
         {

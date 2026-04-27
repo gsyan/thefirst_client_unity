@@ -6,13 +6,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum EEnterZoneState
-{
-    idle,   // Zone0 또는 현재 스테이지에서 대기
-    warp,   // 워프 이동 중
-    battle, // 전투 진행 중
-}
-
 public class UITabExploration : UITabBase
 {
     [SerializeField] private Button m_safeZoneButton;
@@ -38,7 +31,7 @@ public class UITabExploration : UITabBase
     private readonly Dictionary<int, ZoneStageConfig> m_selectedZoneStagePerGroup = new();
 
     private int m_selectedZoneIndex = 1;
-    private EEnterZoneState m_enterZoneState;
+
     private bool m_isFleetWiped;
 
     public override void InitializeUITab()
@@ -58,7 +51,7 @@ public class UITabExploration : UITabBase
 
         SetupGroupTabs();
         InitializeZoneStageButtons();
-        SetEnterZoneState(EEnterZoneState.idle);
+        SetFleetState(EUnitState.Idle);
 
         var pp = WarpPostProcessing.Instance;
         if (pp != null)
@@ -227,6 +220,7 @@ public class UITabExploration : UITabBase
                 zone1.galaxyCameraRotY);
 
         SetOtherTabsVisible(false, includeSelf: true);
+        EventManager.TriggerExplorationTabOpened();
     }
 
     public override void OnTabDeactivated()
@@ -235,15 +229,13 @@ public class UITabExploration : UITabBase
             CameraController.Instance.ExitGalaxyView();
 
         SetOtherTabsVisible(true, includeSelf: true);
-        EventManager.TriggerEnterZoneStateChanged(m_enterZoneState);
+        EventManager.TriggerExplorationTabClosed();
     }
 
-    private void SetEnterZoneState(EEnterZoneState enterZoneState)
+    private void SetFleetState(EUnitState unitState)
     {
-        m_enterZoneState = enterZoneState;
-        bool inZone = enterZoneState == EEnterZoneState.battle;
-        if (m_safeZoneButton != null) m_safeZoneButton.gameObject.SetActive(inZone);
-        EventManager.TriggerEnterZoneStateChanged(enterZoneState);
+        m_myFleet.SetFleetState(unitState);
+        if (m_safeZoneButton != null) m_safeZoneButton.gameObject.SetActive(unitState == EUnitState.Battle);
     }
 
     private void OnMyFleetWiped()
@@ -287,8 +279,8 @@ public class UITabExploration : UITabBase
     private void OnEnterZoneFromButton(ZoneStageConfig zoneStage)
     {
         if (zoneStage == null) return;
-        if (m_enterZoneState == EEnterZoneState.warp) return;
-        if (m_enterZoneState == EEnterZoneState.battle)
+        if (m_myFleet.m_fleetState == EUnitState.Warp) return;
+        if (m_myFleet.m_fleetState == EUnitState.Battle)
         {
             if (m_currentZoneStage != null && m_currentZoneStage.zoneName == zoneStage.zoneName) return;
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
@@ -340,8 +332,8 @@ public class UITabExploration : UITabBase
     private void OnZoneTryButtonClicked()
     {
         if (m_selectedZoneStage == null) return;
-        if (m_enterZoneState == EEnterZoneState.warp) return;
-        if (m_enterZoneState == EEnterZoneState.battle)
+        if (m_myFleet.m_fleetState == EUnitState.Warp) return;
+        if (m_myFleet.m_fleetState == EUnitState.Battle)
         {
             if(m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZoneStage.zoneName) return;
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
@@ -404,7 +396,7 @@ public class UITabExploration : UITabBase
 
     private void EnterZoneStage(ZoneStageConfig zoneStage)
     {
-        SetEnterZoneState(EEnterZoneState.warp);
+        SetFleetState(EUnitState.Warp);
 
         m_currentZoneStage = zoneStage;
         RefreshCurrentZoneStageButton();
@@ -424,8 +416,7 @@ public class UITabExploration : UITabBase
         {
             SetOtherTabsVisible(true, includeSelf: true);
             cam.SetTargetOfCameraController(m_myFleet.transform);
-            SetEnterZoneState(EEnterZoneState.battle);
-            UIManager.Instance.ShowPanel("UIPanelCameraView");
+            SetFleetState(EUnitState.Battle);
             bool isFirstClear = IsAlreadyCleared(zoneStage) == false;
             EventManager.TriggerZoneEntered(zoneStage.zoneName, isFirstClear);
             StartBattleInZone(zoneStage);
@@ -569,6 +560,8 @@ public class UITabExploration : UITabBase
 
     private void RetreatToPreviousStage()
     {
+        
+
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
         ObjectManager.Instance.StopEnemySpawning();
         ObjectManager.Instance.OrderAllAircraftReturn();
@@ -592,16 +585,14 @@ public class UITabExploration : UITabBase
             retreatRotationY = zone0Stage?.fleetRotationY ?? 0f;
         }
 
-        UIManager.Instance.HidePanel("UIPanelCameraView");
-
         // 카메라를 먼저 후퇴 위치로 이동 (갤럭시뷰 종료 포함 — 이후 CloseAllTabs→ExitGalaxyView 중복 호출 방지)
         CameraController.Instance.ExitGalaxyViewMoveTo(retreatPosition);
-
+        SetFleetState(EUnitState.Warp);
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
         SetOtherTabsVisible(false, includeSelf: true);
 
         ObjectManager.Instance.SetMyFleetPosition(retreatPosition, retreatRotationY);
-
+        
         m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
             SetOtherTabsVisible(true, includeSelf: true);
@@ -610,8 +601,7 @@ public class UITabExploration : UITabBase
             m_currentZoneStage = retreatStage;
             RefreshCurrentZoneStageButton();
 
-            SetEnterZoneState(EEnterZoneState.idle);
-            m_myFleet.SetFleetState(EFleetState.None);
+            SetFleetState(EUnitState.Idle);
             UpdateGroupTabVisual();
             ShowGroupStageButtons(m_selectedZoneIndex);
 
@@ -635,10 +625,7 @@ public class UITabExploration : UITabBase
         ObjectManager.Instance.CleanupAllProjectiles();
         ObjectManager.Instance.RemoveAllEnemyFleets();
 
-        UIManager.Instance.HidePanel("UIPanelCameraView");
-
-        SetEnterZoneState(EEnterZoneState.idle);
-        m_myFleet.SetFleetState(EFleetState.None);
+        SetFleetState(EUnitState.Idle);
         UpdateGroupTabVisual();
         ShowGroupStageButtons(m_selectedZoneIndex);
     }

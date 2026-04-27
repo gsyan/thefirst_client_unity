@@ -75,9 +75,6 @@ public class UIPanelSpace : UIPanelBase
 
         if (closeButton != null)
             closeButton.onClick.AddListener(() => UIManager.Instance.ShowMainPanel());
-
-        EventManager.Subscribe_EnterZoneStateChanged(OnEnterZoneStateChanged);
-        SetStationTabButtonVisible(true);
     }
 
     public override void OnShowUIPanel()
@@ -103,20 +100,6 @@ public class UIPanelSpace : UIPanelBase
     {
         if (m_tabSystem != null)
             m_tabSystem.onTabSelectionChanged -= OnTabSelectionChanged;
-        EventManager.Unsubscribe_EnterZoneStateChanged(OnEnterZoneStateChanged);
-    }
-
-    private void OnEnterZoneStateChanged(EEnterZoneState state)
-    {
-        SetStationTabButtonVisible(state == EEnterZoneState.idle);
-    }
-
-    private void SetStationTabButtonVisible(bool visible)
-    {
-        if (m_stationTabIndex < 0) return;
-        var btn = m_tabSystem.tabs[m_stationTabIndex].tabButton;
-        if (btn != null)
-            btn.gameObject.SetActive(visible);
     }
 
     private void OnTabSelectionChanged(int tabIndex)

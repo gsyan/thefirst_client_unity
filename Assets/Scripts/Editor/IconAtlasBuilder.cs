@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.U2D.Sprites;
 using UnityEngine;
 using UnityEngine.TextCore;
 using TMPro;
@@ -51,7 +52,7 @@ public static class IconAtlasBuilder
             return false;
         }
 
-        // JSON에서 슬라이스 정보 읽어 spritesheet 직접 구성
+        // JSON에서 슬라이스 정보 읽어 SpriteRect 구성
         string jsonFullPath = Path.Combine(Application.dataPath, "../", JSON_PATH);
         if (File.Exists(jsonFullPath) == false)
         {
@@ -61,27 +62,31 @@ public static class IconAtlasBuilder
         var root = JsonConvert.DeserializeObject<AtlasRoot>(File.ReadAllText(jsonFullPath));
         int texHeight = tex.height;
 
-        var metas = new List<SpriteMetaData>();
+        var spriteRects = new List<SpriteRect>();
         foreach (FrameEntry entry in root.frames)
         {
-            metas.Add(new SpriteMetaData
+            spriteRects.Add(new SpriteRect
             {
-                name   = entry.filename,
-                rect   = new Rect(entry.frame.x, texHeight - entry.frame.y - entry.frame.h, entry.frame.w, entry.frame.h),
-                pivot  = new Vector2(0.5f, 0.5f),
-                alignment = (int)SpriteAlignment.Center
+                name      = entry.filename,
+                rect      = new Rect(entry.frame.x, texHeight - entry.frame.y - entry.frame.h, entry.frame.w, entry.frame.h),
+                pivot     = new Vector2(0.5f, 0.5f),
+                alignment = SpriteAlignment.Center
             });
         }
 
-        importer.spritesheet = metas.ToArray();
-        EditorUtility.SetDirty(importer);
-        importer.SaveAndReimport();
+        var factory = new SpriteDataProviderFactories();
+        factory.Init();
+        ISpriteEditorDataProvider dataProvider = factory.GetSpriteEditorDataProviderFromObject(importer);
+        dataProvider.InitSpriteEditorDataProvider();
+        dataProvider.SetSpriteRects(spriteRects.ToArray());
+        dataProvider.Apply();
+        (dataProvider.targetObject as AssetImporter).SaveAndReimport();
 
-        Debug.Log($"[1/3] 슬라이스 완료: {metas.Count}개");
+        Debug.Log($"[1/3] 슬라이스 완료: {spriteRects.Count}개");
         return true;
     }
 
-    // Step 2: spritesheet 이름 재확인 (SliceAtlas에서 이미 이름 설정하므로 검증용)
+    // Step 2: 스프라이트 이름 재확인 (SliceAtlas에서 이미 이름 설정하므로 검증용)
     static void RenameSprites()
     {
         TextureImporter importer = AssetImporter.GetAtPath(ATLAS_PATH) as TextureImporter;
@@ -90,29 +95,33 @@ public static class IconAtlasBuilder
         var root = JsonConvert.DeserializeObject<AtlasRoot>(File.ReadAllText(jsonFullPath));
         int texHeight = tex.height;
 
-        var spriteSheet = new List<SpriteMetaData>(importer.spritesheet);
+        var factory = new SpriteDataProviderFactories();
+        factory.Init();
+        ISpriteEditorDataProvider dataProvider = factory.GetSpriteEditorDataProviderFromObject(importer);
+        dataProvider.InitSpriteEditorDataProvider();
+        SpriteRect[] spriteRects = dataProvider.GetSpriteRects();
         int renamed = 0;
 
-        for (int i = 0; i < spriteSheet.Count; i++)
+        for (int i = 0; i < spriteRects.Length; i++)
         {
-            SpriteMetaData meta = spriteSheet[i];
+            SpriteRect sr = spriteRects[i];
             FrameEntry match = root.frames.Find(e =>
-                Mathf.Approximately(e.frame.x, meta.rect.x) &&
-                Mathf.Approximately(texHeight - e.frame.y - e.frame.h, meta.rect.y)
+                Mathf.Approximately(e.frame.x, sr.rect.x) &&
+                Mathf.Approximately(texHeight - e.frame.y - e.frame.h, sr.rect.y)
             );
             if (match != null)
             {
-                meta.name = match.filename;
-                spriteSheet[i] = meta;
+                sr.name = match.filename;
+                spriteRects[i] = sr;
                 renamed++;
             }
         }
 
-        importer.spritesheet = spriteSheet.ToArray();
-        EditorUtility.SetDirty(importer);
-        importer.SaveAndReimport();
+        dataProvider.SetSpriteRects(spriteRects);
+        dataProvider.Apply();
+        (dataProvider.targetObject as AssetImporter).SaveAndReimport();
 
-        Debug.Log($"[2/3] 이름 적용: {renamed}/{spriteSheet.Count}개");
+        Debug.Log($"[2/3] 이름 적용: {renamed}/{spriteRects.Length}개");
         AssetDatabase.Refresh();
     }
 

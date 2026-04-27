@@ -31,7 +31,7 @@ public class SpaceShip : MonoBehaviour
     [SerializeField] public CapabilityProfile m_spaceShipStatsCur;
 
     public SpaceFleet m_myFleet;
-    public EShipState m_shipState;
+    public EUnitState m_shipState;
     [HideInInspector] public Outline m_shipOutline;
 
     // Zone 적 전용 — 함선별 스탯 배율 (InitializeSpaceShip 전에 세팅, 기본값 1.0)
@@ -118,16 +118,20 @@ public class SpaceShip : MonoBehaviour
 
         switch (m_myFleet.m_fleetState)
         {
-            case EFleetState.None:
-                m_shipState = EShipState.None;
+            case EUnitState.Idle:
+                m_shipState = EUnitState.Idle;
                 StopAutoCombat();
                 break;
-            case EFleetState.Move:
-                m_shipState = EShipState.Move;
+            case EUnitState.Move:
+                m_shipState = EUnitState.Move;
                 StopAutoCombat();
                 break;
-            case EFleetState.Battle:
-                m_shipState = EShipState.Battle;
+            case EUnitState.Warp:
+                m_shipState = EUnitState.Warp;
+                StopAutoCombat();
+                break;
+            case EUnitState.Battle:
+                m_shipState = EUnitState.Battle;
                 if (m_returnRotationCoroutine != null)
                 {
                     StopCoroutine(m_returnRotationCoroutine);
@@ -139,7 +143,7 @@ public class SpaceShip : MonoBehaviour
                     m_rotationCoroutine = StartCoroutine(RotateTowardTarget());
                 break;
             default:
-                m_shipState = EShipState.None;
+                m_shipState = EUnitState.Idle;
                 StopAutoCombat();
                 break;
         }
