@@ -205,6 +205,7 @@ public class CameraController : MonoSingleton<CameraController>
 
     // Input handling
     private bool m_isDragging = false;
+    private bool m_touchBlockedByUI = false; // 터치 시작이 UI 위였으면 해당 터치 전체 차단
     //private bool m_isPanning = false;
     private Vector3 m_startTouchPosition;
     private float m_startRotationY;
@@ -229,15 +230,14 @@ public class CameraController : MonoSingleton<CameraController>
     private void HandleInput()
     {
         if (m_inputEnabled == false) return;
-        if (IsPointerOverUIObject() == true) return;
 
         bool inputDown = false;
         bool inputUp = false;
         bool inputHeld = false;
         Vector3 inputPosition = Vector3.zero;
 
-
 #if UNITY_EDITOR || UNITY_STANDALONE
+        // PC: 우클릭은 UI와 충돌 없으므로 UI 체크 없이 바로 처리
         HandleInput_Mouse(ref inputDown, ref inputUp, ref inputHeld, ref inputPosition);
 #elif UNITY_ANDROID || UNITY_IOS
         HandleInput_Touch(ref inputDown, ref inputUp, ref inputHeld, ref inputPosition);
@@ -374,13 +374,19 @@ public class CameraController : MonoSingleton<CameraController>
             }
             if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
             {
-                inputDown = true;
-                inputPosition = pos;
-                LayerMask pickMask = ~m_layerMaskShield;
-                m_tapHitCollider = GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, pos) ? downHit.collider : null;
+                // 터치 시작이 UI 위면 해당 터치 전체를 UI에게 양보
+                m_touchBlockedByUI = IsPointerOverUIObject();
+                if (m_touchBlockedByUI == false)
+                {
+                    inputDown = true;
+                    inputPosition = pos;
+                    LayerMask pickMask = ~m_layerMaskShield;
+                    m_tapHitCollider = GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, pos) ? downHit.collider : null;
+                }
             }
             else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
             {
+                m_touchBlockedByUI = false;
                 inputUp = true;
                 if (m_tapHitCollider != null)
                 {
@@ -392,13 +398,17 @@ public class CameraController : MonoSingleton<CameraController>
             }
             else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Canceled)
             {
+                m_touchBlockedByUI = false;
                 inputUp = true;
                 m_tapHitCollider = null;
             }
             else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Moved || touch.phase == UnityEngine.InputSystem.TouchPhase.Stationary)
             {
-                inputHeld = true;
-                inputPosition = pos;
+                if (m_touchBlockedByUI == false)
+                {
+                    inputHeld = true;
+                    inputPosition = pos;
+                }
             }
 
             m_prevTouchCount = 1;
