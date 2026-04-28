@@ -452,11 +452,19 @@ public class CameraController : MonoSingleton<CameraController>
     }
 
     // UI 모듈 버튼 선택 시 슬롯에 미리 설정된 카메라 회전/줌으로 이동
+    // m_cameraRotationY/X는 함선 기준 상대각 → 함선의 현재 world Y 회전을 더해 절대각으로 변환
     public void FocusOnModuleIfHidden(ModuleSlot moduleSlot)
     {
         if (moduleSlot == null) return;
+
+        float shipYaw = 0f;
+        SpaceShip ship = moduleSlot.GetComponentInParent<SpaceShip>();
+        if (ship != null)
+            shipYaw = ship.transform.eulerAngles.y;
+
         m_hasTargetRotationY = true;
-        m_targetRotationY = moduleSlot.m_cameraRotationY;
+        // +180f: 슬롯 rotY=0 → 함선 정면에서 바라보는 각도 (카메라 수식의 +180° 오프셋 보정)
+        m_targetRotationY = moduleSlot.m_cameraRotationY + shipYaw + 180f;
         m_hasTargetRotationX = true;
         m_targetRotationX = moduleSlot.m_cameraRotationX;
         m_hasTargetZoom = true;
@@ -695,7 +703,7 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetPosition = zoneWorldPos;
         //m_interpolatedTargetPosition = zoneWorldPos; // 위치 즉시 스냅
         m_hasTargetZoom = true;
-        m_targetZoom = Mathf.Clamp(zoom, m_minZoom, m_maxZoom);
+        m_targetZoom = zoom; // 갤럭시 뷰 전용 줌 — 함선 기준 m_minZoom/m_maxZoom 클램핑 금지
         m_hasTargetRotationX = true;
         m_targetRotationX = Mathf.Clamp(rotX, -80f, 80f);
         m_hasTargetRotationY = true;

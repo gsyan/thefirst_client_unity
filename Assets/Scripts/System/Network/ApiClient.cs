@@ -602,6 +602,21 @@ public class ApiClient
     //     var response = JsonConvert.DeserializeObject<ApiResponse<FleetStatsResponse>>(webRequest.downloadHandler.text);
     //     return response;
     // }
+    public async Task<ApiResponse<object>> FleetHealthSaveAsync(FleetHealthSaveRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<object>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/save-health", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<object>>(webRequest.downloadHandler.text);
+    }
     #endregion
 
     #region Zone Battle API Methods -------------------------------------------------------------------------------

@@ -98,8 +98,8 @@ public class ModuleBody : ModuleBase
         if (moduleData == null) return;
 
         // 복원된 데이터로 초기화
-        m_health = moduleData.health;
-        m_healthMax = moduleData.health;        
+        m_healthMax = moduleData.health;
+        m_health = moduleBodyInfo.currentHealth > 0f ? Mathf.Min(moduleBodyInfo.currentHealth, m_healthMax) : 1f;
         // 업그레이드 비용 설정
         m_mineralCostLevelup = moduleData.mineralCost;
         

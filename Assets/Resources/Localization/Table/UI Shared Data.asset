@@ -191,6 +191,14 @@ MonoBehaviour:
     m_Key: exploration_battle_mineral_reward
     m_Metadata:
       m_Items: []
+  - m_Id: 28734126081048576
+    m_Key: exploration_fleet_wiped
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28734126122991616
+    m_Key: exploration_wipe_retreat
+    m_Metadata:
+      m_Items: []
   - m_Id: 13164879267364864
     m_Key: harvest_offline_elapsed
     m_Metadata:

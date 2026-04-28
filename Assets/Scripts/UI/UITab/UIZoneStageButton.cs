@@ -39,11 +39,11 @@ public class UIZoneStageButton : MonoBehaviour
     public ZoneStageConfig ZoneStageConfig { get; private set; }
     public bool IsExpanded => m_isExpanded;
 
-    public void Initialize(ZoneStageConfig config, System.Action onToggle, System.Action onEnter, EZoneState state, Camera worldCamera)
+    public void Initialize(ZoneStageConfig config, Vector3 worldPos, System.Action onToggle, System.Action onEnter, EZoneState state, Camera worldCamera)
     {
         ZoneStageConfig  = config;
         m_worldCamera    = worldCamera;
-        m_worldPos       = config.fleetPosition;
+        m_worldPos       = worldPos;
         m_diagonalOffset = config.diagonalOffset;
         m_labelAboveLine = config.labelAboveLine;
 

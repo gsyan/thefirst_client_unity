@@ -59,6 +59,8 @@ public class ModuleBodyInfo
     public int investedMineral;
     public int investedPvpMineral;
     public int investedTempMineral;
+    // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
+    public float currentHealth;
 }
 
 [System.Serializable]
@@ -566,6 +568,26 @@ public class ZoneRankingResponse
     public List<RankingEntry> items;
     public RankingEntry myInfo;         // 내 랭킹 정보 (rank/score, 1시간 주기 기준)
     public string lastUpdatedAt;        // 랭킹 마지막 업데이트 시각 ISO 8601
+}
+
+[System.Serializable]
+public class FleetHealthSaveRequest
+{
+    public List<ShipHealthInfo> ships;
+}
+
+[System.Serializable]
+public class ShipHealthInfo
+{
+    public long shipId;
+    public List<BodyHealthEntry> bodies;
+}
+
+[System.Serializable]
+public class BodyHealthEntry
+{
+    public int bodyIndex;
+    public float currentHealth;
 }
 
 #endregion

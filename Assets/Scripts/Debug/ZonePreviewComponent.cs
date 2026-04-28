@@ -67,7 +67,43 @@ public class ZonePreviewComponent : MonoBehaviour
             DestroyImmediate(existing.gameObject);
     }
 
-    // 씬 오브젝트 위치·크기 → DataTableZone에 반영
+    // DataTable 데이터 → 프리뷰 구체 동기화 (핸들/인스펙터 편집 직후 호출)
+    public void SyncPreviewPlanet(int index)
+    {
+        if (dataTableZone == null) return;
+        ZoneConfig zone = dataTableZone.GetZone(selectedZoneIndex);
+        if (zone == null || index >= zone.celestialBodies.Count) return;
+
+        Transform root = transform.Find(PREVIEW_ROOT_NAME);
+        if (root == null) return;
+
+        Transform planet = root.Find($"Planet_{index}");
+        if (planet == null) return;
+
+        CelestialBodyConfig body = zone.celestialBodies[index];
+        planet.position   = body.position;
+        planet.localScale = body.scale;
+
+        Renderer rend = planet.GetComponent<Renderer>();
+        if (rend != null && body.material != null)
+            rend.sharedMaterial = body.material;
+    }
+
+    public void SyncPreviewCameraTarget()
+    {
+        if (dataTableZone == null) return;
+        ZoneConfig zone = dataTableZone.GetZone(selectedZoneIndex);
+        if (zone == null) return;
+
+        Transform root = transform.Find(PREVIEW_ROOT_NAME);
+        if (root == null) return;
+
+        Transform camTarget = root.Find(CAMERA_TARGET_NAME);
+        if (camTarget != null)
+            camTarget.position = zone.galaxyCameraTarget;
+    }
+
+    // 씬 오브젝트 위치·크기 → DataTableZone에 반영 (scale·material 변경 후 fallback 동기화용)
     public void ApplyFromScene()
     {
         if (dataTableZone == null) return;

@@ -16,7 +16,6 @@ public class UITabPvp : UITabBase
     [SerializeField] private Button m_pvpRankListButton;
 
     [Header("PvP Warp")]
-    [SerializeField] private Material m_pvpBattleSkybox;
     [SerializeField] private DataTableZone m_datatableZone;
 
     private SpaceFleet m_myFleet;
@@ -208,15 +207,14 @@ public class UITabPvp : UITabBase
         m_currentBattleToken = response.data.battleToken;
         FleetInfo opponentFleetInfo = response.data.opponentFleetInfo;
 
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null)
-            pp.SetSkyboxBlendTarget(m_pvpBattleSkybox);
+        ZoneStageConfig pvpZoneStage = m_datatableZone.GetZoneStage(0);
+        if (pvpZoneStage != null)
+            ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(pvpZoneStage), pvpZoneStage.fleetRotationY);
 
-        // TODO: StartFleetWarp 제거 → SetMyFleetPosition + StartFleetWarpIn 방식으로 교체 (UITabExploration 참고)
-        m_myFleet.StartFleetWarp(m_pvpBattleSkybox, () =>
+        m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
             UIManager.Instance.ShowPanel("UIPanelCameraView");
-
+            
             ObjectManager.Instance.StartPvpBattle(opponentFleetInfo, (isVictory) =>
             {
                 ReportBattleResult(isVictory);
@@ -275,16 +273,10 @@ public class UITabPvp : UITabBase
         UIManager.Instance.HidePanel("UIPanelCameraView");
         CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
-        ZoneConfig zoneConfig = m_datatableZone.GetZone(0);
-        if (zoneConfig == null) return;
-        Material safeSkybox = m_datatableZone.GetZone(0).skyboxMaterial;
-
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null)
-            pp.SetSkyboxBlendTarget(safeSkybox);
-
-        // TODO: StartFleetWarp 제거 → SetMyFleetPosition + StartFleetWarpIn 방식으로 교체 (UITabExploration 참고)
-        m_myFleet.StartFleetWarp(safeSkybox, () =>
+        ZoneStageConfig returnZoneStage = m_datatableZone.GetZoneStage(0);
+        if (returnZoneStage == null) return;
+        ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(returnZoneStage), returnZoneStage.fleetRotationY);
+        m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
             if (m_myFleet.IsFleetAlive() == false)
                 m_myFleet.RebuildFleet(0.1f);

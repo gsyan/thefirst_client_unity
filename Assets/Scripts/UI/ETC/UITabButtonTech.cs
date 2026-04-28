@@ -3,16 +3,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIStationInfoBar : MonoBehaviour
+public class UITabButtonTech : MonoBehaviour
 {
-    [SerializeField] private TMP_Text m_textInfo;
-    [SerializeField] private Button   m_btnInfo;
-
+    [SerializeField] private TMP_Text m_textTechLevel;
+    
     private void Start()
     {
-        if (m_btnInfo != null)
-            m_btnInfo.onClick.AddListener(OnInfoClicked);
-
         EventManager.Subscribe_TechLevelChanged(OnTechLevelChanged);
         RefreshText();
     }
@@ -29,13 +25,13 @@ public class UIStationInfoBar : MonoBehaviour
 
     private void RefreshText()
     {
-        if (m_textInfo == null) return;
+        if (m_textTechLevel == null) return;
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        m_textInfo.text = $"{CommonUtility.Sprite("gears")} {currentLevel}";
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_textInfo.transform.parent as RectTransform);
+        m_textTechLevel.text = $"{CommonUtility.Sprite("gears")} {currentLevel}";
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_textTechLevel.transform.parent as RectTransform);
     }
 
     private void OnInfoClicked()

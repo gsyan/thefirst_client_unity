@@ -670,6 +670,14 @@ MonoBehaviour:
     m_Localized: Mineral +{0}
     m_Metadata:
       m_Items: []
+  - m_Id: 28734126081048576
+    m_Localized: Fleet Defeated
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28734126122991616
+    m_Localized: Retreating to previous zone
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

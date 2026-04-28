@@ -107,16 +107,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     [HideInInspector] public SpaceFleet m_myFleet;
     [HideInInspector] public List<SpaceFleet> m_enemyFleets = new List<SpaceFleet>();
-    [HideInInspector] public List<SpaceMineral> m_mineralList = new List<SpaceMineral>();
 
     // Zone 전투 관련
-    private ZoneStageConfig m_currentZoneStageConfig;
     private System.Action<bool> m_onZoneBattleComplete;
-    private Coroutine m_spawnCoroutine;
-    private Queue<EnemyShipConfig> m_shipSpawnQueue = new Queue<EnemyShipConfig>();
-    private bool[] m_occupiedSlots;
-    private SpaceFleet m_activeZoneEnemyFleet;
-    private bool m_queueExhausted = false;
 
     // PvP 전투 관련
     private bool m_isPvpBattle;
@@ -181,7 +174,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         {
             var callback = m_onZoneBattleComplete;
             m_onZoneBattleComplete = null;
-            m_currentZoneStageConfig = null;
             callback?.Invoke(isVictory);
         }
     }
@@ -257,26 +249,20 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             return;
         }
 
-        if (m_spawnCoroutine != null)
-            StopCoroutine(m_spawnCoroutine);
+        for (int i = 0; i < m_enemyFleets.Count; i++)
+        {
+            if (m_enemyFleets[i] != null && m_enemyFleets[i].IsZoneEnemy == true)
+                m_enemyFleets[i].StopSpawning();
+        }
 
-        m_currentZoneStageConfig = zoneStageConfig;
         m_onZoneBattleComplete = onComplete;
 
-        m_shipSpawnQueue.Clear();
-        foreach (var cfg in zoneStageConfig.enemyShipConfigs)
-            m_shipSpawnQueue.Enqueue(cfg);
-
-        int slotCount = Mathf.Max(1, zoneStageConfig.maxConcurrentEnemyShips);
-        m_occupiedSlots = new bool[slotCount];
-        m_queueExhausted = false;
-
-        m_activeZoneEnemyFleet = CreateEnemyFleetShell();
-        m_enemyFleets.Add(m_activeZoneEnemyFleet);
+        SpaceFleet newZoneFleet = CreateEnemyFleetShell();
+        m_enemyFleets.Add(newZoneFleet);
 
         GameSpeedController.RestoreSpeed();
         if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.Battle);
-        m_spawnCoroutine = StartCoroutine(SpawnEnemyFleetCoroutine());
+        newZoneFleet.StartSpawning(zoneStageConfig);
     }
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
@@ -303,7 +289,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
         enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EUnitState.Move);
-        enemyFleet.StartFleetWarpIn();
+        enemyFleet.StartFleetWarpIn(() => enemyFleet.SetFleetState(EUnitState.Battle));
         m_myFleet.SetFleetState(EUnitState.Battle);
 
         m_enemyFleets.Add(enemyFleet);
@@ -321,20 +307,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             ForceEndBattle(true);
     }
 
-    // 적 스폰 코루틴 중지 및 Zone 전투 상태 초기화
+    // 적 스폰 중지 및 Zone 전투 상태 초기화
     public void StopEnemySpawning()
     {
-        if (m_spawnCoroutine != null)
+        for (int i = 0; i < m_enemyFleets.Count; i++)
         {
-            StopCoroutine(m_spawnCoroutine);
-            m_spawnCoroutine = null;
+            if (m_enemyFleets[i] != null && m_enemyFleets[i].IsZoneEnemy == true)
+                m_enemyFleets[i].StopSpawning();
         }
-
-        m_currentZoneStageConfig = null;
-        m_shipSpawnQueue.Clear();
-        m_occupiedSlots = null;
-        m_activeZoneEnemyFleet = null;
-        m_queueExhausted = false;
     }
 
     // 모든 적 함대 제거
@@ -346,7 +326,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 Destroy(m_enemyFleets[i].gameObject);
         }
         m_enemyFleets.Clear();
-        m_activeZoneEnemyFleet = null;
     }
 
     // 모든 활성 빔/미사일: 코루틴/이펙트 정리 후 풀 반환
@@ -429,135 +408,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         return fleet;
     }
 
-    // delayBeforeSpawn 대기 후 큐 순서대로 1척씩 스폰 — 슬롯이 빌 때까지 대기
-    private IEnumerator SpawnEnemyFleetCoroutine()
+    // SpaceFleet.SpawnShipCoroutine에서 전멸 판정 후 호출
+    public void OnZoneEnemyFleetDefeated(SpaceFleet fleet)
     {
-        if (m_currentZoneStageConfig.delayBeforeSpawn > 0)
-            yield return new WaitForSeconds(m_currentZoneStageConfig.delayBeforeSpawn);
-
-        while (m_shipSpawnQueue.Count > 0)
-        {
-            EnemyShipConfig next = m_shipSpawnQueue.Peek();
-            int slot = FindFreeSlot(next.isFlagShip);
-            if (slot == -1)
-            {
-                yield return new WaitUntil(() => m_shipSpawnQueue.Count > 0 && FindFreeSlot(m_shipSpawnQueue.Peek().isFlagShip) != -1);
-                continue;
-            }
-
-            m_shipSpawnQueue.Dequeue();
-            m_occupiedSlots[slot] = true;
-            SpawnSingleEnemyShip(next, slot);
-
-            if (m_shipSpawnQueue.Count > 0)
-                yield return new WaitForSeconds(m_currentZoneStageConfig.shipSpawnInterval);
-        }
-
-        m_queueExhausted = true;
-        m_spawnCoroutine = null;
-        CheckZoneClear();
-    }
-
-    // 함선 1척 생성 후 함대에 합류 (워프인 포함)
-    private void SpawnSingleEnemyShip(EnemyShipConfig config, int slotIndex)
-    {
-        if (m_activeZoneEnemyFleet == null) return;
-
-        ShipInfo shipInfo = CreateShipInfoFromConfig(config, slotIndex);
-        GameObject shipGo = new GameObject(shipInfo.shipName);
-        SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
-        spaceShip.m_bodyMultiplier    = config.bodyMultiplier;
-        spaceShip.m_beamMultiplier    = config.beamMultiplier;
-        spaceShip.m_missileMultiplier = config.missileMultiplier;
-        spaceShip.m_hangerMultiplier  = config.hangerMultiplier;
-        spaceShip.InitializeSpaceShip(m_activeZoneEnemyFleet, shipInfo);
-        m_activeZoneEnemyFleet.AddShip(spaceShip, bWarp: true);
-    }
-
-    // isFlagShip=true → 슬롯 0 전용, isFlagShip=false → 슬롯 0 제외
-    private int FindFreeSlot(bool isFlagShip)
-    {
-        if (m_occupiedSlots == null) return -1;
-        if (isFlagShip)
-        {
-            return (m_occupiedSlots.Length > 0 && m_occupiedSlots[0] == false) ? 0 : -1;
-        }
-        for (int i = 1; i < m_occupiedSlots.Length; i++)
-        {
-            if (m_occupiedSlots[i] == false) return i;
-        }
-        return -1;
-    }
-
-    // SpaceFleet.RemoveShip에서 zone enemy 함선 파괴 시 호출
-    public void OnZoneEnemyShipSlotFreed(int slotIndex)
-    {
-        if (m_occupiedSlots != null && slotIndex >= 0 && slotIndex < m_occupiedSlots.Length)
-            m_occupiedSlots[slotIndex] = false;
-
-        CheckZoneClear();
-    }
-
-    // 큐 소진 + 활성 함선 없음 → 클리어
-    private void CheckZoneClear()
-    {
-        if (m_queueExhausted == false) return;
-        if (m_activeZoneEnemyFleet != null && m_activeZoneEnemyFleet.IsFleetAlive()) return;
-
-        SpaceFleet fleet = m_activeZoneEnemyFleet;
-        m_activeZoneEnemyFleet = null;
-        RemoveEnemyFleet(fleet); // 파괴는 RemoveEnemyFleet 단일 지점
+        RemoveEnemyFleet(fleet);
         EventManager.Trigger_EnemyFleetKilled();
-    }
-
-    // EnemyShipConfig를 ShipInfo로 변환
-    private ShipInfo CreateShipInfoFromConfig(EnemyShipConfig config, int positionIndex)
-    {
-        var bodyInfo = new ModuleBodyInfo
-        {
-            moduleType = EModuleType.body,
-            moduleSubType = config.bodySubType,
-            moduleLevel = config.bodyLevel,
-            bodyIndex = 0,
-            beams = new List<ModuleInfo>(),
-            missiles = new List<ModuleInfo>(),
-            hangers = new List<ModuleInfo>()
-        };
-
-        // 슬롯 설정에 따라 모듈 추가 (none = 빈 슬롯, 건너뜀)
-        foreach (var slot in config.moduleSlots)
-        {
-            if (slot.moduleSubType == EModuleSubType.none) continue;
-
-            var moduleInfo = new ModuleInfo
-            {
-                moduleType = slot.slotType,
-                moduleSubType = slot.moduleSubType,
-                moduleLevel = slot.moduleLevel,
-                bodyIndex = 0,
-                slotIndex = slot.slotIndex
-            };
-
-            switch (slot.slotType)
-            {
-                case EModuleType.beam:
-                    bodyInfo.beams.Add(moduleInfo);
-                    break;
-                case EModuleType.missile:
-                    bodyInfo.missiles.Add(moduleInfo);
-                    break;
-                case EModuleType.hanger:
-                    bodyInfo.hangers.Add(moduleInfo);
-                    break;
-            }
-        }
-
-        return new ShipInfo
-        {
-            shipName = $"EnemyShip_{positionIndex}",
-            positionIndex = positionIndex,
-            bodies = new List<ModuleBodyInfo> { bodyInfo }
-        };
     }
 
     #region Prefabs ---------------------------------------------------------------
@@ -698,27 +553,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // }
     #endregion Prefabs ---------------------------------------------------------------
     
-    
-    
-    
-    
-    
-
-
-
-    
-    
-    
-    // Create default mineral when prefab is missing
-    private void CreateDefaultMineral()
-    {
-        GameObject defaultMineral = new GameObject("DefaultMineral");
-        defaultMineral.transform.position = RandomPosition();
-        defaultMineral.transform.rotation = Quaternion.identity;
-        
-        SpaceMineral mineral = defaultMineral.AddComponent<SpaceMineral>();
-        m_mineralList.Add(mineral);
-    }
 
     public SpaceShip GetEnemy()
     {
@@ -728,9 +562,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             for (int i = m_enemyFleets.Count - 1; i >= 0; i--)
             {
                 if (m_enemyFleets[i] == null) { m_enemyFleets.RemoveAt(i); continue; }
-                bool fleetAlive = m_enemyFleets[i].IsFleetAlive();
-                bool hasQueuedShips = m_enemyFleets[i].IsZoneEnemy && m_shipSpawnQueue.Count > 0;
-                if (fleetAlive == false && hasQueuedShips == false)
+                if (m_enemyFleets[i].IsFleetAlive() == false)
                 {
                     Destroy(m_enemyFleets[i].gameObject);
                     m_enemyFleets.RemoveAt(i);
@@ -778,35 +610,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         Vector3 spawnPosition = basePos + m_myFleet.transform.forward * (maxHalfZ + maxZ * 10f);
         spawnPosition.y = 0f;
 
-        return spawnPosition;
-    }
-
-    private Vector3 GetMineralSpawnPosition()
-    {
-        // 내 함대의 위치와 방향 가져오기
-        if (m_myFleet == null || m_myFleet.transform == null) return RandomPosition(); // 내 함대가 없으면 기존 랜덤 위치
-
-        Vector3 fleetPosition = m_myFleet.transform.position;
-        Vector3 fleetForward = m_myFleet.transform.forward;
-
-        // 시야각 45도 (반각 22.5도)를 라디안으로 변환
-        float halfAngle = 22.5f * Mathf.Deg2Rad;
-        
-        // 적절한 거리 설정 (400~500 유닛)
-        float spawnDistance = UnityEngine.Random.Range(400.0f, 500.0f);
-        
-        // -22.5도 ~ +22.5도 사이의 랜덤 각도
-        float randomAngle = UnityEngine.Random.Range(-halfAngle, halfAngle);
-        
-        // 함대 forward 벡터를 기준으로 회전
-        Vector3 spawnDirection = Quaternion.AngleAxis(randomAngle * Mathf.Rad2Deg, Vector3.up) * fleetForward;
-        
-        // 최종 스폰 위치 계산
-        Vector3 spawnPosition = fleetPosition + spawnDirection * spawnDistance;
-        
-        // Y 위치는 0으로 고정
-        spawnPosition.y = 0;
-        
         return spawnPosition;
     }
 

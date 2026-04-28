@@ -123,8 +123,8 @@ public class DataTableZoneEditor : Editor
         }
 
         // --- datatable_zone.csv 파싱 → zoneList ---
-        // 헤더: zone_index,skybox,cam_target_x,cam_target_y,cam_target_z,cam_zoom,cam_rot_x,cam_rot_y
-        m_dataTableZone.zoneList.Clear();
+        // 헤더: zone_index,cam_target_x,cam_target_y,cam_target_z,cam_zoom,cam_rot_x,cam_rot_y
+        // celestialBodies는 CSV 외부에서 수동 설정되므로 기존 객체를 유지하고 카메라 필드만 덮어씀
         string[] zoneCommonLines = File.ReadAllLines(zoneCommonCSV);
         for (int i = 1; i < zoneCommonLines.Length; i++)
         {
@@ -134,38 +134,41 @@ public class DataTableZoneEditor : Editor
 
             if (!int.TryParse(col[0], out int zoneIndex)) continue;
 
-            float.TryParse(col[2], out float cx);
-            float.TryParse(col[3], out float cy);
-            float.TryParse(col[4], out float cz);
-            float.TryParse(col[5], out float zoom);
-            float.TryParse(col[6], out float rotX);
-            float.TryParse(col[7], out float rotY);
+            float.TryParse(col[1], out float cx);
+            float.TryParse(col[2], out float cy);
+            float.TryParse(col[3], out float cz);
+            float.TryParse(col[4], out float zoom);
+            float.TryParse(col[5], out float rotX);
+            float.TryParse(col[6], out float rotY);
 
-            Material skybox = null;
-            string skyboxName = col[1].Trim();
-            if (!string.IsNullOrEmpty(skyboxName))
+            ZoneConfig existing = null;
+            for (int j = 0; j < m_dataTableZone.zoneList.Count; j++)
             {
-                string[] guids = AssetDatabase.FindAssets($"t:Material {skyboxName}");
-                foreach (string guid in guids)
+                if (m_dataTableZone.zoneList[j].zoneIndex == zoneIndex)
                 {
-                    string path = AssetDatabase.GUIDToAssetPath(guid);
-                    if (System.IO.Path.GetFileNameWithoutExtension(path) == skyboxName)
-                    {
-                        skybox = AssetDatabase.LoadAssetAtPath<Material>(path);
-                        break;
-                    }
+                    existing = m_dataTableZone.zoneList[j];
+                    break;
                 }
             }
 
-            m_dataTableZone.zoneList.Add(new ZoneConfig
+            if (existing != null)
             {
-                zoneIndex           = zoneIndex,
-                skyboxMaterial      = skybox,
-                galaxyCameraTarget  = new Vector3(cx, cy, cz),
-                galaxyCameraZoom    = zoom,
-                galaxyCameraRotX    = rotX,
-                galaxyCameraRotY    = rotY,
-            });
+                existing.galaxyCameraTarget = new Vector3(cx, cy, cz);
+                existing.galaxyCameraZoom   = zoom;
+                existing.galaxyCameraRotX   = rotX;
+                existing.galaxyCameraRotY   = rotY;
+            }
+            else
+            {
+                m_dataTableZone.zoneList.Add(new ZoneConfig
+                {
+                    zoneIndex          = zoneIndex,
+                    galaxyCameraTarget = new Vector3(cx, cy, cz),
+                    galaxyCameraZoom   = zoom,
+                    galaxyCameraRotX   = rotX,
+                    galaxyCameraRotY   = rotY,
+                });
+            }
         }
 
         // --- enemy CSV 파싱 (zone,stage → 함선 목록) ---
@@ -186,12 +189,11 @@ public class DataTableZoneEditor : Editor
             if (!enemyMap.ContainsKey(key))
                 enemyMap[key] = new List<EnemyShipConfig>();
 
-            // 기함 여부, 함체 정보 (flag_ship: 1=기함, 0=일반)
-            int.TryParse(col[2], out int flagShip);
+            int.TryParse(col[2], out int shipIndex);
             System.Enum.TryParse(col[3], out EModuleSubType bodyType);
             int.TryParse(col[4], out int bodyLv);
             var ship = new EnemyShipConfig();
-            ship.isFlagShip = (flagShip == 1);
+            ship.shipIndex = shipIndex;
             ship.bodySubType = bodyType;
             ship.bodyLevel = bodyLv;
             // 함체 정보로 모듈 정보
@@ -429,9 +431,6 @@ public class DataTableZoneEditor : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        zoneConfig.skyboxMaterial = (Material)EditorGUILayout.ObjectField(
-            "Skybox Material", zoneConfig.skyboxMaterial, typeof(Material), false);
-
         EditorGUILayout.LabelField("갤럭시 뷰 카메라 앵커", EditorStyles.boldLabel);
         zoneConfig.galaxyCameraTarget = EditorGUILayout.Vector3Field("  Camera Target", zoneConfig.galaxyCameraTarget);
         zoneConfig.galaxyCameraZoom   = EditorGUILayout.FloatField("  Camera Zoom", zoneConfig.galaxyCameraZoom);
@@ -509,7 +508,6 @@ public class DataTableZoneEditor : Editor
 
             // 아군 함대 위치
             EditorGUILayout.BeginVertical("box");
-            zoneStage.skyboxRotation = EditorGUILayout.Slider("Skybox Rotation", zoneStage.skyboxRotation, 0f, 360f);
             zoneStage.fleetPosition = EditorGUILayout.Vector3Field("Fleet Position", zoneStage.fleetPosition);
             zoneStage.fleetRotationY = EditorGUILayout.Slider("Fleet Rotation Y", zoneStage.fleetRotationY, 0f, 360f);
             EditorGUILayout.EndVertical();
@@ -558,11 +556,10 @@ public class DataTableZoneEditor : Editor
 
         // Wave Header
         EditorGUILayout.BeginHorizontal();
-        string flagLabel = ship.isFlagShip ? "[기함] " : "";
         string slotInfo = ship.moduleSlots != null ? $", Slots: {ship.moduleSlots.Count}" : "";
         shipFoldouts[stageIndex][shipIndex] = EditorGUILayout.Foldout(
             shipFoldouts[stageIndex][shipIndex],
-            $"Ship {shipIndex + 1}: {flagLabel}{ship.bodySubType} Lv.{ship.bodyLevel}{slotInfo}", true);
+            $"Ship {shipIndex + 1} [idx:{ship.shipIndex}]: {ship.bodySubType} Lv.{ship.bodyLevel}{slotInfo}", true);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
@@ -578,8 +575,8 @@ public class DataTableZoneEditor : Editor
         {
             EditorGUI.indentLevel++;
 
-            bool newIsFlagShip = EditorGUILayout.Toggle("기함 (슬롯 0 전용)", ship.isFlagShip);
-            if (newIsFlagShip != ship.isFlagShip) { ship.isFlagShip = newIsFlagShip; EditorUtility.SetDirty(m_dataTableZone); }
+            int newShipIndex = EditorGUILayout.IntField("Ship Index (진형 슬롯)", ship.shipIndex);
+            if (newShipIndex != ship.shipIndex) { ship.shipIndex = newShipIndex; EditorUtility.SetDirty(m_dataTableZone); }
 
             // Body Type + Level
             EditorGUILayout.LabelField("Body", EditorStyles.boldLabel);

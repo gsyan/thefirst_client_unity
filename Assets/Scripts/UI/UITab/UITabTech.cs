@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UITabStation : UITabBase
+public class UITabTech : UITabBase
 {
     [Header("Tech Level 행")]
     [SerializeField] private TMP_Text m_techLevelText;
@@ -34,12 +34,14 @@ public class UITabStation : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
+        SetOtherTabsVisible(false, includeSelf: true);
         UpdateTechLevelDisplay();
     }
 
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
+        SetOtherTabsVisible(true, includeSelf: true);
     }
 
     // ── Tech Level ────────────────────────────────────────────────────

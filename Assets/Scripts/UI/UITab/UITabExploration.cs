@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class UITabExploration : UITabBase
 {
-    [SerializeField] private Button m_safeZoneButton;
+    [SerializeField] private Button m_retreatButton;
     [SerializeField] private DataTableZone m_datatableZone;
 
     [Header("존 스테이지 버튼 (World Space)")]
@@ -33,6 +33,7 @@ public class UITabExploration : UITabBase
     private int m_selectedZoneIndex = 1;
 
     private bool m_isFleetWiped;
+    private readonly WaitForSeconds m_wipePopupDelay = new WaitForSeconds(2f);
 
     public override void InitializeUITab()
     {
@@ -45,21 +46,13 @@ public class UITabExploration : UITabBase
         if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
-        m_safeZoneButton.onClick.AddListener(RetreatToPreviousStage);
+        m_retreatButton.onClick.AddListener(RetreatToPreviousStage);
 
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
 
         SetupGroupTabs();
         InitializeZoneStageButtons();
         SetFleetState(EUnitState.Idle);
-
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null)
-        {
-            var zone0 = m_datatableZone.GetZone(0);
-            if (zone0 != null)
-                pp.SetSkyboxImmediate(zone0.skyboxMaterial);
-        }
 
         SetInitialFleetPosition();
     }
@@ -84,7 +77,7 @@ public class UITabExploration : UITabBase
 
         if (targetStage != null)
         {
-            ObjectManager.Instance.SetMyFleetPosition(targetStage.fleetPosition, targetStage.fleetRotationY);
+            ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(targetStage), targetStage.fleetRotationY);
             CameraController.Instance.SnapToTarget();
         }
     }
@@ -168,7 +161,8 @@ public class UITabExploration : UITabBase
                 state = EZoneState.NotCleared;
 
             ZoneStageConfig captured = zoneStage;
-            btn.Initialize(captured, () => OnZoneStageButtonClicked(captured), () => OnEnterZoneFromButton(captured), state, worldCam);
+            Vector3 capturedWorldPos = m_datatableZone.ResolveFleetWorldPosition(captured);
+            btn.Initialize(captured, capturedWorldPos, () => OnZoneStageButtonClicked(captured), () => OnEnterZoneFromButton(captured), state, worldCam);
             btn.gameObject.SetActive(false);
             m_zoneStageButtons[zoneStage.zoneName] = btn;
         }
@@ -235,7 +229,7 @@ public class UITabExploration : UITabBase
     private void SetFleetState(EUnitState unitState)
     {
         m_myFleet.SetFleetState(unitState);
-        if (m_safeZoneButton != null) m_safeZoneButton.gameObject.SetActive(unitState == EUnitState.Battle);
+        if (m_retreatButton != null) m_retreatButton.gameObject.SetActive(unitState == EUnitState.Battle);
     }
 
     private void OnMyFleetWiped()
@@ -403,13 +397,14 @@ public class UITabExploration : UITabBase
         EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilled);
 
         // 카메라를 먼저 목표 위치로 이동 (갤럭시뷰 종료 포함)
-        CameraController.Instance.ExitGalaxyViewMoveTo(zoneStage.fleetPosition);
+        Vector3 fleetWorldPos = m_datatableZone.ResolveFleetWorldPosition(zoneStage);
+        CameraController.Instance.ExitGalaxyViewMoveTo(fleetWorldPos);
 
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
         SetOtherTabsVisible(false, includeSelf: true);
 
         // 최종 위치·방향을 설정 → StartFleetWarpIn이 transform.forward 기준으로 뒤에서 접근
-        ObjectManager.Instance.SetMyFleetPosition(zoneStage.fleetPosition, zoneStage.fleetRotationY);
+        ObjectManager.Instance.SetMyFleetPosition(fleetWorldPos, zoneStage.fleetRotationY);
 
         var cam = CameraController.Instance;
         m_myFleet.StartFleetWarpIn(onArrived: () =>
@@ -560,8 +555,6 @@ public class UITabExploration : UITabBase
 
     private void RetreatToPreviousStage()
     {
-        
-
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
         ObjectManager.Instance.StopEnemySpawning();
         ObjectManager.Instance.OrderAllAircraftReturn();
@@ -575,24 +568,43 @@ public class UITabExploration : UITabBase
 
         if (retreatStage != null)
         {
-            retreatPosition = retreatStage.fleetPosition;
+            retreatPosition = m_datatableZone.ResolveFleetWorldPosition(retreatStage);
             retreatRotationY = retreatStage.fleetRotationY;
         }
         else
         {
             var zone0Stage = m_datatableZone.GetZoneStage(0);
-            retreatPosition = zone0Stage?.fleetPosition ?? Vector3.zero;
-            retreatRotationY = zone0Stage?.fleetRotationY ?? 0f;
+            retreatPosition = zone0Stage != null ? m_datatableZone.ResolveFleetWorldPosition(zone0Stage) : Vector3.zero;
+            retreatRotationY = zone0Stage != null ? zone0Stage.fleetRotationY : 0f;
         }
 
+        if (m_isFleetWiped == true)
+            ObjectManager.Instance.StartCoroutine(ShowWipePopupAfterDelay(retreatPosition, retreatRotationY, retreatStage));
+        else
+            ExecuteRetreat(retreatPosition, retreatRotationY, retreatStage);
+    }
+
+    private IEnumerator ShowWipePopupAfterDelay(Vector3 retreatPosition, float retreatRotationY, ZoneStageConfig retreatStage)
+    {
+        yield return m_wipePopupDelay;
+        string title = LocalizationManager.Instance.Get("exploration_fleet_wiped");
+        string message = LocalizationManager.Instance.Get("exploration_wipe_retreat");
+        UIManager.Instance.ShowPopupAlert(title, message,
+            () => ExecuteRetreat(retreatPosition, retreatRotationY, retreatStage),
+            autoCloseSec: 5f);
+    }
+
+    private void ExecuteRetreat(Vector3 retreatPosition, float retreatRotationY, ZoneStageConfig retreatStage)
+    {
         // 카메라를 먼저 후퇴 위치로 이동 (갤럭시뷰 종료 포함 — 이후 CloseAllTabs→ExitGalaxyView 중복 호출 방지)
         CameraController.Instance.ExitGalaxyViewMoveTo(retreatPosition);
+        // CloseAllTabs 전에 함대 상태를 battle -> warp 로 변경
         SetFleetState(EUnitState.Warp);
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
         SetOtherTabsVisible(false, includeSelf: true);
 
         ObjectManager.Instance.SetMyFleetPosition(retreatPosition, retreatRotationY);
-        
+
         m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
             SetOtherTabsVisible(true, includeSelf: true);

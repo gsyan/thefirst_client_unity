@@ -50,6 +50,10 @@ public class SpaceFleet : MonoBehaviour
     // 수리 설정
     public ERepairThreshold m_repairThreshold = ERepairThreshold.Full;
     public ERepairConcurrency m_repairConcurrency = ERepairConcurrency.One;
+
+    // Zone 스폰 상태 (IsZoneEnemy 전용)
+    public Queue<EnemyShipConfig> m_shipSpawnQueue;
+    private Coroutine m_spawnCoroutine;
     
     private void Start()
     {
@@ -59,13 +63,13 @@ public class SpaceFleet : MonoBehaviour
     }
 
     // fleet 오브젝트를 현재 위치 뒤에서 targetPos까지 워프 이펙트로 진입, 도착 시 콜백
-    // onArrived 미지정 시 기본으로 Battle 상태 전환 (기존 적 함대 스폰 동작 유지)
     public void StartFleetWarpIn(System.Action onArrived = null)
     {
         SpaceShip flagship = GetFlagship();
         if (flagship == null)
         {
-            (onArrived ?? (() => SetFleetState(EUnitState.Battle)))?.Invoke();
+            if (onArrived != null)
+                onArrived.Invoke();
             return;
         }
 
@@ -86,8 +90,7 @@ public class SpaceFleet : MonoBehaviour
 
         float warpSpeed = flagship.m_spaceShipStatsCur.speed * m_spawnApproachSpeedMult;
         float normalSpeed = flagship.m_spaceShipStatsCur.speed;
-        System.Action arrived = onArrived ?? (() => SetFleetState(EUnitState.Battle));
-        StartCoroutine(FleetWarpInMove(finalPos, warpSpeed, normalSpeed, arrived));
+        StartCoroutine(FleetWarpInMove(finalPos, warpSpeed, normalSpeed, onArrived));
     }
 
     private const float WARP_STOP_DIST = 2f;
@@ -123,6 +126,112 @@ public class SpaceFleet : MonoBehaviour
         }
 
         onArrived?.Invoke();
+    }
+
+    public void InitializeZoneSpawn(ZoneStageConfig config)
+    {
+        m_shipSpawnQueue = new Queue<EnemyShipConfig>();
+        foreach (var cfg in config.enemyShipConfigs)
+            m_shipSpawnQueue.Enqueue(cfg);
+    }
+
+    public void StartSpawning(ZoneStageConfig config)
+    {
+        InitializeZoneSpawn(config);
+        m_spawnCoroutine = StartCoroutine(SpawnShipCoroutine(config));
+    }
+
+    public void StopSpawning()
+    {
+        if (m_spawnCoroutine != null)
+        {
+            StopCoroutine(m_spawnCoroutine);
+            m_spawnCoroutine = null;
+        }
+        if (m_shipSpawnQueue != null)
+            m_shipSpawnQueue.Clear();
+    }
+
+    private IEnumerator SpawnShipCoroutine(ZoneStageConfig config)
+    {
+        if (config.delayBeforeSpawn > 0)
+            yield return new WaitForSeconds(config.delayBeforeSpawn);
+
+        while (m_shipSpawnQueue.Count > 0)
+        {
+            EnemyShipConfig next = m_shipSpawnQueue.Dequeue();
+            SpawnSingleShip(next);
+
+            if (m_shipSpawnQueue.Count > 0)
+                yield return new WaitForSeconds(config.shipSpawnInterval);
+        }
+
+        m_spawnCoroutine = null;
+        if (IsFleetAlive() == false)
+            ObjectManager.Instance.OnZoneEnemyFleetDefeated(this);
+    }
+
+    private void SpawnSingleShip(EnemyShipConfig config)
+    {
+        ShipInfo shipInfo = CreateShipInfoFromConfig(config, config.shipIndex);
+        GameObject shipGo = new GameObject(shipInfo.shipName);
+        SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
+        spaceShip.m_bodyMultiplier    = config.bodyMultiplier;
+        spaceShip.m_beamMultiplier    = config.beamMultiplier;
+        spaceShip.m_missileMultiplier = config.missileMultiplier;
+        spaceShip.m_hangerMultiplier  = config.hangerMultiplier;
+        spaceShip.InitializeSpaceShip(this, shipInfo);
+        AddShip(spaceShip, bWarp: true);
+    }
+
+    private ShipInfo CreateShipInfoFromConfig(EnemyShipConfig config, int positionIndex)
+    {
+        ModuleData bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(config.bodySubType, config.bodyLevel);
+        var bodyInfo = new ModuleBodyInfo
+        {
+            moduleType = EModuleType.body,
+            moduleSubType = config.bodySubType,
+            moduleLevel = config.bodyLevel,
+            bodyIndex = 0,
+            currentHealth = bodyModuleData != null ? bodyModuleData.health : 0f,
+            beams = new List<ModuleInfo>(),
+            missiles = new List<ModuleInfo>(),
+            hangers = new List<ModuleInfo>()
+        };
+
+        foreach (var slot in config.moduleSlots)
+        {
+            if (slot.moduleSubType == EModuleSubType.none) continue;
+
+            var moduleInfo = new ModuleInfo
+            {
+                moduleType = slot.slotType,
+                moduleSubType = slot.moduleSubType,
+                moduleLevel = slot.moduleLevel,
+                bodyIndex = 0,
+                slotIndex = slot.slotIndex
+            };
+
+            switch (slot.slotType)
+            {
+                case EModuleType.beam:
+                    bodyInfo.beams.Add(moduleInfo);
+                    break;
+                case EModuleType.missile:
+                    bodyInfo.missiles.Add(moduleInfo);
+                    break;
+                case EModuleType.hanger:
+                    bodyInfo.hangers.Add(moduleInfo);
+                    break;
+            }
+        }
+
+        return new ShipInfo
+        {
+            shipName = $"EnemyShip_{positionIndex}",
+            positionIndex = positionIndex,
+            bodies = new List<ModuleBodyInfo> { bodyInfo }
+        };
     }
 
     // Zone 적 함선을 순차적으로 받아들이기 위한 빈 함대 초기화
@@ -212,6 +321,41 @@ public class SpaceFleet : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChanged);
+        SaveHealthToServer();
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus == true)
+            SaveHealthToServer();
+    }
+
+    private void SaveHealthToServer()
+    {
+        if (m_fleetSource != EFleetSource.fleet_source_player) return;
+        if (NetworkManager.Instance == null) return;
+
+        var request = new FleetHealthSaveRequest { ships = new List<ShipHealthInfo>() };
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            var shipHealth = new ShipHealthInfo
+            {
+                shipId = ship.m_shipInfo.id,
+                bodies = new List<BodyHealthEntry>()
+            };
+            foreach (ModuleBody body in ship.m_moduleBodys)
+            {
+                if (body == null) continue;
+                shipHealth.bodies.Add(new BodyHealthEntry
+                {
+                    bodyIndex = body.GetModuleBodyIndex(),
+                    currentHealth = body.m_health
+                });
+            }
+            request.ships.Add(shipHealth);
+        }
+        NetworkManager.Instance.FleetHealthSave(request);
     }
 
     // 소속 함선의 Body 교체로 크기가 바뀌면 간격 재조정
@@ -511,26 +655,22 @@ public class SpaceFleet : MonoBehaviour
     public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
     {
         if (ship == null) return;
-        int positionIndex = ship.m_shipInfo.positionIndex;
         m_ships.Remove(ship);
 
-        if (IsZoneEnemy)
-        {
-            // 슬롯 반환 → CheckZoneClear 판정 → RemoveEnemyFleet으로 파괴
-            ObjectManager.Instance.OnZoneEnemyShipSlotFreed(positionIndex);
-        }
-        else if (IsFleetAlive() == false)
-        {
-            if (IsEnemy)
-                ObjectManager.Instance.RemoveEnemyFleet(this);
-            else
-                EventManager.Trigger_MyFleetDestroyed();
-        }
-        else
+        if (IsFleetAlive() == true)
         {
             Destroy(ship.gameObject);
             if (refreshFormation)
                 RefreshFormation();
+        }
+        else
+        {
+            if (IsZoneEnemy)
+                ObjectManager.Instance.OnZoneEnemyFleetDefeated(this);
+            else if (IsEnemy)
+                ObjectManager.Instance.RemoveEnemyFleet(this);
+            else
+                EventManager.Trigger_MyFleetDestroyed();
         }
     }
 
@@ -625,6 +765,8 @@ public class SpaceFleet : MonoBehaviour
 
     public bool IsFleetAlive()
     {
+        if (m_shipSpawnQueue != null && m_shipSpawnQueue.Count > 0)
+            return true;
         foreach (SpaceShip ship in m_ships)
         {
             if (ship != null && ship.IsAlive() == true)
@@ -857,75 +999,5 @@ public class SpaceFleet : MonoBehaviour
                 ship.ClearSelectedModule();
         }
     }
-
-    #region Fleet Warp
-    private List<WarpEffectShip> m_warpEffects = new List<WarpEffectShip>();
-    private bool m_isFleetWarping = false;
-
-    // 함대 워프 시작 (모든 함선 동시에)
-    public void StartFleetWarp(Material skyBoxMaterial, System.Action onWarpComplete = null, float targetRotation = 0f)
-    {
-        if (m_isFleetWarping) return;
-
-        m_isFleetWarping = true;
-        EnsureWarpEffects();
-
-        // PP가 글로우/스피드라인까지 통합 제어 — warpEffects 리스트를 함께 전달
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null)
-        {
-            pp.StartWarpSequence(skyBoxMaterial, m_warpEffects, () =>
-            {
-                m_isFleetWarping = false;
-                onWarpComplete?.Invoke();
-            }, targetRotation);
-        }
-        else
-        {
-            m_isFleetWarping = false;
-            onWarpComplete?.Invoke();
-        }
-    }
-
-    // 함대 워프 중단
-    public void StopFleetWarp()
-    {
-        // 함선별 효과 중단
-        foreach (var warpEffect in m_warpEffects)
-        {
-            if (warpEffect != null)
-                warpEffect.StopWarp();
-        }
-
-        // 글로벌 효과 중단
-        var pp = WarpPostProcessing.Instance;
-        if (pp != null)
-            pp.StopWarpSequence();
-
-        m_isFleetWarping = false;
-    }
-
-    // WarpEffectShip 컴포넌트 확보
-    private void EnsureWarpEffects()
-    {
-        m_warpEffects.Clear();
-
-        foreach (var ship in m_ships)
-        {
-            if (ship == null) continue;
-
-            WarpEffectShip warpEffect = ship.GetComponent<WarpEffectShip>();
-            if (warpEffect == null)
-            {
-                warpEffect = ship.gameObject.AddComponent<WarpEffectShip>();
-                warpEffect.InitializeWarpEffect();
-            }
-
-            m_warpEffects.Add(warpEffect);
-        }
-    }
-
-    public bool IsFleetWarping => m_isFleetWarping;
-    #endregion
 
 }

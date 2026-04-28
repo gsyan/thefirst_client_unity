@@ -43,6 +43,8 @@ exploration_zone_insufficient_ships,,Not enough ships,함선이 부족합니다
 exploration_zone_enter_confirm,,Are you sure you want to enter this zone?,존에 입장 하시겠습니까?
 exploration_battle_victory,,Battle Victory,전투 승리
 exploration_battle_mineral_reward,,Mineral +{0},광물 +{0}
+exploration_fleet_wiped,,Fleet Defeated,함대 전멸
+exploration_wipe_retreat,,Retreating to previous zone,이전 구역으로 후퇴합니다
 harvest_offline_elapsed,,Offline,오프라인
 harvest_online_uncollected,,Online (Uncollected),온라인 미수집
 harvest_total,,Total,합계

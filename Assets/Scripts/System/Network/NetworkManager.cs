@@ -727,6 +727,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.InstallModuleAsync(request), onComplete));
     }
 
+    public void FleetHealthSave(FleetHealthSaveRequest request)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.FleetHealthSaveAsync(request), null));
+    }
+
     // public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)
     // {
     //     if (m_bConnected == false) return;

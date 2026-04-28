@@ -110,6 +110,8 @@ public class SpaceShip : MonoBehaviour
     private Coroutine m_rotationCoroutine;
     private Coroutine m_returnRotationCoroutine;
     private const float k_angularSpeedMult = 2f;
+    private List<ModuleBody> m_candidateBodies = new List<ModuleBody>();
+    private readonly WaitForSeconds m_waitOneSecond = new WaitForSeconds(1.0f);
     
     public void ApplyFleetStateToShip()
     {
@@ -176,30 +178,18 @@ public class SpaceShip : MonoBehaviour
     {
         while (true)
         {
-            if (m_currentTargetBody == null || m_currentTargetBody.m_health <= 0)
+            // 매 프레임 현재 전방 기준 최소 회전각의 적 body를 타겟으로 갱신
+            CollectCandidateEnemyBodies(m_candidateBodies);
+            ModuleBody best = FindMinAngleBody(m_candidateBodies);
+
+            if (best == null)
             {
-                if (m_targetShip == null || m_targetShip.IsAlive() == false)
-                {
-                    if (m_myFleet != null && m_myFleet.IsEnemy)
-                    {
-                        if (ObjectManager.Instance.m_myFleet != null)
-                            m_targetShip = ObjectManager.Instance.m_myFleet.GetRandomAliveShip();
-                    }
-                    else
-                    {
-                        m_targetShip = ObjectManager.Instance.GetEnemy();
-                    }
-                }
-
-                if (m_targetShip != null)
-                    m_currentTargetBody = m_targetShip.GetRandomAliveBody();
-
-                if (m_currentTargetBody == null)
-                {
-                    yield return new WaitForSeconds(1.0f);
-                    continue;
-                }
+                yield return m_waitOneSecond;
+                continue;
             }
+
+            m_currentTargetBody = best;
+            m_targetShip = best.GetComponentInParent<SpaceShip>();
 
             foreach (ModuleBody body in m_moduleBodys)
             {
@@ -209,6 +199,62 @@ public class SpaceShip : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private void CollectCandidateEnemyBodies(List<ModuleBody> result)
+    {
+        result.Clear();
+        if (m_myFleet != null && m_myFleet.IsEnemy == true)
+        {
+            SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
+            if (myFleet == null) return;
+            foreach (SpaceShip ship in myFleet.m_ships)
+            {
+                if (ship == null || ship.IsAlive() == false) continue;
+                foreach (ModuleBody body in ship.m_moduleBodys)
+                {
+                    if (body != null && body.m_health > 0)
+                        result.Add(body);
+                }
+            }
+        }
+        else
+        {
+            List<SpaceFleet> enemyFleets = ObjectManager.Instance.m_enemyFleets;
+            foreach (SpaceFleet fleet in enemyFleets)
+            {
+                if (fleet == null || fleet.IsFleetAlive() == false || fleet.m_fleetState != EUnitState.Battle) continue;
+                foreach (SpaceShip ship in fleet.m_ships)
+                {
+                    if (ship == null || ship.IsAlive() == false || ship.IsWarping == true) continue;
+                    foreach (ModuleBody body in ship.m_moduleBodys)
+                    {
+                        if (body != null && body.m_health > 0)
+                            result.Add(body);
+                    }
+                }
+            }
+        }
+    }
+
+    private ModuleBody FindMinAngleBody(List<ModuleBody> candidates)
+    {
+        ModuleBody best = null;
+        float bestAngle = float.MaxValue;
+        Vector3 forward = transform.forward;
+        Vector3 myPos = transform.position;
+
+        foreach (ModuleBody body in candidates)
+        {
+            Vector3 toBody = (body.transform.position - myPos).normalized;
+            float angle = Vector3.Angle(forward, toBody);
+            if (angle < bestAngle)
+            {
+                bestAngle = angle;
+                best = body;
+            }
+        }
+        return best;
     }
 
     private IEnumerator RotateTowardTarget()
@@ -274,7 +320,7 @@ public class SpaceShip : MonoBehaviour
         // SpaceFleet에서 자신을 제거
         SpaceFleet parentFleet = GetComponentInParent<SpaceFleet>();
         if (parentFleet != null)
-            parentFleet.RemoveShip(this);        
+            parentFleet.RemoveShip(this);
         // 폭발 이펙트 생성
         EffectBase effect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_EXPLOSION_SHIP);
         effect.transform.position = transform.position;

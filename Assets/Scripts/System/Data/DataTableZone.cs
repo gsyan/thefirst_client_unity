@@ -14,12 +14,11 @@ public class CelestialBodyConfig
     public float    atmosphereScale    = 1.01f;     // 행성 대비 대기 구체 크기 비율
 }
 
-// Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 skybox를 공유
+// Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 천체·카메라 설정을 공유
 [System.Serializable]
 public class ZoneConfig
 {
-    public int zoneIndex;           // 그룹 키 (0 = 안전구역 Zone-0, X-Y의 X값)
-    public Material skyboxMaterial; // 이 Zone의 스카이박스
+    public int zoneIndex; // 그룹 키 (0 = 안전구역 Zone-0, X-Y의 X값)
 
     [Header("갤럭시 뷰 카메라 앵커 (탐사 탭 그룹 선택 시)")]
     public Vector3 galaxyCameraTarget;
@@ -53,7 +52,7 @@ public class EnemyModuleSlotConfig
 [System.Serializable]
 public class EnemyShipConfig
 {
-    public bool isFlagShip; // true = 기함(슬롯 0 전용), false = 일반(슬롯 0 제외)
+    public int shipIndex;
     public EModuleSubType bodySubType;
     public int bodyLevel;
     public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
@@ -82,10 +81,7 @@ public class ZoneStageConfig
     [Header("클리어시 광물 획득량")]
     public int mineralClearReward = 0;   // [server]
 
-    [Header("스카이박스 회전 (스테이지별)")]
-    [Range(0f, 360f)] public float skyboxRotation = 0f;
-
-    [Header("아군 함대 위치/방향 (절대 좌표)")]
+    [Header("아군 함대 위치/방향 (galaxyCameraTarget 기준 상대 좌표)")]
     public Vector3 fleetPosition;
     [Range(0f, 360f)] public float fleetRotationY;
 
@@ -155,6 +151,32 @@ public class DataTableZone : ScriptableObject
     }
 
     public int ZoneStageCount => zoneStageList.Count;
+
+    // zoneIndex 필드 기준 ZoneConfig 검색 (GetZone은 배열 인덱스 기준)
+    public ZoneConfig GetZoneByZoneIndex(int zoneIndex)
+    {
+        for (int i = 0; i < zoneList.Count; i++)
+        {
+            if (zoneList[i].zoneIndex == zoneIndex)
+                return zoneList[i];
+        }
+        return null;
+    }
+
+    // 존 중심점 (galaxyCameraTarget 기준) — Zone-0 등 ZoneConfig가 없으면 zero 반환
+    public Vector3 GetZoneCenter(int zoneIndex)
+    {
+        ZoneConfig zone = GetZoneByZoneIndex(zoneIndex);
+        if (zone == null)
+            return Vector3.zero;
+        return zone.galaxyCameraTarget;
+    }
+
+    // fleetPosition(상대) + 존 중심점 → 절대 월드 좌표
+    public Vector3 ResolveFleetWorldPosition(ZoneStageConfig stage)
+    {
+        return GetZoneCenter(stage.zoneIndex) + stage.fleetPosition;
+    }
 
     // 서버용 export (필요한 필드만)
     public string ExportToJson()

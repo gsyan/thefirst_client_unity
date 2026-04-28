@@ -20,15 +20,11 @@ public class UIPanelSpace : UIPanelBase
     // UITabShip / UITabStation 탭 인덱스 및 RectTransform (카메라 뷰포트용)
     private int m_moduleTabIndex = -1;
     private RectTransform m_shipTabRect;
-    private int m_stationTabIndex = -1;
-    private RectTransform m_stationTabRect;
-
     private bool m_isUIOpen = false;
     private Coroutine m_layoutCoroutine;
 
     // 각 탭 anchorMin.x 기준 카메라 뷰포트 너비
     private float m_openCameraWidth;
-    private float m_stationOpenCameraWidth;
 
     public override void InitializeUIPanel()
     {
@@ -58,11 +54,6 @@ public class UIPanelSpace : UIPanelBase
                     m_moduleTabIndex = i;
                     m_shipTabRect = tabData.tabPanel.GetComponent<RectTransform>();
                 }
-                else if (tabBase is UITabStation)
-                {
-                    m_stationTabIndex = i;
-                    m_stationTabRect = tabData.tabPanel.GetComponent<RectTransform>();
-                }
             }
         }
 
@@ -70,7 +61,6 @@ public class UIPanelSpace : UIPanelBase
 
         // 각 탭 anchorMin.x → 열린 상태 카메라 너비
         m_openCameraWidth        = m_shipTabRect    != null ? m_shipTabRect.anchorMin.x    : 0.68f;
-        m_stationOpenCameraWidth = m_stationTabRect != null ? m_stationTabRect.anchorMin.x : 0.68f;
         SetLayoutImmediate(false);
 
         if (closeButton != null)
@@ -104,12 +94,11 @@ public class UIPanelSpace : UIPanelBase
 
     private void OnTabSelectionChanged(int tabIndex)
     {
-        bool shouldShrinkCamera = tabIndex == m_moduleTabIndex || tabIndex == m_stationTabIndex;
+        bool shouldShrinkCamera = tabIndex == m_moduleTabIndex;
         if (shouldShrinkCamera == m_isUIOpen) return;
 
         float targetWidth;
         if (tabIndex == m_moduleTabIndex)        targetWidth = m_openCameraWidth;
-        else if (tabIndex == m_stationTabIndex)  targetWidth = m_stationOpenCameraWidth;
         else                                     targetWidth = 1f;
 
         m_isUIOpen = shouldShrinkCamera;

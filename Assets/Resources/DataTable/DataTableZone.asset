@@ -14,100 +14,110 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoneList:
   - zoneIndex: 0
-    skyboxMaterial: {fileID: 2100000, guid: 1fe1faf551eff7540888233964ae8c07, type: 2}
-    galaxyCameraTarget: {x: -2000, y: 0, z: 2000}
-    galaxyCameraZoom: 800
-    galaxyCameraRotX: 45
-    galaxyCameraRotY: 200
+    galaxyCameraTarget: {x: -3000, y: 0, z: 3000}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
     celestialBodies: []
   - zoneIndex: 1
-    skyboxMaterial: {fileID: 2100000, guid: 1fe1faf551eff7540888233964ae8c07, type: 2}
-    galaxyCameraTarget: {x: -2000, y: 0, z: 2000}
-    galaxyCameraZoom: 2000
+    galaxyCameraTarget: {x: -3000, y: 0, z: 3000}
+    galaxyCameraZoom: 4000
     galaxyCameraRotX: 80
     galaxyCameraRotY: 0
     celestialBodies:
-    - position: {x: -3832, y: 0, z: 2000}
-      scale: {x: 80, y: 80, z: 80}
+    - position: {x: -3000, y: 0, z: 3000}
+      scale: {x: 500, y: 500, z: 500}
       material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
       atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
       atmosphereScale: 1.001
-    - position: {x: -3232, y: 0, z: 2556}
-      scale: {x: 80, y: 80, z: 80}
-      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-      atmosphereMaterial: {fileID: 0}
-      atmosphereScale: 1.01
-    - position: {x: -2309, y: 0, z: 3070}
-      scale: {x: 80, y: 80, z: 80}
-      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-      atmosphereMaterial: {fileID: 0}
-      atmosphereScale: 1.01
-    - position: {x: -1054, y: 0, z: 1369}
-      scale: {x: 80, y: 80, z: 80}
-      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-      atmosphereMaterial: {fileID: 0}
-      atmosphereScale: 1.01
-    - position: {x: -427, y: 0, z: 2292}
-      scale: {x: 80, y: 80, z: 80}
-      material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-      atmosphereMaterial: {fileID: 0}
-      atmosphereScale: 1.01
   - zoneIndex: 2
-    skyboxMaterial: {fileID: 2100000, guid: e09c50448265b284c98f1b4ab1b3d814, type: 2}
-    galaxyCameraTarget: {x: 0, y: 0, z: 2000}
-    galaxyCameraZoom: 800
-    galaxyCameraRotX: 45
-    galaxyCameraRotY: 200
-    celestialBodies: []
+    galaxyCameraTarget: {x: 0, y: 0, z: 3000}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies:
+    - position: {x: 0, y: 0, z: 3000}
+      scale: {x: 500, y: 500, z: 500}
+      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
+      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
+      atmosphereScale: 1.001
   - zoneIndex: 3
-    skyboxMaterial: {fileID: 2100000, guid: badcbeaf674407f47871aebf243690a3, type: 2}
-    galaxyCameraTarget: {x: 2000, y: 0, z: 2000}
-    galaxyCameraZoom: 800
-    galaxyCameraRotX: 45
-    galaxyCameraRotY: 200
-    celestialBodies: []
+    galaxyCameraTarget: {x: 3000, y: 0, z: 3000}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies:
+    - position: {x: 3000, y: 0, z: 3000}
+      scale: {x: 500, y: 500, z: 500}
+      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
+      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
+      atmosphereScale: 1.001
   - zoneIndex: 4
-    skyboxMaterial: {fileID: 2100000, guid: 35abe7312286223429ee5d0467d4e882, type: 2}
-    galaxyCameraTarget: {x: 2000, y: 0, z: 0}
-    galaxyCameraZoom: 800
-    galaxyCameraRotX: 45
-    galaxyCameraRotY: 200
-    celestialBodies: []
+    galaxyCameraTarget: {x: 3000, y: 0, z: 0}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies:
+    - position: {x: 3000, y: 0, z: 0}
+      scale: {x: 500, y: 500, z: 500}
+      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
+      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
+      atmosphereScale: 1.001
   - zoneIndex: 5
-    skyboxMaterial: {fileID: 2100000, guid: 2366ba7f489058249ab3210586c96ad3, type: 2}
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
-    galaxyCameraZoom: 800
-    galaxyCameraRotX: 45
-    galaxyCameraRotY: 200
-    celestialBodies: []
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies:
+    - position: {x: 0, y: 0, z: 0}
+      scale: {x: 500, y: 500, z: 500}
+      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
+      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
+      atmosphereScale: 1.001
   - zoneIndex: 6
-    skyboxMaterial: {fileID: 2100000, guid: 153c4d8c0bd5e3c478f382f84bc27052, type: 2}
-    galaxyCameraTarget: {x: -2000, y: 0, z: 0}
-    galaxyCameraZoom: 800
-    galaxyCameraRotX: 45
-    galaxyCameraRotY: 200
-    celestialBodies: []
+    galaxyCameraTarget: {x: -3000, y: 0, z: 0}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies:
+    - position: {x: -3000, y: 0, z: 0}
+      scale: {x: 500, y: 500, z: 500}
+      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
+      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
+      atmosphereScale: 1.01
   - zoneIndex: 7
-    skyboxMaterial: {fileID: 2100000, guid: 06c959ac6fffe2d40abab9e4d0a61dbf, type: 2}
-    galaxyCameraTarget: {x: -2000, y: 0, z: -2000}
-    galaxyCameraZoom: 800
-    galaxyCameraRotX: 45
-    galaxyCameraRotY: 200
-    celestialBodies: []
+    galaxyCameraTarget: {x: -3000, y: 0, z: -3000}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies:
+    - position: {x: -3000, y: 0, z: -3000}
+      scale: {x: 500, y: 500, z: 500}
+      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
+      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
+      atmosphereScale: 1.01
   - zoneIndex: 8
-    skyboxMaterial: {fileID: 2100000, guid: 085092440773a7c4a8bf84a52de08042, type: 2}
-    galaxyCameraTarget: {x: 0, y: 0, z: -2000}
-    galaxyCameraZoom: 800
-    galaxyCameraRotX: 45
-    galaxyCameraRotY: 200
-    celestialBodies: []
+    galaxyCameraTarget: {x: 0, y: 0, z: -3000}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies:
+    - position: {x: 0, y: 0, z: -3000}
+      scale: {x: 500, y: 500, z: 500}
+      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
+      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
+      atmosphereScale: 1.01
   - zoneIndex: 9
-    skyboxMaterial: {fileID: 2100000, guid: 8775bb68282374549a795ba8ad6f7790, type: 2}
-    galaxyCameraTarget: {x: 2000, y: 0, z: -2000}
-    galaxyCameraZoom: 800
-    galaxyCameraRotX: 45
-    galaxyCameraRotY: 200
-    celestialBodies: []
+    galaxyCameraTarget: {x: 3000, y: 0, z: -3000}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies:
+    - position: {x: 3000, y: 0, z: -3000}
+      scale: {x: 500, y: 500, z: 500}
+      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
+      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
+      atmosphereScale: 1.01
   zoneStageList:
   - zoneName: Zone-0
     zoneDescription: "\uC548\uC804\uC9C0\uC5ED"
@@ -117,8 +127,7 @@ MonoBehaviour:
     maxConcurrentEnemyShips: 3
     enemyShipConfigs: []
     mineralClearReward: 0
-    skyboxRotation: 0
-    fleetPosition: {x: -4000, y: 0, z: 2000}
+    fleetPosition: {x: -5000, y: 0, z: 2000}
     fleetRotationY: 0
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
@@ -127,10 +136,10 @@ MonoBehaviour:
     zoneDescription: Zone 1-1
     zoneIndex: 1
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 9
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -150,7 +159,7 @@ MonoBehaviour:
       beamMultiplier: 0.1
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -170,7 +179,7 @@ MonoBehaviour:
       beamMultiplier: 0.1
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -190,7 +199,7 @@ MonoBehaviour:
       beamMultiplier: 0.1
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -210,7 +219,7 @@ MonoBehaviour:
       beamMultiplier: 0.1
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -230,7 +239,7 @@ MonoBehaviour:
       beamMultiplier: 0.1
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -250,7 +259,7 @@ MonoBehaviour:
       beamMultiplier: 0.1
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -270,7 +279,7 @@ MonoBehaviour:
       beamMultiplier: 0.1
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -290,27 +299,7 @@ MonoBehaviour:
       beamMultiplier: 0.1
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
-    - isFlagShip: 0
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 0.1
-      beamMultiplier: 0.1
-      missileMultiplier: 0.1
-      hangerMultiplier: 0.1
-    - isFlagShip: 1
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -331,9 +320,8 @@ MonoBehaviour:
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
     mineralClearReward: 10
-    skyboxRotation: 0
-    fleetPosition: {x: -3774.502, y: 0, z: 2219.882}
-    fleetRotationY: 0
+    fleetPosition: {x: -991.9509, y: 0, z: 0}
+    fleetRotationY: 88.86607
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -341,10 +329,10 @@ MonoBehaviour:
     zoneDescription: Zone 1-2
     zoneIndex: 1
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -364,7 +352,7 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -384,7 +372,7 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -404,7 +392,7 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -424,7 +412,7 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -444,7 +432,7 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -464,7 +452,7 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -484,7 +472,7 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -504,7 +492,7 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -524,30 +512,9 @@ MonoBehaviour:
       beamMultiplier: 0.1474
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 0.1474
-      beamMultiplier: 0.1474
-      missileMultiplier: 0.1474
-      hangerMultiplier: 0.1474
-    mineralClearReward: 20
-    skyboxRotation: 0
-    fleetPosition: {x: -3060.5532, y: 0, z: 2426.1697}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
+    fleetRotationY: 172.2542
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -555,10 +522,10 @@ MonoBehaviour:
     zoneDescription: Zone 1-3
     zoneIndex: 1
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -578,7 +545,7 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -598,7 +565,7 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -618,7 +585,7 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -638,7 +605,7 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -658,7 +625,7 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -678,7 +645,7 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -698,7 +665,7 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -718,7 +685,7 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -738,30 +705,9 @@ MonoBehaviour:
       beamMultiplier: 0.1947
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 0.1947
-      beamMultiplier: 0.1947
-      missileMultiplier: 0.1947
-      hangerMultiplier: 0.1947
-    mineralClearReward: 30
-    skyboxRotation: 0
-    fleetPosition: {x: -2165.7354, y: 0, z: 2983.8057}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
+    fleetRotationY: 296.5794
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -769,10 +715,10 @@ MonoBehaviour:
     zoneDescription: Zone 1-4
     zoneIndex: 1
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -792,7 +738,7 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -812,7 +758,7 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -832,7 +778,7 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -852,7 +798,7 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -872,7 +818,7 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -892,7 +838,7 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -912,7 +858,7 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -932,7 +878,7 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -952,30 +898,9 @@ MonoBehaviour:
       beamMultiplier: 0.2421
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 0.2421
-      beamMultiplier: 0.2421
-      missileMultiplier: 0.2421
-      hangerMultiplier: 0.2421
-    mineralClearReward: 40
-    skyboxRotation: 0
-    fleetPosition: {x: -1249.9626, y: 0, z: 1491.7249}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
+    fleetRotationY: 69.35962
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -983,10 +908,10 @@ MonoBehaviour:
     zoneDescription: Zone 1-5
     zoneIndex: 1
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1006,7 +931,7 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1026,7 +951,7 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1046,7 +971,7 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1066,7 +991,7 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1086,7 +1011,7 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1106,7 +1031,7 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1126,7 +1051,7 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1146,7 +1071,7 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1166,30 +1091,9 @@ MonoBehaviour:
       beamMultiplier: 0.2895
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 0.2895
-      beamMultiplier: 0.2895
-      missileMultiplier: 0.2895
-      hangerMultiplier: 0.2895
-    mineralClearReward: 50
-    skyboxRotation: 0
-    fleetPosition: {x: -455.30994, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
+    fleetRotationY: 85.17218
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1197,10 +1101,10 @@ MonoBehaviour:
     zoneDescription: Zone 2-1
     zoneIndex: 2
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1220,7 +1124,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1240,7 +1144,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1260,7 +1164,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1280,7 +1184,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1300,7 +1204,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1320,7 +1224,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1340,7 +1244,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1360,7 +1264,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1380,30 +1284,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 60
-    skyboxRotation: 0
-    fleetPosition: {x: -400, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -991.9509, y: 0, z: 0}
+    fleetRotationY: 88.86607
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1411,10 +1294,10 @@ MonoBehaviour:
     zoneDescription: Zone 2-2
     zoneIndex: 2
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1434,7 +1317,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1454,7 +1337,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1474,7 +1357,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1494,7 +1377,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1514,7 +1397,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1534,7 +1417,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1554,7 +1437,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1574,7 +1457,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1594,30 +1477,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 70
-    skyboxRotation: 0
-    fleetPosition: {x: -200, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
+    fleetRotationY: 172.2542
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1625,10 +1487,10 @@ MonoBehaviour:
     zoneDescription: Zone 2-3
     zoneIndex: 2
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1648,7 +1510,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1668,7 +1530,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1688,7 +1550,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1708,7 +1570,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1728,7 +1590,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1748,7 +1610,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1768,7 +1630,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1788,7 +1650,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1808,30 +1670,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 80
-    skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
+    fleetRotationY: 296.5794
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1839,10 +1680,10 @@ MonoBehaviour:
     zoneDescription: Zone 2-4
     zoneIndex: 2
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1862,7 +1703,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1882,7 +1723,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1902,7 +1743,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1922,7 +1763,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1942,7 +1783,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1962,7 +1803,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -1982,7 +1823,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2002,7 +1843,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2022,30 +1863,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 90
-    skyboxRotation: 0
-    fleetPosition: {x: 200, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
+    fleetRotationY: 69.35962
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2053,10 +1873,10 @@ MonoBehaviour:
     zoneDescription: Zone 2-5
     zoneIndex: 2
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2076,7 +1896,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2096,7 +1916,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2116,7 +1936,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2136,7 +1956,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2156,7 +1976,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2176,7 +1996,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2196,7 +2016,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2216,7 +2036,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2236,30 +2056,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 100
-    skyboxRotation: 0
-    fleetPosition: {x: 400, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
+    fleetRotationY: 85.17218
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2267,10 +2066,10 @@ MonoBehaviour:
     zoneDescription: Zone 3-1
     zoneIndex: 3
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2290,7 +2089,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2310,7 +2109,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2330,7 +2129,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2350,7 +2149,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2370,7 +2169,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2390,7 +2189,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2410,7 +2209,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2430,7 +2229,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2450,30 +2249,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 110
-    skyboxRotation: 0
-    fleetPosition: {x: 1600, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -991.9509, y: 0, z: 0}
+    fleetRotationY: 88.86607
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2481,10 +2259,10 @@ MonoBehaviour:
     zoneDescription: Zone 3-2
     zoneIndex: 3
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2504,7 +2282,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2524,7 +2302,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2544,7 +2322,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2564,7 +2342,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2584,7 +2362,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2604,7 +2382,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2624,7 +2402,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2644,7 +2422,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2664,30 +2442,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 120
-    skyboxRotation: 0
-    fleetPosition: {x: 1800, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
+    fleetRotationY: 172.2542
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2695,10 +2452,10 @@ MonoBehaviour:
     zoneDescription: Zone 3-3
     zoneIndex: 3
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2718,7 +2475,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2738,7 +2495,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2758,7 +2515,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2778,7 +2535,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2798,7 +2555,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2818,7 +2575,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2838,7 +2595,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2858,7 +2615,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2878,30 +2635,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 130
-    skyboxRotation: 0
-    fleetPosition: {x: 2000, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
+    fleetRotationY: 296.5794
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2909,10 +2645,10 @@ MonoBehaviour:
     zoneDescription: Zone 3-4
     zoneIndex: 3
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2932,7 +2668,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2952,7 +2688,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2972,7 +2708,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -2992,7 +2728,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3012,7 +2748,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3032,7 +2768,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3052,7 +2788,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3072,7 +2808,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3092,30 +2828,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 140
-    skyboxRotation: 0
-    fleetPosition: {x: 2200, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
+    fleetRotationY: 69.35962
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3123,10 +2838,10 @@ MonoBehaviour:
     zoneDescription: Zone 3-5
     zoneIndex: 3
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3146,7 +2861,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3166,7 +2881,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3186,7 +2901,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3206,7 +2921,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3226,7 +2941,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3246,7 +2961,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3266,7 +2981,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3286,7 +3001,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3306,30 +3021,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 150
-    skyboxRotation: 0
-    fleetPosition: {x: 2400, y: 0, z: 2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
+    fleetRotationY: 85.17218
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3337,10 +3031,10 @@ MonoBehaviour:
     zoneDescription: Zone 4-1
     zoneIndex: 4
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3360,7 +3054,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3380,7 +3074,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3400,7 +3094,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3420,7 +3114,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3440,7 +3134,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3460,7 +3154,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3480,7 +3174,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3500,7 +3194,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3520,30 +3214,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 160
-    skyboxRotation: 0
-    fleetPosition: {x: 1600, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -991.9509, y: 0, z: 0}
+    fleetRotationY: 88.86607
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3551,10 +3224,10 @@ MonoBehaviour:
     zoneDescription: Zone 4-2
     zoneIndex: 4
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3574,7 +3247,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3594,7 +3267,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3614,7 +3287,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3634,7 +3307,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3654,7 +3327,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3674,7 +3347,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3694,7 +3367,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3714,7 +3387,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3734,30 +3407,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 170
-    skyboxRotation: 0
-    fleetPosition: {x: 1800, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
+    fleetRotationY: 172.2542
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3765,10 +3417,10 @@ MonoBehaviour:
     zoneDescription: Zone 4-3
     zoneIndex: 4
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3788,7 +3440,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3808,7 +3460,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3828,7 +3480,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3848,7 +3500,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3868,7 +3520,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3888,7 +3540,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3908,7 +3560,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3928,7 +3580,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -3948,30 +3600,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 180
-    skyboxRotation: 0
-    fleetPosition: {x: 2000, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
+    fleetRotationY: 296.5794
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3979,10 +3610,10 @@ MonoBehaviour:
     zoneDescription: Zone 4-4
     zoneIndex: 4
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4002,7 +3633,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4022,7 +3653,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4042,7 +3673,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4062,7 +3693,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4082,7 +3713,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4102,7 +3733,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4122,7 +3753,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4142,7 +3773,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4162,30 +3793,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 190
-    skyboxRotation: 0
-    fleetPosition: {x: 2200, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
+    fleetRotationY: 69.35962
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4193,10 +3803,10 @@ MonoBehaviour:
     zoneDescription: Zone 4-5
     zoneIndex: 4
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4216,7 +3826,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4236,7 +3846,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4256,7 +3866,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4276,7 +3886,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4296,7 +3906,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4316,7 +3926,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4336,7 +3946,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4356,7 +3966,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4376,30 +3986,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 200
-    skyboxRotation: 0
-    fleetPosition: {x: 2400, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
+    fleetRotationY: 85.17218
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4407,10 +3996,10 @@ MonoBehaviour:
     zoneDescription: Zone 5-1
     zoneIndex: 5
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4430,7 +4019,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4450,7 +4039,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4470,7 +4059,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4490,7 +4079,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4510,7 +4099,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4530,7 +4119,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4550,7 +4139,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4570,7 +4159,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4590,30 +4179,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 210
-    skyboxRotation: 0
-    fleetPosition: {x: -400, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -991.9509, y: 0, z: 0}
+    fleetRotationY: 88.86607
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4621,10 +4189,10 @@ MonoBehaviour:
     zoneDescription: Zone 5-2
     zoneIndex: 5
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4644,7 +4212,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4664,7 +4232,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4684,7 +4252,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4704,7 +4272,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4724,7 +4292,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4744,7 +4312,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4764,7 +4332,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4784,7 +4352,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4804,30 +4372,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 220
-    skyboxRotation: 0
-    fleetPosition: {x: -200, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
+    fleetRotationY: 172.2542
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4835,10 +4382,10 @@ MonoBehaviour:
     zoneDescription: Zone 5-3
     zoneIndex: 5
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4858,7 +4405,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4878,7 +4425,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4898,7 +4445,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4918,7 +4465,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4938,7 +4485,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4958,7 +4505,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4978,7 +4525,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -4998,7 +4545,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5018,30 +4565,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 230
-    skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
+    fleetRotationY: 296.5794
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5049,10 +4575,10 @@ MonoBehaviour:
     zoneDescription: Zone 5-4
     zoneIndex: 5
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5072,7 +4598,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5092,7 +4618,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5112,7 +4638,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5132,7 +4658,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5152,7 +4678,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5172,7 +4698,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5192,7 +4718,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5212,7 +4738,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5232,30 +4758,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 240
-    skyboxRotation: 0
-    fleetPosition: {x: 200, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
+    fleetRotationY: 69.35962
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5263,10 +4768,10 @@ MonoBehaviour:
     zoneDescription: Zone 5-5
     zoneIndex: 5
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5286,7 +4791,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5306,7 +4811,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5326,7 +4831,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5346,7 +4851,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5366,7 +4871,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5386,7 +4891,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5406,7 +4911,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5426,7 +4931,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5446,30 +4951,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 250
-    skyboxRotation: 0
-    fleetPosition: {x: 400, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
+    fleetRotationY: 85.17218
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5477,10 +4961,10 @@ MonoBehaviour:
     zoneDescription: Zone 6-1
     zoneIndex: 6
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5500,7 +4984,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5520,7 +5004,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5540,7 +5024,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5560,7 +5044,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5580,7 +5064,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5600,7 +5084,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5620,7 +5104,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5640,7 +5124,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5660,30 +5144,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 260
-    skyboxRotation: 0
-    fleetPosition: {x: -2400, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -991.9509, y: 0, z: 0}
+    fleetRotationY: 88.86607
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5691,10 +5154,10 @@ MonoBehaviour:
     zoneDescription: Zone 6-2
     zoneIndex: 6
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5714,7 +5177,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5734,7 +5197,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5754,7 +5217,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5774,7 +5237,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5794,7 +5257,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5814,7 +5277,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5834,7 +5297,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5854,7 +5317,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5874,30 +5337,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 270
-    skyboxRotation: 0
-    fleetPosition: {x: -2200, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
+    fleetRotationY: 172.2542
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5905,10 +5347,10 @@ MonoBehaviour:
     zoneDescription: Zone 6-3
     zoneIndex: 6
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5928,7 +5370,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5948,7 +5390,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5968,7 +5410,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -5988,7 +5430,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6008,7 +5450,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6028,7 +5470,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6048,7 +5490,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6068,7 +5510,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6088,30 +5530,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 280
-    skyboxRotation: 0
-    fleetPosition: {x: -2000, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
+    fleetRotationY: 296.5794
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6119,10 +5540,10 @@ MonoBehaviour:
     zoneDescription: Zone 6-4
     zoneIndex: 6
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6142,7 +5563,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6162,7 +5583,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6182,7 +5603,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6202,7 +5623,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6222,7 +5643,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6242,7 +5663,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6262,7 +5683,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6282,7 +5703,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6302,30 +5723,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 290
-    skyboxRotation: 0
-    fleetPosition: {x: -1800, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
+    fleetRotationY: 69.35962
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6333,10 +5733,10 @@ MonoBehaviour:
     zoneDescription: Zone 6-5
     zoneIndex: 6
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6356,7 +5756,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6376,7 +5776,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6396,7 +5796,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6416,7 +5816,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6436,7 +5836,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6456,7 +5856,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6476,7 +5876,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6496,7 +5896,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6516,30 +5916,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 300
-    skyboxRotation: 0
-    fleetPosition: {x: -1600, y: 0, z: 0}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
+    fleetRotationY: 85.17218
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6547,10 +5926,10 @@ MonoBehaviour:
     zoneDescription: Zone 7-1
     zoneIndex: 7
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6570,7 +5949,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6590,7 +5969,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6610,7 +5989,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6630,7 +6009,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6650,7 +6029,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6670,7 +6049,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6690,7 +6069,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6710,7 +6089,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6730,30 +6109,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 310
-    skyboxRotation: 0
-    fleetPosition: {x: -2400, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -991.9509, y: 0, z: 0}
+    fleetRotationY: 88.86607
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6761,10 +6119,10 @@ MonoBehaviour:
     zoneDescription: Zone 7-2
     zoneIndex: 7
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6784,7 +6142,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6804,7 +6162,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6824,7 +6182,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6844,7 +6202,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6864,7 +6222,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6884,7 +6242,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6904,7 +6262,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6924,7 +6282,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6944,30 +6302,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 320
-    skyboxRotation: 0
-    fleetPosition: {x: -2200, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
+    fleetRotationY: 172.2542
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6975,10 +6312,10 @@ MonoBehaviour:
     zoneDescription: Zone 7-3
     zoneIndex: 7
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -6998,7 +6335,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7018,7 +6355,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7038,7 +6375,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7058,7 +6395,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7078,7 +6415,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7098,7 +6435,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7118,7 +6455,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7138,7 +6475,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7158,30 +6495,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 330
-    skyboxRotation: 0
-    fleetPosition: {x: -2000, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
+    fleetRotationY: 296.5794
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7189,10 +6505,10 @@ MonoBehaviour:
     zoneDescription: Zone 7-4
     zoneIndex: 7
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7212,7 +6528,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7232,7 +6548,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7252,7 +6568,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7272,7 +6588,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7292,7 +6608,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7312,7 +6628,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7332,7 +6648,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7352,7 +6668,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7372,30 +6688,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 340
-    skyboxRotation: 0
-    fleetPosition: {x: -1800, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
+    fleetRotationY: 69.35962
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7403,10 +6698,10 @@ MonoBehaviour:
     zoneDescription: Zone 7-5
     zoneIndex: 7
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7426,7 +6721,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7446,7 +6741,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7466,7 +6761,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7486,7 +6781,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7506,7 +6801,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7526,7 +6821,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7546,7 +6841,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7566,7 +6861,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7586,30 +6881,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 350
-    skyboxRotation: 0
-    fleetPosition: {x: -1600, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
+    fleetRotationY: 85.17218
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7617,10 +6891,10 @@ MonoBehaviour:
     zoneDescription: Zone 8-1
     zoneIndex: 8
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7640,7 +6914,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7660,7 +6934,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7680,7 +6954,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7700,7 +6974,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7720,7 +6994,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7740,7 +7014,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7760,7 +7034,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7780,7 +7054,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7800,30 +7074,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 360
-    skyboxRotation: 0
-    fleetPosition: {x: -400, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -991.9509, y: 0, z: 0}
+    fleetRotationY: 88.86607
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7831,10 +7084,10 @@ MonoBehaviour:
     zoneDescription: Zone 8-2
     zoneIndex: 8
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7854,7 +7107,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7874,7 +7127,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7894,7 +7147,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7914,7 +7167,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7934,7 +7187,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7954,7 +7207,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7974,7 +7227,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -7994,7 +7247,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8014,30 +7267,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 370
-    skyboxRotation: 0
-    fleetPosition: {x: -200, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
+    fleetRotationY: 172.2542
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -8045,10 +7277,10 @@ MonoBehaviour:
     zoneDescription: Zone 8-3
     zoneIndex: 8
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8068,7 +7300,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8088,7 +7320,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8108,7 +7340,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8128,7 +7360,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8148,7 +7380,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8168,7 +7400,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8188,7 +7420,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8208,7 +7440,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8228,30 +7460,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 380
-    skyboxRotation: 0
-    fleetPosition: {x: 0, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
+    fleetRotationY: 296.5794
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -8259,10 +7470,10 @@ MonoBehaviour:
     zoneDescription: Zone 8-4
     zoneIndex: 8
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8282,7 +7493,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8302,7 +7513,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8322,7 +7533,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8342,7 +7553,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8362,7 +7573,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8382,7 +7593,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8402,7 +7613,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8422,7 +7633,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8442,30 +7653,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 390
-    skyboxRotation: 0
-    fleetPosition: {x: 200, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
+    fleetRotationY: 69.35962
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -8473,10 +7663,10 @@ MonoBehaviour:
     zoneDescription: Zone 8-5
     zoneIndex: 8
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8496,7 +7686,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8516,7 +7706,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8536,7 +7726,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8556,7 +7746,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8576,7 +7766,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8596,7 +7786,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8616,7 +7806,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8636,7 +7826,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8656,30 +7846,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 400
-    skyboxRotation: 0
-    fleetPosition: {x: 400, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
+    fleetRotationY: 85.17218
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -8687,10 +7856,10 @@ MonoBehaviour:
     zoneDescription: Zone 9-1
     zoneIndex: 9
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8710,7 +7879,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8730,7 +7899,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8750,7 +7919,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8770,7 +7939,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8790,7 +7959,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8810,7 +7979,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8830,7 +7999,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8850,7 +8019,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8870,30 +8039,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 410
-    skyboxRotation: 0
-    fleetPosition: {x: 1600, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -991.9509, y: 0, z: 0}
+    fleetRotationY: 88.86607
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -8901,10 +8049,10 @@ MonoBehaviour:
     zoneDescription: Zone 9-2
     zoneIndex: 9
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8924,7 +8072,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8944,7 +8092,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8964,7 +8112,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -8984,7 +8132,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9004,7 +8152,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9024,7 +8172,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9044,7 +8192,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9064,7 +8212,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9084,30 +8232,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 420
-    skyboxRotation: 0
-    fleetPosition: {x: 1800, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
+    fleetRotationY: 172.2542
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -9115,10 +8242,10 @@ MonoBehaviour:
     zoneDescription: Zone 9-3
     zoneIndex: 9
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9138,7 +8265,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9158,7 +8285,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9178,7 +8305,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9198,7 +8325,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9218,7 +8345,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9238,7 +8365,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9258,7 +8385,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9278,7 +8405,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9298,30 +8425,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 430
-    skyboxRotation: 0
-    fleetPosition: {x: 2000, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
+    fleetRotationY: 296.5794
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -9329,10 +8435,10 @@ MonoBehaviour:
     zoneDescription: Zone 9-4
     zoneIndex: 9
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9352,7 +8458,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9372,7 +8478,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9392,7 +8498,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9412,7 +8518,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9432,7 +8538,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9452,7 +8558,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9472,7 +8578,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9492,7 +8598,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9512,30 +8618,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 440
-    skyboxRotation: 0
-    fleetPosition: {x: 2200, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
+    fleetRotationY: 69.35962
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -9543,10 +8628,10 @@ MonoBehaviour:
     zoneDescription: Zone 9-5
     zoneIndex: 9
     delayBeforeSpawn: 1
-    shipSpawnInterval: 1.5
+    shipSpawnInterval: 0.5
     maxConcurrentEnemyShips: 10
     enemyShipConfigs:
-    - isFlagShip: 0
+    - shipIndex: 8
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9566,7 +8651,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 7
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9586,7 +8671,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 6
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9606,7 +8691,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 5
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9626,7 +8711,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 4
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9646,7 +8731,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 3
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9666,7 +8751,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9686,7 +8771,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9706,7 +8791,7 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 0
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -9726,30 +8811,9 @@ MonoBehaviour:
       beamMultiplier: 1
       missileMultiplier: 1
       hangerMultiplier: 1
-    - isFlagShip: 1
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    mineralClearReward: 450
-    skyboxRotation: 0
-    fleetPosition: {x: 2400, y: 0, z: -2000}
-    fleetRotationY: 0
+    mineralClearReward: 10
+    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
+    fleetRotationY: 85.17218
     diagonalOffset: {x: 50, y: 60}
     labelAboveLine: 0
     labelScreenOffset: {x: 80, y: 60}
