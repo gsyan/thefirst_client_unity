@@ -7,7 +7,11 @@ public class UITabFleet : UITabBase
     [Header("함선 선택 UI 부모")]
     [SerializeField] private GameObject m_shipSelectorsObj;
     private ShipSelector[] m_shipSelectors;
-    
+
+    [SerializeField] private GameObject m_addShipContainer;
+    [SerializeField] private Button m_addShipButton;
+    [SerializeField] private TMP_Text m_currentShipCountStatText;
+
     [Header("함선 액션 버튼 (선택 시 활성)")]
     [SerializeField] private Button m_btnShipRepair;    // 집중 수리 (추후 구현)
 
@@ -36,6 +40,7 @@ public class UITabFleet : UITabBase
 
         m_btnFormationChange.onClick.AddListener(OnFormationChangeClicked);
 
+        if (m_addShipButton != null) m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
         if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
         PopulateShipSelectorGrid();
         UpdateShipActionButtons();
@@ -81,31 +86,6 @@ public class UITabFleet : UITabBase
         int currentLevel = character.GetTechLevel();
         
         int maxShips = DataManager.Instance.m_dataTableResearch.GetShipCount(currentLevel);
-    }
-
-    private TechLevelResearchData GetNextTechLevelNode(Character character)
-    {
-        var techList = DataManager.Instance.m_dataTableResearch.TechLevelDataList;
-        for (int i = 0; i < techList.Count; i++)
-        {
-            if (character.IsResearchCompleted(techList[i].researchId) == false)
-                return techList[i];
-        }
-        return null;
-    }
-
-    private void OnTechLevelButtonClicked()
-    {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
-        if (GetNextTechLevelNode(character) == null) return;
-
-        int currentLevel = character.GetTechLevel();
-        UIManager.Instance.ShowTechLevelupPopup(currentLevel, targetLevel =>
-        {
-            ResearchTechLevelsSequentially(currentLevel + 1, targetLevel);
-        });
     }
 
     // currentLevel+1 ~ toLevel 까지 순차적으로 API 호출
@@ -198,23 +178,29 @@ public class UITabFleet : UITabBase
 
             if (i < shipCount)
             {
-                // 보유 함선 슬롯
                 m_shipSelectors[i].gameObject.SetActive(true);
                 SpaceShip captured = m_myFleet.m_ships[i];
                 m_shipSelectors[i].InitializeShipSelector(captured, () => OnShipSelectorClicked(captured), () => OnShipManageClicked(captured));
             }
-            else if (i == shipCount && canAdd)
-            {
-                // 다음 추가 가능 슬롯 1개만 표시
-                m_shipSelectors[i].gameObject.SetActive(true);
-                m_shipSelectors[i].InitializeShipSelectorLocked(OnAddShipButtonClicked);
-            }
             else
             {
-                // 나머지 슬롯은 숨김
                 m_shipSelectors[i].gameObject.SetActive(false);
             }
         }
+
+        if (m_addShipContainer != null) m_addShipContainer.SetActive(canAdd);
+        UpdateShipCountDisplay();
+
+        if (m_shipSelectorsObj != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipSelectorsObj.GetComponent<RectTransform>());
+    }
+
+    private void UpdateShipCountDisplay()
+    {
+        if (m_currentShipCountStatText == null || m_myFleet == null) return;
+        int current = m_myFleet.m_ships.Count;
+        int max = DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet;
+        m_currentShipCountStatText.text = $"{current} / {max}";
     }
 
     private void RefreshShipHealthDisplay()

@@ -725,6 +725,18 @@ MonoBehaviour:
     m_Localized: "\uD568\uC120 \uC2AC\uB86F {0}\uCC99"
     m_Metadata:
       m_Items: []
+  - m_Id: 29120731337850880
+    m_Localized: "\uD568\uB300 \uAD00\uB9AC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29120731379793920
+    m_Localized: "+ \uD568\uC120 \uCD94\uAC00"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29169225431908352
+    m_Localized: "\uD568\uB300"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

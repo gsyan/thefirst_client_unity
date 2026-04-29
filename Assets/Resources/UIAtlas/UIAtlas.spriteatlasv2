@@ -12,11 +12,18 @@ SpriteAtlasAsset:
   m_ImporterData:
     packables:
     - {fileID: 2800000, guid: 1a026c0506f50bc4681a0fe34d664fd3, type: 3}
-    - {fileID: 2800000, guid: 0e50cff2353d60f4981ac7ac83b9f684, type: 3}
     - {fileID: 2800000, guid: b7c3586ea2c698e47b610afb97e831cd, type: 3}
     - {fileID: 2800000, guid: 68e51bc248eb2b44996114cad3e59401, type: 3}
     - {fileID: 2800000, guid: aa152bcc0bdcc384e92c0735792fa62a, type: 3}
     - {fileID: 2800000, guid: 2a6a10326b5165a48938b505a9f2a3e6, type: 3}
     - {fileID: 2800000, guid: 9a0a9d9c1edd57945a5924f392ddcf67, type: 3}
+    - {fileID: 2800000, guid: 849c4673cc2d12f4591cbf2fe8964570, type: 3}
+    - {fileID: 2800000, guid: adf5d26a9edd6864dacbf9cef478bd62, type: 3}
+    - {fileID: 2800000, guid: 5c17adbdb1928eb49a372e854a683855, type: 3}
+    - {fileID: 2800000, guid: 06b46233538805d40b8332065b39c2b8, type: 3}
+    - {fileID: 2800000, guid: 5291ac767dfdf2241a0804f9ad47049c, type: 3}
+    - {fileID: 2800000, guid: 892b762b0335f0b469149fc19556bf4d, type: 3}
+    - {fileID: 2800000, guid: 8a02c7dd2066306458b67e72ebc9548e, type: 3}
+    - {fileID: 2800000, guid: a92c64613ea347349ad69a1045d7b4e3, type: 3}
   m_IsVariant: 0
   m_ScriptablePacker: {fileID: 0}

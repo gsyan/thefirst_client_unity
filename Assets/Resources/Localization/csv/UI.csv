@@ -166,11 +166,14 @@ ship_reset_flagship_forbidden,,The flagship cannot be reset.,기함은 초기화
 ship_reset_no_refund,,Nothing to recover,회수할 자원 없음
 Restart,,RESTART,재시작
 UITabButton_Tech,,TECH,기술
+UITabButton_Fleet,,FLEET,함대
 UITabTech_TechLevelTitle,,TECH LEVEL,기술 레벨
 UITabTech_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
 UITabTech_ShipCountUnit,,ships,척
 UITabTech_NextUnlockTitle,,Next Unlock - Lv.{0},다음 해금 - Lv.{0}
 UITabTech_NextUnlockShipCount,,{0} Ship Slots,함선 슬롯 {0}척
+UITabFleet_FleetManagement,,Fleet Management,함대 관리
+UITabFleet_AddShipText,,+ Add Ship,+ 함선 추가
 UpgradeButtonText,,UPGRADE,업그레이드
 UpgradeButtonTextCompleted,,DONE,완료
 LevelupButtonText,,LEVEL UP,레벨 업

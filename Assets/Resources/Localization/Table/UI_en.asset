@@ -718,6 +718,18 @@ MonoBehaviour:
     m_Localized: '{0} Ship Slots'
     m_Metadata:
       m_Items: []
+  - m_Id: 29120731337850880
+    m_Localized: Fleet Management
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29120731379793920
+    m_Localized: + Add Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29169225431908352
+    m_Localized: FLEET
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

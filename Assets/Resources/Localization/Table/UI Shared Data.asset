@@ -679,6 +679,10 @@ MonoBehaviour:
     m_Key: UITabButton_Tech
     m_Metadata:
       m_Items: []
+  - m_Id: 29169225431908352
+    m_Key: UITabButton_Fleet
+    m_Metadata:
+      m_Items: []
   - m_Id: 29004056152113154
     m_Key: UITabTech_TechLevelTitle
     m_Metadata:
@@ -697,6 +701,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 29084800778108928
     m_Key: UITabTech_NextUnlockShipCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29120731337850880
+    m_Key: UITabFleet_FleetManagement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29120731379793920
+    m_Key: UITabFleet_AddShipText
     m_Metadata:
       m_Items: []
   - m_Id: 29032478144331776
