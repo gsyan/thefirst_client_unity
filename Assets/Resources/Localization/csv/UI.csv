@@ -107,7 +107,7 @@ module_type_missile,,Missile,미사일
 module_type_hanger,,Hanger,격납고
 cancel,,Cancel,취소
 confirm,,Confirm,확인
-tech_level,,Tech Lv,기술레벨
+
 mineral_amount,,Mineral,광물
 mineral_rare_amount,,Mineral.R,광물.R
 mineral_exotic_amount,,Mineral.E,광물.E
@@ -164,3 +164,14 @@ ship_reset,,Reset Ship,함선 초기화
 ship_reset_confirm,,Reset this ship and recover all invested resources?,이 함선의 모든 투자 자원을 회수하고 초기화하시겠습니까?
 ship_reset_flagship_forbidden,,The flagship cannot be reset.,기함은 초기화할 수 없습니다.
 ship_reset_no_refund,,Nothing to recover,회수할 자원 없음
+Restart,,RESTART,재시작
+UITabButton_Tech,,TECH,기술
+UITabTech_TechLevelTitle,,TECH LEVEL,기술 레벨
+UITabTech_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
+UITabTech_ShipCountUnit,,ships,척
+UITabTech_NextUnlockTitle,,Next Unlock - Lv.{0},다음 해금 - Lv.{0}
+UITabTech_NextUnlock,,{0} Ship Slots,함선 슬롯 {0}척
+UpgradeButtonText,,UPGRADE,업그레이드
+UpgradeButtonTextCompleted,,DONE,완료
+LevelupButtonText,,LEVEL UP,레벨 업
+LevelupButtonTextMax,,MAX,최대

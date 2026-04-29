@@ -30,8 +30,8 @@ MonoBehaviour:
     m_Localized: Level
     m_Metadata:
       m_Items: []
-  - m_Id: 394150382993408
-    m_Localized: Tech Lv
+  - m_Id: 29007716294721536
+    m_Localized: Max Ship Slots
     m_Metadata:
       m_Items: []
   - m_Id: 394150433325056
@@ -676,6 +676,46 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 28734126122991616
     m_Localized: Retreating to previous zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29032478144331776
+    m_Localized: UPGRADE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29007716294721538
+    m_Localized: Next Unlock - Lv.{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29004056152113152
+    m_Localized: RESTART
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29004056152113153
+    m_Localized: TECH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29004056152113154
+    m_Localized: TECH LEVEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29007716294721539
+    m_Localized: '{0} Ship Slots'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29033643212931072
+    m_Localized: DONE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29029334198910976
+    m_Localized: ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29032478144331777
+    m_Localized: LEVEL UP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29033643212931073
+    m_Localized: MAX
     m_Metadata:
       m_Items: []
   references:

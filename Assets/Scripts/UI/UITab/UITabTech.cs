@@ -6,28 +6,44 @@ using TMPro;
 
 public class UITabTech : UITabBase
 {
-    [Header("Tech Level 행")]
     [SerializeField] private TMP_Text m_techLevelText;
+    [SerializeField] private TMP_Text m_shipCountText;
+    [SerializeField] private Transform m_shipImages;
+    [SerializeField] private TMP_Text m_nextLevelText;
+    [SerializeField] private TMP_Text m_nextLevelShipCountText;
     [SerializeField] private Button   m_techLevelUpButton;
-    [SerializeField] private TMP_Text m_techLevelInfoText;
+
+    private static readonly Color k_colorActive   = new Color(0f, 1f,     0.510f, 1f); // #00FF82
+    private static readonly Color k_colorInactive = new Color(0f, 0.588f, 0.510f, 1f); // #009682
+    private static readonly Vector2 k_sizeActive   = new Vector2(10f, 50f);
+    private static readonly Vector2 k_sizeInactive = new Vector2(10f, 25f);
 
     private Character m_myCharacter;
     private SpaceFleet m_myFleet;
+    private Image[] m_shipSlots;
     
+
     public override void InitializeUITab()
     {
-        InitializeUITabStation();
+        InitializeUITabTech();
     }
 
-    private void InitializeUITabStation()
+    private void InitializeUITabTech()
     {
         m_myCharacter = DataManager.Instance.m_currentCharacter;
         if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
         if (m_myFleet == null) return;
 
+        if (m_shipImages != null)
+        {
+            m_shipSlots = new Image[m_shipImages.childCount];
+            for (int i = 0; i < m_shipImages.childCount; i++)
+                m_shipSlots[i] = m_shipImages.GetChild(i).GetComponent<Image>();
+        }
+
         if (m_techLevelUpButton != null) m_techLevelUpButton.onClick.AddListener(OnTechLevelButtonClicked);
-        
+
         EventManager.Subscribe_TechLevelChanged(OnTechLevelChanged);
     }
 
@@ -44,6 +60,19 @@ public class UITabTech : UITabBase
         SetOtherTabsVisible(true, includeSelf: true);
     }
 
+    // ── Ship Slots ────────────────────────────────────────────────────
+
+    private void RefreshShipSlots(int activeCount)
+    {
+        if (m_shipSlots == null) return;
+        for (int i = 0; i < m_shipSlots.Length; i++)
+        {
+            bool active = i < activeCount;
+            m_shipSlots[i].color = active ? k_colorActive : k_colorInactive;
+            m_shipSlots[i].rectTransform.sizeDelta = active ? k_sizeActive : k_sizeInactive;
+        }
+    }
+
     // ── Tech Level ────────────────────────────────────────────────────
 
     private void UpdateTechLevelDisplay()
@@ -57,14 +86,19 @@ public class UITabTech : UITabBase
 
         // 기술레벨 요약: 레벨 / 자원 보관 캡 / 최대 함선 수
         if (m_techLevelText != null)
-            m_techLevelText.text = $"Lv.{currentLevel}";
+            m_techLevelText.text = $"{currentLevel}";
 
-        if (m_techLevelInfoText != null)
-            m_techLevelInfoText.text = $"{CommonUtility.Sprite("spaceship")} {maxShips}";
+        if (m_shipCountText != null)
+            m_shipCountText.text = $"{maxShips}";
+
+
+
+
+        RefreshShipSlots(maxShips);
 
         if (m_techLevelUpButton != null)
             m_techLevelUpButton.gameObject.SetActive(nextNode != null);
-        
+
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_techLevelText.transform.parent as RectTransform);
     }
 

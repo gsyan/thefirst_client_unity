@@ -30,7 +30,8 @@ public class UITabButtonTech : MonoBehaviour
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        m_textTechLevel.text = $"{CommonUtility.Sprite("gears")} {currentLevel}";
+        //m_textTechLevel.text = $"{CommonUtility.Sprite("gears")} {currentLevel}";
+        m_textTechLevel.text = $"Lv.{currentLevel}";
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_textTechLevel.transform.parent as RectTransform);
     }
 

@@ -447,10 +447,6 @@ MonoBehaviour:
     m_Key: confirm
     m_Metadata:
       m_Items: []
-  - m_Id: 394150382993408
-    m_Key: tech_level
-    m_Metadata:
-      m_Items: []
   - m_Id: 394150433325056
     m_Key: mineral_amount
     m_Metadata:
@@ -673,6 +669,50 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 26803779604971524
     m_Key: ship_reset_no_refund
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29004056152113152
+    m_Key: Restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29004056152113153
+    m_Key: UITabButton_Tech
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29004056152113154
+    m_Key: UITabTech_TechLevelTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29007716294721536
+    m_Key: UITabTech_ShipCountMaxTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29029334198910976
+    m_Key: UITabTech_ShipCountUnit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29007716294721538
+    m_Key: UITabTech_NextUnlockTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29007716294721539
+    m_Key: UITabTech_NextUnlock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29032478144331776
+    m_Key: UpgradeButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29033643212931072
+    m_Key: UpgradeButtonTextCompleted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29032478144331777
+    m_Key: LevelupButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29033643212931073
+    m_Key: LevelupButtonTextMax
     m_Metadata:
       m_Items: []
   m_Metadata:
