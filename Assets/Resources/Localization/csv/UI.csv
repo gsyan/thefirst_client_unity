@@ -170,7 +170,7 @@ UITabTech_TechLevelTitle,,TECH LEVEL,기술 레벨
 UITabTech_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
 UITabTech_ShipCountUnit,,ships,척
 UITabTech_NextUnlockTitle,,Next Unlock - Lv.{0},다음 해금 - Lv.{0}
-UITabTech_NextUnlock,,{0} Ship Slots,함선 슬롯 {0}척
+UITabTech_NextUnlockShipCount,,{0} Ship Slots,함선 슬롯 {0}척
 UpgradeButtonText,,UPGRADE,업그레이드
 UpgradeButtonTextCompleted,,DONE,완료
 LevelupButtonText,,LEVEL UP,레벨 업

@@ -698,10 +698,6 @@ MonoBehaviour:
     m_Localized: TECH LEVEL
     m_Metadata:
       m_Items: []
-  - m_Id: 29007716294721539
-    m_Localized: '{0} Ship Slots'
-    m_Metadata:
-      m_Items: []
   - m_Id: 29033643212931072
     m_Localized: DONE
     m_Metadata:
@@ -716,6 +712,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 29033643212931073
     m_Localized: MAX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29084800778108928
+    m_Localized: '{0} Ship Slots'
     m_Metadata:
       m_Items: []
   references:

@@ -12,6 +12,7 @@ public class UITabTech : UITabBase
     [SerializeField] private TMP_Text m_nextLevelText;
     [SerializeField] private TMP_Text m_nextLevelShipCountText;
     [SerializeField] private Button   m_techLevelUpButton;
+    [SerializeField] private TMP_Text m_techLevelUpButtonText;
 
     private static readonly Color k_colorActive   = new Color(0f, 1f,     0.510f, 1f); // #00FF82
     private static readonly Color k_colorInactive = new Color(0f, 0.588f, 0.510f, 1f); // #009682
@@ -91,15 +92,30 @@ public class UITabTech : UITabBase
         if (m_shipCountText != null)
             m_shipCountText.text = $"{maxShips}";
 
-
-
-
         RefreshShipSlots(maxShips);
 
-        if (m_techLevelUpButton != null)
-            m_techLevelUpButton.gameObject.SetActive(nextNode != null);
+        if (m_nextLevelText != null)
+        {
+            if (nextNode != null)
+            {
+                m_nextLevelText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextUnlockTitle"), nextNode.targetTechLevel);
+                m_nextLevelShipCountText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextUnlockShipCount"), nextNode.shipCount);
+            }
+            else
+            {
+                m_nextLevelText.text = LocalizationManager.Instance.Get("LevelupButtonTextMax");
+                m_nextLevelShipCountText.gameObject.SetActive(false);
+            }
+                
+        }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_techLevelText.transform.parent as RectTransform);
+        if (m_techLevelUpButtonText != null)
+        {
+            string key = nextNode != null ? "LevelupButtonText" : "LevelupButtonTextMax";
+            m_techLevelUpButtonText.text = LocalizationManager.Instance.Get(key);
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_techLevelText.transform as RectTransform);
     }
 
     private TechLevelResearchData GetNextTechLevelNode(Character character)
