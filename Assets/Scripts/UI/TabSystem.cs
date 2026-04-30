@@ -129,13 +129,8 @@ public class TabSystem : MonoBehaviour
 
         if (tab.tabPanel != null)
         {
-            if (useAnimation)
-            {
-                StopPanelCoroutine(tab.tabPanel);
-                m_animCoroutines[tab.tabPanel] = StartCoroutine(AnimatePanel(tab.tabPanel, false));
-            }
-            else
-                tab.tabPanel.SetActive(false);
+            StopPanelCoroutine(tab.tabPanel);
+            tab.tabPanel.SetActive(false);
         }
 
         // allowDeselect로 전체 탭이 닫힌 경우

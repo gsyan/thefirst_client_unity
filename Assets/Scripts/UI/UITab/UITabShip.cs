@@ -12,9 +12,13 @@ public class UITabShip : UITabBase
     [SerializeField] private Button    m_btnNextShip;
     [SerializeField] private TMP_Text  m_textShipName;
     // 1행: ATK / HP / SPD / REP
-    [SerializeField] private TMP_Text  m_textShipStats1;
+    [SerializeField] private TMP_Text  m_textShipAttack;
+    [SerializeField] private TMP_Text  m_textShipHp;
+    [SerializeField] private TMP_Text  m_textShipRepair;
+    [SerializeField] private TMP_Text  m_textShipSpeed;
     // 2행: 함재기 능력 — aircraft_count == 0 이면 숨김
-    [SerializeField] private TMP_Text  m_textShipStats2;
+    [SerializeField] private TMP_Text  m_textAirAttack;
+    [SerializeField] private TMP_Text  m_textAirCount;
 
     [Header("모듈 맵 — 행 컨테이너 (레이블 + 셀렉터 포함)")]
     [SerializeField] private RectTransform m_moduleBodySelectButtonContainer;
@@ -219,27 +223,20 @@ public class UITabShip : UITabBase
         CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
 
-        if (m_textShipStats1 != null)
-        {
-            m_textShipStats1.text =
-                $"{CommonUtility.Sprite("bubbling-beam")} {statsCur.attack:F0}  " +
-                $"{CommonUtility.Sprite("techno-heart")} {statsOrg.health:F0}  " +
-                $"{CommonUtility.Sprite("rocket-thruster")} {statsCur.speed:F0}  " +
-                $"{CommonUtility.Sprite("auto-repair")} {statsCur.repair:F0}";
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats1.transform.parent as RectTransform);
-        }
+        m_textShipAttack.text = $"statsCur.attack:F0";
+        m_textShipHp.text = $"statsCur.health:F0";
+        m_textShipRepair.text = $"statsCur.repair:F0";
+        m_textShipSpeed.text = $"statsCur.speed:F0";
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipAttack.transform.parent as RectTransform);
 
-        if (m_textShipStats2 != null)
+        bool hasAircraft = statsOrg.airCount > 0;
+        m_textAirAttack.gameObject.SetActive(hasAircraft);
+        m_textAirCount.gameObject.SetActive(hasAircraft);
+        if (hasAircraft)
         {
-            bool hasAircraft = statsOrg.airCount > 0;
-            m_textShipStats2.gameObject.SetActive(hasAircraft);
-            if (hasAircraft)
-            {
-                m_textShipStats2.text =
-                    $"{CommonUtility.Sprite("strafe")} {statsCur.airAttack:F0}  " +
-                    $"{CommonUtility.Sprite("jet-fighter")} {statsOrg.airCount}";
-                LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipStats2.transform.parent as RectTransform);
-            }
+            m_textAirAttack.text = $"statsCur.airAttack:F0";
+            m_textAirCount.text = $"statsOrg.airCount";
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_textAirAttack.transform.parent as RectTransform);
         }
     }
 
