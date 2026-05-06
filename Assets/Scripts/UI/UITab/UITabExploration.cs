@@ -475,10 +475,11 @@ public class UITabExploration : UITabBase
         if (character != null && response.data.rewardInfo != null)
             character.UpdateMineral(response.data.rewardInfo.mineralRemain);
 
+        if (character != null)
+            character.UpdateMineralMaxGot(response.data.mineralMaxGot);
+
         if (response.data.isZoneCleared == true && character != null)
         {
-            character.m_characterInfo.collectDateTime = response.data.collectDateTime;
-
             if (character.m_characterInfo.clearedZones == null)
                 character.m_characterInfo.clearedZones = new List<string>();
 

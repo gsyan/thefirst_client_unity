@@ -730,6 +730,10 @@ MonoBehaviour:
     m_Localized: FLEET
     m_Metadata:
       m_Items: []
+  - m_Id: 31664304520298496
+    m_Localized: UNLOCK
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

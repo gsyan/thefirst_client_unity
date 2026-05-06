@@ -38,8 +38,9 @@ public class RowImageText : MonoBehaviour
 
     public void SetText(string text)
     {
-        if( m_text != null)
-            CommonUtility.SetUILocText(m_text, text);
+        m_text.text = text;
+        // if( m_text != null)
+        //     CommonUtility.SetUILocText(m_text, text);
     }
 
     public void SetTextColor(Color color)

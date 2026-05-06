@@ -13,6 +13,7 @@ public class UITabFleet : UITabBase
     [SerializeField] private TMP_Text m_currentShipCountStatText;
 
     [Header("함선 액션 버튼 (선택 시 활성)")]
+    [SerializeField] private Button m_btnShipManage;    // 선택함선 관리
     [SerializeField] private Button m_btnShipRepair;    // 집중 수리 (추후 구현)
 
     [Header("Formation 하단 바")]
@@ -41,6 +42,7 @@ public class UITabFleet : UITabBase
         m_btnFormationChange.onClick.AddListener(OnFormationChangeClicked);
 
         if (m_addShipButton != null) m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
+        if (m_btnShipManage != null) m_btnShipManage.onClick.AddListener(OnShipManageClicked);
         if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
         PopulateShipSelectorGrid();
         UpdateShipActionButtons();
@@ -59,6 +61,13 @@ public class UITabFleet : UITabBase
         UpdateTechLevelDisplay();
         UpdateCurrentFormationText();
         RefreshShipHealthDisplay();
+
+        // 선택된 함선이 없으면 기함(0번) 자동 선택
+        if (m_selectedShipSelector == null && m_myFleet != null && m_myFleet.m_ships.Count > 0)
+        {
+            OnShipSelectorClicked(m_myFleet.m_ships[0]);
+            return;
+        }
 
         // Fleet 탭 진입 시 선택된 함선 아웃라인 활성화
         if (m_selectedShipSelector != null && m_selectedShipSelector.Ship != null)
@@ -180,7 +189,7 @@ public class UITabFleet : UITabBase
             {
                 m_shipSelectors[i].gameObject.SetActive(true);
                 SpaceShip captured = m_myFleet.m_ships[i];
-                m_shipSelectors[i].InitializeShipSelector(captured, () => OnShipSelectorClicked(captured), () => OnShipManageClicked(captured));
+                m_shipSelectors[i].InitializeShipSelector(captured, () => OnShipSelectorClicked(captured));
             }
             else
             {
@@ -229,12 +238,13 @@ public class UITabFleet : UITabBase
     private void UpdateShipActionButtons()
     {
         bool hasSelection = m_selectedShipSelector != null;
+        if (m_btnShipManage != null) m_btnShipManage.interactable = hasSelection;
         if (m_btnShipRepair != null) m_btnShipRepair.interactable = hasSelection;
     }
 
-    private void OnShipManageClicked(SpaceShip ship)
+    private void OnShipManageClicked()
     {
-        OnShipSelectorClicked(ship);
+        if (m_selectedShipSelector == null || m_selectedShipSelector.Ship == null) return;
         m_tabSystemParent.SwitchToTabByName("tab_ship");
     }
 

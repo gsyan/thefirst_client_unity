@@ -174,7 +174,8 @@ UITabTech_NextUnlockTitle,,Next Unlock - Lv.{0},다음 해금 - Lv.{0}
 UITabTech_NextUnlockShipCount,,{0} Ship Slots,함선 슬롯 {0}척
 UITabFleet_FleetManagement,,Fleet Management,함대 관리
 UITabFleet_AddShipText,,+ Add Ship,+ 함선 추가
+UnlockButtonText,,UNLOCK,잠금해제
+LevelupButtonText,,LEVEL UP,레벨 업
 UpgradeButtonText,,UPGRADE,업그레이드
 UpgradeButtonTextCompleted,,DONE,완료
-LevelupButtonText,,LEVEL UP,레벨 업
 LevelupButtonTextMax,,MAX,최대

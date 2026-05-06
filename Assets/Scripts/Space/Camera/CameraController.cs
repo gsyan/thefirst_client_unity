@@ -295,7 +295,8 @@ public class CameraController : MonoSingleton<CameraController>
         {
             m_startTouchPosition = mousePos;
             LayerMask pickMask = ~m_layerMaskShield;
-            m_tapHitCollider = GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, mousePos) ? downHit.collider : null;
+            m_tapHitCollider = IsPointerOverUIObject() == false && GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, mousePos)
+                ? downHit.collider : null;
         }
         else if (mouse.leftButton.wasReleasedThisFrame == true)
         {

@@ -711,16 +711,20 @@ MonoBehaviour:
     m_Key: UITabFleet_AddShipText
     m_Metadata:
       m_Items: []
+  - m_Id: 31664304520298496
+    m_Key: UnlockButtonText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29032478144331777
+    m_Key: LevelupButtonText
+    m_Metadata:
+      m_Items: []
   - m_Id: 29032478144331776
     m_Key: UpgradeButtonText
     m_Metadata:
       m_Items: []
   - m_Id: 29033643212931072
     m_Key: UpgradeButtonTextCompleted
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29032478144331777
-    m_Key: LevelupButtonText
     m_Metadata:
       m_Items: []
   - m_Id: 29033643212931073

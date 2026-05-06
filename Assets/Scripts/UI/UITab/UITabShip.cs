@@ -583,7 +583,7 @@ public class UITabShip : UITabBase
             ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level);
             if (cur != null && m_statsRows.Count >= 2)
             {
-                m_statsRows[0].SetRow("progression", $"{level}");
+                m_statsRows[0].SetText($"{level}");
 
                 EModuleType moduleType = m_selectedModule.GetModuleType();
                 if (moduleType == EModuleType.body && m_statsRows.Count >= 4)
@@ -604,8 +604,6 @@ public class UITabShip : UITabBase
                     m_statsRows[4].SetRow("jet-fighter",   $"{cur.airCount:F0}");
                 }
             }
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsContainer.transform as RectTransform);
-
             // 투자 광물 rows
             if (m_mineralRows.Count >= 3)
             {
@@ -616,7 +614,10 @@ public class UITabShip : UITabBase
                 if (m_selectedModule.m_investedTempMineral > 0)
                     m_mineralRows[2].SetRow("icon_mineral", $"{m_selectedModule.m_investedTempMineral}");
             }
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleInvestedMineralContainer.transform as RectTransform);
+
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsContainer as RectTransform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleInvestedMineralContainer as RectTransform);
         }
     }
 

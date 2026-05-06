@@ -9,15 +9,15 @@ public class ShipSelector : MonoBehaviour
 {
     [SerializeField] private Button m_selectButton;    // selected Button
     [SerializeField] private TMP_Text m_textName;      // 함선 이름 텍스트
-    [SerializeField] private TMP_Text m_textAtk;       // ATK 수치 텍스트
+    [SerializeField] private Transform m_shipStatsContainer;
     [SerializeField] private Image m_hpBarFill;        // HP 게이지 fill (Image.fillMethod = Horizontal)
     [SerializeField] private TMP_Text m_textHp;        // HP 수치 텍스트
-    [SerializeField] private Button m_btnShipManage;   // 함선 관리 탭으로 이동
 
     [SerializeField] private float m_healthLerpDuration = 0.4f;
 
     private Image m_selectButtonImage;
     private Coroutine m_healthLerpCoroutine;
+    private RowImageText[] m_statRows;
 
     public SpaceShip Ship { get; private set; }
 
@@ -25,9 +25,11 @@ public class ShipSelector : MonoBehaviour
     {
         if (m_selectButton != null)
             m_selectButtonImage = m_selectButton.GetComponent<Image>();
+        if (m_shipStatsContainer != null)
+            m_statRows = m_shipStatsContainer.GetComponentsInChildren<RowImageText>(true);
     }
 
-    public void InitializeShipSelector(SpaceShip ship, UnityEngine.Events.UnityAction onClick, UnityEngine.Events.UnityAction onManage)
+    public void InitializeShipSelector(SpaceShip ship, UnityEngine.Events.UnityAction onClick)
     {
         Ship = ship;
 
@@ -40,13 +42,6 @@ public class ShipSelector : MonoBehaviour
         m_selectButton.onClick.RemoveAllListeners();
         m_selectButton.onClick.AddListener(onClick);
         m_selectButton.interactable = true;
-
-        if (m_btnShipManage != null)
-        {
-            m_btnShipManage.onClick.RemoveAllListeners();
-            m_btnShipManage.onClick.AddListener(onManage);
-            m_btnShipManage.gameObject.SetActive(false);
-        }
 
         SetSelectButtonAlpha(0f);
 
@@ -62,10 +57,15 @@ public class ShipSelector : MonoBehaviour
         if (m_textName != null)
             m_textName.text = Ship.m_shipInfo.shipName;
 
-        if (m_textAtk != null)
-            m_textAtk.text = $"{CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}";
+        if (m_statRows != null && m_statRows.Length > 0)
+        {
+            m_statRows[0].gameObject.SetActive(true);
+            m_statRows[0].SetText($"{CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}");
+            for (int i = 1; i < m_statRows.Length; i++)
+                m_statRows[i].Hide();
+        }
 
-        // 향후 표시 해야할 스텟 추가 되면 여기 추가
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipStatsContainer as RectTransform);
     }
 
     // HP 변경 시 외부에서 호출
@@ -90,8 +90,6 @@ public class ShipSelector : MonoBehaviour
     public void SetSelected(bool selected)
     {
         SetSelectButtonAlpha(selected ? 0.5f : 0f);
-        if (m_btnShipManage != null)
-            m_btnShipManage.gameObject.SetActive(selected);
     }
 
     private void SetSelectButtonAlpha(float alpha)

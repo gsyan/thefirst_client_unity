@@ -26,22 +26,65 @@ public class Character
 
     public string GetName()
     {
-        return GetDisplayName(m_characterInfo?.characterName ?? "", m_characterInfo?.characterId ?? 0);
+        if (m_characterInfo == null) return GetDisplayName("", 0);
+        return GetDisplayName(m_characterInfo.characterName, m_characterInfo.characterId);
     }
 
-    public long GetMineral()
+    public int GetMineral()
     {
-        return m_characterInfo?.mineral ?? 0;
+        if (m_characterInfo == null) return 0;
+        return m_characterInfo.mineral;
+    }
+
+    public int GetMineralMaxGot()
+    {
+        if (m_characterInfo == null) return 0;
+        return m_characterInfo.mineralMaxGot;
+    }
+
+    public void UpdateMineralMaxGot(int mineralMaxGot)
+    {
+        if (m_characterInfo == null) return;
+        m_characterInfo.mineralMaxGot = mineralMaxGot;
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
     public int GetPvpMineral()
     {
-        return m_characterInfo?.pvpMineral ?? 0;
+        if (m_characterInfo == null) return 0;
+        return m_characterInfo.pvpMineral;
+    }
+
+    public int GetPvpMineralMaxGot()
+    {
+        if (m_characterInfo == null) return 0;
+        return m_characterInfo.pvpMineralMaxGot;
+    }
+
+    public void UpdatePvpMineralMaxGot(int pvpMineralMaxGot)
+    {
+        if (m_characterInfo == null) return;
+        m_characterInfo.pvpMineralMaxGot = pvpMineralMaxGot;
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
     public int GetTempMineral()
     {
-        return m_characterInfo?.tempMineral ?? 0;
+        if (m_characterInfo == null) return 0;
+        return m_characterInfo.tempMineral;
+    }
+
+    public int GetTempMineralMaxGot()
+    {
+        if (m_characterInfo == null) return 0;
+        return m_characterInfo.tempMineralMaxGot;
+    }
+
+    public void UpdateTempMineralMaxGot(int tempMineralMaxGot)
+    {
+        if (m_characterInfo == null) return;
+        m_characterInfo.tempMineralMaxGot = tempMineralMaxGot;
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
     // 완료된 tech_level_N ID 중 최댓값을 기술레벨로 반환 (기본값 1)

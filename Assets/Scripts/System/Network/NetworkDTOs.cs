@@ -107,12 +107,14 @@ public class CharacterInfo
     public long characterId;
     public string characterName;
     public int mineral;
+    public int mineralMaxGot;  // 스테이지 클리어로 얻은 누적 총합 (소비 무관, 영구)
     public int pvpMineral;
+    public int pvpMineralMaxGot;
     public string pvpMineralExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
     public int tempMineral;
+    public int tempMineralMaxGot;
     public string tempMineralExpiry;  // ISO 8601 — IAP 구매, 만료 시 소멸
     public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
-    public string collectDateTime;  // 마지막 자원 수확 시간 (ISO 8601 형식)
     public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
 }
 
@@ -433,7 +435,7 @@ public class ClearZoneStageResponse
     public CostRemainInfo rewardInfo;   // 킬 보상
     public bool isZoneCleared;          // true = 신규 클리어 완료
     public string clearedZoneName;      // isZoneCleared == true 일 때만 유효
-    public string collectDateTime;      // isZoneCleared == true 일 때만 유효
+    public int mineralMaxGot;           // 클리어 후 갱신된 누적 총합
 }
 
 #endregion
