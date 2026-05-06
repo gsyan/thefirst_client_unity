@@ -92,15 +92,15 @@ public class UITabSettings : UITabBase
     // 섹션 헤더·라벨 등 고정 문자열 로컬라이즈
     private void RefreshStaticLocText()
     {
-        CommonUtility.SetUILocText(m_sectionAccountText, "settings_section_account");
-        CommonUtility.SetUILocText(m_sectionGeneralText, "settings_section_general");
-        CommonUtility.SetUILocText(m_sectionInfolText,   "settings_section_info");
-        CommonUtility.SetUILocText(m_languageText,       "settings_language");
+        CommonUtility.SetUILocText(m_sectionAccountText, "UITabSettings_Account");
+        CommonUtility.SetUILocText(m_sectionGeneralText, "UITabSettings_General");
+        CommonUtility.SetUILocText(m_sectionInfolText,   "UITabSettings_Info");
+        CommonUtility.SetUILocText(m_languageText,       "UITabSettings_Language");
 
         // 버튼 라벨
-        SetButtonLocText(m_renameCharacterButton, "settings_name_change");
-        SetButtonLocText(m_logoutButton,          "settings_logout");
-        SetButtonLocText(m_licenseButton,         "settings_license_title");
+        SetButtonLocText(m_renameCharacterButton, "UITabSettings_NameChange");
+        SetButtonLocText(m_logoutButton,          "UITabSettings_Logout");
+        SetButtonLocText(m_licenseButton,         "UITabSettings_License");
     }
 
     private void SetButtonLocText(Button btn, string key)
@@ -147,6 +147,9 @@ public class UITabSettings : UITabBase
 
     public override void OnTabActivated()
     {
+        base.OnTabActivated();
+        SetOtherTabsVisible(false, includeSelf: true);
+
         RefreshGoogleLinkUI();
         RefreshNameText();
     }
@@ -160,7 +163,8 @@ public class UITabSettings : UITabBase
 
     public override void OnTabDeactivated()
     {
-        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        base.OnTabDeactivated();
+        SetOtherTabsVisible(true, includeSelf: true);
     }
 
     // 연동 상태에 따라 버튼 라벨 갱신
@@ -170,8 +174,7 @@ public class UITabSettings : UITabBase
         bool linked = DataManager.Instance.m_isGoogleLinked;
         var label = m_googleAccountButton.GetComponentInChildren<TMP_Text>();
         if (label != null)
-            CommonUtility.SetUILocText(label, linked ? "settings_google_unlink" : "settings_google_link");
-            //label.text = LocalizationManager.Instance.Get(linked ? "settings_google_unlink" : "settings_google_link");
+            CommonUtility.SetUILocText(label, linked ? "UITabSettings_GoogleUnlink" : "UITabSettings_GoogleLink");
     }
 
     private void OnGoogleAccountButtonClicked()
@@ -185,7 +188,7 @@ public class UITabSettings : UITabBase
     private void ShowLinkGoogleConfirm()
     {
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("settings_google_link"),
+            LocalizationManager.Instance.Get("UITabSettings_GoogleLink"),
             LocalizationManager.Instance.Get("popup_message_google_link"),
             null, null, 0,
             onConfirm: ExecuteLinkGoogle,
@@ -212,7 +215,7 @@ public class UITabSettings : UITabBase
     private void ShowUnlinkGoogleConfirm()
     {
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("settings_google_unlink"),
+            LocalizationManager.Instance.Get("UITabSettings_GoogleUnlink"),
             LocalizationManager.Instance.Get("popup_message_google_unlink"),
             null, null, 0,
             onConfirm: ExecuteUnlinkGoogle,
@@ -249,7 +252,7 @@ public class UITabSettings : UITabBase
     private void OnLogoutButtonClicked()
     {
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("settings_logout"),
+            LocalizationManager.Instance.Get("UITabSettings_Logout"),
             LocalizationManager.Instance.Get("popup_message_logout"),
             null, null, 0,
             onConfirm: ExecuteLogout,

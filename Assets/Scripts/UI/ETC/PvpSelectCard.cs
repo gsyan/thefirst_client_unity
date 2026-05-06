@@ -8,10 +8,22 @@ public class PvpSelectCard : MonoBehaviour
     [SerializeField] private Button m_attackButton;
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private TMP_Text m_scoreRankText;
-    [SerializeField] private TMP_Text m_statText;
+    [SerializeField] private Transform m_statsContainer1;
+    [SerializeField] private Transform m_statsContainer2;
+
+    private RowImageText[] m_rows1;
+    private RowImageText[] m_rows2;
 
     private PvpOpponentInfo m_opponentInfo;
     public PvpOpponentInfo OpponentInfo => m_opponentInfo;
+
+    private void Awake()
+    {
+        if (m_statsContainer1 != null)
+            m_rows1 = m_statsContainer1.GetComponentsInChildren<RowImageText>(true);
+        if (m_statsContainer2 != null)
+            m_rows2 = m_statsContainer2.GetComponentsInChildren<RowImageText>(true);
+    }
 
     public void InitializePvpSelectCard(PvpOpponentInfo opponentInfo, UnityEngine.Events.UnityAction onAttack)
     {
@@ -25,8 +37,9 @@ public class PvpSelectCard : MonoBehaviour
             ? opponentInfo.fleetInfo.ships.Count : 0;
 
         if (m_nameText != null)      m_nameText.text      = Character.GetDisplayName(opponentInfo.characterName, opponentInfo.characterId);
-        if (m_scoreRankText != null) m_scoreRankText.text = LocalizationManager.Instance.Get("pvp_score_rank", opponentInfo.pvpScore, opponentInfo.rank);
-        if (m_statText != null)      m_statText.text      = BuildStatText(stats, shipCount);
+        if (m_scoreRankText != null) m_scoreRankText.text = LocalizationManager.Instance.Get("UITabPvp_ScoreRank", opponentInfo.pvpScore, opponentInfo.rank);
+
+        PopulateStats(stats, shipCount);
     }
 
     public void SetEmpty()
@@ -35,19 +48,41 @@ public class PvpSelectCard : MonoBehaviour
         m_attackButton.onClick.RemoveAllListeners();
         if (m_nameText != null)      m_nameText.text      = "-";
         if (m_scoreRankText != null) m_scoreRankText.text = "-";
-        if (m_statText != null)      m_statText.text      = "-";
+        HideAllStats();
     }
 
-    private string BuildStatText(CapabilityProfile stats, int shipCount)
+    private void PopulateStats(CapabilityProfile stats, int shipCount)
     {
-        // 1줄: Ships / HP / ATK
-        string line1 = $"{CommonUtility.Sprite("spaceship")} {shipCount}  {CommonUtility.Sprite("techno-heart")} {CommonUtility.FormatBigNumber(stats.health)}  {CommonUtility.Sprite("bubbling-beam")} {CommonUtility.FormatBigNumber(stats.attack)}";
+        HideAllStats();
+        if (m_rows1 == null || m_rows1.Length < 3) return;
 
-        if (stats.airCount <= 0)
-            return line1;
+        m_rows1[0].SetRow("spaceship",     shipCount.ToString());
+        m_rows1[1].SetRow("techno-heart",  CommonUtility.FormatBigNumber(stats.health));
+        m_rows1[2].SetRow("bubbling-beam", CommonUtility.FormatBigNumber(stats.attack));
+        
+        if (stats.airCount > 0 && m_rows2 != null && m_rows2.Length > 0)
+        {
+            m_rows2[0].SetRow("jet-fighter", stats.airCount.ToString());
+            
+        }
+            
+        
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer1 as RectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer2 as RectTransform);
+    }
 
-        // 함재기 보유 시 2줄째에 추가
-        string line2 = $"{CommonUtility.Sprite("jet-fighter")} {stats.airCount}";
-        return $"{line1}\n{line2}";
+    private void HideAllStats()
+    {
+        if (m_rows1 != null)
+        {
+            for (int i = 0; i < m_rows1.Length; i++)
+                m_rows1[i].Hide();
+        }
+        if (m_rows2 != null)
+        {
+            for (int i = 0; i < m_rows2.Length; i++)
+                m_rows2[i].Hide();
+        }
     }
 }

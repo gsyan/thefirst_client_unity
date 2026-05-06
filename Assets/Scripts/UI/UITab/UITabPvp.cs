@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class UITabPvp : UITabBase
 {
     [Header("PvP UI Components")]
-    [SerializeField] private TMP_Text m_myInfoText;
+    [SerializeField] private TMP_Text m_myInfoScoreText;
+    [SerializeField] private TMP_Text m_myInfoRankText;
+    [SerializeField] private TMP_Text m_myInfoSeasonText;
     [SerializeField] private Button m_refreshButton;
     [SerializeField] private TMP_Text m_refreshButtonText;
     [SerializeField] private PvpSelectCard[] m_opponentCards; // 고정 3슬롯
@@ -25,6 +27,8 @@ public class UITabPvp : UITabBase
     private int m_myRank;
     private int m_refreshRemain;
     private string m_currentBattleToken;
+    private string m_seasonName;
+    private string m_seasonEndTime;
 
     public override void InitializeUITab()
     {
@@ -47,14 +51,16 @@ public class UITabPvp : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        SetOtherTabsVisible(false, includeSelf: true);
+        
         RequestPvpList();
         RequestPvpMyRank();
     }
 
     public override void OnTabDeactivated()
     {
-        //CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        base.OnTabDeactivated();
+        SetOtherTabsVisible(true, includeSelf: true);
     }
 
     private void OnRankListButtonClicked()
@@ -94,19 +100,36 @@ public class UITabPvp : UITabBase
         m_myScore = response.data.myRankInfo.pvpScore;
         m_myRank = response.data.myRankInfo.pvpRank;
         m_refreshRemain = response.data.myRankInfo.pvpListRefreshRemain;
+        m_seasonName = response.data.myRankInfo.seasonName;
+        m_seasonEndTime = response.data.myRankInfo.seasonEndTime;
         UpdateMyInfo();
     }
 
     private void UpdateMyInfo()
     {
-        if (m_myInfoText != null)
+        string rankStr = m_myRank > 0 ? $"#{m_myRank}" : "#-";
+        m_myInfoScoreText.text = $"{m_myScore}";
+        m_myInfoRankText.text = rankStr;
+
+        if (m_myInfoSeasonText != null)
         {
-            string rankStr = m_myRank > 0 ? $"{m_myRank}" : "-";
-            m_myInfoText.text = LocalizationManager.Instance.Get("pvp_score_rank", m_myScore, rankStr);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_myInfoText.transform.parent as RectTransform);
+            bool hasSeason = string.IsNullOrEmpty(m_seasonName) == false;
+            m_myInfoSeasonText.gameObject.SetActive(hasSeason);
+            if (hasSeason == true)
+            {
+                string dStr = "";
+                if (string.IsNullOrEmpty(m_seasonEndTime) == false &&
+                    System.DateTime.TryParse(m_seasonEndTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out System.DateTime endTime))
+                {
+                    int daysRemain = (int)(endTime - System.DateTime.UtcNow).TotalDays;
+                    dStr = daysRemain > 0 ? $" (D-{daysRemain})" : " (D-0)";
+                }
+                m_myInfoSeasonText.text = m_seasonName + dStr;
+            }
         }
+
         if (m_refreshButtonText != null)
-            m_refreshButtonText.text = LocalizationManager.Instance.Get("pvp_opponent_list_refresh", new object[] { m_refreshRemain, 5 });
+            m_refreshButtonText.text = LocalizationManager.Instance.Get("UITabPvp_refresh", new object[] { m_refreshRemain, 5 });
     }
 
     private void PopulateOpponentList(List<PvpOpponentInfo> opponents)

@@ -166,8 +166,8 @@ MonoBehaviour:
     m_Localized: PVP
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636932
-    m_Localized: Settings
+  - m_Id: 31773314347040768
+    m_Localized: SETTINGS
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636933
@@ -196,22 +196,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2924654624636952
     m_Localized: PVP List
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636953
-    m_Localized: Refresh({0}/{1})
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636954
-    m_Localized: Score
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636955
-    m_Localized: Rank
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636956
-    m_Localized: Logout
     m_Metadata:
       m_Items: []
   - m_Id: 2929882979762176
@@ -318,10 +302,6 @@ MonoBehaviour:
     m_Localized: "Rank: {0} <voffset=6>\u2192</voffset> {1}"
     m_Metadata:
       m_Items: []
-  - m_Id: 8166668848988160
-    m_Localized: Change Name
-    m_Metadata:
-      m_Items: []
   - m_Id: 8166668865765377
     m_Localized: Checking...
     m_Metadata:
@@ -340,14 +320,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8166668865765381
     m_Localized: English/Korean/Numbers 2-16 chars
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640582524928
-    m_Localized: Link Google Account
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640620273664
-    m_Localized: Unlink Google Account
     m_Metadata:
       m_Items: []
   - m_Id: 8422640620273665
@@ -478,10 +450,6 @@ MonoBehaviour:
     m_Localized: Enter Zone
     m_Metadata:
       m_Items: []
-  - m_Id: 11623322894598144
-    m_Localized: Third-Party Licenses
-    m_Metadata:
-      m_Items: []
   - m_Id: 11674320539353088
     m_Localized: Manage Ship
     m_Metadata:
@@ -512,10 +480,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 13164879321890817
     m_Localized: Total
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13164879321890818
-    m_Localized: Score:{0} (Rank {1})
     m_Metadata:
       m_Items: []
   - m_Id: 13853203355271168
@@ -570,24 +534,8 @@ MonoBehaviour:
     m_Localized: Refresh opponent list? ({0} remaining)
     m_Metadata:
       m_Items: []
-  - m_Id: 15625537762230272
-    m_Localized: Account
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15625537795784704
-    m_Localized: General
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15625537795784705
-    m_Localized: Info
-    m_Metadata:
-      m_Items: []
   - m_Id: 15625537795784706
     m_Localized: Commander
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15625537795784707
-    m_Localized: Language
     m_Metadata:
       m_Items: []
   - m_Id: 15678504414609408
@@ -719,11 +667,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29120731337850880
-    m_Localized: Fleet Management
+    m_Localized: FLEET MANAGEMENT
     m_Metadata:
       m_Items: []
   - m_Id: 29120731379793920
-    m_Localized: + Add Ship
+    m_Localized: + ADD SHIP
     m_Metadata:
       m_Items: []
   - m_Id: 29169225431908352
@@ -732,6 +680,62 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 31664304520298496
     m_Localized: UNLOCK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31773314347040769
+    m_Localized: CHANGE NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074203041792
+    m_Localized: LANGUAGE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236096
+    m_Localized: LOGOUT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236097
+    m_Localized: Link Google Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236098
+    m_Localized: Unlink Google Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236099
+    m_Localized: ACCOUNT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236100
+    m_Localized: GENERAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236101
+    m_Localized: THIRD-PARTY LICENSES
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236102
+    m_Localized: INFO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31791451834548224
+    m_Localized: SCORE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31791451838742528
+    m_Localized: RANK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31791451838742529
+    m_Localized: SEASON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31817718130671616
+    m_Localized: Score:{0} (Rank {1})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31817718160031744
+    m_Localized: REFRESH({0}/{1})
     m_Metadata:
       m_Items: []
   references:

@@ -11,6 +11,7 @@ public class DataTableTotalEditor : EditorWindow
     private DataTableResearch dataTableResearch;
     private DataTableZone dataTableZone;
     private DataTableForbiddenWords dataTableForbiddenWords;
+    private DataTablePvpSeason dataTablePvpSeason;
     private Vector2 scrollPosition;
 
     [MenuItem("Tools/DataTable Total Manager")]
@@ -45,6 +46,9 @@ public class DataTableTotalEditor : EditorWindow
 
         dataTableForbiddenWords = (DataTableForbiddenWords)EditorGUILayout.ObjectField(
             "DataTable ForbiddenWords", dataTableForbiddenWords, typeof(DataTableForbiddenWords), false);
+
+        dataTablePvpSeason = (DataTablePvpSeason)EditorGUILayout.ObjectField(
+            "DataTable PvpSeason", dataTablePvpSeason, typeof(DataTablePvpSeason), false);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
@@ -159,12 +163,22 @@ public class DataTableTotalEditor : EditorWindow
                 dataTableForbiddenWords = AssetDatabase.LoadAssetAtPath<DataTableForbiddenWords>(path);
             }
         }
+
+        if (dataTablePvpSeason == null)
+        {
+            string[] guids = AssetDatabase.FindAssets("t:DataTablePvpSeason", new[] { "Assets/Resources/DataTable" });
+            if (guids.Length > 0)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                dataTablePvpSeason = AssetDatabase.LoadAssetAtPath<DataTablePvpSeason>(path);
+            }
+        }
     }
 
     private bool IsValid()
     {
         return dataTableModule != null && dataTableConfig != null && dataTableResearch != null
-            && dataTableZone != null && dataTableForbiddenWords != null;
+            && dataTableZone != null && dataTableForbiddenWords != null && dataTablePvpSeason != null;
     }
 
     private void ExportAll()
@@ -203,8 +217,13 @@ public class DataTableTotalEditor : EditorWindow
             string forbiddenPath = Path.Combine(folderPath, "DataTableForbiddenWords.json");
             File.WriteAllText(forbiddenPath, forbiddenJson);
 
+            // DataTablePvpSeason.json 내보내기
+            string pvpSeasonJson = dataTablePvpSeason.ExportToJson();
+            string pvpSeasonPath = Path.Combine(folderPath, "DataTablePvpSeason.json");
+            File.WriteAllText(pvpSeasonPath, pvpSeasonJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}\n{zonePath}\n{forbiddenPath}", "OK");
+                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}\n{zonePath}\n{forbiddenPath}\n{pvpSeasonPath}", "OK");
         }
     }
 
@@ -250,8 +269,13 @@ public class DataTableTotalEditor : EditorWindow
             string forbiddenServerPath = Path.Combine(serverDataPath, "DataTableForbiddenWords.json");
             File.WriteAllText(forbiddenServerPath, forbiddenJson);
 
+            // DataTablePvpSeason.json 서버로 내보내기
+            string pvpSeasonJson = dataTablePvpSeason.ExportToJson();
+            string pvpSeasonServerPath = Path.Combine(serverDataPath, "DataTablePvpSeason.json");
+            File.WriteAllText(pvpSeasonServerPath, pvpSeasonJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}\n{zoneServerPath}\n{forbiddenServerPath}", "OK");
+                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}\n{zoneServerPath}\n{forbiddenServerPath}\n{pvpSeasonServerPath}", "OK");
         }
         catch (System.Exception e)
         {

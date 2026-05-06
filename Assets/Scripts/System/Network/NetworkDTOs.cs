@@ -459,6 +459,8 @@ public class PvpRankInfo
     public int pvpLosses;
     public int pvpRank;
     public int pvpListRefreshRemain;
+    public string seasonName;
+    public string seasonEndTime; // ISO 8601
 }
 
 [System.Serializable]

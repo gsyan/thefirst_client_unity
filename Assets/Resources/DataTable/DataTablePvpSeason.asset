@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc0c77d0e0d6ca14da548725d5290d42, type: 3}
+  m_Name: DataTablePvpSeason
+  m_EditorClassIdentifier: Assembly-CSharp::DataTablePvpSeason
+  config:
+    defaultSeasonDurationDays: 14
+    tiers:
+    - tierName: Bronze
+      minScore: 0
+      resetScore: 800
+      seasonReward: 2
+    - tierName: Silver
+      minScore: 1200
+      resetScore: 1000
+      seasonReward: 4
+    - tierName: Gold
+      minScore: 1500
+      resetScore: 1200
+      seasonReward: 6
+    - tierName: Platinum
+      minScore: 1800
+      resetScore: 1400
+      seasonReward: 8
+    - tierName: Diamond
+      minScore: 2100
+      resetScore: 1600
+      seasonReward: 10

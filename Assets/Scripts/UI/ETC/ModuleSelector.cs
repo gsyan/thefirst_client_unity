@@ -24,9 +24,6 @@ public class ModuleSelector : MonoBehaviour
     [SerializeField] private Color m_colorUnlockedOutLineSelected = new Color(0f, 1f, 0.5f, 1f);
     [SerializeField] private Color m_colorUnlockedBgSelected = new Color(0f, 0.59f, 0.25f, 0.25f);
 
-    // 배경 이미지 선택시
-    private float m_colorSelectedAlpha = 8f;
-
     public ModuleBase Module { get; private set; }
 
     public void InitializeModuleSelector(ModuleBase module, UnityEngine.Events.UnityAction onClick)

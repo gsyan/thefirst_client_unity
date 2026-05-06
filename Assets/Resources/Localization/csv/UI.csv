@@ -6,7 +6,6 @@ tab_ship,,Ship,함선
 tab_exploration,,Exploration,탐사
 tab_research,,Research,연구
 tab_pvp,,PVP,PVP
-tab_settings,,Settings,설정
 fleet_status,,Fleet Status,함대 정보
 fleet_ship_count,,Ships,함선 수
 fleet_add_ship_button,,Add\nShip,함선\n추가
@@ -52,13 +51,9 @@ research_button_name,,Research,연구
 research_tech_name,,Tech,기술
 research_already,,Already Researched,연구 완료
 pvp_opponent_list,,PVP List,상대방 목록
-pvp_opponent_list_refresh,,Refresh({0}/{1}),목록갱신({0}/{1})
 pvp_refresh_confirm,,Refresh opponent list? ({0} remaining),상대 목록을 갱신하시겠습니까? (잔여 {0}회)
 pvp_score_mine_head,,My PVP Info,내 PVP 정보
-pvp_score_mine,,Score,점수
-pvp_rank_mine,,Rank,랭크
 pvp_opponent_info,,Opponent Fleet Power,상대 함대 전력
-pvp_score_rank,,Score:{0} (Rank {1}),점수:{0} ({1}위)
 pvp_rank_title,,Rank List,순위표
 pvp_battle_result_win,,Victory,승리
 pvp_battle_result_lose,,Defeat,패배
@@ -67,18 +62,9 @@ pvp_battle_result_rank,,Rank: {0} <voffset=6>→</voffset> {1},순위: {0}위 <v
 rank_first_row_ranking,,Rank,순위
 rank_first_row_name,,Name,이름
 rank_first_row_score,,Score,점수
-settings_section_account,,Account,계정
-settings_section_general,,General,일반
-settings_section_info,,Info,기타
 settings_commander_name,,Commander,지휘관명
-settings_language,,Language,언어
-settings_logout,,Logout,로그아웃
-settings_google_link,,Link Google Account,구글 계정 연동
-settings_google_unlink,,Unlink Google Account,구글 연동 해제
 settings_google_link_success,,Google account linked successfully.,구글 계정이 연동되었습니다.
 settings_google_unlink_success,,Google account unlinked successfully.,구글 연동이 해제되었습니다.
-settings_name_change,,Change Name,이름 변경
-settings_license_title,,Third-Party Licenses,외부 라이센스 고지
 camera_focus_enemy_fleet,,Enemy Fleet,적 함대
 camera_focus_center,,Center,중앙
 camera_focus_my_fleet,,My Fleet,내 함대
@@ -107,7 +93,6 @@ module_type_missile,,Missile,미사일
 module_type_hanger,,Hanger,격납고
 cancel,,Cancel,취소
 confirm,,Confirm,확인
-
 mineral_amount,,Mineral,광물
 mineral_rare_amount,,Mineral.R,광물.R
 mineral_exotic_amount,,Mineral.E,광물.E
@@ -172,10 +157,25 @@ UITabTech_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
 UITabTech_ShipCountUnit,,ships,척
 UITabTech_NextUnlockTitle,,Next Unlock - Lv.{0},다음 해금 - Lv.{0}
 UITabTech_NextUnlockShipCount,,{0} Ship Slots,함선 슬롯 {0}척
-UITabFleet_FleetManagement,,Fleet Management,함대 관리
-UITabFleet_AddShipText,,+ Add Ship,+ 함선 추가
+UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
+UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UnlockButtonText,,UNLOCK,잠금해제
 LevelupButtonText,,LEVEL UP,레벨 업
 UpgradeButtonText,,UPGRADE,업그레이드
 UpgradeButtonTextCompleted,,DONE,완료
 LevelupButtonTextMax,,MAX,최대
+UITabSettings_SettingsText,,SETTINGS,설정
+UITabSettings_NameChange,,CHANGE NAME,이름 변경
+UITabSettings_Language,,LANGUAGE,언어
+UITabSettings_Logout,,LOGOUT,로그아웃
+UITabSettings_GoogleLink,,Link Google Account,구글 계정 연동
+UITabSettings_GoogleUnlink,,Unlink Google Account,구글 연동 해제
+UITabSettings_Account,,ACCOUNT,계정
+UITabSettings_General,,GENERAL,일반
+UITabSettings_License,,THIRD-PARTY LICENSES,외부 라이센스
+UITabSettings_Info,,INFO,정보
+UITabPvp_Score,,SCORE,점수
+UITabPvp_Rank,,RANK,랭크
+UITabPvp_Season,,SEASON,시즌
+UITabPvp_ScoreRank,,Score:{0} (Rank {1}),점수:{0} ({1}위)
+UITabPvp_refresh,,REFRESH({0}/{1}),새로고침({0}/{1})

@@ -43,10 +43,6 @@ MonoBehaviour:
     m_Key: tab_pvp
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636932
-    m_Key: tab_settings
-    m_Metadata:
-      m_Items: []
   - m_Id: 39525816336384
     m_Key: fleet_status
     m_Metadata:
@@ -227,10 +223,6 @@ MonoBehaviour:
     m_Key: pvp_opponent_list
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636953
-    m_Key: pvp_opponent_list_refresh
-    m_Metadata:
-      m_Items: []
   - m_Id: 14291245362708480
     m_Key: pvp_refresh_confirm
     m_Metadata:
@@ -239,20 +231,8 @@ MonoBehaviour:
     m_Key: pvp_score_mine_head
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636954
-    m_Key: pvp_score_mine
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636955
-    m_Key: pvp_rank_mine
-    m_Metadata:
-      m_Items: []
   - m_Id: 3668074850811904
     m_Key: pvp_opponent_info
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13164879321890818
-    m_Key: pvp_score_rank
     m_Metadata:
       m_Items: []
   - m_Id: 7977027994779648
@@ -287,36 +267,8 @@ MonoBehaviour:
     m_Key: rank_first_row_score
     m_Metadata:
       m_Items: []
-  - m_Id: 15625537762230272
-    m_Key: settings_section_account
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15625537795784704
-    m_Key: settings_section_general
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15625537795784705
-    m_Key: settings_section_info
-    m_Metadata:
-      m_Items: []
   - m_Id: 15625537795784706
     m_Key: settings_commander_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15625537795784707
-    m_Key: settings_language
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636956
-    m_Key: settings_logout
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640582524928
-    m_Key: settings_google_link
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640620273664
-    m_Key: settings_google_unlink
     m_Metadata:
       m_Items: []
   - m_Id: 8422640620273665
@@ -325,14 +277,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8422640620273666
     m_Key: settings_google_unlink_success
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8166668848988160
-    m_Key: settings_name_change
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11623322894598144
-    m_Key: settings_license_title
     m_Metadata:
       m_Items: []
   - m_Id: 1211027840434176
@@ -729,6 +673,66 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 29033643212931073
     m_Key: LevelupButtonTextMax
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31773314347040768
+    m_Key: UITabSettings_SettingsText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31773314347040769
+    m_Key: UITabSettings_NameChange
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074203041792
+    m_Key: UITabSettings_Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236096
+    m_Key: UITabSettings_Logout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236097
+    m_Key: UITabSettings_GoogleLink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236098
+    m_Key: UITabSettings_GoogleUnlink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236099
+    m_Key: UITabSettings_Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236100
+    m_Key: UITabSettings_General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236101
+    m_Key: UITabSettings_License
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236102
+    m_Key: UITabSettings_Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31791451834548224
+    m_Key: UITabPvp_Score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31791451838742528
+    m_Key: UITabPvp_Rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31791451838742529
+    m_Key: UITabPvp_Season
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31817718130671616
+    m_Key: UITabPvp_ScoreRank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31817718160031744
+    m_Key: UITabPvp_refresh
     m_Metadata:
       m_Items: []
   m_Metadata:

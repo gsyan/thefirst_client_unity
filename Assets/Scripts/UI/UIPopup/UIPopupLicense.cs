@@ -94,7 +94,7 @@ public class UIPopupLicense : UIPopupBase
     public void ShowPopupLicense(System.Action onClose)
     {
         if (m_titleText != null)
-            CommonUtility.SetUILocText(m_titleText, "settings_license_title");
+            CommonUtility.SetUILocText(m_titleText, "UITabSettings_License");
         if (m_licenseText != null)
             m_licenseText.text = LICENSE_CONTENT;
 
