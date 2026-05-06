@@ -17,6 +17,7 @@ public class UITabShip : UITabBase
     [SerializeField] private TMP_Text  m_textShipRepair;
     [SerializeField] private TMP_Text  m_textShipSpeed;
     // 2행: 함재기 능력 — aircraft_count == 0 이면 숨김
+    [SerializeField] private GameObject m_aircraftContainer;
     [SerializeField] private TMP_Text  m_textAirAttack;
     [SerializeField] private TMP_Text  m_textAirCount;
 
@@ -31,8 +32,10 @@ public class UITabShip : UITabBase
     [SerializeField] private Button m_btnShipStatsDetail;
 
     [Header("모듈 디테일 카드")]
-    [SerializeField] private TMP_Text  m_moduleStatsText;
-
+    [SerializeField] private TMP_Text   m_moduleSubTypeText;
+    [SerializeField] private Transform  m_moduleStatsContainer;
+    [SerializeField] private Transform  m_moduleInvestedMineralContainer;
+    
     [SerializeField] private Button    m_unlockModuleButton;
     [SerializeField] private Button    m_levelUpModuleButton;
     //[SerializeField] private TMP_Text  m_levelUpModuleButtonText;
@@ -53,6 +56,9 @@ public class UITabShip : UITabBase
     private ModuleSelector[] m_selectorsBeam;
     private ModuleSelector[] m_selectorsMissile;
     private ModuleSelector[] m_selectorsHanger;
+
+    private List<RowImageText> m_statsRows   = new List<RowImageText>();
+    private List<RowImageText> m_mineralRows = new List<RowImageText>();
     
 
 
@@ -72,6 +78,9 @@ public class UITabShip : UITabBase
         m_selectorsBeam    = m_moduleBeamSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         m_selectorsMissile = m_moduleMissileSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         m_selectorsHanger  = m_moduleHangerSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
+
+        m_statsRows.AddRange(m_moduleStatsContainer.GetComponentsInChildren<RowImageText>(true));
+        m_mineralRows.AddRange(m_moduleInvestedMineralContainer.GetComponentsInChildren<RowImageText>(true));
         
         if (m_btnPrevShip != null) m_btnPrevShip.onClick.AddListener(OnPrevShipClicked);
         if (m_btnNextShip != null) m_btnNextShip.onClick.AddListener(OnNextShipClicked);
@@ -223,19 +232,18 @@ public class UITabShip : UITabBase
         CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
 
-        m_textShipAttack.text = $"statsCur.attack:F0";
-        m_textShipHp.text = $"statsCur.health:F0";
-        m_textShipRepair.text = $"statsCur.repair:F0";
-        m_textShipSpeed.text = $"statsCur.speed:F0";
+        m_textShipAttack.text = $"{statsCur.attack:F0}";
+        m_textShipHp.text = $"{statsCur.health:F0}";
+        m_textShipRepair.text = $"{statsCur.repair:F0}";
+        m_textShipSpeed.text = $"{statsCur.speed:F0}";
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipAttack.transform.parent as RectTransform);
 
         bool hasAircraft = statsOrg.airCount > 0;
-        m_textAirAttack.gameObject.SetActive(hasAircraft);
-        m_textAirCount.gameObject.SetActive(hasAircraft);
+        m_aircraftContainer.SetActive(hasAircraft);
         if (hasAircraft)
         {
-            m_textAirAttack.text = $"statsCur.airAttack:F0";
-            m_textAirCount.text = $"statsOrg.airCount";
+            m_textAirAttack.text = $"{statsCur.airAttack:F0}";
+            m_textAirCount.text = $"{statsOrg.airCount}";
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_textAirAttack.transform.parent as RectTransform);
         }
     }
@@ -532,6 +540,9 @@ public class UITabShip : UITabBase
         if (bShow != true) return;
         if (m_selectedShip == null) return;
 
+        foreach (var row in m_statsRows)   row.Hide();
+        foreach (var row in m_mineralRows) row.Hide();
+
         if (m_selectedModule is ModulePlaceholder)
         {
             m_unlockModuleButton.gameObject.SetActive(true);
@@ -539,18 +550,15 @@ public class UITabShip : UITabBase
             m_subTypeManageButton.gameObject.SetActive(false);
             if (m_btnResetModule != null) m_btnResetModule.gameObject.SetActive(false);
 
-            if (m_moduleStatsText != null)
-            {
-                m_moduleStatsText.text = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType()}_placeholder");
-                LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsText.transform.parent as RectTransform);
-            }
+            m_moduleSubTypeText.text = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType()}_placeholder");
         }
         else
         {
             m_unlockModuleButton.gameObject.SetActive(false);
 
             EModuleSubType subType    = m_selectedModule.GetModuleSubType();
-            int nextLevel             = m_selectedModule.GetModuleLevel() + 1;
+            int level                 = m_selectedModule.GetModuleLevel();
+            int nextLevel             = level + 1;
             ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
             bool isMaxLevel           = moduleDataNext == null;
 
@@ -569,32 +577,46 @@ public class UITabShip : UITabBase
                 m_btnResetModule.interactable = !(isFlagshipBody && isDefaultBody);
             }
 
-            // if (!isMaxLevel && m_levelUpModuleButtonText != null)
-            // {
-            //     if (DataManager.Instance.GetModuleLevelUpCost(subType, m_selectedModule.GetModuleLevel(), out long cost))
-            //         m_levelUpModuleButtonText.text = $"{LocalizationManager.Instance.Get("ship_module_levelup")}";
-            //     else
-            //         CommonUtility.SetUILocText(m_levelUpModuleButtonText, "ship_module_levelup");
-            // }
+            m_moduleSubTypeText.text = m_selectedModule.GetModuleSubType().GetLocalizedName();
 
-            if (m_moduleStatsText != null)
+            // 스탯 rows
+            ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level);
+            if (cur != null && m_statsRows.Count >= 2)
             {
-                int level = m_selectedModule.GetModuleLevel();
-                string typeName = m_selectedModule.GetModuleSubType().GetLocalizedName();
-                var sb = new System.Text.StringBuilder();
-                sb.AppendLine(typeName);
-                sb.Append(m_selectedModule.GetDetailText(level, level));
-                if (m_selectedModule.HasInvestedMineral())
+                m_statsRows[0].SetRow("progression", $"{level}");
+
+                EModuleType moduleType = m_selectedModule.GetModuleType();
+                if (moduleType == EModuleType.body && m_statsRows.Count >= 4)
                 {
-                    sb.AppendLine();
-                    sb.Append(BuildRefundText(
-                        m_selectedModule.m_investedMineral,
-                        m_selectedModule.m_investedPvpMineral,
-                        m_selectedModule.m_investedTempMineral));
+                    m_statsRows[1].SetRow("techno-heart",     $"{cur.health:F0}");
+                    m_statsRows[2].SetRow("auto-repair",      $"{cur.repair:F0}");
+                    m_statsRows[3].SetRow("rocket-thruster",  $"{cur.speed:F0}");
                 }
-                m_moduleStatsText.text = sb.ToString();
-                LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsText.transform.parent as RectTransform);
+                else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
+                {
+                    m_statsRows[1].SetRow("bubbling-beam", $"{cur.attack:F0}");
+                }
+                else if (moduleType == EModuleType.hanger && m_statsRows.Count >= 5)
+                {
+                    m_statsRows[1].SetRow("strafe",        $"{cur.airAttack:F0}");
+                    m_statsRows[2].SetRow("heart-wings",   $"{cur.airHealth:F0}");
+                    m_statsRows[3].SetRow("light-fighter", $"{cur.airSpeed:F0}");
+                    m_statsRows[4].SetRow("jet-fighter",   $"{cur.airCount:F0}");
+                }
             }
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsContainer.transform as RectTransform);
+
+            // 투자 광물 rows
+            if (m_mineralRows.Count >= 3)
+            {
+                if (m_selectedModule.m_investedMineral > 0)
+                    m_mineralRows[0].SetRow("icon_mineral", $"{m_selectedModule.m_investedMineral}");
+                if (m_selectedModule.m_investedPvpMineral > 0)
+                    m_mineralRows[1].SetRow("icon_mineral", $"{m_selectedModule.m_investedPvpMineral}");
+                if (m_selectedModule.m_investedTempMineral > 0)
+                    m_mineralRows[2].SetRow("icon_mineral", $"{m_selectedModule.m_investedTempMineral}");
+            }
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleInvestedMineralContainer.transform as RectTransform);
         }
     }
 
@@ -719,7 +741,7 @@ public class UITabShip : UITabBase
             }
 
             ModuleBase captured = modules[i];
-            selectors[i].Initialize(captured, () => OnModuleSelectorClicked(captured));
+            selectors[i].InitializeModuleSelector(captured, () => OnModuleSelectorClicked(captured));
         }
     }
 
@@ -737,7 +759,7 @@ public class UITabShip : UITabBase
         for (int i = 0; i < selectors.Length; i++)
         {
             if (selectors[i].gameObject.activeSelf)
-                selectors[i].SetSelected(selectors[i].Module == m_selectedModule);
+                selectors[i].SetModuleSelected(selectors[i].Module == m_selectedModule);
         }
     }
 

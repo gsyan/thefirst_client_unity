@@ -1,27 +1,35 @@
 // 함선 개별 모듈 슬롯 UI 버튼 컴포넌트
 // ModuleBase와 1:1 매칭되며, 선택 여부를 Outline / 잠금 여부를 배경색으로 시각화
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ModuleSelector : MonoBehaviour
 {
     [SerializeField] private Button m_button;
-    [SerializeField] private Image m_backgroundImage;
-    [SerializeField] private TMP_Text m_typeText;
+    [SerializeField] private Image m_borderImage;
+    [SerializeField] private Image m_bgImage;
+    [SerializeField] private TMP_Text m_buttonText;
 
     [Header("상태별 색상")]
-    [SerializeField] private Color m_colorNotExist = new Color(0.2f, 0.2f, 0.2f, 1f);  // 현재 함체에는 없음
-    [SerializeField] private Color m_colorLocked   = new Color(0.8f, 0.2f, 0.2f, 1f);  // placeholder
-    [SerializeField] private Color m_colorUnlocked = new Color(0.2f, 0.8f, 0.4f, 1f);  // 일반 모듈
-    [SerializeField] private Color m_colorSelected = new Color(1f,   0.8f, 0.2f, 1f);  // 선택 테두리
-    [SerializeField] private float m_outlineWidth  = 4f;
+    // locked
+    [SerializeField] private Color m_colorLockedOutLine = new Color(0.59f, 0f, 0f, 0.25f); // 150,0,0,64
+    [SerializeField] private Color m_colorLockedBg = new Color(0.59f, 0f, 0f, 0.03f); // 150,0,0,8
+    [SerializeField] private Color m_colorLockedOutLineSelected = new Color(1f, 0f, 0f, 1f);
+    [SerializeField] private Color m_colorLockedBgSelected = new Color(0.59f, 0f, 0f, 0.25f);
+    // unlocked
+    [SerializeField] private Color m_colorUnlockedOutLine = new Color(0f, 0.59f, 0.25f, 0.25f);
+    [SerializeField] private Color m_colorUnlockedBg = new Color( 0f, 0.59f, 0.25f, 0.03f);    
+    [SerializeField] private Color m_colorUnlockedOutLineSelected = new Color(0f, 1f, 0.5f, 1f);
+    [SerializeField] private Color m_colorUnlockedBgSelected = new Color(0f, 0.59f, 0.25f, 0.25f);
 
-    private UnityEngine.UI.Outline m_outline;
+    // 배경 이미지 선택시
+    private float m_colorSelectedAlpha = 8f;
 
     public ModuleBase Module { get; private set; }
 
-    public void Initialize(ModuleBase module, UnityEngine.Events.UnityAction onClick)
+    public void InitializeModuleSelector(ModuleBase module, UnityEngine.Events.UnityAction onClick)
     {
         Module = module;
 
@@ -29,25 +37,22 @@ public class ModuleSelector : MonoBehaviour
         m_button.onClick.AddListener(onClick);
         m_button.interactable = true;
 
-        if (m_backgroundImage == null)
-            m_backgroundImage = m_button.GetComponent<Image>();
+        if (m_borderImage == null)
+            m_borderImage = m_button.GetComponent<Image>();
+        if (m_bgImage == null)
+            m_bgImage = m_button.GetComponentInChildren<Image>();
 
-        // 슬롯 번호 표시 (행 레이블이 타입 아이콘을 담당)
-        if (m_typeText != null)
-            m_typeText.text = (module.GetModuleSlotIndex() + 1).ToString();
+        // 잠금 여부에 따라 색 설정
+        m_borderImage.color = (module is ModulePlaceholder) ? m_colorLockedOutLine : m_colorUnlockedOutLine;
+        m_bgImage.color = (module is ModulePlaceholder) ? m_colorLockedBg : m_colorUnlockedBg;
 
+        if (m_buttonText == null)
+            m_buttonText = m_button.GetComponentInChildren<TMP_Text>();
 
-
-        // 잠금 여부에 따라 배경색 설정
-        if (m_backgroundImage != null)
-            m_backgroundImage.color = (module is ModulePlaceholder) ? m_colorLocked : m_colorUnlocked;
-
-        m_outline = m_button.GetComponent<UnityEngine.UI.Outline>();
-        if (m_outline == null)
-            m_outline = m_button.gameObject.AddComponent<UnityEngine.UI.Outline>();
-        m_outline.effectColor = m_colorSelected;
-        m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
-        m_outline.enabled = false;
+        // 슬롯 번호 표시
+        m_buttonText.text = (module.GetModuleSlotIndex() + 1).ToString();
+        bool bModuleUnlocked = !(module is ModulePlaceholder);
+        m_buttonText.color = (module is ModulePlaceholder) ? m_colorLockedOutLineSelected : m_colorUnlockedOutLineSelected;
     }
 
     // 현재 함체에 해당 슬롯이 없는 경우: 시각적 유지, 기능 비활성화
@@ -56,20 +61,19 @@ public class ModuleSelector : MonoBehaviour
         Module = null;
         m_button.onClick.RemoveAllListeners();
         m_button.interactable = false;
-
-        if (m_backgroundImage != null)
-            m_backgroundImage.color = m_colorNotExist;
-
-        if (m_typeText != null)
-            m_typeText.text = "";
-
-        if (m_outline != null)
-            m_outline.enabled = false;
+        m_buttonText.gameObject.SetActive(false);
     }
 
-    public void SetSelected(bool selected)
+    public void SetModuleSelected(bool selected)
     {
-        if (m_outline != null)
-            m_outline.enabled = selected;
+        if(Module == null) return;
+        Color m_colorOutLine = (Module is ModulePlaceholder) ? m_colorLockedOutLine : m_colorUnlockedOutLine;
+        Color m_colorBg = (Module is ModulePlaceholder) ? m_colorLockedBg : m_colorUnlockedBg;
+        Color m_colorOutLineSelected = (Module is ModulePlaceholder) ? m_colorLockedOutLineSelected : m_colorUnlockedOutLineSelected;
+        Color m_colorBgSelected = (Module is ModulePlaceholder) ? m_colorLockedBgSelected : m_colorUnlockedBgSelected;
+
+        m_borderImage.color = (selected == true) ? m_colorOutLineSelected : m_colorOutLine;
+        m_bgImage.color = (selected == true) ? m_colorBgSelected : m_colorBg;
+        //m_buttonText.text.color
     }
 }
