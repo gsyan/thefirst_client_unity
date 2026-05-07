@@ -39,10 +39,6 @@ MonoBehaviour:
     m_Key: tab_research
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636931
-    m_Key: tab_pvp
-    m_Metadata:
-      m_Items: []
   - m_Id: 39525816336384
     m_Key: fleet_status
     m_Metadata:
@@ -715,24 +711,40 @@ MonoBehaviour:
     m_Key: UITabSettings_Info
     m_Metadata:
       m_Items: []
-  - m_Id: 31791451834548224
-    m_Key: UITabPvp_Score
+  - m_Id: 32106946823585792
+    m_Key: UITabRank_Score
     m_Metadata:
       m_Items: []
-  - m_Id: 31791451838742528
-    m_Key: UITabPvp_Rank
+  - m_Id: 32106946823585793
+    m_Key: UITabRank_Rank
     m_Metadata:
       m_Items: []
-  - m_Id: 31791451838742529
-    m_Key: UITabPvp_Season
+  - m_Id: 32106946823585794
+    m_Key: UITabRank_Season
     m_Metadata:
       m_Items: []
-  - m_Id: 31817718130671616
-    m_Key: UITabPvp_ScoreRank
+  - m_Id: 32107824360062976
+    m_Key: UITabRank_SeasonNumber
     m_Metadata:
       m_Items: []
-  - m_Id: 31817718160031744
-    m_Key: UITabPvp_refresh
+  - m_Id: 32106946823585795
+    m_Key: UITabRank_ScoreRank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32106946823585796
+    m_Key: UITabRank_refresh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32106946823585797
+    m_Key: UITabRank_MyInfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32106946823585798
+    m_Key: UITabRank_Pvp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32106946823585799
+    m_Key: UITabRank_Exploration
     m_Metadata:
       m_Items: []
   m_Metadata:

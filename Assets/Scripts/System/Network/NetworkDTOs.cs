@@ -459,7 +459,7 @@ public class PvpRankInfo
     public int pvpLosses;
     public int pvpRank;
     public int pvpListRefreshRemain;
-    public string seasonName;
+    public int seasonNumber;
     public string seasonEndTime; // ISO 8601
 }
 
@@ -536,6 +536,11 @@ public class RankingEntry
     public long characterId;
     public string characterName;
     public string score;
+    public int shipCount;      // 함선 수
+    public float statHealth;   // 총 체력
+    public float statAttack;   // 총 공격력
+    public int statAirCount;   // 함재기 수
+    public int statAirAttack;  // 함재기 공격력
     // PVP/Zone/Attack 랭킹 공용 엔트리. score는 항상 string
 }
 
@@ -553,7 +558,7 @@ public class PvpRankingResponse
     public List<RankingEntry> items;
     public RankingEntry myInfo;         // 내 랭킹 정보 (rank/score, 1시간 주기 랭킹 기준)
     public string lastUpdatedAt;        // 랭킹 마지막 업데이트 시각 ISO 8601
-    public string seasonName;           // 시즌 이름 (미설정 시 null)
+    public int seasonNumber;            // 시즌 번호 (미설정 시 0)
     public string seasonStartTime;      // 시즌 시작 시각 ISO 8601 (미설정 시 null)
     public string seasonEndTime;        // 시즌 종료 시각 ISO 8601 (미설정 시 null)
 }

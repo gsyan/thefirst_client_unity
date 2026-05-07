@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ButtonGroupItem
 {
     public Button button;
+    public Graphic[] childGraphics; // 자식 Image, TMP_Text 등 색상 연동 대상
     public Color activeColor = Color.white;
     public Color inactiveColor = Color.gray;
     [System.NonSerialized] public System.Action onSelected;
@@ -56,7 +57,11 @@ public class ButtonGroupSystem : MonoBehaviour
         }
 
         initialized = true;
-        // defaultIndex < 0이면 아무 탭도 선택하지 않음
+
+        // 전체 버튼에 inactiveColor 초기 적용 후 defaultIndex만 activeColor로 덮어씀
+        for (int i = 0; i < items.Count; i++)
+            ApplyColor(items[i], items[i].inactiveColor);
+
         if (defaultIndex >= 0)
             Select(defaultIndex);
     }
@@ -78,14 +83,14 @@ public class ButtonGroupSystem : MonoBehaviour
         if (currentIndex >= 0)
         {
             var prev = items[currentIndex];
-            ApplyColor(prev.button, prev.inactiveColor);
+            ApplyColor(prev, prev.inactiveColor);
             prev.onDeselected?.Invoke();
         }
 
         // 새 버튼 활성화
         currentIndex = index;
         var cur = items[currentIndex];
-        ApplyColor(cur.button, cur.activeColor);
+        ApplyColor(cur, cur.activeColor);
         cur.onSelected?.Invoke();
     }
 
@@ -94,21 +99,32 @@ public class ButtonGroupSystem : MonoBehaviour
     {
         if (currentIndex < 0) return;
         var prev = items[currentIndex];
-        ApplyColor(prev.button, prev.inactiveColor);
+        ApplyColor(prev, prev.inactiveColor);
         currentIndex = -1; // 콜백 전에 -1 설정 (TabSystem이 GetCurrentIndex로 확인하기 때문)
         prev.onDeselected?.Invoke();
     }
 
     public int GetCurrentIndex() => currentIndex;
 
-    private void ApplyColor(Button button, Color color)
+    private void ApplyColor(ButtonGroupItem item, Color color)
     {
-        if (button == null) return;
-        var colors = button.colors;
-        colors.normalColor = color;
-        colors.highlightedColor = color * 1.1f;
-        colors.pressedColor = color * 0.8f;
-        colors.selectedColor = color;
-        button.colors = colors;
+        if (item.button != null)
+        {
+            var colors = item.button.colors;
+            colors.normalColor = color;
+            colors.highlightedColor = color * 1.1f;
+            colors.pressedColor = color * 0.8f;
+            colors.selectedColor = color;
+            item.button.colors = colors;
+        }
+
+        if (item.childGraphics != null)
+        {
+            for (int i = 0; i < item.childGraphics.Length; i++)
+            {
+                if (item.childGraphics[i] != null)
+                    item.childGraphics[i].color = color;
+            }
+        }
     }
 }

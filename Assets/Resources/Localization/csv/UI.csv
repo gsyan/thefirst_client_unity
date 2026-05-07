@@ -5,7 +5,6 @@ tab_fleet,,Fleet,함대
 tab_ship,,Ship,함선
 tab_exploration,,Exploration,탐사
 tab_research,,Research,연구
-tab_pvp,,PVP,PVP
 fleet_status,,Fleet Status,함대 정보
 fleet_ship_count,,Ships,함선 수
 fleet_add_ship_button,,Add\nShip,함선\n추가
@@ -174,8 +173,12 @@ UITabSettings_Account,,ACCOUNT,계정
 UITabSettings_General,,GENERAL,일반
 UITabSettings_License,,THIRD-PARTY LICENSES,외부 라이센스
 UITabSettings_Info,,INFO,정보
-UITabPvp_Score,,SCORE,점수
-UITabPvp_Rank,,RANK,랭크
-UITabPvp_Season,,SEASON,시즌
-UITabPvp_ScoreRank,,Score:{0} (Rank {1}),점수:{0} ({1}위)
-UITabPvp_refresh,,REFRESH({0}/{1}),새로고침({0}/{1})
+UITabRank_Score,,SCORE,점수
+UITabRank_Rank,,RANK,랭크
+UITabRank_Season,,SEASON,시즌
+UITabRank_SeasonNumber,,SEASON {0},시즌 {0}
+UITabRank_ScoreRank,,Score:{0} (Rank {1}),점수:{0} ({1}위)
+UITabRank_refresh,,REFRESH({0}/{1}),새로고침({0}/{1})
+UITabRank_MyInfo,,MY INFO,내 정보
+UITabRank_Pvp,,PVP,PVP
+UITabRank_Exploration,,EXPLORATION,탐사

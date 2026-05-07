@@ -13,6 +13,7 @@ public class TabData
     [Header("Visual States")]
     public Color activeColor = Color.white;
     public Color inactiveColor = Color.gray;
+    public Graphic[] childGraphics; // 색상 연동할 자식 Image, TMP_Text
     [Header("Callbacks")]
     public System.Action onActivate;
     public System.Action onDeactivate;
@@ -74,6 +75,7 @@ public class TabSystem : MonoBehaviour
             var item = new ButtonGroupItem
             {
                 button = tab.tabButton,
+                childGraphics = tab.childGraphics,
                 activeColor = tab.activeColor,
                 inactiveColor = tab.inactiveColor,
                 onSelected = () => ActivatePanel(tabIndex),
@@ -88,6 +90,23 @@ public class TabSystem : MonoBehaviour
 
         m_bInitialized = true;
         buttonGroup.Initialize();
+    }
+
+    // 각 패널의 UITabBase를 찾아 라이프사이클 연결 — 게임 데이터 준비 후 외부에서 호출
+    public void InitializeTabBases()
+    {
+        for (int i = 0; i < tabs.Count; i++)
+        {
+            var tab = tabs[i];
+            if (tab.tabPanel == null) continue;
+            UITabBase tabBase = tab.tabPanel.GetComponent<UITabBase>();
+            if (tabBase == null) continue;
+            tabBase.m_tabSystemParent = this;
+            tabBase.InitializeUITab();
+            tabBase.InitializeCloseButton();
+            tab.onActivate = tabBase.OnTabActivated;
+            tab.onDeactivate = tabBase.OnTabDeactivated;
+        }
     }
 
     public void SwitchToTab(int tabIndex)
@@ -230,6 +249,7 @@ public class TabSystem : MonoBehaviour
         var item = new ButtonGroupItem
         {
             button = newTab.tabButton,
+            childGraphics = newTab.childGraphics,
             activeColor = newTab.activeColor,
             inactiveColor = newTab.inactiveColor,
             onSelected = () => ActivatePanel(tabIndex),

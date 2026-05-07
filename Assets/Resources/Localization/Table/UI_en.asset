@@ -162,10 +162,6 @@ MonoBehaviour:
     m_Localized: Research
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636931
-    m_Localized: PVP
-    m_Metadata:
-      m_Items: []
   - m_Id: 31773314347040768
     m_Localized: SETTINGS
     m_Metadata:
@@ -718,24 +714,40 @@ MonoBehaviour:
     m_Localized: INFO
     m_Metadata:
       m_Items: []
-  - m_Id: 31791451834548224
+  - m_Id: 32106946823585792
     m_Localized: SCORE
     m_Metadata:
       m_Items: []
-  - m_Id: 31791451838742528
+  - m_Id: 32106946823585793
     m_Localized: RANK
     m_Metadata:
       m_Items: []
-  - m_Id: 31791451838742529
+  - m_Id: 32106946823585794
     m_Localized: SEASON
     m_Metadata:
       m_Items: []
-  - m_Id: 31817718130671616
+  - m_Id: 32106946823585795
     m_Localized: Score:{0} (Rank {1})
     m_Metadata:
       m_Items: []
-  - m_Id: 31817718160031744
+  - m_Id: 32106946823585796
     m_Localized: REFRESH({0}/{1})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32106946823585797
+    m_Localized: MY INFO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32106946823585798
+    m_Localized: PVP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32106946823585799
+    m_Localized: EXPLORATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32107824360062976
+    m_Localized: SEASON {0}
     m_Metadata:
       m_Items: []
   references:

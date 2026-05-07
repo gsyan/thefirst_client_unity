@@ -10,6 +10,11 @@ public class InfiniteScrollView : MonoBehaviour
     [SerializeField] private ScrollRect m_scrollRect;
     [SerializeField] private float m_itemHeight = 80f;
     [SerializeField] private int m_bufferCount = 2; // viewport 위아래 추가 유지 개수
+    [SerializeField] private float m_paddingTop = 0f;
+    [SerializeField] private float m_paddingBottom = 0f;
+    [SerializeField] private float m_paddingLeft = 0f;
+    [SerializeField] private float m_paddingRight = 0f;
+    [SerializeField] private float m_spacing = 0f;
 
     // (데이터 인덱스, 아이템 GameObject) → 데이터 적용
     public Action<int, GameObject> onItemBind;
@@ -34,7 +39,8 @@ public class InfiniteScrollView : MonoBehaviour
         m_totalCount = totalCount;
         RectTransform content = m_scrollRect.content;
 
-        content.sizeDelta = new Vector2(content.sizeDelta.x, totalCount * m_itemHeight);
+        float itemStep = m_itemHeight + m_spacing;
+        content.sizeDelta = new Vector2(content.sizeDelta.x, totalCount * itemStep - m_spacing + m_paddingTop + m_paddingBottom);
         content.anchoredPosition = Vector2.zero;
 
         float viewportHeight = m_scrollRect.viewport.rect.height;
@@ -44,7 +50,7 @@ public class InfiniteScrollView : MonoBehaviour
             viewportHeight = m_scrollRect.viewport.rect.height;
         }
 
-        int visibleCount = Mathf.CeilToInt(viewportHeight / m_itemHeight) + 1;
+        int visibleCount = Mathf.CeilToInt(viewportHeight / itemStep) + 1;
         m_poolSize = visibleCount + m_bufferCount * 2;
 
         // 기존 풀 정리 후 재생성
@@ -63,7 +69,7 @@ public class InfiniteScrollView : MonoBehaviour
             rt.anchorMin = new Vector2(0f, 1f);
             rt.anchorMax = new Vector2(1f, 1f);
             rt.pivot = new Vector2(0.5f, 1f);
-            rt.sizeDelta = new Vector2(0f, m_itemHeight);
+            rt.sizeDelta = new Vector2(-(m_paddingLeft + m_paddingRight), m_itemHeight);
             obj.SetActive(false);
             m_itemPool.Add(rt);
         }
@@ -81,9 +87,10 @@ public class InfiniteScrollView : MonoBehaviour
     {
         if (m_initialized == false) return;
         m_totalCount = totalCount;
+        float itemStep = m_itemHeight + m_spacing;
         m_scrollRect.content.sizeDelta = new Vector2(
             m_scrollRect.content.sizeDelta.x,
-            totalCount * m_itemHeight
+            totalCount * itemStep - m_spacing + m_paddingTop + m_paddingBottom
         );
         m_topDataIndex = int.MinValue;
         RefreshView();
@@ -98,7 +105,7 @@ public class InfiniteScrollView : MonoBehaviour
         float contentHeight = m_scrollRect.content.sizeDelta.y;
         float viewportHeight = m_scrollRect.viewport.rect.height;
         float maxScrollY = Mathf.Max(0f, contentHeight - viewportHeight);
-        float targetY = Mathf.Clamp(dataIndex * m_itemHeight, 0f, maxScrollY);
+        float targetY = Mathf.Clamp(m_paddingTop + dataIndex * (m_itemHeight + m_spacing), 0f, maxScrollY);
 
         m_scrollRect.content.anchoredPosition = new Vector2(0f, targetY);
         m_topDataIndex = int.MinValue;
@@ -122,8 +129,9 @@ public class InfiniteScrollView : MonoBehaviour
     {
         if (m_initialized == false || m_totalCount == 0) return;
 
+        float itemStep = m_itemHeight + m_spacing;
         float scrollY = m_scrollRect.content.anchoredPosition.y;
-        int newTop = Mathf.Max(0, Mathf.FloorToInt(scrollY / m_itemHeight) - m_bufferCount);
+        int newTop = Mathf.Max(0, Mathf.FloorToInt((scrollY - m_paddingTop) / itemStep) - m_bufferCount);
 
         if (newTop == m_topDataIndex) return;
         m_topDataIndex = newTop;
@@ -140,7 +148,7 @@ public class InfiniteScrollView : MonoBehaviour
             }
 
             rt.gameObject.SetActive(true);
-            rt.anchoredPosition = new Vector2(0f, -dataIndex * m_itemHeight);
+            rt.anchoredPosition = new Vector2((m_paddingLeft - m_paddingRight) * 0.5f, -(m_paddingTop + dataIndex * itemStep));
             onItemBind?.Invoke(dataIndex, rt.gameObject);
         }
 

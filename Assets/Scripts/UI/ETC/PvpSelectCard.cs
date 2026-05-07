@@ -37,7 +37,7 @@ public class PvpSelectCard : MonoBehaviour
             ? opponentInfo.fleetInfo.ships.Count : 0;
 
         if (m_nameText != null)      m_nameText.text      = Character.GetDisplayName(opponentInfo.characterName, opponentInfo.characterId);
-        if (m_scoreRankText != null) m_scoreRankText.text = LocalizationManager.Instance.Get("UITabPvp_ScoreRank", opponentInfo.pvpScore, opponentInfo.rank);
+        if (m_scoreRankText != null) m_scoreRankText.text = LocalizationManager.Instance.Get("UITabRank_ScoreRank", opponentInfo.pvpScore, opponentInfo.rank);
 
         PopulateStats(stats, shipCount);
     }
@@ -56,16 +56,12 @@ public class PvpSelectCard : MonoBehaviour
         HideAllStats();
         if (m_rows1 == null || m_rows1.Length < 3) return;
 
-        m_rows1[0].SetRow("spaceship",     shipCount.ToString());
+        m_rows1[0].SetRow("icon_ship",     shipCount.ToString());
         m_rows1[1].SetRow("techno-heart",  CommonUtility.FormatBigNumber(stats.health));
         m_rows1[2].SetRow("bubbling-beam", CommonUtility.FormatBigNumber(stats.attack));
         
         if (stats.airCount > 0 && m_rows2 != null && m_rows2.Length > 0)
-        {
             m_rows2[0].SetRow("jet-fighter", stats.airCount.ToString());
-            
-        }
-            
         
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer1 as RectTransform);

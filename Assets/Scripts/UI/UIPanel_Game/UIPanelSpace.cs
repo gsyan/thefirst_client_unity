@@ -36,25 +36,15 @@ public class UIPanelSpace : UIPanelBase
         if (m_myFleet == null)
             m_myFleet = DataManager.Instance.m_currentCharacter.GetOwnedFleet();
 
+        m_tabSystem.InitializeTabBases();
+
         for (int i = 0; i < m_tabSystem.tabs.Count; i++)
         {
             var tabData = m_tabSystem.tabs[i];
-            if (tabData.tabPanel != null)
-            {
-                UITabBase tabBase = tabData.tabPanel.GetComponent<UITabBase>();
-                if (tabBase == null) continue;
-                tabBase.m_tabSystemParent = m_tabSystem;
-                tabBase.InitializeUITab();
-                tabBase.InitializeCloseButton();
-                tabData.onActivate = tabBase.OnTabActivated;
-                tabData.onDeactivate = tabBase.OnTabDeactivated;
-
-                if (tabBase is UITabShip)
-                {
-                    m_moduleTabIndex = i;
-                    m_shipTabRect = tabData.tabPanel.GetComponent<RectTransform>();
-                }
-            }
+            if (tabData.tabPanel == null) continue;
+            if (tabData.tabPanel.TryGetComponent<UITabShip>(out _) == false) continue;
+            m_moduleTabIndex = i;
+            m_shipTabRect = tabData.tabPanel.GetComponent<RectTransform>();
         }
 
         m_tabSystem.onTabSelectionChanged += OnTabSelectionChanged;
