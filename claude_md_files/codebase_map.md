@@ -723,7 +723,7 @@ DataManager (Singleton)
 | 공통 Enum/Define | [CommonDefine.cs](Assets/Scripts/System/CommonDefine.cs) | EModuleType, EModuleSubType, EFormationType, EUnitState |
 | 클라이언트 Define | [ClientDefine.cs](Assets/Scripts/System/ClientDefine.cs) | |
 | 로컬라이제이션 | [LocalizationManager.cs](Assets/Scripts/System/Localization/LocalizationManager.cs) | |
-| 아이콘 스프라이트 캐시 | [IconSpriteCache.cs](Assets/Scripts/System/Util/IconSpriteCache.cs) | |
+| UI 스프라이트 캐시 | [UISpriteCache.cs](Assets/Scripts/System/Util/UISpriteCache.cs) | |
 | UI 매니저 | [UIManager.cs](Assets/Scripts/System/Util/UIManager.cs) | |
 | 쉴드 그리드 | [ShieldGrid.cs](Assets/Scripts/System/Util/ShieldGrid.cs) | |
 | 개발자 콘솔 | [DeveloperConsole.cs](Assets/Scripts/System/Dev/DeveloperConsole.cs) | |

@@ -1,6 +1,5 @@
 // 탐사 탭 — 그룹 탭(Z1~Z9) + 존 스테이지 버튼(3D 월드 좌표 → Screen Space), 존 진입/재진입/킬 보상 처리
 // waveIndex mismatch(백그라운드 복귀 후 Redis TTL 만료) 시 waveIndex=0 재시도, 그 외 에러 시 안전지역 복귀
-using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,10 +15,9 @@ public class UITabExploration : UITabBase
     [SerializeField] private UIZoneStageButton m_zoneStageButtonPrefab;
     
     [Header("그룹 탭")]
-    [SerializeField] private Button[] m_groupTabButtons;           // Z1~Z9 그룹 탭 버튼
+    [SerializeField] private Transform m_zoneTabButtonContainer;
 
-    private static readonly Color k_tabActiveColor   = new Color(1f, 0.8f, 0.2f, 1f);
-    private static readonly Color k_tabInactiveColor = Color.white;
+    private UISelectableButton[] m_zoneTabButtons;
 
 
     private SpaceFleet m_myFleet;
@@ -50,7 +48,7 @@ public class UITabExploration : UITabBase
 
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
 
-        SetupGroupTabs();
+        SetupZoneTabButtons();
         InitializeZoneStageButtons();
         SetFleetState(EUnitState.Idle);
 
@@ -82,16 +80,14 @@ public class UITabExploration : UITabBase
         }
     }
 
-    private void SetupGroupTabs()
+    private void SetupZoneTabButtons()
     {
-        if (m_groupTabButtons == null) return;
-        for (int i = 0; i < m_groupTabButtons.Length; i++)
+        if (m_zoneTabButtonContainer == null) return;
+        m_zoneTabButtons = m_zoneTabButtonContainer.GetComponentsInChildren<UISelectableButton>();
+        for (int i = 0; i < m_zoneTabButtons.Length; i++)
         {
-            if (m_groupTabButtons[i] == null) continue;
             int groupIndex = i + 1;
-            var label = m_groupTabButtons[i].GetComponentInChildren<TMP_Text>();
-            if (label != null) label.text = $"Z{groupIndex}";
-            m_groupTabButtons[i].onClick.AddListener(() => OnGroupTabClicked(groupIndex));
+            m_zoneTabButtons[i].Setup($"Z{groupIndex}", () => OnGroupTabClicked(groupIndex));
         }
     }
 
@@ -116,16 +112,9 @@ public class UITabExploration : UITabBase
 
     private void UpdateGroupTabVisual()
     {
-        if (m_groupTabButtons == null) return;
-        for (int i = 0; i < m_groupTabButtons.Length; i++)
-        {
-            if (m_groupTabButtons[i] == null) continue;
-            bool selected = (i + 1) == m_selectedZoneIndex;
-            var colors = m_groupTabButtons[i].colors;
-            colors.normalColor   = selected ? k_tabActiveColor : k_tabInactiveColor;
-            colors.selectedColor = colors.normalColor;
-            m_groupTabButtons[i].colors = colors;
-        }
+        if (m_zoneTabButtons == null) return;
+        for (int i = 0; i < m_zoneTabButtons.Length; i++)
+            m_zoneTabButtons[i].SetSelected((i + 1) == m_selectedZoneIndex);
     }
 
     // 초기 시작 시 Zone 1의 첫 스테이지 선택 그룹 결정 후 전체 버튼 생성
