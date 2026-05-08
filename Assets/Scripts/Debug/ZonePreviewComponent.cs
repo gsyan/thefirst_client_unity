@@ -1,6 +1,4 @@
-#if UNITY_EDITOR
 using UnityEngine;
-using UnityEditor;
 
 [AddComponentMenu("Debug/Zone Preview")]
 public class ZonePreviewComponent : MonoBehaviour
@@ -19,6 +17,7 @@ public class ZonePreviewComponent : MonoBehaviour
             Destroy(existing.gameObject);
     }
 
+#if UNITY_EDITOR
     public void RefreshPreview()
     {
         ClearPreview();
@@ -31,7 +30,7 @@ public class ZonePreviewComponent : MonoBehaviour
             return;
         }
 
-        GameObject root = new GameObject(PREVIEW_ROOT_NAME);
+        GameObject root = new(PREVIEW_ROOT_NAME);
         root.transform.SetParent(transform);
         root.transform.localPosition = Vector3.zero;
 
@@ -51,7 +50,6 @@ public class ZonePreviewComponent : MonoBehaviour
                 sphere.GetComponent<Renderer>().sharedMaterial = body.material;
         }
 
-        // 카메라 타겟 마커 — 씬에서 이동 가능, Gizmo로 추가 표시
         GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         marker.name = CAMERA_TARGET_NAME;
         marker.transform.SetParent(root.transform);
@@ -67,7 +65,6 @@ public class ZonePreviewComponent : MonoBehaviour
             DestroyImmediate(existing.gameObject);
     }
 
-    // DataTable 데이터 → 프리뷰 구체 동기화 (핸들/인스펙터 편집 직후 호출)
     public void SyncPreviewPlanet(int index)
     {
         if (dataTableZone == null) return;
@@ -103,7 +100,7 @@ public class ZonePreviewComponent : MonoBehaviour
             camTarget.position = zone.galaxyCameraTarget;
     }
 
-    // 씬 오브젝트 위치·크기 → DataTableZone에 반영 (scale·material 변경 후 fallback 동기화용)
+    // 씬 오브젝트 위치·크기 → DataTableZone에 반영
     public void ApplyFromScene()
     {
         if (dataTableZone == null) return;
@@ -117,14 +114,12 @@ public class ZonePreviewComponent : MonoBehaviour
             return;
         }
 
-        Undo.RecordObject(dataTableZone, "Apply Zone Preview to DataTable");
+        UnityEditor.Undo.RecordObject(dataTableZone, "Apply Zone Preview to DataTable");
 
-        // 카메라 타겟
         Transform camTarget = root.Find(CAMERA_TARGET_NAME);
         if (camTarget != null)
             zone.galaxyCameraTarget = camTarget.position;
 
-        // ZonePreView 모든 자식 → celestialBodies 재구성 (CameraTarget 제외)
         zone.celestialBodies.Clear();
         foreach (Transform child in root)
         {
@@ -138,7 +133,7 @@ public class ZonePreviewComponent : MonoBehaviour
             });
         }
 
-        EditorUtility.SetDirty(dataTableZone);
+        UnityEditor.EditorUtility.SetDirty(dataTableZone);
         Debug.Log($"[ZonePreview] 천체 {zone.celestialBodies.Count}개 DataTableZone 반영 완료");
     }
 
@@ -148,10 +143,9 @@ public class ZonePreviewComponent : MonoBehaviour
         ZoneConfig zone = dataTableZone.GetZone(selectedZoneIndex);
         if (zone == null) return;
 
-        // 카메라 타겟 위치를 주황 이중 와이어 구로 표시
         Gizmos.color = new Color(1f, 0.5f, 0f, 0.9f);
         Gizmos.DrawWireSphere(zone.galaxyCameraTarget, 8f);
         Gizmos.DrawWireSphere(zone.galaxyCameraTarget, 2f);
     }
-}
 #endif
+}
