@@ -26,11 +26,12 @@ public static class CelestialBodyEditorGUI
             }
             EditorGUILayout.EndHorizontal();
 
-            body.position           = EditorGUILayout.Vector3Field("Position",  body.position);
-            body.scale              = EditorGUILayout.Vector3Field("Scale",     body.scale);
-            body.material           = (Material)EditorGUILayout.ObjectField("Material",   body.material,           typeof(Material), false);
-            body.atmosphereMaterial = (Material)EditorGUILayout.ObjectField("Atmosphere", body.atmosphereMaterial, typeof(Material), false);
-            if (body.atmosphereMaterial != null)
+            body.position = EditorGUILayout.Vector3Field("Position", body.position);
+            body.scale    = EditorGUILayout.Vector3Field("Scale",    body.scale);
+
+            DrawMaterialPathField("Material",   ref body.materialPath);
+            DrawMaterialPathField("Atmosphere", ref body.atmosphereMaterialPath);
+            if (string.IsNullOrEmpty(body.atmosphereMaterialPath) == false)
                 body.atmosphereScale = EditorGUILayout.Slider("Atm Scale", body.atmosphereScale, 1.001f, 1.20f);
 
             EditorGUILayout.EndVertical();
@@ -41,6 +42,32 @@ public static class CelestialBodyEditorGUI
         {
             bodies.Add(new CelestialBodyConfig { scale = Vector3.one * 20f });
             EditorUtility.SetDirty(dirtyTarget);
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
+    // Resources 기준 경로 문자열 필드 — 경로 유효성 인라인 표시
+    private static void DrawMaterialPathField(string label, ref string path)
+    {
+        EditorGUILayout.BeginHorizontal();
+        path = EditorGUILayout.TextField(label, path);
+
+        if (string.IsNullOrEmpty(path) == false)
+        {
+            Material mat = AssetDatabase.LoadAssetAtPath<Material>($"Assets/Resources/{path}.mat");
+            if (mat == null)
+            {
+                GUI.color = Color.red;
+                GUILayout.Label("✕", GUILayout.Width(20));
+                GUI.color = Color.white;
+            }
+            else
+            {
+                GUI.color = Color.green;
+                if (GUILayout.Button("●", GUILayout.Width(20)))
+                    EditorGUIUtility.PingObject(mat);
+                GUI.color = Color.white;
+            }
         }
         EditorGUILayout.EndHorizontal();
     }

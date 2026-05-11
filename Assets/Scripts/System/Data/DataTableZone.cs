@@ -7,18 +7,18 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class CelestialBodyConfig
 {
-    public Vector3  position;
-    public Vector3  scale              = new Vector3(20f, 20f, 20f);
-    public Material material;
-    public Material atmosphereMaterial;             // null이면 대기 구체 생성 안 함
-    public float    atmosphereScale    = 1.01f;     // 행성 대비 대기 구체 크기 비율
+    public Vector3 position;
+    public Vector3 scale                   = new Vector3(20f, 20f, 20f);
+    public string  materialPath;           // Resources 기준 경로 (확장자 제외)
+    public string  atmosphereMaterialPath; // 비어 있으면 대기 구체 생성 안 함
+    public float   atmosphereScale         = 1.01f;
 }
 
 // Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 천체·카메라 설정을 공유
 [System.Serializable]
 public class ZoneConfig
 {
-    public int zoneIndex; // 그룹 키 (0 = 안전구역 Zone-0, X-Y의 X값)
+    public int zoneIndex; // 그룹 키 (X-Y의 X값)
 
     [Header("갤럭시 뷰 카메라 앵커 (탐사 탭 그룹 선택 시)")]
     public Vector3 galaxyCameraTarget;
@@ -74,7 +74,6 @@ public class ZoneStageConfig
 
     public float delayBeforeSpawn = 3f;
     public float shipSpawnInterval = 1.5f;   // 함선 간 스폰 딜레이
-    public int maxConcurrentEnemyShips = 3;  // 동시에 존재 가능한 최대 적 함선 수 (슬롯 수)
     // 적 함선 템플릿 큐 — 순서대로 1척씩 스폰, 개수 제한 없음
     public List<EnemyShipConfig> enemyShipConfigs;
 
@@ -84,10 +83,6 @@ public class ZoneStageConfig
     [Header("아군 함대 위치/방향 (galaxyCameraTarget 기준 상대 좌표)")]
     public Vector3 fleetPosition;
     [Range(0f, 360f)] public float fleetRotationY;
-
-    [Header("갤럭시 뷰 UI — 꺾인 연결선 설정 (스크린 픽셀)")]
-    public Vector2 diagonalOffset = new Vector2(50f, 60f); // 점 → 꺾임점 오프셋
-    public bool    labelAboveLine = false;                  // 레이블을 선 위(true)/아래(false)에 배치
 
     [Header("갤럭시 뷰 UI — 마커 레이블 오프셋 (스크린 픽셀)")]
     public Vector2 labelScreenOffset = new Vector2(80f, 60f);
@@ -100,7 +95,7 @@ public class DataTableZone : ScriptableObject
     public List<ZoneConfig> zoneList = new List<ZoneConfig>();
     public List<ZoneStageConfig> zoneStageList = new List<ZoneStageConfig>();
 
-    // groupIndex로 그룹 설정 조회 (0 = Zone-0 안전구역)
+    // groupIndex로 그룹 설정 조회 (배열 인덱스 기준)
     public ZoneConfig GetZone(int zoneIndex)
     {
         if (zoneIndex < 0 || zoneIndex >= zoneList.Count)
@@ -163,7 +158,13 @@ public class DataTableZone : ScriptableObject
         return null;
     }
 
-    // 존 중심점 (galaxyCameraTarget 기준) — Zone-0 등 ZoneConfig가 없으면 zero 반환
+    // 존의 x-0 스폰 마커 스테이지 반환 — 없으면 null
+    public ZoneStageConfig GetZoneSpawnStage(int zoneIndex)
+    {
+        return GetZoneStageByName($"{zoneIndex}-0");
+    }
+
+    // 존 중심점 (galaxyCameraTarget 기준) — ZoneConfig가 없으면 zero 반환
     public Vector3 GetZoneCenter(int zoneIndex)
     {
         ZoneConfig zone = GetZoneByZoneIndex(zoneIndex);

@@ -163,10 +163,6 @@ MonoBehaviour:
     m_Key: exploration_elapsed_time
     m_Metadata:
       m_Items: []
-  - m_Id: 11411921936711680
-    m_Key: exploration_try_zone
-    m_Metadata:
-      m_Items: []
   - m_Id: 10761965592772608
     m_Key: exploration_zone_insufficient_ships
     m_Metadata:
@@ -745,6 +741,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 32106946823585799
     m_Key: UITabRank_Exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33428911052161024
+    m_Key: UITabExploration_TryZone
     m_Metadata:
       m_Items: []
   m_Metadata:

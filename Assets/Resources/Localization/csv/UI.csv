@@ -36,7 +36,6 @@ exploration_collectable_minerals_max,,Max Collectable,수집 광물별 최대량
 exploration_collect_mineral,,Collect Mineral,미네랄 수확
 exploration_collect_available_title,,Harvest,수확
 exploration_elapsed_time,,Elapsed,경과 시간
-exploration_try_zone,,Enter Zone,존 입장
 exploration_zone_insufficient_ships,,Not enough ships,함선이 부족합니다
 exploration_zone_enter_confirm,,Are you sure you want to enter this zone?,존에 입장 하시겠습니까?
 exploration_battle_victory,,Battle Victory,전투 승리
@@ -182,3 +181,4 @@ UITabRank_refresh,,REFRESH({0}/{1}),새로고침({0}/{1})
 UITabRank_MyInfo,,MY INFO,내 정보
 UITabRank_Pvp,,PVP,PVP
 UITabRank_Exploration,,EXPLORATION,탐사
+UITabExploration_TryZone,,Enter,입장

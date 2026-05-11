@@ -120,7 +120,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         m_celestialBodySpawner = GetComponent<CelestialBodySpawner>();
         if (m_celestialBodySpawner != null)
-            m_celestialBodySpawner.SpawnAll();
+            m_celestialBodySpawner.SpawnZone(GetInitialZoneIndex());
 
         SpawnFleet();
 
@@ -236,6 +236,26 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         NetworkManager.Instance.StartHeartbeat();
         UIManager.Instance.ShowMainPanel();
+    }
+
+    private int GetInitialZoneIndex()
+    {
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null || character.m_characterInfo == null) return 1;
+
+        var clearedZones = character.m_characterInfo.clearedZones;
+        if (clearedZones == null || clearedZones.Count == 0) return 1;
+
+        string lastCleared = clearedZones[^1];
+        int dashIdx = lastCleared.IndexOf('-');
+        if (dashIdx <= 0) return 1;
+        return int.TryParse(lastCleared.Substring(0, dashIdx), out int zoneIndex) ? zoneIndex : 1;
+    }
+
+    public void ChangeZone(int zoneIndex)
+    {
+        if (m_celestialBodySpawner != null)
+            m_celestialBodySpawner.SpawnZone(zoneIndex);
     }
 
 

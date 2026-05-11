@@ -46,8 +46,8 @@ public class ZonePreviewComponent : MonoBehaviour
             sphere.transform.localScale = body.scale;
             DestroyImmediate(sphere.GetComponent<Collider>());
 
-            if (body.material != null)
-                sphere.GetComponent<Renderer>().sharedMaterial = body.material;
+            if (string.IsNullOrEmpty(body.materialPath) == false)
+                sphere.GetComponent<Renderer>().sharedMaterial = Resources.Load<Material>(body.materialPath);
         }
 
         GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -82,8 +82,8 @@ public class ZonePreviewComponent : MonoBehaviour
         planet.localScale = body.scale;
 
         Renderer rend = planet.GetComponent<Renderer>();
-        if (rend != null && body.material != null)
-            rend.sharedMaterial = body.material;
+        if (rend != null && string.IsNullOrEmpty(body.materialPath) == false)
+            rend.sharedMaterial = Resources.Load<Material>(body.materialPath);
     }
 
     public void SyncPreviewCameraTarget()
@@ -127,14 +127,26 @@ public class ZonePreviewComponent : MonoBehaviour
             Renderer rend = child.GetComponent<Renderer>();
             zone.celestialBodies.Add(new CelestialBodyConfig
             {
-                position = child.position,
-                scale    = child.localScale,
-                material = rend != null ? rend.sharedMaterial : null,
+                position    = child.position,
+                scale       = child.localScale,
+                materialPath = rend != null ? ToResourcesPath(rend.sharedMaterial) : "",
             });
         }
 
         UnityEditor.EditorUtility.SetDirty(dataTableZone);
         Debug.Log($"[ZonePreview] 천체 {zone.celestialBodies.Count}개 DataTableZone 반영 완료");
+    }
+
+    // sharedMaterial 에셋 경로 → Resources 기준 경로 (확장자 제외)
+    private static string ToResourcesPath(Material mat)
+    {
+        if (mat == null) return "";
+        string assetPath = UnityEditor.AssetDatabase.GetAssetPath(mat);
+        const string prefix = "Assets/Resources/";
+        if (assetPath.StartsWith(prefix))
+            return assetPath.Substring(prefix.Length, assetPath.Length - prefix.Length - 4); // strip .mat
+        Debug.LogWarning($"[ZonePreview] {assetPath} 가 Resources 폴더 밖에 있습니다.");
+        return "";
     }
 
     private void OnDrawGizmosSelected()

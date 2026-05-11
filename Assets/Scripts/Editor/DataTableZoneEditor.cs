@@ -94,11 +94,14 @@ public class DataTableZoneEditor : Editor
         if (GUILayout.Button("Import from CSV"))
         {
             if (EditorUtility.DisplayDialog("Import from CSV",
-                "datatable_zone.csv + datatable_zone_stage.csv + datatable_zone_enemy.csv에서 전체 데이터를 가져옵니다.\n기존 데이터가 삭제됩니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
+                "datatable_zone.csv + datatable_zone_stage.csv + datatable_zone_enemy.csv + datatable_zone_celestial.csv 에서 전체 데이터를 가져옵니다.\n기존 데이터가 삭제됩니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
             {
                 ImportFromCSV();
             }
         }
+
+        if (GUILayout.Button("Export Celestial CSV"))
+            ExportCelestialCSV();
 
         if (GUILayout.Button("Validate All Ships"))
         {
@@ -109,12 +112,13 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    // datatable_zone.csv + datatable_zone_stage.csv + datatable_zone_enemy.csv → ScriptableObject 전체 교체
+    // datatable_zone.csv + datatable_zone_stage.csv + datatable_zone_enemy.csv + datatable_zone_celestial.csv → ScriptableObject 전체 교체
     private void ImportFromCSV()
     {
-        string zoneCommonCSV = "Assets/Resources/DataTable/Zone/datatable_zone.csv";
-        string zoneCSV       = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
-        string enemyCSV      = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
+        string zoneCommonCSV  = "Assets/Resources/DataTable/Zone/datatable_zone.csv";
+        string zoneCSV        = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
+        string enemyCSV       = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
+        string celestialCSV   = "Assets/Resources/DataTable/Zone/datatable_zone_celestial.csv";
 
         if (!File.Exists(zoneCommonCSV) || !File.Exists(zoneCSV) || !File.Exists(enemyCSV))
         {
@@ -122,9 +126,13 @@ public class DataTableZoneEditor : Editor
             return;
         }
 
-        // --- datatable_zone.csv 파싱 → zoneList ---
-        // 헤더: zone_index,cam_target_x,cam_target_y,cam_target_z,cam_zoom,cam_rot_x,cam_rot_y
-        // celestialBodies는 CSV 외부에서 수동 설정되므로 기존 객체를 유지하고 카메라 필드만 덮어씀
+        // --- datatable_zone.csv 파싱 → zoneList (완전 재구성) ---
+        var oldZoneMap = new Dictionary<int, ZoneConfig>();
+        for (int j = 0; j < m_dataTableZone.zoneList.Count; j++)
+            oldZoneMap[m_dataTableZone.zoneList[j].zoneIndex] = m_dataTableZone.zoneList[j];
+
+        m_dataTableZone.zoneList.Clear();
+
         string[] zoneCommonLines = File.ReadAllLines(zoneCommonCSV);
         for (int i = 1; i < zoneCommonLines.Length; i++)
         {
@@ -141,32 +149,45 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col[5], out float rotX);
             float.TryParse(col[6], out float rotY);
 
-            ZoneConfig existing = null;
-            for (int j = 0; j < m_dataTableZone.zoneList.Count; j++)
+            m_dataTableZone.zoneList.Add(new ZoneConfig
             {
-                if (m_dataTableZone.zoneList[j].zoneIndex == zoneIndex)
-                {
-                    existing = m_dataTableZone.zoneList[j];
-                    break;
-                }
-            }
+                zoneIndex          = zoneIndex,
+                galaxyCameraTarget = new Vector3(cx, cy, cz),
+                galaxyCameraZoom   = zoom,
+                galaxyCameraRotX   = rotX,
+                galaxyCameraRotY   = rotY,
+                celestialBodies    = new List<CelestialBodyConfig>(),
+            });
+        }
 
-            if (existing != null)
+        // --- datatable_zone_celestial.csv 파싱 → celestialBodies (존재할 때만) ---
+        // 헤더: zone_index,pos_x,pos_y,pos_z,scale_x,scale_y,scale_z,material,atmosphere_material,atmosphere_scale
+        if (File.Exists(celestialCSV))
+        {
+            var zoneMap = new Dictionary<int, ZoneConfig>();
+            for (int j = 0; j < m_dataTableZone.zoneList.Count; j++)
+                zoneMap[m_dataTableZone.zoneList[j].zoneIndex] = m_dataTableZone.zoneList[j];
+
+            string[] celestialLines = File.ReadAllLines(celestialCSV);
+            for (int i = 1; i < celestialLines.Length; i++)
             {
-                existing.galaxyCameraTarget = new Vector3(cx, cy, cz);
-                existing.galaxyCameraZoom   = zoom;
-                existing.galaxyCameraRotX   = rotX;
-                existing.galaxyCameraRotY   = rotY;
-            }
-            else
-            {
-                m_dataTableZone.zoneList.Add(new ZoneConfig
+                string line = celestialLines[i].Trim();
+                if (string.IsNullOrEmpty(line)) continue;
+                string[] col = line.Split(',');
+                if (!int.TryParse(col[0], out int zi)) continue;
+                if (!zoneMap.TryGetValue(zi, out ZoneConfig zc)) continue;
+
+                float.TryParse(col[1], out float px); float.TryParse(col[2], out float py); float.TryParse(col[3], out float pz);
+                float.TryParse(col[4], out float sx); float.TryParse(col[5], out float sy); float.TryParse(col[6], out float sz);
+                float.TryParse(col.Length > 9 ? col[9] : "1.01", out float atmScale);
+
+                zc.celestialBodies.Add(new CelestialBodyConfig
                 {
-                    zoneIndex          = zoneIndex,
-                    galaxyCameraTarget = new Vector3(cx, cy, cz),
-                    galaxyCameraZoom   = zoom,
-                    galaxyCameraRotX   = rotX,
-                    galaxyCameraRotY   = rotY,
+                    position              = new Vector3(px, py, pz),
+                    scale                 = new Vector3(sx, sy, sz),
+                    materialPath          = col.Length > 7 ? col[7].Trim() : "",
+                    atmosphereMaterialPath = col.Length > 8 ? col[8].Trim() : "",
+                    atmosphereScale       = atmScale,
                 });
             }
         }
@@ -253,7 +274,7 @@ public class DataTableZoneEditor : Editor
         }
 
         // --- zone CSV 파싱 ---
-        // 헤더: zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,max_concurrent_enemy_ships,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y
+        // 헤더: zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y
         m_dataTableZone.zoneStageList.Clear();
 
         string[] zoneLines = File.ReadAllLines(zoneCSV);
@@ -266,29 +287,14 @@ public class DataTableZoneEditor : Editor
 
             if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stage)) continue;
 
-            float.TryParse(col.Length > 6 ? col[6] : "0", out float fpx);
-            float.TryParse(col.Length > 7 ? col[7] : "0", out float fpy);
-            float.TryParse(col.Length > 8 ? col[8] : "0", out float fpz);
-            float.TryParse(col.Length > 9 ? col[9] : "0", out float frotY);
-
-            // zone=0 행 → Zone-0 안전지역 (전투 없음)
-            if (zoneIndex == 0)
-            {
-                m_dataTableZone.zoneStageList.Add(new ZoneStageConfig
-                {
-                    zoneName = "Zone-0",
-                    zoneDescription = "안전지역",
-                    zoneIndex = 0,
-                    fleetPosition = new Vector3(fpx, fpy, fpz),
-                    fleetRotationY = frotY,
-                });
-                continue;
-            }
+            float.TryParse(col.Length > 5 ? col[5] : "0", out float fpx);
+            float.TryParse(col.Length > 6 ? col[6] : "0", out float fpy);
+            float.TryParse(col.Length > 7 ? col[7] : "0", out float fpz);
+            float.TryParse(col.Length > 8 ? col[8] : "0", out float frotY);
 
             int.TryParse(col[2], out int clearReward);
             float.TryParse(col[3], out float spawnDelay);
             float.TryParse(col[4], out float shipSpawnInterval);
-            int.TryParse(col[5],   out int maxConcurrent);
 
             enemyMap.TryGetValue((zoneIndex, stage), out var waveTemplates);
 
@@ -299,7 +305,6 @@ public class DataTableZoneEditor : Editor
                 zoneIndex                 = zoneIndex,
                 delayBeforeSpawn          = spawnDelay > 0 ? spawnDelay : 3f,
                 shipSpawnInterval         = shipSpawnInterval > 0 ? shipSpawnInterval : 1.5f,
-                maxConcurrentEnemyShips   = maxConcurrent > 0 ? maxConcurrent : 3,
                 mineralClearReward        = clearReward,
                 fleetPosition             = new Vector3(fpx, fpy, fpz),
                 fleetRotationY            = frotY,
@@ -314,6 +319,32 @@ public class DataTableZoneEditor : Editor
         EditorUtility.DisplayDialog("Import Complete",
             $"ZoneConfig: {m_dataTableZone.zoneList.Count}개\n" +
             $"ZoneStage: {m_dataTableZone.zoneStageList.Count}개 (zone CSV: {imported}행)", "OK");
+    }
+
+    // ZoneConfig.celestialBodies → datatable_zone_celestial.csv 내보내기
+    // 헤더: zone_index,pos_x,pos_y,pos_z,scale_x,scale_y,scale_z,material,atmosphere_material,atmosphere_scale
+    private void ExportCelestialCSV()
+    {
+        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_celestial.csv";
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("zone_index,pos_x,pos_y,pos_z,scale_x,scale_y,scale_z,material,atmosphere_material,atmosphere_scale");
+
+        foreach (ZoneConfig zone in m_dataTableZone.zoneList)
+        {
+            if (zone.celestialBodies == null) continue;
+            foreach (CelestialBodyConfig c in zone.celestialBodies)
+            {
+                sb.AppendLine(
+                    $"{zone.zoneIndex}," +
+                    $"{c.position.x},{c.position.y},{c.position.z}," +
+                    $"{c.scale.x},{c.scale.y},{c.scale.z}," +
+                    $"{c.materialPath},{c.atmosphereMaterialPath},{c.atmosphereScale}");
+            }
+        }
+
+        File.WriteAllText(path, sb.ToString(), System.Text.Encoding.UTF8);
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("Export Complete", path, "OK");
     }
 
 
@@ -501,7 +532,6 @@ public class DataTableZoneEditor : Editor
             EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
             zoneStage.delayBeforeSpawn      = EditorGUILayout.Slider("첫 스폰 지연 (초)", zoneStage.delayBeforeSpawn, 0f, 60f);
             zoneStage.shipSpawnInterval     = EditorGUILayout.Slider("함선 간 스폰 딜레이 (초)", zoneStage.shipSpawnInterval, 0f, 30f);
-            zoneStage.maxConcurrentEnemyShips = EditorGUILayout.IntSlider("최대 동시 적 함선 수", zoneStage.maxConcurrentEnemyShips, 1, 9);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);

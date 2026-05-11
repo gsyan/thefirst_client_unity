@@ -13,131 +13,81 @@ MonoBehaviour:
   m_Name: DataTableZone
   m_EditorClassIdentifier: 
   zoneList:
-  - zoneIndex: 0
-    galaxyCameraTarget: {x: -3000, y: 0, z: 3000}
-    galaxyCameraZoom: 4000
-    galaxyCameraRotX: 80
-    galaxyCameraRotY: 0
-    celestialBodies: []
   - zoneIndex: 1
-    galaxyCameraTarget: {x: -3000, y: 0, z: 3000}
-    galaxyCameraZoom: 4000
-    galaxyCameraRotX: 80
-    galaxyCameraRotY: 0
-    celestialBodies:
-    - position: {x: -3000, y: 0, z: 3000}
-      scale: {x: 500, y: 500, z: 500}
-      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
-      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
-      atmosphereScale: 1.001
-  - zoneIndex: 2
-    galaxyCameraTarget: {x: 0, y: 0, z: 3000}
-    galaxyCameraZoom: 4000
-    galaxyCameraRotX: 80
-    galaxyCameraRotY: 0
-    celestialBodies:
-    - position: {x: 0, y: 0, z: 3000}
-      scale: {x: 500, y: 500, z: 500}
-      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
-      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
-      atmosphereScale: 1.001
-  - zoneIndex: 3
-    galaxyCameraTarget: {x: 3000, y: 0, z: 3000}
-    galaxyCameraZoom: 4000
-    galaxyCameraRotX: 80
-    galaxyCameraRotY: 0
-    celestialBodies:
-    - position: {x: 3000, y: 0, z: 3000}
-      scale: {x: 500, y: 500, z: 500}
-      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
-      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
-      atmosphereScale: 1.001
-  - zoneIndex: 4
-    galaxyCameraTarget: {x: 3000, y: 0, z: 0}
-    galaxyCameraZoom: 4000
-    galaxyCameraRotX: 80
-    galaxyCameraRotY: 0
-    celestialBodies:
-    - position: {x: 3000, y: 0, z: 0}
-      scale: {x: 500, y: 500, z: 500}
-      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
-      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
-      atmosphereScale: 1.001
-  - zoneIndex: 5
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 4000
     galaxyCameraRotX: 80
     galaxyCameraRotY: 0
     celestialBodies:
-    - position: {x: 0, y: 0, z: 0}
+    - position: {x: 0, y: 0, z: 500}
       scale: {x: 500, y: 500, z: 500}
-      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
-      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
+      materialPath: Materials/CelestialBody/planet1
+      atmosphereMaterialPath: Materials/CelestialBody/PlanetAtmosphere
       atmosphereScale: 1.001
+  - zoneIndex: 2
+    galaxyCameraTarget: {x: 0, y: 0, z: 0}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies: []
+  - zoneIndex: 3
+    galaxyCameraTarget: {x: 0, y: 0, z: 0}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies: []
+  - zoneIndex: 4
+    galaxyCameraTarget: {x: 0, y: 0, z: 0}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies: []
+  - zoneIndex: 5
+    galaxyCameraTarget: {x: 0, y: 0, z: 0}
+    galaxyCameraZoom: 4000
+    galaxyCameraRotX: 80
+    galaxyCameraRotY: 0
+    celestialBodies: []
   - zoneIndex: 6
-    galaxyCameraTarget: {x: -3000, y: 0, z: 0}
+    galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 4000
     galaxyCameraRotX: 80
     galaxyCameraRotY: 0
-    celestialBodies:
-    - position: {x: -3000, y: 0, z: 0}
-      scale: {x: 500, y: 500, z: 500}
-      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
-      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
-      atmosphereScale: 1.01
+    celestialBodies: []
   - zoneIndex: 7
-    galaxyCameraTarget: {x: -3000, y: 0, z: -3000}
+    galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 4000
     galaxyCameraRotX: 80
     galaxyCameraRotY: 0
-    celestialBodies:
-    - position: {x: -3000, y: 0, z: -3000}
-      scale: {x: 500, y: 500, z: 500}
-      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
-      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
-      atmosphereScale: 1.01
+    celestialBodies: []
   - zoneIndex: 8
-    galaxyCameraTarget: {x: 0, y: 0, z: -3000}
+    galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 4000
     galaxyCameraRotX: 80
     galaxyCameraRotY: 0
-    celestialBodies:
-    - position: {x: 0, y: 0, z: -3000}
-      scale: {x: 500, y: 500, z: 500}
-      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
-      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
-      atmosphereScale: 1.01
+    celestialBodies: []
   - zoneIndex: 9
-    galaxyCameraTarget: {x: 3000, y: 0, z: -3000}
+    galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 4000
     galaxyCameraRotX: 80
     galaxyCameraRotY: 0
-    celestialBodies:
-    - position: {x: 3000, y: 0, z: -3000}
-      scale: {x: 500, y: 500, z: 500}
-      material: {fileID: 2100000, guid: 2188e5c1fa1060d4cb495fa84edabe96, type: 2}
-      atmosphereMaterial: {fileID: 2100000, guid: 698bf7eff9950ad43bc87fa9b411da6e, type: 2}
-      atmosphereScale: 1.01
+    celestialBodies: []
   zoneStageList:
-  - zoneName: Zone-0
-    zoneDescription: "\uC548\uC804\uC9C0\uC5ED"
-    zoneIndex: 0
+  - zoneName: 1-0
+    zoneDescription: Zone 1-0
+    zoneIndex: 1
     delayBeforeSpawn: 3
     shipSpawnInterval: 1.5
-    maxConcurrentEnemyShips: 3
     enemyShipConfigs: []
     mineralClearReward: 0
-    fleetPosition: {x: -5000, y: 0, z: 2000}
-    fleetRotationY: 0
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -4500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 1-1
     zoneDescription: Zone 1-1
     zoneIndex: 1
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 9
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -320,17 +270,14 @@ MonoBehaviour:
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
     mineralClearReward: 10
-    fleetPosition: {x: -991.9509, y: 0, z: 0}
-    fleetRotationY: 88.86607
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 1-2
     zoneDescription: Zone 1-2
     zoneIndex: 1
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -513,17 +460,14 @@ MonoBehaviour:
       missileMultiplier: 0.1474
       hangerMultiplier: 0.1474
     mineralClearReward: 10
-    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
-    fleetRotationY: 172.2542
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 1-3
     zoneDescription: Zone 1-3
     zoneIndex: 1
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -706,17 +650,14 @@ MonoBehaviour:
       missileMultiplier: 0.1947
       hangerMultiplier: 0.1947
     mineralClearReward: 10
-    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
-    fleetRotationY: 296.5794
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 1-4
     zoneDescription: Zone 1-4
     zoneIndex: 1
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -899,17 +840,14 @@ MonoBehaviour:
       missileMultiplier: 0.2421
       hangerMultiplier: 0.2421
     mineralClearReward: 10
-    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
-    fleetRotationY: 69.35962
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 1-5
     zoneDescription: Zone 1-5
     zoneIndex: 1
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -1092,17 +1030,24 @@ MonoBehaviour:
       missileMultiplier: 0.2895
       hangerMultiplier: 0.2895
     mineralClearReward: 10
-    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
-    fleetRotationY: 85.17218
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 3000, y: 0, z: 0}
+    fleetRotationY: 90
+    labelScreenOffset: {x: 80, y: 60}
+  - zoneName: 2-0
+    zoneDescription: Zone 2-0
+    zoneIndex: 2
+    delayBeforeSpawn: 3
+    shipSpawnInterval: 1.5
+    enemyShipConfigs: []
+    mineralClearReward: 0
+    fleetPosition: {x: -4500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 2-1
     zoneDescription: Zone 2-1
     zoneIndex: 2
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -1285,17 +1230,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -991.9509, y: 0, z: 0}
-    fleetRotationY: 88.86607
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 2-2
     zoneDescription: Zone 2-2
     zoneIndex: 2
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -1478,17 +1420,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
-    fleetRotationY: 172.2542
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 2-3
     zoneDescription: Zone 2-3
     zoneIndex: 2
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -1671,17 +1610,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
-    fleetRotationY: 296.5794
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 2-4
     zoneDescription: Zone 2-4
     zoneIndex: 2
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -1864,17 +1800,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
-    fleetRotationY: 69.35962
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 2-5
     zoneDescription: Zone 2-5
     zoneIndex: 2
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -2057,17 +1990,24 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
-    fleetRotationY: 85.17218
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 3000, y: 0, z: 0}
+    fleetRotationY: 90
+    labelScreenOffset: {x: 80, y: 60}
+  - zoneName: 3-0
+    zoneDescription: Zone 3-0
+    zoneIndex: 3
+    delayBeforeSpawn: 3
+    shipSpawnInterval: 1.5
+    enemyShipConfigs: []
+    mineralClearReward: 0
+    fleetPosition: {x: -4500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 3-1
     zoneDescription: Zone 3-1
     zoneIndex: 3
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -2250,17 +2190,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -991.9509, y: 0, z: 0}
-    fleetRotationY: 88.86607
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 3-2
     zoneDescription: Zone 3-2
     zoneIndex: 3
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -2443,17 +2380,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
-    fleetRotationY: 172.2542
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 3-3
     zoneDescription: Zone 3-3
     zoneIndex: 3
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -2636,17 +2570,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
-    fleetRotationY: 296.5794
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 3-4
     zoneDescription: Zone 3-4
     zoneIndex: 3
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -2829,17 +2760,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
-    fleetRotationY: 69.35962
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 3-5
     zoneDescription: Zone 3-5
     zoneIndex: 3
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -3022,17 +2950,24 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
-    fleetRotationY: 85.17218
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 3000, y: 0, z: 0}
+    fleetRotationY: 90
+    labelScreenOffset: {x: 80, y: 60}
+  - zoneName: 4-0
+    zoneDescription: Zone 4-0
+    zoneIndex: 4
+    delayBeforeSpawn: 3
+    shipSpawnInterval: 1.5
+    enemyShipConfigs: []
+    mineralClearReward: 0
+    fleetPosition: {x: -4500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 4-1
     zoneDescription: Zone 4-1
     zoneIndex: 4
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -3215,17 +3150,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -991.9509, y: 0, z: 0}
-    fleetRotationY: 88.86607
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 4-2
     zoneDescription: Zone 4-2
     zoneIndex: 4
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -3408,17 +3340,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
-    fleetRotationY: 172.2542
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 4-3
     zoneDescription: Zone 4-3
     zoneIndex: 4
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -3601,17 +3530,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
-    fleetRotationY: 296.5794
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 4-4
     zoneDescription: Zone 4-4
     zoneIndex: 4
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -3794,17 +3720,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
-    fleetRotationY: 69.35962
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 4-5
     zoneDescription: Zone 4-5
     zoneIndex: 4
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -3987,17 +3910,24 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
-    fleetRotationY: 85.17218
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 3000, y: 0, z: 0}
+    fleetRotationY: 90
+    labelScreenOffset: {x: 80, y: 60}
+  - zoneName: 5-0
+    zoneDescription: Zone 5-0
+    zoneIndex: 5
+    delayBeforeSpawn: 3
+    shipSpawnInterval: 1.5
+    enemyShipConfigs: []
+    mineralClearReward: 0
+    fleetPosition: {x: -4500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 5-1
     zoneDescription: Zone 5-1
     zoneIndex: 5
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -4180,17 +4110,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -991.9509, y: 0, z: 0}
-    fleetRotationY: 88.86607
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 5-2
     zoneDescription: Zone 5-2
     zoneIndex: 5
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -4373,17 +4300,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
-    fleetRotationY: 172.2542
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 5-3
     zoneDescription: Zone 5-3
     zoneIndex: 5
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -4566,17 +4490,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
-    fleetRotationY: 296.5794
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 5-4
     zoneDescription: Zone 5-4
     zoneIndex: 5
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -4759,17 +4680,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
-    fleetRotationY: 69.35962
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 5-5
     zoneDescription: Zone 5-5
     zoneIndex: 5
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -4952,17 +4870,24 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
-    fleetRotationY: 85.17218
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 3000, y: 0, z: 0}
+    fleetRotationY: 90
+    labelScreenOffset: {x: 80, y: 60}
+  - zoneName: 6-0
+    zoneDescription: Zone 6-0
+    zoneIndex: 6
+    delayBeforeSpawn: 3
+    shipSpawnInterval: 1.5
+    enemyShipConfigs: []
+    mineralClearReward: 0
+    fleetPosition: {x: -4500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 6-1
     zoneDescription: Zone 6-1
     zoneIndex: 6
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -5145,17 +5070,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -991.9509, y: 0, z: 0}
-    fleetRotationY: 88.86607
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 6-2
     zoneDescription: Zone 6-2
     zoneIndex: 6
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -5338,17 +5260,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
-    fleetRotationY: 172.2542
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 6-3
     zoneDescription: Zone 6-3
     zoneIndex: 6
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -5531,17 +5450,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
-    fleetRotationY: 296.5794
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 6-4
     zoneDescription: Zone 6-4
     zoneIndex: 6
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -5724,17 +5640,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
-    fleetRotationY: 69.35962
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 6-5
     zoneDescription: Zone 6-5
     zoneIndex: 6
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -5917,17 +5830,24 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
-    fleetRotationY: 85.17218
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 3000, y: 0, z: 0}
+    fleetRotationY: 90
+    labelScreenOffset: {x: 80, y: 60}
+  - zoneName: 7-0
+    zoneDescription: Zone 7-0
+    zoneIndex: 7
+    delayBeforeSpawn: 3
+    shipSpawnInterval: 1.5
+    enemyShipConfigs: []
+    mineralClearReward: 0
+    fleetPosition: {x: -4500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 7-1
     zoneDescription: Zone 7-1
     zoneIndex: 7
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -6110,17 +6030,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -991.9509, y: 0, z: 0}
-    fleetRotationY: 88.86607
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 7-2
     zoneDescription: Zone 7-2
     zoneIndex: 7
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -6303,17 +6220,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
-    fleetRotationY: 172.2542
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 7-3
     zoneDescription: Zone 7-3
     zoneIndex: 7
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -6496,17 +6410,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
-    fleetRotationY: 296.5794
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 7-4
     zoneDescription: Zone 7-4
     zoneIndex: 7
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -6689,17 +6600,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
-    fleetRotationY: 69.35962
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 7-5
     zoneDescription: Zone 7-5
     zoneIndex: 7
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -6882,17 +6790,24 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
-    fleetRotationY: 85.17218
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 3000, y: 0, z: 0}
+    fleetRotationY: 90
+    labelScreenOffset: {x: 80, y: 60}
+  - zoneName: 8-0
+    zoneDescription: Zone 8-0
+    zoneIndex: 8
+    delayBeforeSpawn: 3
+    shipSpawnInterval: 1.5
+    enemyShipConfigs: []
+    mineralClearReward: 0
+    fleetPosition: {x: -4500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 8-1
     zoneDescription: Zone 8-1
     zoneIndex: 8
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -7075,17 +6990,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -991.9509, y: 0, z: 0}
-    fleetRotationY: 88.86607
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 8-2
     zoneDescription: Zone 8-2
     zoneIndex: 8
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -7268,17 +7180,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
-    fleetRotationY: 172.2542
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 8-3
     zoneDescription: Zone 8-3
     zoneIndex: 8
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -7461,17 +7370,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
-    fleetRotationY: 296.5794
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 8-4
     zoneDescription: Zone 8-4
     zoneIndex: 8
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -7654,17 +7560,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
-    fleetRotationY: 69.35962
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 8-5
     zoneDescription: Zone 8-5
     zoneIndex: 8
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -7847,17 +7750,24 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
-    fleetRotationY: 85.17218
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 3000, y: 0, z: 0}
+    fleetRotationY: 90
+    labelScreenOffset: {x: 80, y: 60}
+  - zoneName: 9-0
+    zoneDescription: Zone 9-0
+    zoneIndex: 9
+    delayBeforeSpawn: 3
+    shipSpawnInterval: 1.5
+    enemyShipConfigs: []
+    mineralClearReward: 0
+    fleetPosition: {x: -4500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 9-1
     zoneDescription: Zone 9-1
     zoneIndex: 9
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -8040,17 +7950,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -991.9509, y: 0, z: 0}
-    fleetRotationY: 88.86607
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 9-2
     zoneDescription: Zone 9-2
     zoneIndex: 9
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -8233,17 +8140,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: -432.1855, y: 0, z: 842.5542}
-    fleetRotationY: 172.2542
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: -1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 9-3
     zoneDescription: Zone 9-3
     zoneIndex: 9
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -8426,17 +8330,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 597.3521, y: 0, z: 711.6577}
-    fleetRotationY: 296.5794
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 0, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 9-4
     zoneDescription: Zone 9-4
     zoneIndex: 9
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -8619,17 +8520,14 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 154.8696, y: 0, z: -656.2437}
-    fleetRotationY: 69.35962
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 1500, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
   - zoneName: 9-5
     zoneDescription: Zone 9-5
     zoneIndex: 9
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
-    maxConcurrentEnemyShips: 10
     enemyShipConfigs:
     - shipIndex: 8
       bodySubType: 10101
@@ -8812,8 +8710,6 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    fleetPosition: {x: 944.4739, y: 0, z: -304.9021}
-    fleetRotationY: 85.17218
-    diagonalOffset: {x: 50, y: 60}
-    labelAboveLine: 0
+    fleetPosition: {x: 3000, y: 0, z: 0}
+    fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}

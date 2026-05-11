@@ -16,6 +16,7 @@ public class UISelectableButton : MonoBehaviour
     public void Setup(string labelText, UnityAction onClick)
     {
         if (m_label != null) m_label.text = labelText;
+        m_button.onClick.RemoveAllListeners();
         m_button.onClick.AddListener(onClick);
     }
 

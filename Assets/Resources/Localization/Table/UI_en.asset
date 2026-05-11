@@ -442,10 +442,6 @@ MonoBehaviour:
     m_Localized: Formation
     m_Metadata:
       m_Items: []
-  - m_Id: 11411921936711680
-    m_Localized: Enter Zone
-    m_Metadata:
-      m_Items: []
   - m_Id: 11674320539353088
     m_Localized: Manage Ship
     m_Metadata:
@@ -748,6 +744,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 32107824360062976
     m_Localized: SEASON {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33428911052161024
+    m_Localized: Enter
     m_Metadata:
       m_Items: []
   references:

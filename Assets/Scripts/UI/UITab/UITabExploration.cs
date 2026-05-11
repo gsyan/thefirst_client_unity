@@ -1,5 +1,5 @@
 // 탐사 탭 — 그룹 탭(Z1~Z9) + 존 스테이지 버튼(3D 월드 좌표 → Screen Space), 존 진입/재진입/킬 보상 처리
-// waveIndex mismatch(백그라운드 복귀 후 Redis TTL 만료) 시 waveIndex=0 재시도, 그 외 에러 시 안전지역 복귀
+// 패배 시: 현재 존에서 클리어 스테이지 있으면 최고 클리어 위치로, 없으면 해당 존 x-0 스폰 마커 위치로 복귀
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +19,7 @@ public class UITabExploration : UITabBase
 
     private UISelectableButton[] m_zoneTabButtons;
 
+    private readonly List<UIZoneStageButton> m_buttonPool = new();
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
@@ -60,24 +61,34 @@ public class UITabExploration : UITabBase
         if (ObjectManager.Instance == null || m_myFleet == null) return;
 
         var clearedZones = m_myCharacter.m_characterInfo != null ? m_myCharacter.m_characterInfo.clearedZones : null;
-        ZoneStageConfig targetStage;
 
         if (clearedZones == null || clearedZones.Count == 0)
         {
-            targetStage = m_datatableZone.GetZoneStage(0);
-        }
-        else
-        {
-            targetStage = m_datatableZone.GetZoneStageByName(clearedZones[^1]);
-            if (targetStage == null)
-                targetStage = m_datatableZone.GetZoneStage(0);
+            // 신규 유저 — zone1 스폰 마커(1-0) 위치
+            ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(1);
+            if (spawnStage != null)
+            {
+                ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(spawnStage), spawnStage.fleetRotationY);
+                CameraController.Instance.SnapToTarget();
+            }
+            return;
         }
 
-        if (targetStage != null)
+        ZoneStageConfig targetStage = m_datatableZone.GetZoneStageByName(clearedZones[^1]);
+        if (targetStage == null)
         {
-            ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(targetStage), targetStage.fleetRotationY);
-            CameraController.Instance.SnapToTarget();
+            // 유효하지 않은 클리어 데이터 — zone1 스폰 마커로 fallback
+            ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(1);
+            if (spawnStage != null)
+            {
+                ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(spawnStage), spawnStage.fleetRotationY);
+                CameraController.Instance.SnapToTarget();
+            }
+            return;
         }
+
+        ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(targetStage), targetStage.fleetRotationY);
+        CameraController.Instance.SnapToTarget();
     }
 
     private void SetupZoneTabButtons()
@@ -93,15 +104,11 @@ public class UITabExploration : UITabBase
 
     private void OnGroupTabClicked(int groupIndex)
     {
-        if (m_selectedZoneStagePerGroup.TryGetValue(m_selectedZoneIndex, out ZoneStageConfig prevZoneStage) &&
-            m_zoneStageButtons.TryGetValue(prevZoneStage.zoneName, out UIZoneStageButton prevBtn))
-            prevBtn.SetSelected(false);
-
         m_selectedZoneIndex = groupIndex;
-        ShowGroupStageButtons(groupIndex);
+        SetupButtonsForGroup(groupIndex);
         UpdateGroupTabVisual();
 
-        var zoneConfig = m_datatableZone.GetZone(groupIndex);
+        var zoneConfig = m_datatableZone.GetZoneByZoneIndex(groupIndex);
         if (zoneConfig != null && CameraController.Instance != null)
             CameraController.Instance.FocusOnZoneAnchor(
                 zoneConfig.galaxyCameraTarget,
@@ -117,84 +124,105 @@ public class UITabExploration : UITabBase
             m_zoneTabButtons[i].SetSelected((i + 1) == m_selectedZoneIndex);
     }
 
-    // 초기 시작 시 Zone 1의 첫 스테이지 선택 그룹 결정 후 전체 버튼 생성
+    // 초기 그룹 인덱스만 결정 — 버튼 생성은 OnTabActivated의 SetupButtonsForGroup에서
     private void InitializeZoneStageButtons()
     {
-        if (m_zoneButtonRoot == null || m_zoneStageButtonPrefab == null || m_datatableZone == null) return;
+        if (m_datatableZone == null) return;
 
         var clearedZoneNames = m_myCharacter != null ? m_myCharacter.m_characterInfo.clearedZones : null;
-        int myShipCount = m_myFleet != null && m_myFleet.m_ships != null ? m_myFleet.m_ships.Count : 0;
-
         if (clearedZoneNames != null && clearedZoneNames.Count > 0)
         {
             int group = ParseZoneGroup(clearedZoneNames[^1]);
             if (group > 0) m_selectedZoneIndex = group;
         }
+    }
 
+    // 선택 그룹 버튼을 풀에서 꺼내 배치 — 이전 그룹 버튼은 먼저 풀로 반납
+    private void SetupButtonsForGroup(int groupIndex)
+    {
+        ReturnAllButtonsToPool();
+        m_currentZoneStageButton = null;
+
+        if (m_zoneButtonRoot == null || m_zoneStageButtonPrefab == null || m_datatableZone == null) return;
+
+        var clearedZoneNames = m_myCharacter != null ? m_myCharacter.m_characterInfo.clearedZones : null;
         Camera worldCam = CameraController.Instance != null ? CameraController.Instance.m_targetCamera : Camera.main;
 
-        // Zone-0 제외, index 1부터 모두 생성 후 비활성화
-        for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
+        for (int i = 0; i < m_datatableZone.ZoneStageCount; i++)
         {
             ZoneStageConfig zoneStage = m_datatableZone.GetZoneStage(i);
-            if (zoneStage == null) continue;
+            if (zoneStage == null || ParseZoneGroup(zoneStage.zoneName) != groupIndex) continue;
+            if (ParseZoneStage(zoneStage.zoneName) == 0) continue;
 
-            UIZoneStageButton btn = Instantiate(m_zoneStageButtonPrefab, m_zoneButtonRoot);
+            UIZoneStageButton btn = GetButtonFromPool();
             btn.name = zoneStage.zoneName;
 
-            EZoneState state;
             bool isCleared = clearedZoneNames != null && clearedZoneNames.Contains(zoneStage.zoneName);
-            if (isCleared == true)
-                state = EZoneState.Cleared;
-            else
-                state = EZoneState.NotCleared;
+            EZoneState state = isCleared == true ? EZoneState.Cleared : EZoneState.NotCleared;
+
+            btn.gameObject.SetActive(true);  // Initialize 전에 활성화해야 RebuildLayout이 Canvas에 반영됨
 
             ZoneStageConfig captured = zoneStage;
             Vector3 capturedWorldPos = m_datatableZone.ResolveFleetWorldPosition(captured);
-            btn.Initialize(captured, capturedWorldPos, () => OnZoneStageButtonClicked(captured), () => OnEnterZoneFromButton(captured), state, worldCam);
-            btn.gameObject.SetActive(false);
+            btn.InitializeUIZoneStageButton(captured, capturedWorldPos, () => OnZoneStageButtonClicked(captured), () => OnEnterZoneFromButton(captured), state, worldCam);
             m_zoneStageButtons[zoneStage.zoneName] = btn;
         }
 
-        UpdateGroupTabVisual();
-        ShowGroupStageButtons(m_selectedZoneIndex);
-    }
+        SortButtonsByName();
 
-    // 선택 그룹의 버튼만 활성화
-    private void ShowGroupStageButtons(int zoneIndex)
-    {
-        foreach (var kv in m_zoneStageButtons)
+        if (m_currentZoneStage != null && ParseZoneGroup(m_currentZoneStage.zoneName) == groupIndex)
         {
-            bool visible = ParseZoneGroup(kv.Key) == zoneIndex;
-            kv.Value.gameObject.SetActive(visible);
-        }
-
-        if (m_currentZoneStage != null && ParseZoneGroup(m_currentZoneStage.zoneName) == zoneIndex)
-        {
-            m_selectedZoneStagePerGroup[zoneIndex] = m_currentZoneStage;
+            if (m_zoneStageButtons.TryGetValue(m_currentZoneStage.zoneName, out UIZoneStageButton curBtn))
+                m_currentZoneStageButton = curBtn;
+            m_selectedZoneStagePerGroup[groupIndex] = m_currentZoneStage;
             ApplyZoneStageSelection(m_currentZoneStage);
             return;
         }
 
-        if (m_currentZoneStageButton != null)
-        {
-            bool inCurrentGroup = ParseZoneGroup(m_currentZoneStageButton.ZoneStageConfig.zoneName) == zoneIndex;
-            m_currentZoneStageButton.SetSelected(inCurrentGroup);
-        }
-
-        ZoneStageConfig toSelect = m_selectedZoneStagePerGroup.TryGetValue(zoneIndex, out ZoneStageConfig saved)
+        ZoneStageConfig toSelect = m_selectedZoneStagePerGroup.TryGetValue(groupIndex, out ZoneStageConfig saved)
             ? saved
-            : GetDefaultZoneStageForZone(zoneIndex);
+            : GetDefaultZoneStageForZone(groupIndex);
 
         if (toSelect != null)
             ApplyZoneStageSelection(toSelect);
+    }
+
+    private void SortButtonsByName()
+    {
+        var sorted = new List<UIZoneStageButton>(m_zoneStageButtons.Count);
+        foreach (var kv in m_zoneStageButtons)
+            sorted.Add(kv.Value);
+        sorted.Sort((a, b) => ParseZoneStage(a.name).CompareTo(ParseZoneStage(b.name)));
+        for (int i = 0; i < sorted.Count; i++)
+            sorted[i].transform.SetSiblingIndex(i);
+    }
+
+    private UIZoneStageButton GetButtonFromPool()
+    {
+        if (m_buttonPool.Count > 0)
+        {
+            UIZoneStageButton btn = m_buttonPool[^1];
+            m_buttonPool.RemoveAt(m_buttonPool.Count - 1);
+            return btn;
+        }
+        return Instantiate(m_zoneStageButtonPrefab, m_zoneButtonRoot);
+    }
+
+    private void ReturnAllButtonsToPool()
+    {
+        foreach (var kv in m_zoneStageButtons)
+        {
+            kv.Value.gameObject.SetActive(false);
+            m_buttonPool.Add(kv.Value);
+        }
+        m_zoneStageButtons.Clear();
     }
 
     public override void OnTabActivated()
     {
         if (m_datatableZone == null) return;
 
-        var zone1 = m_datatableZone.GetZone(1);
+        var zone1 = m_datatableZone.GetZoneByZoneIndex(1);
         if (zone1 != null && CameraController.Instance != null)
             CameraController.Instance.EnterGalaxyView(
                 zone1.galaxyCameraTarget,
@@ -202,12 +230,17 @@ public class UITabExploration : UITabBase
                 zone1.galaxyCameraRotX,
                 zone1.galaxyCameraRotY);
 
+        SetupButtonsForGroup(m_selectedZoneIndex);
+        UpdateGroupTabVisual();
+
         SetOtherTabsVisible(false, includeSelf: true);
         EventManager.TriggerExplorationTabOpened();
     }
 
     public override void OnTabDeactivated()
     {
+        ReturnAllButtonsToPool();
+
         if (CameraController.Instance != null)
             CameraController.Instance.ExitGalaxyView();
 
@@ -241,9 +274,6 @@ public class UITabExploration : UITabBase
 
     private void OnZoneStageButtonClicked(ZoneStageConfig zoneStage)
     {
-        if (m_selectedZoneStage != null && m_zoneStageButtons.TryGetValue(m_selectedZoneStage.zoneName, out UIZoneStageButton prevBtn))
-            prevBtn.SetSelected(false);
-
         m_selectedZoneStagePerGroup[m_selectedZoneIndex] = zoneStage;
         ApplyZoneStageSelection(zoneStage);
     }
@@ -252,11 +282,11 @@ public class UITabExploration : UITabBase
     {
         if (m_selectedZoneStage != null &&
             m_zoneStageButtons.TryGetValue(m_selectedZoneStage.zoneName, out UIZoneStageButton prev))
-            prev.SetSelected(false);
+            prev.SetSelectedUIZoneStageButton(false);
 
         m_selectedZoneStage = zoneStage;
         if (m_zoneStageButtons.TryGetValue(zoneStage.zoneName, out UIZoneStageButton btn))
-            btn.SetSelected(true);
+            btn.SetSelectedUIZoneStageButton(true);
     }
 
     private void OnEnterZoneFromButton(ZoneStageConfig zoneStage)
@@ -287,12 +317,14 @@ public class UITabExploration : UITabBase
         ZoneStageConfig highest = null;
         ZoneStageConfig lowestUncleared = null;
 
-        for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
+        for (int i = 0; i < m_datatableZone.ZoneStageCount; i++)
         {
             ZoneStageConfig zoneStage = m_datatableZone.GetZoneStage(i);
             if (zoneStage == null || ParseZoneGroup(zoneStage.zoneName) != zoneIndex) continue;
 
             int stage = ParseZoneStage(zoneStage.zoneName);
+            if (stage == 0) continue; // x-0 스폰 마커는 선택 대상 제외
+
             if (highest == null || stage > ParseZoneStage(highest.zoneName))
                 highest = zoneStage;
 
@@ -312,28 +344,7 @@ public class UITabExploration : UITabBase
         return int.TryParse(zoneName[(dashIdx + 1)..], out int y) ? y : 0;
     }
 
-    private void OnZoneTryButtonClicked()
-    {
-        if (m_selectedZoneStage == null) return;
-        if (m_myFleet.m_fleetState == EUnitState.Warp) return;
-        if (m_myFleet.m_fleetState == EUnitState.Battle)
-        {
-            if(m_currentZoneStage != null && m_currentZoneStage.zoneName == m_selectedZoneStage.zoneName) return;
-            EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
-            ObjectManager.Instance.StopEnemySpawning();
-            ObjectManager.Instance.OrderAllAircraftReturn();
-            ObjectManager.Instance.CleanupAllProjectiles();
-            ObjectManager.Instance.RemoveAllEnemyFleets();
-        }
 
-        ZoneStageConfig zoneStage = m_selectedZoneStage;
-        UIManager.Instance.ShowConfirmPopup(
-            zoneStage.zoneName,
-            LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
-            null, null, 0,
-            onConfirm: () => ExecuteEnterZone(zoneStage)
-        );
-    }
 
 
     private void ExecuteEnterZone(ZoneStageConfig zoneStage)
@@ -394,6 +405,7 @@ public class UITabExploration : UITabBase
 
         // 최종 위치·방향을 설정 → StartFleetWarpIn이 transform.forward 기준으로 뒤에서 접근
         ObjectManager.Instance.SetMyFleetPosition(fleetWorldPos, zoneStage.fleetRotationY);
+        ObjectManager.Instance.ChangeZone(zoneStage.zoneIndex);
 
         var cam = CameraController.Instance;
         m_myFleet.StartFleetWarpIn(onArrived: () =>
@@ -411,7 +423,7 @@ public class UITabExploration : UITabBase
     {
         if (m_currentZoneStageButton != null)
         {
-            m_currentZoneStageButton.SetSelected(false);
+            m_currentZoneStageButton.SetSelectedUIZoneStageButton(false);
             // if (IsAlreadyCleared(m_currentZoneStageButton.ZoneStageConfig) == false)
             //     m_currentZoneStageButton.SetState(EZoneState.Current);
         }
@@ -423,7 +435,7 @@ public class UITabExploration : UITabBase
             m_currentZoneStageButton = btn;
 
         if (m_currentZoneStageButton != null)
-            m_currentZoneStageButton.SetSelected(true);
+            m_currentZoneStageButton.SetSelectedUIZoneStageButton(true);
     }
 
     private void StartBattleInZone(ZoneStageConfig zoneStage)
@@ -477,7 +489,7 @@ public class UITabExploration : UITabBase
                 character.m_characterInfo.clearedZones.Add(newlyCleared);
 
             if (m_zoneStageButtons.TryGetValue(newlyCleared, out UIZoneStageButton clearedBtn))
-                clearedBtn.SetState(EZoneState.Cleared);
+                clearedBtn.SetStateUIZoneStageButton(EZoneState.Cleared);
 
             RefreshCurrentZoneStageButton();
             SelectNextZoneStage(newlyCleared);
@@ -529,7 +541,7 @@ public class UITabExploration : UITabBase
             for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
             {
                 ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
-                if (zs != null && ParseZoneGroup(zs.zoneName) == nextGroup)
+                if (zs != null && ParseZoneGroup(zs.zoneName) == nextGroup && ParseZoneStage(zs.zoneName) > 0)
                 {
                     nextStage = zs;
                     break;
@@ -563,9 +575,11 @@ public class UITabExploration : UITabBase
         }
         else
         {
-            var zone0Stage = m_datatableZone.GetZoneStage(0);
-            retreatPosition = zone0Stage != null ? m_datatableZone.ResolveFleetWorldPosition(zone0Stage) : Vector3.zero;
-            retreatRotationY = zone0Stage != null ? zone0Stage.fleetRotationY : 0f;
+            // 한 스테이지도 클리어 못했으므로 해당 존 x-0 스폰 마커로 복귀
+            int currentGroup = m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1;
+            ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(currentGroup);
+            retreatPosition  = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
+            retreatRotationY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
         }
 
         if (m_isFleetWiped == true)
@@ -605,7 +619,7 @@ public class UITabExploration : UITabBase
 
             SetFleetState(EUnitState.Idle);
             UpdateGroupTabVisual();
-            ShowGroupStageButtons(m_selectedZoneIndex);
+            SetupButtonsForGroup(m_selectedZoneIndex);
 
             if (m_isFleetWiped == true)
             {
@@ -629,35 +643,35 @@ public class UITabExploration : UITabBase
 
         SetFleetState(EUnitState.Idle);
         UpdateGroupTabVisual();
-        ShowGroupStageButtons(m_selectedZoneIndex);
+        SetupButtonsForGroup(m_selectedZoneIndex);
     }
 
+    // 현재 존에서 클리어한 스테이지 중 가장 높은 것 반환 — 없으면 null(→ 해당 존 최초지점으로 복귀)
     private ZoneStageConfig FindPreviousClearedStage()
     {
         if (m_currentZoneStage == null) return null;
 
         int group = ParseZoneGroup(m_currentZoneStage.zoneName);
-        int stage = ParseZoneStage(m_currentZoneStage.zoneName);
         var cleared = m_myCharacter?.m_characterInfo.clearedZones;
         if (cleared == null || cleared.Count == 0) return null;
 
-        if (stage > 1)
-        {
-            string prevName = $"{group}-{stage - 1}";
-            if (cleared.Contains(prevName))
-                return m_datatableZone.GetZoneStageByName(prevName);
-        }
+        ZoneStageConfig highestCleared = null;
+        int highestStageNum = -1;
 
-        if (group > 1)
+        for (int i = 0; i < m_datatableZone.ZoneStageCount; i++)
         {
-            for (int s = 5; s >= 1; s--)
+            ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
+            if (zs == null || ParseZoneGroup(zs.zoneName) != group) continue;
+            if (cleared.Contains(zs.zoneName) == false) continue;
+
+            int stageNum = ParseZoneStage(zs.zoneName);
+            if (stageNum > highestStageNum)
             {
-                string name = $"{group - 1}-{s}";
-                if (cleared.Contains(name))
-                    return m_datatableZone.GetZoneStageByName(name);
+                highestStageNum = stageNum;
+                highestCleared = zs;
             }
         }
 
-        return null;
+        return highestCleared;
     }
 }

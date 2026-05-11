@@ -282,22 +282,14 @@ public class ZonePreviewComponentEditor : Editor
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,max_concurrent_enemy_ships,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y");
+        sb.AppendLine("zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y");
         foreach (ZoneStageConfig s in table.zoneStageList)
         {
-            int zone, stage;
-            if (s.zoneIndex == 0)
-            {
-                zone = 0; stage = 0;
-            }
-            else
-            {
-                string[] parts = s.zoneName.Split('-');
-                if (parts.Length < 2 || !int.TryParse(parts[0], out zone) || !int.TryParse(parts[1], out stage))
-                    continue;
-            }
+            string[] parts = s.zoneName.Split('-');
+            if (parts.Length < 2 || !int.TryParse(parts[0], out int zone) || !int.TryParse(parts[1], out int stage))
+                continue;
             // fleetPosition은 상대좌표로 저장
-            sb.AppendLine($"{zone},{stage},{s.mineralClearReward},{s.delayBeforeSpawn},{s.shipSpawnInterval},{s.maxConcurrentEnemyShips},{s.fleetPosition.x},{s.fleetPosition.y},{s.fleetPosition.z},{s.fleetRotationY}");
+            sb.AppendLine($"{zone},{stage},{s.mineralClearReward},{s.delayBeforeSpawn},{s.shipSpawnInterval},{s.fleetPosition.x},{s.fleetPosition.y},{s.fleetPosition.z},{s.fleetRotationY}");
         }
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }

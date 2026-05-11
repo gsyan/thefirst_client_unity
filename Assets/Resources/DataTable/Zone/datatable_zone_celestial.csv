@@ -1,0 +1,2 @@
+zone_index,pos_x,pos_y,pos_z,scale_x,scale_y,scale_z,material,atmosphere_material,atmosphere_scale
+1,0,0,500,500,500,500,Materials/CelestialBody/planet1,Materials/CelestialBody/PlanetAtmosphere,1.001

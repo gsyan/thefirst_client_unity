@@ -1,4 +1,4 @@
-// 런타임 천체 스포너 — DataTableZone.zoneList의 celestialBodies를 씬에 생성
+// 런타임 천체 스포너 — DataTableZone.zoneList의 celestialBodies를 씬에 생성 (단일 존만 유지)
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,9 +13,12 @@ public class CelestialBodySpawner : MonoBehaviour
 
     private GameObject m_root;
     private readonly List<GameObject> m_spawnedBodies = new List<GameObject>();
+    private int m_activeZoneIndex = -1;
 
-    public void SpawnAll()
+    public void SpawnZone(int zoneIndex)
     {
+        if (m_activeZoneIndex == zoneIndex) return;
+
         ClearAll();
 
         DataTableZone table = DataManager.Instance.m_dataTableZone;
@@ -25,21 +28,26 @@ public class CelestialBodySpawner : MonoBehaviour
             return;
         }
 
+        ZoneConfig zone = table.GetZoneByZoneIndex(zoneIndex);
+        if (zone == null)
+        {
+            Debug.LogWarning($"[CelestialBodySpawner] zoneIndex {zoneIndex} 없음");
+            return;
+        }
+
+        m_activeZoneIndex = zoneIndex;
         m_root = new GameObject(ROOT_NAME);
 
-        foreach (ZoneConfig zone in table.zoneList)
+        if (zone.celestialBodies != null)
         {
-            if (zone.celestialBodies == null) continue;
-
             for (int i = 0; i < zone.celestialBodies.Count; i++)
             {
                 CelestialBodyConfig cfg = zone.celestialBodies[i];
-                GameObject body = SpawnBody(cfg, zone.zoneIndex, i);
-                m_spawnedBodies.Add(body);
+                m_spawnedBodies.Add(SpawnBody(cfg, zoneIndex, i));
             }
         }
 
-        Debug.Log($"[CelestialBodySpawner] 천체 {m_spawnedBodies.Count}개 생성 완료");
+        Debug.Log($"[CelestialBodySpawner] Zone {zoneIndex} 천체 {m_spawnedBodies.Count}개 생성");
     }
 
     private GameObject SpawnBody(CelestialBodyConfig cfg, int zoneIndex, int bodyIndex)
@@ -53,10 +61,10 @@ public class CelestialBodySpawner : MonoBehaviour
         Destroy(go.GetComponent<Collider>());
 
         Renderer planetRenderer = go.GetComponent<Renderer>();
-        if (cfg.material != null)
-            planetRenderer.sharedMaterial = cfg.material;
+        if (string.IsNullOrEmpty(cfg.materialPath) == false)
+            planetRenderer.sharedMaterial = Resources.Load<Material>(cfg.materialPath);
 
-        if (cfg.atmosphereMaterial != null)
+        if (string.IsNullOrEmpty(cfg.atmosphereMaterialPath) == false)
         {
             Renderer atmRenderer = SpawnAtmosphere(go.transform, cfg);
             AddLODGroup(go, planetRenderer, atmRenderer);
@@ -75,7 +83,7 @@ public class CelestialBodySpawner : MonoBehaviour
 
         Destroy(atm.GetComponent<Collider>());
         Renderer r = atm.GetComponent<Renderer>();
-        r.sharedMaterial = cfg.atmosphereMaterial;
+        r.sharedMaterial = Resources.Load<Material>(cfg.atmosphereMaterialPath);
         return r;
     }
 
@@ -92,6 +100,7 @@ public class CelestialBodySpawner : MonoBehaviour
     public void ClearAll()
     {
         m_spawnedBodies.Clear();
+        m_activeZoneIndex = -1;
         GameObject existing = GameObject.Find(ROOT_NAME);
         if (existing != null)
             Destroy(existing);

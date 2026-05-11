@@ -1366,6 +1366,7 @@ MonoBehaviour:
   m_label: {fileID: 7347970418138869406}
   m_colorActive: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_colorInactive: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_imageAlpha: 0.02
 --- !u!114 &7365923136670226741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2681,6 +2682,7 @@ MonoBehaviour:
   m_label: {fileID: 4647677455233537835}
   m_colorActive: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_colorInactive: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_imageAlpha: 0.02
 --- !u!114 &6665391224115277201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3580,6 +3582,7 @@ MonoBehaviour:
   m_label: {fileID: 3624275710341328303}
   m_colorActive: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_colorInactive: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_imageAlpha: 0.02
 --- !u!114 &1910139961452476531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5806,6 +5809,7 @@ MonoBehaviour:
   m_label: {fileID: 1036102698172877403}
   m_colorActive: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_colorInactive: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_imageAlpha: 0.02
 --- !u!114 &5258256401891207767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17010,14 +17014,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 5931531879793767339, guid: 911a1e2fabe9d554aa490950e459621e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 149c8b35ee6c6c64589f5c54c13051f1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -23444,14 +23448,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 473119435147847706, guid: 911a1e2fabe9d554aa490950e459621e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 892b762b0335f0b469149fc19556bf4d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -30170,6 +30174,7 @@ MonoBehaviour:
   m_label: {fileID: 2160194195734188246}
   m_colorActive: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_colorInactive: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_imageAlpha: 0.02
 --- !u!114 &1755211261291604799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44411,6 +44416,7 @@ MonoBehaviour:
   m_label: {fileID: 1186943533386595878}
   m_colorActive: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_colorInactive: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_imageAlpha: 0.02
 --- !u!114 &5487135131477221872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53207,6 +53213,7 @@ MonoBehaviour:
   m_label: {fileID: 7374022663998873653}
   m_colorActive: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_colorInactive: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_imageAlpha: 0.02
 --- !u!114 &809693815219744163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59419,6 +59426,7 @@ MonoBehaviour:
   m_label: {fileID: 939086319985004782}
   m_colorActive: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_colorInactive: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_imageAlpha: 0.02
 --- !u!114 &1405083145654264752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63963,6 +63971,7 @@ MonoBehaviour:
   m_label: {fileID: 5483786459738649521}
   m_colorActive: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_colorInactive: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_imageAlpha: 0.02
 --- !u!114 &6624516310628354319
 MonoBehaviour:
   m_ObjectHideFlags: 0
