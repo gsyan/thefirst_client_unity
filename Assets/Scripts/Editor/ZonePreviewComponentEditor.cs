@@ -1,7 +1,5 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using UnityEngine;
 using UnityEditor;
 
@@ -66,7 +64,8 @@ public class ZonePreviewComponentEditor : Editor
 
         if (GUILayout.Button("Apply to CSV", GUILayout.Height(28)))
         {
-            WriteToCSV(comp.dataTableZone);
+            DataTableZoneCSVUtility.ExportZoneAndCelestial(comp.dataTableZone);
+            Debug.Log("[ZonePreview] CSV 내보내기 완료");
         }
         EditorGUILayout.EndHorizontal();
 
@@ -255,43 +254,6 @@ public class ZonePreviewComponentEditor : Editor
 
             Handles.Label(worldPos + Vector3.up * 8f, $"[Fleet] {stage.zoneName}", boldWhite);
         }
-    }
-
-    // DataTableZone → datatable_zone.csv + datatable_zone_stage.csv 동기화
-    private static void WriteToCSV(DataTableZone table)
-    {
-        WriteZoneCSV(table);
-        WriteZoneStageCSV(table);
-        AssetDatabase.Refresh();
-        Debug.Log("[ZonePreview] CSV 내보내기 완료");
-    }
-
-    private static void WriteZoneCSV(DataTableZone table)
-    {
-        const string path = "Assets/Resources/DataTable/Zone/datatable_zone.csv";
-        var sb = new StringBuilder();
-        sb.AppendLine("zone_index,cam_target_x,cam_target_y,cam_target_z,cam_zoom,cam_rot_x,cam_rot_y");
-        foreach (ZoneConfig z in table.zoneList)
-        {
-            sb.AppendLine($"{z.zoneIndex},{z.galaxyCameraTarget.x},{z.galaxyCameraTarget.y},{z.galaxyCameraTarget.z},{z.galaxyCameraZoom},{z.galaxyCameraRotX},{z.galaxyCameraRotY}");
-        }
-        File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
-    }
-
-    private static void WriteZoneStageCSV(DataTableZone table)
-    {
-        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
-        var sb = new StringBuilder();
-        sb.AppendLine("zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y");
-        foreach (ZoneStageConfig s in table.zoneStageList)
-        {
-            string[] parts = s.zoneName.Split('-');
-            if (parts.Length < 2 || !int.TryParse(parts[0], out int zone) || !int.TryParse(parts[1], out int stage))
-                continue;
-            // fleetPosition은 상대좌표로 저장
-            sb.AppendLine($"{zone},{stage},{s.mineralClearReward},{s.delayBeforeSpawn},{s.shipSpawnInterval},{s.fleetPosition.x},{s.fleetPosition.y},{s.fleetPosition.z},{s.fleetRotationY}");
-        }
-        File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }
 
     // 기존 절대좌표 데이터를 galaxyCameraTarget 기준 상대좌표로 일괄 변환 (일회성 마이그레이션)

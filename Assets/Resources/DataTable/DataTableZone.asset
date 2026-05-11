@@ -19,7 +19,7 @@ MonoBehaviour:
     galaxyCameraRotX: 80
     galaxyCameraRotY: 0
     celestialBodies:
-    - position: {x: 0, y: 0, z: 500}
+    - position: {x: 0, y: 0, z: 1000}
       scale: {x: 500, y: 500, z: 500}
       materialPath: Materials/CelestialBody/planet1
       atmosphereMaterialPath: Materials/CelestialBody/PlanetAtmosphere

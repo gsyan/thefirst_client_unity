@@ -100,8 +100,8 @@ public class DataTableZoneEditor : Editor
             }
         }
 
-        if (GUILayout.Button("Export Celestial CSV"))
-            ExportCelestialCSV();
+        if (GUILayout.Button("Export All CSV"))
+            ExportAllCSV();
 
         if (GUILayout.Button("Validate All Ships"))
         {
@@ -321,30 +321,11 @@ public class DataTableZoneEditor : Editor
             $"ZoneStage: {m_dataTableZone.zoneStageList.Count}개 (zone CSV: {imported}행)", "OK");
     }
 
-    // ZoneConfig.celestialBodies → datatable_zone_celestial.csv 내보내기
-    // 헤더: zone_index,pos_x,pos_y,pos_z,scale_x,scale_y,scale_z,material,atmosphere_material,atmosphere_scale
-    private void ExportCelestialCSV()
+    private void ExportAllCSV()
     {
-        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_celestial.csv";
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine("zone_index,pos_x,pos_y,pos_z,scale_x,scale_y,scale_z,material,atmosphere_material,atmosphere_scale");
-
-        foreach (ZoneConfig zone in m_dataTableZone.zoneList)
-        {
-            if (zone.celestialBodies == null) continue;
-            foreach (CelestialBodyConfig c in zone.celestialBodies)
-            {
-                sb.AppendLine(
-                    $"{zone.zoneIndex}," +
-                    $"{c.position.x},{c.position.y},{c.position.z}," +
-                    $"{c.scale.x},{c.scale.y},{c.scale.z}," +
-                    $"{c.materialPath},{c.atmosphereMaterialPath},{c.atmosphereScale}");
-            }
-        }
-
-        File.WriteAllText(path, sb.ToString(), System.Text.Encoding.UTF8);
-        AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("Export Complete", path, "OK");
+        DataTableZoneCSVUtility.ExportAll(m_dataTableZone);
+        EditorUtility.DisplayDialog("Export Complete",
+            "datatable_zone.csv\ndatatable_zone_stage.csv\ndatatable_zone_enemy.csv\ndatatable_zone_celestial.csv", "OK");
     }
 
 
