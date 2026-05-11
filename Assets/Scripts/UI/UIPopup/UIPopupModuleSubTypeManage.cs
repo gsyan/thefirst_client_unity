@@ -311,7 +311,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
             long mineralCost = DataManager.Instance.m_dataTableResearch.GetResearchCost(m_selectedSubType);
             var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-            bool insM  = (info?.mineral ?? 0) < mineralCost;
+            bool insM  = (info?.modulePoint ?? 0) < mineralCost;
             bool insufficient = insM;
             if (insufficient == true) canConfirm = false;
 
@@ -335,7 +335,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             // 4종 재화 비용 — 한 줄로 이어서 표시, 0이면 생략
             var costSb = new System.Text.StringBuilder();
             if (mineralCost > 0)
-                costSb.Append(insM ? $"{CommonUtility.Sprite("crystal-growth")} <color=red>{CommonUtility.FormatBigNumber(mineralCost)}</color>" : $"{CommonUtility.Sprite("crystal-growth")} {CommonUtility.FormatBigNumber(mineralCost)}");
+                costSb.Append(insM ? $"{CommonUtility.Sprite("upgrade")} <color=red>{CommonUtility.FormatBigNumber(mineralCost)}</color>" : $"{CommonUtility.Sprite("upgrade")} {CommonUtility.FormatBigNumber(mineralCost)}");
             if (costSb.Length > 0) sb.Append(costSb);
         }
 

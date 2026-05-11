@@ -1,4 +1,4 @@
-research_id,prerequisites,ui_pos_x,ui_pos_y,cost_m
+research_id,prerequisites,ui_pos_x,ui_pos_y,cost_mp
 body_t1_m1,,80,-40,0
 body_t2_m1,body_t1_m1,280,-40,10
 body_t3_m1,body_t2_m1,480,-40,10

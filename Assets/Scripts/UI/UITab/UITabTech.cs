@@ -151,7 +151,7 @@ public class UITabTech : UITabBase
         if (node == null) return;
 
         var character = DataManager.Instance.m_currentCharacter;
-        if (character.CheckEnoughMineral(node.mineralCost) == false)
+        if (character.CheckEnoughTechPoint(node.pointCost) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("error_insufficient_resources"));
             return;
@@ -174,7 +174,7 @@ public class UITabTech : UITabBase
         }
 
         if (response.data.costRemainInfo != null)
-            DataManager.Instance.m_currentCharacter.UpdateAllMinerals(response.data.costRemainInfo);
+            DataManager.Instance.m_currentCharacter.UpdateAllFromCostRemain(response.data.costRemainInfo);
         if (response.data.researchedIds != null)
             DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
 

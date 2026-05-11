@@ -1,4 +1,4 @@
-// 상단 리소스 패널 - 4종 광물량 실시간 표시
+// 상단 리소스 패널 - mineral / techPoint / modulePoint / pvpPoint 실시간 표시
 using System;
 using System.Collections;
 using System.Globalization;
@@ -9,24 +9,19 @@ using UnityEngine.UI;
 public class UIResourceBar : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_textMineralCurrent;
-    [SerializeField] private TMP_Text m_textMineralMaxGot;
-    [SerializeField] private TMP_Text m_textMineralPvpCurrent;
-    [SerializeField] private TMP_Text m_textMineralPvpMaxGot;
-    [SerializeField] private Image    m_imageMineralPvpDday;
-    [SerializeField] private TMP_Text m_textMineralPvpDday;
-    [SerializeField] private TMP_Text m_textMineralTempCurrent;
-    [SerializeField] private TMP_Text m_textMineralTempMaxGot;
-    [SerializeField] private Image    m_imageMineralTempDday;
-    [SerializeField] private TMP_Text m_textMineralTempDday;
+    [SerializeField] private TMP_Text m_textTechPointCurrent;
+    [SerializeField] private TMP_Text m_textModulePointCurrent;
+    [SerializeField] private TMP_Text m_textModulePointMaxGot;
+    [SerializeField] private TMP_Text m_textPvpPointCurrent;
+    [SerializeField] private TMP_Text m_textPvpPointMaxGot;
+    [SerializeField] private Image    m_imagePvpPointDday;
+    [SerializeField] private TMP_Text m_textPvpPointDday;
 
     [Header("Dday Colors")]
-    [SerializeField] private Color m_pvpDdayColorBase   = new(0.502f, 0.196f, 0f);    // #803200
-    [SerializeField] private Color m_pvpDdayColorBright = new(1f,     0.392f, 0f);    // #FF6400
-    [SerializeField] private Color m_tempDdayColorBase  = new(0.251f, 0.125f, 0.314f);// #402050
-    [SerializeField] private Color m_tempDdayColorBright = new(0.502f, 0.251f, 0.565f);// #804090
+    [SerializeField] private Color m_pvpDdayColorBase   = new(0.502f, 0.196f, 0f);
+    [SerializeField] private Color m_pvpDdayColorBright = new(1f,     0.392f, 0f);
 
     private DateTime  m_pvpExpiry;
-    private DateTime  m_tempExpiry;
     private Coroutine m_ddayCoroutine;
 
     private static readonly WaitForSeconds s_wait1Sec    = new(1f);
@@ -37,7 +32,7 @@ public class UIResourceBar : MonoBehaviour
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
-        RefreshMinerals(character);
+        RefreshAll(character);
         EventManager.Subscribe_MineralChanged(OnMineralChanged);
     }
 
@@ -46,44 +41,38 @@ public class UIResourceBar : MonoBehaviour
         EventManager.Unsubscribe_MineralChanged(OnMineralChanged);
     }
 
-    private void RefreshMinerals(Character character)
+    private void RefreshAll(Character character)
     {
         var info = character.GetInfo();
         if (info == null) return;
 
         if (m_textMineralCurrent != null)
             m_textMineralCurrent.text = character.GetMineral().ToString();
-        if (m_textMineralMaxGot != null)
-            m_textMineralMaxGot.text = $"/ {character.GetMineralMaxGot()}";
 
-        if (m_textMineralPvpCurrent != null)
-            m_textMineralPvpCurrent.text = character.GetPvpMineral().ToString();
-        if (m_textMineralPvpMaxGot != null)
-            m_textMineralPvpMaxGot.text = $"/ {character.GetPvpMineralMaxGot()}";
+        if (m_textTechPointCurrent != null)
+            m_textTechPointCurrent.text = character.GetTechPoint().ToString();
 
-        if (m_textMineralTempCurrent != null)
-            m_textMineralTempCurrent.text = character.GetTempMineral().ToString();
-        if (m_textMineralTempMaxGot != null)
-            m_textMineralTempMaxGot.text = $"/ {character.GetTempMineralMaxGot()}";
+        if (m_textModulePointCurrent != null)
+            m_textModulePointCurrent.text = character.GetModulePoint().ToString();
+        if (m_textModulePointMaxGot != null)
+            m_textModulePointMaxGot.text = $"/ {character.GetModulePointMaxGot()}";
 
-        TryParseExpiry(info.pvpMineralExpiry, out m_pvpExpiry);
-        TryParseExpiry(info.tempMineralExpiry, out m_tempExpiry);
+        if (m_textPvpPointCurrent != null)
+            m_textPvpPointCurrent.text = character.GetPvpPoint().ToString();
+        if (m_textPvpPointMaxGot != null)
+            m_textPvpPointMaxGot.text = $"/ {character.GetPvpPointMaxGot()}";
 
-        bool hasPvp  = m_pvpExpiry  != default && m_pvpExpiry.ToUniversalTime()  > DateTime.UtcNow;
-        bool hasTemp = m_tempExpiry != default && m_tempExpiry.ToUniversalTime() > DateTime.UtcNow;
-        if (m_imageMineralPvpDday != null)
+        TryParseExpiry(info.pvpPointExpiry, out m_pvpExpiry);
+
+        bool hasPvp = m_pvpExpiry != default && m_pvpExpiry.ToUniversalTime() > DateTime.UtcNow;
+        if (m_imagePvpPointDday != null)
         {
-            m_imageMineralPvpDday.gameObject.SetActive(hasPvp);
-            m_textMineralPvpDday.gameObject.SetActive(hasPvp);
-        }
-        if (m_imageMineralTempDday != null)
-        {
-            m_imageMineralTempDday.gameObject.SetActive(hasTemp);
-            m_textMineralTempDday.gameObject.SetActive(hasTemp);
+            m_imagePvpPointDday.gameObject.SetActive(hasPvp);
+            m_textPvpPointDday.gameObject.SetActive(hasPvp);
         }
 
         if (m_ddayCoroutine != null) StopCoroutine(m_ddayCoroutine);
-        if (hasPvp == true || hasTemp == true)
+        if (hasPvp == true)
             m_ddayCoroutine = StartCoroutine(RunDdayUpdate());
 
         Canvas.ForceUpdateCanvases();
@@ -94,77 +83,46 @@ public class UIResourceBar : MonoBehaviour
     {
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
-        RefreshMinerals(character);
+        RefreshAll(character);
     }
 
-    // 3일 미만이면 sin 깜박임 + 빠른 갱신, 그 이상이면 1초 갱신. 둘 다 만료되면 종료
     private IEnumerator RunDdayUpdate()
     {
         while (true)
         {
-            bool anyActive  = false;
-            bool anyFlicker = false;
-
             if (m_pvpExpiry != default)
             {
                 TimeSpan left = m_pvpExpiry.ToUniversalTime() - DateTime.UtcNow;
                 if (left.TotalSeconds <= 0)
                 {
-                    if (m_imageMineralPvpDday != null) m_imageMineralPvpDday.gameObject.SetActive(false);
-                    if (m_textMineralPvpDday  != null) m_textMineralPvpDday.gameObject.SetActive(false);
+                    if (m_imagePvpPointDday != null) m_imagePvpPointDday.gameObject.SetActive(false);
+                    if (m_textPvpPointDday  != null) m_textPvpPointDday.gameObject.SetActive(false);
                     m_pvpExpiry = default;
+                    yield break;
                 }
-                else
+
+                if (m_textPvpPointDday != null)
                 {
-                    if (m_textMineralPvpDday != null)
+                    m_textPvpPointDday.text = FormatTimeLeft(m_pvpExpiry);
+                    if (left.TotalDays < 3)
                     {
-                        m_textMineralPvpDday.text = FormatTimeLeft(m_pvpExpiry);
-                        if (left.TotalDays < 3)
-                        {
-                            float t = (Mathf.Sin(Time.time * Mathf.PI * 2f) + 1f) * 0.5f;
-                            m_textMineralPvpDday.color = Color.Lerp(m_pvpDdayColorBase, m_pvpDdayColorBright, t);
-                            anyFlicker = true;
-                        }
-                        else
-                        {
-                            m_textMineralPvpDday.color = m_pvpDdayColorBase;
-                        }
+                        float t = (Mathf.Sin(Time.time * Mathf.PI * 2f) + 1f) * 0.5f;
+                        m_textPvpPointDday.color = Color.Lerp(m_pvpDdayColorBase, m_pvpDdayColorBright, t);
+                        yield return s_waitFlicker;
+                        continue;
                     }
-                    anyActive = true;
+                    else
+                    {
+                        m_textPvpPointDday.color = m_pvpDdayColorBase;
+                    }
                 }
             }
-
-            if (m_tempExpiry != default)
+            else
             {
-                TimeSpan left = m_tempExpiry.ToUniversalTime() - DateTime.UtcNow;
-                if (left.TotalSeconds <= 0)
-                {
-                    if (m_imageMineralTempDday != null) m_imageMineralTempDday.gameObject.SetActive(false);
-                    if (m_textMineralTempDday  != null) m_textMineralTempDday.gameObject.SetActive(false);
-                    m_tempExpiry = default;
-                }
-                else
-                {
-                    if (m_textMineralTempDday != null)
-                    {
-                        m_textMineralTempDday.text = FormatTimeLeft(m_tempExpiry);
-                        if (left.TotalDays < 3)
-                        {
-                            float t = (Mathf.Sin(Time.time * Mathf.PI * 2f) + 1f) * 0.5f;
-                            m_textMineralTempDday.color = Color.Lerp(m_tempDdayColorBase, m_tempDdayColorBright, t);
-                            anyFlicker = true;
-                        }
-                        else
-                        {
-                            m_textMineralTempDday.color = m_tempDdayColorBase;
-                        }
-                    }
-                    anyActive = true;
-                }
+                yield break;
             }
 
-            if (anyActive == false) yield break;
-            yield return anyFlicker == true ? s_waitFlicker : s_wait1Sec;
+            yield return s_wait1Sec;
         }
     }
 

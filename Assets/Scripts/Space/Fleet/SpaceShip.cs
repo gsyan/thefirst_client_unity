@@ -405,11 +405,11 @@ public class SpaceShip : MonoBehaviour
         return body.FindModule(moduleType, slotIndex);
     }
 
-    public void SetModuleInvestedMinerals(int bodyIndex, EModuleType moduleType, int slotIndex, int mineral, int pvpMineral, int tempMineral)
+    public void SetModuleInvestedModulePoint(int bodyIndex, EModuleType moduleType, int slotIndex, int modulePoint)
     {
         ModuleBase module = FindModule(bodyIndex, moduleType, slotIndex);
         if (module == null) return;
-        module.SetInvestedMinerals(mineral, pvpMineral, tempMineral);
+        module.SetInvestedModulePoint(modulePoint);
     }
 
     // 함선의 능력치 프로파일 계산
@@ -702,7 +702,7 @@ public class SpaceShip : MonoBehaviour
 
     // module unlock (외부 호출용 - 모듈 해금 UI에서 사용)
     public void Apply_UnlockModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex,
-                                    int investedMineral = 0, int investedPvpMineral = 0, int investedTempMineral = 0)
+                                    int investedModulePoint = 0)
     {
         ModuleBody body = FindModuleBodyByIndex(bodyIndex);
         if (body == null)
@@ -720,13 +720,13 @@ public class SpaceShip : MonoBehaviour
             return;
         }
 
-        // 언락 비용을 invested minerals에 반영
+        // 언락 비용을 investedModulePoint에 반영
         ModuleSlot slot = body.FindModuleSlot(moduleType, slotIndex);
         if (slot != null)
         {
             ModuleBase newModule = slot.GetComponentInChildren<ModuleBase>();
             if (newModule != null)
-                newModule.SetInvestedMinerals(investedMineral, investedPvpMineral, investedTempMineral);
+                newModule.SetInvestedModulePoint(investedModulePoint);
         }
 
         // 함선 스탯 업데이트

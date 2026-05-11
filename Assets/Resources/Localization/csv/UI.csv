@@ -140,7 +140,6 @@ tech_level_15,,Tech Level 15,기술레벨 15
 tech_level_on_reach,,[ On reaching Lv.{0} ],[ Lv.{0} 달성 시 ]
 tech_level_detail_title,,Tech Level Info,기술레벨 정보
 error_message_title,,Error,오류
-require_level_compare,,{0} Lv.{1} Required (Current: Lv.{2}),{0} Lv.{1} 필요 (현재 Lv.{2})
 ship_module_reset,,Reset Module,모듈 초기화
 ship_module_reset_confirm,,Reset this module and recover invested resources?,이 모듈에 투자한 자원을 회수하고 초기화하시겠습니까?
 ship_reset,,Reset Ship,함선 초기화
@@ -182,3 +181,4 @@ UITabRank_MyInfo,,MY INFO,내 정보
 UITabRank_Pvp,,PVP,PVP
 UITabRank_Exploration,,EXPLORATION,탐사
 UITabExploration_TryZone,,Enter,입장
+require_level_compare,,Lv.{0} Required (Current: Lv.{1}),Lv.{0} 필요 (현재 Lv.{1})

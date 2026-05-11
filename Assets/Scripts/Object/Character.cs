@@ -36,54 +36,68 @@ public class Character
         return m_characterInfo.mineral;
     }
 
-    public int GetMineralMaxGot()
+    public int GetTechPoint()
     {
         if (m_characterInfo == null) return 0;
-        return m_characterInfo.mineralMaxGot;
+        return m_characterInfo.techPoint;
     }
 
-    public void UpdateMineralMaxGot(int mineralMaxGot)
+    public void UpdateTechPoint(int techPoint)
     {
         if (m_characterInfo == null) return;
-        m_characterInfo.mineralMaxGot = mineralMaxGot;
+        m_characterInfo.techPoint = techPoint;
         EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
-    public int GetPvpMineral()
+    public int GetModulePoint()
     {
         if (m_characterInfo == null) return 0;
-        return m_characterInfo.pvpMineral;
+        return m_characterInfo.modulePoint;
     }
 
-    public int GetPvpMineralMaxGot()
+    public int GetModulePointMaxGot()
     {
         if (m_characterInfo == null) return 0;
-        return m_characterInfo.pvpMineralMaxGot;
+        return m_characterInfo.modulePointMaxGot;
     }
 
-    public void UpdatePvpMineralMaxGot(int pvpMineralMaxGot)
+    public void UpdateModulePoint(int modulePoint)
     {
         if (m_characterInfo == null) return;
-        m_characterInfo.pvpMineralMaxGot = pvpMineralMaxGot;
+        m_characterInfo.modulePoint = modulePoint;
         EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
-    public int GetTempMineral()
-    {
-        if (m_characterInfo == null) return 0;
-        return m_characterInfo.tempMineral;
-    }
-
-    public int GetTempMineralMaxGot()
-    {
-        if (m_characterInfo == null) return 0;
-        return m_characterInfo.tempMineralMaxGot;
-    }
-
-    public void UpdateTempMineralMaxGot(int tempMineralMaxGot)
+    public void UpdateModulePointMaxGot(int modulePointMaxGot)
     {
         if (m_characterInfo == null) return;
-        m_characterInfo.tempMineralMaxGot = tempMineralMaxGot;
+        m_characterInfo.modulePointMaxGot = modulePointMaxGot;
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
+    }
+
+    public int GetPvpPoint()
+    {
+        if (m_characterInfo == null) return 0;
+        return m_characterInfo.pvpPoint;
+    }
+
+    public int GetPvpPointMaxGot()
+    {
+        if (m_characterInfo == null) return 0;
+        return m_characterInfo.pvpPointMaxGot;
+    }
+
+    public void UpdatePvpPoint(int pvpPoint)
+    {
+        if (m_characterInfo == null) return;
+        m_characterInfo.pvpPoint = pvpPoint;
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
+    }
+
+    public void UpdatePvpPointMaxGot(int pvpPointMaxGot)
+    {
+        if (m_characterInfo == null) return;
+        m_characterInfo.pvpPointMaxGot = pvpPointMaxGot;
         EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
@@ -123,40 +137,34 @@ public class Character
         EventManager.TriggerMineralChange(mineral);
     }
 
-    public void UpdatePvpMineral(int pvpMineral)
-    {
-        if (m_characterInfo == null) return;
-        m_characterInfo.pvpMineral = pvpMineral;
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
-    }
-
-    public void UpdateTempMineral(int tempMineral)
-    {
-        if (m_characterInfo == null) return;
-        m_characterInfo.tempMineral = tempMineral;
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
-    }
-
-    public void UpdateAllMinerals(CostRemainInfo costRemainInfo)
+    public void UpdateAllFromCostRemain(CostRemainInfo costRemainInfo)
     {
         if (m_characterInfo == null || costRemainInfo == null) return;
-        m_characterInfo.mineral = costRemainInfo.mineralRemain;
-        m_characterInfo.pvpMineral = costRemainInfo.pvpMineralRemain;
-        m_characterInfo.tempMineral = costRemainInfo.tempMineralRemain;
+        if (costRemainInfo.mineralRemain > 0 || costRemainInfo.mineralCost > 0)
+            m_characterInfo.mineral = costRemainInfo.mineralRemain;
+        if (costRemainInfo.techPointCost > 0)
+            m_characterInfo.techPoint = costRemainInfo.techPointRemain;
+        if (costRemainInfo.modulePointCost > 0)
+            m_characterInfo.modulePoint = costRemainInfo.modulePointRemain;
         EventManager.TriggerMineralChange(m_characterInfo.mineral);
-    }
-
-    // 소비 우선순위: M → PM(만료임박) → TM(만료임박) — 서버 자동 처리이므로 합산만 제공
-    public long GetTotalMineral()
-    {
-        if (m_characterInfo == null) return 0;
-        return (long)m_characterInfo.mineral + m_characterInfo.pvpMineral + m_characterInfo.tempMineral;
     }
 
     public bool CheckEnoughMineral(long cost)
     {
         if (m_characterInfo == null) return false;
-        return GetTotalMineral() >= cost;
+        return m_characterInfo.mineral >= cost;
+    }
+
+    public bool CheckEnoughTechPoint(long cost)
+    {
+        if (m_characterInfo == null) return false;
+        return m_characterInfo.techPoint >= cost;
+    }
+
+    public bool CheckEnoughModulePoint(long cost)
+    {
+        if (m_characterInfo == null) return false;
+        return m_characterInfo.modulePoint >= cost;
     }
 
 

@@ -73,7 +73,7 @@ public class ModuleBody : ModuleBase
         m_health = Mathf.Min(m_health, m_healthMax);
         m_repair = moduleData.repair;
         m_speed  = moduleData.speed;
-        m_mineralCostLevelup = moduleData.mineralCost;
+        m_modulePointCostLevelup = moduleData.modulePointCost;
     }
 
     public override int GetModuleBodyIndex()
@@ -91,7 +91,7 @@ public class ModuleBody : ModuleBase
         m_moduleBodyInfo = moduleBodyInfo;
         m_moduleSlot = null;
         SetUnlockedSubTypes(moduleBodyInfo.unlockedSubTypes);
-        SetInvestedMinerals(moduleBodyInfo.investedMineral, moduleBodyInfo.investedPvpMineral, moduleBodyInfo.investedTempMineral);
+        SetInvestedModulePoint(moduleBodyInfo.investedModulePoint);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType, moduleBodyInfo.moduleLevel);
@@ -101,7 +101,7 @@ public class ModuleBody : ModuleBase
         m_healthMax = moduleData.health;
         m_health = moduleBodyInfo.currentHealth > 0f ? Mathf.Min(moduleBodyInfo.currentHealth, m_healthMax) : 1f;
         // 업그레이드 비용 설정
-        m_mineralCostLevelup = moduleData.mineralCost;
+        m_modulePointCostLevelup = moduleData.modulePointCost;
         
         m_attack = 0.0f; // Body는 직접 공격하지 않음
 

@@ -1,4 +1,4 @@
-sub_type,level,cost_m,description,health,repair,speed,attack,attack_count,attack_cool,projectile_speed,air_count,air_maintenance_time,air_launch_dist,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius
+sub_type,level,cost_mp,description,health,repair,speed,attack,attack_count,attack_cool,projectile_speed,air_count,air_maintenance_time,air_launch_dist,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius
 10101,1,1,,100,1,1,,,,,,,,,,,,,,,
 10101,2,1,,110,1,1,,,,,,,,,,,,,,,
 10101,3,1,,120,1,1,,,,,,,,,,,,,,,

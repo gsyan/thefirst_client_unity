@@ -11,13 +11,18 @@ public class UIPopupConfirm : UIPopupBase
     [Header("Confirm Popup UI")]
     public TMP_Text titleText;
     [SerializeField] private TMP_Text bodyText;
+
+    [SerializeField] private RowImageText m_techLevel;
+    [SerializeField] private RowImageText m_mineral;
+    [SerializeField] private RowImageText m_techPoint;
+    [SerializeField] private RowImageText m_modulePoint;
+    [SerializeField] private RowImageText m_pvpPoint;
+
     public Button confirmButton;
     public Button cancelButton;
 
     private Action onCancelCallback;
     private Action onConfirmCallback;
-
-    private const string SEPARATOR = "\n<color=#666666>─────────────</color>\n";
 
     protected override void Awake()
     {
@@ -26,77 +31,101 @@ public class UIPopupConfirm : UIPopupBase
         if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
     }
 
-    public void ShowPopupConfirm(string title, string message, string detailText, RequireStruct require, long mineralCost, Action onConfirm, Action onCancel = null)
+    public void ShowPopupConfirm(string title, string message, string detailText, RequireStruct require, CostStruct cost, Action onConfirm, Action onCancel = null)
     {
-        if (titleText != null) titleText.text = title;
+        base.ShowPopup();
+        if (titleText != null)
+            titleText.text = title;
 
         bool canConfirm = true;
-        if (bodyText != null) bodyText.text = BuildBodyText(message, detailText, require, mineralCost, out canConfirm);
+        if (bodyText != null) bodyText.text = BuildBodyText(message, detailText, require, cost, out canConfirm);
 
         if (confirmButton != null) confirmButton.interactable = canConfirm;
 
         onCancelCallback = onCancel;
         onConfirmCallback = onConfirm;
 
-        base.ShowPopup();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(titleText.transform.parent as RectTransform);
     }
 
-    private string BuildBodyText(string message, string detailText, RequireStruct require, long mineralCost, out bool canConfirm)
+    private string BuildBodyText(string message, string detailText, RequireStruct require, CostStruct cost, out bool canConfirm)
     {
         var sb = new StringBuilder();
         sb.Append(message);
 
         if (string.IsNullOrEmpty(detailText) == false)
-        {
-            sb.Append(SEPARATOR);
             sb.Append(detailText);
-        }
 
         canConfirm = true;
 
-        string requireText = BuildRequireText(require, out bool requireMet);
-        if (string.IsNullOrEmpty(requireText) == false)
-        {
-            sb.Append(SEPARATOR);
-            sb.Append(requireText);
-            if (requireMet == false) canConfirm = false;
-        }
+        bool requireMet = BuildRequireText(require);
+        if (requireMet == false) canConfirm = false;
 
-        string costText = BuildCostText(mineralCost, out bool canAfford);
-        if (string.IsNullOrEmpty(costText) == false)
-        {
-            sb.Append(SEPARATOR);
-            sb.Append(costText);
-            if (canAfford == false) canConfirm = false;
-        }
+        bool canAfford = BuildCostText(cost);
+        if (canAfford == false) canConfirm = false;
 
         return sb.ToString();
     }
 
-    private string BuildRequireText(RequireStruct require, out bool requireMet)
+    private bool BuildRequireText(RequireStruct require)
     {
-        requireMet = true;
-        if (require == null || require.techLevel <= 0) return null;
+        if (require == null || require.techLevel <= 0)
+        {
+            m_techLevel.Hide();
+            return true;
+        }
 
         var ch = DataManager.Instance.m_currentCharacter;
         int currentTechLevel = ch != null ? ch.GetTechLevel() : 0;
-        requireMet = currentTechLevel >= require.techLevel;
+        bool requireMet = currentTechLevel >= require.techLevel;
 
-        string text = LocalizationManager.Instance.Get("require_level_compare", CommonUtility.Sprite("gears"), require.techLevel, currentTechLevel);
-        return requireMet ? text : $"<color=red>{text}</color>";
+        string text = LocalizationManager.Instance.Get("require_level_compare", require.techLevel, currentTechLevel);
+        m_techLevel.SetText( requireMet ? text : $"<color=red>{text}</color>");
+        return requireMet;
     }
 
-    private string BuildCostText(long mineralCost, out bool canAfford)
+    private bool BuildCostText(CostStruct cost)
     {
-        canAfford = true;
-        if (mineralCost <= 0) return null;
+        m_mineral.Hide();
+        m_techPoint.Hide();
+        m_modulePoint.Hide();
+        m_pvpPoint.Hide();
 
-        var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-        bool ins = info != null && info.mineral < mineralCost;
-        if (ins == true) canAfford = false;
+        if (cost == null || cost.amount <= 0) return true;
 
-        string C(bool insufficient, string val) => insufficient ? $"<color=red>{val}</color>" : val;
-        return $"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(mineralCost))}";
+        var ch = DataManager.Instance.m_currentCharacter;
+        long current = 0;
+        RowImageText row = null;
+        
+        if (cost.costType == ECostType.Mineral)
+        {
+            row = m_mineral;
+            current = ch != null ? ch.GetMineral() : 0;
+        }
+        else if (cost.costType == ECostType.TechPoint)
+        {
+            row = m_techPoint;
+            current = ch != null ? ch.GetTechPoint() : 0;
+        }
+        else if (cost.costType == ECostType.ModulePoint)
+        {
+            row = m_modulePoint;
+            current = ch != null ? ch.GetModulePoint() : 0;
+        }
+        else if (cost.costType == ECostType.PvpPoint)
+        {
+            row = m_pvpPoint;
+            current = ch != null ? ch.GetPvpPoint() : 0;
+        }
+
+        bool canAfford = current >= cost.amount;
+        if (row != null)
+        {
+            string val = CommonUtility.FormatBigNumber(cost.amount);
+            row.gameObject.SetActive(true);
+            row.SetText(canAfford ? val : $"<color=red>{val}</color>");
+        }
+        return canAfford;
     }
 
     private void OnConfirmClicked()

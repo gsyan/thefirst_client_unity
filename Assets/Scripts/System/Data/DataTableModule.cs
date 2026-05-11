@@ -21,7 +21,7 @@ public class ModuleData
     public int moduleLevel = 1;
 
     // common ---------------------------------------------------------------------------
-    public int mineralCost;
+    public int modulePointCost;
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -431,7 +431,7 @@ public class DataTableModule : ScriptableObject
                 airAmmo                         = ParseCsvInt  (GetCol(cols, col, "air_ammo")),
                 airDetectRadius                 = ParseCsvFloat(GetCol(cols, col, "air_detect_radius")),
                 airAvoidRadius                  = ParseCsvFloat(GetCol(cols, col, "air_avoid_radius")),
-                mineralCost                     = ParseCsvInt(GetCol(cols, col, "cost_m")),
+                modulePointCost                 = ParseCsvInt(GetCol(cols, col, "cost_mp")),
                 description                     = GetCol(cols, col, "description")
             };
 

@@ -579,10 +579,6 @@ MonoBehaviour:
     m_Key: error_message_title
     m_Metadata:
       m_Items: []
-  - m_Id: 26480402604359680
-    m_Key: require_level_compare
-    m_Metadata:
-      m_Items: []
   - m_Id: 26803779546251264
     m_Key: ship_module_reset
     m_Metadata:
@@ -745,6 +741,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 33428911052161024
     m_Key: UITabExploration_TryZone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26480402604359680
+    m_Key: require_level_compare
     m_Metadata:
       m_Items: []
   m_Metadata:

@@ -179,7 +179,7 @@ public class DataTableModuleEditor : Editor
         module.speed = EditorGUILayout.FloatField("Speed", module.speed);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
+        module.modulePointCost = EditorGUILayout.IntField("Mineral", module.modulePointCost);
         
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -274,7 +274,7 @@ public class DataTableModuleEditor : Editor
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
+        module.modulePointCost = EditorGUILayout.IntField("Mineral", module.modulePointCost);
         
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -368,7 +368,7 @@ public class DataTableModuleEditor : Editor
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
+        module.modulePointCost = EditorGUILayout.IntField("Mineral", module.modulePointCost);
 
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -479,7 +479,7 @@ public class DataTableModuleEditor : Editor
         module.airAvoidRadius = EditorGUILayout.FloatField("Aircraft Avoid Radius", module.airAvoidRadius);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
+        module.modulePointCost = EditorGUILayout.IntField("Mineral", module.modulePointCost);
 
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -549,7 +549,7 @@ public class DataTableModuleEditor : Editor
             foreach (var d in group.modules)
             {
                 sb.AppendLine(string.Format(ic,
-                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24}",
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21}",
                     (int)d.moduleSubType, d.moduleLevel,
                     d.health, d.repair, d.speed,
                     d.attack, d.attackFireCount, d.attackCool,
@@ -558,7 +558,7 @@ public class DataTableModuleEditor : Editor
                     d.airHealth, d.airAttack, d.airAttackRange,
                     d.airAttackCool, d.airSpeed, d.airAmmo,
                     d.airDetectRadius, d.airAvoidRadius,
-                    d.mineralCost, 
+                    d.modulePointCost,
                     d.description));
             }
         }

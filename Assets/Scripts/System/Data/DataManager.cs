@@ -113,13 +113,13 @@ public class DataManager : Singleton<DataManager>
             Debug.LogError("DataTableModule is not exist");
     }
 
-    public bool GetModuleLevelUpCost(EModuleSubType subType, int moduleLevel, out long mineralCost)
+    public bool GetModuleLevelUpCost(EModuleSubType subType, int moduleLevel, out long modulePointCost)
     {
-        mineralCost = 0;
+        modulePointCost = 0;
         ModuleData moduleData = m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
         if (moduleData == null) return false;
 
-        mineralCost = moduleData.mineralCost;
+        modulePointCost = moduleData.modulePointCost;
         return true;
     }
 

@@ -306,7 +306,7 @@ public class UITabExploration : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             zoneStage.zoneName,
             LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
-            null, null, 0,
+            null, null, null,
             onConfirm: () => ExecuteEnterZone(zoneStage)
         );
     }
@@ -475,9 +475,6 @@ public class UITabExploration : UITabBase
 
         if (character != null && response.data.rewardInfo != null)
             character.UpdateMineral(response.data.rewardInfo.mineralRemain);
-
-        if (character != null)
-            character.UpdateMineralMaxGot(response.data.mineralMaxGot);
 
         if (response.data.isZoneCleared == true && character != null)
         {

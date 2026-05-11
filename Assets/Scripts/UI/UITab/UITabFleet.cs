@@ -105,7 +105,7 @@ public class UITabFleet : UITabBase
         if (node == null) return;
 
         var character = DataManager.Instance.m_currentCharacter;
-        if (character.CheckEnoughMineral(node.mineralCost) == false)
+        if (character.CheckEnoughTechPoint(node.pointCost) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("error_insufficient_resources"));
             return;
@@ -128,7 +128,7 @@ public class UITabFleet : UITabBase
         }
 
         if (response.data.costRemainInfo != null)
-            DataManager.Instance.m_currentCharacter.UpdateAllMinerals(response.data.costRemainInfo);
+            DataManager.Instance.m_currentCharacter.UpdateAllFromCostRemain(response.data.costRemainInfo);
         if (response.data.researchedIds != null)
             DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
 
@@ -338,7 +338,7 @@ public class UITabFleet : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("fleet_add_ship_name"),
             LocalizationManager.Instance.Get("popup_message_add_ship"),
-            null, require, gameSettings.addShipCost,
+            null, require, new CostStruct(ECostType.ModulePoint, gameSettings.addShipCost),
             ExecuteAddShip
         );
     }
@@ -360,7 +360,7 @@ public class UITabFleet : UITabBase
         {
             if (response.errorCode == 0)
             {
-                m_myCharacter.UpdateMineral(response.data.costRemainInfo.mineralRemain);
+                m_myCharacter.UpdateAllFromCostRemain(response.data.costRemainInfo);
                 
                 if (response.data.updatedFleetInfo != null)
                     DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
@@ -385,7 +385,7 @@ public class UITabFleet : UITabBase
         int techLevel = m_myCharacter.GetTechLevel();
         int maxShipsAtTech = DataManager.Instance.m_dataTableResearch.GetShipCount(techLevel);
         if (currentShipCount >= maxShipsAtTech) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
-        if (m_myCharacter.m_characterInfo.mineral < gameSettings.addShipCost) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MINERAL;
+        if (m_myCharacter.m_characterInfo.modulePoint < gameSettings.addShipCost) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MODULE_POINT;
 
         return ServerErrorCode.SUCCESS;
     }

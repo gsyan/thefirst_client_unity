@@ -1,4 +1,4 @@
-research_id,prerequisites,cost_m,ship_count
+research_id,prerequisites,cost_tp,ship_count
 tech_level_1,,0,2
 tech_level_2,tech_level_1,10,3
 tech_level_3,tech_level_2,10,4

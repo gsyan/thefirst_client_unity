@@ -27,8 +27,9 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
             characterId   = 1,
             characterName = "debug_player",
             mineral       = 999999,
-            pvpMineral    = 0,
-            tempMineral   = 0,
+            techPoint     = 999999,
+            modulePoint   = 999999,
+            pvpPoint      = 0,
             clearedZones  = new List<string>(),
             nameChangeCount = 2,
         };

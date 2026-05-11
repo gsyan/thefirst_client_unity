@@ -77,8 +77,10 @@ public class ZoneStageConfig
     // 적 함선 템플릿 큐 — 순서대로 1척씩 스폰, 개수 제한 없음
     public List<EnemyShipConfig> enemyShipConfigs;
 
-    [Header("클리어시 광물 획득량")]
-    public int mineralClearReward = 0;   // [server]
+    [Header("클리어 보상")]
+    public int mineralClearReward = 0;     // [server] 매 클리어마다
+    public int techPointClearReward = 0;   // [server] 최초 클리어 1회
+    public int modulePointClearReward = 0; // [server] 최초 클리어 1회
 
     [Header("아군 함대 위치/방향 (galaxyCameraTarget 기준 상대 좌표)")]
     public Vector3 fleetPosition;

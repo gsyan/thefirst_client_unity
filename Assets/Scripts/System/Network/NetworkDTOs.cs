@@ -55,10 +55,8 @@ public class ModuleBodyInfo
     public List<ModuleInfo> hangers;
     // 이 body 슬롯에서 subTypeAddCost를 납부해 비용 없이 교체 가능한 서브타입 목록
     public List<EModuleSubType> unlockedSubTypes;
-    // 이 슬롯에 투자한 재화 이력 (리셋 시 100% 환급)
-    public int investedMineral;
-    public int investedPvpMineral;
-    public int investedTempMineral;
+    // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
+    public int investedModulePoint;
     // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
     public float currentHealth;
 }
@@ -73,10 +71,8 @@ public class ModuleInfo
     public int slotIndex;
     // 이 슬롯에서 subTypeAddCost를 납부해 비용 없이 교체 가능한 서브타입 목록
     public List<EModuleSubType> unlockedSubTypes;
-    // 이 슬롯에 투자한 재화 이력 (리셋 시 100% 환급)
-    public int investedMineral;
-    public int investedPvpMineral;
-    public int investedTempMineral;
+    // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
+    public int investedModulePoint;
 }
 
 [System.Serializable]
@@ -98,7 +94,7 @@ public class ModuleSlotInfo
 public class ModuleChangeCostEntry
 {
     public EModuleSubType moduleSubType;
-    public int mineralCost;
+    public int modulePointCost;
 }
 
 [System.Serializable]
@@ -107,13 +103,12 @@ public class CharacterInfo
     public long characterId;
     public string characterName;
     public int mineral;
-    public int mineralMaxGot;  // 스테이지 클리어로 얻은 누적 총합 (소비 무관, 영구)
-    public int pvpMineral;
-    public int pvpMineralMaxGot;
-    public string pvpMineralExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
-    public int tempMineral;
-    public int tempMineralMaxGot;
-    public string tempMineralExpiry;  // ISO 8601 — IAP 구매, 만료 시 소멸
+    public int techPoint;
+    public int modulePoint;
+    public int modulePointMaxGot;    // 누적 획득량 (리셋 환급 반영)
+    public int pvpPoint;
+    public int pvpPointMaxGot;
+    public string pvpPointExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
     public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
     public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
 }
@@ -318,9 +313,7 @@ public class ModuleUnlockResponse
     public EModuleSubType moduleSubType;
     public int slotIndex;
     public CostRemainInfo costRemainInfo;
-    public int investedMineral;
-    public int investedPvpMineral;
-    public int investedTempMineral;
+    public int investedModulePoint;
 }
 
 [System.Serializable]
@@ -341,10 +334,10 @@ public class CostRemainInfo
 {
     public int mineralCost;
     public int mineralRemain;
-    public int pvpMineralCost;
-    public int pvpMineralRemain;
-    public int tempMineralCost;
-    public int tempMineralRemain;
+    public int techPointCost;
+    public int techPointRemain;
+    public int modulePointCost;
+    public int modulePointRemain;
 }
 
 [System.Serializable]
@@ -432,10 +425,12 @@ public class ClearZoneStageRequest
 [System.Serializable]
 public class ClearZoneStageResponse
 {
-    public CostRemainInfo rewardInfo;   // 킬 보상
+    public CostRemainInfo rewardInfo;   // 킬 보상 (mineral)
     public bool isZoneCleared;          // true = 신규 클리어 완료
     public string clearedZoneName;      // isZoneCleared == true 일 때만 유효
-    public int mineralMaxGot;           // 클리어 후 갱신된 누적 총합
+    public int mineralReward;            // 이번 클리어에서 획득한 mineral
+    public int techPointReward;         // 최초 클리어 시 지급 (isZoneCleared == true 일 때만 유효)
+    public int modulePointReward;       // 최초 클리어 시 지급 (isZoneCleared == true 일 때만 유효)
 }
 
 #endregion

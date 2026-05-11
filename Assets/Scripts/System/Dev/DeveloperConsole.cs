@@ -458,10 +458,10 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
-        // usage: addminerals [mineral] [pvpMineral] [tempMineral] — 0이면 해당 타입 스킵
-        RegisterCommand("addminerals", "Add minerals (usage: addminerals [mineral] [pvpMineral] [tempMineral])", (args) =>
+        // usage: addminerals [mineral] [techPoint] [modulePoint] [pvpPoint] — 0이면 해당 타입 스킵
+        RegisterCommand("addminerals", "Add resources (usage: addminerals [mineral] [techPoint] [modulePoint] [pvpPoint])", (args) =>
         {
-            if (args.Length < 3) return;
+            if (args.Length < 4) return;
             if (NetworkManager.Instance == null) return;
             NetworkManager.Instance.ExecuteDevCommand("addminerals", args, (response) =>
             {
@@ -579,13 +579,17 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 if (int.TryParse(value, out int mineral))
                     DataManager.Instance.m_currentCharacter.UpdateMineral(mineral);
                 break;
-            case "pvpmineral":
-                if (int.TryParse(value, out int pvpMineral))
-                    DataManager.Instance.m_currentCharacter.UpdatePvpMineral(pvpMineral);
+            case "techpoint":
+                if (int.TryParse(value, out int techPoint))
+                    DataManager.Instance.m_currentCharacter.UpdateTechPoint(techPoint);
                 break;
-            case "tempmineral":
-                if (int.TryParse(value, out int tempMineral))
-                    DataManager.Instance.m_currentCharacter.UpdateTempMineral(tempMineral);
+            case "modulepoint":
+                if (int.TryParse(value, out int modulePoint))
+                    DataManager.Instance.m_currentCharacter.UpdateModulePoint(modulePoint);
+                break;
+            case "pvppoint":
+                if (int.TryParse(value, out int pvpPoint))
+                    DataManager.Instance.m_currentCharacter.UpdatePvpPoint(pvpPoint);
                 break;
         }
     }

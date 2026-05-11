@@ -55,7 +55,7 @@ public class ModuleBeam : ModuleBase
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
         SetUnlockedSubTypes(moduleInfo.unlockedSubTypes);
-        SetInvestedMinerals(moduleInfo.investedMineral, moduleInfo.investedPvpMineral, moduleInfo.investedTempMineral);
+        SetInvestedModulePoint(moduleInfo.investedModulePoint);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
@@ -73,7 +73,7 @@ public class ModuleBeam : ModuleBase
         m_attackCool = moduleData.attackCool;
 
         // 업그레이드 비용 설정
-        m_mineralCostLevelup = moduleData.mineralCost;
+        m_modulePointCostLevelup = moduleData.modulePointCost;
 
         m_lastAttackTime = 0f;
 
@@ -189,7 +189,7 @@ public class ModuleBeam : ModuleBase
         m_attack = moduleData.attack;
         m_attackCool = moduleData.attackCool;
         m_attackFireCount = moduleData.attackFireCount;
-        m_mineralCostLevelup = moduleData.mineralCost;
+        m_modulePointCostLevelup = moduleData.modulePointCost;
     }
 
     public override int GetModuleBodyIndex()

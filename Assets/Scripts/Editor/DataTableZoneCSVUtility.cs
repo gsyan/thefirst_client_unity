@@ -47,12 +47,12 @@ public static class DataTableZoneCSVUtility
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y");
+        sb.AppendLine("zone,stage,mineral_clear_reward,tech_point_clear_reward,module_point_clear_reward,spawn_delay,ship_spawn_interval,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y");
         foreach (ZoneStageConfig s in table.zoneStageList)
         {
             int stage = ParseStage(s.zoneName);
             sb.AppendLine(
-                $"{s.zoneIndex},{stage},{s.mineralClearReward}," +
+                $"{s.zoneIndex},{stage},{s.mineralClearReward},{s.techPointClearReward},{s.modulePointClearReward}," +
                 $"{s.delayBeforeSpawn},{s.shipSpawnInterval}," +
                 $"{s.fleetPosition.x},{s.fleetPosition.y},{s.fleetPosition.z}," +
                 $"{s.fleetRotationY}");

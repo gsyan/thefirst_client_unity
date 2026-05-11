@@ -580,7 +580,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26480402604359680
-    m_Localized: "{0} Lv.{1} \uD544\uC694 (\uD604\uC7AC Lv.{2})"
+    m_Localized: "Lv.{0} \uD544\uC694 (\uD604\uC7AC Lv.{1})"
     m_Metadata:
       m_Items: []
   - m_Id: 26803779546251264

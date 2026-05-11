@@ -80,7 +80,7 @@ public class UITabPvp : UITabBase
             sb.Append($"\n{CommonUtility.Sprite("jet-fighter")} {stats.airCount}");
         }
 
-        UIManager.Instance.ShowConfirmPopup(title, message, sb.ToString(), null, 0,
+        UIManager.Instance.ShowConfirmPopup(title, message, sb.ToString(), null, null,
             () => ExecuteAttack(opponent));
     }
 

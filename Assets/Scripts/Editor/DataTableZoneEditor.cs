@@ -274,7 +274,7 @@ public class DataTableZoneEditor : Editor
         }
 
         // --- zone CSV 파싱 ---
-        // 헤더: zone,stage,mineral_clear_reward,spawn_delay,ship_spawn_interval,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y
+        // 헤더: zone,stage,mineral_clear_reward,tech_point_clear_reward,module_point_clear_reward,spawn_delay,ship_spawn_interval,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y
         m_dataTableZone.zoneStageList.Clear();
 
         string[] zoneLines = File.ReadAllLines(zoneCSV);
@@ -287,14 +287,15 @@ public class DataTableZoneEditor : Editor
 
             if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stage)) continue;
 
-            float.TryParse(col.Length > 5 ? col[5] : "0", out float fpx);
-            float.TryParse(col.Length > 6 ? col[6] : "0", out float fpy);
-            float.TryParse(col.Length > 7 ? col[7] : "0", out float fpz);
-            float.TryParse(col.Length > 8 ? col[8] : "0", out float frotY);
-
             int.TryParse(col[2], out int clearReward);
-            float.TryParse(col[3], out float spawnDelay);
-            float.TryParse(col[4], out float shipSpawnInterval);
+            int.TryParse(col.Length > 3 ? col[3] : "0", out int techPointReward);
+            int.TryParse(col.Length > 4 ? col[4] : "0", out int modulePointReward);
+            float.TryParse(col.Length > 5 ? col[5] : "0", out float spawnDelay);
+            float.TryParse(col.Length > 6 ? col[6] : "0", out float shipSpawnInterval);
+            float.TryParse(col.Length > 7 ? col[7] : "0", out float fpx);
+            float.TryParse(col.Length > 8 ? col[8] : "0", out float fpy);
+            float.TryParse(col.Length > 9 ? col[9] : "0", out float fpz);
+            float.TryParse(col.Length > 10 ? col[10] : "0", out float frotY);
 
             enemyMap.TryGetValue((zoneIndex, stage), out var waveTemplates);
 
@@ -306,6 +307,8 @@ public class DataTableZoneEditor : Editor
                 delayBeforeSpawn          = spawnDelay > 0 ? spawnDelay : 3f,
                 shipSpawnInterval         = shipSpawnInterval > 0 ? shipSpawnInterval : 1.5f,
                 mineralClearReward        = clearReward,
+                techPointClearReward      = techPointReward,
+                modulePointClearReward    = modulePointReward,
                 fleetPosition             = new Vector3(fpx, fpy, fpz),
                 fleetRotationY            = frotY,
                 enemyShipConfigs          = waveTemplates ?? new List<EnemyShipConfig>(),
@@ -502,8 +505,10 @@ public class DataTableZoneEditor : Editor
 
             // 시간당 자원 수확량
             EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.LabelField("클리어 자원 획득량", EditorStyles.boldLabel);
-            zoneStage.mineralClearReward = EditorGUILayout.IntField("Mineral Reward", zoneStage.mineralClearReward);
+            EditorGUILayout.LabelField("클리어 보상", EditorStyles.boldLabel);
+            zoneStage.mineralClearReward     = EditorGUILayout.IntField("Mineral (매 클리어)",      zoneStage.mineralClearReward);
+            zoneStage.techPointClearReward   = EditorGUILayout.IntField("TechPoint (최초 클리어)", zoneStage.techPointClearReward);
+            zoneStage.modulePointClearReward = EditorGUILayout.IntField("ModulePoint (최초 클리어)", zoneStage.modulePointClearReward);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);

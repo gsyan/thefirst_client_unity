@@ -150,7 +150,7 @@ public class UIPopupLevelup : UIPopupBase
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 
-    private string BuildBodyText(long mineralCost)
+    private string BuildBodyText(long pointCost)
     {
         const string SEPARATOR = "\n<color=#666666>─────────────</color>\n";
         var sb = new StringBuilder();
@@ -172,12 +172,21 @@ public class UIPopupLevelup : UIPopupBase
             sb.Append($"{CommonUtility.Sprite("spaceship")} {currentShips} → {targetShips}");
         }
 
-        if (mineralCost > 0)
+        if (pointCost > 0)
         {
             var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-            bool ins = info != null && info.mineral < mineralCost;
             string C(bool i, string val) => i ? $"<color=red>{val}</color>" : val;
-            string costStr = $"{CommonUtility.Sprite("crystal-growth")} {C(ins, CommonUtility.FormatBigNumber(mineralCost))}";
+            string costStr;
+            if (m_mode == Mode.Module)
+            {
+                bool ins = info != null && info.modulePoint < pointCost;
+                costStr = $"{CommonUtility.Sprite("upgrade")} {C(ins, CommonUtility.FormatBigNumber(pointCost))}";
+            }
+            else
+            {
+                bool ins = info != null && info.techPoint < pointCost;
+                costStr = $"{CommonUtility.Sprite("gears")} {C(ins, CommonUtility.FormatBigNumber(pointCost))}";
+            }
             if (sb.Length > 0) sb.Append(SEPARATOR);
             sb.Append(costStr);
         }
@@ -185,11 +194,13 @@ public class UIPopupLevelup : UIPopupBase
         return sb.ToString();
     }
 
-    private bool CheckCanAfford(long mineralCost)
+    private bool CheckCanAfford(long pointCost)
     {
         var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
         if (info == null) return false;
-        return info.mineral >= mineralCost;
+        if (m_mode == Mode.Module)
+            return info.modulePoint >= pointCost;
+        return info.techPoint >= pointCost;
     }
 
     // ─────────────────────────────────────────────

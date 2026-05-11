@@ -12,7 +12,7 @@ public class ResearchNodeData
 {
     public string researchId; // 고유 식별자 겸 로컬라이제이션 키
     public List<string> prerequisiteIds = new List<string>();
-    public int mineralCost;
+    public int pointCost;    // TechLevelResearchData → techPoint, ModuleResearchData → modulePoint
     [Newtonsoft.Json.JsonIgnore] public Vector2 uiPosition;
 }
 
@@ -51,7 +51,7 @@ public class DataTableResearch : ScriptableObject
     public long GetResearchCost(EModuleSubType subType)
     {
         var data = GetResearchData(subType);
-        return data?.mineralCost ?? 0;
+        return data?.pointCost ?? 0;
     }
 
     // 선행 연구 조건을 모두 충족하는지 확인
@@ -75,11 +75,11 @@ public class DataTableResearch : ScriptableObject
         return researchDataList.FindAll(r => r.moduleType == moduleType);
     }
 
-    // currentLevel → currentLevel+1 업그레이드 비용 반환
+    // currentLevel → currentLevel+1 업그레이드 비용 반환 (techPoint)
     public long GetTechLevelUpgradeCost(int currentLevel)
     {
         var data = techLevelDataList.Find(r => r.targetTechLevel == currentLevel + 1);
-        return data?.mineralCost ?? 0;
+        return data?.pointCost ?? 0;
     }
 
     // 해당 기술레벨에서 허용되는 최대 함선 수 반환
@@ -150,7 +150,7 @@ public class DataTableResearch : ScriptableObject
                 researchId      = researchId,
                 targetTechLevel = targetLevel,
                 prerequisiteIds = ParseCsvStringList(GetCol(cols, col, "prerequisites")),
-                mineralCost     = (int)ParseCsvFloat(GetCol(cols, col, "cost_m")),
+                pointCost       = (int)ParseCsvFloat(GetCol(cols, col, "cost_tp")),
                 shipCount       = (int)ParseCsvFloat(GetCol(cols, col, "ship_count")),
             });
         }
@@ -193,7 +193,7 @@ public class DataTableResearch : ScriptableObject
                 moduleSubType   = moduleSubType,
                 prerequisiteIds = ParseCsvStringList(GetCol(cols, col, "prerequisites")),
                 uiPosition      = uiPos,
-                mineralCost     = (int)ParseCsvLong(GetCol(cols, col, "cost_m")),
+                pointCost       = (int)ParseCsvLong(GetCol(cols, col, "cost_mp")),
             });
         }
 

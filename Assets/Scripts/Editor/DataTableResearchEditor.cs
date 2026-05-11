@@ -177,7 +177,7 @@ public class DataTableResearchEditor : Editor
 
             // 연구 비용 (Tech Level은 서브타입 인코딩에서 파싱 — 별도 입력 불필요)
             EditorGUILayout.LabelField("Research Cost", EditorStyles.boldLabel);
-            researchData.mineralCost = EditorGUILayout.IntField("Mineral", researchData.mineralCost);
+            researchData.pointCost = EditorGUILayout.IntField("Mineral", researchData.pointCost);
 
             EditorGUI.indentLevel--;
         }
@@ -204,7 +204,7 @@ public class DataTableResearchEditor : Editor
                 EditorGUI.indentLevel++;
                 EditorGUILayout.IntField("Target Tech Level", data.targetTechLevel);
                 EditorGUILayout.LabelField("Prerequisites", string.Join(", ", data.prerequisiteIds));
-                EditorGUILayout.LabelField("Cost M",  data.mineralCost.ToString());
+                EditorGUILayout.LabelField("Cost TP", data.pointCost.ToString());
                 data.shipCount = EditorGUILayout.IntField("Ship Count",       data.shipCount);
                 EditorGUI.indentLevel--;
                 EditorGUILayout.EndVertical();
