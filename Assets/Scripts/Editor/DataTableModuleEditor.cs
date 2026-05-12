@@ -179,7 +179,7 @@ public class DataTableModuleEditor : Editor
         module.speed = EditorGUILayout.FloatField("Speed", module.speed);
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.modulePointCost = EditorGUILayout.IntField("Mineral", module.modulePointCost);
+        module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
         
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -274,7 +274,7 @@ public class DataTableModuleEditor : Editor
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.modulePointCost = EditorGUILayout.IntField("Mineral", module.modulePointCost);
+        module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
         
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -368,7 +368,7 @@ public class DataTableModuleEditor : Editor
         module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.modulePointCost = EditorGUILayout.IntField("Mineral", module.modulePointCost);
+        module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
 
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -479,7 +479,7 @@ public class DataTableModuleEditor : Editor
         module.airAvoidRadius = EditorGUILayout.FloatField("Aircraft Avoid Radius", module.airAvoidRadius);
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.modulePointCost = EditorGUILayout.IntField("Mineral", module.modulePointCost);
+        module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
 
         module.description = EditorGUILayout.TextField("Description", module.description);
     }

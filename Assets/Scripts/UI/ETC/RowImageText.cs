@@ -20,7 +20,7 @@ public class RowImageText : MonoBehaviour
     {
         gameObject.SetActive(true);
         SetImage(spriteName);
-        SetText(text);
+        SetTextRowImageText(text);
     }
 
     public void Hide()
@@ -36,11 +36,10 @@ public class RowImageText : MonoBehaviour
             m_image.sprite = sprite;
     }
 
-    public void SetText(string text)
+    public void SetTextRowImageText(string text)
     {
+        gameObject.SetActive(true);
         m_text.text = text;
-        // if( m_text != null)
-        //     CommonUtility.SetUILocText(m_text, text);
     }
 
     public void SetTextColor(Color color)

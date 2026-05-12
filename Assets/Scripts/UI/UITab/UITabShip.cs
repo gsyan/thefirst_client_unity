@@ -297,13 +297,15 @@ public class UITabShip : UITabBase
 
         int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
         string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
-        string detailText = m_selectedModule.GetDetailText(1, 1);
+        EModuleType moduleType = m_selectedModule.GetModuleType();
+        var resultRows = CommonUtility.GetModuleStatRows(moduleType, CommonUtility.GetDefaultSubType(moduleType), 1, 1);
 
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_unlock"),
             LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
-            detailText, null, new CostStruct(ECostType.ModulePoint, unlockPrice),
-            () => ExecuteModuleUnlock()
+            null, null, new CostStruct(ECostType.ModulePoint, unlockPrice),
+            () => ExecuteModuleUnlock(),
+            null, resultRows
         );
     }
 
@@ -579,7 +581,7 @@ public class UITabShip : UITabBase
             ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level);
             if (cur != null && m_statsRows.Count >= 2)
             {
-                m_statsRows[0].SetText($"{level}");
+                m_statsRows[0].SetTextRowImageText($"{level}");
 
                 EModuleType moduleType = m_selectedModule.GetModuleType();
                 if (moduleType == EModuleType.body && m_statsRows.Count >= 4)

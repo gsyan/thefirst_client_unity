@@ -177,7 +177,7 @@ public class DataTableResearchEditor : Editor
 
             // 연구 비용 (Tech Level은 서브타입 인코딩에서 파싱 — 별도 입력 불필요)
             EditorGUILayout.LabelField("Research Cost", EditorStyles.boldLabel);
-            researchData.pointCost = EditorGUILayout.IntField("Mineral", researchData.pointCost);
+            researchData.pointCost = EditorGUILayout.IntField("ModulePoint", researchData.pointCost);
 
             EditorGUI.indentLevel--;
         }

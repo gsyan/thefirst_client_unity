@@ -15,487 +15,487 @@ MonoBehaviour:
   researchDataList:
   - researchId: body_t1_m1
     prerequisiteIds: []
-    mineralCost: 0
+    pointCost: 0
     uiPosition: {x: 80, y: -40}
     moduleType: 1
     moduleSubType: 10101
   - researchId: body_t2_m1
     prerequisiteIds:
     - body_t1_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 280, y: -40}
     moduleType: 1
     moduleSubType: 10201
   - researchId: body_t3_m1
     prerequisiteIds:
     - body_t2_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 480, y: -40}
     moduleType: 1
     moduleSubType: 10301
   - researchId: body_t4_m1
     prerequisiteIds:
     - body_t3_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 680, y: -40}
     moduleType: 1
     moduleSubType: 10401
   - researchId: body_t5_m1
     prerequisiteIds:
     - body_t4_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 880, y: -40}
     moduleType: 1
     moduleSubType: 10501
   - researchId: body_t6_m1
     prerequisiteIds:
     - body_t5_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1080, y: -40}
     moduleType: 1
     moduleSubType: 10601
   - researchId: body_t7_m1
     prerequisiteIds:
     - body_t6_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1280, y: -40}
     moduleType: 1
     moduleSubType: 10701
   - researchId: body_t8_m1
     prerequisiteIds:
     - body_t7_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1480, y: -40}
     moduleType: 1
     moduleSubType: 10801
   - researchId: body_t9_m1
     prerequisiteIds:
     - body_t8_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1680, y: -40}
     moduleType: 1
     moduleSubType: 10901
   - researchId: body_t10_m1
     prerequisiteIds:
     - body_t9_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1880, y: -40}
     moduleType: 1
     moduleSubType: 11001
   - researchId: body_t11_m1
     prerequisiteIds:
     - body_t10_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2080, y: -40}
     moduleType: 1
     moduleSubType: 11101
   - researchId: body_t12_m1
     prerequisiteIds:
     - body_t11_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2280, y: -40}
     moduleType: 1
     moduleSubType: 11201
   - researchId: body_t13_m1
     prerequisiteIds:
     - body_t12_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2480, y: -40}
     moduleType: 1
     moduleSubType: 11301
   - researchId: body_t14_m1
     prerequisiteIds:
     - body_t13_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2680, y: -40}
     moduleType: 1
     moduleSubType: 11401
   - researchId: beam_t1_m1
     prerequisiteIds: []
-    mineralCost: 0
+    pointCost: 0
     uiPosition: {x: 80, y: -40}
     moduleType: 2
     moduleSubType: 20101
   - researchId: beam_t2_m1
     prerequisiteIds:
     - beam_t1_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 280, y: -40}
     moduleType: 2
     moduleSubType: 20201
   - researchId: beam_t3_m1
     prerequisiteIds:
     - beam_t2_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 480, y: -40}
     moduleType: 2
     moduleSubType: 20301
   - researchId: beam_t4_m1
     prerequisiteIds:
     - beam_t3_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 680, y: -40}
     moduleType: 2
     moduleSubType: 20401
   - researchId: beam_t5_m1
     prerequisiteIds:
     - beam_t4_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 880, y: -40}
     moduleType: 2
     moduleSubType: 20501
   - researchId: beam_t6_m1
     prerequisiteIds:
     - beam_t5_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1080, y: -40}
     moduleType: 2
     moduleSubType: 20601
   - researchId: beam_t7_m1
     prerequisiteIds:
     - beam_t6_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1280, y: -40}
     moduleType: 2
     moduleSubType: 20701
   - researchId: beam_t8_m1
     prerequisiteIds:
     - beam_t7_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1480, y: -40}
     moduleType: 2
     moduleSubType: 20801
   - researchId: beam_t9_m1
     prerequisiteIds:
     - beam_t8_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1680, y: -40}
     moduleType: 2
     moduleSubType: 20901
   - researchId: beam_t10_m1
     prerequisiteIds:
     - beam_t9_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1880, y: -40}
     moduleType: 2
     moduleSubType: 21001
   - researchId: beam_t11_m1
     prerequisiteIds:
     - beam_t10_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2080, y: -40}
     moduleType: 2
     moduleSubType: 21101
   - researchId: beam_t12_m1
     prerequisiteIds:
     - beam_t11_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2280, y: -40}
     moduleType: 2
     moduleSubType: 21201
   - researchId: beam_t13_m1
     prerequisiteIds:
     - beam_t12_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2480, y: -40}
     moduleType: 2
     moduleSubType: 21301
   - researchId: beam_t14_m1
     prerequisiteIds:
     - beam_t13_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2680, y: -40}
     moduleType: 2
     moduleSubType: 21401
   - researchId: missile_t1_m1
     prerequisiteIds: []
-    mineralCost: 0
+    pointCost: 0
     uiPosition: {x: 80, y: -40}
     moduleType: 3
     moduleSubType: 30101
   - researchId: missile_t2_m1
     prerequisiteIds:
     - missile_t1_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 280, y: -40}
     moduleType: 3
     moduleSubType: 30201
   - researchId: missile_t3_m1
     prerequisiteIds:
     - missile_t2_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 480, y: -40}
     moduleType: 3
     moduleSubType: 30301
   - researchId: missile_t4_m1
     prerequisiteIds:
     - missile_t3_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 680, y: -40}
     moduleType: 3
     moduleSubType: 30401
   - researchId: missile_t5_m1
     prerequisiteIds:
     - missile_t4_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 880, y: -40}
     moduleType: 3
     moduleSubType: 30501
   - researchId: missile_t6_m1
     prerequisiteIds:
     - missile_t5_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1080, y: -40}
     moduleType: 3
     moduleSubType: 30601
   - researchId: missile_t7_m1
     prerequisiteIds:
     - missile_t6_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1280, y: -40}
     moduleType: 3
     moduleSubType: 30701
   - researchId: missile_t8_m1
     prerequisiteIds:
     - missile_t7_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1480, y: -40}
     moduleType: 3
     moduleSubType: 30801
   - researchId: missile_t9_m1
     prerequisiteIds:
     - missile_t8_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1680, y: -40}
     moduleType: 3
     moduleSubType: 30901
   - researchId: missile_t10_m1
     prerequisiteIds:
     - missile_t9_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1880, y: -40}
     moduleType: 3
     moduleSubType: 31001
   - researchId: missile_t11_m1
     prerequisiteIds:
     - missile_t10_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2080, y: -40}
     moduleType: 3
     moduleSubType: 31101
   - researchId: missile_t12_m1
     prerequisiteIds:
     - missile_t11_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2280, y: -40}
     moduleType: 3
     moduleSubType: 31201
   - researchId: missile_t13_m1
     prerequisiteIds:
     - missile_t12_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2480, y: -40}
     moduleType: 3
     moduleSubType: 31301
   - researchId: missile_t14_m1
     prerequisiteIds:
     - missile_t13_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2680, y: -40}
     moduleType: 3
     moduleSubType: 31401
   - researchId: hanger_t1_m1
     prerequisiteIds: []
-    mineralCost: 0
+    pointCost: 0
     uiPosition: {x: 80, y: -40}
     moduleType: 4
     moduleSubType: 40101
   - researchId: hanger_t2_m1
     prerequisiteIds:
     - hanger_t1_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 280, y: -40}
     moduleType: 4
     moduleSubType: 40201
   - researchId: hanger_t3_m1
     prerequisiteIds:
     - hanger_t2_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 480, y: -40}
     moduleType: 4
     moduleSubType: 40301
   - researchId: hanger_t4_m1
     prerequisiteIds:
     - hanger_t3_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 680, y: -40}
     moduleType: 4
     moduleSubType: 40401
   - researchId: hanger_t5_m1
     prerequisiteIds:
     - hanger_t4_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 880, y: -40}
     moduleType: 4
     moduleSubType: 40501
   - researchId: hanger_t6_m1
     prerequisiteIds:
     - hanger_t5_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1080, y: -40}
     moduleType: 4
     moduleSubType: 40601
   - researchId: hanger_t7_m1
     prerequisiteIds:
     - hanger_t6_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1280, y: -40}
     moduleType: 4
     moduleSubType: 40701
   - researchId: hanger_t8_m1
     prerequisiteIds:
     - hanger_t7_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1480, y: -40}
     moduleType: 4
     moduleSubType: 40801
   - researchId: hanger_t9_m1
     prerequisiteIds:
     - hanger_t8_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1680, y: -40}
     moduleType: 4
     moduleSubType: 40901
   - researchId: hanger_t10_m1
     prerequisiteIds:
     - hanger_t9_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 1880, y: -40}
     moduleType: 4
     moduleSubType: 41001
   - researchId: hanger_t11_m1
     prerequisiteIds:
     - hanger_t10_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2080, y: -40}
     moduleType: 4
     moduleSubType: 41101
   - researchId: hanger_t12_m1
     prerequisiteIds:
     - hanger_t11_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2280, y: -40}
     moduleType: 4
     moduleSubType: 41201
   - researchId: hanger_t13_m1
     prerequisiteIds:
     - hanger_t12_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2480, y: -40}
     moduleType: 4
     moduleSubType: 41301
   - researchId: hanger_t14_m1
     prerequisiteIds:
     - hanger_t13_m1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 2680, y: -40}
     moduleType: 4
     moduleSubType: 41401
   techLevelDataList:
   - researchId: tech_level_1
     prerequisiteIds: []
-    mineralCost: 0
+    pointCost: 0
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 1
     shipCount: 2
   - researchId: tech_level_2
     prerequisiteIds:
     - tech_level_1
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 2
     shipCount: 3
   - researchId: tech_level_3
     prerequisiteIds:
     - tech_level_2
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 3
     shipCount: 4
   - researchId: tech_level_4
     prerequisiteIds:
     - tech_level_3
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 4
     shipCount: 4
   - researchId: tech_level_5
     prerequisiteIds:
     - tech_level_4
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 5
     shipCount: 5
   - researchId: tech_level_6
     prerequisiteIds:
     - tech_level_5
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 6
     shipCount: 5
   - researchId: tech_level_7
     prerequisiteIds:
     - tech_level_6
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 7
     shipCount: 6
   - researchId: tech_level_8
     prerequisiteIds:
     - tech_level_7
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 8
     shipCount: 6
   - researchId: tech_level_9
     prerequisiteIds:
     - tech_level_8
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 9
     shipCount: 7
   - researchId: tech_level_10
     prerequisiteIds:
     - tech_level_9
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 10
     shipCount: 7
   - researchId: tech_level_11
     prerequisiteIds:
     - tech_level_10
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 11
     shipCount: 8
   - researchId: tech_level_12
     prerequisiteIds:
     - tech_level_11
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 12
     shipCount: 8
   - researchId: tech_level_13
     prerequisiteIds:
     - tech_level_12
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 13
     shipCount: 9
   - researchId: tech_level_14
     prerequisiteIds:
     - tech_level_13
-    mineralCost: 10
+    pointCost: 10
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 14
     shipCount: 9

@@ -239,37 +239,55 @@ public static class CommonUtility
         return defaultSubType;
     }
 
-    // 모듈 스탯을 아이콘+수치 문자열로 반환 (팝업 detailText용)
-    public static string GetModuleDetailText(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel, string separator = " ")
+    // 모듈 타입별 스탯 행을 (아이콘이름, 수치문자열) 쌍으로 반환 — Row UI 표시용
+    public static List<(string icon, string value)> GetModuleStatRows(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel)
     {
         bool showRange = fromLevel != toLevel;
         ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, fromLevel);
         ModuleData nxt = showRange ? DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, toLevel) : null;
-        if (cur == null) return string.Empty;
-        if (showRange && nxt == null) return string.Empty;
+        if (cur == null) return null;
+        if (showRange && nxt == null) return null;
 
-        string V(float c, float n) => showRange ? $"{c:F0} → {n:F0}" : $"{c:F0}";
-        string levelStr = showRange ? $"{Sprite("progression")} {fromLevel} → {toLevel}" : $"{Sprite("progression")} {fromLevel}";
+        string V(float c, float n) => showRange ? $"{c:F0} <voffset=6>→</voffset> {n:F0}" : $"{c:F0}";
+        string Vi(int c, int n)    => showRange ? $"{c} <voffset=6>→</voffset> {n}"       : $"{c}";
 
-        var stats = new List<string> { levelStr };
+        var rows = new List<(string, string)>();
 
         if (moduleType == EModuleType.body)
         {
-            stats.Add($"{Sprite("techno-heart")} {V(cur.health, nxt?.health ?? 0f)}");
-            stats.Add($"{Sprite("auto-repair")} {V(cur.repair, nxt?.repair ?? 0f)}");
-            stats.Add($"{Sprite("rocket-thruster")} {V(cur.speed, nxt?.speed ?? 0f)}");
+            rows.Add(("techno-heart",    V(cur.health, nxt?.health ?? 0f)));
+            rows.Add(("auto-repair",     V(cur.repair, nxt?.repair ?? 0f)));
+            rows.Add(("rocket-thruster", V(cur.speed,  nxt?.speed  ?? 0f)));
         }
         else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
         {
-            stats.Add($"{Sprite("bubbling-beam")} {V(cur.attack, nxt?.attack ?? 0f)}");
+            rows.Add(("bubbling-beam", V(cur.attack, nxt?.attack ?? 0f)));
         }
         else if (moduleType == EModuleType.hanger)
         {
-            stats.Add($"{Sprite("strafe")} {V(cur.airAttack, nxt?.airAttack ?? 0f)}");
-            stats.Add($"{Sprite("heart-wings")} {V(cur.airHealth, nxt?.airHealth ?? 0f)}");
-            stats.Add($"{Sprite("light-fighter")} {V(cur.airSpeed, nxt?.airSpeed ?? 0f)}");
-            stats.Add($"{Sprite("jet-fighter")} {V(cur.airCount, nxt?.airCount ?? 0f)}");
+            rows.Add(("strafe",        V(cur.airAttack, nxt?.airAttack ?? 0f)));
+            rows.Add(("heart-wings",   V(cur.airHealth, nxt?.airHealth ?? 0f)));
+            rows.Add(("light-fighter", V(cur.airSpeed,  nxt?.airSpeed  ?? 0f)));
+            rows.Add(("jet-fighter",   Vi(cur.airCount, nxt?.airCount  ?? 0)));
         }
+
+        return rows;
+    }
+
+    // 모듈 스탯을 인라인 스프라이트 문자열로 반환 (팝업 bodyText용)
+    public static string GetModuleDetailText(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel, string separator = " ")
+    {
+        bool showRange = fromLevel != toLevel;
+        string levelStr = showRange
+            ? $"{Sprite("progression")} {fromLevel} → {toLevel}"
+            : $"{Sprite("progression")} {fromLevel}";
+
+        var statRows = GetModuleStatRows(moduleType, subType, fromLevel, toLevel);
+        if (statRows == null) return string.Empty;
+
+        var stats = new List<string> { levelStr };
+        foreach (var (icon, value) in statRows)
+            stats.Add($"{Sprite(icon)} {value}");
 
         return string.Join(separator, stats);
     }

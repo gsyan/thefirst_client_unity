@@ -1,12 +1,13 @@
 // 다단계 레벨업 팝업 — 모듈/기술레벨 공용. < > 버튼으로 목표 레벨 선택, 누적 비용 표시
 using System;
-using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIPopupLevelup : UIPopupBase
 {
+    [SerializeField] private RectTransform m_layoutRoot;
+
     [Header("타이틀 / 주제명")]
     [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private TMP_Text m_subjectNameText;
@@ -16,10 +17,18 @@ public class UIPopupLevelup : UIPopupBase
     [SerializeField] private TMP_Text m_levelToText;
     [SerializeField] private Button   m_prevButton;
     [SerializeField] private Button   m_nextButton;
-
+    
     [Header("스탯 + 비용")]
     [SerializeField] private TMP_Text m_bodyText;
-    [SerializeField] private RectTransform m_layoutRoot;
+    [SerializeField] private RectTransform m_resultContainer;
+    [SerializeField] private RectTransform m_results;
+    [SerializeField] private GameObject m_result1;
+    [SerializeField] private GameObject m_result2;
+    private RowImageText[] m_result1Rows;
+    private RowImageText[] m_result2Rows;
+    [SerializeField] private Transform m_costContainer;
+    private RowImageText[] m_costRows;
+
 
     [Header("하단 버튼")]
     [SerializeField] private Button m_confirmButton;
@@ -43,6 +52,12 @@ public class UIPopupLevelup : UIPopupBase
     protected override void Awake()
     {
         base.Awake();
+        if (m_result1 != null)
+            m_result1Rows = m_result1.GetComponentsInChildren<RowImageText>(true);
+        if (m_result2 != null)
+            m_result2Rows = m_result2.GetComponentsInChildren<RowImageText>(true);
+        if (m_costContainer != null)
+            m_costRows = m_costContainer.GetComponentsInChildren<RowImageText>(true);
         m_prevButton?.onClick.AddListener(OnPrevClicked);
         m_nextButton?.onClick.AddListener(OnNextClicked);
         m_confirmButton?.onClick.AddListener(OnConfirmClicked);
@@ -62,7 +77,7 @@ public class UIPopupLevelup : UIPopupBase
         if (m_titleText != null)
             m_titleText.text = LocalizationManager.Instance.Get("ship_module_levelup");
         if (m_subjectNameText != null)
-            m_subjectNameText.text = subType.GetLocalizedName() + "\n<color=#666666>─────────────</color>";
+            m_subjectNameText.text = $"<color=#009682>──────────────────────</color>\n{subType.GetLocalizedName()}\n<color=#009682>──────────────────────</color>";
 
         ShowInternal(currentLevel, onConfirm, onCancel);
     }
@@ -74,13 +89,15 @@ public class UIPopupLevelup : UIPopupBase
         if (m_titleText != null)
             m_titleText.text = LocalizationManager.Instance.Get("tech_level_levelup");
         if (m_subjectNameText != null)
-            m_subjectNameText.text = $"{CommonUtility.Sprite("gears")} Tech Level\n<color=#666666>─────────────</color>";
+            m_subjectNameText.text = $"<color=#009682>───────────────────────────</color>";
 
         ShowInternal(currentTechLevel, onConfirm, onCancel);
     }
 
     private void ShowInternal(int currentLevel, Action<int> onConfirm, Action onCancel)
     {
+        base.ShowPopup();
+
         m_currentLevel   = currentLevel;
         m_minTargetLevel = currentLevel + 1;
         m_targetLevel    = currentLevel + 1;
@@ -89,9 +106,6 @@ public class UIPopupLevelup : UIPopupBase
         m_onCancel       = onCancel;
 
         UpdateDisplay();
-        base.ShowPopup();
-        if (m_layoutRoot != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 
     // ─────────────────────────────────────────────
@@ -129,14 +143,21 @@ public class UIPopupLevelup : UIPopupBase
 
     private void UpdateDisplay()
     {
-        if (m_levelFromText != null) m_levelFromText.text = m_currentLevel.ToString();
-        if (m_levelToText   != null) m_levelToText.text   = m_targetLevel.ToString();
-
+        if (m_levelFromText != null) m_levelFromText.text = $"Lv.{m_currentLevel}";
+        if (m_levelToText   != null) m_levelToText.text   = $"Lv.{m_targetLevel}";
         long totalCost = CalculateCumulativeCost(m_currentLevel, m_targetLevel);
+
         bool canAfford = CheckCanAfford(totalCost);
 
         if (m_bodyText != null)
-            m_bodyText.text = BuildBodyText(totalCost);
+        {
+            string bodyStr = BuildBodyText();
+            m_bodyText.text = bodyStr;
+            m_bodyText.gameObject.SetActive(string.IsNullOrEmpty(bodyStr) == false);
+        }
+
+        UpdateResultRows();
+        UpdateCostRows(totalCost);
 
         if (m_prevButton != null)
             m_prevButton.interactable = m_targetLevel > m_minTargetLevel;
@@ -146,52 +167,22 @@ public class UIPopupLevelup : UIPopupBase
         if (m_confirmButton != null)
             m_confirmButton.interactable = canAfford;
 
-        if (m_layoutRoot != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
+        RebuildLayout();
     }
 
-    private string BuildBodyText(long pointCost)
+    // ContentSizeFitter 중첩 구조이므로 안쪽(Result1/2) → 바깥쪽(Panel) 순서로 재빌드
+    private void RebuildLayout()
     {
-        const string SEPARATOR = "\n<color=#666666>─────────────</color>\n";
-        var sb = new StringBuilder();
+        if (m_result1 != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_result1.GetComponent<RectTransform>());
+        if (m_result2 != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_result2.GetComponent<RectTransform>());
+        if (m_results != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_results);
+        if (m_resultContainer != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_resultContainer);
+        if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
+    }
 
-        if (m_mode == Mode.Module)
-        {
-            string full = CommonUtility.GetModuleDetailText(m_moduleType, m_subType, m_currentLevel, m_targetLevel, "\n");
-            if (string.IsNullOrEmpty(full) == false)
-            {
-                int sep = full.IndexOf("\n", StringComparison.Ordinal);
-                string statsOnly = sep >= 0 ? full.Substring(sep + 1) : full;
-                sb.Append(statsOnly);
-            }
-        }
-        else
-        {
-            int currentShips = DataManager.Instance.m_dataTableResearch.GetShipCount(m_currentLevel);
-            int targetShips  = DataManager.Instance.m_dataTableResearch.GetShipCount(m_targetLevel);
-            sb.Append($"{CommonUtility.Sprite("spaceship")} {currentShips} → {targetShips}");
-        }
-
-        if (pointCost > 0)
-        {
-            var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-            string C(bool i, string val) => i ? $"<color=red>{val}</color>" : val;
-            string costStr;
-            if (m_mode == Mode.Module)
-            {
-                bool ins = info != null && info.modulePoint < pointCost;
-                costStr = $"{CommonUtility.Sprite("upgrade")} {C(ins, CommonUtility.FormatBigNumber(pointCost))}";
-            }
-            else
-            {
-                bool ins = info != null && info.techPoint < pointCost;
-                costStr = $"{CommonUtility.Sprite("gears")} {C(ins, CommonUtility.FormatBigNumber(pointCost))}";
-            }
-            if (sb.Length > 0) sb.Append(SEPARATOR);
-            sb.Append(costStr);
-        }
-
-        return sb.ToString();
+    private string BuildBodyText()
+    {
+        return string.Empty;
     }
 
     private bool CheckCanAfford(long pointCost)
@@ -201,6 +192,70 @@ public class UIPopupLevelup : UIPopupBase
         if (m_mode == Mode.Module)
             return info.modulePoint >= pointCost;
         return info.techPoint >= pointCost;
+    }
+
+    private void UpdateResultRows()
+    {
+        int r1Count = m_result1Rows != null ? m_result1Rows.Length : 0;
+        int r2Count = m_result2Rows != null ? m_result2Rows.Length : 0;
+
+        for (int i = 0; i < r1Count; i++) m_result1Rows[i].Hide();
+        for (int i = 0; i < r2Count; i++) m_result2Rows[i].Hide();
+
+        if (m_mode == Mode.TechLevel)
+        {
+            if (r1Count > 0)
+            {
+                int currentShips = DataManager.Instance.m_dataTableResearch.GetShipCount(m_currentLevel);
+                int targetShips  = DataManager.Instance.m_dataTableResearch.GetShipCount(m_targetLevel);
+                m_result1Rows[0].SetRow("icon_ship", $"{currentShips} <voffset=6>→</voffset> {targetShips}");
+            }
+            if (m_result2 != null) m_result2.SetActive(false);
+        }
+        else if (m_mode == Mode.Module)
+        {
+            var statRows = CommonUtility.GetModuleStatRows(m_moduleType, m_subType, m_currentLevel, m_targetLevel);
+            if (statRows == null) return;
+
+            for (int i = 0; i < statRows.Count; i++)
+            {
+                if (i < r1Count)
+                    m_result1Rows[i].SetRow(statRows[i].icon, statRows[i].value);
+                else if (i - r1Count < r2Count)
+                    m_result2Rows[i - r1Count].SetRow(statRows[i].icon, statRows[i].value);
+            }
+
+            bool needResult2 = statRows.Count > r1Count;
+            if (m_result2 != null) m_result2.SetActive(needResult2);
+        }
+    }
+
+    private void UpdateCostRows(long totalCost)
+    {
+        if (m_costRows == null) return;
+        for (int i = 0; i < m_costRows.Length; i++)
+            m_costRows[i].Hide();
+
+        if (totalCost <= 0) return;
+
+        var characterInfo = DataManager.Instance.m_currentCharacter?.m_characterInfo;
+        int rowIndex;
+        bool canAfford;
+
+        if (m_mode == Mode.TechLevel)
+        {
+            rowIndex  = (int)ECostType.TechPoint;
+            canAfford = characterInfo != null && characterInfo.techPoint >= totalCost;
+        }
+        else if (m_mode == Mode.Module)
+        {
+            rowIndex  = (int)ECostType.ModulePoint;
+            canAfford = characterInfo != null && characterInfo.modulePoint >= totalCost;
+        }
+        else return;
+
+        if (rowIndex < m_costRows.Length)
+            m_costRows[rowIndex].SetTextRowImageText(canAfford ? $"{totalCost}" : $"<color=red>{totalCost}</color>");
     }
 
     // ─────────────────────────────────────────────
