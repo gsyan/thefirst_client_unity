@@ -425,12 +425,11 @@ public class ClearZoneStageRequest
 [System.Serializable]
 public class ClearZoneStageResponse
 {
-    public CostRemainInfo rewardInfo;   // 킬 보상 (mineral)
     public bool isZoneCleared;          // true = 신규 클리어 완료
     public string clearedZoneName;      // isZoneCleared == true 일 때만 유효
-    public int mineralReward;            // 이번 클리어에서 획득한 mineral
-    public int techPointReward;         // 최초 클리어 시 지급 (isZoneCleared == true 일 때만 유효)
-    public int modulePointReward;       // 최초 클리어 시 지급 (isZoneCleared == true 일 때만 유효)
+    public int mineralRemain;
+    public int techPointRemain;
+    public int modulePointRemain;
 }
 
 #endregion

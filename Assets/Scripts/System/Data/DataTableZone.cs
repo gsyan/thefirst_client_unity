@@ -190,7 +190,9 @@ public class DataTableZone : ScriptableObject
             serverData.Add(new
             {
                 zoneName = zoneStage.zoneName,
-                mineralClearReward = zoneStage.mineralClearReward
+                mineralClearReward = zoneStage.mineralClearReward,
+                techPointClearReward = zoneStage.techPointClearReward,
+                modulePointClearReward = zoneStage.modulePointClearReward
             });
         }
         return JsonConvert.SerializeObject(new { zoneStages = serverData }, Formatting.Indented);

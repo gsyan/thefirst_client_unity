@@ -473,8 +473,13 @@ public class UITabExploration : UITabBase
         var character = DataManager.Instance.m_currentCharacter;
         int mineralBefore = (character != null && character.m_characterInfo != null) ? character.m_characterInfo.mineral : 0;
 
-        if (character != null && response.data.rewardInfo != null)
-            character.UpdateMineral(response.data.rewardInfo.mineralRemain);
+        if (character != null && character.m_characterInfo != null)
+        {
+            character.m_characterInfo.mineral = response.data.mineralRemain;
+            character.m_characterInfo.techPoint = response.data.techPointRemain;
+            character.m_characterInfo.modulePoint = response.data.modulePointRemain;
+            EventManager.TriggerMineralChange(response.data.mineralRemain);
+        }
 
         if (response.data.isZoneCleared == true && character != null)
         {
@@ -492,9 +497,7 @@ public class UITabExploration : UITabBase
             SelectNextZoneStage(newlyCleared);
         }
 
-        int mineralGained = 0;
-        if (character != null && character.m_characterInfo != null)
-            mineralGained = character.m_characterInfo.mineral - mineralBefore;
+        int mineralGained = response.data.mineralRemain - mineralBefore;
 
         if (mineralGained > 0)
         {
