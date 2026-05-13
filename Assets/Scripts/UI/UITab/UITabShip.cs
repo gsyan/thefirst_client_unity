@@ -11,15 +11,12 @@ public class UITabShip : UITabBase
     [SerializeField] private Button    m_btnPrevShip;
     [SerializeField] private Button    m_btnNextShip;
     [SerializeField] private TMP_Text  m_textShipName;
-    // 1행: ATK / HP / SPD / REP
-    [SerializeField] private TMP_Text  m_textShipAttack;
-    [SerializeField] private TMP_Text  m_textShipHp;
-    [SerializeField] private TMP_Text  m_textShipRepair;
-    [SerializeField] private TMP_Text  m_textShipSpeed;
+    // 1행: ATK / HP / REP / SPD
+    [SerializeField] private Transform  m_shipRitContainer;
+    private RowImageText[] m_shipStatRows;
     // 2행: 함재기 능력 — aircraft_count == 0 이면 숨김
-    [SerializeField] private GameObject m_aircraftContainer;
-    [SerializeField] private TMP_Text  m_textAirAttack;
-    [SerializeField] private TMP_Text  m_textAirCount;
+    [SerializeField] private Transform  m_aircraftRitContainer;
+    private RowImageText[] m_aircraftStatRows;
 
     [Header("모듈 맵 — 행 컨테이너 (레이블 + 셀렉터 포함)")]
     [SerializeField] private RectTransform m_moduleBodySelectButtonContainer;
@@ -33,6 +30,7 @@ public class UITabShip : UITabBase
 
     [Header("모듈 디테일 카드")]
     [SerializeField] private TMP_Text   m_moduleSubTypeText;
+    [SerializeField] private TMP_Text   m_moduleLevelText;
     [SerializeField] private Transform  m_moduleStatsContainer;
     [SerializeField] private Transform  m_moduleInvestedMineralContainer;
     
@@ -78,6 +76,9 @@ public class UITabShip : UITabBase
         m_selectorsBeam    = m_moduleBeamSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         m_selectorsMissile = m_moduleMissileSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         m_selectorsHanger  = m_moduleHangerSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
+
+        m_shipStatRows     = m_shipRitContainer.GetComponentsInChildren<RowImageText>(true);
+        m_aircraftStatRows = m_aircraftRitContainer.GetComponentsInChildren<RowImageText>(true);
 
         m_statsRows.AddRange(m_moduleStatsContainer.GetComponentsInChildren<RowImageText>(true));
         m_mineralRows.AddRange(m_moduleInvestedMineralContainer.GetComponentsInChildren<RowImageText>(true));
@@ -232,19 +233,22 @@ public class UITabShip : UITabBase
         CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
 
-        m_textShipAttack.text = $"{statsCur.attack:F0}";
-        m_textShipHp.text = $"{statsCur.health:F0}";
-        m_textShipRepair.text = $"{statsCur.repair:F0}";
-        m_textShipSpeed.text = $"{statsCur.speed:F0}";
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_textShipAttack.transform.parent as RectTransform);
+        foreach (var row in m_shipStatRows)    row.Hide();
+        foreach (var row in m_aircraftStatRows) row.Hide();
+
+        m_shipStatRows[0].SetRow("bubbling-beam",   $"{statsCur.attack:F0}");
+        m_shipStatRows[1].SetRow("techno-heart",    $"{statsCur.health:F0}");
+        m_shipStatRows[2].SetRow("auto-repair",     $"{statsCur.repair:F0}");
+        m_shipStatRows[3].SetRow("rocket-thruster", $"{statsCur.speed:F0}");
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipRitContainer as RectTransform);
 
         bool hasAircraft = statsOrg.airCount > 0;
-        m_aircraftContainer.SetActive(hasAircraft);
+        m_aircraftRitContainer.gameObject.SetActive(hasAircraft);
         if (hasAircraft)
         {
-            m_textAirAttack.text = $"{statsCur.airAttack:F0}";
-            m_textAirCount.text = $"{statsOrg.airCount}";
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_textAirAttack.transform.parent as RectTransform);
+            m_aircraftStatRows[0].SetRow("strafe",      $"{statsCur.airAttack:F0}");
+            m_aircraftStatRows[1].SetRow("jet-fighter", $"{statsOrg.airCount}");
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_aircraftRitContainer as RectTransform);
         }
     }
 
@@ -579,25 +583,25 @@ public class UITabShip : UITabBase
             ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level);
             if (cur != null && m_statsRows.Count >= 2)
             {
-                m_statsRows[0].SetTextWithInt(level);
+                m_moduleLevelText.SetText("{0}", level);
 
                 EModuleType moduleType = m_selectedModule.GetModuleType();
                 if (moduleType == EModuleType.body && m_statsRows.Count >= 4)
                 {
-                    m_statsRows[1].SetRow("techno-heart",     $"{cur.health:F0}");
-                    m_statsRows[2].SetRow("auto-repair",      $"{cur.repair:F0}");
-                    m_statsRows[3].SetRow("rocket-thruster",  $"{cur.speed:F0}");
+                    m_statsRows[0].SetRow("techno-heart",     $"{cur.health:F0}");
+                    m_statsRows[1].SetRow("auto-repair",      $"{cur.repair:F0}");
+                    m_statsRows[2].SetRow("rocket-thruster",  $"{cur.speed:F0}");
                 }
                 else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
                 {
-                    m_statsRows[1].SetRow("bubbling-beam", $"{cur.attack:F0}");
+                    m_statsRows[0].SetRow("bubbling-beam", $"{cur.attack:F0}");
                 }
                 else if (moduleType == EModuleType.hanger && m_statsRows.Count >= 5)
                 {
-                    m_statsRows[1].SetRow("strafe",        $"{cur.airAttack:F0}");
-                    m_statsRows[2].SetRow("heart-wings",   $"{cur.airHealth:F0}");
-                    m_statsRows[3].SetRow("light-fighter", $"{cur.airSpeed:F0}");
-                    m_statsRows[4].SetRow("jet-fighter",   $"{cur.airCount:F0}");
+                    m_statsRows[0].SetRow("strafe",        $"{cur.airAttack:F0}");
+                    m_statsRows[1].SetRow("heart-wings",   $"{cur.airHealth:F0}");
+                    m_statsRows[2].SetRow("light-fighter", $"{cur.airSpeed:F0}");
+                    m_statsRows[3].SetRow("jet-fighter",   $"{cur.airCount:F0}");
                 }
             }
             // 투자 modulePoint rows

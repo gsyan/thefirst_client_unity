@@ -124,7 +124,6 @@ public class UIZoneStageButton : MonoBehaviour
         if (m_enterButtonText != null)
             m_enterButtonText.text = LocalizationManager.Instance.Get("UITabExploration_TryZone");
         RebuildLayout();
-        Debug.Log($"Expand {this.name}");
     }
 
     public void Collapse()
@@ -135,7 +134,6 @@ public class UIZoneStageButton : MonoBehaviour
         if (m_enterButtonText != null && m_config != null)
             m_enterButtonText.text = m_config.zoneName;
         RebuildLayout();
-        Debug.Log($"Collapse {this.name}");
     }
 
     private void OnEnable()
