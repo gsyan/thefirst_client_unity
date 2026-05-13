@@ -306,7 +306,7 @@ public class UITabExploration : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             zoneStage.zoneName,
             LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
-            null, null, null,
+            null, null, null, 0,
             onConfirm: () => ExecuteEnterZone(zoneStage)
         );
     }

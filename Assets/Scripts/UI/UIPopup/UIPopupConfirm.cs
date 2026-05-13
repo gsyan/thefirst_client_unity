@@ -16,6 +16,7 @@ public class UIPopupConfirm : UIPopupBase
     [SerializeField] private UISection m_sectionResult;
     [SerializeField] private UISection m_sectionRequire;
     [SerializeField] private UISection m_sectionCost;
+    [SerializeField] private UISection m_sectionRefund;
 
     public Button confirmButton;
     public Button cancelButton;
@@ -30,7 +31,7 @@ public class UIPopupConfirm : UIPopupBase
         if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
     }
 
-    public void ShowPopupConfirm(string title, string message, string detailText, RequireStruct require, CostStruct cost, Action onConfirm, Action onCancel = null, List<(string icon, string value)> resultRows = null)
+    public void ShowPopupConfirm(string title, string message, string detailText, RequireStruct require, CostStruct cost, int refundAmount, Action onConfirm, Action onCancel = null, List<(string icon, string value)> resultRows = null)
     {
         base.ShowPopup();
         if (titleText != null)
@@ -50,6 +51,7 @@ public class UIPopupConfirm : UIPopupBase
         bool canAfford = BuildCostText(cost);
         if (canAfford == false) canConfirm = false;
 
+        BuildRefundSection(refundAmount);
         BuildResultRows(resultRows);
 
         if (confirmButton != null) confirmButton.interactable = canConfirm;
@@ -135,9 +137,24 @@ public class UIPopupConfirm : UIPopupBase
         m_sectionResult.SetRows(rows);
     }
 
+    private void BuildRefundSection(int refundAmount)
+    {
+        if (m_sectionRefund == null) return;
+        if (refundAmount <= 0)
+        {
+            m_sectionRefund.SetVisible(false);
+            return;
+        }
+
+        m_sectionRefund.SetVisible(true);
+        m_sectionRefund.HideAllRows();
+        m_sectionRefund.SetRowText(0, CommonUtility.FormatBigNumber(refundAmount));
+    }
+
     private void RebuildLayout()
     {
         if (m_sectionResult != null) m_sectionResult.RebuildLayout();
+        if (m_sectionRefund != null) m_sectionRefund.RebuildLayout();
         if (m_sectionRequire != null) m_sectionRequire.RebuildLayout();
         if (m_sectionCost != null) m_sectionCost.RebuildLayout();
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);

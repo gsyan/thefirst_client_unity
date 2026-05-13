@@ -124,7 +124,7 @@ public class UITabPvp_MyInfo : UITabBase
         }
         string title = LocalizationManager.Instance.Get("pvp_opponent_list");
         string message = LocalizationManager.Instance.Get("pvp_refresh_confirm", m_refreshRemain);
-        UIManager.Instance.ShowConfirmPopup(title, message, null, null, null, onConfirm: ExecuteRefresh);
+        UIManager.Instance.ShowConfirmPopup(title, message, null, null, null, 0, onConfirm: ExecuteRefresh);
     }
 
     private void ExecuteRefresh()

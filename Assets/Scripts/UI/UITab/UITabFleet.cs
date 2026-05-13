@@ -337,7 +337,7 @@ public class UITabFleet : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("fleet_add_ship_name"),
             LocalizationManager.Instance.Get("popup_message_add_ship"),
-            null, require, new CostStruct(ECostType.ModulePoint, gameSettings.addShipCost),
+            null, require, new CostStruct(ECostType.ModulePoint, gameSettings.addShipCost), 0,
             ExecuteAddShip
         );
     }

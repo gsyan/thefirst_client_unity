@@ -192,7 +192,7 @@ public class UITabSettings : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("UITabSettings_GoogleLink"),
             LocalizationManager.Instance.Get("popup_message_google_link"),
-            null, null, null,
+            null, null, null, 0,
             onConfirm: ExecuteLinkGoogle,
             onCancel: null
         );
@@ -219,7 +219,7 @@ public class UITabSettings : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("UITabSettings_GoogleUnlink"),
             LocalizationManager.Instance.Get("popup_message_google_unlink"),
-            null, null, null,
+            null, null, null, 0,
             onConfirm: ExecuteUnlinkGoogle,
             onCancel: null
         );
@@ -256,7 +256,7 @@ public class UITabSettings : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("UITabSettings_Logout"),
             LocalizationManager.Instance.Get("popup_message_logout"),
-            null, null, null,
+            null, null, null, 0,
             onConfirm: ExecuteLogout,
             onCancel: null
         );

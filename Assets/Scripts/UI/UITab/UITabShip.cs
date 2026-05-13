@@ -304,7 +304,7 @@ public class UITabShip : UITabBase
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_module_unlock"),
             LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
-            null, null, new CostStruct(ECostType.ModulePoint, unlockPrice),
+            null, null, new CostStruct(ECostType.ModulePoint, unlockPrice), 0,
             () => ExecuteModuleUnlock(),
             null, resultRows
         );
@@ -786,15 +786,10 @@ public class UITabShip : UITabBase
 
         int mp = m_selectedModule.m_investedModulePoint;
 
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine(LocalizationManager.Instance.Get("UITabShip_ModuleResetConfirm"));
-        sb.AppendLine();
-        sb.AppendLine(BuildRefundText(mp));
-
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("UITabShip_ModuleReset"),
-            sb.ToString(),
-            null, null, null,
+            LocalizationManager.Instance.Get("UITabShip_ModuleResetConfirm"),
+            null, null, null, mp,
             ExecuteResetModule
         );
     }
@@ -879,15 +874,10 @@ public class UITabShip : UITabBase
             }
         }
 
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine(LocalizationManager.Instance.Get("ship_reset_confirm"));
-        sb.AppendLine();
-        sb.AppendLine(BuildRefundText(totalMp));
-
         UIManager.Instance.ShowConfirmPopup(
             LocalizationManager.Instance.Get("ship_reset"),
-            sb.ToString(),
-            null, null, null,
+            LocalizationManager.Instance.Get("ship_reset_confirm"),
+            null, null, null, totalMp,
             ExecuteResetShip
         );
     }
@@ -930,15 +920,6 @@ public class UITabShip : UITabBase
         m_selectedModule = null;
         if (m_myFleet != null && m_myFleet.m_ships.Count > 0)
             SelectShip(m_myFleet.m_ships[0]);
-    }
-
-    // 회수 자원 문자열 생성
-    private string BuildRefundText(int modulePoint)
-    {
-        if (modulePoint == 0)
-            return LocalizationManager.Instance.Get("ship_reset_no_refund");
-
-        return $"{CommonUtility.Sprite("upgrade")} {CommonUtility.FormatBigNumber(modulePoint)}";
     }
 
     // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택
