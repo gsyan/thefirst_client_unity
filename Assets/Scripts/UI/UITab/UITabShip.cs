@@ -30,13 +30,14 @@ public class UITabShip : UITabBase
 
     [Header("모듈 디테일 카드")]
     [SerializeField] private TMP_Text   m_moduleSubTypeText;
+    [SerializeField] private GameObject m_moduleLevelName;
     [SerializeField] private TMP_Text   m_moduleLevelText;
     [SerializeField] private Transform  m_moduleStatsContainer;
-    [SerializeField] private Transform  m_moduleInvestedMineralContainer;
+    [SerializeField] private TMP_Text   m_investedModulePointText;
     
     [SerializeField] private Button    m_unlockModuleButton;
     [SerializeField] private Button    m_levelUpModuleButton;
-    //[SerializeField] private TMP_Text  m_levelUpModuleButtonText;
+    [SerializeField] private TMP_Text  m_levelUpModuleButtonText;
     [SerializeField] private Button    m_subTypeManageButton;
     [SerializeField] private Button    m_btnResetModule;
 
@@ -56,9 +57,6 @@ public class UITabShip : UITabBase
     private ModuleSelector[] m_selectorsHanger;
 
     private List<RowImageText> m_statsRows   = new List<RowImageText>();
-    private List<RowImageText> m_mineralRows = new List<RowImageText>();
-    
-
 
     public override void InitializeUITab()
     {
@@ -81,7 +79,6 @@ public class UITabShip : UITabBase
         m_aircraftStatRows = m_aircraftRitContainer.GetComponentsInChildren<RowImageText>(true);
 
         m_statsRows.AddRange(m_moduleStatsContainer.GetComponentsInChildren<RowImageText>(true));
-        m_mineralRows.AddRange(m_moduleInvestedMineralContainer.GetComponentsInChildren<RowImageText>(true));
         
         if (m_btnPrevShip != null) m_btnPrevShip.onClick.AddListener(OnPrevShipClicked);
         if (m_btnNextShip != null) m_btnNextShip.onClick.AddListener(OnNextShipClicked);
@@ -381,7 +378,7 @@ public class UITabShip : UITabBase
         // 다음 레벨 데이터 없으면 이미 최대 레벨
         if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), currentLevel + 1) == null)
         {
-            ShowErrorMessage(LocalizationManager.Instance.Get("max_level"));
+            ShowErrorMessage(LocalizationManager.Instance.Get("LevelupButtonTextMax"));
             return;
         }
 
@@ -540,8 +537,9 @@ public class UITabShip : UITabBase
         if (bShow != true) return;
         if (m_selectedShip == null) return;
 
+        m_moduleLevelName.SetActive(false);
+        m_moduleLevelText.gameObject.SetActive(false);
         foreach (var row in m_statsRows)   row.Hide();
-        foreach (var row in m_mineralRows) row.Hide();
 
         if (m_selectedModule is ModulePlaceholder)
         {
@@ -562,9 +560,12 @@ public class UITabShip : UITabBase
             ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
             bool isMaxLevel           = moduleDataNext == null;
 
-            // MAX 레벨이면 서브타입 변경 버튼, 아니면 레벨업 버튼
-            m_levelUpModuleButton.gameObject.SetActive(!isMaxLevel);
-            m_subTypeManageButton.gameObject.SetActive(isMaxLevel);
+            // 두 버튼 항상 표시, 레벨업 불가 시 버튼 비활성화 + 텍스트 변경
+            m_levelUpModuleButton.gameObject.SetActive(true);
+            m_levelUpModuleButton.interactable = !isMaxLevel;
+            if (m_levelUpModuleButtonText != null)
+                m_levelUpModuleButtonText.text = LocalizationManager.Instance.Get(isMaxLevel ? "LevelupButtonTextMax" : "LevelupButtonText");
+            m_subTypeManageButton.gameObject.SetActive(true);
 
             if (m_btnResetModule != null)
             {
@@ -584,6 +585,8 @@ public class UITabShip : UITabBase
             if (cur != null && m_statsRows.Count >= 2)
             {
                 m_moduleLevelText.SetText("{0}", level);
+                m_moduleLevelName.SetActive(true);
+                m_moduleLevelText.gameObject.SetActive(true);
 
                 EModuleType moduleType = m_selectedModule.GetModuleType();
                 if (moduleType == EModuleType.body && m_statsRows.Count >= 4)
@@ -605,15 +608,12 @@ public class UITabShip : UITabBase
                 }
             }
             // 투자 modulePoint rows
-            if (m_mineralRows.Count >= 1)
-            {
-                if (m_selectedModule.m_investedModulePoint > 0)
-                    m_mineralRows[0].SetRow("upgrade", $"{m_selectedModule.m_investedModulePoint}");
-            }
+            if (m_selectedModule.m_investedModulePoint > 0)
+                m_investedModulePointText.SetText("{0}", m_selectedModule.m_investedModulePoint);
 
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsContainer as RectTransform);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleInvestedMineralContainer as RectTransform);
+            //LayoutRebuilder.ForceRebuildLayoutImmediate(m_investedModulePointText.transform.parent as RectTransform);
         }
     }
 
@@ -787,12 +787,12 @@ public class UITabShip : UITabBase
         int mp = m_selectedModule.m_investedModulePoint;
 
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine(LocalizationManager.Instance.Get("ship_module_reset_confirm"));
+        sb.AppendLine(LocalizationManager.Instance.Get("UITabShip_ModuleResetConfirm"));
         sb.AppendLine();
         sb.AppendLine(BuildRefundText(mp));
 
         UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("ship_module_reset"),
+            LocalizationManager.Instance.Get("UITabShip_ModuleReset"),
             sb.ToString(),
             null, null, null,
             ExecuteResetModule

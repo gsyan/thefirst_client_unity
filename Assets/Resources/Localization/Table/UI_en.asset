@@ -578,14 +578,6 @@ MonoBehaviour:
     m_Localized: 'Lv.{0} Required (Current: Lv.{1})'
     m_Metadata:
       m_Items: []
-  - m_Id: 26803779546251264
-    m_Localized: Reset Module
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26803779604971520
-    m_Localized: Reset this module and recover invested resources?
-    m_Metadata:
-      m_Items: []
   - m_Id: 26803779604971521
     m_Localized: Reset Ship
     m_Metadata:
@@ -748,6 +740,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 33428911052161024
     m_Localized: Enter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34285289010495488
+    m_Localized: Reset Module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34285289056632832
+    m_Localized: Reset this module and recover invested resources?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34285289056632833
+    m_Localized: RESET
     m_Metadata:
       m_Items: []
   references:

@@ -49,8 +49,11 @@ public class UIPanelSpace : UIPanelBase
 
         m_tabSystem.onTabSelectionChanged += OnTabSelectionChanged;
 
-        // 각 탭 anchorMin.x → 열린 상태 카메라 너비
-        m_openCameraWidth        = m_shipTabRect    != null ? m_shipTabRect.anchorMin.x    : 0.68f;
+        // 760px 고정 UI 너비 → 캔버스 너비 기준으로 카메라 viewport 비율 계산
+        const float uiPanelWidth = 760f;
+        RectTransform canvasRect = m_shipTabRect != null ? m_shipTabRect.root as RectTransform : null;
+        float canvasWidth = canvasRect != null ? canvasRect.rect.width : 1920f;
+        m_openCameraWidth = (canvasWidth - uiPanelWidth) / canvasWidth;
         SetLayoutImmediate(false);
 
         if (closeButton != null)

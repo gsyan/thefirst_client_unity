@@ -15,10 +15,6 @@ public class UIPanelCameraView : UIPanelBase
     [Header("존 진행 정보")]
     [SerializeField] private TextMeshProUGUI m_zoneNameText;
 
-    [Header("Viewport 연동 앵커 (0~1 범위)")]
-    [SerializeField] private float m_anchorXA = 0.5f;    // UI 닫힘 앵커 중심 X
-    [SerializeField] private float m_anchorXB = 0.25f;   // UI 열림 앵커 중심 X
-
     private RectTransform m_rectTransform;
     private float m_lastViewportRatio = 0f; // 패널 비활성 중 놓친 이벤트 대비
 
@@ -142,12 +138,16 @@ public class UIPanelCameraView : UIPanelBase
         }
     }
 
-    // viewport ratio (0=전체화면, 1=UI열림) — 앵커 중심 X만 이동, 크기 유지
+    // 현재 카메라 viewport 너비 중앙에 버튼 배치
     private void OnViewportChanged(float ratio)
     {
         m_lastViewportRatio = ratio;
         if (m_rectTransform == null) return;
-        float centerX = Mathf.Lerp(m_anchorXA, m_anchorXB, ratio);
+
+        var cam = CameraController.Instance;
+        if (cam == null) return;
+
+        float centerX = cam.GetViewportWidth() / 2f;
         Vector2 min = m_rectTransform.anchorMin;
         Vector2 max = m_rectTransform.anchorMax;
         min.x = centerX;
@@ -155,8 +155,6 @@ public class UIPanelCameraView : UIPanelBase
         m_rectTransform.anchorMin = min;
         m_rectTransform.anchorMax = max;
 
-        var cam = CameraController.Instance;
-        if (cam != null)
-            cam.RefreshCenterModeZoom();
+        cam.RefreshCenterModeZoom();
     }
 }

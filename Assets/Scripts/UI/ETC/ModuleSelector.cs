@@ -9,20 +9,20 @@ public class ModuleSelector : MonoBehaviour
 {
     [SerializeField] private Button m_button;
     [SerializeField] private Image m_borderImage;
-    [SerializeField] private Image m_bgImage;
+    //[SerializeField] private Image m_bgImage;
     [SerializeField] private TMP_Text m_buttonText;
 
     [Header("상태별 색상")]
     // locked
     [SerializeField] private Color m_colorLockedOutLine = new Color(0.59f, 0f, 0f, 0.25f); // 150,0,0,64
-    [SerializeField] private Color m_colorLockedBg = new Color(0.59f, 0f, 0f, 0.03f); // 150,0,0,8
+    //[SerializeField] private Color m_colorLockedBg = new Color(0.59f, 0f, 0f, 0.03f); // 150,0,0,8
     [SerializeField] private Color m_colorLockedOutLineSelected = new Color(1f, 0f, 0f, 1f);
-    [SerializeField] private Color m_colorLockedBgSelected = new Color(0.59f, 0f, 0f, 0.25f);
+    //[SerializeField] private Color m_colorLockedBgSelected = new Color(0.59f, 0f, 0f, 0.25f);
     // unlocked
     [SerializeField] private Color m_colorUnlockedOutLine = new Color(0f, 0.59f, 0.25f, 0.25f);
-    [SerializeField] private Color m_colorUnlockedBg = new Color( 0f, 0.59f, 0.25f, 0.03f);    
+    //[SerializeField] private Color m_colorUnlockedBg = new Color( 0f, 0.59f, 0.25f, 0.03f);    
     [SerializeField] private Color m_colorUnlockedOutLineSelected = new Color(0f, 1f, 0.5f, 1f);
-    [SerializeField] private Color m_colorUnlockedBgSelected = new Color(0f, 0.59f, 0.25f, 0.25f);
+    //[SerializeField] private Color m_colorUnlockedBgSelected = new Color(0f, 0.59f, 0.25f, 0.25f);
 
     public ModuleBase Module { get; private set; }
 
@@ -36,12 +36,12 @@ public class ModuleSelector : MonoBehaviour
 
         if (m_borderImage == null)
             m_borderImage = m_button.GetComponent<Image>();
-        if (m_bgImage == null)
-            m_bgImage = m_button.GetComponentInChildren<Image>();
+        // if (m_bgImage == null)
+        //     m_bgImage = m_button.GetComponentInChildren<Image>();
 
         // 잠금 여부에 따라 색 설정
         m_borderImage.color = (module is ModulePlaceholder) ? m_colorLockedOutLine : m_colorUnlockedOutLine;
-        m_bgImage.color = (module is ModulePlaceholder) ? m_colorLockedBg : m_colorUnlockedBg;
+        //m_bgImage.color = (module is ModulePlaceholder) ? m_colorLockedBg : m_colorUnlockedBg;
 
         if (m_buttonText == null)
             m_buttonText = m_button.GetComponentInChildren<TMP_Text>();
@@ -52,25 +52,26 @@ public class ModuleSelector : MonoBehaviour
         m_buttonText.color = (module is ModulePlaceholder) ? m_colorLockedOutLineSelected : m_colorUnlockedOutLineSelected;
     }
 
-    // 현재 함체에 해당 슬롯이 없는 경우: 시각적 유지, 기능 비활성화
+    // 현재 함체에 해당 슬롯이 없는 경우: 기능 비활성화 + Locked 색상으로 표시
     public void SetNotExist()
     {
         Module = null;
         m_button.onClick.RemoveAllListeners();
         m_button.interactable = false;
         m_buttonText.gameObject.SetActive(false);
+        m_borderImage.color = m_colorLockedOutLine;
     }
 
     public void SetModuleSelected(bool selected)
     {
         if(Module == null) return;
         Color m_colorOutLine = (Module is ModulePlaceholder) ? m_colorLockedOutLine : m_colorUnlockedOutLine;
-        Color m_colorBg = (Module is ModulePlaceholder) ? m_colorLockedBg : m_colorUnlockedBg;
+        //Color m_colorBg = (Module is ModulePlaceholder) ? m_colorLockedBg : m_colorUnlockedBg;
         Color m_colorOutLineSelected = (Module is ModulePlaceholder) ? m_colorLockedOutLineSelected : m_colorUnlockedOutLineSelected;
-        Color m_colorBgSelected = (Module is ModulePlaceholder) ? m_colorLockedBgSelected : m_colorUnlockedBgSelected;
+        //Color m_colorBgSelected = (Module is ModulePlaceholder) ? m_colorLockedBgSelected : m_colorUnlockedBgSelected;
 
         m_borderImage.color = (selected == true) ? m_colorOutLineSelected : m_colorOutLine;
-        m_bgImage.color = (selected == true) ? m_colorBgSelected : m_colorBg;
+        //m_bgImage.color = (selected == true) ? m_colorBgSelected : m_colorBg;
         //m_buttonText.text.color
     }
 }

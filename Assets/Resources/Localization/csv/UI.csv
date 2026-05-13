@@ -102,8 +102,6 @@ popup_message_module_upgrade,,Upgrade {0}\nLv.{1} → Lv.{2}?,{0} 모듈을 업�
 popup_message_module_research,,Research {0} module?,{0} 모듈을 연구할까요?
 popup_message_google_link,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
 popup_message_google_unlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
-free,,FREE,무료
-max_level,,Max Level,최고 레벨
 module_subtype_max_level_required,,{0} must reach max level (Lv.{1} / now Lv.{2}),{0} 최고 레벨 도달 필요 (Lv.{1} / 현재 Lv.{2})
 cost_text,,Cost,비용
 details_text,,Details,세부정보
@@ -140,8 +138,6 @@ tech_level_15,,Tech Level 15,기술레벨 15
 tech_level_on_reach,,[ On reaching Lv.{0} ],[ Lv.{0} 달성 시 ]
 tech_level_detail_title,,Tech Level Info,기술레벨 정보
 error_message_title,,Error,오류
-ship_module_reset,,Reset Module,모듈 초기화
-ship_module_reset_confirm,,Reset this module and recover invested resources?,이 모듈에 투자한 자원을 회수하고 초기화하시겠습니까?
 ship_reset,,Reset Ship,함선 초기화
 ship_reset_confirm,,Reset this ship and recover all invested resources?,이 함선의 모든 투자 자원을 회수하고 초기화하시겠습니까?
 ship_reset_flagship_forbidden,,The flagship cannot be reset.,기함은 초기화할 수 없습니다.
@@ -182,3 +178,7 @@ UITabRank_Pvp,,PVP,PVP
 UITabRank_Exploration,,EXPLORATION,탐사
 UITabExploration_TryZone,,Enter,입장
 require_level_compare,,Lv.{0} Required (Current: Lv.{1}),Lv.{0} 필요 (현재 Lv.{1})
+UITabShip_ModuleReset,,Reset Module,모듈 초기화
+UITabShip_ModuleResetConfirm,,Reset this module and recover invested resources?,이 모듈에 투자한 자원을 회수하고 초기화하시겠습니까?
+UIButton_Reset,,RESET,초기화
+free,,FREE,무료

@@ -579,14 +579,6 @@ MonoBehaviour:
     m_Key: error_message_title
     m_Metadata:
       m_Items: []
-  - m_Id: 26803779546251264
-    m_Key: ship_module_reset
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26803779604971520
-    m_Key: ship_module_reset_confirm
-    m_Metadata:
-      m_Items: []
   - m_Id: 26803779604971521
     m_Key: ship_reset
     m_Metadata:
@@ -745,6 +737,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 26480402604359680
     m_Key: require_level_compare
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34285289010495488
+    m_Key: UITabShip_ModuleReset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34285289056632832
+    m_Key: UITabShip_ModuleResetConfirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34285289056632833
+    m_Key: UIButton_Reset
     m_Metadata:
       m_Items: []
   m_Metadata:
