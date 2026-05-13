@@ -471,13 +471,16 @@ public class UITabExploration : UITabBase
         }
 
         var character = DataManager.Instance.m_currentCharacter;
-        int mineralBefore = (character != null && character.m_characterInfo != null) ? character.m_characterInfo.mineral : 0;
+        int mineralBefore    = (character != null && character.m_characterInfo != null) ? character.m_characterInfo.mineral     : 0;
+        int techPointBefore  = (character != null && character.m_characterInfo != null) ? character.m_characterInfo.techPoint   : 0;
+        int modulePointBefore= (character != null && character.m_characterInfo != null) ? character.m_characterInfo.modulePoint : 0;
 
         if (character != null && character.m_characterInfo != null)
         {
-            character.m_characterInfo.mineral = response.data.mineralRemain;
-            character.m_characterInfo.techPoint = response.data.techPointRemain;
-            character.m_characterInfo.modulePoint = response.data.modulePointRemain;
+            character.m_characterInfo.mineral          = response.data.mineralRemain;
+            character.m_characterInfo.techPoint        = response.data.techPointRemain;
+            character.m_characterInfo.modulePoint      = response.data.modulePointRemain;
+            character.m_characterInfo.modulePointMaxGot = response.data.modulePointMaxGot;
             EventManager.TriggerMineralChange(response.data.mineralRemain);
         }
 
@@ -491,20 +494,25 @@ public class UITabExploration : UITabBase
                 character.m_characterInfo.clearedZones.Add(newlyCleared);
 
             if (m_zoneStageButtons.TryGetValue(newlyCleared, out UIZoneStageButton clearedBtn))
+            {
                 clearedBtn.SetStateUIZoneStageButton(EZoneState.Cleared);
+                clearedBtn.RefreshRewardRowsForState(EZoneState.Cleared);
+            }
 
             RefreshCurrentZoneStageButton();
             SelectNextZoneStage(newlyCleared);
         }
 
-        int mineralGained = response.data.mineralRemain - mineralBefore;
+        int mineralGained     = response.data.mineralRemain    - mineralBefore;
+        int techPointGained   = response.data.techPointRemain  - techPointBefore;
+        int modulePointGained = response.data.modulePointRemain- modulePointBefore;
 
-        if (mineralGained > 0)
+        bool hasReward = mineralGained > 0 || techPointGained > 0 || modulePointGained > 0;
+        if (hasReward == true)
         {
             string title = LocalizationManager.Instance.Get("exploration_battle_victory");
-            string rewardText = LocalizationManager.Instance.Get("exploration_battle_mineral_reward", mineralGained);
-            string msg = $"{CommonUtility.Sprite("crystal-growth")} {rewardText}";
-            UIManager.Instance.StartCoroutine(ShowRewardPopupDelayed(title, msg, 2f));
+            var rewards = new List<int> { mineralGained, techPointGained, modulePointGained, 0 };
+            UIManager.Instance.StartCoroutine(ShowRewardPopupDelayed(title, 2f, rewards));
         }
         else
         {
@@ -512,10 +520,10 @@ public class UITabExploration : UITabBase
         }
     }
 
-    private IEnumerator ShowRewardPopupDelayed(string title, string msg, float delay)
+    private IEnumerator ShowRewardPopupDelayed(string title, float delay, List<int> rewards)
     {
         yield return new WaitForSecondsRealtime(delay);
-        UIManager.Instance.ShowPopupAlert(title, msg, StayInCurrentStage, autoCloseSec: 5f);
+        UIManager.Instance.ShowPopupAlert(title, string.Empty, StayInCurrentStage, autoCloseSec: 5f, rewardAmounts: rewards);
     }
 
     private void SelectNextZoneStage(string clearedZoneName)

@@ -1,4 +1,4 @@
-// 확인/취소 팝업: bodyText에 message + detailText를 표시, 요구/비용은 Row 컨테이너로 표시
+// 확인/취소 팝업: bodyText에 message + detailText를 표시, 요구/비용은 UISection으로 표시
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,15 +13,9 @@ public class UIPopupConfirm : UIPopupBase
     [SerializeField] private TMP_Text m_bodyText;
 
     [SerializeField] private RectTransform m_layoutRoot;
-    [SerializeField] private Transform m_resultContainer;
-    [SerializeField] private GameObject m_result1;
-    [SerializeField] private GameObject m_result2;
-    private RowImageText[] m_resultRows;
-    [SerializeField] private Transform m_requireContainer;
-    private RowImageText[] m_requireRows;
-    [SerializeField] private Transform m_costContainer;
-    private RowImageText[] m_costRows;
-    
+    [SerializeField] private UISection m_sectionResult;
+    [SerializeField] private UISection m_sectionRequire;
+    [SerializeField] private UISection m_sectionCost;
 
     public Button confirmButton;
     public Button cancelButton;
@@ -32,12 +26,6 @@ public class UIPopupConfirm : UIPopupBase
     protected override void Awake()
     {
         base.Awake();
-        if (m_resultContainer != null)
-            m_resultRows = m_resultContainer.GetComponentsInChildren<RowImageText>(true);
-        if (m_requireContainer != null)
-            m_requireRows = m_requireContainer.GetComponentsInChildren<RowImageText>(true);
-        if (m_costContainer != null)
-            m_costRows = m_costContainer.GetComponentsInChildren<RowImageText>(true);        
         if (cancelButton != null) cancelButton.onClick.AddListener(OnCancelClicked);
         if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
     }
@@ -85,21 +73,19 @@ public class UIPopupConfirm : UIPopupBase
     {
         if (require == null || require.techLevel <= 0)
         {
-            if (m_requireContainer != null) m_requireContainer.gameObject.SetActive(false);
+            if (m_sectionRequire != null) m_sectionRequire.SetVisible(false);
             return true;
         }
 
-        if (m_requireContainer != null) m_requireContainer.gameObject.SetActive(true);
+        if (m_sectionRequire != null) m_sectionRequire.SetVisible(true);
 
         var ch = DataManager.Instance.m_currentCharacter;
         int currentTechLevel = ch != null ? ch.GetTechLevel() : 0;
         bool requireMet = currentTechLevel >= require.techLevel;
 
-        if (m_requireRows != null && m_requireRows.Length > 0)
-        {
-            string text = LocalizationManager.Instance.Get("require_level_compare", require.techLevel, currentTechLevel);
-            m_requireRows[0].SetTextRowImageText(requireMet ? text : $"<color=red>{text}</color>");
-        }
+        string text = LocalizationManager.Instance.Get("require_level_compare", require.techLevel, currentTechLevel);
+        if (m_sectionRequire != null)
+            m_sectionRequire.SetRowText(0, requireMet ? text : $"<color=red>{text}</color>");
 
         return requireMet;
     }
@@ -108,16 +94,14 @@ public class UIPopupConfirm : UIPopupBase
     {
         if (cost == null || cost.amount <= 0)
         {
-            if (m_costContainer != null) m_costContainer.gameObject.SetActive(false);
+            if (m_sectionCost != null) m_sectionCost.SetVisible(false);
             return true;
         }
 
-        if (m_costContainer != null) m_costContainer.gameObject.SetActive(true);
-
-        if (m_costRows != null)
+        if (m_sectionCost != null)
         {
-            for (int i = 0; i < m_costRows.Length; i++)
-                m_costRows[i].Hide();
+            m_sectionCost.SetVisible(true);
+            m_sectionCost.HideAllRows();
         }
 
         var ch = DataManager.Instance.m_currentCharacter;
@@ -133,10 +117,10 @@ public class UIPopupConfirm : UIPopupBase
 
         bool canAfford = current >= cost.amount;
         int rowIndex = (int)cost.costType;
-        if (m_costRows != null && rowIndex < m_costRows.Length)
+        if (m_sectionCost != null)
         {
             string val = CommonUtility.FormatBigNumber(cost.amount);
-            m_costRows[rowIndex].SetTextRowImageText(canAfford ? val : $"<color=red>{val}</color>");
+            m_sectionCost.SetRowText(rowIndex, canAfford ? val : $"<color=red>{val}</color>");
         }
 
         return canAfford;
@@ -144,26 +128,18 @@ public class UIPopupConfirm : UIPopupBase
 
     private void BuildResultRows(List<(string icon, string value)> rows)
     {
-        if (m_resultContainer == null) return;
+        if (m_sectionResult == null) return;
         bool hasRows = rows != null && rows.Count > 0;
-        m_resultContainer.gameObject.SetActive(hasRows);
+        m_sectionResult.SetVisible(hasRows);
         if (hasRows == false) return;
-        for (int i = 0; i < m_resultRows.Length; i++)
-        {
-            if (i < rows.Count)
-                m_resultRows[i].SetRow(rows[i].icon, rows[i].value);
-            else
-                m_resultRows[i].Hide();
-        }
+        m_sectionResult.SetRows(rows);
     }
 
     private void RebuildLayout()
     {
-        if (m_result1 != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_result1.GetComponent<RectTransform>());
-        if (m_result2 != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_result2.GetComponent<RectTransform>());
-        if (m_resultContainer != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_resultContainer as RectTransform);
-        if (m_requireContainer != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_requireContainer as RectTransform);
-        if (m_costContainer != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_costContainer as RectTransform);
+        if (m_sectionResult != null) m_sectionResult.RebuildLayout();
+        if (m_sectionRequire != null) m_sectionRequire.RebuildLayout();
+        if (m_sectionCost != null) m_sectionCost.RebuildLayout();
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 

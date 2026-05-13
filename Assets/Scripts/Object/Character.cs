@@ -137,17 +137,6 @@ public class Character
         EventManager.TriggerMineralChange(mineral);
     }
 
-    public void UpdateAllFromCostRemain(CostRemainInfo costRemainInfo)
-    {
-        if (m_characterInfo == null || costRemainInfo == null) return;
-        if (costRemainInfo.mineralRemain > 0 || costRemainInfo.mineralCost > 0)
-            m_characterInfo.mineral = costRemainInfo.mineralRemain;
-        if (costRemainInfo.techPointCost > 0)
-            m_characterInfo.techPoint = costRemainInfo.techPointRemain;
-        if (costRemainInfo.modulePointCost > 0)
-            m_characterInfo.modulePoint = costRemainInfo.modulePointRemain;
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
-    }
 
     public bool CheckEnoughMineral(long cost)
     {

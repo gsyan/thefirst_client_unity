@@ -227,7 +227,7 @@ public class AddShipRequest
 public class AddShipResponse
 {
     public ShipInfo newShipInfo;
-    public CostRemainInfo costRemainInfo;
+    public int modulePointRemain;
     public FleetInfo updatedFleetInfo;
 }
 
@@ -265,7 +265,7 @@ public class ModuleLevelUpResponse
     public EModuleSubType moduleSubType;
     public int slotIndex;
     public int newLevel;
-    public CostRemainInfo costRemainInfo;
+    public int modulePointRemain;
 }
 
 [System.Serializable]
@@ -290,7 +290,7 @@ public class ModuleChangeResponse
     public EModuleSubType moduleSubTypeNew;
     public int slotIndex;
     public int moduleNewLevel;
-    public CostRemainInfo costRemainInfo;
+    public int modulePointRemain;
     // 교체 후 이 슬롯의 갱신된 unlock 목록 (최초 교체 시 새 subType 포함)
     public List<EModuleSubType> newUnlockedSubTypes;
 }
@@ -312,7 +312,7 @@ public class ModuleUnlockResponse
     public EModuleType moduleType;
     public EModuleSubType moduleSubType;
     public int slotIndex;
-    public CostRemainInfo costRemainInfo;
+    public int modulePointRemain;
     public int investedModulePoint;
 }
 
@@ -325,19 +325,8 @@ public class TechLevelResearchRequest
 [System.Serializable]
 public class TechLevelResearchResponse
 {
-    public CostRemainInfo costRemainInfo;
-    public string[] researchedIds;  // 완료된 tech_level_N 목록
-}
-
-[System.Serializable]
-public class CostRemainInfo
-{
-    public int mineralCost;
-    public int mineralRemain;
-    public int techPointCost;
     public int techPointRemain;
-    public int modulePointCost;
-    public int modulePointRemain;
+    public string[] researchedIds;  // 완료된 tech_level_N 목록
 }
 
 [System.Serializable]
@@ -356,7 +345,7 @@ public class ModuleResetResponse
     public int bodyIndex;
     public EModuleType moduleType;
     public int slotIndex;
-    public CostRemainInfo costRemainInfo;
+    public int modulePointRemain;
 }
 
 [System.Serializable]
@@ -369,7 +358,7 @@ public class ShipResetRemoveRequest
 public class ShipResetRemoveResponse
 {
     public long removedShipId;
-    public CostRemainInfo costRemainInfo;
+    public int modulePointRemain;
     public FleetInfo updatedFleetInfo;
 }
 
@@ -430,6 +419,7 @@ public class ClearZoneStageResponse
     public int mineralRemain;
     public int techPointRemain;
     public int modulePointRemain;
+    public int modulePointMaxGot;
 }
 
 #endregion

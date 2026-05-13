@@ -173,8 +173,7 @@ public class UITabTech : UITabBase
             return;
         }
 
-        if (response.data.costRemainInfo != null)
-            DataManager.Instance.m_currentCharacter.UpdateAllFromCostRemain(response.data.costRemainInfo);
+        DataManager.Instance.m_currentCharacter.UpdateTechPoint(response.data.techPointRemain);
         if (response.data.researchedIds != null)
             DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
 

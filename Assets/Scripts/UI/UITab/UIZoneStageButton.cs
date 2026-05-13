@@ -9,17 +9,16 @@ public class UIZoneStageButton : MonoBehaviour
     [SerializeField] private Image               m_pointMarker;   // point marker
     [SerializeField] private Button              m_expendButton;  // 누르면 m_detailText 표시 토글
     [SerializeField] private Image               m_labelAnchor;   // bg
-    [SerializeField] private Image               m_borderImage;   // border
-    [SerializeField] private TMP_Text            m_detailText;    
+    [SerializeField] private TMP_Text            m_detailText;
+    [SerializeField] private Transform           m_rewardContainer;
+    private RowImageText[]                       m_rewardTexts;
     [SerializeField] private Button              m_enterButton;
     [SerializeField] private Image               m_enterButtonBg;
-    [SerializeField] private Image               m_enterButtonBorder;
     [SerializeField] private TMP_Text            m_enterButtonText;
 
     [Header("상태별 색상")]
     [SerializeField] private Color m_colorNotCleared = new(1.0f, 0.0f, 0.0f, 0.8f);
     [SerializeField] private Color m_colorCleared    = new(0.3f, 0.7f, 0.3f, 0.9f);
-    [SerializeField] private float m_bgAlpha    = 0.02f;
 
     private Camera  m_worldCamera;
     private Vector3 m_worldPos;
@@ -62,27 +61,66 @@ public class UIZoneStageButton : MonoBehaviour
             });
         }
 
+        CacheRewardTexts();
         RefreshDetailText(config);
+        RefreshRewardRows(config, state);
         SetStateUIZoneStageButton(state);
         Collapse();
+    }
+
+    private void CacheRewardTexts()
+    {
+        if (m_rewardContainer == null) return;
+        m_rewardTexts = m_rewardContainer.GetComponentsInChildren<RowImageText>(true);
     }
 
     private void RefreshDetailText(ZoneStageConfig config)
     {
         if (m_detailText == null) return;
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine(config.zoneName);
-        if (string.IsNullOrEmpty(config.zoneDescription) == false)
-            sb.AppendLine(config.zoneDescription);
-        if (config.mineralClearReward > 0)
-            sb.Append($"{CommonUtility.Sprite("crystal-growth")} {CommonUtility.FormatBigNumber(config.mineralClearReward)}");
-        m_detailText.text = sb.ToString().TrimEnd();
+        m_detailText.text = $"STAGE {config.zoneName}";
+    }
+
+    private void RefreshRewardRows(ZoneStageConfig config, EZoneState state)
+    {
+        if (m_rewardTexts == null || m_rewardTexts.Length == 0) return;
+        bool isCleared = state == EZoneState.Cleared;
+
+        // [0] 미네랄 (매 클리어)
+        if (m_rewardTexts.Length > 0)
+        {
+            if (config.mineralClearReward > 0)
+                m_rewardTexts[0].SetTextWithString(CommonUtility.FormatBigNumber(config.mineralClearReward));
+            else
+                m_rewardTexts[0].Hide();
+        }
+        // [1] 기술포인트 (최초 클리어 — 클리어 상태면 숨김)
+        if (m_rewardTexts.Length > 1)
+        {
+            if (config.techPointClearReward > 0 && isCleared == false)
+                m_rewardTexts[1].SetTextWithInt(config.techPointClearReward);
+            else
+                m_rewardTexts[1].Hide();
+        }
+        // [2] 모듈포인트 (최초 클리어 — 클리어 상태면 숨김)
+        if (m_rewardTexts.Length > 2)
+        {
+            if (config.modulePointClearReward > 0 && isCleared == false)
+                m_rewardTexts[2].SetTextWithInt(config.modulePointClearReward);
+            else
+                m_rewardTexts[2].Hide();
+        }
+    }
+
+    public void RefreshRewardRowsForState(EZoneState state)
+    {
+        RefreshRewardRows(m_config, state);
     }
 
     public void Expand()
     {
         m_isExpanded = true;
-        if (m_detailText != null) m_detailText.gameObject.SetActive(true);
+        if (m_detailText != null)      m_detailText.gameObject.SetActive(true);
+        if (m_rewardContainer != null) m_rewardContainer.gameObject.SetActive(true);
         if (m_enterButtonText != null)
             m_enterButtonText.text = LocalizationManager.Instance.Get("UITabExploration_TryZone");
         RebuildLayout();
@@ -92,7 +130,8 @@ public class UIZoneStageButton : MonoBehaviour
     public void Collapse()
     {
         m_isExpanded = false;
-        if (m_detailText != null) m_detailText.gameObject.SetActive(false);
+        if (m_detailText != null)      m_detailText.gameObject.SetActive(false);
+        if (m_rewardContainer != null) m_rewardContainer.gameObject.SetActive(false);
         if (m_enterButtonText != null && m_config != null)
             m_enterButtonText.text = m_config.zoneName;
         RebuildLayout();
@@ -115,17 +154,9 @@ public class UIZoneStageButton : MonoBehaviour
         Color color = state == EZoneState.Cleared ? m_colorCleared : m_colorNotCleared;
         if (m_pointMarker != null) m_pointMarker.color = color;
         
-        if (m_labelAnchor != null)
-        {
-            Color bgColor = color;
-            bgColor.a = m_bgAlpha;
-            m_labelAnchor.color = bgColor;
-            m_enterButtonBg.color = bgColor;
-        }
-        m_borderImage.color = color;
-
-        m_enterButtonBorder.color = color;
-        //if (m_enterButtonText != null) m_enterButtonText.color = color;
+        m_labelAnchor.color = color;
+        m_enterButtonBg.color = color;
+        //m_enterButtonText.color = color;
     }
 
     public void SetSelectedUIZoneStageButton(bool selected)

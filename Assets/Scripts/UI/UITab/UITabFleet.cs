@@ -127,8 +127,7 @@ public class UITabFleet : UITabBase
             return;
         }
 
-        if (response.data.costRemainInfo != null)
-            DataManager.Instance.m_currentCharacter.UpdateAllFromCostRemain(response.data.costRemainInfo);
+        DataManager.Instance.m_currentCharacter.UpdateTechPoint(response.data.techPointRemain);
         if (response.data.researchedIds != null)
             DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
 
@@ -360,7 +359,7 @@ public class UITabFleet : UITabBase
         {
             if (response.errorCode == 0)
             {
-                m_myCharacter.UpdateAllFromCostRemain(response.data.costRemainInfo);
+                m_myCharacter.UpdateModulePoint(response.data.modulePointRemain);
                 
                 if (response.data.updatedFleetInfo != null)
                     DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);

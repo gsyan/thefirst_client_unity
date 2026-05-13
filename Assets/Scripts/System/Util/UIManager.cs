@@ -380,7 +380,8 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 단순 알림 팝업 (확인 버튼만) - Overlay 레이어: 다른 팝업 위에 쌓임
-    public void ShowPopupAlert(string title, string message, System.Action onConfirm, float autoCloseSec = 0f)
+    // rewardAmounts: [mineral, techPoint, modulePoint, pvpPoint] 순, null이면 보상 섹션 숨김
+    public void ShowPopupAlert(string title, string message, System.Action onConfirm, float autoCloseSec = 0f, System.Collections.Generic.List<int> rewardAmounts = null)
     {
         UIPopupAlert popup = GetOrCreatePopup<UIPopupAlert>("UIPopupAlert", EPopupLayer.Overlay);
         if (popup == null) return;
@@ -389,7 +390,7 @@ public class UIManager : MonoSingleton<UIManager>
 
         void WrappedConfirm() { onConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Overlay); }
 
-        popup.ShowPopupAlert(title, message, WrappedConfirm, autoCloseSec);
+        popup.ShowPopupAlert(title, message, WrappedConfirm, autoCloseSec, rewardAmounts);
     }
 
     // PvP 전체 랭킹 팝업

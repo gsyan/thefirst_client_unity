@@ -59,7 +59,7 @@ public class ShipSelector : MonoBehaviour
 
         if (m_statRows != null && m_statRows.Length > 0)
         {
-            m_statRows[0].SetTextRowImageText($"{CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}");
+            m_statRows[0].SetTextWithString($"{CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}");
             for (int i = 1; i < m_statRows.Length; i++)
                 m_statRows[i].Hide();
         }

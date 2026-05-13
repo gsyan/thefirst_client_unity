@@ -345,8 +345,7 @@ public class UITabShip : UITabBase
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
-        if (unlockData.costRemainInfo != null)
-            character.UpdateAllFromCostRemain(unlockData.costRemainInfo);
+        character.UpdateModulePoint(unlockData.modulePointRemain);
 
         SpaceFleet fleet = character.GetOwnedFleet();
         if (fleet == null) return;
@@ -474,8 +473,7 @@ public class UITabShip : UITabBase
 
         if (response.errorCode == 0)
         {
-            if (response.data.costRemainInfo != null)
-                character.UpdateAllFromCostRemain(response.data.costRemainInfo);
+            character.UpdateModulePoint(response.data.modulePointRemain);
 
             ApplyModuleLevelUp(response.data);
             UpdateModuleStatsDisplay();
@@ -581,7 +579,7 @@ public class UITabShip : UITabBase
             ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level);
             if (cur != null && m_statsRows.Count >= 2)
             {
-                m_statsRows[0].SetTextRowImageText($"{level}");
+                m_statsRows[0].SetTextWithInt(level);
 
                 EModuleType moduleType = m_selectedModule.GetModuleType();
                 if (moduleType == EModuleType.body && m_statsRows.Count >= 4)
@@ -668,12 +666,9 @@ public class UITabShip : UITabBase
 
         ship.ApplyModuleChange(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel, changeData.newUnlockedSubTypes);
 
-        if (changeData.costRemainInfo != null)
-        {
-            var character = DataManager.Instance.m_currentCharacter;
-            if (character != null)
-                character.UpdateAllFromCostRemain(changeData.costRemainInfo);
-        }
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+            character.UpdateModulePoint(changeData.modulePointRemain);
 
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
@@ -828,8 +823,8 @@ public class UITabShip : UITabBase
 
         var data = response.data;
         var character = DataManager.Instance.m_currentCharacter;
-        if (character != null && data.costRemainInfo != null)
-            character.UpdateAllFromCostRemain(data.costRemainInfo);
+        if (character != null)
+            character.UpdateModulePoint(data.modulePointRemain);
 
         SpaceFleet fleet = character?.GetOwnedFleet();
         if (fleet == null) return;
@@ -910,8 +905,8 @@ public class UITabShip : UITabBase
 
         var data = response.data;
         var character = DataManager.Instance.m_currentCharacter;
-        if (character != null && data.costRemainInfo != null)
-            character.UpdateAllFromCostRemain(data.costRemainInfo);
+        if (character != null)
+            character.UpdateModulePoint(data.modulePointRemain);
 
         if (data.updatedFleetInfo != null)
             DataManager.Instance.SetFleetData(data.updatedFleetInfo);

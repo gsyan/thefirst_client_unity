@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6756390435632161813}
   - component: {fileID: 1515919752818283168}
   m_Layer: 5
-  m_Name: Row
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 7827655645850205151}
   - component: {fileID: 7894347280776633316}
   m_Layer: 5
-  m_Name: Row
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 1219835954742508982}
   - component: {fileID: 126212480086865476}
   m_Layer: 5
-  m_Name: ModulePoint
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -689,7 +689,7 @@ GameObject:
   - component: {fileID: 6284853730537714552}
   - component: {fileID: 7158135282520329609}
   m_Layer: 5
-  m_Name: Row
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -916,8 +916,9 @@ GameObject:
   - component: {fileID: 6098426873415339821}
   - component: {fileID: 9152733042320938582}
   - component: {fileID: 9207004899566640386}
+  - component: {fileID: 8538285237268755634}
   m_Layer: 5
-  m_Name: Result1
+  m_Name: RITContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -986,6 +987,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &8538285237268755634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093351927569383091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b3b6b3521b619419b2ae22e988fc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RowImageTextContainer
 --- !u!1 &1122055187024278371
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,7 +1355,7 @@ GameObject:
   - component: {fileID: 5190510022795942004}
   - component: {fileID: 7291188284423056936}
   m_Layer: 5
-  m_Name: Row
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1517,7 +1530,7 @@ GameObject:
   - component: {fileID: 2189124286806948041}
   - component: {fileID: 981007031735725831}
   m_Layer: 5
-  m_Name: TechPoint
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1622,7 +1635,7 @@ GameObject:
   - component: {fileID: 6545484853118846488}
   - component: {fileID: 6087831402438387254}
   m_Layer: 5
-  m_Name: Row
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3163,7 +3176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.50980395, a: 1}
+  m_Color: {r: 0, g: 0.39215687, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3602,7 +3615,7 @@ GameObject:
   - component: {fileID: 7246714935112987165}
   - component: {fileID: 1020707113058488602}
   m_Layer: 5
-  m_Name: Mineral
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4179,8 +4192,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3628196201560364285}
   - component: {fileID: 3482469443777760948}
+  - component: {fileID: 4509512031072235786}
   m_Layer: 5
-  m_Name: CostContainer
+  m_Name: SectionCost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4233,6 +4247,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4509512031072235786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5373496171595338984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce942ebeba818594380dc86760e93037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UISection
 --- !u!1 &5537170094577850060
 GameObject:
   m_ObjectHideFlags: 0
@@ -4247,7 +4273,7 @@ GameObject:
   - component: {fileID: 699203788215094974}
   - component: {fileID: 7654127835652815915}
   m_Layer: 5
-  m_Name: Row
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4383,8 +4409,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7151009710646676522}
   - component: {fileID: 5051275742019355268}
+  - component: {fileID: 6479470266954048587}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: RITContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4439,6 +4466,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6479470266954048587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5730746249530655981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b3b6b3521b619419b2ae22e988fc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RowImageTextContainer
 --- !u!1 &5808192640227685623
 GameObject:
   m_ObjectHideFlags: 0
@@ -4856,11 +4895,8 @@ MonoBehaviour:
   m_prevButton: {fileID: 500025159933820831}
   m_nextButton: {fileID: 4216249416583385435}
   m_bodyText: {fileID: 2544851973035186441}
-  m_resultContainer: {fileID: 1904791311154853340}
-  m_results: {fileID: 915401007661886360}
-  m_result1: {fileID: 1093351927569383091}
-  m_result2: {fileID: 9118699427851577443}
-  m_costContainer: {fileID: 7151009710646676522}
+  m_sectionResult: {fileID: 7412112285847727113}
+  m_sectionCost: {fileID: 4509512031072235786}
   m_confirmButton: {fileID: 3116320435018880307}
   m_cancelButton: {fileID: 1640683066758061305}
 --- !u!1 &6264510029103972683
@@ -6452,7 +6488,7 @@ GameObject:
   - component: {fileID: 5877181717390859288}
   - component: {fileID: 1573792380748221802}
   m_Layer: 5
-  m_Name: PvpPoint
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6637,7 +6673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.3529412, b: 0.50980395, a: 1}
+  m_Color: {r: 0.5882353, g: 0.39215687, b: 0.39215687, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6936,8 +6972,9 @@ GameObject:
   - component: {fileID: 1904791311154853340}
   - component: {fileID: 2025049949489270942}
   - component: {fileID: 2333361736679749165}
+  - component: {fileID: 7412112285847727113}
   m_Layer: 5
-  m_Name: ResultContainer
+  m_Name: SectionResult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6961,7 +6998,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 350, y: -314.43}
+  m_AnchoredPosition: {x: 350, y: -421.93}
   m_SizeDelta: {x: 600, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2025049949489270942
@@ -7004,6 +7041,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &7412112285847727113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8812643997871554903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce942ebeba818594380dc86760e93037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UISection
 --- !u!1 &8889869140361445846
 GameObject:
   m_ObjectHideFlags: 0
@@ -7108,7 +7157,7 @@ GameObject:
   - component: {fileID: 2786423056429141637}
   - component: {fileID: 2728793325951243338}
   m_Layer: 5
-  m_Name: Row
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7435,7 +7484,7 @@ GameObject:
   - component: {fileID: 65051008309348798}
   - component: {fileID: 5208955645475283008}
   m_Layer: 5
-  m_Name: Row
+  m_Name: RIT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7537,8 +7586,9 @@ GameObject:
   - component: {fileID: 1773473644790266836}
   - component: {fileID: 2457025682444932896}
   - component: {fileID: 3725508562583177149}
+  - component: {fileID: 796495229165900373}
   m_Layer: 5
-  m_Name: Result2
+  m_Name: RITContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7607,6 +7657,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &796495229165900373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118699427851577443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b3b6b3521b619419b2ae22e988fc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RowImageTextContainer
 --- !u!1 &9172128199383658187
 GameObject:
   m_ObjectHideFlags: 0

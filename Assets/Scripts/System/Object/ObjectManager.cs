@@ -627,7 +627,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         }
 
         Vector3 basePos = m_myFleet.transform.position;
-        Vector3 spawnPosition = basePos + m_myFleet.transform.forward * (maxHalfZ + maxZ * 10f);
+        Vector3 spawnPosition = basePos + m_myFleet.transform.forward * (maxHalfZ + 50f);
         spawnPosition.y = 0f;
 
         return spawnPosition;
