@@ -5,27 +5,22 @@ using UnityEngine.UI;
 // 연구 노드 기본 상태 (선택 여부와 별개 - 선택은 isSelected 파라미터로 전달)
 public enum EResearchNodeState
 {
-    Researchable,   // 배울 수 있음 (선행 조건 충족)
-    Researched,     // 이미 배움
-    Current,        // 현재 장착 중 (모듈 업그레이드 팝업 전용)
-    Locked          // 기술레벨 부족 — 선택 불가
+    Locked,         // 안배움
+    Researched,     // 배움
+    Current,        // 현재 장착 중    
 }
 
 public class ScrollViewResearchItem : MonoBehaviour
 {
     [SerializeField] private Button m_selectButton;
     [SerializeField] private TMP_Text m_nameText;
-    [SerializeField] private Image m_backgroundImage;
+    [SerializeField] private Image m_borderImage;
+    [SerializeField] private Image m_bgImage;
 
     [Header("상태별 색상")]
-    [SerializeField] private Color m_colorResearchable = new Color(0.3f, 0.3f, 0.3f, 1f);
-    [SerializeField] private Color m_colorResearched = new Color(0.2f, 0.8f, 0.4f, 1f);
-    [SerializeField] private Color m_colorCurrent = new Color(0.2f, 0.6f, 1f, 1f);    // 현재 장착 중 - 파란색
-    [SerializeField] private Color m_colorLocked = new Color(0.15f, 0.15f, 0.15f, 1.0f); // 기술레벨 부족 - 어둡게
-    [SerializeField] private Color m_colorSelected = new Color(1f, 0.8f, 0.2f, 1f);
-    [SerializeField] private float m_outlineWidth = 4f;
-
-    private UnityEngine.UI.Outline m_outline;
+    [SerializeField] private Color m_colorLocked    = CommonUtility.HexColor("#253549");
+    [SerializeField] private Color m_colorResearched = CommonUtility.HexColor("#2DE8A0");
+    [SerializeField] private Color m_colorSelected  = CommonUtility.HexColor("#F0B429");
 
     // displayName: 이미 로컬라이즈된 표시명 (동적 생성 지원)
     public void InitializeScrollViewResearchItem(string displayName, UnityEngine.Events.UnityAction onSelect, bool isLocKey = true)
@@ -40,43 +35,33 @@ public class ScrollViewResearchItem : MonoBehaviour
                 m_nameText.text = displayName;
         }
 
-        if (m_backgroundImage == null)
-            m_backgroundImage = m_selectButton.GetComponent<Image>();
-
-        // 동적으로 Outline 부착 (UnityEngine.UI.Outline, QuickOutline 아님)
-        m_outline = m_selectButton.GetComponent<UnityEngine.UI.Outline>();
-        if (m_outline == null)
-            m_outline = m_selectButton.gameObject.AddComponent<UnityEngine.UI.Outline>();
-        m_outline.effectColor = m_colorSelected;
-        m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
-        m_outline.enabled = false;
+        if (m_borderImage == null)
+            m_borderImage = m_selectButton.GetComponent<Image>();
     }
 
-    // 배경색은 연구 상태, 외곽선(색상 포함)은 선택 여부로 독립 처리
     public void SetNodeState(EResearchNodeState baseState, bool isSelected)
     {
-        if (m_backgroundImage == null) return;
+        if (m_borderImage == null) return;
 
-        if (baseState == EResearchNodeState.Locked)
-            m_backgroundImage.color = m_colorLocked;
+        // borderImage: selected → colorSelected 우선, 아니면 baseState 기준
+        Color borderColor;
+        if (isSelected == true)
+            borderColor = m_colorSelected;
         else if (baseState == EResearchNodeState.Current)
-            m_backgroundImage.color = m_colorCurrent;
+            borderColor = m_colorResearched;
         else if (baseState == EResearchNodeState.Researched)
-            m_backgroundImage.color = m_colorResearched;
+            borderColor = m_colorResearched;
         else
-            m_backgroundImage.color = m_colorResearchable;
+            borderColor = m_colorLocked;
 
-        // 풀 재사용 시 m_outline이 소실될 수 있으므로 방어적으로 재획득
-        if (m_outline == null)
-        {
-            m_outline = m_selectButton.GetComponent<UnityEngine.UI.Outline>();
-            if (m_outline == null)
-                m_outline = m_selectButton.gameObject.AddComponent<UnityEngine.UI.Outline>();
-            m_outline.effectColor    = m_colorSelected;
-            m_outline.effectDistance = new Vector2(m_outlineWidth, -m_outlineWidth);
-        }
+        m_borderImage.color = borderColor;
 
-        m_outline.enabled = isSelected;
-        if (isSelected == true) m_backgroundImage.SetAllDirty();
+        // bgImage: Current(비선택)만 solid fill, 나머지 검정
+        if (m_bgImage != null)
+            m_bgImage.color = (baseState == EResearchNodeState.Current && isSelected == false) ? m_colorResearched : Color.black;
+
+        // nameText: Current(비선택) → 검정, 나머지 → borderColor
+        if (m_nameText != null)
+            m_nameText.color = (baseState == EResearchNodeState.Current && isSelected == false) ? Color.black : borderColor;
     }
 }

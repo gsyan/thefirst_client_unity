@@ -332,6 +332,12 @@ public static class CommonUtility
         return $"<size={sizePercent:F0}%><sprite name=\"{name}\"></size>";
     }
 
+    public static Color HexColor(string hex)
+    {
+        ColorUtility.TryParseHtmlString(hex, out Color c);
+        return c;
+    }
+
     // label 에 localization
     public static void SetUILocText(TMP_Text textComp, string text)
     {

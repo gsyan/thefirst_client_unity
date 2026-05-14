@@ -15,7 +15,9 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
     [Header("Info Panel")]
     [SerializeField] private TMP_Text m_titleText;
-    [SerializeField] private TMP_Text m_costText;        // "FREE" 또는 "5,000 MR"
+    [SerializeField] private TMP_Text m_moduleLevelCheckText;
+    [SerializeField] private UISection m_sectionRequire;
+    [SerializeField] private UISection m_sectionCost;
     [SerializeField] private Button m_confirmButton;
     [SerializeField] private Button m_closeButton;
 
@@ -224,13 +226,9 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         UpdateInfoPanel();
     }
 
-    // 노드 배경색 및 선택 아웃라인 갱신
     private void RefreshNodeColors()
     {
         EModuleSubType currentSubType = m_sourceModule.GetModuleSubType();
-        int playerTechLevel = DataManager.Instance.m_currentCharacter?.GetTechLevel() ?? 0;
-        ModuleResearchData currentNode = DataManager.Instance.m_dataTableResearch.GetResearchData(currentSubType);
-        string currentResearchId = currentNode?.researchId ?? "";
 
         for (int i = 0; i < m_currentNodeList.Count; i++)
         {
@@ -240,20 +238,12 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             bool isSelected = node.moduleSubType == m_selectedSubType;
             EResearchNodeState state;
 
-            bool isDirectNextStep = string.IsNullOrEmpty(currentResearchId) == false
-                && node.prerequisiteIds != null
-                && node.prerequisiteIds.Contains(currentResearchId);
-
-            if (node.moduleSubType.GetTechTier() > playerTechLevel)
-                state = EResearchNodeState.Locked;       // 어둠 = 기술레벨 부족
-            else if (node.moduleSubType == currentSubType)
-                state = EResearchNodeState.Current;      // 파랑 = 현재 장착
-            else if (m_sourceModule.IsSubTypeFree(node.moduleSubType))
-                state = EResearchNodeState.Researched;   // 초록 = 비용 없음 (이미 해금)
-            else if (isDirectNextStep == true)
-                state = EResearchNodeState.Researchable; // 회색 = MR 비용 (직접 다음 단계)
+            if (node.moduleSubType == currentSubType)
+                state = EResearchNodeState.Current;
+            else if (m_sourceModule.IsSubTypeUnlocked(node.moduleSubType))
+                state = EResearchNodeState.Researched;
             else
-                state = EResearchNodeState.Locked;       // 어둠 = 직접 다음 단계 아님
+                state = EResearchNodeState.Locked;
 
             item.SetNodeState(state, isSelected);
         }
@@ -265,7 +255,9 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         bool nothingSelected = m_selectedSubType == EModuleSubType.none || m_selectedSubType == currentSubType;
         if (nothingSelected == true)
         {
-            if (m_costText != null) m_costText.text = "";
+            if (m_moduleLevelCheckText != null) m_moduleLevelCheckText.text = "";
+            if (m_sectionRequire != null) m_sectionRequire.SetVisible(false);
+            if (m_sectionCost != null) m_sectionCost.SetVisible(false);
             if (m_confirmButton != null) m_confirmButton.interactable = false;
             return;
         }
@@ -274,15 +266,15 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         int requiredTechTier = m_selectedSubType.GetTechTier();
         bool hasTechLevel = playerTechLevel >= requiredTechTier;
 
-        bool isFree = m_sourceModule.IsSubTypeFree(m_selectedSubType);
+        bool isFree = m_sourceModule.IsSubTypeUnlocked(m_selectedSubType);
         bool canConfirm = hasTechLevel;
-
-        var sb = new System.Text.StringBuilder();
 
         if (isFree == true)
         {
-            // 이미 unlock된 서브타입 → 자유 교체, 비용 조건 없음
-            sb.Append(LocalizationManager.Instance.Get("free"));
+            // 이미 unlock된 서브타입 → 자유 교체, 비용/조건 섹션 불필요
+            if (m_moduleLevelCheckText != null) m_moduleLevelCheckText.text = LocalizationManager.Instance.Get("free");
+            if (m_sectionRequire != null) m_sectionRequire.SetVisible(false);
+            if (m_sectionCost != null) m_sectionCost.SetVisible(false);
         }
         else
         {
@@ -305,46 +297,53 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
             int currentLevel = m_sourceModule.GetModuleLevel();
             int maxLevel = DataManager.Instance.GetMaxModuleLevel(prereqSubType);
-            // 현재 서브타입이 prerequisite과 일치해야 하고, 그 레벨이 맥스여야 함
             bool isMaxLevel = currentSubType == prereqSubType && currentLevel >= maxLevel;
             if (isMaxLevel == false) canConfirm = false;
 
             long mineralCost = DataManager.Instance.m_dataTableResearch.GetResearchCost(m_selectedSubType);
             var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-            bool insM  = (info?.modulePoint ?? 0) < mineralCost;
-            bool insufficient = insM;
+            bool insufficient = (info?.modulePoint ?? 0) < mineralCost;
             if (insufficient == true) canConfirm = false;
 
-            // prerequisite 서브타입 이름 기준으로 레벨 조건 표시
-            string subtypeName = prereqSubType.GetLocalizedName();
-            string levelMsg = LocalizationManager.Instance.Get(
-                "module_subtype_max_level_required",
-                new object[] { subtypeName, maxLevel, currentLevel });
-            sb.Append(isMaxLevel == true
-                ? levelMsg
-                : $"<color=red>{levelMsg}</color>");
-            sb.Append("\n");
+            // m_moduleLevelCheckText: prerequisite 서브타입 기준 max level 조건 표시
+            if (m_moduleLevelCheckText != null)
+            {
+                string subtypeName = prereqSubType.GetLocalizedName();
+                string levelMsg = LocalizationManager.Instance.Get("module_subtype_max_level_required", new object[] { subtypeName, currentLevel, maxLevel });
+                m_moduleLevelCheckText.text = isMaxLevel == true ? levelMsg : $"<color=red>{levelMsg}</color>";
+            }
 
-            // 기술 레벨 조건 (부족하면 빨간색)
-            string techLine = hasTechLevel
-                ? $"{CommonUtility.Sprite("gears")} Lv.{requiredTechTier}"
-                : $"{CommonUtility.Sprite("gears")} <color=red>Lv.{requiredTechTier}</color>";
-            sb.Append(techLine);
-            sb.Append("\n");
+            // m_sectionRequire: 기술 레벨 조건 (row 0 = gears 아이콘 + Lv.X)
+            if (m_sectionRequire != null)
+            {
+                m_sectionRequire.SetVisible(true);
+                string techText = hasTechLevel ? $"Lv.{requiredTechTier}" : $"<color=red>Lv.{requiredTechTier}</color>";
+                m_sectionRequire.SetRow(0, "gears", techText);
+            }
 
-            // 4종 재화 비용 — 한 줄로 이어서 표시, 0이면 생략
-            var costSb = new System.Text.StringBuilder();
-            if (mineralCost > 0)
-                costSb.Append(insM ? $"{CommonUtility.Sprite("upgrade")} <color=red>{CommonUtility.FormatBigNumber(mineralCost)}</color>" : $"{CommonUtility.Sprite("upgrade")} {CommonUtility.FormatBigNumber(mineralCost)}");
-            if (costSb.Length > 0) sb.Append(costSb);
+            // m_sectionCost: 재화 비용 (4행 — ECostType 인덱스 기준, 연구 비용은 ModulePoint)
+            if (m_sectionCost != null)
+            {
+                if (mineralCost > 0)
+                {
+                    m_sectionCost.SetVisible(true);
+                    m_sectionCost.HideAllRows();
+                    string costText = insufficient
+                        ? $"<color=red>{CommonUtility.FormatBigNumber(mineralCost)}</color>"
+                        : CommonUtility.FormatBigNumber(mineralCost);
+                    m_sectionCost.SetRowText((int)ECostType.ModulePoint, costText);
+                }
+                else
+                {
+                    m_sectionCost.SetVisible(false);
+                }
+            }
         }
 
-        if (m_costText != null)
-        {
-            m_costText.text = sb.ToString().TrimEnd();
-            // 텍스트 변경 후 부모 레이아웃 갱신
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_costText.transform.parent as RectTransform);
-        }
+        if (m_sectionRequire != null) m_sectionRequire.RebuildLayout();
+        if (m_sectionCost != null) m_sectionCost.RebuildLayout();
+        if (m_moduleLevelCheckText != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleLevelCheckText.transform.parent as RectTransform);
 
         if (m_confirmButton != null) m_confirmButton.interactable = canConfirm;
     }

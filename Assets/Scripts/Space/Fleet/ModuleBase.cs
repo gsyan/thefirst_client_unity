@@ -36,7 +36,7 @@ public class ModuleBase : MonoBehaviour
         return m_investedModulePoint > 0;
     }
 
-    public bool IsSubTypeFree(EModuleSubType subType)
+    public bool IsSubTypeUnlocked(EModuleSubType subType)
     {
         return m_unlockedSubTypes != null && m_unlockedSubTypes.Contains(subType);
     }

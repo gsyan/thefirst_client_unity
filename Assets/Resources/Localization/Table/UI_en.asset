@@ -130,10 +130,6 @@ MonoBehaviour:
     m_Localized: Hanger
     m_Metadata:
       m_Items: []
-  - m_Id: 797857342685184
-    m_Localized: Max Level
-    m_Metadata:
-      m_Items: []
   - m_Id: 1211027840434176
     m_Localized: Enemy Fleet
     m_Metadata:
@@ -515,7 +511,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14264662300164096
-    m_Localized: '{0} must reach max level (Lv.{1} / now Lv.{2})'
+    m_Localized: '{0} must reach max level (Lv.{1} / Lv.{2})'
     m_Metadata:
       m_Items: []
   - m_Id: 14282967706632192
