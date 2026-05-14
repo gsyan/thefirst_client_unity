@@ -384,7 +384,7 @@ public class UITabFleet : UITabBase
         int techLevel = m_myCharacter.GetTechLevel();
         int maxShipsAtTech = DataManager.Instance.m_dataTableResearch.GetShipCount(techLevel);
         if (currentShipCount >= maxShipsAtTech) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
-        if (m_myCharacter.m_characterInfo.modulePoint < gameSettings.addShipCost) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_MODULE_POINT;
+        if (m_myCharacter.m_characterInfo.modulePoint < gameSettings.addShipCost) return ServerErrorCode.ADD_SHIP_FAIL_INSUFFICIENT_MODULE_POINT;
 
         return ServerErrorCode.SUCCESS;
     }
