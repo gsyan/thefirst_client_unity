@@ -10,6 +10,7 @@ pipeline {
         booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드')
         booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드')
         booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드')
+        booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\bk_server\\bk\\개발)에 APK 업로드')
     }
 
     environment {
@@ -45,6 +46,7 @@ pipeline {
                             booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드'),
                             booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드'),
                             booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드'),
+                            booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\\\\\bk_server\\\\bk\\\\개발)에 APK 업로드'),
                         ])
                     ])
                 }
@@ -157,6 +159,22 @@ pipeline {
                       --groups "fidforge,testers" ^
                       --release-notes "v${env.VERSION_NAME} Build #%BUILD_NUMBER%"
                 """
+            }
+        }
+
+        stage('NAS Upload') {
+            when {
+                expression { params.RELEASE_NAS == true && params.RELEASE_PLAY == false }
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'nas-smb-cred', usernameVariable: 'NAS_USER', passwordVariable: 'NAS_PASS')]) {
+                    bat """
+                        net use \\\\bk_server\\bk /user:%NAS_USER% %NAS_PASS% /persistent:no
+                        if not exist "\\\\bk_server\\bk\\개발\\v${env.VERSION_NAME}" mkdir "\\\\bk_server\\bk\\개발\\v${env.VERSION_NAME}"
+                        robocopy "${env.WORKSPACE}\\build" "\\\\bk_server\\bk\\개발\\v${env.VERSION_NAME}" thefirst.apk /r:3 /w:5
+                        net use \\\\bk_server\\bk /delete
+                    """
+                }
             }
         }
     }
