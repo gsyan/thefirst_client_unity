@@ -272,7 +272,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         if (isFree == true)
         {
             // 이미 unlock된 서브타입 → 자유 교체, 비용/조건 섹션 불필요
-            if (m_moduleLevelCheckText != null) m_moduleLevelCheckText.text = LocalizationManager.Instance.Get("free");
+            if (m_moduleLevelCheckText != null) m_moduleLevelCheckText.text = LocalizationManager.Instance.Get("Simple_Free");
             if (m_sectionRequire != null) m_sectionRequire.SetVisible(false);
             if (m_sectionCost != null) m_sectionCost.SetVisible(false);
         }
@@ -372,10 +372,12 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         lineRect.gameObject.SetActive(true);
         lineRect.transform.SetAsFirstSibling();
 
-        Vector2 dir = end.anchoredPosition - start.anchoredPosition;
+        Vector2 startPoint = start.anchoredPosition + new Vector2(start.sizeDelta.x * 0.5f, 0f);
+        Vector2 endPoint   = end.anchoredPosition   - new Vector2(end.sizeDelta.x   * 0.5f, 0f);
+        Vector2 dir = endPoint - startPoint;
         float dist = dir.magnitude;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        lineRect.anchoredPosition = start.anchoredPosition + dir * 0.5f;
+        lineRect.anchoredPosition = startPoint + dir * 0.5f;
         lineRect.sizeDelta = new Vector2(dist, 5f);
         lineRect.localRotation = Quaternion.Euler(0, 0, angle);
     }

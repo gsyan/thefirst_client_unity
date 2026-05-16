@@ -12,10 +12,13 @@ public class ShipSelector : MonoBehaviour
     [SerializeField] private Transform m_shipStatsContainer;
     [SerializeField] private Image m_hpBarFill;        // HP 게이지 fill (Image.fillMethod = Horizontal)
     [SerializeField] private TMP_Text m_textHp;        // HP 수치 텍스트
+    [SerializeField] private Button m_manageButton;
 
     [SerializeField] private float m_healthLerpDuration = 0.4f;
 
     private Image m_selectButtonImage;
+    private Color m_selectButtonOriginalColor;
+    private Color m_selectButtonSelectedColor;
     private Coroutine m_healthLerpCoroutine;
     private RowImageText[] m_statRows;
 
@@ -24,12 +27,21 @@ public class ShipSelector : MonoBehaviour
     private void Awake()
     {
         if (m_selectButton != null)
+        {
             m_selectButtonImage = m_selectButton.GetComponent<Image>();
+            if (m_selectButtonImage != null)
+                m_selectButtonOriginalColor = m_selectButtonImage.color;
+        }
+
+        var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
+        if (palette != null)
+            m_selectButtonSelectedColor = palette.GetColor("Selected");
+
         if (m_shipStatsContainer != null)
             m_statRows = m_shipStatsContainer.GetComponentsInChildren<RowImageText>(true);
     }
 
-    public void InitializeShipSelector(SpaceShip ship, UnityEngine.Events.UnityAction onClick)
+    public void InitializeShipSelector(SpaceShip ship, UnityEngine.Events.UnityAction onSelect, UnityEngine.Events.UnityAction onManage)
     {
         Ship = ship;
 
@@ -40,10 +52,15 @@ public class ShipSelector : MonoBehaviour
         }
 
         m_selectButton.onClick.RemoveAllListeners();
-        m_selectButton.onClick.AddListener(onClick);
+        m_selectButton.onClick.AddListener(onSelect);
         m_selectButton.interactable = true;
 
-        SetSelectButtonAlpha(0f);
+        if (m_manageButton != null)
+        {
+            m_manageButton.onClick.RemoveAllListeners();
+            m_manageButton.onClick.AddListener(onManage);
+            m_manageButton.gameObject.SetActive(false);
+        }
 
         RefreshStats();
         SetHealthImmediate();
@@ -88,15 +105,9 @@ public class ShipSelector : MonoBehaviour
 
     public void SetSelected(bool selected)
     {
-        SetSelectButtonAlpha(selected ? 0.5f : 0f);
-    }
-
-    private void SetSelectButtonAlpha(float alpha)
-    {
-        if (m_selectButtonImage == null) return;
-        Color c = m_selectButtonImage.color;
-        c.a = alpha;
-        m_selectButtonImage.color = c;
+        if (m_selectButtonImage != null)
+            m_selectButtonImage.color = selected ? m_selectButtonSelectedColor : m_selectButtonOriginalColor;
+        if (m_manageButton != null) m_manageButton.gameObject.SetActive(selected);
     }
 
     private float GetHealthRatio()

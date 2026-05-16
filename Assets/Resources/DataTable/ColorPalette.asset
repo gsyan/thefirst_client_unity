@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f10ee0f69fae644d890a8f6fbc82c60, type: 3}
+  m_Name: ColorPalette
+  m_EditorClassIdentifier: Assembly-CSharp::ColorPalette
+  entries:
+  - key: GeneralBright2
+    color: {r: 0.1764706, g: 0.9098039, b: 0.627451, a: 1}
+  - key: GeneralBright2Glow
+    color: {r: 0.1764706, g: 0.9098039, b: 0.627451, a: 0.1254902}
+  - key: GeneralBright1
+    color: {r: 0, g: 1, b: 0.50980395, a: 1}
+  - key: General
+    color: {r: 0, g: 0.764151, b: 0.38956723, a: 1}
+  - key: GeneralDark1
+    color: {r: 0, g: 0.588, b: 0.51, a: 1}
+  - key: GeneralDark2
+    color: {r: 0.145, g: 0.208, b: 0.286, a: 1}
+  - key: Mineral
+    color: {r: 0.5647059, g: 0.38823533, b: 0.38823533, a: 1}
+  - key: TechPoint
+    color: {r: 0, g: 0.39607847, b: 0.81568635, a: 1}
+  - key: ModulePoint
+    color: {r: 0.941, g: 0.494, b: 0.161, a: 1}
+  - key: ModulePointDark
+    color: {r: 0.5019608, g: 0.19607843, b: 0, a: 1}
+  - key: PvpPoint
+    color: {r: 0.4901961, g: 0.2509804, b: 0.59607846, a: 1}
+  - key: PvpPointDark
+    color: {r: 0.2509804, g: 0.1254902, b: 0.3137255, a: 1}
+  - key: Unlocked
+    color: {r: 0.176, g: 0.91, b: 0.627, a: 1}
+  - key: Current
+    color: {r: 0, g: 1, b: 0.51, a: 1}
+  - key: Locked
+    color: {r: 0.145, g: 0.208, b: 0.286, a: 1}
+  - key: Selected
+    color: {r: 0.941, g: 0.706, b: 0.161, a: 1}
+  - key: BackButton
+    color: {r: 0.37484184, g: 0.4716981, b: 0.21582414, a: 1}
+  - key: ManageButton
+    color: {r: 0.1764706, g: 0.909804, b: 0.627451, a: 1}
+  - key: LevelupButton
+    color: {r: 0.909804, g: 0.4901961, b: 0.1764706, a: 1}

@@ -303,12 +303,20 @@ public class UITabExploration : UITabBase
             ObjectManager.Instance.RemoveAllEnemyFleets();
         }
 
-        UIManager.Instance.ShowConfirmPopup(
-            zoneStage.zoneName,
-            LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
-            null, null, null, 0,
-            onConfirm: () => ExecuteEnterZone(zoneStage)
-        );
+        bool isFirstClear = IsAlreadyCleared(zoneStage) == false;
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title   = zoneStage.zoneName,
+            message = LocalizationManager.Instance.Get("exploration_zone_enter_confirm"),
+            rewardAmounts = new System.Collections.Generic.List<int>
+            {
+                zoneStage.mineralClearReward,
+                isFirstClear ? zoneStage.techPointClearReward    : 0,
+                isFirstClear ? zoneStage.modulePointClearReward  : 0,
+                0
+            },
+            onConfirm = () => ExecuteEnterZone(zoneStage)
+        });
     }
 
     private ZoneStageConfig GetDefaultZoneStageForZone(int zoneIndex)

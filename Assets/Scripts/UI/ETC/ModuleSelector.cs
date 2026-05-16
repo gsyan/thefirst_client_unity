@@ -9,21 +9,15 @@ public class ModuleSelector : MonoBehaviour
 {
     [SerializeField] private Button m_button;
     [SerializeField] private Image m_borderImage;
-    //[SerializeField] private Image m_bgImage;
     [SerializeField] private TMP_Text m_buttonText;
 
-    [Header("상태별 색상")]
     // locked
-    [SerializeField] private Color m_colorLockedOutLine = new Color(0.59f, 0f, 0f, 0.25f); // 150,0,0,64
-    //[SerializeField] private Color m_colorLockedBg = new Color(0.59f, 0f, 0f, 0.03f); // 150,0,0,8
-    [SerializeField] private Color m_colorLockedOutLineSelected = new Color(1f, 0f, 0f, 1f);
-    //[SerializeField] private Color m_colorLockedBgSelected = new Color(0.59f, 0f, 0f, 0.25f);
+    private Color m_colorLocked;
+    private Color m_colorLockedSelected;
     // unlocked
-    [SerializeField] private Color m_colorUnlockedOutLine = new Color(0f, 0.59f, 0.25f, 0.25f);
-    //[SerializeField] private Color m_colorUnlockedBg = new Color( 0f, 0.59f, 0.25f, 0.03f);    
-    [SerializeField] private Color m_colorUnlockedOutLineSelected = new Color(0f, 1f, 0.5f, 1f);
-    //[SerializeField] private Color m_colorUnlockedBgSelected = new Color(0f, 0.59f, 0.25f, 0.25f);
-
+    private Color m_colorUnlocked;
+    private Color m_colorUnlockedSelected;
+    
     public ModuleBase Module { get; private set; }
 
     public void InitializeModuleSelector(ModuleBase module, UnityEngine.Events.UnityAction onClick)
@@ -36,20 +30,25 @@ public class ModuleSelector : MonoBehaviour
 
         if (m_borderImage == null)
             m_borderImage = m_button.GetComponent<Image>();
-        // if (m_bgImage == null)
-        //     m_bgImage = m_button.GetComponentInChildren<Image>();
 
+        var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
+        if (palette != null)
+        {
+            m_colorLocked = palette.GetColor("Locked");
+            m_colorLockedSelected = palette.GetColor("LockedSelected");
+            m_colorUnlocked = palette.GetColor("Unlocked");
+            m_colorUnlockedSelected = palette.GetColor("UnlockedSelected");
+        }
+        
         // 잠금 여부에 따라 색 설정
-        m_borderImage.color = (module is ModulePlaceholder) ? m_colorLockedOutLine : m_colorUnlockedOutLine;
-        //m_bgImage.color = (module is ModulePlaceholder) ? m_colorLockedBg : m_colorUnlockedBg;
-
+        m_borderImage.color = (module is ModulePlaceholder) ? m_colorLocked : m_colorUnlocked;
+        
         if (m_buttonText == null)
             m_buttonText = m_button.GetComponentInChildren<TMP_Text>();
 
         // 슬롯 번호 표시
         m_buttonText.text = (module.GetModuleSlotIndex() + 1).ToString();
-        bool bModuleUnlocked = !(module is ModulePlaceholder);
-        m_buttonText.color = (module is ModulePlaceholder) ? m_colorLockedOutLineSelected : m_colorUnlockedOutLineSelected;
+        m_buttonText.color = (module is ModulePlaceholder) ? m_colorLockedSelected : m_colorUnlockedSelected;
     }
 
     // 현재 함체에 해당 슬롯이 없는 경우: 기능 비활성화 + Locked 색상으로 표시
@@ -59,19 +58,14 @@ public class ModuleSelector : MonoBehaviour
         m_button.onClick.RemoveAllListeners();
         m_button.interactable = false;
         m_buttonText.gameObject.SetActive(false);
-        m_borderImage.color = m_colorLockedOutLine;
+        m_borderImage.color = m_colorLocked;
     }
 
     public void SetModuleSelected(bool selected)
     {
         if(Module == null) return;
-        Color m_colorOutLine = (Module is ModulePlaceholder) ? m_colorLockedOutLine : m_colorUnlockedOutLine;
-        //Color m_colorBg = (Module is ModulePlaceholder) ? m_colorLockedBg : m_colorUnlockedBg;
-        Color m_colorOutLineSelected = (Module is ModulePlaceholder) ? m_colorLockedOutLineSelected : m_colorUnlockedOutLineSelected;
-        //Color m_colorBgSelected = (Module is ModulePlaceholder) ? m_colorLockedBgSelected : m_colorUnlockedBgSelected;
-
-        m_borderImage.color = (selected == true) ? m_colorOutLineSelected : m_colorOutLine;
-        //m_bgImage.color = (selected == true) ? m_colorBgSelected : m_colorBg;
-        //m_buttonText.text.color
+        Color m_colorBase = (Module is ModulePlaceholder) ? m_colorLocked : m_colorUnlocked;
+        Color m_colorSelected = (Module is ModulePlaceholder) ? m_colorLockedSelected : m_colorUnlockedSelected;        
+        m_borderImage.color = (selected == true) ? m_colorSelected : m_colorBase;
     }
 }

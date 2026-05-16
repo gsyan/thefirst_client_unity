@@ -17,10 +17,9 @@ public class ScrollViewResearchItem : MonoBehaviour
     [SerializeField] private Image m_borderImage;
     [SerializeField] private Image m_bgImage;
 
-    [Header("상태별 색상")]
-    [SerializeField] private Color m_colorLocked    = CommonUtility.HexColor("#253549");
-    [SerializeField] private Color m_colorResearched = CommonUtility.HexColor("#2DE8A0");
-    [SerializeField] private Color m_colorSelected  = CommonUtility.HexColor("#F0B429");
+    private Color m_colorLocked;
+    private Color m_colorResearched;
+    private Color m_colorSelected;
 
     // displayName: 이미 로컬라이즈된 표시명 (동적 생성 지원)
     public void InitializeScrollViewResearchItem(string displayName, UnityEngine.Events.UnityAction onSelect, bool isLocKey = true)
@@ -37,6 +36,17 @@ public class ScrollViewResearchItem : MonoBehaviour
 
         if (m_borderImage == null)
             m_borderImage = m_selectButton.GetComponent<Image>();
+
+        var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
+        if (palette != null)
+        {
+            m_colorLocked = palette.GetColor("Locked");
+            m_colorResearched = palette.GetColor("Unlocked");
+            m_colorSelected = palette.GetColor("Selected");
+        }
+
+        if (m_bgImage != null)
+            m_bgImage.color = m_colorResearched;
     }
 
     public void SetNodeState(EResearchNodeState baseState, bool isSelected)
@@ -56,9 +66,9 @@ public class ScrollViewResearchItem : MonoBehaviour
 
         m_borderImage.color = borderColor;
 
-        // bgImage: Current(비선택)만 solid fill, 나머지 검정
+        // bgImage: Current(비선택인 경우)만 solid fill
         if (m_bgImage != null)
-            m_bgImage.color = (baseState == EResearchNodeState.Current && isSelected == false) ? m_colorResearched : Color.black;
+            m_bgImage.enabled = baseState == EResearchNodeState.Current && isSelected == false;
 
         // nameText: Current(비선택) → 검정, 나머지 → borderColor
         if (m_nameText != null)

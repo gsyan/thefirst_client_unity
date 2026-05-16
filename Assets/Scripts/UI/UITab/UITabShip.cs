@@ -301,13 +301,14 @@ public class UITabShip : UITabBase
         EModuleType moduleType = m_selectedModule.GetModuleType();
         var resultRows = CommonUtility.GetModuleStatRows(moduleType, CommonUtility.GetDefaultSubType(moduleType), 1, 1);
 
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("ship_module_unlock"),
-            LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
-            null, null, new CostStruct(ECostType.ModulePoint, unlockPrice), 0,
-            () => ExecuteModuleUnlock(),
-            null, resultRows
-        );
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title   = LocalizationManager.Instance.Get("ship_module_unlock"),
+            message = LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
+            cost    = new CostStruct(ECostType.ModulePoint, unlockPrice),
+            resultRows = resultRows,
+            onConfirm  = () => ExecuteModuleUnlock()
+        });
     }
 
     private void ExecuteModuleUnlock()
@@ -786,12 +787,13 @@ public class UITabShip : UITabBase
 
         int mp = m_selectedModule.m_investedModulePoint;
 
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("UITabShip_ModuleReset"),
-            LocalizationManager.Instance.Get("UITabShip_ModuleResetConfirm"),
-            null, null, null, mp,
-            ExecuteResetModule
-        );
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title        = LocalizationManager.Instance.Get("UITabShip_ModuleReset"),
+            message      = LocalizationManager.Instance.Get("UITabShip_ModuleResetConfirm"),
+            refundAmount = mp,
+            onConfirm    = ExecuteResetModule
+        });
     }
 
     private void ExecuteResetModule()
@@ -874,12 +876,13 @@ public class UITabShip : UITabBase
             }
         }
 
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("ship_reset"),
-            LocalizationManager.Instance.Get("ship_reset_confirm"),
-            null, null, null, totalMp,
-            ExecuteResetShip
-        );
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title        = LocalizationManager.Instance.Get("ship_reset"),
+            message      = LocalizationManager.Instance.Get("ship_reset_confirm"),
+            refundAmount = totalMp,
+            onConfirm    = ExecuteResetShip
+        });
     }
 
     private void ExecuteResetShip()

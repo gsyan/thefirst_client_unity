@@ -13,7 +13,6 @@ public class UITabFleet : UITabBase
     [SerializeField] private TMP_Text m_currentShipCountStatText;
 
     [Header("함선 액션 버튼 (선택 시 활성)")]
-    [SerializeField] private Button m_btnShipManage;    // 선택함선 관리
     [SerializeField] private Button m_btnShipRepair;    // 집중 수리 (추후 구현)
 
     [Header("Formation 하단 바")]
@@ -42,7 +41,6 @@ public class UITabFleet : UITabBase
         m_btnFormationChange.onClick.AddListener(OnFormationChangeClicked);
 
         if (m_addShipButton != null) m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
-        if (m_btnShipManage != null) m_btnShipManage.onClick.AddListener(OnShipManageClicked);
         if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
         PopulateShipSelectorGrid();
         UpdateShipActionButtons();
@@ -188,7 +186,7 @@ public class UITabFleet : UITabBase
             {
                 m_shipSelectors[i].gameObject.SetActive(true);
                 SpaceShip captured = m_myFleet.m_ships[i];
-                m_shipSelectors[i].InitializeShipSelector(captured, () => OnShipSelectorClicked(captured));
+                m_shipSelectors[i].InitializeShipSelector(captured, () => OnShipSelectorClicked(captured), OnShipManageClicked);
             }
             else
             {
@@ -237,7 +235,6 @@ public class UITabFleet : UITabBase
     private void UpdateShipActionButtons()
     {
         bool hasSelection = m_selectedShipSelector != null;
-        if (m_btnShipManage != null) m_btnShipManage.interactable = hasSelection;
         if (m_btnShipRepair != null) m_btnShipRepair.interactable = hasSelection;
     }
 
@@ -334,12 +331,14 @@ public class UITabFleet : UITabBase
         int requiredTechLevel = DataManager.Instance.m_dataTableResearch.GetRequiredTechLevel(currentShipCount + 1);
         var require = new RequireStruct(requiredTechLevel);
 
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("fleet_add_ship_name"),
-            LocalizationManager.Instance.Get("popup_message_add_ship"),
-            null, require, new CostStruct(ECostType.ModulePoint, gameSettings.addShipCost), 0,
-            ExecuteAddShip
-        );
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title     = LocalizationManager.Instance.Get("fleet_add_ship_name"),
+            message   = LocalizationManager.Instance.Get("popup_message_add_ship"),
+            require   = require,
+            cost      = new CostStruct(ECostType.ModulePoint, gameSettings.addShipCost),
+            onConfirm = ExecuteAddShip
+        });
     }
 
     private void ExecuteAddShip()

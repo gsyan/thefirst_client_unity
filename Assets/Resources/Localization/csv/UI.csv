@@ -181,4 +181,8 @@ require_level_compare,,Lv.{0} Required (Current: Lv.{1}),Lv.{0} 필요 (현재 L
 UITabShip_ModuleReset,,Reset Module,모듈 초기화
 UITabShip_ModuleResetConfirm,,Reset this module and recover invested resources?,이 모듈에 투자한 자원을 회수하고 초기화하시겠습니까?
 UIButton_Reset,,RESET,초기화
-free,,FREE,무료
+Simple_WatchAD,,WATCH AD,광고 보기
+Simple_NoThanks,,NO THANKS,건너뛰기
+Simple_RewardsX1,,1 x REWARDS,보상 1배
+Simple_RewardsX,,{0} x REWARDS,보상 {0}배
+Simple_Free,,FREE,무료

@@ -14,10 +14,11 @@ public class UITabTech : UITabBase
     [SerializeField] private Button   m_techLevelUpButton;
     [SerializeField] private TMP_Text m_techLevelUpButtonText;
 
-    private static readonly Color k_colorActive   = new Color(0f, 1f,     0.510f, 1f); // #00FF82
-    private static readonly Color k_colorInactive = new Color(0f, 0.588f, 0.510f, 1f); // #009682
     private static readonly Vector2 k_sizeActive   = new Vector2(10f, 50f);
     private static readonly Vector2 k_sizeInactive = new Vector2(10f, 25f);
+
+    private Color m_colorActive;
+    private Color m_colorInactive;
 
     private Character m_myCharacter;
     private SpaceFleet m_myFleet;
@@ -31,6 +32,13 @@ public class UITabTech : UITabBase
 
     private void InitializeUITabTech()
     {
+        var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
+        if (palette != null)
+        {
+            m_colorActive   = palette.GetColor("GeneralBright1");
+            m_colorInactive = palette.GetColor("GeneralDark1");
+        }
+
         m_myCharacter = DataManager.Instance.m_currentCharacter;
         if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
@@ -69,7 +77,7 @@ public class UITabTech : UITabBase
         for (int i = 0; i < m_shipSlots.Length; i++)
         {
             bool active = i < activeCount;
-            m_shipSlots[i].color = active ? k_colorActive : k_colorInactive;
+            m_shipSlots[i].color = active ? m_colorActive : m_colorInactive;
             m_shipSlots[i].rectTransform.sizeDelta = active ? k_sizeActive : k_sizeInactive;
         }
     }

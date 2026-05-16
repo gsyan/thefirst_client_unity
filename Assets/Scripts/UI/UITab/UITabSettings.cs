@@ -189,13 +189,12 @@ public class UITabSettings : UITabBase
 
     private void ShowLinkGoogleConfirm()
     {
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("UITabSettings_GoogleLink"),
-            LocalizationManager.Instance.Get("popup_message_google_link"),
-            null, null, null, 0,
-            onConfirm: ExecuteLinkGoogle,
-            onCancel: null
-        );
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title     = LocalizationManager.Instance.Get("UITabSettings_GoogleLink"),
+            message   = LocalizationManager.Instance.Get("popup_message_google_link"),
+            onConfirm = ExecuteLinkGoogle
+        });
     }
 
     private void ExecuteLinkGoogle()
@@ -216,13 +215,12 @@ public class UITabSettings : UITabBase
 
     private void ShowUnlinkGoogleConfirm()
     {
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("UITabSettings_GoogleUnlink"),
-            LocalizationManager.Instance.Get("popup_message_google_unlink"),
-            null, null, null, 0,
-            onConfirm: ExecuteUnlinkGoogle,
-            onCancel: null
-        );
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title     = LocalizationManager.Instance.Get("UITabSettings_GoogleUnlink"),
+            message   = LocalizationManager.Instance.Get("popup_message_google_unlink"),
+            onConfirm = ExecuteUnlinkGoogle
+        });
     }
 
     private void ExecuteUnlinkGoogle()
@@ -253,13 +251,12 @@ public class UITabSettings : UITabBase
 
     private void OnLogoutButtonClicked()
     {
-        UIManager.Instance.ShowConfirmPopup(
-            LocalizationManager.Instance.Get("UITabSettings_Logout"),
-            LocalizationManager.Instance.Get("popup_message_logout"),
-            null, null, null, 0,
-            onConfirm: ExecuteLogout,
-            onCancel: null
-        );
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title     = LocalizationManager.Instance.Get("UITabSettings_Logout"),
+            message   = LocalizationManager.Instance.Get("popup_message_logout"),
+            onConfirm = ExecuteLogout
+        });
     }
 
     private void ExecuteLogout()

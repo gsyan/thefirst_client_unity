@@ -24,7 +24,8 @@ public static class BuildScript
         if (!string.IsNullOrEmpty(versionCode) && int.TryParse(versionCode, out int code))
             PlayerSettings.Android.bundleVersionCode = code;
 
-        // Keystore 설정 (환경변수가 없으면 기존 설정 유지)
+        // Keystore 설정 (환경변수가 없으면 빌드 중단)
+        Debug.Log($"[Build] KEYSTORE_PATH={keystorePath ?? "(null)"}, KEY_ALIAS={keyaliasName ?? "(null)"}");
         if (!string.IsNullOrEmpty(keystorePath))
         {
             PlayerSettings.Android.keystoreName = keystorePath;
@@ -32,6 +33,13 @@ public static class BuildScript
             PlayerSettings.Android.keyaliasName = keyaliasName;
             PlayerSettings.Android.keyaliasPass = keyaliasPass;
             PlayerSettings.Android.useCustomKeystore = true;
+            Debug.Log($"[Build] Keystore 적용 완료: {keystorePath}");
+        }
+        else
+        {
+            Debug.LogError("[Build] KEYSTORE_PATH 환경변수 없음 - 서명 불가, 빌드 중단");
+            EditorApplication.Exit(1);
+            return;
         }
 
         // APK vs AAB

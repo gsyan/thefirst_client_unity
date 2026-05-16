@@ -426,8 +426,8 @@ MonoBehaviour:
     m_Localized: Manage Module Type
     m_Metadata:
       m_Items: []
-  - m_Id: 11064991343837186
-    m_Localized: FREE
+  - m_Id: 34837876499677184
+    m_Localized: 1X REWARDS
     m_Metadata:
       m_Items: []
   - m_Id: 11317517746044928
@@ -748,6 +748,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 34285289056632833
     m_Localized: RESET
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34837143712825344
+    m_Localized: WATCH AD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34837143750574080
+    m_Localized: NO THANKS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34837143750574081
+    m_Localized: '{0}X REWARDS'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34837143750574082
+    m_Localized: FREE
     m_Metadata:
       m_Items: []
   references:

@@ -17,9 +17,8 @@ public class UIResourceBar : MonoBehaviour
     [SerializeField] private Image    m_imagePvpPointDday;
     [SerializeField] private TMP_Text m_textPvpPointDday;
 
-    [Header("Dday Colors")]
-    [SerializeField] private Color m_pvpDdayColorBase   = new(0.502f, 0.196f, 0f);
-    [SerializeField] private Color m_pvpDdayColorBright = new(1f,     0.392f, 0f);
+    private Color m_pvpDdayColorBase;
+    private Color m_pvpDdayColorBright;
 
     private DateTime  m_pvpExpiry;
     private Coroutine m_ddayCoroutine;
@@ -29,6 +28,13 @@ public class UIResourceBar : MonoBehaviour
 
     void Start()
     {
+        if (m_textPvpPointDday != null)
+        {
+            m_pvpDdayColorBase = m_textPvpPointDday.color;
+            Color.RGBToHSV(m_pvpDdayColorBase, out float h, out float s, out float v);
+            m_pvpDdayColorBright = Color.HSVToRGB(h, s, Mathf.Min(v * 2f, 1f));
+        }
+
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 

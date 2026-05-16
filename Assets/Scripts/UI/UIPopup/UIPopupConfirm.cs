@@ -1,4 +1,3 @@
-// 확인/취소 팝업: bodyText에 message + detailText를 표시, 요구/비용은 UISection으로 표시
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,6 +5,22 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 확인/취소 팝업 설정 데이터
+public class ConfirmPopupConfig
+{
+    public string title;
+    public string message;
+    public string detailText;
+    public List<(string icon, string value)> resultRows;
+    public RequireStruct require;
+    public CostStruct cost;
+    public int refundAmount;    
+    public List<int> rewardAmounts;
+    public Action onConfirm;
+    public Action onCancel;
+}
+
+// 확인/취소 팝업: bodyText에 message + detailText를 표시, 요구/비용은 UISection으로 표시
 public class UIPopupConfirm : UIPopupBase
 {
     [Header("Confirm Popup UI")]
@@ -17,6 +32,7 @@ public class UIPopupConfirm : UIPopupBase
     [SerializeField] private UISection m_sectionRequire;
     [SerializeField] private UISection m_sectionCost;
     [SerializeField] private UISection m_sectionRefund;
+    [SerializeField] private UISection m_sectionReward;
 
     public Button confirmButton;
     public Button cancelButton;
@@ -31,33 +47,34 @@ public class UIPopupConfirm : UIPopupBase
         if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
     }
 
-    public void ShowPopupConfirm(string title, string message, string detailText, RequireStruct require, CostStruct cost, int refundAmount, Action onConfirm, Action onCancel = null, List<(string icon, string value)> resultRows = null)
+    public void ShowPopupConfirm(ConfirmPopupConfig config)
     {
         base.ShowPopup();
         if (titleText != null)
-            titleText.text = title;
+            titleText.text = config.title;
 
         bool canConfirm = true;
         if (m_bodyText != null)
         {
-            string bodyStr = BuildBodyText(message, detailText);
+            string bodyStr = BuildBodyText(config.message, config.detailText);
             m_bodyText.text = bodyStr;
             m_bodyText.gameObject.SetActive(string.IsNullOrEmpty(bodyStr) == false);
         }
 
-        bool requireMet = BuildRequireText(require);
+        bool requireMet = BuildRequireSection(config.require);
         if (requireMet == false) canConfirm = false;
 
-        bool canAfford = BuildCostText(cost);
+        bool canAfford = BuildCostSection(config.cost);
         if (canAfford == false) canConfirm = false;
 
-        BuildRefundSection(refundAmount);
-        BuildResultRows(resultRows);
+        BuildRefundSection(config.refundAmount);
+        BuildResultRows(config.resultRows);
+        BuildRewardSection(config.rewardAmounts);
 
         if (confirmButton != null) confirmButton.interactable = canConfirm;
 
-        onCancelCallback = onCancel;
-        onConfirmCallback = onConfirm;
+        onCancelCallback = config.onCancel;
+        onConfirmCallback = config.onConfirm;
 
         RebuildLayout();
     }
@@ -71,7 +88,7 @@ public class UIPopupConfirm : UIPopupBase
         return sb.ToString();
     }
 
-    private bool BuildRequireText(RequireStruct require)
+    private bool BuildRequireSection(RequireStruct require)
     {
         if (require == null || require.techLevel <= 0)
         {
@@ -92,7 +109,7 @@ public class UIPopupConfirm : UIPopupBase
         return requireMet;
     }
 
-    private bool BuildCostText(CostStruct cost)
+    private bool BuildCostSection(CostStruct cost)
     {
         if (cost == null || cost.amount <= 0)
         {
@@ -151,12 +168,37 @@ public class UIPopupConfirm : UIPopupBase
         m_sectionRefund.SetRowText(0, CommonUtility.FormatBigNumber(refundAmount));
     }
 
+    private void BuildRewardSection(List<int> amounts)
+    {
+        if (m_sectionReward == null) return;
+
+        bool hasAny = false;
+        if (amounts != null)
+        {
+            for (int i = 0; i < amounts.Count; i++)
+            {
+                if (amounts[i] > 0) { hasAny = true; break; }
+            }
+        }
+
+        m_sectionReward.SetVisible(hasAny);
+        if (hasAny == false) return;
+
+        m_sectionReward.HideAllRows();
+        for (int i = 0; i < amounts.Count; i++)
+        {
+            if (amounts[i] > 0)
+                m_sectionReward.SetRowText(i, CommonUtility.FormatBigNumber(amounts[i]));
+        }
+    }
+
     private void RebuildLayout()
     {
         if (m_sectionResult != null) m_sectionResult.RebuildLayout();
         if (m_sectionRefund != null) m_sectionRefund.RebuildLayout();
         if (m_sectionRequire != null) m_sectionRequire.RebuildLayout();
         if (m_sectionCost != null) m_sectionCost.RebuildLayout();
+        if (m_sectionReward != null) m_sectionReward.RebuildLayout();
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 

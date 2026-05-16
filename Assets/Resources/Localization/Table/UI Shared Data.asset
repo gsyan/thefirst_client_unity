@@ -743,8 +743,24 @@ MonoBehaviour:
     m_Key: UIButton_Reset
     m_Metadata:
       m_Items: []
-  - m_Id: 11064991343837186
-    m_Key: free
+  - m_Id: 34837143712825344
+    m_Key: Simple_WatchAD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34837143750574080
+    m_Key: Simple_NoThanks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34837876499677184
+    m_Key: Simple_RewardsX1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34837143750574081
+    m_Key: Simple_RewardsX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34837143750574082
+    m_Key: Simple_Free
     m_Metadata:
       m_Items: []
   m_Metadata:
