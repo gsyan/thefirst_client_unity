@@ -20,33 +20,38 @@ public class ModuleSelector : MonoBehaviour
     
     public ModuleBase Module { get; private set; }
 
+    private void EnsureReferences()
+    {
+        if (m_borderImage == null)
+            m_borderImage = m_button.GetComponent<Image>();
+
+        if (m_buttonText == null)
+            m_buttonText = m_button.GetComponentInChildren<TMP_Text>();
+
+        if (m_colorLocked == default)
+        {
+            var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
+            if (palette != null)
+            {
+                m_colorLocked = palette.GetColor("Locked");
+                m_colorLockedSelected = palette.GetColor("LockedSelected");
+                m_colorUnlocked = palette.GetColor("Unlocked");
+                m_colorUnlockedSelected = palette.GetColor("UnlockedSelected");
+            }
+        }
+    }
+
     public void InitializeModuleSelector(ModuleBase module, UnityEngine.Events.UnityAction onClick)
     {
         Module = module;
+        EnsureReferences();
 
         m_button.onClick.RemoveAllListeners();
         m_button.onClick.AddListener(onClick);
         m_button.interactable = true;
+        m_buttonText.gameObject.SetActive(true);
 
-        if (m_borderImage == null)
-            m_borderImage = m_button.GetComponent<Image>();
-
-        var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
-        if (palette != null)
-        {
-            m_colorLocked = palette.GetColor("Locked");
-            m_colorLockedSelected = palette.GetColor("LockedSelected");
-            m_colorUnlocked = palette.GetColor("Unlocked");
-            m_colorUnlockedSelected = palette.GetColor("UnlockedSelected");
-        }
-        
-        // 잠금 여부에 따라 색 설정
         m_borderImage.color = (module is ModulePlaceholder) ? m_colorLocked : m_colorUnlocked;
-        
-        if (m_buttonText == null)
-            m_buttonText = m_button.GetComponentInChildren<TMP_Text>();
-
-        // 슬롯 번호 표시
         m_buttonText.text = (module.GetModuleSlotIndex() + 1).ToString();
         m_buttonText.color = (module is ModulePlaceholder) ? m_colorLockedSelected : m_colorUnlockedSelected;
     }
@@ -54,6 +59,8 @@ public class ModuleSelector : MonoBehaviour
     // 현재 함체에 해당 슬롯이 없는 경우: 기능 비활성화 + Locked 색상으로 표시
     public void SetNotExist()
     {
+        EnsureReferences();
+
         Module = null;
         m_button.onClick.RemoveAllListeners();
         m_button.interactable = false;

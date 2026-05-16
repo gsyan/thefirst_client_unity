@@ -89,7 +89,7 @@ pipeline {
             }
             steps {
                 script {
-                    def devFlag = params.IS_SHIPPING ? "" : "-isDev"
+                    // AAB는 Play Store 배포용 → 항상 release buildType (AGP 8.x + minSdk>=24에서 debug buildType은 v1 서명 비활성화 → 업로드 불가)
                     bat """
                         "${env.UNITY_PATH}" ^
                           -batchmode -quit -nographics ^
@@ -98,7 +98,6 @@ pipeline {
                           -outputPath "${env.OUTPUT_AAB}" ^
                           -versionName "${env.VERSION_NAME}" ^
                           -buildAAB ^
-                          ${devFlag} ^
                           -logFile "${env.WORKSPACE}/build/unity_build_aab.log"
                     """
                 }
