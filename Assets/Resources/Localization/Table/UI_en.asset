@@ -62,14 +62,6 @@ MonoBehaviour:
     m_Localized: Unlock {0} slot?
     m_Metadata:
       m_Items: []
-  - m_Id: 705451700125696
-    m_Localized: Cancel
-    m_Metadata:
-      m_Items: []
-  - m_Id: 705451700125697
-    m_Localized: Confirm
-    m_Metadata:
-      m_Items: []
   - m_Id: 705451700125698
     m_Localized: "Upgrade {0}\\nLv.{1} \u2192 Lv.{2}?"
     m_Metadata:
@@ -426,10 +418,6 @@ MonoBehaviour:
     m_Localized: Manage Module Type
     m_Metadata:
       m_Items: []
-  - m_Id: 34837876499677184
-    m_Localized: 1X REWARDS
-    m_Metadata:
-      m_Items: []
   - m_Id: 11317517746044928
     m_Localized: Change Formation
     m_Metadata:
@@ -758,12 +746,28 @@ MonoBehaviour:
     m_Localized: NO THANKS
     m_Metadata:
       m_Items: []
-  - m_Id: 34837143750574081
-    m_Localized: '{0}X REWARDS'
-    m_Metadata:
-      m_Items: []
   - m_Id: 34837143750574082
     m_Localized: FREE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35605468558524416
+    m_Localized: 1 x MINERAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35605468608856064
+    m_Localized: '{0} x MINERAL'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35624047941124096
+    m_Localized: CANCEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35624047941124097
+    m_Localized: CONFIRM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35640746719444992
+    m_Localized: Clear the previous stage first.
     m_Metadata:
       m_Items: []
   references:

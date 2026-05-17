@@ -11,6 +11,8 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableModuleResearch();
         LoadDataTableConfig();
         LoadDataTableZone();
+        LoadDataTablePvpSeason();
+        LoadColorPalette();
     }
     #endregion
 
@@ -164,6 +166,28 @@ public class DataManager : Singleton<DataManager>
         m_dataTableZone = Resources.Load<DataTableZone>("DataTable/DataTableZone");
         if (m_dataTableZone == null)
             Debug.LogError("DataTableZone is not exist");
+    }
+    #endregion
+
+    #region Data Table PvpSeason ###############################################################
+    public DataTablePvpSeason m_dataTablePvpSeason;
+
+    private void LoadDataTablePvpSeason()
+    {
+        m_dataTablePvpSeason = Resources.Load<DataTablePvpSeason>("DataTable/DataTablePvpSeason");
+        if (m_dataTablePvpSeason == null)
+            Debug.LogError("DataTablePvpSeason is not exist");
+    }
+    #endregion
+
+    #region ColorPalette ###############################################################
+    public ColorPalette m_colorPalette;
+
+    private void LoadColorPalette()
+    {
+        m_colorPalette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
+        if (m_colorPalette == null)
+            Debug.LogError("ColorPalette is not exist");
     }
     #endregion
 

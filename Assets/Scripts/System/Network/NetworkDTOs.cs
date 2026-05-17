@@ -414,8 +414,22 @@ public class ClearZoneStageRequest
 [System.Serializable]
 public class ClearZoneStageResponse
 {
-    public bool isZoneCleared;          // true = 신규 클리어 완료
-    public string clearedZoneName;      // isZoneCleared == true 일 때만 유효
+    public bool isFirstClear;           // true = 최초 클리어
+    public string clearedZoneName;      // isFirstClear == true 일 때만 유효
+}
+
+[System.Serializable]
+public class ClaimZoneRewardRequest
+{
+    public string zoneName;
+    public bool watchedAd;
+}
+
+[System.Serializable]
+public class ClaimZoneRewardResponse
+{
+    public string zoneName;
+    public bool watchedAd;
     public int mineralRemain;
     public int techPointRemain;
     public int modulePointRemain;

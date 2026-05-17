@@ -10,8 +10,16 @@ public class ScrollViewRankingItem : MonoBehaviour
     [SerializeField] private TMP_Text m_scoreText;
     [SerializeField] private Image m_highlightImage;
 
-    private static readonly Color COLOR_OTHER = new(0x00 / 255f, 0x96 / 255f, 0x82 / 255f, 1f); // #009682
-    private static readonly Color COLOR_MINE  = new(0x00 / 255f, 0xFF / 255f, 0x82 / 255f, 1f); // #00FF82
+    // tierName → 팔레트 키 (rank 4 이상)
+    private static readonly (string tierName, string paletteKey)[] TIER_PALETTE_KEYS =
+    {
+        ("Bronze",   "PvpBronze"),
+        ("Silver",   "PvpSilver"),
+        ("Gold",     "PvpGold"),
+        ("Platinum", "PvpPlatinum"),
+        ("Diamond",  "PvpDiamond"),
+    };
+
     [SerializeField] private Transform m_statContainer;
 
     private RowImageText[] m_statRows;
@@ -24,11 +32,36 @@ public class ScrollViewRankingItem : MonoBehaviour
 
     public void SetData(RankingEntry entry, bool isMyRank)
     {
-        if (m_rankText != null) m_rankText.text = entry.rank > 0 ? $"#{entry.rank}" : "-";
+        if (m_rankText != null)
+        {
+            m_rankText.text = entry.rank > 0 ? $"#{entry.rank}" : "-";
+            m_rankText.color = GetRankTextColor(entry.rank, entry.score);
+        }
         if (m_nameText != null) m_nameText.text = Character.GetDisplayName(entry.characterName, entry.characterId);
         if (m_scoreText != null) m_scoreText.text = entry.score ?? "";
-        if (m_highlightImage != null) m_highlightImage.color = isMyRank ? COLOR_MINE : COLOR_OTHER;
+        if (m_highlightImage != null) m_highlightImage.color = isMyRank ? CommonUtility.PaletteColor("GeneralBright1") : CommonUtility.PaletteColor("GeneralDark1");
         PopulateStats(entry);
+    }
+
+    private static Color GetRankTextColor(int rank, string scoreStr)
+    {
+        if (rank == 1) return CommonUtility.PaletteColor("PvpRank1");
+        if (rank == 2) return CommonUtility.PaletteColor("PvpRank2");
+        if (rank == 3) return CommonUtility.PaletteColor("PvpRank3");
+
+        var pvpSeason = DataManager.Instance.m_dataTablePvpSeason;
+        if (pvpSeason == null == true || int.TryParse(scoreStr, out int score) == false)
+            return Color.gray;
+
+        var tier = pvpSeason.GetTierByScore(score);
+        if (tier == null) return Color.gray;
+
+        for (int i = 0; i < TIER_PALETTE_KEYS.Length; i++)
+        {
+            if (TIER_PALETTE_KEYS[i].tierName == tier.tierName)
+                return CommonUtility.PaletteColor(TIER_PALETTE_KEYS[i].paletteKey);
+        }
+        return Color.gray;
     }
 
     public void SetLoading()
@@ -36,7 +69,7 @@ public class ScrollViewRankingItem : MonoBehaviour
         if (m_rankText != null) m_rankText.text = "...";
         if (m_nameText != null) m_nameText.text = "...";
         if (m_scoreText != null) m_scoreText.text = "...";
-        if (m_highlightImage != null) m_highlightImage.color = COLOR_OTHER;
+        if (m_highlightImage != null) m_highlightImage.color = CommonUtility.PaletteColor("GeneralDark1");
         HideAllStats();
     }
 

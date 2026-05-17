@@ -89,8 +89,6 @@ module_type_engine,,Engine,엔진
 module_type_beam,,Beam,빔
 module_type_missile,,Missile,미사일
 module_type_hanger,,Hanger,격납고
-cancel,,Cancel,취소
-confirm,,Confirm,확인
 mineral_amount,,Mineral,광물
 mineral_rare_amount,,Mineral.R,광물.R
 mineral_exotic_amount,,Mineral.E,광물.E
@@ -177,12 +175,15 @@ UITabRank_MyInfo,,MY INFO,내 정보
 UITabRank_Pvp,,PVP,PVP
 UITabRank_Exploration,,EXPLORATION,탐사
 UITabExploration_TryZone,,Enter,입장
+UITabExploration_PreviousStageRequired,,Clear the previous stage first.,이전 스테이지를 먼저 클리어해야 합니다.
 require_level_compare,,Lv.{0} Required (Current: Lv.{1}),Lv.{0} 필요 (현재 Lv.{1})
 UITabShip_ModuleReset,,Reset Module,모듈 초기화
 UITabShip_ModuleResetConfirm,,Reset this module and recover invested resources?,이 모듈에 투자한 자원을 회수하고 초기화하시겠습니까?
 UIButton_Reset,,RESET,초기화
 Simple_WatchAD,,WATCH AD,광고 보기
 Simple_NoThanks,,NO THANKS,건너뛰기
-Simple_RewardsX1,,1 x REWARDS,보상 1배
-Simple_RewardsX,,{0} x REWARDS,보상 {0}배
+Simple_MineralX1,,1 x MINERAL,광물 보상 1배
+Simple_MineralX,,{0} x MINERAL,광물 보상 {0}배
 Simple_Free,,FREE,무료
+Simple_Cancel,,CANCEL,취소
+Simple_Confirm,,CONFIRM,확인

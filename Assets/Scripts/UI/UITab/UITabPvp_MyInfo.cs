@@ -11,7 +11,8 @@ public class UITabPvp_MyInfo : UITabBase
     [SerializeField] private TMP_Text m_myInfoSeasonText;
     [SerializeField] private Button m_refreshButton;
     [SerializeField] private TMP_Text m_refreshButtonText;
-    [SerializeField] private PvpSelectCard[] m_opponentCards;
+    [SerializeField] private Transform m_opponentCardParent;
+    private PvpSelectCard[] m_opponentCards;
 
     private int m_myScore;
     private int m_myRank;
@@ -24,6 +25,8 @@ public class UITabPvp_MyInfo : UITabBase
     public override void InitializeUITab()
     {
         m_refreshButton.onClick.AddListener(OnRefreshClicked);
+        if (m_opponentCardParent != null)
+            m_opponentCards = m_opponentCardParent.GetComponentsInChildren<PvpSelectCard>(true);
     }
 
     public override void OnTabActivated()

@@ -55,11 +55,11 @@ public class UITabButtonTech : MonoBehaviour
             sb.Append    ($"{CommonUtility.Sprite("spaceship")} (Max Ships)  {nextMaxShips}");
         }
 
-        UIManager.Instance.ShowPopupAlert(
-            LocalizationManager.Instance.Get("tech_level_detail_title"),
-            sb.ToString(),
-            null
-        );
+        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig
+        {
+            title = LocalizationManager.Instance.Get("tech_level_detail_title"),
+            message = sb.ToString(),
+        });
     }
 
     // 소수 시간을 "XH YM" 형식으로 변환 (예: 3.5 → "3H 30M")

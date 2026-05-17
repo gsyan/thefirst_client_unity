@@ -30,14 +30,10 @@ public class ModuleSelector : MonoBehaviour
 
         if (m_colorLocked == default)
         {
-            var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
-            if (palette != null)
-            {
-                m_colorLocked = palette.GetColor("Locked");
-                m_colorLockedSelected = palette.GetColor("LockedSelected");
-                m_colorUnlocked = palette.GetColor("Unlocked");
-                m_colorUnlockedSelected = palette.GetColor("UnlockedSelected");
-            }
+            m_colorLocked           = CommonUtility.PaletteColor("Locked");
+            m_colorLockedSelected   = CommonUtility.PaletteColor("LockedSelected");
+            m_colorUnlocked         = CommonUtility.PaletteColor("Unlocked");
+            m_colorUnlockedSelected = CommonUtility.PaletteColor("UnlockedSelected");
         }
     }
 

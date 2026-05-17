@@ -32,12 +32,8 @@ public class UITabTech : UITabBase
 
     private void InitializeUITabTech()
     {
-        var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
-        if (palette != null)
-        {
-            m_colorActive   = palette.GetColor("GeneralBright1");
-            m_colorInactive = palette.GetColor("GeneralDark1");
-        }
+        m_colorActive   = CommonUtility.PaletteColor("GeneralBright1");
+        m_colorInactive = CommonUtility.PaletteColor("GeneralDark1");
 
         m_myCharacter = DataManager.Instance.m_currentCharacter;
         if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;

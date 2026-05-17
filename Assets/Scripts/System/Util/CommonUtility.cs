@@ -357,4 +357,13 @@ public static class CommonUtility
     }
 
     #endregion UI end -----------------------------------------------------------------------------------
+
+    #region ColorPalette begin -----------------------------------------------------------------------------------
+    public static Color PaletteColor(string key)
+    {
+        var palette = DataManager.Instance.m_colorPalette;
+        if (palette == null) return Color.white;
+        return palette.GetColor(key);
+    }
+    #endregion ColorPalette end -----------------------------------------------------------------------------------
 }

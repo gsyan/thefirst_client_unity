@@ -14,10 +14,18 @@ public class ConfirmPopupConfig
     public List<(string icon, string value)> resultRows;
     public RequireStruct require;
     public CostStruct cost;
-    public int refundAmount;    
+    public int refundAmount;
     public List<int> rewardAmounts;
     public Action onConfirm;
     public Action onCancel;
+
+    // 버튼 커스터마이징 (null이면 프리팹 기본값 유지)
+    public Sprite cancelImage;
+    public string cancelText1;
+    public string cancelText2;
+    public Sprite confirmImage;
+    public string confirmText1;
+    public string confirmText2;
 }
 
 // 확인/취소 팝업: bodyText에 message + detailText를 표시, 요구/비용은 UISection으로 표시
@@ -34,17 +42,30 @@ public class UIPopupConfirm : UIPopupBase
     [SerializeField] private UISection m_sectionRefund;
     [SerializeField] private UISection m_sectionReward;
 
-    public Button confirmButton;
-    public Button cancelButton;
+    [SerializeField] private Button cancelButton;
+    [SerializeField] private Image m_cancelImage;
+    [SerializeField] private TMP_Text m_cancelText1;
+    [SerializeField] private TMP_Text m_cancelText2;
+
+    [SerializeField] private Button confirmButton;
+    [SerializeField] private Image m_confirmImage;
+    [SerializeField] private TMP_Text m_confirmText1;
+    [SerializeField] private TMP_Text m_confirmText2;
 
     private Action onCancelCallback;
     private Action onConfirmCallback;
+
+    private Sprite m_defaultCancelImage;
+    private Sprite m_defaultConfirmImage;
 
     protected override void Awake()
     {
         base.Awake();
         if (cancelButton != null) cancelButton.onClick.AddListener(OnCancelClicked);
         if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
+
+        if (m_cancelImage != null) m_defaultCancelImage = m_cancelImage.sprite;
+        if (m_confirmImage != null) m_defaultConfirmImage = m_confirmImage.sprite;
     }
 
     public void ShowPopupConfirm(ConfirmPopupConfig config)
@@ -70,6 +91,7 @@ public class UIPopupConfirm : UIPopupBase
         BuildRefundSection(config.refundAmount);
         BuildResultRows(config.resultRows);
         BuildRewardSection(config.rewardAmounts);
+        BuildButtonSection(config);
 
         if (confirmButton != null) confirmButton.interactable = canConfirm;
 
@@ -192,6 +214,29 @@ public class UIPopupConfirm : UIPopupBase
         }
     }
 
+    private void BuildButtonSection(ConfirmPopupConfig config)
+    {
+        var loc = LocalizationManager.Instance;
+
+        if (m_cancelImage != null) m_cancelImage.sprite = config.cancelImage != null ? config.cancelImage : m_defaultCancelImage;
+        if (m_cancelText1 != null) m_cancelText1.text = config.cancelText1 ?? loc.Get("Simple_Cancel");
+        if (m_cancelText2 != null)
+        {
+            bool has = string.IsNullOrEmpty(config.cancelText2) == false;
+            m_cancelText2.gameObject.SetActive(has);
+            if (has) m_cancelText2.text = config.cancelText2;
+        }
+
+        if (m_confirmImage != null) m_confirmImage.sprite = config.confirmImage != null ? config.confirmImage : m_defaultConfirmImage;
+        if (m_confirmText1 != null) m_confirmText1.text = config.confirmText1 ?? loc.Get("Simple_Confirm");
+        if (m_confirmText2 != null)
+        {
+            bool has = string.IsNullOrEmpty(config.confirmText2) == false;
+            m_confirmText2.gameObject.SetActive(has);
+            if (has) m_confirmText2.text = config.confirmText2;
+        }
+    }
+
     private void RebuildLayout()
     {
         if (m_sectionResult != null) m_sectionResult.RebuildLayout();
@@ -199,6 +244,8 @@ public class UIPopupConfirm : UIPopupBase
         if (m_sectionRequire != null) m_sectionRequire.RebuildLayout();
         if (m_sectionCost != null) m_sectionCost.RebuildLayout();
         if (m_sectionReward != null) m_sectionReward.RebuildLayout();
+        if (cancelButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(cancelButton.GetComponent<RectTransform>());
+        if (confirmButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(confirmButton.GetComponent<RectTransform>());
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 

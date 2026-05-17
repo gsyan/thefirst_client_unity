@@ -637,6 +637,22 @@ public class ApiClient
     }
 
 
+    public async Task<ApiResponse<ClaimZoneRewardResponse>> ClaimZoneRewardAsync(ClaimZoneRewardRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ClaimZoneRewardResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/claim-reward", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<ClaimZoneRewardResponse>>(webRequest.downloadHandler.text);
+    }
+
     #endregion
 
     #region Heartbeat API Methods ---------------------------------------------------------------------------------

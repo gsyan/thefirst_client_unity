@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class UIZoneStageButton : MonoBehaviour
 {
     [SerializeField] private RectTransform       m_rectTransform;
-    [SerializeField] private Image               m_pointMarker;   // point marker
-    [SerializeField] private Button              m_expendButton;  // 누르면 m_detailText 표시 토글
-    [SerializeField] private Image               m_labelAnchor;   // bg
+    [SerializeField] private Image               m_myFleetMarker;
+    [SerializeField] private Image               m_pointMarker;
+    [SerializeField] private Image               m_pointMarkerSelected;    
+    [SerializeField] private Image               m_labelAnchorImage;
     [SerializeField] private TMP_Text            m_detailText;
     [SerializeField] private Transform           m_rewardContainer;
     private RowImageText[]                       m_rewardTexts;
@@ -37,27 +38,15 @@ public class UIZoneStageButton : MonoBehaviour
         m_worldCamera   = worldCamera;
         m_worldPos      = worldPos;
 
-        m_expendButton.onClick.RemoveAllListeners();
-        m_expendButton.onClick.AddListener(() =>
-        {
-            if (m_isExpanded) { Collapse(); }
-            else              { Expand(); onToggle?.Invoke(); }
-        });
-
-        // m_enterButton: 미선택 상태 → expand + onToggle / 선택 상태 → onEnter
         if (m_enterButton != null)
         {
             m_enterButton.onClick.RemoveAllListeners();
             m_enterButton.onClick.AddListener(() =>
             {
                 if (m_isExpanded == false)
-                {
                     onToggle?.Invoke();
-                }
                 else
-                {
                     m_onEnter?.Invoke();
-                }
             });
         }
 
@@ -65,6 +54,7 @@ public class UIZoneStageButton : MonoBehaviour
         RefreshDetailText(config);
         RefreshRewardRows(config, state);
         SetStateUIZoneStageButton(state);
+        SetMyFleetMarker(false);
         Collapse();
     }
 
@@ -119,8 +109,10 @@ public class UIZoneStageButton : MonoBehaviour
     public void Expand()
     {
         m_isExpanded = true;
-        if (m_detailText != null)      m_detailText.gameObject.SetActive(true);
-        if (m_rewardContainer != null) m_rewardContainer.gameObject.SetActive(true);
+        if (m_pointMarkerSelected != null)  m_pointMarkerSelected.gameObject.SetActive(true);
+        if (m_labelAnchorImage != null)     m_labelAnchorImage.enabled = true;
+        if (m_detailText != null)           m_detailText.gameObject.SetActive(true);
+        if (m_rewardContainer != null)      m_rewardContainer.gameObject.SetActive(true);
         if (m_enterButtonText != null)
             m_enterButtonText.text = LocalizationManager.Instance.Get("UITabExploration_TryZone");
         RebuildLayout();
@@ -129,11 +121,12 @@ public class UIZoneStageButton : MonoBehaviour
     public void Collapse()
     {
         m_isExpanded = false;
-        if (m_detailText != null)      m_detailText.gameObject.SetActive(false);
-        if (m_rewardContainer != null) m_rewardContainer.gameObject.SetActive(false);
+        if (m_pointMarkerSelected != null)  m_pointMarkerSelected.gameObject.SetActive(false);
+        if (m_detailText != null)           m_detailText.gameObject.SetActive(false);
+        if (m_rewardContainer != null)      m_rewardContainer.gameObject.SetActive(false);
         if (m_enterButtonText != null && m_config != null)
             m_enterButtonText.text = m_config.zoneName;
-        RebuildLayout();
+        if (m_labelAnchorImage != null)     m_labelAnchorImage.enabled = false;
     }
 
     private void OnEnable()
@@ -144,33 +137,37 @@ public class UIZoneStageButton : MonoBehaviour
     private void RebuildLayout()
     {
         //Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_labelAnchor.rectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_labelAnchorImage.rectTransform);
     }
 
     public void SetStateUIZoneStageButton(EZoneState state)
     {
         Color color = state == EZoneState.Cleared ? m_colorCleared : m_colorNotCleared;
-        if (m_pointMarker != null) m_pointMarker.color = color;
-        
-        m_labelAnchor.color = color;
-        m_enterButtonBg.color = color;
-        //m_enterButtonText.color = color;
+        if (m_pointMarker != null)      m_pointMarker.color = color;
+        if (m_labelAnchorImage != null) m_labelAnchorImage.color = color;
+        if (m_enterButtonBg != null)    m_enterButtonBg.color = color;
+    }
+
+    public void SetMyFleetMarker(bool active)
+    {
+        if (m_myFleetMarker != null) m_myFleetMarker.gameObject.SetActive(active);
     }
 
     public void SetSelectedUIZoneStageButton(bool selected)
     {
-        if (selected) Expand();
-        else          Collapse();
+        if (selected)
+            Expand();
+        else
+            Collapse();
     }
 
-    private void LateUpdate()
+    public void UpdateScreenPosition()
     {
-        if (m_worldCamera == null) return;
-
+        if (m_worldCamera == null || m_rectTransform == null) return;
         Vector3 screenPos = m_worldCamera.WorldToScreenPoint(m_worldPos);
         if (screenPos.z < 0f) return;
-
-        if (m_rectTransform != null)
-            m_rectTransform.position = new Vector3(screenPos.x, screenPos.y, 0f);
+        m_rectTransform.position = new Vector3(screenPos.x, screenPos.y, 0f);
     }
+
+    public Vector3 GetScreenPosition() => m_rectTransform != null ? m_rectTransform.position : Vector3.zero;
 }

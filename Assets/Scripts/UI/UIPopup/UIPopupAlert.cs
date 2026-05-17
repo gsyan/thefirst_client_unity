@@ -5,6 +5,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 알림 팝업 설정 데이터
+public class AlertPopupConfig
+{
+    public string title;
+    public string message;
+    public List<int> rewardAmounts;
+    public float autoCloseSec;
+    public Action onConfirm;
+}
+
 // 확인 버튼만 있는 단순 알림 팝업
 public class UIPopupAlert : UIPopupBase
 {
@@ -26,21 +36,22 @@ public class UIPopupAlert : UIPopupBase
             okButton.onClick.AddListener(OnConfirmClicked);
         if (okButtonBackground != null)
             okButtonBackground.onClick.AddListener(OnConfirmClicked);
+        if (m_sectionReward != null)
+            m_sectionReward.SetVisible(false);
     }
 
-    // rewardAmounts: [mineral, techPoint, modulePoint, pvpPoint] 순, 0이면 해당 행 숨김
-    public void ShowPopupAlert(string title, string message, Action onConfirm, float autoCloseSec = 0f, List<int> rewardAmounts = null)
+    public void ShowPopupAlert(AlertPopupConfig config)
     {
-        if (titleText != null) titleText.text = title;
+        if (titleText != null) titleText.text = config.title;
         if (messageText != null)
         {
-            messageText.text = message;
-            messageText.gameObject.SetActive(string.IsNullOrEmpty(message) == false);
+            messageText.text = config.message;
+            messageText.gameObject.SetActive(string.IsNullOrEmpty(config.message) == false);
         }
 
-        BuildRewardRows(rewardAmounts);
+        BuildRewardRows(config.rewardAmounts);
 
-        onConfirmCallback = onConfirm;
+        onConfirmCallback = config.onConfirm;
 
         if (m_autoCloseCoroutine != null)
             StopCoroutine(m_autoCloseCoroutine);
@@ -51,8 +62,8 @@ public class UIPopupAlert : UIPopupBase
         if (m_sectionReward != null) m_sectionReward.RebuildLayout();
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
 
-        if (autoCloseSec > 0f)
-            m_autoCloseCoroutine = StartCoroutine(AutoCloseRoutine(autoCloseSec));
+        if (config.autoCloseSec > 0f)
+            m_autoCloseCoroutine = StartCoroutine(AutoCloseRoutine(config.autoCloseSec));
     }
 
     private void BuildRewardRows(List<int> amounts)

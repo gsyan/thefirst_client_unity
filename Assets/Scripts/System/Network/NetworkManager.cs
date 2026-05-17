@@ -88,12 +88,17 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
         CancelInvoke(nameof(CheckConnection));
 
-        UIManager.Instance.ShowPopupAlert(title, message, () => {
+        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig
+        {
+            title = title,
+            message = message,
+            onConfirm = () => {
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+                Application.Quit();
 #endif
+            },
         });
     }
 
@@ -775,6 +780,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClearZoneStageAsync(request), onComplete));
     }
 
+    public void ClaimZoneReward(ClaimZoneRewardRequest request, System.Action<ApiResponse<ClaimZoneRewardResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimZoneRewardAsync(request), onComplete));
+    }
 
     public void Heartbeat()
     {

@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UITabShip : UITabBase
+public class UITabFleetManage : UITabBase
 {
     [Header("상단 헤더 — 함선 네비게이터 + 스탯 2행")]
     [SerializeField] private Button    m_btnPrevShip;

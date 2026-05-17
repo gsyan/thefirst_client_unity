@@ -375,14 +375,6 @@ MonoBehaviour:
     m_Key: module_type_hanger
     m_Metadata:
       m_Items: []
-  - m_Id: 705451700125696
-    m_Key: cancel
-    m_Metadata:
-      m_Items: []
-  - m_Id: 705451700125697
-    m_Key: confirm
-    m_Metadata:
-      m_Items: []
   - m_Id: 394150433325056
     m_Key: mineral_amount
     m_Metadata:
@@ -727,6 +719,10 @@ MonoBehaviour:
     m_Key: UITabExploration_TryZone
     m_Metadata:
       m_Items: []
+  - m_Id: 35640746719444992
+    m_Key: UITabExploration_PreviousStageRequired
+    m_Metadata:
+      m_Items: []
   - m_Id: 26480402604359680
     m_Key: require_level_compare
     m_Metadata:
@@ -751,16 +747,24 @@ MonoBehaviour:
     m_Key: Simple_NoThanks
     m_Metadata:
       m_Items: []
-  - m_Id: 34837876499677184
-    m_Key: Simple_RewardsX1
+  - m_Id: 35605468558524416
+    m_Key: Simple_MineralX1
     m_Metadata:
       m_Items: []
-  - m_Id: 34837143750574081
-    m_Key: Simple_RewardsX
+  - m_Id: 35605468608856064
+    m_Key: Simple_MineralX
     m_Metadata:
       m_Items: []
   - m_Id: 34837143750574082
     m_Key: Simple_Free
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35624047941124096
+    m_Key: Simple_Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35624047941124097
+    m_Key: Simple_Confirm
     m_Metadata:
       m_Items: []
   m_Metadata:

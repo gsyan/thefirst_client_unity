@@ -157,7 +157,7 @@ public class UITabPvp : UITabBase
         string title = LocalizationManager.Instance.Get(titleKey);
         string scoreLine = LocalizationManager.Instance.Get("pvp_battle_result_score", scoreStr, response.data.newScore);
         string rankLine = LocalizationManager.Instance.Get("pvp_battle_result_rank", oldRank, response.data.newRank);
-        UIManager.Instance.ShowPopupAlert(title, $"{scoreLine}\n{rankLine}", ReturnFromBattle);
+        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig { title = title, message = $"{scoreLine}\n{rankLine}", onConfirm = ReturnFromBattle });
     }
 
     private void ReturnFromBattle()

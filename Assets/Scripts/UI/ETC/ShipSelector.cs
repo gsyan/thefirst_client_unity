@@ -33,9 +33,7 @@ public class ShipSelector : MonoBehaviour
                 m_selectButtonOriginalColor = m_selectButtonImage.color;
         }
 
-        var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
-        if (palette != null)
-            m_selectButtonSelectedColor = palette.GetColor("Selected");
+        m_selectButtonSelectedColor = CommonUtility.PaletteColor("Selected");
 
         if (m_shipStatsContainer != null)
             m_statRows = m_shipStatsContainer.GetComponentsInChildren<RowImageText>(true);

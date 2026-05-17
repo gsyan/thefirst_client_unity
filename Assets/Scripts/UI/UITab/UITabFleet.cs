@@ -15,9 +15,7 @@ public class UITabFleet : UITabBase
     [Header("함선 액션 버튼 (선택 시 활성)")]
     [SerializeField] private Button m_btnShipRepair;    // 집중 수리 (추후 구현)
 
-    [Header("Formation 하단 바")]
-    [SerializeField] private TMP_Text m_textCurrentFormation;   // 현재 진형명
-    [SerializeField] private Button m_btnFormationChange;       // [교체 ▶] 버튼
+    [SerializeField] private Button m_fleetManageButton;
 
     private Character m_myCharacter;
     private SpaceFleet m_myFleet;
@@ -38,7 +36,7 @@ public class UITabFleet : UITabBase
             m_shipSelectors = m_shipSelectorsObj.GetComponentsInChildren<ShipSelector>(true);
         if (m_myFleet == null) return;
 
-        m_btnFormationChange.onClick.AddListener(OnFormationChangeClicked);
+        m_fleetManageButton.onClick.AddListener(OnFormationChangeClicked);
 
         if (m_addShipButton != null) m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
         if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
@@ -57,7 +55,6 @@ public class UITabFleet : UITabBase
         base.OnTabActivated();
         SetOtherTabsVisible(false, includeSelf: true);
         UpdateTechLevelDisplay();
-        UpdateCurrentFormationText();
         RefreshShipHealthDisplay();
 
         // 선택된 함선이 없으면 기함(0번) 자동 선택
@@ -155,15 +152,6 @@ public class UITabFleet : UITabBase
     {
         if (m_myFleet == null) return;
         m_myFleet.ChangeFormation(formationType);
-        // 낙관적 업데이트 — 서버 응답 전에 UI 먼저 갱신
-        if (m_textCurrentFormation != null)
-            m_textCurrentFormation.text = LocalizationManager.Instance.Get(formationType.ToString());
-    }
-
-    private void UpdateCurrentFormationText()
-    {
-        if (m_textCurrentFormation == null || m_myFleet == null) return;
-        m_textCurrentFormation.text = LocalizationManager.Instance.Get(m_myFleet.m_currentFormationType.ToString());
     }
 
     // ── ShipSelector 그리드 ────────────────────────────────────────────

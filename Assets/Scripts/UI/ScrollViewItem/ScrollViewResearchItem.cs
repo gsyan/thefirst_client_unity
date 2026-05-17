@@ -37,13 +37,9 @@ public class ScrollViewResearchItem : MonoBehaviour
         if (m_borderImage == null)
             m_borderImage = m_selectButton.GetComponent<Image>();
 
-        var palette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
-        if (palette != null)
-        {
-            m_colorLocked = palette.GetColor("Locked");
-            m_colorResearched = palette.GetColor("Unlocked");
-            m_colorSelected = palette.GetColor("Selected");
-        }
+        m_colorLocked     = CommonUtility.PaletteColor("Locked");
+        m_colorResearched = CommonUtility.PaletteColor("Unlocked");
+        m_colorSelected   = CommonUtility.PaletteColor("Selected");
 
         if (m_bgImage != null)
             m_bgImage.color = m_colorResearched;

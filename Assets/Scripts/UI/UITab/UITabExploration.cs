@@ -16,14 +16,13 @@ public class UITabExploration : UITabBase
     
     [Header("그룹 탭")]
     [SerializeField] private Transform m_zoneTabButtonContainer;
-
     private UISelectableButton[] m_zoneTabButtons;
-
     private readonly List<UIZoneStageButton> m_buttonPool = new();
 
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
-    private ZoneStageConfig m_currentZoneStage;
+    private ZoneStageConfig m_currentZoneStage;  // 클리어 진행 위치
+    private ZoneStageConfig m_battleZoneStage;   // 현재 전투 중인 존 (입장 시 set, 후퇴/완료 후 null)
     private ZoneStageConfig m_selectedZoneStage;
     private UIZoneStageButton m_currentZoneStageButton;
     private readonly Dictionary<string, UIZoneStageButton> m_zoneStageButtons = new Dictionary<string, UIZoneStageButton>();
@@ -108,6 +107,9 @@ public class UITabExploration : UITabBase
         SetupButtonsForGroup(groupIndex);
         UpdateGroupTabVisual();
 
+        if (m_zoneButtonRoot != null)
+            m_zoneButtonRoot.gameObject.SetActive(false);
+        
         var zoneConfig = m_datatableZone.GetZoneByZoneIndex(groupIndex);
         if (zoneConfig != null && CameraController.Instance != null)
             CameraController.Instance.FocusOnZoneAnchor(
@@ -124,7 +126,7 @@ public class UITabExploration : UITabBase
             m_zoneTabButtons[i].SetSelected((i + 1) == m_selectedZoneIndex);
     }
 
-    // 초기 그룹 인덱스만 결정 — 버튼 생성은 OnTabActivated의 SetupButtonsForGroup에서
+    // 초기 그룹 인덱스 및 현재 함대 스테이지 결정 — 버튼 생성은 OnTabActivated의 SetupButtonsForGroup에서
     private void InitializeZoneStageButtons()
     {
         if (m_datatableZone == null) return;
@@ -132,8 +134,10 @@ public class UITabExploration : UITabBase
         var clearedZoneNames = m_myCharacter != null ? m_myCharacter.m_characterInfo.clearedZones : null;
         if (clearedZoneNames != null && clearedZoneNames.Count > 0)
         {
-            int group = ParseZoneGroup(clearedZoneNames[^1]);
+            string lastCleared = clearedZoneNames[^1];
+            int group = ParseZoneGroup(lastCleared);
             if (group > 0) m_selectedZoneIndex = group;
+            m_currentZoneStage = m_datatableZone.GetZoneStageByName(lastCleared);
         }
     }
 
@@ -144,6 +148,8 @@ public class UITabExploration : UITabBase
         m_currentZoneStageButton = null;
 
         if (m_zoneButtonRoot == null || m_zoneStageButtonPrefab == null || m_datatableZone == null) return;
+
+        m_zoneButtonRoot.gameObject.SetActive(true); // RebuildLayout이 Canvas에 반영되려면 root가 활성 상태여야 함
 
         var clearedZoneNames = m_myCharacter != null ? m_myCharacter.m_characterInfo.clearedZones : null;
         Camera worldCam = CameraController.Instance != null ? CameraController.Instance.m_targetCamera : Camera.main;
@@ -170,21 +176,39 @@ public class UITabExploration : UITabBase
 
         SortButtonsByName();
 
+        // 풀에서 꺼낸 버튼의 이전 위치 잔류 방지 — OnCameraGalaxyViewSettled가 재발생하지 않는 경우(탭 이미 열림)에도 올바른 위치 보장
+        foreach (var kv in m_zoneStageButtons)
+            kv.Value.UpdateScreenPosition();
+
         if (m_currentZoneStage != null && ParseZoneGroup(m_currentZoneStage.zoneName) == groupIndex)
         {
             if (m_zoneStageButtons.TryGetValue(m_currentZoneStage.zoneName, out UIZoneStageButton curBtn))
                 m_currentZoneStageButton = curBtn;
             m_selectedZoneStagePerGroup[groupIndex] = m_currentZoneStage;
             ApplyZoneStageSelection(m_currentZoneStage);
-            return;
         }
-
-        ZoneStageConfig toSelect = m_selectedZoneStagePerGroup.TryGetValue(groupIndex, out ZoneStageConfig saved)
+        else
+        {
+            ZoneStageConfig toSelect = m_selectedZoneStagePerGroup.TryGetValue(groupIndex, out ZoneStageConfig saved)
             ? saved
             : GetDefaultZoneStageForZone(groupIndex);
 
-        if (toSelect != null)
-            ApplyZoneStageSelection(toSelect);
+            if (toSelect != null)
+                ApplyZoneStageSelection(toSelect);    
+        }
+
+        RefreshMyFleetMarker();
+    }
+
+    private void RefreshMyFleetMarker()
+    {
+        foreach (var kv in m_zoneStageButtons)
+            kv.Value.SetMyFleetMarker(false);
+
+        if (m_currentZoneStage == null) return;
+
+        if (m_zoneStageButtons.TryGetValue(m_currentZoneStage.zoneName, out UIZoneStageButton markerBtn))
+            markerBtn.SetMyFleetMarker(true);
     }
 
     private void SortButtonsByName()
@@ -222,16 +246,22 @@ public class UITabExploration : UITabBase
     {
         if (m_datatableZone == null) return;
 
-        var zone1 = m_datatableZone.GetZoneByZoneIndex(1);
-        if (zone1 != null && CameraController.Instance != null)
-            CameraController.Instance.EnterGalaxyView(
-                zone1.galaxyCameraTarget,
-                zone1.galaxyCameraZoom,
-                zone1.galaxyCameraRotX,
-                zone1.galaxyCameraRotY);
+        if (CameraController.Instance != null)
+        {
+            CameraController.Instance.OnGalaxyViewSettled += OnCameraGalaxyViewSettled;
+            var zone1 = m_datatableZone.GetZoneByZoneIndex(1);
+            if (zone1 != null)
+                CameraController.Instance.EnterGalaxyView(
+                    zone1.galaxyCameraTarget,
+                    zone1.galaxyCameraZoom,
+                    zone1.galaxyCameraRotX,
+                    zone1.galaxyCameraRotY);
+        }
 
         SetupButtonsForGroup(m_selectedZoneIndex);
         UpdateGroupTabVisual();
+
+        if (m_zoneButtonRoot != null) m_zoneButtonRoot.gameObject.SetActive(false);
 
         SetOtherTabsVisible(false, includeSelf: true);
         EventManager.TriggerExplorationTabOpened();
@@ -239,6 +269,9 @@ public class UITabExploration : UITabBase
 
     public override void OnTabDeactivated()
     {
+        if (CameraController.Instance != null)
+            CameraController.Instance.OnGalaxyViewSettled -= OnCameraGalaxyViewSettled;
+
         ReturnAllButtonsToPool();
 
         if (CameraController.Instance != null)
@@ -246,6 +279,14 @@ public class UITabExploration : UITabBase
 
         SetOtherTabsVisible(true, includeSelf: true);
         EventManager.TriggerExplorationTabClosed();
+    }
+
+    private void OnCameraGalaxyViewSettled()
+    {
+        if (m_zoneButtonRoot != null) m_zoneButtonRoot.gameObject.SetActive(true);
+
+        foreach (var kv in m_zoneStageButtons)
+            kv.Value.UpdateScreenPosition();
     }
 
     private void SetFleetState(EUnitState unitState)
@@ -295,12 +336,18 @@ public class UITabExploration : UITabBase
         if (m_myFleet.m_fleetState == EUnitState.Warp) return;
         if (m_myFleet.m_fleetState == EUnitState.Battle)
         {
-            if (m_currentZoneStage != null && m_currentZoneStage.zoneName == zoneStage.zoneName) return;
+            if (m_battleZoneStage != null && m_battleZoneStage.zoneName == zoneStage.zoneName) return;
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
             ObjectManager.Instance.StopEnemySpawning();
             ObjectManager.Instance.OrderAllAircraftReturn();
             ObjectManager.Instance.CleanupAllProjectiles();
             ObjectManager.Instance.RemoveAllEnemyFleets();
+        }
+
+        if (IsPreviousStageCleared(zoneStage) == false)
+        {
+            ShowErrorMessage(LocalizationManager.Instance.Get("UITabExploration_PreviousStageRequired"));
+            return;
         }
 
         bool isFirstClear = IsAlreadyCleared(zoneStage) == false;
@@ -400,7 +447,7 @@ public class UITabExploration : UITabBase
     {
         SetFleetState(EUnitState.Warp);
 
-        m_currentZoneStage = zoneStage;
+        m_battleZoneStage = zoneStage;
         RefreshCurrentZoneStageButton();
         EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilled);
 
@@ -457,17 +504,49 @@ public class UITabExploration : UITabBase
         return clearedZones != null && clearedZones.Contains(zoneStage.zoneName);
     }
 
+    private bool IsPreviousStageCleared(ZoneStageConfig zoneStage)
+    {
+        int group = ParseZoneGroup(zoneStage.zoneName);
+        int stage = ParseZoneStage(zoneStage.zoneName);
+
+        string prevStageName;
+        if (stage > 1)
+        {
+            prevStageName = $"{group}-{stage - 1}";
+        }
+        else
+        {
+            if (group <= 1) return true; // 1-1은 조건 없음
+
+            int maxStage = 0;
+            for (int i = 0; i < m_datatableZone.ZoneStageCount; i++)
+            {
+                ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
+                if (zs == null || ParseZoneGroup(zs.zoneName) != group - 1) continue;
+                int s = ParseZoneStage(zs.zoneName);
+                if (s > maxStage) maxStage = s;
+            }
+            if (maxStage == 0) return true;
+            prevStageName = $"{group - 1}-{maxStage}";
+        }
+
+        var cleared = m_myCharacter?.m_characterInfo.clearedZones;
+        return cleared != null && cleared.Contains(prevStageName);
+    }
+
     private void OnEnemyFleetKilled()
     {
         Debug.Log("OnEnemyFleetKilled");
-        if (m_currentZoneStage == null) return;
+        if (m_battleZoneStage == null) return;
 
         var request = new ClearZoneStageRequest
         {
-            zoneName = m_currentZoneStage.zoneName,
+            zoneName = m_battleZoneStage.zoneName,
         };
         NetworkManager.Instance.ClearZoneStage(request, OnClearZoneStageResponse);
     }
+
+    private bool m_pendingRewardIsFirstClear;
 
     private void OnClearZoneStageResponse(ApiResponse<ClearZoneStageResponse> response)
     {
@@ -479,20 +558,7 @@ public class UITabExploration : UITabBase
         }
 
         var character = DataManager.Instance.m_currentCharacter;
-        int mineralBefore    = (character != null && character.m_characterInfo != null) ? character.m_characterInfo.mineral     : 0;
-        int techPointBefore  = (character != null && character.m_characterInfo != null) ? character.m_characterInfo.techPoint   : 0;
-        int modulePointBefore= (character != null && character.m_characterInfo != null) ? character.m_characterInfo.modulePoint : 0;
-
-        if (character != null && character.m_characterInfo != null)
-        {
-            character.m_characterInfo.mineral          = response.data.mineralRemain;
-            character.m_characterInfo.techPoint        = response.data.techPointRemain;
-            character.m_characterInfo.modulePoint      = response.data.modulePointRemain;
-            character.m_characterInfo.modulePointMaxGot = response.data.modulePointMaxGot;
-            EventManager.TriggerMineralChange(response.data.mineralRemain);
-        }
-
-        if (response.data.isZoneCleared == true && character != null)
+        if (response.data.isFirstClear == true && character != null)
         {
             if (character.m_characterInfo.clearedZones == null)
                 character.m_characterInfo.clearedZones = new List<string>();
@@ -509,29 +575,98 @@ public class UITabExploration : UITabBase
 
             RefreshCurrentZoneStageButton();
             SelectNextZoneStage(newlyCleared);
+            UpdateCurrentZoneStageOnClear(newlyCleared);
         }
 
-        int mineralGained     = response.data.mineralRemain    - mineralBefore;
-        int techPointGained   = response.data.techPointRemain  - techPointBefore;
-        int modulePointGained = response.data.modulePointRemain- modulePointBefore;
-
-        bool hasReward = mineralGained > 0 || techPointGained > 0 || modulePointGained > 0;
-        if (hasReward == true)
-        {
-            string title = LocalizationManager.Instance.Get("exploration_battle_victory");
-            var rewards = new List<int> { mineralGained, techPointGained, modulePointGained, 0 };
-            UIManager.Instance.StartCoroutine(ShowRewardPopupDelayed(title, 2f, rewards));
-        }
-        else
-        {
-            StayInCurrentStage();
-        }
+        m_pendingRewardIsFirstClear = response.data.isFirstClear;
+        StayInCurrentStage();
+        string title = LocalizationManager.Instance.Get("exploration_battle_victory");
+        UIManager.Instance.StartCoroutine(ShowRewardPopupDelayed(title, 2f));
     }
 
-    private IEnumerator ShowRewardPopupDelayed(string title, float delay, List<int> rewards)
+    private IEnumerator ShowRewardPopupDelayed(string title, float delay)
     {
         yield return new WaitForSecondsRealtime(delay);
-        UIManager.Instance.ShowPopupAlert(title, string.Empty, StayInCurrentStage, autoCloseSec: 5f, rewardAmounts: rewards);
+
+        if (m_battleZoneStage == null) { yield break; }
+
+        bool isFirstClear = m_pendingRewardIsFirstClear;
+        var rewards = new List<int>
+        {
+            m_battleZoneStage.mineralClearReward,
+            isFirstClear ? m_battleZoneStage.techPointClearReward   : 0,
+            isFirstClear ? m_battleZoneStage.modulePointClearReward : 0,
+            0
+        };
+
+        var loc = LocalizationManager.Instance;
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title         = title,
+            rewardAmounts = rewards,
+            cancelText1   = loc.Get("Simple_NoThanks"),
+            cancelText2   = loc.Get("Simple_MineralX1"),
+            confirmText1  = loc.Get("Simple_WatchAD"),
+            confirmText2  = loc.Get("Simple_MineralX", 2),
+            onCancel      = OnClaimRewardX1,
+            onConfirm     = OnWatchAdForDoubleReward,
+        });
+    }
+
+    private void OnClaimRewardX1()
+    {
+        if (m_battleZoneStage == null) { return; }
+        var request = new ClaimZoneRewardRequest { zoneName = m_battleZoneStage.zoneName, watchedAd = false };
+        NetworkManager.Instance.ClaimZoneReward(request, OnClaimZoneRewardResponse);
+    }
+
+    private void OnWatchAdForDoubleReward()
+    {
+#if UNITY_EDITOR
+        if (AdManager.s_devSkipAd == true)
+        {
+            SendClaimZoneReward(true);
+            return;
+        }
+#endif
+        bool adReady = AdManager.Instance != null && AdManager.Instance.IsRewardedAdReady;
+        if (adReady == false)
+        {
+            SendClaimZoneReward(false);
+            return;
+        }
+
+        AdManager.Instance.ShowRewardedAd(result =>
+        {
+            SendClaimZoneReward(result == EAdResult.Rewarded);
+        });
+    }
+
+    private void SendClaimZoneReward(bool watchedAd)
+    {
+        if (m_battleZoneStage == null) { return; }
+        var request = new ClaimZoneRewardRequest { zoneName = m_battleZoneStage.zoneName, watchedAd = watchedAd };
+        NetworkManager.Instance.ClaimZoneReward(request, OnClaimZoneRewardResponse);
+    }
+
+    private void OnClaimZoneRewardResponse(ApiResponse<ClaimZoneRewardResponse> response)
+    {
+        if (response.errorCode != 0)
+        {
+            Debug.LogWarning($"[Zone] ClaimZoneReward 에러: {ErrorCodeMapping.GetMessage(response.errorCode)} ({response.errorCode})");
+            return;
+        }
+
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character != null && character.m_characterInfo != null)
+        {
+            character.m_characterInfo.mineral           = response.data.mineralRemain;
+            character.m_characterInfo.techPoint         = response.data.techPointRemain;
+            character.m_characterInfo.modulePoint       = response.data.modulePointRemain;
+            character.m_characterInfo.modulePointMaxGot = response.data.modulePointMaxGot;
+            EventManager.TriggerMineralChange(response.data.mineralRemain);
+        }
+        m_battleZoneStage = null;
     }
 
     private void SelectNextZoneStage(string clearedZoneName)
@@ -571,6 +706,13 @@ public class UITabExploration : UITabBase
         m_selectedZoneStagePerGroup[ParseZoneGroup(nextStage.zoneName)] = nextStage;
     }
 
+    private void UpdateCurrentZoneStageOnClear(string clearedZoneName)
+    {
+        ZoneStageConfig clearedStage = m_datatableZone.GetZoneStageByName(clearedZoneName);
+        if (clearedStage == null) return;
+        m_currentZoneStage = clearedStage;
+    }
+
     private void RetreatToPreviousStage()
     {
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
@@ -592,29 +734,33 @@ public class UITabExploration : UITabBase
         else
         {
             // 한 스테이지도 클리어 못했으므로 해당 존 x-0 스폰 마커로 복귀
-            int currentGroup = m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1;
+            int currentGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : 1;
             ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(currentGroup);
             retreatPosition  = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
             retreatRotationY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
         }
 
         if (m_isFleetWiped == true)
-            ObjectManager.Instance.StartCoroutine(ShowWipePopupAfterDelay(retreatPosition, retreatRotationY, retreatStage));
+            ObjectManager.Instance.StartCoroutine(ShowWipePopupAfterDelay(retreatPosition, retreatRotationY));
         else
-            ExecuteRetreat(retreatPosition, retreatRotationY, retreatStage);
+            ExecuteRetreat(retreatPosition, retreatRotationY);
     }
 
-    private IEnumerator ShowWipePopupAfterDelay(Vector3 retreatPosition, float retreatRotationY, ZoneStageConfig retreatStage)
+    private IEnumerator ShowWipePopupAfterDelay(Vector3 retreatPosition, float retreatRotationY)
     {
         yield return m_wipePopupDelay;
         string title = LocalizationManager.Instance.Get("exploration_fleet_wiped");
         string message = LocalizationManager.Instance.Get("exploration_wipe_retreat");
-        UIManager.Instance.ShowPopupAlert(title, message,
-            () => ExecuteRetreat(retreatPosition, retreatRotationY, retreatStage),
-            autoCloseSec: 5f);
+        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig
+        {
+            title = title,
+            message = message,
+            onConfirm = () => ExecuteRetreat(retreatPosition, retreatRotationY),
+            autoCloseSec = 5f,
+        });
     }
 
-    private void ExecuteRetreat(Vector3 retreatPosition, float retreatRotationY, ZoneStageConfig retreatStage)
+    private void ExecuteRetreat(Vector3 retreatPosition, float retreatRotationY)
     {
         // 카메라를 먼저 후퇴 위치로 이동 (갤럭시뷰 종료 포함 — 이후 CloseAllTabs→ExitGalaxyView 중복 호출 방지)
         CameraController.Instance.ExitGalaxyViewMoveTo(retreatPosition);
@@ -630,7 +776,7 @@ public class UITabExploration : UITabBase
             SetOtherTabsVisible(true, includeSelf: true);
             CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 
-            m_currentZoneStage = retreatStage;
+            m_battleZoneStage = null;
             RefreshCurrentZoneStageButton();
 
             SetFleetState(EUnitState.Idle);
@@ -665,9 +811,9 @@ public class UITabExploration : UITabBase
     // 현재 존에서 클리어한 스테이지 중 가장 높은 것 반환 — 없으면 null(→ 해당 존 최초지점으로 복귀)
     private ZoneStageConfig FindPreviousClearedStage()
     {
-        if (m_currentZoneStage == null) return null;
+        if (m_battleZoneStage == null) return null;
 
-        int group = ParseZoneGroup(m_currentZoneStage.zoneName);
+        int group = ParseZoneGroup(m_battleZoneStage.zoneName);
         var cleared = m_myCharacter?.m_characterInfo.clearedZones;
         if (cleared == null || cleared.Count == 0) return null;
 
