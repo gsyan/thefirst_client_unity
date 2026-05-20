@@ -152,8 +152,8 @@ MonoBehaviour:
       missileMultiplier: 0.1
       hangerMultiplier: 0.1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -224,8 +224,8 @@ MonoBehaviour:
       missileMultiplier: 0.15
       hangerMultiplier: 0.15
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -296,8 +296,8 @@ MonoBehaviour:
       missileMultiplier: 0.2
       hangerMultiplier: 0.2
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 0, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -368,8 +368,8 @@ MonoBehaviour:
       missileMultiplier: 0.25
       hangerMultiplier: 0.25
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -440,8 +440,8 @@ MonoBehaviour:
       missileMultiplier: 0.3
       hangerMultiplier: 0.3
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -524,8 +524,8 @@ MonoBehaviour:
       missileMultiplier: 0.4
       hangerMultiplier: 0.4
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -596,8 +596,8 @@ MonoBehaviour:
       missileMultiplier: 0.5
       hangerMultiplier: 0.5
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -668,8 +668,8 @@ MonoBehaviour:
       missileMultiplier: 0.6
       hangerMultiplier: 0.6
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 0, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -740,8 +740,8 @@ MonoBehaviour:
       missileMultiplier: 0.8
       hangerMultiplier: 0.8
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -812,8 +812,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -908,8 +908,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -992,8 +992,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1076,8 +1076,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 0, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1160,8 +1160,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1244,8 +1244,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1340,8 +1340,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1424,8 +1424,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1508,8 +1508,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 0, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1592,8 +1592,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1676,8 +1676,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1772,8 +1772,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1856,8 +1856,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -1940,8 +1940,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 0, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2024,8 +2024,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2108,8 +2108,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2204,8 +2204,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2288,8 +2288,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2372,8 +2372,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 0, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2456,8 +2456,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2540,8 +2540,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2660,8 +2660,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2768,8 +2768,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -2876,8 +2876,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 0, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -3008,8 +3008,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -3116,8 +3116,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -3236,8 +3236,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -3344,8 +3344,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -3452,8 +3452,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 0, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -3560,8 +3560,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -3668,8 +3668,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -3788,8 +3788,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -3896,8 +3896,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: -1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -4004,8 +4004,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 0, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -4112,8 +4112,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 1500, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
@@ -4220,8 +4220,8 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     mineralClearReward: 10
-    techPointClearReward: 10
-    modulePointClearReward: 10
+    techPointClearReward: 1
+    modulePointClearReward: 1
     fleetPosition: {x: 3000, y: 0, z: 0}
     fleetRotationY: 90
     labelScreenOffset: {x: 80, y: 60}
