@@ -76,6 +76,7 @@ public class ModuleMissile : ModuleBase
 
         // 업그레이드 비용 설정
         m_modulePointCostLevelup = moduleData.modulePointCost;
+        m_mineralCost = moduleData.mineralCost;
 
         m_lastAttackTime = 0f;
 
@@ -150,21 +151,24 @@ public class ModuleMissile : ModuleBase
     {
         while (true)
         {
-            if( m_moduleState != EUnitState.Battle ) yield return null;
+            if (m_moduleState != EUnitState.Battle) yield return null;
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
             {
                 if (Time.time >= m_lastAttackTime + m_attackCoolTime)
                 {
-                    ExecuteAttackOnTarget(m_currentTarget);
-                    m_lastAttackTime = Time.time;
+                    if (TryConsumeMineral(1) == true)
+                    {
+                        ExecuteAttackOnTarget(m_currentTarget);
+                        m_lastAttackTime = Time.time;
+                    }
                 }
             }
 
             yield return null;
         }
     }
-    
+
     private void ExecuteAttackOnTarget(ModuleBody target)
     {
         foreach (var launcher in m_launchers)

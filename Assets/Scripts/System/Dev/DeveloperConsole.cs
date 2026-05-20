@@ -495,7 +495,17 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             var objectManager = ObjectManager.Instance;
             if (objectManager?.m_myFleet == null) return;
 
-            objectManager.m_myFleet.ChangeFormation(formationType);
+            var fleet = objectManager.m_myFleet;
+            var request = new ChangeFormationRequest { fleetId = fleet.m_fleetInfo.id, formationType = formationType };
+            NetworkManager.Instance.ChangeFormation(request, (response) =>
+            {
+                if (response.errorCode == 0)
+                {
+                    fleet.UpdateShipFormation(formationType);
+                    if (response.data.updatedFleetInfo != null)
+                        DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
+                }
+            });
         });
 
         RegisterCommand("addtech", "Add technology level (usage: addtech [amount])", (args) =>

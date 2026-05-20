@@ -39,11 +39,13 @@ public class RowImageText : MonoBehaviour
     {
         gameObject.SetActive(true);
         m_text.text = text;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
 
     public void SetTextWithInt(int value)
     {
         gameObject.SetActive(true);
         m_text.SetText("{0}", (float)value);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
 }

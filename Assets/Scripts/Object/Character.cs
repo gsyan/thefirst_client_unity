@@ -46,7 +46,7 @@ public class Character
     {
         if (m_characterInfo == null) return;
         m_characterInfo.techPoint = techPoint;
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
+        EventManager.TriggerTechPointChanged(techPoint);
     }
 
     public int GetModulePoint()
@@ -65,14 +65,13 @@ public class Character
     {
         if (m_characterInfo == null) return;
         m_characterInfo.modulePoint = modulePoint;
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
+        EventManager.TriggerModulePointChanged(modulePoint);
     }
 
     public void UpdateModulePointMaxGot(int modulePointMaxGot)
     {
         if (m_characterInfo == null) return;
         m_characterInfo.modulePointMaxGot = modulePointMaxGot;
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
     public int GetPvpPoint()
@@ -91,14 +90,13 @@ public class Character
     {
         if (m_characterInfo == null) return;
         m_characterInfo.pvpPoint = pvpPoint;
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
+        EventManager.TriggerPvpPointChanged(pvpPoint);
     }
 
     public void UpdatePvpPointMaxGot(int pvpPointMaxGot)
     {
         if (m_characterInfo == null) return;
         m_characterInfo.pvpPointMaxGot = pvpPointMaxGot;
-        EventManager.TriggerMineralChange(m_characterInfo.mineral);
     }
 
     // 완료된 tech_level_N ID 중 최댓값을 기술레벨로 반환 (기본값 1)
@@ -142,6 +140,15 @@ public class Character
     {
         if (m_characterInfo == null) return false;
         return m_characterInfo.mineral >= cost;
+    }
+
+    public bool TryConsumeMineral(int amount)
+    {
+        if (m_characterInfo == null) return false;
+        if (m_characterInfo.mineral < amount) return false;
+        m_characterInfo.mineral -= amount;
+        EventManager.TriggerMineralChange(m_characterInfo.mineral);
+        return true;
     }
 
     public bool CheckEnoughTechPoint(long cost)

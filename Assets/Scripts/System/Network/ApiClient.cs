@@ -412,6 +412,22 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<ChangeFormationResponse>>(webRequest.downloadHandler.text);
     }
 
+    public async Task<ApiResponse<ChangeTacticOptionsResponse>> ChangeTacticOptionsAsync(ChangeTacticOptionsRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ChangeTacticOptionsResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/change-tactic-options", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<ChangeTacticOptionsResponse>>(webRequest.downloadHandler.text);
+    }
+
     public async Task<ApiResponse<ModuleLevelUpResponse>> LevelUpModuleAsync(ModuleLevelUpRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleLevelUpResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);

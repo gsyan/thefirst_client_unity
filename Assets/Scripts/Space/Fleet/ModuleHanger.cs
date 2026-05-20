@@ -92,6 +92,7 @@ public class ModuleHanger : ModuleBase
 
         // 업그레이드 비용 설정
         m_modulePointCostLevelup = moduleData.modulePointCost;
+        m_mineralCost = moduleData.mineralCost;
 
         m_lastLaunchTime = 0f;
 
@@ -155,14 +156,17 @@ public class ModuleHanger : ModuleBase
     {
         while (true)
         {
-            if( m_moduleState != EUnitState.Battle ) yield return null;
+            if (m_moduleState != EUnitState.Battle) yield return null;
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
             {
                 if (Time.time >= m_lastLaunchTime + m_launchCool)
                 {
-                    ExecuteLaunchOnTarget(m_currentTarget);
-                    m_lastLaunchTime = Time.time;
+                    if (TryConsumeMineral(2) == true)
+                    {
+                        ExecuteLaunchOnTarget(m_currentTarget);
+                        m_lastLaunchTime = Time.time;
+                    }
                 }
             }
 

@@ -55,10 +55,6 @@ MonoBehaviour:
     m_Key: fleet_add_ship_name
     m_Metadata:
       m_Items: []
-  - m_Id: 11319763854557184
-    m_Key: fleet_formation
-    m_Metadata:
-      m_Items: []
   - m_Id: 11317517746044928
     m_Key: fleet_formation_change
     m_Metadata:
@@ -321,22 +317,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 15678504460746753
     m_Key: air_launch_count
-    m_Metadata:
-      m_Items: []
-  - m_Id: 728096982302720
-    m_Key: formation_type_linear_horizontal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 728097020051456
-    m_Key: formation_type_circle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 728097020051457
-    m_Key: formation_type_cross
-    m_Metadata:
-      m_Items: []
-  - m_Id: 728097020051458
-    m_Key: formation_type_x
     m_Metadata:
       m_Items: []
   - m_Id: 767916345524224
@@ -617,6 +597,66 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 29120731379793920
     m_Key: UITabFleet_AddShipText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35928926043635712
+    m_Key: UITabFleetTactics_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35928926072995840
+    m_Key: UITabFleetTactics_FormationType_LinearHorizontal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842788655104
+    m_Key: UITabFleetTactics_FormationType_LinearHorizontal_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842818015232
+    m_Key: UITabFleetTactics_FormationType_XOffensive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842818015233
+    m_Key: UITabFleetTactics_FormationType_XOffensive_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842818015234
+    m_Key: UITabFleetTactics_FormationType_XDefensive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842818015235
+    m_Key: UITabFleetTactics_FormationType_XDefensive_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082114965504
+    m_Key: UITabFleetTactics_UseBattleRepair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325632
+    m_Key: UITabFleetTactics_UseBattleRepair_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325633
+    m_Key: UITabFleetTactics_UseMissile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325634
+    m_Key: UITabFleetTactics_UseMissile_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325635
+    m_Key: UITabFleetTactics_UseAircraft
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325636
+    m_Key: UITabFleetTactics_UseAircraft_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36387413043314688
+    m_Key: UITabFleetTactics_LockedTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36387413089452032
+    m_Key: UITabFleetTactics_LockedMessage
     m_Metadata:
       m_Items: []
   - m_Id: 31664304520298496

@@ -44,7 +44,7 @@ public class SpaceFleet : MonoBehaviour
     public bool IsEnemy => m_fleetSide == EFleetSide.fleet_side_enemy;
     public bool IsZoneEnemy => m_fleetSource == EFleetSource.fleet_source_zone_data;
     public bool IsPvpEnemy => m_fleetSource == EFleetSource.fleet_source_player_remote;
-    public EFormationType m_currentFormationType = EFormationType.formation_type_linear_horizontal;
+    public EFormationType m_currentFormationType = EFormationType.linear_horizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
 
     // 수리 설정
@@ -417,7 +417,7 @@ public class SpaceFleet : MonoBehaviour
         return null;
     }
 
-    public void UpdateShipFormation(EFormationType formationType = EFormationType.formation_type_linear_horizontal, bool smooth = true)
+    public void UpdateShipFormation(EFormationType formationType = EFormationType.linear_horizontal, bool smooth = true)
     {
         m_currentFormationType = formationType;
         var targets = CalculateFormationTargets(formationType);
@@ -631,28 +631,7 @@ public class SpaceFleet : MonoBehaviour
     }
 
 
-    public void ChangeFormation(EFormationType newFormationType)
-    {
-        if (IsEnemy) return;
-
-        var request = new ChangeFormationRequest
-        {
-            fleetId = m_fleetInfo.id,
-            formationType = newFormationType
-        };
-
-        NetworkManager.Instance.ChangeFormation(request, (response) =>
-        {
-            if (response.errorCode == 0)
-            {
-                UpdateShipFormation(newFormationType);
-                if (response.data.updatedFleetInfo != null)
-                    DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
-            }
-        });
-    }
-
-    public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
+public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
     {
         if (ship == null) return;
         m_ships.Remove(ship);
@@ -884,13 +863,24 @@ public class SpaceFleet : MonoBehaviour
 
     public IEnumerator AutoRepair()
     {
+        bool isPlayerFleet = m_fleetSource == EFleetSource.fleet_source_player;
+
         while (IsFleetAlive() == true)
         {
             yield return new WaitForSeconds(1.0f);
 
+            bool isBattle = m_fleetState == EUnitState.Battle;
+
+            // 전투 중: tacticOptions bit 0(UseBattleRepair)이 꺼져 있으면 건너뜀
+            if (isBattle && m_fleetInfo != null && (m_fleetInfo.tacticOptions & 1) == 0) continue;
+
             CapabilityProfile fleetStats = GetFleetCapabilityProfile(true);
             float totalRepair = fleetStats.repair;
             if (totalRepair <= 0f) continue;
+
+            // 전투 중, Player 함대: Mineral 잔액 없으면 수리 건너뜀
+            Character character = isPlayerFleet ? DataManager.Instance.m_currentCharacter : null;
+            if (isBattle && isPlayerFleet && (character == null || character.GetMineral() <= 0)) continue;
 
             float threshold = GetRepairThresholdRatio();
 
@@ -940,6 +930,7 @@ public class SpaceFleet : MonoBehaviour
 
             // 총 수리력을 대상 수로 균등 분배
             float repairPerTarget = totalRepair / targets.Count;
+            float totalActualRepaired = 0f;
 
             foreach (SpaceShip ship in targets)
             {
@@ -957,12 +948,19 @@ public class SpaceFleet : MonoBehaviour
                 foreach (ModuleBody body in ship.m_moduleBodys)
                 {
                     if (body == null || body.m_health >= body.m_healthMax) continue;
+                    float before = body.m_health;
                     body.m_health = Mathf.Min(body.m_health + repairPerBody, body.m_healthMax);
+                    totalActualRepaired += body.m_health - before;
                 }
 
                 ship.UpdateShipStatCur();
                 EventManager.Trigger_ShipUpdateHP();
             }
+
+            // 실제 회복된 HP만큼 Mineral 차감 (전투 중, Player 함대만)
+            if (isBattle && isPlayerFleet && totalActualRepaired > 0f)
+                character?.TryConsumeMineral(Mathf.CeilToInt(totalActualRepaired));
+
             EventManager.Trigger_FleetUpdateHP();
         }
     }

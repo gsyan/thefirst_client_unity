@@ -71,7 +71,12 @@ public class UIPanelCameraView : UIPanelBase
 
     private void OnFleetStateChanged(EUnitState state)
     {
+        bool wasBattle = m_fleetState == EUnitState.Battle;
         m_fleetState = state;
+
+        if (wasBattle == true && state != EUnitState.Battle)
+            CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
+
         RefreshVisibility();
     }
 

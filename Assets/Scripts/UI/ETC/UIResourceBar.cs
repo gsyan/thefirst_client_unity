@@ -23,7 +23,19 @@ public class UIResourceBar : MonoBehaviour
     private DateTime  m_pvpExpiry;
     private Coroutine m_ddayCoroutine;
 
-    private static readonly WaitForSeconds s_wait1Sec    = new(1f);
+    // 자원별 마지막 표시값 (-1 = 미초기화, 애니메이션 없이 즉시 표시)
+    private long m_displayedMineral     = -1;
+    private long m_displayedTechPoint   = -1;
+    private long m_displayedModulePoint = -1;
+    private long m_displayedPvpPoint    = -1;
+
+    // 자원별 롤링 애니메이션 코루틴 핸들
+    private Coroutine m_coroutineMineral;
+    private Coroutine m_coroutineTechPoint;
+    private Coroutine m_coroutineModulePoint;
+    private Coroutine m_coroutinePvpPoint;
+
+    private static readonly WaitForSeconds s_wait1Sec    = new(0.5f);
     private static readonly WaitForSeconds s_waitFlicker = new(0.05f);
 
     void Start()
@@ -38,35 +50,39 @@ public class UIResourceBar : MonoBehaviour
         var character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
-        RefreshAll(character);
+        InitAll(character);
+
         EventManager.Subscribe_MineralChanged(OnMineralChanged);
+        EventManager.Subscribe_TechPointChanged(OnTechPointChanged);
+        EventManager.Subscribe_ModulePointChanged(OnModulePointChanged);
+        EventManager.Subscribe_PvpPointChanged(OnPvpPointChanged);
     }
 
     private void OnDestroy()
     {
         EventManager.Unsubscribe_MineralChanged(OnMineralChanged);
+        EventManager.Unsubscribe_TechPointChanged(OnTechPointChanged);
+        EventManager.Unsubscribe_ModulePointChanged(OnModulePointChanged);
+        EventManager.Unsubscribe_PvpPointChanged(OnPvpPointChanged);
     }
 
-    private void RefreshAll(Character character)
+    // 최초 1회 직접 갱신 — 애니메이션 없음
+    private void InitAll(Character character)
     {
         var info = character.GetInfo();
         if (info == null) return;
 
-        if (m_textMineralCurrent != null)
-            m_textMineralCurrent.text = character.GetMineral().ToString();
+        m_displayedMineral     = character.GetMineral();
+        m_displayedTechPoint   = character.GetTechPoint();
+        m_displayedModulePoint = character.GetModulePoint();
+        m_displayedPvpPoint    = character.GetPvpPoint();
 
-        if (m_textTechPointCurrent != null)
-            m_textTechPointCurrent.text = character.GetTechPoint().ToString();
-
-        if (m_textModulePointCurrent != null)
-            m_textModulePointCurrent.text = character.GetModulePoint().ToString();
-        if (m_textModulePointMaxGot != null)
-            m_textModulePointMaxGot.text = $"/ {character.GetModulePointMaxGot()}";
-
-        if (m_textPvpPointCurrent != null)
-            m_textPvpPointCurrent.text = character.GetPvpPoint().ToString();
-        if (m_textPvpPointMaxGot != null)
-            m_textPvpPointMaxGot.text = $"/ {character.GetPvpPointMaxGot()}";
+        if (m_textMineralCurrent != null)     m_textMineralCurrent.text     = m_displayedMineral.ToString();
+        if (m_textTechPointCurrent != null)   m_textTechPointCurrent.text   = m_displayedTechPoint.ToString();
+        if (m_textModulePointCurrent != null) m_textModulePointCurrent.text = m_displayedModulePoint.ToString();
+        if (m_textModulePointMaxGot != null)  m_textModulePointMaxGot.text  = $"/ {character.GetModulePointMaxGot()}";
+        if (m_textPvpPointCurrent != null)    m_textPvpPointCurrent.text    = m_displayedPvpPoint.ToString();
+        if (m_textPvpPointMaxGot != null)     m_textPvpPointMaxGot.text     = $"/ {character.GetPvpPointMaxGot()}";
 
         TryParseExpiry(info.pvpPointExpiry, out m_pvpExpiry);
 
@@ -87,9 +103,91 @@ public class UIResourceBar : MonoBehaviour
 
     public void OnMineralChanged(long mineral)
     {
+        StartFieldAnimation(ref m_coroutineMineral, m_textMineralCurrent, m_displayedMineral, mineral);
+        m_displayedMineral = mineral;
+    }
+
+    private void OnTechPointChanged(int techPoint)
+    {
+        StartFieldAnimation(ref m_coroutineTechPoint, m_textTechPointCurrent, m_displayedTechPoint, techPoint);
+        m_displayedTechPoint = techPoint;
+    }
+
+    private void OnModulePointChanged(int modulePoint)
+    {
+        StartFieldAnimation(ref m_coroutineModulePoint, m_textModulePointCurrent, m_displayedModulePoint, modulePoint);
+        m_displayedModulePoint = modulePoint;
+
         var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-        RefreshAll(character);
+        if (character != null && m_textModulePointMaxGot != null)
+            m_textModulePointMaxGot.text = $"/ {character.GetModulePointMaxGot()}";
+    }
+
+    private void OnPvpPointChanged(int pvpPoint)
+    {
+        StartFieldAnimation(ref m_coroutinePvpPoint, m_textPvpPointCurrent, m_displayedPvpPoint, pvpPoint);
+        m_displayedPvpPoint = pvpPoint;
+
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character != null && m_textPvpPointMaxGot != null)
+            m_textPvpPointMaxGot.text = $"/ {character.GetPvpPointMaxGot()}";
+    }
+
+    private void StartFieldAnimation(ref Coroutine handle, TMP_Text textUI, long from, long to)
+    {
+        if (textUI == null) return;
+        if (handle != null) StopCoroutine(handle);
+        handle = StartCoroutine(AnimateDigits(textUI, from, to));
+    }
+
+    // 변경된 자릿수만 0~9 빠르게 순환, 1초 후 목표값으로 확정
+    private IEnumerator AnimateDigits(TMP_Text textUI, long from, long to, float duration = 1f)
+    {
+        if (from < 0)
+        {
+            textUI.text = to.ToString();
+            yield break;
+        }
+
+        string fromStr = from.ToString();
+        string toStr   = to.ToString();
+
+        int maxLen = Mathf.Max(fromStr.Length, toStr.Length);
+        fromStr = fromStr.PadLeft(maxLen, '0');
+        toStr   = toStr.PadLeft(maxLen, '0');
+
+        bool[] changed    = new bool[maxLen];
+        bool   anyChanged = false;
+        for (int i = 0; i < maxLen; i++)
+        {
+            changed[i] = fromStr[i] != toStr[i];
+            if (changed[i] == true) anyChanged = true;
+        }
+
+        if (anyChanged == false)
+        {
+            textUI.text = to.ToString();
+            yield break;
+        }
+
+        float  elapsed = 0f;
+        char[] buffer  = new char[maxLen];
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            int cycleIndex = Mathf.FloorToInt(Time.time * 20f) % 10;
+
+            for (int i = 0; i < maxLen; i++)
+                buffer[i] = changed[i] ? (char)('0' + cycleIndex) : toStr[i];
+
+            string result = new string(buffer).TrimStart('0');
+            textUI.text = result.Length == 0 ? "0" : result;
+
+            yield return null;
+        }
+
+        textUI.text = to.ToString();
     }
 
     private IEnumerator RunDdayUpdate()

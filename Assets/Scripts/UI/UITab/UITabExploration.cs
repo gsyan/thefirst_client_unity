@@ -536,12 +536,12 @@ public class UITabExploration : UITabBase
 
     private void OnEnemyFleetKilled()
     {
-        Debug.Log("OnEnemyFleetKilled");
         if (m_battleZoneStage == null) return;
 
         var request = new ClearZoneStageRequest
         {
             zoneName = m_battleZoneStage.zoneName,
+            mineralRemain = m_myCharacter != null ? m_myCharacter.GetMineral() : 0,
         };
         NetworkManager.Instance.ClearZoneStage(request, OnClearZoneStageResponse);
     }
@@ -660,11 +660,10 @@ public class UITabExploration : UITabBase
         var character = DataManager.Instance.m_currentCharacter;
         if (character != null && character.m_characterInfo != null)
         {
-            character.m_characterInfo.mineral           = response.data.mineralRemain;
-            character.m_characterInfo.techPoint         = response.data.techPointRemain;
-            character.m_characterInfo.modulePoint       = response.data.modulePointRemain;
-            character.m_characterInfo.modulePointMaxGot = response.data.modulePointMaxGot;
-            EventManager.TriggerMineralChange(response.data.mineralRemain);
+            character.UpdateMineral(response.data.mineralRemain);
+            character.UpdateTechPoint(response.data.techPointRemain);
+            character.UpdateModulePoint(response.data.modulePointRemain);
+            character.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
         }
         m_battleZoneStage = null;
     }

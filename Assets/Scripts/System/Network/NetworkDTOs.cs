@@ -29,6 +29,8 @@ public class FleetInfo
     public string description;
     public bool isActive;
     public EFormationType formation;
+    // bit0=전투수리, bit1=미사일, bit2=항공기. 기본값 7(0b111=전체 ON)
+    public int tacticOptions;
     public List<ShipInfo> ships;
 }
 
@@ -245,6 +247,19 @@ public class ChangeFormationResponse
 }
 
 [System.Serializable]
+public class ChangeTacticOptionsRequest
+{
+    public long fleetId;
+    public int tacticOptions;
+}
+
+[System.Serializable]
+public class ChangeTacticOptionsResponse
+{
+    public FleetInfo updatedFleetInfo;
+}
+
+[System.Serializable]
 public class ModuleLevelUpRequest
 {
     public long shipId;
@@ -409,6 +424,7 @@ public class ProgressListResponse
 public class ClearZoneStageRequest
 {
     public string zoneName;   // 존 이름 (예: "2-5")
+    public int mineralRemain; // 전투 종료 시점 클라 Mineral 잔액
 }
 
 [System.Serializable]

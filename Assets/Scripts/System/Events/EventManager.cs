@@ -48,6 +48,24 @@ public static class EventManager
         OnMineralChanged -= callback;
     }
 
+    // techPoint
+    public static event Action<int> OnTechPointChanged;
+    public static void TriggerTechPointChanged(int techPoint) { OnTechPointChanged?.Invoke(techPoint); }
+    public static void Subscribe_TechPointChanged(Action<int> callback)   { OnTechPointChanged += callback; }
+    public static void Unsubscribe_TechPointChanged(Action<int> callback) { OnTechPointChanged -= callback; }
+
+    // modulePoint
+    public static event Action<int> OnModulePointChanged;
+    public static void TriggerModulePointChanged(int modulePoint) { OnModulePointChanged?.Invoke(modulePoint); }
+    public static void Subscribe_ModulePointChanged(Action<int> callback)   { OnModulePointChanged += callback; }
+    public static void Unsubscribe_ModulePointChanged(Action<int> callback) { OnModulePointChanged -= callback; }
+
+    // pvpPoint
+    public static event Action<int> OnPvpPointChanged;
+    public static void TriggerPvpPointChanged(int pvpPoint) { OnPvpPointChanged?.Invoke(pvpPoint); }
+    public static void Subscribe_PvpPointChanged(Action<int> callback)   { OnPvpPointChanged += callback; }
+    public static void Unsubscribe_PvpPointChanged(Action<int> callback) { OnPvpPointChanged -= callback; }
+
     #endregion Character Tech, Mineral ----------------------------------------------------------------------
     
     # region Fleet ShipCount / HP----------------------------------------------------------------------
@@ -282,6 +300,12 @@ public static class EventManager
     {
         OnGameSpeedChanged -= callback;
     }
+
+    // 전술 옵션 변경 (tacticOptions 비트마스크: 0=수리, 1=미사일, 2=함재기)
+    public static event Action<int> OnTacticOptionsChanged;
+    public static void Trigger_TacticOptionsChanged(int tacticOptions) { OnTacticOptionsChanged?.Invoke(tacticOptions); }
+    public static void Subscribe_TacticOptionsChanged(Action<int> callback)   { OnTacticOptionsChanged += callback; }
+    public static void Unsubscribe_TacticOptionsChanged(Action<int> callback) { OnTacticOptionsChanged -= callback; }
 
     // Module Replaced (oldModule, newModule)
     public static event Action<ModuleBase, ModuleBase> OnModuleReplaced;

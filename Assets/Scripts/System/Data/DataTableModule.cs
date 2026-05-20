@@ -22,6 +22,7 @@ public class ModuleData
 
     // common ---------------------------------------------------------------------------
     public int modulePointCost;
+    public int mineralCost;     // 발동 1회당 소모 Mineral (수리/미사일/격납고)
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -35,9 +36,6 @@ public class ModuleData
     [Header("Body Stats")]
     public float health = 0f;
     public float repair = 0f;
-
-    // Engine ---------------------------------------------------------------------------
-    [Header("Engine Stats")]
     public float speed = 0f;
 
     // Weapon ---------------------------------------------------------------------------
@@ -432,6 +430,7 @@ public class DataTableModule : ScriptableObject
                 airDetectRadius                 = ParseCsvFloat(GetCol(cols, col, "air_detect_radius")),
                 airAvoidRadius                  = ParseCsvFloat(GetCol(cols, col, "air_avoid_radius")),
                 modulePointCost                 = ParseCsvInt(GetCol(cols, col, "cost_mp")),
+                mineralCost                     = ParseCsvInt(GetCol(cols, col, "cost_mineral")),
                 description                     = GetCol(cols, col, "description")
             };
 

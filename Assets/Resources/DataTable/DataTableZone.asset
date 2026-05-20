@@ -91,7 +91,47 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
+    - shipIndex: 2
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.1
+      beamMultiplier: 0.1
+      missileMultiplier: 0.1
+      hangerMultiplier: 0.1
+    - shipIndex: 1
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.1
+      beamMultiplier: 0.1
+      missileMultiplier: 0.1
+      hangerMultiplier: 0.1
+    - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -123,7 +163,7 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -139,10 +179,50 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 0.1474
-      beamMultiplier: 0.1474
-      missileMultiplier: 0.1474
-      hangerMultiplier: 0.1474
+      bodyMultiplier: 0.15
+      beamMultiplier: 0.15
+      missileMultiplier: 0.15
+      hangerMultiplier: 0.15
+    - shipIndex: 1
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.15
+      beamMultiplier: 0.15
+      missileMultiplier: 0.15
+      hangerMultiplier: 0.15
+    - shipIndex: 0
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.15
+      beamMultiplier: 0.15
+      missileMultiplier: 0.15
+      hangerMultiplier: 0.15
     mineralClearReward: 10
     techPointClearReward: 10
     modulePointClearReward: 10
@@ -155,7 +235,7 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -171,10 +251,50 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 0.1947
-      beamMultiplier: 0.1947
-      missileMultiplier: 0.1947
-      hangerMultiplier: 0.1947
+      bodyMultiplier: 0.2
+      beamMultiplier: 0.2
+      missileMultiplier: 0.2
+      hangerMultiplier: 0.2
+    - shipIndex: 1
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.2
+      beamMultiplier: 0.2
+      missileMultiplier: 0.2
+      hangerMultiplier: 0.2
+    - shipIndex: 0
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.2
+      beamMultiplier: 0.2
+      missileMultiplier: 0.2
+      hangerMultiplier: 0.2
     mineralClearReward: 10
     techPointClearReward: 10
     modulePointClearReward: 10
@@ -187,7 +307,7 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -203,10 +323,50 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 0.2421
-      beamMultiplier: 0.2421
-      missileMultiplier: 0.2421
-      hangerMultiplier: 0.2421
+      bodyMultiplier: 0.25
+      beamMultiplier: 0.25
+      missileMultiplier: 0.25
+      hangerMultiplier: 0.25
+    - shipIndex: 1
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.25
+      beamMultiplier: 0.25
+      missileMultiplier: 0.25
+      hangerMultiplier: 0.25
+    - shipIndex: 0
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.25
+      beamMultiplier: 0.25
+      missileMultiplier: 0.25
+      hangerMultiplier: 0.25
     mineralClearReward: 10
     techPointClearReward: 10
     modulePointClearReward: 10
@@ -219,7 +379,7 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
+    - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
       moduleSlots:
@@ -235,10 +395,50 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 0.2895
-      beamMultiplier: 0.2895
-      missileMultiplier: 0.2895
-      hangerMultiplier: 0.2895
+      bodyMultiplier: 0.3
+      beamMultiplier: 0.3
+      missileMultiplier: 0.3
+      hangerMultiplier: 0.3
+    - shipIndex: 1
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.3
+      beamMultiplier: 0.3
+      missileMultiplier: 0.3
+      hangerMultiplier: 0.3
+    - shipIndex: 0
+      bodySubType: 10101
+      bodyLevel: 1
+      moduleSlots:
+      - slotType: 2
+        slotIndex: 0
+        moduleSubType: 20101
+        moduleLevel: 1
+      - slotType: 3
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      - slotType: 4
+        slotIndex: 0
+        moduleSubType: 0
+        moduleLevel: 1
+      bodyMultiplier: 0.3
+      beamMultiplier: 0.3
+      missileMultiplier: 0.3
+      hangerMultiplier: 0.3
     mineralClearReward: 10
     techPointClearReward: 10
     modulePointClearReward: 10
@@ -263,126 +463,6 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
@@ -399,10 +479,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.4
+      beamMultiplier: 0.4
+      missileMultiplier: 0.4
+      hangerMultiplier: 0.4
     - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
@@ -419,10 +499,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.4
+      beamMultiplier: 0.4
+      missileMultiplier: 0.4
+      hangerMultiplier: 0.4
     - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
@@ -439,10 +519,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.4
+      beamMultiplier: 0.4
+      missileMultiplier: 0.4
+      hangerMultiplier: 0.4
     mineralClearReward: 10
     techPointClearReward: 10
     modulePointClearReward: 10
@@ -455,126 +535,6 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
@@ -591,10 +551,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.5
+      beamMultiplier: 0.5
+      missileMultiplier: 0.5
+      hangerMultiplier: 0.5
     - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
@@ -611,10 +571,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.5
+      beamMultiplier: 0.5
+      missileMultiplier: 0.5
+      hangerMultiplier: 0.5
     - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
@@ -631,10 +591,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.5
+      beamMultiplier: 0.5
+      missileMultiplier: 0.5
+      hangerMultiplier: 0.5
     mineralClearReward: 10
     techPointClearReward: 10
     modulePointClearReward: 10
@@ -647,126 +607,6 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
@@ -783,10 +623,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.6
+      beamMultiplier: 0.6
+      missileMultiplier: 0.6
+      hangerMultiplier: 0.6
     - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
@@ -803,10 +643,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.6
+      beamMultiplier: 0.6
+      missileMultiplier: 0.6
+      hangerMultiplier: 0.6
     - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
@@ -823,10 +663,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.6
+      beamMultiplier: 0.6
+      missileMultiplier: 0.6
+      hangerMultiplier: 0.6
     mineralClearReward: 10
     techPointClearReward: 10
     modulePointClearReward: 10
@@ -839,126 +679,6 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
@@ -975,10 +695,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.8
+      beamMultiplier: 0.8
+      missileMultiplier: 0.8
+      hangerMultiplier: 0.8
     - shipIndex: 1
       bodySubType: 10101
       bodyLevel: 1
@@ -995,10 +715,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.8
+      beamMultiplier: 0.8
+      missileMultiplier: 0.8
+      hangerMultiplier: 0.8
     - shipIndex: 0
       bodySubType: 10101
       bodyLevel: 1
@@ -1015,10 +735,10 @@ MonoBehaviour:
         slotIndex: 0
         moduleSubType: 0
         moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
+      bodyMultiplier: 0.8
+      beamMultiplier: 0.8
+      missileMultiplier: 0.8
+      hangerMultiplier: 0.8
     mineralClearReward: 10
     techPointClearReward: 10
     modulePointClearReward: 10
@@ -1031,126 +751,6 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
       bodySubType: 10101
       bodyLevel: 1
@@ -1235,133 +835,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1376,12 +860,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1396,12 +884,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1427,133 +919,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1568,12 +944,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1588,12 +968,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1619,133 +1003,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1760,12 +1028,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1780,12 +1052,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1811,133 +1087,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1952,12 +1112,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -1972,12 +1136,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2003,133 +1171,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2144,12 +1196,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2164,12 +1220,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2207,133 +1267,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2348,12 +1292,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2368,12 +1316,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2399,133 +1351,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2540,12 +1376,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2560,12 +1400,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2591,133 +1435,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2732,12 +1460,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2752,12 +1484,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2783,133 +1519,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2924,12 +1544,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2944,12 +1568,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -2975,133 +1603,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3116,12 +1628,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3136,12 +1652,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10201
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20201
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3179,133 +1699,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3320,12 +1724,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3340,12 +1748,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3371,133 +1783,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3512,12 +1808,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3532,12 +1832,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3563,133 +1867,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3704,12 +1892,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3724,12 +1916,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3755,133 +1951,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3896,12 +1976,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3916,12 +2000,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -3947,133 +2035,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4088,12 +2060,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4108,12 +2084,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4151,133 +2131,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4292,12 +2156,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4312,12 +2180,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4343,133 +2215,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4484,12 +2240,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4504,12 +2264,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4535,133 +2299,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4676,12 +2324,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4696,12 +2348,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4727,133 +2383,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4868,12 +2408,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4888,12 +2432,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -4919,133 +2467,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 3
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5060,12 +2492,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5080,12 +2516,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5123,113 +2563,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5244,12 +2588,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5264,12 +2612,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5284,12 +2636,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5315,113 +2671,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5436,12 +2696,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5456,12 +2720,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5476,12 +2744,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5507,113 +2779,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5628,12 +2804,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5648,12 +2828,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5668,12 +2852,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5699,93 +2887,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 4
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5800,12 +2912,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5820,12 +2936,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5840,12 +2960,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5860,12 +2984,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -5891,113 +3019,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6012,12 +3044,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6032,12 +3068,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6052,12 +3092,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6095,113 +3139,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6216,12 +3164,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6236,12 +3188,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6256,12 +3212,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6287,113 +3247,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6408,12 +3272,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6428,12 +3296,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6448,12 +3320,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6479,113 +3355,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6600,12 +3380,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6620,12 +3404,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6640,12 +3428,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6671,113 +3463,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6792,12 +3488,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6812,12 +3512,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6832,12 +3536,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6863,113 +3571,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -6984,12 +3596,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7004,12 +3620,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7024,12 +3644,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7067,113 +3691,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7188,12 +3716,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7208,12 +3740,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7228,12 +3764,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7259,113 +3799,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7380,12 +3824,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7400,12 +3848,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7420,12 +3872,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7451,113 +3907,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7572,12 +3932,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7592,12 +3956,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7612,12 +3980,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7643,113 +4015,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7764,12 +4040,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7784,12 +4064,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7804,12 +4088,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7835,113 +4123,17 @@ MonoBehaviour:
     delayBeforeSpawn: 1
     shipSpawnInterval: 0.5
     enemyShipConfigs:
-    - shipIndex: 8
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 7
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 6
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 5
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
-    - shipIndex: 4
-      bodySubType: 10101
-      bodyLevel: 1
-      moduleSlots:
-      - slotType: 2
-        slotIndex: 0
-        moduleSubType: 20101
-        moduleLevel: 1
-      - slotType: 3
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      - slotType: 4
-        slotIndex: 0
-        moduleSubType: 0
-        moduleLevel: 1
-      bodyMultiplier: 1
-      beamMultiplier: 1
-      missileMultiplier: 1
-      hangerMultiplier: 1
     - shipIndex: 3
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7956,12 +4148,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 2
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7976,12 +4172,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 1
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0
@@ -7996,12 +4196,16 @@ MonoBehaviour:
       missileMultiplier: 1
       hangerMultiplier: 1
     - shipIndex: 0
-      bodySubType: 10101
+      bodySubType: 10301
       bodyLevel: 1
       moduleSlots:
       - slotType: 2
         slotIndex: 0
-        moduleSubType: 20101
+        moduleSubType: 20301
+        moduleLevel: 1
+      - slotType: 2
+        slotIndex: 1
+        moduleSubType: 0
         moduleLevel: 1
       - slotType: 3
         slotIndex: 0

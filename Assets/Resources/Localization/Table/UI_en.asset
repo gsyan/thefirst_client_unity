@@ -70,22 +70,6 @@ MonoBehaviour:
     m_Localized: Research {0} module?
     m_Metadata:
       m_Items: []
-  - m_Id: 728096982302720
-    m_Localized: Linear Horizontal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 728097020051456
-    m_Localized: Circle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 728097020051457
-    m_Localized: Cross
-    m_Metadata:
-      m_Items: []
-  - m_Id: 728097020051458
-    m_Localized: X
-    m_Metadata:
-      m_Items: []
   - m_Id: 767916345524224
     m_Localized: Engine(Locked)
     m_Metadata:
@@ -422,10 +406,6 @@ MonoBehaviour:
     m_Localized: Change Formation
     m_Metadata:
       m_Items: []
-  - m_Id: 11319763854557184
-    m_Localized: Formation
-    m_Metadata:
-      m_Items: []
   - m_Id: 11674320539353088
     m_Localized: Manage Ship
     m_Metadata:
@@ -499,7 +479,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14264662300164096
-    m_Localized: '{0} must reach max level (Lv.{1} / Lv.{2})'
+    m_Localized: Max level of {0}(Lv.{1} / Lv.{2})
     m_Metadata:
       m_Items: []
   - m_Id: 14282967706632192
@@ -768,6 +748,66 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 35640746719444992
     m_Localized: Clear the previous stage first.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35928926043635712
+    m_Localized: FLEET TACTICS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35928926072995840
+    m_Localized: Balanced
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842788655104
+    m_Localized: Balanced Offense & Defense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842818015232
+    m_Localized: Offensive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842818015233
+    m_Localized: Maximum Firepower Focused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842818015234
+    m_Localized: Defensive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35979842818015235
+    m_Localized: Hull Defense Priority
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082114965504
+    m_Localized: In-Battle Auto Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325632
+    m_Localized: '{0} Mineral / 1 HP healed'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325633
+    m_Localized: In-Battle Missiles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325634
+    m_Localized: avg. {0} Mineral / launch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325635
+    m_Localized: In-Battle Aircraft
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36001082144325636
+    m_Localized: avg. {0} Mineral / sortie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36387413043314688
+    m_Localized: Locked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36387413089452032
+    m_Localized: Requires 3 or more ships in fleet
     m_Metadata:
       m_Items: []
   references:

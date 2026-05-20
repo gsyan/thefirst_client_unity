@@ -22,7 +22,7 @@ public class TestScene : MonoBehaviour
 
     [Header("Fleet")]
     [SerializeField] TestSceneShipInfo[] m_shipInfos;
-    [SerializeField] private EFormationType m_spawnFormation = EFormationType.formation_type_linear_horizontal;
+    [SerializeField] private EFormationType m_spawnFormation = EFormationType.linear_horizontal;
 
     [Header("Effect")]
     [SerializeField] private GameObject[] m_explosionPrefabs; // 1~9,0키 순서

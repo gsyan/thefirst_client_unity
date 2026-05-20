@@ -9,7 +9,6 @@ fleet_status,,Fleet Status,함대 정보
 fleet_ship_count,,Ships,함선 수
 fleet_add_ship_button,,Add\nShip,함선\n추가
 fleet_add_ship_name,,Add Ship,함선 추가
-fleet_formation,,Formation,함대 진영
 fleet_formation_change,,Change Formation,진형 변경
 fleet_btn_ship_manage,,Manage Ship,함선 관리
 fleet_btn_ship_repair,,Focus Repair,집중 수리
@@ -76,10 +75,6 @@ air_health,,HP(Air),체력(함)
 air_speed,,Spd(Air),이동(함)
 air_count,,Aircrafts,함재기수
 air_launch_count,,Launch,발진수
-formation_type_linear_horizontal,,Linear Horizontal,일자횡진
-formation_type_circle,,Circle,원형진
-formation_type_cross,,Cross,십자진
-formation_type_x,,X,학익진
 module_type_engine_placeholder,,Engine(Locked),엔진(잠김)
 module_type_beam_placeholder,,Beam(Locked),빔(잠김)
 module_type_missile_placeholder,,Missile(Locked),미사일(잠김)
@@ -100,7 +95,7 @@ popup_message_module_upgrade,,Upgrade {0}\nLv.{1} → Lv.{2}?,{0} 모듈을 업�
 popup_message_module_research,,Research {0} module?,{0} 모듈을 연구할까요?
 popup_message_google_link,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
 popup_message_google_unlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
-module_subtype_max_level_required,,{0} must reach max level (Lv.{1} / Lv.{2}),{0} 최고 레벨 도달 필요 (Lv.{1} / Lv.{2})
+module_subtype_max_level_required,,Max level of {0}(Lv.{1} / Lv.{2}),{0} 최고 레벨 (Lv.{1} / Lv.{2})
 cost_text,,Cost,비용
 details_text,,Details,세부정보
 ship_module_select_body,,B,체
@@ -150,6 +145,21 @@ UITabTech_NextUnlockTitle,,Next Unlock - Lv.{0},다음 해금 - Lv.{0}
 UITabTech_NextUnlockShipCount,,{0} Ship Slots,함선 슬롯 {0}척
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
+UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
+UITabFleetTactics_FormationType_LinearHorizontal,,Balanced,균형
+UITabFleetTactics_FormationType_LinearHorizontal_description,,Balanced Offense & Defense,공방 균형 유지
+UITabFleetTactics_FormationType_XOffensive,,Offensive,공격우선
+UITabFleetTactics_FormationType_XOffensive_description,,Maximum Firepower Focused,최대 화력 집중
+UITabFleetTactics_FormationType_XDefensive,,Defensive,방어우선
+UITabFleetTactics_FormationType_XDefensive_description,,Hull Defense Priority,함채 방어 우선
+UITabFleetTactics_UseBattleRepair,,In-Battle Auto Repair,전투중 자동 수리
+UITabFleetTactics_UseBattleRepair_description,,{0} Mineral / 1 HP healed,광물 {0} / 회복 HP
+UITabFleetTactics_UseMissile,,In-Battle Missiles,전투중 미사일 사용
+UITabFleetTactics_UseMissile_description,,avg. {0} Mineral / launch,평균 광물 {0} / 발사
+UITabFleetTactics_UseAircraft,,In-Battle Aircraft,전투중 함재기 사용
+UITabFleetTactics_UseAircraft_description,,avg. {0} Mineral / sortie,평균 광물 {0} / 출격
+UITabFleetTactics_LockedTitle,,Locked,잠금
+UITabFleetTactics_LockedMessage,,Requires 3 or more ships in fleet,함선 3대 이상이 필요합니다
 UnlockButtonText,,UNLOCK,잠금해제
 LevelupButtonText,,LEVEL UP,레벨 업
 UpgradeButtonText,,UPGRADE,업그레이드

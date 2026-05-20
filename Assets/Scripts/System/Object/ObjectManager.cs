@@ -424,7 +424,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         }
 
         SpaceFleet fleet = fleetObj.AddComponent<SpaceFleet>();
-        fleet.InitializeAsZoneEnemyFleetShell("EnemyFleet", EFormationType.formation_type_linear_horizontal);
+        fleet.InitializeAsZoneEnemyFleetShell("EnemyFleet", EFormationType.linear_horizontal);
         return fleet;
     }
 

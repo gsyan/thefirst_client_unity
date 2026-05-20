@@ -180,11 +180,13 @@ public class DataTableModuleEditor : Editor
         
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
-        
+        EditorGUILayout.LabelField("Using Cost", EditorStyles.boldLabel);
+        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
+
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
     #endregion
-    
+
     #region Beam Modules
     private void DrawBeamModuleSection()
     {
@@ -369,6 +371,8 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
+        EditorGUILayout.LabelField("Using Cost", EditorStyles.boldLabel);
+        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
 
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -480,6 +484,8 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
+        EditorGUILayout.LabelField("Using Cost", EditorStyles.boldLabel);
+        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
 
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
@@ -535,7 +541,7 @@ public class DataTableModuleEditor : Editor
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("sub_type,level,health,repair,speed,attack,attack_count,attack_cool,projectile_speed,air_count,air_maintenance_time,air_launch_dist,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,cost_m,cost_mr,cost_me,cost_md,description");
+        sb.AppendLine("sub_type,level,health,repair,speed,attack,attack_count,attack_cool,projectile_speed,air_count,air_maintenance_time,air_launch_dist,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,cost_mp,cost_mineral,description");
 
         var allGroups = new List<ModuleSubTypeGroup>();
         allGroups.AddRange(dataTableModule.BodyGroups);
@@ -549,7 +555,7 @@ public class DataTableModuleEditor : Editor
             foreach (var d in group.modules)
             {
                 sb.AppendLine(string.Format(ic,
-                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21}",
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22}",
                     (int)d.moduleSubType, d.moduleLevel,
                     d.health, d.repair, d.speed,
                     d.attack, d.attackFireCount, d.attackCool,
@@ -558,7 +564,7 @@ public class DataTableModuleEditor : Editor
                     d.airHealth, d.airAttack, d.airAttackRange,
                     d.airAttackCool, d.airSpeed, d.airAmmo,
                     d.airDetectRadius, d.airAvoidRadius,
-                    d.modulePointCost,
+                    d.modulePointCost, d.mineralCost,
                     d.description));
             }
         }

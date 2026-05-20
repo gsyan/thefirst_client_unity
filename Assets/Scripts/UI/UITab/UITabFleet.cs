@@ -36,7 +36,7 @@ public class UITabFleet : UITabBase
             m_shipSelectors = m_shipSelectorsObj.GetComponentsInChildren<ShipSelector>(true);
         if (m_myFleet == null) return;
 
-        m_fleetManageButton.onClick.AddListener(OnFormationChangeClicked);
+        m_fleetManageButton.onClick.AddListener(OnFleetTacticsButtonClicked);
 
         if (m_addShipButton != null) m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
         if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
@@ -142,16 +142,10 @@ public class UITabFleet : UITabBase
 
     // ── Formation ──────────────────────────────────────────────────────
 
-    private void OnFormationChangeClicked()
+    private void OnFleetTacticsButtonClicked()
     {
-        if (m_myFleet == null) return;
-        UIManager.Instance.ShowFormationPopup(m_myFleet.m_currentFormationType, OnFormationSelected);
-    }
-
-    private void OnFormationSelected(EFormationType formationType)
-    {
-        if (m_myFleet == null) return;
-        m_myFleet.ChangeFormation(formationType);
+        if (m_tabSystemParent == null) return;
+        m_tabSystemParent.SwitchToTabByName("tab_fleettactics");
     }
 
     // ── ShipSelector 그리드 ────────────────────────────────────────────

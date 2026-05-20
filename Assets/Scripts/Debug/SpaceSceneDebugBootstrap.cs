@@ -67,7 +67,7 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
         {
             id        = 1,
             fleetName = "Debug Fleet",
-            formation = EFormationType.formation_type_linear_horizontal,
+            formation = EFormationType.linear_horizontal,
             ships     = new List<ShipInfo> { ship },
         };
 

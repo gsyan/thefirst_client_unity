@@ -8,8 +8,8 @@ public class ButtonGroupItem
 {
     public Button button;
     public Graphic[] childGraphics; // 자식 Image, TMP_Text 등 색상 연동 대상
-    public Color activeColor = Color.white;
-    public Color inactiveColor = Color.gray;
+    [System.NonSerialized] public Color activeColor = Color.white;
+    [System.NonSerialized] public Color inactiveColor = Color.gray;
     [System.NonSerialized] public System.Action onSelected;
     [System.NonSerialized] public System.Action onDeselected;
 }
@@ -21,19 +21,6 @@ public class ButtonGroupSystem : MonoBehaviour
     public int defaultIndex = 0;
     // true면 현재 선택된 버튼 재클릭 시 해제 (-1 상태)
     public bool allowDeselect = false;
-
-    // 인스펙터에서 + 버튼으로 추가 시 색상 기본값 자동 적용
-    private void OnValidate()
-    {
-        for (int i = 0; i < items.Count; i++)
-        {
-            var item = items[i];
-            if (item.activeColor.a == 0f && item.activeColor.r == 0f && item.activeColor.g == 0f && item.activeColor.b == 0f)
-                item.activeColor = new Color(1f, 0.8f, 0.2f, 1f);
-            if (item.inactiveColor.a == 0f && item.inactiveColor.r == 0f && item.inactiveColor.g == 0f && item.inactiveColor.b == 0f)
-                item.inactiveColor = new Color(0.8f, 0.8f, 0.8f, 1f);
-        }
-    }
 
     private int currentIndex = -1;
     private bool initialized = false;
@@ -47,8 +34,14 @@ public class ButtonGroupSystem : MonoBehaviour
     {
         if (initialized) return;
 
+        Color colorActive   = CommonUtility.PaletteColor("GeneralBright1");
+        Color colorInactive = CommonUtility.PaletteColor("GeneralDark1");
+
         for (int i = 0; i < items.Count; i++)
         {
+            items[i].activeColor   = colorActive;
+            items[i].inactiveColor = colorInactive;
+
             if (items[i].button != null)
             {
                 int idx = i;

@@ -14,6 +14,7 @@ public class ModuleBase : MonoBehaviour
     [HideInInspector] public float m_attack;
 
     [HideInInspector] public long m_modulePointCostLevelup;
+    [HideInInspector] public int m_mineralCost;
 
     // 이 슬롯에서 subTypeAddCost 납부 이력 (비용 없이 교체 가능한 서브타입 목록)
     [HideInInspector] public List<EModuleSubType> m_unlockedSubTypes = new List<EModuleSubType>();
@@ -169,6 +170,22 @@ public class ModuleBase : MonoBehaviour
     public virtual CapabilityProfile GetModuleCapabilityProfile(bool bByInfo = true)
     {
         return new CapabilityProfile();
+    }
+
+    // tacticBit: 0=수리, 1=미사일, 2=격납고
+    // Player 함대가 아니면 항상 true(에너미는 차감 불필요), mineralCost 0이면 true
+    protected bool TryConsumeMineral(int tacticBit)
+    {
+        if (m_myFleet != null && m_myFleet.m_fleetInfo != null &&
+            (m_myFleet.m_fleetInfo.tacticOptions & (1 << tacticBit)) == 0)
+            return false;
+
+        if (m_mineralCost <= 0) return true;
+        if (m_myFleet == null || m_myFleet.m_fleetSource != EFleetSource.fleet_source_player) return true;
+
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return false;
+        return character.TryConsumeMineral(m_mineralCost);
     }
 
     // 코루틴 재시작 (Body 교체 등으로 모듈이 재활성화될 때 호출)

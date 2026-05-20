@@ -544,16 +544,10 @@ MonoBehaviour:
   items:
   - button: {fileID: 2834465330063948986}
     childGraphics: []
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
   - button: {fileID: 6286616633195763111}
     childGraphics: []
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
   - button: {fileID: 4295239486024421270}
     childGraphics: []
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
   defaultIndex: 0
   allowDeselect: 0
 --- !u!1 &5472748332012422750
@@ -592,7 +586,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 28.635, y: -36}
-  m_SizeDelta: {x: 0, y: 72}
+  m_SizeDelta: {x: 57.27, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6473840675326757401
 CanvasRenderer:

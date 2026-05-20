@@ -676,6 +676,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ChangeFormationAsync(request), onComplete));
     }
 
+    public void ChangeTacticOptions(ChangeTacticOptionsRequest request, System.Action<ApiResponse<ChangeTacticOptionsResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ChangeTacticOptionsAsync(request), onComplete));
+    }
+
     public void UnlockModule(ModuleUnlockRequest request, System.Action<ApiResponse<ModuleUnlockResponse>> onComplete)
     {
         if (m_bConnected == false) return;

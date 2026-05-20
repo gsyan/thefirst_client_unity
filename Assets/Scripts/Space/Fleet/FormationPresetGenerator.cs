@@ -20,8 +20,8 @@ public static class FormationPresetGenerator
 
         // 정의된 타입은 명시 생성, 나머지 enum 값은 Linear와 동일한 기본값으로 생성
         CreateLinear(ref created, ref skipped);
-        CreateCross(ref created, ref skipped);
-        CreateX(ref created, ref skipped);
+        CreateXDefensive(ref created, ref skipped);
+        CreateXOffensive(ref created, ref skipped);
         CreateCircle(ref created, ref skipped);
 
         // EFormationType 중 위에서 처리되지 않은 값 → Linear 슬롯으로 기본 생성
@@ -70,27 +70,27 @@ public static class FormationPresetGenerator
     static void CreateLinear(ref int created, ref int skipped)
     {
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
-        preset.formationType = EFormationType.formation_type_linear_horizontal;
+        preset.formationType = EFormationType.linear_horizontal;
         preset.parseType     = EFormationParseType.CubeGrid;
         preset.gridGap = new Vector3(0.1f, 1f, 1f);
         preset.zPlacement = EZPlacement.Center;
         preset.zIncludeHalfSize = true;
         preset.slots         = LinearSlots();
-        Save(preset, EFormationType.formation_type_linear_horizontal, ref created, ref skipped);
+        Save(preset, EFormationType.linear_horizontal, ref created, ref skipped);
     }
 
     // ────────────────────────────────────────────────────────────
-    // Cross: 대각 쌍 배치 (전방 우/좌 → 후방 우/좌 순으로 링 확장)
+    // 대각 쌍 배치 (전방 우/좌 → 후방 우/좌 순으로 링 확장)
     //   6       5
     //     2   1
     //       0
     //     4   3
     //   8       7
     // ────────────────────────────────────────────────────────────
-    static void CreateCross(ref int created, ref int skipped)
+    static void CreateXDefensive(ref int created, ref int skipped)
     {
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
-        preset.formationType = EFormationType.formation_type_cross;
+        preset.formationType = EFormationType.x_defensive;
         preset.parseType = EFormationParseType.CubeGrid;
         preset.gridGap = new Vector3(0f, 0f, 0f);
         preset.zPlacement = EZPlacement.Backward;
@@ -107,7 +107,7 @@ public static class FormationPresetGenerator
             new FormationSlot { positionIndex = 7, gridCoord = new Vector3Int(+2, -2, 2) },
             new FormationSlot { positionIndex = 8, gridCoord = new Vector3Int(-2, -2, 2) },
         };
-        Save(preset, EFormationType.formation_type_cross, ref created, ref skipped);
+        Save(preset, EFormationType.x_defensive, ref created, ref skipped);
     }
 
     // ────────────────────────────────────────────────────────────
@@ -116,10 +116,10 @@ public static class FormationPresetGenerator
     //      FormationPreview의 m_gridUnitSize를 진형별로 조절하거나
     //      추후 per-axis 스케일 필드 추가
     // ────────────────────────────────────────────────────────────
-    static void CreateX(ref int created, ref int skipped)
+    static void CreateXOffensive(ref int created, ref int skipped)
     {
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
-        preset.formationType = EFormationType.formation_type_x;
+        preset.formationType = EFormationType.x_offensive;
         preset.parseType = EFormationParseType.CubeGrid;
         preset.gridGap = new Vector3(0f, 0f, 0f);
         preset.zPlacement = EZPlacement.Forward;
@@ -136,7 +136,7 @@ public static class FormationPresetGenerator
             new FormationSlot { positionIndex = 7, gridCoord = new Vector3Int(+2, -2, 2) },
             new FormationSlot { positionIndex = 8, gridCoord = new Vector3Int(-2, -2, 2) },
         };
-        Save(preset, EFormationType.formation_type_x, ref created, ref skipped);
+        Save(preset, EFormationType.x_offensive, ref created, ref skipped);
     }
 
     // ────────────────────────────────────────────────────────────
@@ -147,7 +147,7 @@ public static class FormationPresetGenerator
     static void CreateCircle(ref int created, ref int skipped)
     {
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
-        preset.formationType    = EFormationType.formation_type_circle;
+        preset.formationType    = EFormationType.circle;
         preset.parseType        = EFormationParseType.Circle;
         preset.gridGap          = new Vector3(1f, 1f, 0f);
         preset.zPlacement       = EZPlacement.Forward;
@@ -164,7 +164,7 @@ public static class FormationPresetGenerator
             new FormationSlot { positionIndex = 7, circleAngle = 135f },
             new FormationSlot { positionIndex = 8, circleAngle = 225f },
         };
-        Save(preset, EFormationType.formation_type_circle, ref created, ref skipped);
+        Save(preset, EFormationType.circle, ref created, ref skipped);
     }
 
     static void Save(FormationPreset preset, EFormationType type, ref int created, ref int skipped)
