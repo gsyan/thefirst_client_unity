@@ -42,6 +42,7 @@ public class ModuleData
     [Header("Weapon Stats")]
     public int attackFireCount = 0;     // 발사당 빔, 미사일, 함재기 수
     public float attack = 0f;
+    public float splashRadius = 0f;     // 0 = 단일 타겟, >0 = 범위 공격 반경
     public float attackCool = 0f;       // 발사 쿨다운 빔, 미사일, 함재기
     [Header("Weapon Projectile Stats")]
     public float projectileSpeed = 0f;
@@ -415,6 +416,7 @@ public class DataTableModule : ScriptableObject
                 repair                          = ParseCsvFloat(GetCol(cols, col, "repair")),
                 speed                           = ParseCsvFloat(GetCol(cols, col, "speed")),
                 attack                          = ParseCsvFloat(GetCol(cols, col, "attack")),
+                splashRadius                    = ParseCsvFloat(GetCol(cols, col, "splash_radius")),
                 attackFireCount                 = ParseCsvInt  (GetCol(cols, col, "attack_count")),
                 attackCool                      = ParseCsvFloat(GetCol(cols, col, "attack_cool")),
                 projectileSpeed                 = ParseCsvFloat(GetCol(cols, col, "projectile_speed")),

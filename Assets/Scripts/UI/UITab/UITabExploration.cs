@@ -3,11 +3,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
 public class UITabExploration : UITabBase
 {
-    [SerializeField] private Button m_retreatButton;
     [SerializeField] private DataTableZone m_datatableZone;
 
     [Header("존 스테이지 버튼 (World Space)")]
@@ -44,8 +41,7 @@ public class UITabExploration : UITabBase
         if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
-        m_retreatButton.onClick.AddListener(RetreatToPreviousStage);
-
+        EventManager.Subscribe_RetreatRequested(RetreatToPreviousStage);
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
 
         SetupZoneTabButtons();
@@ -180,22 +176,20 @@ public class UITabExploration : UITabBase
         foreach (var kv in m_zoneStageButtons)
             kv.Value.UpdateScreenPosition();
 
+        // 함대 마커 버튼 갱신 (선택과 분리)
         if (m_currentZoneStage != null && ParseZoneGroup(m_currentZoneStage.zoneName) == groupIndex)
         {
             if (m_zoneStageButtons.TryGetValue(m_currentZoneStage.zoneName, out UIZoneStageButton curBtn))
                 m_currentZoneStageButton = curBtn;
-            m_selectedZoneStagePerGroup[groupIndex] = m_currentZoneStage;
-            ApplyZoneStageSelection(m_currentZoneStage);
         }
-        else
-        {
-            ZoneStageConfig toSelect = m_selectedZoneStagePerGroup.TryGetValue(groupIndex, out ZoneStageConfig saved)
+
+        // 선택 스테이지 결정: 명시적으로 저장된 값 우선, 없으면 클리어+1(최저 미클리어) 기본값
+        ZoneStageConfig toSelect = m_selectedZoneStagePerGroup.TryGetValue(groupIndex, out ZoneStageConfig saved)
             ? saved
             : GetDefaultZoneStageForZone(groupIndex);
 
-            if (toSelect != null)
-                ApplyZoneStageSelection(toSelect);    
-        }
+        if (toSelect != null)
+            ApplyZoneStageSelection(toSelect);
 
         RefreshMyFleetMarker();
     }
@@ -292,7 +286,6 @@ public class UITabExploration : UITabBase
     private void SetFleetState(EUnitState unitState)
     {
         m_myFleet.SetFleetState(unitState);
-        if (m_retreatButton != null) m_retreatButton.gameObject.SetActive(unitState == EUnitState.Battle);
     }
 
     private void OnMyFleetWiped()
@@ -302,6 +295,7 @@ public class UITabExploration : UITabBase
 
     private void OnDestroy()
     {
+        EventManager.Unsubscribe_RetreatRequested(RetreatToPreviousStage);
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
     }
 
@@ -713,6 +707,21 @@ public class UITabExploration : UITabBase
     }
 
     private void RetreatToPreviousStage()
+    {
+        if (m_isFleetWiped == false)
+        {
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                title   = LocalizationManager.Instance.Get("UITabExploration_RetreatTitle"),
+                message = LocalizationManager.Instance.Get("UITabExploration_RetreatConfirm"),
+                onConfirm = DoRetreatSequence
+            });
+            return;
+        }
+        DoRetreatSequence();
+    }
+
+    private void DoRetreatSequence()
     {
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
         ObjectManager.Instance.StopEnemySpawning();

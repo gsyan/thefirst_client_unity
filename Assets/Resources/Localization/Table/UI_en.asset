@@ -810,6 +810,14 @@ MonoBehaviour:
     m_Localized: Requires 3 or more ships in fleet
     m_Metadata:
       m_Items: []
+  - m_Id: 37053841358585856
+    m_Localized: Retreat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37053841400528896
+    m_Localized: Retreat to the previous zone?
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -137,53 +137,25 @@ public class UIResourceBar : MonoBehaviour
     {
         if (textUI == null) return;
         if (handle != null) StopCoroutine(handle);
-        handle = StartCoroutine(AnimateDigits(textUI, from, to));
+        handle = StartCoroutine(AnimateCounter(textUI, from, to));
     }
 
-    // 변경된 자릿수만 0~9 빠르게 순환, 1초 후 목표값으로 확정
-    private IEnumerator AnimateDigits(TMP_Text textUI, long from, long to, float duration = 1f)
+    // from → to 를 1초 안에 카운팅 (증가/감소 모두 적용)
+    private IEnumerator AnimateCounter(TMP_Text textUI, long from, long to, float duration = 0.5f)
     {
-        if (from < 0)
+        if (from < 0 || from == to)
         {
             textUI.text = to.ToString();
             yield break;
         }
 
-        string fromStr = from.ToString();
-        string toStr   = to.ToString();
-
-        int maxLen = Mathf.Max(fromStr.Length, toStr.Length);
-        fromStr = fromStr.PadLeft(maxLen, '0');
-        toStr   = toStr.PadLeft(maxLen, '0');
-
-        bool[] changed    = new bool[maxLen];
-        bool   anyChanged = false;
-        for (int i = 0; i < maxLen; i++)
-        {
-            changed[i] = fromStr[i] != toStr[i];
-            if (changed[i] == true) anyChanged = true;
-        }
-
-        if (anyChanged == false)
-        {
-            textUI.text = to.ToString();
-            yield break;
-        }
-
-        float  elapsed = 0f;
-        char[] buffer  = new char[maxLen];
-
+        float elapsed = 0f;
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            int cycleIndex = Mathf.FloorToInt(Time.time * 20f) % 10;
-
-            for (int i = 0; i < maxLen; i++)
-                buffer[i] = changed[i] ? (char)('0' + cycleIndex) : toStr[i];
-
-            string result = new string(buffer).TrimStart('0');
-            textUI.text = result.Length == 0 ? "0" : result;
-
+            float t       = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+            long  current = from + (long)((to - from) * t);
+            textUI.text = current.ToString();
             yield return null;
         }
 

@@ -5,7 +5,7 @@ using TMPro;
 
 public class UIPanelCameraView : UIPanelBase
 {
-    public Button m_cameraViewCycleButton;
+    [SerializeField] private Button m_retreatButton;
     [SerializeField] private ButtonGroupSystem buttonGroup;
 
     [Header("Game Speed")]
@@ -14,6 +14,10 @@ public class UIPanelCameraView : UIPanelBase
 
     [Header("존 진행 정보")]
     [SerializeField] private TextMeshProUGUI m_zoneNameText;
+
+    [Header("함대 전술 토글")]
+    [SerializeField] private Transform m_tacticsButtonContainer;
+    private UIButtonHasChildren[] m_tacticsButtons;
 
     private RectTransform m_rectTransform;
     private float m_lastViewportRatio = 0f; // 패널 비활성 중 놓친 이벤트 대비
@@ -31,13 +35,13 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Subscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Subscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Subscribe_ExplorationTabClosed(OnExplorationTabClosed);
+        EventManager.Subscribe_TacticOptionsChanged(OnTacticOptionsChanged);
+
+        SetupTacticsButtons();
     }
 
     void Start()
     {
-        if (m_cameraViewCycleButton != null)
-            m_cameraViewCycleButton.onClick.AddListener(() => OnCameraViewCycleClicked());
-
         // 버튼 클릭 시 카메라 포커스 변경
         if (buttonGroup != null)
         {
@@ -51,6 +55,9 @@ public class UIPanelCameraView : UIPanelBase
 
         // buttonGroup 초기화 완료 후 구독 (Select 호출 안전 보장)
         EventManager.Subscribe_CameraFocusTargetChanged(OnCameraFocusTargetChanged);
+
+        if (m_retreatButton != null)
+            m_retreatButton.onClick.AddListener(EventManager.TriggerRetreatRequested);
 
         if (m_speedButton != null)
             m_speedButton.onClick.AddListener(OnSpeedButtonClicked);
@@ -67,6 +74,30 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Unsubscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Unsubscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Unsubscribe_ExplorationTabClosed(OnExplorationTabClosed);
+        EventManager.Unsubscribe_TacticOptionsChanged(OnTacticOptionsChanged);
+    }
+
+    private void SetupTacticsButtons()
+    {
+        if (m_tacticsButtonContainer == null) return;
+
+        m_tacticsButtons = m_tacticsButtonContainer.GetComponentsInChildren<UIButtonHasChildren>();
+        for (int i = 0; i < m_tacticsButtons.Length; i++)
+        {
+            int idx = i;
+            m_tacticsButtons[idx].GetButton().onClick.AddListener(() => EventManager.Trigger_TacticToggleRequested(idx));
+        }
+    }
+
+    private void OnTacticOptionsChanged(int options)
+    {
+        if (m_tacticsButtons == null) return;
+
+        Color colorOn  = CommonUtility.PaletteColor("GeneralBright1");
+        Color colorOff = CommonUtility.PaletteColor("GeneralDark1");
+
+        for (int i = 0; i < m_tacticsButtons.Length; i++)
+            m_tacticsButtons[i].SetColor((options & (1 << i)) != 0 ? colorOn : colorOff);
     }
 
     private void OnFleetStateChanged(EUnitState state)
@@ -100,11 +131,6 @@ public class UIPanelCameraView : UIPanelBase
             UIManager.Instance.HidePanel(panelName);
     }
 
-    private void OnCameraViewCycleClicked()
-    {
-        CameraController.Instance.CycleCameraFocusTarget();
-    }
-
     private void OnCameraFocusTargetChanged(ECameraFocusTarget target)
     {
         buttonGroup.Select((int)target);
@@ -131,6 +157,11 @@ public class UIPanelCameraView : UIPanelBase
     {
         // 패널이 뜰 때 현재 viewport 비율로 즉시 위치 동기화 (비활성 중 놓친 이벤트 보정)
         OnViewportChanged(m_lastViewportRatio);
+
+        // 이벤트를 놓쳤을 수 있으므로 현재 전술 옵션 상태로 즉시 동기화
+        var fleet = DataManager.Instance.m_currentCharacter?.GetOwnedFleet();
+        if (fleet != null)
+            OnTacticOptionsChanged(fleet.m_fleetInfo.tacticOptions);
     }
 
     private void OnZoneEntered(string zoneName, bool isFirstClear)

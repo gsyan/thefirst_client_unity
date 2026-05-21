@@ -1,6 +1,8 @@
 // 미사일 발사체 - Rigidbody 물리 기반, 콜드런치(Eject→Steering→Homing) 3단계, 관성 있는 유도 비행
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 [RequireComponent(typeof(Rigidbody))]
 public class ProjectileMissile : ProjectileBase
@@ -29,6 +31,7 @@ public class ProjectileMissile : ProjectileBase
     private Vector3 m_prevPosition;
     private EFlightPhase m_phase;
     private Vector3 m_prevLocalDir;
+    private float m_splashRadius;
 
     [Header("Trail Particles")]
     [SerializeField] private GameObject m_burstTail;
@@ -49,6 +52,7 @@ public class ProjectileMissile : ProjectileBase
     {
         base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection, ejectSpeed, projectileWidth);
         m_missileSpeed = moduleData.projectileSpeed;
+        m_splashRadius = moduleData.splashRadius;
         m_ejectSpeed = ejectSpeed;
         m_lifeTime = 0.0f;
         m_prevPosition = transform.position;
@@ -97,8 +101,60 @@ public class ProjectileMissile : ProjectileBase
         }
         if (m_target != null)
             m_saveTargetPosition = m_target.transform.position;
+        else
+            m_target = FindNewTarget();
         return true;
     }
+
+    private ModuleBase FindNewTarget()
+    {
+        if (m_sourceShip == null) return null;
+
+        bool isEnemySource = m_sourceShip.m_myFleet != null && m_sourceShip.m_myFleet.IsEnemy;
+        Vector3 myPos = transform.position;
+        ModuleBase nearest = null;
+        float nearestSqrDist = float.MaxValue;
+
+        if (isEnemySource)
+        {
+            SpaceFleet playerFleet = ObjectManager.Instance.m_myFleet;
+            if (playerFleet == null || playerFleet.IsFleetAlive() == false) return null;
+            SearchFleetForNearestBody(playerFleet, myPos, ref nearest, ref nearestSqrDist);
+        }
+        else
+        {
+            List<SpaceFleet> enemyFleets = ObjectManager.Instance.m_enemyFleets;
+            for (int i = 0; i < enemyFleets.Count; i++)
+            {
+                SpaceFleet fleet = enemyFleets[i];
+                if (fleet == null || fleet.IsFleetAlive() == false) continue;
+                SearchFleetForNearestBody(fleet, myPos, ref nearest, ref nearestSqrDist);
+            }
+        }
+        return nearest;
+    }
+
+    private void SearchFleetForNearestBody(SpaceFleet fleet, Vector3 myPos, ref ModuleBase nearest, ref float nearestSqrDist)
+    {
+        for (int i = 0; i < fleet.m_ships.Count; i++)
+        {
+            SpaceShip ship = fleet.m_ships[i];
+            if (ship == null || ship.IsAlive() == false) continue;
+            for (int j = 0; j < ship.m_moduleBodys.Count; j++)
+            {
+                ModuleBody body = ship.m_moduleBodys[j];
+                if (body == null || body.m_health <= 0) continue;
+                float sqrDist = (body.transform.position - myPos).sqrMagnitude;
+                if (sqrDist < nearestSqrDist)
+                {
+                    nearestSqrDist = sqrDist;
+                    nearest = body;
+                }
+            }
+        }
+    }
+
+    private static readonly Collider[] s_overlapResults = new Collider[32];
 
     private bool CheckCollision()
     {
@@ -111,13 +167,36 @@ public class ProjectileMissile : ProjectileBase
             SpaceShip hitShip = hit.collider.GetComponentInParent<SpaceShip>();
             if (hitShip != null && (m_sourceShip == null || hitShip.m_myFleet != m_sourceShip.m_myFleet))
             {
-                hitShip.TakeDamage(m_damage);
+                if (m_splashRadius > 0f)
+                    ApplySplashDamage(hit.point, hitShip);
+                else
+                    hitShip.TakeDamage(m_damage);
+
                 ReturnToPool(hitPosition: hit.point);
                 return true;
             }
         }
         m_prevPosition = transform.position;
         return false;
+    }
+
+    // 직격 대상 100%, 범위 내 나머지는 거리 비례 선형 감쇄(100%~50%)
+    private void ApplySplashDamage(Vector3 center, SpaceShip directHitShip)
+    {
+        directHitShip.TakeDamage(m_damage);
+
+        int count = Physics.OverlapSphereNonAlloc(center, m_splashRadius, s_overlapResults, s_raycastMask);
+        for (int i = 0; i < count; i++)
+        {
+            SpaceShip ship = s_overlapResults[i].GetComponentInParent<SpaceShip>();
+            if (ship == null) continue;
+            if (ship == directHitShip) continue;
+            if (m_sourceShip != null && ship.m_myFleet == m_sourceShip.m_myFleet) continue;
+
+            float dist = Vector3.Distance(center, s_overlapResults[i].transform.position);
+            float ratio = 1.0f - 0.5f * (dist / m_splashRadius);
+            ship.TakeDamage(m_damage * ratio);
+        }
     }
 
     // 발사 방향 고정 이동 → initialFlightDuration 경과 즉시 Steering 전환
@@ -220,6 +299,9 @@ public class ProjectileMissile : ProjectileBase
             Vector3 effectPos = hitPosition == default ? transform.position : hitPosition;
             EffectBase effect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_EXPLOSION_MISSILE_SMALL);
             effect.transform.position = effectPos;
+            effect.transform.localScale = m_splashRadius > 0f
+                ? Vector3.one * (1f + m_splashRadius * 0.1f)
+                : Vector3.one;
             effect.PlayEffect();
         }
 

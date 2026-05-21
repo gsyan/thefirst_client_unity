@@ -103,7 +103,6 @@ public class TabSystem : MonoBehaviour
             if (tabBase == null) continue;
             tabBase.m_tabSystemParent = this;
             tabBase.InitializeUITab();
-            tabBase.InitializeCloseButton();
             tab.onActivate = tabBase.OnTabActivated;
             tab.onDeactivate = tabBase.OnTabDeactivated;
         }

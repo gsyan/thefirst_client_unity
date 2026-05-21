@@ -52,6 +52,17 @@ public class UITabFleetTactics : UITabBase
         "UITabFleetTactics_UseAircraft_description",
     };
 
+    void Awake()
+    {
+        EventManager.Subscribe_TacticToggleRequested(OnClickToggle);
+    }
+
+    void OnDestroy()
+    {
+        EventManager.Unsubscribe_TacticToggleRequested(OnClickToggle);
+        EventManager.Unsubscribe_TacticOptionsChanged(RefreshToggleUI);
+    }
+
     public override void InitializeUITab()
     {
         m_myCharacter = DataManager.Instance.m_currentCharacter;
@@ -106,8 +117,6 @@ public class UITabFleetTactics : UITabBase
             var item = m_formationButtonGroup.items[i];
             if (item.button != null)
                 gList.AddRange(item.button.GetComponentsInChildren<Graphic>(true));
-            // if (item.childGraphics != null)
-            //     gList.AddRange(item.childGraphics);
         }
         m_formationGroupGraphics = gList.ToArray();
 
@@ -198,9 +207,7 @@ public class UITabFleetTactics : UITabBase
         int savedOptions = m_myFleet.m_fleetInfo.tacticOptions;
         for (int i = 0; i < m_toggleButtons.Length; i++)
         {
-            bool on = (savedOptions & (1 << i)) != 0;
-            m_toggleStates[i] = on;
-            m_toggleButtons[i].SetSelected(on);
+            m_toggleStates[i] = (savedOptions & (1 << i)) != 0;
 
             if (i < k_toggleNameKeys.Length)
                 m_toggleButtons[i].SetTexts(k_toggleNameKeys[i], k_toggleDescKeys[i], i < costs.Length ? costs[i] : 0);
@@ -208,6 +215,16 @@ public class UITabFleetTactics : UITabBase
             int idx = i;
             m_toggleButtons[idx].button.onClick.AddListener(() => OnClickToggle(idx));
         }
+
+        RefreshToggleUI(savedOptions);
+        EventManager.Subscribe_TacticOptionsChanged(RefreshToggleUI);
+    }
+
+    private void RefreshToggleUI(int options)
+    {
+        if (m_toggleButtons == null) return;
+        for (int i = 0; i < m_toggleButtons.Length; i++)
+            m_toggleButtons[i].SetSelected((options & (1 << i)) != 0);
     }
 
     private int GetAvgMissileCost()
@@ -242,8 +259,9 @@ public class UITabFleetTactics : UITabBase
 
     private void OnClickToggle(int idx)
     {
+        if (m_myFleet == null || m_toggleStates == null || idx >= m_toggleStates.Length) return;
+
         m_toggleStates[idx] = !m_toggleStates[idx];
-        m_toggleButtons[idx].SetSelected(m_toggleStates[idx]);
 
         int newOptions = 0;
         for (int i = 0; i < m_toggleStates.Length; i++)
@@ -254,7 +272,7 @@ public class UITabFleetTactics : UITabBase
 
         // AutoRepair·TryConsumeMineral 코루틴이 즉시 참조하는 런타임 객체 갱신
         m_myFleet.m_fleetInfo.tacticOptions = newOptions;
-        EventManager.Trigger_TacticOptionsChanged(newOptions);
+        EventManager.Trigger_TacticOptionsChanged(newOptions); // → RefreshToggleUI 호출됨
 
         var req = new ChangeTacticOptionsRequest
         {

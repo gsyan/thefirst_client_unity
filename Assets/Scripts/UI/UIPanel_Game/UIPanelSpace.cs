@@ -12,8 +12,8 @@ public class UIPanelSpace : UIPanelBase
     [Header("Layout Animation (UITabShip / UITabStation)")]
     public float m_animDuration = 0.3f;
 
-    [Header("Manual Tab Setup (Alternative)")]
-    public Button closeButton;
+    [Header("Hidden Close Button (backdrop)")]
+    [SerializeField] private Button m_hiddenCloseButton;
 
     [HideInInspector] public SpaceFleet m_myFleet;
 
@@ -56,8 +56,11 @@ public class UIPanelSpace : UIPanelBase
         m_openCameraWidth = (canvasWidth - uiPanelWidth) / canvasWidth;
         SetLayoutImmediate(false);
 
-        if (closeButton != null)
-            closeButton.onClick.AddListener(() => UIManager.Instance.ShowMainPanel());
+        if (m_hiddenCloseButton != null)
+        {
+            m_hiddenCloseButton.onClick.AddListener(() => m_tabSystem.SwitchToTab(-1));
+            m_hiddenCloseButton.gameObject.SetActive(false);
+        }
     }
 
     public override void OnShowUIPanel()
@@ -87,6 +90,9 @@ public class UIPanelSpace : UIPanelBase
 
     private void OnTabSelectionChanged(int tabIndex)
     {
+        if (m_hiddenCloseButton != null)
+            m_hiddenCloseButton.gameObject.SetActive(tabIndex >= 0);
+
         bool shouldShrinkCamera = tabIndex == m_moduleTabIndex;
         if (shouldShrinkCamera == m_isUIOpen) return;
 

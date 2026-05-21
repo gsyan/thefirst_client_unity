@@ -203,8 +203,8 @@ public class CameraController : MonoSingleton<CameraController>
             }
             m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, k_positionLerpSpeed * Time.deltaTime);
 
-            // 카메라 이동 완료 시 입력 자동 활성화
-            if (m_inputEnabled == false
+            // 카메라 이동 완료 시 입력 자동 활성화 (갤럭시 뷰 중에는 입력 유지 차단)
+            if (m_inputEnabled == false && m_isGalaxyView == false
                 && m_hasTargetRotationX == false && m_hasTargetRotationY == false && m_hasTargetZoom == false)
                 m_inputEnabled = true;
         }
@@ -785,28 +785,6 @@ public class CameraController : MonoSingleton<CameraController>
     {
         if( m_focusTarget == focusTarget) return;
         ApplyFocusTarget(focusTarget);
-    }
-
-    // 카메라 중심점을 순환 전환 (MyFleet → EnemyFleet → Center → MyFleet)
-    public void CycleCameraFocusTarget()
-    {
-        ECameraFocusTarget next;
-        switch (m_focusTarget)
-        {
-            case ECameraFocusTarget.camera_focus_my_fleet:
-                next = ECameraFocusTarget.camera_focus_enemy_fleet;
-                break;
-            case ECameraFocusTarget.camera_focus_enemy_fleet:
-                next = ECameraFocusTarget.camera_focus_center;
-                break;
-            case ECameraFocusTarget.camera_focus_center:
-                next = ECameraFocusTarget.camera_focus_my_fleet;
-                break;
-            default:
-                next = ECameraFocusTarget.camera_focus_my_fleet;
-                break;
-        }
-        ApplyFocusTarget(next);
     }
 
     // 현재 focusTarget에 따라 카메라 타겟을 적용

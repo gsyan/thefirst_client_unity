@@ -241,6 +241,11 @@ public static class EventManager
     public static void Subscribe_ExplorationTabClosed(Action callback)   { OnExplorationTabClosed += callback; }
     public static void Unsubscribe_ExplorationTabClosed(Action callback) { OnExplorationTabClosed -= callback; }
 
+    public static event Action OnRetreatRequested;
+    public static void TriggerRetreatRequested() { OnRetreatRequested?.Invoke(); }
+    public static void Subscribe_RetreatRequested(Action callback)   { OnRetreatRequested += callback; }
+    public static void Unsubscribe_RetreatRequested(Action callback) { OnRetreatRequested -= callback; }
+
     // 존 진입 (zoneName, isFirstClear)
     public static event Action<string, bool> OnZoneEntered;
     public static void TriggerZoneEntered(string zoneName, bool isFirstClear)
@@ -306,6 +311,12 @@ public static class EventManager
     public static void Trigger_TacticOptionsChanged(int tacticOptions) { OnTacticOptionsChanged?.Invoke(tacticOptions); }
     public static void Subscribe_TacticOptionsChanged(Action<int> callback)   { OnTacticOptionsChanged += callback; }
     public static void Unsubscribe_TacticOptionsChanged(Action<int> callback) { OnTacticOptionsChanged -= callback; }
+
+    // 전술 토글 요청 — UIPanelCameraView 등 외부에서 idx 토글을 UITabFleetTactics에 위임
+    public static event Action<int> OnTacticToggleRequested;
+    public static void Trigger_TacticToggleRequested(int idx) { OnTacticToggleRequested?.Invoke(idx); }
+    public static void Subscribe_TacticToggleRequested(Action<int> callback)   { OnTacticToggleRequested += callback; }
+    public static void Unsubscribe_TacticToggleRequested(Action<int> callback) { OnTacticToggleRequested -= callback; }
 
     // Module Replaced (oldModule, newModule)
     public static event Action<ModuleBase, ModuleBase> OnModuleReplaced;
