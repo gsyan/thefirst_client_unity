@@ -202,6 +202,11 @@ public class CameraController : MonoSingleton<CameraController>
                 }
             }
             m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, k_positionLerpSpeed * Time.deltaTime);
+
+            // 카메라 이동 완료 시 입력 자동 활성화
+            if (m_inputEnabled == false
+                && m_hasTargetRotationX == false && m_hasTargetRotationY == false && m_hasTargetZoom == false)
+                m_inputEnabled = true;
         }
 
         // 1. 회전 각도를 라디안으로 변환 (RotY=0 → +Z 방향 기준, +180° 오프셋)
@@ -224,11 +229,6 @@ public class CameraController : MonoSingleton<CameraController>
     }
 
     private bool m_inputEnabled = true;
-
-    public void SetInputEnabled(bool enabled)
-    {
-        m_inputEnabled = enabled;
-    }
 
     // Input handling
     private bool m_isDragging = false;
@@ -750,7 +750,7 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_isGalaxyView == false) return;
         m_isGalaxyView = false;
         m_isGalaxyViewAnimating = false;
-        m_inputEnabled = true;
+        m_inputEnabled = false;
 
         m_currentTarget = m_savedTarget;
         m_targetPosition = m_savedTargetPosition;
@@ -764,7 +764,7 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_isGalaxyView == false) return;
         m_isGalaxyView = false;
         m_isGalaxyViewAnimating = false;
-        m_inputEnabled = true;
+        m_inputEnabled = false;
         m_currentTarget = null;
         m_targetPosition = position;
 

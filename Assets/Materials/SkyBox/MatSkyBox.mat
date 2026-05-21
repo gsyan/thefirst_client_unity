@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MatSkyBox
-  m_Shader: {fileID: 4800000, guid: 6836f2af65ddd074e918b737ce0e75d0, type: 3}
+  m_Shader: {fileID: 104, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -40,7 +40,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BackTex:
-        m_Texture: {fileID: 2800000, guid: 70e3c2f743af9c14c8190e191770101a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9c4c1dbe2e325764ab2ee0a4867ed44e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BackTexA:
@@ -72,7 +72,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DownTex:
-        m_Texture: {fileID: 2800000, guid: 70e3c2f743af9c14c8190e191770101a, type: 3}
+        m_Texture: {fileID: 2800000, guid: d461fb3485a06874a99952d0fee7cf1d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DownTexA:
@@ -88,7 +88,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FrontTex:
-        m_Texture: {fileID: 2800000, guid: 70e3c2f743af9c14c8190e191770101a, type: 3}
+        m_Texture: {fileID: 2800000, guid: e0d518e774d18e04989aa9899382fec5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FrontTexA:
@@ -100,7 +100,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LeftTex:
-        m_Texture: {fileID: 2800000, guid: 70e3c2f743af9c14c8190e191770101a, type: 3}
+        m_Texture: {fileID: 2800000, guid: c5842357075fdeb49ac3cbf85cfd3a3c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LeftTexA:
@@ -128,7 +128,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RightTex:
-        m_Texture: {fileID: 2800000, guid: 70e3c2f743af9c14c8190e191770101a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9745d4c98f62d874f9217cb6be85dede, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RightTexA:
@@ -151,8 +151,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Tex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _UpTex:
-        m_Texture: {fileID: 2800000, guid: 70e3c2f743af9c14c8190e191770101a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 26880cdad79c1bb41925a1e139b581df, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _UpTexA:
