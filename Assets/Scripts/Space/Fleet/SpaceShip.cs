@@ -178,26 +178,33 @@ public class SpaceShip : MonoBehaviour
     {
         while (true)
         {
-            // 매 프레임 현재 전방 기준 최소 회전각의 적 body를 타겟으로 갱신
-            CollectCandidateEnemyBodies(m_candidateBodies);
-            ModuleBody best = FindMinAngleBody(m_candidateBodies);
+            // 현재 타겟이 살아있으면 유지 — 죽었거나 없을 때만 재선택
+            bool currentTargetAlive = m_currentTargetBody != null
+                && m_currentTargetBody.gameObject.activeSelf
+                && m_currentTargetBody.m_health > 0;
 
-            if (best == null)
+            if (currentTargetAlive == false)
             {
-                yield return m_waitOneSecond;
-                continue;
+                CollectCandidateEnemyBodies(m_candidateBodies);
+                ModuleBody best = FindMinAngleBody(m_candidateBodies);
+
+                if (best == null)
+                {
+                    yield return m_waitOneSecond;
+                    continue;
+                }
+
+                m_currentTargetBody = best;
+                m_targetShip = best.GetComponentInParent<SpaceShip>();
+
+                foreach (ModuleBody body in m_moduleBodys)
+                {
+                    if (body != null && body.m_health > 0)
+                        body.SetTarget(m_currentTargetBody);
+                }
             }
 
-            m_currentTargetBody = best;
-            m_targetShip = best.GetComponentInParent<SpaceShip>();
-
-            foreach (ModuleBody body in m_moduleBodys)
-            {
-                if (body != null && body.m_health > 0)
-                    body.SetTarget(m_currentTargetBody);
-            }
-
-            yield return null;
+            yield return m_waitOneSecond;
         }
     }
 
@@ -777,6 +784,9 @@ public class SpaceShip : MonoBehaviour
                 Debug.LogError($"Failed to replace module: moduleTypeNew={moduleType}");
                 return;
             }
+            // 전투 중 교체된 모듈에 현재 타겟 재전파
+            if (m_currentTargetBody != null && m_currentTargetBody.m_health > 0)
+                body.SetTarget(m_currentTargetBody);
         }
 
         // 서버에서 받은 unlock 목록으로 새 모듈 갱신

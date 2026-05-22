@@ -194,6 +194,12 @@ public static class EventManager
         OnCameraFocusTargetChanged -= callback;
     }
 
+    // 갤럭시뷰 → 함대뷰 카메라 복귀 완료
+    public static event Action OnFleetViewRestored;
+    public static void TriggerFleetViewRestored() { OnFleetViewRestored?.Invoke(); }
+    public static void Subscribe_FleetViewRestored(Action callback)   { OnFleetViewRestored += callback; }
+    public static void Unsubscribe_FleetViewRestored(Action callback) { OnFleetViewRestored -= callback; }
+
     // Camera Viewport Open Ratio (0 = 전체화면, 1 = UI 열림)
     public static event Action<float> OnCameraViewportChanged;
     public static void TriggerCameraViewportChanged(float ratio)

@@ -56,12 +56,16 @@ public class CameraController : MonoSingleton<CameraController>
 
     // 갤럭시 뷰 (탐사 탭)
     private bool m_isGalaxyView = false;
+    public bool IsGalaxyView => m_isGalaxyView;
     public event System.Action OnGalaxyViewSettled;
     private bool  m_isGalaxyViewAnimating = false;
     private float m_galaxyViewAnimTimer   = 0f;
-    private const float k_galaxyViewAnimDuration = 0.5f;
+    private const float k_galaxyViewAnimDuration = 1.0f;
+    private const float k_galaxyViewEasePower = 4f;   // 높을수록 중반까지 정체 후 급가속 (3=cubic, 4=quartic, 5=quintic)
     private float   m_animStartRotX, m_animStartRotY, m_animStartZoom;
     private Vector3 m_animStartPos;
+
+    private Coroutine m_fleetViewRestoreCoroutine;
 
     private Transform m_savedTarget = null;
     private Vector3 m_savedTargetPosition = Vector3.zero;
@@ -158,13 +162,15 @@ public class CameraController : MonoSingleton<CameraController>
         bool galaxyViewJustSettled = false;
         if (m_isGalaxyView == true && m_isGalaxyViewAnimating == true)
         {
-            // 갤럭시뷰 전용 — 고정 시간 선형 보간
+            // 갤럭시뷰 전용 — 지수 이즈인: 처음엔 거의 정지, 후반에 급가속
             m_galaxyViewAnimTimer += Time.deltaTime;
             float t = Mathf.Clamp01(m_galaxyViewAnimTimer / k_galaxyViewAnimDuration);
-            m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, t);
-            m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, t);
-            m_currentZoom = Mathf.Lerp(m_animStartZoom, m_targetZoom, t);
-            m_interpolatedTargetPosition = Vector3.Lerp(m_animStartPos, m_targetPosition, t);
+            // 2^(10t-10): t=0→~0.001, t=0.5→~0.031, t=0.9→0.5, t=1→1
+            float easedT = Mathf.Pow(t, k_galaxyViewEasePower);
+            m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, easedT);
+            m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, easedT);
+            m_currentZoom = Mathf.Lerp(m_animStartZoom, m_targetZoom, easedT);
+            m_interpolatedTargetPosition = Vector3.Lerp(m_animStartPos, m_targetPosition, easedT);
             if (t >= 1f)
             {
                 m_isGalaxyViewAnimating = false;
@@ -756,6 +762,7 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetPosition = m_savedTargetPosition;
 
         RestoreFleetView();
+        StartFleetViewRestoreCoroutine();
     }
 
     // 갤럭시 뷰 종료하면서 카메라를 이전 함선 위치 대신 지정 위치로 이동, 회전·줌 복원
@@ -769,6 +776,20 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetPosition = position;
 
         RestoreFleetView();
+        StartFleetViewRestoreCoroutine();
+    }
+
+    private void StartFleetViewRestoreCoroutine()
+    {
+        if (m_fleetViewRestoreCoroutine != null) StopCoroutine(m_fleetViewRestoreCoroutine);
+        m_fleetViewRestoreCoroutine = StartCoroutine(WaitForFleetViewRestored());
+    }
+
+    private System.Collections.IEnumerator WaitForFleetViewRestored()
+    {
+        yield return new UnityEngine.WaitUntil(() => m_inputEnabled == true);
+        m_fleetViewRestoreCoroutine = null;
+        EventManager.TriggerFleetViewRestored();
     }
 
     private void RestoreFleetView()

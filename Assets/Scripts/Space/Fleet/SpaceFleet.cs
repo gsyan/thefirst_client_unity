@@ -54,6 +54,7 @@ public class SpaceFleet : MonoBehaviour
     // Zone 스폰 상태 (IsZoneEnemy 전용)
     public Queue<EnemyShipConfig> m_shipSpawnQueue;
     private Coroutine m_spawnCoroutine;
+    private Coroutine m_warpInCoroutine;
     
     private void Start()
     {
@@ -65,6 +66,7 @@ public class SpaceFleet : MonoBehaviour
     // fleet 오브젝트를 현재 위치 뒤에서 targetPos까지 워프 이펙트로 진입, 도착 시 콜백
     public void StartFleetWarpIn(System.Action onArrived = null)
     {
+        CancelFleetWarpIn();
         SpaceShip flagship = GetFlagship();
         if (flagship == null)
         {
@@ -90,7 +92,21 @@ public class SpaceFleet : MonoBehaviour
 
         float warpSpeed = flagship.m_spaceShipStatsCur.speed * m_spawnApproachSpeedMult;
         float normalSpeed = flagship.m_spaceShipStatsCur.speed;
-        StartCoroutine(FleetWarpInMove(finalPos, warpSpeed, normalSpeed, onArrived));
+        m_warpInCoroutine = StartCoroutine(FleetWarpInMove(finalPos, warpSpeed, normalSpeed, onArrived));
+    }
+
+    public void CancelFleetWarpIn()
+    {
+        if (m_warpInCoroutine != null)
+        {
+            StopCoroutine(m_warpInCoroutine);
+            m_warpInCoroutine = null;
+        }
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship != null && ship.TryGetComponent(out WarpEffectShip warpEffect))
+                warpEffect.StopWarp();
+        }
     }
 
     private const float WARP_STOP_DIST = 2f;

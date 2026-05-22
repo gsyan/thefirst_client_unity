@@ -27,6 +27,13 @@ public class UITabExploration : UITabBase
 
     private int m_selectedZoneIndex = 1;
 
+    [Header("뷰 전환 타이밍")]
+    [SerializeField] private float m_fleetHideDelay = 0.5f; // 함대뷰→갤럭시뷰 전환 시 함대 숨기기 딜레이(초)
+
+    private Coroutine m_hideFleetCoroutine;
+    private Vector3 m_pendingFleetPos;
+    private float m_pendingFleetRotY;
+
     private bool m_isFleetWiped;
     private readonly WaitForSeconds m_wipePopupDelay = new WaitForSeconds(2f);
 
@@ -100,19 +107,9 @@ public class UITabExploration : UITabBase
     private void OnGroupTabClicked(int groupIndex)
     {
         m_selectedZoneIndex = groupIndex;
+        ObjectManager.Instance.ChangeZone(groupIndex);
         SetupButtonsForGroup(groupIndex);
         UpdateGroupTabVisual();
-
-        if (m_zoneButtonRoot != null)
-            m_zoneButtonRoot.gameObject.SetActive(false);
-        
-        var zoneConfig = m_datatableZone.GetZoneByZoneIndex(groupIndex);
-        if (zoneConfig != null && CameraController.Instance != null)
-            CameraController.Instance.FocusOnZoneAnchor(
-                zoneConfig.galaxyCameraTarget,
-                zoneConfig.galaxyCameraZoom,
-                zoneConfig.galaxyCameraRotX,
-                zoneConfig.galaxyCameraRotY);
     }
 
     private void UpdateGroupTabVisual()
@@ -240,16 +237,33 @@ public class UITabExploration : UITabBase
     {
         if (m_datatableZone == null) return;
 
+        // WarpIn 진행 중 재진입이면 취소 후 Idle로 복귀
+        if (m_myFleet != null && m_myFleet.m_fleetState == EUnitState.Warp)
+        {
+            m_myFleet.CancelFleetWarpIn();
+            SetFleetState(EUnitState.Idle);
+        }
+
+        // 전투 중이 아닐 때만 함대 오프스크린으로 이동 (전투 중에는 갤럭시뷰에서도 전투 지속)
+        if (m_myFleet == null || m_myFleet.m_fleetState != EUnitState.Battle)
+        {
+            if (m_hideFleetCoroutine != null) StopCoroutine(m_hideFleetCoroutine);
+            m_hideFleetCoroutine = StartCoroutine(HideFleetDelayed());
+        }
+
+        // 이전에 선택한 존의 천체 배치
+        ObjectManager.Instance.ChangeZone(m_selectedZoneIndex);
+
         if (CameraController.Instance != null)
         {
             CameraController.Instance.OnGalaxyViewSettled += OnCameraGalaxyViewSettled;
-            var zone1 = m_datatableZone.GetZoneByZoneIndex(1);
-            if (zone1 != null)
+            var zoneConfig = m_datatableZone.GetZoneByZoneIndex(m_selectedZoneIndex);
+            if (zoneConfig != null)
                 CameraController.Instance.EnterGalaxyView(
-                    zone1.galaxyCameraTarget,
-                    zone1.galaxyCameraZoom,
-                    zone1.galaxyCameraRotX,
-                    zone1.galaxyCameraRotY);
+                    zoneConfig.galaxyCameraTarget,
+                    zoneConfig.galaxyCameraZoom,
+                    zoneConfig.galaxyCameraRotX,
+                    zoneConfig.galaxyCameraRotY);
         }
 
         SetupButtonsForGroup(m_selectedZoneIndex);
@@ -266,13 +280,69 @@ public class UITabExploration : UITabBase
         if (CameraController.Instance != null)
             CameraController.Instance.OnGalaxyViewSettled -= OnCameraGalaxyViewSettled;
 
+        // 함대 숨기기 코루틴 진행 중이면 취소하고 즉시 숨기기
+        if (m_hideFleetCoroutine != null)
+        {
+            StopCoroutine(m_hideFleetCoroutine);
+            m_hideFleetCoroutine = null;
+            if (m_myFleet != null)
+                m_myFleet.transform.position = new Vector3(0f, -9999f, 0f);
+        }
+
         ReturnAllButtonsToPool();
-
-        if (CameraController.Instance != null)
-            CameraController.Instance.ExitGalaxyView();
-
         SetOtherTabsVisible(true, includeSelf: true);
         EventManager.TriggerExplorationTabClosed();
+
+        // EnterZoneStage/ExecuteRetreat가 이미 Warp 상태로 갤럭시뷰 탈출 처리 중이면 스킵
+        if (m_myFleet == null || m_myFleet.m_fleetState == EUnitState.Warp) return;
+
+        // 전투 중이면 카메라만 전투 위치로 복귀 (함대는 그대로 전투 지속)
+        if (m_myFleet.m_fleetState == EUnitState.Battle)
+        {
+            if (m_battleZoneStage != null)
+            {
+                Vector3 battlePos = m_datatableZone.ResolveFleetWorldPosition(m_battleZoneStage);
+                EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
+                CameraController.Instance.ExitGalaxyViewMoveTo(battlePos);
+            }
+            return;
+        }
+
+        ReturnFleetToCurrentZone();
+    }
+
+    private void ReturnFleetToCurrentZone()
+    {
+        int fleetZoneIndex = m_currentZoneStage != null ? m_currentZoneStage.zoneIndex : 1;
+        ObjectManager.Instance.ChangeZone(fleetZoneIndex);
+
+        if (m_currentZoneStage != null)
+        {
+            m_pendingFleetPos = m_datatableZone.ResolveFleetWorldPosition(m_currentZoneStage);
+            m_pendingFleetRotY = m_currentZoneStage.fleetRotationY;
+        }
+        else
+        {
+            ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(fleetZoneIndex);
+            m_pendingFleetPos = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
+            m_pendingFleetRotY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
+        }
+
+        // 카메라 복귀 완료 후 함대 배치 + 워프인 (함대뷰 전환 완료 전에 함대가 나타나지 않도록)
+        EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredAfterReturn);
+        CameraController.Instance.ExitGalaxyViewMoveTo(m_pendingFleetPos);
+    }
+
+    private void OnFleetViewRestoredAfterReturn()
+    {
+        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterReturn);
+        ObjectManager.Instance.SetMyFleetPosition(m_pendingFleetPos, m_pendingFleetRotY);
+        SetFleetState(EUnitState.Warp);
+        m_myFleet.StartFleetWarpIn(onArrived: () =>
+        {
+            CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+            SetFleetState(EUnitState.Idle);
+        });
     }
 
     private void OnCameraGalaxyViewSettled()
@@ -293,10 +363,27 @@ public class UITabExploration : UITabBase
         m_isFleetWiped = true;
     }
 
+    private void OnFleetViewRestoredAfterBattleReturn()
+    {
+        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
+        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+    }
+
     private void OnDestroy()
     {
         EventManager.Unsubscribe_RetreatRequested(RetreatToPreviousStage);
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
+        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterReturn);
+        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
+        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
+    }
+
+    private IEnumerator HideFleetDelayed()
+    {
+        yield return new WaitForSeconds(m_fleetHideDelay);
+        if (m_myFleet != null)
+            m_myFleet.transform.position = new Vector3(0f, -9999f, 0f);
+        m_hideFleetCoroutine = null;
     }
 
     private int ParseZoneGroup(string zoneName)
@@ -439,32 +526,40 @@ public class UITabExploration : UITabBase
 
     private void EnterZoneStage(ZoneStageConfig zoneStage)
     {
-        SetFleetState(EUnitState.Warp);
+        SetFleetState(EUnitState.Warp); // CloseAllTabs→OnTabDeactivated에서 ReturnFleetToCurrentZone 스킵용
 
         m_battleZoneStage = zoneStage;
         RefreshCurrentZoneStageButton();
         EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilled);
 
-        // 카메라를 먼저 목표 위치로 이동 (갤럭시뷰 종료 포함)
-        Vector3 fleetWorldPos = m_datatableZone.ResolveFleetWorldPosition(zoneStage);
-        CameraController.Instance.ExitGalaxyViewMoveTo(fleetWorldPos);
+        m_pendingFleetPos  = m_datatableZone.ResolveFleetWorldPosition(zoneStage);
+        m_pendingFleetRotY = zoneStage.fleetRotationY;
+        ObjectManager.Instance.ChangeZone(zoneStage.zoneIndex);
 
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
         SetOtherTabsVisible(false, includeSelf: true);
 
-        // 최종 위치·방향을 설정 → StartFleetWarpIn이 transform.forward 기준으로 뒤에서 접근
-        ObjectManager.Instance.SetMyFleetPosition(fleetWorldPos, zoneStage.fleetRotationY);
-        ObjectManager.Instance.ChangeZone(zoneStage.zoneIndex);
+        // 카메라 복귀 완료 후 함대 배치 + 워프인
+        EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
+        CameraController.Instance.ExitGalaxyViewMoveTo(m_pendingFleetPos);
+    }
 
+    private void OnFleetViewRestoredAfterEnterZone()
+    {
+        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
+        ObjectManager.Instance.SetMyFleetPosition(m_pendingFleetPos, m_pendingFleetRotY);
         var cam = CameraController.Instance;
         m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
             SetOtherTabsVisible(true, includeSelf: true);
             cam.SetTargetOfCameraController(m_myFleet.transform);
             SetFleetState(EUnitState.Battle);
-            bool isFirstClear = IsAlreadyCleared(zoneStage) == false;
-            EventManager.TriggerZoneEntered(zoneStage.zoneName, isFirstClear);
-            StartBattleInZone(zoneStage);
+            if (m_battleZoneStage != null)
+            {
+                bool isFirstClear = IsAlreadyCleared(m_battleZoneStage) == false;
+                EventManager.TriggerZoneEntered(m_battleZoneStage.zoneName, isFirstClear);
+                StartBattleInZone(m_battleZoneStage);
+            }
         });
     }
 
@@ -656,8 +751,8 @@ public class UITabExploration : UITabBase
         {
             character.UpdateMineral(response.data.mineralRemain);
             character.UpdateTechPoint(response.data.techPointRemain);
+            character.UpdateModulePointMaxGot(response.data.modulePointMaxGot); // 이벤트 발생 전에 먼저 갱신
             character.UpdateModulePoint(response.data.modulePointRemain);
-            character.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
         }
         m_battleZoneStage = null;
     }
@@ -812,6 +907,14 @@ public class UITabExploration : UITabBase
         ObjectManager.Instance.RemoveAllEnemyFleets();
 
         SetFleetState(EUnitState.Idle);
+
+        // 갤럭시뷰 중에 전투가 완료된 경우 함대를 즉시 오프스크린으로 이동
+        if (CameraController.Instance != null && CameraController.Instance.IsGalaxyView == true)
+        {
+            if (m_myFleet != null)
+                m_myFleet.transform.position = new Vector3(0f, -9999f, 0f);
+        }
+
         UpdateGroupTabVisual();
         SetupButtonsForGroup(m_selectedZoneIndex);
     }

@@ -189,16 +189,20 @@ public class GaugeBars : MonoBehaviour
 
     private void LateUpdate()
     {
+        bool isGalaxyView = CameraController.Instance != null && CameraController.Instance.IsGalaxyView;
         foreach (var kvp in m_moduleGaugeBars)
         {
             ModuleBase module = kvp.Key;
             GaugeBar gaugeBar = kvp.Value;
             if (module == null || gaugeBar == null) continue;
 
-            bool isInBounds = gaugeBar.IsInScreenBounds();
-            bool isFullHealth = IsModuleAtFullHealth(module);
-            //bool isFullHealth = false;
-            bool shouldShow = isInBounds == true && isFullHealth == false;
+            bool shouldShow = false;
+            if (isGalaxyView == false)
+            {
+                bool isInBounds = gaugeBar.IsInScreenBounds();
+                bool isFullHealth = IsModuleAtFullHealth(module);
+                shouldShow = isInBounds == true && isFullHealth == false;
+            }
 
             if (shouldShow == true && gaugeBar.gameObject.activeSelf == false)
                 gaugeBar.gameObject.SetActive(true);
