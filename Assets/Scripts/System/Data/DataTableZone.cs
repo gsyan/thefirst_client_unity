@@ -8,10 +8,30 @@ using Newtonsoft.Json;
 public class CelestialBodyConfig
 {
     public Vector3 position;
-    public Vector3 scale                   = new Vector3(20f, 20f, 20f);
-    public string  materialPath;           // Resources 기준 경로 (확장자 제외)
-    public string  atmosphereMaterialPath; // 비어 있으면 대기 구체 생성 안 함
-    public float   atmosphereScale         = 1.01f;
+    public Vector3 scale = new Vector3(20f, 20f, 20f);
+
+    [Header("Surface (Land + Sea)")]
+    public Color deepSeaColor    = new Color(0.05f, 0.15f, 0.45f);
+    public Color shallowSeaColor = new Color(0.10f, 0.35f, 0.65f);
+    public Color coastColor      = new Color(0.75f, 0.70f, 0.50f);
+    public Color grasslandColor  = new Color(0.28f, 0.55f, 0.18f);
+    public Color forestColor     = new Color(0.08f, 0.28f, 0.08f);
+    public Color desertColor     = new Color(0.80f, 0.65f, 0.30f);
+    public Color highlandColor   = new Color(0.55f, 0.48f, 0.38f);
+    [Range(0f, 1f)]   public float landCoverage  = 0.5f;
+    [Range(0f, 360f)] public float landRotation  = 0f;
+
+    [Header("Cloud Layer")]
+    public bool  hasClouds     = true;
+    public Color cloudColor    = new Color(1f, 1f, 1f, 0.85f);
+    [Range(0f, 1f)]   public float cloudCoverage  = 0.5f;  // 구름 영역 비율
+    [Range(0f, 360f)] public float cloudRotation  = 0f;
+    public float cloudScale    = 1.02f;                 // Surface 구 대비 배율
+
+    [Header("Atmosphere Layer")]
+    public bool  hasAtmosphere = true;
+    public Color atmosphereColor = new Color(0.3f, 0.6f, 1f);
+    public float atmosphereScale = 1.10f;
 }
 
 // Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 천체·카메라 설정을 공유

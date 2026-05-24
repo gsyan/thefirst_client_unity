@@ -21,9 +21,23 @@ MonoBehaviour:
     celestialBodies:
     - position: {x: 0, y: 0, z: 1000}
       scale: {x: 500, y: 500, z: 500}
-      materialPath: Materials/CelestialBody/planet1
-      atmosphereMaterialPath: Materials/CelestialBody/PlanetAtmosphere
-      atmosphereScale: 1.001
+      deepSeaColor: {r: 0.05, g: 0.15, b: 0.45, a: 1}
+      shallowSeaColor: {r: 0.1, g: 0.35, b: 0.65, a: 1}
+      coastColor: {r: 0.75, g: 0.7, b: 0.5, a: 1}
+      grasslandColor: {r: 0.28, g: 0.55, b: 0.18, a: 1}
+      forestColor: {r: 0.08, g: 0.28, b: 0.08, a: 1}
+      desertColor: {r: 0.8, g: 0.65, b: 0.3, a: 1}
+      highlandColor: {r: 0.45, g: 0.35, b: 0.25, a: 1}
+      landCoverage: 0.5
+      landRotation: 0
+      hasClouds: 1
+      cloudColor: {r: 1, g: 1, b: 1, a: 0.85}
+      cloudCoverage: 0.5
+      cloudRotation: 0
+      cloudScale: 1.02
+      hasAtmosphere: 1
+      atmosphereColor: {r: 0.3, g: 0.6, b: 1, a: 1}
+      atmosphereScale: 1.01
   - zoneIndex: 2
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 4000

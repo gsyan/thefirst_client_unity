@@ -18,6 +18,9 @@ public class ZonePreviewComponent : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    private static readonly int ID_DeepSeaColor  = Shader.PropertyToID("_DeepSeaColor");
+    private static readonly int ID_ForestColor   = Shader.PropertyToID("_ForestColor");
+
     public void RefreshPreview()
     {
         ClearPreview();
@@ -29,6 +32,8 @@ public class ZonePreviewComponent : MonoBehaviour
             Debug.LogWarning($"[ZonePreview] zoneIndex {selectedZoneIndex} 없음");
             return;
         }
+
+        Material previewMat = Resources.Load<Material>("Materials/CelestialBody/PlanetSurface");
 
         GameObject root = new(PREVIEW_ROOT_NAME);
         root.transform.SetParent(transform);
@@ -42,12 +47,19 @@ public class ZonePreviewComponent : MonoBehaviour
             GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             sphere.name = objName;
             sphere.transform.SetParent(root.transform);
-            sphere.transform.position  = body.position;
+            sphere.transform.position   = body.position;
             sphere.transform.localScale = body.scale;
             DestroyImmediate(sphere.GetComponent<Collider>());
 
-            if (string.IsNullOrEmpty(body.materialPath) == false)
-                sphere.GetComponent<Renderer>().sharedMaterial = Resources.Load<Material>(body.materialPath);
+            Renderer rend = sphere.GetComponent<Renderer>();
+            rend.sharedMaterial = previewMat;
+            if (previewMat != null)
+            {
+                var block = new MaterialPropertyBlock();
+                block.SetColor(ID_DeepSeaColor, body.deepSeaColor);
+                block.SetColor(ID_ForestColor, body.forestColor);
+                rend.SetPropertyBlock(block);
+            }
         }
 
         GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -81,9 +93,13 @@ public class ZonePreviewComponent : MonoBehaviour
         planet.position   = body.position;
         planet.localScale = body.scale;
 
-        Renderer rend = planet.GetComponent<Renderer>();
-        if (rend != null && string.IsNullOrEmpty(body.materialPath) == false)
-            rend.sharedMaterial = Resources.Load<Material>(body.materialPath);
+        if (planet.TryGetComponent(out Renderer rend) == true)
+        {
+            var block = new MaterialPropertyBlock();
+            block.SetColor(ID_DeepSeaColor, body.deepSeaColor);
+            block.SetColor(ID_ForestColor,  body.forestColor);
+            rend.SetPropertyBlock(block);
+        }
     }
 
     public void SyncPreviewCameraTarget()
@@ -124,29 +140,15 @@ public class ZonePreviewComponent : MonoBehaviour
         foreach (Transform child in root)
         {
             if (child.name == CAMERA_TARGET_NAME) continue;
-            Renderer rend = child.GetComponent<Renderer>();
             zone.celestialBodies.Add(new CelestialBodyConfig
             {
-                position    = child.position,
-                scale       = child.localScale,
-                materialPath = rend != null ? ToResourcesPath(rend.sharedMaterial) : "",
+                position = child.position,
+                scale    = child.localScale,
             });
         }
 
         UnityEditor.EditorUtility.SetDirty(dataTableZone);
         Debug.Log($"[ZonePreview] 천체 {zone.celestialBodies.Count}개 DataTableZone 반영 완료");
-    }
-
-    // sharedMaterial 에셋 경로 → Resources 기준 경로 (확장자 제외)
-    private static string ToResourcesPath(Material mat)
-    {
-        if (mat == null) return "";
-        string assetPath = UnityEditor.AssetDatabase.GetAssetPath(mat);
-        const string prefix = "Assets/Resources/";
-        if (assetPath.StartsWith(prefix))
-            return assetPath.Substring(prefix.Length, assetPath.Length - prefix.Length - 4); // strip .mat
-        Debug.LogWarning($"[ZonePreview] {assetPath} 가 Resources 폴더 밖에 있습니다.");
-        return "";
     }
 
     private void OnDrawGizmosSelected()
