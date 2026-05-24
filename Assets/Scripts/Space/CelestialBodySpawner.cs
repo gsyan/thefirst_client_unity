@@ -14,15 +14,21 @@ public class CelestialBodySpawner : MonoBehaviour
     private const float LOD_CULL_THRESHOLD = 0.005f;
 
     // 셰이더 프로퍼티 ID (캐시)
-    private static readonly int ID_DeepSeaColor   = Shader.PropertyToID("_DeepSeaColor");
-    private static readonly int ID_ShallowSeaColor= Shader.PropertyToID("_ShallowSeaColor");
-    private static readonly int ID_CoastColor     = Shader.PropertyToID("_CoastColor");
-    private static readonly int ID_GrasslandColor = Shader.PropertyToID("_GrasslandColor");
-    private static readonly int ID_ForestColor    = Shader.PropertyToID("_ForestColor");
-    private static readonly int ID_DesertColor    = Shader.PropertyToID("_DesertColor");
-    private static readonly int ID_HighlandColor  = Shader.PropertyToID("_HighlandColor");
+    private static readonly int ID_DeepSeaColor      = Shader.PropertyToID("_DeepSeaColor");
+    private static readonly int ID_ShallowSeaColor   = Shader.PropertyToID("_ShallowSeaColor");
+    private static readonly int ID_LowlandSandColor  = Shader.PropertyToID("_LowlandSandColor");
+    private static readonly int ID_LowlandGreenColor = Shader.PropertyToID("_LowlandGreenColor");
+    private static readonly int ID_PlainsDesertColor = Shader.PropertyToID("_PlainsDesertColor");
+    private static readonly int ID_PlainsGrassColor  = Shader.PropertyToID("_PlainsGrassColor");
+    private static readonly int ID_PlainsForestColor = Shader.PropertyToID("_PlainsForestColor");
+    private static readonly int ID_HighlandSnowColor    = Shader.PropertyToID("_HighlandSnowColor");
     private static readonly int ID_LandCoverage    = Shader.PropertyToID("_LandCoverage");
     private static readonly int ID_RotationRad     = Shader.PropertyToID("_RotationRad");
+    private static readonly int ID_HasPolarIce  = Shader.PropertyToID("_HasPolarIce");
+    private static readonly int ID_IceColor     = Shader.PropertyToID("_IceColor");
+    private static readonly int ID_IceColorEdge = Shader.PropertyToID("_IceColorEdge");
+    private static readonly int ID_PoleIceWidth = Shader.PropertyToID("_PoleIceWidth");
+    private static readonly int ID_CloudTex      = Shader.PropertyToID("_CloudTex");
     private static readonly int ID_CloudColor    = Shader.PropertyToID("_CloudColor");
     private static readonly int ID_CloudCoverage = Shader.PropertyToID("_CloudCoverage");
     private static readonly int ID_AtmColor      = Shader.PropertyToID("_AtmosphereColor");
@@ -125,21 +131,28 @@ public class CelestialBodySpawner : MonoBehaviour
     private MaterialPropertyBlock BuildSurfaceBlock(CelestialBodyConfig cfg)
     {
         var block = new MaterialPropertyBlock();
-        block.SetColor(ID_DeepSeaColor,    cfg.deepSeaColor);
-        block.SetColor(ID_ShallowSeaColor, cfg.shallowSeaColor);
-        block.SetColor(ID_CoastColor,     cfg.coastColor);
-        block.SetColor(ID_GrasslandColor, cfg.grasslandColor);
-        block.SetColor(ID_ForestColor,    cfg.forestColor);
-        block.SetColor(ID_DesertColor,    cfg.desertColor);
-        block.SetColor(ID_HighlandColor,  cfg.highlandColor);
+        block.SetColor(ID_DeepSeaColor,      cfg.deepSeaColor);
+        block.SetColor(ID_ShallowSeaColor,   cfg.shallowSeaColor);
+        block.SetColor(ID_LowlandSandColor,  cfg.lowlandSandColor);
+        block.SetColor(ID_LowlandGreenColor, cfg.lowlandGreenColor);
+        block.SetColor(ID_PlainsDesertColor, cfg.plainsDesertColor);
+        block.SetColor(ID_PlainsGrassColor,  cfg.plainsGrassColor);
+        block.SetColor(ID_PlainsForestColor, cfg.plainsForestColor);
+        block.SetColor(ID_HighlandSnowColor,    cfg.highlandSnowColor);
         block.SetFloat(ID_LandCoverage, cfg.landCoverage);
         block.SetFloat(ID_RotationRad,  cfg.landRotation * Mathf.Deg2Rad);
+        block.SetFloat(ID_HasPolarIce,  cfg.hasPolarIce ? 1f : 0f);
+        block.SetColor(ID_IceColor,     cfg.iceColor);
+        block.SetColor(ID_IceColorEdge, cfg.iceColorEdge);
+        block.SetFloat(ID_PoleIceWidth, cfg.poleIceWidth);
         return block;
     }
 
     private MaterialPropertyBlock BuildCloudBlock(CelestialBodyConfig cfg)
     {
         var block = new MaterialPropertyBlock();
+        if (cfg.cloudMaskTex != null)
+            block.SetTexture(ID_CloudTex, cfg.cloudMaskTex);
         block.SetColor(ID_CloudColor,    cfg.cloudColor);
         block.SetFloat(ID_CloudCoverage, cfg.cloudCoverage);
         block.SetFloat(ID_RotationRad,   cfg.cloudRotation * Mathf.Deg2Rad);

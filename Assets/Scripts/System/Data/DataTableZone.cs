@@ -10,28 +10,36 @@ public class CelestialBodyConfig
     public Vector3 position;
     public Vector3 scale = new Vector3(20f, 20f, 20f);
 
-    [Header("Surface (Land + Sea)")]
-    public Color deepSeaColor    = new Color(0.05f, 0.15f, 0.45f);
-    public Color shallowSeaColor = new Color(0.10f, 0.35f, 0.65f);
-    public Color coastColor      = new Color(0.75f, 0.70f, 0.50f);
-    public Color grasslandColor  = new Color(0.28f, 0.55f, 0.18f);
-    public Color forestColor     = new Color(0.08f, 0.28f, 0.08f);
-    public Color desertColor     = new Color(0.80f, 0.65f, 0.30f);
-    public Color highlandColor   = new Color(0.55f, 0.48f, 0.38f);
+    [HideInInspector] public Color deepSeaColor       = CommonUtility.HexColor("#0D2673");
+    [HideInInspector] public Color shallowSeaColor    = CommonUtility.HexColor("#1A59A6");
+    [HideInInspector] public Color lowlandSandColor   = CommonUtility.HexColor("#BFB380");
+    [HideInInspector] public Color lowlandGreenColor  = CommonUtility.HexColor("#90C060");
+    [HideInInspector] public Color plainsDesertColor  = CommonUtility.HexColor("#A99159");
+    [HideInInspector] public Color plainsGrassColor   = CommonUtility.HexColor("#478C2E");
+    [HideInInspector] public Color plainsForestColor  = CommonUtility.HexColor("#236523");
+    [HideInInspector] public Color highlandSnowColor  = CommonUtility.HexColor("#E8F0F5");
+    [Header("Surface (Common)")]
     [Range(0f, 1f)]   public float landCoverage  = 0.5f;
     [Range(0f, 360f)] public float landRotation  = 0f;
 
     [Header("Cloud Layer")]
-    public bool  hasClouds     = true;
-    public Color cloudColor    = new Color(1f, 1f, 1f, 0.85f);
+    public bool      hasClouds     = true;
+    public Color     cloudColor    = CommonUtility.HexColor("#FFFFFFD9");
+    public Texture2D cloudMaskTex;                          // CloudMaskPainter로 생성한 R채널 텍스처
     [Range(0f, 1f)]   public float cloudCoverage  = 0.5f;  // 구름 영역 비율
     [Range(0f, 360f)] public float cloudRotation  = 0f;
-    public float cloudScale    = 1.02f;                 // Surface 구 대비 배율
+    public float cloudScale    = 1.001f;                 // Surface 구 대비 배율
 
     [Header("Atmosphere Layer")]
     public bool  hasAtmosphere = true;
-    public Color atmosphereColor = new Color(0.3f, 0.6f, 1f);
-    public float atmosphereScale = 1.10f;
+    public Color atmosphereColor = CommonUtility.HexColor("#4D99FF");
+    public float atmosphereScale = 1.002f;
+
+    [Header("Polar Ice")]
+    public bool  hasPolarIce   = false;
+    public Color iceColor     = CommonUtility.HexColor("#F2FAFF");
+    public Color iceColorEdge = CommonUtility.HexColor("#ADD1F0");
+    [Range(0f, 0.4f)] public float poleIceWidth = 0.12f;
 }
 
 // Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 천체·카메라 설정을 공유

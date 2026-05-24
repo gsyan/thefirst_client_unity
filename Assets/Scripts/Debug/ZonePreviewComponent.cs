@@ -18,8 +18,8 @@ public class ZonePreviewComponent : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private static readonly int ID_DeepSeaColor  = Shader.PropertyToID("_DeepSeaColor");
-    private static readonly int ID_ForestColor   = Shader.PropertyToID("_ForestColor");
+    private static readonly int ID_DeepSeaColor      = Shader.PropertyToID("_DeepSeaColor");
+    private static readonly int ID_PlainsGrassColor  = Shader.PropertyToID("_PlainsGrassColor");
 
     public void RefreshPreview()
     {
@@ -56,8 +56,8 @@ public class ZonePreviewComponent : MonoBehaviour
             if (previewMat != null)
             {
                 var block = new MaterialPropertyBlock();
-                block.SetColor(ID_DeepSeaColor, body.deepSeaColor);
-                block.SetColor(ID_ForestColor, body.forestColor);
+                block.SetColor(ID_DeepSeaColor,     body.deepSeaColor);
+                block.SetColor(ID_PlainsGrassColor, body.plainsGrassColor);
                 rend.SetPropertyBlock(block);
             }
         }
@@ -96,8 +96,8 @@ public class ZonePreviewComponent : MonoBehaviour
         if (planet.TryGetComponent(out Renderer rend) == true)
         {
             var block = new MaterialPropertyBlock();
-            block.SetColor(ID_DeepSeaColor, body.deepSeaColor);
-            block.SetColor(ID_ForestColor,  body.forestColor);
+            block.SetColor(ID_DeepSeaColor,     body.deepSeaColor);
+            block.SetColor(ID_PlainsGrassColor, body.plainsGrassColor);
             rend.SetPropertyBlock(block);
         }
     }

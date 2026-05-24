@@ -104,8 +104,6 @@ public static class DataTableZoneCSVUtility
         var sb = new StringBuilder();
         sb.AppendLine(
             "zone_index,pos_x,pos_y,pos_z,scale_x,scale_y,scale_z," +
-            "deepsea_r,deepsea_g,deepsea_b,shallowsea_r,shallowsea_g,shallowsea_b," +
-            "coast_r,coast_g,coast_b,grassland_r,grassland_g,grassland_b,forest_r,forest_g,forest_b,desert_r,desert_g,desert_b,highland_r,highland_g,highland_b," +
             "land_coverage,land_rotation," +
             "has_clouds,cloud_r,cloud_g,cloud_b,cloud_a,cloud_coverage,cloud_rotation,cloud_scale," +
             "has_atmosphere,atm_r,atm_g,atm_b,atmosphere_scale");
@@ -118,13 +116,6 @@ public static class DataTableZoneCSVUtility
                     $"{z.zoneIndex}," +
                     $"{c.position.x},{c.position.y},{c.position.z}," +
                     $"{c.scale.x},{c.scale.y},{c.scale.z}," +
-                    $"{c.deepSeaColor.r},{c.deepSeaColor.g},{c.deepSeaColor.b}," +
-                    $"{c.shallowSeaColor.r},{c.shallowSeaColor.g},{c.shallowSeaColor.b}," +
-                    $"{c.coastColor.r},{c.coastColor.g},{c.coastColor.b}," +
-                    $"{c.grasslandColor.r},{c.grasslandColor.g},{c.grasslandColor.b}," +
-                    $"{c.forestColor.r},{c.forestColor.g},{c.forestColor.b}," +
-                    $"{c.desertColor.r},{c.desertColor.g},{c.desertColor.b}," +
-                    $"{c.highlandColor.r},{c.highlandColor.g},{c.highlandColor.b}," +
                     $"{c.landCoverage},{c.landRotation}," +
                     $"{c.hasClouds},{c.cloudColor.r},{c.cloudColor.g},{c.cloudColor.b},{c.cloudColor.a}," +
                     $"{c.cloudCoverage},{c.cloudRotation},{c.cloudScale}," +

@@ -184,32 +184,23 @@ public class DataTableZoneEditor : Editor
                 bool  B(int idx)                 => col.Length > idx && col[idx].Trim().ToLower() == "true";
 
                 // col 인덱스: 0=zone, 1~3=pos, 4~6=scale,
-                // 7~9=deepsea, 10~12=shallowsea, 13~15=coast,
-                // 16~18=grassland, 19~21=forest, 22~24=desert, 25~27=highland,
-                // 28=land_coverage, 29=land_rotation,
-                // 30=has_clouds, 31~34=cloud_rgba, 35=cloud_coverage, 36=cloud_rotation, 37=cloud_scale,
-                // 38=has_atmosphere, 39~41=atm_rgb, 42=atmosphere_scale
+                // 7=land_coverage, 8=land_rotation,
+                // 9=has_clouds, 10~13=cloud_rgba, 14=cloud_coverage, 15=cloud_rotation, 16=cloud_scale,
+                // 17=has_atmosphere, 18~20=atm_rgb, 21=atmosphere_scale
                 zc.celestialBodies.Add(new CelestialBodyConfig
                 {
                     position        = new Vector3(F(1), F(2), F(3)),
                     scale           = new Vector3(F(4), F(5), F(6)),
-                    deepSeaColor    = new Color(F(7),  F(8),  F(9)),
-                    shallowSeaColor = new Color(F(10), F(11), F(12)),
-                    coastColor      = new Color(F(13), F(14), F(15)),
-                    grasslandColor  = new Color(F(16), F(17), F(18)),
-                    forestColor     = new Color(F(19), F(20), F(21)),
-                    desertColor     = new Color(F(22), F(23), F(24)),
-                    highlandColor   = new Color(F(25), F(26), F(27)),
-                    landCoverage    = F(28, 0.5f),
-                    landRotation    = F(29),
-                    hasClouds       = B(30),
-                    cloudColor      = new Color(F(31), F(32), F(33), F(34, 0.85f)),
-                    cloudCoverage   = F(35, 0.5f),
-                    cloudRotation   = F(36),
-                    cloudScale      = F(37, 1.02f),
-                    hasAtmosphere   = B(38),
-                    atmosphereColor = new Color(F(39), F(40), F(41)),
-                    atmosphereScale = F(42, 1.10f),
+                    landCoverage    = F(7, 0.5f),
+                    landRotation    = F(8),
+                    hasClouds       = B(9),
+                    cloudColor      = new Color(F(10), F(11), F(12), F(13, 0.85f)),
+                    cloudCoverage   = F(14, 0.5f),
+                    cloudRotation   = F(15),
+                    cloudScale      = F(16, 1.02f),
+                    hasAtmosphere   = B(17),
+                    atmosphereColor = new Color(F(18), F(19), F(20)),
+                    atmosphereScale = F(21, 1.10f),
                 });
             }
         }

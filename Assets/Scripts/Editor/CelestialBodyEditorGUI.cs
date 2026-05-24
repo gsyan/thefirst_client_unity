@@ -32,16 +32,21 @@ public static class CelestialBodyEditorGUI
             EditorGUILayout.Space(4);
 
             // Surface
-            EditorGUILayout.LabelField("─ Surface (Land + Sea)", EditorStyles.miniLabel);
+            EditorGUILayout.LabelField("─ Surface (Sea)", EditorStyles.miniLabel);
             body.deepSeaColor    = EditorGUILayout.ColorField("Deep Sea",    body.deepSeaColor);
             body.shallowSeaColor = EditorGUILayout.ColorField("Shallow Sea", body.shallowSeaColor);
-            body.coastColor      = EditorGUILayout.ColorField("Coast",      body.coastColor);
-            body.grasslandColor  = EditorGUILayout.ColorField("Grassland",  body.grasslandColor);
-            body.forestColor     = EditorGUILayout.ColorField("Forest",     body.forestColor);
-            body.desertColor     = EditorGUILayout.ColorField("Desert",     body.desertColor);
-            body.highlandColor   = EditorGUILayout.ColorField("Highland",   body.highlandColor);
-            body.landCoverage    = EditorGUILayout.Slider("Land Coverage",   body.landCoverage, 0f, 1f);
-            body.landRotation    = EditorGUILayout.Slider("Land Rotation°",  body.landRotation, 0f, 360f);
+            EditorGUILayout.LabelField("─ Surface (Lowland)", EditorStyles.miniLabel);
+            body.lowlandSandColor  = EditorGUILayout.ColorField("Sand",  body.lowlandSandColor);
+            body.lowlandGreenColor = EditorGUILayout.ColorField("Green", body.lowlandGreenColor);            
+            EditorGUILayout.LabelField("─ Surface (Plains)", EditorStyles.miniLabel);
+            body.plainsDesertColor = EditorGUILayout.ColorField("Desert", body.plainsDesertColor);
+            body.plainsGrassColor  = EditorGUILayout.ColorField("Grass",  body.plainsGrassColor);
+            body.plainsForestColor = EditorGUILayout.ColorField("Forest", body.plainsForestColor);
+            EditorGUILayout.LabelField("─ Surface (Highland)", EditorStyles.miniLabel);
+            body.highlandSnowColor    = EditorGUILayout.ColorField("Snow",    body.highlandSnowColor);
+            EditorGUILayout.LabelField("─", EditorStyles.miniLabel);
+            body.landCoverage  = EditorGUILayout.Slider("Land Coverage",  body.landCoverage, 0f, 1f);
+            body.landRotation  = EditorGUILayout.Slider("Land Rotation°", body.landRotation, 0f, 360f);
 
             EditorGUILayout.Space(4);
 
@@ -54,7 +59,7 @@ public static class CelestialBodyEditorGUI
                 body.cloudColor    = EditorGUILayout.ColorField("Cloud Color",     body.cloudColor);
                 body.cloudCoverage = EditorGUILayout.Slider("Cloud Coverage",  body.cloudCoverage, 0f, 1f);
                 body.cloudRotation = EditorGUILayout.Slider("Cloud Rotation°", body.cloudRotation, 0f, 360f);
-                body.cloudScale    = EditorGUILayout.Slider("Cloud Scale",     body.cloudScale, 1.001f, 1.10f);
+                body.cloudScale    = EditorGUILayout.Slider("Cloud Scale",     body.cloudScale, 1.001f, 1.1f);
                 EditorGUI.indentLevel--;
             }
 
@@ -67,7 +72,21 @@ public static class CelestialBodyEditorGUI
             {
                 EditorGUI.indentLevel++;
                 body.atmosphereColor = EditorGUILayout.ColorField("Atmosphere Color", body.atmosphereColor);
-                body.atmosphereScale = EditorGUILayout.Slider("Atmosphere Scale", body.atmosphereScale, 1.01f, 1.30f);
+                body.atmosphereScale = EditorGUILayout.Slider("Atmosphere Scale", body.atmosphereScale, 1.002f, 1.2f);
+                EditorGUI.indentLevel--;
+            }
+
+            EditorGUILayout.Space(4);
+
+            // Polar Ice
+            EditorGUILayout.LabelField("─ Polar Ice", EditorStyles.miniLabel);
+            body.hasPolarIce = EditorGUILayout.Toggle("Has Polar Ice", body.hasPolarIce);
+            if (body.hasPolarIce == true)
+            {
+                EditorGUI.indentLevel++;
+                body.iceColor     = EditorGUILayout.ColorField("Ice Color (Core)", body.iceColor);
+                body.iceColorEdge = EditorGUILayout.ColorField("Ice Color (Edge)", body.iceColorEdge);
+                body.poleIceWidth = EditorGUILayout.Slider("Pole Ice Width",       body.poleIceWidth, 0f, 0.4f);
                 EditorGUI.indentLevel--;
             }
 

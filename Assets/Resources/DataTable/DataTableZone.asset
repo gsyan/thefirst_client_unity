@@ -21,29 +21,60 @@ MonoBehaviour:
     celestialBodies:
     - position: {x: 0, y: 0, z: 1000}
       scale: {x: 500, y: 500, z: 500}
-      deepSeaColor: {r: 0.05, g: 0.15, b: 0.45, a: 1}
+      deepSeaColor: {r: 0.050980393, g: 0.14901961, b: 0.4509804, a: 1}
       shallowSeaColor: {r: 0.1, g: 0.35, b: 0.65, a: 1}
-      coastColor: {r: 0.75, g: 0.7, b: 0.5, a: 1}
-      grasslandColor: {r: 0.28, g: 0.55, b: 0.18, a: 1}
-      forestColor: {r: 0.08, g: 0.28, b: 0.08, a: 1}
-      desertColor: {r: 0.8, g: 0.65, b: 0.3, a: 1}
-      highlandColor: {r: 0.45, g: 0.35, b: 0.25, a: 1}
+      lowlandSandColor: {r: 0.7490196, g: 0.7019608, b: 0.5019608, a: 1}
+      lowlandGreenColor: {r: 0.5647059, g: 0.7529412, b: 0.3764706, a: 1}
+      plainsDesertColor: {r: 0.6627451, g: 0.5686275, b: 0.34901962, a: 1}
+      plainsGrassColor: {r: 0.2784314, g: 0.54901963, b: 0.18039216, a: 1}
+      plainsForestColor: {r: 0.13725491, g: 0.39607844, b: 0.13725491, a: 1}
+      highlandSnowColor: {r: 0.9098039, g: 0.9411765, b: 0.9607843, a: 1}
       landCoverage: 0.5
       landRotation: 0
       hasClouds: 1
       cloudColor: {r: 1, g: 1, b: 1, a: 0.85}
+      cloudMaskTex: {fileID: 0}
       cloudCoverage: 0.5
       cloudRotation: 0
-      cloudScale: 1.02
+      cloudScale: 1.001
       hasAtmosphere: 1
       atmosphereColor: {r: 0.3, g: 0.6, b: 1, a: 1}
-      atmosphereScale: 1.01
+      atmosphereScale: 1.002
+      hasPolarIce: 0
+      iceColor: {r: 0.95, g: 0.98, b: 1, a: 1}
+      iceColorEdge: {r: 0.68, g: 0.82, b: 0.94, a: 1}
+      poleIceWidth: 0.12
   - zoneIndex: 2
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 4000
     galaxyCameraRotX: 80
     galaxyCameraRotY: 0
-    celestialBodies: []
+    celestialBodies:
+    - position: {x: 0, y: 0, z: 0}
+      scale: {x: 500, y: 500, z: 500}
+      deepSeaColor: {r: 0.050980393, g: 0.14901961, b: 0.4509804, a: 1}
+      shallowSeaColor: {r: 0.101960786, g: 0.34901962, b: 0.6509804, a: 1}
+      lowlandSandColor: {r: 0.7490196, g: 0.7019608, b: 0.5019608, a: 1}
+      lowlandGreenColor: {r: 0.5647059, g: 0.7529412, b: 0.3764706, a: 1}
+      plainsDesertColor: {r: 0.6627451, g: 0.5686275, b: 0.34901962, a: 1}
+      plainsGrassColor: {r: 0.2784314, g: 0.54901963, b: 0.18039216, a: 1}
+      plainsForestColor: {r: 0.13725491, g: 0.39607844, b: 0.13725491, a: 1}
+      highlandSnowColor: {r: 0.9098039, g: 0.9411765, b: 0.9607843, a: 1}
+      landCoverage: 0.4
+      landRotation: 0
+      hasClouds: 1
+      cloudColor: {r: 1, g: 1, b: 1, a: 0.8509804}
+      cloudMaskTex: {fileID: 0}
+      cloudCoverage: 0.52
+      cloudRotation: 0
+      cloudScale: 1.001
+      hasAtmosphere: 1
+      atmosphereColor: {r: 0.3019608, g: 0.6, b: 1, a: 1}
+      atmosphereScale: 1.002
+      hasPolarIce: 0
+      iceColor: {r: 0.9490196, g: 0.98039216, b: 1, a: 1}
+      iceColorEdge: {r: 0.6784314, g: 0.81960785, b: 0.9411765, a: 1}
+      poleIceWidth: 0.12
   - zoneIndex: 3
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 4000

@@ -2,11 +2,15 @@ Shader "Custom/PlanetCloud"
 {
     Properties
     {
-        _CloudTex    ("Cloud Alpha Tex", 2D)    = "white" {}
+        _CloudTex      ("Cloud Alpha Tex", 2D)          = "white" {}
         _CloudColor    ("Cloud Color",     Color)        = (1.0, 1.0, 1.0, 0.9)
-        _CloudCoverage ("Cloud Coverage", Range(0.0, 1.0)) = 0.5
-        _RotationRad   ("Rotation Rad",   Float)         = 0.0
-        _DarkSideMin   ("Dark Side Min",  Range(0.0, 1.0)) = 0.1
+        _CloudCoverage    ("Cloud Coverage",      Range(0.0, 1.0)) = 0.5
+        _RotationRad      ("Rotation Rad",       Float)          = 0.0
+        _DarkSideMin      ("Dark Side Min",      Range(0.0, 1.0)) = 0.1
+        _MidLatOpacity    ("MidLat Opacity",     Range(0.0, 1.0))  = 0.0
+        _MidLatCenter     ("MidLat Center (UV v)",Range(0.1, 0.45)) = 0.25
+        _MidLatWidth      ("MidLat Width",       Range(0.0, 0.5))  = 0.12
+        _CloudSoftness    ("Cloud Softness",     Range(0.0, 0.5))  = 0.3
     }
 
     SubShader
@@ -42,6 +46,10 @@ Shader "Custom/PlanetCloud"
                 half   _CloudCoverage;
                 float  _RotationRad;
                 half   _DarkSideMin;
+                half   _MidLatOpacity;
+                half   _MidLatCenter;
+                half   _MidLatWidth;
+                half   _CloudSoftness;
             CBUFFER_END
 
             TEXTURE2D(_CloudTex);
@@ -86,13 +94,25 @@ Shader "Custom/PlanetCloud"
 
             half4 frag(Varyings IN) : SV_Target
             {
-                float2 uv        = RotateUV(IN.uv, _RotationRad);
-                half   cloudMask = SAMPLE_TEXTURE2D(_CloudTex, sampler_CloudTex, uv).r;
+                // 위도별 opacity — 8비트 banding 없이 float 정밀도로 직접 계산
+                // IN.uv.y 사용: RotateUV는 2D 회전이라 v도 틀어지므로 회전 전 원본 사용
+                half origV  = (half)IN.uv.y;
+                half distN  = abs(origV - _MidLatCenter);
+                half distS  = abs(origV - (1.0h - _MidLatCenter));
+                half mFactor = saturate(1.0h - min(distN, distS) / max(_MidLatWidth, 0.001h));
+                mFactor      = mFactor * mFactor * (3.0h - 2.0h * mFactor);
+                half latOpacity = 1.0h - mFactor * _MidLatOpacity;
 
-                // Coverage 수치로 구름 영역 제어 (LandCoverage와 동일 방식)
-                half   alpha = saturate((cloudMask - (1.0h - _CloudCoverage)) / 0.08h);
-                alpha *= _CloudColor.a;
+                float2 uv          = RotateUV(IN.uv, _RotationRad);
+                half4  cloudSample = SAMPLE_TEXTURE2D(_CloudTex, sampler_CloudTex, uv);
 
+                // R: coverage 기준 이동 + softness로 구름 결 표현
+                // softness=0 → binary, softness=0.5 → smoothstep(0,1) → R값이 그대로 alpha에 반영
+                half adjusted = cloudSample.r + (_CloudCoverage - 0.5h) * 2.0h;
+                half lo       = 0.5h - _CloudSoftness;
+                half hi       = 0.5h + _CloudSoftness;
+                half alpha    = smoothstep(lo, hi, adjusted) * latOpacity * _CloudColor.a;
+                
                 Light mainLight  = GetMainLight();
                 half  sunDot     = dot(normalize(IN.normalWS), mainLight.direction);
                 half  sunFactor  = lerp(_DarkSideMin, 1.0h, saturate(sunDot));

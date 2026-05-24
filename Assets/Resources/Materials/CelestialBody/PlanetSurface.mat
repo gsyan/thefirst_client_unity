@@ -89,6 +89,9 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _BiomeBlend: 0.05
+    - _BiomeEdgeCoast: 0
+    - _BiomeEdgeLand: 0
     - _BiomeNoiseScale: 3
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
@@ -105,15 +108,19 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _ForestRatio: 0.3
+    - _GBlend: 0.15
+    - _GVariantBlend: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GrasslandRatio: 0.3
+    - _HasPolarIce: 1
     - _HighlandRatio: 0.3
     - _LandCoverage: 0.5
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _PoleIceWidth: 0.2
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RotationRad: 0
@@ -128,16 +135,27 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CoastColor: {r: 0.75, g: 0.7, b: 0.5, a: 1}
+    - _CoastColor: {r: 0.7490196, g: 0.69803923, b: 0.5019608, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DeepSeaColor: {r: 0.049999982, g: 0.14999998, b: 0.45, a: 1}
-    - _DesertColor: {r: 0.8, g: 0.65, b: 0.29999998, a: 1}
+    - _DesertColor: {r: 0.8207547, g: 0.73687255, b: 0.41424885, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ForestColor: {r: 0.13300997, g: 0.46226418, b: 0.13300997, a: 1}
     - _GrasslandColor: {r: 0.27999997, g: 0.54999995, b: 0.17999998, a: 1}
-    - _HighlandColor: {r: 0.9803922, g: 0.9215687, b: 0.8431373, a: 1}
+    - _HighlandColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HighlandConiferColor: {r: 0.17999998, g: 0.28999996, b: 0.17999998, a: 1}
+    - _HighlandSnowColor: {r: 0.91, g: 0.94, b: 0.96, a: 1}
+    - _IceColor: {r: 0.9, g: 0.95, b: 1, a: 1}
+    - _IceColorEdge: {r: 0.050980393, g: 0.14901961, b: 0.45283014, a: 1}
     - _LandColor: {r: 0.19999996, g: 0.5, b: 0.19999996, a: 1}
     - _LowlandColor: {r: 0.19999996, g: 0.5, b: 0.19999996, a: 1}
+    - _LowlandGreenColor: {r: 0.56, g: 0.75, b: 0.37999994, a: 1}
+    - _LowlandSandColor: {r: 0.75, g: 0.7, b: 0.5, a: 1}
+    - _LowlandSwampColor: {r: 0.23999995, g: 0.35999998, b: 0.17999998, a: 1}
+    - _PlainsDesertColor: {r: 0.6603774, g: 0.5654939, b: 0.34576362, a: 1}
+    - _PlainsForestColor: {r: 0.13643645, g: 0.3962264, b: 0.13643645, a: 1}
+    - _PlainsGrassColor: {r: 0.27999997, g: 0.54999995, b: 0.17999998, a: 1}
+    - _PlainsTundraColor: {r: 0.078431375, g: 0.2784314, b: 0.078431375, a: 1}
     - _SeaColor: {r: 0.09999997, g: 0.29999998, b: 0.7, a: 1}
     - _ShallowSeaColor: {r: 0.09999997, g: 0.34999996, b: 0.65, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
