@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEditor;
+using UnityEngine;
 
 // DataTableZone CSV 입출력 공통 유틸리티 — DataTableZoneEditor / ZonePreviewComponentEditor 공유
 public static class DataTableZoneCSVUtility
@@ -103,10 +104,13 @@ public static class DataTableZoneCSVUtility
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_celestial.csv";
         var sb = new StringBuilder();
         sb.AppendLine(
-            "zone_index,pos_x,pos_y,pos_z,scale_x,scale_y,scale_z," +
-            "land_coverage,land_rotation," +
-            "has_clouds,cloud_r,cloud_g,cloud_b,cloud_a,cloud_coverage,cloud_rotation,cloud_scale," +
-            "has_atmosphere,atm_r,atm_g,atm_b,atmosphere_scale");
+            "zone_index,pos_x,pos_y,pos_z,rot_x,rot_y,rot_z,scale_x,scale_y,scale_z," +
+            "land_coverage,biome_blend,g_blend," +
+            "deep_sea_color,shallow_sea_color,lowland_sand_color,lowland_green_color," +
+            "plains_desert_color,plains_grass_color,plains_forest_color,highland_snow_color," +
+            "has_polar_ice,ice_color,ice_color_edge,pole_ice_width," +
+            "has_clouds,cloud_color,cloud_coverage,cloud_rotation,cloud_scale," +
+            "has_atmosphere,atmosphere_color,atmosphere_scale");
         foreach (ZoneConfig z in table.zoneList)
         {
             if (z.celestialBodies == null) continue;
@@ -115,16 +119,26 @@ public static class DataTableZoneCSVUtility
                 sb.AppendLine(
                     $"{z.zoneIndex}," +
                     $"{c.position.x},{c.position.y},{c.position.z}," +
+                    $"{c.rotation.x},{c.rotation.y},{c.rotation.z}," +
                     $"{c.scale.x},{c.scale.y},{c.scale.z}," +
-                    $"{c.landCoverage},{c.landRotation}," +
-                    $"{c.hasClouds},{c.cloudColor.r},{c.cloudColor.g},{c.cloudColor.b},{c.cloudColor.a}," +
-                    $"{c.cloudCoverage},{c.cloudRotation},{c.cloudScale}," +
-                    $"{c.hasAtmosphere},{c.atmosphereColor.r},{c.atmosphereColor.g},{c.atmosphereColor.b}," +
-                    $"{c.atmosphereScale}");
+                    $"{c.landCoverage},{c.biomeBlend},{c.gBlend}," +
+                    $"{ToHex(c.deepSeaColor)},{ToHex(c.shallowSeaColor)}," +
+                    $"{ToHex(c.lowlandSandColor)},{ToHex(c.lowlandGreenColor)}," +
+                    $"{ToHex(c.plainsDesertColor)},{ToHex(c.plainsGrassColor)},{ToHex(c.plainsForestColor)}," +
+                    $"{ToHex(c.highlandSnowColor)}," +
+                    $"{c.hasPolarIce},{ToHex(c.iceColor)},{ToHex(c.iceColorEdge)},{c.poleIceWidth}," +
+                    $"{c.hasClouds},{ToHexA(c.cloudColor)},{c.cloudCoverage},{c.cloudRotation},{c.cloudScale}," +
+                    $"{c.hasAtmosphere},{ToHex(c.atmosphereColor)},{c.atmosphereScale}");
             }
         }
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }
+
+    private static string ToHex(Color c) =>
+        $"#{(int)(c.r * 255):X2}{(int)(c.g * 255):X2}{(int)(c.b * 255):X2}";
+
+    private static string ToHexA(Color c) =>
+        $"#{(int)(c.r * 255):X2}{(int)(c.g * 255):X2}{(int)(c.b * 255):X2}{(int)(c.a * 255):X2}";
 
     // "1-3" → 3, 파싱 실패 시 0
     public static int ParseStage(string zoneName)

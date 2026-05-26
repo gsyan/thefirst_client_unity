@@ -27,6 +27,7 @@ public static class CelestialBodyEditorGUI
             EditorGUILayout.EndHorizontal();
 
             body.position = EditorGUILayout.Vector3Field("Position", body.position);
+            body.rotation = EditorGUILayout.Vector3Field("Rotation", body.rotation);
             body.scale    = EditorGUILayout.Vector3Field("Scale",    body.scale);
 
             EditorGUILayout.Space(4);
@@ -45,8 +46,9 @@ public static class CelestialBodyEditorGUI
             EditorGUILayout.LabelField("─ Surface (Highland)", EditorStyles.miniLabel);
             body.highlandSnowColor    = EditorGUILayout.ColorField("Snow",    body.highlandSnowColor);
             EditorGUILayout.LabelField("─", EditorStyles.miniLabel);
-            body.landCoverage  = EditorGUILayout.Slider("Land Coverage",  body.landCoverage, 0f, 1f);
-            body.landRotation  = EditorGUILayout.Slider("Land Rotation°", body.landRotation, 0f, 360f);
+            body.landCoverage = EditorGUILayout.Slider("Land Coverage",  body.landCoverage, 0f, 1f);
+            body.biomeBlend   = EditorGUILayout.Slider("Biome Blend (R)", body.biomeBlend, 0f, 0.2f);
+            body.gBlend       = EditorGUILayout.Slider("G Blend (G)",     body.gBlend, 0f, 5f);
 
             EditorGUILayout.Space(4);
 
@@ -96,7 +98,7 @@ public static class CelestialBodyEditorGUI
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("+ 행성 추가"))
         {
-            bodies.Add(new CelestialBodyConfig { scale = Vector3.one * 20f });
+            bodies.Add(new CelestialBodyConfig());
             EditorUtility.SetDirty(dirtyTarget);
         }
         EditorGUILayout.EndHorizontal();

@@ -25,6 +25,22 @@ public class ZonePreviewComponentEditor : Editor
             EditorGUILayout.HelpBox("DataTableZone을 먼저 할당하세요.", MessageType.Info);
             return;
         }
+        
+        // 버튼 배치
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Refresh Preview", GUILayout.Height(28)))
+            comp.RefreshPreview();
+
+        if (GUILayout.Button("Apply to CSV", GUILayout.Height(28)))
+        {
+            DataTableZoneCSVUtility.ExportZoneAndCelestial(comp.dataTableZone);
+            Debug.Log("[ZonePreview] CSV 내보내기 완료");
+        }
+
+        if (GUILayout.Button("Clear Preview", GUILayout.Height(28)))
+            comp.ClearPreview();
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.Space(6);
 
         int zoneCount = comp.dataTableZone.zoneList.Count;
         if (zoneCount == 0)
@@ -51,39 +67,13 @@ public class ZonePreviewComponentEditor : Editor
         ZoneConfig zone = comp.dataTableZone.GetZone(comp.selectedZoneIndex);
         if (zone != null)
         {
-            DrawZoneInspector(comp.dataTableZone, zone);
+            DrawZoneInspector(comp, zone);
             EditorGUILayout.Space(4);
             DrawStagesInspector(comp.dataTableZone, zone.zoneIndex);
-        }
-
-        EditorGUILayout.Space(6);
-
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Refresh Preview", GUILayout.Height(28)))
-            comp.RefreshPreview();
-
-        if (GUILayout.Button("Apply to CSV", GUILayout.Height(28)))
-        {
-            DataTableZoneCSVUtility.ExportZoneAndCelestial(comp.dataTableZone);
-            Debug.Log("[ZonePreview] CSV 내보내기 완료");
-        }
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space(4);
-        if (GUILayout.Button("Convert Absolute → Relative (일회성 마이그레이션)"))
-        {
-            if (EditorUtility.DisplayDialog("마이그레이션",
-                "fleetPosition을 절대좌표에서 galaxyCameraTarget 기준 상대좌표로 변환합니다.\n이미 변환된 경우 재실행하면 값이 틀어집니다.\n\n계속하시겠습니까?", "변환", "취소"))
-            {
-                ConvertAbsoluteToRelative(comp.dataTableZone);
-            }
-        }
-
-        if (GUILayout.Button("Clear Preview"))
-            comp.ClearPreview();
+        }        
     }
 
-    private void DrawZoneInspector(DataTableZone table, ZoneConfig zone)
+    private void DrawZoneInspector(ZonePreviewComponent comp, ZoneConfig zone)
     {
         EditorGUI.BeginChangeCheck();
 
@@ -106,12 +96,15 @@ public class ZonePreviewComponentEditor : Editor
             EditorGUI.indentLevel++;
             if (zone.celestialBodies == null)
                 zone.celestialBodies = new List<CelestialBodyConfig>();
-            CelestialBodyEditorGUI.DrawCelestialBodyList(zone.celestialBodies, table);
+            CelestialBodyEditorGUI.DrawCelestialBodyList(zone.celestialBodies, comp.dataTableZone);
             EditorGUI.indentLevel--;
         }
 
         if (EditorGUI.EndChangeCheck())
-            EditorUtility.SetDirty(table);
+        {
+            EditorUtility.SetDirty(comp.dataTableZone);
+            comp.RefreshPreview();
+        }
     }
 
     private void DrawStagesInspector(DataTableZone table, int zoneIndex)
@@ -256,19 +249,5 @@ public class ZonePreviewComponentEditor : Editor
         }
     }
 
-    // 기존 절대좌표 데이터를 galaxyCameraTarget 기준 상대좌표로 일괄 변환 (일회성 마이그레이션)
-    private static void ConvertAbsoluteToRelative(DataTableZone table)
-    {
-        int converted = 0;
-        foreach (ZoneStageConfig stage in table.zoneStageList)
-        {
-            Vector3 center = table.GetZoneCenter(stage.zoneIndex);
-            stage.fleetPosition -= center;
-            converted++;
-        }
-        EditorUtility.SetDirty(table);
-        EditorUtility.DisplayDialog("완료", $"{converted}개 스테이지 변환 완료.\nApply to CSV로 저장하세요.", "OK");
-        SceneView.RepaintAll();
-    }
 }
 #endif

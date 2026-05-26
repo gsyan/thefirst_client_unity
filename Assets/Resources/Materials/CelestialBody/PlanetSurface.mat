@@ -89,7 +89,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _BiomeBlend: 0.05
+    - _BiomeBlend: 0.054
     - _BiomeEdgeCoast: 0
     - _BiomeEdgeLand: 0
     - _BiomeNoiseScale: 3
@@ -108,13 +108,13 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _ForestRatio: 0.3
-    - _GBlend: 0.15
+    - _GBlend: 0.72
     - _GVariantBlend: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GrasslandRatio: 0.3
-    - _HasPolarIce: 1
+    - _HasPolarIce: 0
     - _HighlandRatio: 0.3
     - _LandCoverage: 0.5
     - _Metallic: 0
@@ -123,7 +123,7 @@ Material:
     - _PoleIceWidth: 0.2
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RotationRad: 0
+    - _RotationRad: 0.4
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

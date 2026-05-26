@@ -7,8 +7,9 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class CelestialBodyConfig
 {
-    public Vector3 position;
-    public Vector3 scale = new Vector3(20f, 20f, 20f);
+    public Vector3 position = new Vector3(0f, 0f, 1000f);
+    public Vector3 rotation = Vector3.zero;
+    public Vector3 scale = new Vector3(500f, 500f, 500f);
 
     [HideInInspector] public Color deepSeaColor       = CommonUtility.HexColor("#0D2673");
     [HideInInspector] public Color shallowSeaColor    = CommonUtility.HexColor("#1A59A6");
@@ -19,8 +20,9 @@ public class CelestialBodyConfig
     [HideInInspector] public Color plainsForestColor  = CommonUtility.HexColor("#236523");
     [HideInInspector] public Color highlandSnowColor  = CommonUtility.HexColor("#E8F0F5");
     [Header("Surface (Common)")]
-    [Range(0f, 1f)]   public float landCoverage  = 0.5f;
-    [Range(0f, 360f)] public float landRotation  = 0f;
+    [Range(0f, 1f)]   public float landCoverage = 0.5f;
+    [Range(0f, 0.2f)] public float biomeBlend   = 0.01f;
+    [Range(0f, 5f)]   public float gBlend       = 0.02f;
 
     [Header("Cloud Layer")]
     public bool      hasClouds     = true;

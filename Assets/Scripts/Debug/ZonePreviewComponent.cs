@@ -8,6 +8,13 @@ public class ZonePreviewComponent : MonoBehaviour
 
     private const string PREVIEW_ROOT_NAME  = "ZonePreView";
     private const string CAMERA_TARGET_NAME = "CameraTarget";
+    private const string LAYER_SURFACE      = "Surface";
+    private const string LAYER_CLOUD        = "Cloud";
+    private const string LAYER_ATMOSPHERE   = "Atmosphere";
+
+    private const string MAT_SURFACE_PATH    = "Materials/CelestialBody/PlanetSurface";
+    private const string MAT_CLOUD_PATH      = "Materials/CelestialBody/PlanetCloud";
+    private const string MAT_ATMOSPHERE_PATH = "Materials/CelestialBody/PlanetAtmosphere";
 
     private void Awake()
     {
@@ -19,7 +26,24 @@ public class ZonePreviewComponent : MonoBehaviour
 
 #if UNITY_EDITOR
     private static readonly int ID_DeepSeaColor      = Shader.PropertyToID("_DeepSeaColor");
+    private static readonly int ID_ShallowSeaColor   = Shader.PropertyToID("_ShallowSeaColor");
+    private static readonly int ID_LowlandSandColor  = Shader.PropertyToID("_LowlandSandColor");
+    private static readonly int ID_LowlandGreenColor = Shader.PropertyToID("_LowlandGreenColor");
+    private static readonly int ID_PlainsDesertColor = Shader.PropertyToID("_PlainsDesertColor");
     private static readonly int ID_PlainsGrassColor  = Shader.PropertyToID("_PlainsGrassColor");
+    private static readonly int ID_PlainsForestColor = Shader.PropertyToID("_PlainsForestColor");
+    private static readonly int ID_HighlandSnowColor = Shader.PropertyToID("_HighlandSnowColor");
+    private static readonly int ID_LandCoverage      = Shader.PropertyToID("_LandCoverage");
+    private static readonly int ID_BiomeBlend        = Shader.PropertyToID("_BiomeBlend");
+    private static readonly int ID_GBlend            = Shader.PropertyToID("_GBlend");
+    private static readonly int ID_HasPolarIce       = Shader.PropertyToID("_HasPolarIce");
+    private static readonly int ID_IceColor          = Shader.PropertyToID("_IceColor");
+    private static readonly int ID_IceColorEdge      = Shader.PropertyToID("_IceColorEdge");
+    private static readonly int ID_PoleIceWidth      = Shader.PropertyToID("_PoleIceWidth");
+    private static readonly int ID_CloudTex          = Shader.PropertyToID("_CloudTex");
+    private static readonly int ID_CloudColor        = Shader.PropertyToID("_CloudColor");
+    private static readonly int ID_CloudCoverage     = Shader.PropertyToID("_CloudCoverage");
+    private static readonly int ID_AtmColor          = Shader.PropertyToID("_AtmosphereColor");
 
     public void RefreshPreview()
     {
@@ -33,7 +57,9 @@ public class ZonePreviewComponent : MonoBehaviour
             return;
         }
 
-        Material previewMat = Resources.Load<Material>("Materials/CelestialBody/PlanetSurface");
+        Material matSurface    = Resources.Load<Material>(MAT_SURFACE_PATH);
+        Material matCloud      = Resources.Load<Material>(MAT_CLOUD_PATH);
+        Material matAtmosphere = Resources.Load<Material>(MAT_ATMOSPHERE_PATH);
 
         GameObject root = new(PREVIEW_ROOT_NAME);
         root.transform.SetParent(transform);
@@ -42,24 +68,21 @@ public class ZonePreviewComponent : MonoBehaviour
         for (int i = 0; i < zone.celestialBodies.Count; i++)
         {
             CelestialBodyConfig body = zone.celestialBodies[i];
-            string objName = $"Planet_{i}";
 
-            GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            sphere.name = objName;
-            sphere.transform.SetParent(root.transform);
-            sphere.transform.position   = body.position;
-            sphere.transform.localScale = body.scale;
-            DestroyImmediate(sphere.GetComponent<Collider>());
+            GameObject planet = new($"Planet_{i}");
+            planet.transform.SetParent(root.transform);
+            planet.transform.SetPositionAndRotation(body.position, Quaternion.Euler(body.rotation));
 
-            Renderer rend = sphere.GetComponent<Renderer>();
-            rend.sharedMaterial = previewMat;
-            if (previewMat != null)
+            SpawnLayer(planet.transform, LAYER_SURFACE, body.scale, matSurface, BuildSurfaceBlock(body));
+
+            if (body.hasClouds && matCloud != null)
             {
-                var block = new MaterialPropertyBlock();
-                block.SetColor(ID_DeepSeaColor,     body.deepSeaColor);
-                block.SetColor(ID_PlainsGrassColor, body.plainsGrassColor);
-                rend.SetPropertyBlock(block);
+                Renderer cloudRend = SpawnLayer(planet.transform, LAYER_CLOUD, body.scale * body.cloudScale, matCloud, BuildCloudBlock(body));
+                cloudRend.transform.localRotation = Quaternion.Euler(0f, body.cloudRotation, 0f);
             }
+
+            if (body.hasAtmosphere && matAtmosphere != null)
+                SpawnLayer(planet.transform, LAYER_ATMOSPHERE, body.scale * body.atmosphereScale, matAtmosphere, BuildAtmosphereBlock(body));
         }
 
         GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -68,6 +91,59 @@ public class ZonePreviewComponent : MonoBehaviour
         marker.transform.position   = zone.galaxyCameraTarget;
         marker.transform.localScale = Vector3.one * 5f;
         DestroyImmediate(marker.GetComponent<Collider>());
+    }
+
+    private Renderer SpawnLayer(Transform parent, string layerName, Vector3 scale, Material mat, MaterialPropertyBlock block)
+    {
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.name = layerName;
+        go.transform.SetParent(parent, false);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localScale    = scale;
+        DestroyImmediate(go.GetComponent<Collider>());
+
+        Renderer r = go.GetComponent<Renderer>();
+        r.sharedMaterial = mat;
+        r.SetPropertyBlock(block);
+        return r;
+    }
+
+    private MaterialPropertyBlock BuildSurfaceBlock(CelestialBodyConfig cfg)
+    {
+        var block = new MaterialPropertyBlock();
+        block.SetColor(ID_DeepSeaColor,      cfg.deepSeaColor);
+        block.SetColor(ID_ShallowSeaColor,   cfg.shallowSeaColor);
+        block.SetColor(ID_LowlandSandColor,  cfg.lowlandSandColor);
+        block.SetColor(ID_LowlandGreenColor, cfg.lowlandGreenColor);
+        block.SetColor(ID_PlainsDesertColor, cfg.plainsDesertColor);
+        block.SetColor(ID_PlainsGrassColor,  cfg.plainsGrassColor);
+        block.SetColor(ID_PlainsForestColor, cfg.plainsForestColor);
+        block.SetColor(ID_HighlandSnowColor, cfg.highlandSnowColor);
+        block.SetFloat(ID_LandCoverage, cfg.landCoverage);
+        block.SetFloat(ID_BiomeBlend,   cfg.biomeBlend);
+        block.SetFloat(ID_GBlend,       cfg.gBlend);
+        block.SetFloat(ID_HasPolarIce,       cfg.hasPolarIce ? 1f : 0f);
+        block.SetColor(ID_IceColor,          cfg.iceColor);
+        block.SetColor(ID_IceColorEdge,      cfg.iceColorEdge);
+        block.SetFloat(ID_PoleIceWidth,      cfg.poleIceWidth);
+        return block;
+    }
+
+    private MaterialPropertyBlock BuildCloudBlock(CelestialBodyConfig cfg)
+    {
+        var block = new MaterialPropertyBlock();
+        if (cfg.cloudMaskTex != null)
+            block.SetTexture(ID_CloudTex, cfg.cloudMaskTex);
+        block.SetColor(ID_CloudColor,    cfg.cloudColor);
+        block.SetFloat(ID_CloudCoverage, cfg.cloudCoverage);
+        return block;
+    }
+
+    private MaterialPropertyBlock BuildAtmosphereBlock(CelestialBodyConfig cfg)
+    {
+        var block = new MaterialPropertyBlock();
+        block.SetColor(ID_AtmColor, cfg.atmosphereColor);
+        return block;
     }
 
     public void ClearPreview()
@@ -90,16 +166,22 @@ public class ZonePreviewComponent : MonoBehaviour
         if (planet == null) return;
 
         CelestialBodyConfig body = zone.celestialBodies[index];
-        planet.position   = body.position;
-        planet.localScale = body.scale;
+        planet.SetPositionAndRotation(body.position, Quaternion.Euler(body.rotation));
 
-        if (planet.TryGetComponent(out Renderer rend) == true)
+        Transform surface = planet.Find(LAYER_SURFACE);
+        if (surface != null && surface.TryGetComponent(out Renderer surfRend) == true)
+            surfRend.SetPropertyBlock(BuildSurfaceBlock(body));
+
+        Transform cloud = planet.Find(LAYER_CLOUD);
+        if (cloud != null && cloud.TryGetComponent(out Renderer cloudRend) == true)
         {
-            var block = new MaterialPropertyBlock();
-            block.SetColor(ID_DeepSeaColor,     body.deepSeaColor);
-            block.SetColor(ID_PlainsGrassColor, body.plainsGrassColor);
-            rend.SetPropertyBlock(block);
+            cloud.localRotation = Quaternion.Euler(0f, body.cloudRotation, 0f);
+            cloudRend.SetPropertyBlock(BuildCloudBlock(body));
         }
+
+        Transform atm = planet.Find(LAYER_ATMOSPHERE);
+        if (atm != null && atm.TryGetComponent(out Renderer atmRend) == true)
+            atmRend.SetPropertyBlock(BuildAtmosphereBlock(body));
     }
 
     public void SyncPreviewCameraTarget()
@@ -140,10 +222,15 @@ public class ZonePreviewComponent : MonoBehaviour
         foreach (Transform child in root)
         {
             if (child.name == CAMERA_TARGET_NAME) continue;
+
+            Transform surface = child.Find(LAYER_SURFACE);
+            Vector3 scale = surface != null ? surface.localScale : Vector3.one * 20f;
+
             zone.celestialBodies.Add(new CelestialBodyConfig
             {
                 position = child.position,
-                scale    = child.localScale,
+                rotation = child.eulerAngles,
+                scale    = scale,
             });
         }
 

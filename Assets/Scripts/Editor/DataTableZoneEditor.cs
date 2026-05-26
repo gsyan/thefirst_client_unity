@@ -182,25 +182,47 @@ public class DataTableZoneEditor : Editor
 
                 float F(int idx, float def = 0f) => col.Length > idx && float.TryParse(col[idx], out float v) ? v : def;
                 bool  B(int idx)                 => col.Length > idx && col[idx].Trim().ToLower() == "true";
+                Color C(int idx, Color def)
+                {
+                    if (col.Length <= idx) return def;
+                    return ColorUtility.TryParseHtmlString(col[idx].Trim(), out Color c) ? c : def;
+                }
 
-                // col 인덱스: 0=zone, 1~3=pos, 4~6=scale,
-                // 7=land_coverage, 8=land_rotation,
-                // 9=has_clouds, 10~13=cloud_rgba, 14=cloud_coverage, 15=cloud_rotation, 16=cloud_scale,
-                // 17=has_atmosphere, 18~20=atm_rgb, 21=atmosphere_scale
+                // col 인덱스: 0=zone, 1~3=pos, 4~6=rot, 7~9=scale,
+                // 10=land_coverage, 11=biome_blend, 12=g_blend,
+                // 13=deep_sea_color, 14=shallow_sea_color, 15=lowland_sand_color, 16=lowland_green_color,
+                // 17=plains_desert_color, 18=plains_grass_color, 19=plains_forest_color, 20=highland_snow_color,
+                // 21=has_polar_ice, 22=ice_color, 23=ice_color_edge, 24=pole_ice_width,
+                // 25=has_clouds, 26=cloud_color, 27=cloud_coverage, 28=cloud_rotation, 29=cloud_scale,
+                // 30=has_atmosphere, 31=atmosphere_color, 32=atmosphere_scale
                 zc.celestialBodies.Add(new CelestialBodyConfig
                 {
-                    position        = new Vector3(F(1), F(2), F(3)),
-                    scale           = new Vector3(F(4), F(5), F(6)),
-                    landCoverage    = F(7, 0.5f),
-                    landRotation    = F(8),
-                    hasClouds       = B(9),
-                    cloudColor      = new Color(F(10), F(11), F(12), F(13, 0.85f)),
-                    cloudCoverage   = F(14, 0.5f),
-                    cloudRotation   = F(15),
-                    cloudScale      = F(16, 1.02f),
-                    hasAtmosphere   = B(17),
-                    atmosphereColor = new Color(F(18), F(19), F(20)),
-                    atmosphereScale = F(21, 1.10f),
+                    position          = new Vector3(F(1), F(2), F(3)),
+                    rotation          = new Vector3(F(4), F(5), F(6)),
+                    scale             = new Vector3(F(7), F(8), F(9)),
+                    landCoverage      = F(10, 0.5f),
+                    biomeBlend        = F(11, 0.01f),
+                    gBlend            = F(12, 0.02f),
+                    deepSeaColor      = C(13, CommonUtility.HexColor("#0D2673")),
+                    shallowSeaColor   = C(14, CommonUtility.HexColor("#1A59A6")),
+                    lowlandSandColor  = C(15, CommonUtility.HexColor("#BFB380")),
+                    lowlandGreenColor = C(16, CommonUtility.HexColor("#90C060")),
+                    plainsDesertColor = C(17, CommonUtility.HexColor("#A99159")),
+                    plainsGrassColor  = C(18, CommonUtility.HexColor("#478C2E")),
+                    plainsForestColor = C(19, CommonUtility.HexColor("#236523")),
+                    highlandSnowColor = C(20, CommonUtility.HexColor("#E8F0F5")),
+                    hasPolarIce       = B(21),
+                    iceColor          = C(22, CommonUtility.HexColor("#F2FAFF")),
+                    iceColorEdge      = C(23, CommonUtility.HexColor("#ADD1F0")),
+                    poleIceWidth      = F(24, 0.12f),
+                    hasClouds         = B(25),
+                    cloudColor        = C(26, CommonUtility.HexColor("#FFFFFFD9")),
+                    cloudCoverage     = F(27, 0.5f),
+                    cloudRotation     = F(28),
+                    cloudScale        = F(29, 1.001f),
+                    hasAtmosphere     = B(30),
+                    atmosphereColor   = C(31, CommonUtility.HexColor("#4D99FF")),
+                    atmosphereScale   = F(32, 1.002f),
                 });
             }
         }

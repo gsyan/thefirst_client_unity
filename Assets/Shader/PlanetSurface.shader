@@ -3,7 +3,7 @@ Shader "Custom/PlanetSurface"
     Properties
     {
         _LandMaskTex   ("Land Mask (RG)",  2D)           = "white" {}
-        
+
         // 색 — Inspector 비노출, MPB로 설정. 기본값은 에디터 프리뷰용
         _DeepSeaColor         ("DeepSeaColor",Color) = (0.05, 0.15, 0.45, 1)
         _ShallowSeaColor      ("ShallowSeaColor",Color) = (0.10, 0.35, 0.65, 1)
@@ -18,13 +18,12 @@ Shader "Custom/PlanetSurface"
 
         [Header(Common)]
         _LandCoverage  ("Land Coverage",   Range(0,1))   = 0.5
-        _RotationRad   ("Rotation Rad",    Float)        = 0.0
         _DarkSideMin   ("Dark Side Min",   Range(0,1))   = 0.15
         _HasPolarIce   ("Has Polar Ice",   Float)        = 0.0
         _PoleIceWidth  ("Pole Ice Width",  Range(0,0.4)) = 0.12
         [Header(Biome Blend)]
-        _BiomeBlend    ("BiomeBlend (R)",  Range(0,0.05)) = 0.01
-        _GBlend        ("GBlend (G)",      Range(0,0.15)) = 0.02        
+        _BiomeBlend    ("BiomeBlend (R)",  Range(0,0.2)) = 0.01
+        _GBlend        ("GBlend (G)",      Range(0,5)) = 0.02
     }
 
     SubShader
@@ -64,7 +63,6 @@ Shader "Custom/PlanetSurface"
                 half4  _PlainsForestColor;
                 half4  _HighlandSnowColor;
                 half   _LandCoverage;
-                float  _RotationRad;
                 half   _DarkSideMin;
                 half   _HasPolarIce;
                 half4  _IceColor;
@@ -94,18 +92,10 @@ Shader "Custom/PlanetSurface"
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
-            float2 RotateUV(float2 uv, float rad)
-            {
-                float2 c = uv - 0.5;
-                float  s = sin(rad), cs = cos(rad);
-                return float2(cs * c.x - s * c.y, s * c.x + cs * c.y) + 0.5;
-            }
-
             half4 frag(Varyings IN) : SV_Target
             {
                 // ── 1. 텍스처 샘플링 (R=고도, G=변이) ────────────────────
-                float2 uv  = RotateUV(IN.uv, _RotationRad);
-                half2  rg  = SAMPLE_TEXTURE2D(_LandMaskTex, sampler_LandMaskTex, uv).rg;
+                half2  rg  = SAMPLE_TEXTURE2D(_LandMaskTex, sampler_LandMaskTex, IN.uv).rg;
                 half   r   = rg.r;   // 고도 (raw, 0~1)
                 half   g   = rg.g;   // 변이 (0~1)
                 half   mask   = r + (_LandCoverage - 0.5h) * 2.0h;  // 보정된 지형 높이

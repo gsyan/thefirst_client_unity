@@ -23,7 +23,8 @@ public class CelestialBodySpawner : MonoBehaviour
     private static readonly int ID_PlainsForestColor = Shader.PropertyToID("_PlainsForestColor");
     private static readonly int ID_HighlandSnowColor    = Shader.PropertyToID("_HighlandSnowColor");
     private static readonly int ID_LandCoverage    = Shader.PropertyToID("_LandCoverage");
-    private static readonly int ID_RotationRad     = Shader.PropertyToID("_RotationRad");
+    private static readonly int ID_BiomeBlend   = Shader.PropertyToID("_BiomeBlend");
+    private static readonly int ID_GBlend       = Shader.PropertyToID("_GBlend");
     private static readonly int ID_HasPolarIce  = Shader.PropertyToID("_HasPolarIce");
     private static readonly int ID_IceColor     = Shader.PropertyToID("_IceColor");
     private static readonly int ID_IceColorEdge = Shader.PropertyToID("_IceColorEdge");
@@ -93,15 +94,18 @@ public class CelestialBodySpawner : MonoBehaviour
     {
         GameObject root = new GameObject($"Planet_z{zoneIndex}_{bodyIndex}");
         root.transform.SetParent(m_root.transform);
-        root.transform.position = cfg.position;
+        root.transform.SetPositionAndRotation(cfg.position, Quaternion.Euler(cfg.rotation));
 
         Renderer surfaceRenderer = SpawnLayer(root.transform, "Surface",
             cfg.scale, m_matSurface, BuildSurfaceBlock(cfg));
 
         Renderer cloudRenderer = null;
         if (cfg.hasClouds && m_matCloud != null)
+        {
             cloudRenderer = SpawnLayer(root.transform, "Cloud",
                 cfg.scale * cfg.cloudScale, m_matCloud, BuildCloudBlock(cfg));
+            cloudRenderer.transform.localRotation = Quaternion.Euler(0f, cfg.cloudRotation, 0f);
+        }
 
         Renderer atmRenderer = null;
         if (cfg.hasAtmosphere && m_matAtmosphere != null)
@@ -117,7 +121,7 @@ public class CelestialBodySpawner : MonoBehaviour
     {
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         go.name = layerName;
-        go.transform.SetParent(parent);
+        go.transform.SetParent(parent, false);
         go.transform.localPosition = Vector3.zero;
         go.transform.localScale    = scale;
         Destroy(go.GetComponent<Collider>());
@@ -140,7 +144,8 @@ public class CelestialBodySpawner : MonoBehaviour
         block.SetColor(ID_PlainsForestColor, cfg.plainsForestColor);
         block.SetColor(ID_HighlandSnowColor,    cfg.highlandSnowColor);
         block.SetFloat(ID_LandCoverage, cfg.landCoverage);
-        block.SetFloat(ID_RotationRad,  cfg.landRotation * Mathf.Deg2Rad);
+        block.SetFloat(ID_BiomeBlend,   cfg.biomeBlend);
+        block.SetFloat(ID_GBlend,       cfg.gBlend);
         block.SetFloat(ID_HasPolarIce,  cfg.hasPolarIce ? 1f : 0f);
         block.SetColor(ID_IceColor,     cfg.iceColor);
         block.SetColor(ID_IceColorEdge, cfg.iceColorEdge);
@@ -155,7 +160,6 @@ public class CelestialBodySpawner : MonoBehaviour
             block.SetTexture(ID_CloudTex, cfg.cloudMaskTex);
         block.SetColor(ID_CloudColor,    cfg.cloudColor);
         block.SetFloat(ID_CloudCoverage, cfg.cloudCoverage);
-        block.SetFloat(ID_RotationRad,   cfg.cloudRotation * Mathf.Deg2Rad);
         return block;
     }
 
