@@ -803,6 +803,10 @@ MonoBehaviour:
     m_Key: Simple_MineralX
     m_Metadata:
       m_Items: []
+  - m_Id: 38995797596831744
+    m_Key: Simple_FleetFullRepair
+    m_Metadata:
+      m_Items: []
   - m_Id: 34837143750574082
     m_Key: Simple_Free
     m_Metadata:

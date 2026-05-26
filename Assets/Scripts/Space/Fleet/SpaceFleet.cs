@@ -747,6 +747,12 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
         }
     }
 
+    public void FullRepair()
+    {
+        ApplyHealthRatio(1f);
+        SaveHealthToServer();
+    }
+
     // 모든 함선의 체력을 지정 비율로 설정
     private void ApplyHealthRatio(float ratio)
     {

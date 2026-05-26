@@ -818,6 +818,10 @@ MonoBehaviour:
     m_Localized: Retreat to the previous zone?
     m_Metadata:
       m_Items: []
+  - m_Id: 38995797596831744
+    m_Localized: FLEET FULL REPAIR
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

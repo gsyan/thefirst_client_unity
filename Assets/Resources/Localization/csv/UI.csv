@@ -196,6 +196,7 @@ Simple_WatchAD,,WATCH AD,광고 보기
 Simple_NoThanks,,NO THANKS,건너뛰기
 Simple_MineralX1,,1 x MINERAL,광물 보상 1배
 Simple_MineralX,,{0} x MINERAL,광물 보상 {0}배
+Simple_FleetFullRepair,,FULL REPAIR,함대 완전 회복
 Simple_Free,,FREE,무료
 Simple_Cancel,,CANCEL,취소
 Simple_Confirm,,CONFIRM,확인

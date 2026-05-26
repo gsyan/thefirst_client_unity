@@ -656,7 +656,7 @@ public class UITabExploration : UITabBase
             cancelText1   = loc.Get("Simple_NoThanks"),
             cancelText2   = loc.Get("Simple_MineralX1"),
             confirmText1  = loc.Get("Simple_WatchAD"),
-            confirmText2  = loc.Get("Simple_MineralX", 2),
+            confirmText2  = loc.Get("Simple_MineralX", 2) + "\n" + loc.Get("Simple_FleetFullRepair"),
             onCancel      = OnClaimRewardX1,
             onConfirm     = OnWatchAdForDoubleReward,
         });
@@ -674,6 +674,7 @@ public class UITabExploration : UITabBase
 #if UNITY_EDITOR
         if (AdManager.s_devSkipAd == true)
         {
+            if (m_myFleet != null) m_myFleet.FullRepair();
             SendClaimZoneReward(true);
             return;
         }
@@ -691,7 +692,10 @@ public class UITabExploration : UITabBase
 
         AdManager.Instance.ShowRewardedAd(result =>
         {
-            SendClaimZoneReward(result == EAdResult.Rewarded);
+            bool rewarded = result == EAdResult.Rewarded;
+            if (rewarded == true && m_myFleet != null)
+                m_myFleet.FullRepair();
+            SendClaimZoneReward(rewarded);
         });
     }
 
