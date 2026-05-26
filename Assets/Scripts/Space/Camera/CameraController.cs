@@ -253,6 +253,8 @@ public class CameraController : MonoSingleton<CameraController>
 
     // 탭 판정 — 누를 때와 뗄 때 같은 콜라이더를 픽하면 선택
     private Collider m_tapHitCollider;
+    // 마지막 유효 입력 스크린 좌표 (마우스/터치 공통) — onClick 콜백 등 입력 시점 외부에서 사용
+    public Vector3 m_lastInputScreenPosition { get; private set; }
 
     private void Update()
     {
@@ -326,6 +328,7 @@ public class CameraController : MonoSingleton<CameraController>
         // 좌클릭: 누를 때 픽 저장, 뗄 때 같은 콜라이더면 선택
         if (mouse.leftButton.wasPressedThisFrame == true)
         {
+            m_lastInputScreenPosition = mousePos;
             m_startTouchPosition = mousePos;
             LayerMask pickMask = ~m_layerMaskShield;
             m_tapHitCollider = IsPointerOverUIObject() == false && GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, mousePos)
@@ -408,6 +411,7 @@ public class CameraController : MonoSingleton<CameraController>
             }
             if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
             {
+                m_lastInputScreenPosition = pos;
                 // 터치 시작이 UI 위면 해당 터치 전체를 UI에게 양보
                 m_touchBlockedByUI = IsPointerOverUIObject();
                 if (m_touchBlockedByUI == false)
@@ -635,7 +639,7 @@ public class CameraController : MonoSingleton<CameraController>
             return false;
         }
 
-        Vector3 inputPos = screenPosition ?? (Mouse.current != null ? (Vector3)Mouse.current.position.ReadValue() : Vector3.zero);
+        Vector3 inputPos = screenPosition ?? m_lastInputScreenPosition;
         Ray ray = m_targetCamera.ScreenPointToRay(inputPos);
         if (layerMask == default)
             return Physics.Raycast(ray, out hit, maxDistance);
