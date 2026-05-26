@@ -761,7 +761,8 @@ public class UITabShip : UITabBase
     private void OnModuleSelectorClicked(ModuleBase module)
     {
         if (m_selectedShip == null || module == null) return;
-        CameraController.Instance.FocusOnModuleIfHidden(module.m_moduleSlot);
+        if (m_myFleet == null || m_myFleet.m_fleetState != EUnitState.Battle)
+            CameraController.Instance.FocusOnModuleIfHidden(module.m_moduleSlot);
         EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, module);
     }
 

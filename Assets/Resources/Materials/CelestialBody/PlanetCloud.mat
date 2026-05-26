@@ -95,10 +95,10 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _CloudCoverage: 0.5
-    - _CloudSoftness: 0.423
+    - _CloudSoftness: 0.5
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DarkSideMin: 0.5
+    - _DarkSideMin: 0.521
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -109,7 +109,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _MidLatCenter: 0.405
-    - _MidLatOpacity: 0.917
+    - _MidLatOpacity: 0.75
     - _MidLatWidth: 0.34
     - _OcclusionStrength: 1
     - _Parallax: 0.005

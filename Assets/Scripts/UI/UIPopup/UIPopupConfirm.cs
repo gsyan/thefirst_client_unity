@@ -47,7 +47,7 @@ public class UIPopupConfirm : UIPopupBase
     [SerializeField] private TMP_Text m_cancelText1;
     [SerializeField] private TMP_Text m_cancelText2;
 
-    [SerializeField] private Button confirmButton;
+    [SerializeField] private UIButtonHasChildren confirmButton;
     [SerializeField] private Image m_confirmImage;
     [SerializeField] private TMP_Text m_confirmText1;
     [SerializeField] private TMP_Text m_confirmText2;
@@ -62,7 +62,7 @@ public class UIPopupConfirm : UIPopupBase
     {
         base.Awake();
         if (cancelButton != null) cancelButton.onClick.AddListener(OnCancelClicked);
-        if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
+        if (confirmButton != null) confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
 
         if (m_cancelImage != null) m_defaultCancelImage = m_cancelImage.sprite;
         if (m_confirmImage != null) m_defaultConfirmImage = m_confirmImage.sprite;
@@ -93,7 +93,7 @@ public class UIPopupConfirm : UIPopupBase
         BuildRewardSection(config.rewardAmounts);
         BuildButtonSection(config);
 
-        if (confirmButton != null) confirmButton.interactable = canConfirm;
+        if (confirmButton != null) confirmButton.SetInteractable(canConfirm);
 
         onCancelCallback = config.onCancel;
         onConfirmCallback = config.onConfirm;

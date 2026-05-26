@@ -25,8 +25,6 @@ public class UITabExploration : UITabBase
     private readonly Dictionary<string, UIZoneStageButton> m_zoneStageButtons = new Dictionary<string, UIZoneStageButton>();
     private readonly Dictionary<int, ZoneStageConfig> m_selectedZoneStagePerGroup = new();
 
-    private int m_selectedZoneIndex = 1;
-
     [Header("뷰 전환 타이밍")]
     [SerializeField] private float m_fleetHideDelay = 0.5f; // 함대뷰→갤럭시뷰 전환 시 함대 숨기기 딜레이(초)
 
@@ -106,17 +104,16 @@ public class UITabExploration : UITabBase
 
     private void OnGroupTabClicked(int groupIndex)
     {
-        m_selectedZoneIndex = groupIndex;
         ObjectManager.Instance.ChangeZone(groupIndex);
         SetupButtonsForGroup(groupIndex);
-        UpdateGroupTabVisual();
+        UpdateGroupTabVisual(groupIndex);
     }
 
-    private void UpdateGroupTabVisual()
+    private void UpdateGroupTabVisual(int groupIndex)
     {
         if (m_zoneTabButtons == null) return;
         for (int i = 0; i < m_zoneTabButtons.Length; i++)
-            m_zoneTabButtons[i].SetSelected((i + 1) == m_selectedZoneIndex);
+            m_zoneTabButtons[i].SetSelected((i + 1) == groupIndex);
     }
 
     // 초기 그룹 인덱스 및 현재 함대 스테이지 결정 — 버튼 생성은 OnTabActivated의 SetupButtonsForGroup에서
@@ -128,8 +125,6 @@ public class UITabExploration : UITabBase
         if (clearedZoneNames != null && clearedZoneNames.Count > 0)
         {
             string lastCleared = clearedZoneNames[^1];
-            int group = ParseZoneGroup(lastCleared);
-            if (group > 0) m_selectedZoneIndex = group;
             m_currentZoneStage = m_datatableZone.GetZoneStageByName(lastCleared);
         }
     }
@@ -251,13 +246,16 @@ public class UITabExploration : UITabBase
             m_hideFleetCoroutine = StartCoroutine(HideFleetDelayed());
         }
 
-        // 이전에 선택한 존의 천체 배치
-        ObjectManager.Instance.ChangeZone(m_selectedZoneIndex);
+        // 최고 클리어 스테이지가 속한 존 그룹으로 열기
+        int groupIndex = m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1;
+        if (groupIndex <= 0) groupIndex = 1;
+
+        ObjectManager.Instance.ChangeZone(groupIndex);
 
         if (CameraController.Instance != null)
         {
             CameraController.Instance.OnGalaxyViewSettled += OnCameraGalaxyViewSettled;
-            var zoneConfig = m_datatableZone.GetZoneByZoneIndex(m_selectedZoneIndex);
+            var zoneConfig = m_datatableZone.GetZoneByZoneIndex(groupIndex);
             if (zoneConfig != null)
                 CameraController.Instance.EnterGalaxyView(
                     zoneConfig.galaxyCameraTarget,
@@ -266,8 +264,8 @@ public class UITabExploration : UITabBase
                     zoneConfig.galaxyCameraRotY);
         }
 
-        SetupButtonsForGroup(m_selectedZoneIndex);
-        UpdateGroupTabVisual();
+        SetupButtonsForGroup(groupIndex);
+        UpdateGroupTabVisual(groupIndex);
 
         if (m_zoneButtonRoot != null) m_zoneButtonRoot.gameObject.SetActive(false);
 
@@ -370,7 +368,7 @@ public class UITabExploration : UITabBase
     }
 
     private void OnDestroy()
-    {
+    {        
         EventManager.Unsubscribe_RetreatRequested(RetreatToPreviousStage);
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterReturn);
@@ -396,7 +394,7 @@ public class UITabExploration : UITabBase
 
     private void OnZoneStageButtonClicked(ZoneStageConfig zoneStage)
     {
-        m_selectedZoneStagePerGroup[m_selectedZoneIndex] = zoneStage;
+        m_selectedZoneStagePerGroup[ParseZoneGroup(zoneStage.zoneName)] = zoneStage;
         ApplyZoneStageSelection(zoneStage);
     }
 
@@ -666,6 +664,12 @@ public class UITabExploration : UITabBase
             SelectNextZoneStage(newlyCleared);
             UpdateCurrentZoneStageOnClear(newlyCleared);
         }
+        else if (m_battleZoneStage != null)
+        {
+            // 재도전 클리어: m_currentZoneStage를 방금 클리어한 스테이지로 갱신
+            RefreshCurrentZoneStageButton();
+            UpdateCurrentZoneStageOnClear(m_battleZoneStage.zoneName);
+        }
 
         m_pendingRewardIsFirstClear = response.data.isFirstClear;
         StayInCurrentStage();
@@ -786,8 +790,6 @@ public class UITabExploration : UITabBase
                     break;
                 }
             }
-            if (nextStage != null)
-                m_selectedZoneIndex = nextGroup;
         }
 
         if (nextStage == null) return;
@@ -874,6 +876,9 @@ public class UITabExploration : UITabBase
 
         ObjectManager.Instance.SetMyFleetPosition(retreatPosition, retreatRotationY);
 
+        int retreatGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : (m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1);
+        if (retreatGroup <= 0) retreatGroup = 1;
+
         m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
             SetOtherTabsVisible(true, includeSelf: true);
@@ -883,8 +888,8 @@ public class UITabExploration : UITabBase
             RefreshCurrentZoneStageButton();
 
             SetFleetState(EUnitState.Idle);
-            UpdateGroupTabVisual();
-            SetupButtonsForGroup(m_selectedZoneIndex);
+            UpdateGroupTabVisual(retreatGroup);
+            SetupButtonsForGroup(retreatGroup);
 
             if (m_isFleetWiped == true)
             {
@@ -908,6 +913,19 @@ public class UITabExploration : UITabBase
 
         SetFleetState(EUnitState.Idle);
 
+        if (m_myFleet != null)
+        {
+            if (m_isFleetWiped == true)
+            {
+                m_myFleet.RebuildFleet(0.1f);
+                m_isFleetWiped = false;
+            }
+            else
+            {
+                m_myFleet.RestoreDestroyedShips(0.1f);
+            }
+        }
+
         // 갤럭시뷰 중에 전투가 완료된 경우 함대를 즉시 오프스크린으로 이동
         if (CameraController.Instance != null && CameraController.Instance.IsGalaxyView == true)
         {
@@ -915,8 +933,10 @@ public class UITabExploration : UITabBase
                 m_myFleet.transform.position = new Vector3(0f, -9999f, 0f);
         }
 
-        UpdateGroupTabVisual();
-        SetupButtonsForGroup(m_selectedZoneIndex);
+        int battleGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : (m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1);
+        if (battleGroup <= 0) battleGroup = 1;
+        UpdateGroupTabVisual(battleGroup);
+        SetupButtonsForGroup(battleGroup);
     }
 
     // 현재 존에서 클리어한 스테이지 중 가장 높은 것 반환 — 없으면 null(→ 해당 존 최초지점으로 복귀)

@@ -73,7 +73,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 365, y: -177.47}
+  m_AnchoredPosition: {x: 365, y: -284.97}
   m_SizeDelta: {x: 600, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &39981528839241435
@@ -2254,8 +2254,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286748160
-  m_fontColor: {r: 0, g: 0.588, b: 0.51, a: 1}
+    rgba: 4286775040
+  m_fontColor: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2866,8 +2866,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286748160
-  m_fontColor: {r: 0, g: 0.588, b: 0.51, a: 1}
+    rgba: 4286775040
+  m_fontColor: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3364,7 +3364,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 365, y: -646.97}
+  m_AnchoredPosition: {x: 365, y: -861.97}
   m_SizeDelta: {x: 0, y: 84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3969859062878126943
@@ -4013,7 +4013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.588, b: 0.51, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4102,11 +4102,11 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 6711368009149993888}
-    colorRole: GeneralDark1
+    colorRole: GeneralBright1
   - graphic: {fileID: 259491254986148872}
     colorRole: GeneralBright1
   - graphic: {fileID: 328737400085455059}
-    colorRole: GeneralDark1
+    colorRole: GeneralBright1
   - graphic: {fileID: 4265679742899598258}
     colorRole: Locked
 --- !u!1 &3566079549636553504
@@ -4441,6 +4441,7 @@ GameObject:
   - component: {fileID: 8102772182830076038}
   - component: {fileID: 4377806017870917015}
   - component: {fileID: 609538688749302109}
+  - component: {fileID: 6533089249962096726}
   m_Layer: 5
   m_Name: ConfirmButton
   m_TagString: Untagged
@@ -4490,7 +4491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.588, b: 0.51, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4579,13 +4580,25 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 1928210583056727490}
-    colorRole: GeneralDark1
+    colorRole: GeneralBright1
   - graphic: {fileID: 4472693167236957073}
     colorRole: GeneralBright1
   - graphic: {fileID: 702868210318319230}
-    colorRole: GeneralDark1
+    colorRole: GeneralBright1
   - graphic: {fileID: 6874762380913346963}
     colorRole: Locked
+--- !u!114 &6533089249962096726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4032829383038097435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
 --- !u!1 &4103947197015853896
 GameObject:
   m_ObjectHideFlags: 0
@@ -7844,7 +7857,7 @@ MonoBehaviour:
   m_cancelImage: {fileID: 259491254986148872}
   m_cancelText1: {fileID: 328737400085455059}
   m_cancelText2: {fileID: 4265679742899598258}
-  confirmButton: {fileID: 8102772182830076038}
+  confirmButton: {fileID: 6533089249962096726}
   m_confirmImage: {fileID: 4472693167236957073}
   m_confirmText1: {fileID: 702868210318319230}
   m_confirmText2: {fileID: 6874762380913346963}

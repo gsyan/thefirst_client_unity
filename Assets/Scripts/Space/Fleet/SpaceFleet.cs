@@ -728,6 +728,13 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
                         body.m_health = body.m_healthMax * healthRatio;
                 }
                 newShip.UpdateShipStatCur();
+
+                var targets = CalculateFormationTargets(m_currentFormationType);
+                if (targets.TryGetValue(newShip, out Vector3 formationTarget))
+                {
+                    float offsetZ = newShip.CalculateShipBounds().size.z * m_spawnOffsetMultiplier;
+                    newShip.transform.localPosition = new Vector3(formationTarget.x, formationTarget.y, formationTarget.z - offsetZ);
+                }
             }
             hasRestored = true;
         }

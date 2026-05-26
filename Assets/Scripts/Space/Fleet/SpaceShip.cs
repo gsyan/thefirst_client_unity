@@ -308,6 +308,8 @@ public class SpaceShip : MonoBehaviour
 
     virtual public void TakeDamage(float attackPower)
     {
+        // 이미 죽었다면 리턴
+        if (IsAlive() == false) return;
         // 살아있는 바디 중 하나에 랜덤으로 데미지 분산 (또는 첫 번째 바디에)
         ModuleBody targetBody = GetRandomAliveBody();
         if (targetBody != null)
@@ -321,6 +323,7 @@ public class SpaceShip : MonoBehaviour
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
         
+        // 데이미 처리 후 살았다면 이후 로직 생략
         if (IsAlive() == true) return;
         // 코루틴 중지
         StopAllCoroutines();        

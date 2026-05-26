@@ -11,7 +11,7 @@ public class UIPopupRenameCharacter : UIPopupBase
     [Header("UI References")]
     [SerializeField] private TMP_InputField m_nameInput;
     [SerializeField] private TMP_Text m_validationText;
-    [SerializeField] private Button m_confirmButton;
+    [SerializeField] private UIButtonHasChildren m_confirmButton;
     [SerializeField] private Button m_cancelButton;
 
     [Header("색상")]
@@ -36,7 +36,7 @@ public class UIPopupRenameCharacter : UIPopupBase
     {
         base.Awake();
         m_forbiddenWords = Resources.Load<DataTableForbiddenWords>("DataTable/DataTableForbiddenWords");
-        if (m_confirmButton != null) m_confirmButton.onClick.AddListener(OnConfirmClicked);
+        if (m_confirmButton != null) m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
         if (m_cancelButton != null)  m_cancelButton.onClick.AddListener(OnCancelClicked);
         if (m_nameInput != null)
         {
@@ -133,7 +133,7 @@ public class UIPopupRenameCharacter : UIPopupBase
     {
         if (m_isNameValid == false) return;
 
-        m_confirmButton.interactable = false;  // 중복 클릭 방지
+        m_confirmButton.SetInteractable(false);  // 중복 클릭 방지
 
         var request = new CharacterRenameRequest { newName = m_nameInput.text };
         NetworkManager.Instance.RenameCharacter(request, OnRenameResponse);
@@ -187,6 +187,6 @@ public class UIPopupRenameCharacter : UIPopupBase
         if (m_confirmButton == null) return;
         var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
         bool hasRemaining = (info?.nameChangeCount ?? 0) > 0;
-        m_confirmButton.interactable = m_isNameValid && hasRemaining;
+        m_confirmButton.SetInteractable(m_isNameValid && hasRemaining);
     }
 }

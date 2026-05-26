@@ -285,8 +285,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286748160
-  m_fontColor: {r: 0, g: 0.588, b: 0.51, a: 1}
+    rgba: 4286775040
+  m_fontColor: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -518,7 +518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.588, b: 0.51, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -607,11 +607,11 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 6906197052896043748}
-    colorRole: GeneralDark1
+    colorRole: GeneralBright1
   - graphic: {fileID: 5183032861209965265}
     colorRole: GeneralBright1
   - graphic: {fileID: 6930773897343314749}
-    colorRole: GeneralDark1
+    colorRole: GeneralBright1
   - graphic: {fileID: 8432995920668521078}
     colorRole: Locked
 --- !u!1 &3200875571787691497
@@ -807,6 +807,7 @@ GameObject:
   - component: {fileID: 5536381245389902009}
   - component: {fileID: 6973902777940486378}
   - component: {fileID: 8402425836844299189}
+  - component: {fileID: 7358758510399807050}
   m_Layer: 5
   m_Name: ConfirmButton
   m_TagString: Untagged
@@ -856,7 +857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.588, b: 0.51, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -945,13 +946,25 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 865141999356859081}
-    colorRole: GeneralDark1
+    colorRole: GeneralBright1
   - graphic: {fileID: 2691219171728657371}
     colorRole: GeneralBright1
   - graphic: {fileID: 6925928467973856930}
-    colorRole: GeneralDark1
+    colorRole: GeneralBright1
   - graphic: {fileID: 3653468092633292019}
     colorRole: Locked
+--- !u!114 &7358758510399807050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3386958411918537583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
 --- !u!1 &4118681288495849241
 GameObject:
   m_ObjectHideFlags: 0
@@ -1398,7 +1411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_nameInput: {fileID: 1373412928284982557}
   m_validationText: {fileID: 2544851973035186441}
-  m_confirmButton: {fileID: 5536381245389902009}
+  m_confirmButton: {fileID: 7358758510399807050}
   m_cancelButton: {fileID: 2312237558819746245}
   m_colorAvailable: {r: 0, g: 1, b: 0, a: 1}
   m_colorError: {r: 1, g: 0, b: 0, a: 1}
@@ -1478,8 +1491,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286748160
-  m_fontColor: {r: 0, g: 0.588, b: 0.51, a: 1}
+    rgba: 4286775040
+  m_fontColor: {r: 0, g: 1, b: 0.50980395, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

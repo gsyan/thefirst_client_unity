@@ -140,8 +140,8 @@ public class UIResourceBar : MonoBehaviour
         handle = StartCoroutine(AnimateCounter(textUI, from, to));
     }
 
-    // from → to 를 1초 안에 카운팅 (증가/감소 모두 적용)
-    private IEnumerator AnimateCounter(TMP_Text textUI, long from, long to, float duration = 0.5f)
+    // from → to 카운팅 (변화량 * 0.03초, 최대 0.5초)
+    private IEnumerator AnimateCounter(TMP_Text textUI, long from, long to)
     {
         if (from < 0 || from == to)
         {
@@ -149,6 +149,7 @@ public class UIResourceBar : MonoBehaviour
             yield break;
         }
 
+        float duration = Mathf.Min(Mathf.Abs(to - from) * 0.03f, 0.5f);
         float elapsed = 0f;
         while (elapsed < duration)
         {

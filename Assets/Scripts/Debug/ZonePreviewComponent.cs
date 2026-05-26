@@ -40,10 +40,14 @@ public class ZonePreviewComponent : MonoBehaviour
     private static readonly int ID_IceColor          = Shader.PropertyToID("_IceColor");
     private static readonly int ID_IceColorEdge      = Shader.PropertyToID("_IceColorEdge");
     private static readonly int ID_PoleIceWidth      = Shader.PropertyToID("_PoleIceWidth");
-    private static readonly int ID_CloudTex          = Shader.PropertyToID("_CloudTex");
-    private static readonly int ID_CloudColor        = Shader.PropertyToID("_CloudColor");
-    private static readonly int ID_CloudCoverage     = Shader.PropertyToID("_CloudCoverage");
-    private static readonly int ID_AtmColor          = Shader.PropertyToID("_AtmosphereColor");
+    private static readonly int ID_CloudTex           = Shader.PropertyToID("_CloudTex");
+    private static readonly int ID_CloudColor         = Shader.PropertyToID("_CloudColor");
+    private static readonly int ID_CloudCoverage      = Shader.PropertyToID("_CloudCoverage");
+    private static readonly int ID_CloudMidLatOpacity = Shader.PropertyToID("_MidLatOpacity");
+    private static readonly int ID_CloudMidLatCenter  = Shader.PropertyToID("_MidLatCenter");
+    private static readonly int ID_CloudMidLatWidth   = Shader.PropertyToID("_MidLatWidth");
+    private static readonly int ID_CloudSoftness      = Shader.PropertyToID("_CloudSoftness");
+    private static readonly int ID_AtmColor           = Shader.PropertyToID("_AtmosphereColor");
 
     public void RefreshPreview()
     {
@@ -134,8 +138,12 @@ public class ZonePreviewComponent : MonoBehaviour
         var block = new MaterialPropertyBlock();
         if (cfg.cloudMaskTex != null)
             block.SetTexture(ID_CloudTex, cfg.cloudMaskTex);
-        block.SetColor(ID_CloudColor,    cfg.cloudColor);
-        block.SetFloat(ID_CloudCoverage, cfg.cloudCoverage);
+        block.SetColor(ID_CloudColor,          cfg.cloudColor);
+        block.SetFloat(ID_CloudCoverage,       cfg.cloudCoverage);
+        block.SetFloat(ID_CloudMidLatOpacity,  cfg.cloudMidLatOpacity);
+        block.SetFloat(ID_CloudMidLatCenter,   cfg.cloudMidLatCenter);
+        block.SetFloat(ID_CloudMidLatWidth,    cfg.cloudMidLatWidth);
+        block.SetFloat(ID_CloudSoftness,       cfg.cloudSoftness);
         return block;
     }
 

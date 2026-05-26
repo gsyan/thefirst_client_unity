@@ -110,6 +110,7 @@ public static class DataTableZoneCSVUtility
             "plains_desert_color,plains_grass_color,plains_forest_color,highland_snow_color," +
             "has_polar_ice,ice_color,ice_color_edge,pole_ice_width," +
             "has_clouds,cloud_color,cloud_coverage,cloud_rotation,cloud_scale," +
+            "cloud_mid_lat_opacity,cloud_mid_lat_center,cloud_mid_lat_width,cloud_softness," +
             "has_atmosphere,atmosphere_color,atmosphere_scale");
         foreach (ZoneConfig z in table.zoneList)
         {
@@ -128,6 +129,7 @@ public static class DataTableZoneCSVUtility
                     $"{ToHex(c.highlandSnowColor)}," +
                     $"{c.hasPolarIce},{ToHex(c.iceColor)},{ToHex(c.iceColorEdge)},{c.poleIceWidth}," +
                     $"{c.hasClouds},{ToHexA(c.cloudColor)},{c.cloudCoverage},{c.cloudRotation},{c.cloudScale}," +
+                    $"{c.cloudMidLatOpacity},{c.cloudMidLatCenter},{c.cloudMidLatWidth},{c.cloudSoftness}," +
                     $"{c.hasAtmosphere},{ToHex(c.atmosphereColor)},{c.atmosphereScale}");
             }
         }

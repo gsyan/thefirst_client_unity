@@ -29,13 +29,17 @@ public class CelestialBodyConfig
     public Color     cloudColor    = CommonUtility.HexColor("#FFFFFFD9");
     public Texture2D cloudMaskTex;                          // CloudMaskPainter로 생성한 R채널 텍스처
     [Range(0f, 1f)]   public float cloudCoverage  = 0.5f;  // 구름 영역 비율
-    [Range(0f, 360f)] public float cloudRotation  = 0f;
-    public float cloudScale    = 1.001f;                 // Surface 구 대비 배율
+    [Range(0f, 360f)] public float cloudRotation     = 0f;
+    public float cloudScale       = 1.01f;              // Surface 구 대비 배율
+    [Range(0f, 1f)]   public float cloudMidLatOpacity = 0.75f;
+    [Range(0.1f, 0.45f)] public float cloudMidLatCenter = 0.37f;
+    [Range(0f, 0.5f)] public float cloudMidLatWidth   = 0.19f;
+    [Range(0f, 0.5f)] public float cloudSoftness      = 0.5f;
 
     [Header("Atmosphere Layer")]
     public bool  hasAtmosphere = true;
     public Color atmosphereColor = CommonUtility.HexColor("#4D99FF");
-    public float atmosphereScale = 1.002f;
+    public float atmosphereScale = 1.01f;
 
     [Header("Polar Ice")]
     public bool  hasPolarIce   = false;

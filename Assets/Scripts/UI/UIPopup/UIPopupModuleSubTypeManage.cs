@@ -18,7 +18,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
     [SerializeField] private TMP_Text m_moduleLevelCheckText;
     [SerializeField] private UISection m_sectionRequire;
     [SerializeField] private UISection m_sectionCost;
-    [SerializeField] private Button m_confirmButton;
+    [SerializeField] private UIButtonHasChildren m_confirmButton;
     [SerializeField] private Button m_closeButton;
 
     // 현재 선택된 모듈 (교체 원본)
@@ -44,7 +44,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
     {
         base.Awake();
         m_scrollRect = GetComponentInChildren<ScrollRect>(true);
-        if (m_confirmButton != null) m_confirmButton.onClick.AddListener(OnConfirmClicked);
+        if (m_confirmButton != null) m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
         if (m_closeButton != null) m_closeButton.onClick.AddListener(HidePopup);
     }
 
@@ -258,7 +258,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             if (m_moduleLevelCheckText != null) m_moduleLevelCheckText.text = "";
             if (m_sectionRequire != null) m_sectionRequire.SetVisible(false);
             if (m_sectionCost != null) m_sectionCost.SetVisible(false);
-            if (m_confirmButton != null) m_confirmButton.interactable = false;
+            if (m_confirmButton != null) m_confirmButton.SetInteractable(false);
             return;
         }
 
@@ -345,7 +345,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         if (m_moduleLevelCheckText != null)
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleLevelCheckText.transform.parent as RectTransform);
 
-        if (m_confirmButton != null) m_confirmButton.interactable = canConfirm;
+        if (m_confirmButton != null) m_confirmButton.SetInteractable(canConfirm);
     }
 
     private void OnConfirmClicked()

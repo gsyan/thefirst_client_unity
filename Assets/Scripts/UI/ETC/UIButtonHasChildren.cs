@@ -27,4 +27,10 @@ public class UIButtonHasChildren : MonoBehaviour
             if (m_graphics[i] != null)
                 m_graphics[i].color = color;
     }
+
+    public void SetInteractable(bool interactable)
+    {
+        GetButton().interactable = interactable;
+        SetColor(interactable ? CommonUtility.PaletteColor("GeneralBright1") : CommonUtility.PaletteColor("GeneralDark2"));
+    }
 }

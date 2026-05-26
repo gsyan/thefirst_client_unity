@@ -137,6 +137,8 @@ public class UIZoneStageButton : MonoBehaviour
     private void RebuildLayout()
     {
         //Canvas.ForceUpdateCanvases();
+        
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_rewardContainer as RectTransform);
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_labelAnchorImage.rectTransform);
     }
 

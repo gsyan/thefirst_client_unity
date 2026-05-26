@@ -58,10 +58,14 @@ public static class CelestialBodyEditorGUI
             if (body.hasClouds == true)
             {
                 EditorGUI.indentLevel++;
-                body.cloudColor    = EditorGUILayout.ColorField("Cloud Color",     body.cloudColor);
-                body.cloudCoverage = EditorGUILayout.Slider("Cloud Coverage",  body.cloudCoverage, 0f, 1f);
-                body.cloudRotation = EditorGUILayout.Slider("Cloud Rotation°", body.cloudRotation, 0f, 360f);
-                body.cloudScale    = EditorGUILayout.Slider("Cloud Scale",     body.cloudScale, 1.001f, 1.1f);
+                body.cloudColor         = EditorGUILayout.ColorField("Cloud Color",       body.cloudColor);
+                body.cloudCoverage      = EditorGUILayout.Slider("Cloud Coverage",    body.cloudCoverage,     0f, 1f);
+                body.cloudRotation      = EditorGUILayout.Slider("Cloud Rotation°",   body.cloudRotation,     0f, 360f);
+                body.cloudScale         = EditorGUILayout.Slider("Cloud Scale",       body.cloudScale,        1.01f, 1.1f);
+                body.cloudMidLatOpacity = EditorGUILayout.Slider("MidLat Opacity",    body.cloudMidLatOpacity, 0f, 1f);
+                body.cloudMidLatCenter  = EditorGUILayout.Slider("MidLat Center (v)", body.cloudMidLatCenter,  0.1f, 0.45f);
+                body.cloudMidLatWidth   = EditorGUILayout.Slider("MidLat Width",      body.cloudMidLatWidth,   0f, 0.5f);
+                body.cloudSoftness      = EditorGUILayout.Slider("Cloud Softness",    body.cloudSoftness,      0f, 0.5f);
                 EditorGUI.indentLevel--;
             }
 
@@ -74,7 +78,7 @@ public static class CelestialBodyEditorGUI
             {
                 EditorGUI.indentLevel++;
                 body.atmosphereColor = EditorGUILayout.ColorField("Atmosphere Color", body.atmosphereColor);
-                body.atmosphereScale = EditorGUILayout.Slider("Atmosphere Scale", body.atmosphereScale, 1.002f, 1.2f);
+                body.atmosphereScale = EditorGUILayout.Slider("Atmosphere Scale", body.atmosphereScale, 1.01f, 1.2f);
                 EditorGUI.indentLevel--;
             }
 

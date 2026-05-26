@@ -24,8 +24,8 @@ public class UIPopupLevelup : UIPopupBase
     [SerializeField] private UISection m_sectionCost;
 
     [Header("하단 버튼")]
-    [SerializeField] private Button m_confirmButton;
-    [SerializeField] private Button m_cancelButton;
+    [SerializeField] private UIButtonHasChildren m_confirmButton;
+    [SerializeField] private Button              m_cancelButton;
 
     private enum Mode { Module, TechLevel }
     private Mode m_mode;
@@ -47,7 +47,7 @@ public class UIPopupLevelup : UIPopupBase
         base.Awake();
         m_prevButton?.onClick.AddListener(OnPrevClicked);
         m_nextButton?.onClick.AddListener(OnNextClicked);
-        m_confirmButton?.onClick.AddListener(OnConfirmClicked);
+        if (m_confirmButton != null) m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
         m_cancelButton?.onClick.AddListener(OnCancelClicked);
     }
 
@@ -152,7 +152,7 @@ public class UIPopupLevelup : UIPopupBase
             m_nextButton.interactable = m_targetLevel < m_maxDataLevel;
 
         if (m_confirmButton != null)
-            m_confirmButton.interactable = canAfford;
+            m_confirmButton.SetInteractable(canAfford);
 
         RebuildLayout();
     }

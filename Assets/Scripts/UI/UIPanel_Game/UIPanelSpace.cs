@@ -1,6 +1,5 @@
 // 우주 공간 UI 패널 — 탭 시스템 초기화, UITabShip/UITabStation 탭 시 카메라 viewport 애니메이션, 모듈 선택 자동 전환
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -58,7 +57,7 @@ public class UIPanelSpace : UIPanelBase
 
         if (m_hiddenCloseButton != null)
         {
-            m_hiddenCloseButton.onClick.AddListener(() => m_tabSystem.SwitchToTab(-1));
+            m_hiddenCloseButton.onClick.AddListener(OnHiddenCloseButtonClicked);
             m_hiddenCloseButton.gameObject.SetActive(false);
         }
     }
@@ -144,6 +143,34 @@ public class UIPanelSpace : UIPanelBase
             if (btn != null)
                 btn.gameObject.SetActive(visible);
         }
+    }
+
+    private void OnHiddenCloseButtonClicked()
+    {
+        if (m_tabSystem.GetCurrentActiveTab() != m_moduleTabIndex)
+        {
+            m_tabSystem.SwitchToTab(-1);
+            return;
+        }
+
+        // UITabShip 상태: 모듈 피킹 먼저 시도, 내 함대 모듈이 맞으면 닫지 않음
+        LayerMask pickMask = ~(1 << 13); // Shield 레이어 제외
+        if (CameraController.Instance.GetCameraRaycast(out RaycastHit hit, pickMask, 3000f))
+        {
+            SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
+            if (ship != null && ship.m_myFleet != null && ship.m_myFleet.IsEnemy == false)
+            {
+                ModuleBase module = hit.collider.GetComponentInParent<ModuleBase>();
+                if (module != null)
+                {
+                    EventManager.Trigger_SpaceShipSelected(ship);
+                    EventManager.TriggerSpaceShipModuleSelected(ship, module);
+                    return;
+                }
+            }
+        }
+
+        m_tabSystem.SwitchToTab(-1);
     }
 
     // 모듈이 선택될 때만 UITabShip 로 자동 전환 (함선 클릭만으로는 전환 안 함)
