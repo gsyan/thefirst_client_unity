@@ -174,6 +174,12 @@ public class AdManager : MonoSingleton<AdManager>
 
     public bool IsRewardedAdReady => _isDeviceAllowed && _rewardedAd != null && _rewardedAd.CanShowAd();
 
+    public void LogAdReadyStatus(string tag = "")
+    {
+        bool canShow = _rewardedAd != null && _rewardedAd.CanShowAd();
+        Debug.LogWarning($"{tag} AdReady=false | DeviceAllowed={_isDeviceAllowed} | AdLoaded={_rewardedAd != null} | CanShow={canShow}");
+    }
+
     // 개발자 테스트용 — 광고 스킵 플래그 (PlayerPrefs 키: DevSkipAd)
     public static bool s_devSkipAd;
 

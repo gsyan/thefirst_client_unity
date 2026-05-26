@@ -441,7 +441,7 @@ public class UITabExploration : UITabBase
                 isFirstClear ? zoneStage.modulePointClearReward  : 0,
                 0
             },
-            onConfirm = () => ExecuteEnterZone(zoneStage)
+            onConfirm = () => EnterZoneStage(zoneStage)
         });
     }
 
@@ -476,50 +476,6 @@ public class UITabExploration : UITabBase
         int dashIdx = zoneName.IndexOf('-');
         if (dashIdx < 0 || dashIdx >= zoneName.Length - 1) return 0;
         return int.TryParse(zoneName[(dashIdx + 1)..], out int y) ? y : 0;
-    }
-
-
-
-
-    private void ExecuteEnterZone(ZoneStageConfig zoneStage)
-    {
-        TryEnterZoneStageWithAd(zoneStage);
-    }
-
-    private void TryEnterZoneStageWithAd(ZoneStageConfig zonestage)
-    {
-#if UNITY_EDITOR
-        EnterZoneStage(zonestage);
-#else
-        if (AdManager.s_devSkipAd == true)
-        {
-            EnterZoneStage(zonestage);
-            return;
-        }
-
-        bool adInstanceNull = AdManager.Instance == null;
-        bool adReady = adInstanceNull == false && AdManager.Instance.IsRewardedAdReady;
-
-        if (adInstanceNull == false && adReady == true)
-        {
-            AdManager.Instance.ShowRewardedAd(result =>
-            {
-                if (result == EAdResult.Rewarded)
-                    EnterZoneStage(zonestage);
-                else if (result == EAdResult.Failed)
-                    EnterZoneStage(zonestage);
-                else if (result == EAdResult.UserClosed)
-                    ShowErrorMessage("[광고] 광고를 시청해야 입장할 수 있습니다");
-            });
-        }
-        else
-        {
-            if (adInstanceNull == false)
-                AdManager.Instance.RequestLoad();
-            Debug.Log("[Ad] 광고 미준비 상태로 입장");
-            EnterZoneStage(zonestage);
-        }
-#endif
     }
 
     private void EnterZoneStage(ZoneStageConfig zoneStage)
@@ -725,6 +681,10 @@ public class UITabExploration : UITabBase
         bool adReady = AdManager.Instance != null && AdManager.Instance.IsRewardedAdReady;
         if (adReady == false)
         {
+            if (AdManager.Instance != null)
+                AdManager.Instance.LogAdReadyStatus("[DoubleReward]");
+            else
+                Debug.LogWarning("[DoubleReward] AdManager.Instance == null → 일반 보상으로 대체");
             SendClaimZoneReward(false);
             return;
         }
