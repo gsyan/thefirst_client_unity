@@ -298,7 +298,16 @@ public class SpaceFleet : MonoBehaviour
     public void AddShip(SpaceShip ship, bool bWarp = false)
     {
         if (ship == null) return;
-        m_ships.Add(ship);
+        int insertIdx = m_ships.Count;
+        for (int i = 0; i < m_ships.Count; i++)
+        {
+            if (m_ships[i] != null && m_ships[i].m_shipInfo.positionIndex > ship.m_shipInfo.positionIndex)
+            {
+                insertIdx = i;
+                break;
+            }
+        }
+        m_ships.Insert(insertIdx, ship);
         ship.transform.SetParent(transform);
         ship.transform.localRotation = Quaternion.identity;
 

@@ -46,8 +46,8 @@ public class GaugeBars : MonoBehaviour
             m_moduleGaugeBars.Remove(oldModule);
         }
 
-        // 새 모듈 게이지바 생성 (Body 타입만)
-        if (newModule != null && newModule is ModuleBody)
+        // 새 모듈 게이지바 생성 (이 함선 소속 Body 타입만)
+        if (newModule != null && newModule is ModuleBody && m_spaceShip != null && m_spaceShip.m_moduleBodys.Contains(newModule as ModuleBody))
         {
             CreateGaugeBarForModule(newModule);
         }

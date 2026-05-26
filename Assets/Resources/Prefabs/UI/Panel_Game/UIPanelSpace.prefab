@@ -30814,6 +30814,7 @@ MonoBehaviour:
   m_zoneStageButtonPrefab: {fileID: 2250107648708955735, guid: 86253578a70586049af934252644de55, type: 3}
   m_zoneTabButtonContainer: {fileID: 5656696349759068273}
   m_fleetHideDelay: 0.5
+  m_requirePreviousStageCleared: 0
 --- !u!1 &4116183100211378538
 GameObject:
   m_ObjectHideFlags: 0

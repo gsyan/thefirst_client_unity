@@ -28,6 +28,9 @@ public class UITabExploration : UITabBase
     [Header("뷰 전환 타이밍")]
     [SerializeField] private float m_fleetHideDelay = 0.5f; // 함대뷰→갤럭시뷰 전환 시 함대 숨기기 딜레이(초)
 
+    [Header("개발 설정")]
+    [SerializeField] private bool m_requirePreviousStageCleared = true;
+
     private Coroutine m_hideFleetCoroutine;
     private Vector3 m_pendingFleetPos;
     private float m_pendingFleetRotY;
@@ -423,7 +426,7 @@ public class UITabExploration : UITabBase
             ObjectManager.Instance.RemoveAllEnemyFleets();
         }
 
-        if (IsPreviousStageCleared(zoneStage) == false)
+        if (m_requirePreviousStageCleared == true && IsPreviousStageCleared(zoneStage) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("UITabExploration_PreviousStageRequired"));
             return;
