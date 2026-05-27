@@ -593,9 +593,17 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 if (int.TryParse(value, out int techPoint))
                     DataManager.Instance.m_currentCharacter.UpdateTechPoint(techPoint);
                 break;
+            case "modulepointmaxgot":
+                if (int.TryParse(value, out int mpMaxGot))
+                    DataManager.Instance.m_currentCharacter.UpdateModulePointMaxGot(mpMaxGot);
+                break;
             case "modulepoint":
                 if (int.TryParse(value, out int modulePoint))
                     DataManager.Instance.m_currentCharacter.UpdateModulePoint(modulePoint);
+                break;
+            case "pvppointmaxgot":
+                if (int.TryParse(value, out int pvpMaxGot))
+                    DataManager.Instance.m_currentCharacter.UpdatePvpPointMaxGot(pvpMaxGot);
                 break;
             case "pvppoint":
                 if (int.TryParse(value, out int pvpPoint))

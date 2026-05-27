@@ -609,8 +609,7 @@ public class UITabShip : UITabBase
                 }
             }
             // 투자 modulePoint rows
-            if (m_selectedModule.m_investedModulePoint > 0)
-                m_investedModulePointText.SetText("{0}", m_selectedModule.m_investedModulePoint);
+            m_investedModulePointText.SetText("{0}", m_selectedModule.m_investedModulePoint);
 
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsContainer as RectTransform);
@@ -789,6 +788,23 @@ public class UITabShip : UITabBase
 
         int mp = m_selectedModule.m_investedModulePoint;
 
+        // 기함 body 리셋: T1 레벨1에서 지원하지 않는 슬롯의 투자 포인트도 합산
+        if (m_selectedModule.GetModuleType() == EModuleType.body && m_selectedShip.m_shipInfo.positionIndex == 0)
+        {
+            int bodyIdx = m_selectedModule.GetModuleBodyIndex();
+            ModuleBody body = m_selectedShip.FindModuleBodyByIndex(bodyIdx);
+            ModuleData t1Data = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(EModuleSubType.body_t1_m1, 1);
+            if (body != null && t1Data != null)
+            {
+                foreach (var beam in body.m_beams)
+                    if (!IsSlotSupportedByT1(t1Data, EModuleType.beam, beam.GetSlotIndex())) mp += beam.m_investedModulePoint;
+                foreach (var missile in body.m_missiles)
+                    if (!IsSlotSupportedByT1(t1Data, EModuleType.missile, missile.GetSlotIndex())) mp += missile.m_investedModulePoint;
+                foreach (var hanger in body.m_hangers)
+                    if (!IsSlotSupportedByT1(t1Data, EModuleType.hanger, hanger.GetSlotIndex())) mp += hanger.m_investedModulePoint;
+            }
+        }
+
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             title        = LocalizationManager.Instance.Get("UITabShip_ModuleReset"),
@@ -836,6 +852,24 @@ public class UITabShip : UITabBase
 
         if (data.moduleType == EModuleType.body)
         {
+            // T1에서 지원되지 않는 슬롯을 먼저 placeholder로 초기화
+            ModuleBody body = targetShip.FindModuleBodyByIndex(data.bodyIndex);
+            ModuleData t1Data = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(EModuleSubType.body_t1_m1, 1);
+            if (body != null && t1Data != null)
+            {
+                var beamsCopy    = new List<ModuleBeam>(body.m_beams);
+                var missilesCopy = new List<ModuleMissile>(body.m_missiles);
+                var hangersCopy  = new List<ModuleHanger>(body.m_hangers);
+                foreach (var beam in beamsCopy)
+                    if (!IsSlotSupportedByT1(t1Data, EModuleType.beam, beam.GetSlotIndex()))
+                        targetShip.Apply_ResetModuleToPlaceholder(data.bodyIndex, EModuleType.beam, beam.GetSlotIndex());
+                foreach (var missile in missilesCopy)
+                    if (!IsSlotSupportedByT1(t1Data, EModuleType.missile, missile.GetSlotIndex()))
+                        targetShip.Apply_ResetModuleToPlaceholder(data.bodyIndex, EModuleType.missile, missile.GetSlotIndex());
+                foreach (var hanger in hangersCopy)
+                    if (!IsSlotSupportedByT1(t1Data, EModuleType.hanger, hanger.GetSlotIndex()))
+                        targetShip.Apply_ResetModuleToPlaceholder(data.bodyIndex, EModuleType.hanger, hanger.GetSlotIndex());
+            }
             // 기함 body 리셋 — T1 레벨1로 복귀
             targetShip.ApplyModuleChange(data.bodyIndex, EModuleType.body, EModuleSubType.body_t1_m1, 0, 1);
         }
@@ -855,6 +889,14 @@ public class UITabShip : UITabBase
     // ─────────────────────────────────────────────
     // 함선 리셋 + 삭제
     // ─────────────────────────────────────────────
+
+    private bool IsSlotSupportedByT1(ModuleData t1Data, EModuleType moduleType, int slotIndex)
+    {
+        if (t1Data == null || t1Data.moduleSlots == null) return false;
+        foreach (var slot in t1Data.moduleSlots)
+            if (slot.moduleType == moduleType && slot.slotIndex == slotIndex) return true;
+        return false;
+    }
 
     private void OnResetShipClicked()
     {
