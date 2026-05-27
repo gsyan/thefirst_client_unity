@@ -10,6 +10,7 @@ public class UITabExploration : UITabBase
     [Header("존 스테이지 버튼 (World Space)")]
     [SerializeField] private RectTransform m_zoneButtonRoot;       // Screen Space 오버레이 루트 (stretch 전체)
     [SerializeField] private UIZoneStageButton m_zoneStageButtonPrefab;
+    [SerializeField] private UnityEngine.UI.Button m_backgroundCloseButton; // 빈 곳 클릭 시 탭 닫기용 투명 풀스크린 버튼
     
     [Header("그룹 탭")]
     [SerializeField] private Transform m_zoneTabButtonContainer;
@@ -51,6 +52,9 @@ public class UITabExploration : UITabBase
 
         EventManager.Subscribe_RetreatRequested(RetreatToPreviousStage);
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
+
+        if (m_backgroundCloseButton != null)
+            m_backgroundCloseButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(-1));
 
         SetupZoneTabButtons();
         InitializeZoneStageButtons();
@@ -674,7 +678,7 @@ public class UITabExploration : UITabBase
 
     private void OnWatchAdForDoubleReward()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         if (AdManager.s_devSkipAd == true)
         {
             if (m_myFleet != null) m_myFleet.FullRepair();

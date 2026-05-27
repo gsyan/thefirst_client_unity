@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -98,6 +96,9 @@ public class CameraController : MonoSingleton<CameraController>
 
         m_currentZoom = (m_minZoom + m_maxZoom) / 2f;
         EnhancedTouchSupport.Enable();
+
+        m_handleInputMouse = new HandleInputMouse(this);
+        m_handleInputTouch = new HandleInputTouch(this);
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelectedForZoom);
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChangedForZoom);
@@ -237,25 +238,12 @@ public class CameraController : MonoSingleton<CameraController>
     private bool m_inputEnabled = true;
 
     // Input handling
-    private bool m_isDragging = false;
-    private bool m_inputBlockedByUI = false; // 입력 시작이 UI 위였으면 해당 입력 전체 차단 (마우스/터치 공용)
+    private HandleInputMouse m_handleInputMouse;
+    private HandleInputTouch m_handleInputTouch;
 
-    //private bool m_isPanning = false;
     private Vector3 m_startTouchPosition;
     private float m_startRotationY;
     private float m_startRotationX;
-    private float m_lastPinchDistance = 0f;
-    private Vector2 m_lastTwoTouchCenter = Vector2.zero;
-
-    // 이전 프레임 터치 위치 저장 (방향 벡터 계산용)
-    private Vector2 m_prevTouch0Position;
-    private Vector2 m_prevTouch1Position;
-    private int m_prevTouchCount = 0; // 2터치→1터치 전환 감지용
-
-    // 탭 판정 — 누를 때와 뗄 때 같은 콜라이더를 픽하면 선택
-    private Collider m_tapHitCollider;
-    // 마지막 유효 입력 스크린 좌표 (마우스/터치 공통) — onClick 콜백 등 입력 시점 외부에서 사용
-    public Vector3 m_lastInputScreenPosition { get; private set; }
 
     private void Update()
     {
@@ -267,220 +255,41 @@ public class CameraController : MonoSingleton<CameraController>
     {
         if (m_inputEnabled == false) return;
 
-        bool inputDown = false;
-        bool inputUp = false;
-        bool inputHeld = false;
-        Vector3 inputPosition = Vector3.zero;
-
 #if UNITY_EDITOR || UNITY_STANDALONE
-        // PC: 우클릭은 UI와 충돌 없으므로 UI 체크 없이 바로 처리
-        HandleInput_Mouse(ref inputDown, ref inputUp, ref inputHeld, ref inputPosition);
+        m_handleInputMouse.Process();
 #elif UNITY_ANDROID || UNITY_IOS
-        HandleInput_Touch(ref inputDown, ref inputUp, ref inputHeld, ref inputPosition);
+        m_handleInputTouch.Process();
 #endif
-
-        // 우클릭 회전 처리 (공통)
-        if (inputDown == true)
-        {
-            m_isDragging = false; // 실제 이동 발생 전까지 탭으로 간주
-            m_startTouchPosition = inputPosition;
-            m_startRotationY = m_currentRotationY;
-            m_startRotationX = m_currentRotationX;
-            m_hasTargetRotationY = false;
-            m_hasTargetRotationX = false;
-            m_hasTargetZoom = false;
-        }
-        else if (inputUp)
-        {
-            m_isDragging = false;
-        }
-
-        if (inputHeld)
-        {
-            m_isDragging = true; // 이동 발생 → 드래그 확정
-            Vector3 touchDelta = (inputPosition - m_startTouchPosition) * m_rotationSpeed;
-            m_currentRotationY = m_startRotationY + touchDelta.x;
-            m_currentRotationX = Mathf.Clamp(m_startRotationX - touchDelta.y, -80f, 80f);
-        }
-    }
-    
-    private void HandleInput_Mouse(ref bool inputDown, ref bool inputUp, ref bool inputHeld, ref Vector3 inputPosition)
-    {
-        var mouse = Mouse.current;
-        if (mouse == null) return;
-
-        Vector3 mousePos = mouse.position.ReadValue();
-
-        // 우클릭: 회전
-        if (mouse.rightButton.wasPressedThisFrame == true)
-        {
-            inputDown = true;
-            inputPosition = mousePos;
-        }
-        else if (mouse.rightButton.wasReleasedThisFrame == true)
-        {
-            inputUp = true;
-        }
-        else if (mouse.rightButton.isPressed == true)
-        {
-            inputHeld = true;
-            inputPosition = mousePos;
-        }
-
-        // 좌클릭: 누를 때 픽 저장, 뗄 때 같은 콜라이더면 선택
-        if (mouse.leftButton.wasPressedThisFrame == true)
-        {
-            m_lastInputScreenPosition = mousePos;
-            m_startTouchPosition = mousePos;
-            m_inputBlockedByUI = IsPointerOverUIObject();
-            if (m_inputBlockedByUI == false)
-            {
-                LayerMask pickMask = ~m_layerMaskShield;
-                m_tapHitCollider = GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, mousePos)
-                    ? downHit.collider : null;
-            }
-        }
-        else if (mouse.leftButton.wasReleasedThisFrame == true)
-        {
-            if (m_inputBlockedByUI == false)
-            {
-                LayerMask pickMask = ~m_layerMaskShield;
-                if (m_tapHitCollider != null)
-                {
-                    if (GetCameraRaycast(out RaycastHit upHit, pickMask, 3000f, mousePos) && upHit.collider == m_tapHitCollider)
-                        HandleModuleSelection(mousePos);
-                }
-                else
-                {
-                    HandleModuleSelection(mousePos);
-                }
-            }
-            m_inputBlockedByUI = false;
-            m_tapHitCollider = null;
-        }
-
-        // 마우스 휠 줌 (new Input System scroll.y: 1노치 ≈ 1.0)
-        float scrollDelta = mouse.scroll.ReadValue().y;
-        if (Mathf.Abs(scrollDelta) > 0.01f)
-            ZoomCamera(-scrollDelta * 0.5f);
     }
 
-    private void HandleInput_Touch(ref bool inputDown, ref bool inputUp, ref bool inputHeld, ref Vector3 inputPosition)
+    public void OnDragStart(Vector3 position)
     {
-        var touches = Touch.activeTouches;
+        m_startTouchPosition = position;
+        m_startRotationY = m_currentRotationY;
+        m_startRotationX = m_currentRotationX;
+        m_hasTargetRotationY = false;
+        m_hasTargetRotationX = false;
+        m_hasTargetZoom = false;
+    }
 
-        if (touches.Count >= 2)
-        {
-            Touch touch0 = touches[0];
-            Touch touch1 = touches[1];
+    public void OnDragMove(Vector3 position)
+    {
+        Vector3 delta = (position - m_startTouchPosition) * m_rotationSpeed;
+        m_currentRotationY = m_startRotationY + delta.x;
+        m_currentRotationX = Mathf.Clamp(m_startRotationX - delta.y, -80f, 80f);
+    }
 
-            Vector2 currentTouchCenter = (touch0.screenPosition + touch1.screenPosition) * 0.5f;
-            float currentPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
-
-            if (touch0.phase == UnityEngine.InputSystem.TouchPhase.Began || touch1.phase == UnityEngine.InputSystem.TouchPhase.Began)
-            {
-                m_isDragging = false; // 핀치 진입 시 단일 터치 드래그 중단
-                m_lastPinchDistance = currentPinchDistance;
-                m_lastTwoTouchCenter = currentTouchCenter;
-                m_prevTouch0Position = touch0.screenPosition;
-                m_prevTouch1Position = touch1.screenPosition;
-            }
-            else if (touch0.phase == UnityEngine.InputSystem.TouchPhase.Moved || touch1.phase == UnityEngine.InputSystem.TouchPhase.Moved)
-            {
-                Vector2 moveVector0 = touch0.screenPosition - m_prevTouch0Position;
-                Vector2 moveVector1 = touch1.screenPosition - m_prevTouch1Position;
-
-                if (moveVector0.magnitude > 1f && moveVector1.magnitude > 1f)
-                {
-                    float dotProduct = Vector2.Dot(moveVector0.normalized, moveVector1.normalized);
-
-                    // dot < -0.5: 반대 방향 → 핀치 줌
-                    if (dotProduct < -0.5f)
-                    {
-                        float deltaPinch = currentPinchDistance - m_lastPinchDistance;
-                        ZoomCamera(-deltaPinch * 0.01f);
-                    }
-                }
-
-                m_lastPinchDistance = currentPinchDistance;
-                m_lastTwoTouchCenter = currentTouchCenter;
-                m_prevTouch0Position = touch0.screenPosition;
-                m_prevTouch1Position = touch1.screenPosition;
-            }
-
-            m_prevTouchCount = 2;
-        }
-        else if (touches.Count == 1)
-        {
-            Touch touch = touches[0];
-            Vector2 pos = touch.screenPosition;
-
-            // 2터치 → 1터치 전환: 현재 손가락 위치를 새 기준점으로 즉시 초기화
-            if (m_prevTouchCount >= 2)
-            {
-                m_startTouchPosition = pos;
-                m_startRotationY = m_currentRotationY;
-                m_startRotationX = m_currentRotationX;
-                m_isDragging = true;
-            }
-            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
-            {
-                m_lastInputScreenPosition = pos;
-                // 터치 시작이 UI 위면 해당 터치 전체를 UI에게 양보
-                m_inputBlockedByUI = IsPointerOverUIObject();
-                if (m_inputBlockedByUI == false)
-                {
-                    inputDown = true;
-                    inputPosition = pos;
-                    LayerMask pickMask = ~m_layerMaskShield;
-                    m_tapHitCollider = GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, pos) ? downHit.collider : null;
-                }
-            }
-            else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
-            {
-                inputUp = true;
-                if (m_inputBlockedByUI == false && m_isDragging == false)
-                {
-                    LayerMask pickMask = ~m_layerMaskShield;
-                    if (m_tapHitCollider != null)
-                    {
-                        if (GetCameraRaycast(out RaycastHit upHit, pickMask, 3000f, pos) && upHit.collider == m_tapHitCollider)
-                            HandleModuleSelection(pos);
-                    }
-                    else
-                    {
-                        HandleModuleSelection(pos);
-                    }
-                }
-                m_inputBlockedByUI = false;
-                m_tapHitCollider = null;
-            }
-            else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Canceled)
-            {
-                m_inputBlockedByUI = false;
-                inputUp = true;
-                m_tapHitCollider = null;
-            }
-            else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Moved || touch.phase == UnityEngine.InputSystem.TouchPhase.Stationary)
-            {
-                if (m_inputBlockedByUI == false)
-                {
-                    inputHeld = true;
-                    inputPosition = pos;
-                }
-            }
-
-            m_prevTouchCount = 1;
-        }
-        else
-        {
-            m_prevTouchCount = 0;
-        }
+    // 2터치→1터치 전환 시: 플래그 초기화 없이 기준점만 갱신
+    public void ResetDragOrigin(Vector3 position)
+    {
+        m_startTouchPosition = position;
+        m_startRotationY = m_currentRotationY;
+        m_startRotationX = m_currentRotationX;
     }
     
 
     // 3D 클릭으로 내 함선/모듈 선택. 빈공간이면 EmptySpaceTapped 발행
-    private void HandleModuleSelection(Vector3? screenPosition = null)
+    public void HandleModuleSelection(Vector3? screenPosition = null)
     {
         if (!m_shipSelectionEnabled) return;
 
@@ -639,24 +448,6 @@ public class CameraController : MonoSingleton<CameraController>
         return Mathf.Max(rawZoom, m_minZoom);
     }
 
-    private bool IsPointerOverUIObject()
-    {
-        if (EventSystem.current == null)
-            return false;
-
-        PointerEventData eventData = new PointerEventData(EventSystem.current);
-
-        // 터치 입력 체크
-        if (Touch.activeTouches.Count > 0)
-            eventData.position = Touch.activeTouches[0].screenPosition;
-        else
-            eventData.position = Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
-
-        var results = new System.Collections.Generic.List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventData, results);
-        return results.Count > 0;
-    }
-
     // Raycast for object selection
     public bool GetCameraRaycast(out RaycastHit hit, LayerMask layerMask = default, float maxDistance = 1000f, Vector3? screenPosition = null)
     {
@@ -666,7 +457,7 @@ public class CameraController : MonoSingleton<CameraController>
             return false;
         }
 
-        Vector3 inputPos = screenPosition ?? m_lastInputScreenPosition;
+        Vector3 inputPos = screenPosition ?? Vector3.zero;
         Ray ray = m_targetCamera.ScreenPointToRay(inputPos);
         if (layerMask == default)
             return Physics.Raycast(ray, out hit, maxDistance);
