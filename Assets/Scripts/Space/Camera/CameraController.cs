@@ -239,6 +239,7 @@ public class CameraController : MonoSingleton<CameraController>
     // Input handling
     private bool m_isDragging = false;
     private bool m_inputBlockedByUI = false; // 입력 시작이 UI 위였으면 해당 입력 전체 차단 (마우스/터치 공용)
+
     //private bool m_isPanning = false;
     private Vector3 m_startTouchPosition;
     private float m_startRotationY;
@@ -281,7 +282,7 @@ public class CameraController : MonoSingleton<CameraController>
         // 우클릭 회전 처리 (공통)
         if (inputDown == true)
         {
-            m_isDragging = true;
+            m_isDragging = false; // 실제 이동 발생 전까지 탭으로 간주
             m_startTouchPosition = inputPosition;
             m_startRotationY = m_currentRotationY;
             m_startRotationX = m_currentRotationX;
@@ -294,8 +295,9 @@ public class CameraController : MonoSingleton<CameraController>
             m_isDragging = false;
         }
 
-        if (m_isDragging && inputHeld)
+        if (inputHeld)
         {
+            m_isDragging = true; // 이동 발생 → 드래그 확정
             Vector3 touchDelta = (inputPosition - m_startTouchPosition) * m_rotationSpeed;
             m_currentRotationY = m_startRotationY + touchDelta.x;
             m_currentRotationX = Mathf.Clamp(m_startRotationX - touchDelta.y, -80f, 80f);
@@ -437,7 +439,7 @@ public class CameraController : MonoSingleton<CameraController>
             else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
             {
                 inputUp = true;
-                if (m_inputBlockedByUI == false)
+                if (m_inputBlockedByUI == false && m_isDragging == false)
                 {
                     LayerMask pickMask = ~m_layerMaskShield;
                     if (m_tapHitCollider != null)
