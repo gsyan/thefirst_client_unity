@@ -277,7 +277,7 @@ public class SpaceFleet : MonoBehaviour
             for (int i = 0; i < m_fleetInfo.ships.Count; i++)
                 CreateSpaceShipFromData(fleetInfo.ships[i]);
 
-            UpdateShipFormation(m_fleetInfo.formation, false);
+            UpdateShipFormation(m_fleetInfo.formation, bSmooth: false);
         }
         
         SetFleetState(fleetState);
@@ -322,7 +322,7 @@ public class SpaceFleet : MonoBehaviour
             if (bWarp == true)
             {
                 // 고속 워프 진입 — Moving 상태로 전환되므로 ApplyFleetStateToShip은 Arrived에서 호출됨
-                ship.MoveToFormation(newShipTarget, m_spawnApproachSpeedMult);
+                ship.MoveToFormation(newShipTarget, bWarp: true, speedMult: m_spawnApproachSpeedMult);
 
                 if (ship.TryGetComponent(out WarpEffectShip warpEffect) == false)
                 {
@@ -397,7 +397,7 @@ public class SpaceFleet : MonoBehaviour
                 ship.StopFormationMovement();
         }
 
-        UpdateShipFormation(m_currentFormationType, smooth: true);
+        UpdateShipFormation(m_currentFormationType, bSmooth: true);
     }
 
     // shipId로 함선 찾기
@@ -439,7 +439,7 @@ public class SpaceFleet : MonoBehaviour
         return null;
     }
 
-    public void UpdateShipFormation(EFormationType formationType = EFormationType.linear_horizontal, bool smooth = true)
+    public void UpdateShipFormation(EFormationType formationType = EFormationType.linear_horizontal, bool bSmooth = true)
     {
         m_currentFormationType = formationType;
         Dictionary<SpaceShip, Vector3> targets = CalculateFormationTargets(formationType);
@@ -447,8 +447,8 @@ public class SpaceFleet : MonoBehaviour
         foreach (var kv in targets)
         {
             if (kv.Key == null) continue;
-            if (smooth == true)
-                kv.Key.MoveToFormation(kv.Value);
+            if (bSmooth == true)
+                kv.Key.MoveToFormation(kv.Value, bWarp: false, speedMult: 1f);
             else
             {
                 kv.Key.transform.localPosition = kv.Value;
@@ -699,7 +699,7 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
             for (int i = 0; i < m_fleetInfo.ships.Count; i++)
                 CreateSpaceShipFromData(m_fleetInfo.ships[i]);
 
-            UpdateShipFormation(m_fleetInfo.formation, false);
+            UpdateShipFormation(m_fleetInfo.formation, bSmooth: false);
         }
 
         ApplyHealthRatio(healthRatio);
@@ -727,7 +727,7 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
         {
             if (aliveShipIds.Contains(shipInfo.id)) continue;
 
-            CreateSpaceShipFromData(shipInfo);  // AddShip 내부에서 후방 스폰 위치 설정됨
+            CreateSpaceShipFromData(shipInfo, bWarp: true);  // AddShip 내부에서 후방 스폰 위치 설정됨
             SpaceShip newShip = FindShip(shipInfo.id);
             if (newShip != null)
             {
@@ -743,7 +743,6 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
 
         if (hasRestored)
         {
-            RefreshFormation();
             EventManager.Trigger_FleetUpdateHP();
             EventManager.Trigger_ShipUpdateHP();
         }

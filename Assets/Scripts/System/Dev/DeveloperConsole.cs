@@ -501,7 +501,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             {
                 if (response.errorCode == 0)
                 {
-                    fleet.UpdateShipFormation(formationType);
+                    fleet.UpdateShipFormation(formationType, bSmooth: true);
                     if (response.data.updatedFleetInfo != null)
                         DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
                 }

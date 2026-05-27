@@ -95,7 +95,7 @@ public class TestScene : MonoBehaviour
         for (int i = 0; i < m_shipInfos.Length; i++)
             SpawnTestShip(fleet, m_shipInfos[i], i);
 
-        fleet.UpdateShipFormation(m_spawnFormation, smooth: false);
+        fleet.UpdateShipFormation(m_spawnFormation, bSmooth: false);
         CameraController.Instance.SetTargetOfCameraController(fleet.transform);
 
         // 기함을 초기 선택 상태로 설정 (줌 범위 적용 및 UI 초기화)

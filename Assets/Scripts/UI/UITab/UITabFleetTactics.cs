@@ -187,7 +187,7 @@ public class UITabFleetTactics : UITabBase
         {
             if (response.errorCode == 0)
             {
-                m_myFleet.UpdateShipFormation(newFormationType);
+                m_myFleet.UpdateShipFormation(newFormationType, bSmooth: true);
                 if (response.data.updatedFleetInfo != null)
                     DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
             }

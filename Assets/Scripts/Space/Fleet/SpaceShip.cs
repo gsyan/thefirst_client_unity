@@ -566,11 +566,11 @@ public class SpaceShip : MonoBehaviour
 
     // fleet이 CalculateFormationTargets()로 계산한 목적지를 전달받아 이동 시작
     // speedMult: 1.0 = 일반, 10+ = 스폰 워프 진입용 고속
-    public void MoveToFormation(Vector3 target, float speedMult = 1f)
+    public void MoveToFormation(Vector3 target, bool bWarp, float speedMult = 1f)
     {
         m_formationTarget = target;
         m_movementSpeedMult = speedMult;
-        m_bWarp = true;
+        m_bWarp = bWarp;
         m_formationMoveState = FormationMoveState.Moving;
 
         if (m_formationCoroutine != null)
@@ -610,6 +610,7 @@ public class SpaceShip : MonoBehaviour
     {
         // 로컬 스페이스 기준 — 진입 방향은 항상 로컬 +Z
         Vector3 WarpStopPos = m_formationTarget + (-Vector3.forward * WARP_STOP_DIST);
+        Vector3 startToTarget = m_formationTarget - transform.localPosition;
         while (m_formationMoveState == FormationMoveState.Moving)
         {
             Vector3 currentPos = transform.localPosition;
@@ -630,7 +631,8 @@ public class SpaceShip : MonoBehaviour
             }
             else
             {
-                float dot_arrival = Vector3.Dot(Vector3.forward, toTarget);
+                // 초기 접근 방향 대비 반전 = 목표 통과 → 스냅
+                float dot_arrival = Vector3.Dot(startToTarget, toTarget);
                 if (dot_arrival <= 0)
                 {
                     transform.localPosition = m_formationTarget;
@@ -639,7 +641,7 @@ public class SpaceShip : MonoBehaviour
                     // 진형 도달 후 함대 상태 적용 (워프 진입 시 전투 개시 방지)
                     ApplyFleetStateToShip();
                     yield break;
-                }    
+                }
             }
 
             // 목표 방향 + 이번 프레임 누적 회피 벡터 혼합
