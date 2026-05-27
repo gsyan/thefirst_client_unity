@@ -282,7 +282,7 @@ public class SpaceFleet : MonoBehaviour
         
         SetFleetState(fleetState);
     }
-    // bWarp: true면 뒤에서 스폰 후 이동, false면 즉시 진형 위치에 배치
+    // bWarp: 항상 후방 스폰. true면 워프 이펙트+고속 이동, false면 UpdateShipFormation이 배치 담당
     public void CreateSpaceShipFromData(ShipInfo shipInfo, bool bWarp = false)
     {
         GameObject shipGo = new GameObject($"{shipInfo.shipName}");
@@ -311,35 +311,32 @@ public class SpaceFleet : MonoBehaviour
         ship.transform.SetParent(transform);
         ship.transform.localRotation = Quaternion.identity;
 
-        if (bWarp == false)
-        {
-            ship.ApplyFleetStateToShip();
-            return;
-        }
-
-        // 신규 함선의 진형 목적지 계산 (positionIndex 기반, 기존 함선 위치 불변)
+        // 항상 함대 후방(-Z)에 스폰 — bWarp는 워프 이펙트·고속 여부만 결정
         var targets = CalculateFormationTargets(m_currentFormationType);
 
         if (targets.TryGetValue(ship, out Vector3 newShipTarget))
         {
-            // 목적지 뒤쪽(-Z)에 스폰 — 함선 z크기 * m_spawnOffsetMultiplier 만큼
             float spawnOffsetZ = ship.CalculateShipBounds().size.z * m_spawnOffsetMultiplier;
             ship.transform.localPosition = new Vector3(newShipTarget.x, newShipTarget.y, newShipTarget.z - spawnOffsetZ);
 
-            // 고속 워프 진입 — Moving 상태로 전환되므로 ApplyFleetStateToShip은 Arrived에서 호출됨
-            ship.MoveToFormation(newShipTarget, m_spawnApproachSpeedMult);
-
-            if (ship.TryGetComponent(out WarpEffectShip warpEffect) == false)
+            if (bWarp == true)
             {
-                warpEffect = ship.gameObject.AddComponent<WarpEffectShip>();
-                warpEffect.InitializeWarpEffect();
+                // 고속 워프 진입 — Moving 상태로 전환되므로 ApplyFleetStateToShip은 Arrived에서 호출됨
+                ship.MoveToFormation(newShipTarget, m_spawnApproachSpeedMult);
+
+                if (ship.TryGetComponent(out WarpEffectShip warpEffect) == false)
+                {
+                    warpEffect = ship.gameObject.AddComponent<WarpEffectShip>();
+                    warpEffect.InitializeWarpEffect();
+                }
+                warpEffect.StartApproachWarp();
             }
-            warpEffect.StartApproachWarp();
+            // bWarp=false: 후방 스폰만
         }
         else
         {
-            // 진형 슬롯 없으면 기본 위치
-            ship.transform.localPosition = new Vector3(0, 0, -20f);
+            // 진형 슬롯 없으면 에러 상황
+            Debug.LogWarning("AddShip formation position is not exist");
         }
     }
 
@@ -445,7 +442,7 @@ public class SpaceFleet : MonoBehaviour
     public void UpdateShipFormation(EFormationType formationType = EFormationType.linear_horizontal, bool smooth = true)
     {
         m_currentFormationType = formationType;
-        var targets = CalculateFormationTargets(formationType);
+        Dictionary<SpaceShip, Vector3> targets = CalculateFormationTargets(formationType);
 
         foreach (var kv in targets)
         {
@@ -453,7 +450,10 @@ public class SpaceFleet : MonoBehaviour
             if (smooth == true)
                 kv.Key.MoveToFormation(kv.Value);
             else
+            {
                 kv.Key.transform.localPosition = kv.Value;
+                kv.Key.ApplyFleetStateToShip();
+            }
         }
     }
 
@@ -727,7 +727,7 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
         {
             if (aliveShipIds.Contains(shipInfo.id)) continue;
 
-            CreateSpaceShipFromData(shipInfo);
+            CreateSpaceShipFromData(shipInfo);  // AddShip 내부에서 후방 스폰 위치 설정됨
             SpaceShip newShip = FindShip(shipInfo.id);
             if (newShip != null)
             {
@@ -737,13 +737,6 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
                         body.m_health = body.m_healthMax * healthRatio;
                 }
                 newShip.UpdateShipStatCur();
-
-                var targets = CalculateFormationTargets(m_currentFormationType);
-                if (targets.TryGetValue(newShip, out Vector3 formationTarget))
-                {
-                    float offsetZ = newShip.CalculateShipBounds().size.z * m_spawnOffsetMultiplier;
-                    newShip.transform.localPosition = new Vector3(formationTarget.x, formationTarget.y, formationTarget.z - offsetZ);
-                }
             }
             hasRestored = true;
         }
