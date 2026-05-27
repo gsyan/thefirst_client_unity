@@ -8,12 +8,12 @@ public class ToggleButton : MonoBehaviour
 {
     public Button button;
 
-    private Color    m_colorSelected;
-    private Color    m_colorUnselected;
-    private Image    m_outline;
-    private Image    m_checkmark;
-    private TMP_Text m_text;
-    private TMP_Text m_textDescription;
+    private Color     m_colorSelected;
+    private Color     m_colorUnselected;
+    private TMP_Text  m_text;
+    private TMP_Text  m_textDescription;
+    private Image     m_checkmark;
+    private Graphic[] m_graphics; // 색상 일괄 적용 대상 (checkmark 제외)
 
     private void Awake()
     {
@@ -22,15 +22,20 @@ public class ToggleButton : MonoBehaviour
 
         if (button == null)
             button = GetComponentInChildren<Button>();
-        m_outline = button.GetComponentInChildren<Image>();
+
+        Transform checkmarkTr = button.transform.Find("CheckmarkBorder/Checkmark");
+        if (checkmarkTr != null)
+            m_checkmark = checkmarkTr.GetComponent<Image>();
 
         var texts = button.GetComponentsInChildren<TMP_Text>(true);
         m_text            = texts.Length >= 1 ? texts[0] : null;
         m_textDescription = texts.Length >= 2 ? texts[1] : null;
 
-        Transform checkmarkTr = button.transform.Find("CheckmarkBorder/Checkmark");
-        if (checkmarkTr != null)
-            m_checkmark = checkmarkTr.GetComponent<Image>();
+        var all = button.GetComponentsInChildren<Graphic>(true);
+        var list = new System.Collections.Generic.List<Graphic>(all.Length);
+        foreach (var g in all)
+            if (g != m_checkmark) list.Add(g);
+        m_graphics = list.ToArray();
     }
 
     public void SetTexts(string nameKey, string descKey)
@@ -50,9 +55,7 @@ public class ToggleButton : MonoBehaviour
     public void SetSelected(bool selected)
     {
         Color c = selected ? m_colorSelected : m_colorUnselected;
-        if (m_outline != null)         m_outline.color         = c;
-        if (m_text != null)            m_text.color            = c;
-        if (m_textDescription != null) m_textDescription.color = c;
-        if (m_checkmark != null)       m_checkmark.gameObject.SetActive(selected);
+        foreach (var g in m_graphics) g.color = c;
+        if (m_checkmark != null) m_checkmark.gameObject.SetActive(selected);
     }
 }

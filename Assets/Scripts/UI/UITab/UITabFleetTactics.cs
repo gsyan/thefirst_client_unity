@@ -1,19 +1,19 @@
 // 함대 전략 설정 UI — 진형 선택(라디오) + 전투 옵션 토글
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UITabFleetTactics : UITabBase
 {
-    [SerializeField] private Button            m_toTabFleet;
-    [SerializeField] private ButtonGroupSystem m_formationButtonGroup;
-    [SerializeField] private Transform         m_toggleButtonContainer;
+    [SerializeField] private Button    m_toTabFleet;
+    [SerializeField] private Transform m_toggleButtonContainer;
+    [SerializeField] private Transform m_formationButtonContainer;
 
     private Character      m_myCharacter;
     private SpaceFleet     m_myFleet;
     private ToggleButton[] m_toggleButtons;
     private bool[]         m_toggleStates;
-    private Graphic[]      m_formationGroupGraphics;
+    private ToggleButton[] m_formationButtons;
+    private int            m_selectedFormationIdx = -1;
     private bool           m_suppressFormationCallback;
 
     // 인덱스 → 진형: 0=균형, 1=공격우선, 2=방어우선
@@ -80,118 +80,17 @@ public class UITabFleetTactics : UITabBase
         SetupFormationButtons();
     }
 
-    // 서버 데이터 기준 함선 수 — 전투 중 파괴된 함선은 영향 없음
-    private bool IsFormationLocked()
+    public override void OnTabActivated()
     {
-        if (m_myFleet == null) return true;
-        var ships = m_myFleet.m_fleetInfo.ships;
-        return ships == null || ships.Count < 3;
-    }
-
-    private void SetupFormationButtons()
-    {
-        if (m_formationButtonGroup == null) return;
-
-        m_formationButtonGroup.Initialize();
-
-        for (int i = 0; i < k_formationByIndex.Length; i++)
-        {
-            int idx = i;
-            EFormationType ft = k_formationByIndex[idx];
-            m_formationButtonGroup.items[idx].onSelected = () =>
-            {
-                if (m_suppressFormationCallback == false) RequestChangeFormation(ft);
-            };
-
-            var texts = m_formationButtonGroup.items[idx].button.GetComponentsInChildren<TMP_Text>();
-            if (texts.Length >= 1)
-                CommonUtility.SetUILocText(texts[0], k_formationNameKeys[idx]);
-            if (texts.Length >= 2)
-                CommonUtility.SetUILocText(texts[1], k_formationDescKeys[idx]);
-        }
-
-        // 헤더/구분선 제외, 버튼 item 그래픽만 캐시
-        var gList = new System.Collections.Generic.List<Graphic>();
-        for (int i = 0; i < m_formationButtonGroup.items.Count; i++)
-        {
-            var item = m_formationButtonGroup.items[i];
-            if (item.button != null)
-                gList.AddRange(item.button.GetComponentsInChildren<Graphic>(true));
-        }
-        m_formationGroupGraphics = gList.ToArray();
-
-        // 버튼 onClick을 직접 교체해 잠금 체크를 가장 먼저 수행
-        for (int i = 0; i < m_formationButtonGroup.items.Count; i++)
-        {
-            int idx = i;
-            var btn = m_formationButtonGroup.items[idx].button;
-            if (btn == null) continue;
-            btn.onClick.RemoveAllListeners();
-            btn.onClick.AddListener(() =>
-            {
-                if (IsFormationLocked() == true)
-                {
-                    ShowLockedAlert();
-                    return;
-                }
-                m_formationButtonGroup.Select(idx);
-            });
-        }
-
+        base.OnTabActivated();
+        SetOtherTabsVisible(false, includeSelf: true);
         RefreshFormationButtonLock();
     }
 
-    private void RefreshFormationButtonLock()
+    public override void OnTabDeactivated()
     {
-        if (m_formationButtonGroup == null || m_formationGroupGraphics == null) return;
-
-        if (IsFormationLocked() == true)
-        {
-            Color lockedColor = CommonUtility.PaletteColor("GeneralDark2");
-            for (int i = 0; i < m_formationGroupGraphics.Length; i++)
-                if (m_formationGroupGraphics[i] != null)
-                    m_formationGroupGraphics[i].color = lockedColor;
-        }
-        else
-        {
-            Color inactiveColor = CommonUtility.PaletteColor("GeneralDark1");
-            for (int i = 0; i < m_formationGroupGraphics.Length; i++)
-                if (m_formationGroupGraphics[i] != null)
-                    m_formationGroupGraphics[i].color = inactiveColor;
-
-            int currentIdx = GetFormationIndex(m_myFleet.m_currentFormationType);
-            m_suppressFormationCallback = true;
-            m_formationButtonGroup.Select(currentIdx);
-            m_suppressFormationCallback = false;
-        }
-    }
-
-    private void ShowLockedAlert()
-    {
-        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig
-        {
-            title   = LocalizationManager.Instance.Get("UITabFleetTactics_LockedTitle"),
-            message = LocalizationManager.Instance.Get("UITabFleetTactics_LockedMessage"),
-        });
-    }
-
-    private void RequestChangeFormation(EFormationType newFormationType)
-    {
-        var request = new ChangeFormationRequest
-        {
-            fleetId       = m_myFleet.m_fleetInfo.id,
-            formationType = newFormationType
-        };
-
-        NetworkManager.Instance.ChangeFormation(request, (response) =>
-        {
-            if (response.errorCode == 0)
-            {
-                m_myFleet.UpdateShipFormation(newFormationType, bSmooth: true);
-                if (response.data.updatedFleetInfo != null)
-                    DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
-            }
-        });
+        base.OnTabDeactivated();
+        SetOtherTabsVisible(true, includeSelf: true);
     }
 
     private void SetupToggleButtons()
@@ -291,6 +190,109 @@ public class UITabFleetTactics : UITabBase
         });
     }
 
+
+    // 서버 데이터 기준 함선 수 — 전투 중 파괴된 함선은 영향 없음
+    private bool IsFormationLocked()
+    {
+        if (m_myFleet == null) return true;
+        var ships = m_myFleet.m_fleetInfo.ships;
+        return ships == null || ships.Count < 3;
+    }
+
+    private void SetupFormationButtons()
+    {
+        if (m_formationButtonContainer == null) return;
+
+        m_formationButtons = m_formationButtonContainer.GetComponentsInChildren<ToggleButton>();
+
+        for (int i = 0; i < m_formationButtons.Length; i++)
+            m_formationButtons[i].SetSelected(false);
+
+        for (int i = 0; i < m_formationButtons.Length; i++)
+        {
+            if (i < k_formationNameKeys.Length)
+                m_formationButtons[i].SetTexts(k_formationNameKeys[i], k_formationDescKeys[i]);
+
+            int idx = i;
+            m_formationButtons[idx].button.onClick.RemoveAllListeners();
+            m_formationButtons[idx].button.onClick.AddListener(() =>
+            {
+                if (IsFormationLocked() == true)
+                {
+                    ShowLockedAlert();
+                    return;
+                }
+                SelectFormation(idx);
+            });
+        }
+
+        RefreshFormationButtonLock();
+    }
+
+    private void SelectFormation(int idx)
+    {
+        if (m_formationButtons == null || idx < 0 || idx >= m_formationButtons.Length) return;
+        if (idx == m_selectedFormationIdx) return;
+
+        if (m_selectedFormationIdx >= 0 && m_selectedFormationIdx < m_formationButtons.Length)
+            m_formationButtons[m_selectedFormationIdx].SetSelected(false);
+
+        m_selectedFormationIdx = idx;
+        m_formationButtons[idx].SetSelected(true);
+
+        if (m_suppressFormationCallback == false)
+            RequestChangeFormation(k_formationByIndex[idx]);
+    }
+
+    private void RefreshFormationButtonLock()
+    {
+        if (m_formationButtons == null) return;
+
+        if (IsFormationLocked() == true)
+        {
+            for (int i = 0; i < m_formationButtons.Length; i++)
+                m_formationButtons[i].SetSelected(false);
+            m_selectedFormationIdx = -1;
+        }
+        else
+        {
+            int currentIdx = GetFormationIndex(m_myFleet.m_currentFormationType);
+            m_suppressFormationCallback = true;
+            SelectFormation(currentIdx);
+            m_suppressFormationCallback = false;
+        }
+    }
+
+    private void ShowLockedAlert()
+    {
+        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig
+        {
+            title   = LocalizationManager.Instance.Get("UITabFleetTactics_LockedTitle"),
+            message = LocalizationManager.Instance.Get("UITabFleetTactics_LockedMessage"),
+        });
+    }
+
+    private void RequestChangeFormation(EFormationType newFormationType)
+    {
+        var request = new ChangeFormationRequest
+        {
+            fleetId       = m_myFleet.m_fleetInfo.id,
+            formationType = newFormationType
+        };
+
+        NetworkManager.Instance.ChangeFormation(request, (response) =>
+        {
+            if (response.errorCode == 0)
+            {
+                m_myFleet.UpdateShipFormation(newFormationType, bSmooth: true);
+                if (response.data.updatedFleetInfo != null)
+                    DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
+            }
+        });
+    }
+
+    
+
     private static int GetFormationIndex(EFormationType ft)
     {
         for (int i = 0; i < k_formationByIndex.Length; i++)
@@ -300,16 +302,5 @@ public class UITabFleetTactics : UITabBase
         return 0;
     }
 
-    public override void OnTabActivated()
-    {
-        base.OnTabActivated();
-        SetOtherTabsVisible(false, includeSelf: true);
-        RefreshFormationButtonLock();
-    }
-
-    public override void OnTabDeactivated()
-    {
-        base.OnTabDeactivated();
-        SetOtherTabsVisible(true, includeSelf: true);
-    }
+    
 }
