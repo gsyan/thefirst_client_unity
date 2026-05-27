@@ -306,6 +306,7 @@ public class ModuleChangeResponse
     public int slotIndex;
     public int moduleNewLevel;
     public int modulePointRemain;
+    public int investedModulePoint;
     // 교체 후 이 슬롯의 갱신된 unlock 목록 (최초 교체 시 새 subType 포함)
     public List<EModuleSubType> newUnlockedSubTypes;
 }

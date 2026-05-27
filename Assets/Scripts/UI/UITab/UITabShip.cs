@@ -670,6 +670,7 @@ public class UITabShip : UITabBase
         if (ship == null) return;
 
         ship.ApplyModuleChange(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel, changeData.newUnlockedSubTypes);
+        ship.SetModuleInvestedModulePoint(changeData.bodyIndex, changeData.moduleTypeNew, changeData.slotIndex, changeData.investedModulePoint);
 
         var character = DataManager.Instance.m_currentCharacter;
         if (character != null)
