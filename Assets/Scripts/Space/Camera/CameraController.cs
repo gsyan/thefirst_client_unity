@@ -238,7 +238,7 @@ public class CameraController : MonoSingleton<CameraController>
 
     // Input handling
     private bool m_isDragging = false;
-    private bool m_touchBlockedByUI = false; // 터치 시작이 UI 위였으면 해당 터치 전체 차단
+    private bool m_inputBlockedByUI = false; // 입력 시작이 UI 위였으면 해당 입력 전체 차단 (마우스/터치 공용)
     //private bool m_isPanning = false;
     private Vector3 m_startTouchPosition;
     private float m_startRotationY;
@@ -330,19 +330,31 @@ public class CameraController : MonoSingleton<CameraController>
         {
             m_lastInputScreenPosition = mousePos;
             m_startTouchPosition = mousePos;
-            LayerMask pickMask = ~m_layerMaskShield;
-            m_tapHitCollider = IsPointerOverUIObject() == false && GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, mousePos)
-                ? downHit.collider : null;
+            m_inputBlockedByUI = IsPointerOverUIObject();
+            if (m_inputBlockedByUI == false)
+            {
+                LayerMask pickMask = ~m_layerMaskShield;
+                m_tapHitCollider = GetCameraRaycast(out RaycastHit downHit, pickMask, 3000f, mousePos)
+                    ? downHit.collider : null;
+            }
         }
         else if (mouse.leftButton.wasReleasedThisFrame == true)
         {
-            if (m_tapHitCollider != null)
+            if (m_inputBlockedByUI == false)
             {
                 LayerMask pickMask = ~m_layerMaskShield;
-                if (GetCameraRaycast(out RaycastHit upHit, pickMask, 3000f, mousePos) && upHit.collider == m_tapHitCollider)
+                if (m_tapHitCollider != null)
+                {
+                    if (GetCameraRaycast(out RaycastHit upHit, pickMask, 3000f, mousePos) && upHit.collider == m_tapHitCollider)
+                        HandleModuleSelection(mousePos);
+                }
+                else
+                {
                     HandleModuleSelection(mousePos);
-                m_tapHitCollider = null;
+                }
             }
+            m_inputBlockedByUI = false;
+            m_tapHitCollider = null;
         }
 
         // 마우스 휠 줌 (new Input System scroll.y: 1노치 ≈ 1.0)
@@ -413,8 +425,8 @@ public class CameraController : MonoSingleton<CameraController>
             {
                 m_lastInputScreenPosition = pos;
                 // 터치 시작이 UI 위면 해당 터치 전체를 UI에게 양보
-                m_touchBlockedByUI = IsPointerOverUIObject();
-                if (m_touchBlockedByUI == false)
+                m_inputBlockedByUI = IsPointerOverUIObject();
+                if (m_inputBlockedByUI == false)
                 {
                     inputDown = true;
                     inputPosition = pos;
@@ -424,25 +436,32 @@ public class CameraController : MonoSingleton<CameraController>
             }
             else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
             {
-                m_touchBlockedByUI = false;
                 inputUp = true;
-                if (m_tapHitCollider != null)
+                if (m_inputBlockedByUI == false)
                 {
                     LayerMask pickMask = ~m_layerMaskShield;
-                    if (GetCameraRaycast(out RaycastHit upHit, pickMask, 3000f, pos) && upHit.collider == m_tapHitCollider)
+                    if (m_tapHitCollider != null)
+                    {
+                        if (GetCameraRaycast(out RaycastHit upHit, pickMask, 3000f, pos) && upHit.collider == m_tapHitCollider)
+                            HandleModuleSelection(pos);
+                    }
+                    else
+                    {
                         HandleModuleSelection(pos);
-                    m_tapHitCollider = null;
+                    }
                 }
+                m_inputBlockedByUI = false;
+                m_tapHitCollider = null;
             }
             else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Canceled)
             {
-                m_touchBlockedByUI = false;
+                m_inputBlockedByUI = false;
                 inputUp = true;
                 m_tapHitCollider = null;
             }
             else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Moved || touch.phase == UnityEngine.InputSystem.TouchPhase.Stationary)
             {
-                if (m_touchBlockedByUI == false)
+                if (m_inputBlockedByUI == false)
                 {
                     inputHeld = true;
                     inputPosition = pos;
@@ -458,18 +477,24 @@ public class CameraController : MonoSingleton<CameraController>
     }
     
 
-    // 3D 클릭으로 내 함선/모듈 선택 (UIPanelSpace 활성 시에만 동작)
+    // 3D 클릭으로 내 함선/모듈 선택. 빈공간이면 EmptySpaceTapped 발행
     private void HandleModuleSelection(Vector3? screenPosition = null)
     {
         if (!m_shipSelectionEnabled) return;
 
         LayerMask pickMask = ~m_layerMaskShield;
         if (!GetCameraRaycast(out RaycastHit hit, pickMask, 3000f, screenPosition))
+        {
+            EventManager.Trigger_EmptySpaceTapped();
             return;
+        }
 
         SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
-        if (ship == null) return;
-        if (ship.m_myFleet == null || ship.m_myFleet.IsEnemy) return;
+        if (ship == null || ship.m_myFleet == null || ship.m_myFleet.IsEnemy)
+        {
+            EventManager.Trigger_EmptySpaceTapped();
+            return;
+        }
 
         // 내함대 보기
         SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);

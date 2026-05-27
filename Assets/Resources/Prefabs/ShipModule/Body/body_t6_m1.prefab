@@ -154,12 +154,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -168,6 +166,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &340060325153954866
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,12 +249,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -264,6 +261,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &378547953206930241
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,8 +584,8 @@ Transform:
   m_GameObject: {fileID: 877616666521038346}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.504, z: -2.78}
-  m_LocalScale: {x: 0.5, y: 0.3, z: 0.1}
+  m_LocalPosition: {x: 0, y: -0.392, z: -2.78}
+  m_LocalScale: {x: 0.4, y: 0.21, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6365369270559502687}
@@ -929,12 +927,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_moduleBodyInfo:
     moduleType: 0
     moduleSubType: 0
@@ -944,6 +940,8 @@ MonoBehaviour:
     missiles: []
     hangers: []
     unlockedSubTypes: 
+    investedModulePoint: 0
+    currentHealth: 0
   m_moduleSlots: []
   m_beams: []
   m_missiles: []
@@ -1983,8 +1981,8 @@ Transform:
   m_GameObject: {fileID: 2867096224039980341}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.50975764, w: 0.860318}
-  m_LocalPosition: {x: 0.32, y: -0.144, z: -2.78}
-  m_LocalScale: {x: 1.1, y: 0.3, z: 0.1}
+  m_LocalPosition: {x: 0.276, y: -0.12, z: -2.78}
+  m_LocalScale: {x: 0.9, y: 0.2, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6365369270559502687}
@@ -2599,12 +2597,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -2613,6 +2609,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &3615688261838707085
 GameObject:
   m_ObjectHideFlags: 0
@@ -3308,12 +3305,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -3322,6 +3317,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &4458267418880214661
 GameObject:
   m_ObjectHideFlags: 0
@@ -3527,12 +3523,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -3541,6 +3535,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &4636364846274555567
 GameObject:
   m_ObjectHideFlags: 0
@@ -4490,8 +4485,8 @@ Transform:
   m_GameObject: {fileID: 6152624187109059106}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.331, z: -2.78}
-  m_LocalScale: {x: 1.3, y: 0.5, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0.264, z: -2.78}
+  m_LocalScale: {x: 1, y: 0.4, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6365369270559502687}
@@ -5762,8 +5757,8 @@ Transform:
   m_GameObject: {fileID: 8347642889542455056}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.52789515, w: 0.8493095}
-  m_LocalPosition: {x: -0.331, y: -0.144, z: -2.78}
-  m_LocalScale: {x: 1.1, y: 0.3, z: 0.1}
+  m_LocalPosition: {x: -0.263, y: -0.11, z: -2.78}
+  m_LocalScale: {x: 0.9, y: 0.2, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6365369270559502687}
@@ -6355,12 +6350,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -6369,6 +6362,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &9210620006550260140
 GameObject:
   m_ObjectHideFlags: 0

@@ -339,4 +339,10 @@ public static class EventManager
         OnModuleReplaced -= callback;
     }
 
+    // Empty Space Tapped — 3D 빈공간 탭 (UI/함선/모듈 아닌 곳)
+    public static event Action OnEmptySpaceTapped;
+    public static void Trigger_EmptySpaceTapped() { OnEmptySpaceTapped?.Invoke(); }
+    public static void Subscribe_EmptySpaceTapped(Action callback) { OnEmptySpaceTapped += callback; }
+    public static void Unsubscribe_EmptySpaceTapped(Action callback) { OnEmptySpaceTapped -= callback; }
+
 }

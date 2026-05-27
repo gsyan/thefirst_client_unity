@@ -1,7 +1,6 @@
 // 우주 공간 UI 패널 — 탭 시스템 초기화, UITabShip/UITabStation 탭 시 카메라 viewport 애니메이션, 모듈 선택 자동 전환
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIPanelSpace : UIPanelBase
 {
@@ -10,9 +9,6 @@ public class UIPanelSpace : UIPanelBase
 
     [Header("Layout Animation (UITabShip / UITabStation)")]
     public float m_animDuration = 0.3f;
-
-    [Header("Hidden Close Button (backdrop)")]
-    [SerializeField] private Button m_hiddenCloseButton;
 
     [HideInInspector] public SpaceFleet m_myFleet;
 
@@ -54,18 +50,13 @@ public class UIPanelSpace : UIPanelBase
         float canvasWidth = canvasRect != null ? canvasRect.rect.width : 1920f;
         m_openCameraWidth = (canvasWidth - uiPanelWidth) / canvasWidth;
         SetLayoutImmediate(false);
-
-        if (m_hiddenCloseButton != null)
-        {
-            m_hiddenCloseButton.onClick.AddListener(OnHiddenCloseButtonClicked);
-            m_hiddenCloseButton.gameObject.SetActive(false);
-        }
     }
 
     public override void OnShowUIPanel()
     {
         CameraController.Instance.SetShipSelectionEnabled(true);
         EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
+        EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         m_tabSystem.ForceActivateTab();
     }
 
@@ -73,6 +64,7 @@ public class UIPanelSpace : UIPanelBase
     {
         CameraController.Instance.SetShipSelectionEnabled(false);
         EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
+        EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         m_tabSystem.ForceDeactivateTab();
 
         SetTabNavVisible(true);
@@ -89,20 +81,21 @@ public class UIPanelSpace : UIPanelBase
 
     private void OnTabSelectionChanged(int tabIndex)
     {
-        if (m_hiddenCloseButton != null)
-            m_hiddenCloseButton.gameObject.SetActive(tabIndex >= 0);
-
         bool shouldShrinkCamera = tabIndex == m_moduleTabIndex;
         if (shouldShrinkCamera == m_isUIOpen) return;
 
-        float targetWidth;
-        if (tabIndex == m_moduleTabIndex)        targetWidth = m_openCameraWidth;
-        else                                     targetWidth = 1f;
+        float targetWidth = tabIndex == m_moduleTabIndex ? m_openCameraWidth : 1f;
 
         m_isUIOpen = shouldShrinkCamera;
         if (m_layoutCoroutine != null)
             StopCoroutine(m_layoutCoroutine);
         m_layoutCoroutine = StartCoroutine(Co_AnimateLayout(shouldShrinkCamera, targetWidth));
+    }
+
+    private void OnEmptySpaceTapped()
+    {
+        if (m_tabSystem.GetCurrentActiveTab() >= 0)
+            m_tabSystem.SwitchToTab(-1);
     }
 
     // 카메라 viewport width 애니메이션
@@ -143,34 +136,6 @@ public class UIPanelSpace : UIPanelBase
             if (btn != null)
                 btn.gameObject.SetActive(visible);
         }
-    }
-
-    private void OnHiddenCloseButtonClicked()
-    {
-        if (m_tabSystem.GetCurrentActiveTab() != m_moduleTabIndex)
-        {
-            m_tabSystem.SwitchToTab(-1);
-            return;
-        }
-
-        // UITabShip 상태: 모듈 피킹 먼저 시도, 내 함대 모듈이 맞으면 닫지 않음
-        LayerMask pickMask = ~(1 << 13); // Shield 레이어 제외
-        if (CameraController.Instance.GetCameraRaycast(out RaycastHit hit, pickMask, 3000f))
-        {
-            SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
-            if (ship != null && ship.m_myFleet != null && ship.m_myFleet.IsEnemy == false)
-            {
-                ModuleBase module = hit.collider.GetComponentInParent<ModuleBase>();
-                if (module != null)
-                {
-                    EventManager.Trigger_SpaceShipSelected(ship);
-                    EventManager.TriggerSpaceShipModuleSelected(ship, module);
-                    return;
-                }
-            }
-        }
-
-        m_tabSystem.SwitchToTab(-1);
     }
 
     // 모듈이 선택될 때만 UITabShip 로 자동 전환 (함선 클릭만으로는 전환 안 함)
