@@ -21,6 +21,7 @@ public class ModuleBeam : ModuleBase
     private Coroutine m_autoAttackCoroutine;
     private Animator m_animator;
     private const float k_beamFireAngle = 5f;
+    private readonly List<ModuleBase> m_candidateModules = new List<ModuleBase>();
 
 
     public override EModuleType GetModuleType()
@@ -150,15 +151,43 @@ public class ModuleBeam : ModuleBase
         }
     }
     
+    private void CollectTargetModules(SpaceShip targetShip, ModuleBody fallback)
+    {
+        m_candidateModules.Clear();
+        if (targetShip == null)
+        {
+            m_candidateModules.Add(fallback);
+            return;
+        }
+        foreach (ModuleBody body in targetShip.m_moduleBodys)
+        {
+            if (body == null) continue;
+            m_candidateModules.Add(body);
+            foreach (ModuleSlot slot in body.m_moduleSlots)
+            {
+                if (slot == null) continue;
+                ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
+                if (module != null)
+                    m_candidateModules.Add(module);
+            }
+        }
+        if (m_candidateModules.Count == 0)
+            m_candidateModules.Add(fallback);
+    }
+
     private void ExecuteAttackOnTarget(ModuleBody target)
     {
         if (m_animator != null)
             m_animator.SetTrigger("Fire");
 
+        SpaceShip targetShip = target.GetComponentInParent<SpaceShip>();
+        CollectTargetModules(targetShip, target);
+
         foreach (var launcher in m_launchers)
         {
-            if (launcher != null)
-                launcher.FireAtTarget(target, m_attack, this);
+            if (launcher == null) continue;
+            ModuleBase fireTarget = m_candidateModules[Random.Range(0, m_candidateModules.Count)];
+            launcher.FireAtTarget(fireTarget, m_attack, this);
         }
     }
 
