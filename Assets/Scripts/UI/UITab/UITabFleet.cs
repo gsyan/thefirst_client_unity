@@ -57,10 +57,12 @@ public class UITabFleet : UITabBase
         UpdateTechLevelDisplay();
         RefreshShipHealthDisplay();
 
-        // 선택된 함선이 없으면 기함(0번) 자동 선택
+        // 선택된 함선이 없으면 살아있는 첫 함선 자동 선택
         if (m_selectedShipSelector == null && m_myFleet != null && m_myFleet.m_ships.Count > 0)
         {
-            OnShipSelectorClicked(m_myFleet.m_ships[0]);
+            SpaceShip firstShip = m_myFleet.GetFirstAliveShip();
+            if (firstShip != null)
+                OnShipSelectorClicked(firstShip);
             return;
         }
 
@@ -77,7 +79,10 @@ public class UITabFleet : UITabBase
         // Fleet 탭 벗어날 때 모든 함선 아웃라인 비활성화
         if (m_myFleet == null) return;
         for (int i = 0; i < m_myFleet.m_ships.Count; i++)
+        {
+            if (m_myFleet.m_ships[i] == null) continue;
             m_myFleet.m_ships[i].m_shipOutline.enabled = false;
+        }
     }
 
     // ── Tech Level ────────────────────────────────────────────────────
@@ -193,25 +198,47 @@ public class UITabFleet : UITabBase
 
     private void RefreshShipHealthDisplay()
     {
-        if (m_shipSelectors == null || m_myFleet == null) return;
+        if (m_shipSelectors == null) return;
 
-        int shipCount = m_myFleet.m_ships.Count;
-
-        // 각 슬롯의 Ship 참조가 현재 함대와 다르면 전체 재구성
         for (int i = 0; i < m_shipSelectors.Length; i++)
         {
-            if (m_shipSelectors[i] == null) continue;
-            SpaceShip expected = i < shipCount ? m_myFleet.m_ships[i] : null;
-            if (m_shipSelectors[i].Ship != expected)
+            if (m_shipSelectors[i] == null || m_shipSelectors[i].gameObject.activeSelf == false) continue;
+
+            if (m_shipSelectors[i].Ship == null)
             {
-                PopulateShipSelectorGrid();
+                // 전투 중 파괴된 함선 — 파괴 상태 표시
+                m_shipSelectors[i].SetDestroyedState();
+                if (m_selectedShipSelector == m_shipSelectors[i])
+                    SelectAliveShipFallback();
+            }
+            else
+            {
+                m_shipSelectors[i].RefreshHealth();
+            }
+        }
+    }
+
+    // 살아있는 함선으로 선택 변경 (기함 우선, 인덱스 순)
+    private void SelectAliveShipFallback()
+    {
+        if (m_selectedShipSelector != null)
+        {
+            m_selectedShipSelector.SetSelected(false);
+            m_selectedShipSelector = null;
+        }
+
+        for (int i = 0; i < m_shipSelectors.Length; i++)
+        {
+            if (m_shipSelectors[i] == null || m_shipSelectors[i].gameObject.activeSelf == false) continue;
+            SpaceShip ship = m_shipSelectors[i].Ship;
+            if (ship != null && ship.IsAlive() == true)
+            {
+                OnShipSelectorClicked(ship);
                 return;
             }
         }
 
-        for (int i = 0; i < shipCount && i < m_shipSelectors.Length; i++)
-            if (m_shipSelectors[i] != null)
-                m_shipSelectors[i].RefreshHealth();
+        UpdateShipActionButtons();
     }
 
     private void UpdateShipActionButtons()
@@ -246,15 +273,17 @@ public class UITabFleet : UITabBase
             {
                 m_selectedShipSelector = m_shipSelectors[i];
                 m_selectedShipSelector.SetSelected(true);
-                m_selectedShipSelector.Ship.m_shipOutline.enabled = true;
+                if (m_selectedShipSelector.Ship != null)
+                    m_selectedShipSelector.Ship.m_shipOutline.enabled = true;
                 break;
             }
         }
 
         UpdateShipActionButtons();
 
-        // 카메라 타겟 지정
-        EventManager.Trigger_SpaceShipSelected(ship);
+        // 카메라 타겟 지정 (파괴된 함선은 이벤트 전달 생략)
+        if (ship != null)
+            EventManager.Trigger_SpaceShipSelected(ship);
     }
 
     // ── 이벤트 핸들러 ─────────────────────────────────────────────────

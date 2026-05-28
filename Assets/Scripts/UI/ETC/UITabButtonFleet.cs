@@ -68,6 +68,8 @@ public class UITabButtonFleet : MonoBehaviour
         m_fleetStatRows[0].SetTextWithString($"{org.attack:F0}");
         m_fleetStatRows[1].SetTextWithString($"{org.health:F0}");
 
+        for (int i = 0; i < m_fleetStatRows.Length; i++)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_fleetStatRows[i].transform as RectTransform);
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_rtFleetStats);
     }
 

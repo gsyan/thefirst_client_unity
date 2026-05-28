@@ -283,31 +283,63 @@ public class SpaceFleet : MonoBehaviour
         SetFleetState(fleetState);
     }
     // bWarp: 항상 후방 스폰. true면 워프 이펙트+고속 이동, false면 UpdateShipFormation이 배치 담당
-    public void CreateSpaceShipFromData(ShipInfo shipInfo, bool bWarp = false)
+    // bFillNullSlot: true면 파괴된 슬롯(null) 자리에 복원, false면 신규 추가(null 슬롯 무시)
+    public void CreateSpaceShipFromData(ShipInfo shipInfo, bool bWarp = false, bool bFillNullSlot = false)
     {
         GameObject shipGo = new GameObject($"{shipInfo.shipName}");
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
         spaceShip.InitializeSpaceShip(this, shipInfo);
-        AddShip(spaceShip, bWarp: bWarp);
+        AddShip(spaceShip, bWarp: bWarp, bFillNullSlot: bFillNullSlot);
     }
     // 함선 추가 시 스폰 오프셋 배율 (함선 z크기 * 배율 만큼 목적지 뒤에서 워프 진입)
     private float m_spawnOffsetMultiplier = 20f;
     // 워프 진입 시 이동 속도 배율
     private float m_spawnApproachSpeedMult = 60f;
 
-    public void AddShip(SpaceShip ship, bool bWarp = false)
+    public void AddShip(SpaceShip ship, bool bWarp = false, bool bFillNullSlot = false)
     {
         if (ship == null) return;
-        int insertIdx = m_ships.Count;
-        for (int i = 0; i < m_ships.Count; i++)
+
+        if (bFillNullSlot == true)
         {
-            if (m_ships[i] != null && m_ships[i].m_shipInfo.positionIndex > ship.m_shipInfo.positionIndex)
+            // 파괴된 함선 복원: positionIndex 순서상 올바른 null 슬롯에 직접 대입
+            int nullSlotIdx = -1;
+            for (int i = 0; i < m_ships.Count; i++)
             {
-                insertIdx = i;
-                break;
+                if (m_ships[i] != null) continue;
+                int prevPos = -1;
+                for (int j = i - 1; j >= 0; j--)
+                { if (m_ships[j] != null) { prevPos = m_ships[j].m_shipInfo.positionIndex; break; } }
+                int nextPos = int.MaxValue;
+                for (int j = i + 1; j < m_ships.Count; j++)
+                { if (m_ships[j] != null) { nextPos = m_ships[j].m_shipInfo.positionIndex; break; } }
+                if (prevPos < ship.m_shipInfo.positionIndex && ship.m_shipInfo.positionIndex < nextPos)
+                { nullSlotIdx = i; break; }
+            }
+            if (nullSlotIdx >= 0)
+            {
+                m_ships[nullSlotIdx] = ship;
+            }
+            else
+            {
+                Debug.LogWarning($"[AddShip] null 슬롯 없음, 일반 삽입 fallback: positionIndex={ship.m_shipInfo.positionIndex}");
+                m_ships.Add(ship);
             }
         }
-        m_ships.Insert(insertIdx, ship);
+        else
+        {
+            // 신규 함선 추가: positionIndex 기준 정렬 삽입 (null 슬롯 무시)
+            int insertIdx = m_ships.Count;
+            for (int i = 0; i < m_ships.Count; i++)
+            {
+                if (m_ships[i] != null && m_ships[i].m_shipInfo.positionIndex > ship.m_shipInfo.positionIndex)
+                {
+                    insertIdx = i;
+                    break;
+                }
+            }
+            m_ships.Insert(insertIdx, ship);
+        }
         ship.transform.SetParent(transform);
         ship.transform.localRotation = Quaternion.identity;
 
@@ -420,11 +452,11 @@ public class SpaceFleet : MonoBehaviour
         return ship.FindModule(bodyIndex, moduleType, slotIndex);
     }
 
-    // 기함 반환 (positionIndex == 0, 없으면 첫 번째 함선)
+    // 기함 반환 (positionIndex == 0, 없으면 첫 번째 non-null 함선)
     public SpaceShip GetFlagship()
     {
         SpaceShip flagship = m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == 0);
-        if (flagship == null && m_ships.Count > 0) flagship = m_ships[0];
+        if (flagship == null) flagship = m_ships.Find(s => s != null);
         return flagship;
     }
 
@@ -656,7 +688,25 @@ public class SpaceFleet : MonoBehaviour
     }
 
 
-public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
+    // 전투 중 파괴 전용 — 슬롯 인덱스를 유지한 채 null로 표시
+    public void SetShipNullified(SpaceShip ship)
+    {
+        if (ship == null) return;
+        int idx = m_ships.IndexOf(ship);
+        if (idx >= 0) m_ships[idx] = null;
+
+        if (IsFleetAlive() == false)
+        {
+            if (IsZoneEnemy)
+                ObjectManager.Instance.OnZoneEnemyFleetDefeated(this);
+            else if (IsEnemy)
+                ObjectManager.Instance.RemoveEnemyFleet(this);
+            else
+                EventManager.Trigger_MyFleetDestroyed();
+        }
+    }
+
+    public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
     {
         if (ship == null) return;
         m_ships.Remove(ship);
@@ -702,6 +752,8 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
             UpdateShipFormation(m_fleetInfo.formation, bSmooth: false);
         }
 
+        // ShipSelector가 새 함선 객체를 참조하도록 먼저 갱신, 이후 HP 이벤트
+        EventManager.Trigger_FleetShipCountChanged();
         ApplyHealthRatio(healthRatio);
 
         if (m_fleetSource == EFleetSource.fleet_source_player || m_fleetSource == EFleetSource.fleet_source_player_remote)
@@ -727,7 +779,7 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
         {
             if (aliveShipIds.Contains(shipInfo.id)) continue;
 
-            CreateSpaceShipFromData(shipInfo, bWarp: true);  // AddShip 내부에서 후방 스폰 위치 설정됨
+            CreateSpaceShipFromData(shipInfo, bWarp: true, bFillNullSlot: true);
             SpaceShip newShip = FindShip(shipInfo.id);
             if (newShip != null)
             {
@@ -743,6 +795,7 @@ public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
 
         if (hasRestored)
         {
+            EventManager.Trigger_FleetShipCountChanged();
             EventManager.Trigger_FleetUpdateHP();
             EventManager.Trigger_ShipUpdateHP();
         }

@@ -327,10 +327,10 @@ public class SpaceShip : MonoBehaviour
         if (IsAlive() == true) return;
         // 코루틴 중지
         StopAllCoroutines();        
-        // SpaceFleet에서 자신을 제거
+        // 전투 중 파괴 — 슬롯 null 처리 (인덱스 유지, UI 파괴 표시용)
         SpaceFleet parentFleet = GetComponentInParent<SpaceFleet>();
         if (parentFleet != null)
-            parentFleet.RemoveShip(this);
+            parentFleet.SetShipNullified(this);
         // 폭발 이펙트 생성
         EffectBase effect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_EXPLOSION_SHIP);
         effect.transform.position = transform.position;

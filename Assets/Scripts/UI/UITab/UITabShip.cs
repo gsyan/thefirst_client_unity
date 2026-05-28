@@ -176,6 +176,7 @@ public class UITabShip : UITabBase
 
     private void OnSpaceShipSelected(SpaceShip ship)
     {
+        if (ship == null) return;
         if (m_selectedShip == ship) return;
 
         m_selectedShip = ship;

@@ -63,8 +63,12 @@ public class FleetButtonHPDisplay : MonoBehaviour
                 if (m_hpBarFills[i] == null) continue;
 
                 SpaceShip ship = fleet.m_ships[i];
-                float maxHp  = ship.m_spaceShipStatsOrg.health;
-                float ratio  = maxHp > 0f ? Mathf.Clamp01(ship.m_spaceShipStatsCur.health / maxHp) : 0f;
+                float ratio = 0f;
+                if (ship != null)
+                {
+                    float maxHp = ship.m_spaceShipStatsOrg.health;
+                    ratio = maxHp > 0f ? Mathf.Clamp01(ship.m_spaceShipStatsCur.health / maxHp) : 0f;
+                }
                 SetRatio(i, ratio);
             }
             else
