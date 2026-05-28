@@ -79,7 +79,7 @@ public class ModuleBase : MonoBehaviour
 
     public virtual void Attack(SpaceShip target)
     {
-        target.TakeDamage(m_attack);
+        target.TakeDamage(m_attack, transform.position);
     }
 
     public virtual EModuleType GetModuleType()

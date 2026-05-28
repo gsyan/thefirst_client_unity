@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 //using System.Numerics;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 
 // 능력치 프로파일 구조체 (함선/함대의 전투 및 작전 능력)
@@ -42,6 +43,19 @@ public class SpaceShip : MonoBehaviour
 
     private GaugeBars m_gaugeBars;
     public ShieldGrid m_shieldGrid;
+
+    // 체력 단계별 화재 이펙트 (50% / 30% / 10% 이하 피격 시 각각 생성)
+    private EffectBase m_fireEffect50 = null;
+    private EffectBase m_fireEffect30 = null;
+    private EffectBase m_fireEffect10 = null;
+
+    // 피격 스코치 마크 (함선당 최대 개수 제한)
+    private const int k_maxScorchMarks = 6;
+    private const float k_scorchHoldTime = 1.0f;
+    private const float k_scorchFadeTime = 0.5f;
+    private readonly List<EffectBase> m_scorchMarks = new List<EffectBase>();
+    private readonly List<Coroutine> m_scorchCoroutines = new List<Coroutine>();
+    private readonly List<DecalProjector> m_scorchDecals = new List<DecalProjector>();
 
     virtual protected void Start()
     {
@@ -306,7 +320,7 @@ public class SpaceShip : MonoBehaviour
         return Vector3.Angle(transform.forward, toTarget) <= angleThreshold;
     }
 
-    virtual public void TakeDamage(float attackPower)
+    virtual public void TakeDamage(float attackPower, Vector3 hitPosition)
     {
         // 이미 죽었다면 리턴
         if (IsAlive() == false) return;
@@ -322,11 +336,20 @@ public class SpaceShip : MonoBehaviour
 
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
-        
-        // 데이미 처리 후 살았다면 이후 로직 생략
-        if (IsAlive() == true) return;
+
+        // 화재 이펙트: 체력 비율이 임계값 이하로 떨어진 시점에 하나씩 생성
+        if (IsAlive() == true)
+        {
+            UpdateFireEffects(hitPosition);
+            SpawnScorchMark(hitPosition);
+            return;
+        }
+
+        // 사망 처리
+        ClearAllFireEffects();
+        ClearAllScorchMarks();
         // 코루틴 중지
-        StopAllCoroutines();        
+        StopAllCoroutines();
         // 전투 중 파괴 — 슬롯 null 처리 (인덱스 유지, UI 파괴 표시용)
         SpaceFleet parentFleet = GetComponentInParent<SpaceFleet>();
         if (parentFleet != null)
@@ -337,6 +360,103 @@ public class SpaceShip : MonoBehaviour
         effect.PlayEffect();
         // 파괴 처리
         Destroy(gameObject);
+    }
+
+    private void UpdateFireEffects(Vector3 hitPosition)
+    {
+        if (m_spaceShipStatsOrg.health <= 0f) return;
+        float ratio = m_spaceShipStatsCur.health / m_spaceShipStatsOrg.health;
+        if (ratio < 0.5f && m_fireEffect50 == null) SpawnFireEffect(ref m_fireEffect50, hitPosition);
+        if (ratio < 0.3f && m_fireEffect30 == null) SpawnFireEffect(ref m_fireEffect30, hitPosition);
+        if (ratio < 0.1f && m_fireEffect10 == null) SpawnFireEffect(ref m_fireEffect10, hitPosition);
+    }
+
+    public void CheckFireEffects()
+    {
+        if (m_spaceShipStatsOrg.health <= 0f) return;
+        float ratio = m_spaceShipStatsCur.health / m_spaceShipStatsOrg.health;
+        if (ratio >= 0.5f) ReturnFireEffect(ref m_fireEffect50);
+        if (ratio >= 0.3f) ReturnFireEffect(ref m_fireEffect30);
+        if (ratio >= 0.1f) ReturnFireEffect(ref m_fireEffect10);
+    }
+
+    private void SpawnFireEffect(ref EffectBase slot, Vector3 position)
+    {
+        slot = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_FIRE_ON_SHIP);
+        slot.transform.position = position;
+        slot.PlayEffect();
+    }
+
+    private void ReturnFireEffect(ref EffectBase slot)
+    {
+        if (slot == null) return;
+        slot.ReturnEffect();
+        slot = null;
+    }
+
+    private void ClearAllFireEffects()
+    {
+        ReturnFireEffect(ref m_fireEffect50);
+        ReturnFireEffect(ref m_fireEffect30);
+        ReturnFireEffect(ref m_fireEffect10);
+    }
+
+    public void SpawnScorchMark(Vector3 hitPosition)
+    {
+        if (m_scorchMarks.Count >= k_maxScorchMarks)
+            ReturnScorchMarkAt(0);
+
+        EffectBase mark = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_SCORCH_MARK);
+        DecalProjector decal = mark.GetComponent<DecalProjector>();
+        mark.transform.SetParent(transform, true);
+        mark.transform.position = hitPosition;
+        mark.transform.rotation = Quaternion.LookRotation(hitPosition - transform.position);
+        mark.PlayEffect();
+        Coroutine co = StartCoroutine(ScorchMarkLifeCycle(decal, mark));
+        m_scorchMarks.Add(mark);
+        m_scorchCoroutines.Add(co);
+        m_scorchDecals.Add(decal);
+    }
+
+    private IEnumerator ScorchMarkLifeCycle(DecalProjector decal, EffectBase mark)
+    {
+        yield return new WaitForSeconds(k_scorchHoldTime);
+
+        float elapsed = 0f;
+        while (elapsed < k_scorchFadeTime)
+        {
+            elapsed += Time.deltaTime;
+            if (decal != null)
+                decal.fadeFactor = Mathf.Lerp(1f, 0f, elapsed / k_scorchFadeTime);
+            yield return null;
+        }
+
+        int idx = m_scorchMarks.IndexOf(mark);
+        if (idx >= 0)
+        {
+            m_scorchMarks.RemoveAt(idx);
+            m_scorchCoroutines.RemoveAt(idx);
+            m_scorchDecals.RemoveAt(idx);
+        }
+        if (decal != null) decal.fadeFactor = 1f;
+        mark.ReturnEffect();
+    }
+
+    private void ReturnScorchMarkAt(int index)
+    {
+        if (m_scorchCoroutines[index] != null) StopCoroutine(m_scorchCoroutines[index]);
+        DecalProjector decal = m_scorchDecals[index];
+        if (decal != null) decal.fadeFactor = 1f;
+        m_scorchMarks[index].ReturnEffect();
+        m_scorchMarks.RemoveAt(index);
+        m_scorchCoroutines.RemoveAt(index);
+        m_scorchDecals.RemoveAt(index);
+    }
+
+    private void ClearAllScorchMarks()
+    {
+        for (int i = m_scorchMarks.Count - 1; i >= 0; i--)
+            ReturnScorchMarkAt(i);
     }
 
     // 함선이 살아있는지 확인

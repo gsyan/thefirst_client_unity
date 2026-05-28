@@ -170,7 +170,7 @@ public class ProjectileMissile : ProjectileBase
                 if (m_splashRadius > 0f)
                     ApplySplashDamage(hit.point, hitShip);
                 else
-                    hitShip.TakeDamage(m_damage);
+                    hitShip.TakeDamage(m_damage, hit.point);
 
                 ReturnToPool(hitPosition: hit.point);
                 return true;
@@ -183,7 +183,8 @@ public class ProjectileMissile : ProjectileBase
     // 직격 대상 100%, 범위 내 나머지는 거리 비례 선형 감쇄(100%~50%)
     private void ApplySplashDamage(Vector3 center, SpaceShip directHitShip)
     {
-        directHitShip.TakeDamage(m_damage);
+        // 직격 함선은 미사일 실제 충돌 지점(center == hit.point)을 그대로 사용
+        directHitShip.TakeDamage(m_damage, center);
 
         int count = Physics.OverlapSphereNonAlloc(center, m_splashRadius, s_overlapResults, s_raycastMask);
         for (int i = 0; i < count; i++)
@@ -195,7 +196,9 @@ public class ProjectileMissile : ProjectileBase
 
             float dist = Vector3.Distance(center, s_overlapResults[i].transform.position);
             float ratio = 1.0f - 0.5f * (dist / m_splashRadius);
-            ship.TakeDamage(m_damage * ratio);
+            // 폭발 중심에서 콜라이더 표면까지의 가장 가까운 지점 = 실제 피탄 지점
+            Vector3 splashHitPoint = s_overlapResults[i].ClosestPoint(center);
+            ship.TakeDamage(m_damage * ratio, splashHitPoint);
         }
     }
 

@@ -80,7 +80,7 @@ public class ProjectileBeamInstant : ProjectileBase
             {
                 tickAccum -= m_tickInterval;
                 if (targetShip != null)
-                    targetShip.TakeDamage(tickDamage);
+                    targetShip.TakeDamage(tickDamage, m_target.transform.position);
             }
 
             yield return null;

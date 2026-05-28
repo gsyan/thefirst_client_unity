@@ -90,6 +90,18 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         else
             Debug.LogError("WarpSpeedLines not found at Resources/Prefabs/Effect/WarpSpeedLines");
 
+        EffectBase effectFireOnShipPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectFireOnShip");
+        if (effectFireOnShipPrefab != null)
+            m_poolManager.CreatePool(EPoolName.EFFECT_FIRE_ON_SHIP, effectFireOnShipPrefab, 5, 15);
+        else
+            Debug.LogError("EffectFireOnShip not found at Resources/Prefabs/Effect/EffectFireOnShip");
+
+        EffectBase effectScorchMarkPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectScorchMark");
+        if (effectScorchMarkPrefab != null)
+            m_poolManager.CreatePool(EPoolName.EFFECT_SCORCH_MARK, effectScorchMarkPrefab, 10, 30);
+        else
+            Debug.LogError("EffectScorchMark not found at Resources/Prefabs/Effect/EffectScorchMark");
+
 
 
 

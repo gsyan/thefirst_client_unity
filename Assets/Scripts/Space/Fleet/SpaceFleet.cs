@@ -820,6 +820,7 @@ public class SpaceFleet : MonoBehaviour
                 body.m_health = body.m_healthMax * ratio;
             }
             ship.UpdateShipStatCur();
+            ship.CheckFireEffects();
         }
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
@@ -1037,6 +1038,7 @@ public class SpaceFleet : MonoBehaviour
                 }
 
                 ship.UpdateShipStatCur();
+                ship.CheckFireEffects();
                 EventManager.Trigger_ShipUpdateHP();
             }
 

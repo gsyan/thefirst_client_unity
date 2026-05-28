@@ -7,21 +7,28 @@ public class EffectBase : MonoBehaviour
     // EPoolName 문자열 - enum 직렬화 시 중간 삽입에 의한 인덱스 밀림 방지
     [SerializeField] protected string m_poolName;
 
+    private ParticleSystem m_ps;
+
+    protected virtual void Awake()
+    {
+        m_ps = GetComponent<ParticleSystem>();
+    }
+
     public virtual void PlayEffect()
     {
-        ParticleSystem ps = GetComponent<ParticleSystem>();
-        ps.Play();
+        if (m_ps == null) return;
+        m_ps.Play();
         // 루프가 아니라면 한번만 재생
-        if (ps.main.loop == false)
-            StartCoroutine(ReturnEffectAfterDuration(ps));
+        if (m_ps.main.loop == false)
+            StartCoroutine(ReturnEffectAfterDuration(m_ps));
     }
-    
+
     public virtual void PlayEffectOnce()
     {
-        ParticleSystem ps = GetComponent<ParticleSystem>();
-        ps.Play();
+        if (m_ps == null) return;
+        m_ps.Play();
         // 무조건 한번만 재생
-        StartCoroutine(ReturnEffectAfterDuration(ps));
+        StartCoroutine(ReturnEffectAfterDuration(m_ps));
     }
 
 
@@ -47,11 +54,13 @@ public class EffectBase : MonoBehaviour
     
     public virtual void StopEffect()
     {
-        GetComponent<ParticleSystem>().Stop();
+        if (m_ps == null) return;
+        m_ps.Stop();
     }
+
     public virtual ParticleSystem GetParticleSystem()
     {
-        return GetComponent<ParticleSystem>();
+        return m_ps;
     }
 
     
