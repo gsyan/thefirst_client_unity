@@ -70,9 +70,7 @@ public class UIPanelLoginType : UIPanelBase
          if (errorCode == ServerErrorCode.SUCCESS)
          {
                message = ErrorCodeMapping.Messages[errorCode];
-               Debug.Log($"Guest Login successful: {message}");
-               Debug.Log($"Access Token received: {response.data?.accessToken}");
-
+               CommonUtility.DebugLog($"[GuestLogin Access Token] {response.data?.accessToken}");
                m_uiMain.GetCharacters();
          }
          else

@@ -31,9 +31,8 @@ public class UITabBase : MonoBehaviour
         }
     }
 
-    // 에러/실패 메시지 — UIPopupAlert로 표시 (확인 버튼 필요)
     protected void ShowErrorMessage(string message)
     {
-        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig { title = LocalizationManager.Instance.Get("error_message_title"), message = message });
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig { title = LocalizationManager.Instance.Get("error_message_title"), message = message, autoCloseSec = 5f });
     }
 }

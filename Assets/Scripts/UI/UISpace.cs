@@ -1,8 +1,40 @@
 //------------------------------------------------------------------------------
+using System.Collections;
 using UnityEngine;
 
 public class UISpace : UIManager
 {
+    protected override void Awake()
+    {
+        base.Awake();
+        StartCoroutine(CheckVipDailyBonusRoutine());
+    }
+
+    private IEnumerator CheckVipDailyBonusRoutine()
+    {
+        yield return new WaitForEndOfFrame();
+
+        if (IAPManager.Instance == null || IAPManager.Instance.IsVipActive() == false) yield break;
+
+        IAPManager.Instance.TryClaimDailyMineral(result =>
+        {
+            if (result == null || result.available == false) return;
+
+            var character = DataManager.Instance.m_currentCharacter;
+            if (character != null)
+                character.UpdateMineral(result.mineralRemain);
+
+            var loc = LocalizationManager.Instance;
+            ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                title        = loc.Get("VipDailyBonus_Title"),
+                message      = loc.Get("VipDailyBonus_Desc", result.grantedMineral),
+                confirmText1 = loc.Get("Simple_Confirm"),
+                onConfirm    = null,
+            });
+        });
+    }
+
     public override void InitializeUIManager()
     {
         base.InitializeUIManager();

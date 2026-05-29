@@ -200,3 +200,6 @@ Simple_FleetFullRepair,,FULL REPAIR,함대 완전 회복
 Simple_Free,,FREE,무료
 Simple_Cancel,,CANCEL,취소
 Simple_Confirm,,CONFIRM,확인
+Simple_VipReward,,VIP REWARD,VIP 보상 받기
+VipDailyBonus_Title,,VIP Daily Bonus,VIP 일일 보너스
+VipDailyBonus_Desc,,+{0} Minerals received!,미네랄 +{0} 지급!

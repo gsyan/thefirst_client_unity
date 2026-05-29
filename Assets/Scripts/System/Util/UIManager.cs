@@ -368,32 +368,19 @@ public class UIManager : MonoSingleton<UIManager>
     // 확인 팝업
     public void ShowConfirmPopup(ConfirmPopupConfig config)
     {
-        UIPopupConfirm popup = GetOrCreatePopup<UIPopupConfirm>("UIPopupConfirm", EPopupLayer.Normal);
-        if (popup == null) return;
-
-        ReplacePopup(popup, EPopupLayer.Normal);
-
-        System.Action userConfirm = config.onConfirm;
-        System.Action userCancel  = config.onCancel;
-        config.onConfirm = () => { userConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Normal); };
-        config.onCancel  = () => { userCancel?.Invoke();  CloseTopPopup(EPopupLayer.Normal); };
-
-        popup.ShowPopupConfirm(config);
-    }
-
-    // 단순 알림 팝업 (확인 버튼만) - Overlay 레이어: 다른 팝업 위에 쌓임
-    public void ShowPopupAlert(AlertPopupConfig config)
-    {
-        UIPopupAlert popup = GetOrCreatePopup<UIPopupAlert>("UIPopupAlert", EPopupLayer.Overlay);
+        UIPopupConfirm popup = GetOrCreatePopup<UIPopupConfirm>("UIPopupConfirm", EPopupLayer.Overlay);
         if (popup == null) return;
 
         PushPopup(popup, EPopupLayer.Overlay);
 
         System.Action userConfirm = config.onConfirm;
+        System.Action userCancel  = config.onCancel;
         config.onConfirm = () => { userConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Overlay); };
+        config.onCancel  = () => { userCancel?.Invoke();  CloseTopPopup(EPopupLayer.Overlay); };
 
-        popup.ShowPopupAlert(config);
+        popup.ShowPopupConfirm(config);
     }
+
 
     // PvP 전체 랭킹 팝업
     public void ShowRankingPopup()

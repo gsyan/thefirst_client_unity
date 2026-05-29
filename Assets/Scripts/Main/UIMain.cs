@@ -61,16 +61,16 @@ public class UIMain : UIManager
             if (errorCode == ServerErrorCode.SUCCESS)
             {
                 message = ErrorCodeMapping.Messages[errorCode];
-                Debug.Log($"Get characters successful: {message}");
+                
                 
                 if (response.data != null)  // Character list accessible from response.data
                 {
                     m_characterList = response.data;
-                    Debug.Log($"Found {response.data.Count} characters:");
-                    foreach (var character in response.data)
-                    {
-                        Debug.Log($"- {character.characterName} (ID: {character.characterId})");
-                    }
+                    
+                    // foreach (var character in response.data)
+                    // {
+                    //     Debug.Log($"- {character.characterName} (ID: {character.characterId})");
+                    // }
 
                     if (m_characterList.Count > 0)
                     {
@@ -142,13 +142,11 @@ public class UIMain : UIManager
             if (errorCode == ServerErrorCode.SUCCESS)
             {
                 message = ErrorCodeMapping.Messages[errorCode];
-                Debug.Log($"Character selection successful: {message}, loading SpaceScene");
+                
                 
                 // New access token information accessible from response.data
                 if (response.data != null)
                 {
-                    Debug.Log($"New Access Token received: {response.data.accessToken}");
-                    
                     // Save fleet information to DataManager
                     if (response.data.activeFleetInfo != null)
                         DataManager.Instance.SetFleetData(response.data.activeFleetInfo);
@@ -162,13 +160,6 @@ public class UIMain : UIManager
                     {
                         DataManager.Instance.SetCharacterInfo(response.data.characterInfo);
 
-                        // Set researched modules to Character
-                        if (response.data.researchedModuleTypes != null)
-                        {
-                            DataManager.Instance.m_currentCharacter.SetResearchedModules(response.data.researchedModuleTypes);
-                            Debug.Log($"Researched modules loaded: {response.data.researchedModuleTypes.Length} modules");
-                        }
-
                         // Set string-based research IDs (tech_level_N 등)
                         if (response.data.researchedIds != null)
                             DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
@@ -180,6 +171,7 @@ public class UIMain : UIManager
                     }
                 }
 
+                IAPManager.Instance.FetchVipStatus();
                 LoadingManager.LoadSceneWithLoading("SpaceScene");
             }
             else

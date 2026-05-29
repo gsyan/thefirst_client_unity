@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
@@ -18,6 +19,7 @@ public class ConfirmPopupConfig
     public List<int> rewardAmounts;
     public Action onConfirm;
     public Action onCancel;
+    public float autoCloseSec;
 
     // 버튼 커스터마이징 (null이면 프리팹 기본값 유지)
     public Sprite cancelImage;
@@ -54,6 +56,8 @@ public class UIPopupConfirm : UIPopupBase
 
     private Action onCancelCallback;
     private Action onConfirmCallback;
+    private Coroutine m_autoCloseCoroutine;
+    private static readonly WaitForSecondsRealtime s_wait1Sec = new WaitForSecondsRealtime(1f);
 
     private Sprite m_defaultCancelImage;
     private Sprite m_defaultConfirmImage;
@@ -97,6 +101,11 @@ public class UIPopupConfirm : UIPopupBase
 
         onCancelCallback = config.onCancel;
         onConfirmCallback = config.onConfirm;
+
+        if (m_autoCloseCoroutine != null) StopCoroutine(m_autoCloseCoroutine);
+        m_autoCloseCoroutine = null;
+        if (config.autoCloseSec > 0f)
+            m_autoCloseCoroutine = StartCoroutine(AutoCloseRoutine(config.autoCloseSec));
 
         RebuildLayout();
     }
@@ -218,13 +227,18 @@ public class UIPopupConfirm : UIPopupBase
     {
         var loc = LocalizationManager.Instance;
 
-        if (m_cancelImage != null) m_cancelImage.sprite = config.cancelImage != null ? config.cancelImage : m_defaultCancelImage;
-        if (m_cancelText1 != null) m_cancelText1.text = config.cancelText1 ?? loc.Get("Simple_Cancel");
-        if (m_cancelText2 != null)
+        bool showCancel = config.onCancel != null;
+        if (cancelButton != null) cancelButton.gameObject.SetActive(showCancel);
+        if (showCancel)
         {
-            bool has = string.IsNullOrEmpty(config.cancelText2) == false;
-            m_cancelText2.gameObject.SetActive(has);
-            if (has) m_cancelText2.text = config.cancelText2;
+            if (m_cancelImage != null) m_cancelImage.sprite = config.cancelImage != null ? config.cancelImage : m_defaultCancelImage;
+            if (m_cancelText1 != null) m_cancelText1.text = config.cancelText1 ?? loc.Get("Simple_Cancel");
+            if (m_cancelText2 != null)
+            {
+                bool has = string.IsNullOrEmpty(config.cancelText2) == false;
+                m_cancelText2.gameObject.SetActive(has);
+                if (has) m_cancelText2.text = config.cancelText2;
+            }
         }
 
         if (m_confirmImage != null) m_confirmImage.sprite = config.confirmImage != null ? config.confirmImage : m_defaultConfirmImage;
@@ -249,13 +263,39 @@ public class UIPopupConfirm : UIPopupBase
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 
+    private IEnumerator AutoCloseRoutine(float seconds)
+    {
+        int remaining = Mathf.CeilToInt(seconds);
+        while (remaining > 0)
+        {
+            yield return s_wait1Sec;
+            remaining--;
+        }
+        // cancel 버튼이 있으면 취소로, 없으면(단순 알림 용도) 확인으로 처리
+        if (onCancelCallback != null)
+            OnCancelClicked();
+        else
+            OnConfirmClicked();
+    }
+
+    private void StopAutoClose()
+    {
+        if (m_autoCloseCoroutine != null)
+        {
+            StopCoroutine(m_autoCloseCoroutine);
+            m_autoCloseCoroutine = null;
+        }
+    }
+
     private void OnConfirmClicked()
     {
+        StopAutoClose();
         onConfirmCallback?.Invoke();
     }
 
     private void OnCancelClicked()
     {
+        StopAutoClose();
         onCancelCallback?.Invoke();
     }
 }

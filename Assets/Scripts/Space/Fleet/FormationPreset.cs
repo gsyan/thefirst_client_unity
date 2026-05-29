@@ -66,6 +66,6 @@ public static class FormationPresetDB
             if (p != null)
                 s_map[p.formationType] = p;
         }
-        UnityEngine.Debug.Log($"[FormationPresetDB] {s_map.Count}개 로드 완료");
+        //Debug.Log($"[FormationPresetDB] {s_map.Count}개 로드 완료");
     }
 }

@@ -159,7 +159,6 @@ public class AuthResponse
     public string refreshToken;
     public FleetInfo activeFleetInfo;
     public CharacterInfo characterInfo;
-    public int[][] researchedModuleTypes;  // [moduleType, moduleSubType] 쌍의 배열
     public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록 (tech_level_N 등)
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
 }
@@ -614,4 +613,29 @@ public class BodyHealthEntry
     public float currentHealth;
 }
 
+#endregion
+
+#region IAP Data Classes ##################################################################################
+[System.Serializable]
+public class VipPurchaseRequest
+{
+    public string receipt;    // Unity IAP receipt JSON (플랫폼별 원본)
+    public string platform;   // "GooglePlay" | "AppleAppStore"
+}
+
+[System.Serializable]
+public class VipStatusResponse
+{
+    public bool isVip;
+    public string vipExpiry;  // ISO 8601 UTC, null이면 VIP 아님
+}
+
+[System.Serializable]
+public class VipDailyMineralResponse
+{
+    public bool available;          // true=지급됨, false=24h 미경과
+    public int grantedMineral;      // 이번에 지급된 미네랄 양
+    public int mineralRemain;       // 지급 후 현재 미네랄
+    public string nextAvailableAt;  // 다음 지급 가능 시각 (ISO 8601 UTC)
+}
 #endregion

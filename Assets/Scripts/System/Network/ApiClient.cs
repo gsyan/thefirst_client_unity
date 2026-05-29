@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -83,7 +84,8 @@ public class ApiClient
             // 연결 자체가 실패한 경우만 false (ConnectionError)
             // 4xx, 5xx 응답은 서버가 살아있다는 의미
             bool isServerAlive = request.result != UnityWebRequest.Result.ConnectionError;
-            Debug.Log($"[ServerCheck] URL: {baseUrl}, Result: {request.result}, Code: {request.responseCode}, Alive: {isServerAlive}");
+            // request.result 403은 서버가 "너 인증 없어" 라고 거절한 것이므로 서버가 정상 동작 중
+            //Debug.Log($"[ServerCheck] URL: {baseUrl}, Result: {request.result}, Code: {request.responseCode}, Alive: {isServerAlive}");
             return isServerAlive;
         }
         catch (Exception e)
@@ -172,7 +174,7 @@ public class ApiClient
         request.SetRequestHeader("Content-Type", "application/json");
 
         await SendRequestAsync(request);
-        Debug.Log($"[RefreshToken] Raw response: {request.downloadHandler.text}");  // ← 추가
+        CommonUtility.DebugLog($"[RefreshToken] Raw response: {request.downloadHandler.text}");
         var response = JsonConvert.DeserializeObject<ApiResponse<AuthResponse>>(request.downloadHandler.text);
 
         if (response.errorCode == 0)
@@ -207,7 +209,7 @@ public class ApiClient
     {
         var requestDto = new GuestLoginRequest { guestId = guestId };
         string json = JsonConvert.SerializeObject(requestDto);
-        Debug.Log($"GuestLogin JSON: {json}");
+        CommonUtility.DebugLog($"[GuestLogin] {json}");
 
         using var request = new UnityWebRequest($"{baseUrl}/account/guest-login", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
@@ -826,6 +828,51 @@ public class ApiClient
         var response = JsonConvert.DeserializeObject<ApiResponse<PvpMyRankResponse>>(webRequest.downloadHandler.text);
         Debug.Log($"PvP My Rank Response: {webRequest.downloadHandler.text}");
         return response;
+    }
+    #endregion
+
+    #region VIP API Methods ---------------------------------------------------------------------------------------
+    public async Task<ApiResponse<VipStatusResponse>> PurchaseVipAsync(VipPurchaseRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<VipStatusResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/iap/vip/purchase", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<VipStatusResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<VipStatusResponse>> GetVipStatusAsync()
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<VipStatusResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/iap/vip/status", "GET");
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<VipStatusResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<VipDailyMineralResponse>> ClaimVipDailyMineralAsync()
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<VipDailyMineralResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/iap/vip/daily-mineral", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(new byte[0]);
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<VipDailyMineralResponse>>(webRequest.downloadHandler.text);
     }
     #endregion
 

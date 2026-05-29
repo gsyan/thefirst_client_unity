@@ -88,11 +88,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
         CancelInvoke(nameof(CheckConnection));
 
-        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            title = title,
-            message = message,
-            onConfirm = () => {
+            title        = title,
+            message      = message,
+            autoCloseSec = 5f,
+            onConfirm    = () => {
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -108,7 +109,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         using (UnityEngine.Networking.UnityWebRequest request =
             UnityEngine.Networking.UnityWebRequest.Get("https://www.google.com"))
         {
-            Debug.Log("CheckInternetAccess");
             request.timeout = 3; // 3 second limit
             yield return request.SendWebRequest();
 
@@ -792,6 +792,21 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClaimZoneRewardAsync(request), onComplete));
     }
 
+    public void PurchaseVip(VipPurchaseRequest request, System.Action<ApiResponse<VipStatusResponse>> onComplete)
+    {
+        StartCoroutine(RunAsync(() => m_apiClient.PurchaseVipAsync(request), onComplete));
+    }
+
+    public void GetVipStatus(System.Action<ApiResponse<VipStatusResponse>> onComplete)
+    {
+        StartCoroutine(RunAsync(() => m_apiClient.GetVipStatusAsync(), onComplete));
+    }
+
+    public void ClaimVipDailyMineral(System.Action<ApiResponse<VipDailyMineralResponse>> onComplete)
+    {
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimVipDailyMineralAsync(), onComplete));
+    }
+
     public void Heartbeat()
     {
         if (m_bConnected == false) return;
@@ -831,7 +846,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     // 백그라운드 전환 시 하트비트 중단, 복귀 시 재개 (StartHeartbeat 이후에만 동작)
     private void OnApplicationPause(bool pauseStatus)
     {
-        Debug.Log($"NetworkManager/OnApplicationPause ({pauseStatus})");
+        //Debug.Log($"NetworkManager/OnApplicationPause ({pauseStatus})");
         if (pauseStatus)
         {
             if (m_heartbeatStarted) Heartbeat(); // 백그라운드 직전 하트비트 전송

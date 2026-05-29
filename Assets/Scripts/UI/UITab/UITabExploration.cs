@@ -656,17 +656,40 @@ public class UITabExploration : UITabBase
         };
 
         var loc = LocalizationManager.Instance;
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        bool isVip = IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
+        ConfirmPopupConfig popupConfig;
+        if (isVip == true)
         {
-            title         = title,
-            rewardAmounts = rewards,
-            cancelText1   = loc.Get("Simple_NoThanks"),
-            cancelText2   = loc.Get("Simple_MineralX1"),
-            confirmText1  = loc.Get("Simple_WatchAD"),
-            confirmText2  = loc.Get("Simple_MineralX", 2) + "\n" + loc.Get("Simple_FleetFullRepair"),
-            onCancel      = OnClaimRewardX1,
-            onConfirm     = OnWatchAdForDoubleReward,
-        });
+            popupConfig = new ConfirmPopupConfig
+            {
+                title        = title,
+                rewardAmounts = rewards,
+                confirmText1 = loc.Get("Simple_VipReward"),
+                onConfirm    = OnClaimRewardVip,
+            };
+        }
+        else
+        {
+            popupConfig = new ConfirmPopupConfig
+            {
+                title         = title,
+                rewardAmounts = rewards,
+                cancelText1   = loc.Get("Simple_NoThanks"),
+                cancelText2   = loc.Get("Simple_MineralX1"),
+                confirmText1  = loc.Get("Simple_WatchAD"),
+                confirmText2  = loc.Get("Simple_MineralX", 2) + "\n" + loc.Get("Simple_FleetFullRepair"),
+                onCancel      = OnClaimRewardX1,
+                onConfirm     = OnWatchAdForDoubleReward,
+            };
+        }
+        UIManager.Instance.ShowConfirmPopup(popupConfig);
+    }
+
+    private void OnClaimRewardVip()
+    {
+        // VIP는 광고 없이 자동으로 watchedAd=true 처리 (서버에서 *4 보상 + 전체 수리)
+        if (m_myFleet != null) m_myFleet.FullRepair();
+        SendClaimZoneReward(true);
     }
 
     private void OnClaimRewardX1()
@@ -827,11 +850,11 @@ public class UITabExploration : UITabBase
         yield return m_wipePopupDelay;
         string title = LocalizationManager.Instance.Get("exploration_fleet_wiped");
         string message = LocalizationManager.Instance.Get("exploration_wipe_retreat");
-        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            title = title,
-            message = message,
-            onConfirm = () => ExecuteRetreat(retreatPosition, retreatRotationY),
+            title        = title,
+            message      = message,
+            onConfirm    = () => ExecuteRetreat(retreatPosition, retreatRotationY),
             autoCloseSec = 5f,
         });
     }

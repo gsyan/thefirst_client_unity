@@ -29,24 +29,11 @@
 - 오브젝트 생성, 소멸을 최소화 하기 위해 pool을 사용 ( public class PoolManager 참고할 것)
 - Raycast, Physics 사용 시 반드시 성능 비용 및 가능한 대안 설명 포함
 - switch 표현식(switch expression) 지양
-
-## 프로젝트별 MD 참고 및 수정
-- 전체 기획 : 클라 프로젝트 루트/claude_md_files/game_design/
-    [overview.md] : 게임 개요, 재화 시스템 (4종 자원, 소모처 구조)
-    [combat.md] : 전투 배속 시스템 (GameSpeedController, 피치 연동)
-    [tab_fleet.md] : Fleet 탭 UI, 함선 시스템, 기술레벨 시스템, 자원 적립 캡
-    [tab_ship.md] : Ship 탭 UI, 모듈 시스템 (SubType 인코딩, 레벨업, 서브타입 추가)
-    [tab_exploration.md] : Exploration 탭 UI, 존 탐험 시스템, 존 보상 수치, 광고 입장 정책
-    [tab_pvp.md] : PVP 탭 UI (점수/순위, 대전 상대 카드, Refresh)
-    [tab_settings.md] : Settings 탭 UI (계정 관리, 언어, 라이센스, 개발자 도구)
-    
-- 서버 구조 및 운영 : 서버 프로젝트 루트/claude_md_files/server_structure_and_operation.md
-- 클라 구조 및 운영 : 클라 프로젝트 루트/claude_md_files/client_structure_and_operation.md
-- 클라 사용 asset store list : 클라 프로젝트 루트/claude_md_files/asset_store_list.md
-- 젠킨스 설정 : 클라 프로젝트 루트/claude_md_files/jenkins-setup-tutorial.md
-- **[작업중] 진형 이동 시스템 재설계** : 클라 프로젝트 루트/claude_md_files/formation_movement_redesign.md
-- **[작업중] 렌더링 최적화** : 클라 프로젝트 루트/claude_md_files/rendering_optimization.md
+- **C# 프로퍼티 지양** — `public EUnitState FleetState => m_fleetState;` 형태 금지. `GetFleetState()` / `SetFleetState()` 또는 직접 필드 접근(`m_fleetState`) 사용. C++ 스타일 선호.
 
 ## 주의 사항
 - `DataTableZone`, `DataTableModule` 등은 서버와 반드시 동기화
 - 외부 라이센스 표시는 아주 중요한 일, UIPopupLicense 으로 하고 있으니 추가할 것들이 생기면 실시간으로 추가
+
+## 참고 MD
+- 코드베이스 기능별 파일 위치 : 클라 프로젝트 루트/claude_md_files/codebase_map.md

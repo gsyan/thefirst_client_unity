@@ -14,6 +14,11 @@ public static class EnumExtensions
 
 public static class CommonUtility
 {
+    [System.Diagnostics.Conditional("UNITY_EDITOR")]
+    [System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+    public static void DebugLog(string message) => Debug.Log($"[DEV] {message}");
+
+
     #region Fleet Utility begin -----------------------------------------------------------------------------------
     public static Vector3 CalculateFleetCenter(Vector3[] shipPositions)
     {

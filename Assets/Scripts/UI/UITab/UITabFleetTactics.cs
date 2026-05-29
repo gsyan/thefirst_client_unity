@@ -265,10 +265,11 @@ public class UITabFleetTactics : UITabBase
 
     private void ShowLockedAlert()
     {
-        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            title   = LocalizationManager.Instance.Get("UITabFleetTactics_LockedTitle"),
-            message = LocalizationManager.Instance.Get("UITabFleetTactics_LockedMessage"),
+            title        = LocalizationManager.Instance.Get("UITabFleetTactics_LockedTitle"),
+            message      = LocalizationManager.Instance.Get("UITabFleetTactics_LockedMessage"),
+            autoCloseSec = 5f,
         });
     }
 

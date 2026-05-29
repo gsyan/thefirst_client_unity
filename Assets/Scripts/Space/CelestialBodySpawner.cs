@@ -90,8 +90,6 @@ public class CelestialBodySpawner : MonoBehaviour
             for (int i = 0; i < zone.celestialBodies.Count; i++)
                 m_spawnedBodies.Add(SpawnBody(zone.celestialBodies[i], zoneIndex, i));
         }
-
-        Debug.Log($"[CelestialBodySpawner] Zone {zoneIndex} 천체 {m_spawnedBodies.Count}개 생성");
     }
 
     private GameObject SpawnBody(CelestialBodyConfig cfg, int zoneIndex, int bodyIndex)

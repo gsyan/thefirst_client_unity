@@ -55,10 +55,11 @@ public class UITabButtonTech : MonoBehaviour
             sb.Append    ($"{CommonUtility.Sprite("spaceship")} (Max Ships)  {nextMaxShips}");
         }
 
-        UIManager.Instance.ShowPopupAlert(new AlertPopupConfig
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            title = LocalizationManager.Instance.Get("tech_level_detail_title"),
-            message = sb.ToString(),
+            title        = LocalizationManager.Instance.Get("tech_level_detail_title"),
+            message      = sb.ToString(),
+            autoCloseSec = 5f,
         });
     }
 
