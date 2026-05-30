@@ -345,4 +345,22 @@ public static class EventManager
     public static void Subscribe_EmptySpaceTapped(Action callback) { OnEmptySpaceTapped += callback; }
     public static void Unsubscribe_EmptySpaceTapped(Action callback) { OnEmptySpaceTapped -= callback; }
 
+    // Tab Selection Changed — 탭 선택 변경 (systemName: TabSystem 고유 이름, tabIndex: -1이면 전체 닫힘)
+    public static event Action<string, int> OnTabSelectionChanged;
+    public static void Trigger_TabSelectionChanged(string systemName, int tabIndex) { OnTabSelectionChanged?.Invoke(systemName, tabIndex); }
+    public static void Subscribe_TabSelectionChanged(Action<string, int> callback) { OnTabSelectionChanged += callback; }
+    public static void Unsubscribe_TabSelectionChanged(Action<string, int> callback) { OnTabSelectionChanged -= callback; }
+
+    // VIP 상태 변경 (구매 완료 / FetchVipStatus 완료 시 발행)
+    public static event Action OnVipStatusChanged;
+    public static void TriggerVipStatusChanged() { OnVipStatusChanged?.Invoke(); }
+    public static void Subscribe_VipStatusChanged(Action callback)   { OnVipStatusChanged += callback; }
+    public static void Unsubscribe_VipStatusChanged(Action callback) { OnVipStatusChanged -= callback; }
+
+    // VIP 버튼 확장 (UIVipButton.Open 시 발행 — 탭 닫기 등 다른 UI 반응용)
+    public static event Action OnVipButtonOpened;
+    public static void Trigger_VipButtonOpened() { OnVipButtonOpened?.Invoke(); }
+    public static void Subscribe_VipButtonOpened(Action callback)   { OnVipButtonOpened += callback; }
+    public static void Unsubscribe_VipButtonOpened(Action callback) { OnVipButtonOpened -= callback; }
+
 }

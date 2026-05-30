@@ -819,7 +819,59 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38995797596831744
-    m_Localized: FLEET FULL REPAIR
+    m_Localized: FULL REPAIR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930285215744
+    m_Localized: VIP REWARD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964480
+    m_Localized: VIP Daily Bonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964481
+    m_Localized: +{0} Minerals received!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964482
+    m_Localized: FRONTIER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964483
+    m_Localized: ADMIRAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964484
+    m_Localized: (D-{0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964487
+    m_Localized: BECOME ADMIRAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964488
+    m_Localized: '{0} / 30 Days'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40210342046728192
+    m_Localized: ADMIRAL's Benefit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40210342097059840
+    m_Localized: No Ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40210342097059841
+    m_Localized: Mineral Rewards x {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40210342097059842
+    m_Localized: Daily {0} Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40229268445069312
+    m_Localized: (Expired)
     m_Metadata:
       m_Items: []
   references:

@@ -42,7 +42,7 @@ public class UIPanelSpace : UIPanelBase
             m_shipTabRect = tabData.tabPanel.GetComponent<RectTransform>();
         }
 
-        m_tabSystem.onTabSelectionChanged += OnTabSelectionChanged;
+        EventManager.Subscribe_TabSelectionChanged(OnTabSelectionChanged);
 
         // 760px 고정 UI 너비 → 캔버스 너비 기준으로 카메라 viewport 비율 계산
         const float uiPanelWidth = 760f;
@@ -57,6 +57,7 @@ public class UIPanelSpace : UIPanelBase
         CameraController.Instance.SetShipSelectionEnabled(true);
         EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
+        EventManager.Subscribe_VipButtonOpened(OnVipButtonOpened);
         m_tabSystem.ForceActivateTab();
     }
 
@@ -65,6 +66,7 @@ public class UIPanelSpace : UIPanelBase
         CameraController.Instance.SetShipSelectionEnabled(false);
         EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
+        EventManager.Unsubscribe_VipButtonOpened(OnVipButtonOpened);
         m_tabSystem.ForceDeactivateTab();
 
         SetTabNavVisible(true);
@@ -75,12 +77,12 @@ public class UIPanelSpace : UIPanelBase
 
     private void OnDestroy()
     {
-        if (m_tabSystem != null)
-            m_tabSystem.onTabSelectionChanged -= OnTabSelectionChanged;
+        EventManager.Unsubscribe_TabSelectionChanged(OnTabSelectionChanged);
     }
 
-    private void OnTabSelectionChanged(int tabIndex)
+    private void OnTabSelectionChanged(string systemName, int tabIndex)
     {
+        if (systemName != m_tabSystem.GetSystemName()) return;
         bool shouldShrinkCamera = tabIndex == m_moduleTabIndex;
         if (shouldShrinkCamera == m_isUIOpen) return;
 
@@ -96,6 +98,11 @@ public class UIPanelSpace : UIPanelBase
     {
         if (m_tabSystem.GetCurrentActiveTab() >= 0)
             m_tabSystem.SwitchToTab(-1);
+    }
+
+    private void OnVipButtonOpened()
+    {
+        m_tabSystem.CloseAllTabs();
     }
 
     // 카메라 viewport width 애니메이션

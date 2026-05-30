@@ -22,6 +22,7 @@ public class TabData
 public class TabSystem : MonoBehaviour
 {
     private bool m_bInitialized = false;
+    private string m_systemName;
 
     [Header("Tab Configuration")]
     public List<TabData> tabs = new List<TabData>();
@@ -34,10 +35,7 @@ public class TabSystem : MonoBehaviour
     public bool useAnimation = true;
     public float animationDuration = 0.3f;
     public AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-
-    // 탭 인덱스 변경 시 호출 (-1이면 모든 탭 닫힘)
-    public System.Action<int> onTabSelectionChanged;
-
+    
     private ButtonGroupSystem buttonGroup;
     private int currentActiveTab = -1;
     private readonly Dictionary<GameObject, Coroutine> m_animCoroutines = new Dictionary<GameObject, Coroutine>();
@@ -55,8 +53,13 @@ public class TabSystem : MonoBehaviour
         }
     }
 
+    public string GetSystemName() { return m_systemName; }
+
     private void Start()
     {
+        m_systemName = gameObject.name;
+        if (m_systemName.EndsWith(" (Clone)"))
+            m_systemName = m_systemName.Substring(0, m_systemName.Length - 8);
         InitializeTabs();
     }
 
@@ -136,7 +139,7 @@ public class TabSystem : MonoBehaviour
         }
 
         tab.onActivate?.Invoke();
-        onTabSelectionChanged?.Invoke(tabIndex);
+        EventManager.Trigger_TabSelectionChanged(m_systemName, tabIndex);
     }
 
     private void DeactivatePanel(int tabIndex)
@@ -155,7 +158,7 @@ public class TabSystem : MonoBehaviour
         if (buttonGroup.GetCurrentIndex() < 0)
         {
             currentActiveTab = -1;
-            onTabSelectionChanged?.Invoke(-1);
+            EventManager.Trigger_TabSelectionChanged(m_systemName, -1);
         }
     }
 

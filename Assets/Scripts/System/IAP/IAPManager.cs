@@ -12,7 +12,9 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
     private IExtensionProvider m_storeExtensionProvider;
 
     private Action<bool, string> m_onVipPurchaseComplete;
-    private DateTime? m_vipExpiry;   // UTC, null이면 VIP 아님
+    private DateTime? m_vipExpiry;       // UTC, null이면 VIP 아님
+    private int m_dailyMineralAmount;       // 서버 설정 일일 지급량
+    private int m_mineralRewardMultiplier;  // 서버 설정 보상 배율
 
     protected override void OnInitialize()
     {
@@ -46,25 +48,48 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         return DateTime.UtcNow < m_vipExpiry.Value;
     }
 
+    public int GetVipRemainingDays()
+    {
+        if (m_vipExpiry == null || IsVipActive() == false) return 0;
+        return Mathf.Max(0, (int)(m_vipExpiry.Value - DateTime.UtcNow).TotalDays);
+    }
+
+    // 스토어에서 현지화된 가격 문자열 반환 (예: "$4.99", "₩6,500")
+    public string GetVipLocalizedPrice()
+    {
+        if (m_storeController == null) return string.Empty;
+        var product = m_storeController.products.WithID(PRODUCT_VIP);
+        if (product == null) return string.Empty;
+        return product.metadata.localizedPriceString;
+    }
+
     public void SetVipExpiry(string isoExpiry)
     {
         if (string.IsNullOrEmpty(isoExpiry))
         {
             m_vipExpiry = null;
-            return;
         }
-        if (DateTime.TryParse(isoExpiry, null, System.Globalization.DateTimeStyles.RoundtripKind, out var dt))
+        else if (DateTime.TryParse(isoExpiry, null, System.Globalization.DateTimeStyles.RoundtripKind, out var dt))
             m_vipExpiry = dt.ToUniversalTime();
         else
             m_vipExpiry = null;
+
+        EventManager.TriggerVipStatusChanged();
     }
+
+    public int GetDailyMineralAmount()      { return m_dailyMineralAmount; }
+    public int GetMineralRewardMultiplier() { return m_mineralRewardMultiplier; }
 
     public void FetchVipStatus(Action onDone = null)
     {
         NetworkManager.Instance.GetVipStatus(response =>
         {
             if (response != null && response.errorCode == (int)ServerErrorCode.SUCCESS && response.data != null)
+            {
+                m_dailyMineralAmount      = response.data.dailyMineralAmount;
+                m_mineralRewardMultiplier = response.data.mineralRewardMultiplier;
                 SetVipExpiry(response.data.isVip ? response.data.vipExpiry : null);
+            }
             onDone?.Invoke();
         });
     }
@@ -121,13 +146,17 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         if (args.purchasedProduct.definition.id == PRODUCT_VIP)
         {
             string receipt = args.purchasedProduct.receipt;
-#if UNITY_ANDROID
-            string platform = "GooglePlay";
-#elif UNITY_IOS
-            string platform = "AppleAppStore";
+#if UNITY_EDITOR
+            Debug.Log("[IAPManager] 에디터 모드 — 서버 검증 생략, VIP 30일 즉시 적용");
+            SetVipExpiry(DateTime.UtcNow.AddDays(30).ToString("O"));
+            m_onVipPurchaseComplete?.Invoke(true, receipt);
+            m_onVipPurchaseComplete = null;
 #else
+    #if UNITY_ANDROID
             string platform = "GooglePlay";
-#endif
+    #elif UNITY_IOS
+            string platform = "AppleAppStore";
+    #endif
             var request = new VipPurchaseRequest { receipt = receipt, platform = platform };
             NetworkManager.Instance.PurchaseVip(request, response =>
             {
@@ -137,6 +166,7 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
                 m_onVipPurchaseComplete?.Invoke(ok, ok ? receipt : null);
                 m_onVipPurchaseComplete = null;
             });
+#endif
         }
         return PurchaseProcessingResult.Complete;
     }

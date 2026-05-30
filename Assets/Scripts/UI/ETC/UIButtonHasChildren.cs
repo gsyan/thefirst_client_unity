@@ -23,6 +23,9 @@ public class UIButtonHasChildren : MonoBehaviour
 
     public void SetColor(Color color)
     {
+        if (m_graphics == null)
+            m_graphics = GetComponentsInChildren<Graphic>(true);
+            
         for (int i = 0; i < m_graphics.Length; i++)
             if (m_graphics[i] != null)
                 m_graphics[i].color = color;

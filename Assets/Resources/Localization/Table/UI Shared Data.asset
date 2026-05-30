@@ -819,6 +819,58 @@ MonoBehaviour:
     m_Key: Simple_Confirm
     m_Metadata:
       m_Items: []
+  - m_Id: 39970930285215744
+    m_Key: Simple_VipReward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964480
+    m_Key: VipDailyBonus_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964481
+    m_Key: VipDailyBonus_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964482
+    m_Key: UIVipStatus_Frontier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964483
+    m_Key: UIVipStatus_Admiral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40210342046728192
+    m_Key: UIVipStatus_BenefitTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40229268445069312
+    m_Key: UIVipStatus_Expired
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964484
+    m_Key: UIVipStatus_ExpiryDays
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40210342097059840
+    m_Key: UIVipStatus_Benefit_NoAds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40210342097059841
+    m_Key: UIVipStatus_Benefit_Mineral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40210342097059842
+    m_Key: UIVipStatus_Benefit_Daily
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964487
+    m_Key: UIVipStatus_PurchaseTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39970930322964488
+    m_Key: UIVipStatus_PurchasePrice
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
