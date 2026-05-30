@@ -29,7 +29,12 @@ public class UIVipButton : MonoBehaviour
 
     private void Awake()
     {
-        m_rectTransform     = GetComponent<RectTransform>();
+        m_rectTransform = GetComponent<RectTransform>();
+        if (m_detailContainer == null || m_toggleButton == null)
+        {
+            Debug.LogError($"[UIVipButton] 필수 레퍼런스 미설정: detailContainer={m_detailContainer}, toggleButton={m_toggleButton}", this);
+            return;
+        }
         m_detailContainerRT = m_detailContainer.GetComponent<RectTransform>();
         m_toggleButton.onClick.AddListener(OnToggleClicked);
         if (m_purchaseButton != null)
@@ -121,7 +126,12 @@ public class UIVipButton : MonoBehaviour
 
     private void Refresh()
     {
-        if (IAPManager.Instance == null) return;
+        if (IAPManager.Instance == null)
+        {
+            Debug.Log("Refresh() IAPManager.Instance = null");
+            return;
+        }
+        
 
         var loc = LocalizationManager.Instance;
         bool isAdmiral = IAPManager.Instance.IsVipActive();
@@ -162,10 +172,10 @@ public class UIVipButton : MonoBehaviour
             m_purchaseLabel2.text = loc.Get("UIVipStatus_PurchasePrice", (object)price);
         }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_benefitName.rectTransform);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_benefitRT);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_detailContainerRT);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_rectTransform);
+        if (m_benefitName != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_benefitName.rectTransform);
+        if (m_benefitRT != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_benefitRT);
+        if (m_detailContainerRT != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_detailContainerRT);
+        if (m_rectTransform != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_rectTransform);
     }
 
     private void OnPurchaseButtonClicked()
