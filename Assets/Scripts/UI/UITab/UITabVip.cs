@@ -40,7 +40,7 @@ public class UITabVip : UITabBase
     private void Refresh()
     {
         var loc = LocalizationManager.Instance;
-        bool isAdmiral = false; // IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
+        bool isAdmiral = IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
 
         if (m_rankText != null)
             m_rankText.text = loc.Get(isAdmiral ? "UIVipStatus_Admiral" : "UIVipStatus_Frontier");
@@ -50,7 +50,7 @@ public class UITabVip : UITabBase
             m_expiryText.gameObject.SetActive(isAdmiral);
             if (isAdmiral == true)
             {
-                int days = 0; // IAPManager.Instance.GetVipRemainingDays();
+                int days = IAPManager.Instance.GetVipRemainingDays();
                 m_expiryText.text = loc.Get("UIVipStatus_ExpiryDays", days);
             }
         }
@@ -58,8 +58,8 @@ public class UITabVip : UITabBase
         if (m_benefitText != null)
         {
             string benefitKey  = isAdmiral ? "UIVipStatus_BenefitAdmiral" : "UIVipStatus_BenefitFrontier";
-            int multiplier     = 0; // IAPManager.Instance != null ? IAPManager.Instance.GetMineralRewardMultiplier() : 0;
-            int dailyAmount    = 0; // IAPManager.Instance != null ? IAPManager.Instance.GetDailyMineralAmount() : 0;
+            int multiplier     = IAPManager.Instance != null ? IAPManager.Instance.GetMineralRewardMultiplier() : 0;
+            int dailyAmount    = IAPManager.Instance != null ? IAPManager.Instance.GetDailyMineralAmount() : 0;
             m_benefitText.text = loc.Get(benefitKey, multiplier, dailyAmount);
         }
 
@@ -71,7 +71,7 @@ public class UITabVip : UITabBase
 
         if (m_purchaseLabel2 != null)
         {
-            string price = string.Empty; // IAPManager.Instance != null ? IAPManager.Instance.GetVipLocalizedPrice() : string.Empty;
+            string price = IAPManager.Instance != null ? IAPManager.Instance.GetVipLocalizedPrice() : string.Empty;
             m_purchaseLabel2.text = loc.Get("UIVipStatus_PurchasePrice", price);
         }
     }

@@ -171,7 +171,7 @@ public class UIMain : UIManager
                     }
                 }
 
-                // IAPManager.Instance.FetchVipStatus();
+                IAPManager.Instance.FetchVipStatus();
                 LoadingManager.LoadSceneWithLoading("SpaceScene");
             }
             else

@@ -129,15 +129,14 @@ public class UIVipButton : MonoBehaviour
         if (IAPManager.Instance == null) return;
 
         var loc = LocalizationManager.Instance;
-        bool isAdmiral = false; // IAPManager.Instance.IsVipActive();
+        bool isAdmiral = IAPManager.Instance.IsVipActive();
 
         if (m_rankText != null)
             m_rankText.text = loc.Get(isAdmiral ? "UIVipStatus_Admiral" : "UIVipStatus_Frontier");
 
         if (m_benefitName != null)
         {
-            string status = loc.Get("UIVipStatus_Expired");
-                // isAdmiral ? loc.Get("UIVipStatus_ExpiryDays", IAPManager.Instance.GetVipRemainingDays()) : loc.Get("UIVipStatus_Expired");
+            string status = isAdmiral ? loc.Get("UIVipStatus_ExpiryDays", IAPManager.Instance.GetVipRemainingDays()) : loc.Get("UIVipStatus_Expired");
             m_benefitName.text = loc.Get("UIVipStatus_BenefitTitle") + " " + status;
         }
 
@@ -162,7 +161,7 @@ public class UIVipButton : MonoBehaviour
 
         if (m_purchaseLabel2 != null)
         {
-            string price = string.Empty; // IAPManager.Instance.GetVipLocalizedPrice();
+            string price = IAPManager.Instance.GetVipLocalizedPrice();
             m_purchaseLabel2.text = loc.Get("UIVipStatus_PurchasePrice", (object)price);
         }
 

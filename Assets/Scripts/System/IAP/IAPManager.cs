@@ -18,7 +18,7 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
 
     protected override void OnInitialize()
     {
-        // InitializePurchasing();
+        InitializePurchasing();
     }
 
     private async void InitializePurchasing()

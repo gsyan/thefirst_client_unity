@@ -656,7 +656,7 @@ public class UITabExploration : UITabBase
         };
 
         var loc = LocalizationManager.Instance;
-        bool isVip = false; // IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
+        bool isVip = IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
         ConfirmPopupConfig popupConfig;
         if (isVip == true)
         {
