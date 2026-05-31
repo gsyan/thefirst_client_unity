@@ -51,12 +51,16 @@ public class UISpace : UIManager
         {
             if(prefab == null)
                 Debug.Log($"[InitializeUIManager] prefab is null");
+            else
+                Debug.Log($"[InitializeUIManager] prefab.name: {prefab.name}");
 
             // 일반 UI는 GeneralContainer에 생성
             GameObject panelInstance = Instantiate(prefab, m_generalContainer);
             
             if(panelInstance == null)
                 Debug.Log($"[InitializeUIManager] panelInstance is null: {prefab.name}");
+            else
+                Debug.Log($"[InitializeUIManager] panelInstance.name: {panelInstance.name}");
 
 
             panelInstance.name = prefab.name;
