@@ -49,26 +49,16 @@ public class UISpace : UIManager
 
         foreach (GameObject prefab in panelPrefabs)
         {
-            if(prefab == null)
-                Debug.Log($"[InitializeUIManager] prefab is null");
-            else
-                Debug.Log($"[InitializeUIManager] prefab.name: {prefab.name}");
+            string prefabName = prefab.name; // Instantiate 도중 native object 소멸 대비
 
             // 일반 UI는 GeneralContainer에 생성
             GameObject panelInstance = Instantiate(prefab, m_generalContainer);
-            
-            if(panelInstance == null)
-                Debug.Log($"[InitializeUIManager] panelInstance is null: {prefab.name}");
-            else
-                Debug.Log($"[InitializeUIManager] panelInstance.name: {panelInstance.name}");
-
-
-            panelInstance.name = prefab.name;
+            panelInstance.name = prefabName;
 
             var panelBase = panelInstance.GetComponent<UIPanelBase>();
             if(panelBase != null)
             {
-                panelBase.panelName = prefab.name;
+                panelBase.panelName = prefabName;
                 panelBase.InitializeUIPanel();
             }
 
