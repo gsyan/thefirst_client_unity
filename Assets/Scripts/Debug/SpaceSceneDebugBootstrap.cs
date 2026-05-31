@@ -1,16 +1,19 @@
-#if UNITY_EDITOR
 // 에디터 전용 — SpaceScene을 직접 실행할 때 더미 캐릭터/함대 데이터를 주입
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// SpaceScene에 배치. DataManager 미초기화 시 더미 데이터를 Awake에서 주입한다.
-/// 모든 MonoBehaviour의 Awake는 Start보다 먼저 실행되므로 ObjectManager.Start → SpawnFleet 전에 처리됨.
-/// </summary>
+// 빌드 시 클래스가 사라지지 않도록 #if UNITY_EDITOR를 클래스 밖에 두지 않음.
+// 대신 Awake에서 자기 파괴하여 missing script 경고를 방지.
 public class SpaceSceneDebugBootstrap : MonoBehaviour
 {
     private void Awake()
     {
+#if !UNITY_EDITOR
+        Destroy(gameObject);
+        return;
+#endif
+
+#if UNITY_EDITOR
         if (DataManager.Instance.m_currentCharacter != null)
             return;
 
@@ -18,8 +21,10 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
         InjectDebugFleet();
 
         Debug.LogWarning("[DebugBootstrap] 에디터 직접 실행 감지 — 더미 캐릭터/함대 데이터 주입 완료");
+#endif
     }
 
+#if UNITY_EDITOR
     private void InjectDebugCharacter()
     {
         var characterInfo = new CharacterInfo
@@ -73,5 +78,5 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
 
         DataManager.Instance.SetFleetData(fleet);
     }
-}
 #endif
+}
