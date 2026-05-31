@@ -25,7 +25,7 @@ public class UITabButtonVip : MonoBehaviour
 
     private void Refresh()
     {
-        bool isAdmiral = IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
+        bool isAdmiral = false; // IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
 
         if (m_rankText != null)
         {
