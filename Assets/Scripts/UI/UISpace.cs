@@ -36,33 +36,33 @@ public class UISpace : UIManager
     {
         base.InitializeUIManager();
 
-        const string PANEL_GAME_PREFAB_PATH = "Prefabs/UI/Panel_Game";
+        // const string PANEL_GAME_PREFAB_PATH = "Prefabs/UI/Panel_Game";
 
-        // Load all prefabs from the Panel folder
-        GameObject[] panelPrefabs = Resources.LoadAll<GameObject>(PANEL_GAME_PREFAB_PATH);
+        // // Load all prefabs from the Panel folder
+        // GameObject[] panelPrefabs = Resources.LoadAll<GameObject>(PANEL_GAME_PREFAB_PATH);
 
-        if (panelPrefabs == null || panelPrefabs.Length == 0)
-        {
-            Debug.LogWarning($"No panel prefabs found in {PANEL_GAME_PREFAB_PATH}");
-            return;
-        }
+        // if (panelPrefabs == null || panelPrefabs.Length == 0)
+        // {
+        //     Debug.LogWarning($"No panel prefabs found in {PANEL_GAME_PREFAB_PATH}");
+        //     return;
+        // }
 
-        foreach (GameObject prefab in panelPrefabs)
-        {
-            // 일반 UI는 GeneralContainer에 생성
-            GameObject panelInstance = Instantiate(prefab, m_generalContainer);
-            panelInstance.name = prefab.name;
+        // foreach (GameObject prefab in panelPrefabs)
+        // {
+        //     // 일반 UI는 GeneralContainer에 생성
+        //     GameObject panelInstance = Instantiate(prefab, m_generalContainer);
+        //     panelInstance.name = prefab.name;
 
-            var panelBase = panelInstance.GetComponent<UIPanelBase>();
-            if(panelBase != null)
-            {
-                panelBase.panelName = prefab.name;
-                panelBase.InitializeUIPanel();
-            }
+        //     var panelBase = panelInstance.GetComponent<UIPanelBase>();
+        //     if(panelBase != null)
+        //     {
+        //         panelBase.panelName = prefab.name;
+        //         panelBase.InitializeUIPanel();
+        //     }
 
-            AddPanel(panelBase);
-        }
+        //     AddPanel(panelBase);
+        // }
 
-        InitializePanels();
+        // InitializePanels();
     }
 }
