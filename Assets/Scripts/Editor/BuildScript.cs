@@ -24,6 +24,9 @@ public static class BuildScript
         if (!string.IsNullOrEmpty(versionCode) && int.TryParse(versionCode, out int code))
             PlayerSettings.Android.bundleVersionCode = code;
 
+        // 메모리 변경을 디스크에 저장해야 Bee 증분 빌드가 새 값으로 재빌드함
+        AssetDatabase.SaveAssets();
+
         // Keystore 설정 (환경변수가 없으면 빌드 중단)
         Debug.Log($"[Build] KEYSTORE_PATH={keystorePath ?? "(null)"}, KEY_ALIAS={keyaliasName ?? "(null)"}");
         if (!string.IsNullOrEmpty(keystorePath))
