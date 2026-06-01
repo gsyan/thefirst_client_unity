@@ -361,7 +361,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         yield return StartCoroutine(RunAsync(() => apiCall(idToken), onComplete));
     }
 
-    // Google WebView OAuth 공통 헬퍼 — idToken 획득만 담당 (PC: 시스템 브라우저, Mobile: WebView)
+    // Google idToken 획득 공통 헬퍼 — PC: 시스템 브라우저, Mobile: 네이티브 Google Sign-In
     private IEnumerator GetGoogleIdTokenCoroutine(
         Action<string, int> onTokenResult,
         ServerErrorCode timeoutError,
@@ -370,101 +370,36 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 #if UNITY_EDITOR || UNITY_STANDALONE
         yield return StartCoroutine(GetGoogleIdTokenForPCCoroutine(onTokenResult, timeoutError, extractError));
 #else
-        // 1) WebView 생성
-        var webViewGO = new GameObject("GoogleLoginWebView");
-        var webView = webViewGO.AddComponent<WebViewObject>();
+        bool done = false;
+        string resultToken = null;
+        int resultErr = 0;
 
-        bool redirectDetected = false;
-        string authToken = null;
-
-        // 2) WebView 초기화 + redirect 감지
-        webView.Init(
-            cb: (msg) =>
-            {
-                Debug.Log($"[WebView Msg] {msg}");
-            },
-            err: (msg) =>
-            {
-                Debug.LogError($"[WebView Error] {msg}");
-            },
-            started: (url) =>
-            {
-                Debug.Log($"[WebView Started] {url}");
-                if (url.StartsWith("https://thefirst-fd116.firebaseapp.com/__/auth/handler"))
-                {
-                    Debug.Log("[Google OAuth] Redirect URL Captured in started!");
-                    redirectDetected = true;
-                    authToken = ExtractToken(url);
-                }
-            },
-            hooked: (url) =>
-            {
-                Debug.Log($"[WebView Hooked] {url}");
-                if (url.StartsWith("https://thefirst-fd116.firebaseapp.com/__/auth/handler"))
-                {
-                    Debug.Log("[Google OAuth] Redirect URL Captured!");
-                    redirectDetected = true;
-                    authToken = ExtractToken(url);
-                    Debug.Log("[Google OAuth] Extracted Token => " + authToken);
-                }
-                else
-                {
-                    Debug.Log("[Google OAuth] Hooked but not redirect URL.");
-                }
-            },
-            enableWKWebView: true,
-            wkContentMode: 0,
-            ua: "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36"
+        GoogleSignInBridge.Instance.RequestSignIn(
+            (token) => { resultToken = token; done = true; },
+            (error) => { resultErr = (int)extractError; done = true; }
         );
 
-        webView.SetMargins(0, 0, 0, 0);
-        webView.SetVisibility(true);
-
-        // 3) Google OAuth URL 로딩
-        string clientId = "527468162306-m77vtlkevpa42hf41arcodjmcio5fs85.apps.googleusercontent.com";
-        string redirectUri = "https://thefirst-fd116.firebaseapp.com/__/auth/handler";
-        string scope = "openid%20email%20profile";
-        string nonce = Guid.NewGuid().ToString("N");
-
-        string authUrl =
-            "https://accounts.google.com/o/oauth2/v2/auth" +
-            "?client_id=" + clientId +
-            "&redirect_uri=" + redirectUri +
-            "&response_type=id_token" +
-            "&scope=" + scope +
-            "&nonce=" + nonce;
-
-        Debug.Log("[Google OAuth] Loading URL: " + authUrl);
-        webView.LoadURL(authUrl);
-
-        // 4) redirect 될 때까지 기다리기 (최대 5분)
-        float timeout = 300f;
         float elapsed = 0f;
-        while (redirectDetected == false && elapsed < timeout)
+        while (done == false && elapsed < 120f)
         {
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // 5) WebView 닫기
-        webView.SetVisibility(false);
-        Destroy(webViewGO);
-
-        if (redirectDetected == false)
+        if (done == false)
         {
-            Debug.LogError("[Google OAuth] Timeout - no redirect detected");
+            Debug.LogError("[Google SignIn] Timeout");
             onTokenResult(null, (int)timeoutError);
             yield break;
         }
 
-        if (string.IsNullOrEmpty(authToken))
+        if (string.IsNullOrEmpty(resultToken))
         {
-            Debug.LogError("[Google OAuth] No token extracted from redirect");
-            onTokenResult(null, (int)extractError);
+            onTokenResult(null, resultErr);
             yield break;
         }
 
-        onTokenResult(authToken, 0);
+        onTokenResult(resultToken, 0);
 #endif
     }
 
@@ -569,69 +504,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     }
 #endif
 
-#if !UNITY_EDITOR && !UNITY_STANDALONE
-    private string ExtractToken(string url)
-    {
-        Debug.Log("[ExtractToken] Raw URL => " + url);
-
-        if (string.IsNullOrEmpty(url))
-            return null;
-
-        // 1) fragment(#) 처리
-        int hashIndex = url.IndexOf('#');
-        if (hashIndex >= 0)
-        {
-            string fragment = url.Substring(hashIndex + 1); // id_token=...&...
-            Debug.Log("[ExtractToken] Fragment => " + fragment);
-            var parameters = fragment.Split('&');
-            foreach (var param in parameters)
-            {
-                if (param.StartsWith("id_token="))
-                {
-                    string token = param.Substring("id_token=".Length);
-                    Debug.Log("[ExtractToken] Found id_token in fragment.");
-                    return token;
-                }
-
-                if (param.StartsWith("code="))
-                {
-                    string code = param.Substring("code=".Length);
-                    Debug.Log("[ExtractToken] Found code in fragment.");
-                    return code;
-                }
-            }
-        }
-
-        // 2) query(?) 처리
-        int qIndex = url.IndexOf('?');
-        if (qIndex >= 0)
-        {
-            string query = url.Substring(qIndex + 1); // id_token=...&...
-            Debug.Log("[ExtractToken] Query => " + query);
-
-            var parameters = query.Split('&');
-            foreach (var param in parameters)
-            {
-                if (param.StartsWith("id_token="))
-                {
-                    string token = param.Substring("id_token=".Length);
-                    Debug.Log("[ExtractToken] Found id_token in query.");
-                    return token;
-                }
-
-                if (param.StartsWith("code="))
-                {
-                    string code = param.Substring("code=".Length);
-                    Debug.Log("[ExtractToken] Found code in query.");
-                    return code;
-                }
-            }
-        }
-
-        Debug.LogError("[ExtractToken] No id_token or code found → URL did NOT contain token.");
-        return null;
-    }
-#endif
 
     public void CreateCharacter(string name, System.Action<ApiResponse<CharacterResponse>> onComplete = null)
     {
