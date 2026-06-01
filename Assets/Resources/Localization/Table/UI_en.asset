@@ -854,6 +854,10 @@ MonoBehaviour:
     m_Localized: '{0} / 30 Days'
     m_Metadata:
       m_Items: []
+  - m_Id: 39970930322964489
+    m_Localized: Logging out as a guest will permanently delete your account and all data. Continue?
+    m_Metadata:
+      m_Items: []
   - m_Id: 40210342046728192
     m_Localized: ADMIRAL's Benefit
     m_Metadata:

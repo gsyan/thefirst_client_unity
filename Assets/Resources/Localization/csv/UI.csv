@@ -90,6 +90,7 @@ mineral_exotic_amount,,Mineral.E,광물.E
 mineral_dark_amount,,Mineral.D,광물.D
 popup_message_add_ship,,Do you want to add a new ship to your fleet?,새로운 함선을 추가 하시겠습니까?
 popup_message_logout,,Are you sure you want to logout?,로그아웃 하시겠습니까?
+popup_message_logout_guest,,Logging out as a guest will permanently delete your account and all data. Continue?,게스트 로그아웃 시 계정과 모든 데이터가 영구 삭제됩니다. 계속하시겠습니까?
 popup_message_module_unlock,,Unlock {0} slot?,{0} 슬롯을 잠금 해제 할까요?
 popup_message_module_upgrade,,Upgrade {0}\nLv.{1} → Lv.{2}?,{0} 모듈을 업그레이드 할까요?\n(Lv.{1} ->  Lv.{2} )
 popup_message_module_research,,Research {0} module?,{0} 모듈을 연구할까요?

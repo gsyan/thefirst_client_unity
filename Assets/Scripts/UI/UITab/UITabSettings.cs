@@ -251,17 +251,41 @@ public class UITabSettings : UITabBase
 
     private void OnLogoutButtonClicked()
     {
+        bool isGuest = DataManager.Instance.m_isGoogleLinked == false;
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             title     = LocalizationManager.Instance.Get("UITabSettings_Logout"),
-            message   = LocalizationManager.Instance.Get("popup_message_logout"),
-            onConfirm = ExecuteLogout
+            message   = LocalizationManager.Instance.Get(isGuest
+                            ? "popup_message_logout_guest"
+                            : "popup_message_logout"),
+            onConfirm = isGuest ? (System.Action)ExecuteGuestLogout : ExecuteGoogleLogout
         });
     }
 
-    private void ExecuteLogout()
+    // 게스트: 서버 계정 삭제 후 로컬 초기화 (GuestId 포함 전부 제거)
+    private void ExecuteGuestLogout()
+    {
+        NetworkManager.Instance.DeleteAccount((response) =>
+        {
+            if (response.errorCode != 0)
+            {
+                ShowErrorMessage(ErrorCodeMapping.GetMessage(response.errorCode));
+                return;
+            }
+            NetworkManager.Instance.Logout(); // GuestId + 토큰 정리
+            DoLocalLogout();
+        });
+    }
+
+    // Google 연동: 토큰만 폐기, 서버 데이터 유지
+    private void ExecuteGoogleLogout()
     {
         NetworkManager.Instance.Logout();
+        DoLocalLogout();
+    }
+
+    private void DoLocalLogout()
+    {
         EventManager.UnsubscribeAll();
         LoadingManager.LoadSceneWithLoading("MainScene");
     }

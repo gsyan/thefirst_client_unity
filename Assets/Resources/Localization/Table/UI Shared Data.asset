@@ -871,6 +871,10 @@ MonoBehaviour:
     m_Key: UIVipStatus_PurchasePrice
     m_Metadata:
       m_Items: []
+  - m_Id: 39970930322964489
+    m_Key: popup_message_logout_guest
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
