@@ -18,14 +18,23 @@ public static class BuildScript
         string versionName = GetArg("-versionName");
 
         // 버전 설정
+        Debug.Log($"[Build] ARG -versionName = '{versionName ?? "(null)"}'");
+        Debug.Log($"[Build] ENV BUILD_NUMBER = '{versionCode ?? "(null)"}'");
+        Debug.Log($"[Build] PlayerSettings.bundleVersion (before) = '{PlayerSettings.bundleVersion}'");
+        Debug.Log($"[Build] PlayerSettings.bundleVersionCode (before) = {PlayerSettings.Android.bundleVersionCode}");
+
         if (!string.IsNullOrEmpty(versionName))
             PlayerSettings.bundleVersion = versionName;
 
         if (!string.IsNullOrEmpty(versionCode) && int.TryParse(versionCode, out int code))
             PlayerSettings.Android.bundleVersionCode = code;
 
+        Debug.Log($"[Build] PlayerSettings.bundleVersion (after) = '{PlayerSettings.bundleVersion}'");
+        Debug.Log($"[Build] PlayerSettings.bundleVersionCode (after) = {PlayerSettings.Android.bundleVersionCode}");
+
         // 메모리 변경을 디스크에 저장해야 Bee 증분 빌드가 새 값으로 재빌드함
         AssetDatabase.SaveAssets();
+        Debug.Log("[Build] AssetDatabase.SaveAssets() 완료");
 
         // Keystore 설정 (환경변수가 없으면 빌드 중단)
         Debug.Log($"[Build] KEYSTORE_PATH={keystorePath ?? "(null)"}, KEY_ALIAS={keyaliasName ?? "(null)"}");
