@@ -38,8 +38,29 @@ public class DataTableResearch : ScriptableObject
     [Header("Tech Level Upgrade Data")]
     [SerializeField] private List<TechLevelResearchData> techLevelDataList = new();
 
+    private int m_cachedMaxShipCount = -1;
+
     public List<ModuleResearchData> ResearchDataList => researchDataList;
     public List<TechLevelResearchData> TechLevelDataList => techLevelDataList;
+
+    // CSV에 정의된 최고 함선 수 (전체 상한) — 로드 시 캐싱
+    public int GetMaxShipCountInCsv()
+    {
+        if (m_cachedMaxShipCount >= 0) return m_cachedMaxShipCount;
+        RebuildMaxShipCountCache();
+        return m_cachedMaxShipCount;
+    }
+
+    private void RebuildMaxShipCountCache()
+    {
+        int max = 1;
+        for (int i = 0; i < techLevelDataList.Count; i++)
+        {
+            if (techLevelDataList[i].shipCount > max)
+                max = techLevelDataList[i].shipCount;
+        }
+        m_cachedMaxShipCount = max;
+    }
 
     #region Public Methods
 
@@ -155,6 +176,7 @@ public class DataTableResearch : ScriptableObject
             });
         }
 
+        RebuildMaxShipCountCache();
         Debug.Log($"[DataTableResearch] Tech CSV Import 완료: 기술레벨 {techLevelDataList.Count}개");
         UnityEditor.EditorUtility.SetDirty(this);
     }
@@ -278,6 +300,7 @@ public class DataTableResearch : ScriptableObject
         {
             researchDataList  = importData.researchDataList;
             techLevelDataList = importData.techLevelDataList ?? new List<TechLevelResearchData>();
+            RebuildMaxShipCountCache();
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
 #endif

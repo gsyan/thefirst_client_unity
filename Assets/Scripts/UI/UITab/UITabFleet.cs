@@ -161,9 +161,9 @@ public class UITabFleet : UITabBase
 
         m_selectedShipSelector = null;
 
-        int shipCount = m_myFleet.m_ships.Count;
-        int maxShips  = DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet;
-        bool canAdd   = shipCount < maxShips;
+        int shipCount  = m_myFleet.m_ships.Count;
+        int maxInCsv   = DataManager.Instance.m_dataTableResearch.GetMaxShipCountInCsv();
+        bool canAdd    = shipCount < maxInCsv;
 
         for (int i = 0; i < m_shipSelectors.Length; i++)
         {
@@ -192,7 +192,7 @@ public class UITabFleet : UITabBase
     {
         if (m_currentShipCountStatText == null || m_myFleet == null) return;
         int current = m_myFleet.m_ships.Count;
-        int max = DataManager.Instance.m_dataTableConfig.gameSettings.maxShipsPerFleet;
+        int max = DataManager.Instance.m_dataTableResearch.GetMaxShipCountInCsv();
         m_currentShipCountStatText.text = $"{current} / {max}";
     }
 
@@ -389,7 +389,8 @@ public class UITabFleet : UITabBase
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         if (m_myCharacter.m_ownedFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;
         int currentShipCount = m_myCharacter.m_ownedFleet.m_ships.Count;
-        if (currentShipCount >= gameSettings.maxShipsPerFleet) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
+        int maxInCsv = DataManager.Instance.m_dataTableResearch.GetMaxShipCountInCsv();
+        if (currentShipCount >= maxInCsv) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
         int techLevel = m_myCharacter.GetTechLevel();
         int maxShipsAtTech = DataManager.Instance.m_dataTableResearch.GetShipCount(techLevel);

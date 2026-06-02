@@ -103,7 +103,6 @@ public class DataTableTotalEditor : EditorWindow
 
             var settings = dataTableConfig.gameSettings;
             EditorGUILayout.LabelField($"Version: {settings.version}");
-            EditorGUILayout.LabelField($"Max Ships Per Fleet: {settings.maxShipsPerFleet}");
             EditorGUILayout.LabelField($"Add Ships Cost: {settings.addShipCost}");
 
             EditorGUILayout.EndVertical();

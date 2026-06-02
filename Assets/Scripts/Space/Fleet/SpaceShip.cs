@@ -88,7 +88,7 @@ public class SpaceShip : MonoBehaviour
             m_shieldGrid.InitFormationRelay(this);
         
         // Outline 미리 설정
-        m_shipOutline = gameObject.AddComponent<Outline>();
+        m_shipOutline = gameObject.AddComponent<Outline>();//
         m_shipOutline.OutlineMode = Outline.Mode.OutlineAll;
         m_shipOutline.OutlineColor = Color.cyan;
         m_shipOutline.OutlineWidth = 5f;
@@ -383,6 +383,7 @@ public class SpaceShip : MonoBehaviour
     private void SpawnFireEffect(ref EffectBase slot, Vector3 position)
     {
         slot = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_FIRE_ON_SHIP);
+        slot.transform.SetParent(transform, false);
         slot.transform.position = position;
         slot.PlayEffect();
     }
@@ -390,7 +391,9 @@ public class SpaceShip : MonoBehaviour
     private void ReturnFireEffect(ref EffectBase slot)
     {
         if (slot == null) return;
-        slot.ReturnEffect();
+        // loop=false 자동 반환 후 슬롯이 dangling reference가 된 경우 이중 반환 방지
+        if (slot.gameObject.activeInHierarchy == true)
+            slot.ReturnEffect();
         slot = null;
     }
 

@@ -13,9 +13,6 @@ public class GameSettings
     [Header("Game Settings")]
     public string version = "0.0.1";
 
-    [Header("Fleet Settings")]
-    public int maxShipsPerFleet = 9;
-
     [Tooltip("함선 추가 시 필요한 Mineral 비용")]
     public int addShipCost = 10;
 
