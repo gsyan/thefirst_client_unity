@@ -627,9 +627,10 @@ public class VipPurchaseRequest
 public class VipStatusResponse
 {
     public bool isVip;
-    public string vipExpiry;           // ISO 8601 UTC, null이면 VIP 아님
-    public int dailyMineralAmount;     // 매일 지급 미네랄 (서버 설정값)
+    public string vipExpiry;            // ISO 8601 UTC, null이면 VIP 아님
+    public int dailyMineralAmount;      // 매일 지급 미네랄 (서버 설정값)
     public int mineralRewardMultiplier; // 스테이지 미네랄 보상 배율 (서버 설정값)
+    public int pendingMineralTotal;     // 구매 응답 시 1일~오늘(최대 28일) 분 클레임 가능 총량
 }
 
 [System.Serializable]

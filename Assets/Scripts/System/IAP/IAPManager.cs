@@ -6,15 +6,16 @@ using Unity.Services.Core;
 
 public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
 {
-    public const string PRODUCT_VIP = "vip_30day";
+    public const string PRODUCT_VIP = "vip_month";
 
     private IStoreController m_storeController;
     private IExtensionProvider m_storeExtensionProvider;
 
     private Action<bool, string> m_onVipPurchaseComplete;
-    private DateTime? m_vipExpiry;       // UTC, null이면 VIP 아님
+    private DateTime? m_vipExpiry;          // UTC, null이면 VIP 아님
     private int m_dailyMineralAmount;       // 서버 설정 일일 지급량
     private int m_mineralRewardMultiplier;  // 서버 설정 보상 배율
+    private int m_pendingMineralTotal;      // 로그인/구매 시 서버에서 받은 클레임 가능 총량
 
     protected override void OnInitialize()
     {
@@ -33,7 +34,7 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         }
 
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-        builder.AddProduct(PRODUCT_VIP, ProductType.Subscription);
+        builder.AddProduct(PRODUCT_VIP, ProductType.Consumable);
         UnityPurchasing.Initialize(this, builder);
     }
 
@@ -88,10 +89,19 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
             {
                 m_dailyMineralAmount      = response.data.dailyMineralAmount;
                 m_mineralRewardMultiplier = response.data.mineralRewardMultiplier;
+                m_pendingMineralTotal     = response.data.pendingMineralTotal;
                 SetVipExpiry(response.data.isVip ? response.data.vipExpiry : null);
             }
             onDone?.Invoke();
         });
+    }
+
+    // 팝업 표시 후 한 번만 소비 (0으로 초기화 후 이전 값 반환)
+    public int ConsumePendingMineralTotal()
+    {
+        int total = m_pendingMineralTotal;
+        m_pendingMineralTotal = 0;
+        return total;
     }
 
     public void TryClaimDailyMineral(Action<VipDailyMineralResponse> onResult)

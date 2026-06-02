@@ -141,6 +141,7 @@ pipeline {
                 bat """
                     set APK_PATH=${env.OUTPUT_AAB}
                     set GOOGLE_PLAY_JSON_KEY=${env.GOOGLE_PLAY_JSON_KEY}
+                    set VERSION_NAME=${env.VERSION_NAME}
                     C:\\Ruby34-x64\\bin\\fastlane android internal
                 """
             }

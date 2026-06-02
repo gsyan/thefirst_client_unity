@@ -1,5 +1,6 @@
 // 우주 공간 UI 패널 — 탭 시스템 초기화, UITabShip/UITabStation 탭 시 카메라 viewport 애니메이션, 모듈 선택 자동 전환
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UIPanelSpace : UIPanelBase
@@ -58,7 +59,9 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Subscribe_VipButtonOpened(OnVipButtonOpened);
+        EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyMineral);
         m_tabSystem.ForceActivateTab();
+        CheckAndShowDailyMineralPopup();
     }
 
     public override void OnHideUIPanel()
@@ -67,6 +70,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Unsubscribe_VipButtonOpened(OnVipButtonOpened);
+        EventManager.Unsubscribe_VipStatusChanged(OnVipStatusChangedForDailyMineral);
         m_tabSystem.ForceDeactivateTab();
 
         SetTabNavVisible(true);
@@ -78,6 +82,38 @@ public class UIPanelSpace : UIPanelBase
     private void OnDestroy()
     {
         EventManager.Unsubscribe_TabSelectionChanged(OnTabSelectionChanged);
+    }
+
+    // ── VIP 일일 미네랄 팝업 ──────────────────────────────────────────────────
+
+    private void OnVipStatusChangedForDailyMineral()
+    {
+        CheckAndShowDailyMineralPopup();
+    }
+
+    private void CheckAndShowDailyMineralPopup()
+    {
+        if (IAPManager.Instance == null) return;
+
+        int pending = IAPManager.Instance.ConsumePendingMineralTotal();
+        if (pending <= 0) return;
+
+        var loc = LocalizationManager.Instance;
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title         = loc.Get("VipDailyBonus_Title"),
+            rewardAmounts = new List<int> { pending },
+            onConfirm     = OnDailyMineralClaimed,
+        });
+    }
+
+    private void OnDailyMineralClaimed()
+    {
+        IAPManager.Instance.TryClaimDailyMineral(response =>
+        {
+            if (response != null && response.available == true)
+                EventManager.TriggerVipStatusChanged();
+        });
     }
 
     private void OnTabSelectionChanged(string systemName, int tabIndex)
