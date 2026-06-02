@@ -23,7 +23,6 @@ public class UIVipButton : MonoBehaviour
     [SerializeField] private TMP_Text   m_purchaseLabel2;  // TextTechLevel2
 
     private bool          m_isOpen = false;
-    private bool          m_isPurchasing = false;
     private RectTransform m_rectTransform;
     private RectTransform m_detailContainerRT;
 
@@ -142,7 +141,7 @@ public class UIVipButton : MonoBehaviour
 
         Color benefitColor = isAdmiral
             ? CommonUtility.PaletteColor("GeneralBright1")
-            : CommonUtility.PaletteColor("GeneralDark2");
+            : CommonUtility.PaletteColor("GeneralDark1");
 
         if (m_benefits != null)
         {
@@ -161,8 +160,10 @@ public class UIVipButton : MonoBehaviour
 
         if (m_purchaseLabel2 != null)
         {
-            string price = IAPManager.Instance.GetVipLocalizedPrice();
-            m_purchaseLabel2.text = loc.Get("UIVipStatus_PurchasePrice", (object)price);
+            string price        = IAPManager.Instance.GetVipLocalizedPrice();
+            string monthDisplay = IAPManager.Instance.GetVipMonthDisplay();
+            int    remaining    = IAPManager.Instance.GetMonthRemainingDays();
+            m_purchaseLabel2.text = loc.Get("UIVipStatus_PurchasePrice", price, monthDisplay, remaining);
         }
 
         if (m_benefitName != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_benefitName.rectTransform);
@@ -180,11 +181,9 @@ public class UIVipButton : MonoBehaviour
             return;
         }
 
-        m_isPurchasing = true;
         m_purchaseButton.interactable = false;
         IAPManager.Instance.PurchaseVip((success, _) =>
         {
-            m_isPurchasing = false;
             if (m_purchaseButton != null)
                 m_purchaseButton.interactable = true;
 

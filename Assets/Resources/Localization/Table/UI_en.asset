@@ -851,11 +851,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964488
-    m_Localized: '{0} / 30 Days'
+    m_Localized: "{0} ({1} Pass \xB7 {2}d Left)"
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964489
-    m_Localized: Logging out as a guest will permanently delete your account and all data. Continue?
+    m_Localized: Logging out as a guest will permanently delete your account and
+      all data. Continue?
     m_Metadata:
       m_Items: []
   - m_Id: 40210342046728192

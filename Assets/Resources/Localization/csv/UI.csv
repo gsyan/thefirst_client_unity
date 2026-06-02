@@ -213,4 +213,4 @@ UIVipStatus_Benefit_NoAds,,No Ads,광고 없음
 UIVipStatus_Benefit_Mineral,,Mineral Rewards x {0},미네랄 보상 {0}배
 UIVipStatus_Benefit_Daily,,Daily {0} Minerals,매일 미네랄 +{0}
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
-UIVipStatus_PurchasePrice,,{0} / 30 Days,{0} / 30일
+UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}d Left),{0} ({1} 패스 D-{2})

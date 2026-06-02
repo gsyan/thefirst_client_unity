@@ -1,6 +1,5 @@
 // 우주 공간 UI 패널 — 탭 시스템 초기화, UITabShip/UITabStation 탭 시 카메라 viewport 애니메이션, 모듈 선택 자동 전환
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIPanelSpace : UIPanelBase
@@ -61,7 +60,6 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_VipButtonOpened(OnVipButtonOpened);
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyMineral);
         m_tabSystem.ForceActivateTab();
-        CheckAndShowDailyMineralPopup();
     }
 
     public override void OnHideUIPanel()
@@ -95,24 +93,19 @@ public class UIPanelSpace : UIPanelBase
     {
         if (IAPManager.Instance == null) return;
 
-        int pending = IAPManager.Instance.ConsumePendingMineralTotal();
-        if (pending <= 0) return;
-
-        var loc = LocalizationManager.Instance;
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        IAPManager.Instance.TryClaimDailyMineral(result =>
         {
-            title         = loc.Get("VipDailyBonus_Title"),
-            rewardAmounts = new List<int> { pending },
-            onConfirm     = OnDailyMineralClaimed,
-        });
-    }
-
-    private void OnDailyMineralClaimed()
-    {
-        IAPManager.Instance.TryClaimDailyMineral(response =>
-        {
-            if (response != null && response.available == true)
-                EventManager.TriggerVipStatusChanged();
+            if (result == null || result.available == false) return;
+            var character = DataManager.Instance.m_currentCharacter;
+            if (character != null) character.UpdateMineral(result.mineralRemain);
+            var loc = LocalizationManager.Instance;
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                title        = loc.Get("VipDailyBonus_Title"),
+                message      = loc.Get("VipDailyBonus_Desc", result.grantedMineral),
+                confirmText1 = loc.Get("Simple_Confirm"),
+                onConfirm    = null,
+            });
         });
     }
 

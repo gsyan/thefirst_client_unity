@@ -64,6 +64,20 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         return product.metadata.localizedPriceString;
     }
 
+    public int GetMonthRemainingDays()
+    {
+        var now = DateTime.UtcNow;
+        var endOfMonth = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 23, 59, 59, DateTimeKind.Utc);
+        return Mathf.Max(0, (int)(endOfMonth - now).TotalDays);
+    }
+
+    public string GetVipMonthDisplay()
+    {
+        var now = DateTime.UtcNow;
+        string localeCode = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetCurrentLocaleCode() : "ko";
+        return localeCode == "ko" ? $"{now.Month}월" : now.ToString("MMM");
+    }
+
     public void SetVipExpiry(string isoExpiry)
     {
         if (string.IsNullOrEmpty(isoExpiry))
@@ -96,17 +110,9 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         });
     }
 
-    // 팝업 표시 후 한 번만 소비 (0으로 초기화 후 이전 값 반환)
-    public int ConsumePendingMineralTotal()
-    {
-        int total = m_pendingMineralTotal;
-        m_pendingMineralTotal = 0;
-        return total;
-    }
-
     public void TryClaimDailyMineral(Action<VipDailyMineralResponse> onResult)
     {
-        if (IsVipActive() == false)
+        if (IsVipActive() == false || m_pendingMineralTotal <= 0)
         {
             onResult?.Invoke(null);
             return;
@@ -114,7 +120,10 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         NetworkManager.Instance.ClaimVipDailyMineral(response =>
         {
             if (response != null && response.errorCode == (int)ServerErrorCode.SUCCESS)
+            {
+                m_pendingMineralTotal = 0;
                 onResult?.Invoke(response.data);
+            }
             else
                 onResult?.Invoke(null);
         });
@@ -151,14 +160,17 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         Debug.LogWarning($"[IAPManager] 초기화 실패: {error} — {message}");
     }
 
+    // IDetailedStoreListener 인터페이스 메서드라 Unity IAP 시스템이 구매 완료 시 자동으로 호출
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
         if (args.purchasedProduct.definition.id == PRODUCT_VIP)
         {
             string receipt = args.purchasedProduct.receipt;
 #if UNITY_EDITOR
-            Debug.Log("[IAPManager] 에디터 모드 — 서버 검증 생략, VIP 30일 즉시 적용");
-            SetVipExpiry(DateTime.UtcNow.AddDays(30).ToString("O"));
+            Debug.Log("[IAPManager] 에디터 모드 — 서버 검증 생략, VIP 이번 달 말일 즉시 적용");
+            var now = DateTime.UtcNow;
+            var endOfMonth = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 23, 59, 59, DateTimeKind.Utc);
+            SetVipExpiry(endOfMonth.ToString("O"));
             m_onVipPurchaseComplete?.Invoke(true, receipt);
             m_onVipPurchaseComplete = null;
 #else

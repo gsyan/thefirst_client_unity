@@ -858,11 +858,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964488
-    m_Localized: "{0} / 30\uC77C"
+    m_Localized: "{0} ({1} \uD328\uC2A4 D-{2})"
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964489
-    m_Localized: "\uAC8C\uC2A4\uD2B8 \uB85C\uADF8\uC544\uC6C3 \uC2DC \uACC4\uC815\uACFC \uBAA8\uB4E0 \uB370\uC774\uD130\uAC00 \uC601\uAD6C \uC0AD\uC81C\uB429\uB2C8\uB2E4. \uACC4\uC18D\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+    m_Localized: "\uAC8C\uC2A4\uD2B8 \uB85C\uADF8\uC544\uC6C3 \uC2DC \uACC4\uC815\uACFC
+      \uBAA8\uB4E0 \uB370\uC774\uD130\uAC00 \uC601\uAD6C \uC0AD\uC81C\uB429\uB2C8\uB2E4.
+      \uACC4\uC18D\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items: []
   - m_Id: 40210342046728192

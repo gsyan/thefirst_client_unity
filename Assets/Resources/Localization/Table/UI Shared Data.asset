@@ -379,6 +379,10 @@ MonoBehaviour:
     m_Key: popup_message_logout
     m_Metadata:
       m_Items: []
+  - m_Id: 39970930322964489
+    m_Key: popup_message_logout_guest
+    m_Metadata:
+      m_Items: []
   - m_Id: 697933397622785
     m_Key: popup_message_module_unlock
     m_Metadata:
@@ -869,10 +873,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 39970930322964488
     m_Key: UIVipStatus_PurchasePrice
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930322964489
-    m_Key: popup_message_logout_guest
     m_Metadata:
       m_Items: []
   m_Metadata:
