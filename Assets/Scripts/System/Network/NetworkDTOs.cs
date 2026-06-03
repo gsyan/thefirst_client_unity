@@ -161,6 +161,7 @@ public class AuthResponse
     public CharacterInfo characterInfo;
     public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록 (tech_level_N 등)
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
+    public VipStatusResponse vipStatus;   // 로그인/캐릭터 선택 시 VIP 상태 포함
 }
 
 [System.Serializable]

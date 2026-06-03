@@ -59,6 +59,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Subscribe_VipButtonOpened(OnVipButtonOpened);
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyMineral);
+        CheckAndShowDailyMineralPopup();
         m_tabSystem.ForceActivateTab();
     }
 

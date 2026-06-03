@@ -95,17 +95,21 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
     public int GetDailyMineralAmount()      { return m_dailyMineralAmount; }
     public int GetMineralRewardMultiplier() { return m_mineralRewardMultiplier; }
 
+    public void ApplyVipStatus(VipStatusResponse data)
+    {
+        if (data == null) return;
+        m_dailyMineralAmount      = data.dailyMineralAmount;
+        m_mineralRewardMultiplier = data.mineralRewardMultiplier;
+        m_pendingMineralTotal     = data.pendingMineralTotal;
+        SetVipExpiry(data.isVip ? data.vipExpiry : null);
+    }
+
     public void FetchVipStatus(Action onDone = null)
     {
         NetworkManager.Instance.GetVipStatus(response =>
         {
-            if (response != null && response.errorCode == (int)ServerErrorCode.SUCCESS && response.data != null)
-            {
-                m_dailyMineralAmount      = response.data.dailyMineralAmount;
-                m_mineralRewardMultiplier = response.data.mineralRewardMultiplier;
-                m_pendingMineralTotal     = response.data.pendingMineralTotal;
-                SetVipExpiry(response.data.isVip ? response.data.vipExpiry : null);
-            }
+            if (response != null && response.errorCode == (int)ServerErrorCode.SUCCESS)
+                ApplyVipStatus(response.data);
             onDone?.Invoke();
         });
     }
@@ -192,7 +196,10 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
                 Debug.Log($"[IAPManager] PurchaseVip 응답 errorCode={response.errorCode} vipExpiry={response.data?.vipExpiry}");
                 bool ok = response.errorCode == (int)ServerErrorCode.SUCCESS;
                 if (ok == true && response.data != null)
+                {
+                    m_pendingMineralTotal = response.data.pendingMineralTotal;
                     SetVipExpiry(response.data.vipExpiry);
+                }
                 m_onVipPurchaseComplete?.Invoke(ok, ok ? receipt : null);
                 m_onVipPurchaseComplete = null;
             });

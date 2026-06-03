@@ -127,6 +127,8 @@ public class UIVipButton : MonoBehaviour
     {
         if (IAPManager.Instance == null) return;
 
+        InitBenefitTexts();
+
         var loc = LocalizationManager.Instance;
         bool isAdmiral = IAPManager.Instance.IsVipActive();
 
