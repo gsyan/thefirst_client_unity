@@ -25,9 +25,7 @@ pipeline {
         OUTPUT_AAB            = "${WORKSPACE}/build/thefirst.aab"
         GH_REPO               = 'gsyan/thefirst_client_unity'
         VERSION_NAME          = "${params.VERSION_MAJOR}.${params.VERSION_MINOR}.${params.VERSION_PATCH}"
-        GOOGLE_PLAY_JSON_KEY  = 'D:/BK/thefirst/thefirst_server/tools/google_relate/thefirst-fd116-93d5321f214a.json'
         FIREBASE_APP_ID       = '1:527468162306:android:fdd9d29003b29326e2261b'
-        FIREBASE_JSON_KEY     = 'D:/BK/thefirst/thefirst_server/tools/google_relate/firebase-service-account.json'
         FIREBASE_CMD          = 'C:\\Users\\gsyan\\AppData\\Roaming\\npm\\firebase.cmd'
     }
 
@@ -138,12 +136,14 @@ pipeline {
                 expression { params.RELEASE_PLAY == true }
             }
             steps {
-                bat """
-                    set APK_PATH=${env.OUTPUT_AAB}
-                    set GOOGLE_PLAY_JSON_KEY=${env.GOOGLE_PLAY_JSON_KEY}
-                    set VERSION_NAME=${env.VERSION_NAME}
-                    C:\\Ruby34-x64\\bin\\fastlane android internal
-                """
+                withCredentials([file(credentialsId: 'GOOGLE_PLAY_DEPLOY', variable: 'GOOGLE_PLAY_JSON_KEY')]) {
+                    bat """
+                        set APK_PATH=${env.OUTPUT_AAB}
+                        set GOOGLE_PLAY_JSON_KEY=%GOOGLE_PLAY_JSON_KEY%
+                        set VERSION_NAME=${env.VERSION_NAME}
+                        C:\\Ruby34-x64\\bin\\fastlane android internal
+                    """
+                }
             }
         }
 
@@ -152,13 +152,15 @@ pipeline {
                 expression { params.RELEASE_FIREBASE == true }
             }
             steps {
-                bat """
-                    set GOOGLE_APPLICATION_CREDENTIALS=${env.FIREBASE_JSON_KEY}
+                withCredentials([file(credentialsId: 'FIREBASE_SERVICE_ACCOUNT', variable: 'FIREBASE_JSON_KEY')]) {
+                    bat """
+                    set GOOGLE_APPLICATION_CREDENTIALS=%FIREBASE_JSON_KEY%
                     "${env.FIREBASE_CMD}" appdistribution:distribute "${env.OUTPUT_APK}" ^
                       --app ${env.FIREBASE_APP_ID} ^
                       --groups "fidforge,testers" ^
                       --release-notes "v${env.VERSION_NAME} Build #%BUILD_NUMBER%"
-                """
+                    """
+                }
             }
         }
 
