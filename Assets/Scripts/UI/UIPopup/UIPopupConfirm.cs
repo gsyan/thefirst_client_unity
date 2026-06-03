@@ -13,6 +13,7 @@ public class ConfirmPopupConfig
     public string message;
     public string detailText;
     public List<(string icon, string value)> resultRows;
+    public List<(string icon, string value)> pvpOpponentRows; // STATUS 섹션 (GeneralBright1 색)
     public RequireStruct require;
     public CostStruct cost;
     public int refundAmount;
@@ -39,11 +40,8 @@ public class UIPopupConfirm : UIPopupBase
     [SerializeField] private TMP_Text m_bodyText;
 
     [SerializeField] private RectTransform m_layoutRoot;
-    [SerializeField] private UISection m_sectionResult;
-    [SerializeField] private UISection m_sectionRequire;
-    [SerializeField] private UISection m_sectionCost;
-    [SerializeField] private UISection m_sectionRefund;
-    [SerializeField] private UISection m_sectionReward;
+    [SerializeField] private UISection m_sectionPrefab;
+    [SerializeField] private RectTransform m_sectionsRoot;
 
     [SerializeField] private Button cancelButton;
     [SerializeField] private Image m_cancelImage;
@@ -62,6 +60,8 @@ public class UIPopupConfirm : UIPopupBase
 
     private Sprite m_defaultCancelImage;
     private Sprite m_defaultConfirmImage;
+
+    private List<UISection> m_sectionCache = new List<UISection>();
 
     protected override void Awake()
     {
@@ -87,17 +87,19 @@ public class UIPopupConfirm : UIPopupBase
             m_bodyText.gameObject.SetActive(string.IsNullOrEmpty(bodyStr) == false);
         }
 
-        bool requireMet = BuildRequireSection(config.require);
-        if (requireMet == false) canConfirm = false;
+        int sectionIdx = 0;
+        BuildResultRows(config.resultRows, ref sectionIdx);
+        BuildPvpOpponentSection(config.pvpOpponentRows, ref sectionIdx);
+        bool requireMet = BuildRequireSection(config.require, ref sectionIdx);
+        bool canAfford  = BuildCostSection(config.cost, ref sectionIdx);
+        BuildRefundSection(config.refundAmount, ref sectionIdx);
+        BuildRewardSection(config.rewardAmounts, config.mineralVipMultiplier, ref sectionIdx);
+        HideUnusedSections(sectionIdx);
 
-        bool canAfford = BuildCostSection(config.cost);
+        if (requireMet == false) canConfirm = false;
         if (canAfford == false) canConfirm = false;
 
-        BuildRefundSection(config.refundAmount);
-        BuildResultRows(config.resultRows);
-        BuildRewardSection(config.rewardAmounts, config.mineralVipMultiplier);
         BuildButtonSection(config);
-
         if (confirmButton != null) confirmButton.SetInteractable(canConfirm);
 
         onCancelCallback = config.onCancel;
@@ -111,6 +113,25 @@ public class UIPopupConfirm : UIPopupBase
         RebuildLayout();
     }
 
+    private UISection GetOrCreateSection(ref int idx)
+    {
+        if (idx < m_sectionCache.Count)
+        {
+            m_sectionCache[idx].SetVisible(true);
+            return m_sectionCache[idx++];
+        }
+        UISection sec = Instantiate(m_sectionPrefab, m_sectionsRoot);
+        m_sectionCache.Add(sec);
+        idx++;
+        return sec;
+    }
+
+    private void HideUnusedSections(int usedCount)
+    {
+        for (int i = usedCount; i < m_sectionCache.Count; i++)
+            m_sectionCache[i].SetVisible(false);
+    }
+
     private string BuildBodyText(string message, string detailText)
     {
         var sb = new StringBuilder();
@@ -120,40 +141,34 @@ public class UIPopupConfirm : UIPopupBase
         return sb.ToString();
     }
 
-    private bool BuildRequireSection(RequireStruct require)
+    private bool BuildRequireSection(RequireStruct require, ref int sectionIdx)
     {
         if (require == null || require.techLevel <= 0)
-        {
-            if (m_sectionRequire != null) m_sectionRequire.SetVisible(false);
             return true;
-        }
 
-        if (m_sectionRequire != null) m_sectionRequire.SetVisible(true);
+        UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.SetTitle("REQUIRE");
+        sec.HideAllRows();
 
         var ch = DataManager.Instance.m_currentCharacter;
         int currentTechLevel = ch != null ? ch.GetTechLevel() : 0;
         bool requireMet = currentTechLevel >= require.techLevel;
 
+        string icon = require.techLevel > 0 ? "icon_tech" : string.Empty;
         string text = LocalizationManager.Instance.Get("require_level_compare", require.techLevel, currentTechLevel);
-        if (m_sectionRequire != null)
-            m_sectionRequire.SetRowText(0, requireMet ? text : $"<color=red>{text}</color>");
+        sec.SetRow(0, icon, CommonUtility.PaletteColor("GeneralBright1"), requireMet ? text : $"<color=red>{text}</color>");
 
         return requireMet;
     }
 
-    private bool BuildCostSection(CostStruct cost)
+    private bool BuildCostSection(CostStruct cost, ref int sectionIdx)
     {
         if (cost == null || cost.amount <= 0)
-        {
-            if (m_sectionCost != null) m_sectionCost.SetVisible(false);
             return true;
-        }
 
-        if (m_sectionCost != null)
-        {
-            m_sectionCost.SetVisible(true);
-            m_sectionCost.HideAllRows();
-        }
+        UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.SetTitle("COST");
+        sec.HideAllRows();
 
         var ch = DataManager.Instance.m_currentCharacter;
         long current = 0;
@@ -167,43 +182,46 @@ public class UIPopupConfirm : UIPopupBase
             current = ch != null ? ch.GetPvpPoint() : 0;
 
         bool canAfford = current >= cost.amount;
-        int rowIndex = (int)cost.costType;
-        if (m_sectionCost != null)
-        {
-            string val = CommonUtility.FormatBigNumber(cost.amount);
-            m_sectionCost.SetRowText(rowIndex, canAfford ? val : $"<color=red>{val}</color>");
-        }
+        string val = CommonUtility.FormatBigNumber(cost.amount);
+        Color iconColor = GetCostColor(cost.costType);
+        sec.SetRow(0, "mineral_basic", iconColor, canAfford ? val : $"<color=red>{val}</color>");
 
         return canAfford;
     }
 
-    private void BuildResultRows(List<(string icon, string value)> rows)
+    private void BuildResultRows(List<(string icon, string value)> rows, ref int sectionIdx)
     {
-        if (m_sectionResult == null) return;
-        bool hasRows = rows != null && rows.Count > 0;
-        m_sectionResult.SetVisible(hasRows);
-        if (hasRows == false) return;
-        m_sectionResult.SetRows(rows);
-    }
-
-    private void BuildRefundSection(int refundAmount)
-    {
-        if (m_sectionRefund == null) return;
-        if (refundAmount <= 0)
-        {
-            m_sectionRefund.SetVisible(false);
+        if (rows == null || rows.Count <= 0)
             return;
-        }
 
-        m_sectionRefund.SetVisible(true);
-        m_sectionRefund.HideAllRows();
-        m_sectionRefund.SetRowText(0, CommonUtility.FormatBigNumber(refundAmount));
+        UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.SetTitle("RESULT");
+        sec.SetRows(rows);
     }
 
-    private void BuildRewardSection(List<int> amounts, int mineralVipMultiplier = 0)
+    private void BuildPvpOpponentSection(List<(string icon, string value)> rows, ref int sectionIdx)
     {
-        if (m_sectionReward == null) return;
+        if (rows == null || rows.Count <= 0)
+            return;
 
+        UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.SetTitle("STATUS");
+        sec.SetRows(rows, CommonUtility.PaletteColor("GeneralBright1"));
+    }
+
+    private void BuildRefundSection(int refundAmount, ref int sectionIdx)
+    {
+        if (refundAmount <= 0)
+            return;
+
+        UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.SetTitle("REFUND");
+        sec.HideAllRows();
+        sec.SetRowText(0, CommonUtility.FormatBigNumber(refundAmount));
+    }
+
+    private void BuildRewardSection(List<int> amounts, int mineralVipMultiplier, ref int sectionIdx)
+    {
         bool hasAny = false;
         if (amounts != null)
         {
@@ -212,11 +230,12 @@ public class UIPopupConfirm : UIPopupBase
                 if (amounts[i] > 0) { hasAny = true; break; }
             }
         }
+        if (hasAny == false)
+            return;
 
-        m_sectionReward.SetVisible(hasAny);
-        if (hasAny == false) return;
-
-        m_sectionReward.HideAllRows();
+        UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.SetTitle("REWARD");
+        sec.HideAllRows();
         for (int i = 0; i < amounts.Count; i++)
         {
             if (amounts[i] > 0)
@@ -224,7 +243,7 @@ public class UIPopupConfirm : UIPopupBase
                 string text = CommonUtility.FormatBigNumber(amounts[i]);
                 if (i == 0 && mineralVipMultiplier > 0)
                     text = $"{text} × {mineralVipMultiplier}(VIP)";
-                m_sectionReward.SetRowText(i, text);
+                sec.SetRowText(i, text);
             }
         }
     }
@@ -259,11 +278,12 @@ public class UIPopupConfirm : UIPopupBase
 
     private void RebuildLayout()
     {
-        if (m_sectionResult != null) m_sectionResult.RebuildLayout();
-        if (m_sectionRefund != null) m_sectionRefund.RebuildLayout();
-        if (m_sectionRequire != null) m_sectionRequire.RebuildLayout();
-        if (m_sectionCost != null) m_sectionCost.RebuildLayout();
-        if (m_sectionReward != null) m_sectionReward.RebuildLayout();
+        for (int i = 0; i < m_sectionCache.Count; i++)
+        {
+            if (m_sectionCache[i].gameObject.activeSelf == true)
+                m_sectionCache[i].RebuildLayout();
+        }
+        if (m_sectionsRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_sectionsRoot);
         if (cancelButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(cancelButton.GetComponent<RectTransform>());
         if (confirmButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(confirmButton.GetComponent<RectTransform>());
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
@@ -303,5 +323,14 @@ public class UIPopupConfirm : UIPopupBase
     {
         StopAutoClose();
         onCancelCallback?.Invoke();
+    }
+
+    private static Color GetCostColor(ECostType costType)
+    {
+        if (costType == ECostType.Mineral)     return CommonUtility.PaletteColor("Mineral");
+        if (costType == ECostType.TechPoint)   return CommonUtility.PaletteColor("TechPoint");
+        if (costType == ECostType.ModulePoint) return CommonUtility.PaletteColor("ModulePoint");
+        if (costType == ECostType.PvpPoint)    return CommonUtility.PaletteColor("PvpPoint");
+        return Color.white;
     }
 }

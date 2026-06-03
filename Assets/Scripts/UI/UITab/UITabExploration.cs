@@ -448,7 +448,8 @@ public class UITabExploration : UITabBase
                 isFirstClear ? zoneStage.modulePointClearReward  : 0,
                 0
             },
-            onConfirm = () => EnterZoneStage(zoneStage)
+            onConfirm = () => EnterZoneStage(zoneStage),
+            onCancel  = () => { }
         });
     }
 
@@ -806,7 +807,8 @@ public class UITabExploration : UITabBase
             {
                 title   = LocalizationManager.Instance.Get("UITabExploration_RetreatTitle"),
                 message = LocalizationManager.Instance.Get("UITabExploration_RetreatConfirm"),
-                onConfirm = DoRetreatSequence
+                onConfirm = DoRetreatSequence,
+                onCancel  = () => { }
             });
             return;
         }

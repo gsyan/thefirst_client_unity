@@ -19,6 +19,7 @@ public class RowImageText : MonoBehaviour
     public void SetRow(string spriteName, string text)
     {
         SetImage(spriteName);
+        SetImageColor(CommonUtility.PaletteColor("GeneralBright1"));
         SetTextWithString(text);
     }
 
@@ -33,6 +34,12 @@ public class RowImageText : MonoBehaviour
         Sprite sprite = UISpriteCache.Get(spriteName);
         if (sprite != null)
             m_image.sprite = sprite;
+    }
+
+    public void SetImageColor(Color color)
+    {
+        if (m_image == null) return;
+        m_image.color = color;
     }
 
     public void SetTextWithString(string text)

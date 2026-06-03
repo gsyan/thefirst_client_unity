@@ -193,7 +193,8 @@ public class UITabSettings : UITabBase
         {
             title     = LocalizationManager.Instance.Get("UITabSettings_GoogleLink"),
             message   = LocalizationManager.Instance.Get("popup_message_google_link"),
-            onConfirm = ExecuteLinkGoogle
+            onConfirm = ExecuteLinkGoogle,
+            onCancel  = () => { }
         });
     }
 
@@ -219,7 +220,8 @@ public class UITabSettings : UITabBase
         {
             title     = LocalizationManager.Instance.Get("UITabSettings_GoogleUnlink"),
             message   = LocalizationManager.Instance.Get("popup_message_google_unlink"),
-            onConfirm = ExecuteUnlinkGoogle
+            onConfirm = ExecuteUnlinkGoogle,
+            onCancel  = () => { }
         });
     }
 
@@ -258,7 +260,8 @@ public class UITabSettings : UITabBase
             message   = LocalizationManager.Instance.Get(isGuest
                             ? "popup_message_logout_guest"
                             : "popup_message_logout"),
-            onConfirm = isGuest ? (System.Action)ExecuteGuestLogout : ExecuteGoogleLogout
+            onConfirm = isGuest ? (System.Action)ExecuteGuestLogout : ExecuteGoogleLogout,
+            onCancel  = () => { }
         });
     }
 

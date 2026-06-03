@@ -348,7 +348,8 @@ public class UITabFleet : UITabBase
             message   = LocalizationManager.Instance.Get("popup_message_add_ship"),
             require   = require,
             cost      = new CostStruct(ECostType.ModulePoint, gameSettings.addShipCost),
-            onConfirm = ExecuteAddShip
+            onConfirm = ExecuteAddShip,
+            onCancel  = () => { }
         });
     }
 

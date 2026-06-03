@@ -68,24 +68,22 @@ public class UITabPvp : UITabBase
         string title = opponent.characterName;
         string message = LocalizationManager.Instance.Get("pvp_opponent_info", new object[] { opponent.pvpScore, opponent.rank });
 
-        var sb = new System.Text.StringBuilder();
-        sb.Append($"{CommonUtility.Sprite("spaceship")} {shipCount}");
-        sb.Append("\n");
-        sb.Append($"{CommonUtility.Sprite("techno-heart")} {CommonUtility.FormatBigNumber(stats.health)}");
-        sb.Append("\n");
-        sb.Append($"{CommonUtility.Sprite("bubbling-beam")} {CommonUtility.FormatBigNumber(stats.attack)}");
-        if (stats.airCount > 0)
+        var rows = new System.Collections.Generic.List<(string icon, string value)>
         {
-            sb.Append("\n");
-            sb.Append($"\n{CommonUtility.Sprite("jet-fighter")} {stats.airCount}");
-        }
+            ("icon_ship",      shipCount.ToString()),
+            ("techno-heart",   CommonUtility.FormatBigNumber(stats.health)),
+            ("bubbling-beam",  CommonUtility.FormatBigNumber(stats.attack)),
+        };
+        if (stats.airCount > 0)
+            rows.Add(("jet-fighter", stats.airCount.ToString()));
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             title      = title,
             message    = message,
-            detailText = sb.ToString(),
-            onConfirm  = () => ExecuteAttack(opponent)
+            pvpOpponentRows = rows,
+            onConfirm  = () => ExecuteAttack(opponent),
+            onCancel   = () => { }
         });
     }
 

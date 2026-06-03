@@ -16,6 +16,7 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
     [Header("Info Panel")]
     [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private TMP_Text m_moduleLevelCheckText;
+    [SerializeField] private UISection m_sectionResult;
     [SerializeField] private UISection m_sectionRequire;
     [SerializeField] private UISection m_sectionCost;
     [SerializeField] private UIButtonHasChildren m_confirmButton;
@@ -256,11 +257,14 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         if (nothingSelected == true)
         {
             if (m_moduleLevelCheckText != null) m_moduleLevelCheckText.text = "";
+            if (m_sectionResult != null) m_sectionResult.SetVisible(false);
             if (m_sectionRequire != null) m_sectionRequire.SetVisible(false);
             if (m_sectionCost != null) m_sectionCost.SetVisible(false);
             if (m_confirmButton != null) m_confirmButton.SetInteractable(false);
             return;
         }
+
+        UpdateResultSection(currentSubType);
 
         int playerTechLevel = DataManager.Instance.m_currentCharacter?.GetTechLevel() ?? 0;
         int requiredTechTier = m_selectedSubType.GetTechTier();
@@ -340,12 +344,64 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
             }
         }
 
+        if (m_sectionResult != null) m_sectionResult.RebuildLayout();
         if (m_sectionRequire != null) m_sectionRequire.RebuildLayout();
         if (m_sectionCost != null) m_sectionCost.RebuildLayout();
         if (m_moduleLevelCheckText != null)
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleLevelCheckText.transform.parent as RectTransform);
 
         if (m_confirmButton != null) m_confirmButton.SetInteractable(canConfirm);
+    }
+
+    // 현재 서브타입(현재레벨) → 선택 서브타입(Lv.1) 스탯 비교 행을 sectionResult에 표시
+    private void UpdateResultSection(EModuleSubType currentSubType)
+    {
+        if (m_sectionResult == null) return;
+
+        EModuleType moduleType = m_sourceModule.GetModuleType();
+        int currentLevel = m_sourceModule.GetModuleLevel();
+
+        ModuleData curData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(currentSubType, currentLevel);
+        ModuleData selData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedSubType, 1);
+
+        if (curData == null || selData == null)
+        {
+            m_sectionResult.SetVisible(false);
+            return;
+        }
+
+        string V(float c, float s) => $"{c:F0} <voffset=6>→</voffset> {s:F0}";
+        string Vi(int c, int s)    => $"{c} <voffset=6>→</voffset> {s}";
+
+        var rows = new List<(string icon, string value)>();
+
+        if (moduleType == EModuleType.body)
+        {
+            rows.Add(("techno-heart",    V(curData.health, selData.health)));
+            rows.Add(("auto-repair",     V(curData.repair, selData.repair)));
+            rows.Add(("rocket-thruster", V(curData.speed,  selData.speed)));
+        }
+        else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
+        {
+            rows.Add(("bubbling-beam", V(curData.attack, selData.attack)));
+        }
+        else if (moduleType == EModuleType.hanger)
+        {
+            rows.Add(("strafe",        V(curData.airAttack, selData.airAttack)));
+            rows.Add(("heart-wings",   V(curData.airHealth, selData.airHealth)));
+            rows.Add(("light-fighter", V(curData.airSpeed,  selData.airSpeed)));
+            rows.Add(("jet-fighter",   Vi(curData.airCount, selData.airCount)));
+        }
+
+        if (rows.Count == 0)
+        {
+            m_sectionResult.SetVisible(false);
+            return;
+        }
+
+        m_sectionResult.SetVisible(true);
+        m_sectionResult.HideAllRows();
+        m_sectionResult.SetRows(rows);
     }
 
     private void OnConfirmClicked()

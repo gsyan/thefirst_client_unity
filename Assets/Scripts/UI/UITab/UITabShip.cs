@@ -308,7 +308,8 @@ public class UITabShip : UITabBase
             message = LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
             cost    = new CostStruct(ECostType.ModulePoint, unlockPrice),
             resultRows = resultRows,
-            onConfirm  = () => ExecuteModuleUnlock()
+            onConfirm = () => ExecuteModuleUnlock(),
+            onCancel  = () => { }
         });
     }
 
