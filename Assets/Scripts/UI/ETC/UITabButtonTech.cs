@@ -30,37 +30,8 @@ public class UITabButtonTech : MonoBehaviour
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        //m_textTechLevel.text = $"{CommonUtility.Sprite("gears")} {currentLevel}";
         m_textTechLevel.text = $"Lv.{currentLevel}";
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_textTechLevel.transform.parent as RectTransform);
-    }
-
-    private void OnInfoClicked()
-    {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
-        int currentLevel = character.GetTechLevel();
-        int maxShips     = DataManager.Instance.m_dataTableResearch.GetShipCount(currentLevel);
-        TechLevelResearchData nextNode = GetNextTechLevelNode(character);
-
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"{CommonUtility.Sprite("gears")} {currentLevel}  {CommonUtility.Sprite("spaceship")} {maxShips}");
-
-        if (nextNode != null)
-        {
-            int nextMaxShips = DataManager.Instance.m_dataTableResearch.GetShipCount(nextNode.targetTechLevel);
-            sb.AppendLine();
-            sb.AppendLine(LocalizationManager.Instance.Get("tech_level_on_reach", new object[] { nextNode.targetTechLevel }));
-            sb.Append    ($"{CommonUtility.Sprite("spaceship")} (Max Ships)  {nextMaxShips}");
-        }
-
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            title        = LocalizationManager.Instance.Get("tech_level_detail_title"),
-            message      = sb.ToString(),
-            autoCloseSec = 5f,
-        });
     }
 
     // 소수 시간을 "XH YM" 형식으로 변환 (예: 3.5 → "3H 30M")

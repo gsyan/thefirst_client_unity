@@ -73,27 +73,4 @@ public class UITabButtonFleet : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_rtFleetStats);
     }
 
-    // private void OnInfoClicked()
-    // {
-    //     if (m_fleet == null) return;
-
-    //     CapabilityProfile org = m_fleet.GetFleetCapabilityProfile(false);
-    //     CapabilityProfile cur = m_fleet.GetFleetCapabilityProfile(true);
-
-    //     var sb = new StringBuilder();
-    //     sb.AppendLine($"{CommonUtility.Sprite("bubbling-beam")} (Attack)  {cur.attack:F0}");
-    //     sb.Append($"{CommonUtility.Sprite("techno-heart")} (HP)  {org.health:F0} ");
-    //     sb.AppendLine($"{CommonUtility.Sprite("auto-repair")} (Repair)  {cur.repair:F0}");
-    //     sb.AppendLine($"{CommonUtility.Sprite("rocket-thruster")} (Speed)  {cur.speed:F0}");
-        
-
-    //     if (org.airCount > 0)
-    //     {
-    //         sb.AppendLine();
-    //         sb.AppendLine($"{CommonUtility.Sprite("strafe")} (Aircraft Attack)  {cur.airAttack:F0}");
-    //         sb.Append    ($"{CommonUtility.Sprite("jet-fighter")} (Aircraft)  {org.airCount:F0}");
-    //     }
-
-    //     UIManager.Instance.ShowPopupAlert("Fleet Stats", sb.ToString(), null);
-    // }
 }
