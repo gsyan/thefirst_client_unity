@@ -845,6 +845,7 @@ public class ApiClient
         webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(webRequest);
+        Debug.Log($"[ApiClient] PurchaseVip raw={webRequest.downloadHandler.text}");
         return JsonConvert.DeserializeObject<ApiResponse<VipStatusResponse>>(webRequest.downloadHandler.text);
     }
 

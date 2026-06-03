@@ -182,7 +182,15 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
             var request = new VipPurchaseRequest { receipt = receipt, platform = platform };
             NetworkManager.Instance.PurchaseVip(request, response =>
             {
-                bool ok = response != null && response.errorCode == (int)ServerErrorCode.SUCCESS;
+                if (response == null)
+                {
+                    Debug.LogError("[IAPManager] PurchaseVip 서버 응답 null");
+                    m_onVipPurchaseComplete?.Invoke(false, null);
+                    m_onVipPurchaseComplete = null;
+                    return;
+                }
+                Debug.Log($"[IAPManager] PurchaseVip 응답 errorCode={response.errorCode} vipExpiry={response.data?.vipExpiry}");
+                bool ok = response.errorCode == (int)ServerErrorCode.SUCCESS;
                 if (ok == true && response.data != null)
                     SetVipExpiry(response.data.vipExpiry);
                 m_onVipPurchaseComplete?.Invoke(ok, ok ? receipt : null);
