@@ -376,7 +376,7 @@ public class UIManager : MonoSingleton<UIManager>
         System.Action userConfirm = config.onConfirm;
         System.Action userCancel  = config.onCancel;
         config.onConfirm = () => { userConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Overlay); };
-        config.onCancel  = () => { userCancel?.Invoke();  CloseTopPopup(EPopupLayer.Overlay); };
+        config.onCancel  = userCancel != null ? () => { userCancel.Invoke(); CloseTopPopup(EPopupLayer.Overlay); } : (System.Action)null;
 
         popup.ShowPopupConfirm(config);
     }

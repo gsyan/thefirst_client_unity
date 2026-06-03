@@ -201,7 +201,7 @@ Simple_FleetFullRepair,,FULL REPAIR,함대 완전 회복
 Simple_Free,,FREE,무료
 Simple_Cancel,,CANCEL,취소
 Simple_Confirm,,CONFIRM,확인
-Simple_VipReward,,VIP REWARD,VIP 보상 받기
+Simple_VipReward,,CLAIM REWARD,보상 받기
 VipDailyBonus_Title,,VIP Daily Bonus,VIP 일일 보너스
 VipDailyBonus_Desc,,+{0} Minerals received!,미네랄 +{0} 지급!
 UIVipStatus_Frontier,,FRONTIER,프론티어
@@ -213,4 +213,4 @@ UIVipStatus_Benefit_NoAds,,No Ads,광고 없음
 UIVipStatus_Benefit_Mineral,,Mineral Rewards x {0},미네랄 보상 {0}배
 UIVipStatus_Benefit_Daily,,Daily {0} Minerals,매일 미네랄 +{0}
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
-UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}d Left),{0} ({1} 패스 D-{2})
+UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}day(s) Left),{0} ({1} 패스 D-{2})

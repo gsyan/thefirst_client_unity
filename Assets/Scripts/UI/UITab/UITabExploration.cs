@@ -662,10 +662,11 @@ public class UITabExploration : UITabBase
         {
             popupConfig = new ConfirmPopupConfig
             {
-                title        = title,
-                rewardAmounts = rewards,
-                confirmText1 = loc.Get("Simple_VipReward"),
-                onConfirm    = OnClaimRewardVip,
+                title                = title,
+                rewardAmounts        = rewards,
+                mineralVipMultiplier = 4,
+                confirmText1         = loc.Get("Simple_VipReward"),
+                onConfirm            = OnClaimRewardVip,
             };
         }
         else

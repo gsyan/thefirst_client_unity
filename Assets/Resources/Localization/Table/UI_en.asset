@@ -823,7 +823,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 39970930285215744
-    m_Localized: VIP REWARD
+    m_Localized: CLAIM REWARD
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964480
@@ -851,7 +851,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964488
-    m_Localized: "{0} ({1} Pass \xB7 {2}d Left)"
+    m_Localized: "{0} ({1} Pass \xB7 {2}day(s) Left)"
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964489

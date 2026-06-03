@@ -17,6 +17,7 @@ public class ConfirmPopupConfig
     public CostStruct cost;
     public int refundAmount;
     public List<int> rewardAmounts;
+    public int mineralVipMultiplier; // 0이면 기본 표시, 양수이면 미네랄 행에 "× N(VIP)" 접미사
     public Action onConfirm;
     public Action onCancel;
     public float autoCloseSec;
@@ -94,7 +95,7 @@ public class UIPopupConfirm : UIPopupBase
 
         BuildRefundSection(config.refundAmount);
         BuildResultRows(config.resultRows);
-        BuildRewardSection(config.rewardAmounts);
+        BuildRewardSection(config.rewardAmounts, config.mineralVipMultiplier);
         BuildButtonSection(config);
 
         if (confirmButton != null) confirmButton.SetInteractable(canConfirm);
@@ -199,7 +200,7 @@ public class UIPopupConfirm : UIPopupBase
         m_sectionRefund.SetRowText(0, CommonUtility.FormatBigNumber(refundAmount));
     }
 
-    private void BuildRewardSection(List<int> amounts)
+    private void BuildRewardSection(List<int> amounts, int mineralVipMultiplier = 0)
     {
         if (m_sectionReward == null) return;
 
@@ -219,7 +220,12 @@ public class UIPopupConfirm : UIPopupBase
         for (int i = 0; i < amounts.Count; i++)
         {
             if (amounts[i] > 0)
-                m_sectionReward.SetRowText(i, CommonUtility.FormatBigNumber(amounts[i]));
+            {
+                string text = CommonUtility.FormatBigNumber(amounts[i]);
+                if (i == 0 && mineralVipMultiplier > 0)
+                    text = $"{text} × {mineralVipMultiplier}(VIP)";
+                m_sectionReward.SetRowText(i, text);
+            }
         }
     }
 
