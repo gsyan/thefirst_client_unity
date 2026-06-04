@@ -601,7 +601,7 @@ public class UITabExploration : UITabBase
         m_pendingRewardIsFirstClear = response.data.isFirstClear;
         StayInCurrentStage();
         string title = LocalizationManager.Instance.Get("exploration_battle_victory");
-        StartCoroutine(StartVictorySequence(title));
+        UIManager.Instance.StartCoroutine(StartVictorySequence(title));
     }
 
     private IEnumerator StartVictorySequence(string title)
