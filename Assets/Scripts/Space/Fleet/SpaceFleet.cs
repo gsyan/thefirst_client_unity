@@ -3,22 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 수리 시 한 함선을 어느 수준까지 회복한 뒤 다음 함선으로 넘어갈지
-public enum ERepairThreshold
-{
-    Full,       // 100%까지 회복
-    TwoThirds,  // 2/3까지 회복
-    OneThird,   // 1/3까지 회복
-}
-
-// 동시에 몇 대의 함선을 수리할지
-public enum ERepairConcurrency
-{
-    One,    // 1대 집중
-    Two,    // 2대 동시
-    Three,  // 3대 동시
-    All,    // 체력 100% 아닌 함선 모두
-}
 
 public enum EFleetSide
 {
@@ -47,10 +31,6 @@ public class SpaceFleet : MonoBehaviour
     public EFormationType m_currentFormationType = EFormationType.linear_horizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
 
-    // 수리 설정
-    public ERepairThreshold m_repairThreshold = ERepairThreshold.Full;
-    public ERepairConcurrency m_repairConcurrency = ERepairConcurrency.One;
-
     // Zone 스폰 상태 (IsZoneEnemy 전용)
     public Queue<EnemyShipConfig> m_shipSpawnQueue;
     private Coroutine m_spawnCoroutine;
@@ -59,8 +39,6 @@ public class SpaceFleet : MonoBehaviour
     private void Start()
     {
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
-        if (m_fleetSource == EFleetSource.fleet_source_player || m_fleetSource == EFleetSource.fleet_source_player_remote)
-            StartCoroutine(AutoRepair());
     }
 
     // fleet 오브젝트를 현재 위치 뒤에서 targetPos까지 워프 이펙트로 진입, 도착 시 콜백
@@ -755,9 +733,6 @@ public class SpaceFleet : MonoBehaviour
         // ShipSelector가 새 함선 객체를 참조하도록 먼저 갱신, 이후 HP 이벤트
         EventManager.Trigger_FleetShipCountChanged();
         ApplyHealthRatio(healthRatio);
-
-        if (m_fleetSource == EFleetSource.fleet_source_player || m_fleetSource == EFleetSource.fleet_source_player_remote)
-            StartCoroutine(AutoRepair());
     }
 
     // 파괴된 함선만 복구 (퇴각용, 살아있는 함선은 현재 체력 유지)
@@ -918,136 +893,6 @@ public class SpaceFleet : MonoBehaviour
         }
         if (m_fleetSide == EFleetSide.fleet_side_player)
             EventManager.TriggerMyFleetStateChanged(fleetState);
-    }
-
-    // 함선의 전체 체력 비율 계산 (모든 바디의 합산)
-    private float GetShipHealthRatio(SpaceShip ship)
-    {
-        float totalHealth = 0f;
-        float totalMaxHealth = 0f;
-        foreach (ModuleBody body in ship.m_moduleBodys)
-        {
-            if (body == null) continue;
-            totalHealth += body.m_health;
-            totalMaxHealth += body.m_healthMax;
-        }
-        return totalMaxHealth > 0f ? totalHealth / totalMaxHealth : 1f;
-    }
-
-    // 임계값 enum → 실제 비율
-    private float GetRepairThresholdRatio()
-    {
-        switch (m_repairThreshold)
-        {
-            case ERepairThreshold.TwoThirds: return 2f / 3f;
-            case ERepairThreshold.OneThird:  return 1f / 3f;
-            default:                         return 1f;
-        }
-    }
-
-    public IEnumerator AutoRepair()
-    {
-        bool isPlayerFleet = m_fleetSource == EFleetSource.fleet_source_player;
-
-        while (IsFleetAlive() == true)
-        {
-            yield return new WaitForSeconds(1.0f);
-
-            bool isBattle = m_fleetState == EUnitState.Battle;
-
-            // 전투 중: tacticOptions bit 0(UseBattleRepair)이 꺼져 있으면 건너뜀
-            if (isBattle && m_fleetInfo != null && (m_fleetInfo.tacticOptions & 1) == 0) continue;
-
-            CapabilityProfile fleetStats = GetFleetCapabilityProfile(true);
-            float totalRepair = fleetStats.repair;
-            if (totalRepair <= 0f) continue;
-
-            // 전투 중, Player 함대: Mineral 잔액 없으면 수리 건너뜀
-            Character character = isPlayerFleet ? DataManager.Instance.m_currentCharacter : null;
-            if (isBattle && isPlayerFleet && (character == null || character.GetMineral() <= 0)) continue;
-
-            float threshold = GetRepairThresholdRatio();
-
-            // 수리가 필요한 함선 수집 (체력비율이 threshold 미만이거나, threshold 이상이지만 100% 미달)
-            // 우선순위: 체력 비율이 낮은 함선부터
-            List<SpaceShip> needRepair = new List<SpaceShip>();
-            foreach (SpaceShip ship in m_ships)
-            {
-                if (ship == null || ship.IsAlive() == false) continue;
-                if (GetShipHealthRatio(ship) < 1f)
-                    needRepair.Add(ship);
-            }
-
-            if (needRepair.Count == 0) continue;
-
-            // 체력 비율이 낮은 순으로 정렬
-            needRepair.Sort((a, b) => GetShipHealthRatio(a).CompareTo(GetShipHealthRatio(b)));
-
-            // 동시 수리 대수 결정
-            int maxTargets;
-            switch (m_repairConcurrency)
-            {
-                case ERepairConcurrency.Two:   maxTargets = 2; break;
-                case ERepairConcurrency.Three: maxTargets = 3; break;
-                case ERepairConcurrency.All:   maxTargets = needRepair.Count; break;
-                default:                       maxTargets = 1; break;
-            }
-
-            // threshold 미달인 함선 우선, 그 다음 나머지
-            List<SpaceShip> targets = new List<SpaceShip>();
-            foreach (SpaceShip ship in needRepair)
-            {
-                if (targets.Count >= maxTargets) break;
-                if (GetShipHealthRatio(ship) < threshold)
-                    targets.Add(ship);
-            }
-            // 아직 자리가 남으면 threshold 이상~100% 미달 함선도 추가
-            if (targets.Count < maxTargets)
-            {
-                foreach (SpaceShip ship in needRepair)
-                {
-                    if (targets.Count >= maxTargets) break;
-                    if (targets.Contains(ship) == false)
-                        targets.Add(ship);
-                }
-            }
-
-            // 총 수리력을 대상 수로 균등 분배
-            float repairPerTarget = totalRepair / targets.Count;
-            float totalActualRepaired = 0f;
-
-            foreach (SpaceShip ship in targets)
-            {
-                // 함선 내 바디별 균등 분배
-                int aliveBodyCount = 0;
-                foreach (ModuleBody body in ship.m_moduleBodys)
-                {
-                    if (body != null && body.m_health < body.m_healthMax)
-                        aliveBodyCount++;
-                }
-                if (aliveBodyCount == 0) continue;
-
-                float repairPerBody = repairPerTarget / aliveBodyCount;
-
-                foreach (ModuleBody body in ship.m_moduleBodys)
-                {
-                    if (body == null || body.m_health >= body.m_healthMax) continue;
-                    float before = body.m_health;
-                    body.m_health = Mathf.Min(body.m_health + repairPerBody, body.m_healthMax);
-                    totalActualRepaired += body.m_health - before;
-                }
-
-                ship.UpdateShipStatCur();
-                ship.CheckFireEffects();
-                EventManager.Trigger_ShipUpdateHP();
-            }
-
-            // 실제 회복된 HP만큼 Mineral 차감 (전투 중, Player 함대만)
-            if (isBattle && isPlayerFleet && totalActualRepaired > 0f)
-                character?.TryConsumeMineral(Mathf.CeilToInt(totalActualRepaired));
-
-            EventManager.Trigger_FleetUpdateHP();
-        }
     }
 
     // 함대의 능력치 프로파일 계산
