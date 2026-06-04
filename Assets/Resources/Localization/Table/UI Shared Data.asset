@@ -875,6 +875,26 @@ MonoBehaviour:
     m_Key: UIVipStatus_PurchasePrice
     m_Metadata:
       m_Items: []
+  - m_Id: 42163135020138496
+    m_Key: loading_tip_0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42163135078858752
+    m_Key: loading_tip_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42163135078858753
+    m_Key: loading_tip_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42163135078858754
+    m_Key: loading_tip_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42163135078858755
+    m_Key: loading_tip_4
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

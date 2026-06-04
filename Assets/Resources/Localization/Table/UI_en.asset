@@ -539,7 +539,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26480402604359680
-    m_Localized: 'Lv.{0} Required (Current: Lv.{1})'
+    m_Localized: Lv.{0} (Current Lv.{1})
     m_Metadata:
       m_Items: []
   - m_Id: 26803779604971521
@@ -877,6 +877,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 40229268445069312
     m_Localized: (Expired)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42163135020138496
+    m_Localized: 'Tip: Clearing exploration zones unlocks new areas.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42163135078858752
+    m_Localized: 'Tip: Upgrade ship modules to strengthen your fleet.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42163135078858753
+    m_Localized: 'Tip: Research raises your Tech Level and unlocks new modules.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42163135078858754
+    m_Localized: 'Tip: Deploy a mix of ship types for better fleet synergy.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42163135078858755
+    m_Localized: 'Tip: Run explorations to gather resources when you run short.'
     m_Metadata:
       m_Items: []
   references:
