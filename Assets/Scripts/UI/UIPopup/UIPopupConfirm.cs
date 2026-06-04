@@ -243,9 +243,17 @@ public class UIPopupConfirm : UIPopupBase
                 string text = CommonUtility.FormatBigNumber(amounts[i]);
                 if (i == 0 && mineralVipMultiplier > 0)
                     text = $"{text} × {mineralVipMultiplier}(VIP)";
-                sec.SetRowText(i, text);
+                sec.SetRow(i, "mineral_basic", GetRewardColor(i), text);
             }
         }
+    }
+
+    private static Color GetRewardColor(int rewardIndex)
+    {
+        if (rewardIndex == 0) return CommonUtility.PaletteColor("Mineral");
+        if (rewardIndex == 1) return CommonUtility.PaletteColor("TechPoint");
+        if (rewardIndex == 2) return CommonUtility.PaletteColor("ModulePoint");
+        return CommonUtility.PaletteColor("GeneralBright1");
     }
 
     private void BuildButtonSection(ConfirmPopupConfig config)

@@ -26,13 +26,9 @@ public class UITabExploration : UITabBase
     private readonly Dictionary<string, UIZoneStageButton> m_zoneStageButtons = new Dictionary<string, UIZoneStageButton>();
     private readonly Dictionary<int, ZoneStageConfig> m_selectedZoneStagePerGroup = new();
 
-    [Header("뷰 전환 타이밍")]
-    [SerializeField] private float m_fleetHideDelay = 0.5f; // 함대뷰→갤럭시뷰 전환 시 함대 숨기기 딜레이(초)
-
     [Header("개발 설정")]
     [SerializeField] private bool m_requirePreviousStageCleared = true;
 
-    private Coroutine m_hideFleetCoroutine;
     private Vector3 m_pendingFleetPos;
     private float m_pendingFleetRotY;
 
@@ -165,7 +161,7 @@ public class UITabExploration : UITabBase
 
             ZoneStageConfig captured = zoneStage;
             Vector3 capturedWorldPos = m_datatableZone.ResolveFleetWorldPosition(captured);
-            btn.InitializeUIZoneStageButton(captured, capturedWorldPos, () => OnZoneStageButtonClicked(captured), () => OnEnterZoneFromButton(captured), state, worldCam);
+            btn.InitializeUIZoneStageButton(captured, capturedWorldPos, () => OnZoneStageButtonClicked(captured), () => OnEnterZoneStageFromButton(captured), state, worldCam);
             m_zoneStageButtons[zoneStage.zoneName] = btn;
         }
 
@@ -246,13 +242,6 @@ public class UITabExploration : UITabBase
             SetFleetState(EUnitState.Idle);
         }
 
-        // 전투 중이 아닐 때만 함대 오프스크린으로 이동 (전투 중에는 갤럭시뷰에서도 전투 지속)
-        if (m_myFleet == null || m_myFleet.m_fleetState != EUnitState.Battle)
-        {
-            if (m_hideFleetCoroutine != null) StopCoroutine(m_hideFleetCoroutine);
-            m_hideFleetCoroutine = StartCoroutine(HideFleetDelayed());
-        }
-
         // 최고 클리어 스테이지가 속한 존 그룹으로 열기
         int groupIndex = m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1;
         if (groupIndex <= 0) groupIndex = 1;
@@ -285,69 +274,43 @@ public class UITabExploration : UITabBase
         if (CameraController.Instance != null)
             CameraController.Instance.OnGalaxyViewSettled -= OnCameraGalaxyViewSettled;
 
-        // 함대 숨기기 코루틴 진행 중이면 취소하고 즉시 숨기기
-        if (m_hideFleetCoroutine != null)
-        {
-            StopCoroutine(m_hideFleetCoroutine);
-            m_hideFleetCoroutine = null;
-            if (m_myFleet != null)
-                m_myFleet.transform.position = new Vector3(0f, -9999f, 0f);
-        }
-
         ReturnAllButtonsToPool();
         SetOtherTabsVisible(true, includeSelf: true);
         EventManager.TriggerExplorationTabClosed();
 
         // EnterZoneStage/ExecuteRetreat가 이미 Warp 상태로 갤럭시뷰 탈출 처리 중이면 스킵
-        if (m_myFleet == null || m_myFleet.m_fleetState == EUnitState.Warp) return;
+        //if (m_myFleet == null || m_myFleet.m_fleetState == EUnitState.Warp) return;
 
-        // 전투 중이면 카메라만 전투 위치로 복귀 (함대는 그대로 전투 지속)
-        if (m_myFleet.m_fleetState == EUnitState.Battle)
-        {
-            if (m_battleZoneStage != null)
-            {
-                Vector3 battlePos = m_datatableZone.ResolveFleetWorldPosition(m_battleZoneStage);
-                EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
-                CameraController.Instance.ExitGalaxyViewMoveTo(battlePos);
-            }
-            return;
-        }
-
-        ReturnFleetToCurrentZone();
+        ReturnFleetView();
     }
 
-    private void ReturnFleetToCurrentZone()
+    private void ReturnFleetView()
     {
         int fleetZoneIndex = m_currentZoneStage != null ? m_currentZoneStage.zoneIndex : 1;
         ObjectManager.Instance.ChangeZone(fleetZoneIndex);
 
-        if (m_currentZoneStage != null)
+        Vector3 targetCameraPosition;
+
+        // 전투 중이면 카메라만 포커스 타겟 위치로 복귀 (함대는 그대로 전투 지속)
+        if (m_battleZoneStage != null && m_myFleet.m_fleetState == EUnitState.Battle)
+        {
+            targetCameraPosition = CameraController.Instance.GetFocusTargetPosition();
+        }
+        else if (m_currentZoneStage != null)
         {
             m_pendingFleetPos = m_datatableZone.ResolveFleetWorldPosition(m_currentZoneStage);
             m_pendingFleetRotY = m_currentZoneStage.fleetRotationY;
+            targetCameraPosition = m_pendingFleetPos;
         }
         else
         {
             ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(fleetZoneIndex);
             m_pendingFleetPos = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
             m_pendingFleetRotY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
+            targetCameraPosition = m_pendingFleetPos;
         }
 
-        // 카메라 복귀 완료 후 함대 배치 + 워프인 (함대뷰 전환 완료 전에 함대가 나타나지 않도록)
-        EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredAfterReturn);
-        CameraController.Instance.ExitGalaxyViewMoveTo(m_pendingFleetPos);
-    }
-
-    private void OnFleetViewRestoredAfterReturn()
-    {
-        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterReturn);
-        ObjectManager.Instance.SetMyFleetPosition(m_pendingFleetPos, m_pendingFleetRotY);
-        SetFleetState(EUnitState.Warp);
-        m_myFleet.StartFleetWarpIn(onArrived: () =>
-        {
-            CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
-            SetFleetState(EUnitState.Idle);
-        });
+        CameraController.Instance.ExitExplorationView(targetCameraPosition);
     }
 
     private void OnCameraGalaxyViewSettled()
@@ -375,20 +338,17 @@ public class UITabExploration : UITabBase
     }
 
     private void OnDestroy()
-    {        
+    {
         EventManager.Unsubscribe_RetreatRequested(RetreatToPreviousStage);
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
-        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterReturn);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
     }
 
-    private IEnumerator HideFleetDelayed()
+    private void SetMyFleetToHiddenPosition()
     {
-        yield return new WaitForSeconds(m_fleetHideDelay);
         if (m_myFleet != null)
             m_myFleet.transform.position = new Vector3(0f, -9999f, 0f);
-        m_hideFleetCoroutine = null;
     }
 
     private int ParseZoneGroup(string zoneName)
@@ -416,7 +376,7 @@ public class UITabExploration : UITabBase
             btn.SetSelectedUIZoneStageButton(true);
     }
 
-    private void OnEnterZoneFromButton(ZoneStageConfig zoneStage)
+    private void OnEnterZoneStageFromButton(ZoneStageConfig zoneStage)
     {
         if (zoneStage == null) return;
         if (m_myFleet.m_fleetState == EUnitState.Warp) return;
@@ -488,6 +448,7 @@ public class UITabExploration : UITabBase
 
     private void EnterZoneStage(ZoneStageConfig zoneStage)
     {
+        SetMyFleetToHiddenPosition();
         SetFleetState(EUnitState.Warp); // CloseAllTabs→OnTabDeactivated에서 ReturnFleetToCurrentZone 스킵용
 
         m_battleZoneStage = zoneStage;
@@ -503,7 +464,7 @@ public class UITabExploration : UITabBase
 
         // 카메라 복귀 완료 후 함대 배치 + 워프인
         EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
-        CameraController.Instance.ExitGalaxyViewMoveTo(m_pendingFleetPos);
+        CameraController.Instance.ExitExplorationView(m_pendingFleetPos);
     }
 
     private void OnFleetViewRestoredAfterEnterZone()
@@ -598,12 +559,14 @@ public class UITabExploration : UITabBase
     }
 
     private bool m_pendingRewardIsFirstClear;
+    private static readonly WaitForSecondsRealtime s_victorySequenceWait = new WaitForSecondsRealtime(1.5f);
 
     private void OnClearZoneStageResponse(ApiResponse<ClearZoneStageResponse> response)
     {
         if (response.errorCode != 0)
         {
             Debug.LogWarning($"[Zone] ClearZoneStage 에러: {ErrorCodeMapping.GetMessage(response.errorCode)} ({response.errorCode})");
+            ObjectManager.Instance.CleanupAllProjectiles();
             StayInCurrentStage();
             return;
         }
@@ -638,14 +601,15 @@ public class UITabExploration : UITabBase
         m_pendingRewardIsFirstClear = response.data.isFirstClear;
         StayInCurrentStage();
         string title = LocalizationManager.Instance.Get("exploration_battle_victory");
-        UIManager.Instance.StartCoroutine(ShowRewardPopupDelayed(title, 2f));
+        StartCoroutine(StartVictorySequence(title));
     }
 
-    private IEnumerator ShowRewardPopupDelayed(string title, float delay)
+    private IEnumerator StartVictorySequence(string title)
     {
-        yield return new WaitForSecondsRealtime(delay);
+        yield return s_victorySequenceWait;
+        ObjectManager.Instance.CleanupAllProjectiles();
 
-        if (m_battleZoneStage == null) { yield break; }
+        if (m_battleZoneStage == null) yield break;
 
         bool isFirstClear = m_pendingRewardIsFirstClear;
         var rewards = new List<int>
@@ -864,8 +828,8 @@ public class UITabExploration : UITabBase
 
     private void ExecuteRetreat(Vector3 retreatPosition, float retreatRotationY)
     {
-        // 카메라를 먼저 후퇴 위치로 이동 (갤럭시뷰 종료 포함 — 이후 CloseAllTabs→ExitGalaxyView 중복 호출 방지)
-        CameraController.Instance.ExitGalaxyViewMoveTo(retreatPosition);
+        // 카메라를 먼저 후퇴 위치로 이동
+        CameraController.Instance.ExitExplorationView(retreatPosition);
         // CloseAllTabs 전에 함대 상태를 battle -> warp 로 변경
         SetFleetState(EUnitState.Warp);
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
@@ -905,7 +869,6 @@ public class UITabExploration : UITabBase
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
         ObjectManager.Instance.StopEnemySpawning();
         ObjectManager.Instance.OrderAllAircraftReturn();
-        ObjectManager.Instance.CleanupAllProjectiles();
         ObjectManager.Instance.RemoveAllEnemyFleets();
 
         SetFleetState(EUnitState.Idle);

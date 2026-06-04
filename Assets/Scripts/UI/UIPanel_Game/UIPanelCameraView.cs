@@ -191,6 +191,5 @@ public class UIPanelCameraView : UIPanelBase
         m_rectTransform.anchorMin = min;
         m_rectTransform.anchorMax = max;
 
-        cam.RefreshCenterModeZoom();
     }
 }

@@ -29,59 +29,37 @@ public class UIPanelLoginType : UIPanelBase
 
    private void GoogleLogin()
    {
-      UIManager.Instance.ShowMainPanel();
-
-      if (m_resultText != null)
-         m_resultText.text = "Processing Google Login...";
+      gameObject.SetActive(false);
 
       NetworkManager.Instance.GoogleLogin((response) => {
          ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
-         string message = "";
          if (errorCode == ServerErrorCode.SUCCESS)
          {
-               message = ErrorCodeMapping.Messages[errorCode];
-               Debug.Log($"Google Login successful: {message}");
-               Debug.Log($"Access Token received: {response.data?.accessToken}");
-
                m_uiMain.GetCharacters();
          }
          else
          {
-               message = ErrorCodeMapping.GetMessage(response.errorCode);
-               Debug.LogError($"Google Login failed - ErrorCode: {errorCode}, Message: {message}");
-
-               UIManager.Instance.ShowPanel("UIpanelLoginType");
+               Debug.LogError($"Google Login failed - ErrorCode: {errorCode}");
+               gameObject.SetActive(true);
          }
-         if (m_resultText != null)
-               m_resultText.text = $"Result: {message}";
       });
    }
 
    private void GuestLogin()
    {
-      UIManager.Instance.ShowMainPanel();
-
-      if (m_resultText != null)
-         m_resultText.text = "Processing Guest Login...";
+      gameObject.SetActive(false);
 
       NetworkManager.Instance.GuestLogin((response) => {
          ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
-         string message = "";
          if (errorCode == ServerErrorCode.SUCCESS)
          {
-               message = ErrorCodeMapping.Messages[errorCode];
-               CommonUtility.DebugLog($"[GuestLogin Access Token] {response.data?.accessToken}");
                m_uiMain.GetCharacters();
          }
          else
          {
-               message = ErrorCodeMapping.GetMessage(response.errorCode);
-               Debug.LogError($"Guest Login failed - ErrorCode: {errorCode}, Message: {message}");
-
-               UIManager.Instance.ShowPanel("UIpanelLoginType");
+               Debug.LogError($"Guest Login failed - ErrorCode: {errorCode}");
+               gameObject.SetActive(true);
          }
-         if (m_resultText != null)
-               m_resultText.text = $"Result: {message}";
       });
    }
 

@@ -352,6 +352,7 @@ public class CameraController : MonoSingleton<CameraController>
         Rect r = m_targetCamera.rect;
         r.width = Mathf.Clamp01(width);
         m_targetCamera.rect = r;
+        RefreshCenterModeZoom();
     }
 
     public float GetViewportWidth()
@@ -394,7 +395,10 @@ public class CameraController : MonoSingleton<CameraController>
     public void SetTargetZoom(float zoom)
     {
         m_hasTargetZoom = true;
-        m_targetZoom = Mathf.Clamp(zoom, m_minZoom, m_maxZoom);
+        if (m_isCenterMode == true)
+            m_targetZoom = zoom;
+        else
+            m_targetZoom = Mathf.Clamp(zoom, m_minZoom, m_maxZoom);
     }
 
     // center 모드 진입: 기준 줌 계산 후 m_isCenterMode 활성화
@@ -481,6 +485,20 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetPosition = target.position;
 
         EventManager.TriggerCameraFocusTargetChanged(ECameraFocusTarget.camera_focus_my_fleet);
+    }
+
+    // 현재 FocusTarget 기준 월드 위치 반환 (상태 변경 없음)
+    public Vector3 GetFocusTargetPosition()
+    {
+        var objMgr = ObjectManager.Instance;
+        var myFleet = objMgr != null ? objMgr.m_myFleet : null;
+        if (m_focusTarget == ECameraFocusTarget.camera_focus_enemy_fleet && objMgr != null)
+            return objMgr.GetEnemySpawnPosition();
+        if (m_focusTarget == ECameraFocusTarget.camera_focus_center && objMgr != null && myFleet != null)
+            return (myFleet.transform.position + objMgr.GetEnemySpawnPosition()) * 0.5f;
+        // camera_focus_my_fleet
+        if (m_currentTarget != null) return m_currentTarget.position;
+        return myFleet != null ? myFleet.transform.position : m_targetPosition;
     }
 
     // 카메라를 현재 타겟 위치로 즉시 스냅 (스테이지 입장 등 순간이동 시 사용)
@@ -572,23 +590,8 @@ public class CameraController : MonoSingleton<CameraController>
         m_isGalaxyViewAnimating = true;
     }
 
-    // 갤럭시 뷰 종료 — 함선 뷰로 복귀, 진입 전 회전·줌 복원
-    public void ExitGalaxyView()
-    {
-        if (m_isGalaxyView == false) return;
-        m_isGalaxyView = false;
-        m_isGalaxyViewAnimating = false;
-        m_inputEnabled = false;
-
-        m_currentTarget = m_savedTarget;
-        m_targetPosition = m_savedTargetPosition;
-
-        RestoreFleetView();
-        StartFleetViewRestoreCoroutine();
-    }
-
-    // 갤럭시 뷰 종료하면서 카메라를 이전 함선 위치 대신 지정 위치로 이동, 회전·줌 복원
-    public void ExitGalaxyViewMoveTo(Vector3 position)
+    // 탐사뷰 종료하면서 카메라를 이전 함선 위치 대신 지정 위치로 이동, 회전·줌 복원
+    public void ExitExplorationView(Vector3 position)
     {
         if (m_isGalaxyView == false) return;
         m_isGalaxyView = false;
@@ -620,7 +623,7 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetRotationX = m_savedRotationX;
         m_hasTargetRotationY = true;
         m_targetRotationY = m_savedRotationY;
-        SetTargetZoom(Mathf.Clamp(m_savedZoom, m_minZoom, m_maxZoom));
+        SetTargetZoom(m_savedZoom);
     }
 
     // 카메라 중심점 전환 (적함대, 중간, 우리함대)

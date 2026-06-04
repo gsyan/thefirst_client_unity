@@ -292,7 +292,7 @@ public class SpaceFleet : MonoBehaviour
         AddShip(spaceShip, bWarp: bWarp, bFillNullSlot: bFillNullSlot);
     }
     // 함선 추가 시 스폰 오프셋 배율 (함선 z크기 * 배율 만큼 목적지 뒤에서 워프 진입)
-    private float m_spawnOffsetMultiplier = 20f;
+    private float m_spawnOffsetMultiplier = 40f;
     // 워프 진입 시 이동 속도 배율
     private float m_spawnApproachSpeedMult = 60f;
 

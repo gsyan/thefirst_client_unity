@@ -247,12 +247,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -261,6 +259,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &209928875176810629
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,12 +311,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -326,6 +323,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &256527208995972563
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,12 +590,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -606,6 +602,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &378547953206930241
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,9 +652,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 4
     slotIndex: 1
-  m_cameraRotationY: 76.1
-  m_cameraRotationX: 3.1
-  m_cameraZoom: 10.4
+  m_cameraRotationY: 41.9
+  m_cameraRotationX: 15.7
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &460445731727865439
 GameObject:
@@ -799,9 +796,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 2
     slotIndex: 1
-  m_cameraRotationY: -0.3
-  m_cameraRotationX: 4
-  m_cameraZoom: 10.4
+  m_cameraRotationY: -32.2
+  m_cameraRotationX: 19.4
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &635071625959967433
 GameObject:
@@ -882,9 +879,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 3
     slotIndex: 1
-  m_cameraRotationY: 81.5
-  m_cameraRotationX: 1.9
-  m_cameraZoom: 10.4
+  m_cameraRotationY: 30.7
+  m_cameraRotationX: 14
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &744705605947870094
 GameObject:
@@ -965,9 +962,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 3
     slotIndex: 2
-  m_cameraRotationY: -69.6
-  m_cameraRotationX: 13.6
-  m_cameraZoom: 10.4
+  m_cameraRotationY: -32.2
+  m_cameraRotationX: 19.4
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &951987373219882557
 GameObject:
@@ -1233,12 +1230,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -1247,6 +1242,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &1371999247231750881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,12 +1344,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_moduleBodyInfo:
     moduleType: 0
     moduleSubType: 0
@@ -1363,6 +1357,8 @@ MonoBehaviour:
     missiles: []
     hangers: []
     unlockedSubTypes: 
+    investedModulePoint: 0
+    currentHealth: 0
   m_moduleSlots: []
   m_beams: []
   m_missiles: []
@@ -1875,9 +1871,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 4
     slotIndex: 0
-  m_cameraRotationY: -75.3
-  m_cameraRotationX: 2.2
-  m_cameraZoom: 10.4
+  m_cameraRotationY: -38.2
+  m_cameraRotationX: 18.8
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &1736369970345014791
 GameObject:
@@ -2467,9 +2463,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 2
     slotIndex: 3
-  m_cameraRotationY: -0.3
-  m_cameraRotationX: 4
-  m_cameraZoom: 10.4
+  m_cameraRotationY: -32.2
+  m_cameraRotationX: 19.4
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &2310363518794575412
 GameObject:
@@ -3381,9 +3377,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 2
     slotIndex: 0
-  m_cameraRotationY: -0.3
-  m_cameraRotationX: 4
-  m_cameraZoom: 10.4
+  m_cameraRotationY: -32.2
+  m_cameraRotationX: 19.4
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &3454019892156548754
 GameObject:
@@ -3571,12 +3567,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -3585,6 +3579,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &3673529221076905374
 GameObject:
   m_ObjectHideFlags: 0
@@ -4036,9 +4031,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 4
     slotIndex: 2
-  m_cameraRotationY: -75.3
-  m_cameraRotationX: 2.2
-  m_cameraZoom: 10.4
+  m_cameraRotationY: -38.2
+  m_cameraRotationX: 18.8
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &4123638188536159876
 GameObject:
@@ -4384,9 +4379,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 4
     slotIndex: 3
-  m_cameraRotationY: 76.1
-  m_cameraRotationX: 3.1
-  m_cameraZoom: 10.4
+  m_cameraRotationY: 41.9
+  m_cameraRotationX: 15.7
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &4295463820897716851
 GameObject:
@@ -4439,12 +4434,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -4453,6 +4446,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &4385780886783817248
 GameObject:
   m_ObjectHideFlags: 0
@@ -4779,12 +4773,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -4793,6 +4785,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &4663488425191920020
 GameObject:
   m_ObjectHideFlags: 0
@@ -4949,9 +4942,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 2
     slotIndex: 2
-  m_cameraRotationY: -0.3
-  m_cameraRotationX: 4
-  m_cameraZoom: 10.4
+  m_cameraRotationY: -32.2
+  m_cameraRotationX: 19.4
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &4765863205324622763
 GameObject:
@@ -5047,9 +5040,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 3
     slotIndex: 0
-  m_cameraRotationY: -69.6
-  m_cameraRotationX: 13.6
-  m_cameraZoom: 10.4
+  m_cameraRotationY: -32.2
+  m_cameraRotationX: 19.4
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &4833534232986833072
 GameObject:
@@ -5194,12 +5187,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -5208,6 +5199,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &4932706853064076401
 GameObject:
   m_ObjectHideFlags: 0
@@ -5305,12 +5297,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -5319,6 +5309,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &5238937167405769088
 GameObject:
   m_ObjectHideFlags: 0
@@ -5608,9 +5599,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 3
     slotIndex: 3
-  m_cameraRotationY: 81.5
-  m_cameraRotationX: 1.9
-  m_cameraZoom: 10.4
+  m_cameraRotationY: 30.7
+  m_cameraRotationX: 14
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &5818568894011901486
 GameObject:
@@ -6320,12 +6311,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -6334,6 +6323,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &6668839544403077824
 GameObject:
   m_ObjectHideFlags: 0
@@ -6896,12 +6886,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -6910,6 +6898,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &7535974554891117146
 GameObject:
   m_ObjectHideFlags: 0
@@ -7170,12 +7159,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -7184,6 +7171,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &7886303247124037030
 GameObject:
   m_ObjectHideFlags: 0
@@ -7533,12 +7521,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -7547,6 +7533,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1 &8245305673457147231
 GameObject:
   m_ObjectHideFlags: 0
@@ -8343,9 +8330,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 2
     slotIndex: 4
-  m_cameraRotationY: -0.3
-  m_cameraRotationX: 4
-  m_cameraZoom: 10.4
+  m_cameraRotationY: -32.2
+  m_cameraRotationX: 19.4
+  m_cameraZoom: 15.6
   m_missileEjectSpeed: 1
 --- !u!1 &9196673448459241153
 GameObject:
@@ -8398,12 +8385,10 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_upgradeCost:
-    mineral: 0
-    mineralRare: 0
-    mineralExotic: 0
-    mineralDark: 0
+  m_modulePointCostLevelup: 0
+  m_mineralCost: 0
   m_unlockedSubTypes: 
+  m_investedModulePoint: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -8412,6 +8397,7 @@ MonoBehaviour:
     bodyIndex: 0
     slotIndex: 0
     unlockedSubTypes: 
+    investedModulePoint: 0
 --- !u!1001 &567400674625440893
 PrefabInstance:
   m_ObjectHideFlags: 0

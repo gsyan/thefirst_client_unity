@@ -61,24 +61,17 @@ public class UIMain : UIManager
             if (errorCode == ServerErrorCode.SUCCESS)
             {
                 message = ErrorCodeMapping.Messages[errorCode];
-                
-                
+
                 if (response.data != null)  // Character list accessible from response.data
                 {
                     m_characterList = response.data;
                     
-                    // foreach (var character in response.data)
-                    // {
-                    //     Debug.Log($"- {character.characterName} (ID: {character.characterId})");
-                    // }
-
                     if (m_characterList.Count > 0)
                     {
                         SelectCharacter(m_characterList[0].characterId); // Select first character
                     }
                     else
                     {
-                        //CreateCharacter("HiddenCharacter_" + emailInput.text); // Automatically create character
                         Debug.LogError("No characters found.");
                     }
                 }
@@ -94,36 +87,6 @@ public class UIMain : UIManager
             }
         });
     }
-
-    private void CreateCharacter(string name)
-    {
-        if (string.IsNullOrEmpty(name)) return;
-        
-        NetworkManager.Instance.CreateCharacter(name, (response) => {
-            ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
-            string message = "";
-            if (errorCode == ServerErrorCode.SUCCESS)
-            {
-                message = ErrorCodeMapping.Messages[errorCode];
-                Debug.Log($"Character creation successful: {message}");
-                
-                // Created character information accessible from response.data
-                if (response.data != null)
-                {
-                    Debug.Log($"Created character: {response.data.characterName} (ID: {response.data.characterId})");
-                }
-                
-                GetCharacters(); // Refresh character list
-            }
-            else
-            {
-                message = ErrorCodeMapping.GetMessage(response.errorCode);
-                Debug.LogError($"Character creation failed - ErrorCode: {errorCode}, Message: {message}");
-            }
-        });
-    }
-
-    
 
     private void SelectCharacter(long characterId = 0)
     {

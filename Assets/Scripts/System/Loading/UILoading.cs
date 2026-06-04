@@ -10,21 +10,20 @@ public class UILoading : UIManager
     public Image progressBar;
     public TMP_Text tipText;
     
-    private string[] loadingTips = {
-        "Tip: Use WASD keys to move around in space!",
-        "Tip: Right-click to interact with objects.",
-        "Tip: Check your inventory regularly.",
-        "Tip: Don't forget to save your progress!",
-        "Tip: Explore different areas to find new items."
+    private static readonly string[] s_loadingTipKeys = {
+        "loading_tip_0",
+        "loading_tip_1",
+        "loading_tip_2",
+        "loading_tip_3",
+        "loading_tip_4"
     };
-    
+
     private void Start()
     {
-        // Display random tip
-        if (tipText != null && loadingTips.Length > 0)
+        if (tipText != null)
         {
-            int randomIndex = Random.Range(0, loadingTips.Length);
-            tipText.text = loadingTips[randomIndex];
+            int randomIndex = Random.Range(0, s_loadingTipKeys.Length);
+            tipText.text = LocalizationManager.Instance.Get(s_loadingTipKeys[randomIndex]);
         }
         
         // Pass UI reference to LoadingManager

@@ -214,3 +214,8 @@ UIVipStatus_Benefit_Mineral,,Mineral Rewards x {0},미네랄 보상 {0}배
 UIVipStatus_Benefit_Daily,,Daily {0} Minerals,매일 미네랄 +{0}
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
 UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}day(s) Left),{0} ({1} 패스 D-{2})
+loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.
+loading_tip_1,,Tip: Upgrade ship modules to strengthen your fleet.,팁: 함선 모듈을 업그레이드하면 함대 전투력이 향상됩니다.
+loading_tip_2,,Tip: Research raises your Tech Level and unlocks new modules.,팁: 연구를 통해 기술 레벨을 올리고 새 모듈을 개방하세요.
+loading_tip_3,,Tip: Deploy a mix of ship types for better fleet synergy.,팁: 다양한 함선을 배치하면 함대 시너지가 높아집니다.
+loading_tip_4,,Tip: Run explorations to gather resources when you run short.,팁: 자원이 부족할 때는 탐사를 먼저 진행하세요.

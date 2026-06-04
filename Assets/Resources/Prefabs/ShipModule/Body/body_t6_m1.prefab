@@ -311,9 +311,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 4
     slotIndex: 1
-  m_cameraRotationY: 70.1
-  m_cameraRotationX: -4
-  m_cameraZoom: 5.8
+  m_cameraRotationY: 39.2
+  m_cameraRotationX: 4.3
+  m_cameraZoom: 8.8
   m_missileEjectSpeed: 1
 --- !u!1 &523279133789058027
 GameObject:
@@ -363,9 +363,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 2
     slotIndex: 1
-  m_cameraRotationY: 0.2
-  m_cameraRotationX: 10.5
-  m_cameraZoom: 5.8
+  m_cameraRotationY: -23.9
+  m_cameraRotationX: 16.3
+  m_cameraZoom: 8.8
   m_missileEjectSpeed: 1
 --- !u!1 &581591488234775123
 GameObject:
@@ -461,9 +461,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 3
     slotIndex: 1
-  m_cameraRotationY: -48.6
-  m_cameraRotationX: 41.8
-  m_cameraZoom: 5.8
+  m_cameraRotationY: -23.9
+  m_cameraRotationX: 16.3
+  m_cameraZoom: 8.8
   m_missileEjectSpeed: 1
 --- !u!1 &704514606269309517
 GameObject:
@@ -1362,9 +1362,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 4
     slotIndex: 0
-  m_cameraRotationY: -76.3
-  m_cameraRotationX: -3.3
-  m_cameraZoom: 5.8
+  m_cameraRotationY: -39.4
+  m_cameraRotationX: 4
+  m_cameraZoom: 8.8
   m_missileEjectSpeed: 1
 --- !u!1 &1649213102733198282
 GameObject:
@@ -2466,9 +2466,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 2
     slotIndex: 0
-  m_cameraRotationY: 0.2
-  m_cameraRotationX: 10.5
-  m_cameraZoom: 5.8
+  m_cameraRotationY: -23.9
+  m_cameraRotationX: 16.3
+  m_cameraZoom: 8.8
   m_missileEjectSpeed: 1
 --- !u!1 &3485235453115242289
 GameObject:
@@ -3753,9 +3753,9 @@ MonoBehaviour:
   m_moduleSlotInfo:
     moduleType: 3
     slotIndex: 0
-  m_cameraRotationY: -48.6
-  m_cameraRotationX: 41.8
-  m_cameraZoom: 5.8
+  m_cameraRotationY: -23.9
+  m_cameraRotationX: 16.3
+  m_cameraZoom: 8.8
   m_missileEjectSpeed: 1
 --- !u!1 &4851199724593099497
 GameObject:
