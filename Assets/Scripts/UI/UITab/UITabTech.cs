@@ -55,14 +55,14 @@ public class UITabTech : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetOtherTabsVisible(false, includeSelf: true);
+        SetTabButtonsVisible(false, includeSelf: true);
         UpdateTechLevelDisplay();
     }
 
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetOtherTabsVisible(true, includeSelf: true);
+        SetTabButtonsVisible(true, includeSelf: true);
     }
 
     // ── Ship Slots ────────────────────────────────────────────────────

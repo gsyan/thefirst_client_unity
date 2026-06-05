@@ -34,6 +34,6 @@
 ## 주의 사항
 - `DataTableZone`, `DataTableModule` 등은 서버와 반드시 동기화
 - 외부 라이센스 표시는 아주 중요한 일, UIPopupLicense 으로 하고 있으니 추가할 것들이 생기면 실시간으로 추가
+- Thinking 도 한국어로 해서 내가 알수 있게해줘
 
-## 참고 MD
-- 코드베이스 기능별 파일 위치 : 클라 프로젝트 루트/claude_md_files/codebase_map.md
+

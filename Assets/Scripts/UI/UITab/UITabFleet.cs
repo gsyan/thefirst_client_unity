@@ -53,7 +53,7 @@ public class UITabFleet : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetOtherTabsVisible(false, includeSelf: true);
+        SetTabButtonsVisible(false, includeSelf: true);
         UpdateTechLevelDisplay();
         RefreshShipHealthDisplay();
 
@@ -74,7 +74,7 @@ public class UITabFleet : UITabBase
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetOtherTabsVisible(true, includeSelf: true);
+        SetTabButtonsVisible(true, includeSelf: true);
 
         // Fleet 탭 벗어날 때 모든 함선 아웃라인 비활성화
         if (m_myFleet == null) return;

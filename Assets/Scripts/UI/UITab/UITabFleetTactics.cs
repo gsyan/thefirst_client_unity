@@ -83,14 +83,14 @@ public class UITabFleetTactics : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetOtherTabsVisible(false, includeSelf: true);
+        SetTabButtonsVisible(false, includeSelf: true);
         RefreshFormationButtonLock();
     }
 
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetOtherTabsVisible(true, includeSelf: true);
+        SetTabButtonsVisible(true, includeSelf: true);
     }
 
     private void SetupToggleButtons()

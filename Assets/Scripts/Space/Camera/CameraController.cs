@@ -591,7 +591,7 @@ public class CameraController : MonoSingleton<CameraController>
     }
 
     // 탐사뷰 종료하면서 카메라를 이전 함선 위치 대신 지정 위치로 이동, 회전·줌 복원
-    public void ExitExplorationView(Vector3 position)
+    public void ExitGalaxyView(Vector3 position)
     {
         if (m_isGalaxyView == false) return;
         m_isGalaxyView = false;

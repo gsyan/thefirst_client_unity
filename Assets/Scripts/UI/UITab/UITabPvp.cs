@@ -35,7 +35,7 @@ public class UITabPvp : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetOtherTabsVisible(false, includeSelf: true);
+        SetTabButtonsVisible(false, includeSelf: true);
 
         m_innerTabSystem.SwitchToTab(0);
         RequestPvpMyRank();
@@ -44,7 +44,7 @@ public class UITabPvp : UITabBase
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetOtherTabsVisible(true, includeSelf: true);
+        SetTabButtonsVisible(true, includeSelf: true);
     }
 
     private void RequestPvpMyRank()

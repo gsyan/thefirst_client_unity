@@ -150,7 +150,7 @@ public class UITabSettings : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetOtherTabsVisible(false, includeSelf: true);
+        SetTabButtonsVisible(false, includeSelf: true);
 
         RefreshGoogleLinkUI();
         RefreshNameText();
@@ -166,7 +166,7 @@ public class UITabSettings : UITabBase
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetOtherTabsVisible(true, includeSelf: true);
+        SetTabButtonsVisible(true, includeSelf: true);
     }
 
     // 연동 상태에 따라 버튼 라벨 갱신

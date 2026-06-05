@@ -19,7 +19,7 @@ public class UITabBase : MonoBehaviour
     }
 
     // includeSelf=true 이면 자신의 탭 버튼도 포함해 숨김/표시
-    protected void SetOtherTabsVisible(bool visible, bool includeSelf = false)
+    protected void SetTabButtonsVisible(bool visible, bool includeSelf = false)
     {
         if (m_tabSystemParent == null) return;
         for (int i = 0; i < m_tabSystemParent.tabs.Count; i++)
