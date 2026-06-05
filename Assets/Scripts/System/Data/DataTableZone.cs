@@ -195,9 +195,9 @@ public class DataTableZone : ScriptableObject
     }
 
     // 존의 x-0 스폰 마커 스테이지 반환 — 없으면 null
-    public ZoneStageConfig GetZoneSpawnStage(int zoneIndex)
+    public ZoneStageConfig GetZoneFirstStage(int zoneIndex)
     {
-        return GetZoneStageByName($"{zoneIndex}-0");
+        return GetZoneStageByName($"{zoneIndex}-1");
     }
 
     // 존 중심점 (galaxyCameraTarget 기준) — ZoneConfig가 없으면 zero 반환

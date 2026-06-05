@@ -43,8 +43,10 @@ public class UITabExploration : UITabBase
     private void InitializeUITabExploration()
     {
         m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
+        if (m_myCharacter == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
+        if (m_myFleet == null) return;
+        
 
         EventManager.Subscribe_RetreatRequested(RetreatToPreviousStage);
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
@@ -61,34 +63,17 @@ public class UITabExploration : UITabBase
 
     private void SetInitialFleetPosition()
     {
-        if (ObjectManager.Instance == null || m_myFleet == null) return;
-
         var clearedZones = m_myCharacter.m_characterInfo != null ? m_myCharacter.m_characterInfo.clearedZones : null;
 
-        if (clearedZones == null || clearedZones.Count == 0)
-        {
-            // 신규 유저 — zone1 스폰 마커(1-0) 위치
-            ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(1);
-            if (spawnStage != null)
-            {
-                ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(spawnStage), spawnStage.fleetRotationY);
-                CameraController.Instance.SnapToTarget();
-            }
-            return;
-        }
+        ZoneStageConfig targetStage = null;
+        if (clearedZones != null && clearedZones.Count > 0)
+            targetStage = m_datatableZone.GetZoneStageByName(clearedZones[^1]);
 
-        ZoneStageConfig targetStage = m_datatableZone.GetZoneStageByName(clearedZones[^1]);
+        // 신규 유저 또는 유효하지 않은 클리어 데이터 — zone1 스폰 마커로 fallback
         if (targetStage == null)
-        {
-            // 유효하지 않은 클리어 데이터 — zone1 스폰 마커로 fallback
-            ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(1);
-            if (spawnStage != null)
-            {
-                ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(spawnStage), spawnStage.fleetRotationY);
-                CameraController.Instance.SnapToTarget();
-            }
-            return;
-        }
+            targetStage = m_datatableZone.GetZoneFirstStage(1);
+
+        if (targetStage == null) return;
 
         ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(targetStage), targetStage.fleetRotationY);
         CameraController.Instance.SnapToTarget();
@@ -304,7 +289,7 @@ public class UITabExploration : UITabBase
         }
         else
         {
-            ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(fleetZoneIndex);
+            ZoneStageConfig spawnStage = m_datatableZone.GetZoneFirstStage(fleetZoneIndex);
             m_pendingFleetPos = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
             m_pendingFleetRotY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
             targetCameraPosition = m_pendingFleetPos;
@@ -801,7 +786,7 @@ public class UITabExploration : UITabBase
         {
             // 한 스테이지도 클리어 못했으므로 해당 존 x-0 스폰 마커로 복귀
             int currentGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : 1;
-            ZoneStageConfig spawnStage = m_datatableZone.GetZoneSpawnStage(currentGroup);
+            ZoneStageConfig spawnStage = m_datatableZone.GetZoneFirstStage(currentGroup);
             retreatPosition  = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
             retreatRotationY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
         }
