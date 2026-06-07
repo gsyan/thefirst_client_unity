@@ -55,7 +55,6 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
             beams         = new List<ModuleInfo>(),
             missiles      = new List<ModuleInfo>(),
             hangers       = new List<ModuleInfo>(),
-            unlockedSubTypes = new List<EModuleSubType>(),
         };
 
         var ship = new ShipInfo

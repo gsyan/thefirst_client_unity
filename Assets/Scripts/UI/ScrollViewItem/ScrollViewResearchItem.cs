@@ -5,9 +5,8 @@ using UnityEngine.UI;
 // 연구 노드 기본 상태 (선택 여부와 별개 - 선택은 isSelected 파라미터로 전달)
 public enum EResearchNodeState
 {
-    Locked,         // 안배움
-    Researched,     // 배움
-    Current,        // 현재 장착 중    
+    Locked,         // 미개발
+    Current,        // 현재 장착 중
 }
 
 public class ScrollViewResearchItem : MonoBehaviour
@@ -54,8 +53,6 @@ public class ScrollViewResearchItem : MonoBehaviour
         if (isSelected == true)
             borderColor = m_colorSelected;
         else if (baseState == EResearchNodeState.Current)
-            borderColor = m_colorResearched;
-        else if (baseState == EResearchNodeState.Researched)
             borderColor = m_colorResearched;
         else
             borderColor = m_colorLocked;

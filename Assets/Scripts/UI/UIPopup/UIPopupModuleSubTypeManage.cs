@@ -241,8 +241,6 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
 
             if (node.moduleSubType == currentSubType)
                 state = EResearchNodeState.Current;
-            else if (m_sourceModule.IsSubTypeUnlocked(node.moduleSubType))
-                state = EResearchNodeState.Researched;
             else
                 state = EResearchNodeState.Locked;
 
@@ -270,19 +268,10 @@ public class UIPopupModuleSubTypeManage : UIPopupBase
         int requiredTechTier = m_selectedSubType.GetTechTier();
         bool hasTechLevel = playerTechLevel >= requiredTechTier;
 
-        bool isFree = m_sourceModule.IsSubTypeUnlocked(m_selectedSubType);
         bool canConfirm = hasTechLevel;
 
-        if (isFree == true)
         {
-            // 이미 unlock된 서브타입 → 자유 교체, 비용/조건 섹션 불필요
-            if (m_moduleLevelCheckText != null) m_moduleLevelCheckText.text = LocalizationManager.Instance.Get("Simple_Free");
-            if (m_sectionRequire != null) m_sectionRequire.SetVisible(false);
-            if (m_sectionCost != null) m_sectionCost.SetVisible(false);
-        }
-        else
-        {
-            // 신규 unlock → 직접 다음 단계 + max level 조건 + 기술레벨 + 비용 동시 체크
+            // 직접 다음 단계 + max level 조건 + 기술레벨 + 비용 동시 체크
             ModuleResearchData currentNode = DataManager.Instance.m_dataTableResearch.GetResearchData(currentSubType);
             ModuleResearchData selectedNode = DataManager.Instance.m_dataTableResearch.GetResearchData(m_selectedSubType);
             bool isDirectNextStep = selectedNode != null && currentNode != null

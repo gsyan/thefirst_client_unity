@@ -55,8 +55,6 @@ public class ModuleBodyInfo
     public List<ModuleInfo> beams;
     public List<ModuleInfo> missiles;
     public List<ModuleInfo> hangers;
-    // 이 body 슬롯에서 subTypeAddCost를 납부해 비용 없이 교체 가능한 서브타입 목록
-    public List<EModuleSubType> unlockedSubTypes;
     // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
     public int investedModulePoint;
     // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
@@ -71,8 +69,6 @@ public class ModuleInfo
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
-    // 이 슬롯에서 subTypeAddCost를 납부해 비용 없이 교체 가능한 서브타입 목록
-    public List<EModuleSubType> unlockedSubTypes;
     // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
     public int investedModulePoint;
 }
@@ -260,7 +256,7 @@ public class ChangeTacticOptionsResponse
 }
 
 [System.Serializable]
-public class ModuleLevelUpRequest
+public class ModuleLevelChangeRequest
 {
     public long shipId;
     public int bodyIndex;
@@ -272,7 +268,7 @@ public class ModuleLevelUpRequest
 }
 
 [System.Serializable]
-public class ModuleLevelUpResponse
+public class ModuleLevelChangeResponse
 {
     public long shipId;
     public int bodyIndex;
@@ -281,10 +277,11 @@ public class ModuleLevelUpResponse
     public int slotIndex;
     public int newLevel;
     public int modulePointRemain;
+    public int investedModulePoint;
 }
 
 [System.Serializable]
-public class ModuleChangeRequest
+public class ModuleGradeChangeRequest
 {
     public long shipId;
     public int bodyIndex;
@@ -295,7 +292,7 @@ public class ModuleChangeRequest
 }
 
 [System.Serializable]
-public class ModuleChangeResponse
+public class ModuleGradeChangeResponse
 {
     public long shipId;
     public int bodyIndex;
@@ -307,8 +304,6 @@ public class ModuleChangeResponse
     public int moduleNewLevel;
     public int modulePointRemain;
     public int investedModulePoint;
-    // 교체 후 이 슬롯의 갱신된 unlock 목록 (최초 교체 시 새 subType 포함)
-    public List<EModuleSubType> newUnlockedSubTypes;
 }
 
 [System.Serializable]

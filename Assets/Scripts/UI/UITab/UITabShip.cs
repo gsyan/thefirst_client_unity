@@ -35,11 +35,29 @@ public class UITabShip : UITabBase
     [SerializeField] private Transform  m_moduleStatsContainer;
     [SerializeField] private TMP_Text   m_investedModulePointText;
     
-    [SerializeField] private Button    m_unlockModuleButton;
-    [SerializeField] private Button    m_levelUpModuleButton;
-    [SerializeField] private TMP_Text  m_levelUpModuleButtonText;
-    [SerializeField] private Button    m_subTypeManageButton;
-    [SerializeField] private Button    m_btnResetModule;
+    [SerializeField] private Button     m_unlockModuleButton;
+    [SerializeField] private TMP_Text   m_unlockModuleButtonText;
+    [SerializeField] private TMP_Text   m_unlockModuleSubTypeText;
+    [SerializeField] private Transform  m_moduleStatusContainer;
+
+    [SerializeField] private UIButtonHasChildren    m_gradeDownModuleButton;
+    [SerializeField] private TMP_Text               m_gradeDownModuleButtonText1;
+    [SerializeField] private RowImageText           m_gradeDownModuleButtonText2;
+    [SerializeField] private UIButtonHasChildren    m_gradeUpModuleButton;
+    [SerializeField] private TMP_Text               m_gradeUpModuleButtonText1;
+    [SerializeField] private RowImageText           m_gradeUpModuleButtonText2;
+    [SerializeField] private TMP_Text               m_gradeUpModuleButtonText3;
+
+    [SerializeField] private UIButtonHasChildren    m_levelDownModuleButton;
+    [SerializeField] private TMP_Text               m_levelDownModuleButtonText1;
+    [SerializeField] private RowImageText           m_levelDownModuleButtonText2;
+    [SerializeField] private UIButtonHasChildren    m_levelUpModuleButton;
+    [SerializeField] private TMP_Text               m_levelUpModuleButtonText1;
+    [SerializeField] private RowImageText           m_levelUpModuleButtonText2;
+
+
+    //[SerializeField] private Button    m_subTypeManageButton;
+    //[SerializeField] private Button    m_btnResetModule;
 
     private bool bShow = false;
 
@@ -84,10 +102,17 @@ public class UITabShip : UITabBase
         if (m_btnNextShip != null) m_btnNextShip.onClick.AddListener(OnNextShipClicked);
 
         m_unlockModuleButton.onClick.AddListener(OnModuleUnlockClicked);
-        m_levelUpModuleButton.onClick.AddListener(OnModuleLevelUpClicked);
-        m_subTypeManageButton.onClick.AddListener(OnSubTypeManageClicked);
+        if (m_unlockModuleButtonText != null)
+        {
+            int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
+            m_unlockModuleButtonText.SetText($"-{unlockPrice}");
+        }
+        m_gradeDownModuleButton.GetButton().onClick.AddListener(OnGradeDownClicked);
+        m_gradeUpModuleButton.GetButton().onClick.AddListener(OnGradeUpClicked);
+        m_levelDownModuleButton.GetButton().onClick.AddListener(OnLevelDownClicked);
+        m_levelUpModuleButton.GetButton().onClick.AddListener(OnLevelUpClicked);
         if (m_btnShipStatsDetail != null) m_btnShipStatsDetail.onClick.AddListener(OnShipStatsDetailClicked);
-        if (m_btnResetModule != null) m_btnResetModule.onClick.AddListener(OnResetModuleClicked);
+        //if (m_btnResetModule != null) m_btnResetModule.onClick.AddListener(OnResetModuleClicked);
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
         EventManager.Subscribe_ShipUpdateHP(UpdateShipHeader);
@@ -368,109 +393,97 @@ public class UITabShip : UITabBase
     }
 
     // ─────────────────────────────────────────────
-    // 모듈 레벨업
+    // 모듈 레벨업 / 레벨다운
     // ─────────────────────────────────────────────
 
-    private void OnModuleLevelUpClicked()
+    private void OnLevelUpClicked()
     {
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
         int currentLevel = m_selectedModule.GetModuleLevel();
+        int targetLevel  = currentLevel + 1;
 
-        // 다음 레벨 데이터 없으면 이미 최대 레벨
-        if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), currentLevel + 1) == null)
+        if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), targetLevel) == null)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("LevelupButtonTextMax"));
             return;
         }
 
-        UIManager.Instance.ShowModuleLevelupPopup(
-            m_selectedModule.GetModuleSubType(),
-            m_selectedModule.GetModuleType(),
-            currentLevel,
-            ExecuteModuleLevelUp
-        );
-    }
-
-    private void ExecuteModuleLevelUp(int targetLevel)
-    {
-        if (CanLevelup(targetLevel, out string validationMessage) == false)
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+        if (DataManager.Instance.GetModuleLevelUpCost(m_selectedModule.GetModuleSubType(), currentLevel, out long cost) == false) return;
+        if (character.CheckEnoughModulePoint(cost) == false)
         {
-            ShowErrorMessage($"Levelup failed: {validationMessage}");
+            ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_module_point"));
             return;
         }
 
-        var levelUpRequest = new ModuleLevelUpRequest
+        var req = new ModuleLevelChangeRequest
         {
             shipId        = m_selectedShip.m_shipInfo.id,
             bodyIndex     = m_selectedModule.GetModuleBodyIndex(),
             moduleType    = m_selectedModule.GetModuleType(),
             moduleSubType = m_selectedModule.GetModuleSubType(),
             slotIndex     = m_selectedModule.GetSlotIndex(),
-            currentLevel  = m_selectedModule.GetModuleLevel(),
+            currentLevel  = currentLevel,
             targetLevel   = targetLevel
         };
-
-        NetworkManager.Instance.LevelUpModule(levelUpRequest, OnLevelUpResponse);
+        NetworkManager.Instance.LevelUpModule(req, OnLevelUpResponse);
     }
 
-    private bool CanLevelup(int targetLevel, out string validationMessage)
+    private void OnLevelDownClicked()
     {
-        validationMessage = "";
+        if (m_selectedShip == null || m_selectedModule == null) return;
+        if (m_selectedModule is ModulePlaceholder == true) return;
 
-        if (m_selectedModule == null)
-        {
-            validationMessage = "No module selected";
-            return false;
-        }
+        int currentLevel = m_selectedModule.GetModuleLevel();
 
-        // targetLevel 데이터 존재 여부 확인
-        ModuleData targetData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(
-            m_selectedModule.GetModuleSubType(), targetLevel);
-        if (targetData == null)
+        if (currentLevel == 1)
         {
-            validationMessage = "Max level reached";
-            return false;
-        }
-
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null)
-        {
-            validationMessage = "Character data not available";
-            return false;
-        }
-
-        int requiredTechTier = m_selectedModule.GetModuleSubType().GetTechTier();
-        if (character.GetTechLevel() < requiredTechTier)
-        {
-            validationMessage = $"Insufficient tech level (need {requiredTechTier}, current {character.GetTechLevel()})";
-            return false;
-        }
-
-        // currentLevel → targetLevel 누적 비용 합산 후 검증
-        int fromLevel = m_selectedModule.GetModuleLevel();
-        long totalModulePoint = 0;
-        for (int lv = fromLevel; lv < targetLevel; lv++)
-        {
-            if (DataManager.Instance.GetModuleLevelUpCost(m_selectedModule.GetModuleSubType(), lv, out long cost) == false)
+            // T1 Lv.1: 더 내릴 단계 없으면 플레이스홀더 복귀
+            EModuleSubType prevSubType = GetPrevSubType(m_selectedModule.GetModuleSubType());
+            if (prevSubType == EModuleSubType.none)
             {
-                validationMessage = "Failed to get upgrade cost";
-                return false;
+                ExecuteResetModule();
+                return;
             }
-            totalModulePoint += cost;
+            // T2 이상 Lv.1: targetLevel=0 으로 서버에 이전 단계 맥스레벨 처리 위임
         }
 
-        if (character.CheckEnoughModulePoint(totalModulePoint) == false)
+        var req = new ModuleLevelChangeRequest
         {
-            validationMessage = $"Insufficient modulePoint";
-            return false;
-        }
-
-        return true;
+            shipId        = m_selectedShip.m_shipInfo.id,
+            bodyIndex     = m_selectedModule.GetModuleBodyIndex(),
+            moduleType    = m_selectedModule.GetModuleType(),
+            moduleSubType = m_selectedModule.GetModuleSubType(),
+            slotIndex     = m_selectedModule.GetSlotIndex(),
+            currentLevel  = currentLevel,
+            targetLevel   = currentLevel - 1  // Lv.1이면 0 → 서버에서 이전 단계 맥스레벨 처리
+        };
+        NetworkManager.Instance.LevelDownModule(req, OnLevelDownResponse);
     }
 
-    private void OnLevelUpResponse(ApiResponse<ModuleLevelUpResponse> response)
+    private void OnLevelUpResponse(ApiResponse<ModuleLevelChangeResponse> response)
+    {
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        if (response.errorCode == 0)
+        {
+            character.UpdateModulePoint(response.data.modulePointRemain);
+            ApplyModuleLevelChange(response.data.shipId, response.data.bodyIndex, response.data.moduleType,
+                response.data.moduleSubType, response.data.slotIndex, response.data.newLevel, isLevelUp: true);
+        }
+        else
+        {
+            string msg = ErrorCodeMapping.GetMessage(response.errorCode);
+            Debug.LogError($"LevelUp failed: {msg}");
+            ShowErrorMessage($"LevelUp failed: {msg}");
+        }
+    }
+
+    private void OnLevelDownResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
@@ -479,55 +492,71 @@ public class UITabShip : UITabBase
         {
             character.UpdateModulePoint(response.data.modulePointRemain);
 
-            ApplyModuleLevelUp(response.data);
-            UpdateModuleStatsDisplay();
+            if (m_myFleet == null) return;
+            SpaceShip ship = m_myFleet.FindShip(response.data.shipId);
+            if (ship == null) return;
+
+            ship.ApplyModuleChange(response.data.bodyIndex, response.data.moduleType,
+                response.data.moduleSubType, response.data.slotIndex, response.data.newLevel);
+            ship.SetModuleInvestedModulePoint(response.data.bodyIndex, response.data.moduleType,
+                response.data.slotIndex, response.data.investedModulePoint);
+
+            EventManager.Trigger_ShipStatsChanged(ship);
+
+            if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == response.data.shipId)
+            {
+                UpdateShipHeader();
+                PopulateModuleSelectButtons();
+                ReselectReplacedModule(ship, response.data.bodyIndex, response.data.moduleType,
+                    response.data.moduleSubType, response.data.slotIndex);
+            }
         }
         else
         {
-            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            Debug.LogError($"Upgrade failed: {errorMessage}");
-            ShowErrorMessage($"Upgrade failed: {errorMessage}");
+            string msg = ErrorCodeMapping.GetMessage(response.errorCode);
+            Debug.LogError($"LevelDown failed: {msg}");
+            ShowErrorMessage($"LevelDown failed: {msg}");
         }
     }
 
-    private void ApplyModuleLevelUp(ModuleLevelUpResponse upgradeData)
+    private void ApplyModuleLevelChange(long shipId, int bodyIndex, EModuleType moduleType,
+        EModuleSubType moduleSubType, int slotIndex, int newLevel, bool isLevelUp)
     {
-        if (upgradeData == null) return;
         if (m_myFleet == null) return;
-
-        SpaceShip ship = m_myFleet.FindShip(upgradeData.shipId);
+        SpaceShip ship = m_myFleet.FindShip(shipId);
         if (ship == null) return;
 
-        // 레벨업 전 모듈의 투자 광물 및 레벨 저장
-        ModuleBase prevModule = ship.FindModule(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.slotIndex);
+        ModuleBase prevModule = ship.FindModule(bodyIndex, moduleType, slotIndex);
         int prevLevel         = 0;
-        int prevInvModulePoint = 0;
+        int prevInvestedPoint = 0;
         if (prevModule != null)
         {
-            prevLevel          = prevModule.GetModuleLevel();
-            prevInvModulePoint = prevModule.m_investedModulePoint;
+            prevLevel         = prevModule.GetModuleLevel();
+            prevInvestedPoint = prevModule.m_investedModulePoint;
         }
 
-        ship.ApplyModuleChange(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex, upgradeData.newLevel);
+        ship.ApplyModuleChange(bodyIndex, moduleType, moduleSubType, slotIndex, newLevel);
 
-        // 레벨업 비용을 계산해 투자 modulePoint에 누적
-        int addedModulePoint = 0;
-        for (int lv = prevLevel; lv < upgradeData.newLevel; lv++)
+        int pointDelta = 0;
+        int fromLv     = Mathf.Min(prevLevel, newLevel);
+        int toLv       = Mathf.Max(prevLevel, newLevel);
+        for (int lv = fromLv; lv < toLv; lv++)
         {
-            if (DataManager.Instance.GetModuleLevelUpCost(upgradeData.moduleSubType, lv, out long cost) == true)
-                addedModulePoint += (int)cost;
+            if (DataManager.Instance.GetModuleLevelUpCost(moduleSubType, lv, out long cost) == true)
+                pointDelta += (int)cost;
         }
-        ship.SetModuleInvestedModulePoint(upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.slotIndex,
-            prevInvModulePoint + addedModulePoint);
+        int newInvestedPoint = isLevelUp == true
+            ? prevInvestedPoint + pointDelta
+            : prevInvestedPoint - pointDelta;
+        ship.SetModuleInvestedModulePoint(bodyIndex, moduleType, slotIndex, newInvestedPoint);
 
         EventManager.Trigger_ShipStatsChanged(ship);
 
-
-        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == upgradeData.shipId)
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == shipId)
         {
             UpdateShipHeader();
             PopulateModuleSelectButtons();
-            ReselectReplacedModule(ship, upgradeData.bodyIndex, upgradeData.moduleType, upgradeData.moduleSubType, upgradeData.slotIndex);
+            ReselectReplacedModule(ship, bodyIndex, moduleType, moduleSubType, slotIndex);
         }
     }
 
@@ -547,43 +576,31 @@ public class UITabShip : UITabBase
         if (m_selectedModule is ModulePlaceholder)
         {
             m_unlockModuleButton.gameObject.SetActive(true);
-            m_levelUpModuleButton.gameObject.SetActive(false);
-            m_subTypeManageButton.gameObject.SetActive(false);
-            if (m_btnResetModule != null) m_btnResetModule.gameObject.SetActive(false);
-
-            m_moduleSubTypeText.text = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType()}_placeholder");
+            m_moduleStatusContainer.gameObject.SetActive(false);
+            //if (m_btnResetModule != null) m_btnResetModule.gameObject.SetActive(false);
+            string placeholderText = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType()}_placeholder");
+            if (m_unlockModuleSubTypeText != null) m_unlockModuleSubTypeText.text = placeholderText;
         }
         else
         {
             m_unlockModuleButton.gameObject.SetActive(false);
+            m_moduleStatusContainer.gameObject.SetActive(true);
 
-            EModuleSubType subType    = m_selectedModule.GetModuleSubType();
-            int level                 = m_selectedModule.GetModuleLevel();
-            int nextLevel             = level + 1;
-            ModuleData moduleDataNext = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, nextLevel);
-            bool isMaxLevel           = moduleDataNext == null;
+            EModuleSubType subType = m_selectedModule.GetModuleSubType();
+            int level              = m_selectedModule.GetModuleLevel();
 
-            // 두 버튼 항상 표시, 레벨업 불가 시 버튼 비활성화 + 텍스트 변경
-            m_levelUpModuleButton.gameObject.SetActive(true);
-            m_levelUpModuleButton.interactable = !isMaxLevel;
-            if (m_levelUpModuleButtonText != null)
-                m_levelUpModuleButtonText.text = LocalizationManager.Instance.Get(isMaxLevel ? "LevelupButtonTextMax" : "LevelupButtonText");
-            m_subTypeManageButton.gameObject.SetActive(true);
+            // if (m_btnResetModule != null)
+            // {
+            //     m_btnResetModule.gameObject.SetActive(true);
+            //     bool isFlagshipBody = m_selectedShip.m_shipInfo.positionIndex == 0
+            //                        && m_selectedModule.GetModuleType() == EModuleType.body;
+            //     bool isDefaultBody  = m_selectedModule.GetModuleSubType() == EModuleSubType.body_t1_m1
+            //                        && m_selectedModule.GetModuleLevel() == 1;
+            //     m_btnResetModule.interactable = !(isFlagshipBody && isDefaultBody);
+            // }
 
-            if (m_btnResetModule != null)
-            {
-                m_btnResetModule.gameObject.SetActive(true);
-                // 기함 body이고 이미 T1 레벨1이면 리셋 불필요 → 비활성화
-                bool isFlagshipBody = m_selectedShip.m_shipInfo.positionIndex == 0
-                                   && m_selectedModule.GetModuleType() == EModuleType.body;
-                bool isDefaultBody  = m_selectedModule.GetModuleSubType() == EModuleSubType.body_t1_m1
-                                   && m_selectedModule.GetModuleLevel() == 1;
-                m_btnResetModule.interactable = !(isFlagshipBody && isDefaultBody);
-            }
+            m_moduleSubTypeText.text = subType.GetLocalizedName();
 
-            m_moduleSubTypeText.text = m_selectedModule.GetModuleSubType().GetLocalizedName();
-
-            // 스탯 rows
             ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level);
             if (cur != null && m_statsRows.Count >= 2)
             {
@@ -610,59 +627,311 @@ public class UITabShip : UITabBase
                     m_statsRows[3].SetRow("jet-fighter",   $"{cur.airCount:F0}");
                 }
             }
-            // 투자 modulePoint rows
+
             m_investedModulePointText.SetText("{0}", m_selectedModule.m_investedModulePoint);
+            RefreshModuleActionButtons();
 
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsContainer as RectTransform);
-            //LayoutRebuilder.ForceRebuildLayoutImmediate(m_investedModulePointText.transform.parent as RectTransform);
         }
     }
 
     // ─────────────────────────────────────────────
-    // 서브타입 관리
+    // 버튼 상태 갱신
     // ─────────────────────────────────────────────
 
-    private void OnSubTypeManageClicked()
+    private void RefreshModuleActionButtons()
     {
-        if (m_selectedShip == null || m_selectedModule == null) return;
-        if (m_selectedModule is ModulePlaceholder) return;
+        if (m_selectedModule == null) return;
 
-        UIManager.Instance.ShowModuleSubTypeManagePopup(m_selectedModule, OnModuleSubTypeSelected);
+        EModuleSubType subType = m_selectedModule.GetModuleSubType();
+        int  level       = m_selectedModule.GetModuleLevel();
+        var  character   = DataManager.Instance.m_currentCharacter;
+        int  playerTech  = character != null ? character.GetTechLevel() : 0;
+        long playerPoint = character != null ? character.GetModulePoint() : 0;
+
+        bool           isMaxLevel  = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level + 1) == null;
+        EModuleSubType nextSubType = GetNextSubType(subType);
+        EModuleSubType prevSubType = GetPrevSubType(subType);
+
+        RefreshGradeUpButton(nextSubType, isMaxLevel, playerTech, playerPoint);
+        RefreshGradeDownButton(subType, level, prevSubType);
+        RefreshLevelUpButton(subType, level, isMaxLevel, playerTech, playerPoint);
+        RefreshLevelDownButton(subType, level, prevSubType);
     }
 
-    private void OnModuleSubTypeSelected(EModuleSubType newSubType)
+    private void RefreshGradeUpButton(EModuleSubType nextSubType, bool isMaxLevel, int playerTech, long playerPoint)
+    {
+        if (nextSubType == EModuleSubType.none)
+        {
+            m_gradeUpModuleButton.SetInteractable(false);
+            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
+            m_gradeUpModuleButtonText2.Hide();
+            if (m_gradeUpModuleButtonText3 != null) m_gradeUpModuleButtonText3.text = "";
+            return;
+        }
+
+        long gradeUpCost = DataManager.Instance.m_dataTableResearch.GetResearchCost(nextSubType);
+        int  reqTier     = nextSubType.GetTechTier();
+        bool hasTech     = playerTech >= reqTier;
+        bool hasPoint    = playerPoint >= gradeUpCost;
+        bool canUpgrade  = isMaxLevel == true && hasTech == true && hasPoint == true;
+
+        m_gradeUpModuleButton.SetInteractable(canUpgrade);
+
+        // 우선순위: 1)기술레벨 부족 → 2)만렙 미달 → 3)포인트 부족 → 4)업그레이드 가능
+        if (canUpgrade == true)
+        {
+            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
+            m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(gradeUpCost)}");
+            if (m_gradeUpModuleButtonText3 != null) m_gradeUpModuleButtonText3.text = "";
+        }
+        else if (hasTech == false)
+        {
+            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
+            SetDisabledReason(m_gradeUpModuleButtonText2, false, reqTier, gradeUpCost);
+            if (m_gradeUpModuleButtonText3 != null) m_gradeUpModuleButtonText3.text = "";
+        }
+        else if (isMaxLevel == false)
+        {
+            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
+            m_gradeUpModuleButtonText2.Hide();
+            if (m_gradeUpModuleButtonText3 != null)
+            {
+                m_gradeUpModuleButtonText3.text  = $"Lv.{LocalizationManager.Instance.Get("LevelupButtonTextMax")}";
+                m_gradeUpModuleButtonText3.color = Color.red;
+            }
+        }
+        else
+        {
+            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
+            SetDisabledReason(m_gradeUpModuleButtonText2, true, reqTier, gradeUpCost);
+            if (m_gradeUpModuleButtonText3 != null) m_gradeUpModuleButtonText3.text = "";
+        }
+    }
+
+    private void RefreshGradeDownButton(EModuleSubType currentSubType, int currentLevel, EModuleSubType prevSubType)
+    {
+        if (m_gradeDownModuleButtonText1 != null)
+            m_gradeDownModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeDown");
+
+        bool isFlagshipBodyMin = m_selectedShip != null
+            && m_selectedShip.m_shipInfo.positionIndex == 0
+            && m_selectedModule != null
+            && m_selectedModule.GetModuleType() == EModuleType.body
+            && prevSubType == EModuleSubType.none
+            && currentLevel == 1;
+
+        if (isFlagshipBodyMin == true)
+        {
+            m_gradeDownModuleButton.SetInteractable(false);
+            if (m_gradeDownModuleButtonText2 != null) m_gradeDownModuleButtonText2.Hide();
+            return;
+        }
+
+        m_gradeDownModuleButton.SetInteractable(true);
+
+        if (m_gradeDownModuleButtonText2 == null) return;
+
+        long refund;
+        if (prevSubType != EModuleSubType.none)
+        {
+            // 그레이드 업 비용: 현재 서브타입 리서치 비용
+            long currentResearchCost = DataManager.Instance.m_dataTableResearch.GetResearchCost(currentSubType);
+
+            // 현재 서브타입 Lv.1~currentLevel-1 레벨업 합계 (moduleLevel=n 비용은 Lv.n→n+1 비용)
+            long currentLevelUpTotal = 0;
+            for (int lv = 1; lv < currentLevel; lv++)
+            {
+                DataManager.Instance.GetModuleLevelUpCost(currentSubType, lv, out long lvCost);
+                currentLevelUpTotal += lvCost;
+            }
+
+            // 이전 서브타입 전체 레벨업 합계 (서버 calcLevelRefund와 동일: lv < maxLevel)
+            int  prevMaxLevel    = DataManager.Instance.GetMaxModuleLevel(prevSubType);
+            long prevLevelUpTotal = 0;
+            for (int lv = 1; lv < prevMaxLevel; lv++)
+            {
+                DataManager.Instance.GetModuleLevelUpCost(prevSubType, lv, out long lvCost);
+                prevLevelUpTotal += lvCost;
+            }
+
+            refund = currentResearchCost + currentLevelUpTotal + prevLevelUpTotal;
+            if (refund < 0) refund = 0;
+        }
+        else
+        {
+            refund = m_selectedModule.m_investedModulePoint;
+        }
+        m_gradeDownModuleButtonText2.SetRow("module-point", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
+    }
+
+    private void RefreshLevelUpButton(EModuleSubType subType, int level, bool isMaxLevel, int playerTech, long playerPoint)
+    {
+        if (isMaxLevel == true)
+        {
+            m_levelUpModuleButton.SetInteractable(false);
+            if (m_levelUpModuleButtonText1 != null)
+                m_levelUpModuleButtonText1.text = LocalizationManager.Instance.Get("LevelupButtonTextMax");
+            if (m_levelUpModuleButtonText2 != null)
+                m_levelUpModuleButtonText2.SetRow("", "");
+            return;
+        }
+
+        DataManager.Instance.GetModuleLevelUpCost(subType, level, out long levelUpCost);
+        int  reqTier  = subType.GetTechTier();
+        bool hasTech  = playerTech >= reqTier;
+        bool hasPoint = playerPoint >= levelUpCost;
+        bool canLevel = hasTech == true && hasPoint == true;
+
+        m_levelUpModuleButton.SetInteractable(canLevel);
+
+        if (canLevel == true)
+        {
+            if (m_levelUpModuleButtonText1 != null)
+                m_levelUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_LevelUp");
+            if (m_levelUpModuleButtonText2 != null)
+                m_levelUpModuleButtonText2.SetRow("module-point", $"-{CommonUtility.FormatBigNumber(levelUpCost)}");
+        }
+        else
+        {
+            if (m_levelUpModuleButtonText1 != null)
+                m_levelUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
+            if (m_levelUpModuleButtonText2 != null)
+                SetDisabledReason(m_levelUpModuleButtonText2, hasTech, reqTier, levelUpCost);
+        }
+    }
+
+    private void RefreshLevelDownButton(EModuleSubType subType, int level, EModuleSubType prevSubType)
+    {
+        if (m_levelDownModuleButtonText1 != null)
+            m_levelDownModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_LevelDown");
+
+        bool isFlagshipBodyMin = m_selectedShip != null
+            && m_selectedShip.m_shipInfo.positionIndex == 0
+            && m_selectedModule != null
+            && m_selectedModule.GetModuleType() == EModuleType.body
+            && prevSubType == EModuleSubType.none
+            && level == 1;
+
+        if (isFlagshipBodyMin == true)
+        {
+            m_levelDownModuleButton.SetInteractable(false);
+            if (m_levelDownModuleButtonText2 != null) m_levelDownModuleButtonText2.Hide();
+            return;
+        }
+
+        m_levelDownModuleButton.SetInteractable(true);
+
+        if (m_levelDownModuleButtonText2 == null) return;
+
+        if (level > 1)
+        {
+            DataManager.Instance.GetModuleLevelUpCost(subType, level - 1, out long levelDownRefund);
+            m_levelDownModuleButtonText2.SetRow("module-point", $"+{CommonUtility.FormatBigNumber(levelDownRefund)}");
+        }
+        else if (prevSubType != EModuleSubType.none)
+        {
+            // Lv.1 레벨다운 = 서브타입 다운과 동일하지만 환급은 T→currentSubType 업그레이드 비용만
+            long gradeDownRefund = DataManager.Instance.m_dataTableResearch.GetResearchCost(subType);
+            m_levelDownModuleButtonText2.SetRow("module-point", $"+{CommonUtility.FormatBigNumber(gradeDownRefund)}");
+        }
+        else
+        {
+            long fullRefund = m_selectedModule.m_investedModulePoint;
+            m_levelDownModuleButtonText2.SetRow("module-point", fullRefund > 0 ? $"+{CommonUtility.FormatBigNumber(fullRefund)}" : "");
+        }
+    }
+
+    private void SetDisabledReason(RowImageText row, bool hasTech, int reqTier, long cost)
+    {
+        if (hasTech == false)
+        {
+            row.SetRow("icon_tech", $"{reqTier}");
+            row.SetImageColor(CommonUtility.PaletteColor("TechPoint"));
+        }
+        else
+        {
+            row.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(cost)}");
+            row.SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
+        }
+        row.SetTextColor(Color.red);
+    }
+
+    // ─────────────────────────────────────────────
+    // 서브타입 업그레이드 / 다운그레이드
+    // ─────────────────────────────────────────────
+
+    private void OnGradeUpClicked()
     {
         if (m_selectedShip == null || m_selectedModule == null) return;
-        if (newSubType == EModuleSubType.none) return;
-        if (newSubType == m_selectedModule.GetModuleSubType()) return;
+        if (m_selectedModule is ModulePlaceholder == true) return;
 
+        EModuleSubType nextSubType = GetNextSubType(m_selectedModule.GetModuleSubType());
+        if (nextSubType == EModuleSubType.none) return;
+
+        ExecuteGradeUp(nextSubType);
+    }
+
+    private void OnGradeDownClicked()
+    {
+        if (m_selectedShip == null || m_selectedModule == null) return;
+        if (m_selectedModule is ModulePlaceholder == true) return;
+
+        EModuleSubType prevSubType = GetPrevSubType(m_selectedModule.GetModuleSubType());
+        if (prevSubType == EModuleSubType.none)
+        {
+            ExecuteResetModule();
+            return;
+        }
+        ExecuteGradeDown(prevSubType);
+    }
+
+    private void ExecuteGradeUp(EModuleSubType targetSubType)
+    {
         int slotIndex = 0;
         if (m_selectedModule.GetModuleType() != EModuleType.body)
             slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
 
-        var changeRequest = new ModuleChangeRequest
+        var req = new ModuleGradeChangeRequest
         {
             shipId               = m_selectedShip.m_shipInfo.id,
             bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
             slotIndex            = slotIndex,
             moduleType           = m_selectedModule.GetModuleType(),
             moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
-            moduleSubTypeNew     = newSubType
+            moduleSubTypeNew     = targetSubType
         };
-
-        NetworkManager.Instance.ChangeModule(changeRequest, OnModuleChangeResponse);
+        NetworkManager.Instance.GradeUpModule(req, OnGradeChangeResponse);
     }
 
-    private void OnModuleChangeResponse(ApiResponse<ModuleChangeResponse> response)
+    private void ExecuteGradeDown(EModuleSubType targetSubType)
+    {
+        int slotIndex = 0;
+        if (m_selectedModule.GetModuleType() != EModuleType.body)
+            slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+
+        var req = new ModuleGradeChangeRequest
+        {
+            shipId               = m_selectedShip.m_shipInfo.id,
+            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
+            slotIndex            = slotIndex,
+            moduleType           = m_selectedModule.GetModuleType(),
+            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
+            moduleSubTypeNew     = targetSubType
+        };
+        NetworkManager.Instance.GradeDownModule(req, OnGradeChangeResponse);
+    }
+
+    private void OnGradeChangeResponse(ApiResponse<ModuleGradeChangeResponse> response)
     {
         if (response.errorCode == 0)
             ApplyModuleChange(response.data);
         else
-            ShowErrorMessage($"Module change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+            ShowErrorMessage($"Grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
     }
 
-    private void ApplyModuleChange(ModuleChangeResponse changeData)
+    private void ApplyModuleChange(ModuleGradeChangeResponse changeData)
     {
         if (changeData == null) return;
         if (m_myFleet == null) return;
@@ -670,19 +939,38 @@ public class UITabShip : UITabBase
         SpaceShip ship = m_myFleet.FindShip(changeData.shipId);
         if (ship == null) return;
 
-        ship.ApplyModuleChange(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex, changeData.moduleNewLevel, changeData.newUnlockedSubTypes);
-        ship.SetModuleInvestedModulePoint(changeData.bodyIndex, changeData.moduleTypeNew, changeData.slotIndex, changeData.investedModulePoint);
+        ship.ApplyModuleChange(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew,
+            changeData.slotIndex, changeData.moduleNewLevel);
+        ship.SetModuleInvestedModulePoint(changeData.bodyIndex, changeData.moduleTypeNew,
+            changeData.slotIndex, changeData.investedModulePoint);
 
         var character = DataManager.Instance.m_currentCharacter;
         if (character != null)
             character.UpdateModulePoint(changeData.modulePointRemain);
 
-
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
         {
             PopulateModuleSelectButtons();
-            ReselectReplacedModule(ship, changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew, changeData.slotIndex);
+            ReselectReplacedModule(ship, changeData.bodyIndex, changeData.moduleTypeNew,
+                changeData.moduleSubTypeNew, changeData.slotIndex);
         }
+    }
+
+    private EModuleSubType GetNextSubType(EModuleSubType subType)
+    {
+        int nextVal = (int)subType + 100;
+        return System.Enum.IsDefined(typeof(EModuleSubType), nextVal)
+            ? (EModuleSubType)nextVal
+            : EModuleSubType.none;
+    }
+
+    private EModuleSubType GetPrevSubType(EModuleSubType subType)
+    {
+        int prevVal = (int)subType - 100;
+        if (prevVal <= 0) return EModuleSubType.none;
+        return System.Enum.IsDefined(typeof(EModuleSubType), prevVal)
+            ? (EModuleSubType)prevVal
+            : EModuleSubType.none;
     }
 
     // 모듈 선택 버튼 생성 / 갱신
@@ -772,53 +1060,17 @@ public class UITabShip : UITabBase
     // 모듈 리셋
     // ─────────────────────────────────────────────
 
-    private void OnResetModuleClicked()
-    {
-        if (m_selectedShip == null || m_selectedModule == null) return;
-        if (m_selectedModule is ModulePlaceholder) return;
-
-        if (m_selectedModule.GetModuleType() == EModuleType.body)
-        {
-            // 기함이 아닌 경우 함선 전체 리셋
-            if (m_selectedShip.m_shipInfo.positionIndex != 0)
-            {
-                OnResetShipClicked();
-                return;
-            }
-            // 기함 body 리셋 — T1 레벨1로 되돌리기 (투자 광물 환급)
-        }
-
-        int mp = m_selectedModule.m_investedModulePoint;
-
-        // 기함 body 리셋: T1 레벨1에서 지원하지 않는 슬롯의 투자 포인트도 합산
-        if (m_selectedModule.GetModuleType() == EModuleType.body && m_selectedShip.m_shipInfo.positionIndex == 0)
-        {
-            int bodyIdx = m_selectedModule.GetModuleBodyIndex();
-            ModuleBody body = m_selectedShip.FindModuleBodyByIndex(bodyIdx);
-            ModuleData t1Data = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(EModuleSubType.body_t1_m1, 1);
-            if (body != null && t1Data != null)
-            {
-                foreach (var beam in body.m_beams)
-                    if (!IsSlotSupportedByT1(t1Data, EModuleType.beam, beam.GetSlotIndex())) mp += beam.m_investedModulePoint;
-                foreach (var missile in body.m_missiles)
-                    if (!IsSlotSupportedByT1(t1Data, EModuleType.missile, missile.GetSlotIndex())) mp += missile.m_investedModulePoint;
-                foreach (var hanger in body.m_hangers)
-                    if (!IsSlotSupportedByT1(t1Data, EModuleType.hanger, hanger.GetSlotIndex())) mp += hanger.m_investedModulePoint;
-            }
-        }
-
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            title        = LocalizationManager.Instance.Get("UITabShip_ModuleReset"),
-            message      = LocalizationManager.Instance.Get("UITabShip_ModuleResetConfirm"),
-            refundAmount = mp,
-            onConfirm    = ExecuteResetModule
-        });
-    }
-
     private void ExecuteResetModule()
     {
         if (m_selectedShip == null || m_selectedModule == null) return;
+
+        // 기함이 아닌 함선의 바디 리셋 = 자원 환급 + 함선 삭제
+        if (m_selectedModule.GetModuleType() == EModuleType.body && m_selectedShip.m_shipInfo.positionIndex != 0)
+        {
+            var removeReq = new ShipResetRemoveRequest { shipId = m_selectedShip.m_shipInfo.id };
+            NetworkManager.Instance.ResetAndRemoveShip(removeReq, OnResetAndRemoveShipResponse);
+            return;
+        }
 
         int slotIndex = m_selectedModule.GetModuleType() == EModuleType.body
             ? 0
@@ -826,12 +1078,48 @@ public class UITabShip : UITabBase
 
         var req = new ModuleResetRequest
         {
-            shipId    = m_selectedShip.m_shipInfo.id,
-            bodyIndex = m_selectedModule.GetModuleBodyIndex(),
+            shipId     = m_selectedShip.m_shipInfo.id,
+            bodyIndex  = m_selectedModule.GetModuleBodyIndex(),
             moduleType = m_selectedModule.GetModuleType(),
             slotIndex  = slotIndex
         };
         NetworkManager.Instance.ResetModule(req, OnResetModuleResponse);
+    }
+
+    private void OnResetAndRemoveShipResponse(ApiResponse<ShipResetRemoveResponse> response)
+    {
+        if (response.errorCode != 0)
+        {
+            ShowErrorMessage($"Reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+            return;
+        }
+
+        var data = response.data;
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+            character.UpdateModulePoint(data.modulePointRemain);
+
+        SpaceShip removedShip = m_myFleet.FindShip(data.removedShipId);
+        if (removedShip != null)
+            m_myFleet.RemoveShip(removedShip, refreshFormation: true);
+
+        if (data.updatedFleetInfo != null)
+            DataManager.Instance.SetFleetData(data.updatedFleetInfo);
+
+        EventManager.Trigger_FleetShipCountChanged();
+
+        // 기함으로 선택 전환
+        m_selectedShip   = m_myFleet.m_ships.Count > 0 ? m_myFleet.m_ships[0] : null;
+        m_selectedModule = m_selectedShip != null ? m_selectedShip.m_moduleBodys[0] : null;
+
+        if (m_selectedShip != null)
+        {
+            CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
+            EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, m_selectedModule);
+        }
+
+        UpdateShipHeader();
+        PopulateModuleSelectButtons();
     }
 
     private void OnResetModuleResponse(ApiResponse<ModuleResetResponse> response)
@@ -900,76 +1188,7 @@ public class UITabShip : UITabBase
         return false;
     }
 
-    private void OnResetShipClicked()
-    {
-        if (m_selectedShip == null) return;
-        if (m_selectedShip.m_shipInfo.positionIndex == 0)
-        {
-            ShowErrorMessage(LocalizationManager.Instance.Get("ship_reset_flagship_forbidden"));
-            return;
-        }
 
-        int totalMp = 0;
-        foreach (var body in m_selectedShip.m_moduleBodys)
-        {
-            totalMp += body.m_investedModulePoint;
-            foreach (var slot in body.m_moduleSlots)
-            {
-                if (slot.transform.childCount == 0) continue;
-                ModuleBase mod = slot.GetComponentInChildren<ModuleBase>();
-                if (mod == null || mod is ModulePlaceholder) continue;
-                totalMp += mod.m_investedModulePoint;
-            }
-        }
-
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            title        = LocalizationManager.Instance.Get("ship_reset"),
-            message      = LocalizationManager.Instance.Get("ship_reset_confirm"),
-            refundAmount = totalMp,
-            onConfirm    = ExecuteResetShip
-        });
-    }
-
-    private void ExecuteResetShip()
-    {
-        if (m_selectedShip == null) return;
-        var req = new ShipResetRemoveRequest { shipId = m_selectedShip.m_shipInfo.id };
-        NetworkManager.Instance.ResetAndRemoveShip(req, OnResetShipResponse);
-    }
-
-    private void OnResetShipResponse(ApiResponse<ShipResetRemoveResponse> response)
-    {
-        if (response.errorCode != 0)
-        {
-            ShowErrorMessage($"Ship reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
-            return;
-        }
-
-        var data = response.data;
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateModulePoint(data.modulePointRemain);
-
-        if (data.updatedFleetInfo != null)
-            DataManager.Instance.SetFleetData(data.updatedFleetInfo);
-
-        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
-        if (fleet != null)
-        {
-            SpaceShip removed = fleet.FindShip(data.removedShipId);
-            if (removed != null)
-                fleet.RemoveShip(removed, refreshFormation: true);
-            m_myFleet = fleet;
-        }
-
-        EventManager.Trigger_FleetShipCountChanged();
-
-        m_selectedShip   = null;
-        m_selectedModule = null;
-        if (m_myFleet != null && m_myFleet.m_ships.Count > 0)
-            SelectShip(m_myFleet.m_ships[0]);
-    }
 
     // 모듈 교체/해금 후 새로 생성된 모듈을 다시 선택
     private void ReselectReplacedModule(SpaceShip targetShip, int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex)

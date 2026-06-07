@@ -912,6 +912,26 @@ MonoBehaviour:
       \uBA3C\uC800 \uC9C4\uD589\uD558\uC138\uC694."
     m_Metadata:
       m_Items: []
+  - m_Id: 43020881605033984
+    m_Localized: "\uD22C\uC785"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43020881659559936
+    m_Localized: "\uD68C\uC218"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43020881659559937
+    m_Localized: "\uD22C\uC785"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43020881659559938
+    m_Localized: "\uD68C\uC218"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43056462032666624
+    m_Localized: "\uC870\uAC74\uBD80\uC871"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

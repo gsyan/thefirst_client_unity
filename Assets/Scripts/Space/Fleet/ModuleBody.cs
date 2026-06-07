@@ -90,7 +90,6 @@ public class ModuleBody : ModuleBase
     {
         m_moduleBodyInfo = moduleBodyInfo;
         m_moduleSlot = null;
-        SetUnlockedSubTypes(moduleBodyInfo.unlockedSubTypes);
         SetInvestedModulePoint(moduleBodyInfo.investedModulePoint);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
@@ -603,7 +602,6 @@ public class ModuleBody : ModuleBase
             }
         }
 
-        // 새 모듈 생성 (기존 모듈의 unlockedSubTypes 이어받기)
         ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel);
 
         // 전투 중 추가 시 즉시 전함 상태 적용 (뚜껑 열림 등 애니메이터 반영)

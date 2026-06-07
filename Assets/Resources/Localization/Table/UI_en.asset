@@ -899,6 +899,26 @@ MonoBehaviour:
     m_Localized: 'Tip: Run explorations to gather resources when you run short.'
     m_Metadata:
       m_Items: []
+  - m_Id: 43020881605033984
+    m_Localized: INVEST
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43020881659559936
+    m_Localized: REFUND
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43020881659559937
+    m_Localized: INVEST
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43020881659559938
+    m_Localized: REFUND
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43056462032666624
+    m_Localized: REQUIRE
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

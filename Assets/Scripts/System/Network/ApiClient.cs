@@ -430,9 +430,9 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<ChangeTacticOptionsResponse>>(webRequest.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<ModuleLevelUpResponse>> LevelUpModuleAsync(ModuleLevelUpRequest request)
+    public async Task<ApiResponse<ModuleLevelChangeResponse>> LevelUpModuleAsync(ModuleLevelChangeRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleLevelUpResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleLevelChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module LevelUp Request: {json}");
@@ -445,19 +445,19 @@ public class ApiClient
 
         await SendRequestAsync(webRequest);
 
-        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleLevelUpResponse>>(webRequest.downloadHandler.text);
+        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleLevelChangeResponse>>(webRequest.downloadHandler.text);
         Debug.Log($"Module LevelUp Response: {webRequest.downloadHandler.text}");
         return response;
     }
 
-    public async Task<ApiResponse<ModuleChangeResponse>> ChangeModuleAsync(ModuleChangeRequest request)
+    public async Task<ApiResponse<ModuleLevelChangeResponse>> LevelDownModuleAsync(ModuleLevelChangeRequest request)
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleLevelChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
-        Debug.Log($"Module Change Request: {json}");
+        Debug.Log($"Module LevelDown Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/change-module", "POST");
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/leveldown-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -465,8 +465,48 @@ public class ApiClient
 
         await SendRequestAsync(webRequest);
 
-        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleChangeResponse>>(webRequest.downloadHandler.text);
-        Debug.Log($"Module Change Response: {webRequest.downloadHandler.text}");
+        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleLevelChangeResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Module LevelDown Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
+    public async Task<ApiResponse<ModuleGradeChangeResponse>> GradeUpModuleAsync(ModuleGradeChangeRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleGradeChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"Module GradeUp Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/gradeup-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleGradeChangeResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Module GradeUp Response: {webRequest.downloadHandler.text}");
+        return response;
+    }
+
+    public async Task<ApiResponse<ModuleGradeChangeResponse>> GradeDownModuleAsync(ModuleGradeChangeRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ModuleGradeChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        Debug.Log($"Module GradeDown Request: {json}");
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/gradedown-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+
+        var response = JsonConvert.DeserializeObject<ApiResponse<ModuleGradeChangeResponse>>(webRequest.downloadHandler.text);
+        Debug.Log($"Module GradeDown Response: {webRequest.downloadHandler.text}");
         return response;
     }
 

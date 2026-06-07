@@ -560,10 +560,16 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.UnlockModuleAsync(request), onComplete));
     }
 
-    public void LevelUpModule(ModuleLevelUpRequest request, System.Action<ApiResponse<ModuleLevelUpResponse>> onComplete)
+    public void LevelUpModule(ModuleLevelChangeRequest request, System.Action<ApiResponse<ModuleLevelChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.LevelUpModuleAsync(request), onComplete));
+    }
+
+    public void LevelDownModule(ModuleLevelChangeRequest request, System.Action<ApiResponse<ModuleLevelChangeResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.LevelDownModuleAsync(request), onComplete));
     }
 
     public void ResearchTechLevel(TechLevelResearchRequest request, System.Action<ApiResponse<TechLevelResearchResponse>> onComplete)
@@ -572,13 +578,19 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ResearchTechLevelAsync(request), onComplete));
     }
 
-    public void ChangeModule(ModuleChangeRequest request, System.Action<ApiResponse<ModuleChangeResponse>> onComplete)
+    public void GradeUpModule(ModuleGradeChangeRequest request, System.Action<ApiResponse<ModuleGradeChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ChangeModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.GradeUpModuleAsync(request), onComplete));
     }
 
-    
+    public void GradeDownModule(ModuleGradeChangeRequest request, System.Action<ApiResponse<ModuleGradeChangeResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.GradeDownModuleAsync(request), onComplete));
+    }
+
+
 
     // public void AddModuleBody(ModuleBodyAddRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
     // {

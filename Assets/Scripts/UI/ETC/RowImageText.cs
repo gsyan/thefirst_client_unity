@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class RowImageText : MonoBehaviour
 {
-    [SerializeField] private Image m_image;
+    [SerializeField] private Image    m_image;
     [SerializeField] private TMP_Text m_text;
+    [SerializeField] private string   m_imageColorKey = "GeneralBright1";
+    [SerializeField] private string   m_textColorKey  = "GeneralBright1";
 
     private void Awake()
     {
@@ -19,7 +21,8 @@ public class RowImageText : MonoBehaviour
     public void SetRow(string spriteName, string text)
     {
         SetImage(spriteName);
-        SetImageColor(CommonUtility.PaletteColor("GeneralBright1"));
+        SetImageColor(CommonUtility.PaletteColor(m_imageColorKey));
+        SetTextColor(CommonUtility.PaletteColor(m_textColorKey));
         SetTextWithString(text);
     }
 
@@ -40,6 +43,12 @@ public class RowImageText : MonoBehaviour
     {
         if (m_image == null) return;
         m_image.color = color;
+    }
+
+    public void SetTextColor(Color color)
+    {
+        if (m_text == null) return;
+        m_text.color = color;
     }
 
     public void SetTextWithString(string text)

@@ -69,7 +69,6 @@ public class ModuleHanger : ModuleBase
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
-        SetUnlockedSubTypes(moduleInfo.unlockedSubTypes);
         SetInvestedModulePoint(moduleInfo.investedModulePoint);
 
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);

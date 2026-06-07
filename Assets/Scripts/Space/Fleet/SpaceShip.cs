@@ -1016,7 +1016,7 @@ public class SpaceShip : MonoBehaviour
     }
 
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
-    public void ApplyModuleChange(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel, List<EModuleSubType> newUnlockedSubTypes = null)
+    public void ApplyModuleChange(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel)
     {
         if (moduleType == EModuleType.body)
         {
@@ -1041,14 +1041,6 @@ public class SpaceShip : MonoBehaviour
             // 전투 중 교체된 모듈에 현재 타겟 재전파
             if (m_currentTargetBody != null && m_currentTargetBody.m_health > 0)
                 body.SetTarget(m_currentTargetBody);
-        }
-
-        // 서버에서 받은 unlock 목록으로 새 모듈 갱신
-        if (newUnlockedSubTypes != null)
-        {
-            ModuleBase newModule = FindModule(bodyIndex, moduleType, slotIndex);
-            if (newModule != null)
-                newModule.SetUnlockedSubTypes(newUnlockedSubTypes);
         }
 
         // Outline 갱신 (새로 생성된 모듈들을 포함하도록)

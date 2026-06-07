@@ -268,7 +268,11 @@ public class UITabExploration : UITabBase
 
     private void ReturnFleetView()
     {
-        int fleetZoneIndex = m_currentZoneStage != null ? m_currentZoneStage.zoneIndex : 1;
+        int fleetZoneIndex;
+        if (m_battleZoneStage != null)
+            fleetZoneIndex = m_battleZoneStage.zoneIndex;
+        else
+            fleetZoneIndex = m_currentZoneStage != null ? m_currentZoneStage.zoneIndex : 1;
         ObjectManager.Instance.ChangeZone(fleetZoneIndex);
 
         Vector3 targetCameraPosition;
@@ -471,7 +475,6 @@ public class UITabExploration : UITabBase
 
         m_pendingFleetPos  = m_datatableZone.ResolveFleetWorldPosition(zoneStage);
         m_pendingFleetRotY = zoneStage.fleetRotationY;
-        ObjectManager.Instance.ChangeZone(zoneStage.zoneIndex);
 
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
         SetTabButtonsVisible(false, includeSelf: true);
@@ -778,7 +781,7 @@ public class UITabExploration : UITabBase
         ObjectManager.Instance.CleanupAllProjectiles();
         ObjectManager.Instance.RemoveAllEnemyFleets();
 
-        ZoneStageConfig retreatStage = FindPreviousClearedStage();
+        ZoneStageConfig retreatStage = m_currentZoneStage;
 
         Vector3 retreatPosition;
         float retreatRotationY;
@@ -790,9 +793,8 @@ public class UITabExploration : UITabBase
         }
         else
         {
-            // 한 스테이지도 클리어 못했으므로 해당 존 x-0 스폰 마커로 복귀
-            int currentGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : 1;
-            ZoneStageConfig spawnStage = m_datatableZone.GetZoneFirstStage(currentGroup);
+            // 한 스테이지도 클리어 못한 신규 유저 → 존1-0 스폰 마커로 복귀
+            ZoneStageConfig spawnStage = m_datatableZone.GetZoneFirstStage(1);
             retreatPosition  = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
             retreatRotationY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
         }
@@ -823,23 +825,26 @@ public class UITabExploration : UITabBase
         CameraController.Instance.ExitGalaxyView(retreatPosition);
         // CloseAllTabs 전에 함대 상태를 battle -> warp 로 변경
         SetFleetState(EUnitState.Warp);
+        // CloseAllTabs → OnTabDeactivated → ReturnFleetView 호출 시 battleZoneStage 기반 워프인 구독을 막기 위해 먼저 null 처리
+        m_battleZoneStage = null;
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
         SetTabButtonsVisible(false, includeSelf: true);
 
-        ObjectManager.Instance.SetMyFleetPosition(retreatPosition, retreatRotationY);
-
-        int retreatGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : (m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1);
+        int retreatGroup = m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1;
         if (retreatGroup <= 0) retreatGroup = 1;
+
+        ObjectManager.Instance.ChangeZone(retreatGroup);
+        ObjectManager.Instance.SetMyFleetPosition(retreatPosition, retreatRotationY);
 
         m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
             SetTabButtonsVisible(true, includeSelf: true);
             CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 
-            m_battleZoneStage = null;
             RefreshCurrentZoneStageButton();
 
             SetFleetState(EUnitState.Idle);
+            
             UpdateGroupTabVisual(retreatGroup);
             SetupButtonsForGroup(retreatGroup);
 
@@ -890,32 +895,4 @@ public class UITabExploration : UITabBase
         SetupButtonsForGroup(battleGroup);
     }
 
-    // 현재 존에서 클리어한 스테이지 중 가장 높은 것 반환 — 없으면 null(→ 해당 존 최초지점으로 복귀)
-    private ZoneStageConfig FindPreviousClearedStage()
-    {
-        if (m_battleZoneStage == null) return null;
-
-        int group = ParseZoneGroup(m_battleZoneStage.zoneName);
-        var cleared = m_myCharacter?.m_characterInfo.clearedZones;
-        if (cleared == null || cleared.Count == 0) return null;
-
-        ZoneStageConfig highestCleared = null;
-        int highestStageNum = -1;
-
-        for (int i = 0; i < m_datatableZone.ZoneStageCount; i++)
-        {
-            ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
-            if (zs == null || ParseZoneGroup(zs.zoneName) != group) continue;
-            if (cleared.Contains(zs.zoneName) == false) continue;
-
-            int stageNum = ParseZoneStage(zs.zoneName);
-            if (stageNum > highestStageNum)
-            {
-                highestStageNum = stageNum;
-                highestCleared = zs;
-            }
-        }
-
-        return highestCleared;
-    }
 }

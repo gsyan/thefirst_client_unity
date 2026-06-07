@@ -5,10 +5,9 @@ using TMPro;
 public class UITabFleet : UITabBase
 {
     [Header("함선 선택 UI 부모")]
-    [SerializeField] private GameObject m_shipSelectorsObj;
+    [SerializeField] private RectTransform m_shipSelectorContainer;
     private ShipSelector[] m_shipSelectors;
 
-    [SerializeField] private GameObject m_addShipContainer;
     [SerializeField] private Button m_addShipButton;
     [SerializeField] private TMP_Text m_currentShipCountStatText;
 
@@ -20,6 +19,7 @@ public class UITabFleet : UITabBase
     private Character m_myCharacter;
     private SpaceFleet m_myFleet;
     private ShipSelector m_selectedShipSelector;
+    private bool m_needsLayoutRebuild = false;
 
     public override void InitializeUITab()
     {
@@ -32,8 +32,8 @@ public class UITabFleet : UITabBase
         if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
         m_myFleet = m_myCharacter.GetOwnedFleet();
 
-        if (m_shipSelectorsObj != null)
-            m_shipSelectors = m_shipSelectorsObj.GetComponentsInChildren<ShipSelector>(true);
+        if (m_shipSelectorContainer != null)
+            m_shipSelectors = m_shipSelectorContainer.GetComponentsInChildren<ShipSelector>(true);
         if (m_myFleet == null) return;
 
         m_fleetManageButton.onClick.AddListener(OnFleetTacticsButtonClicked);
@@ -55,6 +55,14 @@ public class UITabFleet : UITabBase
         base.OnTabActivated();
         SetTabButtonsVisible(false, includeSelf: true);
         UpdateTechLevelDisplay();
+
+        if (m_needsLayoutRebuild == true)
+        {
+            m_needsLayoutRebuild = false;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipSelectorContainer);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+        }
+
         RefreshShipHealthDisplay();
 
         // 선택된 함선이 없으면 살아있는 첫 함선 자동 선택
@@ -159,6 +167,12 @@ public class UITabFleet : UITabBase
     {
         if (m_shipSelectors == null || m_myFleet == null) return;
 
+        SpaceShip prevShip = m_selectedShipSelector != null ? m_selectedShipSelector.Ship : null;
+
+        // 이전 선택 아웃라인 정리
+        if (prevShip != null)
+            prevShip.m_shipOutline.enabled = false;
+
         m_selectedShipSelector = null;
 
         int shipCount  = m_myFleet.m_ships.Count;
@@ -174,6 +188,15 @@ public class UITabFleet : UITabBase
                 m_shipSelectors[i].gameObject.SetActive(true);
                 SpaceShip captured = m_myFleet.m_ships[i];
                 m_shipSelectors[i].InitializeShipSelector(captured, () => OnShipSelectorClicked(captured), OnShipManageClicked);
+
+                // 이전 선택 함선 복원
+                if (captured == prevShip)
+                {
+                    m_selectedShipSelector = m_shipSelectors[i];
+                    m_selectedShipSelector.SetSelected(true);
+                    if (gameObject.activeInHierarchy == true)
+                        prevShip.m_shipOutline.enabled = true;
+                }
             }
             else
             {
@@ -181,11 +204,18 @@ public class UITabFleet : UITabBase
             }
         }
 
-        if (m_addShipContainer != null) m_addShipContainer.SetActive(canAdd);
+        if (m_addShipButton != null) m_addShipButton.gameObject.SetActive(canAdd);
         UpdateShipCountDisplay();
 
-        if (m_shipSelectorsObj != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipSelectorsObj.GetComponent<RectTransform>());
+        if (gameObject.activeInHierarchy == true)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipSelectorContainer);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+        }
+        else
+        {
+            m_needsLayoutRebuild = true;
+        }
     }
 
     private void UpdateShipCountDisplay()

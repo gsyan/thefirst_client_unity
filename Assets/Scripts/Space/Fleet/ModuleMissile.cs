@@ -56,7 +56,6 @@ public class ModuleMissile : ModuleBase
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
-        SetUnlockedSubTypes(moduleInfo.unlockedSubTypes);
         SetInvestedModulePoint(moduleInfo.investedModulePoint);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원

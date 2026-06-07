@@ -16,16 +16,8 @@ public class ModuleBase : MonoBehaviour
     [HideInInspector] public long m_modulePointCostLevelup;
     [HideInInspector] public int m_mineralCost;
 
-    // 이 슬롯에서 subTypeAddCost 납부 이력 (비용 없이 교체 가능한 서브타입 목록)
-    [HideInInspector] public List<EModuleSubType> m_unlockedSubTypes = new List<EModuleSubType>();
-
     // 리셋 시 환급할 투자 이력
     [HideInInspector] public int m_investedModulePoint;
-
-    public void SetUnlockedSubTypes(List<EModuleSubType> list)
-    {
-        m_unlockedSubTypes = list ?? new List<EModuleSubType>();
-    }
 
     public void SetInvestedModulePoint(int modulePoint)
     {
@@ -37,11 +29,6 @@ public class ModuleBase : MonoBehaviour
         return m_investedModulePoint > 0;
     }
 
-    public bool IsSubTypeUnlocked(EModuleSubType subType)
-    {
-        return m_unlockedSubTypes != null && m_unlockedSubTypes.Contains(subType);
-    }
-    
     // 함대 정보
     protected SpaceFleet m_myFleet;
     protected SpaceShip m_myShip;
