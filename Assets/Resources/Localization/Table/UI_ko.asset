@@ -876,11 +876,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 40210342097059841
-    m_Localized: "\uBBF8\uB124\uB784 \uBCF4\uC0C1 {0}\uBC30"
+    m_Localized: "\uC2A4\uD14C\uC774\uC9C0 \uBBF8\uB124\uB784 \uBCF4\uC0C1 {0}\uBC30
+      & \uD568\uC120 \uCCB4\uB825 \uC989\uC2DC \uD68C\uBCF5"
     m_Metadata:
       m_Items: []
   - m_Id: 40210342097059842
-    m_Localized: "\uB9E4\uC77C \uBBF8\uB124\uB784 +{0}"
+    m_Localized: "\uB9E4\uC77C \uB85C\uADF8\uC778\uC2DC \uBBF8\uB124\uB784 +{0}"
     m_Metadata:
       m_Items: []
   - m_Id: 40229268445069312

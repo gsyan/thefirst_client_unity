@@ -868,11 +868,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 40210342097059841
-    m_Localized: Mineral Rewards x {0}
+    m_Localized: Stage Mineral Rewards x {0} & Instant Fleet HP Restore
     m_Metadata:
       m_Items: []
   - m_Id: 40210342097059842
-    m_Localized: Daily {0} Minerals
+    m_Localized: Daily Login Rewards {0} Minerals
     m_Metadata:
       m_Items: []
   - m_Id: 40229268445069312

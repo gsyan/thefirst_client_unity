@@ -217,8 +217,8 @@ UIVipStatus_BenefitTitle,,ADMIRAL's Benefit,제독 혜택
 UIVipStatus_Expired,,(Expired),(만료)
 UIVipStatus_ExpiryDays,,(D-{0}),(D-{0})
 UIVipStatus_Benefit_NoAds,,No Ads,광고 없음
-UIVipStatus_Benefit_Mineral,,Mineral Rewards x {0},미네랄 보상 {0}배
-UIVipStatus_Benefit_Daily,,Daily {0} Minerals,매일 미네랄 +{0}
+UIVipStatus_Benefit_Mineral,,Stage Mineral Rewards x {0} & Instant Fleet HP Restore,스테이지 미네랄 보상 {0}배 & 함선 체력 즉시 회복
+UIVipStatus_Benefit_Daily,,Daily Login Rewards {0} Minerals,매일 로그인시 미네랄 +{0}
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
 UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}day(s) Left),{0} ({1} 패스 D-{2})
 loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.

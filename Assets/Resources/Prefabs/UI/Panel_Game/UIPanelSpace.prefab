@@ -44957,7 +44957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.50980395, a: 1}
+  m_Color: {r: 0.12615699, g: 0.43595225, b: 0.764151, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -61368,7 +61368,7 @@ MonoBehaviour:
   - graphic: {fileID: 5261692998961549049}
     colorRole: General
   - graphic: {fileID: 4951679389283788521}
-    colorRole: GeneralBright1
+    colorRole: ModulePoint
   - graphic: {fileID: 1127781085521176140}
     colorRole: GeneralDark2
   - graphic: {fileID: 8358717242418630095}
@@ -66792,7 +66792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.50980395, a: 1}
+  m_Color: {r: 0.5450981, g: 0.2705882, b: 0.07450981, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -72398,7 +72398,7 @@ MonoBehaviour:
   - graphic: {fileID: 36480619211587714}
     colorRole: General
   - graphic: {fileID: 8164872334966847751}
-    colorRole: GeneralBright1
+    colorRole: TechPoint
   - graphic: {fileID: 5818859552005244532}
     colorRole: GeneralDark1
   - graphic: {fileID: 4037770666180282562}
