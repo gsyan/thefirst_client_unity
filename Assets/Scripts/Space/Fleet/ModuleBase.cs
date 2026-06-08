@@ -147,12 +147,6 @@ public class ModuleBase : MonoBehaviour
         return m_myShip;
     }
 
-    // 팝업용 아이콘+수치 문자열 반환 (fromLevel == toLevel이면 단순 현재 수치 표시, 다르면 "현재 → 다음" 비교 표시 용도)
-    public virtual string GetDetailText(int fromLevel, int toLevel)
-    {
-        return CommonUtility.GetModuleDetailText(GetModuleType(), GetModuleSubType(), fromLevel, toLevel);
-    }
-
     // 모듈의 능력치 프로파일 반환 (하위 클래스에서 override)
     public virtual CapabilityProfile GetModuleCapabilityProfile(bool bByInfo = true)
     {

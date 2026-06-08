@@ -381,37 +381,6 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupConfirm(config);
     }
 
-
-    // PvP 전체 랭킹 팝업
-    public void ShowRankingPopup()
-    {
-        UIPopupRanking popup = GetOrCreatePopup<UIPopupRanking>("UIPopupRanking", EPopupLayer.Normal);
-        if (popup == null) return;
-
-        ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopupRanking(() => CloseTopPopup(EPopupLayer.Normal));
-    }
-
-    // 진형 선택 팝업
-    public void ShowFormationPopup(EFormationType currentFormationType, System.Action<EFormationType> onSelected)
-    {
-        UIPopupFormation popup = GetOrCreatePopup<UIPopupFormation>("UIPopupFormation", EPopupLayer.Normal);
-        if (popup == null) return;
-
-        ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopup(currentFormationType, onSelected);
-    }
-
-    // 모듈 서브타입 관리 팝업 (서브타입 교체 선택)
-    public void ShowModuleSubTypeManagePopup(ModuleBase sourceModule, System.Action<EModuleSubType> onConfirm)
-    {
-        UIPopupModuleSubTypeManage popup = GetOrCreatePopup<UIPopupModuleSubTypeManage>("UIPopupModuleSubTypeManage", EPopupLayer.Normal);
-        if (popup == null) return;
-
-        ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopup(sourceModule, onConfirm);
-    }
-
     // 캐릭터 이름 변경 팝업
     public void ShowRenameCharacterPopup(System.Action onRenameSuccess = null)
     {

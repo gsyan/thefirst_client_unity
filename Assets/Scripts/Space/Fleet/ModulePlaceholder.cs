@@ -62,13 +62,6 @@ public class ModulePlaceholder : ModuleBase
         m_attack = 0f;
     }
     
-    // 플레이스홀더: default subType 기준 Lv.1 수치 반환
-    public override string GetDetailText(int fromLevel, int toLevel)
-    {
-        EModuleType moduleType = GetModuleType();
-        EModuleSubType defaultSubType = CommonUtility.GetDefaultSubType(moduleType);
-        return CommonUtility.GetModuleDetailText(moduleType, defaultSubType, fromLevel, toLevel);
-    }
-
+    
 
 }

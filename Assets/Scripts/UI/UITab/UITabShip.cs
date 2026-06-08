@@ -25,9 +25,6 @@ public class UITabShip : UITabBase
     [SerializeField] private RectTransform m_moduleHangerSelectButtonContainer;
 
 
-    [Header("함선 스탯 디테일")]
-    [SerializeField] private Button m_btnShipStatsDetail;
-
     [Header("모듈 디테일 카드")]
     [SerializeField] private TMP_Text   m_moduleSubTypeText;
     [SerializeField] private GameObject m_moduleLevelName;
@@ -112,7 +109,6 @@ public class UITabShip : UITabBase
         m_gradeUpModuleButton.GetButton().onClick.AddListener(OnGradeUpClicked);
         m_levelDownModuleButton.GetButton().onClick.AddListener(OnLevelDownClicked);
         m_levelUpModuleButton.GetButton().onClick.AddListener(OnLevelUpClicked);
-        if (m_btnShipStatsDetail != null) m_btnShipStatsDetail.onClick.AddListener(OnShipStatsDetailClicked);
         //if (m_btnResetModule != null) m_btnResetModule.onClick.AddListener(OnResetModuleClicked);
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
@@ -274,29 +270,6 @@ public class UITabShip : UITabBase
             m_aircraftStatRows[1].SetRow("jet-fighter", $"{statsOrg.airCount}");
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_aircraftRitContainer as RectTransform);
         }
-    }
-
-    private void OnShipStatsDetailClicked()
-    {
-        if (m_selectedShip == null) return;
-
-        CapabilityProfile org = m_selectedShip.m_spaceShipStatsOrg;
-        CapabilityProfile cur = m_selectedShip.m_spaceShipStatsCur;
-
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"{CommonUtility.Sprite("bubbling-beam")} (Attack)  {cur.attack:F0}");
-        sb.Append($"{CommonUtility.Sprite("techno-heart")} (HP)  {org.health:F0}" );
-        sb.AppendLine($"{CommonUtility.Sprite("auto-repair")} (Repair)  {cur.repair:F0}");
-        sb.AppendLine($"{CommonUtility.Sprite("rocket-thruster")} (Speed)  {cur.speed:F0}");
-
-        if (org.airCount > 0)
-        {
-            sb.AppendLine();
-            sb.AppendLine($"{CommonUtility.Sprite("strafe")} (Aircraft Attack)  {cur.airAttack:F0}");
-            sb.AppendLine($"{CommonUtility.Sprite("jet-fighter")} (Aircraft Count)  {org.airCount:F0}");
-        }
-
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig { title = m_selectedShip.m_shipInfo.shipName, message = sb.ToString(), autoCloseSec = 5f });
     }
 
     // ─────────────────────────────────────────────

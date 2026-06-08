@@ -278,25 +278,6 @@ public static class CommonUtility
 
         return rows;
     }
-
-    // 모듈 스탯을 인라인 스프라이트 문자열로 반환 (팝업 bodyText용)
-    public static string GetModuleDetailText(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel, string separator = " ")
-    {
-        bool showRange = fromLevel != toLevel;
-        string levelStr = showRange
-            ? $"{Sprite("progression")} {fromLevel} → {toLevel}"
-            : $"{Sprite("progression")} {fromLevel}";
-
-        var statRows = GetModuleStatRows(moduleType, subType, fromLevel, toLevel);
-        if (statRows == null) return string.Empty;
-
-        var stats = new List<string> { levelStr };
-        foreach (var (icon, value) in statRows)
-            stats.Add($"{Sprite(icon)} {value}");
-
-        return string.Join(separator, stats);
-    }
-
     
     #endregion Module Type end -----------------------------------------------------------------------------------
 
@@ -329,12 +310,6 @@ public static class CommonUtility
     public static string FormatBigNumber(long value)
     {
         return FormatBigNumber((float)value);
-    }
-
-    // 텍스트 내 스프라이트 크기 조정 (기본 130%)
-    public static string Sprite(string name, float sizePercent = 150f)
-    {
-        return $"<size={sizePercent:F0}%><sprite name=\"{name}\"></size>";
     }
 
     public static Color HexColor(string hex)
