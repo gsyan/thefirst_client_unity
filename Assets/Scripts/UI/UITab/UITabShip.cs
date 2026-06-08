@@ -66,6 +66,7 @@ public class UITabShip : UITabBase
 
     private SpaceShip  m_selectedShip;
     private ModuleBase m_selectedModule;
+    private bool       m_bModuleChanging = false;
 
 
     // 행별 셀렉터 캐시 (prefab에 미리 배치된 버튼들)
@@ -398,6 +399,7 @@ public class UITabShip : UITabBase
 
     private void OnLevelUpClicked()
     {
+        if (m_bModuleChanging == true) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
@@ -429,11 +431,13 @@ public class UITabShip : UITabBase
             currentLevel  = currentLevel,
             targetLevel   = targetLevel
         };
+        m_bModuleChanging = true;
         NetworkManager.Instance.LevelUpModule(req, OnLevelUpResponse);
     }
 
     private void OnLevelDownClicked()
     {
+        if (m_bModuleChanging == true) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
@@ -461,11 +465,13 @@ public class UITabShip : UITabBase
             currentLevel  = currentLevel,
             targetLevel   = currentLevel - 1  // Lv.1이면 0 → 서버에서 이전 단계 맥스레벨 처리
         };
+        m_bModuleChanging = true;
         NetworkManager.Instance.LevelDownModule(req, OnLevelDownResponse);
     }
 
     private void OnLevelUpResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
+        m_bModuleChanging = false;
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
@@ -485,6 +491,7 @@ public class UITabShip : UITabBase
 
     private void OnLevelDownResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
+        m_bModuleChanging = false;
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
@@ -864,6 +871,7 @@ public class UITabShip : UITabBase
 
     private void OnGradeUpClicked()
     {
+        if (m_bModuleChanging == true) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
@@ -875,6 +883,7 @@ public class UITabShip : UITabBase
 
     private void OnGradeDownClicked()
     {
+        if (m_bModuleChanging == true) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
@@ -902,6 +911,7 @@ public class UITabShip : UITabBase
             moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
             moduleSubTypeNew     = targetSubType
         };
+        m_bModuleChanging = true;
         NetworkManager.Instance.GradeUpModule(req, OnGradeChangeResponse);
     }
 
@@ -920,11 +930,13 @@ public class UITabShip : UITabBase
             moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
             moduleSubTypeNew     = targetSubType
         };
+        m_bModuleChanging = true;
         NetworkManager.Instance.GradeDownModule(req, OnGradeChangeResponse);
     }
 
     private void OnGradeChangeResponse(ApiResponse<ModuleGradeChangeResponse> response)
     {
+        m_bModuleChanging = false;
         if (response.errorCode == 0)
             ApplyModuleChange(response.data);
         else
@@ -1068,6 +1080,7 @@ public class UITabShip : UITabBase
         if (m_selectedModule.GetModuleType() == EModuleType.body && m_selectedShip.m_shipInfo.positionIndex != 0)
         {
             var removeReq = new ShipResetRemoveRequest { shipId = m_selectedShip.m_shipInfo.id };
+            m_bModuleChanging = true;
             NetworkManager.Instance.ResetAndRemoveShip(removeReq, OnResetAndRemoveShipResponse);
             return;
         }
@@ -1083,11 +1096,13 @@ public class UITabShip : UITabBase
             moduleType = m_selectedModule.GetModuleType(),
             slotIndex  = slotIndex
         };
+        m_bModuleChanging = true;
         NetworkManager.Instance.ResetModule(req, OnResetModuleResponse);
     }
 
     private void OnResetAndRemoveShipResponse(ApiResponse<ShipResetRemoveResponse> response)
     {
+        m_bModuleChanging = false;
         if (response.errorCode != 0)
         {
             ShowErrorMessage($"Reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
@@ -1124,6 +1139,7 @@ public class UITabShip : UITabBase
 
     private void OnResetModuleResponse(ApiResponse<ModuleResetResponse> response)
     {
+        m_bModuleChanging = false;
         if (response.errorCode != 0)
         {
             ShowErrorMessage($"Reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
