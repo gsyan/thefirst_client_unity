@@ -43,7 +43,6 @@ public class UITabShip : UITabBase
     [SerializeField] private UIButtonHasChildren    m_gradeUpModuleButton;
     [SerializeField] private TMP_Text               m_gradeUpModuleButtonText1;
     [SerializeField] private RowImageText           m_gradeUpModuleButtonText2;
-    [SerializeField] private TMP_Text               m_gradeUpModuleButtonText3;
 
     [SerializeField] private UIButtonHasChildren    m_levelDownModuleButton;
     [SerializeField] private TMP_Text               m_levelDownModuleButtonText1;
@@ -114,6 +113,19 @@ public class UITabShip : UITabBase
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
         EventManager.Subscribe_ShipUpdateHP(UpdateShipHeader);
         EventManager.Subscribe_SpaceShipModuleSelected(OnSpaceShipModuleSelected);
+        EventManager.Subscribe_ModulePointChanged(OnModulePointChanged);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_ModulePointChanged(OnModulePointChanged);
+    }
+
+    private void OnModulePointChanged(int modulePoint)
+    {
+        if (bShow == false) return;
+        if (m_selectedModule == null || m_selectedModule is ModulePlaceholder) return;
+        RefreshModuleActionButtons();
     }
 
     public override void OnTabActivated()
@@ -248,7 +260,7 @@ public class UITabShip : UITabBase
         if (m_selectedShip == null) return;
 
         if (m_textShipName != null)
-            m_textShipName.text = m_selectedShip.m_shipInfo.shipName;
+            m_textShipName.text = CommonUtility.GetShipDisplayName(m_selectedShip);
 
         CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
@@ -634,59 +646,47 @@ public class UITabShip : UITabBase
         EModuleSubType nextSubType = GetNextSubType(subType);
         EModuleSubType prevSubType = GetPrevSubType(subType);
 
-        RefreshGradeUpButton(nextSubType, isMaxLevel, playerTech, playerPoint);
+        RefreshGradeUpButton(subType, level, nextSubType, playerTech, playerPoint);
         RefreshGradeDownButton(subType, level, prevSubType);
         RefreshLevelUpButton(subType, level, isMaxLevel, playerTech, playerPoint);
         RefreshLevelDownButton(subType, level, prevSubType);
     }
 
-    private void RefreshGradeUpButton(EModuleSubType nextSubType, bool isMaxLevel, int playerTech, long playerPoint)
+    private void RefreshGradeUpButton(EModuleSubType subType, int level, EModuleSubType nextSubType, int playerTech, long playerPoint)
     {
         if (nextSubType == EModuleSubType.none)
         {
             m_gradeUpModuleButton.SetInteractable(false);
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
             m_gradeUpModuleButtonText2.Hide();
-            if (m_gradeUpModuleButtonText3 != null) m_gradeUpModuleButtonText3.text = "";
             return;
         }
 
-        long gradeUpCost = DataManager.Instance.m_dataTableResearch.GetResearchCost(nextSubType);
-        int  reqTier     = nextSubType.GetTechTier();
-        bool hasTech     = playerTech >= reqTier;
-        bool hasPoint    = playerPoint >= gradeUpCost;
-        bool canUpgrade  = isMaxLevel == true && hasTech == true && hasPoint == true;
+        long levelUpToMaxCost = CalcLevelUpToMaxCost(subType, level);
+        long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(nextSubType);
+        long totalCost        = levelUpToMaxCost + gradeUpCost;
+        int  reqTier          = nextSubType.GetTechTier();
+        bool hasTech          = playerTech >= reqTier;
+        bool hasPoint         = playerPoint >= totalCost;
+        bool canUpgrade       = hasTech == true && hasPoint == true;
 
         m_gradeUpModuleButton.SetInteractable(canUpgrade);
 
-        // 우선순위: 1)기술레벨 부족 → 2)만렙 미달 → 3)포인트 부족 → 4)업그레이드 가능
+        // 우선순위: 1)기술레벨 부족 → 2)포인트 부족 → 3)업그레이드 가능
         if (canUpgrade == true)
         {
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
-            m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(gradeUpCost)}");
-            if (m_gradeUpModuleButtonText3 != null) m_gradeUpModuleButtonText3.text = "";
+            m_gradeUpModuleButtonText2.SetRow("module-point", $"-{CommonUtility.FormatBigNumber(totalCost)}");
         }
         else if (hasTech == false)
         {
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
-            SetDisabledReason(m_gradeUpModuleButtonText2, false, reqTier, gradeUpCost);
-            if (m_gradeUpModuleButtonText3 != null) m_gradeUpModuleButtonText3.text = "";
-        }
-        else if (isMaxLevel == false)
-        {
-            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
-            m_gradeUpModuleButtonText2.Hide();
-            if (m_gradeUpModuleButtonText3 != null)
-            {
-                m_gradeUpModuleButtonText3.text  = $"Lv.{LocalizationManager.Instance.Get("LevelupButtonTextMax")}";
-                m_gradeUpModuleButtonText3.color = Color.red;
-            }
+            SetDisabledReason(m_gradeUpModuleButtonText2, false, reqTier, totalCost);
         }
         else
         {
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
-            SetDisabledReason(m_gradeUpModuleButtonText2, true, reqTier, gradeUpCost);
-            if (m_gradeUpModuleButtonText3 != null) m_gradeUpModuleButtonText3.text = "";
+            SetDisabledReason(m_gradeUpModuleButtonText2, true, reqTier, totalCost);
         }
     }
 
@@ -821,6 +821,19 @@ public class UITabShip : UITabBase
             long fullRefund = m_selectedModule.m_investedModulePoint;
             m_levelDownModuleButtonText2.SetRow("module-point", fullRefund > 0 ? $"+{CommonUtility.FormatBigNumber(fullRefund)}" : "");
         }
+    }
+
+    private long CalcLevelUpToMaxCost(EModuleSubType subType, int currentLevel)
+    {
+        long total = 0;
+        int  lv    = currentLevel;
+        while (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, lv + 1) != null)
+        {
+            if (DataManager.Instance.GetModuleLevelUpCost(subType, lv, out long cost))
+                total += cost;
+            lv++;
+        }
+        return total;
     }
 
     private void SetDisabledReason(RowImageText row, bool hasTech, int reqTier, long cost)

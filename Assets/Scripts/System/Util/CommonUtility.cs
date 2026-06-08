@@ -234,6 +234,15 @@ public static class CommonUtility
     }
 
     
+    public static string GetShipDisplayName(SpaceShip ship)
+    {
+        string key = $"ShipName_{ship.m_shipInfo.positionIndex}";
+        string localized = LocalizationManager.Instance.Get(key);
+        if (localized != null && localized != key)
+            return localized;
+        return ship.m_shipInfo.shipName;
+    }
+
     #endregion Fleet Utility end -----------------------------------------------------------------------------------
 
     #region Module Type begin -----------------------------------------------------------------------------------

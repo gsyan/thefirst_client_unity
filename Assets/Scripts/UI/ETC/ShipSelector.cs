@@ -70,7 +70,7 @@ public class ShipSelector : MonoBehaviour
         if (Ship == null) return;
 
         if (m_textName != null)
-            m_textName.text = Ship.m_shipInfo.shipName;
+            m_textName.text = CommonUtility.GetShipDisplayName(Ship);
 
         if (m_statRows != null && m_statRows.Length > 0)
         {

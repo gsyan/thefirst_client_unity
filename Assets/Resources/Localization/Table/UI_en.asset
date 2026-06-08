@@ -927,6 +927,42 @@ MonoBehaviour:
     m_Localized: Retreat from the PvP battle?
     m_Metadata:
       m_Items: []
+  - m_Id: 43683692479905792
+    m_Localized: Deokam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654528
+    m_Localized: Mundeok
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654529
+    m_Localized: Gungpa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654530
+    m_Localized: Ido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654531
+    m_Localized: Euncheon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654532
+    m_Localized: Damdeok
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654533
+    m_Localized: Yaksan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654534
+    m_Localized: Maeheon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654535
+    m_Localized: Baekbeom
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

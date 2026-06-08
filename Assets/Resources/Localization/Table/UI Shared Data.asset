@@ -923,6 +923,42 @@ MonoBehaviour:
     m_Key: loading_tip_4
     m_Metadata:
       m_Items: []
+  - m_Id: 43683692479905792
+    m_Key: ShipName_0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654528
+    m_Key: ShipName_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654529
+    m_Key: ShipName_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654530
+    m_Key: ShipName_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654531
+    m_Key: ShipName_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654532
+    m_Key: ShipName_5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654533
+    m_Key: ShipName_6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654534
+    m_Key: ShipName_7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43683692517654535
+    m_Key: ShipName_8
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -116,7 +116,7 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
 
     public void TryClaimDailyMineral(Action<VipDailyMineralResponse> onResult)
     {
-        if (IsVipActive() == false || m_pendingMineralTotal <= 0)
+        if (m_pendingMineralTotal <= 0)
         {
             onResult?.Invoke(null);
             return;
