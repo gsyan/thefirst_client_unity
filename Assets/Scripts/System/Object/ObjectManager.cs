@@ -120,13 +120,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     [HideInInspector] public SpaceFleet m_myFleet;
     [HideInInspector] public List<SpaceFleet> m_enemyFleets = new List<SpaceFleet>();
 
-    // Zone 전투 관련
-    private System.Action<bool> m_onZoneBattleComplete;
-
-    // PvP 전투 관련
-    private bool m_isPvpBattle;
-    private System.Action<bool> m_onPvpBattleComplete;
-
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
     {
@@ -167,6 +160,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 전투 강제 종료 (전멸/퇴각 공통)
     public void ForceEndBattle(bool isVictory)
     {
+        bool isPvp = m_myFleet != null && m_myFleet.m_fleetState == EUnitState.BattlePvp;
+
         GameSpeedController.Reset(); // timeScale 및 오디오 피치 복원
         if (m_myFleet != null)
             m_myFleet.SetFleetState(EUnitState.Idle);
@@ -175,19 +170,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         CleanupAllProjectiles();
         RemoveAllEnemyFleets();
 
-        if (m_isPvpBattle)
-        {
-            m_isPvpBattle = false;
-            var pvpCallback = m_onPvpBattleComplete;
-            m_onPvpBattleComplete = null;
-            pvpCallback?.Invoke(isVictory);
-        }
+        if (isPvp)
+            EventManager.TriggerPvpBattleEnd(isVictory);
         else
-        {
-            var callback = m_onZoneBattleComplete;
-            m_onZoneBattleComplete = null;
-            callback?.Invoke(isVictory);
-        }
+            EventManager.TriggerZoneStageBattleEnd(isVictory);
     }
 
     // 튜토리얼 시작 체크
@@ -273,11 +259,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
 
     // ZoneConfig 기반 적 함선 순차 스폰 — 슬롯 단위 관리, 큐 소진 + 전멸 시 클리어
-    public void StartSpawnEnemies(ZoneStageConfig zoneStageConfig, System.Action<bool> onComplete)
+    public void StartSpawnEnemies(ZoneStageConfig zoneStageConfig)
     {
         if (zoneStageConfig == null || zoneStageConfig.enemyShipConfigs == null || zoneStageConfig.enemyShipConfigs.Count == 0)
         {
-            onComplete?.Invoke(true);
+            EventManager.TriggerZoneStageBattleEnd(true);
             return;
         }
 
@@ -287,28 +273,23 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 m_enemyFleets[i].StopSpawning();
         }
 
-        m_onZoneBattleComplete = onComplete;
-
         SpaceFleet newZoneFleet = CreateEnemyFleetShell();
         m_enemyFleets.Add(newZoneFleet);
 
         GameSpeedController.RestoreSpeed();
-        if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.Battle);
+        if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.BattleExploration);
         newZoneFleet.StartSpawning(zoneStageConfig);
     }
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
-    public void StartPvpBattle(FleetInfo opponentFleetInfo, System.Action<bool> onComplete)
+    public void StartPvpBattle(FleetInfo opponentFleetInfo)
     {
         if (opponentFleetInfo == null || m_myFleet == null)
         {
-            onComplete?.Invoke(false);
+            EventManager.TriggerPvpBattleEnd(false);
             return;
         }
         GameSpeedController.RestoreSpeed(); // 이전 전투 배속 복원
-
-        m_isPvpBattle = true;
-        m_onPvpBattleComplete = onComplete;
 
         Vector3 spawnPosition = GetEnemySpawnPosition();
         GameObject fleetObj = new GameObject("PvpEnemyFleet");
@@ -321,8 +302,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
         enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EUnitState.Move);
-        enemyFleet.StartFleetWarpIn(() => enemyFleet.SetFleetState(EUnitState.Battle));
-        m_myFleet.SetFleetState(EUnitState.Battle);
+        enemyFleet.StartFleetWarpIn(() => enemyFleet.SetFleetState(EUnitState.BattlePvp));
+        m_myFleet.SetFleetState(EUnitState.BattlePvp);
 
         m_enemyFleets.Add(enemyFleet);
     }
@@ -335,7 +316,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_enemyFleets.Remove(fleet);
         Destroy(fleet.gameObject);
 
-        if (m_isPvpBattle && m_enemyFleets.Count == 0)
+        if (m_myFleet != null && m_myFleet.m_fleetState == EUnitState.BattlePvp && m_enemyFleets.Count == 0)
             ForceEndBattle(true);
     }
 
@@ -604,7 +585,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             // Find random alive enemy ship
             foreach (SpaceFleet fleet in m_enemyFleets)
             {
-                if (fleet != null && fleet.IsFleetAlive() == true && fleet.m_fleetState == EUnitState.Battle)
+                if (fleet != null && fleet.IsFleetAlive() == true && fleet.m_fleetState.IsBattleState() == true)
                 {
                     SpaceShip enemyShip = fleet.GetRandomAliveShipWarpDone();
                     if (enemyShip != null)

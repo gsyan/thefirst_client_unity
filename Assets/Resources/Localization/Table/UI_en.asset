@@ -263,7 +263,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8029751486578689
-    m_Localized: "Score: {0} <voffset=6>\u2192</voffset> {1}"
+    m_Localized: "Score: {0} <voffset=6>\u2192</voffset> {1} ({2})"
     m_Metadata:
       m_Items: []
   - m_Id: 8029751486578690
@@ -900,7 +900,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43020881605033984
-    m_Localized: INVEST
+    m_Localized: UPGRADE
     m_Metadata:
       m_Items: []
   - m_Id: 43020881659559936
@@ -908,7 +908,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43020881659559937
-    m_Localized: INVEST
+    m_Localized: LV UP
     m_Metadata:
       m_Items: []
   - m_Id: 43020881659559938
@@ -917,6 +917,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 43056462032666624
     m_Localized: REQUIRE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43649151207866368
+    m_Localized: Retreat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43649151266586624
+    m_Localized: Retreat from the PvP battle?
     m_Metadata:
       m_Items: []
   references:

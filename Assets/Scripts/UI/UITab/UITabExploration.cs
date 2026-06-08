@@ -33,6 +33,7 @@ public class UITabExploration : UITabBase
     private float m_pendingFleetRotY;
 
     private bool m_isFleetWiped;
+    private bool m_isBattleEnded;
     private readonly WaitForSeconds m_wipePopupDelay = new WaitForSeconds(2f);
 
     public override void InitializeUITab()
@@ -48,8 +49,9 @@ public class UITabExploration : UITabBase
         if (m_myFleet == null) return;
         
 
-        EventManager.Subscribe_RetreatRequested(RetreatToPreviousStage);
+        EventManager.Subscribe_RetreatExploration(OnRetreatZoneStage);
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
+        EventManager.Subscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
 
         if (m_backgroundCloseButton != null)
             m_backgroundCloseButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(-1));
@@ -278,7 +280,7 @@ public class UITabExploration : UITabBase
         Vector3 targetCameraPosition;
 
         // 전투 중이면 카메라만 포커스 타겟 위치로 복귀 (함대는 그대로 전투 지속)
-        if (m_battleZoneStage != null && m_myFleet.m_fleetState == EUnitState.Battle)
+        if (m_battleZoneStage != null && m_myFleet.m_fleetState.IsBattleState() == true)
         {
             // m_pendingFleetPos 을 설정하지 않는다.
             targetCameraPosition = CameraController.Instance.GetFocusTargetPosition();
@@ -318,7 +320,7 @@ public class UITabExploration : UITabBase
         {
             SetTabButtonsVisible(true, includeSelf: true);
             cam.SetTargetOfCameraController(m_myFleet.transform);
-            SetFleetState(EUnitState.Battle);
+            SetFleetState(EUnitState.BattleExploration);
             if (m_battleZoneStage != null)
             {
                 bool isFirstClear = IsAlreadyCleared(m_battleZoneStage) == false;
@@ -354,8 +356,9 @@ public class UITabExploration : UITabBase
 
     private void OnDestroy()
     {
-        EventManager.Unsubscribe_RetreatRequested(RetreatToPreviousStage);
+        EventManager.Unsubscribe_RetreatExploration(OnRetreatZoneStage);
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
+        EventManager.Unsubscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
     }
@@ -395,7 +398,7 @@ public class UITabExploration : UITabBase
     {
         if (zoneStage == null) return;
         if (m_myFleet.m_fleetState == EUnitState.Warp) return;
-        if (m_myFleet.m_fleetState == EUnitState.Battle)
+        if (m_myFleet.m_fleetState.IsBattleState() == true)
         {
             if (m_battleZoneStage != null && m_battleZoneStage.zoneName == zoneStage.zoneName) return;
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
@@ -499,9 +502,40 @@ public class UITabExploration : UITabBase
             m_currentZoneStageButton.SetSelectedUIZoneStageButton(true);
     }
 
+    private void OnZoneStageBattleEnd(bool isVictory)
+    {
+        if (m_isBattleEnded == true) return;
+        m_isBattleEnded = true;
+        EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+
+        ZoneStageConfig retreatStage = m_currentZoneStage;
+
+        Vector3 retreatPosition;
+        float retreatRotationY;
+
+        if (retreatStage != null)
+        {
+            retreatPosition = m_datatableZone.ResolveFleetWorldPosition(retreatStage);
+            retreatRotationY = retreatStage.fleetRotationY;
+        }
+        else
+        {
+            // 한 스테이지도 클리어 못한 신규 유저 → 존1-0 스폰 마커로 복귀
+            ZoneStageConfig spawnStage = m_datatableZone.GetZoneFirstStage(1);
+            retreatPosition  = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
+            retreatRotationY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
+        }
+
+        if (m_isFleetWiped == true)
+            ObjectManager.Instance.StartCoroutine(ShowWipePopupAfterDelay(retreatPosition, retreatRotationY));
+        else
+            ExecuteRetreat(retreatPosition, retreatRotationY);
+    }
+
     private void StartBattleInZone(ZoneStageConfig zoneStage)
     {
-        ObjectManager.Instance.StartSpawnEnemies(zoneStage, (_) => RetreatToPreviousStage());
+        m_isBattleEnded = false;
+        ObjectManager.Instance.StartSpawnEnemies(zoneStage);
     }
 
     private bool IsAlreadyCleared(ZoneStageConfig zoneStage)
@@ -757,52 +791,15 @@ public class UITabExploration : UITabBase
         m_currentZoneStage = clearedStage;
     }
 
-    private void RetreatToPreviousStage()
+    private void OnRetreatZoneStage()
     {
-        if (m_isFleetWiped == false)
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-            {
-                title   = LocalizationManager.Instance.Get("UITabExploration_RetreatTitle"),
-                message = LocalizationManager.Instance.Get("UITabExploration_RetreatConfirm"),
-                onConfirm = DoRetreatSequence,
-                onCancel  = () => { }
-            });
-            return;
-        }
-        DoRetreatSequence();
-    }
-
-    private void DoRetreatSequence()
-    {
-        EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
-        ObjectManager.Instance.StopEnemySpawning();
-        ObjectManager.Instance.OrderAllAircraftReturn();
-        ObjectManager.Instance.CleanupAllProjectiles();
-        ObjectManager.Instance.RemoveAllEnemyFleets();
-
-        ZoneStageConfig retreatStage = m_currentZoneStage;
-
-        Vector3 retreatPosition;
-        float retreatRotationY;
-
-        if (retreatStage != null)
-        {
-            retreatPosition = m_datatableZone.ResolveFleetWorldPosition(retreatStage);
-            retreatRotationY = retreatStage.fleetRotationY;
-        }
-        else
-        {
-            // 한 스테이지도 클리어 못한 신규 유저 → 존1-0 스폰 마커로 복귀
-            ZoneStageConfig spawnStage = m_datatableZone.GetZoneFirstStage(1);
-            retreatPosition  = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
-            retreatRotationY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
-        }
-
-        if (m_isFleetWiped == true)
-            ObjectManager.Instance.StartCoroutine(ShowWipePopupAfterDelay(retreatPosition, retreatRotationY));
-        else
-            ExecuteRetreat(retreatPosition, retreatRotationY);
+            title     = LocalizationManager.Instance.Get("UITabExploration_RetreatTitle"),
+            message   = LocalizationManager.Instance.Get("UITabExploration_RetreatConfirm"),
+            onConfirm = () => ObjectManager.Instance.ForceEndBattle(false),
+            onCancel  = () => { }
+        });
     }
 
     private IEnumerator ShowWipePopupAfterDelay(Vector3 retreatPosition, float retreatRotationY)

@@ -56,8 +56,7 @@ public class UIPanelCameraView : UIPanelBase
         // buttonGroup 초기화 완료 후 구독 (Select 호출 안전 보장)
         EventManager.Subscribe_CameraFocusTargetChanged(OnCameraFocusTargetChanged);
 
-        if (m_retreatButton != null)
-            m_retreatButton.onClick.AddListener(EventManager.TriggerRetreatRequested);
+        // 버튼 콜백은 OnFleetStateChanged에서 전투 종류에 따라 동적으로 세팅
 
         if (m_speedButton != null)
             m_speedButton.onClick.AddListener(OnSpeedButtonClicked);
@@ -102,11 +101,20 @@ public class UIPanelCameraView : UIPanelBase
 
     private void OnFleetStateChanged(EUnitState state)
     {
-        bool wasBattle = m_fleetState == EUnitState.Battle;
+        bool wasBattle = m_fleetState.IsBattleState();
         m_fleetState = state;
 
-        if (wasBattle == true && state != EUnitState.Battle)
+        if (wasBattle == true && state.IsBattleState() == false)
             CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
+
+        if (m_retreatButton != null)
+        {
+            m_retreatButton.onClick.RemoveAllListeners();
+            if (state == EUnitState.BattleExploration)
+                m_retreatButton.onClick.AddListener(EventManager.TriggerRetreatExploration);
+            else if (state == EUnitState.BattlePvp)
+                m_retreatButton.onClick.AddListener(EventManager.TriggerRetreatPvp);
+        }
 
         RefreshVisibility();
     }
@@ -125,7 +133,7 @@ public class UIPanelCameraView : UIPanelBase
 
     private void RefreshVisibility()
     {
-        if (m_fleetState == EUnitState.Battle && m_isExplorationOpen == false)
+        if (m_fleetState.IsBattleState() == true && m_isExplorationOpen == false)
             UIManager.Instance.ShowPanel(panelName);
         else
             UIManager.Instance.HidePanel(panelName);

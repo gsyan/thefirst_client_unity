@@ -129,7 +129,7 @@ public class ModuleBeam : ModuleBase
     {
         while (true)
         {
-            if( m_moduleState != EUnitState.Battle ) yield return null;
+            if (m_moduleState.IsBattleState() == false) yield return null;
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
             {

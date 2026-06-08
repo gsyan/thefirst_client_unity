@@ -240,7 +240,7 @@ public class SpaceFleet : MonoBehaviour
             ships     = new List<ShipInfo>()
         };
         m_currentFormationType = formation;
-        SetFleetState(EUnitState.Battle);
+        SetFleetState(EUnitState.BattleExploration);
     }
 
     public void InitializeSpaceFleet(FleetInfo fleetInfo, EFleetSide side = EFleetSide.fleet_side_player, EFleetSource source = EFleetSource.fleet_source_player, EUnitState fleetState = EUnitState.Idle)

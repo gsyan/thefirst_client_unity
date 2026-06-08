@@ -28,5 +28,14 @@ public enum EUnitState
     Idle,
     Move,
     Warp,
-    Battle,
+    BattleExploration,
+    BattlePvp,
+}
+
+public static class EUnitStateExtensions
+{
+    public static bool IsBattleState(this EUnitState state)
+    {
+        return state == EUnitState.BattleExploration || state == EUnitState.BattlePvp;
+    }
 }

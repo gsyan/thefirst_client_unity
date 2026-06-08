@@ -247,10 +247,25 @@ public static class EventManager
     public static void Subscribe_ExplorationTabClosed(Action callback)   { OnExplorationTabClosed += callback; }
     public static void Unsubscribe_ExplorationTabClosed(Action callback) { OnExplorationTabClosed -= callback; }
 
-    public static event Action OnRetreatRequested;
-    public static void TriggerRetreatRequested() { OnRetreatRequested?.Invoke(); }
-    public static void Subscribe_RetreatRequested(Action callback)   { OnRetreatRequested += callback; }
-    public static void Unsubscribe_RetreatRequested(Action callback) { OnRetreatRequested -= callback; }
+    public static event Action OnRetreatExploration;
+    public static void TriggerRetreatExploration() { OnRetreatExploration?.Invoke(); }
+    public static void Subscribe_RetreatExploration(Action callback)   { OnRetreatExploration += callback; }
+    public static void Unsubscribe_RetreatExploration(Action callback) { OnRetreatExploration -= callback; }
+
+    public static event Action OnRetreatPvp;
+    public static void TriggerRetreatPvp() { OnRetreatPvp?.Invoke(); }
+    public static void Subscribe_RetreatPvp(Action callback)   { OnRetreatPvp += callback; }
+    public static void Unsubscribe_RetreatPvp(Action callback) { OnRetreatPvp -= callback; }
+
+    public static event Action<bool> OnZoneStageBattleEnd;
+    public static void TriggerZoneStageBattleEnd(bool isVictory) { OnZoneStageBattleEnd?.Invoke(isVictory); }
+    public static void Subscribe_ZoneStageBattleEnd(Action<bool> callback)   { OnZoneStageBattleEnd += callback; }
+    public static void Unsubscribe_ZoneStageBattleEnd(Action<bool> callback) { OnZoneStageBattleEnd -= callback; }
+
+    public static event Action<bool> OnPvpBattleEnd;
+    public static void TriggerPvpBattleEnd(bool isVictory) { OnPvpBattleEnd?.Invoke(isVictory); }
+    public static void Subscribe_PvpBattleEnd(Action<bool> callback)   { OnPvpBattleEnd += callback; }
+    public static void Unsubscribe_PvpBattleEnd(Action<bool> callback) { OnPvpBattleEnd -= callback; }
 
     // 존 진입 (zoneName, isFirstClear)
     public static event Action<string, bool> OnZoneEntered;

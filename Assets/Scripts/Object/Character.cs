@@ -14,10 +14,10 @@ public class Character
         m_completedResearchIds = new HashSet<string>();
     }
 
-    // "empty_" 로 시작하는 이름이면 로컬라이즈된 이름 + characterId로 반환 (예: "지휘관42")
+    // "commander_" 로 시작하면 로컬라이즈된 이름 + characterId 반환
     public static string GetDisplayName(string rawName, long characterId)
     {
-        if (string.IsNullOrEmpty(rawName) || rawName.StartsWith("empty_"))
+        if (string.IsNullOrEmpty(rawName) || rawName.StartsWith("commander_", System.StringComparison.OrdinalIgnoreCase))
             return LocalizationManager.Instance.Get("char_default_name") + characterId;
         return rawName;
     }

@@ -264,7 +264,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8029751486578689
-    m_Localized: "\uC810\uC218: {0} <voffset=6>\u2192</voffset> {1}"
+    m_Localized: "\uC810\uC218: {0} <voffset=6>\u2192</voffset> {1} ({2})"
     m_Metadata:
       m_Items: []
   - m_Id: 8029751486578690
@@ -913,7 +913,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43020881605033984
-    m_Localized: "\uD22C\uC785"
+    m_Localized: "\uC5C5\uADF8\uB798\uC774\uB4DC"
     m_Metadata:
       m_Items: []
   - m_Id: 43020881659559936
@@ -921,7 +921,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43020881659559937
-    m_Localized: "\uD22C\uC785"
+    m_Localized: "\uB808\uBCA8\uC5C5"
     m_Metadata:
       m_Items: []
   - m_Id: 43020881659559938
@@ -929,7 +929,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43056462032666624
-    m_Localized: "\uC870\uAC74\uBD80\uC871"
+    m_Localized: "\uC694\uAD6C\uC870\uAC74"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43649151207866368
+    m_Localized: "\uD1F4\uAC01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43649151266586624
+    m_Localized: "PvP \uC804\uD22C\uC5D0\uC11C \uD1F4\uAC01\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items: []
   references:

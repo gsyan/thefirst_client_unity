@@ -775,6 +775,14 @@ MonoBehaviour:
     m_Key: UITabExploration_RetreatConfirm
     m_Metadata:
       m_Items: []
+  - m_Id: 43649151207866368
+    m_Key: UITabPvp_RetreatTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43649151266586624
+    m_Key: UITabPvp_RetreatConfirm
+    m_Metadata:
+      m_Items: []
   - m_Id: 26480402604359680
     m_Key: require_level_compare
     m_Metadata:

@@ -150,8 +150,9 @@ public class SpaceShip : MonoBehaviour
                 m_shipState = EUnitState.Warp;
                 StopAutoCombat();
                 break;
-            case EUnitState.Battle:
-                m_shipState = EUnitState.Battle;
+            case EUnitState.BattleExploration:
+            case EUnitState.BattlePvp:
+                m_shipState = m_myFleet.m_fleetState;
                 if (m_returnRotationCoroutine != null)
                 {
                     StopCoroutine(m_returnRotationCoroutine);
@@ -248,7 +249,7 @@ public class SpaceShip : MonoBehaviour
             List<SpaceFleet> enemyFleets = ObjectManager.Instance.m_enemyFleets;
             foreach (SpaceFleet fleet in enemyFleets)
             {
-                if (fleet == null || fleet.IsFleetAlive() == false || fleet.m_fleetState != EUnitState.Battle) continue;
+                if (fleet == null || fleet.IsFleetAlive() == false || fleet.m_fleetState.IsBattleState() == false) continue;
                 foreach (SpaceShip ship in fleet.m_ships)
                 {
                     if (ship == null || ship.IsAlive() == false || ship.IsWarping == true) continue;
@@ -518,7 +519,7 @@ public class SpaceShip : MonoBehaviour
             float ownRepair = m_spaceShipStatsCur.repair;
             if (ownRepair <= 0f) continue;
 
-            bool isBattle = m_myFleet != null && m_myFleet.m_fleetState == EUnitState.Battle;
+            bool isBattle = m_myFleet != null && m_myFleet.m_fleetState.IsBattleState() == true;
             if (isBattle && m_myFleet.m_fleetInfo != null && (m_myFleet.m_fleetInfo.tacticOptions & 1) == 0) continue;
 
             Character character = isPlayerFleet ? DataManager.Instance.m_currentCharacter : null;

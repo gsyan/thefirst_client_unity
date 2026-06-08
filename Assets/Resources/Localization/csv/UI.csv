@@ -54,7 +54,7 @@ pvp_opponent_info,,Opponent Fleet Power,상대 함대 전력
 pvp_rank_title,,Rank List,순위표
 pvp_battle_result_win,,Victory,승리
 pvp_battle_result_lose,,Defeat,패배
-pvp_battle_result_score,,Score: {0} <voffset=6>→</voffset> {1},점수: {0} <voffset=6>→</voffset> {1}
+pvp_battle_result_score,,Score: {0} <voffset=6>→</voffset> {1} ({2}),점수: {0} <voffset=6>→</voffset> {1} ({2})
 pvp_battle_result_rank,,Rank: {0} <voffset=6>→</voffset> {1},순위: {0}위 <voffset=6>→</voffset> {1}위
 rank_first_row_ranking,,Rank,순위
 rank_first_row_name,,Name,이름
@@ -189,13 +189,15 @@ UITabExploration_TryZone,,Enter,입장
 UITabExploration_PreviousStageRequired,,Clear the previous stage first.,이전 스테이지를 먼저 클리어해야 합니다.
 UITabExploration_RetreatTitle,,Retreat,퇴각
 UITabExploration_RetreatConfirm,,Retreat to the previous zone?,이전 구역으로 퇴각하시겠습니까?
+UITabPvp_RetreatTitle,,Retreat,퇴각
+UITabPvp_RetreatConfirm,,Retreat from the PvP battle?,PvP 전투에서 퇴각하시겠습니까?
 require_level_compare,,Lv.{0} (Current Lv.{1}),Lv.{0} (현재 Lv.{1})
 UITabShip_ModuleReset,,Reset Module,모듈 초기화
 UITabShip_ModuleResetConfirm,,Reset this module and recover invested resources?,이 모듈에 투자한 자원을 회수하고 초기화하시겠습니까?
-UITabShip_GradeUp,,INVEST,투입
-UITabShip_Require,,REQUIRE,조건부족
+UITabShip_GradeUp,,UPGRADE,업그래이드
+UITabShip_Require,,REQUIRE,요구조건
 UITabShip_GradeDown,,REFUND,회수
-UITabShip_LevelUp,,INVEST,투입
+UITabShip_LevelUp,,LV UP,레벨업
 UITabShip_LevelDown,,REFUND,회수
 UIButton_Reset,,RESET,초기화
 Simple_WatchAD,,WATCH AD,광고 보기

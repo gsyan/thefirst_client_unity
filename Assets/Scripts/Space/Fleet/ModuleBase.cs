@@ -49,8 +49,9 @@ public class ModuleBase : MonoBehaviour
             case EUnitState.Warp:
                 m_moduleState = EUnitState.Idle;
                 break;
-            case EUnitState.Battle:
-                m_moduleState = EUnitState.Battle;
+            case EUnitState.BattleExploration:
+            case EUnitState.BattlePvp:
+                m_moduleState = m_myShip.m_shipState;
                 break;
             default:
                 m_moduleState = EUnitState.Idle;

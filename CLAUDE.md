@@ -29,6 +29,7 @@
 - 오브젝트 생성, 소멸을 최소화 하기 위해 pool을 사용 ( public class PoolManager 참고할 것)
 - Raycast, Physics 사용 시 반드시 성능 비용 및 가능한 대안 설명 포함
 - switch 표현식(switch expression) 지양
+- **C# null 합산 연산자 지양** — `??`, `??=`, `?.` 사용 금지. 명시적 null 체크(`if (x == null)`) 사용. C++ 스타일 선호.
 - **C# 프로퍼티 지양** — `public EUnitState FleetState => m_fleetState;` 형태 금지. `GetFleetState()` / `SetFleetState()` 또는 직접 필드 접근(`m_fleetState`) 사용. C++ 스타일 선호.
 
 ## 주의 사항

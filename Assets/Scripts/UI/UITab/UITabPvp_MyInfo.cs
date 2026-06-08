@@ -51,6 +51,11 @@ public class UITabPvp_MyInfo : UITabBase
         SetOpponentList(response.data.opponents);
     }
 
+    public int GetCurrentScore()
+    {
+        return m_myScore;
+    }
+
     public int GetCurrentRank()
     {
         return m_myRank;

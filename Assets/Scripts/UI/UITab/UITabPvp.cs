@@ -14,6 +14,7 @@ public class UITabPvp : UITabBase
     private SpaceFleet m_myFleet;
     private Character m_myCharacter;
     private string m_currentBattleToken;
+    private bool m_isBattleInProgress;
 
     public override void InitializeUITab()
     {
@@ -25,11 +26,15 @@ public class UITabPvp : UITabBase
         m_tabMyInfo.onAttackClicked = OnAttackClicked;
 
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
+        EventManager.Subscribe_RetreatPvp(OnRetreatPvp);
+        EventManager.Subscribe_PvpBattleEnd(OnPvpBattleEnd);
     }
 
     private void OnDestroy()
     {
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
+        EventManager.Unsubscribe_RetreatPvp(OnRetreatPvp);
+        EventManager.Unsubscribe_PvpBattleEnd(OnPvpBattleEnd);
     }
 
     public override void OnTabActivated()
@@ -62,10 +67,11 @@ public class UITabPvp : UITabBase
 
     private void OnAttackClicked(PvpOpponentInfo opponent)
     {
+        if (m_isBattleInProgress == true) return;
         CapabilityProfile stats = CommonUtility.GetFleetCapabilityProfile(opponent.fleetInfo);
         int shipCount = (opponent.fleetInfo != null && opponent.fleetInfo.ships != null) ? opponent.fleetInfo.ships.Count : 0;
 
-        string title = opponent.characterName;
+        string title = Character.GetDisplayName(opponent.characterName, opponent.characterId);
         string message = LocalizationManager.Instance.Get("pvp_opponent_info", new object[] { opponent.pvpScore, opponent.rank });
 
         var rows = new System.Collections.Generic.List<(string icon, string value)>
@@ -89,6 +95,7 @@ public class UITabPvp : UITabBase
 
     private void ExecuteAttack(PvpOpponentInfo opponent)
     {
+        m_isBattleInProgress = true;
         var request = new PvpBattleStartRequest { opponentCharacterId = opponent.characterId };
         NetworkManager.Instance.PvpBattleStart(request, OnBattleStartResponse);
     }
@@ -97,9 +104,13 @@ public class UITabPvp : UITabBase
     {
         if (response == null || response.errorCode != 0)
         {
+            m_isBattleInProgress = false;
             ShowErrorMessage("전투를 시작할 수 없습니다.");
             return;
         }
+
+        m_tabSystemParent.SwitchToTab(-1);
+        ObjectManager.Instance.ChangeZone(1);
 
         m_currentBattleToken = response.data.battleToken;
         FleetInfo opponentFleetInfo = response.data.opponentFleetInfo;
@@ -107,21 +118,34 @@ public class UITabPvp : UITabBase
         ZoneStageConfig pvpZoneStage = m_datatableZone.GetZoneStage(0);
         if (pvpZoneStage != null)
             ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(pvpZoneStage), pvpZoneStage.fleetRotationY);
+        CameraController.Instance.SnapToTarget();
 
         m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
-            UIManager.Instance.ShowPanel("UIPanelCameraView");
-
-            ObjectManager.Instance.StartPvpBattle(opponentFleetInfo, (isVictory) =>
-            {
-                ReportBattleResult(isVictory);
-            });
+            ObjectManager.Instance.StartPvpBattle(opponentFleetInfo);
         });
+    }
+
+    private void OnRetreatPvp()
+    {
+        if (m_isBattleInProgress == false) return;
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title     = LocalizationManager.Instance.Get("UITabPvp_RetreatTitle"),
+            message   = LocalizationManager.Instance.Get("UITabPvp_RetreatConfirm"),
+            onConfirm = () => ObjectManager.Instance.ForceEndBattle(false),
+            onCancel  = () => { }
+        });
+    }
+
+    private void OnPvpBattleEnd(bool isVictory)
+    {
+        ReportBattleResult(isVictory);
     }
 
     private void OnMyFleetWiped()
     {
-        // ObjectManager.ForceEndBattle(false)가 콜백을 호출함
+        // ObjectManager.ForceEndBattle(false) → EventManager.TriggerPvpBattleEnd 로 처리됨
     }
 
     private void ReportBattleResult(bool isVictory)
@@ -139,11 +163,12 @@ public class UITabPvp : UITabBase
         if (response == null || response.errorCode != 0)
         {
             ShowErrorMessage("전투 결과 처리 실패");
-            ReturnFromBattle();
+            ReturnToPrevious();
             return;
         }
 
         int scoreChange = response.data.scoreChange;
+        int oldScore = m_tabMyInfo.GetCurrentScore();
         int oldRank = m_tabMyInfo.GetCurrentRank();
         bool isVictory = scoreChange >= 0;
 
@@ -153,21 +178,47 @@ public class UITabPvp : UITabBase
         string titleKey = isVictory ? "pvp_battle_result_win" : "pvp_battle_result_lose";
         string scoreStr = isVictory ? $"+{scoreChange}" : $"{scoreChange}";
         string title = LocalizationManager.Instance.Get(titleKey);
-        string scoreLine = LocalizationManager.Instance.Get("pvp_battle_result_score", scoreStr, response.data.newScore);
+        string scoreLine = LocalizationManager.Instance.Get("pvp_battle_result_score", oldScore, response.data.newScore, scoreStr);
         string rankLine = LocalizationManager.Instance.Get("pvp_battle_result_rank", oldRank, response.data.newRank);
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig { title = title, message = $"{scoreLine}\n{rankLine}", onConfirm = ReturnFromBattle, autoCloseSec = 5f });
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title     = title,
+            message   = $"{scoreLine}\n{rankLine}",
+            onConfirm = ReturnToPrevious,
+            autoCloseSec = 5.0f
+        });
     }
 
-    private void ReturnFromBattle()
+    private void ReturnToPrevious()
     {
+        m_isBattleInProgress = false;
         m_currentBattleToken = null;
 
         UIManager.Instance.HidePanel("UIPanelCameraView");
         CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
-        ZoneStageConfig returnZoneStage = m_datatableZone.GetZoneStage(0);
-        if (returnZoneStage == null) return;
+        ZoneStageConfig returnZoneStage = null;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character != null && character.m_characterInfo != null && character.m_characterInfo.clearedZones != null && character.m_characterInfo.clearedZones.Count > 0)
+            returnZoneStage = m_datatableZone.GetZoneStageByName(character.m_characterInfo.clearedZones[^1]);
+        if (returnZoneStage == null)
+            returnZoneStage = m_datatableZone.GetZoneFirstStage(1);
+        if (returnZoneStage == null)
+        {
+            Debug.LogError("[UITabPvp] zone1 fallback 스테이지도 없음, ReturnFromBattle 중단");
+            return;
+        }
+
+        int zoneGroup = 1;
+        int dashIdx = returnZoneStage.zoneName.IndexOf('-');
+        if (dashIdx > 0)
+            int.TryParse(returnZoneStage.zoneName[..dashIdx], out zoneGroup);
+        if (zoneGroup <= 0)
+            zoneGroup = 1;
+
+        ObjectManager.Instance.ChangeZone(zoneGroup);
         ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(returnZoneStage), returnZoneStage.fleetRotationY);
+        CameraController.Instance.SnapToTarget();
         m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
             if (m_myFleet.IsFleetAlive() == false)
