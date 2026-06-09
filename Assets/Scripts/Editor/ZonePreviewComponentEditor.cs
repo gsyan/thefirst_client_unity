@@ -236,7 +236,7 @@ public class ZonePreviewComponentEditor : Editor
             }
 
             Handles.color = Color.yellow;
-            float arrowLen = HandleUtility.GetHandleSize(worldPos) * 1.5f;
+            float arrowLen = HandleUtility.GetHandleSize(worldPos) * 0.45f;
             Vector3 fwd   = Quaternion.Euler(0f, stage.fleetRotationY, 0f) * Vector3.forward;
             Vector3 tip   = worldPos + fwd * arrowLen;
             Handles.DrawLine(worldPos, tip, 3f);

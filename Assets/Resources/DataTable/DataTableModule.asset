@@ -340,7 +340,7 @@ MonoBehaviour:
     - moduleName: body_t2_m1 Lv.1
       moduleSubType: 10201
       moduleLevel: 1
-      modulePointCost: 1
+      modulePointCost: 7
       mineralCost: 1
       description: 
       moduleSlots:

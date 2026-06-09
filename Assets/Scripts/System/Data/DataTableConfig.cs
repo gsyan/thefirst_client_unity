@@ -13,7 +13,7 @@ public class GameSettings
     [Header("Game Settings")]
     public string version = "0.0.1";
 
-    [Tooltip("함선 추가 시 필요한 Mineral 비용")]
+    [Tooltip("함선 추가 시 필요한 ModulePoint 비용")]
     public int addShipCost = 10;
 
 [Header("Pvp Settings")]

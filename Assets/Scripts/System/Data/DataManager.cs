@@ -118,7 +118,7 @@ public class DataManager : Singleton<DataManager>
     public bool GetModuleLevelUpCost(EModuleSubType subType, int moduleLevel, out long modulePointCost)
     {
         modulePointCost = 0;
-        ModuleData moduleData = m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel);
+        ModuleData moduleData = m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel + 1);
         if (moduleData == null) return false;
 
         modulePointCost = moduleData.modulePointCost;
