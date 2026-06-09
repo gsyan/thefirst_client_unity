@@ -55,12 +55,14 @@ public class UITabFleetTactics : UITabBase
     void Awake()
     {
         EventManager.Subscribe_TacticToggleRequested(OnClickToggle);
+        EventManager.Subscribe_FormationChanged(OnExternalFormationChanged);
     }
 
     void OnDestroy()
     {
         EventManager.Unsubscribe_TacticToggleRequested(OnClickToggle);
         EventManager.Unsubscribe_TacticOptionsChanged(RefreshToggleUI);
+        EventManager.Unsubscribe_FormationChanged(OnExternalFormationChanged);
     }
 
     public override void InitializeUITab()
@@ -183,9 +185,7 @@ public class UITabFleetTactics : UITabBase
         {
             if (response.errorCode == 0 && response.data.updatedFleetInfo != null)
             {
-                DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
-                // DataManager가 새 참조로 교체되므로 SpaceFleet도 재동기화
-                m_myFleet.m_fleetInfo.tacticOptions = response.data.updatedFleetInfo.tacticOptions;
+                DataManager.Instance.ApplyFleetTacticOptions(response.data.updatedFleetInfo.tacticOptions);
             }
         });
     }
@@ -287,7 +287,7 @@ public class UITabFleetTactics : UITabBase
             {
                 m_myFleet.UpdateShipFormation(newFormationType, bSmooth: true);
                 if (response.data.updatedFleetInfo != null)
-                    DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
+                    DataManager.Instance.ApplyFleetFormation(response.data.updatedFleetInfo.formation);
             }
         });
     }
@@ -303,5 +303,13 @@ public class UITabFleetTactics : UITabBase
         return 0;
     }
 
-    
+    // 외부(UIPanelCameraView 버튼 등)에서 진형이 변경되면 버튼 선택 상태 동기화
+    private void OnExternalFormationChanged(EFormationType formation)
+    {
+        if (m_formationButtons == null) return;
+        int idx = GetFormationIndex(formation);
+        m_suppressFormationCallback = true;
+        SelectFormation(idx);
+        m_suppressFormationCallback = false;
+    }
 }

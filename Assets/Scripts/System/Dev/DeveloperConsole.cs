@@ -503,7 +503,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 {
                     fleet.UpdateShipFormation(formationType, bSmooth: true);
                     if (response.data.updatedFleetInfo != null)
-                        DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
+                        DataManager.Instance.ApplyFleetFormation(response.data.updatedFleetInfo.formation);
                 }
             });
         });
@@ -548,7 +548,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                         if (addShipResponse != null)
                         {
                              if (DataManager.Instance != null && addShipResponse.updatedFleetInfo != null)
-                                DataManager.Instance.SetFleetData(addShipResponse.updatedFleetInfo);
+                                DataManager.Instance.ApplyFleetShips(addShipResponse.updatedFleetInfo.ships);
 
                             if (ObjectManager.Instance != null && addShipResponse.newShipInfo != null)
                                 // CreateSpaceShipFromData 내부에서 진형 재배치 처리됨

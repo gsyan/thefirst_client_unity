@@ -465,6 +465,23 @@ public class SpaceFleet : MonoBehaviour
                 kv.Key.ApplyFleetStateToShip();
             }
         }
+
+        EventManager.Trigger_FormationChanged(formationType);
+    }
+
+    private static readonly EFormationType[] k_cycleFormations =
+    {
+        EFormationType.linear_horizontal,
+        EFormationType.x_offensive,
+        EFormationType.x_defensive,
+        //EFormationType.cross_defensive,
+    };
+
+    public void CycleFormation()
+    {
+        int current = System.Array.IndexOf(k_cycleFormations, m_currentFormationType);
+        int next = (current + 1) % k_cycleFormations.Length;
+        UpdateShipFormation(k_cycleFormations[next], bSmooth: true);
     }
 
     // 전체 함선 크기 누적 기반 진형 목적지 계산 (positionIndex 고정, 교환 없음)
@@ -718,10 +735,6 @@ public class SpaceFleet : MonoBehaviour
         }
         m_ships.Clear();
 
-        // AddShip 이후 SetFleetData 호출로 m_fleetInfo가 DataManager와 분리될 수 있으므로 동기화
-        if (DataManager.Instance != null && DataManager.Instance.m_currentFleetInfo != null)
-            m_fleetInfo = DataManager.Instance.m_currentFleetInfo;
-
         if (m_fleetInfo.ships != null && m_fleetInfo.ships.Count > 0)
         {
             for (int i = 0; i < m_fleetInfo.ships.Count; i++)
@@ -738,10 +751,6 @@ public class SpaceFleet : MonoBehaviour
     // 파괴된 함선만 복구 (퇴각용, 살아있는 함선은 현재 체력 유지)
     public void RestoreDestroyedShips(float healthRatio = 0.1f)
     {
-        // AddShip 이후 SetFleetData 호출로 m_fleetInfo가 DataManager와 분리될 수 있으므로 동기화
-        if (DataManager.Instance != null && DataManager.Instance.m_currentFleetInfo != null)
-            m_fleetInfo = DataManager.Instance.m_currentFleetInfo;
-
         HashSet<long> aliveShipIds = new HashSet<long>();
         foreach (SpaceShip ship in m_ships)
         {
@@ -927,5 +936,69 @@ public class SpaceFleet : MonoBehaviour
                 ship.ClearSelectedModule();
         }
     }
+
+    #region Fleet Balance Bonus -------------------------------------------------------
+
+    public int GetAliveShipCount()
+    {
+        int count = 0;
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship != null && ship.IsAlive() == true)
+                count++;
+        }
+        return count;
+    }
+
+    // 함선 수 공격력 배율: 1척=1.0, 2척부터 보너스, 9척=3.0
+    public float GetShipCountAttackMultiplier()
+    {
+        int n = GetAliveShipCount();
+        if (n <= 1) return 1f;
+        return 1f + 2f * (n - 1) / 8f;
+    }
+
+    // 진형 단계: 3척=1, 5척=2, 7척=3, 9척=4, 미달=0
+    public int GetFormationStep()
+    {
+        int n = GetAliveShipCount();
+        if (n >= 9) return 4;
+        if (n >= 7) return 3;
+        if (n >= 5) return 2;
+        if (n >= 3) return 1;
+        return 0;
+    }
+
+    // 공격력 배율 — 1f + delta (보너스=양수, 패널티=음수)
+    public float GetFormationAttackMultiplier()
+    {
+        int step = GetFormationStep();
+        if (step == 0) return 1f;
+        FormationPreset preset = FormationPresetDB.Get(m_currentFormationType);
+        if (preset == null || preset.attackMultiplierPerStep == null || preset.attackMultiplierPerStep.Length < step) return 1f;
+        return 1f + preset.attackMultiplierPerStep[step - 1];
+    }
+
+    // 피격 데미지 차감 비율 — 그대로 반환 (0=없음, 0.2~0.5=차감)
+    public float GetFormationDefenseReduction()
+    {
+        int step = GetFormationStep();
+        if (step == 0) return 0f;
+        FormationPreset preset = FormationPresetDB.Get(m_currentFormationType);
+        if (preset == null || preset.defenseReductionPerStep == null || preset.defenseReductionPerStep.Length < step) return 0f;
+        return preset.defenseReductionPerStep[step - 1];
+    }
+
+    // 회복력 배율 — 1f + delta (보너스=양수, 패널티=음수)
+    public float GetFormationRepairMultiplier()
+    {
+        int step = GetFormationStep();
+        if (step == 0) return 1f;
+        FormationPreset preset = FormationPresetDB.Get(m_currentFormationType);
+        if (preset == null || preset.repairMultiplierPerStep == null || preset.repairMultiplierPerStep.Length < step) return 1f;
+        return 1f + preset.repairMultiplierPerStep[step - 1];
+    }
+
+    #endregion Fleet Balance Bonus ----------------------------------------------------
 
 }

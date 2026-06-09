@@ -97,6 +97,20 @@ public static class EventManager
         OnFleetUpdateHP -= callback;
     }
 
+    public static event Action<EFormationType> OnFormationChanged;
+    public static void Trigger_FormationChanged(EFormationType formation)
+    {
+        OnFormationChanged?.Invoke(formation);
+    }
+    public static void Subscribe_FormationChanged(Action<EFormationType> callback)
+    {
+        OnFormationChanged += callback;
+    }
+    public static void Unsubscribe_FormationChanged(Action<EFormationType> callback)
+    {
+        OnFormationChanged -= callback;
+    }
+
     # endregion Fleet --------------------------------------------------------------------
 
     # region Ship ----------------------------------------------------------------------

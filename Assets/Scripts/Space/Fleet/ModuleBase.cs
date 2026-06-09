@@ -67,7 +67,10 @@ public class ModuleBase : MonoBehaviour
 
     public virtual void Attack(SpaceShip target)
     {
-        target.TakeDamage(m_attack, transform.position);
+        float finalAttack = m_attack;
+        if (m_myFleet != null)
+            finalAttack *= m_myFleet.GetShipCountAttackMultiplier() * m_myFleet.GetFormationAttackMultiplier();
+        target.TakeDamage(finalAttack, transform.position);
     }
 
     public virtual EModuleType GetModuleType()

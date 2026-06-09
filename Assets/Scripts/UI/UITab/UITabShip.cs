@@ -1105,7 +1105,7 @@ public class UITabShip : UITabBase
             m_myFleet.RemoveShip(removedShip, refreshFormation: true);
 
         if (data.updatedFleetInfo != null)
-            DataManager.Instance.SetFleetData(data.updatedFleetInfo);
+            DataManager.Instance.ApplyFleetShips(data.updatedFleetInfo.ships);
 
         EventManager.Trigger_FleetShipCountChanged();
 

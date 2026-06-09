@@ -329,6 +329,14 @@ public class SpaceShip : MonoBehaviour
     {
         // 이미 죽었다면 리턴
         if (IsAlive() == false) return;
+
+        // 진형 데미지 차감 (x_defensive 전용)
+        if (m_myFleet != null)
+        {
+            float reduction = m_myFleet.GetFormationDefenseReduction();
+            attackPower *= (1f - reduction);
+        }
+
         // 살아있는 바디 중 하나에 랜덤으로 데미지 분산 (또는 첫 번째 바디에)
         ModuleBody targetBody = GetRandomAliveBody();
         if (targetBody != null)
@@ -525,13 +533,17 @@ public class SpaceShip : MonoBehaviour
             Character character = isPlayerFleet ? DataManager.Instance.m_currentCharacter : null;
             if (isBattle && isPlayerFleet && (character == null || character.GetMineral() <= 0)) continue;
 
+            // 진형 회복력 보너스 적용 (cross_defensive 전용)
+            float formationRepairMult = m_myFleet != null ? m_myFleet.GetFormationRepairMultiplier() : 1f;
+            float effectiveRepair = ownRepair * formationRepairMult;
+
             // 자기 HP 미달 → 자신만 수리
             if (GetHealthRatio() < 1f)
             {
                 m_repairTarget = null;
-                float repaired = ApplyRepair(this, ownRepair);
+                float repaired = ApplyRepair(this, effectiveRepair);
                 if (isBattle && isPlayerFleet && repaired > 0f)
-                    character?.TryConsumeMineral(Mathf.CeilToInt(repaired));
+                    character.TryConsumeMineral(Mathf.CeilToInt(repaired));
                 continue;
             }
 
@@ -541,7 +553,7 @@ public class SpaceShip : MonoBehaviour
 
             if (m_repairTarget == null) continue;
 
-            float repairedOther = ApplyRepair(m_repairTarget, ownRepair);
+            float repairedOther = ApplyRepair(m_repairTarget, effectiveRepair);
             if (isBattle && isPlayerFleet && repairedOther > 0f)
                 character?.TryConsumeMineral(Mathf.CeilToInt(repairedOther));
         }

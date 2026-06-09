@@ -134,10 +134,11 @@ public static class EModuleTypeExtensions
 [System.Serializable]
 public enum EFormationType
 {
-    linear_horizontal,   // 가로 일렬 배치, 균형
-    x_offensive,         // 전진 x 배치, 공격우선
-    x_defensive,         // 후진 x 배치, 방어우선    
+    linear_horizontal,   // 가로 일렬 배치, 균형 (보너스 없음)
+    x_offensive,         // 전진 x 배치, 공격력 증가
+    x_defensive,         // 후진 x 배치, 데미지 차감
     circle,              // 원형 배치, 기함방어우선
+    cross_defensive,     // 십자 배치, 회복력 증가
 }
 
 public enum FormationMoveState

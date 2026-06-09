@@ -19,6 +19,10 @@ public class UIPanelCameraView : UIPanelBase
     [SerializeField] private Transform m_tacticsButtonContainer;
     private UIButtonHasChildren[] m_tacticsButtons;
 
+    [SerializeField] private UIButtonHasChildren m_tacticsFormationButton;
+    [SerializeField] private Image m_tacticsFormationImage;
+
+
     private RectTransform m_rectTransform;
     private float m_lastViewportRatio = 0f; // 패널 비활성 중 놓친 이벤트 대비
 
@@ -36,8 +40,11 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Subscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Subscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Subscribe_TacticOptionsChanged(OnTacticOptionsChanged);
+        EventManager.Subscribe_FleetShipCountChanged(OnFleetShipCountChanged);
+        EventManager.Subscribe_FormationChanged(OnFormationChanged);
 
         SetupTacticsButtons();
+        SetupFormationButton();
     }
 
     void Start()
@@ -74,6 +81,8 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Unsubscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Unsubscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Unsubscribe_TacticOptionsChanged(OnTacticOptionsChanged);
+        EventManager.Unsubscribe_FleetShipCountChanged(OnFleetShipCountChanged);
+        EventManager.Unsubscribe_FormationChanged(OnFormationChanged);
     }
 
     private void SetupTacticsButtons()
@@ -170,6 +179,8 @@ public class UIPanelCameraView : UIPanelBase
         var fleet = DataManager.Instance.m_currentCharacter?.GetOwnedFleet();
         if (fleet != null)
             OnTacticOptionsChanged(fleet.m_fleetInfo.tacticOptions);
+
+        RefreshFormationButton();
     }
 
     private void OnZoneEntered(string zoneName, bool isFirstClear)
@@ -198,6 +209,53 @@ public class UIPanelCameraView : UIPanelBase
         max.x = centerX;
         m_rectTransform.anchorMin = min;
         m_rectTransform.anchorMax = max;
+    }
 
+    private void SetupFormationButton()
+    {
+        if (m_tacticsFormationButton == null) return;
+        m_tacticsFormationButton.GetButton().onClick.AddListener(OnFormationButtonClicked);
+        RefreshFormationButton();
+    }
+
+    private void OnFormationButtonClicked()
+    {
+        SpaceFleet fleet = DataManager.Instance.m_currentCharacter?.GetOwnedFleet();
+        if (fleet == null) return;
+        fleet.CycleFormation();
+    }
+
+    private void OnFleetShipCountChanged()
+    {
+        RefreshFormationButtonInteractable();
+    }
+
+    private void OnFormationChanged(EFormationType formation)
+    {
+        RefreshFormationIcon(formation);
+    }
+
+    private void RefreshFormationButton()
+    {
+        SpaceFleet fleet = DataManager.Instance.m_currentCharacter?.GetOwnedFleet();
+        RefreshFormationButtonInteractable();
+        if (fleet != null)
+            RefreshFormationIcon(fleet.m_currentFormationType);
+    }
+
+    private void RefreshFormationButtonInteractable()
+    {
+        if (m_tacticsFormationButton == null) return;
+        SpaceFleet fleet = DataManager.Instance.m_currentCharacter?.GetOwnedFleet();
+        int shipCount = fleet != null ? fleet.GetAliveShipCount() : 0;
+        m_tacticsFormationButton.SetInteractable(shipCount >= 3);
+    }
+
+    private void RefreshFormationIcon(EFormationType formation)
+    {
+        if (m_tacticsFormationImage == null) return;
+        FormationPreset preset = FormationPresetDB.Get(formation);
+        if (preset == null || preset.formationIcon == null) return;
+        m_tacticsFormationImage.sprite = preset.formationIcon;
     }
 }

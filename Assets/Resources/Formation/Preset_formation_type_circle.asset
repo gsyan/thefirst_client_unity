@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e78907e12e88ca4baca1d9d1628972d, type: 3}
   m_Name: Preset_formation_type_circle
   m_EditorClassIdentifier: 
-  formationType: 1
+  formationType: 3
   parseType: 1
   gridGap: {x: 1, y: 1, z: 0}
   zPlacement: 1
@@ -45,3 +45,18 @@ MonoBehaviour:
   - positionIndex: 8
     gridCoord: {x: 0, y: 0, z: 0}
     circleAngle: 225
+  attackMultiplierPerStep:
+  - 0
+  - 0
+  - 0
+  - 0
+  defenseReductionPerStep:
+  - 0
+  - 0
+  - 0
+  - 0
+  repairMultiplierPerStep:
+  - 0
+  - 0
+  - 0
+  - 0

@@ -43,6 +43,18 @@ public class FormationPreset : ScriptableObject
     public bool zIncludeHalfSize = true;
     [Tooltip("positionIndex 0 = 기함, 격자 (0,0) 고정")]
     public FormationSlot[] slots;
+
+    [Header("UI")]
+    [Tooltip("전술 버튼에 표시할 아이콘 이미지")]
+    public Sprite formationIcon;
+
+    [Header("밸런스 — 인덱스 0~3 = 진형단계 1~4 (3척/5척/7척/9척)")]
+    [Tooltip("공격력 배율 delta. 보너스=양수(0.25~1.0), 패널티=음수(-0.10~-0.25), 효과없음=0")]
+    public float[] attackMultiplierPerStep = { 0f, 0f, 0f, 0f };
+    [Tooltip("피격 데미지 차감 비율. 0=없음, 0.2~0.5=차감")]
+    public float[] defenseReductionPerStep = { 0f, 0f, 0f, 0f };
+    [Tooltip("회복력 배율 delta. 보너스=양수(0.25~1.0), 패널티=음수(-0.10~-0.25), 효과없음=0")]
+    public float[] repairMultiplierPerStep = { 0f, 0f, 0f, 0f };
 }
 
 // 전역 진형 프리셋 맵 — Resources/Formation/ 에서 lazy 로드, 모든 함대가 공유

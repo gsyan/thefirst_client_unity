@@ -1,4 +1,5 @@
 // 게임 전반의 런타임 데이터(캐릭터, 함대, 계정 상태, 데이터 테이블)를 관리하는 싱글톤
+using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -45,10 +46,31 @@ public class DataManager : Singleton<DataManager>
     private const string FLEET_DATA_KEY = "CurrentFleetData";
     public FleetInfo m_currentFleetInfo;
 
-    // 서버에서 받은 함대 정보 설정 — 로컬 저장 없음
+    // 초기화 전용 — 로그인/씬 진입 시 최초 1회만 사용
     public void SetFleetData(FleetInfo fleetInfo)
     {
         m_currentFleetInfo = fleetInfo;
+    }
+
+    // 서버 응답으로 함선 목록이 바뀌었을 때 (추가/제거)
+    public void ApplyFleetShips(List<ShipInfo> ships)
+    {
+        if (m_currentFleetInfo == null) return;
+        m_currentFleetInfo.ships = ships;
+    }
+
+    // 진형 변경 시
+    public void ApplyFleetFormation(EFormationType formation)
+    {
+        if (m_currentFleetInfo == null) return;
+        m_currentFleetInfo.formation = formation;
+    }
+
+    // 전술 옵션 변경 시
+    public void ApplyFleetTacticOptions(int tacticOptions)
+    {
+        if (m_currentFleetInfo == null) return;
+        m_currentFleetInfo.tacticOptions = tacticOptions;
     }
 
     public void ClearFleetData()

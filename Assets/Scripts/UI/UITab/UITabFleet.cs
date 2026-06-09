@@ -403,7 +403,7 @@ public class UITabFleet : UITabBase
                 m_myCharacter.UpdateModulePoint(response.data.modulePointRemain);
                 
                 if (response.data.updatedFleetInfo != null)
-                    DataManager.Instance.SetFleetData(response.data.updatedFleetInfo);
+                    DataManager.Instance.ApplyFleetShips(response.data.updatedFleetInfo.ships);
 
                 if (response.data.newShipInfo != null && m_myCharacter.m_ownedFleet != null)
                     ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(response.data.newShipInfo, true);
