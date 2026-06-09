@@ -28706,7 +28706,7 @@ MonoBehaviour:
     0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
     \"airAvoidRadius\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m1
     Lv.2\",\r\n        \"moduleSubType\": \"body_t1_m1\",\r\n        \"moduleLevel\":
-    2,\r\n        \"modulePointCost\": 7,\r\n        \"mineralCost\": 1,\r\n       
+    2,\r\n        \"modulePointCost\": 1,\r\n        \"mineralCost\": 1,\r\n       
     \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
     \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n         
