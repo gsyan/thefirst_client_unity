@@ -1,8 +1,6 @@
 //------------------------------------------------------------------------------
-using NUnit.Framework;
 using System;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class ModuleBase : MonoBehaviour
 {
@@ -161,7 +159,9 @@ public class ModuleBase : MonoBehaviour
     // Player 함대가 아니면 항상 true(에너미는 차감 불필요), mineralCost 0이면 true
     protected bool TryConsumeMineral(int tacticBit)
     {
+        // 적 함대의 경우 체크하지않고, 플레이어의 함대만 체크
         if (m_myFleet != null && m_myFleet.m_fleetInfo != null &&
+            m_myFleet.m_fleetSource == EFleetSource.fleet_source_player &&
             (m_myFleet.m_fleetInfo.tacticOptions & (1 << tacticBit)) == 0)
             return false;
 

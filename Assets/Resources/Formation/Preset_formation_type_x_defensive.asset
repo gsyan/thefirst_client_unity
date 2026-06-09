@@ -15,7 +15,7 @@ MonoBehaviour:
   formationType: 2
   parseType: 0
   gridGap: {x: 0, y: 0, z: 0}
-  zPlacement: 1
+  zPlacement: 2
   zIncludeHalfSize: 0
   slots:
   - positionIndex: 0
@@ -45,6 +45,7 @@ MonoBehaviour:
   - positionIndex: 8
     gridCoord: {x: -2, y: -2, z: 2}
     circleAngle: 0
+  formationIcon: {fileID: 21300000, guid: 25f7010ea3751734a865377402685b06, type: 3}
   attackMultiplierPerStep:
   - -0.1
   - -0.15
