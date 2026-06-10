@@ -379,9 +379,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_myFleet = fleetObj.AddComponent<SpaceFleet>();
         m_myFleet.InitializeSpaceFleet(DataManager.Instance.m_currentFleetInfo);
 
-        if (DataManager.Instance.m_currentCharacter != null)
-            DataManager.Instance.m_currentCharacter.SetOwnedFleet(m_myFleet);
-
         // 카메라가 함대를 타겟으로 설정
         CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
 

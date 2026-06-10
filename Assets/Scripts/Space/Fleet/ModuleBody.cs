@@ -112,7 +112,7 @@ public class ModuleBody : ModuleBase
         AutoDetectFleetInfo();
 
         // Zone 적 함선일 때 체력에 배율 적용
-        if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
+        if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
             m_health    *= m_myShip.m_bodyMultiplier;
             m_healthMax *= m_myShip.m_bodyMultiplier;
@@ -153,7 +153,7 @@ public class ModuleBody : ModuleBase
     private void RestoreSavedModules(List<ModuleBase> savedModules)
     {
         SpaceShip myShip = GetSpaceShip();
-        SpaceFleet myFleet = myShip != null ? myShip.m_myFleet : null;
+        SpaceFleet myFleet = myShip != null ? myShip.m_ownerFleet : null;
 
         foreach (var module in savedModules)
         {

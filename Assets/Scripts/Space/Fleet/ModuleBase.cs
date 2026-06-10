@@ -28,7 +28,7 @@ public class ModuleBase : MonoBehaviour
     }
 
     // 함대 정보
-    protected SpaceFleet m_myFleet;
+    protected SpaceFleet m_ownerFleet;
     protected SpaceShip m_myShip;
 
     protected EUnitState m_moduleState;
@@ -66,8 +66,8 @@ public class ModuleBase : MonoBehaviour
     public virtual void Attack(SpaceShip target)
     {
         float finalAttack = m_attack;
-        if (m_myFleet != null)
-            finalAttack *= m_myFleet.GetShipCountAttackMultiplier() * m_myFleet.GetFormationAttackMultiplier();
+        if (m_ownerFleet != null)
+            finalAttack *= m_ownerFleet.GetShipCountAttackMultiplier() * m_ownerFleet.GetFormationAttackMultiplier();
         target.TakeDamage(finalAttack, transform.position);
     }
 
@@ -114,7 +114,7 @@ public class ModuleBase : MonoBehaviour
     // 함대 정보 설정
     public virtual void SetFleetInfo(SpaceFleet fleet, SpaceShip ship)
     {
-        m_myFleet = fleet;
+        m_ownerFleet = fleet;
         m_myShip = ship;
     }
 
@@ -124,15 +124,15 @@ public class ModuleBase : MonoBehaviour
         if (m_myShip == null)
             m_myShip = GetComponentInParent<SpaceShip>();
 
-        if (m_myFleet == null && m_myShip != null)
-            m_myFleet = m_myShip.m_myFleet;
+        if (m_ownerFleet == null && m_myShip != null)
+            m_ownerFleet = m_myShip.m_ownerFleet;
     }
 
     // 함대 이름 반환 (로그용)
     public string GetFleetName()
     {
-        if (m_myFleet != null)
-            return m_myFleet.m_fleetInfo.fleetName;
+        if (m_ownerFleet != null)
+            return m_ownerFleet.m_fleetInfo.fleetName;
         return "Unknown Fleet";
     }
 
@@ -160,13 +160,13 @@ public class ModuleBase : MonoBehaviour
     protected bool TryConsumeMineral(int tacticBit)
     {
         // 적 함대의 경우 체크하지않고, 플레이어의 함대만 체크
-        if (m_myFleet != null && m_myFleet.m_fleetInfo != null &&
-            m_myFleet.m_fleetSource == EFleetSource.fleet_source_player &&
-            (m_myFleet.m_fleetInfo.tacticOptions & (1 << tacticBit)) == 0)
+        if (m_ownerFleet != null && m_ownerFleet.m_fleetInfo != null &&
+            m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player &&
+            (m_ownerFleet.m_fleetInfo.tacticOptions & (1 << tacticBit)) == 0)
             return false;
 
         if (m_mineralCost <= 0) return true;
-        if (m_myFleet == null || m_myFleet.m_fleetSource != EFleetSource.fleet_source_player) return true;
+        if (m_ownerFleet == null || m_ownerFleet.m_fleetSource != EFleetSource.fleet_source_player) return true;
 
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return false;

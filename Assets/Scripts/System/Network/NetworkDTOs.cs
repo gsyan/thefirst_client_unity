@@ -226,7 +226,6 @@ public class AddShipResponse
 {
     public ShipInfo newShipInfo;
     public int modulePointRemain;
-    public FleetInfo updatedFleetInfo;
 }
 
 [System.Serializable]
@@ -239,7 +238,7 @@ public class ChangeFormationRequest
 [System.Serializable]
 public class ChangeFormationResponse
 {
-    public FleetInfo updatedFleetInfo;
+    public EFormationType formation;
 }
 
 [System.Serializable]
@@ -252,7 +251,7 @@ public class ChangeTacticOptionsRequest
 [System.Serializable]
 public class ChangeTacticOptionsResponse
 {
-    public FleetInfo updatedFleetInfo;
+    public int tacticOptions;
 }
 
 [System.Serializable]
@@ -370,7 +369,6 @@ public class ShipResetRemoveResponse
 {
     public long removedShipId;
     public int modulePointRemain;
-    public FleetInfo updatedFleetInfo;
 }
 
 [System.Serializable]

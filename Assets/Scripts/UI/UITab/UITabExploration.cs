@@ -17,7 +17,7 @@ public class UITabExploration : UITabBase
     private UISelectableButton[] m_zoneTabButtons;
     private readonly List<UIZoneStageButton> m_buttonPool = new();
 
-    private SpaceFleet m_myFleet;
+    private SpaceFleet m_playerFleet;
     private Character m_myCharacter;
     private ZoneStageConfig m_currentZoneStage;  // 클리어 진행 위치
     private ZoneStageConfig m_battleZoneStage;   // 현재 전투 중인 존 (입장 시 set, 후퇴/완료 후 null)
@@ -44,9 +44,8 @@ public class UITabExploration : UITabBase
     private void InitializeUITabExploration()
     {
         m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null) return;
-        m_myFleet = m_myCharacter.GetOwnedFleet();
-        if (m_myFleet == null) return;
+        if (m_myCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        m_playerFleet = ObjectManager.Instance.m_myFleet;
         
 
         EventManager.Subscribe_RetreatExploration(OnRetreatZoneStage);
@@ -223,9 +222,9 @@ public class UITabExploration : UITabBase
         if (m_datatableZone == null) return;
 
         // WarpIn 진행 중 재진입이면 취소 후 Idle로 복귀
-        if (m_myFleet != null && m_myFleet.m_fleetState == EUnitState.Warp)
+        if (m_playerFleet != null && m_playerFleet.m_fleetState == EUnitState.Warp)
         {
-            m_myFleet.CancelFleetWarpIn();
+            m_playerFleet.CancelFleetWarpIn();
             SetFleetState(EUnitState.Idle);
         }
 
@@ -280,13 +279,13 @@ public class UITabExploration : UITabBase
         Vector3 targetCameraPosition;
 
         // 전투 중이면 카메라만 포커스 타겟 위치로 복귀 (함대는 그대로 전투 지속)
-        if (m_battleZoneStage != null && m_myFleet.m_fleetState.IsBattleState() == true)
+        if (m_battleZoneStage != null && m_playerFleet.m_fleetState.IsBattleState() == true)
         {
             // m_pendingFleetPos 을 설정하지 않는다.
             targetCameraPosition = CameraController.Instance.GetFocusTargetPosition();
         }
         // 전투 목표 stage 정해진 상태에서 워프 상태라면, 새로운 스테이지로 이동한다는 것
-        else if (m_battleZoneStage != null && m_myFleet.m_fleetState == EUnitState.Warp)
+        else if (m_battleZoneStage != null && m_playerFleet.m_fleetState == EUnitState.Warp)
         {
             m_pendingFleetPos = m_datatableZone.ResolveFleetWorldPosition(m_battleZoneStage);
             m_pendingFleetRotY = m_battleZoneStage.fleetRotationY;
@@ -316,10 +315,10 @@ public class UITabExploration : UITabBase
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
         ObjectManager.Instance.SetMyFleetPosition(m_pendingFleetPos, m_pendingFleetRotY);
         var cam = CameraController.Instance;
-        m_myFleet.StartFleetWarpIn(onArrived: () =>
+        m_playerFleet.StartFleetWarpIn(onArrived: () =>
         {
             SetTabButtonsVisible(true, includeSelf: true);
-            cam.SetTargetOfCameraController(m_myFleet.transform);
+            cam.SetTargetOfCameraController(m_playerFleet.transform);
             SetFleetState(EUnitState.BattleExploration);
             if (m_battleZoneStage != null)
             {
@@ -340,7 +339,7 @@ public class UITabExploration : UITabBase
 
     private void SetFleetState(EUnitState unitState)
     {
-        m_myFleet.SetFleetState(unitState);
+        m_playerFleet.SetFleetState(unitState);
     }
 
     private void OnMyFleetWiped()
@@ -351,7 +350,7 @@ public class UITabExploration : UITabBase
     private void OnFleetViewRestoredAfterBattleReturn()
     {
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        CameraController.Instance.SetTargetOfCameraController(m_playerFleet.transform);
     }
 
     private void OnDestroy()
@@ -365,8 +364,8 @@ public class UITabExploration : UITabBase
 
     private void SetMyFleetToHiddenPosition()
     {
-        if (m_myFleet != null)
-            m_myFleet.transform.position = new Vector3(0f, -9999f, 0f);
+        if (m_playerFleet != null)
+            m_playerFleet.transform.position = new Vector3(0f, -9999f, 0f);
     }
 
     private int ParseZoneGroup(string zoneName)
@@ -397,8 +396,8 @@ public class UITabExploration : UITabBase
     private void OnEnterZoneStageFromButton(ZoneStageConfig zoneStage)
     {
         if (zoneStage == null) return;
-        if (m_myFleet.m_fleetState == EUnitState.Warp) return;
-        if (m_myFleet.m_fleetState.IsBattleState() == true)
+        if (m_playerFleet.m_fleetState == EUnitState.Warp) return;
+        if (m_playerFleet.m_fleetState.IsBattleState() == true)
         {
             if (m_battleZoneStage != null && m_battleZoneStage.zoneName == zoneStage.zoneName) return;
             EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
@@ -682,7 +681,7 @@ public class UITabExploration : UITabBase
     private void OnClaimRewardVip()
     {
         // VIP는 광고 없이 자동으로 watchedAd=true 처리 (서버에서 *4 보상 + 전체 수리)
-        if (m_myFleet != null) m_myFleet.FullRepair();
+        if (m_playerFleet != null) m_playerFleet.FullRepair();
         SendClaimZoneReward(true);
     }
 
@@ -698,7 +697,7 @@ public class UITabExploration : UITabBase
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         if (AdManager.s_devSkipAd == true)
         {
-            if (m_myFleet != null) m_myFleet.FullRepair();
+            if (m_playerFleet != null) m_playerFleet.FullRepair();
             SendClaimZoneReward(true);
             return;
         }
@@ -717,8 +716,8 @@ public class UITabExploration : UITabBase
         AdManager.Instance.ShowRewardedAd(result =>
         {
             bool rewarded = result == EAdResult.Rewarded;
-            if (rewarded == true && m_myFleet != null)
-                m_myFleet.FullRepair();
+            if (rewarded == true && m_playerFleet != null)
+                m_playerFleet.FullRepair();
             SendClaimZoneReward(rewarded);
         });
     }
@@ -833,10 +832,10 @@ public class UITabExploration : UITabBase
         ObjectManager.Instance.ChangeZone(retreatGroup);
         ObjectManager.Instance.SetMyFleetPosition(retreatPosition, retreatRotationY);
 
-        m_myFleet.StartFleetWarpIn(onArrived: () =>
+        m_playerFleet.StartFleetWarpIn(onArrived: () =>
         {
             SetTabButtonsVisible(true, includeSelf: true);
-            CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+            CameraController.Instance.SetTargetOfCameraController(m_playerFleet.transform);
 
             RefreshCurrentZoneStageButton();
 
@@ -847,12 +846,12 @@ public class UITabExploration : UITabBase
 
             if (m_isFleetWiped == true)
             {
-                m_myFleet.RebuildFleet(0.1f);
+                m_playerFleet.RebuildFleet(0.1f);
                 m_isFleetWiped = false;
             }
             else
             {
-                m_myFleet.RestoreDestroyedShips(0.1f);
+                m_playerFleet.RestoreDestroyedShips(0.1f);
             }
         });
     }
@@ -866,24 +865,24 @@ public class UITabExploration : UITabBase
 
         SetFleetState(EUnitState.Idle);
 
-        if (m_myFleet != null)
+        if (m_playerFleet != null)
         {
             if (m_isFleetWiped == true)
             {
-                m_myFleet.RebuildFleet(0.1f);
+                m_playerFleet.RebuildFleet(0.1f);
                 m_isFleetWiped = false;
             }
             else
             {
-                m_myFleet.RestoreDestroyedShips(0.1f);
+                m_playerFleet.RestoreDestroyedShips(0.1f);
             }
         }
 
         // 갤럭시뷰 중에 전투가 완료된 경우 함대를 즉시 오프스크린으로 이동
         if (CameraController.Instance != null && CameraController.Instance.IsGalaxyView == true)
         {
-            if (m_myFleet != null)
-                m_myFleet.transform.position = new Vector3(0f, -9999f, 0f);
+            if (m_playerFleet != null)
+                m_playerFleet.transform.position = new Vector3(0f, -9999f, 0f);
         }
 
         int battleGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : (m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1);

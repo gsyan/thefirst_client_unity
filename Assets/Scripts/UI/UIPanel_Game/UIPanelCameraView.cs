@@ -176,7 +176,7 @@ public class UIPanelCameraView : UIPanelBase
         OnViewportChanged(m_lastViewportRatio);
 
         // 이벤트를 놓쳤을 수 있으므로 현재 전술 옵션 상태로 즉시 동기화
-        var fleet = DataManager.Instance.m_currentCharacter?.GetOwnedFleet();
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet != null)
             OnTacticOptionsChanged(fleet.m_fleetInfo.tacticOptions);
 
@@ -220,7 +220,7 @@ public class UIPanelCameraView : UIPanelBase
 
     private void OnFormationButtonClicked()
     {
-        SpaceFleet fleet = DataManager.Instance.m_currentCharacter?.GetOwnedFleet();
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet == null) return;
         fleet.CycleFormation();
     }
@@ -237,7 +237,7 @@ public class UIPanelCameraView : UIPanelBase
 
     private void RefreshFormationButton()
     {
-        SpaceFleet fleet = DataManager.Instance.m_currentCharacter?.GetOwnedFleet();
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         RefreshFormationButtonInteractable();
         if (fleet != null)
             RefreshFormationIcon(fleet.m_currentFormationType);
@@ -246,7 +246,7 @@ public class UIPanelCameraView : UIPanelBase
     private void RefreshFormationButtonInteractable()
     {
         if (m_tacticsFormationButton == null) return;
-        SpaceFleet fleet = DataManager.Instance.m_currentCharacter?.GetOwnedFleet();
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         int shipCount = fleet != null ? fleet.GetAliveShipCount() : 0;
         m_tacticsFormationButton.SetInteractable(shipCount >= 3);
     }

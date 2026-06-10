@@ -253,16 +253,29 @@ public class SpaceFleet : MonoBehaviour
         if (m_fleetInfo.ships != null && m_fleetInfo.ships.Count > 0)
         {
             for (int i = 0; i < m_fleetInfo.ships.Count; i++)
-                CreateSpaceShipFromData(fleetInfo.ships[i]);
+                CreateSpaceShipByInfo(fleetInfo.ships[i]);
 
             UpdateShipFormation(m_fleetInfo.formation, bSmooth: false);
         }
         
         SetFleetState(fleetState);
     }
+    // m_fleetInfo.ships에서 id로 항목을 찾아 생성 — 외부에서 ShipInfo 객체 없이 id만 알 때 사용
+    public void CreateSpaceShipById(long shipId, bool bWarp = false)
+    {
+        if (m_fleetInfo.ships == null) return;
+        ShipInfo found = null;
+        foreach (ShipInfo si in m_fleetInfo.ships)
+        {
+            if (si.id == shipId) { found = si; break; }
+        }
+        if (found != null)
+            CreateSpaceShipByInfo(found, bWarp);
+    }
+
     // bWarp: 항상 후방 스폰. true면 워프 이펙트+고속 이동, false면 UpdateShipFormation이 배치 담당
     // bFillNullSlot: true면 파괴된 슬롯(null) 자리에 복원, false면 신규 추가(null 슬롯 무시)
-    public void CreateSpaceShipFromData(ShipInfo shipInfo, bool bWarp = false, bool bFillNullSlot = false)
+    public void CreateSpaceShipByInfo(ShipInfo shipInfo, bool bWarp = false, bool bFillNullSlot = false)
     {
         GameObject shipGo = new GameObject($"{shipInfo.shipName}");
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
@@ -738,7 +751,7 @@ public class SpaceFleet : MonoBehaviour
         if (m_fleetInfo.ships != null && m_fleetInfo.ships.Count > 0)
         {
             for (int i = 0; i < m_fleetInfo.ships.Count; i++)
-                CreateSpaceShipFromData(m_fleetInfo.ships[i]);
+                CreateSpaceShipByInfo(m_fleetInfo.ships[i]);
 
             UpdateShipFormation(m_fleetInfo.formation, bSmooth: false);
         }
@@ -763,7 +776,7 @@ public class SpaceFleet : MonoBehaviour
         {
             if (aliveShipIds.Contains(shipInfo.id)) continue;
 
-            CreateSpaceShipFromData(shipInfo, bWarp: true, bFillNullSlot: true);
+            CreateSpaceShipByInfo(shipInfo, bWarp: true, bFillNullSlot: true);
             SpaceShip newShip = FindShip(shipInfo.id);
             if (newShip != null)
             {

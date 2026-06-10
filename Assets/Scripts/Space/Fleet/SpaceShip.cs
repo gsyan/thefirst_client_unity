@@ -31,7 +31,7 @@ public class SpaceShip : MonoBehaviour
     [SerializeField] public CapabilityProfile m_spaceShipStatsOrg;
     [SerializeField] public CapabilityProfile m_spaceShipStatsCur;
 
-    public SpaceFleet m_myFleet;
+    public SpaceFleet m_ownerFleet;
     public EUnitState m_shipState;
     [HideInInspector] public Outline m_shipOutline;
 
@@ -60,10 +60,10 @@ public class SpaceShip : MonoBehaviour
     virtual protected void Start()
     {
         InitializeGaugeDisplay();
-        if (m_myFleet != null &&
-            (m_myFleet.m_fleetSource == EFleetSource.fleet_source_player ||
-             m_myFleet.m_fleetSource == EFleetSource.fleet_source_player_remote))
-            StartRepairLoop(m_myFleet.m_fleetSource == EFleetSource.fleet_source_player);
+        if (m_ownerFleet != null &&
+            (m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player ||
+             m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player_remote))
+            StartRepairLoop(m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player);
     }
 
     private void InitializeGaugeDisplay()
@@ -75,7 +75,7 @@ public class SpaceShip : MonoBehaviour
 
     public void InitializeSpaceShip(SpaceFleet fleet, ShipInfo shipInfo)
     {
-        m_myFleet = fleet;
+        m_ownerFleet = fleet;
         m_shipInfo = shipInfo;
         if (shipInfo.bodies == null || shipInfo.bodies.Count == 0) return;
         foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
@@ -136,7 +136,7 @@ public class SpaceShip : MonoBehaviour
         // 진형 이동 중이면 도착 후 FormationMovementLoop에서 재호출됨
         if (m_formationMoveState == FormationMoveState.Moving) return;
 
-        switch (m_myFleet.m_fleetState)
+        switch (m_ownerFleet.m_fleetState)
         {
             case EUnitState.Idle:
                 m_shipState = EUnitState.Idle;
@@ -152,7 +152,7 @@ public class SpaceShip : MonoBehaviour
                 break;
             case EUnitState.BattleExploration:
             case EUnitState.BattlePvp:
-                m_shipState = m_myFleet.m_fleetState;
+                m_shipState = m_ownerFleet.m_fleetState;
                 if (m_returnRotationCoroutine != null)
                 {
                     StopCoroutine(m_returnRotationCoroutine);
@@ -230,7 +230,7 @@ public class SpaceShip : MonoBehaviour
     private void CollectCandidateEnemyBodies(List<ModuleBody> result)
     {
         result.Clear();
-        if (m_myFleet != null && m_myFleet.IsEnemy == true)
+        if (m_ownerFleet != null && m_ownerFleet.IsEnemy == true)
         {
             SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
             if (myFleet == null) return;
@@ -303,7 +303,7 @@ public class SpaceShip : MonoBehaviour
 
     private IEnumerator ReturnToFleetForward()
     {
-        Vector3 fleetForward = m_myFleet != null ? m_myFleet.transform.forward : Vector3.forward;
+        Vector3 fleetForward = m_ownerFleet != null ? m_ownerFleet.transform.forward : Vector3.forward;
         Quaternion targetRotation = Quaternion.LookRotation(fleetForward);
         while (true)
         {
@@ -331,9 +331,9 @@ public class SpaceShip : MonoBehaviour
         if (IsAlive() == false) return;
 
         // 진형 데미지 차감 (x_defensive 전용)
-        if (m_myFleet != null)
+        if (m_ownerFleet != null)
         {
-            float reduction = m_myFleet.GetFormationDefenseReduction();
+            float reduction = m_ownerFleet.GetFormationDefenseReduction();
             attackPower *= (1f - reduction);
         }
 
@@ -527,14 +527,14 @@ public class SpaceShip : MonoBehaviour
             float ownRepair = m_spaceShipStatsCur.repair;
             if (ownRepair <= 0f) continue;
 
-            bool isBattle = m_myFleet != null && m_myFleet.m_fleetState.IsBattleState() == true;
-            if (isBattle && m_myFleet.m_fleetInfo != null && (m_myFleet.m_fleetInfo.tacticOptions & 1) == 0) continue;
+            bool isBattle = m_ownerFleet != null && m_ownerFleet.m_fleetState.IsBattleState() == true;
+            if (isBattle && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 1) == 0) continue;
 
             Character character = isPlayerFleet ? DataManager.Instance.m_currentCharacter : null;
             if (isBattle && isPlayerFleet && (character == null || character.GetMineral() <= 0)) continue;
 
             // 진형 회복력 보너스 적용 (cross_defensive 전용)
-            float formationRepairMult = m_myFleet != null ? m_myFleet.GetFormationRepairMultiplier() : 1f;
+            float formationRepairMult = m_ownerFleet != null ? m_ownerFleet.GetFormationRepairMultiplier() : 1f;
             float effectiveRepair = ownRepair * formationRepairMult;
 
             // 자기 HP 미달 → 자신만 수리
@@ -563,10 +563,10 @@ public class SpaceShip : MonoBehaviour
     // 함대에서 HP 비율이 가장 낮은 생존 함선 탐색 (자기 제외)
     private SpaceShip FindRepairTarget()
     {
-        if (m_myFleet == null) return null;
+        if (m_ownerFleet == null) return null;
         SpaceShip target = null;
         float lowestRatio = 1f;
-        foreach (SpaceShip ship in m_myFleet.m_ships)
+        foreach (SpaceShip ship in m_ownerFleet.m_ships)
         {
             if (ship == null || ship == this || ship.IsAlive() == false) continue;
             float ratio = ship.GetHealthRatio();
@@ -783,9 +783,9 @@ public class SpaceShip : MonoBehaviour
 
     public void SetSelectedModule(SpaceShip ship, ModuleBase module)
     {
-        if (m_myFleet == null) return;
+        if (m_ownerFleet == null) return;
         if (this != ship) return;
-        m_myFleet.ClearAllSelectedModule();
+        m_ownerFleet.ClearAllSelectedModule();
         m_selectedModule = module;
         UpdateSelectedModuleVisual();
     }
@@ -855,7 +855,7 @@ public class SpaceShip : MonoBehaviour
     public void OnShieldTriggerStay(SpaceShip other, float penetrationDepth)
     {
         if (m_formationMoveState != FormationMoveState.Moving) return;
-        if (other == null || other.m_myFleet != m_myFleet) return;
+        if (other == null || other.m_ownerFleet != m_ownerFleet) return;
 
         // 내 인덱스가 낮으면 우선권 있음 → 상대가 피함
         if (m_shipInfo.positionIndex <= other.m_shipInfo.positionIndex) return;

@@ -115,7 +115,7 @@ public class CameraController : MonoSingleton<CameraController>
     // 함선 선택 시 해당 함선 기준 줌 범위 적용 (내 함대만)
     private void OnSpaceShipSelectedForZoom(SpaceShip ship)
     {
-        if (ship == null || ship.m_myFleet == null || ship.m_myFleet.IsEnemy == true) return;
+        if (ship == null || ship.m_ownerFleet == null || ship.m_ownerFleet.IsEnemy == true) return;
         ApplyZoomRangeFromShip(ship);
     }
 
@@ -301,7 +301,7 @@ public class CameraController : MonoSingleton<CameraController>
         }
 
         SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
-        if (ship == null || ship.m_myFleet == null || ship.m_myFleet.IsEnemy)
+        if (ship == null || ship.m_ownerFleet == null || ship.m_ownerFleet.IsEnemy)
         {
             EventManager.Trigger_EmptySpaceTapped();
             return;

@@ -22,7 +22,6 @@ public class DataManager : Singleton<DataManager>
     #endregion
 
     #region Character Info Management ###########################################################
-    private const string CHARACTER_DATA_KEY = "CurrentCharacterData";
     public Character m_currentCharacter;
 
     // 서버에서 받은 캐릭터 정보 설정 — 로컬 저장 없음
@@ -37,13 +36,10 @@ public class DataManager : Singleton<DataManager>
     public void ClearCharacterData()
     {
         m_currentCharacter = null;
-        PlayerPrefs.DeleteKey(CHARACTER_DATA_KEY);
-        PlayerPrefs.Save();
     }
     #endregion
 
     #region Fleet Info Management ###############################################################
-    private const string FLEET_DATA_KEY = "CurrentFleetData";
     public FleetInfo m_currentFleetInfo;
 
     // 초기화 전용 — 로그인/씬 진입 시 최초 1회만 사용
@@ -52,11 +48,32 @@ public class DataManager : Singleton<DataManager>
         m_currentFleetInfo = fleetInfo;
     }
 
-    // 서버 응답으로 함선 목록이 바뀌었을 때 (추가/제거)
+    // 서버에서 전체 함선 목록을 받을 때 통째 교체 (초기화 또는 전체 갱신)
     public void ApplyFleetShips(List<ShipInfo> ships)
     {
         if (m_currentFleetInfo == null) return;
         m_currentFleetInfo.ships = ships;
+    }
+
+    // 함선 1척 추가 — SpaceShip.m_shipInfo 참조 보존을 위해 서버 응답 ShipInfo를 리스트에 직접 추가
+    public void AddFleetShip(ShipInfo ship)
+    {
+        if (m_currentFleetInfo == null || m_currentFleetInfo.ships == null) return;
+        m_currentFleetInfo.ships.Add(ship);
+    }
+
+    // 함선 1척 제거
+    public void RemoveFleetShip(long shipId)
+    {
+        if (m_currentFleetInfo == null || m_currentFleetInfo.ships == null) return;
+        for (int i = m_currentFleetInfo.ships.Count - 1; i >= 0; i--)
+        {
+            if (m_currentFleetInfo.ships[i].id == shipId)
+            {
+                m_currentFleetInfo.ships.RemoveAt(i);
+                break;
+            }
+        }
     }
 
     // 진형 변경 시
@@ -76,8 +93,6 @@ public class DataManager : Singleton<DataManager>
     public void ClearFleetData()
     {
         m_currentFleetInfo = null;
-        PlayerPrefs.DeleteKey(FLEET_DATA_KEY);
-        PlayerPrefs.Save();
     }
 
     public ShipInfo GetShipAtPosition(int positionIndex)

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Character
 {
     public CharacterInfo m_characterInfo;
-    public SpaceFleet m_ownedFleet;
     private HashSet<string> m_completedResearchIds; // tech_level_N 등 문자열 기반 완료 연구
 
     public Character(CharacterInfo characterInfo)
@@ -163,33 +162,6 @@ public class Character
 
 
 
-
-    public void SetOwnedFleet(SpaceFleet fleet)
-    {
-        m_ownedFleet = fleet;
-    }
-
-    public SpaceFleet GetOwnedFleet()
-    {
-        return m_ownedFleet;
-    }
-
-    public bool HasFleet()
-    {
-        return m_ownedFleet != null;
-    }
-
-    public SpaceShip GetRandomAliveShip()
-    {
-        if (m_ownedFleet == null) return null;
-        return m_ownedFleet.GetRandomAliveShip();
-    }
-
-    public bool IsFleetAlive()
-    {
-        if (m_ownedFleet == null) return false;
-        return m_ownedFleet.IsFleetAlive();
-    }
 
     // 문자열 기반 완료 연구 ID 목록 세팅
     public void SetCompletedResearchIds(string[] ids)

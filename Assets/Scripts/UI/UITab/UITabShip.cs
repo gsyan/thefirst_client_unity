@@ -58,7 +58,7 @@ public class UITabShip : UITabBase
     private bool bShow = false;
 
     private Character  m_myCharacter;
-    private SpaceFleet m_myFleet;
+    private SpaceFleet m_playerFleet;
 
     private SpaceShip  m_selectedShip;
     private ModuleBase m_selectedModule;
@@ -81,9 +81,8 @@ public class UITabShip : UITabBase
     private void InitializeUITabShip()
     {
         m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
-        m_myFleet = m_myCharacter.GetOwnedFleet();
-        if (m_myFleet == null) return;
+        if (m_myCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        m_playerFleet = ObjectManager.Instance.m_myFleet;
 
         m_selectorsBody    = m_moduleBodySelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         m_selectorsBeam    = m_moduleBeamSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
@@ -133,7 +132,7 @@ public class UITabShip : UITabBase
         base.OnTabActivated();
 
         if (m_selectedShip == null)
-            m_selectedShip = m_myFleet.m_ships[0];
+            m_selectedShip = m_playerFleet.m_ships[0];
         if (m_selectedModule == null)
             m_selectedModule = m_selectedShip.m_moduleBodys[0];
 
@@ -152,8 +151,8 @@ public class UITabShip : UITabBase
 
         bShow = false;
 
-        if (m_myFleet != null)
-            m_myFleet.ClearAllSelectedModule();
+        if (m_playerFleet != null)
+            m_playerFleet.ClearAllSelectedModule();
     }
 
     // ─────────────────────────────────────────────
@@ -162,18 +161,18 @@ public class UITabShip : UITabBase
 
     private void OnPrevShipClicked()
     {
-        if (m_myFleet == null || m_myFleet.m_ships.Count == 0) return;
-        int idx = m_myFleet.m_ships.IndexOf(m_selectedShip);
-        int next = (idx - 1 + m_myFleet.m_ships.Count) % m_myFleet.m_ships.Count;
-        SelectShip(m_myFleet.m_ships[next]);
+        if (m_playerFleet == null || m_playerFleet.m_ships.Count == 0) return;
+        int idx = m_playerFleet.m_ships.IndexOf(m_selectedShip);
+        int next = (idx - 1 + m_playerFleet.m_ships.Count) % m_playerFleet.m_ships.Count;
+        SelectShip(m_playerFleet.m_ships[next]);
     }
 
     private void OnNextShipClicked()
     {
-        if (m_myFleet == null || m_myFleet.m_ships.Count == 0) return;
-        int idx = m_myFleet.m_ships.IndexOf(m_selectedShip);
-        int next = (idx + 1) % m_myFleet.m_ships.Count;
-        SelectShip(m_myFleet.m_ships[next]);
+        if (m_playerFleet == null || m_playerFleet.m_ships.Count == 0) return;
+        int idx = m_playerFleet.m_ships.IndexOf(m_selectedShip);
+        int next = (idx + 1) % m_playerFleet.m_ships.Count;
+        SelectShip(m_playerFleet.m_ships[next]);
     }
 
     private void SelectShip(SpaceShip ship)
@@ -183,7 +182,7 @@ public class UITabShip : UITabBase
         m_selectedShip = ship;
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
 
-        if (m_myFleet != null) m_myFleet.ClearAllSelectedModule();
+        if (m_playerFleet != null) m_playerFleet.ClearAllSelectedModule();
 
         // 기본 모듈 선택
         m_selectedModule = null;
@@ -216,7 +215,7 @@ public class UITabShip : UITabBase
         m_selectedShip = ship;
         CameraController.Instance.SetTargetOfCameraController(m_selectedShip.transform);
 
-        if (m_myFleet != null) m_myFleet.ClearAllSelectedModule();
+        if (m_playerFleet != null) m_playerFleet.ClearAllSelectedModule();
 
         m_selectedModule = null;
         if (ship.m_moduleBodys[0].m_beams.Count > 0)
@@ -237,7 +236,7 @@ public class UITabShip : UITabBase
     private void OnSpaceShipModuleSelected(SpaceShip ship, ModuleBase module)
     {
         if (module == null) return;
-        if (m_myFleet == null) return;
+        if (m_playerFleet == null) return;
         if (m_selectedShip != ship) return;
 
         m_selectedModule = module;
@@ -362,7 +361,7 @@ public class UITabShip : UITabBase
 
         character.UpdateModulePoint(unlockData.modulePointRemain);
 
-        SpaceFleet fleet = character.GetOwnedFleet();
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet == null) return;
         SpaceShip targetShip = fleet.FindShip(unlockData.shipId);
         if (targetShip == null) return;
@@ -484,8 +483,8 @@ public class UITabShip : UITabBase
         {
             character.UpdateModulePoint(response.data.modulePointRemain);
 
-            if (m_myFleet == null) return;
-            SpaceShip ship = m_myFleet.FindShip(response.data.shipId);
+            if (m_playerFleet == null) return;
+            SpaceShip ship = m_playerFleet.FindShip(response.data.shipId);
             if (ship == null) return;
 
             ship.ApplyModuleChange(response.data.bodyIndex, response.data.moduleType,
@@ -514,8 +513,8 @@ public class UITabShip : UITabBase
     private void ApplyModuleLevelChange(long shipId, int bodyIndex, EModuleType moduleType,
         EModuleSubType moduleSubType, int slotIndex, int newLevel, bool isLevelUp)
     {
-        if (m_myFleet == null) return;
-        SpaceShip ship = m_myFleet.FindShip(shipId);
+        if (m_playerFleet == null) return;
+        SpaceShip ship = m_playerFleet.FindShip(shipId);
         if (ship == null) return;
 
         ModuleBase prevModule = ship.FindModule(bodyIndex, moduleType, slotIndex);
@@ -932,9 +931,9 @@ public class UITabShip : UITabBase
     private void ApplyModuleChange(ModuleGradeChangeResponse changeData)
     {
         if (changeData == null) return;
-        if (m_myFleet == null) return;
+        if (m_playerFleet == null) return;
 
-        SpaceShip ship = m_myFleet.FindShip(changeData.shipId);
+        SpaceShip ship = m_playerFleet.FindShip(changeData.shipId);
         if (ship == null) return;
 
         ship.ApplyModuleChange(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew,
@@ -1049,7 +1048,7 @@ public class UITabShip : UITabBase
     private void OnModuleSelectorClicked(ModuleBase module)
     {
         if (m_selectedShip == null || module == null) return;
-        if (m_myFleet == null || m_myFleet.m_fleetState.IsBattleState() == false)
+        if (m_playerFleet == null || m_playerFleet.m_fleetState.IsBattleState() == false)
             CameraController.Instance.FocusOnModuleIfHidden(module.m_moduleSlot);
         EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, module);
     }
@@ -1100,17 +1099,16 @@ public class UITabShip : UITabBase
         if (character != null)
             character.UpdateModulePoint(data.modulePointRemain);
 
-        SpaceShip removedShip = m_myFleet.FindShip(data.removedShipId);
+        SpaceShip removedShip = m_playerFleet.FindShip(data.removedShipId);
         if (removedShip != null)
-            m_myFleet.RemoveShip(removedShip, refreshFormation: true);
+            m_playerFleet.RemoveShip(removedShip, refreshFormation: true);
 
-        if (data.updatedFleetInfo != null)
-            DataManager.Instance.ApplyFleetShips(data.updatedFleetInfo.ships);
+        DataManager.Instance.RemoveFleetShip(data.removedShipId);
 
         EventManager.Trigger_FleetShipCountChanged();
 
         // 기함으로 선택 전환
-        m_selectedShip   = m_myFleet.m_ships.Count > 0 ? m_myFleet.m_ships[0] : null;
+        m_selectedShip   = m_playerFleet.m_ships.Count > 0 ? m_playerFleet.m_ships[0] : null;
         m_selectedModule = m_selectedShip != null ? m_selectedShip.m_moduleBodys[0] : null;
 
         if (m_selectedShip != null)
@@ -1137,7 +1135,7 @@ public class UITabShip : UITabBase
         if (character != null)
             character.UpdateModulePoint(data.modulePointRemain);
 
-        SpaceFleet fleet = character?.GetOwnedFleet();
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet == null) return;
         SpaceShip targetShip = fleet.FindShip(data.shipId);
         if (targetShip == null) return;

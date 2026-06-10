@@ -20,8 +20,6 @@ public class UITabTech : UITabBase
     private Color m_colorActive;
     private Color m_colorInactive;
 
-    private Character m_myCharacter;
-    private SpaceFleet m_myFleet;
     private Image[] m_shipSlots;
     
 
@@ -35,10 +33,7 @@ public class UITabTech : UITabBase
         m_colorActive   = CommonUtility.PaletteColor("GeneralBright1");
         m_colorInactive = CommonUtility.PaletteColor("GeneralDark1");
 
-        m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
-        m_myFleet = m_myCharacter.GetOwnedFleet();
-        if (m_myFleet == null) return;
+        if (DataManager.Instance.m_currentCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
 
         if (m_shipImages != null)
         {

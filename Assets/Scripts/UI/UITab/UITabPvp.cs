@@ -11,16 +11,12 @@ public class UITabPvp : UITabBase
     [Header("PvP Warp")]
     [SerializeField] private DataTableZone m_datatableZone;
 
-    private SpaceFleet m_myFleet;
-    private Character m_myCharacter;
     private string m_currentBattleToken;
     private bool m_isBattleInProgress;
 
     public override void InitializeUITab()
     {
-        m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
-        m_myFleet = m_myCharacter.GetOwnedFleet();
+        if (DataManager.Instance.m_currentCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
 
         m_innerTabSystem.InitializeTabBases();
         m_tabMyInfo.onAttackClicked = OnAttackClicked;
@@ -120,7 +116,7 @@ public class UITabPvp : UITabBase
             ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(pvpZoneStage), pvpZoneStage.fleetRotationY);
         CameraController.Instance.SnapToTarget();
 
-        m_myFleet.StartFleetWarpIn(onArrived: () =>
+        ObjectManager.Instance.m_myFleet.StartFleetWarpIn(onArrived: () =>
         {
             ObjectManager.Instance.StartPvpBattle(opponentFleetInfo);
         });
@@ -219,12 +215,13 @@ public class UITabPvp : UITabBase
         ObjectManager.Instance.ChangeZone(zoneGroup);
         ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(returnZoneStage), returnZoneStage.fleetRotationY);
         CameraController.Instance.SnapToTarget();
-        m_myFleet.StartFleetWarpIn(onArrived: () =>
+        SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
+        myFleet.StartFleetWarpIn(onArrived: () =>
         {
-            if (m_myFleet.IsFleetAlive() == false)
-                m_myFleet.RebuildFleet(0.1f);
+            if (myFleet.IsFleetAlive() == false)
+                myFleet.RebuildFleet(0.1f);
             else
-                m_myFleet.RestoreDestroyedShips(0.1f);
+                myFleet.RestoreDestroyedShips(0.1f);
 
             m_tabMyInfo.RequestPvpList();
             RequestPvpMyRank();

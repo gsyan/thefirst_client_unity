@@ -111,7 +111,7 @@ public class ModuleHanger : ModuleBase
         AutoDetectFleetInfo();
 
         // Zone 적 함선일 때 격납고 체력·함재기 스탯에 배율 적용
-        if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
+        if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
             m_health    *= m_myShip.m_hangerMultiplier;
             m_healthMax *= m_myShip.m_hangerMultiplier;

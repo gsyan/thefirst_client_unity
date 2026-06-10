@@ -81,7 +81,7 @@ public class ModuleBeam : ModuleBase
         AutoDetectFleetInfo();
 
         // Zone 적 함선일 때 체력·공격력에 배율 적용
-        if (m_myFleet != null && m_myFleet.IsZoneEnemy == true)
+        if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
             m_health    *= m_myShip.m_beamMultiplier;
             m_healthMax *= m_myShip.m_beamMultiplier;
@@ -105,7 +105,7 @@ public class ModuleBeam : ModuleBase
         for(int i=0; i< moduleData.attackFireCount; i++)
         {
             LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
-            launcher.InitializeLauncherBeam(moduleData, i, m_myFleet != null && m_myFleet.IsEnemy, slotScale);
+            launcher.InitializeLauncherBeam(moduleData, i, m_ownerFleet != null && m_ownerFleet.IsEnemy, slotScale);
             m_launchers.Add(launcher);
         }
     }

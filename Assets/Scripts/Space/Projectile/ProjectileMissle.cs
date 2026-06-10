@@ -110,7 +110,7 @@ public class ProjectileMissile : ProjectileBase
     {
         if (m_sourceShip == null) return null;
 
-        bool isEnemySource = m_sourceShip.m_myFleet != null && m_sourceShip.m_myFleet.IsEnemy;
+        bool isEnemySource = m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy;
         Vector3 myPos = transform.position;
         ModuleBase nearest = null;
         float nearestSqrDist = float.MaxValue;
@@ -165,7 +165,7 @@ public class ProjectileMissile : ProjectileBase
         if (Physics.Raycast(m_prevPosition, moveVec.normalized, out RaycastHit hit, moveVec.magnitude, s_raycastMask))
         {
             SpaceShip hitShip = hit.collider.GetComponentInParent<SpaceShip>();
-            if (hitShip != null && (m_sourceShip == null || hitShip.m_myFleet != m_sourceShip.m_myFleet))
+            if (hitShip != null && (m_sourceShip == null || hitShip.m_ownerFleet != m_sourceShip.m_ownerFleet))
             {
                 if (m_splashRadius > 0f)
                     ApplySplashDamage(hit.point, hitShip);
@@ -192,7 +192,7 @@ public class ProjectileMissile : ProjectileBase
             SpaceShip ship = s_overlapResults[i].GetComponentInParent<SpaceShip>();
             if (ship == null) continue;
             if (ship == directHitShip) continue;
-            if (m_sourceShip != null && ship.m_myFleet == m_sourceShip.m_myFleet) continue;
+            if (m_sourceShip != null && ship.m_ownerFleet == m_sourceShip.m_ownerFleet) continue;
 
             float dist = Vector3.Distance(center, s_overlapResults[i].transform.position);
             float ratio = 1.0f - 0.5f * (dist / m_splashRadius);

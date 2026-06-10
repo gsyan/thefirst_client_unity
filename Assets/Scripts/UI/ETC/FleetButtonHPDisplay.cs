@@ -48,9 +48,9 @@ public class FleetButtonHPDisplay : MonoBehaviour
     private void RefreshHPBars()
     {
         if (m_hpBarRoots == null) return;
-        if (DataManager.Instance == null || DataManager.Instance.m_currentCharacter == null) return;
+        if (ObjectManager.Instance == null) return;
 
-        var fleet = DataManager.Instance.m_currentCharacter.GetOwnedFleet();
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         int shipCount = fleet != null ? fleet.m_ships.Count : 0;
 
         for (int i = 0; i < m_hpBarRoots.Length; i++)

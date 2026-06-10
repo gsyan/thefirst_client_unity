@@ -8,8 +8,7 @@ public class UITabFleetTactics : UITabBase
     [SerializeField] private Transform m_toggleButtonContainer;
     [SerializeField] private Transform m_formationButtonContainer;
 
-    private Character      m_myCharacter;
-    private SpaceFleet     m_myFleet;
+    private SpaceFleet     m_playerFleet;
     private ToggleButton[] m_toggleButtons;
     private bool[]         m_toggleStates;
     private ToggleButton[] m_formationButtons;
@@ -67,9 +66,8 @@ public class UITabFleetTactics : UITabBase
 
     public override void InitializeUITab()
     {
-        m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
-        m_myFleet = m_myCharacter.GetOwnedFleet();
+        if (DataManager.Instance.m_currentCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        m_playerFleet = ObjectManager.Instance.m_myFleet;
 
         if (m_toTabFleet != null)
             m_toTabFleet.onClick.AddListener(() =>
@@ -105,7 +103,7 @@ public class UITabFleetTactics : UITabBase
         // 0=수리(HP당 1고정), 1=미사일 평균, 2=함재기 평균
         int[] costs = { 1, GetAvgMissileCost(), GetAvgHangerCost() };
 
-        int savedOptions = m_myFleet.m_fleetInfo.tacticOptions;
+        int savedOptions = m_playerFleet.m_fleetInfo.tacticOptions;
         for (int i = 0; i < m_toggleButtons.Length; i++)
         {
             m_toggleStates[i] = (savedOptions & (1 << i)) != 0;
@@ -131,7 +129,7 @@ public class UITabFleetTactics : UITabBase
     private int GetAvgMissileCost()
     {
         int total = 0, count = 0;
-        foreach (var ship in m_myFleet.m_ships)
+        foreach (var ship in m_playerFleet.m_ships)
         {
             if (ship == null) continue;
             foreach (var body in ship.m_moduleBodys)
@@ -146,7 +144,7 @@ public class UITabFleetTactics : UITabBase
     private int GetAvgHangerCost()
     {
         int total = 0, count = 0;
-        foreach (var ship in m_myFleet.m_ships)
+        foreach (var ship in m_playerFleet.m_ships)
         {
             if (ship == null) continue;
             foreach (var body in ship.m_moduleBodys)
@@ -160,7 +158,7 @@ public class UITabFleetTactics : UITabBase
 
     private void OnClickToggle(int idx)
     {
-        if (m_myFleet == null || m_toggleStates == null || idx >= m_toggleStates.Length) return;
+        if (m_playerFleet == null || m_toggleStates == null || idx >= m_toggleStates.Length) return;
 
         m_toggleStates[idx] = !m_toggleStates[idx];
 
@@ -172,20 +170,20 @@ public class UITabFleetTactics : UITabBase
         }
 
         // AutoRepair·TryConsumeMineral 코루틴이 즉시 참조하는 런타임 객체 갱신
-        m_myFleet.m_fleetInfo.tacticOptions = newOptions;
+        m_playerFleet.m_fleetInfo.tacticOptions = newOptions;
         EventManager.Trigger_TacticOptionsChanged(newOptions); // → RefreshToggleUI 호출됨
 
         var req = new ChangeTacticOptionsRequest
         {
-            fleetId       = m_myFleet.m_fleetInfo.id,
+            fleetId       = m_playerFleet.m_fleetInfo.id,
             tacticOptions = newOptions
         };
 
         NetworkManager.Instance.ChangeTacticOptions(req, (response) =>
         {
-            if (response.errorCode == 0 && response.data.updatedFleetInfo != null)
+            if (response.errorCode == 0)
             {
-                DataManager.Instance.ApplyFleetTacticOptions(response.data.updatedFleetInfo.tacticOptions);
+                DataManager.Instance.ApplyFleetTacticOptions(response.data.tacticOptions);
             }
         });
     }
@@ -194,8 +192,8 @@ public class UITabFleetTactics : UITabBase
     // 서버 데이터 기준 함선 수 — 전투 중 파괴된 함선은 영향 없음
     private bool IsFormationLocked()
     {
-        if (m_myFleet == null) return true;
-        var ships = m_myFleet.m_fleetInfo.ships;
+        if (m_playerFleet == null) return true;
+        var ships = m_playerFleet.m_fleetInfo.ships;
         return ships == null || ships.Count < 3;
     }
 
@@ -256,7 +254,7 @@ public class UITabFleetTactics : UITabBase
         }
         else
         {
-            int currentIdx = GetFormationIndex(m_myFleet.m_currentFormationType);
+            int currentIdx = GetFormationIndex(m_playerFleet.m_currentFormationType);
             m_suppressFormationCallback = true;
             SelectFormation(currentIdx);
             m_suppressFormationCallback = false;
@@ -277,7 +275,7 @@ public class UITabFleetTactics : UITabBase
     {
         var request = new ChangeFormationRequest
         {
-            fleetId       = m_myFleet.m_fleetInfo.id,
+            fleetId       = m_playerFleet.m_fleetInfo.id,
             formationType = newFormationType
         };
 
@@ -285,9 +283,8 @@ public class UITabFleetTactics : UITabBase
         {
             if (response.errorCode == 0)
             {
-                m_myFleet.UpdateShipFormation(newFormationType, bSmooth: true);
-                if (response.data.updatedFleetInfo != null)
-                    DataManager.Instance.ApplyFleetFormation(response.data.updatedFleetInfo.formation);
+                m_playerFleet.UpdateShipFormation(newFormationType, bSmooth: true);
+                DataManager.Instance.ApplyFleetFormation(response.data.formation);
             }
         });
     }

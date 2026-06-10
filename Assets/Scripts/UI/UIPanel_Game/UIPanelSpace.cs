@@ -10,8 +10,6 @@ public class UIPanelSpace : UIPanelBase
     [Header("Layout Animation (UITabShip / UITabStation)")]
     public float m_animDuration = 0.3f;
 
-    [HideInInspector] public SpaceFleet m_myFleet;
-
     // UITabShip / UITabStation 탭 인덱스 및 RectTransform (카메라 뷰포트용)
     private int m_moduleTabIndex = -1;
     private RectTransform m_shipTabRect;
@@ -28,9 +26,6 @@ public class UIPanelSpace : UIPanelBase
 
     private void InitializeUIPanelSpace()
     {
-        if (m_myFleet == null)
-            m_myFleet = DataManager.Instance.m_currentCharacter.GetOwnedFleet();
-
         m_tabSystem.InitializeTabBases();
 
         for (int i = 0; i < m_tabSystem.tabs.Count; i++)
@@ -75,7 +70,7 @@ public class UIPanelSpace : UIPanelBase
         SetTabNavVisible(true);
         SetLayoutImmediate(false);
 
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        CameraController.Instance.SetTargetOfCameraController(ObjectManager.Instance.m_myFleet.transform);
     }
 
     private void OnDestroy()

@@ -575,11 +575,11 @@ public abstract class AircraftBase : MonoBehaviour
         }
 
         // 2순위: 적 함대에서 직접 탐색 (모함 타겟이 아직 갱신 안 됐을 때)
-        if (m_carrierShip == null || m_carrierShip.m_myFleet == null) return false;
+        if (m_carrierShip == null || m_carrierShip.m_ownerFleet == null) return false;
 
         // 적 함대에서 살아있는 모듈 직접 탐색
         SpaceFleet enemyFleet = null;
-        if (m_carrierShip.m_myFleet.IsEnemy)
+        if (m_carrierShip.m_ownerFleet.IsEnemy)
         {
             enemyFleet = ObjectManager.Instance.m_myFleet;
         }

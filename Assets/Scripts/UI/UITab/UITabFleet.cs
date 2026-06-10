@@ -16,8 +16,7 @@ public class UITabFleet : UITabBase
 
     [SerializeField] private Button m_fleetManageButton;
 
-    private Character m_myCharacter;
-    private SpaceFleet m_myFleet;
+    private SpaceFleet m_playerFleet;
     private ShipSelector m_selectedShipSelector;
     private bool m_needsLayoutRebuild = false;
 
@@ -28,13 +27,11 @@ public class UITabFleet : UITabBase
 
     private void InitializeUITabFleet()
     {
-        m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null || m_myCharacter.GetOwnedFleet() == null) return;
-        m_myFleet = m_myCharacter.GetOwnedFleet();
+        if (DataManager.Instance.m_currentCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        m_playerFleet = ObjectManager.Instance.m_myFleet;
 
         if (m_shipSelectorContainer != null)
             m_shipSelectors = m_shipSelectorContainer.GetComponentsInChildren<ShipSelector>(true);
-        if (m_myFleet == null) return;
 
         m_fleetManageButton.onClick.AddListener(OnFleetTacticsButtonClicked);
 
@@ -66,9 +63,9 @@ public class UITabFleet : UITabBase
         RefreshShipHealthDisplay();
 
         // 선택된 함선이 없으면 살아있는 첫 함선 자동 선택
-        if (m_selectedShipSelector == null && m_myFleet != null && m_myFleet.m_ships.Count > 0)
+        if (m_selectedShipSelector == null && m_playerFleet != null && m_playerFleet.m_ships.Count > 0)
         {
-            SpaceShip firstShip = m_myFleet.GetFirstAliveShip();
+            SpaceShip firstShip = m_playerFleet.GetFirstAliveShip();
             if (firstShip != null)
                 OnShipSelectorClicked(firstShip);
             return;
@@ -85,11 +82,11 @@ public class UITabFleet : UITabBase
         SetTabButtonsVisible(true, includeSelf: true);
 
         // Fleet 탭 벗어날 때 모든 함선 아웃라인 비활성화
-        if (m_myFleet == null) return;
-        for (int i = 0; i < m_myFleet.m_ships.Count; i++)
+        if (m_playerFleet == null) return;
+        for (int i = 0; i < m_playerFleet.m_ships.Count; i++)
         {
-            if (m_myFleet.m_ships[i] == null) continue;
-            m_myFleet.m_ships[i].m_shipOutline.enabled = false;
+            if (m_playerFleet.m_ships[i] == null) continue;
+            m_playerFleet.m_ships[i].m_shipOutline.enabled = false;
         }
     }
 
@@ -165,7 +162,7 @@ public class UITabFleet : UITabBase
 
     private void PopulateShipSelectorGrid()
     {
-        if (m_shipSelectors == null || m_myFleet == null) return;
+        if (m_shipSelectors == null || m_playerFleet == null) return;
 
         SpaceShip prevShip = m_selectedShipSelector != null ? m_selectedShipSelector.Ship : null;
 
@@ -175,7 +172,7 @@ public class UITabFleet : UITabBase
 
         m_selectedShipSelector = null;
 
-        int shipCount  = m_myFleet.m_ships.Count;
+        int shipCount  = m_playerFleet.m_ships.Count;
         int maxInCsv   = DataManager.Instance.m_dataTableResearch.GetMaxShipCountInCsv();
         bool canAdd    = shipCount < maxInCsv;
 
@@ -186,7 +183,7 @@ public class UITabFleet : UITabBase
             if (i < shipCount)
             {
                 m_shipSelectors[i].gameObject.SetActive(true);
-                SpaceShip captured = m_myFleet.m_ships[i];
+                SpaceShip captured = m_playerFleet.m_ships[i];
                 m_shipSelectors[i].InitializeShipSelector(captured, () => OnShipSelectorClicked(captured), OnShipManageClicked);
 
                 // 이전 선택 함선 복원
@@ -220,8 +217,8 @@ public class UITabFleet : UITabBase
 
     private void UpdateShipCountDisplay()
     {
-        if (m_currentShipCountStatText == null || m_myFleet == null) return;
-        int current = m_myFleet.m_ships.Count;
+        if (m_currentShipCountStatText == null || m_playerFleet == null) return;
+        int current = m_playerFleet.m_ships.Count;
         int max = DataManager.Instance.m_dataTableResearch.GetMaxShipCountInCsv();
         m_currentShipCountStatText.text = $"{current} / {max}";
     }
@@ -365,10 +362,10 @@ public class UITabFleet : UITabBase
 
     private void OnAddShipButtonClicked()
     {
-        if (m_myCharacter == null) return;
+        if (DataManager.Instance.m_currentCharacter == null) return;
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
-        int currentShipCount = m_myFleet.m_ships.Count;
+        int currentShipCount = m_playerFleet.m_ships.Count;
         int requiredTechLevel = DataManager.Instance.m_dataTableResearch.GetRequiredTechLevel(currentShipCount + 1);
         var require = new RequireStruct(requiredTechLevel);
 
@@ -385,7 +382,8 @@ public class UITabFleet : UITabBase
 
     private void ExecuteAddShip()
     {
-        if (m_myCharacter == null) return;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
 
         ServerErrorCode errorCode = CanAddShip();
         if (errorCode != ServerErrorCode.SUCCESS)
@@ -400,13 +398,14 @@ public class UITabFleet : UITabBase
         {
             if (response.errorCode == 0)
             {
-                m_myCharacter.UpdateModulePoint(response.data.modulePointRemain);
-                
-                if (response.data.updatedFleetInfo != null)
-                    DataManager.Instance.ApplyFleetShips(response.data.updatedFleetInfo.ships);
+                character.UpdateModulePoint(response.data.modulePointRemain);
 
-                if (response.data.newShipInfo != null && m_myCharacter.m_ownedFleet != null)
-                    ObjectManager.Instance.m_myFleet.CreateSpaceShipFromData(response.data.newShipInfo, true);
+                if (response.data.newShipInfo != null)
+                {
+                    DataManager.Instance.AddFleetShip(response.data.newShipInfo);
+                    if (ObjectManager.Instance.m_myFleet != null)
+                        ObjectManager.Instance.m_myFleet.CreateSpaceShipById(response.data.newShipInfo.id, bWarp: true);
+                }
 
                 EventManager.Trigger_FleetShipCountChanged();
             }
@@ -415,18 +414,21 @@ public class UITabFleet : UITabBase
 
     private ServerErrorCode CanAddShip()
     {
-        if (m_myCharacter == null) return ServerErrorCode.CLIENT_CanAddShip_CHARACTER_NOT_FOUND;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return ServerErrorCode.CLIENT_CanAddShip_CHARACTER_NOT_FOUND;
+
+        SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
+        if (myFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
-        if (m_myCharacter.m_ownedFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;
-        int currentShipCount = m_myCharacter.m_ownedFleet.m_ships.Count;
+        int currentShipCount = myFleet.m_ships.Count;
         int maxInCsv = DataManager.Instance.m_dataTableResearch.GetMaxShipCountInCsv();
         if (currentShipCount >= maxInCsv) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
-        int techLevel = m_myCharacter.GetTechLevel();
+        int techLevel = character.GetTechLevel();
         int maxShipsAtTech = DataManager.Instance.m_dataTableResearch.GetShipCount(techLevel);
         if (currentShipCount >= maxShipsAtTech) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
-        if (m_myCharacter.m_characterInfo.modulePoint < gameSettings.addShipCost) return ServerErrorCode.ADD_SHIP_FAIL_INSUFFICIENT_MODULE_POINT;
+        if (character.m_characterInfo.modulePoint < gameSettings.addShipCost) return ServerErrorCode.ADD_SHIP_FAIL_INSUFFICIENT_MODULE_POINT;
 
         return ServerErrorCode.SUCCESS;
     }

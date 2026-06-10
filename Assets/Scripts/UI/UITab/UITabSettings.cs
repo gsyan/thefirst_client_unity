@@ -36,7 +36,6 @@ public class UITabSettings : UITabBase
 
     [SerializeField] private Toggle   m_toggleRemoveAd;
 
-    private SpaceFleet m_myFleet;
     private List<Locale> m_locales;
 
     public override void InitializeUITab()
@@ -46,9 +45,6 @@ public class UITabSettings : UITabBase
 
     private void InitializeUITabSettings()
     {
-        if (m_myFleet == null)
-            m_myFleet = DataManager.Instance.m_currentCharacter.GetOwnedFleet();
-
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         if (m_devToolPanel != null) m_devToolPanel.SetActive(true);
 #else
