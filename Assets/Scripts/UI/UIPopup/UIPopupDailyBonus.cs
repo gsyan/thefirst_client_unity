@@ -102,23 +102,13 @@ public class UIPopupDailyBonus : UIPopupBase
             int day = i + 1; // 1~28
             if (day > CALENDAR_DAYS) break;
 
-            UIPopupDailyBonusDayCell.EDailyBonusCellState state = ResolveCellState(claimedDaysMask, day, todayDay);
+            bool claimed    = (claimedDaysMask    & (1 << (day - 1))) != 0;
+            bool bToday     = claimed && (day == todayDay);
+            bool passed     = claimed || (day < todayDay);
             bool vipClaimed = (vipClaimedDaysMask & (1 << (day - 1))) != 0;
             DailyBonusRewardEntry[] rewards = (table != null) ? table.GetRewards(day) : null;
-            m_dayCells[i].SetupDailyBonusDayCell(day, state, vipClaimed, rewards);
+            m_dayCells[i].SetupDailyBonusDayCell(day, claimed, vipClaimed, bToday, passed, rewards);
         }
-    }
-
-    private UIPopupDailyBonusDayCell.EDailyBonusCellState ResolveCellState(int mask, int day, int todayDay)
-    {
-        bool claimed = (mask & (1 << (day - 1))) != 0;
-        if (claimed == true)
-        {
-            if (day == todayDay) return UIPopupDailyBonusDayCell.EDailyBonusCellState.ClaimedToday;
-            return UIPopupDailyBonusDayCell.EDailyBonusCellState.Claimed;
-        }
-        if (day < todayDay) return UIPopupDailyBonusDayCell.EDailyBonusCellState.MissedNoReward;
-        return UIPopupDailyBonusDayCell.EDailyBonusCellState.Future;
     }
 
     private void OnConfirmClicked()

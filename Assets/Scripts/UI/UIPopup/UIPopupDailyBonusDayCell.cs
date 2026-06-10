@@ -5,16 +5,12 @@ using UnityEngine.UI;
 
 public class UIPopupDailyBonusDayCell : MonoBehaviour
 {
-    public enum EDailyBonusCellState { Future, MissedNoReward, Claimed, ClaimedToday }
-
     [SerializeField] private TMP_Text m_dayText;
-    [SerializeField] private GameObject m_checkIcon;
     [SerializeField] private Image m_background;
     [SerializeField] private Image m_borderHighlight;
     [SerializeField] private RectTransform m_rewardContainer;
 
     [Header("Colors")]
-    [SerializeField] private Color m_colorClaimed = new Color(0.2f, 0.8f, 0.4f, 1f);
     [SerializeField] private Color m_colorPassed  = new Color(0.3f, 0.3f, 0.3f, 1f);
     [SerializeField] private Color m_colorFuture  = new Color(0.15f, 0.15f, 0.15f, 1f);
 
@@ -28,34 +24,22 @@ public class UIPopupDailyBonusDayCell : MonoBehaviour
         return s_rowPrefab;
     }
 
-    public void SetupDailyBonusDayCell(int day, EDailyBonusCellState state, bool vipClaimed, DailyBonusRewardEntry[] rewards)
+    public void SetupDailyBonusDayCell(int day, bool claimed, bool vipClaimed, bool bToday, bool passed, DailyBonusRewardEntry[] rewards)
     {
         if (m_dayText != null)
             m_dayText.text = day.ToString();
 
-        bool isClaimed = state == EDailyBonusCellState.Claimed || state == EDailyBonusCellState.ClaimedToday;
-        if (m_checkIcon != null)
-            m_checkIcon.SetActive(isClaimed);
-
         if (m_borderHighlight != null)
         {
-            bool isToday = state == EDailyBonusCellState.ClaimedToday;
-            m_borderHighlight.gameObject.SetActive(isToday);
-            if (isToday == true)
+            m_borderHighlight.gameObject.SetActive(bToday);
+            if (bToday == true)
                 m_borderHighlight.color = CommonUtility.PaletteColor("Selected");
         }
 
         if (m_background != null)
-        {
-            if (state == EDailyBonusCellState.Claimed || state == EDailyBonusCellState.ClaimedToday)
-                m_background.color = m_colorPassed;
-            else if (state == EDailyBonusCellState.MissedNoReward)
-                m_background.color = m_colorPassed;
-            else
-                m_background.color = m_colorFuture;
-        }
+            m_background.color = passed == true ? m_colorPassed : m_colorFuture;
 
-        RefreshRewards(rewards, isClaimed, vipClaimed);
+        RefreshRewards(rewards, claimed, vipClaimed);
     }
 
     private void RefreshRewards(DailyBonusRewardEntry[] rewards, bool isClaimed, bool vipClaimed)
@@ -77,21 +61,21 @@ public class UIPopupDailyBonusDayCell : MonoBehaviour
                 m_rows.Add(Instantiate(prefab, m_rewardContainer));
         }
 
-        Color textColor = CommonUtility.PaletteColor(isClaimed ? "GeneralBright1" : "GeneralDark2");
-
         // 사용하는 row는 내용 갱신
         for (int i = 0; i < rewardCount; i++)
         {
             string spriteName = GetSpriteName(rewards[i].rewardType);
             string text = $"+{rewards[i].amount}";
+            bool isVipTier = rewards[i].tier == EDailyBonusTier.VIP;
+            bool rowClaimed = isVipTier ? vipClaimed : isClaimed;
 
-            if (rewards[i].tier == EDailyBonusTier.VIP && vipClaimed == true)
+            if (isVipTier == true && vipClaimed == true)
                 m_rows[i].SetRow(spriteName, text, "rank-3");
             else
                 m_rows[i].SetRow(spriteName, text);
 
             m_rows[i].SetImageColor(CommonUtility.PaletteColor("Mineral"));
-            m_rows[i].SetTextColor(textColor);
+            m_rows[i].SetTextColor(CommonUtility.PaletteColor(rowClaimed ? "GeneralBright1" : "GeneralDark2"));
         }
 
         // 남는 row는 숨김
