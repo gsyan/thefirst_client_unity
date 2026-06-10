@@ -541,9 +541,7 @@ public class SpaceShip : MonoBehaviour
             if (GetHealthRatio() < 1f)
             {
                 m_repairTarget = null;
-                float repaired = ApplyRepair(this, effectiveRepair);
-                if (isBattle && isPlayerFleet && repaired > 0f)
-                    character.TryConsumeMineral(Mathf.CeilToInt(repaired));
+                ApplyRepair(this, effectiveRepair);
                 continue;
             }
 
@@ -553,9 +551,7 @@ public class SpaceShip : MonoBehaviour
 
             if (m_repairTarget == null) continue;
 
-            float repairedOther = ApplyRepair(m_repairTarget, effectiveRepair);
-            if (isBattle && isPlayerFleet && repairedOther > 0f)
-                character?.TryConsumeMineral(Mathf.CeilToInt(repairedOther));
+            ApplyRepair(m_repairTarget, effectiveRepair);
         }
         m_repairCoroutine = null;
     }

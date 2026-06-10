@@ -628,6 +628,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.FleetHealthSaveAsync(request), null));
     }
 
+    public void FleetInstantRepair(System.Action<ApiResponse<FleetInstantRepairResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.FleetInstantRepairAsync(), onComplete));
+    }
+
     // public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)
     // {
     //     if (m_bConnected == false) return;

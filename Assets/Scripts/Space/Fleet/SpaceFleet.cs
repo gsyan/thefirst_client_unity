@@ -804,6 +804,21 @@ public class SpaceFleet : MonoBehaviour
         SaveHealthToServer();
     }
 
+    public float GetMissingHealth()
+    {
+        float missing = 0f;
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleBody body in ship.m_moduleBodys)
+            {
+                if (body == null) continue;
+                missing += body.m_healthMax - body.m_health;
+            }
+        }
+        return missing;
+    }
+
     // 모든 함선의 체력을 지정 비율로 설정
     private void ApplyHealthRatio(float ratio)
     {
@@ -913,8 +928,58 @@ public class SpaceFleet : MonoBehaviour
             if (ship != null && ship.IsAlive())
                 ship.ApplyFleetStateToShip();
         }
+        if (m_fleetSource == EFleetSource.fleet_source_player)
+        {
+            if (fleetState.IsBattleState() == true)
+                StartBattleRepairCostLoop();
+            else
+                StopBattleRepairCostLoop();
+        }
         if (m_fleetSide == EFleetSide.fleet_side_player)
             EventManager.TriggerMyFleetStateChanged(fleetState);
+    }
+
+    private static readonly WaitForSeconds k_battleRepairCostInterval = new WaitForSeconds(1f);
+    private Coroutine m_battleRepairCostCoroutine;
+
+    private void StartBattleRepairCostLoop()
+    {
+        if (m_battleRepairCostCoroutine != null) StopCoroutine(m_battleRepairCostCoroutine);
+        m_battleRepairCostCoroutine = StartCoroutine(BattleRepairCostLoop());
+    }
+
+    private void StopBattleRepairCostLoop()
+    {
+        if (m_battleRepairCostCoroutine == null) return;
+        StopCoroutine(m_battleRepairCostCoroutine);
+        m_battleRepairCostCoroutine = null;
+    }
+
+    private IEnumerator BattleRepairCostLoop()
+    {
+        while (true)
+        {
+            yield return k_battleRepairCostInterval;
+            if (m_fleetState.IsBattleState() == false) continue;
+            if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 1) == 0) continue;
+            if (HasAnyDamagedShip() == false) continue;
+
+            Character character = DataManager.Instance.m_currentCharacter;
+            if (character == null) continue;
+
+            int cost = DataManager.Instance.m_dataTableConfig.gameSettings.battleRepairMineralPerSec;
+            character.TryConsumeMineral(cost);
+        }
+    }
+
+    private bool HasAnyDamagedShip()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship != null && ship.IsAlive() == true && ship.GetHealthRatio() < 1f)
+                return true;
+        }
+        return false;
     }
 
     // 함대의 능력치 프로파일 계산

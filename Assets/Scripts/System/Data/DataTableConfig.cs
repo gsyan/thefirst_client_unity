@@ -24,7 +24,10 @@ public class GameSettings
     
     public int moduleUnlockPrice = 1;
 
-
+    [Tooltip("전투 중 수리 flag ON 시 1초당 소모하는 미네랄 (함대 단위)")]
+    public int battleRepairMineralPerSec = 1;
+    [Tooltip("즉시 수리 비용 기준 시간(초) — 비용 = battleRepairMineralPerSec × instantRepairBaseSecs")]
+    public int instantRepairBaseSecs = 60;
 }
 
 [CreateAssetMenu(fileName = "DataTableConfig", menuName = "Custom/DataTableConfig")]

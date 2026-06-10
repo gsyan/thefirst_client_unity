@@ -35,6 +35,11 @@ public class UIButtonHasChildren : MonoBehaviour
                 m_graphics[i].color = color;
     }
 
+    public bool IsInteractable()
+    {
+        return GetButton().interactable;
+    }
+
     public void SetInteractable(bool interactable)
     {
         GetButton().interactable = interactable;

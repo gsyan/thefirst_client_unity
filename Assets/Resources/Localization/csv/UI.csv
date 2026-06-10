@@ -205,6 +205,9 @@ Simple_NoThanks,,NO THANKS,건너뛰기
 Simple_MineralX1,,1 x MINERAL,광물 보상 1배
 Simple_MineralX,,{0} x MINERAL,광물 보상 {0}배
 Simple_FleetFullRepair,,FULL REPAIR,함대 완전 회복
+fleet_instant_repair_title,,INSTANT REPAIR,즉시 회복
+fleet_instant_repair_message,,Instantly restore all fleet HP by consuming Minerals.,미네랄을 소모하여 함대 체력을 즉시 완전 회복합니다.
+fleet_instant_repair_confirm,,REPAIR,미네랄 소모 회복
 Simple_Free,,FREE,무료
 Simple_Cancel,,CANCEL,취소
 Simple_Confirm,,CONFIRM,확인

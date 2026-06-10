@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UITabShip : UITabBase
@@ -64,6 +65,16 @@ public class UITabShip : UITabBase
     private ModuleBase m_selectedModule;
     private bool       m_bModuleChanging = false;
 
+    // 레벨업 롱프레스 연속 입력
+    private bool      m_isLevelUpHolding     = false;
+    private bool      m_levelUpContinuous     = false;
+    private float     m_levelUpRequestTime    = 0f;
+    private Coroutine m_levelUpHoldCoroutine  = null;
+    private Coroutine m_levelUpChainCoroutine = null;
+
+    private const float LEVELUP_HOLD_START_DELAY = 0.5f;
+    private const float LEVELUP_MIN_INTERVAL     = 0.35f;
+
 
     // 행별 셀렉터 캐시 (prefab에 미리 배치된 버튼들)
     private ModuleSelector[] m_selectorsBody;
@@ -106,7 +117,7 @@ public class UITabShip : UITabBase
         m_gradeDownModuleButton.GetButton().onClick.AddListener(OnGradeDownClicked);
         m_gradeUpModuleButton.GetButton().onClick.AddListener(OnGradeUpClicked);
         m_levelDownModuleButton.GetButton().onClick.AddListener(OnLevelDownClicked);
-        m_levelUpModuleButton.GetButton().onClick.AddListener(OnLevelUpClicked);
+        RegisterLevelUpPointerEvents();
         //if (m_btnResetModule != null) m_btnResetModule.onClick.AddListener(OnResetModuleClicked);
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
@@ -307,20 +318,7 @@ public class UITabShip : UITabBase
             return;
         }
 
-        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
-        string slotTypeName = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType().ToLocKey()}");
-        EModuleType moduleType = m_selectedModule.GetModuleType();
-        var resultRows = CommonUtility.GetModuleStatRows(moduleType, CommonUtility.GetDefaultSubType(moduleType), 1, 1);
-
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            title   = LocalizationManager.Instance.Get("ship_module_unlock"),
-            message = LocalizationManager.Instance.Get("popup_message_module_unlock", new object[] { slotTypeName }),
-            cost    = new CostStruct(ECostType.ModulePoint, unlockPrice),
-            resultRows = resultRows,
-            onConfirm = () => ExecuteModuleUnlock(),
-            onCancel  = () => { }
-        });
+        ExecuteModuleUnlock();
     }
 
     private void ExecuteModuleUnlock()
@@ -381,9 +379,67 @@ public class UITabShip : UITabBase
     // 모듈 레벨업 / 레벨다운
     // ─────────────────────────────────────────────
 
-    private void OnLevelUpClicked()
+    private void RegisterLevelUpPointerEvents()
     {
+        Button btn = m_levelUpModuleButton.GetButton();
+        EventTrigger trigger = btn.gameObject.AddComponent<EventTrigger>();
+
+        var down = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
+        down.callback.AddListener(_ => OnLevelUpPointerDown());
+        trigger.triggers.Add(down);
+
+        var up = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
+        up.callback.AddListener(_ => OnLevelUpPointerUp());
+        trigger.triggers.Add(up);
+
+        var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+        exit.callback.AddListener(_ => OnLevelUpPointerUp());
+        trigger.triggers.Add(exit);
+    }
+
+    private void OnLevelUpPointerDown()
+    {
+        if (m_levelUpModuleButton.GetButton().interactable == false) return;
         if (m_bModuleChanging == true) return;
+        m_isLevelUpHolding = true;
+        ExecuteLevelUpRequest();
+        m_levelUpHoldCoroutine = StartCoroutine(LevelUpHoldRoutine());
+    }
+
+    private void OnLevelUpPointerUp()
+    {
+        m_isLevelUpHolding  = false;
+        m_levelUpContinuous = false;
+        if (m_levelUpHoldCoroutine != null)
+        {
+            StopCoroutine(m_levelUpHoldCoroutine);
+            m_levelUpHoldCoroutine = null;
+        }
+        if (m_levelUpChainCoroutine != null)
+        {
+            StopCoroutine(m_levelUpChainCoroutine);
+            m_levelUpChainCoroutine = null;
+        }
+    }
+
+    private IEnumerator LevelUpHoldRoutine()
+    {
+        yield return new WaitForSeconds(LEVELUP_HOLD_START_DELAY);
+        m_levelUpContinuous    = true;
+        m_levelUpHoldCoroutine = null;
+
+        // 응답이 이미 도착해서 체인이 끊긴 경우 재시동
+        if (m_isLevelUpHolding == true && m_bModuleChanging == false
+            && m_levelUpModuleButton.IsInteractable() == true)
+        {
+            float elapsed = Time.time - m_levelUpRequestTime;
+            float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
+            m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
+        }
+    }
+
+    private void ExecuteLevelUpRequest()
+    {
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
@@ -393,6 +449,7 @@ public class UITabShip : UITabBase
         if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), targetLevel) == null)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("LevelupButtonTextMax"));
+            OnLevelUpPointerUp();
             return;
         }
 
@@ -402,6 +459,7 @@ public class UITabShip : UITabBase
         if (character.CheckEnoughModulePoint(cost) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_module_point"));
+            OnLevelUpPointerUp();
             return;
         }
 
@@ -415,8 +473,20 @@ public class UITabShip : UITabBase
             currentLevel  = currentLevel,
             targetLevel   = targetLevel
         };
-        m_bModuleChanging = true;
+        m_bModuleChanging    = true;
+        m_levelUpRequestTime = Time.time;
         NetworkManager.Instance.LevelUpModule(req, OnLevelUpResponse);
+    }
+
+    private IEnumerator LevelUpChainRoutine(float delay)
+    {
+        if (delay > 0f)
+            yield return new WaitForSeconds(delay);
+        m_levelUpChainCoroutine = null;
+        if (m_isLevelUpHolding == false || m_levelUpContinuous == false) yield break;
+        if (m_bModuleChanging == true) yield break;
+        if (m_levelUpModuleButton.IsInteractable() == false) yield break;
+        ExecuteLevelUpRequest();
     }
 
     private void OnLevelDownClicked()
@@ -464,12 +534,21 @@ public class UITabShip : UITabBase
             character.UpdateModulePoint(response.data.modulePointRemain);
             ApplyModuleLevelChange(response.data.shipId, response.data.bodyIndex, response.data.moduleType,
                 response.data.moduleSubType, response.data.slotIndex, response.data.newLevel, isLevelUp: true);
+
+            // 연속 모드: HOLD_START_DELAY가 지났고 버튼을 아직 누르고 있으면 다음 요청 예약
+            if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
+            {
+                float elapsed = Time.time - m_levelUpRequestTime;
+                float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
+                m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
+            }
         }
         else
         {
             string msg = ErrorCodeMapping.GetMessage(response.errorCode);
             Debug.LogError($"LevelUp failed: {msg}");
             ShowErrorMessage($"LevelUp failed: {msg}");
+            OnLevelUpPointerUp();
         }
     }
 

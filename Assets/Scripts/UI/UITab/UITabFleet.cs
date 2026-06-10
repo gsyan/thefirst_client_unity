@@ -282,7 +282,38 @@ public class UITabFleet : UITabBase
 
     private void OnShipRepairClicked()
     {
-        // TODO: 집중 수리 구현
+        if (m_playerFleet == null) return;
+        if (m_playerFleet.GetMissingHealth() <= 0f) return;
+
+        var loc          = LocalizationManager.Instance;
+        var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
+        int cost         = gameSettings.battleRepairMineralPerSec * gameSettings.instantRepairBaseSecs;
+
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title        = loc.Get("fleet_instant_repair_title"),
+            message      = loc.Get("fleet_instant_repair_message"),
+            cost         = new CostStruct(ECostType.Mineral, cost),
+            confirmText1 = loc.Get("fleet_instant_repair_confirm"),
+            onConfirm    = ExecuteFleetInstantRepair,
+            onCancel     = () => { }
+        });
+    }
+
+    private void ExecuteFleetInstantRepair()
+    {
+        NetworkManager.Instance.FleetInstantRepair(response =>
+        {
+            if (response.errorCode == 0)
+            {
+                DataManager.Instance.m_currentCharacter.UpdateMineral(response.data.mineralRemain);
+                m_playerFleet.FullRepair();
+            }
+            else
+            {
+                ShowErrorMessage(ErrorCodeMapping.GetMessage(response.errorCode));
+            }
+        });
     }
 
     private void OnShipSelectorClicked(SpaceShip ship)

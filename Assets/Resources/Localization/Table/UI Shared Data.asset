@@ -839,6 +839,18 @@ MonoBehaviour:
     m_Key: Simple_FleetFullRepair
     m_Metadata:
       m_Items: []
+  - m_Id: 44270707776815104
+    m_Key: fleet_instant_repair_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44270707831341056
+    m_Key: fleet_instant_repair_message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44270707831341057
+    m_Key: fleet_instant_repair_confirm
+    m_Metadata:
+      m_Items: []
   - m_Id: 34837143750574082
     m_Key: Simple_Free
     m_Metadata:

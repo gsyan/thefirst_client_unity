@@ -675,6 +675,20 @@ public class ApiClient
         await SendRequestAsync(webRequest);
         return JsonConvert.DeserializeObject<ApiResponse<object>>(webRequest.downloadHandler.text);
     }
+
+    public async Task<ApiResponse<FleetInstantRepairResponse>> FleetInstantRepairAsync()
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<FleetInstantRepairResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/instant-repair", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(new byte[0]);
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<FleetInstantRepairResponse>>(webRequest.downloadHandler.text);
+    }
     #endregion
 
     #region Zone Battle API Methods -------------------------------------------------------------------------------

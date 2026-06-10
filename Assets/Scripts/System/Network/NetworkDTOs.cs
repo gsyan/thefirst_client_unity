@@ -607,6 +607,15 @@ public class BodyHealthEntry
     public float currentHealth;
 }
 
+[System.Serializable]
+public class FleetInstantRepairRequest { }
+
+[System.Serializable]
+public class FleetInstantRepairResponse
+{
+    public int mineralRemain;
+}
+
 #endregion
 
 #region IAP Data Classes ##################################################################################
