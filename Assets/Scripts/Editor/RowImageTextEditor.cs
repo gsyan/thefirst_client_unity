@@ -24,6 +24,7 @@ public class RowImageTextEditor : Editor
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("m_image"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("m_text"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_image2"));
 
         EditorGUILayout.Space(4);
 

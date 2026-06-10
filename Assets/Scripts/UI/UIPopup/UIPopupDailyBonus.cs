@@ -5,18 +5,21 @@ using UnityEngine.UI;
 
 // 일일 출석 보너스 달력 팝업
 // claimedDaysMask: 비트마스크 (bit0=1일, bit27=28일)
-// todayDay: 오늘 수령한 날짜 (1~28, 0이면 오늘 수령 없음)
+// todayDay: 서버 기준 오늘 날짜 (1~28)
 public class UIPopupDailyBonus : UIPopupBase
 {
     private const int CALENDAR_DAYS = 28;
 
+    private const string CELL_PREFAB_PATH = "Prefabs/UI/ETC/UIPopupDailyBonusDayCell";
+
     [Header("Daily Bonus Popup")]
     [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private TMP_Text m_rewardDescText;   // "미네랄 +N 지급!" 텍스트
-    [SerializeField] private UIPopupDailyBonusDayCell[] m_dayCells; // 인스펙터에서 28개 연결
+    [SerializeField] private Transform m_gridLayoutGroup;
     [SerializeField] private Button m_confirmButton;
     [SerializeField] private TMP_Text m_confirmButtonText;
 
+    private UIPopupDailyBonusDayCell[] m_dayCells;
     private Action m_onConfirm;
 
     protected override void Awake()
@@ -24,10 +27,27 @@ public class UIPopupDailyBonus : UIPopupBase
         base.Awake();
         if (m_confirmButton != null)
             m_confirmButton.onClick.AddListener(OnConfirmClicked);
+        CreateDayCells();
+    }
+
+    private void CreateDayCells()
+    {
+        if (m_gridLayoutGroup == null) return;
+
+        var cellPrefab = Resources.Load<UIPopupDailyBonusDayCell>(CELL_PREFAB_PATH);
+        if (cellPrefab == null)
+        {
+            Debug.LogError("[UIPopupDailyBonus] 셀 프리팹 로드 실패: " + CELL_PREFAB_PATH);
+            return;
+        }
+
+        m_dayCells = new UIPopupDailyBonusDayCell[CALENDAR_DAYS];
+        for (int i = 0; i < CALENDAR_DAYS; i++)
+            m_dayCells[i] = Instantiate(cellPrefab, m_gridLayoutGroup);
     }
 
     // grantedMineral: 오늘 지급된 미네랄 (0이면 지급 메세지 숨김)
-    public void ShowPopupDailyBonus(int claimedDaysMask, int todayDay, int grantedMineral, Action onConfirm)
+    public void ShowPopupDailyBonus(int claimedDaysMask, int vipClaimedDaysMask, int todayDay, int grantedMineral, Action onConfirm)
     {
         base.ShowPopup();
         m_onConfirm = onConfirm;
@@ -48,12 +68,11 @@ public class UIPopupDailyBonus : UIPopupBase
         if (m_confirmButtonText != null)
             m_confirmButtonText.text = loc.Get("Simple_Confirm");
 
-        int todayInMonth = DateTime.UtcNow.Day;
-        RefreshCalendar(claimedDaysMask, todayDay, todayInMonth);
+        RefreshCalendar(claimedDaysMask, vipClaimedDaysMask, todayDay);
     }
 
     // 달력 재갱신 (수령 없이 열람 용도)
-    public void ShowCalendarOnly(int claimedDaysMask, Action onConfirm)
+    public void ShowCalendarOnly(int claimedDaysMask, int vipClaimedDaysMask, Action onConfirm)
     {
         base.ShowPopup();
         m_onConfirm = onConfirm;
@@ -69,24 +88,28 @@ public class UIPopupDailyBonus : UIPopupBase
         if (m_confirmButtonText != null)
             m_confirmButtonText.text = loc.Get("Simple_Confirm");
 
-        int todayInMonth = DateTime.UtcNow.Day;
-        RefreshCalendar(claimedDaysMask, 0, todayInMonth);
+        var character = DataManager.Instance.m_currentCharacter;
+        int todayDay = (character != null) ? character.GetTodayDay() : 0;
+        RefreshCalendar(claimedDaysMask, vipClaimedDaysMask, todayDay);
     }
 
-    private void RefreshCalendar(int claimedDaysMask, int todayDay, int todayInMonth)
+    private void RefreshCalendar(int claimedDaysMask, int vipClaimedDaysMask, int todayDay)
     {
+        var table = DataManager.Instance.m_dataTableDailyBonus;
         for (int i = 0; i < m_dayCells.Length; i++)
         {
             if (m_dayCells[i] == null) continue;
             int day = i + 1; // 1~28
             if (day > CALENDAR_DAYS) break;
 
-            UIPopupDailyBonusDayCell.EDailyBonusCellState state = ResolveCellState(claimedDaysMask, day, todayDay, todayInMonth);
-            m_dayCells[i].Setup(day, state);
+            UIPopupDailyBonusDayCell.EDailyBonusCellState state = ResolveCellState(claimedDaysMask, day, todayDay);
+            bool vipClaimed = (vipClaimedDaysMask & (1 << (day - 1))) != 0;
+            DailyBonusRewardEntry[] rewards = (table != null) ? table.GetRewards(day) : null;
+            m_dayCells[i].SetupDailyBonusDayCell(day, state, vipClaimed, rewards);
         }
     }
 
-    private UIPopupDailyBonusDayCell.EDailyBonusCellState ResolveCellState(int mask, int day, int todayDay, int todayInMonth)
+    private UIPopupDailyBonusDayCell.EDailyBonusCellState ResolveCellState(int mask, int day, int todayDay)
     {
         bool claimed = (mask & (1 << (day - 1))) != 0;
         if (claimed == true)
@@ -94,8 +117,7 @@ public class UIPopupDailyBonus : UIPopupBase
             if (day == todayDay) return UIPopupDailyBonusDayCell.EDailyBonusCellState.ClaimedToday;
             return UIPopupDailyBonusDayCell.EDailyBonusCellState.Claimed;
         }
-        // 지나간 날이지만 못 받음 (일반 유저 미수령)
-        if (day < todayInMonth) return UIPopupDailyBonusDayCell.EDailyBonusCellState.MissedNoReward;
+        if (day < todayDay) return UIPopupDailyBonusDayCell.EDailyBonusCellState.MissedNoReward;
         return UIPopupDailyBonusDayCell.EDailyBonusCellState.Future;
     }
 

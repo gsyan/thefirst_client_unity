@@ -12,6 +12,7 @@ public class DataTableTotalEditor : EditorWindow
     private DataTableZone dataTableZone;
     private DataTableForbiddenWords dataTableForbiddenWords;
     private DataTablePvpSeason dataTablePvpSeason;
+    private DataTableDailyBonus dataTableDailyBonus;
     private Vector2 scrollPosition;
 
     [MenuItem("Tools/DataTable Total Manager")]
@@ -49,6 +50,9 @@ public class DataTableTotalEditor : EditorWindow
 
         dataTablePvpSeason = (DataTablePvpSeason)EditorGUILayout.ObjectField(
             "DataTable PvpSeason", dataTablePvpSeason, typeof(DataTablePvpSeason), false);
+
+        dataTableDailyBonus = (DataTableDailyBonus)EditorGUILayout.ObjectField(
+            "DataTable DailyBonus", dataTableDailyBonus, typeof(DataTableDailyBonus), false);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
@@ -172,12 +176,23 @@ public class DataTableTotalEditor : EditorWindow
                 dataTablePvpSeason = AssetDatabase.LoadAssetAtPath<DataTablePvpSeason>(path);
             }
         }
+
+        if (dataTableDailyBonus == null)
+        {
+            string[] guids = AssetDatabase.FindAssets("t:DataTableDailyBonus", new[] { "Assets/Resources/DataTable" });
+            if (guids.Length > 0)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                dataTableDailyBonus = AssetDatabase.LoadAssetAtPath<DataTableDailyBonus>(path);
+            }
+        }
     }
 
     private bool IsValid()
     {
         return dataTableModule != null && dataTableConfig != null && dataTableResearch != null
-            && dataTableZone != null && dataTableForbiddenWords != null && dataTablePvpSeason != null;
+            && dataTableZone != null && dataTableForbiddenWords != null && dataTablePvpSeason != null
+            && dataTableDailyBonus != null;
     }
 
     private void ExportAll()
@@ -221,8 +236,13 @@ public class DataTableTotalEditor : EditorWindow
             string pvpSeasonPath = Path.Combine(folderPath, "DataTablePvpSeason.json");
             File.WriteAllText(pvpSeasonPath, pvpSeasonJson);
 
+            // DataTableDailyBonus.json 내보내기
+            string dailyBonusJson = dataTableDailyBonus.ExportToJson();
+            string dailyBonusPath = Path.Combine(folderPath, "DataTableDailyBonus.json");
+            File.WriteAllText(dailyBonusPath, dailyBonusJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}\n{zonePath}\n{forbiddenPath}\n{pvpSeasonPath}", "OK");
+                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}\n{zonePath}\n{forbiddenPath}\n{pvpSeasonPath}\n{dailyBonusPath}", "OK");
         }
     }
 
@@ -273,8 +293,13 @@ public class DataTableTotalEditor : EditorWindow
             string pvpSeasonServerPath = Path.Combine(serverDataPath, "DataTablePvpSeason.json");
             File.WriteAllText(pvpSeasonServerPath, pvpSeasonJson);
 
+            // DataTableDailyBonus.json 서버로 내보내기
+            string dailyBonusJson = dataTableDailyBonus.ExportToJson();
+            string dailyBonusServerPath = Path.Combine(serverDataPath, "DataTableDailyBonus.json");
+            File.WriteAllText(dailyBonusServerPath, dailyBonusJson);
+
             EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}\n{zoneServerPath}\n{forbiddenServerPath}\n{pvpSeasonServerPath}", "OK");
+                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}\n{zoneServerPath}\n{forbiddenServerPath}\n{pvpSeasonServerPath}\n{dailyBonusServerPath}", "OK");
         }
         catch (System.Exception e)
         {

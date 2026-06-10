@@ -53,8 +53,8 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Subscribe_VipButtonOpened(OnVipButtonOpened);
-        EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyMineral);
-        CheckAndShowDailyMineralPopup();
+        EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
+        CheckAndShowDailyRewardPopup();
         m_tabSystem.ForceActivateTab();
     }
 
@@ -64,7 +64,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Unsubscribe_VipButtonOpened(OnVipButtonOpened);
-        EventManager.Unsubscribe_VipStatusChanged(OnVipStatusChangedForDailyMineral);
+        EventManager.Unsubscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         m_tabSystem.ForceDeactivateTab();
 
         SetTabNavVisible(true);
@@ -80,21 +80,33 @@ public class UIPanelSpace : UIPanelBase
 
     // ── VIP 일일 미네랄 팝업 ──────────────────────────────────────────────────
 
-    private void OnVipStatusChangedForDailyMineral()
+    private void OnVipStatusChangedForDailyReward()
     {
-        CheckAndShowDailyMineralPopup();
+        CheckAndShowDailyRewardPopup();
     }
 
-    private void CheckAndShowDailyMineralPopup()
+    private void CheckAndShowDailyRewardPopup()
     {
         if (IAPManager.Instance == null) return;
 
-        IAPManager.Instance.TryClaimDailyMineral(result =>
+        IAPManager.Instance.TryClaimDailyReward(result =>
         {
-            if (result == null || result.available == false) return;
+            if (result == null) return;
+
             var character = DataManager.Instance.m_currentCharacter;
-            if (character != null) character.UpdateMineral(result.mineralRemain);
-            UIManager.Instance.ShowDailyBonusPopup(result.claimedDaysMask, result.todayDay, result.grantedMineral);
+            if (character != null)
+            {
+                character.SetClaimedDaysMask(result.claimedDaysMask);
+                character.SetVipClaimedDaysMask(result.vipClaimedDaysMask);
+                character.SetTodayDay(result.todayDay);
+            }
+
+            if (result.available == false) return;
+
+            if (character != null)
+                character.UpdateMineral(result.mineralRemain);
+
+            UIManager.Instance.ShowDailyBonusPopup(result.claimedDaysMask, result.vipClaimedDaysMask, result.todayDay, result.grantedMineral);
         });
     }
 

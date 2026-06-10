@@ -692,9 +692,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.GetVipStatusAsync(), onComplete));
     }
 
-    public void ClaimVipDailyMineral(System.Action<ApiResponse<VipDailyMineralResponse>> onComplete)
+    public void ClaimVipDailyReward(System.Action<ApiResponse<DailyClaimResponse>> onComplete)
     {
-        StartCoroutine(RunAsync(() => m_apiClient.ClaimVipDailyMineralAsync(), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimVipDailyRewardAsync(), onComplete));
     }
 
     public void Heartbeat()

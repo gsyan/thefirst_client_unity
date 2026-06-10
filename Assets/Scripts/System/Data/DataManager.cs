@@ -13,6 +13,7 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableConfig();
         LoadDataTableZone();
         LoadDataTablePvpSeason();
+        LoadDataTableDailyBonus();
         LoadColorPalette();
     }
     #endregion
@@ -214,6 +215,17 @@ public class DataManager : Singleton<DataManager>
         m_dataTablePvpSeason = Resources.Load<DataTablePvpSeason>("DataTable/DataTablePvpSeason");
         if (m_dataTablePvpSeason == null)
             Debug.LogError("DataTablePvpSeason is not exist");
+    }
+    #endregion
+
+    #region Data Table DailyBonus ###############################################################
+    public DataTableDailyBonus m_dataTableDailyBonus;
+
+    private void LoadDataTableDailyBonus()
+    {
+        m_dataTableDailyBonus = Resources.Load<DataTableDailyBonus>("DataTable/DataTableDailyBonus");
+        if (m_dataTableDailyBonus == null)
+            Debug.LogError("DataTableDailyBonus is not exist");
     }
     #endregion
 

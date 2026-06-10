@@ -5,6 +5,9 @@ using UnityEngine;
 public class Character
 {
     public CharacterInfo m_characterInfo;
+    private int m_claimedDaysMask;
+    private int m_vipClaimedDaysMask;
+    private int m_todayDay;
     private HashSet<string> m_completedResearchIds; // tech_level_N 등 문자열 기반 완료 연구
 
     public Character(CharacterInfo characterInfo)
@@ -131,6 +134,13 @@ public class Character
         m_characterInfo.mineral = mineral;
         EventManager.TriggerMineralChange(mineral);
     }
+
+    public int GetClaimedDaysMask() { return m_claimedDaysMask; }
+    public void SetClaimedDaysMask(int mask) { m_claimedDaysMask = mask; }
+    public int GetVipClaimedDaysMask() { return m_vipClaimedDaysMask; }
+    public void SetVipClaimedDaysMask(int mask) { m_vipClaimedDaysMask = mask; }
+    public int GetTodayDay() { return m_todayDay; }
+    public void SetTodayDay(int day) { m_todayDay = day; }
 
 
     public bool CheckEnoughMineral(long cost)

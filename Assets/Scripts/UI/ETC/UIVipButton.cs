@@ -8,14 +8,13 @@ public class UIVipButton : MonoBehaviour
 {
     [Header("토글 버튼 영역")]
     [SerializeField] private Button     m_toggleButton;
-    [SerializeField] private TMP_Text   m_rankText;
+    [SerializeField] private Image      m_rankImage;
     
     [Header("상세 영역")]
     [SerializeField] private GameObject         m_detailContainer;
     [SerializeField] private TMP_Text           m_benefitName;     // TextBenefitName
     [SerializeField] private RectTransform      m_benefitRT;
     private TMP_Text[] m_benefits;
-
 
     [SerializeField] private Button m_purchaseButton;
     [SerializeField] private GameObject m_purchaseButtonParent;
@@ -36,6 +35,7 @@ public class UIVipButton : MonoBehaviour
         }
         m_detailContainerRT = m_detailContainer.GetComponent<RectTransform>();
         m_toggleButton.onClick.AddListener(OnToggleClicked);
+        
         if (m_purchaseButton != null)
             m_purchaseButton.onClick.AddListener(OnPurchaseButtonClicked);
         if (m_benefitRT != null)
@@ -107,14 +107,13 @@ public class UIVipButton : MonoBehaviour
         if (IAPManager.Instance == null) return;
 
         var loc = LocalizationManager.Instance;
-        int multiplier  = IAPManager.Instance.GetMineralRewardMultiplier();
-        int dailyAmount = IAPManager.Instance.GetDailyMineralAmount();
+        int multiplier = IAPManager.Instance.GetMineralRewardMultiplier();
 
         string[] texts =
         {
             loc.Get("UIVipStatus_Benefit_NoAds"),
             loc.Get("UIVipStatus_Benefit_Mineral", multiplier),
-            loc.Get("UIVipStatus_Benefit_Daily", dailyAmount),
+            loc.Get("UIVipStatus_Benefit_Daily"),
         };
         for (int i = 0; i < 3; i++)
         {
@@ -132,8 +131,8 @@ public class UIVipButton : MonoBehaviour
         var loc = LocalizationManager.Instance;
         bool isAdmiral = IAPManager.Instance.IsVipActive();
 
-        if (m_rankText != null)
-            m_rankText.text = loc.Get(isAdmiral ? "UIVipStatus_Admiral" : "UIVipStatus_Frontier");
+        if (m_rankImage != null)
+            m_rankImage.sprite = UISpriteCache.Get(isAdmiral ? "rank-3" : "rank-1");
 
         if (m_benefitName != null)
         {

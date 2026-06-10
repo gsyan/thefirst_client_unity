@@ -148,3 +148,11 @@ public enum FormationMoveState
     Arrived     // 목표 위치 도착 완료
 }
 #endregion
+
+#region Daily Bonus
+[System.Serializable]
+public enum EDailyBonusTier { Normal, VIP }
+
+[System.Serializable]
+public enum EDailyBonusRewardType { Mineral }
+#endregion

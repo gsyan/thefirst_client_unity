@@ -7,8 +7,10 @@ public class RowImageText : MonoBehaviour
 {
     [SerializeField] private Image    m_image;
     [SerializeField] private TMP_Text m_text;
-    [SerializeField] private string   m_imageColorKey = "GeneralBright1";
-    [SerializeField] private string   m_textColorKey  = "GeneralBright1";
+    [SerializeField] private Image    m_image2;
+    [SerializeField] private string   m_imageColorKey  = "GeneralBright1";
+    [SerializeField] private string   m_textColorKey   = "GeneralBright1";
+    [SerializeField] private string   m_image2ColorKey = "GeneralBright1";
 
     private void Awake()
     {
@@ -16,6 +18,8 @@ public class RowImageText : MonoBehaviour
             m_image = GetComponent<RectTransform>().GetChild(0).GetComponent<Image>();
         if (m_text == null)
             m_text = GetComponent<RectTransform>().GetChild(1).GetComponent<TMP_Text>();
+        if (m_image2 != null)
+            m_image2.gameObject.SetActive(false);
     }
 
     public void SetRow(string spriteName, string text)
@@ -24,6 +28,31 @@ public class RowImageText : MonoBehaviour
         SetImageColor(CommonUtility.PaletteColor(m_imageColorKey));
         SetTextColor(CommonUtility.PaletteColor(m_textColorKey));
         SetTextWithString(text);
+        if (m_image2 != null)
+            m_image2.gameObject.SetActive(false);
+    }
+
+    // 아이템 이미지 - 텍스트 - tier 이미지 3단 구성
+    public void SetRow(string spriteName, string text, string image2SpriteName)
+    {
+        SetRow(spriteName, text);
+        SetImage2(image2SpriteName);
+    }
+
+    public void SetImage2(string spriteName)
+    {
+        if (m_image2 == null) return;
+        Sprite sprite = UISpriteCache.Get(spriteName);
+        if (sprite != null)
+            m_image2.sprite = sprite;
+        m_image2.color = CommonUtility.PaletteColor(m_image2ColorKey);
+        m_image2.gameObject.SetActive(true);
+    }
+
+    public void SetImage2Color(Color color)
+    {
+        if (m_image2 == null) return;
+        m_image2.color = color;
     }
 
     public void Hide()

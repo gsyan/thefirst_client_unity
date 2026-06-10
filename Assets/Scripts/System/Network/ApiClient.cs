@@ -916,18 +916,18 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<VipStatusResponse>>(webRequest.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<VipDailyMineralResponse>> ClaimVipDailyMineralAsync()
+    public async Task<ApiResponse<DailyClaimResponse>> ClaimVipDailyRewardAsync()
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<VipDailyMineralResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<DailyClaimResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/iap/vip/daily-mineral", "POST");
+        using var webRequest = new UnityWebRequest($"{baseUrl}/iap/vip/daily-reward", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(new byte[0]);
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
         webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(webRequest);
-        return JsonConvert.DeserializeObject<ApiResponse<VipDailyMineralResponse>>(webRequest.downloadHandler.text);
+        return JsonConvert.DeserializeObject<ApiResponse<DailyClaimResponse>>(webRequest.downloadHandler.text);
     }
     #endregion
 

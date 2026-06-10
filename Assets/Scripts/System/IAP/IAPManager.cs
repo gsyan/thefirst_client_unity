@@ -13,9 +13,7 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
 
     private Action<bool, string> m_onVipPurchaseComplete;
     private DateTime? m_vipExpiry;          // UTC, null이면 VIP 아님
-    private int m_dailyMineralAmount;       // 서버 설정 일일 지급량
     private int m_mineralRewardMultiplier;  // 서버 설정 보상 배율
-    private int m_pendingMineralTotal;      // 로그인/구매 시 서버에서 받은 클레임 가능 총량
 
     protected override void OnInitialize()
     {
@@ -92,15 +90,12 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         EventManager.TriggerVipStatusChanged();
     }
 
-    public int GetDailyMineralAmount()      { return m_dailyMineralAmount; }
     public int GetMineralRewardMultiplier() { return m_mineralRewardMultiplier; }
 
     public void ApplyVipStatus(VipStatusResponse data)
     {
         if (data == null) return;
-        m_dailyMineralAmount      = data.dailyMineralAmount;
         m_mineralRewardMultiplier = data.mineralRewardMultiplier;
-        m_pendingMineralTotal     = data.pendingMineralTotal;
         SetVipExpiry(data.isVip ? data.vipExpiry : null);
     }
 
@@ -114,20 +109,12 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         });
     }
 
-    public void TryClaimDailyMineral(Action<VipDailyMineralResponse> onResult)
+    public void TryClaimDailyReward(Action<DailyClaimResponse> onResult)
     {
-        if (m_pendingMineralTotal <= 0)
-        {
-            onResult?.Invoke(null);
-            return;
-        }
-        NetworkManager.Instance.ClaimVipDailyMineral(response =>
+        NetworkManager.Instance.ClaimVipDailyReward(response =>
         {
             if (response != null && response.errorCode == (int)ServerErrorCode.SUCCESS)
-            {
-                m_pendingMineralTotal = 0;
                 onResult?.Invoke(response.data);
-            }
             else
                 onResult?.Invoke(null);
         });
@@ -196,10 +183,7 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
                 Debug.Log($"[IAPManager] PurchaseVip 응답 errorCode={response.errorCode} vipExpiry={response.data?.vipExpiry}");
                 bool ok = response.errorCode == (int)ServerErrorCode.SUCCESS;
                 if (ok == true && response.data != null)
-                {
-                    m_pendingMineralTotal = response.data.pendingMineralTotal;
                     SetVipExpiry(response.data.vipExpiry);
-                }
                 m_onVipPurchaseComplete?.Invoke(ok, ok ? receipt : null);
                 m_onVipPurchaseComplete = null;
             });
