@@ -875,6 +875,14 @@ MonoBehaviour:
     m_Key: VipDailyBonus_Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 44304125210263552
+    m_Key: DailyBonus_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44304125248012288
+    m_Key: DailyBonus_Desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 39970930322964482
     m_Key: UIVipStatus_Frontier
     m_Metadata:

@@ -214,6 +214,8 @@ Simple_Confirm,,CONFIRM,확인
 Simple_VipReward,,CLAIM REWARD,보상 받기
 VipDailyBonus_Title,,VIP Daily Bonus,VIP 일일 보너스
 VipDailyBonus_Desc,,+{0} Minerals received!,미네랄 +{0} 지급!
+DailyBonus_Title,,Daily Login Bonus,일일 출석 보너스
+DailyBonus_Desc,,+{0} Minerals received!,미네랄 +{0} 지급!
 UIVipStatus_Frontier,,FRONTIER,프론티어
 UIVipStatus_Admiral,,ADMIRAL,제독
 UIVipStatus_BenefitTitle,,ADMIRAL's Benefit,제독 혜택

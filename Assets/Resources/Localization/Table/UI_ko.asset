@@ -990,6 +990,14 @@ MonoBehaviour:
     m_Localized: "\uBBF8\uB124\uB784 \uC18C\uBAA8 \uD68C\uBCF5"
     m_Metadata:
       m_Items: []
+  - m_Id: 44304125210263552
+    m_Localized: "\uC77C\uC77C \uCD9C\uC11D \uBCF4\uB108\uC2A4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44304125248012288
+    m_Localized: "\uBBF8\uB124\uB784 +{0} \uC9C0\uAE09!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

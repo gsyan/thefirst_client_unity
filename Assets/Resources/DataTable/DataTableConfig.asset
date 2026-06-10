@@ -20,6 +20,9 @@ MonoBehaviour:
     pvpRankScoreInit: 1000
     pvpRankScorePenalty: 1
     moduleUnlockPrice: 1
+    battleRepairMineralPerSec: 1
+    instantRepairBaseSecs: 60
   exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"addShipCost\": 10,\r\n  \"pvpListCount\":
     3,\r\n  \"pvpListRefreshCount\": 5,\r\n  \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\":
-    1,\r\n  \"moduleUnlockPrice\": 1\r\n}"
+    1,\r\n  \"moduleUnlockPrice\": 1,\r\n  \"battleRepairMineralPerSec\": 1,\r\n 
+    \"instantRepairBaseSecs\": 60\r\n}"

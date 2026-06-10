@@ -634,6 +634,8 @@ public class VipStatusResponse
     public int dailyMineralAmount;      // VIP 추가 지급 미네랄 (서버 설정값, UIVipButton 표시용)
     public int mineralRewardMultiplier; // 스테이지 미네랄 보상 배율 (서버 설정값)
     public int pendingMineralTotal;     // 클레임 가능 총량 (공통 보상 + VIP 추가 합산)
+    public int claimedDaysMask;         // 이번 달 수령 현황 비트마스크 (bit0=1일, bit27=28일)
+    public int loginRewardMonth;        // 비트마스크 기준 달 (yyyyMM, e.g. 202606)
 }
 
 [System.Serializable]
@@ -643,5 +645,7 @@ public class VipDailyMineralResponse
     public int grantedMineral;      // 이번에 지급된 미네랄 양
     public int mineralRemain;       // 지급 후 현재 미네랄
     public string nextAvailableAt;  // 다음 지급 가능 시각 (ISO 8601 UTC)
+    public int todayDay;            // 오늘 날짜 (1~28)
+    public int claimedDaysMask;     // 수령 후 갱신된 비트마스크
 }
 #endregion

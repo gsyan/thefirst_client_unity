@@ -975,6 +975,14 @@ MonoBehaviour:
     m_Localized: REPAIR
     m_Metadata:
       m_Items: []
+  - m_Id: 44304125210263552
+    m_Localized: Daily Login Bonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44304125248012288
+    m_Localized: +{0} Minerals received!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -4105,6 +4105,71 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!1 &613753716056040056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4856010951749155553}
+  - component: {fileID: 3142408911949785875}
+  m_Layer: 5
+  m_Name: UnlockModuleContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4856010951749155553
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613753716056040056}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8374157422900822538}
+  - {fileID: 3972134517664871832}
+  - {fileID: 9204868588142784788}
+  m_Father: {fileID: 598508943940190493}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 740, y: 80}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3142408911949785875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613753716056040056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &620808635043141541
 GameObject:
   m_ObjectHideFlags: 0
@@ -6724,6 +6789,41 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &829479229294650458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8374157422900822538}
+  m_Layer: 5
+  m_Name: Empty
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8374157422900822538
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829479229294650458}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4856010951749155553}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 80}
+  m_Pivot: {x: 0, y: 1}
 --- !u!1 &833093234792844136
 GameObject:
   m_ObjectHideFlags: 0
@@ -21483,6 +21583,7 @@ GameObject:
   - component: {fileID: 2971794746974160369}
   - component: {fileID: 4988772869980504082}
   - component: {fileID: 8546691061169306147}
+  - component: {fileID: 377248409560083319}
   m_Layer: 5
   m_Name: UnlockModuleButton
   m_TagString: Untagged
@@ -21505,8 +21606,7 @@ RectTransform:
   - {fileID: 6063744724236100707}
   - {fileID: 8101050283912511314}
   - {fileID: 6174739913886863187}
-  - {fileID: 3972134517664871832}
-  m_Father: {fileID: 598508943940190493}
+  m_Father: {fileID: 4856010951749155553}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -21615,6 +21715,20 @@ MonoBehaviour:
     colorRole: LevelupButton
   - graphic: {fileID: 7539918233879629254}
     colorRole: LevelupButton
+--- !u!114 &377248409560083319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2610668668356626651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
+  m_activeColorKey: LevelupButton
+  m_inactiveColorKey: GeneralDark2
 --- !u!1 &2616906823772212741
 GameObject:
   m_ObjectHideFlags: 0
@@ -29007,7 +29121,6 @@ MonoBehaviour:
   bCameraMove: 0
   m_tabSystem: {fileID: 8294625144142245584}
   m_animDuration: 0.3
-  m_myFleet: {fileID: 0}
 --- !u!114 &8294625144142245584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35963,7 +36076,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4671343294109423367}
-  - {fileID: 9204868588142784788}
+  - {fileID: 4856010951749155553}
   - {fileID: 8460233698539502978}
   m_Father: {fileID: 5522951484602823850}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -42952,7 +43065,8 @@ MonoBehaviour:
   m_moduleLevelText: {fileID: 2444366826413581350}
   m_moduleStatsContainer: {fileID: 4236715729598277833}
   m_investedModulePointText: {fileID: 6148509458652564055}
-  m_unlockModuleButton: {fileID: 4988772869980504082}
+  m_unlockModuleContainer: {fileID: 613753716056040056}
+  m_unlockModuleButton: {fileID: 377248409560083319}
   m_unlockModuleButtonText: {fileID: 6970662566386038531}
   m_unlockModuleSubTypeText: {fileID: 868404167317406545}
   m_moduleStatusContainer: {fileID: 8460233698539502978}
@@ -54726,12 +54840,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 9204868588142784788}
+  m_Father: {fileID: 4856010951749155553}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: 0}
-  m_SizeDelta: {x: 300, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5344416569244079802
 CanvasRenderer:

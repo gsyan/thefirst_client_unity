@@ -33,7 +33,8 @@ public class UITabShip : UITabBase
     [SerializeField] private Transform  m_moduleStatsContainer;
     [SerializeField] private TMP_Text   m_investedModulePointText;
     
-    [SerializeField] private Button     m_unlockModuleButton;
+    [SerializeField] private GameObject m_unlockModuleContainer;
+    [SerializeField] private UIButtonHasChildren    m_unlockModuleButton;
     [SerializeField] private TMP_Text   m_unlockModuleButtonText;
     [SerializeField] private TMP_Text   m_unlockModuleSubTypeText;
     [SerializeField] private Transform  m_moduleStatusContainer;
@@ -108,7 +109,7 @@ public class UITabShip : UITabBase
         if (m_btnPrevShip != null) m_btnPrevShip.onClick.AddListener(OnPrevShipClicked);
         if (m_btnNextShip != null) m_btnNextShip.onClick.AddListener(OnNextShipClicked);
 
-        m_unlockModuleButton.onClick.AddListener(OnModuleUnlockClicked);
+        m_unlockModuleButton.GetButton().onClick.AddListener(OnModuleUnlockClicked);
         if (m_unlockModuleButtonText != null)
         {
             int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
@@ -134,8 +135,11 @@ public class UITabShip : UITabBase
     private void OnModulePointChanged(int modulePoint)
     {
         if (bShow == false) return;
-        if (m_selectedModule == null || m_selectedModule is ModulePlaceholder) return;
-        RefreshModuleActionButtons();
+        if (m_selectedModule == null) return;
+        if (m_selectedModule is ModulePlaceholder)
+            RefreshUnlockButton();
+        else
+            RefreshModuleActionButtons();
     }
 
     public override void OnTabActivated()
@@ -645,15 +649,16 @@ public class UITabShip : UITabBase
 
         if (m_selectedModule is ModulePlaceholder)
         {
-            m_unlockModuleButton.gameObject.SetActive(true);
+            m_unlockModuleContainer.SetActive(true);
             m_moduleStatusContainer.gameObject.SetActive(false);
             //if (m_btnResetModule != null) m_btnResetModule.gameObject.SetActive(false);
             string placeholderText = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType()}_placeholder");
             if (m_unlockModuleSubTypeText != null) m_unlockModuleSubTypeText.text = placeholderText;
+            RefreshUnlockButton();
         }
         else
         {
-            m_unlockModuleButton.gameObject.SetActive(false);
+            m_unlockModuleContainer.SetActive(false);
             m_moduleStatusContainer.gameObject.SetActive(true);
 
             EModuleSubType subType = m_selectedModule.GetModuleSubType();
@@ -709,6 +714,15 @@ public class UITabShip : UITabBase
     // ─────────────────────────────────────────────
     // 버튼 상태 갱신
     // ─────────────────────────────────────────────
+
+    private void RefreshUnlockButton()
+    {
+        if (m_unlockModuleButton == null) return;
+        var character  = DataManager.Instance.m_currentCharacter;
+        long playerPoint = character != null ? character.GetModulePoint() : 0;
+        int  unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
+        m_unlockModuleButton.SetInteractable(playerPoint >= unlockPrice);
+    }
 
     private void RefreshModuleActionButtons()
     {

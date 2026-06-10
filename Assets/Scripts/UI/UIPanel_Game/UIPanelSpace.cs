@@ -94,14 +94,7 @@ public class UIPanelSpace : UIPanelBase
             if (result == null || result.available == false) return;
             var character = DataManager.Instance.m_currentCharacter;
             if (character != null) character.UpdateMineral(result.mineralRemain);
-            var loc = LocalizationManager.Instance;
-            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-            {
-                title        = loc.Get("VipDailyBonus_Title"),
-                message      = loc.Get("VipDailyBonus_Desc", result.grantedMineral),
-                confirmText1 = loc.Get("Simple_Confirm"),
-                onConfirm    = null,
-            });
+            UIManager.Instance.ShowDailyBonusPopup(result.claimedDaysMask, result.todayDay, result.grantedMineral);
         });
     }
 
