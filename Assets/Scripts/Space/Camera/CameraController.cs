@@ -164,7 +164,7 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_isGalaxyView == true && m_isGalaxyViewAnimating == true)
         {
             // 갤럭시뷰 전용 — 지수 이즈인: 처음엔 거의 정지, 후반에 급가속
-            m_galaxyViewAnimTimer += Time.deltaTime;
+            m_galaxyViewAnimTimer += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(m_galaxyViewAnimTimer / k_galaxyViewAnimDuration);
             // 2^(10t-10): t=0→~0.001, t=0.5→~0.031, t=0.9→0.5, t=1→1
             float easedT = Mathf.Pow(t, k_galaxyViewEasePower);
@@ -183,7 +183,7 @@ public class CameraController : MonoSingleton<CameraController>
             // 일반 뷰 — 기존 지수 보간 (모듈 포커싱 등)
             if (m_hasTargetRotationY == true)
             {
-                m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_targetRotationY, k_rotateLerpSpeed * Time.deltaTime);
+                m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_targetRotationY, k_rotateLerpSpeed * Time.unscaledDeltaTime);
                 if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, m_targetRotationY)) < k_rotateArriveThreshold)
                 {
                     m_currentRotationY = m_targetRotationY;
@@ -192,7 +192,7 @@ public class CameraController : MonoSingleton<CameraController>
             }
             if (m_hasTargetRotationX == true)
             {
-                m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_targetRotationX, k_rotateLerpSpeed * Time.deltaTime);
+                m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_targetRotationX, k_rotateLerpSpeed * Time.unscaledDeltaTime);
                 if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationX, m_targetRotationX)) < k_rotateArriveThreshold)
                 {
                     m_currentRotationX = m_targetRotationX;
@@ -201,14 +201,14 @@ public class CameraController : MonoSingleton<CameraController>
             }
             if (m_hasTargetZoom == true)
             {
-                m_currentZoom = Mathf.Lerp(m_currentZoom, m_targetZoom, k_zoomLerpSpeed * Time.deltaTime);
+                m_currentZoom = Mathf.Lerp(m_currentZoom, m_targetZoom, k_zoomLerpSpeed * Time.unscaledDeltaTime);
                 if (Mathf.Abs(m_currentZoom - m_targetZoom) < k_zoomArriveThreshold)
                 {
                     m_currentZoom = m_targetZoom;
                     m_hasTargetZoom = false;
                 }
             }
-            m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, k_positionLerpSpeed * Time.deltaTime);
+            m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, k_positionLerpSpeed * Time.unscaledDeltaTime);
 
             // 카메라 이동 완료 시 입력 자동 활성화 (갤럭시 뷰 중에는 입력 유지 차단)
             if (m_inputEnabled == false && m_isGalaxyView == false

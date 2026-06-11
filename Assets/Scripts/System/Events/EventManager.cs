@@ -276,6 +276,11 @@ public static class EventManager
     public static void Subscribe_ZoneStageBattleEnd(Action<bool> callback)   { OnZoneStageBattleEnd += callback; }
     public static void Unsubscribe_ZoneStageBattleEnd(Action<bool> callback) { OnZoneStageBattleEnd -= callback; }
 
+    public static event Action OnPvpBattleStart;
+    public static void TriggerPvpBattleStart() { OnPvpBattleStart?.Invoke(); }
+    public static void Subscribe_PvpBattleStart(Action callback)   { OnPvpBattleStart += callback; }
+    public static void Unsubscribe_PvpBattleStart(Action callback) { OnPvpBattleStart -= callback; }
+
     public static event Action<bool> OnPvpBattleEnd;
     public static void TriggerPvpBattleEnd(bool isVictory) { OnPvpBattleEnd?.Invoke(isVictory); }
     public static void Subscribe_PvpBattleEnd(Action<bool> callback)   { OnPvpBattleEnd += callback; }

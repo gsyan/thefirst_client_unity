@@ -74,6 +74,7 @@ public class UIVipButton : MonoBehaviour
     private void OnTabSelectionChanged(string systemName, int tabIndex)
     {
         if (systemName != "UIPanelSpace") return;
+        if (tabIndex == -1) return; // 모든 탭이 닫히는 변화라면 그건 uivipbutton이 눌려서 그런것
         Close();
     }
 

@@ -61,6 +61,42 @@ public class TabSystem : MonoBehaviour
         if (m_systemName.EndsWith(" (Clone)"))
             m_systemName = m_systemName.Substring(0, m_systemName.Length - 8);
         InitializeTabs();
+        EventManager.Subscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+    }
+
+    private void OnMyFleetStateChanged(EUnitState state)
+    {
+        // 탭이 열려있는 동안은 적용하지 않음
+        if (currentActiveTab >= 0) return;
+        RefreshTabButtonsByFleetState();
+    }
+
+    public void RefreshTabButtonsByFleetState()
+    {
+        SpaceFleet myFleet = ObjectManager.Instance != null ? ObjectManager.Instance.m_myFleet : null;
+        EUnitState state = myFleet != null ? myFleet.m_fleetState : EUnitState.Idle;
+        for (int i = 0; i < tabs.Count; i++)
+        {
+            TabData tab = tabs[i];
+            if (tab.tabButton == null) continue;
+            tab.tabButton.gameObject.SetActive(IsTabVisibleInState(tab, state));
+        }
+    }
+
+    private bool IsTabVisibleInState(TabData tab, EUnitState state)
+    {
+        if (tab.tabPanel == null) return true;
+        if (state == EUnitState.BattleExploration || state == EUnitState.Warp)
+            return tab.tabPanel.GetComponent<UITabPvp>() == null;
+        if (state == EUnitState.BattlePvp)
+            return tab.tabPanel.GetComponent<UITabTech>() != null
+                || tab.tabPanel.GetComponent<UITabFleet>() != null;
+        return true;
     }
 
     private void InitializeTabs()

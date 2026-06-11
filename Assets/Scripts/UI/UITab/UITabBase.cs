@@ -18,17 +18,21 @@ public class UITabBase : MonoBehaviour
     {
     }
 
-    // includeSelf=true 이면 자신의 탭 버튼도 포함해 숨김/표시
-    protected void SetTabButtonsVisible(bool visible, bool includeSelf = false)
+    protected void HideTabButtons()
     {
         if (m_tabSystemParent == null) return;
-        for (int i = 0; i < m_tabSystemParent.tabs.Count; i++)
+        foreach (var tab in m_tabSystemParent.tabs)
         {
-            var tab = m_tabSystemParent.tabs[i];
             if (tab.tabButton == null) continue;
-            if (includeSelf == false && tab.tabPanel == gameObject) continue;
-            tab.tabButton.gameObject.SetActive(visible);
+            tab.tabButton.gameObject.SetActive(false);
         }
+    }
+
+    // fleet 상태에 따라 탭 버튼 가시성 복원
+    protected void RefreshTabButtons()
+    {
+        if (m_tabSystemParent != null)
+            m_tabSystemParent.RefreshTabButtonsByFleetState();
     }
 
     protected void ShowErrorMessage(string message)

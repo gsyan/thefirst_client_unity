@@ -1,4 +1,4 @@
-// PvP 탭 - 상대 목록, 전투 시작/결과, 랭킹 보드(InfiniteScrollView) 관리
+﻿// PvP 탭 - 상대 목록, 전투 시작/결과, 랭킹 보드(InfiniteScrollView) 관리
 using UnityEngine;
 
 public class UITabPvp : UITabBase
@@ -36,7 +36,7 @@ public class UITabPvp : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetTabButtonsVisible(false, includeSelf: true);
+        HideTabButtons();
 
         m_innerTabSystem.SwitchToTab(0);
         RequestPvpMyRank();
@@ -45,7 +45,8 @@ public class UITabPvp : UITabBase
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetTabButtonsVisible(true, includeSelf: true);
+        if (m_isBattleInProgress == false)
+            RefreshTabButtons();
     }
 
     private void RequestPvpMyRank()
@@ -104,6 +105,16 @@ public class UITabPvp : UITabBase
             ShowErrorMessage("전투를 시작할 수 없습니다.");
             return;
         }
+
+        SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
+        if (myFleet != null && myFleet.m_fleetState == EUnitState.BattleExploration)
+        {
+            ObjectManager.Instance.StopEnemySpawning();
+            ObjectManager.Instance.OrderAllAircraftReturn();
+            ObjectManager.Instance.CleanupAllProjectiles();
+            ObjectManager.Instance.RemoveAllEnemyFleets();
+        }
+        EventManager.TriggerPvpBattleStart();
 
         m_tabSystemParent.SwitchToTab(-1);
         ObjectManager.Instance.ChangeZone(1);
@@ -189,6 +200,7 @@ public class UITabPvp : UITabBase
     {
         m_isBattleInProgress = false;
         m_currentBattleToken = null;
+        RefreshTabButtons();
 
         UIManager.Instance.HidePanel("UIPanelCameraView");
         CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
@@ -228,3 +240,4 @@ public class UITabPvp : UITabBase
         });
     }
 }
+

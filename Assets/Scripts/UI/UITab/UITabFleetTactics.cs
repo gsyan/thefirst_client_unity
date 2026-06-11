@@ -1,4 +1,4 @@
-// 함대 전략 설정 UI — 진형 선택(라디오) + 전투 옵션 토글
+﻿// 함대 전략 설정 UI — 진형 선택(라디오) + 전투 옵션 토글
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -83,14 +83,14 @@ public class UITabFleetTactics : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetTabButtonsVisible(false, includeSelf: true);
+        HideTabButtons();
         RefreshFormationButtonLock();
     }
 
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetTabButtonsVisible(true, includeSelf: true);
+        RefreshTabButtons();
     }
 
     private void SetupToggleButtons()
@@ -310,3 +310,4 @@ public class UITabFleetTactics : UITabBase
         m_suppressFormationCallback = false;
     }
 }
+

@@ -1,4 +1,4 @@
-// 함대 탭 UI — Tech Level 행, Fleet Stats(2행 압축), 함선 선택 그리드(9칸 고정, 프리팹에 미리 배치), Formation 하단 바 + 교체 팝업 관리
+﻿// 함대 탭 UI — Tech Level 행, Fleet Stats(2행 압축), 함선 선택 그리드(9칸 고정, 프리팹에 미리 배치), Formation 하단 바 + 교체 팝업 관리
 // 빈 슬롯은 잠금 아이콘으로 표시, 클릭 시 함선 추가 팝업 호출
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +10,7 @@ public class UITabTech : UITabBase
     [SerializeField] private TMP_Text m_shipCountText;
     [SerializeField] private Transform m_shipImages;
     [SerializeField] private TMP_Text m_nextLevelText;
+    [SerializeField] private TMP_Text m_nextModuleGradeText;
     [SerializeField] private TMP_Text m_nextLevelShipCountText;
     [SerializeField] private Button   m_techLevelUpButton;
     [SerializeField] private TMP_Text m_techLevelUpButtonText;
@@ -50,14 +51,14 @@ public class UITabTech : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetTabButtonsVisible(false, includeSelf: true);
+        HideTabButtons();
         UpdateTechLevelDisplay();
     }
 
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetTabButtonsVisible(true, includeSelf: true);
+        RefreshTabButtons();
     }
 
     // ── Ship Slots ────────────────────────────────────────────────────
@@ -98,11 +99,13 @@ public class UITabTech : UITabBase
             if (nextNode != null)
             {
                 m_nextLevelText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextUnlockTitle"), nextNode.targetTechLevel);
+                m_nextModuleGradeText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextModuleGrade"), nextNode.targetTechLevel);
                 m_nextLevelShipCountText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextUnlockShipCount"), nextNode.shipCount);
             }
             else
             {
                 m_nextLevelText.text = LocalizationManager.Instance.Get("LevelupButtonTextMax");
+                m_nextModuleGradeText.gameObject.SetActive(false);
                 m_nextLevelShipCountText.gameObject.SetActive(false);
             }
                 
@@ -189,3 +192,4 @@ public class UITabTech : UITabBase
     }
 
 }
+

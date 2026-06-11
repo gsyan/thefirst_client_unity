@@ -1,4 +1,4 @@
-// 설정 탭 UI — 섹션(계정/일반/기타) 구조, 로그아웃, 언어 설정, 구글 계정 연동/해제, 개발자 자원 추가
+﻿// 설정 탭 UI — 섹션(계정/일반/기타) 구조, 로그아웃, 언어 설정, 구글 계정 연동/해제, 개발자 자원 추가
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -146,7 +146,7 @@ public class UITabSettings : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetTabButtonsVisible(false, includeSelf: true);
+        HideTabButtons();
 
         RefreshGoogleLinkUI();
         RefreshNameText();
@@ -162,7 +162,7 @@ public class UITabSettings : UITabBase
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetTabButtonsVisible(true, includeSelf: true);
+        RefreshTabButtons();
     }
 
     // 연동 상태에 따라 버튼 라벨 갱신
@@ -290,3 +290,4 @@ public class UITabSettings : UITabBase
     }
 
 }
+

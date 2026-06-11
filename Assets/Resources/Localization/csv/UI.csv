@@ -143,6 +143,7 @@ UITabTech_TechLevelTitle,,TECH LEVEL,기술 레벨
 UITabTech_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
 UITabTech_ShipCountUnit,,ships,척
 UITabTech_NextUnlockTitle,,Next Unlock - Lv.{0},다음 해금 - Lv.{0}
+UITabTech_NextModuleGrade,,Next Module Grade - T.{0},다음 모듈 그래이드 - T.{0}
 UITabTech_NextUnlockShipCount,,{0} Ship Slots,함선 슬롯 {0}척
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
@@ -223,7 +224,7 @@ UIVipStatus_Expired,,(Expired),(만료)
 UIVipStatus_ExpiryDays,,(D-{0}),(D-{0})
 UIVipStatus_Benefit_NoAds,,No Ads,광고 없음
 UIVipStatus_Benefit_Mineral,,Stage Mineral Rewards x {0} & Instant Fleet HP Restore,스테이지 미네랄 보상 {0}배 & 함선 체력 즉시 회복
-UIVipStatus_Benefit_Daily,,Daily Login Rewards {0} Minerals,매일 로그인시 미네랄 +{0}
+UIVipStatus_Benefit_Daily,,Daily Login VIP Exclusive Rewards & Instant Ship HP Recovery,매일 로그인 VIP 전용 보상 & 함선 체력 즉시 회복
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
 UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}day(s) Left),{0} ({1} 패스 D-{2})
 loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.

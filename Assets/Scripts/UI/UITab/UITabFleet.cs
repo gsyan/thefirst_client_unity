@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -50,7 +50,7 @@ public class UITabFleet : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
-        SetTabButtonsVisible(false, includeSelf: true);
+        HideTabButtons();
         UpdateTechLevelDisplay();
 
         if (m_needsLayoutRebuild == true)
@@ -79,7 +79,7 @@ public class UITabFleet : UITabBase
     public override void OnTabDeactivated()
     {
         base.OnTabDeactivated();
-        SetTabButtonsVisible(true, includeSelf: true);
+        RefreshTabButtons();
 
         // Fleet 탭 벗어날 때 모든 함선 아웃라인 비활성화
         if (m_playerFleet == null) return;
@@ -464,3 +464,4 @@ public class UITabFleet : UITabBase
         return ServerErrorCode.SUCCESS;
     }
 }
+

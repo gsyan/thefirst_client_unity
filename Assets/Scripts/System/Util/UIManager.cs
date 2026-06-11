@@ -436,7 +436,7 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupLicense(() => CloseTopPopup(EPopupLayer.Normal));
     }
 
-    // 모듈/기술레벨 공용 레벨업 팝업
+    // 기술 레벨업 팝업
     public void ShowTechLevelupPopup(int currentTechLevel, System.Action<int> onConfirm)
     {
         UIPopupLevelup popup = GetOrCreatePopup<UIPopupLevelup>("UIPopupLevelup", EPopupLayer.Normal);

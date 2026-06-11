@@ -188,6 +188,10 @@ public class UIPopupLevelup : UIPopupBase
             int currentShips = DataManager.Instance.m_dataTableResearch.GetShipCount(m_currentLevel);
             int targetShips  = DataManager.Instance.m_dataTableResearch.GetShipCount(m_targetLevel);
             m_sectionResult.SetRow(0, "icon_ship", $"{currentShips} <voffset=6>→</voffset> {targetShips}");
+            
+            int currentModuleGrade = m_currentLevel;
+            int targetModuleGrade  = m_targetLevel;
+            m_sectionResult.SetRow(1, "cargo-crane", $"T{currentModuleGrade} <voffset=6>→</voffset> T{targetModuleGrade}");
         }
         else if (m_mode == Mode.Module)
         {

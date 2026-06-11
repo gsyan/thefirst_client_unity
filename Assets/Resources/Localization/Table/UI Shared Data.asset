@@ -591,6 +591,10 @@ MonoBehaviour:
     m_Key: UITabTech_NextUnlockTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 44653455670640640
+    m_Key: UITabTech_NextModuleGrade
+    m_Metadata:
+      m_Items: []
   - m_Id: 29084800778108928
     m_Key: UITabTech_NextUnlockShipCount
     m_Metadata:

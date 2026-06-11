@@ -872,7 +872,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 40210342097059842
-    m_Localized: Daily Login Rewards {0} Minerals
+    m_Localized: Daily Login VIP Exclusive Rewards & Instant Ship HP Recovery
     m_Metadata:
       m_Items: []
   - m_Id: 40229268445069312
@@ -981,6 +981,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 44304125248012288
     m_Localized: +{0} Minerals received!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44653455670640640
+    m_Localized: Next Module Grade - T.{0}
     m_Metadata:
       m_Items: []
   references:
