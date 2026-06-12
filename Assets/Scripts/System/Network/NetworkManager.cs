@@ -683,6 +683,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClaimZoneRewardAsync(request), onComplete));
     }
 
+    public void ClaimPendingStageRewards(System.Action<ApiResponse<PendingStageRewardResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimPendingStageRewardsAsync(), onComplete));
+    }
+
     public void GetStageEnemies(GetStageEnemiesRequest request, System.Action<ApiResponse<GetStageEnemiesResponse>> onComplete)
     {
         if (m_bConnected == false) return;

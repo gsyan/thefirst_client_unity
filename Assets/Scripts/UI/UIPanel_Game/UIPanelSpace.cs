@@ -55,6 +55,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_VipButtonOpened(OnVipButtonOpened);
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         CheckAndShowDailyRewardPopup();
+        CheckAndClaimPendingStageRewards();
         m_tabSystem.ForceActivateTab();
     }
 
@@ -76,6 +77,40 @@ public class UIPanelSpace : UIPanelBase
     private void OnDestroy()
     {
         EventManager.Unsubscribe_TabSelectionChanged(OnTabSelectionChanged);
+    }
+
+    // ── 미수령 존 보상 복구 ───────────────────────────────────────────────────
+
+    private void CheckAndClaimPendingStageRewards()
+    {
+        NetworkManager.Instance.ClaimPendingStageRewards(response =>
+        {
+            if (response == null || response.errorCode != 0) return;
+            if (response.data.mineralGained == 0) return;
+
+            var character = DataManager.Instance.m_currentCharacter;
+            if (character != null)
+            {
+                character.UpdateMineral(response.data.mineralRemain);
+                character.UpdateTechPoint(response.data.techPointRemain);
+                character.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
+                character.UpdateModulePoint(response.data.modulePointRemain);
+            }
+
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                title   = LocalizationManager.Instance.Get("pending_reward_title"),
+                message = LocalizationManager.Instance.Get("pending_reward_message"),
+                rewardAmounts = new System.Collections.Generic.List<int>
+                {
+                    response.data.mineralGained,
+                    response.data.techPointGained,
+                    response.data.modulePointGained,
+                    0
+                },
+                onConfirm = () => { }
+            });
+        });
     }
 
     // ── VIP 일일 미네랄 팝업 ──────────────────────────────────────────────────

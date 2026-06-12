@@ -19,7 +19,7 @@ public struct CapabilityProfile
     public float health;                // 체력
     public float speed;                 // 속력 (이동+회전 통합)
     public float repair;                // 수리 능력
-    public int airAttack;               // 함재기 공격력
+    public float airAttack;              // 함재기 공격력
     public int airCount;                // 함재기 수
 }
 
@@ -678,6 +678,43 @@ public class SpaceShip : MonoBehaviour
         ModuleBase module = FindModule(bodyIndex, moduleType, slotIndex);
         if (module == null) return;
         module.SetInvestedModulePoint(modulePoint);
+
+        // DTO에도 반영 (RebuildFleet 시 올바른 값으로 재생성되도록)
+        if (m_shipInfo == null || m_shipInfo.bodies == null) return;
+        ModuleBodyInfo bodyInfo = null;
+        for (int i = 0; i < m_shipInfo.bodies.Count; i++)
+        {
+            if (m_shipInfo.bodies[i].bodyIndex == bodyIndex)
+            {
+                bodyInfo = m_shipInfo.bodies[i];
+                break;
+            }
+        }
+        if (bodyInfo == null) return;
+
+        if (moduleType == EModuleType.body)
+        {
+            bodyInfo.investedModulePoint = modulePoint;
+            return;
+        }
+
+        List<ModuleInfo> moduleList = null;
+        if (moduleType == EModuleType.beam)
+            moduleList = bodyInfo.beams;
+        else if (moduleType == EModuleType.missile)
+            moduleList = bodyInfo.missiles;
+        else if (moduleType == EModuleType.hanger)
+            moduleList = bodyInfo.hangers;
+
+        if (moduleList == null) return;
+        for (int i = 0; i < moduleList.Count; i++)
+        {
+            if (moduleList[i].slotIndex == slotIndex)
+            {
+                moduleList[i].investedModulePoint = modulePoint;
+                break;
+            }
+        }
     }
 
     // 함선의 능력치 프로파일 계산

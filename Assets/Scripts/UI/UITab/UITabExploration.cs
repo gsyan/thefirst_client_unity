@@ -371,6 +371,7 @@ public class UITabExploration : UITabBase
     {
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
         m_battleZoneStage = null;
+        m_pendingClaimZoneName = null;
     }
 
     private void SetMyFleetToHiddenPosition()
@@ -618,6 +619,8 @@ public class UITabExploration : UITabBase
     {
         if (m_battleZoneStage == null) return;
 
+        m_pendingClaimZoneName = m_battleZoneStage.zoneName; // 후퇴로 m_battleZoneStage가 null이 되기 전에 캡처
+
         var request = new ClearZoneStageRequest
         {
             zoneName = m_battleZoneStage.zoneName,
@@ -627,6 +630,7 @@ public class UITabExploration : UITabBase
     }
 
     private bool m_pendingRewardIsFirstClear;
+    private string m_pendingClaimZoneName; // ExecuteRetreat로 m_battleZoneStage가 null이 돼도 보상 청구 가능하도록
     private static readonly WaitForSecondsRealtime s_victorySequenceWait = new WaitForSecondsRealtime(1.5f);
 
     private void OnClearZoneStageResponse(ApiResponse<ClearZoneStageResponse> response)
@@ -634,6 +638,7 @@ public class UITabExploration : UITabBase
         if (response.errorCode != 0)
         {
             Debug.LogWarning($"[Zone] ClearZoneStage 에러: {ErrorCodeMapping.GetMessage(response.errorCode)} ({response.errorCode})");
+            m_pendingClaimZoneName = null;
             ObjectManager.Instance.CleanupAllProjectiles();
             StayInCurrentStage();
             return;
@@ -677,14 +682,15 @@ public class UITabExploration : UITabBase
         yield return s_victorySequenceWait;
         ObjectManager.Instance.CleanupAllProjectiles();
 
-        if (m_battleZoneStage == null) yield break;
+        ZoneStageConfig pendingStage = m_datatableZone.GetZoneStageByName(m_pendingClaimZoneName);
+        if (pendingStage == null) { m_pendingClaimZoneName = null; yield break; }
 
         bool isFirstClear = m_pendingRewardIsFirstClear;
         var rewards = new List<int>
         {
-            m_battleZoneStage.mineralClearReward,
-            isFirstClear ? m_battleZoneStage.techPointClearReward   : 0,
-            isFirstClear ? m_battleZoneStage.modulePointClearReward : 0,
+            pendingStage.mineralClearReward,
+            isFirstClear ? pendingStage.techPointClearReward   : 0,
+            isFirstClear ? pendingStage.modulePointClearReward : 0,
             0
         };
 
@@ -728,8 +734,8 @@ public class UITabExploration : UITabBase
 
     private void OnClaimRewardX1()
     {
-        if (m_battleZoneStage == null) { return; }
-        var request = new ClaimZoneRewardRequest { zoneName = m_battleZoneStage.zoneName, watchedAd = false };
+        if (string.IsNullOrEmpty(m_pendingClaimZoneName)) { return; }
+        var request = new ClaimZoneRewardRequest { zoneName = m_pendingClaimZoneName, watchedAd = false };
         NetworkManager.Instance.ClaimZoneReward(request, OnClaimZoneRewardResponse);
     }
 
@@ -765,8 +771,8 @@ public class UITabExploration : UITabBase
 
     private void SendClaimZoneReward(bool watchedAd)
     {
-        if (m_battleZoneStage == null) { return; }
-        var request = new ClaimZoneRewardRequest { zoneName = m_battleZoneStage.zoneName, watchedAd = watchedAd };
+        if (string.IsNullOrEmpty(m_pendingClaimZoneName)) { return; }
+        var request = new ClaimZoneRewardRequest { zoneName = m_pendingClaimZoneName, watchedAd = watchedAd };
         NetworkManager.Instance.ClaimZoneReward(request, OnClaimZoneRewardResponse);
     }
 
@@ -787,6 +793,7 @@ public class UITabExploration : UITabBase
             character.UpdateModulePoint(response.data.modulePointRemain);
         }
         m_battleZoneStage = null;
+        m_pendingClaimZoneName = null;
     }
 
     private void SelectNextZoneStage(string clearedZoneName)

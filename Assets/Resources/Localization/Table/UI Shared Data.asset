@@ -167,6 +167,14 @@ MonoBehaviour:
     m_Key: exploration_zone_enter_confirm
     m_Metadata:
       m_Items: []
+  - m_Id: 45106829071351808
+    m_Key: pending_reward_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45106829100711936
+    m_Key: pending_reward_message
+    m_Metadata:
+      m_Items: []
   - m_Id: 26943208810217472
     m_Key: exploration_battle_victory
     m_Metadata:

@@ -465,6 +465,21 @@ public class GetStageEnemiesResponse
     public FleetInfo enemyFleet;
 }
 
+[System.Serializable]
+public class PendingStageRewardRequest { }
+
+[System.Serializable]
+public class PendingStageRewardResponse
+{
+    public int mineralGained;       // 합산 획득량 (*1 고정), 0이면 미수령 없음
+    public int techPointGained;
+    public int modulePointGained;
+    public int mineralRemain;       // 처리 후 잔액
+    public int techPointRemain;
+    public int modulePointRemain;
+    public int modulePointMaxGot;
+}
+
 #endregion
 
 #region Heartbeat Data Classes ################################################################################

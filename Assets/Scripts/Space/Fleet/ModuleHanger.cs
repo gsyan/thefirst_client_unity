@@ -362,7 +362,7 @@ public class ModuleHanger : ModuleBase
         stats.totalWeapons = 1;
         // 함재기 데이터로부터 계산
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        stats.airAttack = (int)(moduleData.airAttack);
+        stats.airAttack = moduleData.airAttack;
         stats.airCount = moduleData.airCount;
 
         return stats;

@@ -726,6 +726,23 @@ public class ApiClient
     }
 
 
+    public async Task<ApiResponse<PendingStageRewardResponse>> ClaimPendingStageRewardsAsync()
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<PendingStageRewardResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(new PendingStageRewardRequest());
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/claim-pending-rewards", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<PendingStageRewardResponse>>(webRequest.downloadHandler.text);
+    }
+
+
     public async Task<ApiResponse<GetStageEnemiesResponse>> GetStageEnemiesAsync(GetStageEnemiesRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<GetStageEnemiesResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);

@@ -36,6 +36,8 @@ public class UIManager : MonoSingleton<UIManager>
     private RectTransform[] m_popupContainers;                               // [EPopupLayer] → container
     private Stack<UIPopupBase>[] m_popupStacks;                              // [EPopupLayer] → active stack
     private readonly Dictionary<string, Queue<UIPopupBase>> m_popupPool = new(); // prefabName → free instances
+    private readonly Queue<ConfirmPopupConfig> m_confirmPopupQueue = new();  // 팝업 큐: 겹침 방지
+    private bool m_isConfirmPopupShowing;
     private Canvas mainCanvas;
 
     // UI 컨테이너
@@ -365,18 +367,36 @@ public class UIManager : MonoSingleton<UIManager>
     // Show Popup API
     // ---------------------------------------------------------------------------------
 
-    // 확인 팝업
+    // 확인 팝업 — 이미 표시 중이면 큐에 적재, 닫힐 때 자동으로 다음 팝업 표시
     public void ShowConfirmPopup(ConfirmPopupConfig config)
     {
+        m_confirmPopupQueue.Enqueue(config);
+        if (m_isConfirmPopupShowing == false)
+            ShowNextConfirmPopup();
+    }
+
+    private void ShowNextConfirmPopup()
+    {
+        if (m_confirmPopupQueue.Count == 0)
+        {
+            m_isConfirmPopupShowing = false;
+            return;
+        }
+
+        m_isConfirmPopupShowing = true;
+        ConfirmPopupConfig config = m_confirmPopupQueue.Dequeue();
+
         UIPopupConfirm popup = GetOrCreatePopup<UIPopupConfirm>("UIPopupConfirm", EPopupLayer.Overlay);
-        if (popup == null) return;
+        if (popup == null) { ShowNextConfirmPopup(); return; }
 
         PushPopup(popup, EPopupLayer.Overlay);
 
         System.Action userConfirm = config.onConfirm;
         System.Action userCancel  = config.onCancel;
-        config.onConfirm = () => { userConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Overlay); };
-        config.onCancel  = userCancel != null ? () => { userCancel.Invoke(); CloseTopPopup(EPopupLayer.Overlay); } : (System.Action)null;
+        config.onConfirm = () => { userConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Overlay); ShowNextConfirmPopup(); };
+        config.onCancel  = userCancel != null
+            ? () => { userCancel.Invoke(); CloseTopPopup(EPopupLayer.Overlay); ShowNextConfirmPopup(); }
+            : (System.Action)null;
 
         popup.ShowPopupConfirm(config);
     }

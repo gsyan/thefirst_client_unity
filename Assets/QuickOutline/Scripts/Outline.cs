@@ -82,8 +82,10 @@ public class Outline : MonoBehaviour {
 
   void Awake() {
 
-    // Cache renderers
-    renderers = GetComponentsInChildren<Renderer>();
+    // Cache renderers (파티클 렌더러 제외 — 이펙트에 아웃라인 적용 방지)
+    renderers = GetComponentsInChildren<Renderer>()
+      .Where(r => !(r is ParticleSystemRenderer))
+      .ToArray();
 
     // Instantiate outline materials
     outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
@@ -322,8 +324,10 @@ public class Outline : MonoBehaviour {
       renderer.materials = materials.ToArray();
     }
 
-    // 2. renderers 배열 다시 가져오기 (새로 생성된 자식 포함)
-    renderers = GetComponentsInChildren<Renderer>();
+    // 2. renderers 배열 다시 가져오기 (새로 생성된 자식 포함, 파티클 제외)
+    renderers = GetComponentsInChildren<Renderer>()
+      .Where(r => !(r is ParticleSystemRenderer))
+      .ToArray();
 
     // 3. registeredMeshes 초기화하여 새로운 mesh들을 다시 등록
     registeredMeshes.Clear();

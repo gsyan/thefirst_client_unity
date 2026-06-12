@@ -1007,6 +1007,14 @@ MonoBehaviour:
     m_Localized: Instantly Restore Fleet HP After Battle
     m_Metadata:
       m_Items: []
+  - m_Id: 45106829071351808
+    m_Localized: Pending Rewards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45106829100711936
+    m_Localized: Claimed rewards from completed zones.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

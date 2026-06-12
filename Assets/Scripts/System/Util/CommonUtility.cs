@@ -129,7 +129,7 @@ public static class CommonUtility
         }
         else if (moduleInfo.moduleType == EModuleType.hanger)
         {
-            stats.airAttack = (int)moduleData.airAttack;       // 함재기 공격력
+            stats.airAttack = moduleData.airAttack;             // 함재기 공격력
             stats.airCount = moduleData.airCount;              // 함재기 수
             stats.totalWeapons = 1;
         }

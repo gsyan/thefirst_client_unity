@@ -411,91 +411,91 @@ MonoBehaviour:
   - researchId: tech_level_2
     prerequisiteIds:
     - tech_level_1
-    pointCost: 5
+    pointCost: 2
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 2
     shipCount: 1
   - researchId: tech_level_3
     prerequisiteIds:
     - tech_level_2
-    pointCost: 5
+    pointCost: 3
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 3
-    shipCount: 2
+    shipCount: 1
   - researchId: tech_level_4
     prerequisiteIds:
     - tech_level_3
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 4
-    shipCount: 2
+    shipCount: 1
   - researchId: tech_level_5
     prerequisiteIds:
     - tech_level_4
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 5
-    shipCount: 3
+    shipCount: 2
   - researchId: tech_level_6
     prerequisiteIds:
     - tech_level_5
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 6
-    shipCount: 3
+    shipCount: 2
   - researchId: tech_level_7
     prerequisiteIds:
     - tech_level_6
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 7
-    shipCount: 4
+    shipCount: 2
   - researchId: tech_level_8
     prerequisiteIds:
     - tech_level_7
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 8
-    shipCount: 4
+    shipCount: 2
   - researchId: tech_level_9
     prerequisiteIds:
     - tech_level_8
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 9
-    shipCount: 5
+    shipCount: 2
   - researchId: tech_level_10
     prerequisiteIds:
     - tech_level_9
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 10
-    shipCount: 5
+    shipCount: 3
   - researchId: tech_level_11
     prerequisiteIds:
     - tech_level_10
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 11
-    shipCount: 6
+    shipCount: 3
   - researchId: tech_level_12
     prerequisiteIds:
     - tech_level_11
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 12
-    shipCount: 6
+    shipCount: 3
   - researchId: tech_level_13
     prerequisiteIds:
     - tech_level_12
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 13
-    shipCount: 7
+    shipCount: 3
   - researchId: tech_level_14
     prerequisiteIds:
     - tech_level_13
     pointCost: 5
     uiPosition: {x: 0, y: 0}
     targetTechLevel: 14
-    shipCount: 7
+    shipCount: 3
