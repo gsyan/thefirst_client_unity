@@ -217,14 +217,19 @@ VipDailyBonus_Title,,VIP Daily Bonus,VIP 일일 보너스
 VipDailyBonus_Desc,,+{0} Minerals received!,미네랄 +{0} 지급!
 DailyBonus_Title,,Daily Login Bonus,일일 출석 보너스
 DailyBonus_Desc,,+{0} Minerals received!,미네랄 +{0} 지급!
+DailyBonus_MonthLabel,,Month Reset In,이번 달 남은 시간
+DailyBonus_DailyLabel,,Next Reward In,다음 일일보상까지
+DailyBonus_DaysTime,,{0}d {1:D2}:{2:D2}:{3:D2},{0}일 {1:D2}:{2:D2}:{3:D2}
+DailyBonus_Available,,Available now!,지금 수령 가능!
 UIVipStatus_Frontier,,FRONTIER,프론티어
 UIVipStatus_Admiral,,ADMIRAL,제독
 UIVipStatus_BenefitTitle,,ADMIRAL's Benefit,제독 혜택
 UIVipStatus_Expired,,(Expired),(만료)
 UIVipStatus_ExpiryDays,,(D-{0}),(D-{0})
 UIVipStatus_Benefit_NoAds,,No Ads,광고 없음
-UIVipStatus_Benefit_Mineral,,Stage Mineral Rewards x {0} & Instant Fleet HP Restore,스테이지 미네랄 보상 {0}배 & 함선 체력 즉시 회복
-UIVipStatus_Benefit_Daily,,Daily Login VIP Exclusive Rewards & Instant Ship HP Recovery,매일 로그인 VIP 전용 보상 & 함선 체력 즉시 회복
+UIVipStatus_Benefit_Daily,,Exclusive Daily Rewards,전용 일일 보상
+UIVipStatus_Benefit_Mineral,,Stage Mineral Rewards x{0} (Excl. Tech & Module Points),스테이지 미네랄 보상 {0}배(기술, 모듈 포인트 제외)
+UIVipStatus_Benefit_InstantFleetRestore,,Instantly Restore Fleet HP After Battle,전투 후 함대 체력 즉시 회복
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
 UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}day(s) Left),{0} ({1} 패스 D-{2})
 loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.

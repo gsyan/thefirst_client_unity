@@ -53,11 +53,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIPopupDailyBonusDayCell
   m_dayText: {fileID: 7430933859914832200}
-  m_checkIcon: {fileID: 0}
   m_background: {fileID: 141947181107287945}
   m_borderHighlight: {fileID: 5627988318445019869}
   m_rewardContainer: {fileID: 7651410007937341705}
-  m_colorClaimed: {r: 0.0627451, g: 0.03137255, b: 0.11372549, a: 1}
   m_colorPassed: {r: 0.0627451, g: 0.03137255, b: 0.11372549, a: 1}
   m_colorFuture: {r: 0.1509434, g: 0.039159846, b: 0.11264626, a: 1}
 --- !u!1 &2438659077842942828
@@ -264,7 +262,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: 5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0

@@ -98,7 +98,7 @@ public class ModuleBody : ModuleBase
 
         // 복원된 데이터로 초기화
         m_healthMax = moduleData.health;
-        m_health = moduleBodyInfo.currentHealth > 0f ? Mathf.Min(moduleBodyInfo.currentHealth, m_healthMax) : 1f;
+        m_health = moduleBodyInfo.currentHealth > 0f ? Mathf.Min(moduleBodyInfo.currentHealth, m_healthMax) : m_healthMax;
         // 업그레이드 비용 설정
         m_modulePointCostLevelup = moduleData.modulePointCost;
         
@@ -183,12 +183,10 @@ public class ModuleBody : ModuleBase
                 // 코루틴 재시작 (각 모듈에서 필요시 override)
                 module.RestartCoroutines();
 
-                Debug.Log($"Module preserved: {module.GetType().Name} at slot {oldSlotIndex}");
             }
             else
             {
-                // 슬롯을 찾을 수 없음 - 모듈 파괴
-                Debug.LogWarning($"Cannot find compatible slot for {module.GetType().Name} (type={moduleType}, slot={oldSlotIndex}). Module destroyed.");
+                // 새 body가 지원하지 않는 슬롯 (다운그레이드 시 정상 경로)
                 Destroy(module.gameObject);
             }
         }

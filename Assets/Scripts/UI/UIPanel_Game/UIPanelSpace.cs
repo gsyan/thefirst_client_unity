@@ -87,26 +87,19 @@ public class UIPanelSpace : UIPanelBase
 
     private void CheckAndShowDailyRewardPopup()
     {
-        if (IAPManager.Instance == null) return;
+        if (DailyBonusManager.Instance == null) return;
 
-        IAPManager.Instance.TryClaimDailyReward(result =>
+        DailyBonusManager.Instance.TryClaimDailyBonus(result =>
         {
             if (result == null) return;
 
-            var character = DataManager.Instance.m_currentCharacter;
-            if (character != null)
-            {
-                character.SetClaimedDaysMask(result.claimedDaysMask);
-                character.SetVipClaimedDaysMask(result.vipClaimedDaysMask);
-                character.SetTodayDay(result.todayDay);
-            }
-
             if (result.available == false) return;
 
+            var character = DataManager.Instance.m_currentCharacter;
             if (character != null)
                 character.UpdateMineral(result.mineralRemain);
 
-            UIManager.Instance.ShowDailyBonusPopup(result.claimedDaysMask, result.vipClaimedDaysMask, result.todayDay, result.grantedMineral);
+            UIManager.Instance.ShowDailyBonusPopup(result.grantedMineral);
         });
     }
 

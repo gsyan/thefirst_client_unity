@@ -232,85 +232,76 @@ public class DataTableZoneEditor : Editor
             }
         }
 
-        // --- enemy CSV 파싱 (zone,stage → 함선 목록) ---
-        // 헤더: zone_stage,stage,flag_ship,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio
-        // flag_ship: 1=기함(슬롯0 전용), 0=일반(슬롯0 제외)
-        var enemyMap = new Dictionary<(int zone, int stage), List<EnemyShipConfig>>();
+        // --- enemy CSV 파싱 (zone,stage → ShipInfo 목록) ---
+        // 헤더: zone_stage,stage,ship_index,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio
+        var enemyMap = new Dictionary<(int zone, int stage), List<ShipInfo>>();
         string[] enemyLines = File.ReadAllLines(enemyCSV);
         for (int i = 1; i < enemyLines.Length; i++)
         {
             string line = enemyLines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
-            
-            // key 값 찾기
-            int.TryParse(col[0],  out int zoneIndex);
-            int.TryParse(col[1],  out int stageIndex);
+
+            int.TryParse(col[0], out int zoneIndex);
+            int.TryParse(col[1], out int stageIndex);
             var key = (zoneIndex, stageIndex);
             if (!enemyMap.ContainsKey(key))
-                enemyMap[key] = new List<EnemyShipConfig>();
+                enemyMap[key] = new List<ShipInfo>();
 
             int.TryParse(col[2], out int shipIndex);
             System.Enum.TryParse(col[3], out EModuleSubType bodyType);
             int.TryParse(col[4], out int bodyLv);
-            var ship = new EnemyShipConfig();
-            ship.shipIndex = shipIndex;
-            ship.bodySubType = bodyType;
-            ship.bodyLevel = bodyLv;
-            // 함체 정보로 모듈 정보
-            RefreshShipModuleSlots(ship);
-            
-            // beam 장착: beam_type, beam_level, beam_count (count 빈 값 = 1)
-            if ( string.IsNullOrEmpty(col[5]) == false && System.Enum.TryParse(col[5], out EModuleSubType beamType) && int.TryParse(col[6], out int beamLv))
+
+            var beams    = new List<ModuleInfo>();
+            var missiles = new List<ModuleInfo>();
+            var hangers  = new List<ModuleInfo>();
+
+            if (string.IsNullOrEmpty(col[5]) == false && System.Enum.TryParse(col[5], out EModuleSubType beamType) && int.TryParse(col[6], out int beamLv))
             {
-                int beamCount = string.IsNullOrEmpty(col[7]) ? 1 : (int.TryParse(col[7], out int bc) ? bc : 1);
-                int filled = 0;
-                foreach (var slot in ship.moduleSlots.Where(s => s.slotType == EModuleType.beam).OrderBy(s => s.slotIndex))
-                {
-                    if (filled >= beamCount) break;
-                    slot.moduleSubType = beamType;
-                    slot.moduleLevel = beamLv;
-                    filled++;
-                }
+                int beamCount = (string.IsNullOrEmpty(col[7]) == false && int.TryParse(col[7], out int bc)) ? bc : 1;
+                for (int s = 0; s < beamCount; s++)
+                    beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = beamType, moduleLevel = beamLv, bodyIndex = 0, slotIndex = s });
             }
 
-            // missile 장착: missile_type, missile_level, missile_count (count 빈 값 = 1)
             if (string.IsNullOrEmpty(col[8]) == false && System.Enum.TryParse(col[8], out EModuleSubType missileType) && int.TryParse(col[9], out int missileLv))
             {
-                int missileCount = string.IsNullOrEmpty(col[10]) ? 1 : (int.TryParse(col[10], out int mc) ? mc : 1);
-                int filled = 0;
-                foreach (var slot in ship.moduleSlots.Where(s => s.slotType == EModuleType.missile).OrderBy(s => s.slotIndex))
-                {
-                    if (filled >= missileCount) break;
-                    slot.moduleSubType = missileType;
-                    slot.moduleLevel = missileLv;
-                    filled++;
-                }
+                int missileCount = (string.IsNullOrEmpty(col[10]) == false && int.TryParse(col[10], out int mc)) ? mc : 1;
+                for (int s = 0; s < missileCount; s++)
+                    missiles.Add(new ModuleInfo { moduleType = EModuleType.missile, moduleSubType = missileType, moduleLevel = missileLv, bodyIndex = 0, slotIndex = s });
             }
 
-            // hanger 장착: hanger_type, hanger_level, hanger_count (count 빈 값 = 1)
             if (string.IsNullOrEmpty(col[11]) == false && System.Enum.TryParse(col[11], out EModuleSubType hangerType) && int.TryParse(col[12], out int hangerLv))
             {
-                int hangerCount = string.IsNullOrEmpty(col[13]) ? 1 : (int.TryParse(col[13], out int hc) ? hc : 1);
-                int filled = 0;
-                foreach (var slot in ship.moduleSlots.Where(s => s.slotType == EModuleType.hanger).OrderBy(s => s.slotIndex))
-                {
-                    if (filled >= hangerCount) break;
-                    slot.moduleSubType = hangerType;
-                    slot.moduleLevel = hangerLv;
-                    filled++;
-                }
+                int hangerCount = (string.IsNullOrEmpty(col[13]) == false && int.TryParse(col[13], out int hc)) ? hc : 1;
+                for (int s = 0; s < hangerCount; s++)
+                    hangers.Add(new ModuleInfo { moduleType = EModuleType.hanger, moduleSubType = hangerType, moduleLevel = hangerLv, bodyIndex = 0, slotIndex = s });
             }
 
             float.TryParse(col[14], out float bodyR);
             float.TryParse(col[15], out float beamR);
             float.TryParse(col[16], out float missileR);
             float.TryParse(col[17], out float hangerR);
-            ship.bodyMultiplier    = bodyR;
-            ship.beamMultiplier    = beamR;
-            ship.missileMultiplier = missileR;
-            ship.hangerMultiplier  = hangerR;
-            enemyMap[key].Add(ship);
+
+            var bodyInfo = new ModuleBodyInfo
+            {
+                moduleType    = EModuleType.body,
+                moduleSubType = bodyType,
+                moduleLevel   = bodyLv,
+                bodyIndex     = 0,
+                beams         = beams,
+                missiles      = missiles,
+                hangers       = hangers
+            };
+            enemyMap[key].Add(new ShipInfo
+            {
+                shipName          = $"EnemyShip_{shipIndex}",
+                positionIndex     = shipIndex,
+                bodyMultiplier    = bodyR,
+                beamMultiplier    = beamR,
+                missileMultiplier = missileR,
+                hangerMultiplier  = hangerR,
+                bodies            = new List<ModuleBodyInfo> { bodyInfo }
+            });
         }
 
         // --- zone CSV 파싱 ---
@@ -351,7 +342,11 @@ public class DataTableZoneEditor : Editor
                 modulePointClearReward    = modulePointReward,
                 fleetPosition             = new Vector3(fpx, fpy, fpz),
                 fleetRotationY            = frotY,
-                enemyShipConfigs          = waveTemplates ?? new List<EnemyShipConfig>(),
+                enemyFleet = new FleetInfo
+                {
+                    fleetName = $"{zoneIndex}-{stage}",
+                    ships     = waveTemplates != null ? waveTemplates : new List<ShipInfo>()
+                },
             };
 
             m_dataTableZone.zoneStageList.Add(zoneStage);
@@ -379,27 +374,17 @@ public class DataTableZoneEditor : Editor
 
         foreach (var zone in m_dataTableZone.zoneStageList)
         {
-            if (zone.enemyShipConfigs == null) continue;
-            foreach (var ship in zone.enemyShipConfigs)
+            if (zone.enemyFleet == null || zone.enemyFleet.ships == null) continue;
+            foreach (var ship in zone.enemyFleet.ships)
             {
                 totalShips++;
-                if (ship.moduleSlots == null || ship.moduleSlots.Count == 0)
-                {
+                if (ship.bodies == null || ship.bodies.Count == 0)
                     invalidShips++;
-                    RefreshShipModuleSlots(ship);
-                }
             }
         }
 
-        if (invalidShips > 0)
-        {
-            EditorUtility.SetDirty(m_dataTableZone);
-            EditorUtility.DisplayDialog("Validation", $"Total: {totalShips} ships\nFixed: {invalidShips} ships with missing slots", "OK");
-        }
-        else
-        {
-            EditorUtility.DisplayDialog("Validation", $"Total: {totalShips} ships\nAll ships are valid!", "OK");
-        }
+        EditorUtility.DisplayDialog("Validation",
+            $"Total: {totalShips} ships\n" + (invalidShips > 0 ? $"Invalid (no bodies): {invalidShips}" : "All ships are valid!"), "OK");
     }
 
     private void DrawZoneList()
@@ -518,7 +503,7 @@ public class DataTableZoneEditor : Editor
 
         // Zone Header
         EditorGUILayout.BeginHorizontal();
-        int shipCount = zoneStage.enemyShipConfigs?.Count ?? 0;
+        int shipCount = (zoneStage.enemyFleet != null && zoneStage.enemyFleet.ships != null) ? zoneStage.enemyFleet.ships.Count : 0;
         zoneFoldouts[stageIntegratedIndex] = EditorGUILayout.Foldout(zoneFoldouts[stageIntegratedIndex],
             $"Zone {stageIntegratedIndex}: {zoneStage.zoneName} (Ships: {shipCount})", true, EditorStyles.foldoutHeader);
 
@@ -572,23 +557,25 @@ public class DataTableZoneEditor : Editor
 
             // 적 함대 구성 함선 템플릿 (전체가 한 함대로 스폰)
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField($"함선 템플릿 ({zoneStage.enemyShipConfigs?.Count ?? 0})", EditorStyles.boldLabel);
+            int fleetShipCount = (zoneStage.enemyFleet != null && zoneStage.enemyFleet.ships != null) ? zoneStage.enemyFleet.ships.Count : 0;
+            EditorGUILayout.LabelField($"함선 템플릿 ({fleetShipCount})", EditorStyles.boldLabel);
             if (GUILayout.Button("+ Add Ship", GUILayout.Width(100)))
             {
-                if (zoneStage.enemyShipConfigs == null)
-                    zoneStage.enemyShipConfigs = new List<EnemyShipConfig>();
-                var ship = new EnemyShipConfig { bodySubType = EModuleSubType.body_t1_m1, bodyLevel = 1 };
-                RefreshShipModuleSlots(ship);
-                zoneStage.enemyShipConfigs.Add(ship);
+                if (zoneStage.enemyFleet == null)
+                    zoneStage.enemyFleet = new FleetInfo { fleetName = zoneStage.zoneName, ships = new List<ShipInfo>() };
+                if (zoneStage.enemyFleet.ships == null)
+                    zoneStage.enemyFleet.ships = new List<ShipInfo>();
+                var body = new ModuleBodyInfo { moduleType = EModuleType.body, moduleSubType = EModuleSubType.body_t1_m1, moduleLevel = 1, bodyIndex = 0, beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangers = new List<ModuleInfo>() };
+                zoneStage.enemyFleet.ships.Add(new ShipInfo { shipName = $"EnemyShip_{fleetShipCount}", positionIndex = fleetShipCount, bodyMultiplier = 1f, beamMultiplier = 1f, missileMultiplier = 1f, hangerMultiplier = 1f, bodies = new List<ModuleBodyInfo> { body } });
                 EditorUtility.SetDirty(m_dataTableZone);
             }
             EditorGUILayout.EndHorizontal();
 
-            if (zoneStage.enemyShipConfigs != null)
+            if (zoneStage.enemyFleet != null && zoneStage.enemyFleet.ships != null)
             {
-                for (int shipIndex = 0; shipIndex < zoneStage.enemyShipConfigs.Count; shipIndex++)
+                for (int shipIndex = 0; shipIndex < zoneStage.enemyFleet.ships.Count; shipIndex++)
                 {
-                    DrawShips(stageIntegratedIndex, shipIndex, zoneStage.enemyShipConfigs[shipIndex]);
+                    DrawShips(stageIntegratedIndex, shipIndex, zoneStage.enemyFleet.ships[shipIndex]);
                 }
             }
 
@@ -598,28 +585,30 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawShips(int stageIndex, int shipIndex, EnemyShipConfig ship)
+    private void DrawShips(int stageIndex, int shipIndex, ShipInfo ship)
     {
         if (!shipFoldouts.ContainsKey(stageIndex))
             shipFoldouts[stageIndex] = new Dictionary<int, bool>();
         if (!shipFoldouts[stageIndex].ContainsKey(shipIndex))
             shipFoldouts[stageIndex][shipIndex] = false;
 
+        ModuleBodyInfo body = (ship.bodies != null && ship.bodies.Count > 0) ? ship.bodies[0] : null;
+
         var originalColor = GUI.backgroundColor;
         GUI.backgroundColor = shipColor;
         EditorGUILayout.BeginVertical("box");
         GUI.backgroundColor = originalColor;
 
-        // Wave Header
         EditorGUILayout.BeginHorizontal();
-        string slotInfo = ship.moduleSlots != null ? $", Slots: {ship.moduleSlots.Count}" : "";
+        EModuleSubType dispSubType = body != null ? body.moduleSubType : EModuleSubType.none;
+        int dispLevel = body != null ? body.moduleLevel : 0;
         shipFoldouts[stageIndex][shipIndex] = EditorGUILayout.Foldout(
             shipFoldouts[stageIndex][shipIndex],
-            $"Ship {shipIndex + 1} [idx:{ship.shipIndex}]: {ship.bodySubType} Lv.{ship.bodyLevel}{slotInfo}", true);
+            $"Ship {shipIndex + 1} [idx:{ship.positionIndex}]: {dispSubType} Lv.{dispLevel}", true);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
-            m_dataTableZone.zoneStageList[stageIndex].enemyShipConfigs.RemoveAt(shipIndex);
+            m_dataTableZone.zoneStageList[stageIndex].enemyFleet.ships.RemoveAt(shipIndex);
             EditorUtility.SetDirty(m_dataTableZone);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
@@ -631,43 +620,26 @@ public class DataTableZoneEditor : Editor
         {
             EditorGUI.indentLevel++;
 
-            int newShipIndex = EditorGUILayout.IntField("Ship Index (진형 슬롯)", ship.shipIndex);
-            if (newShipIndex != ship.shipIndex) { ship.shipIndex = newShipIndex; EditorUtility.SetDirty(m_dataTableZone); }
+            int newPosIndex = EditorGUILayout.IntField("Ship Index (진형 슬롯)", ship.positionIndex);
+            if (newPosIndex != ship.positionIndex) { ship.positionIndex = newPosIndex; EditorUtility.SetDirty(m_dataTableZone); }
 
-            // Body Type + Level
-            EditorGUILayout.LabelField("Body", EditorStyles.boldLabel);
-            int bodyIndex = System.Array.IndexOf(bodySubTypes, ship.bodySubType);
-            if (bodyIndex < 0) bodyIndex = 0;
-            int newBodyIndex = EditorGUILayout.Popup("Body Type", bodyIndex, bodySubTypeNames);
-            if (newBodyIndex != bodyIndex)
+            if (body != null)
             {
-                ship.bodySubType = bodySubTypes[newBodyIndex];
-                EditorUtility.SetDirty(m_dataTableZone);
-            }
+                EditorGUILayout.LabelField("Body", EditorStyles.boldLabel);
+                int bodyTypeIdx = System.Array.IndexOf(bodySubTypes, body.moduleSubType);
+                if (bodyTypeIdx < 0) bodyTypeIdx = 0;
+                int newBodyTypeIdx = EditorGUILayout.Popup("Body Type", bodyTypeIdx, bodySubTypeNames);
+                if (newBodyTypeIdx != bodyTypeIdx) { body.moduleSubType = bodySubTypes[newBodyTypeIdx]; EditorUtility.SetDirty(m_dataTableZone); }
 
-            int newLevel = EditorGUILayout.IntSlider("Body Level", ship.bodyLevel, 1, 10);
-            if (newLevel != ship.bodyLevel)
-            {
-                ship.bodyLevel = newLevel;
-                EditorUtility.SetDirty(m_dataTableZone);
-            }
+                int newLevel = EditorGUILayout.IntSlider("Body Level", body.moduleLevel, 1, 10);
+                if (newLevel != body.moduleLevel) { body.moduleLevel = newLevel; EditorUtility.SetDirty(m_dataTableZone); }
 
-
-            EditorGUILayout.Space(5);
-
-            // Module Slots
-            if (ship.moduleSlots != null && ship.moduleSlots.Count > 0)
-            {
-                DrawModuleSlots(ship);
-            }
-            else
-            {
-                EditorGUILayout.HelpBox("No module slots found. Click 'Refresh Slots' to load from prefab.", MessageType.Warning);
+                EditorGUILayout.Space(5);
+                DrawModuleSlots(body);
             }
 
             EditorGUILayout.Space(5);
 
-            // 스탯 배율 (함선별)
             var origColor = GUI.backgroundColor;
             GUI.backgroundColor = multiplierColor;
             EditorGUILayout.BeginVertical("box");
@@ -685,19 +657,18 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawModuleSlots(EnemyShipConfig ship)
+    private void DrawModuleSlots(ModuleBodyInfo body)
     {
-        // 타입별로 그룹화 — 슬롯이 없어도 항상 표시
-        var beamSlots    = ship.moduleSlots.Where(s => s.slotType == EModuleType.beam).OrderBy(s => s.slotIndex).ToList();
-        var missileSlots = ship.moduleSlots.Where(s => s.slotType == EModuleType.missile).OrderBy(s => s.slotIndex).ToList();
-        var hangerSlots  = ship.moduleSlots.Where(s => s.slotType == EModuleType.hanger).OrderBy(s => s.slotIndex).ToList();
+        if (body.beams    == null) body.beams    = new List<ModuleInfo>();
+        if (body.missiles == null) body.missiles = new List<ModuleInfo>();
+        if (body.hangers  == null) body.hangers  = new List<ModuleInfo>();
 
-        DrawSlotGroup("Beam",    beamSlots,    EModuleType.beam);
-        DrawSlotGroup("Missile", missileSlots, EModuleType.missile);
-        DrawSlotGroup("Hanger",  hangerSlots,  EModuleType.hanger);
+        DrawSlotGroup("Beam",    body.beams,    EModuleType.beam);
+        DrawSlotGroup("Missile", body.missiles, EModuleType.missile);
+        DrawSlotGroup("Hanger",  body.hangers,  EModuleType.hanger);
     }
 
-    private void DrawSlotGroup(string groupName, List<EnemyModuleSlotConfig> slots, EModuleType moduleType)
+    private void DrawSlotGroup(string groupName, List<ModuleInfo> slots, EModuleType moduleType)
     {
         var originalColor = GUI.backgroundColor;
         GUI.backgroundColor = slotColor;
@@ -720,24 +691,14 @@ public class DataTableZoneEditor : Editor
         {
             EditorGUILayout.BeginVertical("box");
 
-            // 첫째 줄: SubType (none=비어있음)
             int currentIndex = System.Array.IndexOf(subTypes, slot.moduleSubType);
             if (currentIndex < 0) currentIndex = 0;
             int newIndex = EditorGUILayout.Popup(currentIndex, subTypeNames);
-            if (newIndex != currentIndex)
-            {
-                slot.moduleSubType = subTypes[newIndex];
-                EditorUtility.SetDirty(m_dataTableZone);
-            }
+            if (newIndex != currentIndex) { slot.moduleSubType = subTypes[newIndex]; EditorUtility.SetDirty(m_dataTableZone); }
 
-            // 둘째 줄: Level — 비어있으면 비활성화
             EditorGUI.BeginDisabledGroup(slot.moduleSubType == EModuleSubType.none);
             int newLevel = EditorGUILayout.IntSlider("Level", slot.moduleLevel, 1, 10);
-            if (newLevel != slot.moduleLevel)
-            {
-                slot.moduleLevel = newLevel;
-                EditorUtility.SetDirty(m_dataTableZone);
-            }
+            if (newLevel != slot.moduleLevel) { slot.moduleLevel = newLevel; EditorUtility.SetDirty(m_dataTableZone); }
             EditorGUI.EndDisabledGroup();
 
             EditorGUILayout.EndVertical();
@@ -755,42 +716,6 @@ public class DataTableZoneEditor : Editor
                 subTypes.Add(subType);
         }
         return subTypes.ToArray();
-    }
-
-    // Body 프리팹에서 슬롯 정보 추출
-    private void RefreshShipModuleSlots(EnemyShipConfig ship)
-    {
-        ship.moduleSlots = new List<EnemyModuleSlotConfig>();
-
-        string prefabPath = ObjectManager.GetShipModulePrefabPath(EModuleType.body.ToString(), ship.bodySubType.ToString());
-        GameObject prefab = Resources.Load<GameObject>(prefabPath);
-        if (prefab == null)
-        {
-            Debug.LogWarning($"Prefab not found: {prefabPath}");
-            return;
-        }
-
-        ModuleSlot[] slots = prefab.GetComponentsInChildren<ModuleSlot>(true);
-        if (slots == null || slots.Length == 0)
-        {
-            Debug.LogWarning($"No ModuleSlot found in: {prefabPath}");
-            return;
-        }
-
-        foreach (var slot in slots)
-        {
-            // 유효한 슬롯 타입만 (none/max 제외)
-            EModuleType t = slot.m_moduleSlotInfo.moduleType;
-            if (t == EModuleType.none || t == EModuleType.max || t == EModuleType.body) continue;
-
-            ship.moduleSlots.Add(new EnemyModuleSlotConfig
-            {
-                slotType      = t,
-                slotIndex     = slot.m_moduleSlotInfo.slotIndex,
-                moduleSubType = EModuleSubType.none,  // 비어있음 — 에디터에서 직접 지정
-                moduleLevel   = 1,
-            });
-        }
     }
 }
 #endif

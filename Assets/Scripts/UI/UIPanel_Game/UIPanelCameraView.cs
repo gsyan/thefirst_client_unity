@@ -172,15 +172,15 @@ public class UIPanelCameraView : UIPanelBase
 
     public override void OnShowUIPanel()
     {
-        // 패널이 뜰 때 현재 viewport 비율로 즉시 위치 동기화 (비활성 중 놓친 이벤트 보정)
+        // 패널이 뜰 때 현재 viewport 비율로 즉시 위치 동기화 (비활성 중 놓친 이벤트 보정) - 없어도 작동 하나 혹시 나중을 위해 남겨둠
         //OnViewportChanged(m_lastViewportRatio);
 
         // 이벤트를 놓쳤을 수 있으므로 현재 전술 옵션 상태로 즉시 동기화
         SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
-        //if (fleet != null)
-            //OnTacticOptionsChanged(fleet.m_fleetInfo.tacticOptions);
+        if (fleet != null)
+            OnTacticOptionsChanged(fleet.m_fleetInfo.tacticOptions);
 
-        //RefreshFormationButton();
+        RefreshFormationButton();
     }
 
     private void OnZoneEntered(string zoneName, bool isFirstClear)

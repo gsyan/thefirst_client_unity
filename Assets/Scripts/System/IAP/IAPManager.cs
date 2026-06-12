@@ -109,17 +109,6 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
         });
     }
 
-    public void TryClaimDailyReward(Action<DailyClaimResponse> onResult)
-    {
-        NetworkManager.Instance.ClaimVipDailyReward(response =>
-        {
-            if (response != null && response.errorCode == (int)ServerErrorCode.SUCCESS)
-                onResult?.Invoke(response.data);
-            else
-                onResult?.Invoke(null);
-        });
-    }
-
     public void PurchaseVip(Action<bool, string> onComplete)
     {
         if (m_storeController == null)

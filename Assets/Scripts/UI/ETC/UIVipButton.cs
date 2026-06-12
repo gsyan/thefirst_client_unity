@@ -104,7 +104,7 @@ public class UIVipButton : MonoBehaviour
 
     private void InitBenefitTexts()
     {
-        if (m_benefits == null || m_benefits.Length < 3) return;
+        if (m_benefits == null || m_benefits.Length < 4) return;
         if (IAPManager.Instance == null) return;
 
         var loc = LocalizationManager.Instance;
@@ -113,10 +113,11 @@ public class UIVipButton : MonoBehaviour
         string[] texts =
         {
             loc.Get("UIVipStatus_Benefit_NoAds"),
-            loc.Get("UIVipStatus_Benefit_Mineral", multiplier),
             loc.Get("UIVipStatus_Benefit_Daily"),
+            loc.Get("UIVipStatus_Benefit_Mineral", multiplier),
+            loc.Get("UIVipStatus_Benefit_InstantFleetRestore"),
         };
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             if (m_benefits[i] == null) continue;
             m_benefits[i].text = texts[i];

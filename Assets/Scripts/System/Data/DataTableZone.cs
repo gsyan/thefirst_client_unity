@@ -63,41 +63,6 @@ public class ZoneConfig
     [Header("천체 배치 (ZonePreviewComponent로 시각 편집)")]
     public List<CelestialBodyConfig> celestialBodies = new List<CelestialBodyConfig>();
 }
-// 각 슬롯에 장착할 모듈 설정
-[System.Serializable]
-public class EnemyModuleSlotConfig
-{
-    public EModuleType slotType;      // 슬롯 타입 (Beam, Missile, Hanger)
-    public int slotIndex;              // 슬롯 인덱스
-    public EModuleSubType moduleSubType; // 장착할 모듈의 SubType
-    public int moduleLevel = 1;        // 장착할 모듈의 레벨
-
-    public EnemyModuleSlotConfig() { }
-    public EnemyModuleSlotConfig(EModuleType slotType, int slotIndex)
-    {
-        this.slotType = slotType;
-        this.slotIndex = slotIndex;
-        this.moduleSubType = CommonUtility.GetDefaultSubType(slotType);
-        this.moduleLevel = 1;
-    }
-}
-
-// 웨이브 1개의 적 함선 템플릿 — 함선별 모듈·스탯 배율 설정
-[System.Serializable]
-public class EnemyShipConfig
-{
-    public int shipIndex;
-    public EModuleSubType bodySubType;
-    public int bodyLevel;
-    public List<EnemyModuleSlotConfig> moduleSlots = new List<EnemyModuleSlotConfig>();
-
-    [Header("스탯 배율 (1.0 = 플레이어 동일)")]
-    [Range(0.1f, 3.0f)] public float bodyMultiplier    = 1.0f;
-    [Range(0.1f, 3.0f)] public float beamMultiplier    = 1.0f;
-    [Range(0.1f, 3.0f)] public float missileMultiplier = 1.0f;
-    [Range(0.1f, 3.0f)] public float hangerMultiplier  = 1.0f;
-}
-
 // Zone 설정
 [System.Serializable]
 public class ZoneStageConfig
@@ -108,8 +73,7 @@ public class ZoneStageConfig
 
     public float delayBeforeSpawn = 3f;
     public float shipSpawnInterval = 1.5f;   // 함선 간 스폰 딜레이
-    // 적 함선 템플릿 큐 — 순서대로 1척씩 스폰, 개수 제한 없음
-    public List<EnemyShipConfig> enemyShipConfigs;
+    public FleetInfo enemyFleet; // [server]
 
     [Header("클리어 보상")]
     public int mineralClearReward = 0;     // [server] 매 클리어마다
@@ -215,7 +179,7 @@ public class DataTableZone : ScriptableObject
         return GetZoneCenter(stage.zoneIndex) + stage.fleetPosition;
     }
 
-    // 서버용 export (필요한 필드만)
+    // 서버용 export — enemyFleet은 FleetInfo 그대로 직렬화
     public string ExportToJson()
     {
         var serverData = new List<object>();
@@ -223,10 +187,11 @@ public class DataTableZone : ScriptableObject
         {
             serverData.Add(new
             {
-                zoneName = zoneStage.zoneName,
-                mineralClearReward = zoneStage.mineralClearReward,
-                techPointClearReward = zoneStage.techPointClearReward,
-                modulePointClearReward = zoneStage.modulePointClearReward
+                zoneName               = zoneStage.zoneName,
+                mineralClearReward     = zoneStage.mineralClearReward,
+                techPointClearReward   = zoneStage.techPointClearReward,
+                modulePointClearReward = zoneStage.modulePointClearReward,
+                enemyFleet             = zoneStage.enemyFleet
             });
         }
         return JsonConvert.SerializeObject(new { zoneStages = serverData }, Formatting.Indented);

@@ -61,7 +61,7 @@ public static class DataTableZoneCSVUtility
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }
 
-    // enemyShipConfigs → datatable_zone_enemy.csv
+    // enemyFleet.ships → datatable_zone_enemy.csv
     public static void ExportEnemy(DataTableZone table)
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
@@ -69,26 +69,30 @@ public static class DataTableZoneCSVUtility
         sb.AppendLine("zone_stage,stage,ship_index,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio");
         foreach (ZoneStageConfig s in table.zoneStageList)
         {
-            if (s.enemyShipConfigs == null) continue;
+            if (s.enemyFleet == null || s.enemyFleet.ships == null) continue;
             int stage = ParseStage(s.zoneName);
-            foreach (EnemyShipConfig ship in s.enemyShipConfigs)
+            foreach (ShipInfo ship in s.enemyFleet.ships)
             {
-                var beamSlots    = ship.moduleSlots.Where(sl => sl.slotType == EModuleType.beam    && sl.moduleSubType != EModuleSubType.none).OrderBy(sl => sl.slotIndex).ToList();
-                var missileSlots = ship.moduleSlots.Where(sl => sl.slotType == EModuleType.missile  && sl.moduleSubType != EModuleSubType.none).OrderBy(sl => sl.slotIndex).ToList();
-                var hangerSlots  = ship.moduleSlots.Where(sl => sl.slotType == EModuleType.hanger   && sl.moduleSubType != EModuleSubType.none).OrderBy(sl => sl.slotIndex).ToList();
+                ModuleBodyInfo body = (ship.bodies != null && ship.bodies.Count > 0) ? ship.bodies[0] : null;
+                EModuleSubType bodySubType = body != null ? body.moduleSubType : EModuleSubType.none;
+                int bodyLevel = body != null ? body.moduleLevel : 1;
 
-                string beamType    = beamSlots.Count > 0    ? beamSlots[0].moduleSubType.ToString()    : "";
-                string beamLv      = beamSlots.Count > 0    ? beamSlots[0].moduleLevel.ToString()      : "";
-                string beamCnt     = beamSlots.Count > 0    ? beamSlots.Count.ToString()               : "";
-                string missileType = missileSlots.Count > 0 ? missileSlots[0].moduleSubType.ToString() : "";
-                string missileLv   = missileSlots.Count > 0 ? missileSlots[0].moduleLevel.ToString()   : "";
-                string missileCnt  = missileSlots.Count > 0 ? missileSlots.Count.ToString()            : "";
-                string hangerType  = hangerSlots.Count > 0  ? hangerSlots[0].moduleSubType.ToString()  : "";
-                string hangerLv    = hangerSlots.Count > 0  ? hangerSlots[0].moduleLevel.ToString()    : "";
-                string hangerCnt   = hangerSlots.Count > 0  ? hangerSlots.Count.ToString()             : "";
+                var beams    = body != null && body.beams    != null ? body.beams.Where(m    => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
+                var missiles = body != null && body.missiles != null ? body.missiles.Where(m => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
+                var hangers  = body != null && body.hangers  != null ? body.hangers.Where(m  => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
+
+                string beamType    = beams.Count > 0    ? beams[0].moduleSubType.ToString()    : "";
+                string beamLv      = beams.Count > 0    ? beams[0].moduleLevel.ToString()      : "";
+                string beamCnt     = beams.Count > 0    ? beams.Count.ToString()               : "";
+                string missileType = missiles.Count > 0 ? missiles[0].moduleSubType.ToString() : "";
+                string missileLv   = missiles.Count > 0 ? missiles[0].moduleLevel.ToString()   : "";
+                string missileCnt  = missiles.Count > 0 ? missiles.Count.ToString()            : "";
+                string hangerType  = hangers.Count > 0  ? hangers[0].moduleSubType.ToString()  : "";
+                string hangerLv    = hangers.Count > 0  ? hangers[0].moduleLevel.ToString()    : "";
+                string hangerCnt   = hangers.Count > 0  ? hangers.Count.ToString()             : "";
 
                 sb.AppendLine(
-                    $"{s.zoneIndex},{stage},{ship.shipIndex},{ship.bodySubType},{ship.bodyLevel}," +
+                    $"{s.zoneIndex},{stage},{ship.positionIndex},{bodySubType},{bodyLevel}," +
                     $"{beamType},{beamLv},{beamCnt}," +
                     $"{missileType},{missileLv},{missileCnt}," +
                     $"{hangerType},{hangerLv},{hangerCnt}," +

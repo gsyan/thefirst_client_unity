@@ -261,7 +261,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // ZoneConfig 기반 적 함선 순차 스폰 — 슬롯 단위 관리, 큐 소진 + 전멸 시 클리어
     public void StartSpawnEnemies(ZoneStageConfig zoneStageConfig)
     {
-        if (zoneStageConfig == null || zoneStageConfig.enemyShipConfigs == null || zoneStageConfig.enemyShipConfigs.Count == 0)
+        if (zoneStageConfig == null || zoneStageConfig.enemyFleet == null || zoneStageConfig.enemyFleet.ships == null || zoneStageConfig.enemyFleet.ships.Count == 0)
         {
             EventManager.TriggerZoneStageBattleEnd(true);
             return;
@@ -279,6 +279,43 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         GameSpeedController.RestoreSpeed();
         if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.BattleExploration);
         newZoneFleet.StartSpawning(zoneStageConfig);
+    }
+
+    // Zone 적 함대 — 서버 FleetInfo로 초기화 (PvP와 동일 구조, IsZoneEnemy 보장)
+    public void StartSpawnEnemiesFromFleetInfo(FleetInfo fleetInfo)
+    {
+        if (fleetInfo == null || fleetInfo.ships == null || fleetInfo.ships.Count == 0)
+        {
+            EventManager.TriggerZoneStageBattleEnd(true);
+            return;
+        }
+
+        for (int i = 0; i < m_enemyFleets.Count; i++)
+        {
+            if (m_enemyFleets[i] != null && m_enemyFleets[i].IsZoneEnemy == true)
+                m_enemyFleets[i].StopSpawning();
+        }
+
+        Vector3 spawnPosition = GetEnemySpawnPosition();
+        GameObject fleetObj = new GameObject("EnemyFleet");
+        fleetObj.transform.position = spawnPosition;
+        if (m_myFleet != null)
+        {
+            Vector3 dir = m_myFleet.transform.position - spawnPosition;
+            dir.y = 0;
+            if (dir != Vector3.zero)
+                fleetObj.transform.rotation = Quaternion.LookRotation(dir);
+        }
+
+        SpaceFleet newZoneFleet = fleetObj.AddComponent<SpaceFleet>();
+        m_enemyFleets.Add(newZoneFleet);
+
+        GameSpeedController.RestoreSpeed();
+        if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.BattleExploration);
+
+        // fleet_source_zone_data → IsZoneEnemy == true → 전멸 시 OnZoneEnemyFleetDefeated 호출
+        newZoneFleet.InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EUnitState.Move);
+        newZoneFleet.StartFleetWarpIn(() => newZoneFleet.SetFleetState(EUnitState.BattleExploration));
     }
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성

@@ -887,6 +887,22 @@ MonoBehaviour:
     m_Key: DailyBonus_Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 45034403373383680
+    m_Key: DailyBonus_MonthLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45034403495018496
+    m_Key: DailyBonus_DailyLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45034403495018497
+    m_Key: DailyBonus_DaysTime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45034403495018498
+    m_Key: DailyBonus_Available
+    m_Metadata:
+      m_Items: []
   - m_Id: 39970930322964482
     m_Key: UIVipStatus_Frontier
     m_Metadata:
@@ -911,12 +927,16 @@ MonoBehaviour:
     m_Key: UIVipStatus_Benefit_NoAds
     m_Metadata:
       m_Items: []
+  - m_Id: 40210342097059842
+    m_Key: UIVipStatus_Benefit_Daily
+    m_Metadata:
+      m_Items: []
   - m_Id: 40210342097059841
     m_Key: UIVipStatus_Benefit_Mineral
     m_Metadata:
       m_Items: []
-  - m_Id: 40210342097059842
-    m_Key: UIVipStatus_Benefit_Daily
+  - m_Id: 45040859153825792
+    m_Key: UIVipStatus_Benefit_InstantFleetRestore
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964487

@@ -109,10 +109,32 @@ public class UITabSettings : UITabBase
 
     private void OnTestMineralButtonClicked()
     {
-        string mineral       = (m_toggleMineral       != null && m_toggleMineral.isOn       == true) ? "100" : "0";
-        string techPoint     = (m_toggleTechPoint     != null && m_toggleTechPoint.isOn     == true) ? "100" : "0";
-        string modulePoint   = (m_toggleModulePoint   != null && m_toggleModulePoint.isOn   == true) ? "100" : "0";
-        string pvpPoint      = (m_togglePvpPoint      != null && m_togglePvpPoint.isOn      == true) ? "100" : "0";
+        DataTableZone table = DataManager.Instance.m_dataTableZone;
+        if (table == null) return;
+
+        int clickCount    = PlayerPrefs.GetInt("DevMineralClickCount", 0);
+        int zoneListCount = table.zoneList.Count;
+        int targetZoneIndex = (zoneListCount > 0) ? table.zoneList[clickCount % zoneListCount].zoneIndex : 1;
+
+        int totalMineral = 0, totalTechPoint = 0, totalModulePoint = 0;
+        for (int i = 0; i < table.zoneStageList.Count; i++)
+        {
+            if (table.zoneStageList[i].zoneIndex == targetZoneIndex)
+            {
+                totalMineral     += table.zoneStageList[i].mineralClearReward;
+                totalTechPoint   += table.zoneStageList[i].techPointClearReward;
+                totalModulePoint += table.zoneStageList[i].modulePointClearReward;
+            }
+        }
+
+        PlayerPrefs.SetInt("DevMineralClickCount", clickCount + 1);
+        PlayerPrefs.Save();
+
+        string mineral     = (m_toggleMineral     != null && m_toggleMineral.isOn     == true) ? totalMineral.ToString()     : "0";
+        string techPoint   = (m_toggleTechPoint   != null && m_toggleTechPoint.isOn   == true) ? totalTechPoint.ToString()   : "0";
+        string modulePoint = (m_toggleModulePoint != null && m_toggleModulePoint.isOn == true) ? totalModulePoint.ToString() : "0";
+        string pvpPoint    = (m_togglePvpPoint    != null && m_togglePvpPoint.isOn    == true) ? "100" : "0";
+
         DeveloperConsole.ExecuteCommandStatic($"addminerals {mineral} {techPoint} {modulePoint} {pvpPoint}");
     }
 

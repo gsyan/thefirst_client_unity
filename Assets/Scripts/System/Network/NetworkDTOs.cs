@@ -43,6 +43,11 @@ public class ShipInfo
     public int positionIndex;
     public string description;
     public List<ModuleBodyInfo> bodies;
+    // Zone 적 전용 배율 — PvP는 기본값(1.0) 유지, 서버 저장 불필요
+    public float bodyMultiplier    = 1.0f;
+    public float beamMultiplier    = 1.0f;
+    public float missileMultiplier = 1.0f;
+    public float hangerMultiplier  = 1.0f;
 }
 
 [System.Serializable]
@@ -444,6 +449,20 @@ public class ClaimZoneRewardResponse
     public int techPointRemain;
     public int modulePointRemain;
     public int modulePointMaxGot;
+}
+
+
+[System.Serializable]
+public class GetStageEnemiesRequest
+{
+    public string zoneName;
+}
+
+[System.Serializable]
+public class GetStageEnemiesResponse
+{
+    public string zoneName;
+    public FleetInfo enemyFleet;
 }
 
 #endregion

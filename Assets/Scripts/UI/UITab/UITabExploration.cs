@@ -31,6 +31,7 @@ public class UITabExploration : UITabBase
 
     private Vector3 m_pendingFleetPos;
     private float m_pendingFleetRotY;
+    private FleetInfo m_pendingEnemyFleetInfo;
 
     private bool m_isFleetWiped;
     private bool m_isBattleEnded;
@@ -430,7 +431,7 @@ public class UITabExploration : UITabBase
                 isFirstClear ? zoneStage.modulePointClearReward  : 0,
                 0
             },
-            onConfirm = () => EnterZoneStage(zoneStage),
+            onConfirm = () => EnterZoneStageWithServerData(zoneStage),
             onCancel  = () => { }
         });
     }
@@ -545,10 +546,36 @@ public class UITabExploration : UITabBase
             ExecuteRetreat(retreatPosition, retreatRotationY);
     }
 
+    private void EnterZoneStageWithServerData(ZoneStageConfig zoneStage)
+    {
+        var request = new GetStageEnemiesRequest { zoneName = zoneStage.zoneName };
+        NetworkManager.Instance.GetStageEnemies(request, (response) => OnGetStageEnemiesResponse(zoneStage, response));
+    }
+
+    private void OnGetStageEnemiesResponse(ZoneStageConfig zoneStage, ApiResponse<GetStageEnemiesResponse> response)
+    {
+        if (response == null || response.errorCode != 0)
+        {
+            int code = -1;
+            if (response != null) code = response.errorCode;
+            Debug.LogWarning($"[Zone] GetStageEnemies 실패: errorCode={code}");
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                title     = zoneStage.zoneName,
+                message   = LocalizationManager.Instance.Get("exploration_zone_enter_failed"),
+                onConfirm = () => { },
+            });
+            return;
+        }
+        m_pendingEnemyFleetInfo = response.data.enemyFleet;
+        EnterZoneStage(zoneStage);
+    }
+
     private void StartBattleInZone(ZoneStageConfig zoneStage)
     {
         m_isBattleEnded = false;
-        ObjectManager.Instance.StartSpawnEnemies(zoneStage);
+        ObjectManager.Instance.StartSpawnEnemiesFromFleetInfo(m_pendingEnemyFleetInfo);
+        m_pendingEnemyFleetInfo = null;
     }
 
     private bool IsAlreadyCleared(ZoneStageConfig zoneStage)

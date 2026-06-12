@@ -725,6 +725,23 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<ClaimZoneRewardResponse>>(webRequest.downloadHandler.text);
     }
 
+
+    public async Task<ApiResponse<GetStageEnemiesResponse>> GetStageEnemiesAsync(GetStageEnemiesRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<GetStageEnemiesResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/get-stage-enemies", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<GetStageEnemiesResponse>>(webRequest.downloadHandler.text);
+    }
+
     #endregion
 
     #region Heartbeat API Methods ---------------------------------------------------------------------------------

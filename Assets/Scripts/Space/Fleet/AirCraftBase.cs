@@ -136,6 +136,8 @@ public abstract class AircraftBase : MonoBehaviour
         m_currentDirection = transform.forward.normalized;
         while (currentIndex < waypoints.Count)
         {
+            if (waypoints[currentIndex] == null) { ReturnToPool(); yield break; }
+
             Vector3 toWp = (waypoints[currentIndex].position - transform.position).normalized;
             if (Vector3.Dot(transform.forward, toWp) < 0f)
             {
@@ -403,9 +405,11 @@ public abstract class AircraftBase : MonoBehaviour
         {
             yield return null;
 
-            if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null)
+            if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null || waypoints[currentIndex] == null)
             {
                 if (TryFindNewHangerAndFirePoint() == false) { ReturnToPool(); yield break; }
+                m_state = EAircraftState.ReturnToApproach;
+                yield break;
             }
 
             Vector3 toWp = (waypoints[currentIndex].position - transform.position).normalized;

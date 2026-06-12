@@ -32,7 +32,7 @@ public class SpaceFleet : MonoBehaviour
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
 
     // Zone 스폰 상태 (IsZoneEnemy 전용)
-    public Queue<EnemyShipConfig> m_shipSpawnQueue;
+    public Queue<ShipInfo> m_shipSpawnQueue;
     private Coroutine m_spawnCoroutine;
     private Coroutine m_warpInCoroutine;
     
@@ -124,9 +124,10 @@ public class SpaceFleet : MonoBehaviour
 
     public void InitializeZoneSpawn(ZoneStageConfig config)
     {
-        m_shipSpawnQueue = new Queue<EnemyShipConfig>();
-        foreach (var cfg in config.enemyShipConfigs)
-            m_shipSpawnQueue.Enqueue(cfg);
+        m_shipSpawnQueue = new Queue<ShipInfo>();
+        if (config.enemyFleet == null || config.enemyFleet.ships == null) return;
+        foreach (var shipInfo in config.enemyFleet.ships)
+            m_shipSpawnQueue.Enqueue(shipInfo);
     }
 
     public void StartSpawning(ZoneStageConfig config)
@@ -153,7 +154,7 @@ public class SpaceFleet : MonoBehaviour
 
         while (m_shipSpawnQueue.Count > 0)
         {
-            EnemyShipConfig next = m_shipSpawnQueue.Dequeue();
+            ShipInfo next = m_shipSpawnQueue.Dequeue();
             SpawnSingleShip(next);
 
             if (m_shipSpawnQueue.Count > 0)
@@ -165,67 +166,16 @@ public class SpaceFleet : MonoBehaviour
             ObjectManager.Instance.OnZoneEnemyFleetDefeated(this);
     }
 
-    private void SpawnSingleShip(EnemyShipConfig config)
+    private void SpawnSingleShip(ShipInfo shipInfo)
     {
-        ShipInfo shipInfo = CreateShipInfoFromConfig(config, config.shipIndex);
         GameObject shipGo = new GameObject(shipInfo.shipName);
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
-        spaceShip.m_bodyMultiplier    = config.bodyMultiplier;
-        spaceShip.m_beamMultiplier    = config.beamMultiplier;
-        spaceShip.m_missileMultiplier = config.missileMultiplier;
-        spaceShip.m_hangerMultiplier  = config.hangerMultiplier;
+        spaceShip.m_bodyMultiplier    = shipInfo.bodyMultiplier;
+        spaceShip.m_beamMultiplier    = shipInfo.beamMultiplier;
+        spaceShip.m_missileMultiplier = shipInfo.missileMultiplier;
+        spaceShip.m_hangerMultiplier  = shipInfo.hangerMultiplier;
         spaceShip.InitializeSpaceShip(this, shipInfo);
         AddShip(spaceShip, bWarp: true);
-    }
-
-    private ShipInfo CreateShipInfoFromConfig(EnemyShipConfig config, int positionIndex)
-    {
-        ModuleData bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(config.bodySubType, config.bodyLevel);
-        var bodyInfo = new ModuleBodyInfo
-        {
-            moduleType = EModuleType.body,
-            moduleSubType = config.bodySubType,
-            moduleLevel = config.bodyLevel,
-            bodyIndex = 0,
-            currentHealth = bodyModuleData != null ? bodyModuleData.health : 0f,
-            beams = new List<ModuleInfo>(),
-            missiles = new List<ModuleInfo>(),
-            hangers = new List<ModuleInfo>()
-        };
-
-        foreach (var slot in config.moduleSlots)
-        {
-            if (slot.moduleSubType == EModuleSubType.none) continue;
-
-            var moduleInfo = new ModuleInfo
-            {
-                moduleType = slot.slotType,
-                moduleSubType = slot.moduleSubType,
-                moduleLevel = slot.moduleLevel,
-                bodyIndex = 0,
-                slotIndex = slot.slotIndex
-            };
-
-            switch (slot.slotType)
-            {
-                case EModuleType.beam:
-                    bodyInfo.beams.Add(moduleInfo);
-                    break;
-                case EModuleType.missile:
-                    bodyInfo.missiles.Add(moduleInfo);
-                    break;
-                case EModuleType.hanger:
-                    bodyInfo.hangers.Add(moduleInfo);
-                    break;
-            }
-        }
-
-        return new ShipInfo
-        {
-            shipName = $"EnemyShip_{positionIndex}",
-            positionIndex = positionIndex,
-            bodies = new List<ModuleBodyInfo> { bodyInfo }
-        };
     }
 
     // Zone 적 함선을 순차적으로 받아들이기 위한 빈 함대 초기화
@@ -279,6 +229,10 @@ public class SpaceFleet : MonoBehaviour
     {
         GameObject shipGo = new GameObject($"{shipInfo.shipName}");
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
+        spaceShip.m_bodyMultiplier    = shipInfo.bodyMultiplier;
+        spaceShip.m_beamMultiplier    = shipInfo.beamMultiplier;
+        spaceShip.m_missileMultiplier = shipInfo.missileMultiplier;
+        spaceShip.m_hangerMultiplier  = shipInfo.hangerMultiplier;
         spaceShip.InitializeSpaceShip(this, shipInfo);
         AddShip(spaceShip, bWarp: bWarp, bFillNullSlot: bFillNullSlot);
     }

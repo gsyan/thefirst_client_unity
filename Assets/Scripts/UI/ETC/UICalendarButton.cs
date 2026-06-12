@@ -17,9 +17,6 @@ public class UICalendarButton : MonoBehaviour
     
     private void OnCalendarButtonClicked()
     {
-        var character = DataManager.Instance.m_currentCharacter;
-        int mask    = (character != null) ? character.GetClaimedDaysMask()    : 0;
-        int vipMask = (character != null) ? character.GetVipClaimedDaysMask() : 0;
-        UIManager.Instance.ShowDailyBonusCalendar(mask, vipMask);
+        UIManager.Instance.ShowDailyBonusCalendar();
     }
 }

@@ -661,6 +661,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
         // 게스트 ID 삭제 - 재로그인 시 새 계정으로 시작되도록
         PlayerPrefs.DeleteKey("GuestId");
+        PlayerPrefs.DeleteKey("DevMineralClickCount");
         PlayerPrefs.Save();
     }
 
@@ -680,6 +681,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.ClaimZoneRewardAsync(request), onComplete));
+    }
+
+    public void GetStageEnemies(GetStageEnemiesRequest request, System.Action<ApiResponse<GetStageEnemiesResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.GetStageEnemiesAsync(request), onComplete));
     }
 
     public void PurchaseVip(VipPurchaseRequest request, System.Action<ApiResponse<VipStatusResponse>> onComplete)

@@ -1066,16 +1066,19 @@ public class SpaceShip : MonoBehaviour
     {
         ModuleBody oldBody = FindModuleBodyByIndex(bodyIndex);
         if (oldBody == null) return;
-        
+
+        // 새 body 슬롯 목록 기준으로 필터링 — 다운그레이드 시 사라지는 슬롯 데이터가 m_shipInfo에 남아
+        // CreateMissingModules로 재생성되는 버그 방지 (level 1 데이터로 지원 슬롯 확인)
+        ModuleData newBodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleSubTypeNew, 1);
         ModuleBodyInfo newBodyInfo = new ModuleBodyInfo
         {
-            moduleType = moduleTypeNew,
+            moduleType    = moduleTypeNew,
             moduleSubType = moduleSubTypeNew,
-            moduleLevel = moduleLevel,
-            bodyIndex = bodyIndex,
-            beams = oldBody.m_moduleBodyInfo.beams,
-            missiles = oldBody.m_moduleBodyInfo.missiles,
-            hangers = oldBody.m_moduleBodyInfo.hangers
+            moduleLevel   = moduleLevel,
+            bodyIndex     = bodyIndex,
+            beams    = FilterModulesByNewBodySlots(oldBody.m_moduleBodyInfo.beams,    EModuleType.beam,    newBodyData),
+            missiles = FilterModulesByNewBodySlots(oldBody.m_moduleBodyInfo.missiles, EModuleType.missile, newBodyData),
+            hangers  = FilterModulesByNewBodySlots(oldBody.m_moduleBodyInfo.hangers,  EModuleType.hanger,  newBodyData)
         };
 
         ReplaceBodyWhilePreservingModules(oldBody, newBodyInfo);
@@ -1093,6 +1096,30 @@ public class SpaceShip : MonoBehaviour
             }
         }
     }
+    // 새 body가 지원하는 슬롯만 남기고 나머지는 제거
+    private List<ModuleInfo> FilterModulesByNewBodySlots(List<ModuleInfo> modules, EModuleType moduleType, ModuleData newBodyData)
+    {
+        if (modules == null) return null;
+        if (newBodyData == null || newBodyData.moduleSlots == null) return new List<ModuleInfo>();
+
+        List<ModuleInfo> result = new List<ModuleInfo>();
+        foreach (ModuleInfo module in modules)
+        {
+            bool supported = false;
+            foreach (ModuleSlotInfo slot in newBodyData.moduleSlots)
+            {
+                if (slot.moduleType == moduleType && slot.slotIndex == module.slotIndex)
+                {
+                    supported = true;
+                    break;
+                }
+            }
+            if (supported == true)
+                result.Add(module);
+        }
+        return result;
+    }
+
     // Body 교체 시 기존 모듈을 보존하는 메서드
     private void ReplaceBodyWhilePreservingModules(ModuleBody oldBody, ModuleBodyInfo newBodyInfo)
     {

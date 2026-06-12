@@ -382,7 +382,7 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 일일 출석 보너스 달력 팝업 (수령 직후 호출)
-    public void ShowDailyBonusPopup(int claimedDaysMask, int vipClaimedDaysMask, int todayDay, int grantedMineral, System.Action onConfirm = null)
+    public void ShowDailyBonusPopup(int grantedMineral, System.Action onConfirm = null)
     {
         UIPopupDailyBonus popup = GetOrCreatePopup<UIPopupDailyBonus>("UIPopupDailyBonus", EPopupLayer.Overlay);
         if (popup == null) return;
@@ -390,7 +390,7 @@ public class UIManager : MonoSingleton<UIManager>
         PushPopup(popup, EPopupLayer.Overlay);
 
         System.Action userConfirm = onConfirm;
-        popup.ShowPopupDailyBonus(claimedDaysMask, vipClaimedDaysMask, todayDay, grantedMineral, () =>
+        popup.ShowPopupDailyBonus(grantedMineral, () =>
         {
             userConfirm?.Invoke();
             CloseTopPopup(EPopupLayer.Overlay);
@@ -398,7 +398,7 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 일일 출석 보너스 달력 팝업 (수령 없이 열람용)
-    public void ShowDailyBonusCalendar(int claimedDaysMask, int vipClaimedDaysMask, System.Action onConfirm = null)
+    public void ShowDailyBonusCalendar(System.Action onConfirm = null)
     {
         UIPopupDailyBonus popup = GetOrCreatePopup<UIPopupDailyBonus>("UIPopupDailyBonus", EPopupLayer.Overlay);
         if (popup == null) return;
@@ -406,7 +406,7 @@ public class UIManager : MonoSingleton<UIManager>
         PushPopup(popup, EPopupLayer.Overlay);
 
         System.Action userConfirm = onConfirm;
-        popup.ShowCalendarOnly(claimedDaysMask, vipClaimedDaysMask, () =>
+        popup.ShowCalendarOnly(() =>
         {
             userConfirm?.Invoke();
             CloseTopPopup(EPopupLayer.Overlay);

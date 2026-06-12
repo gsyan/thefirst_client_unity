@@ -69,13 +69,16 @@ public class UIPopupDailyBonusDayCell : MonoBehaviour
             bool isVipTier = rewards[i].tier == EDailyBonusTier.VIP;
             bool rowClaimed = isVipTier ? vipClaimed : isClaimed;
 
-            if (isVipTier == true && vipClaimed == true)
+            if (isVipTier == true)
                 m_rows[i].SetRow(spriteName, text, "rank-3");
             else
                 m_rows[i].SetRow(spriteName, text);
 
+            Color claimedColor = CommonUtility.PaletteColor(rowClaimed ? "GeneralBright1" : "GeneralDark2");
             m_rows[i].SetImageColor(CommonUtility.PaletteColor("Mineral"));
-            m_rows[i].SetTextColor(CommonUtility.PaletteColor(rowClaimed ? "GeneralBright1" : "GeneralDark2"));
+            m_rows[i].SetTextColor(claimedColor);
+            if (isVipTier == true)
+                m_rows[i].SetImage2Color(claimedColor);
         }
 
         // 남는 row는 숨김
