@@ -72,7 +72,7 @@ public static class FormationPresetDB
     private static void Load()
     {
         s_map = new Dictionary<EFormationType, FormationPreset>();
-        var presets = UnityEngine.Resources.LoadAll<FormationPreset>("Formation");
+        var presets = ResourceManager.Instance.LoadAll<FormationPreset>("Formation");
         foreach (var p in presets)
         {
             if (p != null)

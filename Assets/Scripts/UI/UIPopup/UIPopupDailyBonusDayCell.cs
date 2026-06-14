@@ -20,7 +20,7 @@ public class UIPopupDailyBonusDayCell : MonoBehaviour
     private static RowImageText GetRowPrefab()
     {
         if (s_rowPrefab == null)
-            s_rowPrefab = Resources.Load<RowImageText>("Prefabs/UI/ETC/RowImageText");
+            s_rowPrefab = ResourceManager.Instance.Load<RowImageText>("Prefabs/UI/ETC/RowImageText");
         return s_rowPrefab;
     }
 

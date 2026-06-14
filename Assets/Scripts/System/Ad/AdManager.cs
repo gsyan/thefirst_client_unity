@@ -41,7 +41,7 @@ public class AdManager : MonoSingleton<AdManager>
     {
         if (m_adConfig == null)
         {
-            m_adConfig = Resources.Load<AdConfig>("DataTable/AdConfig");
+            m_adConfig = ResourceManager.Instance.Load<AdConfig>("DataTable/AdConfig");
             if (m_adConfig == null)
             {
                 Debug.LogError("[AdManager] AdConfig를 찾을 수 없습니다.");

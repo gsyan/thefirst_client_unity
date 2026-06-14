@@ -35,7 +35,7 @@ public class UIPopupRenameCharacter : UIPopupBase
     protected override void Awake()
     {
         base.Awake();
-        m_forbiddenWords = Resources.Load<DataTableForbiddenWords>("DataTable/DataTableForbiddenWords");
+        m_forbiddenWords = ResourceManager.Instance.Load<DataTableForbiddenWords>("DataTable/DataTableForbiddenWords");
         if (m_confirmButton != null) m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
         if (m_cancelButton != null)  m_cancelButton.onClick.AddListener(OnCancelClicked);
         if (m_nameInput != null)

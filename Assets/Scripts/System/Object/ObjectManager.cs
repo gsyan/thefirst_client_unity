@@ -28,75 +28,75 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         m_poolManager.InitializePoolManager(this);
 
-        ProjectileBeam projectileBeamPrefab = Resources.Load<ProjectileBeam>("Prefabs/Projectile/ProjectileBeam");
+        ProjectileBeam projectileBeamPrefab = ResourceManager.Instance.Load<ProjectileBeam>("Prefabs/Projectile/ProjectileBeam");
         if (projectileBeamPrefab != null)
             m_poolManager.CreatePool(EPoolName.PROJECTILE_BEAM, projectileBeamPrefab, 1, 50);
         else
             Debug.LogError("ProjectileBeamPrefab not found at Resources/Prefabs/Projectile/ProjectileBeam");
 
-        ProjectileBeamInstant projectileBeamInstantPrefab = Resources.Load<ProjectileBeamInstant>("Prefabs/Projectile/ProjectileBeamInstant");
+        ProjectileBeamInstant projectileBeamInstantPrefab = ResourceManager.Instance.Load<ProjectileBeamInstant>("Prefabs/Projectile/ProjectileBeamInstant");
         if (projectileBeamInstantPrefab != null)
             m_poolManager.CreatePool(EPoolName.PROJECTILE_BEAM_INSTANT, projectileBeamInstantPrefab, 1, 20);
         else
             Debug.LogWarning("ProjectileBeamInstant not found at Resources/Prefabs/Projectile/ProjectileBeamInstant");
 
-        ProjectileMissile projectileMissileSmallPrefab = Resources.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileSmall");
+        ProjectileMissile projectileMissileSmallPrefab = ResourceManager.Instance.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileSmall");
         if (projectileMissileSmallPrefab != null)
             m_poolManager.CreatePool(EPoolName.PROJECTILE_MISSILE_SMALL, projectileMissileSmallPrefab, 1, 50);
         else
             Debug.LogError("ProjectileMissileSmall not found at Resources/Prefabs/Projectile/ProjectileMissileSmall");
 
-        ProjectileMissile projectileMissileMediumPrefab = Resources.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileMedium");
+        ProjectileMissile projectileMissileMediumPrefab = ResourceManager.Instance.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileMedium");
         if (projectileMissileMediumPrefab != null)
             m_poolManager.CreatePool(EPoolName.PROJECTILE_MISSILE_MEDIUM, projectileMissileMediumPrefab, 1, 50);
         else
             Debug.LogError("ProjectileMissileMedium not found at Resources/Prefabs/Projectile/ProjectileMissileMedium");
 
-        ProjectileMissile projectileMissileLargePrefab = Resources.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileLarge");
+        ProjectileMissile projectileMissileLargePrefab = ResourceManager.Instance.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileLarge");
         if (projectileMissileLargePrefab != null)
             m_poolManager.CreatePool(EPoolName.PROJECTILE_MISSILE_LARGE, projectileMissileLargePrefab, 1, 50);
         else
             Debug.LogError("ProjectileMissileLarge not found at Resources/Prefabs/Projectile/ProjectileMissileLarge");
 
 
-        EffectBase effectPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectBeamHead");
+        EffectBase effectPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectBeamHead");
         if (effectPrefab == null) Debug.LogError("Not found at Resources/Prefabs/Effect/EffectBeamHead");
         m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_HEAD, effectPrefab, 5, 20);
 
-        effectPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectBeamHit");
+        effectPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectBeamHit");
         if (effectPrefab == null) Debug.LogError("Not found at Resources/Prefabs/Effect/EffectBeamHit");
         m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_HIT, effectPrefab, 5, 20);
 
-        effectPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectBeamMuzzle");
+        effectPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectBeamMuzzle");
         if (effectPrefab == null) Debug.LogError("Not found at Resources/Prefabs/Effect/EffectBeamMuzzle");
         m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_MUZZLE, effectPrefab, 5, 20);
         
-        EffectBase effectExplosionShipPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectExplosionShip");
+        EffectBase effectExplosionShipPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectExplosionShip");
         if (effectExplosionShipPrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_EXPLOSION_SHIP, effectExplosionShipPrefab, 3, 10);
         else
             Debug.LogError("EffectExplosionShip not found at Resources/Prefabs/Effect/EffectExplosionShip");
 
-        EffectBase effectExplosionMissileSmallPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectExplosionMissileSmall");
+        EffectBase effectExplosionMissileSmallPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectExplosionMissileSmall");
         if (effectExplosionMissileSmallPrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_EXPLOSION_MISSILE_SMALL, effectExplosionMissileSmallPrefab, 3, 10);
         else
             Debug.LogError("EffectExplosionShip not found at Resources/Prefabs/Effect/EffectExplosionShip");
 
 
-        EffectBase effectWarpSpeedLinesPrefab = Resources.Load<EffectBase>("Prefabs/Effect/WarpSpeedLines");
+        EffectBase effectWarpSpeedLinesPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/WarpSpeedLines");
         if (effectWarpSpeedLinesPrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_WARP_SPEEDLINES, effectWarpSpeedLinesPrefab, 5, 20);
         else
             Debug.LogError("WarpSpeedLines not found at Resources/Prefabs/Effect/WarpSpeedLines");
 
-        EffectBase effectFireOnShipPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectFireOnShip");
+        EffectBase effectFireOnShipPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectFireOnShip");
         if (effectFireOnShipPrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_FIRE_ON_SHIP, effectFireOnShipPrefab, 5, 15);
         else
             Debug.LogError("EffectFireOnShip not found at Resources/Prefabs/Effect/EffectFireOnShip");
 
-        EffectBase effectScorchMarkPrefab = Resources.Load<EffectBase>("Prefabs/Effect/EffectScorchMark");
+        EffectBase effectScorchMarkPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectScorchMark");
         if (effectScorchMarkPrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_SCORCH_MARK, effectScorchMarkPrefab, 10, 30);
         else
@@ -106,7 +106,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
 
 
-        AircraftStandard aircraftStandardPrefab = Resources.Load<AircraftStandard>("Prefabs/Aircraft/AircraftStandard");
+        AircraftStandard aircraftStandardPrefab = ResourceManager.Instance.Load<AircraftStandard>("Prefabs/Aircraft/AircraftStandard");
         if (aircraftStandardPrefab != null)
             m_poolManager.CreatePool(EPoolName.AIRCRAFT_STANDARD, aircraftStandardPrefab, 1, 30);
         else
@@ -481,35 +481,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
 
     private PrefabPaths prefabPaths = new PrefabPaths();
-    private Dictionary<string, GameObject> cachedPrefabs = new Dictionary<string, GameObject>();
 
     public GameObject LoadPrefab(string prefabSort, string typeName, string prefabName, int level = 0, string variant = "")
     {
-        string cacheKey = CreateCacheKey(prefabSort, typeName, prefabName, level, variant);
-
-        // Return immediately if in cache
-        if (cachedPrefabs.ContainsKey(cacheKey))
-            return cachedPrefabs[cacheKey];
-
-        string resourcePath = GetPrefabPath(prefabSort, typeName, prefabName, level, variant);        
-        GameObject prefab = Resources.Load<GameObject>(resourcePath);
-        if (prefab == null)
-            return null;
-
-        // Save to cache
-        if (prefab != null)
-            cachedPrefabs[cacheKey] = prefab;
-
-        return prefab;
-    }
-    
-    private string CreateCacheKey(string prefabSort, string typeName, string prefabName, int level, string variant)
-    {
-        string key = $"{prefabSort}_{prefabName}";
-        if (string.IsNullOrEmpty(typeName) == false) key += $"_{typeName}";
-        if (level > 0) key += $"_{level}";
-        if (string.IsNullOrEmpty(variant) == false) key += $"_{variant}";
-        return key;
+        string resourcePath = GetPrefabPath(prefabSort, typeName, prefabName, level, variant);
+        return ResourceManager.Instance.Load<GameObject>(resourcePath);
     }
     
     private string GetPrefabPath(string prefabSort, string typeName, string prefabName, int level, string variant)
@@ -579,7 +555,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public GameObject LoadShipModulePrefab(string moduleTypeName, string modulePrefabName)
     {
         string path = GetShipModulePrefabPath(moduleTypeName, modulePrefabName);
-        return Resources.Load<GameObject>(path);
+        return ResourceManager.Instance.Load<GameObject>(path);
     }
 
     public GameObject LoadModulePlaceholderPrefab()

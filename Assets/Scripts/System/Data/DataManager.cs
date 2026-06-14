@@ -119,7 +119,7 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadDataTableConfig()
     {
-        m_dataTableConfig = Resources.Load<DataTableConfig>("DataTable/DataTableConfig");
+        m_dataTableConfig = ResourceManager.Instance.Load<DataTableConfig>("DataTable/DataTableConfig");
         if (m_dataTableConfig == null)
         {
             Debug.LogError("DataTableConfig is not exist");
@@ -148,7 +148,7 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadDataTableModule()
     {
-        m_dataTableModule = Resources.Load<DataTableModule>("DataTable/DataTableModule");
+        m_dataTableModule = ResourceManager.Instance.Load<DataTableModule>("DataTable/DataTableModule");
         if (m_dataTableModule == null)
             Debug.LogError("DataTableModule is not exist");
     }
@@ -178,7 +178,7 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadDataTableModuleResearch()
     {
-        m_dataTableResearch = Resources.Load<DataTableResearch>("DataTable/DataTableResearch");
+        m_dataTableResearch = ResourceManager.Instance.Load<DataTableResearch>("DataTable/DataTableResearch");
         if (m_dataTableResearch == null)
         {
             Debug.LogError("DataTableResearch is not exist");
@@ -201,7 +201,7 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadDataTableZone()
     {
-        m_dataTableZone = Resources.Load<DataTableZone>("DataTable/DataTableZone");
+        m_dataTableZone = ResourceManager.Instance.Load<DataTableZone>("DataTable/DataTableZone");
         if (m_dataTableZone == null)
             Debug.LogError("DataTableZone is not exist");
     }
@@ -212,7 +212,7 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadDataTablePvpSeason()
     {
-        m_dataTablePvpSeason = Resources.Load<DataTablePvpSeason>("DataTable/DataTablePvpSeason");
+        m_dataTablePvpSeason = ResourceManager.Instance.Load<DataTablePvpSeason>("DataTable/DataTablePvpSeason");
         if (m_dataTablePvpSeason == null)
             Debug.LogError("DataTablePvpSeason is not exist");
     }
@@ -223,7 +223,7 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadDataTableDailyBonus()
     {
-        m_dataTableDailyBonus = Resources.Load<DataTableDailyBonus>("DataTable/DataTableDailyBonus");
+        m_dataTableDailyBonus = ResourceManager.Instance.Load<DataTableDailyBonus>("DataTable/DataTableDailyBonus");
         if (m_dataTableDailyBonus == null)
             Debug.LogError("DataTableDailyBonus is not exist");
     }
@@ -234,7 +234,7 @@ public class DataManager : Singleton<DataManager>
 
     private void LoadColorPalette()
     {
-        m_colorPalette = Resources.Load<ColorPalette>("DataTable/ColorPalette");
+        m_colorPalette = ResourceManager.Instance.Load<ColorPalette>("DataTable/ColorPalette");
         if (m_colorPalette == null)
             Debug.LogError("ColorPalette is not exist");
     }

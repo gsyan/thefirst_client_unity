@@ -10,7 +10,7 @@ public class UISpace : UIManager
         const string PANEL_GAME_PREFAB_PATH = "Prefabs/UI/Panel_Game";
 
         // Load all prefabs from the Panel folder
-        GameObject[] panelPrefabs = Resources.LoadAll<GameObject>(PANEL_GAME_PREFAB_PATH);
+        GameObject[] panelPrefabs = ResourceManager.Instance.LoadAll<GameObject>(PANEL_GAME_PREFAB_PATH);
 
         if (panelPrefabs == null || panelPrefabs.Length == 0)
         {

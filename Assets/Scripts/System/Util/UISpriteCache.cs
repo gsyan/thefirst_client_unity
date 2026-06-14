@@ -10,7 +10,7 @@ public static class UISpriteCache
     {
         if (s_cache != null) return;
         s_cache = new Dictionary<string, Sprite>();
-        SpriteAtlas atlas = Resources.Load<SpriteAtlas>("UIAtlas/UIAtlas");
+        SpriteAtlas atlas = ResourceManager.Instance.Load<SpriteAtlas>("UIAtlas/UIAtlas");
         if (atlas == null) return;
         Sprite[] sprites = new Sprite[atlas.spriteCount];
         atlas.GetSprites(sprites);

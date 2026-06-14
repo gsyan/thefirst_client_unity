@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+﻿//------------------------------------------------------------------------------
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,21 +19,30 @@ public class CustomException : Exception
     }
 }
 
+public static class ApiServerUrl
+{
+    public const string Dev     = "http://localhost:8080/api";
+    public const string Test    = "https://dev.fidforge.com/api";
+    public const string Release = "https://www.fidforge.com/api";
+}
+
 public class ApiClient
 {
-#if UNITY_EDITOR
-    // 유니티 에디터에서 실행될 때 사용할 URL (로컬 개발 서버)
-    private readonly string baseUrl = "http://localhost:8080/api";
-    //private readonly string baseUrl = "http://192.168.0.51:8080/api";
-#elif DEVELOPMENT_BUILD
-    // 개발 빌드(Development Build)에서 사용할 URL (개발 테스트 서버)
-    //private readonly string baseUrl = "http://192.168.0.61:8080/api";
-    private readonly string baseUrl = "https://www.fidforge.com/api";
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    private string m_baseUrl = ApiServerUrl.Dev;
 #else
-    // 출시 빌드(Release Build)에서 사용할 URL (실제 서비스 서버)
-    private readonly string baseUrl = "https://www.fidforge.com/api";
-    //private readonly string baseUrl = "http://192.168.0.51:8080/api";
+    private string m_baseUrl = ApiServerUrl.Release;
 #endif
+
+    public void SetBaseUrl(string url)
+    {
+        m_baseUrl = url;
+    }
+
+    public string GetBaseUrl()
+    {
+        return m_baseUrl;
+    }
 
     private string accessToken;
     private string refreshToken;
@@ -75,7 +84,7 @@ public class ApiClient
     {
         try
         {
-            using var request = UnityWebRequest.Get(baseUrl);
+            using var request = UnityWebRequest.Get(m_baseUrl);
             request.timeout = 3;
             var operation = request.SendWebRequest();
             while (!operation.isDone)
@@ -85,7 +94,7 @@ public class ApiClient
             // 4xx, 5xx 응답은 서버가 살아있다는 의미
             bool isServerAlive = request.result != UnityWebRequest.Result.ConnectionError;
             // request.result 403은 서버가 "너 인증 없어" 라고 거절한 것이므로 서버가 정상 동작 중
-            //Debug.Log($"[ServerCheck] URL: {baseUrl}, Result: {request.result}, Code: {request.responseCode}, Alive: {isServerAlive}");
+            //Debug.Log($"[ServerCheck] URL: {m_baseUrl}, Result: {request.result}, Code: {request.responseCode}, Alive: {isServerAlive}");
             return isServerAlive;
         }
         catch (Exception e)
@@ -132,7 +141,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(requestDto);
         Debug.Log($"SignUp JSON: {json}");
 
-        using var request = new UnityWebRequest($"{baseUrl}/account/signup", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/account/signup", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -147,7 +156,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(requestDto);
         Debug.Log($"Login JSON: {json}");
 
-        using var request = new UnityWebRequest($"{baseUrl}/account/login", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/account/login", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -168,7 +177,7 @@ public class ApiClient
         var requestDto = new RefreshTokenRequest { refreshToken = refreshToken };
         string json = JsonConvert.SerializeObject(requestDto);
 
-        using var request = new UnityWebRequest($"{baseUrl}/account/refresh", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/account/refresh", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -191,7 +200,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(requestDto);
         Debug.Log($"GoogleLogin JSON: {json}");
 
-        using var request = new UnityWebRequest($"{baseUrl}/account/google-login", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/account/google-login", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -211,7 +220,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(requestDto);
         CommonUtility.DebugLog($"[GuestLogin] {json}");
 
-        using var request = new UnityWebRequest($"{baseUrl}/account/guest-login", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/account/guest-login", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -229,7 +238,7 @@ public class ApiClient
     {
         if (string.IsNullOrEmpty(refreshToken) == true) return ApiResponse<string>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var request = new UnityWebRequest($"{baseUrl}/account/delete", "DELETE");
+        using var request = new UnityWebRequest($"{m_baseUrl}/account/delete", "DELETE");
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
@@ -251,7 +260,7 @@ public class ApiClient
         var requestDto = new LinkGoogleRequest { idToken = idToken };
         string json = JsonConvert.SerializeObject(requestDto);
 
-        using var request = new UnityWebRequest($"{baseUrl}/account/link-google", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/account/link-google", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -266,7 +275,7 @@ public class ApiClient
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<UnlinkGoogleResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var request = new UnityWebRequest($"{baseUrl}/account/unlink-google", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/account/unlink-google", "POST");
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
@@ -283,7 +292,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(requestDto);
         Debug.Log($"CreateCharacter JSON: {json}");
 
-        using var request = new UnityWebRequest($"{baseUrl}/character/create", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/character/create", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -299,7 +308,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(new CharacterValidateNameRequest { name = name });
 
-        using var request = new UnityWebRequest($"{baseUrl}/character/validate-name", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/character/validate-name", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -316,7 +325,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(renameRequest);
         Debug.Log($"RenameCharacter JSON: {json}");
 
-        using var request = new UnityWebRequest($"{baseUrl}/character/rename", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/character/rename", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -332,7 +341,7 @@ public class ApiClient
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<List<CharacterResponse>>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var request = new UnityWebRequest($"{baseUrl}/character/characters", "GET");
+        using var request = new UnityWebRequest($"{m_baseUrl}/character/characters", "GET");
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
@@ -345,7 +354,7 @@ public class ApiClient
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var request = new UnityWebRequest($"{baseUrl}/character/select-character/{characterId}", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/character/select-character/{characterId}", "POST");
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
@@ -368,7 +377,7 @@ public class ApiClient
         var requestDto = new DevCommandRequest { command = command, @params = parameters };
         string json = JsonConvert.SerializeObject(requestDto);
 
-        using var request = new UnityWebRequest($"{baseUrl}/dev/command", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/dev/command", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -387,7 +396,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Add Ship Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/add-ship", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/add-ship", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -404,7 +413,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Change Formation Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/change-formation", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/change-formation", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -420,7 +429,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/change-tactic-options", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/change-tactic-options", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -437,7 +446,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module LevelUp Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/levelup-module", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/levelup-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -457,7 +466,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module LevelDown Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/leveldown-module", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/leveldown-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -477,7 +486,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module GradeUp Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/gradeup-module", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/gradeup-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -497,7 +506,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module GradeDown Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/gradedown-module", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/gradedown-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -517,7 +526,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module Unlock Request: {json}");
         
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/unlock-module", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/unlock-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -537,7 +546,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"TechLevel Research Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/research-tech-level", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/research-tech-level", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -557,7 +566,7 @@ public class ApiClient
     //     string json = JsonConvert.SerializeObject(request);
     //     Debug.Log($"Add ModuleBody Request: {json}");
 
-    //     using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/add-modulebody", "POST");
+    //     using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/add-modulebody", "POST");
     //     webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
     //     webRequest.downloadHandler = new DownloadHandlerBuffer();
     //     webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -576,7 +585,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Module Reset Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/reset-module", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/reset-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -596,7 +605,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"Ship ResetRemove Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/reset-ship", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/reset-ship", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -615,7 +624,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/remove-modulebody", "DELETE");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/remove-modulebody", "DELETE");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -633,7 +642,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/install-module", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/install-module", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -651,7 +660,7 @@ public class ApiClient
 
     //     string queryParam = $"?fleetId={request.fleetId}";
 
-    //     using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/stats{queryParam}", "GET");
+    //     using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/stats{queryParam}", "GET");
     //     webRequest.downloadHandler = new DownloadHandlerBuffer();
     //     webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
@@ -666,7 +675,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/save-health", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/save-health", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -680,7 +689,7 @@ public class ApiClient
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<FleetInstantRepairResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/fleet/instant-repair", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/instant-repair", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(new byte[0]);
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -698,7 +707,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/clear-stage", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/zone/clear-stage", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -715,7 +724,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/claim-reward", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/zone/claim-reward", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -732,7 +741,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(new PendingStageRewardRequest());
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/claim-pending-rewards", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/zone/claim-pending-rewards", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -749,7 +758,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/get-stage-enemies", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/zone/get-stage-enemies", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -768,7 +777,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(new HeartbeatRequest());
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/zone/heartbeat", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/zone/heartbeat", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -787,7 +796,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"PvP List Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/list", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/pvp/list", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -807,7 +816,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"PvP Refresh Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/refresh", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/pvp/refresh", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -827,7 +836,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"PvP Battle Start Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/battle/start", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/pvp/battle/start", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -847,7 +856,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"PvP Battle Result Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/pvp/battle/result", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/pvp/battle/result", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -867,7 +876,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"PvP Ranking Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/ranking/pvp", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/ranking/pvp", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -885,7 +894,7 @@ public class ApiClient
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ZoneRankingResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(request);
-        using var webRequest = new UnityWebRequest($"{baseUrl}/ranking/zone", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/ranking/zone", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -905,7 +914,7 @@ public class ApiClient
         string json = JsonConvert.SerializeObject(request);
         Debug.Log($"PvP My Rank Request: {json}");
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/ranking/pvp/my-rank", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/ranking/pvp/my-rank", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -926,7 +935,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/iap/vip/purchase", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/iap/vip/purchase", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -941,7 +950,7 @@ public class ApiClient
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<VipStatusResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/iap/vip/status", "GET");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/iap/vip/status", "GET");
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
         webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
@@ -954,7 +963,7 @@ public class ApiClient
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<DailyClaimResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/iap/vip/daily-reward", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/iap/vip/daily-reward", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(new byte[0]);
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -972,7 +981,7 @@ public class ApiClient
 
         string json = JsonConvert.SerializeObject(request);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/progress/save", "POST");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/progress/save", "POST");
         webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -986,7 +995,7 @@ public class ApiClient
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ProgressListResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var webRequest = new UnityWebRequest($"{baseUrl}/progress/{category}", "GET");
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/progress/{category}", "GET");
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
         webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");

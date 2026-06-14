@@ -49,9 +49,9 @@ public class CelestialBodySpawner : MonoBehaviour
     private void LoadSharedMaterials()
     {
         if (m_matSurface != null) return;
-        m_matSurface    = Resources.Load<Material>(MAT_SURFACE_PATH);
-        m_matCloud      = Resources.Load<Material>(MAT_CLOUD_PATH);
-        m_matAtmosphere = Resources.Load<Material>(MAT_ATMOSPHERE_PATH);
+        m_matSurface    = ResourceManager.Instance.Load<Material>(MAT_SURFACE_PATH);
+        m_matCloud      = ResourceManager.Instance.Load<Material>(MAT_CLOUD_PATH);
+        m_matAtmosphere = ResourceManager.Instance.Load<Material>(MAT_ATMOSPHERE_PATH);
 
         if (m_matSurface == null)
             Debug.LogError($"[CelestialBodySpawner] 메터리얼 없음: {MAT_SURFACE_PATH}");

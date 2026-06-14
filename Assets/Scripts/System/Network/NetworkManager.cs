@@ -39,6 +39,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     private float m_lastResumeHeartbeatTime = -999f;
     private const float ResumeHeartbeatCool = 5f;
 
+    // 인터넷 체크 코루틴 중복 실행 방지 (10초 타이머와의 충돌)
+    private bool m_checkingInternetAccess = false;
+    // Dev 빌드 서버 선택 팝업: 한 번만 표시
+    private bool m_serverSelectShown = false;
+
     public void OnChangeScene()
     {
         if (SceneManager.GetActiveScene().name == "MainScene")
@@ -46,6 +51,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
             m_bConnected = false;
             m_heartbeatStarted = false;
+            m_bNetworkPopupShown = false;
+            m_checkingInternetAccess = false;
+            m_serverSelectShown = false;
             InvokeRepeating(nameof(CheckConnection), 0f, 10f);
         }
         else if (SceneManager.GetActiveScene().name == "SpaceScene")
@@ -106,6 +114,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     // Check if internet is actually working
     IEnumerator CheckInternetAccess()
     {
+        if (m_checkingInternetAccess == true) yield break;
+        m_checkingInternetAccess = true;
+
         using (UnityEngine.Networking.UnityWebRequest request =
             UnityEngine.Networking.UnityWebRequest.Get("https://www.google.com"))
         {
@@ -114,10 +125,39 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
             if (request.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
             {
+                m_checkingInternetAccess = false;
                 ShowFatalErrorPopup("Internet Error", "Please check your internet connection.\nThe app will close.");
                 yield break;
             }
         }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (m_serverSelectShown == false)
+        {
+            m_serverSelectShown = true;
+            bool serverChosen = false;
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                title        = "서버 선택",
+                message      = "접속할 서버를 선택하세요.",
+                cancelText1  = "DEV",
+                cancelText2  = "localhost:8080",
+                confirmText1 = "TEST",
+                confirmText2 = "dev.fidforge.com",
+                onCancel = () =>
+                {
+                    m_apiClient.SetBaseUrl(ApiServerUrl.Dev);
+                    serverChosen = true;
+                },
+                onConfirm = () =>
+                {
+                    m_apiClient.SetBaseUrl(ApiServerUrl.Test);
+                    serverChosen = true;
+                },
+            });
+            yield return new WaitUntil(() => serverChosen == true);
+        }
+#endif
 
         // 서버 체크
         var serverCheckTask = m_apiClient.CheckServerAliveAsync();
@@ -126,6 +166,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
         if (serverCheckTask.Result == false)
         {
+            m_checkingInternetAccess = false;
             ShowFatalErrorPopup("Server Not Found", "The server is currently unavailable.\nPlease try again later.");
             yield break;
         }

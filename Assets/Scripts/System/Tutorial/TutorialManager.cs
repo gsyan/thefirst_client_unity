@@ -213,7 +213,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     {
         if (m_tutorialUI != null) return;
 
-        GameObject prefab = Resources.Load<GameObject>(TUTORIAL_UI_PATH);
+        GameObject prefab = ResourceManager.Instance.Load<GameObject>(TUTORIAL_UI_PATH);
         if (prefab == null)
         {
             Debug.LogError($"[Tutorial] UI 프리팹을 찾을 수 없음: {TUTORIAL_UI_PATH}");
@@ -236,7 +236,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private TutorialData LoadTutorialData(string tutorialId)
     {
         string path = $"DataTable/Tutorial/{tutorialId}";
-        return Resources.Load<TutorialData>(path);
+        return ResourceManager.Instance.Load<TutorialData>(path);
     }
 
     // 디버그: 튜토리얼 초기화 (메모리만)

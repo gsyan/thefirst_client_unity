@@ -301,7 +301,7 @@ public class UIManager : MonoSingleton<UIManager>
             return cached as T;
         }
 
-        GameObject prefab = Resources.Load<GameObject>($"{POPUP_PREFAB_PATH}/{prefabName}");
+        GameObject prefab = ResourceManager.Instance.Load<GameObject>($"{POPUP_PREFAB_PATH}/{prefabName}");
         if (prefab == null)
         {
             Debug.LogError($"Failed to load popup prefab: {POPUP_PREFAB_PATH}/{prefabName}");

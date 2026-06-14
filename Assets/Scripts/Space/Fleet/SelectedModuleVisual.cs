@@ -29,7 +29,7 @@ public class SelectedModuleVisual : MonoBehaviour
     private bool TryCreateOverlayMaterial()
     {
         // Resources 폴더 경유로 로드해야 Android 빌드 스트리핑 방지
-        Shader shader = Resources.Load<Shader>("Shaders/GridOverlay");
+        Shader shader = ResourceManager.Instance.Load<Shader>("Shaders/GridOverlay");
         if (shader == null)
         {
             Debug.LogError("[SelectedModuleVisual] Resources/Shaders/GridOverlay 쉐이더를 찾을 수 없습니다.");

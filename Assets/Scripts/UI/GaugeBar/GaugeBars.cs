@@ -119,7 +119,7 @@ public class GaugeBars : MonoBehaviour
         if (m_moduleGaugeBars.ContainsKey(module) == true) return;
         if (m_gaugeBarContainer == null) return;
 
-        GameObject gaugeBarPrefab = Resources.Load<GameObject>("Prefabs/UI/GaugeBar");
+        GameObject gaugeBarPrefab = ResourceManager.Instance.Load<GameObject>("Prefabs/UI/GaugeBar");
         if (gaugeBarPrefab == null) return;
 
         GameObject gaugeBarObj = Instantiate(gaugeBarPrefab, m_gaugeBarContainer);

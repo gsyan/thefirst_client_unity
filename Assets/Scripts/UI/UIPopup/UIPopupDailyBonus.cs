@@ -37,7 +37,7 @@ public class UIPopupDailyBonus : UIPopupBase
     {
         if (m_gridLayoutGroup == null) return;
 
-        var cellPrefab = Resources.Load<UIPopupDailyBonusDayCell>(CELL_PREFAB_PATH);
+        var cellPrefab = ResourceManager.Instance.Load<UIPopupDailyBonusDayCell>(CELL_PREFAB_PATH);
         if (cellPrefab == null)
         {
             Debug.LogError("[UIPopupDailyBonus] 셀 프리팹 로드 실패: " + CELL_PREFAB_PATH);

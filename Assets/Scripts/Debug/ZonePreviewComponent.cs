@@ -61,9 +61,9 @@ public class ZonePreviewComponent : MonoBehaviour
             return;
         }
 
-        Material matSurface    = Resources.Load<Material>(MAT_SURFACE_PATH);
-        Material matCloud      = Resources.Load<Material>(MAT_CLOUD_PATH);
-        Material matAtmosphere = Resources.Load<Material>(MAT_ATMOSPHERE_PATH);
+        Material matSurface    = ResourceManager.Instance.Load<Material>(MAT_SURFACE_PATH);
+        Material matCloud      = ResourceManager.Instance.Load<Material>(MAT_CLOUD_PATH);
+        Material matAtmosphere = ResourceManager.Instance.Load<Material>(MAT_ATMOSPHERE_PATH);
 
         GameObject root = new(PREVIEW_ROOT_NAME);
         root.transform.SetParent(transform);
