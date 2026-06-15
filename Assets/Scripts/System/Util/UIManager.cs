@@ -404,12 +404,22 @@ public class UIManager : MonoSingleton<UIManager>
     // 기술 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출)
     public void ShowTechLevelupNotify(int newLevel)
     {
+        int shipCount = DataManager.Instance.m_dataTableTechLevel.GetShipCount(newLevel);
+        var loc = LocalizationManager.Instance;
+        string shipLabel  = loc.Get("UITabTech_ShipCountMaxTitle");
+        string gradeLabel = loc.Get("UITabTech_ModuleGradeTitle");
+        var rows = new List<(string icon, string value)>
+        {
+            ("icon_ship",   $"{shipLabel}  {shipCount}"),
+            ("cargo-crane", $"{gradeLabel}  T.{newLevel}"),
+        };
         ShowConfirmPopup(new ConfirmPopupConfig
         {
-            title        = LocalizationManager.Instance.Get("UIPopupMessage_TechLevelupTitle"),
-            message      = LocalizationManager.Instance.Get("UIPopupMessage_TechLevelupMessage", newLevel),
-            onConfirm    = () => { },
-            autoCloseSec = 5f,
+            title              = LocalizationManager.Instance.Get("UIPopupMessage_TechLevelupTitle"),
+            resultRows         = rows,
+            resultRowsVertical = true,
+            onConfirm          = () => { },
+            autoCloseSec       = 5f,
         });
     }
 

@@ -15,389 +15,333 @@ MonoBehaviour:
   researchDataList:
   - researchId: body_t1_m1
     prerequisiteIds: []
-    uiPosition: {x: 80, y: -40}
     moduleType: 1
     moduleSubType: 10101
     pointCost: 0
   - researchId: body_t2_m1
     prerequisiteIds:
     - body_t1_m1
-    uiPosition: {x: 280, y: -40}
     moduleType: 1
     moduleSubType: 10201
     pointCost: 2
   - researchId: body_t3_m1
     prerequisiteIds:
     - body_t2_m1
-    uiPosition: {x: 480, y: -40}
     moduleType: 1
     moduleSubType: 10301
     pointCost: 3
   - researchId: body_t4_m1
     prerequisiteIds:
     - body_t3_m1
-    uiPosition: {x: 680, y: -40}
     moduleType: 1
     moduleSubType: 10401
     pointCost: 4
   - researchId: body_t5_m1
     prerequisiteIds:
     - body_t4_m1
-    uiPosition: {x: 880, y: -40}
     moduleType: 1
     moduleSubType: 10501
     pointCost: 5
   - researchId: body_t6_m1
     prerequisiteIds:
     - body_t5_m1
-    uiPosition: {x: 1080, y: -40}
     moduleType: 1
     moduleSubType: 10601
     pointCost: 6
   - researchId: body_t7_m1
     prerequisiteIds:
     - body_t6_m1
-    uiPosition: {x: 1280, y: -40}
     moduleType: 1
     moduleSubType: 10701
     pointCost: 7
   - researchId: body_t8_m1
     prerequisiteIds:
     - body_t7_m1
-    uiPosition: {x: 1480, y: -40}
     moduleType: 1
     moduleSubType: 10801
     pointCost: 8
   - researchId: body_t9_m1
     prerequisiteIds:
     - body_t8_m1
-    uiPosition: {x: 1680, y: -40}
     moduleType: 1
     moduleSubType: 10901
     pointCost: 9
   - researchId: body_t10_m1
     prerequisiteIds:
     - body_t9_m1
-    uiPosition: {x: 1880, y: -40}
     moduleType: 1
     moduleSubType: 11001
     pointCost: 10
   - researchId: body_t11_m1
     prerequisiteIds:
     - body_t10_m1
-    uiPosition: {x: 2080, y: -40}
     moduleType: 1
     moduleSubType: 11101
     pointCost: 11
   - researchId: body_t12_m1
     prerequisiteIds:
     - body_t11_m1
-    uiPosition: {x: 2280, y: -40}
     moduleType: 1
     moduleSubType: 11201
     pointCost: 12
   - researchId: body_t13_m1
     prerequisiteIds:
     - body_t12_m1
-    uiPosition: {x: 2480, y: -40}
     moduleType: 1
     moduleSubType: 11301
     pointCost: 13
   - researchId: body_t14_m1
     prerequisiteIds:
     - body_t13_m1
-    uiPosition: {x: 2680, y: -40}
     moduleType: 1
     moduleSubType: 11401
     pointCost: 14
   - researchId: beam_t1_m1
     prerequisiteIds: []
-    uiPosition: {x: 80, y: -40}
     moduleType: 2
     moduleSubType: 20101
     pointCost: 0
   - researchId: beam_t2_m1
     prerequisiteIds:
     - beam_t1_m1
-    uiPosition: {x: 280, y: -40}
     moduleType: 2
     moduleSubType: 20201
     pointCost: 2
   - researchId: beam_t3_m1
     prerequisiteIds:
     - beam_t2_m1
-    uiPosition: {x: 480, y: -40}
     moduleType: 2
     moduleSubType: 20301
     pointCost: 3
   - researchId: beam_t4_m1
     prerequisiteIds:
     - beam_t3_m1
-    uiPosition: {x: 680, y: -40}
     moduleType: 2
     moduleSubType: 20401
     pointCost: 4
   - researchId: beam_t5_m1
     prerequisiteIds:
     - beam_t4_m1
-    uiPosition: {x: 880, y: -40}
     moduleType: 2
     moduleSubType: 20501
     pointCost: 5
   - researchId: beam_t6_m1
     prerequisiteIds:
     - beam_t5_m1
-    uiPosition: {x: 1080, y: -40}
     moduleType: 2
     moduleSubType: 20601
     pointCost: 6
   - researchId: beam_t7_m1
     prerequisiteIds:
     - beam_t6_m1
-    uiPosition: {x: 1280, y: -40}
     moduleType: 2
     moduleSubType: 20701
     pointCost: 7
   - researchId: beam_t8_m1
     prerequisiteIds:
     - beam_t7_m1
-    uiPosition: {x: 1480, y: -40}
     moduleType: 2
     moduleSubType: 20801
     pointCost: 8
   - researchId: beam_t9_m1
     prerequisiteIds:
     - beam_t8_m1
-    uiPosition: {x: 1680, y: -40}
     moduleType: 2
     moduleSubType: 20901
     pointCost: 9
   - researchId: beam_t10_m1
     prerequisiteIds:
     - beam_t9_m1
-    uiPosition: {x: 1880, y: -40}
     moduleType: 2
     moduleSubType: 21001
     pointCost: 10
   - researchId: beam_t11_m1
     prerequisiteIds:
     - beam_t10_m1
-    uiPosition: {x: 2080, y: -40}
     moduleType: 2
     moduleSubType: 21101
     pointCost: 11
   - researchId: beam_t12_m1
     prerequisiteIds:
     - beam_t11_m1
-    uiPosition: {x: 2280, y: -40}
     moduleType: 2
     moduleSubType: 21201
     pointCost: 12
   - researchId: beam_t13_m1
     prerequisiteIds:
     - beam_t12_m1
-    uiPosition: {x: 2480, y: -40}
     moduleType: 2
     moduleSubType: 21301
     pointCost: 13
   - researchId: beam_t14_m1
     prerequisiteIds:
     - beam_t13_m1
-    uiPosition: {x: 2680, y: -40}
     moduleType: 2
     moduleSubType: 21401
     pointCost: 14
   - researchId: missile_t1_m1
     prerequisiteIds: []
-    uiPosition: {x: 80, y: -40}
     moduleType: 3
     moduleSubType: 30101
     pointCost: 0
   - researchId: missile_t2_m1
     prerequisiteIds:
     - missile_t1_m1
-    uiPosition: {x: 280, y: -40}
     moduleType: 3
     moduleSubType: 30201
     pointCost: 2
   - researchId: missile_t3_m1
     prerequisiteIds:
     - missile_t2_m1
-    uiPosition: {x: 480, y: -40}
     moduleType: 3
     moduleSubType: 30301
     pointCost: 3
   - researchId: missile_t4_m1
     prerequisiteIds:
     - missile_t3_m1
-    uiPosition: {x: 680, y: -40}
     moduleType: 3
     moduleSubType: 30401
     pointCost: 4
   - researchId: missile_t5_m1
     prerequisiteIds:
     - missile_t4_m1
-    uiPosition: {x: 880, y: -40}
     moduleType: 3
     moduleSubType: 30501
     pointCost: 5
   - researchId: missile_t6_m1
     prerequisiteIds:
     - missile_t5_m1
-    uiPosition: {x: 1080, y: -40}
     moduleType: 3
     moduleSubType: 30601
     pointCost: 6
   - researchId: missile_t7_m1
     prerequisiteIds:
     - missile_t6_m1
-    uiPosition: {x: 1280, y: -40}
     moduleType: 3
     moduleSubType: 30701
     pointCost: 7
   - researchId: missile_t8_m1
     prerequisiteIds:
     - missile_t7_m1
-    uiPosition: {x: 1480, y: -40}
     moduleType: 3
     moduleSubType: 30801
     pointCost: 8
   - researchId: missile_t9_m1
     prerequisiteIds:
     - missile_t8_m1
-    uiPosition: {x: 1680, y: -40}
     moduleType: 3
     moduleSubType: 30901
     pointCost: 9
   - researchId: missile_t10_m1
     prerequisiteIds:
     - missile_t9_m1
-    uiPosition: {x: 1880, y: -40}
     moduleType: 3
     moduleSubType: 31001
     pointCost: 10
   - researchId: missile_t11_m1
     prerequisiteIds:
     - missile_t10_m1
-    uiPosition: {x: 2080, y: -40}
     moduleType: 3
     moduleSubType: 31101
     pointCost: 11
   - researchId: missile_t12_m1
     prerequisiteIds:
     - missile_t11_m1
-    uiPosition: {x: 2280, y: -40}
     moduleType: 3
     moduleSubType: 31201
     pointCost: 12
   - researchId: missile_t13_m1
     prerequisiteIds:
     - missile_t12_m1
-    uiPosition: {x: 2480, y: -40}
     moduleType: 3
     moduleSubType: 31301
     pointCost: 13
   - researchId: missile_t14_m1
     prerequisiteIds:
     - missile_t13_m1
-    uiPosition: {x: 2680, y: -40}
     moduleType: 3
     moduleSubType: 31401
     pointCost: 14
   - researchId: hanger_t1_m1
     prerequisiteIds: []
-    uiPosition: {x: 80, y: -40}
     moduleType: 4
     moduleSubType: 40101
     pointCost: 0
   - researchId: hanger_t2_m1
     prerequisiteIds:
     - hanger_t1_m1
-    uiPosition: {x: 280, y: -40}
     moduleType: 4
     moduleSubType: 40201
     pointCost: 2
   - researchId: hanger_t3_m1
     prerequisiteIds:
     - hanger_t2_m1
-    uiPosition: {x: 480, y: -40}
     moduleType: 4
     moduleSubType: 40301
     pointCost: 3
   - researchId: hanger_t4_m1
     prerequisiteIds:
     - hanger_t3_m1
-    uiPosition: {x: 680, y: -40}
     moduleType: 4
     moduleSubType: 40401
     pointCost: 4
   - researchId: hanger_t5_m1
     prerequisiteIds:
     - hanger_t4_m1
-    uiPosition: {x: 880, y: -40}
     moduleType: 4
     moduleSubType: 40501
     pointCost: 5
   - researchId: hanger_t6_m1
     prerequisiteIds:
     - hanger_t5_m1
-    uiPosition: {x: 1080, y: -40}
     moduleType: 4
     moduleSubType: 40601
     pointCost: 6
   - researchId: hanger_t7_m1
     prerequisiteIds:
     - hanger_t6_m1
-    uiPosition: {x: 1280, y: -40}
     moduleType: 4
     moduleSubType: 40701
     pointCost: 7
   - researchId: hanger_t8_m1
     prerequisiteIds:
     - hanger_t7_m1
-    uiPosition: {x: 1480, y: -40}
     moduleType: 4
     moduleSubType: 40801
     pointCost: 8
   - researchId: hanger_t9_m1
     prerequisiteIds:
     - hanger_t8_m1
-    uiPosition: {x: 1680, y: -40}
     moduleType: 4
     moduleSubType: 40901
     pointCost: 9
   - researchId: hanger_t10_m1
     prerequisiteIds:
     - hanger_t9_m1
-    uiPosition: {x: 1880, y: -40}
     moduleType: 4
     moduleSubType: 41001
     pointCost: 10
   - researchId: hanger_t11_m1
     prerequisiteIds:
     - hanger_t10_m1
-    uiPosition: {x: 2080, y: -40}
     moduleType: 4
     moduleSubType: 41101
     pointCost: 11
   - researchId: hanger_t12_m1
     prerequisiteIds:
     - hanger_t11_m1
-    uiPosition: {x: 2280, y: -40}
     moduleType: 4
     moduleSubType: 41201
     pointCost: 12
   - researchId: hanger_t13_m1
     prerequisiteIds:
     - hanger_t12_m1
-    uiPosition: {x: 2480, y: -40}
     moduleType: 4
     moduleSubType: 41301
     pointCost: 13
   - researchId: hanger_t14_m1
     prerequisiteIds:
     - hanger_t13_m1
-    uiPosition: {x: 2680, y: -40}
     moduleType: 4
     moduleSubType: 41401
     pointCost: 14

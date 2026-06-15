@@ -979,7 +979,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 46108790423945216
-    m_Localized: Module Grade Limited
+    m_Localized: New Module Grade
     m_Metadata:
       m_Items: []
   - m_Id: 46114131756843008
@@ -1005,10 +1005,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 46124173268746243
     m_Localized: TECH LEVEL UP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 46124173268746244
-    m_Localized: Tech Level {0} reached
     m_Metadata:
       m_Items: []
   - m_Id: 46125335501996032

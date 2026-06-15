@@ -134,7 +134,7 @@ UITabButton_Fleet,,FLEET,함대
 UITabTech_TechLevelTitle,,TECH LEVEL,기술 레벨
 UITabTech_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
 UITabTech_ShipCountUnit,,ships,척
-UITabTech_ModuleGradeTitle,,Module Grade Limited,모듈 등급 제한
+UITabTech_ModuleGradeTitle,,New Module Grade,새 모듈 등급
 UITabTech_NextUnlockTitle,,Next Level - Lv.{0},다음 레벨 - Lv.{0}
 UITabTech_NextUnlockShipCount,,{0} Next Level Ship Slots,다음 레벨 함선 슬롯 {0}척
 UITabTech_NextModuleGrade,,Next Level Module Grade - T.{0},다음 레벨 모듈 그래이드 - T.{0}
@@ -233,7 +233,6 @@ UIPopupMessage_LogoutGuest,,Logging out as a guest will permanently delete your 
 UIPopupMessage_GoogleLink,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
 UIPopupMessage_GoogleUnlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
 UIPopupMessage_TechLevelupTitle,,TECH LEVEL UP,기술 레벨업
-UIPopupMessage_TechLevelupMessage,,Tech Level {0} reached,기술 레벨 {0} 달성
 module_subtype_max_level_required,,Max level of {0}(Lv.{1} / Lv.{2}),{0} 최고 레벨 (Lv.{1} / Lv.{2})
 loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.
 loading_tip_1,,Tip: Upgrade ship modules to strengthen your fleet.,팁: 함선 모듈을 업그레이드하면 함대 전투력이 향상됩니다.

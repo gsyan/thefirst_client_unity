@@ -12,7 +12,6 @@ public class ResearchNodeData
 {
     public string researchId;
     public List<string> prerequisiteIds = new List<string>();
-    [Newtonsoft.Json.JsonIgnore] public Vector2 uiPosition;
 }
 
 [System.Serializable]
@@ -105,10 +104,6 @@ public class DataTableResearch : ScriptableObject
             string researchId = GetCol(cols, col, "research_id");
             if (string.IsNullOrEmpty(researchId)) continue;
 
-            var uiPos = new Vector2(
-                ParseFloat(GetCol(cols, col, "ui_pos_x")),
-                ParseFloat(GetCol(cols, col, "ui_pos_y")));
-
             if (System.Enum.TryParse(researchId, out EModuleSubType moduleSubType) == false) continue;
             researchDataList.Add(new ModuleResearchData
             {
@@ -116,7 +111,6 @@ public class DataTableResearch : ScriptableObject
                 moduleType      = (EModuleType)moduleSubType.GetModuleType(),
                 moduleSubType   = moduleSubType,
                 prerequisiteIds = ParseStringList(GetCol(cols, col, "prerequisites")),
-                uiPosition      = uiPos,
                 pointCost       = (int)ParseLong(GetCol(cols, col, "cost_mp")),
             });
         }
@@ -164,13 +158,6 @@ public class DataTableResearch : ScriptableObject
         }
         result.Add(current.ToString());
         return result.ToArray();
-    }
-
-    private float ParseFloat(string s)
-    {
-        s = s.Replace(",", "").Trim();
-        return float.TryParse(s, System.Globalization.NumberStyles.Float,
-            System.Globalization.CultureInfo.InvariantCulture, out float r) ? r : 0f;
     }
 
     private long ParseLong(string s)

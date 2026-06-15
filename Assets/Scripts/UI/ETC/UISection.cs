@@ -100,6 +100,20 @@ public class UISection : MonoBehaviour
             m_allRows[i].SetImageColor(iconColor);
     }
 
+    // 각 컨테이너에 항목 1개씩 배치 — 컨테이너가 수직 쌓임 시 세로 두 줄
+    public void SetRowsVertical(List<(string icon, string value)> rows)
+    {
+        if (m_containers == null) return;
+        for (int i = 0; i < m_containers.Length; i++)
+        {
+            m_containers[i].HideAll();
+            bool hasContent = rows != null && i < rows.Count;
+            m_containers[i].gameObject.SetActive(hasContent);
+            if (hasContent == false) continue;
+            m_containers[i].SetRow(0, rows[i].icon, rows[i].value);
+        }
+    }
+
     // Row → Container → Section 순서로 레이아웃 재빌드 (ContentSizeFitter가 있는 경우 bottom-up 필수)
     public void RebuildLayout()
     {

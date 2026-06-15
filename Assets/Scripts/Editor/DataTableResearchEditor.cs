@@ -151,10 +151,6 @@ public class DataTableResearchEditor : Editor
 
             EditorGUILayout.Space(5);
 
-            researchData.uiPosition = EditorGUILayout.Vector2Field("UI Position", researchData.uiPosition);
-
-            EditorGUILayout.Space(5);
-
             EditorGUILayout.LabelField("Research Cost", EditorStyles.boldLabel);
             researchData.pointCost = EditorGUILayout.IntField("ModulePoint", researchData.pointCost);
 

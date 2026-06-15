@@ -1036,6 +1036,10 @@ public class SpaceShip : MonoBehaviour
                 newModule.SetInvestedModulePoint(investedModulePoint);
         }
 
+        // 전투 중 해금된 모듈에 현재 타겟 재전파
+        if (m_currentTargetBody != null && m_currentTargetBody.m_health > 0)
+            body.SetTarget(m_currentTargetBody);
+
         // 함선 스탯 업데이트
         UpdateShipStats();
 

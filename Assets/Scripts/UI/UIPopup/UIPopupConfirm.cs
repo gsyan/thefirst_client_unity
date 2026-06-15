@@ -13,6 +13,7 @@ public class ConfirmPopupConfig
     public string message;
     public string detailText;
     public List<(string icon, string value)> resultRows;
+    public bool resultRowsVertical; // true면 컨테이너당 1개씩 세로 배치
     public List<(string icon, string value)> pvpOpponentRows; // STATUS 섹션 (GeneralBright1 색)
     public RequireStruct require;
     public CostStruct cost;
@@ -88,7 +89,7 @@ public class UIPopupConfirm : UIPopupBase
         }
 
         int sectionIdx = 0;
-        BuildResultRows(config.resultRows, ref sectionIdx);
+        BuildResultRows(config.resultRows, config.resultRowsVertical, ref sectionIdx);
         BuildPvpOpponentSection(config.pvpOpponentRows, ref sectionIdx);
         bool requireMet = BuildRequireSection(config.require, ref sectionIdx);
         bool canAfford  = BuildCostSection(config.cost, ref sectionIdx);
@@ -189,14 +190,17 @@ public class UIPopupConfirm : UIPopupBase
         return canAfford;
     }
 
-    private void BuildResultRows(List<(string icon, string value)> rows, ref int sectionIdx)
+    private void BuildResultRows(List<(string icon, string value)> rows, bool vertical, ref int sectionIdx)
     {
         if (rows == null || rows.Count <= 0)
             return;
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
         sec.SetTitle("RESULT");
-        sec.SetRows(rows);
+        if (vertical)
+            sec.SetRowsVertical(rows);
+        else
+            sec.SetRows(rows);
     }
 
     private void BuildPvpOpponentSection(List<(string icon, string value)> rows, ref int sectionIdx)
