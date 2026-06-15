@@ -8,7 +8,6 @@ tab_research,,Research,연구
 fleet_status,,Fleet Status,함대 정보
 fleet_ship_count,,Ships,함선 수
 fleet_add_ship_button,,Add\nShip,함선\n추가
-fleet_add_ship_name,,Add Ship,함선 추가
 fleet_formation_change,,Change Formation,진형 변경
 fleet_btn_ship_manage,,Manage Ship,함선 관리
 fleet_btn_ship_repair,,Focus Repair,집중 수리
@@ -90,15 +89,6 @@ mineral_amount,,Mineral,광물
 mineral_rare_amount,,Mineral.R,광물.R
 mineral_exotic_amount,,Mineral.E,광물.E
 mineral_dark_amount,,Mineral.D,광물.D
-popup_message_add_ship,,Do you want to add a new ship to your fleet?,새로운 함선을 추가 하시겠습니까?
-popup_message_logout,,Are you sure you want to logout?,로그아웃 하시겠습니까?
-popup_message_logout_guest,,Logging out as a guest will permanently delete your account and all data. Continue?,게스트 로그아웃 시 계정과 모든 데이터가 영구 삭제됩니다. 계속하시겠습니까?
-popup_message_module_unlock,,Unlock {0} slot?,{0} 슬롯을 잠금 해제 할까요?
-popup_message_module_upgrade,,Upgrade {0}\nLv.{1} → Lv.{2}?,{0} 모듈을 업그레이드 할까요?\n(Lv.{1} ->  Lv.{2} )
-popup_message_module_research,,Research {0} module?,{0} 모듈을 연구할까요?
-popup_message_google_link,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
-popup_message_google_unlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
-module_subtype_max_level_required,,Max level of {0}(Lv.{1} / Lv.{2}),{0} 최고 레벨 (Lv.{1} / Lv.{2})
 cost_text,,Cost,비용
 details_text,,Details,세부정보
 ship_module_select_body,,B,체
@@ -144,9 +134,11 @@ UITabButton_Fleet,,FLEET,함대
 UITabTech_TechLevelTitle,,TECH LEVEL,기술 레벨
 UITabTech_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
 UITabTech_ShipCountUnit,,ships,척
-UITabTech_NextUnlockTitle,,Next Unlock - Lv.{0},다음 해금 - Lv.{0}
-UITabTech_NextModuleGrade,,Next Module Grade - T.{0},다음 모듈 그래이드 - T.{0}
-UITabTech_NextUnlockShipCount,,{0} Ship Slots,함선 슬롯 {0}척
+UITabTech_ModuleGradeTitle,,Module Grade Limited,모듈 등급 제한
+UITabTech_NextUnlockTitle,,Next Level - Lv.{0},다음 레벨 - Lv.{0}
+UITabTech_NextUnlockShipCount,,{0} Next Level Ship Slots,다음 레벨 함선 슬롯 {0}척
+UITabTech_NextModuleGrade,,Next Level Module Grade - T.{0},다음 레벨 모듈 그래이드 - T.{0}
+UITabTech_PointsToNextLevel,,Points to next level : {0},다음 레벨업까지 남은 포인트 : {0}
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
@@ -234,6 +226,15 @@ UIVipStatus_Benefit_Mineral,,Stage Mineral Rewards x{0} (Excl. Tech & Module Poi
 UIVipStatus_Benefit_InstantFleetRestore,,Instantly Restore Fleet HP After Battle,전투 후 함대 체력 즉시 회복
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
 UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}day(s) Left),{0} ({1} 패스 D-{2})
+UIPopupMessage_AddShipTitle,,ADD SHIP,함선 추가
+UIPopupMessage_AddShipMessage,,Do you want to add a new ship to your fleet?,새로운 함선을 추가 하시겠습니까?
+UIPopupMessage_Logout,,Are you sure you want to logout?,로그아웃 하시겠습니까?
+UIPopupMessage_LogoutGuest,,Logging out as a guest will permanently delete your account and all data. Continue?,게스트 로그아웃 시 계정과 모든 데이터가 영구 삭제됩니다. 계속하시겠습니까?
+UIPopupMessage_GoogleLink,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
+UIPopupMessage_GoogleUnlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
+UIPopupMessage_TechLevelupTitle,,TECH LEVEL UP,기술 레벨업
+UIPopupMessage_TechLevelupMessage,,Tech Level {0} reached,기술 레벨 {0} 달성
+module_subtype_max_level_required,,Max level of {0}(Lv.{1} / Lv.{2}),{0} 최고 레벨 (Lv.{1} / Lv.{2})
 loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.
 loading_tip_1,,Tip: Upgrade ship modules to strengthen your fleet.,팁: 함선 모듈을 업그레이드하면 함대 전투력이 향상됩니다.
 loading_tip_2,,Tip: Research raises your Tech Level and unlocks new modules.,팁: 연구를 통해 기술 레벨을 올리고 새 모듈을 개방하세요.

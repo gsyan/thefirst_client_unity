@@ -1,4 +1,4 @@
-// 다단계 레벨업 팝업 — 모듈/기술레벨 공용. < > 버튼으로 목표 레벨 선택, 누적 비용 표시
+// 모듈 레벨업 팝업 — < > 버튼으로 목표 레벨 선택, 누적 비용 표시
 using System;
 using TMPro;
 using UnityEngine;
@@ -27,14 +27,9 @@ public class UIPopupLevelup : UIPopupBase
     [SerializeField] private UIButtonHasChildren m_confirmButton;
     [SerializeField] private Button              m_cancelButton;
 
-    private enum Mode { Module, TechLevel }
-    private Mode m_mode;
-
-    // 모듈 전용 상태
     private EModuleSubType m_subType;
     private EModuleType    m_moduleType;
 
-    // 공통 상태
     private int         m_currentLevel;
     private int         m_minTargetLevel;
     private int         m_maxDataLevel;
@@ -57,7 +52,6 @@ public class UIPopupLevelup : UIPopupBase
 
     public void ShowModule(EModuleSubType subType, EModuleType moduleType, int currentLevel, Action<int> onConfirm, Action onCancel = null)
     {
-        m_mode       = Mode.Module;
         m_subType    = subType;
         m_moduleType = moduleType;
 
@@ -66,23 +60,6 @@ public class UIPopupLevelup : UIPopupBase
         if (m_subjectNameText != null)
             m_subjectNameText.text = $"<color=#009682>──────────────────────</color>\n{subType.GetLocalizedName()}\n<color=#009682>──────────────────────</color>";
 
-        ShowInternal(currentLevel, onConfirm, onCancel);
-    }
-
-    public void ShowTechLevel(int currentTechLevel, Action<int> onConfirm, Action onCancel = null)
-    {
-        m_mode = Mode.TechLevel;
-
-        if (m_titleText != null)
-            m_titleText.text = LocalizationManager.Instance.Get("tech_level_levelup");
-        if (m_subjectNameText != null)
-            m_subjectNameText.text = $"<color=#009682>───────────────────────────</color>";
-
-        ShowInternal(currentTechLevel, onConfirm, onCancel);
-    }
-
-    private void ShowInternal(int currentLevel, Action<int> onConfirm, Action onCancel)
-    {
         base.ShowPopup();
 
         m_currentLevel   = currentLevel;
@@ -138,9 +115,8 @@ public class UIPopupLevelup : UIPopupBase
 
         if (m_bodyText != null)
         {
-            string bodyStr = BuildBodyText();
-            m_bodyText.text = bodyStr;
-            m_bodyText.gameObject.SetActive(string.IsNullOrEmpty(bodyStr) == false);
+            m_bodyText.text = string.Empty;
+            m_bodyText.gameObject.SetActive(false);
         }
 
         UpdateResultRows();
@@ -164,18 +140,11 @@ public class UIPopupLevelup : UIPopupBase
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 
-    private string BuildBodyText()
-    {
-        return string.Empty;
-    }
-
     private bool CheckCanAfford(long pointCost)
     {
         var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
         if (info == null) return false;
-        if (m_mode == Mode.Module)
-            return info.modulePoint >= pointCost;
-        return info.techPoint >= pointCost;
+        return info.modulePoint >= pointCost;
     }
 
     private void UpdateResultRows()
@@ -183,22 +152,9 @@ public class UIPopupLevelup : UIPopupBase
         if (m_sectionResult == null) return;
         m_sectionResult.HideAllRows();
 
-        if (m_mode == Mode.TechLevel)
-        {
-            int currentShips = DataManager.Instance.m_dataTableResearch.GetShipCount(m_currentLevel);
-            int targetShips  = DataManager.Instance.m_dataTableResearch.GetShipCount(m_targetLevel);
-            m_sectionResult.SetRow(0, "icon_ship", $"{currentShips} <voffset=6>→</voffset> {targetShips}");
-            
-            int currentModuleGrade = m_currentLevel;
-            int targetModuleGrade  = m_targetLevel;
-            m_sectionResult.SetRow(1, "cargo-crane", $"T{currentModuleGrade} <voffset=6>→</voffset> T{targetModuleGrade}");
-        }
-        else if (m_mode == Mode.Module)
-        {
-            var statRows = CommonUtility.GetModuleStatRows(m_moduleType, m_subType, m_currentLevel, m_targetLevel);
-            if (statRows == null) return;
-            m_sectionResult.SetRows(statRows);
-        }
+        var statRows = CommonUtility.GetModuleStatRows(m_moduleType, m_subType, m_currentLevel, m_targetLevel);
+        if (statRows == null) return;
+        m_sectionResult.SetRows(statRows);
     }
 
     private void UpdateCostRows(long totalCost)
@@ -208,21 +164,8 @@ public class UIPopupLevelup : UIPopupBase
         if (totalCost <= 0) return;
 
         var characterInfo = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-        int rowIndex;
-        bool canAfford;
-
-        if (m_mode == Mode.TechLevel)
-        {
-            rowIndex  = (int)ECostType.TechPoint;
-            canAfford = characterInfo != null && characterInfo.techPoint >= totalCost;
-        }
-        else if (m_mode == Mode.Module)
-        {
-            rowIndex  = (int)ECostType.ModulePoint;
-            canAfford = characterInfo != null && characterInfo.modulePoint >= totalCost;
-        }
-        else return;
-
+        int rowIndex = (int)ECostType.ModulePoint;
+        bool canAfford = characterInfo != null && characterInfo.modulePoint >= totalCost;
         m_sectionCost.SetRowText(rowIndex, canAfford ? $"{totalCost}" : $"<color=red>{totalCost}</color>");
     }
 
@@ -232,41 +175,19 @@ public class UIPopupLevelup : UIPopupBase
 
     private int CalculateMaxDataLevel(int fromLevel)
     {
-        if (m_mode == Mode.Module)
-        {
-            int level = fromLevel;
-            while (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_subType, level + 1) != null)
-                level++;
-            return level;
-        }
-        else
-        {
-            int max = fromLevel;
-            var list = DataManager.Instance.m_dataTableResearch.TechLevelDataList;
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i].targetTechLevel > max)
-                    max = list[i].targetTechLevel;
-            }
-            return max;
-        }
+        int level = fromLevel;
+        while (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_subType, level + 1) != null)
+            level++;
+        return level;
     }
 
     private long CalculateCumulativeCost(int fromLevel, int toLevel)
     {
         long total = 0;
-        if (m_mode == Mode.Module)
+        for (int lv = fromLevel; lv < toLevel; lv++)
         {
-            for (int lv = fromLevel; lv < toLevel; lv++)
-            {
-                if (DataManager.Instance.GetModuleLevelUpCost(m_subType, lv, out long c) == false) break;
-                total += c;
-            }
-        }
-        else
-        {
-            for (int lv = fromLevel; lv < toLevel; lv++)
-                total += DataManager.Instance.m_dataTableResearch.GetTechLevelUpgradeCost(lv);
+            if (DataManager.Instance.GetModuleLevelUpCost(m_subType, lv, out long c) == false) break;
+            total += c;
         }
         return total;
     }

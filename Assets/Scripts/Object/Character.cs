@@ -1,11 +1,10 @@
-// 플레이어 캐릭터 상태 관리 - 문자열 연구 ID(tech_level_N 등) 포함
+// 플레이어 캐릭터 상태 관리
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Character
 {
     public CharacterInfo m_characterInfo;
-    private HashSet<string> m_completedResearchIds; // tech_level_N 등 문자열 기반 완료 연구
+    private HashSet<string> m_completedResearchIds; // 모듈 연구 등 문자열 기반 완료 연구
 
     public Character(CharacterInfo characterInfo)
     {
@@ -96,16 +95,19 @@ public class Character
         m_characterInfo.pvpPointMaxGot = pvpPointMaxGot;
     }
 
-    // 완료된 tech_level_N ID 중 최댓값을 기술레벨로 반환 (기본값 1)
     public int GetTechLevel()
     {
-        int max = 1;
-        foreach (string id in m_completedResearchIds)
-        {
-            if (id.StartsWith("tech_level_") && int.TryParse(id["tech_level_".Length..], out int lv))
-                max = Mathf.Max(max, lv);
-        }
-        return max;
+        if (m_characterInfo == null) return 1;
+        int level = m_characterInfo.techLevel;
+        return level > 0 ? level : 1;
+    }
+
+    // 서버 응답 techLevel로 갱신 후 이벤트 발생
+    public void UpdateTechLevel(int newLevel)
+    {
+        if (m_characterInfo == null) return;
+        m_characterInfo.techLevel = newLevel;
+        EventManager.TriggerTechLevelChange(newLevel);
     }
 
     public CharacterInfo GetInfo()
@@ -164,22 +166,20 @@ public class Character
 
 
 
-    // 문자열 기반 완료 연구 ID 목록 세팅
+    // 문자열 기반 완료 연구 ID 목록 세팅 (모듈 연구용, techLevel과 무관)
     public void SetCompletedResearchIds(string[] ids)
     {
         m_completedResearchIds.Clear();
         if (ids == null) return;
         foreach (string id in ids)
             m_completedResearchIds.Add(id);
-        EventManager.TriggerTechLevelChange(GetTechLevel());
     }
 
-    // 연구 완료 후 단건 추가
+    // 연구 완료 후 단건 추가 (모듈 연구용)
     public void AddCompletedResearchId(string id)
     {
         if (string.IsNullOrEmpty(id)) return;
         m_completedResearchIds.Add(id);
-        EventManager.TriggerTechLevelChange(GetTechLevel());
     }
 
     public bool IsResearchCompleted(string researchId)

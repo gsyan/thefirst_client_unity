@@ -106,6 +106,7 @@ public class CharacterInfo
     public long characterId;
     public string characterName;
     public int mineral;
+    public int techLevel;
     public int techPoint;
     public int modulePoint;
     public int modulePointMaxGot;    // 누적 획득량 (리셋 환급 반영)
@@ -332,19 +333,6 @@ public class ModuleUnlockResponse
 }
 
 [System.Serializable]
-public class TechLevelResearchRequest
-{
-    public string researchId;  // tech_level_N 형식
-}
-
-[System.Serializable]
-public class TechLevelResearchResponse
-{
-    public int techPointRemain;
-    public string[] researchedIds;  // 완료된 tech_level_N 목록
-}
-
-[System.Serializable]
 public class ModuleResetRequest
 {
     public long shipId;
@@ -446,9 +434,10 @@ public class ClaimZoneRewardResponse
     public string zoneName;
     public bool watchedAd;
     public int mineralRemain;
+    public int techLevel;
     public int techPointRemain;
     public int modulePointRemain;
-    public int modulePointMaxGot;
+    public int modulePointMaxGot;    
 }
 
 
@@ -475,6 +464,7 @@ public class PendingStageRewardResponse
     public int techPointGained;
     public int modulePointGained;
     public int mineralRemain;       // 처리 후 잔액
+    public int techLevel;
     public int techPointRemain;
     public int modulePointRemain;
     public int modulePointMaxGot;

@@ -933,7 +933,7 @@ public class UITabShip : UITabBase
         if (hasTech == false)
         {
             row.SetRow("icon_tech", $"{reqTier}");
-            row.SetImageColor(CommonUtility.PaletteColor("TechPoint"));
+            row.SetImageColor(CommonUtility.PaletteColor("GeneralDark1"));
         }
         else
         {

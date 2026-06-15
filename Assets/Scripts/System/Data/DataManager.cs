@@ -10,6 +10,7 @@ public class DataManager : Singleton<DataManager>
     {
         LoadDataTableModule();
         LoadDataTableModuleResearch();
+        LoadDataTableTechLevel();
         LoadDataTableConfig();
         LoadDataTableZone();
         LoadDataTablePvpSeason();
@@ -180,19 +181,28 @@ public class DataManager : Singleton<DataManager>
     {
         m_dataTableResearch = ResourceManager.Instance.Load<DataTableResearch>("DataTable/DataTableResearch");
         if (m_dataTableResearch == null)
-        {
             Debug.LogError("DataTableResearch is not exist");
-        }
         else
-        {
             Debug.Log("DataTableResearch loaded successfully");
-        }
     }
 
     public long GetModuleResearchCost(EModuleSubType subType)
     {
         if (m_dataTableResearch == null) return 0;
         return m_dataTableResearch.GetResearchCost(subType);
+    }
+    #endregion
+
+    #region Data Table Tech Level ###############################################################
+    public DataTableTechLevel m_dataTableTechLevel;
+
+    private void LoadDataTableTechLevel()
+    {
+        m_dataTableTechLevel = ResourceManager.Instance.Load<DataTableTechLevel>("DataTable/DataTableTechLevel");
+        if (m_dataTableTechLevel == null)
+            Debug.LogError("DataTableTechLevel is not exist");
+        else
+            Debug.Log("DataTableTechLevel loaded successfully");
     }
     #endregion
 

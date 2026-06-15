@@ -51,10 +51,6 @@ MonoBehaviour:
     m_Key: fleet_add_ship_button
     m_Metadata:
       m_Items: []
-  - m_Id: 6655868879634432
-    m_Key: fleet_add_ship_name
-    m_Metadata:
-      m_Items: []
   - m_Id: 11317517746044928
     m_Key: fleet_formation_change
     m_Metadata:
@@ -379,42 +375,6 @@ MonoBehaviour:
     m_Key: mineral_dark_amount
     m_Metadata:
       m_Items: []
-  - m_Id: 697933359874048
-    m_Key: popup_message_add_ship
-    m_Metadata:
-      m_Items: []
-  - m_Id: 697933397622784
-    m_Key: popup_message_logout
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930322964489
-    m_Key: popup_message_logout_guest
-    m_Metadata:
-      m_Items: []
-  - m_Id: 697933397622785
-    m_Key: popup_message_module_unlock
-    m_Metadata:
-      m_Items: []
-  - m_Id: 705451700125698
-    m_Key: popup_message_module_upgrade
-    m_Metadata:
-      m_Items: []
-  - m_Id: 705451700125699
-    m_Key: popup_message_module_research
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640620273667
-    m_Key: popup_message_google_link
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640620273668
-    m_Key: popup_message_google_unlink
-    m_Metadata:
-      m_Items: []
-  - m_Id: 14264662300164096
-    m_Key: module_subtype_max_level_required
-    m_Metadata:
-      m_Items: []
   - m_Id: 4035192935022592
     m_Key: cost_text
     m_Metadata:
@@ -595,16 +555,24 @@ MonoBehaviour:
     m_Key: UITabTech_ShipCountUnit
     m_Metadata:
       m_Items: []
+  - m_Id: 46108790423945216
+    m_Key: UITabTech_ModuleGradeTitle
+    m_Metadata:
+      m_Items: []
   - m_Id: 29007716294721538
     m_Key: UITabTech_NextUnlockTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29084800778108928
+    m_Key: UITabTech_NextUnlockShipCount
     m_Metadata:
       m_Items: []
   - m_Id: 44653455670640640
     m_Key: UITabTech_NextModuleGrade
     m_Metadata:
       m_Items: []
-  - m_Id: 29084800778108928
-    m_Key: UITabTech_NextUnlockShipCount
+  - m_Id: 46114131756843008
+    m_Key: UITabTech_PointsToNextLevel
     m_Metadata:
       m_Items: []
   - m_Id: 29120731337850880
@@ -953,6 +921,42 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 39970930322964488
     m_Key: UIVipStatus_PurchasePrice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173239386112
+    m_Key: UIPopupMessage_AddShipTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746240
+    m_Key: UIPopupMessage_AddShipMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746241
+    m_Key: UIPopupMessage_Logout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746242
+    m_Key: UIPopupMessage_LogoutGuest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46125335501996032
+    m_Key: UIPopupMessage_GoogleLink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46125335506190336
+    m_Key: UIPopupMessage_GoogleUnlink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746243
+    m_Key: UIPopupMessage_TechLevelupTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746244
+    m_Key: UIPopupMessage_TechLevelupMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14264662300164096
+    m_Key: module_subtype_max_level_required
     m_Metadata:
       m_Items: []
   - m_Id: 42163135020138496

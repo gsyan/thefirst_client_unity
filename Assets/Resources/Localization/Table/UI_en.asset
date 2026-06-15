@@ -50,26 +50,6 @@ MonoBehaviour:
     m_Localized: Mineral.D
     m_Metadata:
       m_Items: []
-  - m_Id: 697933359874048
-    m_Localized: Do you want to add a new ship to your fleet?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 697933397622784
-    m_Localized: Are you sure you want to logout?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 697933397622785
-    m_Localized: Unlock {0} slot?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 705451700125698
-    m_Localized: "Upgrade {0}\\nLv.{1} \u2192 Lv.{2}?"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 705451700125699
-    m_Localized: Research {0} module?
-    m_Metadata:
-      m_Items: []
   - m_Id: 767916345524224
     m_Localized: Engine(Locked)
     m_Metadata:
@@ -226,10 +206,6 @@ MonoBehaviour:
     m_Localized: Add\nShip
     m_Metadata:
       m_Items: []
-  - m_Id: 6655868879634432
-    m_Localized: Add Ship
-    m_Metadata:
-      m_Items: []
   - m_Id: 6697022492901376
     m_Localized: Harvest
     m_Metadata:
@@ -296,14 +272,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8422640620273666
     m_Localized: Google account unlinked successfully.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640620273667
-    m_Localized: Would you like to link your Google account?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640620273668
-    m_Localized: Unlinking Google will revert your account to guest status. Continue?
     m_Metadata:
       m_Items: []
   - m_Id: 8795249610457088
@@ -579,7 +547,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29007716294721538
-    m_Localized: Next Unlock - Lv.{0}
+    m_Localized: Next Level - Lv.{0}
     m_Metadata:
       m_Items: []
   - m_Id: 29004056152113152
@@ -611,7 +579,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29084800778108928
-    m_Localized: '{0} Ship Slots'
+    m_Localized: '{0} Next Level Ship Slots'
     m_Metadata:
       m_Items: []
   - m_Id: 29120731337850880
@@ -854,11 +822,6 @@ MonoBehaviour:
     m_Localized: "{0} ({1} Pass \xB7 {2}day(s) Left)"
     m_Metadata:
       m_Items: []
-  - m_Id: 39970930322964489
-    m_Localized: Logging out as a guest will permanently delete your account and
-      all data. Continue?
-    m_Metadata:
-      m_Items: []
   - m_Id: 40210342046728192
     m_Localized: ADMIRAL's Benefit
     m_Metadata:
@@ -984,7 +947,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44653455670640640
-    m_Localized: Next Module Grade - T.{0}
+    m_Localized: Next Level Module Grade - T.{0}
     m_Metadata:
       m_Items: []
   - m_Id: 45034403373383680
@@ -1013,6 +976,47 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 45106829100711936
     m_Localized: Claimed rewards from completed zones.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46108790423945216
+    m_Localized: Module Grade Limited
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46114131756843008
+    m_Localized: 'Points to next level : {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173239386112
+    m_Localized: ADD SHIP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746240
+    m_Localized: Do you want to add a new ship to your fleet?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746241
+    m_Localized: Are you sure you want to logout?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746242
+    m_Localized: Logging out as a guest will permanently delete your account and
+      all data. Continue?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746243
+    m_Localized: TECH LEVEL UP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46124173268746244
+    m_Localized: Tech Level {0} reached
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46125335501996032
+    m_Localized: Would you like to link your Google account?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46125335506190336
+    m_Localized: Unlinking Google will revert your account to guest status. Continue?
     m_Metadata:
       m_Items: []
   references:

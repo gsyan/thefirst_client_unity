@@ -401,6 +401,18 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupConfirm(config);
     }
 
+    // 기술 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출)
+    public void ShowTechLevelupNotify(int newLevel)
+    {
+        ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title        = LocalizationManager.Instance.Get("UIPopupMessage_TechLevelupTitle"),
+            message      = LocalizationManager.Instance.Get("UIPopupMessage_TechLevelupMessage", newLevel),
+            onConfirm    = () => { },
+            autoCloseSec = 5f,
+        });
+    }
+
     // 일일 출석 보너스 달력 팝업 (수령 직후 호출)
     public void ShowDailyBonusPopup(int grantedMineral, System.Action onConfirm = null)
     {
@@ -454,19 +466,6 @@ public class UIManager : MonoSingleton<UIManager>
 
         ReplacePopup(popup, EPopupLayer.Normal);
         popup.ShowPopupLicense(() => CloseTopPopup(EPopupLayer.Normal));
-    }
-
-    // 기술 레벨업 팝업
-    public void ShowTechLevelupPopup(int currentTechLevel, System.Action<int> onConfirm)
-    {
-        UIPopupLevelup popup = GetOrCreatePopup<UIPopupLevelup>("UIPopupLevelup", EPopupLayer.Normal);
-        if (popup == null) return;
-
-        ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowTechLevel(currentTechLevel,
-            onConfirm: targetLevel => { onConfirm?.Invoke(targetLevel); CloseTopPopup(EPopupLayer.Normal); },
-            onCancel:  () => CloseTopPopup(EPopupLayer.Normal)
-        );
     }
 
     public void ShowModuleLevelupPopup(EModuleSubType subType, EModuleType moduleType, int currentLevel, System.Action<int> onConfirm)

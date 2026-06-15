@@ -787,10 +787,15 @@ public class UITabExploration : UITabBase
         var character = DataManager.Instance.m_currentCharacter;
         if (character != null && character.m_characterInfo != null)
         {
+            int prevLevel = character.GetTechLevel();
             character.UpdateMineral(response.data.mineralRemain);
             character.UpdateTechPoint(response.data.techPointRemain);
             character.UpdateModulePointMaxGot(response.data.modulePointMaxGot); // 이벤트 발생 전에 먼저 갱신
             character.UpdateModulePoint(response.data.modulePointRemain);
+            int newLevel = response.data.techLevel;
+            character.UpdateTechLevel(newLevel);
+            if (newLevel > prevLevel)
+                UIManager.Instance.ShowTechLevelupNotify(newLevel);
         }
         m_battleZoneStage = null;
         m_pendingClaimZoneName = null;

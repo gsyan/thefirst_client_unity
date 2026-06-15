@@ -1,5 +1,5 @@
-// DataTableResearch 커스텀 에디터 - 연구 트리 데이터 Inspector UI 및 CSV/JSON Import/Export 툴
-// CSV 분리: datatable_research_tech.csv (기술레벨, stack_time/ship_count), datatable_research_subtype.csv (모듈 서브타입)
+// DataTableResearch 커스텀 에디터 — 모듈 연구 트리 Inspector UI 및 CSV Import 툴
+// CSV: datatable_research_subtype.csv (모듈 서브타입)
 
 #if UNITY_EDITOR
 using UnityEngine;
@@ -12,16 +12,14 @@ public class DataTableResearchEditor : Editor
 {
     private DataTableResearch dataTable;
     private Vector2 scrollPosition;
-    
+
     private Dictionary<EModuleType, bool> typeFoldouts = new Dictionary<EModuleType, bool>();
     private Dictionary<ModuleResearchData, bool> dataFoldouts = new Dictionary<ModuleResearchData, bool>();
-    private bool techLevelFoldout = false;
 
-    private readonly Color bodyColor = new Color(0.7f, 0.9f, 0.7f);
-    private readonly Color engineColor = new Color(0.7f, 0.7f, 0.9f);
-    private readonly Color beamColor = new Color(0.9f, 0.7f, 0.7f);
+    private readonly Color bodyColor    = new Color(0.7f, 0.9f, 0.7f);
+    private readonly Color beamColor    = new Color(0.9f, 0.7f, 0.7f);
     private readonly Color missileColor = new Color(0.9f, 0.7f, 0.7f);
-    private readonly Color hangerColor = new Color(0.9f, 0.9f, 0.7f);
+    private readonly Color hangerColor  = new Color(0.9f, 0.9f, 0.7f);
 
     private void OnEnable()
     {
@@ -35,26 +33,20 @@ public class DataTableResearchEditor : Editor
         serializedObject.Update();
 
         EditorGUILayout.Space(5);
-        DrawCustomHeader();
+        DrawHeader();
         EditorGUILayout.Space(10);
 
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-        // Group research data by module type
-        var groupedData = dataTable.ResearchDataList
+        var groupedData = dataTable.GetResearchDataList()
             .GroupBy(r => r.moduleType)
             .OrderBy(g => g.Key);
 
         foreach (var group in groupedData)
-        {
             DrawModuleTypeGroup(group.Key, group.ToList());
-        }
-
-        EditorGUILayout.Space(10);
-        DrawTechLevelGroup();
 
         EditorGUILayout.Space(20);
-        DrawUtilityTools();
+        DrawCsvTools();
 
         EditorGUILayout.EndScrollView();
 
@@ -65,20 +57,18 @@ public class DataTableResearchEditor : Editor
         }
     }
 
-    private void DrawCustomHeader()
+    private void DrawHeader()
     {
         EditorGUILayout.BeginHorizontal("box");
         GUILayout.Label("Data Table Module Research", EditorStyles.largeLabel);
         GUILayout.FlexibleSpace();
-
-        GUILayout.Label($"Total: {dataTable.ResearchDataList.Count}", EditorStyles.miniLabel);
-
+        GUILayout.Label($"Total: {dataTable.GetResearchDataList().Count}", EditorStyles.miniLabel);
         EditorGUILayout.EndHorizontal();
     }
 
-    private void DrawModuleTypeGroup(EModuleType moduleType, List<ModuleResearchData> researchDataList)
+    private void DrawModuleTypeGroup(EModuleType moduleType, List<ModuleResearchData> list)
     {
-        if (!typeFoldouts.ContainsKey(moduleType))
+        if (typeFoldouts.ContainsKey(moduleType) == false)
             typeFoldouts[moduleType] = false;
 
         EditorGUILayout.BeginVertical("box");
@@ -89,20 +79,17 @@ public class DataTableResearchEditor : Editor
         EditorGUILayout.BeginHorizontal();
         typeFoldouts[moduleType] = EditorGUILayout.Foldout(
             typeFoldouts[moduleType],
-            $"{moduleType} Research ({researchDataList.Count})",
+            $"{moduleType} Research ({list.Count})",
             true,
-            EditorStyles.foldoutHeader
-        );
+            EditorStyles.foldoutHeader);
         EditorGUILayout.EndHorizontal();
 
         GUI.backgroundColor = originalColor;
 
         if (typeFoldouts[moduleType])
         {
-            foreach (var researchData in researchDataList)
-            {
+            foreach (var researchData in list)
                 DrawResearchData(researchData);
-            }
         }
 
         EditorGUILayout.EndVertical();
@@ -110,7 +97,7 @@ public class DataTableResearchEditor : Editor
 
     private void DrawResearchData(ModuleResearchData researchData)
     {
-        if (!dataFoldouts.ContainsKey(researchData))
+        if (dataFoldouts.ContainsKey(researchData) == false)
             dataFoldouts[researchData] = false;
 
         EditorGUILayout.BeginVertical("box");
@@ -119,21 +106,18 @@ public class DataTableResearchEditor : Editor
         dataFoldouts[researchData] = EditorGUILayout.Foldout(
             dataFoldouts[researchData],
             $"{researchData.moduleSubType} ({researchData.researchId})",
-            true
-        );
+            true);
         EditorGUILayout.EndHorizontal();
 
         if (dataFoldouts[researchData])
         {
             EditorGUI.indentLevel++;
 
-            // ResearchNodeData 공통 필드
             EditorGUILayout.LabelField("Node Info", EditorStyles.boldLabel);
             researchData.researchId = EditorGUILayout.TextField("Research ID", researchData.researchId);
 
             EditorGUILayout.Space(5);
 
-            // 선행 연구 조건 (string ID를 EModuleSubType 드롭다운으로 편집)
             EditorGUILayout.LabelField("Prerequisites", EditorStyles.boldLabel);
             if (researchData.prerequisiteIds == null)
                 researchData.prerequisiteIds = new List<string>();
@@ -142,7 +126,6 @@ public class DataTableResearchEditor : Editor
             {
                 EditorGUILayout.BeginHorizontal();
 
-                // string → EModuleSubType 변환 시도, 실패하면 텍스트 필드
                 EModuleSubType prereqEnum = EModuleSubType.none;
                 bool isModuleSubType = System.Enum.TryParse(researchData.prerequisiteIds[i], out prereqEnum);
 
@@ -164,18 +147,14 @@ public class DataTableResearchEditor : Editor
                 EditorGUILayout.EndHorizontal();
             }
             if (GUILayout.Button("+ Add Prerequisite", GUILayout.Width(150)))
-            {
                 researchData.prerequisiteIds.Add(EModuleSubType.none.ToString());
-            }
 
             EditorGUILayout.Space(5);
 
-            // UI 위치
             researchData.uiPosition = EditorGUILayout.Vector2Field("UI Position", researchData.uiPosition);
 
             EditorGUILayout.Space(5);
 
-            // 연구 비용 (Tech Level은 서브타입 인코딩에서 파싱 — 별도 입력 불필요)
             EditorGUILayout.LabelField("Research Cost", EditorStyles.boldLabel);
             researchData.pointCost = EditorGUILayout.IntField("ModulePoint", researchData.pointCost);
 
@@ -185,70 +164,12 @@ public class DataTableResearchEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawTechLevelGroup()
-    {
-        var list = dataTable.TechLevelDataList;
-
-        EditorGUILayout.BeginVertical("box");
-        var originalColor = GUI.backgroundColor;
-        GUI.backgroundColor = new Color(0.8f, 0.8f, 1.0f);
-        techLevelFoldout = EditorGUILayout.Foldout(techLevelFoldout, $"Tech Level Upgrades ({list.Count})", true, EditorStyles.foldoutHeader);
-        GUI.backgroundColor = originalColor;
-
-        if (techLevelFoldout)
-        {
-            foreach (var data in list)
-            {
-                EditorGUILayout.BeginVertical("box");
-                EditorGUILayout.LabelField($"tech_level_{data.targetTechLevel}  ({data.researchId})", EditorStyles.boldLabel);
-                EditorGUI.indentLevel++;
-                EditorGUILayout.IntField("Target Tech Level", data.targetTechLevel);
-                EditorGUILayout.LabelField("Prerequisites", string.Join(", ", data.prerequisiteIds));
-                EditorGUILayout.LabelField("Cost TP", data.pointCost.ToString());
-                data.shipCount = EditorGUILayout.IntField("Ship Count",       data.shipCount);
-                EditorGUI.indentLevel--;
-                EditorGUILayout.EndVertical();
-            }
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawUtilityTools()
-    {
-        EditorGUILayout.BeginVertical("box");
-        //EditorGUILayout.Space(10);
-        DrawCsvTools();
-        EditorGUILayout.EndVertical();
-    }
-
     private void DrawCsvTools()
     {
         EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField("CSV Import/Export", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("CSV Import", EditorStyles.boldLabel);
 
-        string basePath = Application.dataPath + "/Resources/DataTable/Research/";
-        string techCsvPath    = basePath + "datatable_research_tech.csv";
-        string subtypeCsvPath = basePath + "datatable_research_subtype.csv";
-
-        EditorGUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Import Tech CSV"))
-        {
-            if (System.IO.File.Exists(techCsvPath) == false)
-            {
-                EditorUtility.DisplayDialog("Error", $"파일 없음:\n{techCsvPath}", "OK");
-            }
-            else if (EditorUtility.DisplayDialog("Import Tech CSV",
-                "datatable_research_tech.csv 를 읽어 기술레벨 데이터를 갱신합니다.", "Import", "Cancel"))
-            {
-                string csvText = System.IO.File.ReadAllText(techCsvPath, System.Text.Encoding.UTF8);
-                dataTable.LoadTechFromCsv(csvText);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-                EditorUtility.DisplayDialog("Complete", $"Tech CSV Import 완료!\n기술레벨: {dataTable.TechLevelDataList.Count}개", "OK");
-            }
-        }
+        string subtypeCsvPath = Application.dataPath + "/Resources/DataTable/Research/datatable_research_subtype.csv";
 
         if (GUILayout.Button("Import Subtype CSV"))
         {
@@ -257,40 +178,16 @@ public class DataTableResearchEditor : Editor
                 EditorUtility.DisplayDialog("Error", $"파일 없음:\n{subtypeCsvPath}", "OK");
             }
             else if (EditorUtility.DisplayDialog("Import Subtype CSV",
-                "datatable_research_subtype.csv 를 읽어 모듈 연구 데이터를 갱신합니다.", "Import", "Cancel"))
+                "datatable_research_subtype.csv 를 읽어 모듈 연구 데이터를 갱신합니다.\n기존 데이터는 삭제됩니다.", "Import", "Cancel"))
             {
                 string csvText = System.IO.File.ReadAllText(subtypeCsvPath, System.Text.Encoding.UTF8);
                 dataTable.LoadSubtypeFromCsv(csvText);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-                EditorUtility.DisplayDialog("Complete", $"Subtype CSV Import 완료!\n모듈: {dataTable.ResearchDataList.Count}개", "OK");
+                EditorUtility.DisplayDialog("Complete", $"Import 완료!\n모듈: {dataTable.GetResearchDataList().Count}개", "OK");
             }
         }
 
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Import Both CSVs"))
-        {
-            bool techOk    = System.IO.File.Exists(techCsvPath);
-            bool subtypeOk = System.IO.File.Exists(subtypeCsvPath);
-            if (techOk == false || subtypeOk == false)
-            {
-                EditorUtility.DisplayDialog("Error", $"파일 없음:\n{(techOk ? "" : techCsvPath + "\n")}{(subtypeOk ? "" : subtypeCsvPath)}", "OK");
-            }
-            else if (EditorUtility.DisplayDialog("Import Both CSVs",
-                "두 CSV 파일을 모두 읽어 전체 연구 데이터를 갱신합니다.\n기존 데이터는 삭제됩니다.", "Import", "Cancel"))
-            {
-                dataTable.LoadTechFromCsv(System.IO.File.ReadAllText(techCsvPath, System.Text.Encoding.UTF8));
-                dataTable.LoadSubtypeFromCsv(System.IO.File.ReadAllText(subtypeCsvPath, System.Text.Encoding.UTF8));
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-                EditorUtility.DisplayDialog("Complete", $"Import 완료!\n기술레벨: {dataTable.TechLevelDataList.Count}개, 모듈: {dataTable.ResearchDataList.Count}개", "OK");
-            }
-        }
-
-        EditorGUILayout.EndHorizontal();
         EditorGUILayout.EndVertical();
     }
 
@@ -298,16 +195,11 @@ public class DataTableResearchEditor : Editor
     {
         switch (moduleType)
         {
-            case EModuleType.body:
-                return bodyColor;
-            case EModuleType.beam:
-                return beamColor;
-            case EModuleType.missile:
-                return missileColor;
-            case EModuleType.hanger:
-                return hangerColor;
-            default:
-                return Color.white;
+            case EModuleType.body:    return bodyColor;
+            case EModuleType.beam:    return beamColor;
+            case EModuleType.missile: return missileColor;
+            case EModuleType.hanger:  return hangerColor;
+            default:                  return Color.white;
         }
     }
 }

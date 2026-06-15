@@ -14,7 +14,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         //PlayerPrefs.DeleteAll();
         m_apiClient = new ApiClient();
-        m_apiClient.LoadRefreshToken();        
+        m_apiClient.LoadRefreshToken();
     }
     #endregion
 
@@ -611,12 +611,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.LevelDownModuleAsync(request), onComplete));
-    }
-
-    public void ResearchTechLevel(TechLevelResearchRequest request, System.Action<ApiResponse<TechLevelResearchResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ResearchTechLevelAsync(request), onComplete));
     }
 
     public void GradeUpModule(ModuleGradeChangeRequest request, System.Action<ApiResponse<ModuleGradeChangeResponse>> onComplete)

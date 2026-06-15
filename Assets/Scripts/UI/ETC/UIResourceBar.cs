@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class UIResourceBar : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_textMineralCurrent;
-    [SerializeField] private TMP_Text m_textTechPointCurrent;
     [SerializeField] private TMP_Text m_textModulePointCurrent;
     [SerializeField] private TMP_Text m_textModulePointMaxGot;
     [SerializeField] private TMP_Text m_textPvpPointCurrent;
@@ -25,7 +24,6 @@ public class UIResourceBar : MonoBehaviour
 
     // 자원별 마지막 표시값 (-1 = 미초기화, 애니메이션 없이 즉시 표시)
     private long m_displayedMineral     = -1;
-    private long m_displayedTechPoint   = -1;
     private long m_displayedModulePoint = -1;
     private long m_displayedPvpPoint    = -1;
 
@@ -53,7 +51,6 @@ public class UIResourceBar : MonoBehaviour
         InitAll(character);
 
         EventManager.Subscribe_MineralChanged(OnMineralChanged);
-        EventManager.Subscribe_TechPointChanged(OnTechPointChanged);
         EventManager.Subscribe_ModulePointChanged(OnModulePointChanged);
         EventManager.Subscribe_PvpPointChanged(OnPvpPointChanged);
     }
@@ -61,7 +58,6 @@ public class UIResourceBar : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.Unsubscribe_MineralChanged(OnMineralChanged);
-        EventManager.Unsubscribe_TechPointChanged(OnTechPointChanged);
         EventManager.Unsubscribe_ModulePointChanged(OnModulePointChanged);
         EventManager.Unsubscribe_PvpPointChanged(OnPvpPointChanged);
     }
@@ -73,12 +69,10 @@ public class UIResourceBar : MonoBehaviour
         if (info == null) return;
 
         m_displayedMineral     = character.GetMineral();
-        m_displayedTechPoint   = character.GetTechPoint();
         m_displayedModulePoint = character.GetModulePoint();
         m_displayedPvpPoint    = character.GetPvpPoint();
 
         if (m_textMineralCurrent != null)     m_textMineralCurrent.text     = m_displayedMineral.ToString();
-        if (m_textTechPointCurrent != null)   m_textTechPointCurrent.text   = m_displayedTechPoint.ToString();
         if (m_textModulePointCurrent != null) m_textModulePointCurrent.text = m_displayedModulePoint.ToString();
         if (m_textModulePointMaxGot != null)  m_textModulePointMaxGot.text  = $"/ {character.GetModulePointMaxGot()}";
         if (m_textPvpPointCurrent != null)    m_textPvpPointCurrent.text    = m_displayedPvpPoint.ToString();
@@ -105,12 +99,6 @@ public class UIResourceBar : MonoBehaviour
     {
         StartFieldAnimation(ref m_coroutineMineral, m_textMineralCurrent, m_displayedMineral, mineral);
         m_displayedMineral = mineral;
-    }
-
-    private void OnTechPointChanged(int techPoint)
-    {
-        StartFieldAnimation(ref m_coroutineTechPoint, m_textTechPointCurrent, m_displayedTechPoint, techPoint);
-        m_displayedTechPoint = techPoint;
     }
 
     private void OnModulePointChanged(int modulePoint)

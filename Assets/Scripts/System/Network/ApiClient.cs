@@ -21,8 +21,13 @@ public class CustomException : Exception
 
 public static class ApiServerUrl
 {
+    //public const string Dev     = "http://192.168.0.51:8080/api";
     public const string Dev     = "http://localhost:8080/api";
+
+    //public const string Test    = "http://192.168.0.61:8080/api";
     public const string Test    = "https://dev.fidforge.com/api";
+    
+    //public const string Release = "https://168.110.100.27/api";
     public const string Release = "https://www.fidforge.com/api";
 }
 
@@ -539,25 +544,6 @@ public class ApiClient
         return response;
     }
 
-    public async Task<ApiResponse<TechLevelResearchResponse>> ResearchTechLevelAsync(TechLevelResearchRequest request)
-    {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<TechLevelResearchResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
-
-        string json = JsonConvert.SerializeObject(request);
-        Debug.Log($"TechLevel Research Request: {json}");
-
-        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/research-tech-level", "POST");
-        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
-        webRequest.downloadHandler = new DownloadHandlerBuffer();
-        webRequest.SetRequestHeader("Content-Type", "application/json");
-        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
-
-        await SendRequestAsync(webRequest);
-
-        var response = JsonConvert.DeserializeObject<ApiResponse<TechLevelResearchResponse>>(webRequest.downloadHandler.text);
-        Debug.Log($"TechLevel Research Response: {webRequest.downloadHandler.text}");
-        return response;
-    }
 
     // public async Task<ApiResponse<ShipInfo>> AddModuleBodyAsync(ModuleBodyAddRequest request)
     // {

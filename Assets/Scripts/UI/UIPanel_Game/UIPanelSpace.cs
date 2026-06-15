@@ -91,10 +91,15 @@ public class UIPanelSpace : UIPanelBase
             var character = DataManager.Instance.m_currentCharacter;
             if (character != null)
             {
+                int prevLevel = character.GetTechLevel();
                 character.UpdateMineral(response.data.mineralRemain);
                 character.UpdateTechPoint(response.data.techPointRemain);
                 character.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
                 character.UpdateModulePoint(response.data.modulePointRemain);
+                int newLevel = response.data.techLevel;
+                character.UpdateTechLevel(newLevel);
+                if (newLevel > prevLevel)
+                    UIManager.Instance.ShowTechLevelupNotify(newLevel);
             }
 
             UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig

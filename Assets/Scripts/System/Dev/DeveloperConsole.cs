@@ -574,6 +574,10 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
 
         switch (key.ToLower())
         {
+            case "techlevel":
+                if (int.TryParse(value, out int techLevel))
+                    DataManager.Instance.m_currentCharacter.UpdateTechLevel(techLevel);
+                break;
             case "tech":
                 // 서버가 반환한 targetTechLevel까지 tech_level_1~N을 모두 완료 처리
                 if (int.TryParse(value, out int tech))

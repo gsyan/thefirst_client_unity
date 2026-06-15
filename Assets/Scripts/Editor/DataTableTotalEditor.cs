@@ -9,6 +9,7 @@ public class DataTableTotalEditor : EditorWindow
     private DataTableConfig dataTableConfig;
     private DataTableModule dataTableModule;
     private DataTableResearch dataTableResearch;
+    private DataTableTechLevel dataTableTechLevel;
     private DataTableZone dataTableZone;
     private DataTableForbiddenWords dataTableForbiddenWords;
     private DataTablePvpSeason dataTablePvpSeason;
@@ -29,7 +30,6 @@ public class DataTableTotalEditor : EditorWindow
 
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-        // Data Sources 섹션
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Data Sources", EditorStyles.boldLabel);
 
@@ -40,7 +40,10 @@ public class DataTableTotalEditor : EditorWindow
             "DataTable Module", dataTableModule, typeof(DataTableModule), false);
 
         dataTableResearch = (DataTableResearch)EditorGUILayout.ObjectField(
-            "DataTable Module Research", dataTableResearch, typeof(DataTableResearch), false);
+            "DataTable Research", dataTableResearch, typeof(DataTableResearch), false);
+
+        dataTableTechLevel = (DataTableTechLevel)EditorGUILayout.ObjectField(
+            "DataTable TechLevel", dataTableTechLevel, typeof(DataTableTechLevel), false);
 
         dataTableZone = (DataTableZone)EditorGUILayout.ObjectField(
             "DataTable Zone", dataTableZone, typeof(DataTableZone), false);
@@ -57,30 +60,23 @@ public class DataTableTotalEditor : EditorWindow
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
 
-        // Export 섹션
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Total Export Options", EditorStyles.boldLabel);
 
         GUI.enabled = IsValid();
 
         if (GUILayout.Button("Export All", GUILayout.Height(40)))
-        {
             ExportAll();
-        }
 
         EditorGUILayout.Space(5);
 
         if (GUILayout.Button("Export to Server Directory", GUILayout.Height(30)))
-        {
             ExportToServerDirectory();
-        }
 
         GUI.enabled = true;
-
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
 
-        // 정보 표시
         if (dataTableModule != null)
         {
             EditorGUILayout.BeginVertical("box");
@@ -96,7 +92,15 @@ public class DataTableTotalEditor : EditorWindow
             EditorGUILayout.LabelField($"Beam Modules: {dataTableModule.BeamModules.Count}");
             EditorGUILayout.LabelField($"Missile Modules: {dataTableModule.MissileModules.Count}");
             EditorGUILayout.LabelField($"Engine Modules: {dataTableModule.EngineModules.Count}");
+            EditorGUILayout.EndVertical();
+        }
 
+        if (dataTableTechLevel != null)
+        {
+            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.LabelField("Tech Level Info", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField($"Tech Levels: {dataTableTechLevel.GetTechLevelDataList().Count}");
+            EditorGUILayout.LabelField($"Max Ship Count: {dataTableTechLevel.GetMaxShipCount()}");
             EditorGUILayout.EndVertical();
         }
 
@@ -104,11 +108,9 @@ public class DataTableTotalEditor : EditorWindow
         {
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("Game Settings Info", EditorStyles.boldLabel);
-
             var settings = dataTableConfig.gameSettings;
             EditorGUILayout.LabelField($"Version: {settings.version}");
             EditorGUILayout.LabelField($"Add Ships Cost: {settings.addShipCost}");
-
             EditorGUILayout.EndVertical();
         }
 
@@ -117,212 +119,91 @@ public class DataTableTotalEditor : EditorWindow
 
     private void AutoAssignAssets()
     {
-        if (dataTableConfig == null)
-        {
-            string[] guids = AssetDatabase.FindAssets("t:DataTableConfig", new[] { "Assets/Resources/DataTable" });
-            if (guids.Length > 0)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                dataTableConfig = AssetDatabase.LoadAssetAtPath<DataTableConfig>(path);
-            }
-        }
+        TryLoad(ref dataTableConfig,       "t:DataTableConfig");
+        TryLoad(ref dataTableModule,        "t:DataTableModule");
+        TryLoad(ref dataTableResearch,      "t:DataTableResearch");
+        TryLoad(ref dataTableTechLevel,     "t:DataTableTechLevel");
+        TryLoad(ref dataTableZone,          "t:DataTableZone");
+        TryLoad(ref dataTableForbiddenWords,"t:DataTableForbiddenWords");
+        TryLoad(ref dataTablePvpSeason,     "t:DataTablePvpSeason");
+        TryLoad(ref dataTableDailyBonus,    "t:DataTableDailyBonus");
+    }
 
-        if (dataTableModule == null)
-        {
-            string[] guids = AssetDatabase.FindAssets("t:DataTableModule", new[] { "Assets/Resources/DataTable" });
-            if (guids.Length > 0)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                dataTableModule = AssetDatabase.LoadAssetAtPath<DataTableModule>(path);
-            }
-        }
-
-        if (dataTableResearch == null)
-        {
-            string[] guids = AssetDatabase.FindAssets("t:DataTableResearch", new[] { "Assets/Resources/DataTable" });
-            if (guids.Length > 0)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                dataTableResearch = AssetDatabase.LoadAssetAtPath<DataTableResearch>(path);
-            }
-        }
-
-        if (dataTableZone == null)
-        {
-            string[] guids = AssetDatabase.FindAssets("t:DataTableZone", new[] { "Assets/Resources/DataTable" });
-            if (guids.Length > 0)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                dataTableZone = AssetDatabase.LoadAssetAtPath<DataTableZone>(path);
-            }
-        }
-
-        if (dataTableForbiddenWords == null)
-        {
-            string[] guids = AssetDatabase.FindAssets("t:DataTableForbiddenWords", new[] { "Assets/Resources/DataTable" });
-            if (guids.Length > 0)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                dataTableForbiddenWords = AssetDatabase.LoadAssetAtPath<DataTableForbiddenWords>(path);
-            }
-        }
-
-        if (dataTablePvpSeason == null)
-        {
-            string[] guids = AssetDatabase.FindAssets("t:DataTablePvpSeason", new[] { "Assets/Resources/DataTable" });
-            if (guids.Length > 0)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                dataTablePvpSeason = AssetDatabase.LoadAssetAtPath<DataTablePvpSeason>(path);
-            }
-        }
-
-        if (dataTableDailyBonus == null)
-        {
-            string[] guids = AssetDatabase.FindAssets("t:DataTableDailyBonus", new[] { "Assets/Resources/DataTable" });
-            if (guids.Length > 0)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                dataTableDailyBonus = AssetDatabase.LoadAssetAtPath<DataTableDailyBonus>(path);
-            }
-        }
+    private void TryLoad<T>(ref T field, string filter) where T : UnityEngine.Object
+    {
+        if (field != null) return;
+        string[] guids = AssetDatabase.FindAssets(filter, new[] { "Assets/Resources/DataTable" });
+        if (guids.Length > 0)
+            field = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guids[0]));
     }
 
     private bool IsValid()
     {
-        return dataTableModule != null && dataTableConfig != null && dataTableResearch != null
-            && dataTableZone != null && dataTableForbiddenWords != null && dataTablePvpSeason != null
-            && dataTableDailyBonus != null;
+        return dataTableModule != null && dataTableConfig != null
+            && dataTableResearch != null && dataTableTechLevel != null
+            && dataTableZone != null && dataTableForbiddenWords != null
+            && dataTablePvpSeason != null && dataTableDailyBonus != null;
     }
 
     private void ExportAll()
     {
-        if (!IsValid())
+        if (IsValid() == false)
         {
             EditorUtility.DisplayDialog("Error", "Please assign all DataTables!", "OK");
             return;
         }
 
         string folderPath = EditorUtility.SaveFolderPanel("Export Game Configs", "", "");
-        if (!string.IsNullOrEmpty(folderPath))
-        {
-            // DataTableConfig.json 내보내기
-            string configJson = dataTableConfig.ExportToJson();
-            string configPath = Path.Combine(folderPath, "DataTableConfig.json");
-            File.WriteAllText(configPath, configJson);
+        if (string.IsNullOrEmpty(folderPath)) return;
 
-            // DataTableModule.json 내보내기
-            string moduleJson = dataTableModule.ExportToJson();
-            string modulePath = Path.Combine(folderPath, "DataTableModule.json");
-            File.WriteAllText(modulePath, moduleJson);
+        WriteJson(folderPath, "DataTableConfig.json",        dataTableConfig.ExportToJson());
+        WriteJson(folderPath, "DataTableModule.json",        dataTableModule.ExportToJson());
+        WriteJson(folderPath, "DataTableResearch.json",      dataTableResearch.ExportToJson());
+        WriteJson(folderPath, "DataTableTechLevel.json",     dataTableTechLevel.ExportToJson());
+        WriteJson(folderPath, "DataTableZone.json",          dataTableZone.ExportToJson());
+        WriteJson(folderPath, "DataTableForbiddenWords.json",dataTableForbiddenWords.ExportToJson());
+        WriteJson(folderPath, "DataTablePvpSeason.json",     dataTablePvpSeason.ExportToJson());
+        WriteJson(folderPath, "DataTableDailyBonus.json",    dataTableDailyBonus.ExportToJson());
 
-            // DataTableModuleResearch.json 내보내기
-            string researchJson = dataTableResearch.ExportToJson();
-            string researchPath = Path.Combine(folderPath, "DataTableResearch.json");
-            File.WriteAllText(researchPath, researchJson);
-
-            // DataTableZone.json 내보내기
-            string zoneJson = dataTableZone.ExportToJson();
-            string zonePath = Path.Combine(folderPath, "DataTableZone.json");
-            File.WriteAllText(zonePath, zoneJson);
-
-            // DataTableForbiddenWords.json 내보내기
-            string forbiddenJson = dataTableForbiddenWords.ExportToJson();
-            string forbiddenPath = Path.Combine(folderPath, "DataTableForbiddenWords.json");
-            File.WriteAllText(forbiddenPath, forbiddenJson);
-
-            // DataTablePvpSeason.json 내보내기
-            string pvpSeasonJson = dataTablePvpSeason.ExportToJson();
-            string pvpSeasonPath = Path.Combine(folderPath, "DataTablePvpSeason.json");
-            File.WriteAllText(pvpSeasonPath, pvpSeasonJson);
-
-            // DataTableDailyBonus.json 내보내기
-            string dailyBonusJson = dataTableDailyBonus.ExportToJson();
-            string dailyBonusPath = Path.Combine(folderPath, "DataTableDailyBonus.json");
-            File.WriteAllText(dailyBonusPath, dailyBonusJson);
-
-            EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to:\n{configPath}\n{modulePath}\n{researchPath}\n{zonePath}\n{forbiddenPath}\n{pvpSeasonPath}\n{dailyBonusPath}", "OK");
-        }
+        EditorUtility.DisplayDialog("Export Successful", $"Exported to:\n{folderPath}", "OK");
     }
 
     private void ExportToServerDirectory()
     {
-        if (!IsValid())
+        if (IsValid() == false)
         {
             EditorUtility.DisplayDialog("Error", "Please assign all DataTables!", "OK");
             return;
         }
 
-        // Application.dataPath = D:\BK\thefirst\thefirst_client_unity\Assets
-        // 목표: D:\BK\thefirst\thefirst_server\src\main\resources\data
-        string serverDataPath = Path.Combine(Application.dataPath, "..", "..", "thefirst_server", "src", "main", "resources", "data");
-        serverDataPath = Path.GetFullPath(serverDataPath);
+        string serverDataPath = Path.GetFullPath(
+            Path.Combine(Application.dataPath, "..", "..", "thefirst_server", "src", "main", "resources", "data"));
 
         try
         {
             Directory.CreateDirectory(serverDataPath);
 
-            // DataTableConfig.json 서버로 내보내기
-            string configJson = dataTableConfig.ExportToJson();
-            string configServerPath = Path.Combine(serverDataPath, "DataTableConfig.json");
-            File.WriteAllText(configServerPath, configJson);
+            WriteJson(serverDataPath, "DataTableConfig.json",        dataTableConfig.ExportToJson());
+            WriteJson(serverDataPath, "DataTableModule.json",        dataTableModule.ExportToJson());
+            WriteJson(serverDataPath, "DataTableResearch.json",      dataTableResearch.ExportToJson());
+            WriteJson(serverDataPath, "DataTableTechLevel.json",     dataTableTechLevel.ExportToJson());
+            WriteJson(serverDataPath, "DataTableZone.json",          dataTableZone.ExportToJson());
+            WriteJson(serverDataPath, "DataTableForbiddenWords.json",dataTableForbiddenWords.ExportToJson());
+            WriteJson(serverDataPath, "DataTablePvpSeason.json",     dataTablePvpSeason.ExportToJson());
+            WriteJson(serverDataPath, "DataTableDailyBonus.json",    dataTableDailyBonus.ExportToJson());
 
-            // DataTableModule.json 서버로 내보내기
-            string moduleJson = dataTableModule.ExportToJson();
-            string moduleServerPath = Path.Combine(serverDataPath, "DataTableModule.json");
-            File.WriteAllText(moduleServerPath, moduleJson);
-
-            // DataTableResearch.json 서버로 내보내기
-            string researchJson = dataTableResearch.ExportToJson();
-            string researchServerPath = Path.Combine(serverDataPath, "DataTableResearch.json");
-            File.WriteAllText(researchServerPath, researchJson);
-
-            // DataTableZone.json 서버로 내보내기
-            string zoneJson = dataTableZone.ExportToJson();
-            string zoneServerPath = Path.Combine(serverDataPath, "DataTableZone.json");
-            File.WriteAllText(zoneServerPath, zoneJson);
-
-            // DataTableForbiddenWords.json 서버로 내보내기
-            string forbiddenJson = dataTableForbiddenWords.ExportToJson();
-            string forbiddenServerPath = Path.Combine(serverDataPath, "DataTableForbiddenWords.json");
-            File.WriteAllText(forbiddenServerPath, forbiddenJson);
-
-            // DataTablePvpSeason.json 서버로 내보내기
-            string pvpSeasonJson = dataTablePvpSeason.ExportToJson();
-            string pvpSeasonServerPath = Path.Combine(serverDataPath, "DataTablePvpSeason.json");
-            File.WriteAllText(pvpSeasonServerPath, pvpSeasonJson);
-
-            // DataTableDailyBonus.json 서버로 내보내기
-            string dailyBonusJson = dataTableDailyBonus.ExportToJson();
-            string dailyBonusServerPath = Path.Combine(serverDataPath, "DataTableDailyBonus.json");
-            File.WriteAllText(dailyBonusServerPath, dailyBonusJson);
-
-            EditorUtility.DisplayDialog("Export Successful",
-                $"Game Configs exported to server:\n{configServerPath}\n{moduleServerPath}\n{researchServerPath}\n{zoneServerPath}\n{forbiddenServerPath}\n{pvpSeasonServerPath}\n{dailyBonusServerPath}", "OK");
+            EditorUtility.DisplayDialog("Export Successful", $"Exported to server:\n{serverDataPath}", "OK");
         }
         catch (System.Exception e)
         {
-            EditorUtility.DisplayDialog("Export Failed",
-                $"Failed to export to server directory:\n{e.Message}", "OK");
+            EditorUtility.DisplayDialog("Export Failed", $"Failed to export:\n{e.Message}", "OK");
         }
     }
 
-    // private TotalGameConfigData CreateTotalGameConfig()
-    // {
-    //     var totalConfig = new TotalGameConfigData();
-
-    //     // DataTableModule 데이터 추가
-    //     totalConfig.modules = new System.Collections.Generic.Dictionary<string, object>();
-    //     totalConfig.modules["0"] = dataTableModule.BodyModules.modules;
-    //     totalConfig.modules["1"] = dataTableModule.WeaponModules.modules;
-    //     totalConfig.modules["2"] = dataTableModule.EngineModules.modules;
-
-    //     // GameSettings 데이터 추가
-    //     totalConfig.gameSettings = dataTableConfig.gameSettings;
-
-    //     return totalConfig;
-    // }
+    private void WriteJson(string folder, string fileName, string json)
+    {
+        File.WriteAllText(Path.Combine(folder, fileName), json);
+    }
 
     [System.Serializable]
     public class TotalGameConfigData

@@ -1,5 +1,4 @@
-﻿// 함대 탭 UI — Tech Level 행, Fleet Stats(2행 압축), 함선 선택 그리드(9칸 고정, 프리팹에 미리 배치), Formation 하단 바 + 교체 팝업 관리
-// 빈 슬롯은 잠금 아이콘으로 표시, 클릭 시 함선 추가 팝업 호출
+﻿// 기술레벨 탭 UI — 현재 기술레벨/함선 수 표시, 기술 포인트 게이지 표시
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,12 +8,13 @@ public class UITabTech : UITabBase
     [SerializeField] private TMP_Text m_techLevelText;
     [SerializeField] private TMP_Text m_shipCountText;
     [SerializeField] private Transform m_shipImages;
+    [SerializeField] private TMP_Text m_moduleGradeLimitText;    
+    [SerializeField] private Image m_techPointGaugeImage;   // 기술 포인트 게이지 Fill Image
+    [SerializeField] private TMP_Text m_techPointGaugeText; // 기술 포인트 게이지 위 텍스트
     [SerializeField] private TMP_Text m_nextLevelText;
-    [SerializeField] private TMP_Text m_nextModuleGradeText;
     [SerializeField] private TMP_Text m_nextLevelShipCountText;
-    [SerializeField] private Button   m_techLevelUpButton;
-    [SerializeField] private TMP_Text m_techLevelUpButtonText;
-
+    [SerializeField] private TMP_Text m_nextModuleGradeText;    
+    
     private static readonly Vector2 k_sizeActive   = new Vector2(10f, 50f);
     private static readonly Vector2 k_sizeInactive = new Vector2(10f, 25f);
 
@@ -22,7 +22,7 @@ public class UITabTech : UITabBase
     private Color m_colorInactive;
 
     private Image[] m_shipSlots;
-    
+
 
     public override void InitializeUITab()
     {
@@ -42,8 +42,6 @@ public class UITabTech : UITabBase
             for (int i = 0; i < m_shipImages.childCount; i++)
                 m_shipSlots[i] = m_shipImages.GetChild(i).GetComponent<Image>();
         }
-
-        if (m_techLevelUpButton != null) m_techLevelUpButton.onClick.AddListener(OnTechLevelButtonClicked);
 
         EventManager.Subscribe_TechLevelChanged(OnTechLevelChanged);
     }
@@ -82,8 +80,8 @@ public class UITabTech : UITabBase
         if (character == null) return;
 
         int currentLevel = character.GetTechLevel();
-        int maxShips = DataManager.Instance.m_dataTableResearch.GetShipCount(currentLevel);
-        TechLevelResearchData nextNode = GetNextTechLevelNode(character);
+        int maxShips = DataManager.Instance.m_dataTableTechLevel.GetShipCount(currentLevel);
+        TechLevelData nextNode = GetNextTechLevelNode(character);
 
         // 기술레벨 요약: 레벨 / 자원 보관 캡 / 최대 함선 수
         if (m_techLevelText != null)
@@ -91,6 +89,9 @@ public class UITabTech : UITabBase
 
         if (m_shipCountText != null)
             m_shipCountText.text = $"{maxShips}";
+
+        if (m_moduleGradeLimitText != null)
+            m_moduleGradeLimitText.text = $"T.{currentLevel}";
 
         RefreshShipSlots(maxShips);
 
@@ -111,79 +112,49 @@ public class UITabTech : UITabBase
                 
         }
 
-        if (m_techLevelUpButtonText != null)
+        int currentTechPoint = character.GetTechPoint();
+        int currentLevelRequired = DataManager.Instance.m_dataTableTechLevel.GetRequiredTechPoint(currentLevel);
+        int progressCurrent = currentTechPoint - currentLevelRequired;
+
+        if (m_techPointGaugeText != null)
         {
-            string key = nextNode != null ? "LevelupButtonText" : "LevelupButtonTextMax";
-            m_techLevelUpButtonText.text = LocalizationManager.Instance.Get(key);
+            if (nextNode != null)
+            {
+                int progressRequired = nextNode.requiredTechPoint - currentLevelRequired;
+                int remaining = progressRequired - progressCurrent;
+                m_techPointGaugeText.text = LocalizationManager.Instance.Get("UITabTech_PointsToNextLevel", remaining);
+            }
+            else
+                m_techPointGaugeText.text = string.Empty;
+        }
+
+        if (m_techPointGaugeImage != null)
+        {
+            if (nextNode != null)
+            {
+                int progressRequired = nextNode.requiredTechPoint - currentLevelRequired;
+                float ratio = progressRequired > 0 ? (float)progressCurrent / progressRequired : 0f;
+                m_techPointGaugeImage.fillAmount = Mathf.Clamp01(ratio);
+            }
+            else
+            {
+                m_techPointGaugeImage.fillAmount = 1f;
+            }
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_techLevelText.transform as RectTransform);
     }
 
-    private TechLevelResearchData GetNextTechLevelNode(Character character)
+    private TechLevelData GetNextTechLevelNode(Character character)
     {
-        var techList = DataManager.Instance.m_dataTableResearch.TechLevelDataList;
+        int currentLevel = character.GetTechLevel();
+        var techList = DataManager.Instance.m_dataTableTechLevel.GetTechLevelDataList();
         for (int i = 0; i < techList.Count; i++)
         {
-            if (character.IsResearchCompleted(techList[i].researchId) == false)
+            if (techList[i].targetTechLevel > currentLevel)
                 return techList[i];
         }
         return null;
-    }
-
-    private void OnTechLevelButtonClicked()
-    {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
-        if (GetNextTechLevelNode(character) == null) return;
-
-        int currentLevel = character.GetTechLevel();
-        UIManager.Instance.ShowTechLevelupPopup(currentLevel, targetLevel =>
-        {
-            ResearchTechLevelsSequentially(currentLevel + 1, targetLevel);
-        });
-    }
-
-    // currentLevel+1 ~ toLevel 까지 순차적으로 API 호출
-    private void ResearchTechLevelsSequentially(int fromLevel, int toLevel)
-    {
-        var techList = DataManager.Instance.m_dataTableResearch.TechLevelDataList;
-        var node = techList.Find(n => n.targetTechLevel == fromLevel);
-        if (node == null) return;
-
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character.CheckEnoughTechPoint(node.pointCost) == false)
-        {
-            ShowErrorMessage(LocalizationManager.Instance.Get("error_insufficient_resources"));
-            return;
-        }
-
-        var request = new TechLevelResearchRequest { researchId = node.researchId };
-        NetworkManager.Instance.ResearchTechLevel(request, response =>
-        {
-            OnSequentialTechLevelResponse(response, fromLevel, toLevel);
-        });
-    }
-
-    private void OnSequentialTechLevelResponse(ApiResponse<TechLevelResearchResponse> response, int completedLevel, int toLevel)
-    {
-        if (response.errorCode != 0)
-        {
-            string errorMessage = ErrorCodeMapping.GetMessage(response.errorCode);
-            ShowErrorMessage($"Research failed: {errorMessage}");
-            return;
-        }
-
-        DataManager.Instance.m_currentCharacter.UpdateTechPoint(response.data.techPointRemain);
-        if (response.data.researchedIds != null)
-            DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
-
-        UpdateTechLevelDisplay();
-
-        int nextLevel = completedLevel + 1;
-        if (nextLevel <= toLevel)
-            ResearchTechLevelsSequentially(nextLevel, toLevel);
     }
 
     private void OnTechLevelChanged(int techLevel)

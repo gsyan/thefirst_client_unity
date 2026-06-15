@@ -34,22 +34,4 @@ public class UITabButtonTech : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_textTechLevel.transform.parent as RectTransform);
     }
 
-    // 소수 시간을 "XH YM" 형식으로 변환 (예: 3.5 → "3H 30M")
-    private string FormatHours(float hours)
-    {
-        int h = (int)hours;
-        int m = Mathf.RoundToInt((hours - h) * 60f);
-        return m > 0 ? $"{h}H {m}M" : $"{h}H";
-    }
-
-    private TechLevelResearchData GetNextTechLevelNode(Character character)
-    {
-        var techList = DataManager.Instance.m_dataTableResearch.TechLevelDataList;
-        for (int i = 0; i < techList.Count; i++)
-        {
-            if (character.IsResearchCompleted(techList[i].researchId) == false)
-                return techList[i];
-        }
-        return null;
-    }
 }
