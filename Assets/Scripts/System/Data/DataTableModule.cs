@@ -95,9 +95,6 @@ public class DataTableModule : ScriptableObject
     [Header("Body Modules by SubType")]
     [SerializeField] private List<ModuleSubTypeGroup> bodyGroups = new();
 
-    [Header("Engine Modules by SubType")]
-    [SerializeField] private List<ModuleSubTypeGroup> engineGroups = new();
-
     [Header("Beam Modules by SubType")]
     [SerializeField] private List<ModuleSubTypeGroup> beamGroups = new();
 
@@ -111,7 +108,6 @@ public class DataTableModule : ScriptableObject
     [SerializeField, TextArea(5, 15)] private string exportedJson = "";
 
     public List<ModuleSubTypeGroup> BodyGroups => bodyGroups;
-    public List<ModuleSubTypeGroup> EngineGroups => engineGroups;
     public List<ModuleSubTypeGroup> BeamGroups => beamGroups;
     public List<ModuleSubTypeGroup> MissileGroups => missileGroups;
     public List<ModuleSubTypeGroup> HangerGroups => hangerGroups;
@@ -122,18 +118,6 @@ public class DataTableModule : ScriptableObject
         {
             var list = new ModuleDataList();
             foreach (var group in bodyGroups)
-                foreach (var module in group.modules)
-                    list.Add(module);
-            return list;
-        }
-    }
-
-    public ModuleDataList EngineModules
-    {
-        get
-        {
-            var list = new ModuleDataList();
-            foreach (var group in engineGroups)
                 foreach (var module in group.modules)
                     list.Add(module);
             return list;
@@ -294,7 +278,6 @@ public class DataTableModule : ScriptableObject
             if (modulesObj != null)
             {
                 bodyGroups.Clear();
-                engineGroups.Clear();
                 beamGroups.Clear();
                 missileGroups.Clear();
                 hangerGroups.Clear();
@@ -379,7 +362,6 @@ public class DataTableModule : ScriptableObject
     public void LoadFromCsv(string csvText)
     {
         bodyGroups.Clear();
-        engineGroups.Clear();
         beamGroups.Clear();
         missileGroups.Clear();
         hangerGroups.Clear();
@@ -447,7 +429,7 @@ public class DataTableModule : ScriptableObject
             AddModuleDataToTable(module);
         }
 
-        int total = BodyModules.Count + EngineModules.Count + BeamModules.Count + MissileModules.Count + HangerModules.Count;
+        int total = BodyModules.Count + BeamModules.Count + MissileModules.Count + HangerModules.Count;
         Debug.Log($"[DataTableModule] CSV Import 완료: {total}개 모듈");
         EditorUtility.SetDirty(this);
     }

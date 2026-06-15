@@ -625,6 +625,42 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.GradeDownModuleAsync(request), onComplete));
     }
 
+    public void MineralUnlockModule(MineralModuleUnlockRequest request, System.Action<ApiResponse<MineralModuleUnlockResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.MineralUnlockModuleAsync(request), onComplete));
+    }
+
+    public void MineralLevelUpModule(MineralModuleLevelChangeRequest request, System.Action<ApiResponse<MineralModuleLevelChangeResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.MineralLevelUpModuleAsync(request), onComplete));
+    }
+
+    public void MineralLevelDownModule(MineralModuleLevelChangeRequest request, System.Action<ApiResponse<MineralModuleLevelChangeResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.MineralLevelDownModuleAsync(request), onComplete));
+    }
+
+    public void MineralGradeUpModule(MineralModuleGradeChangeRequest request, System.Action<ApiResponse<MineralModuleGradeChangeResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.MineralGradeUpModuleAsync(request), onComplete));
+    }
+
+    public void MineralGradeDownModule(MineralModuleGradeChangeRequest request, System.Action<ApiResponse<MineralModuleGradeChangeResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.MineralGradeDownModuleAsync(request), onComplete));
+    }
+
+    public void MineralResetModule(MineralModuleResetRequest request, System.Action<ApiResponse<MineralModuleResetResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.MineralResetModuleAsync(request), onComplete));
+    }
+
 
 
     // public void AddModuleBody(ModuleBodyAddRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)

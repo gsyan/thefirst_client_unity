@@ -48,11 +48,18 @@ public class UIButtonHasChildren : MonoBehaviour
             m_graphics = GetComponentsInChildren<Graphic>(true);
 
         Color mainColor   = CommonUtility.PaletteColor(interactable == true ? m_activeColorKey   : m_inactiveColorKey);
-        
+
         for (int i = 0; i < m_graphics.Length; i++)
         {
             if (m_graphics[i] == null) continue;
             m_graphics[i].color = mainColor;
         }
+    }
+
+    public void SetActiveColorKey(string colorKey)
+    {
+        m_activeColorKey = colorKey;
+        if (GetButton().interactable == true)
+            SetInteractable(true);
     }
 }

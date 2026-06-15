@@ -74,7 +74,7 @@ public class DataTableModuleEditor : Editor
         GUILayout.Label("Data Table Module", EditorStyles.largeLabel);
         GUILayout.FlexibleSpace();
 
-        int totalModules = dataTableModule.BodyModules.Count + dataTableModule.EngineModules.Count + dataTableModule.BeamModules.Count + dataTableModule.MissileModules.Count + dataTableModule.HangerModules.Count;
+        int totalModules = dataTableModule.BodyModules.Count + dataTableModule.BeamModules.Count + dataTableModule.MissileModules.Count + dataTableModule.HangerModules.Count;
         GUILayout.Label($"Total: {totalModules}", EditorStyles.miniLabel);
 
         EditorGUILayout.EndHorizontal();
@@ -277,7 +277,9 @@ public class DataTableModuleEditor : Editor
 
         EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
         module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
-        
+        EditorGUILayout.LabelField("Using Cost", EditorStyles.boldLabel);
+        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
+
         module.description = EditorGUILayout.TextField("Description", module.description);
     }
     #endregion
@@ -545,7 +547,6 @@ public class DataTableModuleEditor : Editor
 
         var allGroups = new List<ModuleSubTypeGroup>();
         allGroups.AddRange(dataTableModule.BodyGroups);
-        allGroups.AddRange(dataTableModule.EngineGroups);
         allGroups.AddRange(dataTableModule.BeamGroups);
         allGroups.AddRange(dataTableModule.MissileGroups);
         allGroups.AddRange(dataTableModule.HangerGroups);

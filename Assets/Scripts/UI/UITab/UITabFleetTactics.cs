@@ -100,16 +100,13 @@ public class UITabFleetTactics : UITabBase
         m_toggleButtons = m_toggleButtonContainer.GetComponentsInChildren<ToggleButton>();
         m_toggleStates  = new bool[m_toggleButtons.Length];
 
-        // 0=수리(HP당 1고정), 1=미사일 평균, 2=함재기 평균
-        int[] costs = { 1, GetAvgMissileCost(), GetAvgHangerCost() };
-
         int savedOptions = m_playerFleet.m_fleetInfo.tacticOptions;
         for (int i = 0; i < m_toggleButtons.Length; i++)
         {
             m_toggleStates[i] = (savedOptions & (1 << i)) != 0;
 
             if (i < k_toggleNameKeys.Length)
-                m_toggleButtons[i].SetTexts(k_toggleNameKeys[i], k_toggleDescKeys[i], i < costs.Length ? costs[i] : 0);
+                m_toggleButtons[i].SetTexts(k_toggleNameKeys[i], k_toggleDescKeys[i]);
 
             int idx = i;
             m_toggleButtons[idx].button.onClick.AddListener(() => OnClickToggle(idx));
@@ -124,36 +121,6 @@ public class UITabFleetTactics : UITabBase
         if (m_toggleButtons == null) return;
         for (int i = 0; i < m_toggleButtons.Length; i++)
             m_toggleButtons[i].SetSelected((options & (1 << i)) != 0);
-    }
-
-    private int GetAvgMissileCost()
-    {
-        int total = 0, count = 0;
-        foreach (var ship in m_playerFleet.m_ships)
-        {
-            if (ship == null) continue;
-            foreach (var body in ship.m_moduleBodys)
-            {
-                if (body == null) continue;
-                foreach (var mod in body.m_missiles) { total += mod.m_mineralCost; count++; }
-            }
-        }
-        return count == 0 ? 0 : Mathf.RoundToInt((float)total / count);
-    }
-
-    private int GetAvgHangerCost()
-    {
-        int total = 0, count = 0;
-        foreach (var ship in m_playerFleet.m_ships)
-        {
-            if (ship == null) continue;
-            foreach (var body in ship.m_moduleBodys)
-            {
-                if (body == null) continue;
-                foreach (var mod in body.m_hangers) { total += mod.m_mineralCost; count++; }
-            }
-        }
-        return count == 0 ? 0 : Mathf.RoundToInt((float)total / count);
     }
 
     private void OnClickToggle(int idx)

@@ -64,6 +64,11 @@ public class ModuleBodyInfo
     public int investedModulePoint;
     // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
     public float currentHealth;
+    // 모듈포인트 기준값 — 미네랄 초기화 시 이 값으로 복귀
+    public EModuleSubType modulePointSubType;
+    public int modulePointLevel;
+    // 투자한 미네랄 이력 (전투 승리 시 소모 + 초기화, 그 전까지 환급 가능)
+    public int investedMineral;
 }
 
 [System.Serializable]
@@ -76,6 +81,11 @@ public class ModuleInfo
     public int slotIndex;
     // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
     public int investedModulePoint;
+    // 모듈포인트 기준값 — 미네랄 초기화 시 이 값으로 복귀
+    public EModuleSubType modulePointSubType;
+    public int modulePointLevel;
+    // 투자한 미네랄 이력 (전투 승리 시 소모 + 초기화, 그 전까지 환급 가능)
+    public int investedMineral;
 }
 
 [System.Serializable]
@@ -381,6 +391,101 @@ public class ModuleInstallRequest
     public int slotIndex;
 }
 
+[System.Serializable]
+public class MineralModuleUnlockRequest
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public int slotIndex;
+}
+
+[System.Serializable]
+public class MineralModuleUnlockResponse
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
+    public int slotIndex;
+    public int mineralRemain;
+    public int investedMineral;
+}
+
+[System.Serializable]
+public class MineralModuleLevelChangeRequest
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
+    public int slotIndex;
+    public int currentLevel;
+    public int targetLevel;
+}
+
+[System.Serializable]
+public class MineralModuleLevelChangeResponse
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
+    public int slotIndex;
+    public int newLevel;
+    public int mineralRemain;
+    public int investedMineral;
+}
+
+[System.Serializable]
+public class MineralModuleGradeChangeRequest
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubTypeCurrent;
+    public EModuleSubType moduleSubTypeNew;
+    public int slotIndex;
+}
+
+[System.Serializable]
+public class MineralModuleGradeChangeResponse
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleTypeCurrent;
+    public EModuleSubType moduleSubTypeCurrent;
+    public EModuleType moduleTypeNew;
+    public EModuleSubType moduleSubTypeNew;
+    public int slotIndex;
+    public int moduleNewLevel;
+    public int mineralRemain;
+    public int investedMineral;
+}
+
+[System.Serializable]
+public class MineralModuleResetRequest
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public int slotIndex;
+}
+
+[System.Serializable]
+public class MineralModuleResetResponse
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
+    public int slotIndex;
+    public int moduleNewLevel;
+    public bool isModuleRemoved;
+    public int mineralRemain;
+    public int investedMineral;
+}
+
 #endregion
 
 #region Progress Data Classes #################################################################################
@@ -419,6 +524,9 @@ public class ClearZoneStageResponse
 {
     public bool isFirstClear;           // true = 최초 클리어
     public string clearedZoneName;      // isFirstClear == true 일 때만 유효
+    // 전투 승리 시 미네랄 강화 자동 초기화 결과
+    public FleetInfo updatedFleetInfo;  // 초기화 후 갱신된 함대 정보 (미네랄 투자 없으면 null)
+    public int mineralRemain;           // 미네랄 환급 후 잔액
 }
 
 [System.Serializable]

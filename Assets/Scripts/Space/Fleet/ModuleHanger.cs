@@ -70,6 +70,8 @@ public class ModuleHanger : ModuleBase
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
         SetInvestedModulePoint(moduleInfo.investedModulePoint);
+        SetInvestedMineral(moduleInfo.investedMineral);
+        SetModulePointInfo(moduleInfo.modulePointSubType, moduleInfo.modulePointLevel);
 
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
         if (moduleData == null)
@@ -91,7 +93,6 @@ public class ModuleHanger : ModuleBase
 
         // 업그레이드 비용 설정
         m_modulePointCostLevelup = moduleData.modulePointCost;
-        m_mineralCost = moduleData.mineralCost;
 
         m_lastLaunchTime = 0f;
 
@@ -161,11 +162,8 @@ public class ModuleHanger : ModuleBase
             {
                 if (Time.time >= m_lastLaunchTime + m_launchCool)
                 {
-                    if (TryConsumeMineral(2) == true)
-                    {
-                        ExecuteLaunchOnTarget(m_currentTarget);
-                        m_lastLaunchTime = Time.time;
-                    }
+                    ExecuteLaunchOnTarget(m_currentTarget);
+                    m_lastLaunchTime = Time.time;
                 }
             }
 

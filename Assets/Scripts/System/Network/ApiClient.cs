@@ -684,6 +684,96 @@ public class ApiClient
         await SendRequestAsync(webRequest);
         return JsonConvert.DeserializeObject<ApiResponse<FleetInstantRepairResponse>>(webRequest.downloadHandler.text);
     }
+
+    public async Task<ApiResponse<MineralModuleUnlockResponse>> MineralUnlockModuleAsync(MineralModuleUnlockRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<MineralModuleUnlockResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/mineral-unlock-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<MineralModuleUnlockResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<MineralModuleLevelChangeResponse>> MineralLevelUpModuleAsync(MineralModuleLevelChangeRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<MineralModuleLevelChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/mineral-levelup-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<MineralModuleLevelChangeResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<MineralModuleLevelChangeResponse>> MineralLevelDownModuleAsync(MineralModuleLevelChangeRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<MineralModuleLevelChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/mineral-leveldown-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<MineralModuleLevelChangeResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<MineralModuleGradeChangeResponse>> MineralGradeUpModuleAsync(MineralModuleGradeChangeRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<MineralModuleGradeChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/mineral-gradeup-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<MineralModuleGradeChangeResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<MineralModuleGradeChangeResponse>> MineralGradeDownModuleAsync(MineralModuleGradeChangeRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<MineralModuleGradeChangeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/mineral-gradedown-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<MineralModuleGradeChangeResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<MineralModuleResetResponse>> MineralResetModuleAsync(MineralModuleResetRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<MineralModuleResetResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/mineral-reset-module", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<MineralModuleResetResponse>>(webRequest.downloadHandler.text);
+    }
     #endregion
 
     #region Zone Battle API Methods -------------------------------------------------------------------------------

@@ -672,9 +672,83 @@ public class UITabExploration : UITabBase
         }
 
         m_pendingRewardIsFirstClear = response.data.isFirstClear;
+
+        // 전투 소모 미네랄 + 미네랄 강화 초기화 반영
+        var characterForMineral = DataManager.Instance.m_currentCharacter;
+        if (characterForMineral != null)
+            characterForMineral.UpdateMineral(response.data.mineralRemain);
+
+        if (response.data.updatedFleetInfo != null)
+            ApplyUpdatedFleetInfo(response.data.updatedFleetInfo);
+
         StayInCurrentStage();
         string title = LocalizationManager.Instance.Get("exploration_battle_victory");
         UIManager.Instance.StartCoroutine(StartVictorySequence(title));
+    }
+
+    private void ApplyUpdatedFleetInfo(FleetInfo updatedFleetInfo)
+    {
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
+        if (fleet == null || updatedFleetInfo.ships == null) return;
+
+        foreach (ShipInfo updatedShip in updatedFleetInfo.ships)
+        {
+            SpaceShip ship = fleet.FindShip(updatedShip.id);
+            if (ship == null || updatedShip.bodies == null) continue;
+
+            foreach (ModuleBodyInfo updatedBody in updatedShip.bodies)
+            {
+                ApplyModuleBodyUpdate(ship, updatedBody);
+            }
+            EventManager.Trigger_ShipStatsChanged(ship);
+        }
+    }
+
+    private void ApplyModuleBodyUpdate(SpaceShip ship, ModuleBodyInfo updatedBody)
+    {
+        // Body 업데이트
+        ModuleBase bodyModule = ship.FindModule(updatedBody.bodyIndex, EModuleType.body, 0);
+        if (bodyModule != null)
+        {
+            bool bodySubTypeChanged = bodyModule.GetModuleSubType() != updatedBody.moduleSubType;
+            bool bodyLevelChanged   = bodyModule.GetModuleLevel()   != updatedBody.moduleLevel;
+            if (bodySubTypeChanged == true || bodyLevelChanged == true)
+                ship.ApplyModuleChange(updatedBody.bodyIndex, EModuleType.body, updatedBody.moduleSubType, 0, updatedBody.moduleLevel);
+
+            // ApplyModuleChange 후 오브젝트가 교체됐을 수 있으므로 재탐색
+            bodyModule = ship.FindModule(updatedBody.bodyIndex, EModuleType.body, 0);
+            if (bodyModule != null)
+            {
+                ship.SetModuleInvestedMineral(updatedBody.bodyIndex, EModuleType.body, 0, updatedBody.investedMineral);
+                bodyModule.SetModulePointInfo(updatedBody.modulePointSubType, updatedBody.modulePointLevel);
+            }
+        }
+
+        ApplyModuleInfoListUpdate(ship, updatedBody.beams,    EModuleType.beam);
+        ApplyModuleInfoListUpdate(ship, updatedBody.missiles, EModuleType.missile);
+        ApplyModuleInfoListUpdate(ship, updatedBody.hangers,  EModuleType.hanger);
+    }
+
+    private void ApplyModuleInfoListUpdate(SpaceShip ship, List<ModuleInfo> moduleInfos, EModuleType moduleType)
+    {
+        if (moduleInfos == null) return;
+        foreach (ModuleInfo updatedModule in moduleInfos)
+        {
+            ModuleBase existing = ship.FindModule(updatedModule.bodyIndex, moduleType, updatedModule.slotIndex);
+            if (existing == null) continue;
+
+            bool subTypeChanged = existing.GetModuleSubType() != updatedModule.moduleSubType;
+            bool levelChanged   = existing.GetModuleLevel()   != updatedModule.moduleLevel;
+            if (subTypeChanged == true || levelChanged == true)
+                ship.ApplyModuleChange(updatedModule.bodyIndex, moduleType, updatedModule.moduleSubType, updatedModule.slotIndex, updatedModule.moduleLevel);
+
+            ship.SetModuleInvestedMineral(updatedModule.bodyIndex, moduleType, updatedModule.slotIndex, updatedModule.investedMineral);
+
+            // ApplyModuleChange 후 재탐색
+            ModuleBase refreshed = ship.FindModule(updatedModule.bodyIndex, moduleType, updatedModule.slotIndex);
+            if (refreshed != null)
+                refreshed.SetModulePointInfo(updatedModule.modulePointSubType, updatedModule.modulePointLevel);
+        }
     }
 
     private IEnumerator StartVictorySequence(string title)

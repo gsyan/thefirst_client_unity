@@ -717,6 +717,49 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
+    public void SetModuleInvestedMineral(int bodyIndex, EModuleType moduleType, int slotIndex, int mineral)
+    {
+        ModuleBase module = FindModule(bodyIndex, moduleType, slotIndex);
+        if (module == null) return;
+        module.SetInvestedMineral(mineral);
+
+        if (m_shipInfo == null || m_shipInfo.bodies == null) return;
+        ModuleBodyInfo bodyInfo = null;
+        for (int i = 0; i < m_shipInfo.bodies.Count; i++)
+        {
+            if (m_shipInfo.bodies[i].bodyIndex == bodyIndex)
+            {
+                bodyInfo = m_shipInfo.bodies[i];
+                break;
+            }
+        }
+        if (bodyInfo == null) return;
+
+        if (moduleType == EModuleType.body)
+        {
+            bodyInfo.investedMineral = mineral;
+            return;
+        }
+
+        List<ModuleInfo> moduleList = null;
+        if (moduleType == EModuleType.beam)
+            moduleList = bodyInfo.beams;
+        else if (moduleType == EModuleType.missile)
+            moduleList = bodyInfo.missiles;
+        else if (moduleType == EModuleType.hanger)
+            moduleList = bodyInfo.hangers;
+
+        if (moduleList == null) return;
+        for (int i = 0; i < moduleList.Count; i++)
+        {
+            if (moduleList[i].slotIndex == slotIndex)
+            {
+                moduleList[i].investedMineral = mineral;
+                break;
+            }
+        }
+    }
+
     // 함선의 능력치 프로파일 계산
     // bByInfo = true: Info 기반 계산 (최대 스펙)
     // bByInfo = false: 실제 상태 기반 계산 (현재 체력/상태 반영)

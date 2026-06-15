@@ -57,7 +57,7 @@ public class DataTableResearchEditor : Editor
         }
     }
 
-    private void DrawHeader()
+    private new void DrawHeader()
     {
         EditorGUILayout.BeginHorizontal("box");
         GUILayout.Label("Data Table Module Research", EditorStyles.largeLabel);

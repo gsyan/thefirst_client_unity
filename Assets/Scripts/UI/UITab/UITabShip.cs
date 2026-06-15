@@ -53,11 +53,15 @@ public class UITabShip : UITabBase
     [SerializeField] private TMP_Text               m_levelUpModuleButtonText1;
     [SerializeField] private RowImageText           m_levelUpModuleButtonText2;
 
+    [Header("미네랄/모듈포인트 모드 전환")]
+    [SerializeField] private UIButtonHasChildren    m_btnModeToggle;
+    [SerializeField] private TMP_Text               m_textModeToggle;
 
     //[SerializeField] private Button    m_subTypeManageButton;
     //[SerializeField] private Button    m_btnResetModule;
 
     private bool bShow = false;
+    private bool m_isMineralMode = false;
 
     private Character  m_myCharacter;
     private SpaceFleet m_playerFleet;
@@ -119,6 +123,7 @@ public class UITabShip : UITabBase
         m_gradeUpModuleButton.GetButton().onClick.AddListener(OnGradeUpClicked);
         m_levelDownModuleButton.GetButton().onClick.AddListener(OnLevelDownClicked);
         RegisterLevelUpPointerEvents();
+        if (m_btnModeToggle != null) m_btnModeToggle.GetButton().onClick.AddListener(OnModeToggleClicked);
         //if (m_btnResetModule != null) m_btnResetModule.onClick.AddListener(OnResetModuleClicked);
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
@@ -130,6 +135,41 @@ public class UITabShip : UITabBase
     private void OnDestroy()
     {
         EventManager.Unsubscribe_ModulePointChanged(OnModulePointChanged);
+    }
+
+    // ─────────────────────────────────────────────
+    // 미네랄 ↔ 모듈포인트 모드 전환
+    // ─────────────────────────────────────────────
+
+    private void OnModeToggleClicked()
+    {
+        if (m_selectedModule == null) return;
+        // 미네랄 투자 이력이 있으면 모듈포인트 모드로 복귀 불가
+        if (m_isMineralMode == true && m_selectedModule.m_investedMineral > 0) return;
+        m_isMineralMode = !m_isMineralMode;
+        if (m_selectedModule is ModulePlaceholder)
+            RefreshUnlockButton();
+        else
+            RefreshModuleActionButtons();
+    }
+
+    private void RefreshModeToggleButton(int investedMineral)
+    {
+        if (m_btnModeToggle == null) return;
+        // 미네랄 투자 이력이 있으면 모드 고정 → 토글 비활성화
+        string colorKey = m_isMineralMode == true ? "Mineral" : "ModulePoint";
+        m_btnModeToggle.SetActiveColorKey(colorKey);
+        m_btnModeToggle.SetInteractable(investedMineral == 0);
+        if (m_textModeToggle != null)
+            m_textModeToggle.text = m_isMineralMode == true ? "미네랄" : "모듈포인트";
+    }
+
+    private void ApplyButtonColorKey(string colorKey)
+    {
+        m_gradeUpModuleButton.SetActiveColorKey(colorKey);
+        m_gradeDownModuleButton.SetActiveColorKey(colorKey);
+        m_levelUpModuleButton.SetActiveColorKey(colorKey);
+        m_levelDownModuleButton.SetActiveColorKey(colorKey);
     }
 
     private void OnModulePointChanged(int modulePoint)
@@ -322,7 +362,10 @@ public class UITabShip : UITabBase
             return;
         }
 
-        ExecuteModuleUnlock();
+        if (m_isMineralMode == true)
+            ExecuteMineralModuleUnlock();
+        else
+            ExecuteModuleUnlock();
     }
 
     private void ExecuteModuleUnlock()
@@ -370,6 +413,58 @@ public class UITabShip : UITabBase
 
         targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex,
             unlockData.investedModulePoint);
+        EventManager.Trigger_ShipStatsChanged(targetShip);
+
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
+        {
+            PopulateModuleSelectButtons();
+            ReselectReplacedModule(targetShip, unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
+        }
+    }
+
+    private void ExecuteMineralModuleUnlock()
+    {
+        int  unlockPrice   = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
+        long playerMineral = m_myCharacter.GetMineral();
+        if (playerMineral < unlockPrice)
+        {
+            ShowErrorMessage($"Insufficient mineral (need {CommonUtility.FormatBigNumber(unlockPrice)}, have {CommonUtility.FormatBigNumber(playerMineral)})");
+            return;
+        }
+
+        var req = new MineralModuleUnlockRequest
+        {
+            shipId     = m_selectedShip.m_shipInfo.id,
+            bodyIndex  = m_selectedModule.GetModuleBodyIndex(),
+            moduleType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType,
+            slotIndex  = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex
+        };
+        NetworkManager.Instance.MineralUnlockModule(req, OnMineralUnlockResponse);
+    }
+
+    private void OnMineralUnlockResponse(ApiResponse<MineralModuleUnlockResponse> response)
+    {
+        if (response.errorCode == 0)
+            UpdateAfterMineralModuleUnlock(response.data);
+        else
+            ShowErrorMessage($"Mineral unlock failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+    }
+
+    private void UpdateAfterMineralModuleUnlock(MineralModuleUnlockResponse unlockData)
+    {
+        if (unlockData == null) return;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        character.UpdateMineral(unlockData.mineralRemain);
+
+        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
+        if (fleet == null) return;
+        SpaceShip targetShip = fleet.FindShip(unlockData.shipId);
+        if (targetShip == null) return;
+
+        targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex, 0);
+        targetShip.SetModuleInvestedMineral(unlockData.bodyIndex, unlockData.moduleType, unlockData.slotIndex, unlockData.investedMineral);
         EventManager.Trigger_ShipStatsChanged(targetShip);
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
@@ -447,6 +542,12 @@ public class UITabShip : UITabBase
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
+        if (m_isMineralMode == true)
+        {
+            ExecuteMineralLevelUpRequest();
+            return;
+        }
+
         int currentLevel = m_selectedModule.GetModuleLevel();
         int targetLevel  = currentLevel + 1;
 
@@ -493,11 +594,150 @@ public class UITabShip : UITabBase
         ExecuteLevelUpRequest();
     }
 
+    private void ExecuteMineralLevelUpRequest()
+    {
+        int currentLevel = m_selectedModule.GetModuleLevel();
+        int targetLevel  = currentLevel + 1;
+
+        ModuleData nextData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), targetLevel);
+        if (nextData == null)
+        {
+            ShowErrorMessage(LocalizationManager.Instance.Get("LevelupButtonTextMax"));
+            OnLevelUpPointerUp();
+            return;
+        }
+
+        int  mineralCost  = nextData.mineralCost;
+        var  character    = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+        if (character.GetMineral() < mineralCost)
+        {
+            ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_mineral"));
+            OnLevelUpPointerUp();
+            return;
+        }
+
+        var req = new MineralModuleLevelChangeRequest
+        {
+            shipId        = m_selectedShip.m_shipInfo.id,
+            bodyIndex     = m_selectedModule.GetModuleBodyIndex(),
+            moduleType    = m_selectedModule.GetModuleType(),
+            moduleSubType = m_selectedModule.GetModuleSubType(),
+            slotIndex     = m_selectedModule.GetSlotIndex(),
+            currentLevel  = currentLevel,
+            targetLevel   = targetLevel
+        };
+        m_bModuleChanging    = true;
+        m_levelUpRequestTime = Time.time;
+        NetworkManager.Instance.MineralLevelUpModule(req, OnMineralLevelUpResponse);
+    }
+
+    private void ExecuteMineralLevelDownRequest()
+    {
+        int currentLevel     = m_selectedModule.GetModuleLevel();
+        int modulePointLevel = m_selectedModule.m_modulePointLevel;
+
+        if (currentLevel <= modulePointLevel)
+        {
+            ShowErrorMessage("미네랄 기준점 아래로 내릴 수 없습니다");
+            return;
+        }
+
+        var req = new MineralModuleLevelChangeRequest
+        {
+            shipId        = m_selectedShip.m_shipInfo.id,
+            bodyIndex     = m_selectedModule.GetModuleBodyIndex(),
+            moduleType    = m_selectedModule.GetModuleType(),
+            moduleSubType = m_selectedModule.GetModuleSubType(),
+            slotIndex     = m_selectedModule.GetSlotIndex(),
+            currentLevel  = currentLevel,
+            targetLevel   = currentLevel - 1
+        };
+        m_bModuleChanging = true;
+        NetworkManager.Instance.MineralLevelDownModule(req, OnMineralLevelDownResponse);
+    }
+
+    private void OnMineralLevelUpResponse(ApiResponse<MineralModuleLevelChangeResponse> response)
+    {
+        m_bModuleChanging = false;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        if (response.errorCode == 0)
+        {
+            character.UpdateMineral(response.data.mineralRemain);
+            ApplyMineralModuleLevelChange(response.data);
+
+            if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
+            {
+                float elapsed = Time.time - m_levelUpRequestTime;
+                float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
+                m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
+            }
+        }
+        else
+        {
+            string msg = ErrorCodeMapping.GetMessage(response.errorCode);
+            Debug.LogError($"Mineral LevelUp failed: {msg}");
+            ShowErrorMessage($"Mineral LevelUp failed: {msg}");
+            OnLevelUpPointerUp();
+        }
+    }
+
+    private void OnMineralLevelDownResponse(ApiResponse<MineralModuleLevelChangeResponse> response)
+    {
+        m_bModuleChanging = false;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        if (response.errorCode == 0)
+        {
+            character.UpdateMineral(response.data.mineralRemain);
+            ApplyMineralModuleLevelChange(response.data);
+        }
+        else
+        {
+            string msg = ErrorCodeMapping.GetMessage(response.errorCode);
+            Debug.LogError($"Mineral LevelDown failed: {msg}");
+            ShowErrorMessage($"Mineral LevelDown failed: {msg}");
+        }
+    }
+
+    private void ApplyMineralModuleLevelChange(MineralModuleLevelChangeResponse data)
+    {
+        if (m_playerFleet == null) return;
+        SpaceShip ship = m_playerFleet.FindShip(data.shipId);
+        if (ship == null) return;
+
+        // ApplyModuleChange가 모듈을 재생성하므로 기존 투자값을 먼저 보존
+        ModuleBase prevModule = ship.FindModule(data.bodyIndex, data.moduleType, data.slotIndex);
+        int savedInvestedModulePoint = prevModule != null ? prevModule.m_investedModulePoint : 0;
+
+        ship.ApplyModuleChange(data.bodyIndex, data.moduleType, data.moduleSubType, data.slotIndex, data.newLevel);
+        ship.SetModuleInvestedMineral(data.bodyIndex, data.moduleType, data.slotIndex, data.investedMineral);
+        ship.SetModuleInvestedModulePoint(data.bodyIndex, data.moduleType, data.slotIndex, savedInvestedModulePoint);
+
+        EventManager.Trigger_ShipStatsChanged(ship);
+
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == data.shipId)
+        {
+            UpdateShipHeader();
+            PopulateModuleSelectButtons();
+            ReselectReplacedModule(ship, data.bodyIndex, data.moduleType, data.moduleSubType, data.slotIndex);
+        }
+    }
+
     private void OnLevelDownClicked()
     {
         if (m_bModuleChanging == true) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
+
+        if (m_isMineralMode == true)
+        {
+            ExecuteMineralLevelDownRequest();
+            return;
+        }
 
         int currentLevel = m_selectedModule.GetModuleLevel();
 
@@ -661,6 +901,13 @@ public class UITabShip : UITabBase
             m_unlockModuleContainer.SetActive(false);
             m_moduleStatusContainer.gameObject.SetActive(true);
 
+            // 미네랄 투자 이력이 있으면 미네랄 모드로 강제 전환, 없으면 모듈포인트 모드로 복귀
+            int investedMineral = m_selectedModule.m_investedMineral;
+            if (investedMineral > 0)
+                m_isMineralMode = true;
+            else
+                m_isMineralMode = false;
+
             EModuleSubType subType = m_selectedModule.GetModuleSubType();
             int level              = m_selectedModule.GetModuleLevel();
 
@@ -718,30 +965,63 @@ public class UITabShip : UITabBase
     private void RefreshUnlockButton()
     {
         if (m_unlockModuleButton == null) return;
-        var character  = DataManager.Instance.m_currentCharacter;
-        long playerPoint = character != null ? character.GetModulePoint() : 0;
-        int  unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
-        m_unlockModuleButton.SetInteractable(playerPoint >= unlockPrice);
+
+        // ModulePlaceholder는 investedMineral 없으므로 0으로 처리
+        RefreshModeToggleButton(0);
+
+        var character   = DataManager.Instance.m_currentCharacter;
+        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
+
+        if (m_isMineralMode == true)
+        {
+            long playerMineral = character != null ? character.GetMineral() : 0;
+            m_unlockModuleButton.SetActiveColorKey("Mineral");
+            m_unlockModuleButton.SetInteractable(playerMineral >= unlockPrice);
+        }
+        else
+        {
+            long playerPoint = character != null ? character.GetModulePoint() : 0;
+            m_unlockModuleButton.SetActiveColorKey("ModulePoint");
+            m_unlockModuleButton.SetInteractable(playerPoint >= unlockPrice);
+        }
     }
 
     private void RefreshModuleActionButtons()
     {
         if (m_selectedModule == null) return;
 
-        EModuleSubType subType = m_selectedModule.GetModuleSubType();
-        int  level       = m_selectedModule.GetModuleLevel();
-        var  character   = DataManager.Instance.m_currentCharacter;
-        int  playerTech  = character != null ? character.GetTechLevel() : 0;
-        long playerPoint = character != null ? character.GetModulePoint() : 0;
+        EModuleSubType subType        = m_selectedModule.GetModuleSubType();
+        int            level          = m_selectedModule.GetModuleLevel();
+        int            investedMineral = m_selectedModule.m_investedMineral;
+        bool           isMaxLevel     = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level + 1) == null;
+        EModuleSubType nextSubType    = GetNextSubType(subType);
+        EModuleSubType prevSubType    = GetPrevSubType(subType);
 
-        bool           isMaxLevel  = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level + 1) == null;
-        EModuleSubType nextSubType = GetNextSubType(subType);
-        EModuleSubType prevSubType = GetPrevSubType(subType);
+        RefreshModeToggleButton(investedMineral);
 
-        RefreshGradeUpButton(subType, level, nextSubType, playerTech, playerPoint);
-        RefreshGradeDownButton(subType, level, prevSubType);
-        RefreshLevelUpButton(subType, level, isMaxLevel, playerTech, playerPoint);
-        RefreshLevelDownButton(subType, level, prevSubType);
+        if (m_isMineralMode == true)
+        {
+            ApplyButtonColorKey("Mineral");
+            var  character     = DataManager.Instance.m_currentCharacter;
+            long playerMineral = character != null ? character.GetMineral() : 0;
+
+            RefreshMineralGradeUpButton(subType, level, nextSubType, playerMineral);
+            RefreshMineralGradeDownButton(investedMineral);
+            RefreshMineralLevelUpButton(subType, level, isMaxLevel, playerMineral);
+            RefreshMineralLevelDownButton(level, investedMineral);
+        }
+        else
+        {
+            ApplyButtonColorKey("ModulePoint");
+            var  character   = DataManager.Instance.m_currentCharacter;
+            int  playerTech  = character != null ? character.GetTechLevel() : 0;
+            long playerPoint = character != null ? character.GetModulePoint() : 0;
+
+            RefreshGradeUpButton(subType, level, nextSubType, playerTech, playerPoint);
+            RefreshGradeDownButton(subType, level, prevSubType);
+            RefreshLevelUpButton(subType, level, isMaxLevel, playerTech, playerPoint);
+            RefreshLevelDownButton(subType, level, prevSubType);
+        }
     }
 
     private void RefreshGradeUpButton(EModuleSubType subType, int level, EModuleSubType nextSubType, int playerTech, long playerPoint)
@@ -928,6 +1208,146 @@ public class UITabShip : UITabBase
         return total;
     }
 
+    // 현재 레벨 → 현재 서브타입 맥스 레벨까지 mineralCost 합산
+    private long CalcMineralLevelUpToMaxCost(EModuleSubType subType, int currentLevel)
+    {
+        long total = 0;
+        int  lv    = currentLevel;
+        while (true)
+        {
+            ModuleData nextData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, lv + 1);
+            if (nextData == null) break;
+            total += nextData.mineralCost;
+            lv++;
+        }
+        return total;
+    }
+
+    private void RefreshMineralLevelUpButton(EModuleSubType subType, int level, bool isMaxLevel, long playerMineral)
+    {
+        if (isMaxLevel == true)
+        {
+            m_levelUpModuleButton.SetInteractable(false);
+            if (m_levelUpModuleButtonText1 != null)
+                m_levelUpModuleButtonText1.text = LocalizationManager.Instance.Get("LevelupButtonTextMax");
+            if (m_levelUpModuleButtonText2 != null)
+                m_levelUpModuleButtonText2.Hide();
+            return;
+        }
+
+        ModuleData nextData   = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level + 1);
+        int        mineralCost = nextData != null ? nextData.mineralCost : 0;
+        bool       canLevel    = playerMineral >= mineralCost;
+
+        m_levelUpModuleButton.SetInteractable(canLevel);
+
+        if (m_levelUpModuleButtonText1 != null)
+            m_levelUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_LevelUp");
+        if (m_levelUpModuleButtonText2 != null)
+        {
+            m_levelUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(mineralCost)}");
+            m_levelUpModuleButtonText2.SetTextColor(canLevel == true ? Color.white : Color.red);
+        }
+    }
+
+    private void RefreshMineralLevelDownButton(int currentLevel, int investedMineral)
+    {
+        if (m_levelDownModuleButtonText1 != null)
+            m_levelDownModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_LevelDown");
+
+        // 미네랄 투자 없으면 내릴 것 없음. modulePointLevel 기본값 0 오염 방지
+        if (investedMineral <= 0)
+        {
+            m_levelDownModuleButton.SetInteractable(false);
+            if (m_levelDownModuleButtonText2 != null) m_levelDownModuleButtonText2.Hide();
+            return;
+        }
+
+        int  modulePointLevel = m_selectedModule.m_modulePointLevel;
+        bool canDown          = currentLevel > modulePointLevel;
+
+        m_levelDownModuleButton.SetInteractable(canDown);
+        if (m_levelDownModuleButtonText2 != null)
+        {
+            if (canDown == true)
+            {
+                EModuleSubType subType = m_selectedModule.GetModuleSubType();
+                ModuleData curData     = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
+                int refundMineral      = curData != null ? curData.mineralCost : 0;
+                m_levelDownModuleButtonText2.SetRow("mineral_basic", refundMineral > 0 ? $"+{CommonUtility.FormatBigNumber(refundMineral)}" : "");
+                m_levelDownModuleButtonText2.SetTextColor(Color.white);
+            }
+            else
+                m_levelDownModuleButtonText2.Hide();
+        }
+    }
+
+    private void RefreshMineralGradeUpButton(EModuleSubType subType, int level, EModuleSubType nextSubType, long playerMineral)
+    {
+        if (nextSubType == EModuleSubType.none)
+        {
+            m_gradeUpModuleButton.SetInteractable(false);
+            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
+            m_gradeUpModuleButtonText2.Hide();
+            return;
+        }
+
+        long levelUpToMaxCost = CalcMineralLevelUpToMaxCost(subType, level);
+        long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(nextSubType);
+        long totalCost        = levelUpToMaxCost + gradeUpCost;
+
+        var  character    = DataManager.Instance.m_currentCharacter;
+        int  playerTech   = character != null ? character.GetTechLevel() : 0;
+        int  reqTier      = nextSubType.GetTechTier();
+        bool hasTech      = playerTech >= reqTier;
+        bool canUpgrade   = hasTech == true && playerMineral >= totalCost;
+
+        m_gradeUpModuleButton.SetInteractable(canUpgrade);
+
+        if (canUpgrade == true)
+        {
+            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
+            m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(totalCost)}");
+            m_gradeUpModuleButtonText2.SetTextColor(Color.white);
+        }
+        else if (hasTech == false)
+        {
+            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
+            m_gradeUpModuleButtonText2.SetRow("icon_tech", $"{reqTier}");
+            m_gradeUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("GeneralDark1"));
+            m_gradeUpModuleButtonText2.SetTextColor(Color.red);
+        }
+        else
+        {
+            m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
+            m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(totalCost)}");
+            m_gradeUpModuleButtonText2.SetTextColor(Color.red);
+        }
+    }
+
+    private void RefreshMineralGradeDownButton(int investedMineral)
+    {
+        if (m_gradeDownModuleButtonText1 != null)
+            m_gradeDownModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeDown");
+
+        // 미네랄 투자 없으면 환급할 것 없음
+        if (investedMineral <= 0)
+        {
+            m_gradeDownModuleButton.SetInteractable(false);
+            if (m_gradeDownModuleButtonText2 != null) m_gradeDownModuleButtonText2.Hide();
+            return;
+        }
+
+        // 미네랄 다운그레이드 = 투자된 전체 미네랄 환급이므로 항상 활성화
+        m_gradeDownModuleButton.SetInteractable(true);
+
+        if (m_gradeDownModuleButtonText2 != null)
+        {
+            m_gradeDownModuleButtonText2.SetRow("mineral_basic", $"+{CommonUtility.FormatBigNumber(investedMineral)}");
+            m_gradeDownModuleButtonText2.SetTextColor(Color.white);
+        }
+    }
+
     private void SetDisabledReason(RowImageText row, bool hasTech, int reqTier, long cost)
     {
         if (hasTech == false)
@@ -956,7 +1376,10 @@ public class UITabShip : UITabBase
         EModuleSubType nextSubType = GetNextSubType(m_selectedModule.GetModuleSubType());
         if (nextSubType == EModuleSubType.none) return;
 
-        ExecuteGradeUp(nextSubType);
+        if (m_isMineralMode == true)
+            ExecuteMineralGradeUp(nextSubType);
+        else
+            ExecuteGradeUp(nextSubType);
     }
 
     private void OnGradeDownClicked()
@@ -966,6 +1389,22 @@ public class UITabShip : UITabBase
         if (m_selectedModule is ModulePlaceholder == true) return;
 
         EModuleSubType prevSubType = GetPrevSubType(m_selectedModule.GetModuleSubType());
+
+        if (m_isMineralMode == true)
+        {
+            int currentSubTypeVal     = (int)m_selectedModule.GetModuleSubType();
+            int modulePointSubTypeVal = (int)m_selectedModule.m_modulePointSubType;
+            bool isAtBaseline         = currentSubTypeVal <= modulePointSubTypeVal;
+
+            if (prevSubType == EModuleSubType.none || isAtBaseline == true)
+            {
+                ExecuteMineralReset();
+                return;
+            }
+            ExecuteMineralGradeDown(prevSubType);
+            return;
+        }
+
         if (prevSubType == EModuleSubType.none)
         {
             ExecuteResetModule();
@@ -1010,6 +1449,151 @@ public class UITabShip : UITabBase
         };
         m_bModuleChanging = true;
         NetworkManager.Instance.GradeDownModule(req, OnGradeChangeResponse);
+    }
+
+    private void ExecuteMineralGradeUp(EModuleSubType targetSubType)
+    {
+        long levelUpToMaxCost = CalcMineralLevelUpToMaxCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel());
+        long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(targetSubType);
+        long totalCost        = levelUpToMaxCost + gradeUpCost;
+
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+        if (character.GetMineral() < totalCost)
+        {
+            ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_mineral"));
+            return;
+        }
+
+        int slotIndex = m_selectedModule.GetModuleType() == EModuleType.body
+            ? 0
+            : m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+
+        var req = new MineralModuleGradeChangeRequest
+        {
+            shipId               = m_selectedShip.m_shipInfo.id,
+            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
+            moduleType           = m_selectedModule.GetModuleType(),
+            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
+            moduleSubTypeNew     = targetSubType,
+            slotIndex            = slotIndex
+        };
+        m_bModuleChanging = true;
+        NetworkManager.Instance.MineralGradeUpModule(req, OnMineralGradeChangeResponse);
+    }
+
+    private void ExecuteMineralGradeDown(EModuleSubType targetSubType)
+    {
+        int slotIndex = m_selectedModule.GetModuleType() == EModuleType.body
+            ? 0
+            : m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+
+        var req = new MineralModuleGradeChangeRequest
+        {
+            shipId               = m_selectedShip.m_shipInfo.id,
+            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
+            moduleType           = m_selectedModule.GetModuleType(),
+            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
+            moduleSubTypeNew     = targetSubType,
+            slotIndex            = slotIndex
+        };
+        m_bModuleChanging = true;
+        NetworkManager.Instance.MineralGradeDownModule(req, OnMineralGradeChangeResponse);
+    }
+
+    private void ExecuteMineralReset()
+    {
+        int slotIndex = m_selectedModule.GetModuleType() == EModuleType.body
+            ? 0
+            : m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+
+        var req = new MineralModuleResetRequest
+        {
+            shipId    = m_selectedShip.m_shipInfo.id,
+            bodyIndex = m_selectedModule.GetModuleBodyIndex(),
+            moduleType = m_selectedModule.GetModuleType(),
+            slotIndex  = slotIndex
+        };
+        m_bModuleChanging = true;
+        NetworkManager.Instance.MineralResetModule(req, OnMineralResetResponse);
+    }
+
+    private void OnMineralResetResponse(ApiResponse<MineralModuleResetResponse> response)
+    {
+        m_bModuleChanging = false;
+        if (response.errorCode == 0)
+            ApplyMineralReset(response.data);
+        else
+            ShowErrorMessage($"Mineral reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+    }
+
+    private void ApplyMineralReset(MineralModuleResetResponse data)
+    {
+        if (data == null) return;
+        if (m_playerFleet == null) return;
+
+        SpaceShip ship = m_playerFleet.FindShip(data.shipId);
+        if (ship == null) return;
+
+        if (data.isModuleRemoved == true)
+        {
+            ship.Apply_ResetModuleToPlaceholder(data.bodyIndex, data.moduleType, data.slotIndex);
+        }
+        else
+        {
+            // ApplyModuleChange가 모듈을 재생성하므로 기존 모듈포인트 투자값을 먼저 보존
+            ModuleBase prevModule = ship.FindModule(data.bodyIndex, data.moduleType, data.slotIndex);
+            int savedInvestedModulePoint = prevModule != null ? prevModule.m_investedModulePoint : 0;
+
+            ship.ApplyModuleChange(data.bodyIndex, data.moduleType, data.moduleSubType, data.slotIndex, data.moduleNewLevel);
+            ship.SetModuleInvestedMineral(data.bodyIndex, data.moduleType, data.slotIndex, data.investedMineral);
+            ship.SetModuleInvestedModulePoint(data.bodyIndex, data.moduleType, data.slotIndex, savedInvestedModulePoint);
+        }
+
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+            character.UpdateMineral(data.mineralRemain);
+
+        EventManager.Trigger_ShipStatsChanged(ship);
+
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == data.shipId)
+        {
+            PopulateModuleSelectButtons();
+            ReselectReplacedModule(ship, data.bodyIndex, data.moduleType, data.moduleSubType, data.slotIndex);
+        }
+    }
+
+    private void OnMineralGradeChangeResponse(ApiResponse<MineralModuleGradeChangeResponse> response)
+    {
+        m_bModuleChanging = false;
+        if (response.errorCode == 0)
+            ApplyMineralGradeChange(response.data);
+        else
+            ShowErrorMessage($"Mineral grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+    }
+
+    private void ApplyMineralGradeChange(MineralModuleGradeChangeResponse data)
+    {
+        if (data == null) return;
+        if (m_playerFleet == null) return;
+
+        SpaceShip ship = m_playerFleet.FindShip(data.shipId);
+        if (ship == null) return;
+
+        ship.ApplyModuleChange(data.bodyIndex, data.moduleTypeNew, data.moduleSubTypeNew, data.slotIndex, data.moduleNewLevel);
+        ship.SetModuleInvestedMineral(data.bodyIndex, data.moduleTypeNew, data.slotIndex, data.investedMineral);
+
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+            character.UpdateMineral(data.mineralRemain);
+
+        EventManager.Trigger_ShipStatsChanged(ship);
+
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == data.shipId)
+        {
+            PopulateModuleSelectButtons();
+            ReselectReplacedModule(ship, data.bodyIndex, data.moduleTypeNew, data.moduleSubTypeNew, data.slotIndex);
+        }
     }
 
     private void OnGradeChangeResponse(ApiResponse<ModuleGradeChangeResponse> response)

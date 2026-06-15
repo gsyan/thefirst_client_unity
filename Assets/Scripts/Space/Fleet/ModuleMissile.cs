@@ -57,6 +57,8 @@ public class ModuleMissile : ModuleBase
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
         SetInvestedModulePoint(moduleInfo.investedModulePoint);
+        SetInvestedMineral(moduleInfo.investedMineral);
+        SetModulePointInfo(moduleInfo.modulePointSubType, moduleInfo.modulePointLevel);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
@@ -75,7 +77,6 @@ public class ModuleMissile : ModuleBase
 
         // 업그레이드 비용 설정
         m_modulePointCostLevelup = moduleData.modulePointCost;
-        m_mineralCost = moduleData.mineralCost;
 
         m_lastAttackTime = 0f;
 
@@ -156,11 +157,8 @@ public class ModuleMissile : ModuleBase
             {
                 if (Time.time >= m_lastAttackTime + m_attackCoolTime)
                 {
-                    if (TryConsumeMineral(1) == true)
-                    {
-                        ExecuteAttackOnTarget(m_currentTarget);
-                        m_lastAttackTime = Time.time;
-                    }
+                    ExecuteAttackOnTarget(m_currentTarget);
+                    m_lastAttackTime = Time.time;
                 }
             }
 

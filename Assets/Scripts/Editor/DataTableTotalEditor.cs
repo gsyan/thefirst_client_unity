@@ -85,13 +85,13 @@ public class DataTableTotalEditor : EditorWindow
             int totalModules = dataTableModule.BodyModules.Count +
                                dataTableModule.BeamModules.Count +
                                dataTableModule.MissileModules.Count +
-                               dataTableModule.EngineModules.Count;
+                               dataTableModule.HangerModules.Count;
 
             EditorGUILayout.LabelField($"Total Modules: {totalModules}");
             EditorGUILayout.LabelField($"Body Modules: {dataTableModule.BodyModules.Count}");
             EditorGUILayout.LabelField($"Beam Modules: {dataTableModule.BeamModules.Count}");
             EditorGUILayout.LabelField($"Missile Modules: {dataTableModule.MissileModules.Count}");
-            EditorGUILayout.LabelField($"Engine Modules: {dataTableModule.EngineModules.Count}");
+            EditorGUILayout.LabelField($"Hanger Modules: {dataTableModule.HangerModules.Count}");
             EditorGUILayout.EndVertical();
         }
 

@@ -12,7 +12,6 @@ public class ModuleBase : MonoBehaviour
     [HideInInspector] public float m_attack;
 
     [HideInInspector] public long m_modulePointCostLevelup;
-    [HideInInspector] public int m_mineralCost;
 
     // 리셋 시 환급할 투자 이력
     [HideInInspector] public int m_investedModulePoint;
@@ -25,6 +24,23 @@ public class ModuleBase : MonoBehaviour
     public bool HasInvestedModulePoint()
     {
         return m_investedModulePoint > 0;
+    }
+
+    // 미네랄 투자 이력 (전투 승리 시 소멸)
+    [HideInInspector] public int m_investedMineral;
+    // 모듈포인트 기준값 (미네랄 초기화 기준점)
+    [HideInInspector] public EModuleSubType m_modulePointSubType;
+    [HideInInspector] public int m_modulePointLevel;
+
+    public void SetInvestedMineral(int mineral)
+    {
+        m_investedMineral = mineral;
+    }
+
+    public void SetModulePointInfo(EModuleSubType subType, int level)
+    {
+        m_modulePointSubType = subType;
+        m_modulePointLevel   = level;
     }
 
     // 함대 정보
@@ -153,24 +169,6 @@ public class ModuleBase : MonoBehaviour
     public virtual CapabilityProfile GetModuleCapabilityProfile(bool bByInfo = true)
     {
         return new CapabilityProfile();
-    }
-
-    // tacticBit: 0=수리, 1=미사일, 2=격납고
-    // Player 함대가 아니면 항상 true(에너미는 차감 불필요), mineralCost 0이면 true
-    protected bool TryConsumeMineral(int tacticBit)
-    {
-        // 적 함대의 경우 체크하지않고, 플레이어의 함대만 체크
-        if (m_ownerFleet != null && m_ownerFleet.m_fleetInfo != null &&
-            m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player &&
-            (m_ownerFleet.m_fleetInfo.tacticOptions & (1 << tacticBit)) == 0)
-            return false;
-
-        if (m_mineralCost <= 0) return true;
-        if (m_ownerFleet == null || m_ownerFleet.m_fleetSource != EFleetSource.fleet_source_player) return true;
-
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return false;
-        return character.TryConsumeMineral(m_mineralCost);
     }
 
     // 코루틴 재시작 (Body 교체 등으로 모듈이 재활성화될 때 호출)
