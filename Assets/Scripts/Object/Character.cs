@@ -42,7 +42,6 @@ public class Character
     {
         if (m_characterInfo == null) return;
         m_characterInfo.techPoint = techPoint;
-        EventManager.TriggerTechPointChanged(techPoint);
     }
 
     public int GetModulePoint()

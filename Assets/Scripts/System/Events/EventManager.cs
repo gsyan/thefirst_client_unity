@@ -48,12 +48,6 @@ public static class EventManager
         OnMineralChanged -= callback;
     }
 
-    // techPoint
-    public static event Action<int> OnTechPointChanged;
-    public static void TriggerTechPointChanged(int techPoint) { OnTechPointChanged?.Invoke(techPoint); }
-    public static void Subscribe_TechPointChanged(Action<int> callback)   { OnTechPointChanged += callback; }
-    public static void Unsubscribe_TechPointChanged(Action<int> callback) { OnTechPointChanged -= callback; }
-
     // modulePoint
     public static event Action<int> OnModulePointChanged;
     public static void TriggerModulePointChanged(int modulePoint) { OnModulePointChanged?.Invoke(modulePoint); }
