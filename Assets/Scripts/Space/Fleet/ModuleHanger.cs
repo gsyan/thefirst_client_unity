@@ -71,7 +71,6 @@ public class ModuleHanger : ModuleBase
         m_moduleSlot = moduleSlot;
         SetInvestedModulePoint(moduleInfo.investedModulePoint);
         SetInvestedMineral(moduleInfo.investedMineral);
-        SetModulePointInfo(moduleInfo.modulePointSubType, moduleInfo.modulePointLevel);
 
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
         if (moduleData == null)

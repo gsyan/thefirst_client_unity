@@ -28,19 +28,10 @@ public class ModuleBase : MonoBehaviour
 
     // 미네랄 투자 이력 (전투 승리 시 소멸)
     [HideInInspector] public int m_investedMineral;
-    // 모듈포인트 기준값 (미네랄 초기화 기준점)
-    [HideInInspector] public EModuleSubType m_modulePointSubType;
-    [HideInInspector] public int m_modulePointLevel;
 
     public void SetInvestedMineral(int mineral)
     {
         m_investedMineral = mineral;
-    }
-
-    public void SetModulePointInfo(EModuleSubType subType, int level)
-    {
-        m_modulePointSubType = subType;
-        m_modulePointLevel   = level;
     }
 
     // 함대 정보

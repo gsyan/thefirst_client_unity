@@ -92,7 +92,6 @@ public class ModuleBody : ModuleBase
         m_moduleSlot = null;
         SetInvestedModulePoint(moduleBodyInfo.investedModulePoint);
         SetInvestedMineral(moduleBodyInfo.investedMineral);
-        SetModulePointInfo(moduleBodyInfo.modulePointSubType, moduleBodyInfo.modulePointLevel);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType, moduleBodyInfo.moduleLevel);
@@ -421,8 +420,6 @@ public class ModuleBody : ModuleBase
                 bodyIndex           = s.bodyIndex,
                 slotIndex           = s.slotIndex,
                 investedModulePoint = s.investedModulePoint,
-                modulePointSubType  = s.modulePointSubType,
-                modulePointLevel    = s.modulePointLevel,
                 investedMineral     = s.investedMineral
             });
         }

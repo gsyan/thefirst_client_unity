@@ -58,7 +58,6 @@ public class ModuleMissile : ModuleBase
         m_moduleSlot = moduleSlot;
         SetInvestedModulePoint(moduleInfo.investedModulePoint);
         SetInvestedMineral(moduleInfo.investedMineral);
-        SetModulePointInfo(moduleInfo.modulePointSubType, moduleInfo.modulePointLevel);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);

@@ -720,7 +720,6 @@ public class UITabExploration : UITabBase
             if (bodyModule != null)
             {
                 ship.SetModuleInvestedMineral(updatedBody.bodyIndex, EModuleType.body, 0, updatedBody.investedMineral);
-                bodyModule.SetModulePointInfo(updatedBody.modulePointSubType, updatedBody.modulePointLevel);
             }
         }
 
@@ -743,11 +742,6 @@ public class UITabExploration : UITabBase
                 ship.ApplyModuleChange(updatedModule.bodyIndex, moduleType, updatedModule.moduleSubType, updatedModule.slotIndex, updatedModule.moduleLevel);
 
             ship.SetModuleInvestedMineral(updatedModule.bodyIndex, moduleType, updatedModule.slotIndex, updatedModule.investedMineral);
-
-            // ApplyModuleChange 후 재탐색
-            ModuleBase refreshed = ship.FindModule(updatedModule.bodyIndex, moduleType, updatedModule.slotIndex);
-            if (refreshed != null)
-                refreshed.SetModulePointInfo(updatedModule.modulePointSubType, updatedModule.modulePointLevel);
         }
     }
 

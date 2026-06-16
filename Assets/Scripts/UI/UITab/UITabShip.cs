@@ -31,7 +31,11 @@ public class UITabShip : UITabBase
     [SerializeField] private GameObject m_moduleLevelName;
     [SerializeField] private TMP_Text   m_moduleLevelText;
     [SerializeField] private Transform  m_moduleStatsContainer;
+    [SerializeField] private RectTransform  m_investedTotal;
+    [SerializeField] private RectTransform  m_investedModulePoint;
     [SerializeField] private TMP_Text   m_investedModulePointText;
+    [SerializeField] private RectTransform  m_investedMineral;
+    [SerializeField] private TMP_Text   m_investedMineralText;
     
     [SerializeField] private GameObject m_unlockModuleContainer;
     [SerializeField] private UIButtonHasChildren    m_unlockModuleButton;
@@ -634,10 +638,15 @@ public class UITabShip : UITabBase
 
     private void ExecuteMineralLevelDownRequest()
     {
-        int currentLevel     = m_selectedModule.GetModuleLevel();
-        int modulePointLevel = m_selectedModule.m_modulePointLevel;
+        int currentLevel = m_selectedModule.GetModuleLevel();
 
-        if (currentLevel <= modulePointLevel)
+        bool hasBaseline = DataManager.Instance.CalcModulePointBaseline(
+            m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
+            out EModuleSubType baselineSubType, out int baselineLevel);
+        bool isSameSubType  = hasBaseline == true && baselineSubType == m_selectedModule.GetModuleSubType();
+        bool atOrBelowBaseline = isSameSubType == true && currentLevel <= baselineLevel;
+
+        if (atOrBelowBaseline == true)
         {
             ShowErrorMessage("미네랄 기준점 아래로 내릴 수 없습니다");
             return;
@@ -951,10 +960,15 @@ public class UITabShip : UITabBase
             }
 
             m_investedModulePointText.SetText("{0}", m_selectedModule.m_investedModulePoint);
+            m_investedMineralText.SetText("{0}", investedMineral);
+            m_investedMineral.gameObject.SetActive(investedMineral > 0);
             RefreshModuleActionButtons();
 
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsContainer as RectTransform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_investedModulePoint);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_investedMineral);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_investedTotal);
         }
     }
 
@@ -1006,7 +1020,7 @@ public class UITabShip : UITabBase
             long playerMineral = character != null ? character.GetMineral() : 0;
 
             RefreshMineralGradeUpButton(subType, level, nextSubType, playerMineral);
-            RefreshMineralGradeDownButton(investedMineral);
+            RefreshMineralGradeDownButton(subType, level, prevSubType, investedMineral);
             RefreshMineralLevelUpButton(subType, level, isMaxLevel, playerMineral);
             RefreshMineralLevelDownButton(level, investedMineral);
         }
@@ -1263,7 +1277,11 @@ public class UITabShip : UITabBase
             return;
         }
 
-        int  modulePointLevel = m_selectedModule.m_modulePointLevel;
+        bool hasBaseline    = DataManager.Instance.CalcModulePointBaseline(
+            m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
+            out EModuleSubType baselineSubType, out int baselineLevel);
+        bool isSameSubType  = hasBaseline == true && baselineSubType == m_selectedModule.GetModuleSubType();
+        int  modulePointLevel = isSameSubType == true ? baselineLevel : 0;
         bool canDown          = currentLevel > modulePointLevel;
 
         m_levelDownModuleButton.SetInteractable(canDown);
@@ -1325,12 +1343,11 @@ public class UITabShip : UITabBase
         }
     }
 
-    private void RefreshMineralGradeDownButton(int investedMineral)
+    private void RefreshMineralGradeDownButton(EModuleSubType currentSubType, int currentLevel, EModuleSubType prevSubType, int investedMineral)
     {
         if (m_gradeDownModuleButtonText1 != null)
             m_gradeDownModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeDown");
 
-        // 미네랄 투자 없으면 환급할 것 없음
         if (investedMineral <= 0)
         {
             m_gradeDownModuleButton.SetInteractable(false);
@@ -1338,14 +1355,49 @@ public class UITabShip : UITabBase
             return;
         }
 
-        // 미네랄 다운그레이드 = 투자된 전체 미네랄 환급이므로 항상 활성화
         m_gradeDownModuleButton.SetInteractable(true);
 
-        if (m_gradeDownModuleButtonText2 != null)
+        if (m_gradeDownModuleButtonText2 == null) return;
+
+        bool hasBaseline     = DataManager.Instance.CalcModulePointBaseline(
+            m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
+            out EModuleSubType baselineSubType, out _);
+        int  currentVal      = (int)currentSubType;
+        int  baselineVal     = hasBaseline == true ? (int)baselineSubType : 0;
+        bool isAtBaseline    = currentVal <= baselineVal;
+
+        long refund;
+        if (prevSubType == EModuleSubType.none || isAtBaseline == true)
         {
-            m_gradeDownModuleButtonText2.SetRow("mineral_basic", $"+{CommonUtility.FormatBigNumber(investedMineral)}");
-            m_gradeDownModuleButtonText2.SetTextColor(Color.white);
+            // 리셋 경로: 투자된 전체 미네랄 환급
+            refund = investedMineral;
         }
+        else
+        {
+            // 다운그레이드 경로: 현재 등급업 비용 + 현재 레벨업 비용 + 이전 등급 전체 레벨업 비용
+            long gradeUpCost = DataManager.Instance.m_dataTableResearch.GetResearchCost(currentSubType);
+
+            long currentLevelUpTotal = 0;
+            for (int lv = 1; lv < currentLevel; lv++)
+            {
+                var nextData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(currentSubType, lv + 1);
+                if (nextData != null) currentLevelUpTotal += nextData.mineralCost;
+            }
+
+            int  prevMaxLevel     = DataManager.Instance.GetMaxModuleLevel(prevSubType);
+            long prevLevelUpTotal = 0;
+            for (int lv = 1; lv < prevMaxLevel; lv++)
+            {
+                var nextData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(prevSubType, lv + 1);
+                if (nextData != null) prevLevelUpTotal += nextData.mineralCost;
+            }
+
+            refund = gradeUpCost + currentLevelUpTotal + prevLevelUpTotal;
+            if (refund < 0) refund = 0;
+        }
+
+        m_gradeDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
+        m_gradeDownModuleButtonText2.SetTextColor(Color.white);
     }
 
     private void SetDisabledReason(RowImageText row, bool hasTech, int reqTier, long cost)
@@ -1392,9 +1444,12 @@ public class UITabShip : UITabBase
 
         if (m_isMineralMode == true)
         {
-            int currentSubTypeVal     = (int)m_selectedModule.GetModuleSubType();
-            int modulePointSubTypeVal = (int)m_selectedModule.m_modulePointSubType;
-            bool isAtBaseline         = currentSubTypeVal <= modulePointSubTypeVal;
+            int currentSubTypeVal = (int)m_selectedModule.GetModuleSubType();
+            bool hasBaseline      = DataManager.Instance.CalcModulePointBaseline(
+                m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
+                out EModuleSubType baselineSubType, out _);
+            int  baselineSubTypeVal = hasBaseline == true ? (int)baselineSubType : 0;
+            bool isAtBaseline       = currentSubTypeVal <= baselineSubTypeVal;
 
             if (prevSubType == EModuleSubType.none || isAtBaseline == true)
             {
@@ -1532,6 +1587,16 @@ public class UITabShip : UITabBase
         if (data == null) return;
         if (m_playerFleet == null) return;
 
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+            character.UpdateMineral(data.mineralRemain);
+
+        if (data.shipRemoved == true)
+        {
+            RemoveShipFromFleet(data.removedShipId);
+            return;
+        }
+
         SpaceShip ship = m_playerFleet.FindShip(data.shipId);
         if (ship == null) return;
 
@@ -1549,10 +1614,6 @@ public class UITabShip : UITabBase
             ship.SetModuleInvestedMineral(data.bodyIndex, data.moduleType, data.slotIndex, data.investedMineral);
             ship.SetModuleInvestedModulePoint(data.bodyIndex, data.moduleType, data.slotIndex, savedInvestedModulePoint);
         }
-
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateMineral(data.mineralRemain);
 
         EventManager.Trigger_ShipStatsChanged(ship);
 
@@ -1577,15 +1638,21 @@ public class UITabShip : UITabBase
         if (data == null) return;
         if (m_playerFleet == null) return;
 
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+            character.UpdateMineral(data.mineralRemain);
+
+        if (data.shipRemoved == true)
+        {
+            RemoveShipFromFleet(data.removedShipId);
+            return;
+        }
+
         SpaceShip ship = m_playerFleet.FindShip(data.shipId);
         if (ship == null) return;
 
         ship.ApplyModuleChange(data.bodyIndex, data.moduleTypeNew, data.moduleSubTypeNew, data.slotIndex, data.moduleNewLevel);
         ship.SetModuleInvestedMineral(data.bodyIndex, data.moduleTypeNew, data.slotIndex, data.investedMineral);
-
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateMineral(data.mineralRemain);
 
         EventManager.Trigger_ShipStatsChanged(ship);
 
@@ -1762,26 +1829,13 @@ public class UITabShip : UITabBase
         NetworkManager.Instance.ResetModule(req, OnResetModuleResponse);
     }
 
-    private void OnResetAndRemoveShipResponse(ApiResponse<ShipResetRemoveResponse> response)
+    private void RemoveShipFromFleet(long removedShipId)
     {
-        m_bModuleChanging = false;
-        if (response.errorCode != 0)
-        {
-            ShowErrorMessage($"Reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
-            return;
-        }
-
-        var data = response.data;
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateModulePoint(data.modulePointRemain);
-
-        SpaceShip removedShip = m_playerFleet.FindShip(data.removedShipId);
+        SpaceShip removedShip = m_playerFleet.FindShip(removedShipId);
         if (removedShip != null)
             m_playerFleet.RemoveShip(removedShip, refreshFormation: true);
 
-        DataManager.Instance.RemoveFleetShip(data.removedShipId);
-
+        DataManager.Instance.RemoveFleetShip(removedShipId);
         EventManager.Trigger_FleetShipCountChanged();
 
         // 기함으로 선택 전환
@@ -1796,6 +1850,24 @@ public class UITabShip : UITabBase
 
         UpdateShipHeader();
         PopulateModuleSelectButtons();
+    }
+
+    private void OnResetAndRemoveShipResponse(ApiResponse<ShipResetRemoveResponse> response)
+    {
+        m_bModuleChanging = false;
+        if (response.errorCode != 0)
+        {
+            ShowErrorMessage($"Reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+            return;
+        }
+
+        var data = response.data;
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+            character.UpdateModulePoint(data.modulePointRemain);
+
+        RemoveShipFromFleet(data.removedShipId);
+
     }
 
     private void OnResetModuleResponse(ApiResponse<ModuleResetResponse> response)

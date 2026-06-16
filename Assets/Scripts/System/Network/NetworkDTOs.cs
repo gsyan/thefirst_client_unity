@@ -64,9 +64,6 @@ public class ModuleBodyInfo
     public int investedModulePoint;
     // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
     public float currentHealth;
-    // 모듈포인트 기준값 — 미네랄 초기화 시 이 값으로 복귀
-    public EModuleSubType modulePointSubType;
-    public int modulePointLevel;
     // 투자한 미네랄 이력 (전투 승리 시 소모 + 초기화, 그 전까지 환급 가능)
     public int investedMineral;
 }
@@ -81,9 +78,6 @@ public class ModuleInfo
     public int slotIndex;
     // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
     public int investedModulePoint;
-    // 모듈포인트 기준값 — 미네랄 초기화 시 이 값으로 복귀
-    public EModuleSubType modulePointSubType;
-    public int modulePointLevel;
     // 투자한 미네랄 이력 (전투 승리 시 소모 + 초기화, 그 전까지 환급 가능)
     public int investedMineral;
 }
@@ -461,6 +455,9 @@ public class MineralModuleGradeChangeResponse
     public int moduleNewLevel;
     public int mineralRemain;
     public int investedMineral;
+    // 비기함 body 다운그레이드 시 함선 삭제
+    public bool shipRemoved;
+    public long removedShipId;
 }
 
 [System.Serializable]
@@ -484,6 +481,9 @@ public class MineralModuleResetResponse
     public bool isModuleRemoved;
     public int mineralRemain;
     public int investedMineral;
+    // 비기함 body 리셋 시 함선 삭제
+    public bool shipRemoved;
+    public long removedShipId;
 }
 
 #endregion

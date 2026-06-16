@@ -172,6 +172,69 @@ public class DataManager : Singleton<DataManager>
             level++;
         return level;
     }
+
+    public EModuleSubType GetFirstSubType(EModuleType moduleType)
+    {
+        if (moduleType == EModuleType.body)    return EModuleSubType.body_t1_m1;
+        if (moduleType == EModuleType.beam)    return EModuleSubType.beam_t1_m1;
+        if (moduleType == EModuleType.missile) return EModuleSubType.missile_t1_m1;
+        if (moduleType == EModuleType.hanger)  return EModuleSubType.hanger_t1_m1;
+        return EModuleSubType.none;
+    }
+
+    // investedModulePoint → (baselineSubType, baselineLevel) 역산
+    // unlock(1) → T1 레벨업 → T2 그레이드업 → T2 레벨업 → ... 순서로 차감
+    public bool CalcModulePointBaseline(EModuleType moduleType, int investedModulePoint, out EModuleSubType baselineSubType, out int baselineLevel)
+    {
+        baselineSubType = EModuleSubType.none;
+        baselineLevel   = 0;
+
+        if (investedModulePoint <= 0) return false;
+
+        int unlockCost    = m_dataTableConfig.gameSettings.moduleUnlockPrice;
+        int remaining     = investedModulePoint - unlockCost;
+        EModuleSubType currentSubType = GetFirstSubType(moduleType);
+
+        while (currentSubType != EModuleSubType.none)
+        {
+            int maxLevel = GetMaxModuleLevel(currentSubType);
+
+            for (int lv = 1; lv < maxLevel; lv++)
+            {
+                if (GetModuleLevelUpCost(currentSubType, lv, out long levelCost) == false) break;
+                int cost = (int)levelCost;
+                if (remaining < cost)
+                {
+                    baselineSubType = currentSubType;
+                    baselineLevel   = lv;
+                    return true;
+                }
+                remaining -= cost;
+            }
+
+            // 최대레벨 도달 → 다음 그레이드
+            int nextVal = (int)currentSubType + 100;
+            if (System.Enum.IsDefined(typeof(EModuleSubType), nextVal) == false)
+            {
+                baselineSubType = currentSubType;
+                baselineLevel   = maxLevel;
+                return true;
+            }
+
+            EModuleSubType nextSubType = (EModuleSubType)nextVal;
+            int gradeUpCost = (int)GetModuleResearchCost(nextSubType);
+            if (remaining < gradeUpCost)
+            {
+                baselineSubType = currentSubType;
+                baselineLevel   = maxLevel;
+                return true;
+            }
+            remaining     -= gradeUpCost;
+            currentSubType = nextSubType;
+        }
+
+        return false;
+    }
     #endregion
 
     #region Data Table Module Research ###############################################################
