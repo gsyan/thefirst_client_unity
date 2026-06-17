@@ -1015,6 +1015,14 @@ MonoBehaviour:
     m_Localized: Unlinking Google will revert your account to guest status. Continue?
     m_Metadata:
       m_Items: []
+  - m_Id: 46939500441370624
+    m_Localized: MINERAL ENHANCEMENT RESET
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46939500504285184
+    m_Localized: Mineral enhancements have been reset after stage clear.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

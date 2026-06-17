@@ -265,6 +265,27 @@ public class ChangeTacticOptionsResponse
 }
 
 [System.Serializable]
+public class ModuleUnlockRequest
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public int slotIndex;
+}
+
+[System.Serializable]
+public class ModuleUnlockResponse
+{
+    public long shipId;
+    public int bodyIndex;
+    public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
+    public int slotIndex;
+    public int pointRemain;
+    public int investedPoint;
+}
+
+[System.Serializable]
 public class ModuleLevelChangeRequest
 {
     public long shipId;
@@ -285,8 +306,8 @@ public class ModuleLevelChangeResponse
     public EModuleSubType moduleSubType;
     public int slotIndex;
     public int newLevel;
-    public int modulePointRemain;
-    public int investedModulePoint;
+    public int pointRemain;
+    public int investedPoint;
 }
 
 [System.Serializable]
@@ -296,7 +317,6 @@ public class ModuleGradeChangeRequest
     public int bodyIndex;
     public EModuleType moduleType;
     public EModuleSubType moduleSubTypeCurrent;
-    public EModuleSubType moduleSubTypeNew;
     public int slotIndex;
 }
 
@@ -311,30 +331,14 @@ public class ModuleGradeChangeResponse
     public EModuleSubType moduleSubTypeNew;
     public int slotIndex;
     public int moduleNewLevel;
-    public int modulePointRemain;
-    public int investedModulePoint;
+    public int pointRemain;
+    public int investedPoint;
+    public bool isModuleRemoved;
+    public bool isShipRemoved;
+    public long removedShipId;
 }
 
-[System.Serializable]
-public class ModuleUnlockRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public int slotIndex;
-}
 
-[System.Serializable]
-public class ModuleUnlockResponse
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public int slotIndex;
-    public int modulePointRemain;
-    public int investedModulePoint;
-}
 
 [System.Serializable]
 public class ModuleResetRequest
@@ -351,8 +355,14 @@ public class ModuleResetResponse
     public long shipId;
     public int bodyIndex;
     public EModuleType moduleType;
+    public EModuleSubType moduleSubType;
     public int slotIndex;
-    public int modulePointRemain;
+    public int moduleNewLevel;
+    public int pointRemain;
+    public int investedPoint;
+    public bool isModuleRemoved;
+    public bool isShipRemoved;
+    public long removedShipId;
 }
 
 [System.Serializable]
@@ -385,106 +395,8 @@ public class ModuleInstallRequest
     public int slotIndex;
 }
 
-[System.Serializable]
-public class MineralModuleUnlockRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public int slotIndex;
-}
 
-[System.Serializable]
-public class MineralModuleUnlockResponse
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public int slotIndex;
-    public int mineralRemain;
-    public int investedMineral;
-}
 
-[System.Serializable]
-public class MineralModuleLevelChangeRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public int slotIndex;
-    public int currentLevel;
-    public int targetLevel;
-}
-
-[System.Serializable]
-public class MineralModuleLevelChangeResponse
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public int slotIndex;
-    public int newLevel;
-    public int mineralRemain;
-    public int investedMineral;
-}
-
-[System.Serializable]
-public class MineralModuleGradeChangeRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubTypeCurrent;
-    public EModuleSubType moduleSubTypeNew;
-    public int slotIndex;
-}
-
-[System.Serializable]
-public class MineralModuleGradeChangeResponse
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleTypeCurrent;
-    public EModuleSubType moduleSubTypeCurrent;
-    public EModuleType moduleTypeNew;
-    public EModuleSubType moduleSubTypeNew;
-    public int slotIndex;
-    public int moduleNewLevel;
-    public int mineralRemain;
-    public int investedMineral;
-    // 비기함 body 다운그레이드 시 함선 삭제
-    public bool shipRemoved;
-    public long removedShipId;
-}
-
-[System.Serializable]
-public class MineralModuleResetRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public int slotIndex;
-}
-
-[System.Serializable]
-public class MineralModuleResetResponse
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public int slotIndex;
-    public int moduleNewLevel;
-    public bool isModuleRemoved;
-    public int mineralRemain;
-    public int investedMineral;
-    // 비기함 body 리셋 시 함선 삭제
-    public bool shipRemoved;
-    public long removedShipId;
-}
 
 #endregion
 

@@ -65,7 +65,6 @@ public class UITabShip : UITabBase
     //[SerializeField] private Button    m_btnResetModule;
 
     private bool bShow = false;
-    private bool m_isMineralMode = false;
 
     private Character  m_myCharacter;
     private SpaceFleet m_playerFleet;
@@ -123,9 +122,9 @@ public class UITabShip : UITabBase
             int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
             m_unlockModuleButtonText.SetText($"-{unlockPrice}");
         }
-        m_gradeDownModuleButton.GetButton().onClick.AddListener(OnGradeDownClicked);
-        m_gradeUpModuleButton.GetButton().onClick.AddListener(OnGradeUpClicked);
-        m_levelDownModuleButton.GetButton().onClick.AddListener(OnLevelDownClicked);
+        m_gradeDownModuleButton.GetButton().onClick.AddListener(OnModuleGradeDownClicked);
+        m_gradeUpModuleButton.GetButton().onClick.AddListener(OnModuleGradeUpClicked);
+        m_levelDownModuleButton.GetButton().onClick.AddListener(OnModuleLevelDownClicked);
         RegisterLevelUpPointerEvents();
         if (m_btnModeToggle != null) m_btnModeToggle.GetButton().onClick.AddListener(OnModeToggleClicked);
         //if (m_btnResetModule != null) m_btnResetModule.onClick.AddListener(OnResetModuleClicked);
@@ -149,8 +148,8 @@ public class UITabShip : UITabBase
     {
         if (m_selectedModule == null) return;
         // 미네랄 투자 이력이 있으면 모듈포인트 모드로 복귀 불가
-        if (m_isMineralMode == true && m_selectedModule.m_investedMineral > 0) return;
-        m_isMineralMode = !m_isMineralMode;
+        if (m_selectedModule.m_isMineralMode == true && m_selectedModule.m_investedMineral > 0) return;
+        m_selectedModule.m_isMineralMode = !m_selectedModule.m_isMineralMode;
         if (m_selectedModule is ModulePlaceholder)
             RefreshUnlockButton();
         else
@@ -161,11 +160,11 @@ public class UITabShip : UITabBase
     {
         if (m_btnModeToggle == null) return;
         // 미네랄 투자 이력이 있으면 모드 고정 → 토글 비활성화
-        string colorKey = m_isMineralMode == true ? "Mineral" : "ModulePoint";
+        string colorKey = m_selectedModule.m_isMineralMode == true ? "Mineral" : "ModulePoint";
         m_btnModeToggle.SetActiveColorKey(colorKey);
         m_btnModeToggle.SetInteractable(investedMineral == 0);
         if (m_textModeToggle != null)
-            m_textModeToggle.text = m_isMineralMode == true ? "미네랄" : "모듈포인트";
+            m_textModeToggle.text = m_selectedModule.m_isMineralMode == true ? "미네랄" : "모듈포인트";
     }
 
     private void ApplyButtonColorKey(string colorKey)
@@ -342,34 +341,18 @@ public class UITabShip : UITabBase
         }
     }
 
-    // ─────────────────────────────────────────────
-    // 모듈 해금
-    // ─────────────────────────────────────────────
-
+    
+#region 모듈 해금 begin -------------------------------------------------------------
     private void OnModuleUnlockClicked()
     {
-        if (m_myCharacter == null)
-        {
-            ShowErrorMessage("Character data not available");
-            return;
-        }
+        if (m_myCharacter == null) return;
+        if (m_selectedShip == null || m_selectedModule == null) return;
+        if ((m_selectedModule is ModulePlaceholder) == false) return;
 
-        if (m_selectedShip == null || m_selectedModule == null)
-        {
-            ShowErrorMessage("No ship or module selected");
-            return;
-        }
-
-        if ((m_selectedModule is ModulePlaceholder) == false)
-        {
-            ShowErrorMessage("Selected module is not a placeholder");
-            return;
-        }
-
-        if (m_isMineralMode == true)
-            ExecuteMineralModuleUnlock();
-        else
+        if (m_selectedModule.m_isMineralMode == false)
             ExecuteModuleUnlock();
+        else
+            ExecuteModuleUnlockMineral();
     }
 
     private void ExecuteModuleUnlock()
@@ -392,23 +375,21 @@ public class UITabShip : UITabBase
 
         NetworkManager.Instance.UnlockModule(unlockRequest, OnModuleUnlockResponse);
     }
-
     private void OnModuleUnlockResponse(ApiResponse<ModuleUnlockResponse> response)
     {
         if (response.errorCode == 0)
-            UpdateAfterModuleUnlock(response.data);
+            Apply_ModuleUnlock(response.data);
         else
             ShowErrorMessage($"Module unlock failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
     }
-
-    private void UpdateAfterModuleUnlock(ModuleUnlockResponse unlockData)
+    private void Apply_ModuleUnlock(ModuleUnlockResponse unlockData)
     {
         if (unlockData == null) return;
 
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
-        character.UpdateModulePoint(unlockData.modulePointRemain);
+        character.UpdateModulePoint(unlockData.pointRemain);
 
         SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet == null) return;
@@ -416,7 +397,7 @@ public class UITabShip : UITabBase
         if (targetShip == null) return;
 
         targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex,
-            unlockData.investedModulePoint);
+            unlockData.investedPoint, 0);
         EventManager.Trigger_ShipStatsChanged(targetShip);
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
@@ -426,7 +407,7 @@ public class UITabShip : UITabBase
         }
     }
 
-    private void ExecuteMineralModuleUnlock()
+    private void ExecuteModuleUnlockMineral()
     {
         int  unlockPrice   = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
         long playerMineral = m_myCharacter.GetMineral();
@@ -436,39 +417,36 @@ public class UITabShip : UITabBase
             return;
         }
 
-        var req = new MineralModuleUnlockRequest
+        var req = new ModuleUnlockRequest
         {
             shipId     = m_selectedShip.m_shipInfo.id,
             bodyIndex  = m_selectedModule.GetModuleBodyIndex(),
             moduleType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType,
             slotIndex  = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex
         };
-        NetworkManager.Instance.MineralUnlockModule(req, OnMineralUnlockResponse);
+        NetworkManager.Instance.ModuleUnlockMineral(req, OnModuleUnlockMineralResponse);
     }
-
-    private void OnMineralUnlockResponse(ApiResponse<MineralModuleUnlockResponse> response)
+    private void OnModuleUnlockMineralResponse(ApiResponse<ModuleUnlockResponse> response)
     {
         if (response.errorCode == 0)
-            UpdateAfterMineralModuleUnlock(response.data);
+            Apply_ModuleUnlockMineral(response.data);
         else
             ShowErrorMessage($"Mineral unlock failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
     }
-
-    private void UpdateAfterMineralModuleUnlock(MineralModuleUnlockResponse unlockData)
+    private void Apply_ModuleUnlockMineral(ModuleUnlockResponse unlockData)
     {
         if (unlockData == null) return;
         Character character = DataManager.Instance.m_currentCharacter;
         if (character == null) return;
 
-        character.UpdateMineral(unlockData.mineralRemain);
+        character.UpdateMineral(unlockData.pointRemain);
 
         SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet == null) return;
         SpaceShip targetShip = fleet.FindShip(unlockData.shipId);
         if (targetShip == null) return;
 
-        targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex, 0);
-        targetShip.SetModuleInvestedMineral(unlockData.bodyIndex, unlockData.moduleType, unlockData.slotIndex, unlockData.investedMineral);
+        targetShip.Apply_UnlockModule(unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex, 0, unlockData.investedPoint);
         EventManager.Trigger_ShipStatsChanged(targetShip);
 
         if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == unlockData.shipId)
@@ -477,11 +455,9 @@ public class UITabShip : UITabBase
             ReselectReplacedModule(targetShip, unlockData.bodyIndex, unlockData.moduleType, unlockData.moduleSubType, unlockData.slotIndex);
         }
     }
+#endregion 모듈 해금 end -------------------------------------------------------------
 
-    // ─────────────────────────────────────────────
-    // 모듈 레벨업 / 레벨다운
-    // ─────────────────────────────────────────────
-
+#region 모듈 레벨 업/다운 begin -------------------------------------------------------------
     private void RegisterLevelUpPointerEvents()
     {
         Button btn = m_levelUpModuleButton.GetButton();
@@ -505,7 +481,7 @@ public class UITabShip : UITabBase
         if (m_levelUpModuleButton.GetButton().interactable == false) return;
         if (m_bModuleChanging == true) return;
         m_isLevelUpHolding = true;
-        ExecuteLevelUpRequest();
+        ExecuteModuleLevelUp();
         m_levelUpHoldCoroutine = StartCoroutine(LevelUpHoldRoutine());
     }
 
@@ -540,15 +516,25 @@ public class UITabShip : UITabBase
             m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
         }
     }
+    private IEnumerator LevelUpChainRoutine(float delay)
+    {
+        if (delay > 0f)
+            yield return new WaitForSeconds(delay);
+        m_levelUpChainCoroutine = null;
+        if (m_isLevelUpHolding == false || m_levelUpContinuous == false) yield break;
+        if (m_bModuleChanging == true) yield break;
+        if (m_levelUpModuleButton.IsInteractable() == false) yield break;
+        ExecuteModuleLevelUp();
+    }
 
-    private void ExecuteLevelUpRequest()
+    private void ExecuteModuleLevelUp()
     {
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
-        if (m_isMineralMode == true)
+        if (m_selectedModule.m_isMineralMode == true)
         {
-            ExecuteMineralLevelUpRequest();
+            ExecuteModuleLevelUpMineral();
             return;
         }
 
@@ -584,21 +570,76 @@ public class UITabShip : UITabBase
         };
         m_bModuleChanging    = true;
         m_levelUpRequestTime = Time.time;
-        NetworkManager.Instance.LevelUpModule(req, OnLevelUpResponse);
+        NetworkManager.Instance.LevelUpModule(req, OnModuleLevelUpResponse);
     }
-
-    private IEnumerator LevelUpChainRoutine(float delay)
+    private void OnModuleLevelUpResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
-        if (delay > 0f)
-            yield return new WaitForSeconds(delay);
-        m_levelUpChainCoroutine = null;
-        if (m_isLevelUpHolding == false || m_levelUpContinuous == false) yield break;
-        if (m_bModuleChanging == true) yield break;
-        if (m_levelUpModuleButton.IsInteractable() == false) yield break;
-        ExecuteLevelUpRequest();
+        m_bModuleChanging = false;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        if (response.errorCode == 0)
+        {
+            character.UpdateModulePoint(response.data.pointRemain);
+            Apply_ModuleLevelChange(response.data.shipId, response.data.bodyIndex, response.data.moduleType,
+                response.data.moduleSubType, response.data.slotIndex, response.data.newLevel, isLevelUp: true);
+
+            // 연속 모드: HOLD_START_DELAY가 지났고 버튼을 아직 누르고 있으면 다음 요청 예약
+            if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
+            {
+                float elapsed = Time.time - m_levelUpRequestTime;
+                float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
+                m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
+            }
+        }
+        else
+        {
+            string msg = ErrorCodeMapping.GetMessage(response.errorCode);
+            Debug.LogError($"LevelUp failed: {msg}");
+            ShowErrorMessage($"LevelUp failed: {msg}");
+            OnLevelUpPointerUp();
+        }
+    }
+    private void Apply_ModuleLevelChange(long shipId, int bodyIndex, EModuleType moduleType,
+        EModuleSubType moduleSubType, int slotIndex, int newLevel, bool isLevelUp)
+    {
+        if (m_playerFleet == null) return;
+        SpaceShip ship = m_playerFleet.FindShip(shipId);
+        if (ship == null) return;
+
+        ModuleBase prevModule = ship.FindModule(bodyIndex, moduleType, slotIndex);
+        int prevLevel         = 0;
+        int prevInvestedPoint = 0;
+        if (prevModule != null)
+        {
+            prevLevel         = prevModule.GetModuleLevel();
+            prevInvestedPoint = prevModule.m_investedModulePoint;
+        }
+
+        int pointDelta = 0;
+        int fromLv     = Mathf.Min(prevLevel, newLevel);
+        int toLv       = Mathf.Max(prevLevel, newLevel);
+        for (int lv = fromLv; lv < toLv; lv++)
+        {
+            if (DataManager.Instance.GetModuleLevelUpCost(moduleSubType, lv, out long cost) == true)
+                pointDelta += (int)cost;
+        }
+        int newInvestedPoint = isLevelUp == true
+            ? prevInvestedPoint + pointDelta
+            : prevInvestedPoint - pointDelta;
+        ship.ApplyModuleChange(bodyIndex, moduleType, moduleSubType, slotIndex, newLevel, 0, newInvestedPoint);
+
+        EventManager.Trigger_ShipStatsChanged(ship);
+
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == shipId)
+        {
+            UpdateShipHeader();
+            PopulateModuleSelectButtons();
+            ReselectReplacedModule(ship, bodyIndex, moduleType, moduleSubType, slotIndex);
+        }
     }
 
-    private void ExecuteMineralLevelUpRequest()
+    private void ExecuteModuleLevelUpMineral()
     {
         int currentLevel = m_selectedModule.GetModuleLevel();
         int targetLevel  = currentLevel + 1;
@@ -621,7 +662,7 @@ public class UITabShip : UITabBase
             return;
         }
 
-        var req = new MineralModuleLevelChangeRequest
+        var req = new ModuleLevelChangeRequest
         {
             shipId        = m_selectedShip.m_shipInfo.id,
             bodyIndex     = m_selectedModule.GetModuleBodyIndex(),
@@ -633,40 +674,9 @@ public class UITabShip : UITabBase
         };
         m_bModuleChanging    = true;
         m_levelUpRequestTime = Time.time;
-        NetworkManager.Instance.MineralLevelUpModule(req, OnMineralLevelUpResponse);
+        NetworkManager.Instance.ModuleLevelUpMineral(req, OnModuleLevelUpMineralResponse);
     }
-
-    private void ExecuteMineralLevelDownRequest()
-    {
-        int currentLevel = m_selectedModule.GetModuleLevel();
-
-        bool hasBaseline = DataManager.Instance.CalcModulePointBaseline(
-            m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
-            out EModuleSubType baselineSubType, out int baselineLevel);
-        bool isSameSubType  = hasBaseline == true && baselineSubType == m_selectedModule.GetModuleSubType();
-        bool atOrBelowBaseline = isSameSubType == true && currentLevel <= baselineLevel;
-
-        if (atOrBelowBaseline == true)
-        {
-            ShowErrorMessage("미네랄 기준점 아래로 내릴 수 없습니다");
-            return;
-        }
-
-        var req = new MineralModuleLevelChangeRequest
-        {
-            shipId        = m_selectedShip.m_shipInfo.id,
-            bodyIndex     = m_selectedModule.GetModuleBodyIndex(),
-            moduleType    = m_selectedModule.GetModuleType(),
-            moduleSubType = m_selectedModule.GetModuleSubType(),
-            slotIndex     = m_selectedModule.GetSlotIndex(),
-            currentLevel  = currentLevel,
-            targetLevel   = currentLevel - 1
-        };
-        m_bModuleChanging = true;
-        NetworkManager.Instance.MineralLevelDownModule(req, OnMineralLevelDownResponse);
-    }
-
-    private void OnMineralLevelUpResponse(ApiResponse<MineralModuleLevelChangeResponse> response)
+    private void OnModuleLevelUpMineralResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
         m_bModuleChanging = false;
         Character character = DataManager.Instance.m_currentCharacter;
@@ -674,8 +684,8 @@ public class UITabShip : UITabBase
 
         if (response.errorCode == 0)
         {
-            character.UpdateMineral(response.data.mineralRemain);
-            ApplyMineralModuleLevelChange(response.data);
+            character.UpdateMineral(response.data.pointRemain);
+            Apply_ModuleLevelChangeMineral(response.data);
 
             if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
             {
@@ -692,39 +702,17 @@ public class UITabShip : UITabBase
             OnLevelUpPointerUp();
         }
     }
-
-    private void OnMineralLevelDownResponse(ApiResponse<MineralModuleLevelChangeResponse> response)
-    {
-        m_bModuleChanging = false;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
-        if (response.errorCode == 0)
-        {
-            character.UpdateMineral(response.data.mineralRemain);
-            ApplyMineralModuleLevelChange(response.data);
-        }
-        else
-        {
-            string msg = ErrorCodeMapping.GetMessage(response.errorCode);
-            Debug.LogError($"Mineral LevelDown failed: {msg}");
-            ShowErrorMessage($"Mineral LevelDown failed: {msg}");
-        }
-    }
-
-    private void ApplyMineralModuleLevelChange(MineralModuleLevelChangeResponse data)
+    private void Apply_ModuleLevelChangeMineral(ModuleLevelChangeResponse data)
     {
         if (m_playerFleet == null) return;
         SpaceShip ship = m_playerFleet.FindShip(data.shipId);
         if (ship == null) return;
 
-        // ApplyModuleChange가 모듈을 재생성하므로 기존 투자값을 먼저 보존
+        // ApplyModuleChange가 모듈을 재생성하므로 기존 모듈포인트 투자값을 먼저 보존
         ModuleBase prevModule = ship.FindModule(data.bodyIndex, data.moduleType, data.slotIndex);
         int savedInvestedModulePoint = prevModule != null ? prevModule.m_investedModulePoint : 0;
 
-        ship.ApplyModuleChange(data.bodyIndex, data.moduleType, data.moduleSubType, data.slotIndex, data.newLevel);
-        ship.SetModuleInvestedMineral(data.bodyIndex, data.moduleType, data.slotIndex, data.investedMineral);
-        ship.SetModuleInvestedModulePoint(data.bodyIndex, data.moduleType, data.slotIndex, savedInvestedModulePoint);
+        ship.ApplyModuleChange(data.bodyIndex, data.moduleType, data.moduleSubType, data.slotIndex, data.newLevel, data.investedPoint, savedInvestedModulePoint);
 
         EventManager.Trigger_ShipStatsChanged(ship);
 
@@ -735,19 +723,21 @@ public class UITabShip : UITabBase
             ReselectReplacedModule(ship, data.bodyIndex, data.moduleType, data.moduleSubType, data.slotIndex);
         }
     }
-
-    private void OnLevelDownClicked()
+    
+    private void OnModuleLevelDownClicked()
     {
         if (m_bModuleChanging == true) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
-        if (m_isMineralMode == true)
-        {
-            ExecuteMineralLevelDownRequest();
-            return;
-        }
-
+        bool isMineralMode = m_selectedModule.m_isMineralMode;
+        if (isMineralMode == false)
+            ExecuteModuleLevelDown();
+        else
+            ExecuteModuleLevelDownMineral();
+    }
+    private void ExecuteModuleLevelDown()
+    {
         int currentLevel = m_selectedModule.GetModuleLevel();
 
         if (currentLevel == 1)
@@ -773,10 +763,9 @@ public class UITabShip : UITabBase
             targetLevel   = currentLevel - 1  // Lv.1이면 0 → 서버에서 이전 단계 맥스레벨 처리
         };
         m_bModuleChanging = true;
-        NetworkManager.Instance.LevelDownModule(req, OnLevelDownResponse);
+        NetworkManager.Instance.LevelDownModule(req, OnModuleLevelDownResponse);
     }
-
-    private void OnLevelUpResponse(ApiResponse<ModuleLevelChangeResponse> response)
+    private void OnModuleLevelDownResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
         m_bModuleChanging = false;
         Character character = DataManager.Instance.m_currentCharacter;
@@ -784,45 +773,14 @@ public class UITabShip : UITabBase
 
         if (response.errorCode == 0)
         {
-            character.UpdateModulePoint(response.data.modulePointRemain);
-            ApplyModuleLevelChange(response.data.shipId, response.data.bodyIndex, response.data.moduleType,
-                response.data.moduleSubType, response.data.slotIndex, response.data.newLevel, isLevelUp: true);
-
-            // 연속 모드: HOLD_START_DELAY가 지났고 버튼을 아직 누르고 있으면 다음 요청 예약
-            if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
-            {
-                float elapsed = Time.time - m_levelUpRequestTime;
-                float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
-                m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
-            }
-        }
-        else
-        {
-            string msg = ErrorCodeMapping.GetMessage(response.errorCode);
-            Debug.LogError($"LevelUp failed: {msg}");
-            ShowErrorMessage($"LevelUp failed: {msg}");
-            OnLevelUpPointerUp();
-        }
-    }
-
-    private void OnLevelDownResponse(ApiResponse<ModuleLevelChangeResponse> response)
-    {
-        m_bModuleChanging = false;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-
-        if (response.errorCode == 0)
-        {
-            character.UpdateModulePoint(response.data.modulePointRemain);
+            character.UpdateModulePoint(response.data.pointRemain);
 
             if (m_playerFleet == null) return;
             SpaceShip ship = m_playerFleet.FindShip(response.data.shipId);
             if (ship == null) return;
 
             ship.ApplyModuleChange(response.data.bodyIndex, response.data.moduleType,
-                response.data.moduleSubType, response.data.slotIndex, response.data.newLevel);
-            ship.SetModuleInvestedModulePoint(response.data.bodyIndex, response.data.moduleType,
-                response.data.slotIndex, response.data.investedModulePoint);
+                response.data.moduleSubType, response.data.slotIndex, response.data.newLevel, 0, response.data.investedPoint);
 
             EventManager.Trigger_ShipStatsChanged(ship);
 
@@ -841,47 +799,264 @@ public class UITabShip : UITabBase
             ShowErrorMessage($"LevelDown failed: {msg}");
         }
     }
-
-    private void ApplyModuleLevelChange(long shipId, int bodyIndex, EModuleType moduleType,
-        EModuleSubType moduleSubType, int slotIndex, int newLevel, bool isLevelUp)
+    private void ExecuteModuleLevelDownMineral()
     {
+        int currentLevel = m_selectedModule.GetModuleLevel();
+
+        bool hasBaseline = DataManager.Instance.CalcModulePointBaseline(
+            m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
+            out EModuleSubType baselineSubType, out int baselineLevel);
+        bool isSameSubType  = hasBaseline == true && baselineSubType == m_selectedModule.GetModuleSubType();
+        bool atOrBelowBaseline = isSameSubType == true && currentLevel <= baselineLevel;
+
+        if (atOrBelowBaseline == true)
+        {
+            ShowErrorMessage("미네랄 기준점 아래로 내릴 수 없습니다");
+            return;
+        }
+
+        var req = new ModuleLevelChangeRequest
+        {
+            shipId        = m_selectedShip.m_shipInfo.id,
+            bodyIndex     = m_selectedModule.GetModuleBodyIndex(),
+            moduleType    = m_selectedModule.GetModuleType(),
+            moduleSubType = m_selectedModule.GetModuleSubType(),
+            slotIndex     = m_selectedModule.GetSlotIndex(),
+            currentLevel  = currentLevel,
+            targetLevel   = currentLevel - 1
+        };
+        m_bModuleChanging = true;
+        NetworkManager.Instance.ModuleLevelDownMineral(req, OnModuleLevelDownMineralResponse);
+    }
+    private void OnModuleLevelDownMineralResponse(ApiResponse<ModuleLevelChangeResponse> response)
+    {
+        m_bModuleChanging = false;
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+
+        if (response.errorCode == 0)
+        {
+            character.UpdateMineral(response.data.pointRemain);
+            Apply_ModuleLevelChangeMineral(response.data);
+        }
+        else
+        {
+            string msg = ErrorCodeMapping.GetMessage(response.errorCode);
+            Debug.LogError($"Mineral LevelDown failed: {msg}");
+            ShowErrorMessage($"Mineral LevelDown failed: {msg}");
+        }
+    }
+  
+
+    
+
+#endregion 모듈 레벨 업/다운 end -------------------------------------------------------------
+
+#region 모듈 그래이드 업/다운 begin -------------------------------------------------------------
+    private void OnModuleGradeUpClicked()
+    {
+        if (m_bModuleChanging == true) return;
+        if (m_selectedShip == null || m_selectedModule == null) return;
+        if (m_selectedModule is ModulePlaceholder == true) return;
+        EModuleSubType nextSubType = GetNextSubType(m_selectedModule.GetModuleSubType());
+        if (nextSubType == EModuleSubType.none) return;
+
+        if (m_selectedModule.m_isMineralMode == false)
+            ExecuteModuleGradeUp();
+        else
+            ExecuteModuleGradeUpMineral(nextSubType);
+    }
+    private void ExecuteModuleGradeUp()
+    {
+        int slotIndex = 0;
+        if (m_selectedModule.GetModuleType() != EModuleType.body)
+            slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+
+        var req = new ModuleGradeChangeRequest
+        {
+            shipId               = m_selectedShip.m_shipInfo.id,
+            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
+            slotIndex            = slotIndex,
+            moduleType           = m_selectedModule.GetModuleType(),
+            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType()
+        };
+        m_bModuleChanging = true;
+        NetworkManager.Instance.ModuleGradeUp(req, OnModuleGradeChangeResponse);
+    }
+    private void ExecuteModuleGradeUpMineral(EModuleSubType targetSubType)
+    {
+        long levelUpToMaxCost = CalcMineralLevelUpToMaxCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel());
+        long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(targetSubType);
+        long totalCost        = levelUpToMaxCost + gradeUpCost;
+
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character == null) return;
+        if (character.GetMineral() < totalCost)
+        {
+            ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_mineral"));
+            return;
+        }
+
+        int slotIndex = m_selectedModule.GetModuleType() == EModuleType.body
+            ? 0
+            : m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+
+        var req = new ModuleGradeChangeRequest
+        {
+            shipId               = m_selectedShip.m_shipInfo.id,
+            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
+            moduleType           = m_selectedModule.GetModuleType(),
+            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
+            slotIndex            = slotIndex
+        };
+        m_bModuleChanging = true;
+        NetworkManager.Instance.ModuleGradeUpMineral(req, OnModuleGradeChangeMineralResponse);
+    }
+
+    private void OnModuleGradeDownClicked()
+    {
+        if (m_bModuleChanging == true) return;
+        if (m_selectedShip == null || m_selectedModule == null) return;
+        if (m_selectedModule is ModulePlaceholder == true) return;
+
+        if (m_selectedModule.m_isMineralMode == false)
+            ExecuteModuleGradeDown();
+        else
+            ExecuteModuleGradeDownMineral();
+    }
+    private void ExecuteModuleGradeDown()
+    {
+        int slotIndex = 0;
+        if (m_selectedModule.GetModuleType() != EModuleType.body)
+            slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+
+        var req = new ModuleGradeChangeRequest
+        {
+            shipId               = m_selectedShip.m_shipInfo.id,
+            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
+            slotIndex            = slotIndex,
+            moduleType           = m_selectedModule.GetModuleType(),
+            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType()
+        };
+        m_bModuleChanging = true;
+        NetworkManager.Instance.ModuleGradeDown(req, OnModuleGradeChangeResponse);
+    }
+    private void ExecuteModuleGradeDownMineral()
+    {
+        int slotIndex = m_selectedModule.GetModuleType() == EModuleType.body
+            ? 0
+            : m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+
+        var req = new ModuleGradeChangeRequest
+        {
+            shipId               = m_selectedShip.m_shipInfo.id,
+            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
+            moduleType           = m_selectedModule.GetModuleType(),
+            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
+            slotIndex            = slotIndex
+        };
+        m_bModuleChanging = true;
+        NetworkManager.Instance.ModuleGradeDownMineral(req, OnModuleGradeChangeMineralResponse);
+    }
+
+    private void OnModuleGradeChangeResponse(ApiResponse<ModuleGradeChangeResponse> response)
+    {
+        m_bModuleChanging = false;
+        if (response.errorCode == 0)
+            Apply_ModuleGradeChange(response.data);
+        else
+            ShowErrorMessage($"Grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+    }
+    private void Apply_ModuleGradeChange(ModuleGradeChangeResponse changeData)
+    {
+        if (changeData == null) return;
         if (m_playerFleet == null) return;
-        SpaceShip ship = m_playerFleet.FindShip(shipId);
+
+        var character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+            character.UpdateModulePoint(changeData.pointRemain);
+
+        if (changeData.isShipRemoved == true)
+        {
+            RemoveShipFromFleet(changeData.removedShipId);
+            return;
+        }
+
+        SpaceShip ship = m_playerFleet.FindShip(changeData.shipId);
         if (ship == null) return;
 
-        ModuleBase prevModule = ship.FindModule(bodyIndex, moduleType, slotIndex);
-        int prevLevel         = 0;
-        int prevInvestedPoint = 0;
-        if (prevModule != null)
+        if (changeData.isModuleRemoved == true)
         {
-            prevLevel         = prevModule.GetModuleLevel();
-            prevInvestedPoint = prevModule.m_investedModulePoint;
+            ship.Apply_ResetModuleToPlaceholder(changeData.bodyIndex, changeData.moduleTypeCurrent, changeData.slotIndex);
+            if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
+            {
+                PopulateModuleSelectButtons();
+                ModuleBase resetModule = ship.FindModule(changeData.bodyIndex, changeData.moduleTypeCurrent, changeData.slotIndex);
+                EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, resetModule);
+            }
+            return;
         }
 
-        ship.ApplyModuleChange(bodyIndex, moduleType, moduleSubType, slotIndex, newLevel);
+        ship.ApplyModuleChange(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew,
+            changeData.slotIndex, changeData.moduleNewLevel, 0, changeData.investedPoint);
 
-        int pointDelta = 0;
-        int fromLv     = Mathf.Min(prevLevel, newLevel);
-        int toLv       = Mathf.Max(prevLevel, newLevel);
-        for (int lv = fromLv; lv < toLv; lv++)
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
         {
-            if (DataManager.Instance.GetModuleLevelUpCost(moduleSubType, lv, out long cost) == true)
-                pointDelta += (int)cost;
+            PopulateModuleSelectButtons();
+            ReselectReplacedModule(ship, changeData.bodyIndex, changeData.moduleTypeNew,
+                changeData.moduleSubTypeNew, changeData.slotIndex);
         }
-        int newInvestedPoint = isLevelUp == true
-            ? prevInvestedPoint + pointDelta
-            : prevInvestedPoint - pointDelta;
-        ship.SetModuleInvestedModulePoint(bodyIndex, moduleType, slotIndex, newInvestedPoint);
+    }
+
+    private void OnModuleGradeChangeMineralResponse(ApiResponse<ModuleGradeChangeResponse> response)
+    {
+        m_bModuleChanging = false;
+        if (response.errorCode == 0)
+            Apply_ModuleGradeChangeMineral(response.data);
+        else
+            ShowErrorMessage($"Mineral grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+    }
+    private void Apply_ModuleGradeChangeMineral(ModuleGradeChangeResponse data)
+    {
+        if (data == null) return;
+        if (m_playerFleet == null) return;
+
+        Character character = DataManager.Instance.m_currentCharacter;
+        if (character != null)
+            character.UpdateMineral(data.pointRemain);
+
+        if (data.isShipRemoved == true)
+        {
+            RemoveShipFromFleet(data.removedShipId);
+            return;
+        }
+
+        SpaceShip ship = m_playerFleet.FindShip(data.shipId);
+        if (ship == null) return;
+
+        if (data.isModuleRemoved == true)
+        {
+            ship.Apply_ResetModuleToPlaceholder(data.bodyIndex, data.moduleTypeCurrent, data.slotIndex);
+        }
+        else
+        {
+            ModuleBase prevModule = ship.FindModule(data.bodyIndex, data.moduleTypeNew, data.slotIndex);
+            int savedInvestedModulePoint = prevModule != null ? prevModule.m_investedModulePoint : 0;
+
+            ship.ApplyModuleChange(data.bodyIndex, data.moduleTypeNew, data.moduleSubTypeNew, data.slotIndex, data.moduleNewLevel, data.investedPoint, savedInvestedModulePoint);
+        }
 
         EventManager.Trigger_ShipStatsChanged(ship);
 
-        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == shipId)
+        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == data.shipId)
         {
-            UpdateShipHeader();
             PopulateModuleSelectButtons();
-            ReselectReplacedModule(ship, bodyIndex, moduleType, moduleSubType, slotIndex);
+            ReselectReplacedModule(ship, data.bodyIndex, data.moduleTypeNew, data.moduleSubTypeNew, data.slotIndex);
         }
     }
+#endregion 모듈 그래이드 업/다운 end -------------------------------------------------------------
+
+
 
     // ─────────────────────────────────────────────
     // 모듈 디테일 카드 갱신
@@ -896,6 +1071,13 @@ public class UITabShip : UITabBase
         m_moduleLevelText.gameObject.SetActive(false);
         foreach (var row in m_statsRows)   row.Hide();
 
+        // 미네랄 투자 이력 있으면 미네랄 모드 고정, 없으면 모듈포인트 모드로 초기화
+        int investedMineral = m_selectedModule.m_investedMineral;
+        if (investedMineral > 0)
+            m_selectedModule.m_isMineralMode = true;
+        else
+            m_selectedModule.m_isMineralMode = false;
+
         if (m_selectedModule is ModulePlaceholder)
         {
             m_unlockModuleContainer.SetActive(true);
@@ -909,13 +1091,6 @@ public class UITabShip : UITabBase
         {
             m_unlockModuleContainer.SetActive(false);
             m_moduleStatusContainer.gameObject.SetActive(true);
-
-            // 미네랄 투자 이력이 있으면 미네랄 모드로 강제 전환, 없으면 모듈포인트 모드로 복귀
-            int investedMineral = m_selectedModule.m_investedMineral;
-            if (investedMineral > 0)
-                m_isMineralMode = true;
-            else
-                m_isMineralMode = false;
 
             EModuleSubType subType = m_selectedModule.GetModuleSubType();
             int level              = m_selectedModule.GetModuleLevel();
@@ -986,7 +1161,7 @@ public class UITabShip : UITabBase
         var character   = DataManager.Instance.m_currentCharacter;
         int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
 
-        if (m_isMineralMode == true)
+        if (m_selectedModule.m_isMineralMode == true)
         {
             long playerMineral = character != null ? character.GetMineral() : 0;
             m_unlockModuleButton.SetActiveColorKey("Mineral");
@@ -1013,7 +1188,7 @@ public class UITabShip : UITabBase
 
         RefreshModeToggleButton(investedMineral);
 
-        if (m_isMineralMode == true)
+        if (m_selectedModule.m_isMineralMode == true)
         {
             ApplyButtonColorKey("Mineral");
             var  character     = DataManager.Instance.m_currentCharacter;
@@ -1062,7 +1237,7 @@ public class UITabShip : UITabBase
         if (canUpgrade == true)
         {
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
-            m_gradeUpModuleButtonText2.SetRow("module-point", $"-{CommonUtility.FormatBigNumber(totalCost)}");
+            m_gradeUpModuleButtonText2.SetRow("mineral-basic", $"-{CommonUtility.FormatBigNumber(totalCost)}");
         }
         else if (hasTech == false)
         {
@@ -1415,146 +1590,25 @@ public class UITabShip : UITabBase
         row.SetTextColor(Color.red);
     }
 
-    // ─────────────────────────────────────────────
-    // 서브타입 업그레이드 / 다운그레이드
-    // ─────────────────────────────────────────────
+    
 
-    private void OnGradeUpClicked()
-    {
-        if (m_bModuleChanging == true) return;
-        if (m_selectedShip == null || m_selectedModule == null) return;
-        if (m_selectedModule is ModulePlaceholder == true) return;
 
-        EModuleSubType nextSubType = GetNextSubType(m_selectedModule.GetModuleSubType());
-        if (nextSubType == EModuleSubType.none) return;
 
-        if (m_isMineralMode == true)
-            ExecuteMineralGradeUp(nextSubType);
-        else
-            ExecuteGradeUp(nextSubType);
-    }
 
-    private void OnGradeDownClicked()
-    {
-        if (m_bModuleChanging == true) return;
-        if (m_selectedShip == null || m_selectedModule == null) return;
-        if (m_selectedModule is ModulePlaceholder == true) return;
 
-        EModuleSubType prevSubType = GetPrevSubType(m_selectedModule.GetModuleSubType());
 
-        if (m_isMineralMode == true)
-        {
-            int currentSubTypeVal = (int)m_selectedModule.GetModuleSubType();
-            bool hasBaseline      = DataManager.Instance.CalcModulePointBaseline(
-                m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
-                out EModuleSubType baselineSubType, out _);
-            int  baselineSubTypeVal = hasBaseline == true ? (int)baselineSubType : 0;
-            bool isAtBaseline       = currentSubTypeVal <= baselineSubTypeVal;
 
-            if (prevSubType == EModuleSubType.none || isAtBaseline == true)
-            {
-                ExecuteMineralReset();
-                return;
-            }
-            ExecuteMineralGradeDown(prevSubType);
-            return;
-        }
+    
 
-        if (prevSubType == EModuleSubType.none)
-        {
-            ExecuteResetModule();
-            return;
-        }
-        ExecuteGradeDown(prevSubType);
-    }
 
-    private void ExecuteGradeUp(EModuleSubType targetSubType)
-    {
-        int slotIndex = 0;
-        if (m_selectedModule.GetModuleType() != EModuleType.body)
-            slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
 
-        var req = new ModuleGradeChangeRequest
-        {
-            shipId               = m_selectedShip.m_shipInfo.id,
-            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
-            slotIndex            = slotIndex,
-            moduleType           = m_selectedModule.GetModuleType(),
-            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
-            moduleSubTypeNew     = targetSubType
-        };
-        m_bModuleChanging = true;
-        NetworkManager.Instance.GradeUpModule(req, OnGradeChangeResponse);
-    }
+    
 
-    private void ExecuteGradeDown(EModuleSubType targetSubType)
-    {
-        int slotIndex = 0;
-        if (m_selectedModule.GetModuleType() != EModuleType.body)
-            slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
+    
 
-        var req = new ModuleGradeChangeRequest
-        {
-            shipId               = m_selectedShip.m_shipInfo.id,
-            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
-            slotIndex            = slotIndex,
-            moduleType           = m_selectedModule.GetModuleType(),
-            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
-            moduleSubTypeNew     = targetSubType
-        };
-        m_bModuleChanging = true;
-        NetworkManager.Instance.GradeDownModule(req, OnGradeChangeResponse);
-    }
+    
 
-    private void ExecuteMineralGradeUp(EModuleSubType targetSubType)
-    {
-        long levelUpToMaxCost = CalcMineralLevelUpToMaxCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel());
-        long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(targetSubType);
-        long totalCost        = levelUpToMaxCost + gradeUpCost;
-
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-        if (character.GetMineral() < totalCost)
-        {
-            ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_mineral"));
-            return;
-        }
-
-        int slotIndex = m_selectedModule.GetModuleType() == EModuleType.body
-            ? 0
-            : m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
-
-        var req = new MineralModuleGradeChangeRequest
-        {
-            shipId               = m_selectedShip.m_shipInfo.id,
-            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
-            moduleType           = m_selectedModule.GetModuleType(),
-            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
-            moduleSubTypeNew     = targetSubType,
-            slotIndex            = slotIndex
-        };
-        m_bModuleChanging = true;
-        NetworkManager.Instance.MineralGradeUpModule(req, OnMineralGradeChangeResponse);
-    }
-
-    private void ExecuteMineralGradeDown(EModuleSubType targetSubType)
-    {
-        int slotIndex = m_selectedModule.GetModuleType() == EModuleType.body
-            ? 0
-            : m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
-
-        var req = new MineralModuleGradeChangeRequest
-        {
-            shipId               = m_selectedShip.m_shipInfo.id,
-            bodyIndex            = m_selectedModule.GetModuleBodyIndex(),
-            moduleType           = m_selectedModule.GetModuleType(),
-            moduleSubTypeCurrent = m_selectedModule.GetModuleSubType(),
-            moduleSubTypeNew     = targetSubType,
-            slotIndex            = slotIndex
-        };
-        m_bModuleChanging = true;
-        NetworkManager.Instance.MineralGradeDownModule(req, OnMineralGradeChangeResponse);
-    }
+    
 
     private void ExecuteMineralReset()
     {
@@ -1562,7 +1616,7 @@ public class UITabShip : UITabBase
             ? 0
             : m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
 
-        var req = new MineralModuleResetRequest
+        var req = new ModuleResetRequest
         {
             shipId    = m_selectedShip.m_shipInfo.id,
             bodyIndex = m_selectedModule.GetModuleBodyIndex(),
@@ -1570,28 +1624,28 @@ public class UITabShip : UITabBase
             slotIndex  = slotIndex
         };
         m_bModuleChanging = true;
-        NetworkManager.Instance.MineralResetModule(req, OnMineralResetResponse);
+        NetworkManager.Instance.ModuleResetMineral(req, OnMineralResetResponse);
     }
 
-    private void OnMineralResetResponse(ApiResponse<MineralModuleResetResponse> response)
+    private void OnMineralResetResponse(ApiResponse<ModuleResetResponse> response)
     {
         m_bModuleChanging = false;
         if (response.errorCode == 0)
-            ApplyMineralReset(response.data);
+            Apply_MineralReset(response.data);
         else
             ShowErrorMessage($"Mineral reset failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
     }
 
-    private void ApplyMineralReset(MineralModuleResetResponse data)
+    private void Apply_MineralReset(ModuleResetResponse data)
     {
         if (data == null) return;
         if (m_playerFleet == null) return;
 
         Character character = DataManager.Instance.m_currentCharacter;
         if (character != null)
-            character.UpdateMineral(data.mineralRemain);
+            character.UpdateMineral(data.pointRemain);
 
-        if (data.shipRemoved == true)
+        if (data.isShipRemoved == true)
         {
             RemoveShipFromFleet(data.removedShipId);
             return;
@@ -1610,9 +1664,7 @@ public class UITabShip : UITabBase
             ModuleBase prevModule = ship.FindModule(data.bodyIndex, data.moduleType, data.slotIndex);
             int savedInvestedModulePoint = prevModule != null ? prevModule.m_investedModulePoint : 0;
 
-            ship.ApplyModuleChange(data.bodyIndex, data.moduleType, data.moduleSubType, data.slotIndex, data.moduleNewLevel);
-            ship.SetModuleInvestedMineral(data.bodyIndex, data.moduleType, data.slotIndex, data.investedMineral);
-            ship.SetModuleInvestedModulePoint(data.bodyIndex, data.moduleType, data.slotIndex, savedInvestedModulePoint);
+            ship.ApplyModuleChange(data.bodyIndex, data.moduleType, data.moduleSubType, data.slotIndex, data.moduleNewLevel, data.investedPoint, savedInvestedModulePoint);
         }
 
         EventManager.Trigger_ShipStatsChanged(ship);
@@ -1624,78 +1676,9 @@ public class UITabShip : UITabBase
         }
     }
 
-    private void OnMineralGradeChangeResponse(ApiResponse<MineralModuleGradeChangeResponse> response)
-    {
-        m_bModuleChanging = false;
-        if (response.errorCode == 0)
-            ApplyMineralGradeChange(response.data);
-        else
-            ShowErrorMessage($"Mineral grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
-    }
+    
 
-    private void ApplyMineralGradeChange(MineralModuleGradeChangeResponse data)
-    {
-        if (data == null) return;
-        if (m_playerFleet == null) return;
-
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateMineral(data.mineralRemain);
-
-        if (data.shipRemoved == true)
-        {
-            RemoveShipFromFleet(data.removedShipId);
-            return;
-        }
-
-        SpaceShip ship = m_playerFleet.FindShip(data.shipId);
-        if (ship == null) return;
-
-        ship.ApplyModuleChange(data.bodyIndex, data.moduleTypeNew, data.moduleSubTypeNew, data.slotIndex, data.moduleNewLevel);
-        ship.SetModuleInvestedMineral(data.bodyIndex, data.moduleTypeNew, data.slotIndex, data.investedMineral);
-
-        EventManager.Trigger_ShipStatsChanged(ship);
-
-        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == data.shipId)
-        {
-            PopulateModuleSelectButtons();
-            ReselectReplacedModule(ship, data.bodyIndex, data.moduleTypeNew, data.moduleSubTypeNew, data.slotIndex);
-        }
-    }
-
-    private void OnGradeChangeResponse(ApiResponse<ModuleGradeChangeResponse> response)
-    {
-        m_bModuleChanging = false;
-        if (response.errorCode == 0)
-            ApplyModuleChange(response.data);
-        else
-            ShowErrorMessage($"Grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
-    }
-
-    private void ApplyModuleChange(ModuleGradeChangeResponse changeData)
-    {
-        if (changeData == null) return;
-        if (m_playerFleet == null) return;
-
-        SpaceShip ship = m_playerFleet.FindShip(changeData.shipId);
-        if (ship == null) return;
-
-        ship.ApplyModuleChange(changeData.bodyIndex, changeData.moduleTypeNew, changeData.moduleSubTypeNew,
-            changeData.slotIndex, changeData.moduleNewLevel);
-        ship.SetModuleInvestedModulePoint(changeData.bodyIndex, changeData.moduleTypeNew,
-            changeData.slotIndex, changeData.investedModulePoint);
-
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateModulePoint(changeData.modulePointRemain);
-
-        if (m_selectedShip != null && m_selectedShip.m_shipInfo.id == changeData.shipId)
-        {
-            PopulateModuleSelectButtons();
-            ReselectReplacedModule(ship, changeData.bodyIndex, changeData.moduleTypeNew,
-                changeData.moduleSubTypeNew, changeData.slotIndex);
-        }
-    }
+    
 
     private EModuleSubType GetNextSubType(EModuleSubType subType)
     {
@@ -1882,7 +1865,7 @@ public class UITabShip : UITabBase
         var data = response.data;
         var character = DataManager.Instance.m_currentCharacter;
         if (character != null)
-            character.UpdateModulePoint(data.modulePointRemain);
+            character.UpdateModulePoint(data.pointRemain);
 
         SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet == null) return;
@@ -1910,7 +1893,7 @@ public class UITabShip : UITabBase
                         targetShip.Apply_ResetModuleToPlaceholder(data.bodyIndex, EModuleType.hanger, hanger.GetSlotIndex());
             }
             // 기함 body 리셋 — T1 레벨1로 복귀
-            targetShip.ApplyModuleChange(data.bodyIndex, EModuleType.body, EModuleSubType.body_t1_m1, 0, 1);
+            targetShip.ApplyModuleChange(data.bodyIndex, EModuleType.body, EModuleSubType.body_t1_m1, 0, 1, 0, 0);
         }
         else
         {

@@ -34,6 +34,9 @@ public class ModuleBase : MonoBehaviour
         m_investedMineral = mineral;
     }
 
+    // 이 모듈의 UI 모드 상태 (미네랄 모드 여부)
+    [HideInInspector] public bool m_isMineralMode = false;
+
     // 함대 정보
     protected SpaceFleet m_ownerFleet;
     protected SpaceShip m_myShip;

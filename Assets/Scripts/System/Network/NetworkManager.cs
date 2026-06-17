@@ -595,70 +595,70 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ChangeTacticOptionsAsync(request), onComplete));
     }
 
-    public void UnlockModule(ModuleUnlockRequest request, System.Action<ApiResponse<ModuleUnlockResponse>> onComplete)
+    public void UnlockModule(ModuleUnlockRequest request, Action<ApiResponse<ModuleUnlockResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.UnlockModuleAsync(request), onComplete));
     }
 
-    public void LevelUpModule(ModuleLevelChangeRequest request, System.Action<ApiResponse<ModuleLevelChangeResponse>> onComplete)
+    public void LevelUpModule(ModuleLevelChangeRequest request, Action<ApiResponse<ModuleLevelChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.LevelUpModuleAsync(request), onComplete));
     }
 
-    public void LevelDownModule(ModuleLevelChangeRequest request, System.Action<ApiResponse<ModuleLevelChangeResponse>> onComplete)
+    public void LevelDownModule(ModuleLevelChangeRequest request, Action<ApiResponse<ModuleLevelChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.LevelDownModuleAsync(request), onComplete));
     }
 
-    public void GradeUpModule(ModuleGradeChangeRequest request, System.Action<ApiResponse<ModuleGradeChangeResponse>> onComplete)
+    public void ModuleGradeUp(ModuleGradeChangeRequest request, Action<ApiResponse<ModuleGradeChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.GradeUpModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ModuleGradeUpAsync(request), onComplete));
     }
 
-    public void GradeDownModule(ModuleGradeChangeRequest request, System.Action<ApiResponse<ModuleGradeChangeResponse>> onComplete)
+    public void ModuleGradeDown(ModuleGradeChangeRequest request, Action<ApiResponse<ModuleGradeChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.GradeDownModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ModuleGradeDownAsync(request), onComplete));
     }
 
-    public void MineralUnlockModule(MineralModuleUnlockRequest request, System.Action<ApiResponse<MineralModuleUnlockResponse>> onComplete)
+    public void ModuleUnlockMineral(ModuleUnlockRequest request, Action<ApiResponse<ModuleUnlockResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.MineralUnlockModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ModuleUnlockMineralAsync(request), onComplete));
     }
 
-    public void MineralLevelUpModule(MineralModuleLevelChangeRequest request, System.Action<ApiResponse<MineralModuleLevelChangeResponse>> onComplete)
+    public void ModuleLevelUpMineral(ModuleLevelChangeRequest request, Action<ApiResponse<ModuleLevelChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.MineralLevelUpModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ModuleLevelUpMineralAsync(request), onComplete));
     }
 
-    public void MineralLevelDownModule(MineralModuleLevelChangeRequest request, System.Action<ApiResponse<MineralModuleLevelChangeResponse>> onComplete)
+    public void ModuleLevelDownMineral(ModuleLevelChangeRequest request, Action<ApiResponse<ModuleLevelChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.MineralLevelDownModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ModuleLevelDownMineralAsync(request), onComplete));
     }
 
-    public void MineralGradeUpModule(MineralModuleGradeChangeRequest request, System.Action<ApiResponse<MineralModuleGradeChangeResponse>> onComplete)
+    public void ModuleGradeUpMineral(ModuleGradeChangeRequest request, Action<ApiResponse<ModuleGradeChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.MineralGradeUpModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ModuleGradeUpMineralAsync(request), onComplete));
     }
 
-    public void MineralGradeDownModule(MineralModuleGradeChangeRequest request, System.Action<ApiResponse<MineralModuleGradeChangeResponse>> onComplete)
+    public void ModuleGradeDownMineral(ModuleGradeChangeRequest request, Action<ApiResponse<ModuleGradeChangeResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.MineralGradeDownModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ModuleGradeDownMineralAsync(request), onComplete));
     }
 
-    public void MineralResetModule(MineralModuleResetRequest request, System.Action<ApiResponse<MineralModuleResetResponse>> onComplete)
+    public void ModuleResetMineral(ModuleResetRequest request, Action<ApiResponse<ModuleResetResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.MineralResetModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ModuleResetMineralAsync(request), onComplete));
     }
 
 
@@ -669,7 +669,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     //     StartCoroutine(RunAsync(() => m_apiClient.AddModuleBodyAsync(request), onComplete));
     // }
 
-    public void ResetModule(ModuleResetRequest request, System.Action<ApiResponse<ModuleResetResponse>> onComplete)
+    public void ResetModule(ModuleResetRequest request, Action<ApiResponse<ModuleResetResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.ResetModuleAsync(request), onComplete));

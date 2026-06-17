@@ -392,6 +392,7 @@ public abstract class AircraftBase : MonoBehaviour
         if (returnContainer == null || returnContainer.childCount == 0)
         {
             Debug.LogError("Phase_ReturnToApproach: returnContainer null or empty!");
+            ReturnToPool();
             yield break;
         }
 

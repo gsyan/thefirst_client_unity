@@ -951,6 +951,14 @@ MonoBehaviour:
     m_Key: UIPopupMessage_TechLevelupTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 46939500441370624
+    m_Key: UIPopupMessage_MineralResetTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46939500504285184
+    m_Key: UIPopupMessage_MineralResetMessage
+    m_Metadata:
+      m_Items: []
   - m_Id: 14264662300164096
     m_Key: module_subtype_max_level_required
     m_Metadata:

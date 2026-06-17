@@ -673,7 +673,7 @@ public class SpaceShip : MonoBehaviour
         return body.FindModule(moduleType, slotIndex);
     }
 
-    public void SetModuleInvestedModulePoint(int bodyIndex, EModuleType moduleType, int slotIndex, int modulePoint)
+    private void SetModuleInvestedModulePoint(int bodyIndex, EModuleType moduleType, int slotIndex, int modulePoint)
     {
         ModuleBase module = FindModule(bodyIndex, moduleType, slotIndex);
         if (module == null) return;
@@ -717,7 +717,7 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
-    public void SetModuleInvestedMineral(int bodyIndex, EModuleType moduleType, int slotIndex, int mineral)
+    private void SetModuleInvestedMineral(int bodyIndex, EModuleType moduleType, int slotIndex, int mineral)
     {
         ModuleBase module = FindModule(bodyIndex, moduleType, slotIndex);
         if (module == null) return;
@@ -1052,7 +1052,7 @@ public class SpaceShip : MonoBehaviour
 
     // module unlock (외부 호출용 - 모듈 해금 UI에서 사용)
     public void Apply_UnlockModule(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubType, int slotIndex,
-                                    int investedModulePoint = 0)
+                                    int investedModulePoint, int investedMineral)
     {
         ModuleBody body = FindModuleBodyByIndex(bodyIndex);
         if (body == null)
@@ -1070,13 +1070,16 @@ public class SpaceShip : MonoBehaviour
             return;
         }
 
-        // 언락 비용을 investedModulePoint에 반영
+        // 언락 비용을 투자 이력에 반영
         ModuleSlot slot = body.FindModuleSlot(moduleType, slotIndex);
         if (slot != null)
         {
             ModuleBase newModule = slot.GetComponentInChildren<ModuleBase>();
             if (newModule != null)
+            {
                 newModule.SetInvestedModulePoint(investedModulePoint);
+                newModule.SetInvestedMineral(investedMineral);
+            }
         }
 
         // 전투 중 해금된 모듈에 현재 타겟 재전파
@@ -1109,7 +1112,7 @@ public class SpaceShip : MonoBehaviour
     }
 
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
-    public void ApplyModuleChange(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel)
+    public void ApplyModuleChange(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel, int investedMineral, int investedModulePoint)
     {
         if (moduleType == EModuleType.body)
         {
@@ -1135,6 +1138,9 @@ public class SpaceShip : MonoBehaviour
             if (m_currentTargetBody != null && m_currentTargetBody.m_health > 0)
                 body.SetTarget(m_currentTargetBody);
         }
+
+        SetModuleInvestedMineral(bodyIndex, moduleType, slotIndex, investedMineral);
+        SetModuleInvestedModulePoint(bodyIndex, moduleType, slotIndex, investedModulePoint);
 
         // Outline 갱신 (새로 생성된 모듈들을 포함하도록)
         if (m_shipOutline != null)
