@@ -284,7 +284,7 @@ public class UITabExploration : UITabBase
         {
             // m_pendingFleetPos 을 설정하지 않는다.
             targetCameraPosition = CameraController.Instance.GetFocusTargetPosition();
-            RefreshTabButtons();
+            EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredTabRefresh);
         }
         // 전투 목표 stage 정해진 상태에서 워프 상태라면, 새로운 스테이지로 이동한다는 것
         else if (m_battleZoneStage != null && m_playerFleet.m_fleetState == EUnitState.Warp)
@@ -300,7 +300,7 @@ public class UITabExploration : UITabBase
             m_pendingFleetPos = m_datatableZone.ResolveFleetWorldPosition(m_currentZoneStage);
             m_pendingFleetRotY = m_currentZoneStage.fleetRotationY;
             targetCameraPosition = m_pendingFleetPos;
-            RefreshTabButtons();
+            EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredTabRefresh);
         }
         else
         {
@@ -308,7 +308,7 @@ public class UITabExploration : UITabBase
             m_pendingFleetPos = spawnStage != null ? m_datatableZone.ResolveFleetWorldPosition(spawnStage) : Vector3.zero;
             m_pendingFleetRotY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
             targetCameraPosition = m_pendingFleetPos;
-            RefreshTabButtons();
+            EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredTabRefresh);
         }
 
         CameraController.Instance.ExitGalaxyView(targetCameraPosition);
@@ -357,6 +357,12 @@ public class UITabExploration : UITabBase
         CameraController.Instance.SetTargetOfCameraController(m_playerFleet.transform);
     }
 
+    private void OnFleetViewRestoredTabRefresh()
+    {
+        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredTabRefresh);
+        RefreshTabButtons();
+    }
+
     private void OnDestroy()
     {
         EventManager.Unsubscribe_RetreatExploration(OnRetreatZoneStage);
@@ -365,6 +371,7 @@ public class UITabExploration : UITabBase
         EventManager.Unsubscribe_PvpBattleStart(OnPvpBattleStarted);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
+        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredTabRefresh);
     }
 
     private void OnPvpBattleStarted()

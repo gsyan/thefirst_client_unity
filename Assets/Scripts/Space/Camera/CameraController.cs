@@ -59,9 +59,10 @@ public class CameraController : MonoSingleton<CameraController>
     private bool  m_isEnteringGalaxy = false; // true=함대→갤럭시, false=갤럭시→함대
     private float m_galaxyViewAnimTimer   = 0f;
     [Header("Galaxy View Animation")]
+    private float m_galaxyPreRotDuration  = 0.5f;  // 진입 시 회전 전용 구간 (위치 고정, m_galaxyViewAnimDuration 외)
     private float m_galaxyViewAnimDuration  = 1.0f;
-    private float m_galaxySlowPhaseRatio    = 0.8f;     // 느린 구간 비율: 이 t까지 천천히 이동 (예: 0.8 = 전체의 80%)
-    private float m_galaxySlowPhaseProgress = 0.01f;    // 느린 구간 끝에서 달성할 이동 진행도 (예: 0.1 = 전체 거리의 10%만 이동)
+    private float m_galaxySlowPhaseRatio    = 0.8f;  // 느린 구간 비율: 이 t까지 천천히 이동 (예: 0.8 = 전체의 80%)
+    private float m_galaxySlowPhaseProgress = 0.01f; // 느린 구간 끝에서 달성할 이동 진행도 (예: 0.01 = 전체 거리의 1%만 이동)
 
     // 애니메이션 시작 스냅샷
     private float   m_animStartRotX, m_animStartRotY, m_animStartZoom;
@@ -169,38 +170,67 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_isGalaxyViewAnimating == true)
         {
             m_galaxyViewAnimTimer += Time.unscaledDeltaTime;
-            float t = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyViewAnimDuration);
 
             if (m_isEnteringGalaxy == true)
             {
-                float ct = GalaxyEasedT(t);
+                if (m_galaxyViewAnimTimer < m_galaxyPreRotDuration)
+                {
+                    // Pre-Phase: 위치 고정 + 각도 전환 + 줌을 함대뷰 최대치로 확장 (시야 확보)
+                    float rotT = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyPreRotDuration);
+                    m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, rotT);
+                    m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, rotT);
+                    m_currentZoom      = Mathf.Lerp(m_animStartZoom, m_maxZoom, rotT);
+                    // m_interpolatedTargetPosition 변경 없음 (함대 위치 고정)
+                }
+                else
+                {
+                    // Main Phase: 각도 유지 + 줌 전환 + 위치 이동
+                    m_currentRotationX = m_targetRotationX;
+                    m_currentRotationY = m_targetRotationY;
 
-                m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, ct);
-                m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, ct);
-                m_currentZoom      = Mathf.Lerp(m_animStartZoom, m_targetZoom, ct);
-
-                float newX = Mathf.Lerp(m_animStartPos.x, m_galaxyTargetPos.x, ct);
-                float newY = Mathf.Lerp(m_animStartPos.y, m_galaxyTargetPos.y, ct);
-                float newZ = Mathf.Lerp(m_animStartPos.z, m_galaxyTargetPos.z, ct);
-                m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
-                Debug.Log($"[Cam] t={t:F3} ct={ct:F3} rotX={m_currentRotationX:F1} zoom={m_currentZoom:F1} camPos={m_targetCamera.transform.position}");
+                    float mainT = Mathf.Clamp01((m_galaxyViewAnimTimer - m_galaxyPreRotDuration) / m_galaxyViewAnimDuration);
+                    float ct    = GalaxyEasedT(mainT);
+                    m_currentZoom = Mathf.Lerp(m_maxZoom, m_targetZoom, ct);
+                    float newX  = Mathf.Lerp(m_animStartPos.x, m_galaxyTargetPos.x, ct);
+                    float newY  = Mathf.Lerp(m_animStartPos.y, m_galaxyTargetPos.y, ct);
+                    float newZ  = Mathf.Lerp(m_animStartPos.z, m_galaxyTargetPos.z, ct);
+                    m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
+                    Debug.Log($"[Cam] mainT={mainT:F3} ct={ct:F3} camPos={m_targetCamera.transform.position}");
+                }
             }
             else
             {
                 Vector3 fleetPos = m_savedTarget != null ? m_savedTarget.position : m_targetPosition;
-                float ct = 1f - GalaxyEasedT(1f - t); // 반전: 초반 빠르고 마지막 느림
 
-                m_currentRotationX = Mathf.LerpAngle(m_animExitRotX, m_targetRotationX, ct);
-                m_currentRotationY = Mathf.LerpAngle(m_animExitRotY, m_targetRotationY, ct);
-                m_currentZoom      = Mathf.Lerp(m_animExitZoom, m_targetZoom, ct);
+                if (m_galaxyViewAnimTimer < m_galaxyViewAnimDuration)
+                {
+                    // Main Phase: 갤럭시 각도 유지 + 줌 m_maxZoom으로 축소 + 위치 이동
+                    float mainT = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyViewAnimDuration);
+                    float ct    = 1f - GalaxyEasedT(1f - mainT); // 초반 빠르고 마지막 느림
 
-                float newX = Mathf.Lerp(m_animStartPos.x, fleetPos.x, ct);
-                float newY = Mathf.Lerp(m_animStartPos.y, fleetPos.y, ct);
-                float newZ = Mathf.Lerp(m_animStartPos.z, fleetPos.z, ct);
-                m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
+                    m_currentRotationX = m_animExitRotX;
+                    m_currentRotationY = m_animExitRotY;
+                    m_currentZoom      = Mathf.Lerp(m_animExitZoom, m_maxZoom, ct);
+
+                    float newX = Mathf.Lerp(m_animStartPos.x, fleetPos.x, ct);
+                    float newY = Mathf.Lerp(m_animStartPos.y, fleetPos.y, ct);
+                    float newZ = Mathf.Lerp(m_animStartPos.z, fleetPos.z, ct);
+                    m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
+                }
+                else
+                {
+                    // Post-Phase: 함대 위치 고정 + 각도/줌 원래 함대뷰로 복귀
+                    float postT = Mathf.Clamp01((m_galaxyViewAnimTimer - m_galaxyViewAnimDuration) / m_galaxyPreRotDuration);
+                    m_currentRotationX = Mathf.LerpAngle(m_animExitRotX, m_targetRotationX, postT);
+                    m_currentRotationY = Mathf.LerpAngle(m_animExitRotY, m_targetRotationY, postT);
+                    m_currentZoom      = Mathf.Lerp(m_maxZoom, m_targetZoom, postT);
+                    // m_interpolatedTargetPosition 변경 없음 (함대 위치 고정)
+                }
             }
 
-            if (t >= 1f)
+            // 진입/복귀 모두 preRotDuration + mainDuration
+            float totalDuration = m_galaxyPreRotDuration + m_galaxyViewAnimDuration;
+            if (m_galaxyViewAnimTimer >= totalDuration)
             {
                 m_isGalaxyViewAnimating = false;
                 if (m_isEnteringGalaxy == true)
