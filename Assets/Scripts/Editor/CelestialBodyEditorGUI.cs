@@ -4,18 +4,22 @@ using UnityEngine;
 
 public static class CelestialBodyEditorGUI
 {
+    private static readonly Dictionary<(int zone, int planet), bool> s_planetFoldouts = new Dictionary<(int, int), bool>();
+
     // 천체 목록 전체를 그리고 추가/삭제를 처리. 변경 시 dirtyTarget을 SetDirty
-    public static void DrawCelestialBodyList(List<CelestialBodyConfig> bodies, Object dirtyTarget)
+    public static void DrawCelestialBodyList(int zoneIndex, List<CelestialBodyConfig> bodies, Object dirtyTarget)
     {
         if (bodies == null) return;
 
         for (int i = 0; i < bodies.Count; i++)
         {
             CelestialBodyConfig body = bodies[i];
+            var key = (zoneIndex, i);
+            if (!s_planetFoldouts.ContainsKey(key)) s_planetFoldouts[key] = false;
 
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField($"● Planet_{i}", EditorStyles.boldLabel);
+            s_planetFoldouts[key] = EditorGUILayout.Foldout(s_planetFoldouts[key], $"● Planet_{i}", true, EditorStyles.foldoutHeader);
             if (GUILayout.Button("X", GUILayout.Width(22)))
             {
                 bodies.RemoveAt(i);
@@ -25,6 +29,12 @@ public static class CelestialBodyEditorGUI
                 return;
             }
             EditorGUILayout.EndHorizontal();
+
+            if (s_planetFoldouts[key] == false)
+            {
+                EditorGUILayout.EndVertical();
+                continue;
+            }
 
             body.position = EditorGUILayout.Vector3Field("Position", body.position);
             body.rotation = EditorGUILayout.Vector3Field("Rotation", body.rotation);

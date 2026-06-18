@@ -96,7 +96,7 @@ public class ZonePreviewComponentEditor : Editor
             EditorGUI.indentLevel++;
             if (zone.celestialBodies == null)
                 zone.celestialBodies = new List<CelestialBodyConfig>();
-            CelestialBodyEditorGUI.DrawCelestialBodyList(zone.celestialBodies, comp.dataTableZone);
+            CelestialBodyEditorGUI.DrawCelestialBodyList(zone.zoneIndex, zone.celestialBodies, comp.dataTableZone);
             EditorGUI.indentLevel--;
         }
 

@@ -59,8 +59,9 @@ public class CameraController : MonoSingleton<CameraController>
     private bool  m_isEnteringGalaxy = false; // true=함대→갤럭시, false=갤럭시→함대
     private float m_galaxyViewAnimTimer   = 0f;
     [Header("Galaxy View Animation")]
-    private float m_galaxyPreRotDuration  = 0.5f;  // 진입 시 회전 전용 구간 (위치 고정, m_galaxyViewAnimDuration 외)
-    private float m_galaxyViewAnimDuration  = 1.0f;
+    private float m_galaxyPreRotDuration  = 0.2f;  // 진입 시 회전 전용 구간 (위치 고정, m_galaxyViewAnimDuration 외)
+    private float m_galaxyPreRotZoomMultiplyer  = 8f;  // 진입 시 회전 전용 구간 줌 곱하기
+    private float m_galaxyViewAnimDuration  = 0.5f;
     private float m_galaxySlowPhaseRatio    = 0.8f;  // 느린 구간 비율: 이 t까지 천천히 이동 (예: 0.8 = 전체의 80%)
     private float m_galaxySlowPhaseProgress = 0.01f; // 느린 구간 끝에서 달성할 이동 진행도 (예: 0.01 = 전체 거리의 1%만 이동)
 
@@ -179,7 +180,7 @@ public class CameraController : MonoSingleton<CameraController>
                     float rotT = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyPreRotDuration);
                     m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, rotT);
                     m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, rotT);
-                    m_currentZoom      = Mathf.Lerp(m_animStartZoom, m_maxZoom, rotT);
+                    m_currentZoom      = Mathf.Lerp(m_animStartZoom, m_maxZoom * m_galaxyPreRotZoomMultiplyer, rotT);
                     // m_interpolatedTargetPosition 변경 없음 (함대 위치 고정)
                 }
                 else
@@ -190,7 +191,7 @@ public class CameraController : MonoSingleton<CameraController>
 
                     float mainT = Mathf.Clamp01((m_galaxyViewAnimTimer - m_galaxyPreRotDuration) / m_galaxyViewAnimDuration);
                     float ct    = GalaxyEasedT(mainT);
-                    m_currentZoom = Mathf.Lerp(m_maxZoom, m_targetZoom, ct);
+                    m_currentZoom = Mathf.Lerp(m_maxZoom * m_galaxyPreRotZoomMultiplyer, m_targetZoom, ct);
                     float newX  = Mathf.Lerp(m_animStartPos.x, m_galaxyTargetPos.x, ct);
                     float newY  = Mathf.Lerp(m_animStartPos.y, m_galaxyTargetPos.y, ct);
                     float newZ  = Mathf.Lerp(m_animStartPos.z, m_galaxyTargetPos.z, ct);
@@ -210,7 +211,7 @@ public class CameraController : MonoSingleton<CameraController>
 
                     m_currentRotationX = m_animExitRotX;
                     m_currentRotationY = m_animExitRotY;
-                    m_currentZoom      = Mathf.Lerp(m_animExitZoom, m_maxZoom, ct);
+                    m_currentZoom      = Mathf.Lerp(m_animExitZoom, m_maxZoom * m_galaxyPreRotZoomMultiplyer, ct);
 
                     float newX = Mathf.Lerp(m_animStartPos.x, fleetPos.x, ct);
                     float newY = Mathf.Lerp(m_animStartPos.y, fleetPos.y, ct);
@@ -223,7 +224,7 @@ public class CameraController : MonoSingleton<CameraController>
                     float postT = Mathf.Clamp01((m_galaxyViewAnimTimer - m_galaxyViewAnimDuration) / m_galaxyPreRotDuration);
                     m_currentRotationX = Mathf.LerpAngle(m_animExitRotX, m_targetRotationX, postT);
                     m_currentRotationY = Mathf.LerpAngle(m_animExitRotY, m_targetRotationY, postT);
-                    m_currentZoom      = Mathf.Lerp(m_maxZoom, m_targetZoom, postT);
+                    m_currentZoom      = Mathf.Lerp(m_maxZoom * m_galaxyPreRotZoomMultiplyer, m_targetZoom, postT);
                     // m_interpolatedTargetPosition 변경 없음 (함대 위치 고정)
                 }
             }

@@ -16,6 +16,8 @@ public class DataTableZoneEditor : Editor
     private Dictionary<int, bool> zoneFoldouts = new Dictionary<int, bool>();
     private Dictionary<int, Dictionary<int, bool>> shipFoldouts = new Dictionary<int, Dictionary<int, bool>>();
     private Dictionary<int, bool> zoneGroupFoldouts = new Dictionary<int, bool>(); // x값(그룹) 폴드아웃
+    private Dictionary<int, bool> m_cameraAnchorFoldouts = new Dictionary<int, bool>();
+    private Dictionary<int, bool> m_celestialFoldouts    = new Dictionary<int, bool>();
     private readonly Color zoneColor       = new Color(0.7f, 0.85f, 0.95f);
     private readonly Color shipColor       = new Color(0.85f, 0.95f, 0.85f);
     private readonly Color slotColor       = new Color(0.9f, 0.9f, 0.95f);
@@ -471,20 +473,31 @@ public class DataTableZoneEditor : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        EditorGUILayout.LabelField("갤럭시 뷰 카메라 앵커", EditorStyles.boldLabel);
-        zoneConfig.galaxyCameraTarget = EditorGUILayout.Vector3Field("  Camera Target", zoneConfig.galaxyCameraTarget);
-        zoneConfig.galaxyCameraZoom   = EditorGUILayout.FloatField("  Camera Zoom", zoneConfig.galaxyCameraZoom);
-        zoneConfig.galaxyCameraRotX   = EditorGUILayout.Slider("  Rot X (앙각)", zoneConfig.galaxyCameraRotX, -80f, 80f);
-        zoneConfig.galaxyCameraRotY   = EditorGUILayout.FloatField("  Rot Y (수평)", zoneConfig.galaxyCameraRotY);
+        if (!m_cameraAnchorFoldouts.ContainsKey(zoneIndex)) m_cameraAnchorFoldouts[zoneIndex] = false;
+        m_cameraAnchorFoldouts[zoneIndex] = EditorGUILayout.Foldout(m_cameraAnchorFoldouts[zoneIndex], "갤럭시 뷰 카메라 앵커", true, EditorStyles.foldoutHeader);
+        if (m_cameraAnchorFoldouts[zoneIndex] == true)
+        {
+            EditorGUI.indentLevel++;
+            zoneConfig.galaxyCameraTarget = EditorGUILayout.Vector3Field("Camera Target", zoneConfig.galaxyCameraTarget);
+            zoneConfig.galaxyCameraZoom   = EditorGUILayout.FloatField("Camera Zoom", zoneConfig.galaxyCameraZoom);
+            zoneConfig.galaxyCameraRotX   = EditorGUILayout.Slider("Rot X (앙각)", zoneConfig.galaxyCameraRotX, -80f, 80f);
+            zoneConfig.galaxyCameraRotY   = EditorGUILayout.FloatField("Rot Y (수평)", zoneConfig.galaxyCameraRotY);
+            EditorGUI.indentLevel--;
+        }
 
-        // 천체 배치
         EditorGUILayout.Space(4);
-        EditorGUILayout.LabelField("천체 배치", EditorStyles.boldLabel);
 
-        if (zoneConfig.celestialBodies == null)
-            zoneConfig.celestialBodies = new System.Collections.Generic.List<CelestialBodyConfig>();
+        if (!m_celestialFoldouts.ContainsKey(zoneIndex)) m_celestialFoldouts[zoneIndex] = false;
+        m_celestialFoldouts[zoneIndex] = EditorGUILayout.Foldout(m_celestialFoldouts[zoneIndex], "천체 배치", true, EditorStyles.foldoutHeader);
+        if (m_celestialFoldouts[zoneIndex] == true)
+        {
+            if (zoneConfig.celestialBodies == null)
+                zoneConfig.celestialBodies = new System.Collections.Generic.List<CelestialBodyConfig>();
 
-        CelestialBodyEditorGUI.DrawCelestialBodyList(zoneConfig.celestialBodies, m_dataTableZone);
+            EditorGUI.indentLevel++;
+            CelestialBodyEditorGUI.DrawCelestialBodyList(zoneIndex, zoneConfig.celestialBodies, m_dataTableZone);
+            EditorGUI.indentLevel--;
+        }
 
         if (EditorGUI.EndChangeCheck())
             EditorUtility.SetDirty(m_dataTableZone);
