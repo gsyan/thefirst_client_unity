@@ -17,223 +17,223 @@ MonoBehaviour:
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 2
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 3
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 4
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 5
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 6
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 7
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 8
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 9
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 10
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 11
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 12
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 13
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 14
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 15
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 16
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 17
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 18
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 19
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 20
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 21
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 22
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 23
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 24
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 25
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 26
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 27
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200
   - day: 28
     rewards:
     - tier: 0
       rewardType: 0
-      amount: 1000
+      amount: 100
     - tier: 1
       rewardType: 0
-      amount: 10000
+      amount: 200

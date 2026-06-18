@@ -255,6 +255,12 @@ public static class EventManager
     public static void Subscribe_ExplorationTabClosed(Action callback)   { OnExplorationTabClosed += callback; }
     public static void Unsubscribe_ExplorationTabClosed(Action callback) { OnExplorationTabClosed -= callback; }
 
+    // 갤럭시 뷰 애니메이션 완료
+    public static event Action OnGalaxyViewSettled;
+    public static void TriggerGalaxyViewSettled() { OnGalaxyViewSettled?.Invoke(); }
+    public static void Subscribe_GalaxyViewSettled(Action callback)   { OnGalaxyViewSettled += callback; }
+    public static void Unsubscribe_GalaxyViewSettled(Action callback) { OnGalaxyViewSettled -= callback; }
+
     public static event Action OnRetreatExploration;
     public static void TriggerRetreatExploration() { OnRetreatExploration?.Invoke(); }
     public static void Subscribe_RetreatExploration(Action callback)   { OnRetreatExploration += callback; }

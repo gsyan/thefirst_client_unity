@@ -238,7 +238,7 @@ public class UITabExploration : UITabBase
 
         if (CameraController.Instance != null)
         {
-            CameraController.Instance.OnGalaxyViewSettled += OnCameraGalaxyViewSettled;
+            EventManager.Subscribe_GalaxyViewSettled(OnCameraGalaxyViewSettled);
             var zoneConfig = m_datatableZone.GetZoneByZoneIndex(groupIndex);
             if (zoneConfig != null)
                 CameraController.Instance.EnterGalaxyView(
@@ -260,7 +260,7 @@ public class UITabExploration : UITabBase
     public override void OnTabDeactivated()
     {
         if (CameraController.Instance != null)
-            CameraController.Instance.OnGalaxyViewSettled -= OnCameraGalaxyViewSettled;
+            EventManager.Unsubscribe_GalaxyViewSettled(OnCameraGalaxyViewSettled);
 
         ReturnAllButtonsToPool();
         EventManager.TriggerExplorationTabClosed();

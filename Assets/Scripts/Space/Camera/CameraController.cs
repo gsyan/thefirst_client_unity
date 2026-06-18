@@ -45,7 +45,7 @@ public class CameraController : MonoSingleton<CameraController>
     private const float k_rotateLerpSpeed = 4f;
     private const float k_rotateArriveThreshold = 0.5f;
     private const float k_zoomLerpSpeed = 8f;
-    private const float k_zoomArriveThreshold = 0.1f;
+    private const float k_zoomArriveThreshold = 0.01f;
     private const float k_positionLerpSpeed = 10f; // 줌(8f)보다 빠르게 — 위치가 먼저 도착해야 커브 방지
 
     // UIPanelSpace 활성화 시 true, 비활성화 시 false
@@ -55,18 +55,24 @@ public class CameraController : MonoSingleton<CameraController>
     // 갤럭시 뷰 (탐사 탭)
     private bool m_isGalaxyView = false;
     public bool IsGalaxyView => m_isGalaxyView;
-    public event System.Action OnGalaxyViewSettled;
     private bool  m_isGalaxyViewAnimating = false;
+    private bool  m_isEnteringGalaxy = false; // true=함대→갤럭시, false=갤럭시→함대
     private float m_galaxyViewAnimTimer   = 0f;
-    private const float k_galaxyViewAnimDuration = 1.0f;
-    private const float k_galaxyViewEasePower = 4f;   // 높을수록 중반까지 정체 후 급가속 (3=cubic, 4=quartic, 5=quintic)
+    [Header("Galaxy View Animation")]
+    private float m_galaxyViewAnimDuration  = 1.0f;
+    private float m_galaxySlowPhaseRatio    = 0.8f;     // 느린 구간 비율: 이 t까지 천천히 이동 (예: 0.8 = 전체의 80%)
+    private float m_galaxySlowPhaseProgress = 0.01f;    // 느린 구간 끝에서 달성할 이동 진행도 (예: 0.1 = 전체 거리의 10%만 이동)
+
+    // 애니메이션 시작 스냅샷
     private float   m_animStartRotX, m_animStartRotY, m_animStartZoom;
     private Vector3 m_animStartPos;
+    private Vector3 m_galaxyTargetPos; // 갤럭시 뷰 목표 위치 (애니메이션 중 덮어써지지 않도록 별도 보관)
+    // 갤럭시→함대 복귀 시 회전/줌 복귀 시작점 (갤럭시 현재 상태)
+    private float   m_animExitRotX, m_animExitRotY, m_animExitZoom;
 
     private Coroutine m_fleetViewRestoreCoroutine;
 
     private Transform m_savedTarget = null;
-    private Vector3 m_savedTargetPosition = Vector3.zero;
     private float m_savedRotationX = 0f;
     private float m_savedRotationY = 0f;
     private float m_savedZoom = 0f;
@@ -147,7 +153,7 @@ public class CameraController : MonoSingleton<CameraController>
     {
         if (m_targetCamera == null) return;
 	
-        // Transform이 설정되어 있으면 해당 위치를 따라감
+        // m_currentTarget 이 계속 움직이기 때문, 이벤트로는 안됨
         if (m_currentTarget != null && m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
             m_targetPosition = m_currentTarget.position;
 
@@ -158,24 +164,49 @@ public class CameraController : MonoSingleton<CameraController>
             if (objMgr != null && objMgr.m_myFleet != null)
                 m_targetPosition = (objMgr.m_myFleet.transform.position + objMgr.GetEnemySpawnPosition()) * 0.5f;
         }
-        
 
         bool galaxyViewJustSettled = false;
-        if (m_isGalaxyView == true && m_isGalaxyViewAnimating == true)
+        if (m_isGalaxyViewAnimating == true)
         {
-            // 갤럭시뷰 전용 — 지수 이즈인: 처음엔 거의 정지, 후반에 급가속
             m_galaxyViewAnimTimer += Time.unscaledDeltaTime;
-            float t = Mathf.Clamp01(m_galaxyViewAnimTimer / k_galaxyViewAnimDuration);
-            // 2^(10t-10): t=0→~0.001, t=0.5→~0.031, t=0.9→0.5, t=1→1
-            float easedT = Mathf.Pow(t, k_galaxyViewEasePower);
-            m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, easedT);
-            m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, easedT);
-            m_currentZoom = Mathf.Lerp(m_animStartZoom, m_targetZoom, easedT);
-            m_interpolatedTargetPosition = Vector3.Lerp(m_animStartPos, m_targetPosition, easedT);
+            float t = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyViewAnimDuration);
+
+            if (m_isEnteringGalaxy == true)
+            {
+                float ct = GalaxyEasedT(t);
+
+                m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, ct);
+                m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, ct);
+                m_currentZoom      = Mathf.Lerp(m_animStartZoom, m_targetZoom, ct);
+
+                float newX = Mathf.Lerp(m_animStartPos.x, m_galaxyTargetPos.x, ct);
+                float newY = Mathf.Lerp(m_animStartPos.y, m_galaxyTargetPos.y, ct);
+                float newZ = Mathf.Lerp(m_animStartPos.z, m_galaxyTargetPos.z, ct);
+                m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
+                Debug.Log($"[Cam] t={t:F3} ct={ct:F3} rotX={m_currentRotationX:F1} zoom={m_currentZoom:F1} camPos={m_targetCamera.transform.position}");
+            }
+            else
+            {
+                Vector3 fleetPos = m_savedTarget != null ? m_savedTarget.position : m_targetPosition;
+                float ct = 1f - GalaxyEasedT(1f - t); // 반전: 초반 빠르고 마지막 느림
+
+                m_currentRotationX = Mathf.LerpAngle(m_animExitRotX, m_targetRotationX, ct);
+                m_currentRotationY = Mathf.LerpAngle(m_animExitRotY, m_targetRotationY, ct);
+                m_currentZoom      = Mathf.Lerp(m_animExitZoom, m_targetZoom, ct);
+
+                float newX = Mathf.Lerp(m_animStartPos.x, fleetPos.x, ct);
+                float newY = Mathf.Lerp(m_animStartPos.y, fleetPos.y, ct);
+                float newZ = Mathf.Lerp(m_animStartPos.z, fleetPos.z, ct);
+                m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
+            }
+
             if (t >= 1f)
             {
                 m_isGalaxyViewAnimating = false;
-                galaxyViewJustSettled = true;
+                if (m_isEnteringGalaxy == true)
+                    galaxyViewJustSettled = true;
+                else
+                    m_inputEnabled = true;
             }
         }
         else
@@ -232,7 +263,7 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
 
         if (galaxyViewJustSettled == true)
-            OnGalaxyViewSettled?.Invoke();
+            EventManager.TriggerGalaxyViewSettled();
     }
 
     private bool m_inputEnabled = true;
@@ -476,10 +507,7 @@ public class CameraController : MonoSingleton<CameraController>
 
         // 처음 설정할 때는 즉시 위치 동기화
         if (m_currentTarget == null && m_targetPosition == Vector3.zero)
-        {
             m_targetPosition = target.position;
-            //m_interpolatedTargetPosition = target.position;
-        }
 
         m_currentTarget = target;
         m_targetPosition = target.position;
@@ -550,16 +578,17 @@ public class CameraController : MonoSingleton<CameraController>
     {
         if (m_isGalaxyView == true) return;
         m_isGalaxyView = true;
+        m_isEnteringGalaxy = true;
         m_inputEnabled = false;
 
         m_savedTarget = m_currentTarget;
-        m_savedTargetPosition = m_targetPosition;
         m_savedRotationX = m_currentRotationX;
         m_savedRotationY = m_currentRotationY;
         m_savedZoom = m_currentZoom;
 
-        m_currentTarget = null;
-        m_targetPosition    = targetPos;
+        m_currentTarget  = null;
+        m_targetPosition = targetPos;
+        m_galaxyTargetPos = targetPos;
         m_targetRotationX   = Mathf.Clamp(rotX, -80f, 80f);
         m_targetRotationY   = rotY;
         m_targetZoom        = zoom;
@@ -586,21 +615,48 @@ public class CameraController : MonoSingleton<CameraController>
         m_animStartRotY = m_currentRotationY;
         m_animStartZoom = m_currentZoom;
         m_animStartPos  = m_interpolatedTargetPosition;
-        m_galaxyViewAnimTimer  = 0f;
+        m_galaxyViewAnimTimer   = 0f;
         m_isGalaxyViewAnimating = true;
     }
 
-    // 탐사뷰 종료하면서 카메라를 이전 함선 위치 대신 지정 위치로 이동, 회전·줌 복원
+    // 느린 구간(0~m_galaxySlowPhaseRatio)에서 m_galaxySlowPhaseProgress까지만 이동,
+    // 이후 구간에서 나머지를 완료
+    private float GalaxyEasedT(float t)
+    {
+        if (t <= m_galaxySlowPhaseRatio)
+        {
+            float localT = t / m_galaxySlowPhaseRatio;
+            return localT * m_galaxySlowPhaseProgress;
+        }
+        else
+        {
+            float localT = (t - m_galaxySlowPhaseRatio) / (1f - m_galaxySlowPhaseRatio);
+            return m_galaxySlowPhaseProgress + localT * (1f - m_galaxySlowPhaseProgress);
+        }
+    }
+
+// 탐사뷰 종료하면서 저장된 함대 위치+각도+줌으로 복귀
     public void ExitGalaxyView(Vector3 position)
     {
         if (m_isGalaxyView == false) return;
         m_isGalaxyView = false;
-        m_isGalaxyViewAnimating = false;
+        m_isEnteringGalaxy = false;
         m_inputEnabled = false;
-        m_currentTarget = null;
+
+        // Phase3 회전/줌 복귀 시작점으로 현재 갤럭시 상태 저장
+        m_animExitRotX = m_currentRotationX;
+        m_animExitRotY = m_currentRotationY;
+        m_animExitZoom = m_currentZoom;
+
+        // m_currentTarget은 Phase3 실시간 추적용으로 null 유지, m_savedTarget 별도 보존
+        m_currentTarget  = null;
         m_targetPosition = position;
 
-        RestoreFleetView();
+        m_targetRotationX = m_savedRotationX;
+        m_targetRotationY = m_savedRotationY;
+        m_targetZoom      = m_savedZoom;
+
+        StartGalaxyViewAnimation();
         StartFleetViewRestoreCoroutine();
     }
 
@@ -615,15 +671,6 @@ public class CameraController : MonoSingleton<CameraController>
         yield return new UnityEngine.WaitUntil(() => m_inputEnabled == true);
         m_fleetViewRestoreCoroutine = null;
         EventManager.TriggerFleetViewRestored();
-    }
-
-    private void RestoreFleetView()
-    {
-        m_hasTargetRotationX = true;
-        m_targetRotationX = m_savedRotationX;
-        m_hasTargetRotationY = true;
-        m_targetRotationY = m_savedRotationY;
-        SetTargetZoom(m_savedZoom);
     }
 
     // 카메라 중심점 전환 (적함대, 중간, 우리함대)
@@ -673,7 +720,7 @@ public class CameraController : MonoSingleton<CameraController>
                 }
                 else
                 {
-                    SetTargetOfCameraController(m_currentTargetBackup);
+                    m_currentTarget = m_currentTargetBackup;
                     m_currentTargetBackup = null;
                 }
                 // 현재 선택된 함선(또는 기함) 기준 줌 범위 복원

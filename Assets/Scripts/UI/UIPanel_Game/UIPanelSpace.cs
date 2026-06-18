@@ -14,7 +14,7 @@ public class UIPanelSpace : UIPanelBase
     private int m_moduleTabIndex = -1;
     private RectTransform m_shipTabRect;
     private bool m_isUIOpen = false;
-    private Coroutine m_layoutCoroutine;
+    private Coroutine m_viewportCoroutine;
 
     // 각 탭 anchorMin.x 기준 카메라 뷰포트 너비
     private float m_openCameraWidth;
@@ -44,7 +44,7 @@ public class UIPanelSpace : UIPanelBase
         RectTransform canvasRect = m_shipTabRect != null ? m_shipTabRect.root as RectTransform : null;
         float canvasWidth = canvasRect != null ? canvasRect.rect.width : 1920f;
         m_openCameraWidth = (canvasWidth - uiPanelWidth) / canvasWidth;
-        SetLayoutImmediate(false);
+        SetViewport(open:false);
     }
 
     public override void OnShowUIPanel()
@@ -68,8 +68,8 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Unsubscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         m_tabSystem.ForceDeactivateTab();
 
-        SetTabNavVisible(true);
-        SetLayoutImmediate(false);
+        //SetTabNavVisible(true);
+        SetViewport(open:false);
 
         CameraController.Instance.SetTargetOfCameraController(ObjectManager.Instance.m_myFleet.transform);
     }
@@ -152,9 +152,9 @@ public class UIPanelSpace : UIPanelBase
         float targetWidth = tabIndex == m_moduleTabIndex ? m_openCameraWidth : 1f;
 
         m_isUIOpen = shouldShrinkCamera;
-        if (m_layoutCoroutine != null)
-            StopCoroutine(m_layoutCoroutine);
-        m_layoutCoroutine = StartCoroutine(Co_AnimateLayout(shouldShrinkCamera, targetWidth));
+        if (m_viewportCoroutine != null)
+            StopCoroutine(m_viewportCoroutine);
+        m_viewportCoroutine = StartCoroutine(Co_AnimateViewport(shouldShrinkCamera, targetWidth));
     }
 
     private void OnEmptySpaceTapped()
@@ -169,7 +169,7 @@ public class UIPanelSpace : UIPanelBase
     }
 
     // 카메라 viewport width 애니메이션
-    private IEnumerator Co_AnimateLayout(bool open, float openCameraWidth)
+    private IEnumerator Co_AnimateViewport(bool open, float openCameraWidth)
     {
         float startCamWidth = CameraController.Instance.GetViewportWidth();
         float targetCamWidth = open ? openCameraWidth : 1f;
@@ -187,26 +187,26 @@ public class UIPanelSpace : UIPanelBase
             yield return null;
         }
 
-        SetLayoutImmediate(open, openCameraWidth);
-        m_layoutCoroutine = null;
+        SetViewport(open, openCameraWidth);
+        m_viewportCoroutine = null;
     }
 
-    private void SetLayoutImmediate(bool open, float openCameraWidth = 0f)
+    private void SetViewport(bool open, float openCameraWidth = 0f)
     {
         if (openCameraWidth <= 0f) openCameraWidth = m_openCameraWidth;
         CameraController.Instance.SetViewportWidth(open ? openCameraWidth : 1f);
         EventManager.TriggerCameraViewportChanged(open ? 1f : 0f);
     }
 
-    private void SetTabNavVisible(bool visible)
-    {
-        for (int i = 0; i < m_tabSystem.tabs.Count; i++)
-        {
-            var btn = m_tabSystem.tabs[i].tabButton;
-            if (btn != null)
-                btn.gameObject.SetActive(visible);
-        }
-    }
+    // private void SetTabNavVisible(bool visible)
+    // {
+    //     for (int i = 0; i < m_tabSystem.tabs.Count; i++)
+    //     {
+    //         var btn = m_tabSystem.tabs[i].tabButton;
+    //         if (btn != null)
+    //             btn.gameObject.SetActive(visible);
+    //     }
+    // }
 
     // 모듈이 선택될 때만 UITabShip 로 자동 전환 (함선 클릭만으로는 전환 안 함)
     private void OnModuleSelectedAutoTabSwitch(SpaceShip ship, ModuleBase module)
