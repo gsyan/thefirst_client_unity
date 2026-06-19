@@ -20,14 +20,32 @@ public class GaugeBars : MonoBehaviour
     
     [SerializeField] private Vector3 m_offsetFromTarget = new Vector3(0, 0f, 0);
     [SerializeField] private float m_smoothSpeed = 5f;
+    private bool m_hideForGalaxy = false;
 
     void Awake()
     {
         m_spaceShip = GetComponent<SpaceShip>();
         if (m_gaugeBarContainer == null && UIManager.Instance != null)
             m_gaugeBarContainer = UIManager.Instance.GetGaugeBarContainer();
+    }
 
+    void OnEnable()
+    {
         EventManager.Subscribe_ModuleReplaced(OnModuleReplaced);
+        EventManager.Subscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+    }
+
+    void OnDisable()
+    {
+        EventManager.Unsubscribe_ModuleReplaced(OnModuleReplaced);
+        EventManager.Unsubscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+    }
+
+    private void OnMyFleetStateChanged(EUnitState state)
+    {
+        bool isGalaxyView = CameraController.Instance != null && CameraController.Instance.IsGalaxyView;
+        if (isGalaxyView == false)
+            m_hideForGalaxy = false;
     }
 
     void Start()
@@ -190,6 +208,9 @@ public class GaugeBars : MonoBehaviour
     private void LateUpdate()
     {
         bool isGalaxyView = CameraController.Instance != null && CameraController.Instance.IsGalaxyView;
+        if (isGalaxyView == true)
+            m_hideForGalaxy = true;
+
         foreach (var kvp in m_moduleGaugeBars)
         {
             ModuleBase module = kvp.Key;
@@ -197,7 +218,7 @@ public class GaugeBars : MonoBehaviour
             if (module == null || gaugeBar == null) continue;
 
             bool shouldShow = false;
-            if (isGalaxyView == false)
+            if (m_hideForGalaxy == false)
             {
                 bool isInBounds = gaugeBar.IsInScreenBounds();
                 bool isFullHealth = IsModuleAtFullHealth(module);
@@ -254,7 +275,6 @@ public class GaugeBars : MonoBehaviour
 
     void OnDestroy()
     {
-        EventManager.Unsubscribe_ModuleReplaced(OnModuleReplaced);
         ClearAllGaugeBars();
     }
 }
