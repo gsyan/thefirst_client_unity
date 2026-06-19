@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &169344780083124495
 RectTransform:
   m_ObjectHideFlags: 0
@@ -136,16 +136,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 951616086358732355}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4389696603548398307}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+  m_Father: {fileID: 1930810570240073460}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -35}
+  m_AnchoredPosition: {x: -100, y: -0.000011444}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3311538718853809824
@@ -651,6 +651,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 3806153278192658146}
   m_text: {fileID: 3631938002134636325}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &7220052659421537188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -740,7 +744,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 20}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &4400316667716925277
@@ -1137,7 +1141,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 169344780083124495}
-  - {fileID: 3310515555129475431}
   - {fileID: 9147885059239869963}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1433,6 +1436,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 5836836005981602321}
   m_text: {fileID: 6320110548769371094}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &135232175108622167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2042,6 +2049,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 5482697895279699957}
   m_text: {fileID: 5378253210816026162}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &2087030512716505779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2123,6 +2134,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3405820583346319767}
+  - {fileID: 3310515555129475431}
   m_Father: {fileID: 9147885059239869963}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

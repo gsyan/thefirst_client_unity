@@ -133,10 +133,11 @@ public class UITabExploration : UITabBase
         var clearedZoneNames = m_myCharacter != null ? m_myCharacter.m_characterInfo.clearedZones : null;
         Camera worldCam = CameraController.Instance != null ? CameraController.Instance.m_targetCamera : Camera.main;
 
-        for (int i = 0; i < m_datatableZone.ZoneStageCount; i++)
+        var groupStages = m_datatableZone.GetStagesByZone(groupIndex);
+        if (groupStages == null) return;
+        for (int i = 0; i < groupStages.Count; i++)
         {
-            ZoneStageConfig zoneStage = m_datatableZone.GetZoneStage(i);
-            if (zoneStage == null || ParseZoneGroup(zoneStage.zoneName) != groupIndex) continue;
+            ZoneStageConfig zoneStage = groupStages[i];
             if (ParseZoneStage(zoneStage.zoneName) == 0) continue;
 
             UIZoneStageButton btn = GetButtonFromPool();
@@ -450,11 +451,11 @@ public class UITabExploration : UITabBase
         ZoneStageConfig highest = null;
         ZoneStageConfig lowestUncleared = null;
 
-        for (int i = 0; i < m_datatableZone.ZoneStageCount; i++)
+        var zoneStages = m_datatableZone.GetStagesByZone(zoneIndex);
+        if (zoneStages == null) return null;
+        for (int i = 0; i < zoneStages.Count; i++)
         {
-            ZoneStageConfig zoneStage = m_datatableZone.GetZoneStage(i);
-            if (zoneStage == null || ParseZoneGroup(zoneStage.zoneName) != zoneIndex) continue;
-
+            ZoneStageConfig zoneStage = zoneStages[i];
             int stage = ParseZoneStage(zoneStage.zoneName);
             if (stage == 0) continue; // x-0 스폰 마커는 선택 대상 제외
 
@@ -607,11 +608,11 @@ public class UITabExploration : UITabBase
             if (group <= 1) return true; // 1-1은 조건 없음
 
             int maxStage = 0;
-            for (int i = 0; i < m_datatableZone.ZoneStageCount; i++)
+            var prevGroupStages = m_datatableZone.GetStagesByZone(group - 1);
+            if (prevGroupStages != null)
+            for (int i = 0; i < prevGroupStages.Count; i++)
             {
-                ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
-                if (zs == null || ParseZoneGroup(zs.zoneName) != group - 1) continue;
-                int s = ParseZoneStage(zs.zoneName);
+                int s = ParseZoneStage(prevGroupStages[i].zoneName);
                 if (s > maxStage) maxStage = s;
             }
             if (maxStage == 0) return true;
@@ -937,11 +938,12 @@ public class UITabExploration : UITabBase
         int stage = ParseZoneStage(clearedZoneName);
 
         ZoneStageConfig nextStage = null;
-        for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
+        var curGroupStages = m_datatableZone.GetStagesByZone(group);
+        if (curGroupStages != null)
+        for (int i = 0; i < curGroupStages.Count; i++)
         {
-            ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
-            if (zs == null) continue;
-            if (ParseZoneGroup(zs.zoneName) == group && ParseZoneStage(zs.zoneName) == stage + 1)
+            ZoneStageConfig zs = curGroupStages[i];
+            if (ParseZoneStage(zs.zoneName) == stage + 1)
             {
                 nextStage = zs;
                 break;
@@ -951,10 +953,12 @@ public class UITabExploration : UITabBase
         if (nextStage == null)
         {
             int nextGroup = group + 1;
-            for (int i = 1; i < m_datatableZone.ZoneStageCount; i++)
+            var nextGroupStages = m_datatableZone.GetStagesByZone(nextGroup);
+            if (nextGroupStages != null)
+            for (int i = 0; i < nextGroupStages.Count; i++)
             {
-                ZoneStageConfig zs = m_datatableZone.GetZoneStage(i);
-                if (zs != null && ParseZoneGroup(zs.zoneName) == nextGroup && ParseZoneStage(zs.zoneName) > 0)
+                ZoneStageConfig zs = nextGroupStages[i];
+                if (ParseZoneStage(zs.zoneName) > 0)
                 {
                     nextStage = zs;
                     break;

@@ -122,7 +122,7 @@ public class UITabPvp : UITabBase
         m_currentBattleToken = response.data.battleToken;
         FleetInfo opponentFleetInfo = response.data.opponentFleetInfo;
 
-        ZoneStageConfig pvpZoneStage = m_datatableZone.GetZoneStage(0);
+        ZoneStageConfig pvpZoneStage = m_datatableZone.GetZoneStageByName("1-1");
         if (pvpZoneStage != null)
             ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(pvpZoneStage), pvpZoneStage.fleetRotationY);
         CameraController.Instance.SnapToTarget();

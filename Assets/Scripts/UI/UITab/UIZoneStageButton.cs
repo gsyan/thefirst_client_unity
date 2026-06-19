@@ -7,8 +7,6 @@ public class UIZoneStageButton : MonoBehaviour
 {
     [SerializeField] private RectTransform       m_rectTransform;
     [SerializeField] private Image               m_myFleetMarker;
-    [SerializeField] private Image               m_pointMarker;
-    [SerializeField] private Image               m_pointMarkerSelected;    
     [SerializeField] private Image               m_labelAnchorImage;
     [SerializeField] private TMP_Text            m_detailText;
     [SerializeField] private Transform           m_rewardContainer;
@@ -109,7 +107,6 @@ public class UIZoneStageButton : MonoBehaviour
     public void Expand()
     {
         m_isExpanded = true;
-        if (m_pointMarkerSelected != null)  m_pointMarkerSelected.gameObject.SetActive(true);
         if (m_labelAnchorImage != null)     m_labelAnchorImage.enabled = true;
         if (m_detailText != null)           m_detailText.gameObject.SetActive(true);
         if (m_rewardContainer != null)      m_rewardContainer.gameObject.SetActive(true);
@@ -121,7 +118,6 @@ public class UIZoneStageButton : MonoBehaviour
     public void Collapse()
     {
         m_isExpanded = false;
-        if (m_pointMarkerSelected != null)  m_pointMarkerSelected.gameObject.SetActive(false);
         if (m_detailText != null)           m_detailText.gameObject.SetActive(false);
         if (m_rewardContainer != null)      m_rewardContainer.gameObject.SetActive(false);
         if (m_enterButtonText != null && m_config != null)
@@ -145,7 +141,6 @@ public class UIZoneStageButton : MonoBehaviour
     public void SetStateUIZoneStageButton(EZoneState state)
     {
         Color color = state == EZoneState.Cleared ? m_colorCleared : m_colorNotCleared;
-        if (m_pointMarker != null)      m_pointMarker.color = color;
         if (m_labelAnchorImage != null) m_labelAnchorImage.color = color;
         if (m_enterButtonBg != null)    m_enterButtonBg.color = color;
     }

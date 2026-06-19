@@ -27,10 +27,10 @@ public static class DataTableZoneCSVUtility
         AssetDatabase.Refresh();
     }
 
-    // zoneList → datatable_zone.csv
+    // zoneList → datatable_zone_camera.csv
     public static void ExportZone(DataTableZone table)
     {
-        const string path = "Assets/Resources/DataTable/Zone/datatable_zone.csv";
+        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_camera.csv";
         var sb = new StringBuilder();
         sb.AppendLine("zone_index,cam_target_x,cam_target_y,cam_target_z,cam_zoom,cam_rot_x,cam_rot_y");
         foreach (ZoneConfig z in table.zoneList)

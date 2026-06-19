@@ -17,41 +17,41 @@ MonoBehaviour:
     requiredTechPoint: 0
     shipCount: 1
   - targetTechLevel: 2
-    requiredTechPoint: 2
+    requiredTechPoint: 10
     shipCount: 1
   - targetTechLevel: 3
-    requiredTechPoint: 5
+    requiredTechPoint: 20
     shipCount: 1
   - targetTechLevel: 4
-    requiredTechPoint: 15
-    shipCount: 1
+    requiredTechPoint: 30
+    shipCount: 2
   - targetTechLevel: 5
-    requiredTechPoint: 25
+    requiredTechPoint: 40
     shipCount: 2
   - targetTechLevel: 6
-    requiredTechPoint: 35
+    requiredTechPoint: 50
     shipCount: 2
   - targetTechLevel: 7
-    requiredTechPoint: 45
-    shipCount: 2
+    requiredTechPoint: 60
+    shipCount: 3
   - targetTechLevel: 8
-    requiredTechPoint: 55
-    shipCount: 2
+    requiredTechPoint: 70
+    shipCount: 3
   - targetTechLevel: 9
-    requiredTechPoint: 65
-    shipCount: 2
+    requiredTechPoint: 80
+    shipCount: 3
   - targetTechLevel: 10
-    requiredTechPoint: 75
-    shipCount: 3
+    requiredTechPoint: 90
+    shipCount: 4
   - targetTechLevel: 11
-    requiredTechPoint: 85
-    shipCount: 3
+    requiredTechPoint: 100
+    shipCount: 4
   - targetTechLevel: 12
-    requiredTechPoint: 95
-    shipCount: 3
+    requiredTechPoint: 110
+    shipCount: 4
   - targetTechLevel: 13
-    requiredTechPoint: 105
-    shipCount: 3
+    requiredTechPoint: 120
+    shipCount: 5
   - targetTechLevel: 14
-    requiredTechPoint: 115
-    shipCount: 3
+    requiredTechPoint: 130
+    shipCount: 5

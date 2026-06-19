@@ -93,7 +93,32 @@ public class DataTableZone : ScriptableObject
 {
     // 함선개수(x) 그룹별 행성 세트 — 같은 그룹의 모든 스테이지가 공유
     public List<ZoneConfig> zoneList = new List<ZoneConfig>();
-    public List<ZoneStageConfig> zoneStageList = new List<ZoneStageConfig>();
+    public List<ZoneStageConfig> zoneStageList = new List<ZoneStageConfig>();   // 인스팩터 에서만 사용
+    private Dictionary<int, List<ZoneStageConfig>> m_stagesByZone;              // 게임 로직에 사용
+
+    private void OnEnable()
+    {
+        BuildRuntimeCache();
+    }
+
+    public void BuildRuntimeCache()
+    {
+        m_stagesByZone = new Dictionary<int, List<ZoneStageConfig>>();
+        for (int i = 0; i < zoneStageList.Count; i++)
+        {
+            int zoneIndex = zoneStageList[i].zoneIndex;
+            if (m_stagesByZone.ContainsKey(zoneIndex) == false)
+                m_stagesByZone[zoneIndex] = new List<ZoneStageConfig>();
+            m_stagesByZone[zoneIndex].Add(zoneStageList[i]);
+        }
+    }
+
+    public List<ZoneStageConfig> GetStagesByZone(int zoneIndex)
+    {
+        if (m_stagesByZone == null) BuildRuntimeCache();
+        m_stagesByZone.TryGetValue(zoneIndex, out List<ZoneStageConfig> list);
+        return list;
+    }
 
     // groupIndex로 그룹 설정 조회 (배열 인덱스 기준)
     public ZoneConfig GetZone(int zoneIndex)
@@ -103,16 +128,23 @@ public class DataTableZone : ScriptableObject
         return zoneList[zoneIndex];
     }
 
-    public ZoneStageConfig GetZoneStage(int zoneStageIndex)
-    {
-        if (zoneStageIndex < 0 || zoneStageIndex >= zoneStageList.Count)
-            return null;
-        return zoneStageList[zoneStageIndex];
-    }
-
     public ZoneStageConfig GetZoneStageByName(string zoneName)
     {
         if (string.IsNullOrEmpty(zoneName)) return null;
+        int dashIdx = zoneName.IndexOf('-');
+        if (dashIdx > 0 && int.TryParse(zoneName[..dashIdx], out int zoneIndex))
+        {
+            List<ZoneStageConfig> stages = GetStagesByZone(zoneIndex);
+            if (stages != null)
+            {
+                for (int i = 0; i < stages.Count; i++)
+                {
+                    if (stages[i].zoneName == zoneName)
+                        return stages[i];
+                }
+            }
+            return null;
+        }
         for (int i = 0; i < zoneStageList.Count; i++)
         {
             if (zoneStageList[i].zoneName == zoneName)

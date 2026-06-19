@@ -13,11 +13,18 @@ public class DataTableZoneEditor : Editor
     private DataTableZone m_dataTableZone;
     private Vector2 scrollPosition;
 
-    private Dictionary<int, bool> zoneFoldouts = new Dictionary<int, bool>();
-    private Dictionary<int, Dictionary<int, bool>> shipFoldouts = new Dictionary<int, Dictionary<int, bool>>();
+    private Dictionary<string, bool> zoneFoldouts = new Dictionary<string, bool>();
+    private Dictionary<string, Dictionary<int, bool>> shipFoldouts = new Dictionary<string, Dictionary<int, bool>>();
     private Dictionary<int, bool> zoneGroupFoldouts = new Dictionary<int, bool>(); // x값(그룹) 폴드아웃
     private Dictionary<int, bool> m_cameraAnchorFoldouts = new Dictionary<int, bool>();
     private Dictionary<int, bool> m_celestialFoldouts    = new Dictionary<int, bool>();
+
+    // 자동 배치 생성 파라미터 (에디터 전용)
+    private Dictionary<int, int>   m_autoGenSeed       = new Dictionary<int, int>();
+    private Dictionary<int, float> m_autoGenXRange     = new Dictionary<int, float>();
+    private Dictionary<int, float> m_autoGenZRange     = new Dictionary<int, float>();
+    private Dictionary<int, float> m_autoGenMinZGap    = new Dictionary<int, float>();
+    private Dictionary<int, int>   m_autoGenStageCount = new Dictionary<int, int>();
     private readonly Color zoneColor       = new Color(0.7f, 0.85f, 0.95f);
     private readonly Color shipColor       = new Color(0.85f, 0.95f, 0.85f);
     private readonly Color slotColor       = new Color(0.9f, 0.9f, 0.95f);
@@ -50,6 +57,7 @@ public class DataTableZoneEditor : Editor
         if (m_dataTableZone == null) return;
 
         serializedObject.Update();
+        Undo.RecordObject(m_dataTableZone, "Edit DataTableZone");
 
         EditorGUILayout.Space(5);
         DrawHeader();
@@ -64,6 +72,7 @@ public class DataTableZoneEditor : Editor
         if (GUI.changed)
         {
             EditorUtility.SetDirty(m_dataTableZone);
+            m_dataTableZone.BuildRuntimeCache();
             serializedObject.ApplyModifiedProperties();
         }
     }
@@ -92,65 +101,50 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Utility Tools", EditorStyles.boldLabel);
 
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Import from CSV"))
-        {
-            if (EditorUtility.DisplayDialog("Import from CSV",
-                "datatable_zone.csv + datatable_zone_stage.csv + datatable_zone_enemy.csv + datatable_zone_celestial.csv 에서 전체 데이터를 가져옵니다.\n기존 데이터가 삭제됩니다.\n\n계속하시겠습니까?", "Yes", "Cancel"))
-            {
-                ImportFromCSV();
-            }
-        }
-
-        if (GUILayout.Button("Export All CSV"))
-            ExportAllCSV();
-
-        if (GUILayout.Button("Validate All Ships"))
-        {
-            ValidateAllShips();
-        }
-        EditorGUILayout.EndHorizontal();
+        DrawImportExportRow("Zone Camera",  ImportCamera,    () => { DataTableZoneCSVUtility.ExportZone(m_dataTableZone);     AssetDatabase.Refresh(); });
+        DrawImportExportRow("Celestial",    ImportCelestial, () => { DataTableZoneCSVUtility.ExportCelestial(m_dataTableZone); AssetDatabase.Refresh(); });
+        DrawImportExportRow("Stage",        ImportStage,     () => { DataTableZoneCSVUtility.ExportZoneStage(m_dataTableZone); AssetDatabase.Refresh(); });
+        DrawImportExportRow("Enemy",        ImportEnemy,     () => { DataTableZoneCSVUtility.ExportEnemy(m_dataTableZone);     AssetDatabase.Refresh(); });
 
         EditorGUILayout.EndVertical();
     }
 
-    // datatable_zone.csv + datatable_zone_stage.csv + datatable_zone_enemy.csv + datatable_zone_celestial.csv → ScriptableObject 전체 교체
-    private void ImportFromCSV()
+    private void DrawImportExportRow(string label, System.Action onImport, System.Action onExport)
     {
-        string zoneCommonCSV  = "Assets/Resources/DataTable/Zone/datatable_zone.csv";
-        string zoneCSV        = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
-        string enemyCSV       = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
-        string celestialCSV   = "Assets/Resources/DataTable/Zone/datatable_zone_celestial.csv";
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button($"Import {label}")) onImport();
+        if (GUILayout.Button($"Export {label}")) onExport();
+        EditorGUILayout.EndHorizontal();
+    }
 
-        if (!File.Exists(zoneCommonCSV) || !File.Exists(zoneCSV) || !File.Exists(enemyCSV))
+    private static readonly string k_cameraCSV    = "Assets/Resources/DataTable/Zone/datatable_zone_camera.csv";
+    private static readonly string k_celestialCSV = "Assets/Resources/DataTable/Zone/datatable_zone_celestial.csv";
+    private static readonly string k_stageCSV     = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
+    private static readonly string k_enemyCSV     = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
+
+    private void ImportCamera()
+    {
+        if (!File.Exists(k_cameraCSV)) { EditorUtility.DisplayDialog("Error", $"파일 없음:\n{k_cameraCSV}", "OK"); return; }
+
+        // celestialBodies 유지를 위해 기존 맵 보존
+        var oldCelestialMap = new Dictionary<int, List<CelestialBodyConfig>>();
+        for (int j = 0; j < m_dataTableZone.zoneList.Count; j++)
         {
-            EditorUtility.DisplayDialog("Error", $"CSV 파일을 찾을 수 없습니다.\n{zoneCommonCSV}\n{zoneCSV}\n{enemyCSV}", "OK");
-            return;
+            ZoneConfig zc = m_dataTableZone.zoneList[j];
+            oldCelestialMap[zc.zoneIndex] = zc.celestialBodies;
         }
 
-        // --- datatable_zone.csv 파싱 → zoneList (완전 재구성) ---
-        var oldZoneMap = new Dictionary<int, ZoneConfig>();
-        for (int j = 0; j < m_dataTableZone.zoneList.Count; j++)
-            oldZoneMap[m_dataTableZone.zoneList[j].zoneIndex] = m_dataTableZone.zoneList[j];
-
         m_dataTableZone.zoneList.Clear();
-
-        string[] zoneCommonLines = File.ReadAllLines(zoneCommonCSV);
-        for (int i = 1; i < zoneCommonLines.Length; i++)
+        string[] lines = File.ReadAllLines(k_cameraCSV);
+        for (int i = 1; i < lines.Length; i++)
         {
-            string line = zoneCommonLines[i].Trim();
+            string line = lines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
-
             if (!int.TryParse(col[0], out int zoneIndex)) continue;
-
-            float.TryParse(col[1], out float cx);
-            float.TryParse(col[2], out float cy);
-            float.TryParse(col[3], out float cz);
-            float.TryParse(col[4], out float zoom);
-            float.TryParse(col[5], out float rotX);
-            float.TryParse(col[6], out float rotY);
-
+            float.TryParse(col[1], out float cx); float.TryParse(col[2], out float cy); float.TryParse(col[3], out float cz);
+            float.TryParse(col[4], out float zoom); float.TryParse(col[5], out float rotX); float.TryParse(col[6], out float rotY);
+            oldCelestialMap.TryGetValue(zoneIndex, out var celestials);
             m_dataTableZone.zoneList.Add(new ZoneConfig
             {
                 zoneIndex          = zoneIndex,
@@ -158,236 +152,165 @@ public class DataTableZoneEditor : Editor
                 galaxyCameraZoom   = zoom,
                 galaxyCameraRotX   = rotX,
                 galaxyCameraRotY   = rotY,
-                celestialBodies    = new List<CelestialBodyConfig>(),
+                celestialBodies    = celestials != null ? celestials : new List<CelestialBodyConfig>(),
             });
         }
+        EditorUtility.SetDirty(m_dataTableZone);
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("완료", $"Zone Camera import 완료 ({m_dataTableZone.zoneList.Count}개)", "OK");
+    }
 
-        // --- datatable_zone_celestial.csv 파싱 → celestialBodies (존재할 때만) ---
-        // 헤더: zone_index,pos_x,pos_y,pos_z,scale_x,scale_y,scale_z,
-        //        sea_r,sea_g,sea_b,land_r,land_g,land_b,land_coverage,land_rotation,
-        //        has_clouds,cloud_r,cloud_g,cloud_b,cloud_a,cloud_coverage,cloud_rotation,cloud_scale,
-        //        has_atmosphere,atm_r,atm_g,atm_b,atmosphere_scale
-        if (File.Exists(celestialCSV))
+    private void ImportCelestial()
+    {
+        if (!File.Exists(k_celestialCSV)) { EditorUtility.DisplayDialog("Error", $"파일 없음:\n{k_celestialCSV}", "OK"); return; }
+
+        var zoneMap = new Dictionary<int, ZoneConfig>();
+        for (int j = 0; j < m_dataTableZone.zoneList.Count; j++)
         {
-            var zoneMap = new Dictionary<int, ZoneConfig>();
-            for (int j = 0; j < m_dataTableZone.zoneList.Count; j++)
-                zoneMap[m_dataTableZone.zoneList[j].zoneIndex] = m_dataTableZone.zoneList[j];
-
-            string[] celestialLines = File.ReadAllLines(celestialCSV);
-            for (int i = 1; i < celestialLines.Length; i++)
-            {
-                string line = celestialLines[i].Trim();
-                if (string.IsNullOrEmpty(line)) continue;
-                string[] col = line.Split(',');
-                if (!int.TryParse(col[0], out int zi)) continue;
-                if (!zoneMap.TryGetValue(zi, out ZoneConfig zc)) continue;
-
-                float F(int idx, float def = 0f) => col.Length > idx && float.TryParse(col[idx], out float v) ? v : def;
-                bool  B(int idx)                 => col.Length > idx && col[idx].Trim().ToLower() == "true";
-                Color C(int idx, Color def)
-                {
-                    if (col.Length <= idx) return def;
-                    return ColorUtility.TryParseHtmlString(col[idx].Trim(), out Color c) ? c : def;
-                }
-
-                // col 인덱스: 0=zone, 1~3=pos, 4~6=rot, 7~9=scale,
-                // 10=land_coverage, 11=biome_blend, 12=g_blend,
-                // 13=deep_sea_color, 14=shallow_sea_color, 15=lowland_sand_color, 16=lowland_green_color,
-                // 17=plains_desert_color, 18=plains_grass_color, 19=plains_forest_color, 20=highland_snow_color,
-                // 21=has_polar_ice, 22=ice_color, 23=ice_color_edge, 24=pole_ice_width,
-                // 25=has_clouds, 26=cloud_color, 27=cloud_coverage, 28=cloud_rotation, 29=cloud_scale,
-                // 30=cloud_mid_lat_opacity, 31=cloud_mid_lat_center, 32=cloud_mid_lat_width, 33=cloud_softness,
-                // 34=has_atmosphere, 35=atmosphere_color, 36=atmosphere_scale
-                zc.celestialBodies.Add(new CelestialBodyConfig
-                {
-                    position           = new Vector3(F(1), F(2), F(3)),
-                    rotation           = new Vector3(F(4), F(5), F(6)),
-                    scale              = new Vector3(F(7), F(8), F(9)),
-                    landCoverage       = F(10, 0.5f),
-                    biomeBlend         = F(11, 0.01f),
-                    gBlend             = F(12, 0.02f),
-                    deepSeaColor       = C(13, CommonUtility.HexColor("#0D2673")),
-                    shallowSeaColor    = C(14, CommonUtility.HexColor("#1A59A6")),
-                    lowlandSandColor   = C(15, CommonUtility.HexColor("#BFB380")),
-                    lowlandGreenColor  = C(16, CommonUtility.HexColor("#90C060")),
-                    plainsDesertColor  = C(17, CommonUtility.HexColor("#A99159")),
-                    plainsGrassColor   = C(18, CommonUtility.HexColor("#478C2E")),
-                    plainsForestColor  = C(19, CommonUtility.HexColor("#236523")),
-                    highlandSnowColor  = C(20, CommonUtility.HexColor("#E8F0F5")),
-                    hasPolarIce        = B(21),
-                    iceColor           = C(22, CommonUtility.HexColor("#F2FAFF")),
-                    iceColorEdge       = C(23, CommonUtility.HexColor("#ADD1F0")),
-                    poleIceWidth       = F(24, 0.12f),
-                    hasClouds          = B(25),
-                    cloudColor         = C(26, CommonUtility.HexColor("#FFFFFFD9")),
-                    cloudCoverage      = F(27, 0.5f),
-                    cloudRotation      = F(28),
-                    cloudScale         = F(29, 1.01f),
-                    cloudMidLatOpacity = F(30, 0f),
-                    cloudMidLatCenter  = F(31, 0.25f),
-                    cloudMidLatWidth   = F(32, 0.12f),
-                    cloudSoftness      = F(33, 0.3f),
-                    hasAtmosphere      = B(34),
-                    atmosphereColor    = C(35, CommonUtility.HexColor("#4D99FF")),
-                    atmosphereScale    = F(36, 1.01f),
-                });
-            }
+            m_dataTableZone.zoneList[j].celestialBodies = new List<CelestialBodyConfig>();
+            zoneMap[m_dataTableZone.zoneList[j].zoneIndex] = m_dataTableZone.zoneList[j];
         }
 
-        // --- enemy CSV 파싱 (zone,stage → ShipInfo 목록) ---
-        // 헤더: zone_stage,stage,ship_index,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio
-        var enemyMap = new Dictionary<(int zone, int stage), List<ShipInfo>>();
-        string[] enemyLines = File.ReadAllLines(enemyCSV);
-        for (int i = 1; i < enemyLines.Length; i++)
+        string[] lines = File.ReadAllLines(k_celestialCSV);
+        for (int i = 1; i < lines.Length; i++)
         {
-            string line = enemyLines[i].Trim();
+            string line = lines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
+            if (!int.TryParse(col[0], out int zi)) continue;
+            if (!zoneMap.TryGetValue(zi, out ZoneConfig zc)) continue;
 
-            int.TryParse(col[0], out int zoneIndex);
-            int.TryParse(col[1], out int stageIndex);
-            var key = (zoneIndex, stageIndex);
-            if (!enemyMap.ContainsKey(key))
-                enemyMap[key] = new List<ShipInfo>();
+            float F(int idx, float def = 0f) => col.Length > idx && float.TryParse(col[idx], out float v) ? v : def;
+            bool  B(int idx)                 => col.Length > idx && col[idx].Trim().ToLower() == "true";
+            Color C(int idx, Color def)      { if (col.Length <= idx) return def; return ColorUtility.TryParseHtmlString(col[idx].Trim(), out Color c) ? c : def; }
 
-            int.TryParse(col[2], out int shipIndex);
-            System.Enum.TryParse(col[3], out EModuleSubType bodyType);
-            int.TryParse(col[4], out int bodyLv);
-
-            var beams    = new List<ModuleInfo>();
-            var missiles = new List<ModuleInfo>();
-            var hangers  = new List<ModuleInfo>();
-
-            if (string.IsNullOrEmpty(col[5]) == false && System.Enum.TryParse(col[5], out EModuleSubType beamType) && int.TryParse(col[6], out int beamLv))
+            zc.celestialBodies.Add(new CelestialBodyConfig
             {
-                int beamCount = (string.IsNullOrEmpty(col[7]) == false && int.TryParse(col[7], out int bc)) ? bc : 1;
-                for (int s = 0; s < beamCount; s++)
-                    beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = beamType, moduleLevel = beamLv, bodyIndex = 0, slotIndex = s });
-            }
-
-            if (string.IsNullOrEmpty(col[8]) == false && System.Enum.TryParse(col[8], out EModuleSubType missileType) && int.TryParse(col[9], out int missileLv))
-            {
-                int missileCount = (string.IsNullOrEmpty(col[10]) == false && int.TryParse(col[10], out int mc)) ? mc : 1;
-                for (int s = 0; s < missileCount; s++)
-                    missiles.Add(new ModuleInfo { moduleType = EModuleType.missile, moduleSubType = missileType, moduleLevel = missileLv, bodyIndex = 0, slotIndex = s });
-            }
-
-            if (string.IsNullOrEmpty(col[11]) == false && System.Enum.TryParse(col[11], out EModuleSubType hangerType) && int.TryParse(col[12], out int hangerLv))
-            {
-                int hangerCount = (string.IsNullOrEmpty(col[13]) == false && int.TryParse(col[13], out int hc)) ? hc : 1;
-                for (int s = 0; s < hangerCount; s++)
-                    hangers.Add(new ModuleInfo { moduleType = EModuleType.hanger, moduleSubType = hangerType, moduleLevel = hangerLv, bodyIndex = 0, slotIndex = s });
-            }
-
-            float.TryParse(col[14], out float bodyR);
-            float.TryParse(col[15], out float beamR);
-            float.TryParse(col[16], out float missileR);
-            float.TryParse(col[17], out float hangerR);
-
-            var bodyInfo = new ModuleBodyInfo
-            {
-                moduleType    = EModuleType.body,
-                moduleSubType = bodyType,
-                moduleLevel   = bodyLv,
-                bodyIndex     = 0,
-                beams         = beams,
-                missiles      = missiles,
-                hangers       = hangers
-            };
-            enemyMap[key].Add(new ShipInfo
-            {
-                shipName          = $"EnemyShip_{shipIndex}",
-                positionIndex     = shipIndex,
-                bodyMultiplier    = bodyR,
-                beamMultiplier    = beamR,
-                missileMultiplier = missileR,
-                hangerMultiplier  = hangerR,
-                bodies            = new List<ModuleBodyInfo> { bodyInfo }
+                position = new Vector3(F(1), F(2), F(3)), rotation = new Vector3(F(4), F(5), F(6)), scale = new Vector3(F(7), F(8), F(9)),
+                landCoverage = F(10, 0.5f), biomeBlend = F(11, 0.01f), gBlend = F(12, 0.02f),
+                deepSeaColor = C(13, CommonUtility.HexColor("#0D2673")), shallowSeaColor = C(14, CommonUtility.HexColor("#1A59A6")),
+                lowlandSandColor = C(15, CommonUtility.HexColor("#BFB380")), lowlandGreenColor = C(16, CommonUtility.HexColor("#90C060")),
+                plainsDesertColor = C(17, CommonUtility.HexColor("#A99159")), plainsGrassColor = C(18, CommonUtility.HexColor("#478C2E")),
+                plainsForestColor = C(19, CommonUtility.HexColor("#236523")), highlandSnowColor = C(20, CommonUtility.HexColor("#E8F0F5")),
+                hasPolarIce = B(21), iceColor = C(22, CommonUtility.HexColor("#F2FAFF")), iceColorEdge = C(23, CommonUtility.HexColor("#ADD1F0")), poleIceWidth = F(24, 0.12f),
+                hasClouds = B(25), cloudColor = C(26, CommonUtility.HexColor("#FFFFFFD9")), cloudCoverage = F(27, 0.5f), cloudRotation = F(28), cloudScale = F(29, 1.01f),
+                cloudMidLatOpacity = F(30, 0f), cloudMidLatCenter = F(31, 0.25f), cloudMidLatWidth = F(32, 0.12f), cloudSoftness = F(33, 0.3f),
+                hasAtmosphere = B(34), atmosphereColor = C(35, CommonUtility.HexColor("#4D99FF")), atmosphereScale = F(36, 1.01f),
             });
         }
+        EditorUtility.SetDirty(m_dataTableZone);
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("완료", "Celestial import 완료", "OK");
+    }
 
-        // --- zone CSV 파싱 ---
-        // 헤더: zone,stage,mineral_clear_reward,tech_point_clear_reward,module_point_clear_reward,spawn_delay,ship_spawn_interval,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y
+    private void ImportStage()
+    {
+        if (!File.Exists(k_stageCSV)) { EditorUtility.DisplayDialog("Error", $"파일 없음:\n{k_stageCSV}", "OK"); return; }
+
+        // 기존 enemyFleet 보존
+        var enemyBackup = new Dictionary<string, FleetInfo>();
+        for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
+        {
+            ZoneStageConfig zs = m_dataTableZone.zoneStageList[j];
+            if (zs.enemyFleet != null) enemyBackup[zs.zoneName] = zs.enemyFleet;
+        }
+
         m_dataTableZone.zoneStageList.Clear();
-
-        string[] zoneLines = File.ReadAllLines(zoneCSV);
-        int imported = 0;
-        for (int i = 1; i < zoneLines.Length; i++)
+        string[] lines = File.ReadAllLines(k_stageCSV);
+        int count = 0;
+        for (int i = 1; i < lines.Length; i++)
         {
-            string line = zoneLines[i].Trim();
+            string line = lines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
-
             if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stage)) continue;
 
             int.TryParse(col[2], out int clearReward);
-            int.TryParse(col.Length > 3 ? col[3] : "0", out int techPointReward);
-            int.TryParse(col.Length > 4 ? col[4] : "0", out int modulePointReward);
+            int.TryParse(col.Length > 3 ? col[3] : "0", out int techPt);
+            int.TryParse(col.Length > 4 ? col[4] : "0", out int modPt);
             float.TryParse(col.Length > 5 ? col[5] : "0", out float spawnDelay);
-            float.TryParse(col.Length > 6 ? col[6] : "0", out float shipSpawnInterval);
+            float.TryParse(col.Length > 6 ? col[6] : "0", out float spawnInterval);
             float.TryParse(col.Length > 7 ? col[7] : "0", out float fpx);
             float.TryParse(col.Length > 8 ? col[8] : "0", out float fpy);
             float.TryParse(col.Length > 9 ? col[9] : "0", out float fpz);
             float.TryParse(col.Length > 10 ? col[10] : "0", out float frotY);
 
-            enemyMap.TryGetValue((zoneIndex, stage), out var waveTemplates);
-
-            var zoneStage = new ZoneStageConfig
+            string zoneName = $"{zoneIndex}-{stage}";
+            enemyBackup.TryGetValue(zoneName, out FleetInfo fleet);
+            m_dataTableZone.zoneStageList.Add(new ZoneStageConfig
             {
-                zoneName                  = $"{zoneIndex}-{stage}",
-                zoneDescription           = $"Zone {zoneIndex}-{stage}",
-                zoneIndex                 = zoneIndex,
-                delayBeforeSpawn          = spawnDelay > 0 ? spawnDelay : 3f,
-                shipSpawnInterval         = shipSpawnInterval > 0 ? shipSpawnInterval : 1.5f,
-                mineralClearReward        = clearReward,
-                techPointClearReward      = techPointReward,
-                modulePointClearReward    = modulePointReward,
-                fleetPosition             = new Vector3(fpx, fpy, fpz),
-                fleetRotationY            = frotY,
-                enemyFleet = new FleetInfo
-                {
-                    fleetName = $"{zoneIndex}-{stage}",
-                    ships     = waveTemplates != null ? waveTemplates : new List<ShipInfo>()
-                },
-            };
-
-            m_dataTableZone.zoneStageList.Add(zoneStage);
-            imported++;
+                zoneName               = zoneName,
+                zoneDescription        = $"Zone {zoneName}",
+                zoneIndex              = zoneIndex,
+                delayBeforeSpawn       = spawnDelay > 0 ? spawnDelay : 3f,
+                shipSpawnInterval      = spawnInterval > 0 ? spawnInterval : 1.5f,
+                mineralClearReward     = clearReward,
+                techPointClearReward   = techPt,
+                modulePointClearReward = modPt,
+                fleetPosition          = new Vector3(fpx, fpy, fpz),
+                fleetRotationY         = frotY,
+                enemyFleet             = fleet != null ? fleet : new FleetInfo { fleetName = zoneName, ships = new List<ShipInfo>() },
+            });
+            count++;
         }
-
+        m_dataTableZone.BuildRuntimeCache();
         EditorUtility.SetDirty(m_dataTableZone);
-        EditorUtility.DisplayDialog("Import Complete",
-            $"ZoneConfig: {m_dataTableZone.zoneList.Count}개\n" +
-            $"ZoneStage: {m_dataTableZone.zoneStageList.Count}개 (zone CSV: {imported}행)", "OK");
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("완료", $"Stage import 완료 ({count}개)", "OK");
     }
 
-    private void ExportAllCSV()
+    private void ImportEnemy()
     {
-        DataTableZoneCSVUtility.ExportAll(m_dataTableZone);
-        EditorUtility.DisplayDialog("Export Complete",
-            "datatable_zone.csv\ndatatable_zone_stage.csv\ndatatable_zone_enemy.csv\ndatatable_zone_celestial.csv", "OK");
-    }
+        if (!File.Exists(k_enemyCSV)) { EditorUtility.DisplayDialog("Error", $"파일 없음:\n{k_enemyCSV}", "OK"); return; }
 
-
-    private void ValidateAllShips()
-    {
-        int totalShips = 0;
-        int invalidShips = 0;
-
-        foreach (var zone in m_dataTableZone.zoneStageList)
+        // zoneName → enemyFleet 재구성
+        var enemyMap = new Dictionary<string, List<ShipInfo>>();
+        string[] lines = File.ReadAllLines(k_enemyCSV);
+        for (int i = 1; i < lines.Length; i++)
         {
-            if (zone.enemyFleet == null || zone.enemyFleet.ships == null) continue;
-            foreach (var ship in zone.enemyFleet.ships)
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+            string[] col = line.Split(',');
+            if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stageNum)) continue;
+
+            string zoneName = $"{zoneIndex}-{stageNum}";
+            if (!enemyMap.ContainsKey(zoneName)) enemyMap[zoneName] = new List<ShipInfo>();
+
+            int.TryParse(col[2], out int shipIdx);
+            System.Enum.TryParse(col[3], out EModuleSubType bodyType);
+            int.TryParse(col[4], out int bodyLv);
+
+            var beams = new List<ModuleInfo>(); var missiles = new List<ModuleInfo>(); var hangers = new List<ModuleInfo>();
+            if (!string.IsNullOrEmpty(col[5]) && System.Enum.TryParse(col[5], out EModuleSubType beamType) && int.TryParse(col[6], out int beamLv))
+            { int cnt = col.Length > 7 && int.TryParse(col[7], out int bc) ? bc : 1; for (int s = 0; s < cnt; s++) beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = beamType, moduleLevel = beamLv, bodyIndex = 0, slotIndex = s }); }
+            if (!string.IsNullOrEmpty(col[8]) && System.Enum.TryParse(col[8], out EModuleSubType missileType) && int.TryParse(col[9], out int missileLv))
+            { int cnt = col.Length > 10 && int.TryParse(col[10], out int mc) ? mc : 1; for (int s = 0; s < cnt; s++) missiles.Add(new ModuleInfo { moduleType = EModuleType.missile, moduleSubType = missileType, moduleLevel = missileLv, bodyIndex = 0, slotIndex = s }); }
+            if (!string.IsNullOrEmpty(col[11]) && System.Enum.TryParse(col[11], out EModuleSubType hangerType) && int.TryParse(col[12], out int hangerLv))
+            { int cnt = col.Length > 13 && int.TryParse(col[13], out int hc) ? hc : 1; for (int s = 0; s < cnt; s++) hangers.Add(new ModuleInfo { moduleType = EModuleType.hanger, moduleSubType = hangerType, moduleLevel = hangerLv, bodyIndex = 0, slotIndex = s }); }
+
+            float.TryParse(col[14], out float bodyR); float.TryParse(col[15], out float beamR);
+            float.TryParse(col[16], out float missileR); float.TryParse(col[17], out float hangerR);
+            enemyMap[zoneName].Add(new ShipInfo
             {
-                totalShips++;
-                if (ship.bodies == null || ship.bodies.Count == 0)
-                    invalidShips++;
-            }
+                shipName = $"EnemyShip_{shipIdx}", positionIndex = shipIdx,
+                bodyMultiplier = bodyR, beamMultiplier = beamR, missileMultiplier = missileR, hangerMultiplier = hangerR,
+                bodies = new List<ModuleBodyInfo> { new ModuleBodyInfo { moduleType = EModuleType.body, moduleSubType = bodyType, moduleLevel = bodyLv, bodyIndex = 0, beams = beams, missiles = missiles, hangers = hangers } }
+            });
         }
 
-        EditorUtility.DisplayDialog("Validation",
-            $"Total: {totalShips} ships\n" + (invalidShips > 0 ? $"Invalid (no bodies): {invalidShips}" : "All ships are valid!"), "OK");
+        for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
+        {
+            ZoneStageConfig zs = m_dataTableZone.zoneStageList[j];
+            if (!enemyMap.TryGetValue(zs.zoneName, out List<ShipInfo> ships)) continue;
+            if (zs.enemyFleet == null) zs.enemyFleet = new FleetInfo { fleetName = zs.zoneName };
+            zs.enemyFleet.ships = ships;
+        }
+        EditorUtility.SetDirty(m_dataTableZone);
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("완료", "Enemy import 완료", "OK");
     }
+
+
 
     private void DrawZoneList()
     {
@@ -434,7 +357,7 @@ public class DataTableZoneEditor : Editor
 
             foreach (var (stageIndex, zoneStage) in zoneStageList)
             {
-                DrawZoneStage(stageIndex);
+                DrawZoneStage(stageIndex, zoneStage.zoneName);
                 EditorGUILayout.Space(3);
             }
             EditorGUI.indentLevel--;
@@ -499,15 +422,120 @@ public class DataTableZoneEditor : Editor
             EditorGUI.indentLevel--;
         }
 
+        EditorGUILayout.Space(6);
+        DrawAutoPlacementUI(zoneIndex);
+
         if (EditorGUI.EndChangeCheck())
             EditorUtility.SetDirty(m_dataTableZone);
     }
 
-    private void DrawZoneStage(int stageIntegratedIndex)
+    private void DrawAutoPlacementUI(int zoneIndex)
     {
-        var zoneStage = m_dataTableZone.zoneStageList[stageIntegratedIndex];
-        if (!zoneFoldouts.ContainsKey(stageIntegratedIndex))
-            zoneFoldouts[stageIntegratedIndex] = false;
+        if (!m_autoGenSeed.ContainsKey(zoneIndex))        m_autoGenSeed[zoneIndex]       = zoneIndex * 100;
+        if (!m_autoGenXRange.ContainsKey(zoneIndex))     m_autoGenXRange[zoneIndex]     = 11000f;
+        if (!m_autoGenZRange.ContainsKey(zoneIndex))     m_autoGenZRange[zoneIndex]     = 5000f;
+        if (!m_autoGenMinZGap.ContainsKey(zoneIndex))    m_autoGenMinZGap[zoneIndex]    = 1500f;
+        if (!m_autoGenStageCount.ContainsKey(zoneIndex)) m_autoGenStageCount[zoneIndex] = 10;
+
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.LabelField("함대 위치 자동 배치", EditorStyles.boldLabel);
+        EditorGUI.indentLevel++;
+        m_autoGenSeed[zoneIndex]        = EditorGUILayout.IntField("Seed",        m_autoGenSeed[zoneIndex]);
+        m_autoGenXRange[zoneIndex]      = EditorGUILayout.FloatField("X Range",   m_autoGenXRange[zoneIndex]);
+        m_autoGenZRange[zoneIndex]      = EditorGUILayout.FloatField("Z Range",   m_autoGenZRange[zoneIndex]);
+        m_autoGenMinZGap[zoneIndex]     = EditorGUILayout.FloatField("Min Z Gap", m_autoGenMinZGap[zoneIndex]);
+        m_autoGenStageCount[zoneIndex]  = EditorGUILayout.IntSlider("스테이지 수",  m_autoGenStageCount[zoneIndex],  1, 10);
+        EditorGUI.indentLevel--;
+
+        EditorGUILayout.Space(2);
+        if (GUILayout.Button("생성 (기존 스테이지 전체 교체)"))
+        {
+            bool confirm = EditorUtility.DisplayDialog(
+                "함대 위치 자동 배치",
+                $"Zone {zoneIndex}의 스테이지를 {m_autoGenStageCount[zoneIndex]}개로 전체 교체합니다.\n계속하시겠습니까?",
+                "생성", "취소");
+            if (confirm == true)
+            {
+                GenerateFleetPositions(zoneIndex, m_autoGenSeed[zoneIndex],
+                    m_autoGenXRange[zoneIndex], m_autoGenZRange[zoneIndex],
+                    m_autoGenMinZGap[zoneIndex], m_autoGenStageCount[zoneIndex]);
+            }
+        }
+        EditorGUILayout.EndVertical();
+    }
+
+    private void GenerateFleetPositions(int zoneIndex, int seed, float xRange, float zRange, float minZGap, int stageCount)
+    {
+        // 기존 스테이지 맵 수집 (fleetPosition/Rotation 외 데이터 보존용)
+        var existingMap = new Dictionary<string, ZoneStageConfig>();
+        for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
+        {
+            ZoneStageConfig zs = m_dataTableZone.zoneStageList[j];
+            if (zs.zoneIndex == zoneIndex) existingMap[zs.zoneName] = zs;
+        }
+
+        // 위치 계산
+        int N = stageCount;
+        var rng = new System.Random(seed);
+        float prevZ = float.MaxValue;
+
+        for (int i = 0; i < N; i++)
+        {
+            float x = N == 1 ? 0f : Mathf.Lerp(-xRange, xRange, (float)i / (N - 1));
+
+            float z = 0f;
+            for (int attempt = 0; attempt < 20; attempt++)
+            {
+                z = (float)(rng.NextDouble() * 2.0 - 1.0) * zRange;
+                if (prevZ == float.MaxValue || Mathf.Abs(z - prevZ) >= minZGap)
+                    break;
+            }
+            prevZ = z;
+
+            string stageName = $"{zoneIndex}-{i + 1}";
+            if (existingMap.TryGetValue(stageName, out ZoneStageConfig existing))
+            {
+                // 기존 스테이지 — fleetPosition/Rotation만 업데이트
+                existing.fleetPosition  = new Vector3(x, 0f, z);
+                existing.fleetRotationY = 0f;
+            }
+            else
+            {
+                // 새 스테이지 추가 (enemyFleet 기본값)
+                m_dataTableZone.zoneStageList.Add(new ZoneStageConfig
+                {
+                    zoneName          = stageName,
+                    zoneDescription   = $"Zone {stageName}",
+                    zoneIndex         = zoneIndex,
+                    delayBeforeSpawn  = 3f,
+                    shipSpawnInterval = 1.5f,
+                    fleetPosition     = new Vector3(x, 0f, z),
+                    enemyFleet        = new FleetInfo { fleetName = stageName, ships = new List<ShipInfo>() },
+                });
+            }
+        }
+
+        m_dataTableZone.zoneStageList.Sort((a, b) =>
+        {
+            int zoneCmp = a.zoneIndex.CompareTo(b.zoneIndex);
+            if (zoneCmp != 0) return zoneCmp;
+            int dashA  = a.zoneName.IndexOf('-');
+            int stageA = dashA >= 0 && int.TryParse(a.zoneName[(dashA + 1)..], out int sa) ? sa : 0;
+            int dashB  = b.zoneName.IndexOf('-');
+            int stageB = dashB >= 0 && int.TryParse(b.zoneName[(dashB + 1)..], out int sb) ? sb : 0;
+            return stageA.CompareTo(stageB);
+        });
+
+        m_dataTableZone.BuildRuntimeCache();
+        EditorUtility.SetDirty(m_dataTableZone);
+        Debug.Log($"[AutoPlace] Zone {zoneIndex}: {N}개 스테이지 fleetPosition 생성 완료 (seed={seed})");
+    }
+
+    private void DrawZoneStage(int listIndex, string zoneName)
+    {
+        var zoneStage = m_dataTableZone.zoneStageList[listIndex];
+        if (!zoneFoldouts.ContainsKey(zoneName))
+            zoneFoldouts[zoneName] = false;
 
         var originalColor = GUI.backgroundColor;
         GUI.backgroundColor = zoneColor;
@@ -517,21 +545,21 @@ public class DataTableZoneEditor : Editor
         // Zone Header
         EditorGUILayout.BeginHorizontal();
         int shipCount = (zoneStage.enemyFleet != null && zoneStage.enemyFleet.ships != null) ? zoneStage.enemyFleet.ships.Count : 0;
-        zoneFoldouts[stageIntegratedIndex] = EditorGUILayout.Foldout(zoneFoldouts[stageIntegratedIndex],
-            $"Zone {stageIntegratedIndex}: {zoneStage.zoneName} (Ships: {shipCount})", true, EditorStyles.foldoutHeader);
+        zoneFoldouts[zoneName] = EditorGUILayout.Foldout(zoneFoldouts[zoneName],
+            $"Zone {zoneStage.zoneName} (Ships: {shipCount})", true, EditorStyles.foldoutHeader);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
             if (EditorUtility.DisplayDialog("Delete Zone", $"Delete '{zoneStage.zoneName}'?", "Delete", "Cancel"))
             {
-                m_dataTableZone.zoneStageList.RemoveAt(stageIntegratedIndex);
+                m_dataTableZone.zoneStageList.RemoveAt(listIndex);
                 EditorUtility.SetDirty(m_dataTableZone);
                 return;
             }
         }
         EditorGUILayout.EndHorizontal();
 
-        if (zoneFoldouts[stageIntegratedIndex])
+        if (zoneFoldouts[zoneName])
         {
             EditorGUI.indentLevel++;
 
@@ -588,7 +616,7 @@ public class DataTableZoneEditor : Editor
             {
                 for (int shipIndex = 0; shipIndex < zoneStage.enemyFleet.ships.Count; shipIndex++)
                 {
-                    DrawShips(stageIntegratedIndex, shipIndex, zoneStage.enemyFleet.ships[shipIndex]);
+                    DrawShips(zoneName, shipIndex, zoneStage.enemyFleet.ships[shipIndex], zoneStage);
                 }
             }
 
@@ -598,12 +626,12 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawShips(int stageIndex, int shipIndex, ShipInfo ship)
+    private void DrawShips(string zoneName, int shipIndex, ShipInfo ship, ZoneStageConfig zoneStage)
     {
-        if (!shipFoldouts.ContainsKey(stageIndex))
-            shipFoldouts[stageIndex] = new Dictionary<int, bool>();
-        if (!shipFoldouts[stageIndex].ContainsKey(shipIndex))
-            shipFoldouts[stageIndex][shipIndex] = false;
+        if (!shipFoldouts.ContainsKey(zoneName))
+            shipFoldouts[zoneName] = new Dictionary<int, bool>();
+        if (!shipFoldouts[zoneName].ContainsKey(shipIndex))
+            shipFoldouts[zoneName][shipIndex] = false;
 
         ModuleBodyInfo body = (ship.bodies != null && ship.bodies.Count > 0) ? ship.bodies[0] : null;
 
@@ -615,13 +643,13 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.BeginHorizontal();
         EModuleSubType dispSubType = body != null ? body.moduleSubType : EModuleSubType.none;
         int dispLevel = body != null ? body.moduleLevel : 0;
-        shipFoldouts[stageIndex][shipIndex] = EditorGUILayout.Foldout(
-            shipFoldouts[stageIndex][shipIndex],
+        shipFoldouts[zoneName][shipIndex] = EditorGUILayout.Foldout(
+            shipFoldouts[zoneName][shipIndex],
             $"Ship {shipIndex + 1} [idx:{ship.positionIndex}]: {dispSubType} Lv.{dispLevel}", true);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
-            m_dataTableZone.zoneStageList[stageIndex].enemyFleet.ships.RemoveAt(shipIndex);
+            zoneStage.enemyFleet.ships.RemoveAt(shipIndex);
             EditorUtility.SetDirty(m_dataTableZone);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
@@ -629,7 +657,7 @@ public class DataTableZoneEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
-        if (shipFoldouts[stageIndex][shipIndex])
+        if (shipFoldouts[zoneName][shipIndex])
         {
             EditorGUI.indentLevel++;
 

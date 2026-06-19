@@ -22,19 +22,10 @@ public class DataTableTechLevelEditor : Editor
 
         serializedObject.Update();
 
-        EditorGUILayout.Space(5);
-        EditorGUILayout.BeginHorizontal("box");
-        GUILayout.Label("DataTable Tech Level", EditorStyles.largeLabel);
-        GUILayout.FlexibleSpace();
-        var list = dataTable.GetTechLevelDataList();
-        GUILayout.Label($"Total: {list.Count}", EditorStyles.miniLabel);
-        EditorGUILayout.EndHorizontal();
-
+        DrawCsvTools();
         EditorGUILayout.Space(10);
         DrawTechLevelList();
-        EditorGUILayout.Space(10);
-        DrawCsvTools();
-
+        
         if (GUI.changed)
         {
             EditorUtility.SetDirty(dataTable);
