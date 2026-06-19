@@ -146,6 +146,9 @@ public class ModuleMissile : ModuleBase
         m_autoAttackCoroutine = StartCoroutine(AutoAttack());
     }
 
+    public override float GetLastAttackTime() { return m_lastAttackTime; }
+    public override void SetLastAttackTime(float t) { m_lastAttackTime = t; }
+
     private IEnumerator AutoAttack()
     {
         while (true)

@@ -28,6 +28,7 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected EModuleType m_hangerModuleType;
     [SerializeField] protected EModuleSubType m_hangerModuleSubType;
     [SerializeField] protected int m_hangerSlotIndex;
+    protected bool m_isEnemyAircraft = false; // 초기화 시 캐싱, 모함 소멸 후 null이 돼도 판별 가능
     
 
     [SerializeField] protected float m_repositionMinDistanceMultiplier = 1.5f;
@@ -74,6 +75,8 @@ public abstract class AircraftBase : MonoBehaviour
             }
         }
 
+        m_isEnemyAircraft = m_carrierShip != null && m_carrierShip.m_ownerFleet != null && m_carrierShip.m_ownerFleet.IsEnemy;
+
         m_lastAttackTime = 0f;
 
         m_randomOffset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.2f, 0.2f), Random.Range(-0.5f, 0.5f));
@@ -85,10 +88,18 @@ public abstract class AircraftBase : MonoBehaviour
 
     }
 
+    // 적 함재기이고 모함 참조가 null이면 함대 소멸로 간주
+    private bool IsCarrierFleetDestroyed()
+    {
+        if (m_isEnemyAircraft == false) return false;
+        return m_carrierShip == null || m_carrierShip.m_ownerFleet == null;
+    }
+
     protected virtual IEnumerator AircraftLifeCycle()
     {
         while (m_aircraftInfo.airHealth > 0)
         {
+
             //DebugOverlay.Instance.SetText($"m_state: {m_state}");
 
             switch (m_state)
@@ -136,6 +147,7 @@ public abstract class AircraftBase : MonoBehaviour
         m_currentDirection = transform.forward.normalized;
         while (currentIndex < waypoints.Count)
         {
+            if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
             if (waypoints[currentIndex] == null) { ReturnToPool(); yield break; }
 
             Vector3 toWp = (waypoints[currentIndex].position - transform.position).normalized;
@@ -164,6 +176,7 @@ public abstract class AircraftBase : MonoBehaviour
         m_currentDirection = transform.forward.normalized;
         while (true)
         {
+            if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
             AircraftBase enemyAircraft = DetectEnemyAircraft();
             if (enemyAircraft != null)
             {
@@ -239,6 +252,7 @@ public abstract class AircraftBase : MonoBehaviour
         m_currentDirection = transform.forward.normalized;
         while (true)
         {
+            if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
             if (currentDogfightTarget == null || currentDogfightTarget.m_aircraftInfo.airHealth <= 0)
             {
                 m_state = EAircraftState.MoveToTarget;
@@ -300,6 +314,7 @@ public abstract class AircraftBase : MonoBehaviour
 
         while (true)
         {
+            if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
             // 종료 조건: 탄약 소진 시 무조건 귀환
             if (m_aircraftInfo.airAmmo <= 0)
             {
@@ -406,6 +421,7 @@ public abstract class AircraftBase : MonoBehaviour
         {
             yield return null;
 
+            if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
             if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null || waypoints[currentIndex] == null)
             {
                 if (TryFindNewHangerAndFirePoint() == false) { ReturnToPool(); yield break; }
@@ -444,6 +460,7 @@ public abstract class AircraftBase : MonoBehaviour
         {
             yield return null;
 
+            if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
             if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null)
             {
                 if (TryFindNewHangerAndFirePoint() == false) { ReturnToPool(); yield break; }

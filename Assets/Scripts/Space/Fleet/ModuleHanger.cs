@@ -151,6 +151,9 @@ public class ModuleHanger : ModuleBase
         m_maintenanceCoroutine = StartCoroutine(MaintenanceProcess());
     }
 
+    public override float GetLastAttackTime() { return m_lastLaunchTime; }
+    public override void SetLastAttackTime(float t) { m_lastLaunchTime = t; }
+
     private IEnumerator AutoAttack()
     {
         while (true)

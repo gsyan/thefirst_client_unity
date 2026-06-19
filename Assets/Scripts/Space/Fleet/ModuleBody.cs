@@ -577,11 +577,15 @@ public class ModuleBody : ModuleBase
         }
 
         // 기존 모듈 제거
+        float inheritedLastAttackTime = 0f;
         if (targetSlot.transform.childCount > 0)
         {
             ModuleBase existingModule = targetSlot.GetComponentInChildren<ModuleBase>();
             if (existingModule != null)
             {
+                // 교체 전 공격 타이머 캡처 — 신 모듈에 승계해 즉시발사 방지
+                inheritedLastAttackTime = existingModule.GetLastAttackTime();
+
                 EventManager.TriggerModuleReplaced(existingModule, null);
 
                 if (existingModule is ModulePlaceholder)
@@ -608,6 +612,10 @@ public class ModuleBody : ModuleBase
         // 전투 중 추가 시 즉시 전함 상태 적용 (뚜껑 열림 등 애니메이터 반영)
         if (newModule != null)
             newModule.ApplyShipStateToModule();
+
+        // 구 모듈의 공격 타이머 승계 — 레벨업 시 m_lastAttackTime=0으로 리셋되어 즉시발사되는 버그 방지
+        if (newModule != null && inheritedLastAttackTime > 0f)
+            newModule.SetLastAttackTime(inheritedLastAttackTime);
 
         // 새 모듈 생성 이벤트 발행
         if (newModule != null)

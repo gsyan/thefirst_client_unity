@@ -196,7 +196,6 @@ public class CameraController : MonoSingleton<CameraController>
                     float newY  = Mathf.Lerp(m_animStartPos.y, m_galaxyTargetPos.y, ct);
                     float newZ  = Mathf.Lerp(m_animStartPos.z, m_galaxyTargetPos.z, ct);
                     m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
-                    Debug.Log($"[Cam] mainT={mainT:F3} ct={ct:F3} camPos={m_targetCamera.transform.position}");
                 }
             }
             else
@@ -667,7 +666,7 @@ public class CameraController : MonoSingleton<CameraController>
     }
 
 // 탐사뷰 종료하면서 저장된 함대 위치+각도+줌으로 복귀
-    public void ExitGalaxyView(Vector3 position)
+    public void ExitGalaxyView(Vector3 position, bool ignoreFleetTarget = false)
     {
         if (m_isGalaxyView == false) return;
         m_isGalaxyView = false;
@@ -680,6 +679,9 @@ public class CameraController : MonoSingleton<CameraController>
         m_animExitZoom = m_currentZoom;
 
         // m_currentTarget은 Phase3 실시간 추적용으로 null 유지, m_savedTarget 별도 보존
+        // ignoreFleetTarget=true 시 Main Phase가 m_targetPosition(새 존 위치)을 사용하도록 null 처리
+        if (ignoreFleetTarget == true)
+            m_savedTarget = null;
         m_currentTarget  = null;
         m_targetPosition = position;
 

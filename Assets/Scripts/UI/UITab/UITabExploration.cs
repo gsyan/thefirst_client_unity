@@ -279,6 +279,7 @@ public class UITabExploration : UITabBase
         ObjectManager.Instance.ChangeZone(fleetZoneIndex);
 
         Vector3 targetCameraPosition;
+        bool ignoreFleetTarget = false;
 
         // 전투 중이면 카메라만 포커스 타겟 위치로 복귀 (함대는 그대로 전투 지속)
         if (m_battleZoneStage != null && m_playerFleet.m_fleetState.IsBattleState() == true)
@@ -295,6 +296,7 @@ public class UITabExploration : UITabBase
             targetCameraPosition = m_pendingFleetPos;
             // 카메라 복귀 완료 후 함대 배치 + 워프인, RefreshTabButtons는 워프인 완료 후 OnFleetViewRestoredAfterEnterZone에서 처리
             EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
+            ignoreFleetTarget = true;
         }
         else if (m_currentZoneStage != null)
         {
@@ -312,7 +314,7 @@ public class UITabExploration : UITabBase
             EventManager.Subscribe_FleetViewRestored(OnFleetViewRestoredTabRefresh);
         }
 
-        CameraController.Instance.ExitGalaxyView(targetCameraPosition);
+        CameraController.Instance.ExitGalaxyView(targetCameraPosition, ignoreFleetTarget);
     }
 
     private void OnFleetViewRestoredAfterEnterZone()
@@ -380,12 +382,6 @@ public class UITabExploration : UITabBase
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
         m_battleZoneStage = null;
         m_pendingClaimZoneName = null;
-    }
-
-    private void SetMyFleetToHiddenPosition()
-    {
-        if (m_playerFleet != null)
-            m_playerFleet.transform.position = new Vector3(0f, -9999f, 0f);
     }
 
     private int ParseZoneGroup(string zoneName)
@@ -478,6 +474,12 @@ public class UITabExploration : UITabBase
         return int.TryParse(zoneName[(dashIdx + 1)..], out int y) ? y : 0;
     }
 
+    private void SetMyFleetToHiddenPosition()
+    {
+        if (m_playerFleet != null)
+            m_playerFleet.transform.position = new Vector3(0f, -9999f, 0f);
+    }
+
     private void EnterZoneStage(ZoneStageConfig zoneStage)
     {
         if (m_playerFleet.m_fleetState.IsBattleState() == true)
@@ -489,7 +491,7 @@ public class UITabExploration : UITabBase
             ObjectManager.Instance.RemoveAllEnemyFleets();
         }
 
-        // 실제 제3의 지역으로 위치 이동
+        // 실제 제3의 지역으로 위치 이동, 현재 스테이지로 재 진입시를 위해
         SetMyFleetToHiddenPosition();
         // 전투중 다른 스테이지 위치로 이동 위해
         // 함대가 전투중이면 OnTabDeactivated 에서는 단순히 uitabexploration 을 열었다 닫은것으로 인식
@@ -1065,12 +1067,12 @@ public class UITabExploration : UITabBase
             }
         }
 
-        // 갤럭시뷰 중에 전투가 완료된 경우 함대를 즉시 오프스크린으로 이동
-        if (CameraController.Instance != null && CameraController.Instance.IsGalaxyView == true)
-        {
-            if (m_playerFleet != null)
-                m_playerFleet.transform.position = new Vector3(0f, -9999f, 0f);
-        }
+        // // 갤럭시뷰 중에 전투가 완료된 경우 함대를 즉시 오프스크린으로 이동
+        // if (CameraController.Instance != null && CameraController.Instance.IsGalaxyView == true)
+        // {
+        //     if (m_playerFleet != null)
+        //         m_playerFleet.transform.position = new Vector3(0f, -9999f, 0f);
+        // }
 
         int battleGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : (m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1);
         if (battleGroup <= 0) battleGroup = 1;

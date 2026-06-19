@@ -107,6 +107,9 @@ public class ModuleBase : MonoBehaviour
         // 기본 구현: 레벨만 설정
         SetModuleLevel(newLevel);
     }
+    // 교체 시 구 모듈의 공격 타이머를 신 모듈에 승계 — 무기 모듈에서 override
+    public virtual float GetLastAttackTime() { return 0f; }
+    public virtual void SetLastAttackTime(float t) { }
     public virtual int GetModuleBodyIndex()
     {
         return 0;
