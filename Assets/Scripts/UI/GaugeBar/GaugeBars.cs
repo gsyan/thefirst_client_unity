@@ -21,8 +21,6 @@ public class GaugeBars : MonoBehaviour
     [SerializeField] private Vector3 m_offsetFromTarget = new Vector3(0, 0f, 0);
     [SerializeField] private float m_smoothSpeed = 5f;
 
-    private bool m_hideForGalaxy = false;
-
     void Awake()
     {
         m_spaceShip = GetComponent<SpaceShip>();
@@ -30,12 +28,6 @@ public class GaugeBars : MonoBehaviour
             m_gaugeBarContainer = UIManager.Instance.GetGaugeBarContainer();
 
         EventManager.Subscribe_ModuleReplaced(OnModuleReplaced);
-        EventManager.Subscribe_FleetViewRestored(OnFleetViewRestored);
-    }
-
-    private void OnFleetViewRestored()
-    {
-        m_hideForGalaxy = false;
     }
 
     void Start()
@@ -198,9 +190,6 @@ public class GaugeBars : MonoBehaviour
     private void LateUpdate()
     {
         bool isGalaxyView = CameraController.Instance != null && CameraController.Instance.IsGalaxyView;
-        if (isGalaxyView == true)
-            m_hideForGalaxy = true;
-
         foreach (var kvp in m_moduleGaugeBars)
         {
             ModuleBase module = kvp.Key;
@@ -208,7 +197,7 @@ public class GaugeBars : MonoBehaviour
             if (module == null || gaugeBar == null) continue;
 
             bool shouldShow = false;
-            if (m_hideForGalaxy == false)
+            if (isGalaxyView == false)
             {
                 bool isInBounds = gaugeBar.IsInScreenBounds();
                 bool isFullHealth = IsModuleAtFullHealth(module);
@@ -266,7 +255,6 @@ public class GaugeBars : MonoBehaviour
     void OnDestroy()
     {
         EventManager.Unsubscribe_ModuleReplaced(OnModuleReplaced);
-        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestored);
         ClearAllGaugeBars();
     }
 }

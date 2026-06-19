@@ -1067,13 +1067,6 @@ public class UITabExploration : UITabBase
             }
         }
 
-        // // 갤럭시뷰 중에 전투가 완료된 경우 함대를 즉시 오프스크린으로 이동
-        // if (CameraController.Instance != null && CameraController.Instance.IsGalaxyView == true)
-        // {
-        //     if (m_playerFleet != null)
-        //         m_playerFleet.transform.position = new Vector3(0f, -9999f, 0f);
-        // }
-
         int battleGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : (m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1);
         if (battleGroup <= 0) battleGroup = 1;
         UpdateGroupTabVisual(battleGroup);
