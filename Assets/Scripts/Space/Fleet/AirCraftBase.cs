@@ -19,7 +19,6 @@ public abstract class AircraftBase : MonoBehaviour
 {
     [SerializeField] protected Transform m_firePoint;
     [SerializeField] protected ModuleBase m_targetModule;
-    [SerializeField] protected ModuleBase m_sourceModule;
     [SerializeField] protected ModuleHanger m_moduleHanger;
     [SerializeField] protected AircraftInfo m_aircraftInfo;
 
@@ -50,13 +49,12 @@ public abstract class AircraftBase : MonoBehaviour
     protected ModuleData m_moduleData;
     protected EPoolName m_missilePoolName = EPoolName.PROJECTILE_MISSILE_SMALL;
 
-    public virtual void InitializeAirCraft(Transform firePointTransform, ModuleBase target, AircraftInfo aircraftInfo, ModuleHanger moduleHanger, Color color, ModuleBase sourceModuleBase)
+    public virtual void InitializeAirCraft(Transform firePointTransform, ModuleBase target, AircraftInfo aircraftInfo, ModuleHanger moduleHanger, Color color)
     {
         m_firePoint = firePointTransform;
         m_targetModule = target;
         m_aircraftInfo = aircraftInfo;
         m_moduleHanger = moduleHanger;
-        m_sourceModule = sourceModuleBase;
         m_flightPath = ResolveFlightPath();
         // 미사일 발사 전용 — projectileSpeed만 사용 (함재기 속도 * 2)
         m_moduleData = new ModuleData { projectileSpeed = aircraftInfo.airSpeed * 2f };
@@ -76,6 +74,8 @@ public abstract class AircraftBase : MonoBehaviour
         }
 
         m_isEnemyAircraft = m_carrierShip != null && m_carrierShip.m_ownerFleet != null && m_carrierShip.m_ownerFleet.IsEnemy;
+
+        EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
 
         m_lastAttackTime = 0f;
 
@@ -396,9 +396,9 @@ public abstract class AircraftBase : MonoBehaviour
     // 격납고 출입구 앞 접근 지점까지 ReturnPath WP를 따라 비행, 완료 시 Docking으로 전환
     protected virtual IEnumerator Phase_ReturnToApproach()
     {
-        if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null)
+        if (m_firePoint == null || m_moduleHanger == null || m_moduleHanger == null)
         {
-            if (TryFindNewHangerAndFirePoint() == false) { ReturnToPool(); yield break; }
+            if (TryResolveHangerRefs() == false) { ReturnToPool(); yield break; }
         }
 
         m_currentDirection = transform.forward.normalized;
@@ -422,9 +422,9 @@ public abstract class AircraftBase : MonoBehaviour
             yield return null;
 
             if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
-            if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null || waypoints[currentIndex] == null)
+            if (m_firePoint == null || m_moduleHanger == null || m_moduleHanger == null || waypoints[currentIndex] == null)
             {
-                if (TryFindNewHangerAndFirePoint() == false) { ReturnToPool(); yield break; }
+                if (TryResolveHangerRefs() == false) { ReturnToPool(); yield break; }
                 m_state = EAircraftState.ReturnToApproach;
                 yield break;
             }
@@ -461,9 +461,9 @@ public abstract class AircraftBase : MonoBehaviour
             yield return null;
 
             if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
-            if (m_firePoint == null || m_sourceModule == null || m_moduleHanger == null)
+            if (m_firePoint == null || m_moduleHanger == null || m_moduleHanger == null)
             {
-                if (TryFindNewHangerAndFirePoint() == false) { ReturnToPool(); yield break; }
+                if (TryResolveHangerRefs() == false) { ReturnToPool(); yield break; }
                 continue;
             }
 
@@ -481,40 +481,46 @@ public abstract class AircraftBase : MonoBehaviour
         }
     }
 
-    // m_sourceModule(ModuleHanger)의 슬롯(함체)에서 HangerFlightPath를 탐색해 캐시
+    // m_moduleHanger(ModuleHanger)의 슬롯(함체)에서 HangerFlightPath를 탐색해 캐시
     private HangerFlightPath ResolveFlightPath()
     {
-        if (m_sourceModule == null || m_sourceModule.m_moduleSlot == null) return null;
-        return m_sourceModule.m_moduleSlot.GetComponentInChildren<HangerFlightPath>();
+        if (m_moduleHanger == null || m_moduleHanger.m_moduleSlot == null) return null;
+        return m_moduleHanger.m_moduleSlot.GetComponentInChildren<HangerFlightPath>();
     }
 
-    // Body 교체 후 새로운 ModuleHanger와 firePoint를 찾는 메서드
-    private bool TryFindNewHangerAndFirePoint()
+    // 함체 교체 이벤트 수신 — 내 모함이면 flightPath 갱신
+    private void OnShipBodyChanged(SpaceShip ship)
     {
-        // 저장된 SpaceShip과 슬롯 정보로 새 hanger 찾기
+        if (ship != m_carrierShip) return;
+        TryResolveShipBodyRefs();
+    }
+
+    // 함체 교체 후 flightPath 갱신 (hanger는 살아있음)
+    private bool TryResolveShipBodyRefs()
+    {
+        m_flightPath = ResolveFlightPath();
+        return m_flightPath != null;
+    }
+
+    // 격납고 교체 후 hanger, firePoint 갱신 (flightPath는 살아있음)
+    private bool TryResolveHangerRefs()
+    {
         if (m_carrierShip == null) return false;
 
-        // SpaceShip의 모든 body를 순회하며 같은 슬롯의 ModuleHanger 찾기
         foreach (var body in m_carrierShip.m_moduleBodys)
         {
             ModuleSlot newSlot = body.FindModuleSlot(m_hangerModuleType, m_hangerSlotIndex);
-            if (newSlot != null && newSlot.transform.childCount > 0)
-            {
-                ModuleHanger newHanger = newSlot.GetComponentInChildren<ModuleHanger>();
-                if (newHanger != null)
-                {
-                    // 새로운 hanger의 launcher 찾기
-                    LauncherAircraft launcher = newHanger.GetComponentInChildren<LauncherAircraft>();
-                    if (launcher != null)
-                    {
-                        m_moduleHanger = newHanger;
-                        m_sourceModule = newHanger;
-                        m_firePoint = launcher.GetFirePoint();
-                        m_flightPath = ResolveFlightPath();
-                        return true;
-                    }
-                }
-            }
+            if (newSlot == null || newSlot.transform.childCount == 0) continue;
+
+            ModuleHanger newHanger = newSlot.GetComponentInChildren<ModuleHanger>();
+            if (newHanger == null) continue;
+
+            LauncherAircraft launcher = newHanger.GetComponentInChildren<LauncherAircraft>();
+            if (launcher == null) continue;
+
+            m_moduleHanger = newHanger;
+            m_firePoint = launcher.GetFirePoint();
+            return true;
         }
 
         return false;
@@ -530,7 +536,7 @@ public abstract class AircraftBase : MonoBehaviour
             if (col.gameObject == gameObject) continue;
 
             AircraftBase otherAircraft = col.GetComponent<AircraftBase>();
-            if (otherAircraft != null && otherAircraft.m_sourceModule == m_sourceModule)
+            if (otherAircraft != null && otherAircraft.m_moduleHanger == m_moduleHanger)
             {
                 Vector3 awayDir = transform.position - col.transform.position;
                 float distance = awayDir.magnitude;
@@ -549,7 +555,7 @@ public abstract class AircraftBase : MonoBehaviour
         foreach (Collider col in nearbyObjects)
         {
             AircraftBase otherAircraft = col.GetComponent<AircraftBase>();
-            if (otherAircraft != null && otherAircraft.m_sourceModule != m_sourceModule && otherAircraft.m_aircraftInfo.airHealth > 0)
+            if (otherAircraft != null && otherAircraft.m_moduleHanger != m_moduleHanger && otherAircraft.m_aircraftInfo.airHealth > 0)
                 return otherAircraft;
         }
 
@@ -565,7 +571,7 @@ public abstract class AircraftBase : MonoBehaviour
 
         missile.transform.SetPositionAndRotation(m_firePointMissileList[0].position, m_firePointMissileList[0].rotation);
         missile.SetPoolName(m_missilePoolName);
-        missile.InitializeProjectile(m_firePointMissileList[0], m_targetModule, m_aircraftInfo.airAttack, m_moduleData, Color.black, m_sourceModule, -m_firePointMissileList[0].up, 1f, 1f);
+        missile.InitializeProjectile(m_firePointMissileList[0], m_targetModule, m_aircraftInfo.airAttack, m_moduleData, Color.black, m_moduleHanger, -m_firePointMissileList[0].up, 1f, 1f);
 
         m_aircraftInfo.airAmmo--;
         m_lastAttackTime = Time.time;
@@ -635,7 +641,9 @@ public abstract class AircraftBase : MonoBehaviour
     }
 
     protected virtual void ReturnToPool()
-    {}
+    {
+        EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChanged);
+    }
 
     public virtual void Start() { }
 

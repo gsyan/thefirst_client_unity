@@ -32,20 +32,18 @@ public class GaugeBars : MonoBehaviour
     void OnEnable()
     {
         EventManager.Subscribe_ModuleReplaced(OnModuleReplaced);
-        EventManager.Subscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+        EventManager.Subscribe_FleetViewRestored(OnFleetViewRestored);
     }
 
     void OnDisable()
     {
         EventManager.Unsubscribe_ModuleReplaced(OnModuleReplaced);
-        EventManager.Unsubscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+        EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestored);
     }
 
-    private void OnMyFleetStateChanged(EUnitState state)
+    private void OnFleetViewRestored()
     {
-        bool isGalaxyView = CameraController.Instance != null && CameraController.Instance.IsGalaxyView;
-        if (isGalaxyView == false)
-            m_hideForGalaxy = false;
+        m_hideForGalaxy = false;
     }
 
     void Start()

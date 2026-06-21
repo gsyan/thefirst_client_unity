@@ -48,6 +48,12 @@ public static class EventManager
         OnMineralChanged -= callback;
     }
 
+    // 플리트 전체 미네랄 투입량 합계 변경
+    public static event Action<int> OnInvestedMineralChanged;
+    public static void TriggerInvestedMineralChanged(int total) { OnInvestedMineralChanged?.Invoke(total); }
+    public static void Subscribe_InvestedMineralChanged(Action<int> callback)   { OnInvestedMineralChanged += callback; }
+    public static void Unsubscribe_InvestedMineralChanged(Action<int> callback) { OnInvestedMineralChanged -= callback; }
+
     // modulePoint
     public static event Action<int> OnModulePointChanged;
     public static void TriggerModulePointChanged(int modulePoint) { OnModulePointChanged?.Invoke(modulePoint); }

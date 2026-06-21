@@ -33,10 +33,10 @@ public class LauncherAircraft : LauncherBase
     public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
     {
         if (m_isInitialized == false) return;
-        StartCoroutine(FireCoroutine(target, sourceModuleBase));
+        StartCoroutine(FireCoroutine(target));
     }
 
-    private IEnumerator FireCoroutine(ModuleBase target, ModuleBase sourceModuleBase)
+    private IEnumerator FireCoroutine(ModuleBase target)
     {
         AircraftInfo aircraftInfo = m_moduleHanger.GetReadyAircraft();
         if (aircraftInfo == null) yield break;
@@ -62,7 +62,7 @@ public class LauncherAircraft : LauncherBase
 
         aircraft.transform.position = m_firePoint.position;
         aircraft.transform.rotation = m_firePoint.rotation;
-        aircraft.InitializeAirCraft(m_firePoint, target, aircraftInfo, m_moduleHanger, Color.black, sourceModuleBase);
+        aircraft.InitializeAirCraft(m_firePoint, target, aircraftInfo, m_moduleHanger, Color.black);
     }
 
 }

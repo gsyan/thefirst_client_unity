@@ -115,6 +115,25 @@ public class UIPanelSpace : UIPanelBase
                 },
                 onConfirm = () => { }
             });
+
+            if (response.data.mineralSettingReset == true && response.data.updatedFleetInfo != null)
+            {
+                var loc = LocalizationManager.Instance;
+                var fleet = ObjectManager.Instance.m_myFleet;
+                FleetInfo fleetInfoToApply = response.data.updatedFleetInfo;
+                UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+                {
+                    title        = loc.Get("UIPopupMessage_MineralResetTitle"),
+                    message      = loc.Get("UIPopupMessage_MineralResetMessage"),
+                    confirmText1 = loc.Get("Simple_Confirm"),
+                    autoCloseSec = 5f,
+                    onConfirm    = () =>
+                    {
+                        if (fleet != null)
+                            fleet.ApplyMineralReset(fleetInfoToApply);
+                    },
+                });
+            }
         });
     }
 

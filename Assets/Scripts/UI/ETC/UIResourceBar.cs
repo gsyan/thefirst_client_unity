@@ -8,13 +8,17 @@ using UnityEngine.UI;
 
 public class UIResourceBar : MonoBehaviour
 {
-    [SerializeField] private TMP_Text m_textMineralCurrent;
-    [SerializeField] private TMP_Text m_textModulePointCurrent;
+    [SerializeField] private TMP_Text  m_textMineralCurrent;
+    [SerializeField] private Image     m_imageMineralInvested;
+    [SerializeField] private TMP_Text  m_textMineralInvested;
+    [SerializeField] private TMP_Text  m_textModulePointCurrent;
     [SerializeField] private TMP_Text m_textModulePointMaxGot;
     [SerializeField] private TMP_Text m_textPvpPointCurrent;
     [SerializeField] private TMP_Text m_textPvpPointMaxGot;
     [SerializeField] private Image    m_imagePvpPointDday;
     [SerializeField] private TMP_Text m_textPvpPointDday;
+
+    private static readonly Color s_colorInvestedInsufficient = Color.red;
 
     private Color m_pvpDdayColorBase;
     private Color m_pvpDdayColorBright;
@@ -23,7 +27,8 @@ public class UIResourceBar : MonoBehaviour
     private Coroutine m_ddayCoroutine;
 
     // 자원별 마지막 표시값 (-1 = 미초기화, 애니메이션 없이 즉시 표시)
-    private long m_displayedMineral     = -1;
+    private long m_displayedMineral          = -1;
+    private int  m_displayedInvestedMineral  = 0;
     private long m_displayedModulePoint = -1;
     private long m_displayedPvpPoint    = -1;
 
@@ -53,6 +58,7 @@ public class UIResourceBar : MonoBehaviour
         EventManager.Subscribe_MineralChanged(OnMineralChanged);
         EventManager.Subscribe_ModulePointChanged(OnModulePointChanged);
         EventManager.Subscribe_PvpPointChanged(OnPvpPointChanged);
+        EventManager.Subscribe_InvestedMineralChanged(OnInvestedMineralChanged);
     }
 
     private void OnDestroy()
@@ -60,6 +66,7 @@ public class UIResourceBar : MonoBehaviour
         EventManager.Unsubscribe_MineralChanged(OnMineralChanged);
         EventManager.Unsubscribe_ModulePointChanged(OnModulePointChanged);
         EventManager.Unsubscribe_PvpPointChanged(OnPvpPointChanged);
+        EventManager.Unsubscribe_InvestedMineralChanged(OnInvestedMineralChanged);
     }
 
     // 최초 1회 직접 갱신 — 애니메이션 없음
@@ -77,6 +84,9 @@ public class UIResourceBar : MonoBehaviour
         if (m_textModulePointMaxGot != null)  m_textModulePointMaxGot.text  = $"/ {character.GetModulePointMaxGot()}";
         if (m_textPvpPointCurrent != null)    m_textPvpPointCurrent.text    = m_displayedPvpPoint.ToString();
         if (m_textPvpPointMaxGot != null)     m_textPvpPointMaxGot.text     = $"/ {character.GetPvpPointMaxGot()}";
+
+        if (m_textMineralInvested != null)
+            RefreshInvestedMineralUI(m_displayedInvestedMineral, m_displayedMineral);
 
         TryParseExpiry(info.pvpPointExpiry, out m_pvpExpiry);
 
@@ -99,6 +109,40 @@ public class UIResourceBar : MonoBehaviour
     {
         StartFieldAnimation(ref m_coroutineMineral, m_textMineralCurrent, m_displayedMineral, mineral);
         m_displayedMineral = mineral;
+        RefreshInvestedMineralColor(m_displayedInvestedMineral, mineral);
+    }
+
+    private void OnInvestedMineralChanged(int totalInvested)
+    {
+        m_displayedInvestedMineral = totalInvested;
+        RefreshInvestedMineralUI(totalInvested, m_displayedMineral);
+    }
+
+    private void RefreshInvestedMineralUI(int totalInvested, long currentMineral)
+    {
+        if (m_textMineralInvested == null) return;
+
+        m_textMineralInvested.text = $"{totalInvested}";
+
+        RefreshInvestedMineralColor(totalInvested, currentMineral);
+    }
+
+    private void RefreshInvestedMineralColor(int totalInvested, long currentMineral)
+    {
+        if (m_imageMineralInvested == null || m_textMineralInvested == null) return;
+
+        if (totalInvested <= 0)
+        {
+            m_imageMineralInvested.color = Color.gray;
+            m_textMineralInvested.color  = Color.gray;
+            return;
+        }
+
+        bool isInsufficient = currentMineral < totalInvested;
+        Color mineralColor  = CommonUtility.PaletteColor("Mineral");
+
+        m_imageMineralInvested.color = mineralColor;
+        m_textMineralInvested.color  = isInsufficient == true ? s_colorInvestedInsufficient : mineralColor;
     }
 
     private void OnModulePointChanged(int modulePoint)

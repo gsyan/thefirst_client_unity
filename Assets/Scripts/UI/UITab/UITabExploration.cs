@@ -684,102 +684,17 @@ public class UITabExploration : UITabBase
 
         m_pendingRewardIsFirstClear = response.data.isFirstClear;
 
-        // 전투 소모 미네랄 + 미네랄 강화 초기화 반영
+        // 전투 소모 미네랄 반영
         var characterForMineral = DataManager.Instance.m_currentCharacter;
         if (characterForMineral != null)
             characterForMineral.UpdateMineral(response.data.mineralRemain);
-
-        m_pendingUpdatedFleetInfo = response.data.updatedFleetInfo;
 
         StayInCurrentStage();
         string title = LocalizationManager.Instance.Get("exploration_battle_victory");
         UIManager.Instance.StartCoroutine(StartVictorySequence(title));
     }
 
-    private void RemoveMineralEnhancementFleet(FleetInfo updatedFleetInfo)
-    {
-        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
-        if (fleet == null || updatedFleetInfo.ships == null) return;
 
-        foreach (ShipInfo updatedShip in updatedFleetInfo.ships)
-        {
-            SpaceShip ship = fleet.FindShip(updatedShip.id);
-            if (ship == null || updatedShip.bodies == null) continue;
-
-            foreach (ModuleBodyInfo updatedBody in updatedShip.bodies)
-                RemoveMineralEnhancementBody(ship, updatedBody);
-
-            EventManager.Trigger_ShipStatsChanged(ship);
-        }
-    }
-
-    private void RemoveMineralEnhancementBody(SpaceShip ship, ModuleBodyInfo updatedBody)
-    {
-        // Body 업데이트
-        ModuleBase bodyModule = ship.FindModule(updatedBody.bodyIndex, EModuleType.body, 0);
-        if (bodyModule != null)
-        {
-            bool bodySubTypeChanged = bodyModule.GetModuleSubType() != updatedBody.moduleSubType;
-            bool bodyLevelChanged   = bodyModule.GetModuleLevel()   != updatedBody.moduleLevel;
-            if (bodySubTypeChanged == true || bodyLevelChanged == true)
-                ship.ApplyModuleChange(updatedBody.bodyIndex, EModuleType.body, updatedBody.moduleSubType, 0, updatedBody.moduleLevel, updatedBody.investedMineral, updatedBody.investedModulePoint);
-        }
-
-        ModuleBody body = ship.FindModuleBodyByIndex(updatedBody.bodyIndex);
-        if (body == null) return;
-
-        RemoveMineralEnhancementModuleList(ship, body, updatedBody.beams,    EModuleType.beam);
-        RemoveMineralEnhancementModuleList(ship, body, updatedBody.missiles, EModuleType.missile);
-        RemoveMineralEnhancementModuleList(ship, body, updatedBody.hangers,  EModuleType.hanger);
-    }
-
-    private void RemoveMineralEnhancementModuleList(SpaceShip ship, ModuleBody body, List<ModuleInfo> moduleInfos, EModuleType moduleType)
-    {
-        int bodyIndex = body.GetModuleBodyIndex();
-
-        // moduleInfos == null: 해당 타입 모듈이 서버에 없음 → 전체 슬롯 플레이스홀더로 복원
-        if (moduleInfos == null)
-        {
-            foreach (ModuleSlot slot in body.m_moduleSlots)
-            {
-                if (slot.m_moduleSlotInfo.moduleType != moduleType) continue;
-                ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
-                bool isPlaceholder = module != null && module is ModulePlaceholder;
-                if (isPlaceholder == true) continue;
-                ship.Apply_ResetModuleToPlaceholder(bodyIndex, moduleType, slot.m_moduleSlotInfo.slotIndex);
-            }
-            return;
-        }
-
-        // 서버 목록 기준 업데이트
-        HashSet<int> serverSlotIndexes = new HashSet<int>();
-        foreach (ModuleInfo updatedModule in moduleInfos)
-        {
-            serverSlotIndexes.Add(updatedModule.slotIndex);
-
-            ModuleBase existing = ship.FindModule(bodyIndex, moduleType, updatedModule.slotIndex);
-            if (existing == null) continue;
-
-            bool subTypeChanged = existing.GetModuleSubType() != updatedModule.moduleSubType;
-            bool levelChanged   = existing.GetModuleLevel()   != updatedModule.moduleLevel;
-            if (subTypeChanged == true || levelChanged == true)
-                ship.ApplyModuleChange(bodyIndex, moduleType, updatedModule.moduleSubType, updatedModule.slotIndex, updatedModule.moduleLevel, updatedModule.investedMineral, updatedModule.investedModulePoint);
-        }
-
-        // 서버 목록에 없는 슬롯 → 플레이스홀더로 복원
-        foreach (ModuleSlot slot in body.m_moduleSlots)
-        {
-            if (slot.m_moduleSlotInfo.moduleType != moduleType) continue;
-            int slotIndex = slot.m_moduleSlotInfo.slotIndex;
-            if (serverSlotIndexes.Contains(slotIndex) == true) continue;
-
-            ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
-            bool isPlaceholder = module != null && module is ModulePlaceholder;
-            if (isPlaceholder == true) continue;
-
-            ship.Apply_ResetModuleToPlaceholder(bodyIndex, moduleType, slotIndex);
-        }
-    }
 
     private IEnumerator StartVictorySequence(string title)
     {
@@ -789,31 +704,7 @@ public class UITabExploration : UITabBase
         ZoneStageConfig pendingStage = m_datatableZone.GetZoneStageByName(m_pendingClaimZoneName);
         if (pendingStage == null) { m_pendingClaimZoneName = null; yield break; }
 
-        bool hasMineralReset = m_pendingUpdatedFleetInfo != null;
-        if (hasMineralReset == true)
-        {
-            FleetInfo fleetInfoToApply = m_pendingUpdatedFleetInfo;
-            m_pendingUpdatedFleetInfo = null;
-
-            var loc = LocalizationManager.Instance;
-            var notifyConfig = new ConfirmPopupConfig
-            {
-                title        = loc.Get("UIPopupMessage_MineralResetTitle"),
-                message      = loc.Get("UIPopupMessage_MineralResetMessage"),
-                confirmText1 = loc.Get("Simple_Confirm"),
-                autoCloseSec = 5f,
-                onConfirm    = () =>
-                {
-                    RemoveMineralEnhancementFleet(fleetInfoToApply);
-                    ShowVictoryRewardPopup(title, pendingStage);
-                },
-            };
-            UIManager.Instance.ShowConfirmPopup(notifyConfig);
-        }
-        else
-        {
-            ShowVictoryRewardPopup(title, pendingStage);
-        }
+        ShowVictoryRewardPopup(title, pendingStage);
     }
 
     private void ShowVictoryRewardPopup(string title, ZoneStageConfig pendingStage)
@@ -932,6 +823,27 @@ public class UITabExploration : UITabBase
         }
         m_battleZoneStage = null;
         m_pendingClaimZoneName = null;
+
+        if (response.data.mineralSettingReset == true && response.data.updatedFleetInfo != null)
+        {
+            m_pendingUpdatedFleetInfo = response.data.updatedFleetInfo;
+            var loc = LocalizationManager.Instance;
+            var notifyConfig = new ConfirmPopupConfig
+            {
+                title        = loc.Get("UIPopupMessage_MineralResetTitle"),
+                message      = loc.Get("UIPopupMessage_MineralResetMessage"),
+                confirmText1 = loc.Get("Simple_Confirm"),
+                autoCloseSec = 5f,
+                onConfirm    = () =>
+                {
+                    SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
+                    if (fleet != null)
+                        fleet.ApplyMineralReset(m_pendingUpdatedFleetInfo);
+                    m_pendingUpdatedFleetInfo = null;
+                },
+            };
+            UIManager.Instance.ShowConfirmPopup(notifyConfig);
+        }
     }
 
     private void SelectNextZoneStage(string clearedZoneName)
@@ -1042,6 +954,9 @@ public class UITabExploration : UITabBase
             {
                 m_playerFleet.RestoreDestroyedShips(0.1f);
             }
+            bool isVip = IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
+            if (isVip == true)
+                m_playerFleet.FullRepair();
         });
     }
 

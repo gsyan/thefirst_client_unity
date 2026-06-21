@@ -525,9 +525,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -535,8 +535,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &723053940425919745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,9 +1182,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -1192,8 +1192,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &1690690267128976457
 GameObject:
   m_ObjectHideFlags: 0
@@ -1604,9 +1604,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -1614,8 +1614,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &2761693608824444550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,9 +1771,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_moduleBodyInfo:
     moduleType: 0
     moduleSubType: 0
@@ -1782,9 +1782,9 @@ MonoBehaviour:
     beams: []
     missiles: []
     hangers: []
-    unlockedSubTypes: 
     investedModulePoint: 0
     currentHealth: 0
+    investedMineral: 0
   m_moduleSlots: []
   m_beams: []
   m_missiles: []
@@ -3938,9 +3938,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -3948,8 +3948,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &6552588173549047264
 GameObject:
   m_ObjectHideFlags: 0
@@ -4622,9 +4622,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -4632,8 +4632,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &7256122911818749528
 GameObject:
   m_ObjectHideFlags: 0
@@ -5561,9 +5561,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -5571,8 +5571,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &8588801718259623205
 GameObject:
   m_ObjectHideFlags: 0

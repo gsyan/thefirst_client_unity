@@ -717,11 +717,32 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
+    public int GetTotalInvestedMineral()
+    {
+        int total = 0;
+        for (int i = 0; i < m_moduleBodys.Count; i++)
+        {
+            ModuleBody body = m_moduleBodys[i];
+            if (body == null) continue;
+            total += body.m_investedMineral;
+            for (int j = 0; j < body.m_beams.Count; j++)
+                if (body.m_beams[j] != null) total += body.m_beams[j].m_investedMineral;
+            for (int j = 0; j < body.m_missiles.Count; j++)
+                if (body.m_missiles[j] != null) total += body.m_missiles[j].m_investedMineral;
+            for (int j = 0; j < body.m_hangers.Count; j++)
+                if (body.m_hangers[j] != null) total += body.m_hangers[j].m_investedMineral;
+        }
+        return total;
+    }
+
     private void SetModuleInvestedMineral(int bodyIndex, EModuleType moduleType, int slotIndex, int mineral)
     {
         ModuleBase module = FindModule(bodyIndex, moduleType, slotIndex);
         if (module == null) return;
         module.SetInvestedMineral(mineral);
+
+        if (m_ownerFleet != null)
+            m_ownerFleet.NotifyInvestedMineralChanged();
 
         if (m_shipInfo == null || m_shipInfo.bodies == null) return;
         ModuleBodyInfo bodyInfo = null;

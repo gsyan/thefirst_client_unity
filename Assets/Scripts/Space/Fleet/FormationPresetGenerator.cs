@@ -74,7 +74,6 @@ public static class FormationPresetGenerator
         preset.parseType     = EFormationParseType.CubeGrid;
         preset.gridGap = new Vector3(0.1f, 1f, 1f);
         preset.zPlacement = EZPlacement.Center;
-        preset.zIncludeHalfSize = true;
         preset.slots         = LinearSlots();
         Save(preset, EFormationType.linear_horizontal, ref created, ref skipped);
     }
@@ -94,7 +93,6 @@ public static class FormationPresetGenerator
         preset.parseType = EFormationParseType.CubeGrid;
         preset.gridGap = new Vector3(0f, 0f, 0f);
         preset.zPlacement = EZPlacement.Backward;
-        preset.zIncludeHalfSize = false;
         preset.slots = new FormationSlot[]
         {
             new FormationSlot { positionIndex = 0, gridCoord = new Vector3Int( 0,  0, 0) },
@@ -123,7 +121,6 @@ public static class FormationPresetGenerator
         preset.parseType = EFormationParseType.CubeGrid;
         preset.gridGap = new Vector3(0f, 0f, 0f);
         preset.zPlacement = EZPlacement.Forward;
-        preset.zIncludeHalfSize = false;
         preset.slots = new FormationSlot[]
         {
             new FormationSlot { positionIndex = 0, gridCoord = new Vector3Int( 0,  0, 0) },
@@ -151,7 +148,6 @@ public static class FormationPresetGenerator
         preset.parseType        = EFormationParseType.Circle;
         preset.gridGap          = new Vector3(1f, 1f, 0f);
         preset.zPlacement       = EZPlacement.Forward;
-        preset.zIncludeHalfSize = true;
         preset.slots = new FormationSlot[]
         {
             new FormationSlot { positionIndex = 0, circleAngle =   0f },

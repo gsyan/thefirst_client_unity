@@ -434,11 +434,9 @@ public class ClearZoneStageRequest
 [System.Serializable]
 public class ClearZoneStageResponse
 {
-    public bool isFirstClear;           // true = 최초 클리어
-    public string clearedZoneName;      // isFirstClear == true 일 때만 유효
-    // 전투 승리 시 미네랄 강화 자동 초기화 결과
-    public FleetInfo updatedFleetInfo;  // 초기화 후 갱신된 함대 정보 (미네랄 투자 없으면 null)
-    public int mineralRemain;           // 미네랄 환급 후 잔액
+    public bool isFirstClear;      // true = 최초 클리어
+    public string clearedZoneName; // isFirstClear == true 일 때만 유효
+    public int mineralRemain;
 }
 
 [System.Serializable]
@@ -457,7 +455,9 @@ public class ClaimZoneRewardResponse
     public int techLevel;
     public int techPointRemain;
     public int modulePointRemain;
-    public int modulePointMaxGot;    
+    public int modulePointMaxGot;
+    public bool mineralSettingReset;    // 미네랄 부족으로 강화 세팅이 초기화된 경우 true
+    public FleetInfo updatedFleetInfo;  // mineralSettingReset == true 일 때만 유효
 }
 
 
@@ -480,14 +480,16 @@ public class PendingStageRewardRequest { }
 [System.Serializable]
 public class PendingStageRewardResponse
 {
-    public int mineralGained;       // 합산 획득량 (*1 고정), 0이면 미수령 없음
+    public int mineralGained;           // 합산 획득량 (*1 고정), 0이면 미수령 없음
     public int techPointGained;
     public int modulePointGained;
-    public int mineralRemain;       // 처리 후 잔액
+    public int mineralRemain;           // 처리 후 잔액
     public int techLevel;
     public int techPointRemain;
     public int modulePointRemain;
     public int modulePointMaxGot;
+    public bool mineralSettingReset;    // 미네랄 부족으로 강화 세팅이 초기화된 경우 true
+    public FleetInfo updatedFleetInfo;  // mineralSettingReset == true 일 때만 유효
 }
 
 #endregion

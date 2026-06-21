@@ -39,8 +39,6 @@ public class FormationPreset : ScriptableObject
     public Vector3 gridGap = new(1f, 1f, 1f);
     [Tooltip("Z축 배치 방식: Center=고정 레이어, Forward=앞단 누적, Backward=뒷단 누적")]
     public EZPlacement zPlacement;
-    [Tooltip("Forward/Backward 전용\ntrue: center = cursor+gap+half (자신 반폭 포함, 기본)\nfalse: center = cursor+gap (자신 반폭 미포함)")]
-    public bool zIncludeHalfSize = true;
     [Tooltip("positionIndex 0 = 기함, 격자 (0,0) 고정")]
     public FormationSlot[] slots;
 

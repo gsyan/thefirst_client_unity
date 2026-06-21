@@ -16,7 +16,6 @@ MonoBehaviour:
   parseType: 0
   gridGap: {x: 0.1, y: 1, z: 1}
   zPlacement: 0
-  zIncludeHalfSize: 1
   slots:
   - positionIndex: 0
     gridCoord: {x: 0, y: 0, z: 0}
