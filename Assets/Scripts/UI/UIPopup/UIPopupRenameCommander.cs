@@ -1,4 +1,4 @@
-// 캐릭터 이름 변경 팝업: 실시간 포맷 검사(클라) + 디바운스 서버 유효성 검사 + 남은 횟수 표시
+// 커맨더 이름 변경 팝업: 실시간 포맷 검사(클라) + 디바운스 서버 유효성 검사 + 남은 횟수 표시
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPopupRenameCharacter : UIPopupBase
+public class UIPopupRenameCommander : UIPopupBase
 {
     [Header("UI References")]
     [SerializeField] private TMP_InputField m_nameInput;
@@ -20,7 +20,7 @@ public class UIPopupRenameCharacter : UIPopupBase
     [SerializeField] private Color m_colorChecking  = Color.yellow;
 
     // 한글·영문·숫자 2~16자, 공백·특수문자 불가
-    private static readonly Regex s_nameRegex = new Regex(@"^[a-zA-Z0-9\uAC00-\uD7A3]{2,16}$", RegexOptions.Compiled);
+    private static readonly Regex s_nameRegex = new Regex(@"^[a-zA-Z0-9가-힣]{2,16}$", RegexOptions.Compiled);
     private const float DebounceDelay = 0.5f;
 
     private DataTableForbiddenWords m_forbiddenWords;
@@ -45,7 +45,7 @@ public class UIPopupRenameCharacter : UIPopupBase
         }
     }
 
-    public void ShowPopupRenameCharacter(Action onClose, Action onRenameSuccess = null)
+    public void ShowPopupRenameCommander(Action onClose, Action onRenameSuccess = null)
     {
         m_onClose          = onClose;
         m_onRenameSuccess  = onRenameSuccess;
@@ -100,7 +100,7 @@ public class UIPopupRenameCharacter : UIPopupBase
     private IEnumerator ValidateDebounce(string name)
     {
         yield return new WaitForSeconds(DebounceDelay);
-        NetworkManager.Instance.ValidateCharacterName(name, OnValidateResponse);
+        NetworkManager.Instance.ValidateCommanderName(name, OnValidateResponse);
     }
 
     private void OnValidateResponse(ApiResponse<bool> response)
@@ -135,11 +135,11 @@ public class UIPopupRenameCharacter : UIPopupBase
 
         m_confirmButton.SetInteractable(false);  // 중복 클릭 방지
 
-        var request = new CharacterRenameRequest { newName = m_nameInput.text };
-        NetworkManager.Instance.RenameCharacter(request, OnRenameResponse);
+        var request = new CommanderRenameRequest { newName = m_nameInput.text };
+        NetworkManager.Instance.RenameCommander(request, OnRenameResponse);
     }
 
-    private void OnRenameResponse(ApiResponse<CharacterRenameResponse> response)
+    private void OnRenameResponse(ApiResponse<CommanderRenameResponse> response)
     {
         if (response == null || response.errorCode != 0)
         {
@@ -151,11 +151,12 @@ public class UIPopupRenameCharacter : UIPopupBase
             return;
         }
 
-        DataManager.Instance.m_currentCharacter?.UpdateCharacterName(
-            response.data.characterName, response.data.nameChangeCount);
+        Commander currentCommander = DataManager.Instance.m_currentCommander;
+        if (currentCommander != null)
+            currentCommander.UpdateCommanderName(response.data.commanderName, response.data.nameChangeCount);
 
-        m_onRenameSuccess?.Invoke();
-        m_onClose?.Invoke();
+        if (m_onRenameSuccess != null) m_onRenameSuccess.Invoke();
+        if (m_onClose != null) m_onClose.Invoke();
     }
 
     // ── 취소 ──────────────────────────────────────────────────────
@@ -164,7 +165,7 @@ public class UIPopupRenameCharacter : UIPopupBase
         if (m_debounceCoroutine != null)
             StopCoroutine(m_debounceCoroutine);
 
-        m_onClose?.Invoke();
+        if (m_onClose != null) m_onClose.Invoke();
     }
 
     // ── 헬퍼 ──────────────────────────────────────────────────────
@@ -185,8 +186,9 @@ public class UIPopupRenameCharacter : UIPopupBase
     private void UpdateConfirmButton()
     {
         if (m_confirmButton == null) return;
-        var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
-        bool hasRemaining = (info?.nameChangeCount ?? 0) > 0;
-        m_confirmButton.SetInteractable(m_isNameValid && hasRemaining);
+        Commander currentCommander = DataManager.Instance.m_currentCommander;
+        CommanderInfo info = (currentCommander != null) ? currentCommander.m_commanderInfo : null;
+        int remaining = (info != null) ? info.nameChangeCount : 0;
+        m_confirmButton.SetInteractable(m_isNameValid && remaining > 0);
     }
 }

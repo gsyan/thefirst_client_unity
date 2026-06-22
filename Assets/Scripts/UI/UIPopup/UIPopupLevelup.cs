@@ -142,7 +142,8 @@ public class UIPopupLevelup : UIPopupBase
 
     private bool CheckCanAfford(long pointCost)
     {
-        var info = DataManager.Instance.m_currentCharacter?.m_characterInfo;
+        Commander currentCommander = DataManager.Instance.m_currentCommander;
+        CommanderInfo info = (currentCommander != null) ? currentCommander.m_commanderInfo : null;
         if (info == null) return false;
         return info.modulePoint >= pointCost;
     }
@@ -163,9 +164,10 @@ public class UIPopupLevelup : UIPopupBase
         m_sectionCost.HideAllRows();
         if (totalCost <= 0) return;
 
-        var characterInfo = DataManager.Instance.m_currentCharacter?.m_characterInfo;
+        Commander currentCommander = DataManager.Instance.m_currentCommander;
+        CommanderInfo commanderInfo = (currentCommander != null) ? currentCommander.m_commanderInfo : null;
         int rowIndex = (int)ECostType.ModulePoint;
-        bool canAfford = characterInfo != null && characterInfo.modulePoint >= totalCost;
+        bool canAfford = commanderInfo != null && commanderInfo.modulePoint >= totalCost;
         m_sectionCost.SetRowText(rowIndex, canAfford ? $"{totalCost}" : $"<color=red>{totalCost}</color>");
     }
 

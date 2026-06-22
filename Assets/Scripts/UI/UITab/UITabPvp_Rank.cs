@@ -159,11 +159,12 @@ public class UITabPvp_Rank : UITabBase
     {
         if (itemObj.TryGetComponent<ScrollViewRankingItem>(out var item) == false) return;
 
-        long myCharId = DataManager.Instance.m_currentCharacter.m_characterInfo.characterId;
+        Commander currentCommander = DataManager.Instance.m_currentCommander;
+        long myCommanderId = (currentCommander != null && currentCommander.m_commanderInfo != null) ? currentCommander.m_commanderInfo.commanderId : 0;
         Dictionary<int, RankingEntry> cache = GetCurrentCache();
 
         if (cache.TryGetValue(dataIndex, out RankingEntry entry) == true)
-            item.SetData(entry, entry.characterId == myCharId);
+            item.SetData(entry, entry.commanderId == myCommanderId);
         else
             item.SetLoading();
     }
@@ -231,9 +232,9 @@ public class UITabPvp_Rank : UITabBase
     private void RefreshMyInfoName(RankingEntry info)
     {
         if (info == null) return;
-        Character myChar = DataManager.Instance.m_currentCharacter;
+        Commander myChar = DataManager.Instance.m_currentCommander;
         if (myChar != null)
-            info.characterName = myChar.GetName();
+            info.commanderName = myChar.GetName();
     }
 
     private void ApplyMyInfo(RankingEntry info)

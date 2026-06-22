@@ -105,10 +105,10 @@ public class ModuleChangeCostEntry
 }
 
 [System.Serializable]
-public class CharacterInfo
+public class CommanderInfo
 {
-    public long characterId;
-    public string characterName;
+    public long commanderId;
+    public string commanderName;
     public int mineral;
     public int techLevel;
     public int techPoint;
@@ -164,7 +164,7 @@ public class AuthResponse
     public string accessToken;
     public string refreshToken;
     public FleetInfo activeFleetInfo;
-    public CharacterInfo characterInfo;
+    public CommanderInfo commanderInfo;
     public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록 (tech_level_N 등)
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
     public VipStatusResponse vipStatus;   // 로그인/캐릭터 선택 시 VIP 상태 포함
@@ -183,34 +183,34 @@ public class UnlinkGoogleResponse
 }
 
 [System.Serializable]
-public class CharacterCreateRequest
+public class CommanderCreateRequest
 {
-    public string characterName;
+    public string commanderName;
 }
 
 [System.Serializable]
-public class CharacterResponse
+public class CommanderResponse
 {
-    public long characterId;
-    public string characterName;
+    public long commanderId;
+    public string commanderName;
 }
 
 [System.Serializable]
-public class CharacterValidateNameRequest
+public class CommanderValidateNameRequest
 {
     public string name;
 }
 
 [System.Serializable]
-public class CharacterRenameRequest
+public class CommanderRenameRequest
 {
     public string newName;
 }
 
 [System.Serializable]
-public class CharacterRenameResponse
+public class CommanderRenameResponse
 {
-    public string characterName;
+    public string commanderName;
     public int nameChangeCount;  // 변경 후 남은 횟수
 }
 #endregion
@@ -520,8 +520,8 @@ public class PvpRankInfo
 [System.Serializable]
 public class PvpOpponentInfo
 {
-    public long characterId;
-    public string characterName;
+    public long commanderId;
+    public string commanderName;
     public int pvpScore;
     public int rank;
     public FleetInfo fleetInfo;
@@ -558,7 +558,7 @@ public class PvpRefreshResponse
 [System.Serializable]
 public class PvpBattleStartRequest
 {
-    public long opponentCharacterId;
+    public long opponentCommanderId;
 }
 
 [System.Serializable]
@@ -587,8 +587,8 @@ public class PvpBattleResultResponse
 public class RankingEntry
 {
     public int rank;
-    public long characterId;
-    public string characterName;
+    public long commanderId;
+    public string commanderName;
     public string score;
     public int shipCount;      // 함선 수
     public float statHealth;   // 총 체력

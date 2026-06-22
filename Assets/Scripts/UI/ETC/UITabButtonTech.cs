@@ -26,10 +26,10 @@ public class UITabButtonTech : MonoBehaviour
     private void RefreshText()
     {
         if (m_textTechLevel == null) return;
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
-        int currentLevel = character.GetTechLevel();
+        int currentLevel = commander.GetTechLevel();
         m_textTechLevel.text = $"Lv.{currentLevel}";
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_textTechLevel.transform.parent as RectTransform);
     }

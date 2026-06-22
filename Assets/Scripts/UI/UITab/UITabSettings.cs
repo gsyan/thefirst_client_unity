@@ -12,7 +12,7 @@ public class UITabSettings : UITabBase
     [Header("계정")]
     [SerializeField] private TMP_Text m_sectionAccountText;
     [SerializeField] private TMP_Text m_nameText;
-    [SerializeField] private Button m_renameCharacterButton;
+    [SerializeField] private Button m_renameCommanderButton;
     [SerializeField] private Button m_googleAccountButton;  // 연동/해제 공용 버튼
     [SerializeField] private Button m_logoutButton;
 
@@ -54,8 +54,8 @@ public class UITabSettings : UITabBase
         if (m_logoutButton != null)
             m_logoutButton.onClick.AddListener(OnLogoutButtonClicked);
 
-        if (m_renameCharacterButton != null)
-            m_renameCharacterButton.onClick.AddListener(OnRenameCharacterButtonClicked);
+        if (m_renameCommanderButton != null)
+            m_renameCommanderButton.onClick.AddListener(OnRenameCommanderButtonClicked);
 
         if (m_googleAccountButton != null)
             m_googleAccountButton.onClick.AddListener(OnGoogleAccountButtonClicked);
@@ -95,7 +95,7 @@ public class UITabSettings : UITabBase
         CommonUtility.SetUILocText(m_languageText,       "UITabSettings_Language");
 
         // 버튼 라벨
-        SetButtonLocText(m_renameCharacterButton, "UITabSettings_NameChange");
+        SetButtonLocText(m_renameCommanderButton, "UITabSettings_NameChange");
         SetButtonLocText(m_logoutButton,          "UITabSettings_Logout");
         SetButtonLocText(m_licenseButton,         "UITabSettings_License");
     }
@@ -177,7 +177,8 @@ public class UITabSettings : UITabBase
     private void RefreshNameText()
     {
         if (m_nameText == null) return;
-        m_nameText.text = DataManager.Instance.m_currentCharacter?.GetName() ?? string.Empty;
+        Commander currentCommander = DataManager.Instance.m_currentCommander;
+        m_nameText.text = (currentCommander != null) ? currentCommander.GetName() : string.Empty;
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_nameText.transform.parent as RectTransform);
     }
 
@@ -264,9 +265,9 @@ public class UITabSettings : UITabBase
         });
     }
 
-    private void OnRenameCharacterButtonClicked()
+    private void OnRenameCommanderButtonClicked()
     {
-        UIManager.Instance.ShowRenameCharacterPopup(onRenameSuccess: RefreshNameText);
+        UIManager.Instance.ShowRenameCommanderPopup(onRenameSuccess: RefreshNameText);
     }
 
     private void OnLogoutButtonClicked()

@@ -50,11 +50,11 @@ public class UIMain : UIManager
         ShowMainPanel();
     }
 
-    private List<CharacterResponse> m_characterList = new List<CharacterResponse>();
+    private List<CommanderResponse> m_commanderList = new List<CommanderResponse>();
 
-    public void GetCharacters()
+    public void GetCommanders()
     {
-        NetworkManager.Instance.GetCharacters((response) =>
+        NetworkManager.Instance.GetCommanders((response) =>
         {
             ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
             string message = "";
@@ -62,55 +62,51 @@ public class UIMain : UIManager
             {
                 message = ErrorCodeMapping.Messages[errorCode];
 
-                if (response.data != null)  // Character list accessible from response.data
+                if (response.data != null)
                 {
-                    m_characterList = response.data;
-                    
-                    if (m_characterList.Count > 0)
+                    m_commanderList = response.data;
+
+                    if (m_commanderList.Count > 0)
                     {
-                        SelectCharacter(m_characterList[0].characterId); // Select first character
+                        SelectCommander(m_commanderList[0].commanderId);
                     }
                     else
                     {
-                        Debug.LogError("No characters found.");
+                        Debug.LogError("No commanders found.");
                     }
                 }
                 else
                 {
-                    Debug.Log("Characters List error.");
+                    Debug.Log("Commanders List error.");
                 }
             }
             else
             {
                 message = ErrorCodeMapping.GetMessage(response.errorCode);
-                Debug.LogError($"Get characters failed - ErrorCode: {errorCode}, Message: {message}");
+                Debug.LogError($"Get commanders failed - ErrorCode: {errorCode}, Message: {message}");
             }
         });
     }
 
-    private void SelectCharacter(long characterId = 0)
+    private void SelectCommander(long commanderId = 0)
     {
-        // Use first character if characterId is 0
-        if (characterId == 0)
+        if (commanderId == 0)
         {
-            if (m_characterList.Count > 0)
-                characterId = m_characterList[0].characterId;
+            if (m_commanderList.Count > 0)
+                commanderId = m_commanderList[0].commanderId;
             else
                 return;
         }
 
-        NetworkManager.Instance.SelectCharacter(characterId, (response) => {
+        NetworkManager.Instance.SelectCommander(commanderId, (response) => {
             ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
             string message = "";
             if (errorCode == ServerErrorCode.SUCCESS)
             {
                 message = ErrorCodeMapping.Messages[errorCode];
-                
-                
-                // New access token information accessible from response.data
+
                 if (response.data != null)
                 {
-                    // Save fleet information to DataManager
                     if (response.data.activeFleetInfo != null)
                         DataManager.Instance.SetFleetData(response.data.activeFleetInfo);
                     else
@@ -119,19 +115,17 @@ public class UIMain : UIManager
                     DataManager.Instance.m_isGoogleLinked = response.data.bGoogleLinked;
                     IAPManager.Instance.ApplyVipStatus(response.data.vipStatus);
 
-                    // Save character information to DataManager
-                    if (response.data.characterInfo != null)
+                    if (response.data.commanderInfo != null)
                     {
-                        DataManager.Instance.SetCharacterInfo(response.data.characterInfo);
+                        DataManager.Instance.SetCommanderInfo(response.data.commanderInfo);
 
-                        // Set string-based research IDs (tech_level_N 등)
                         if (response.data.researchedIds != null)
-                            DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(response.data.researchedIds);
+                            DataManager.Instance.m_currentCommander.SetCompletedResearchIds(response.data.researchedIds);
                     }
                     else
                     {
-                        Debug.LogWarning("No character status data received from server");
-                        DataManager.Instance.ClearCharacterData();
+                        Debug.LogWarning("No commander status data received from server");
+                        DataManager.Instance.ClearCommanderData();
                     }
                 }
 
@@ -140,7 +134,7 @@ public class UIMain : UIManager
             else
             {
                 message = ErrorCodeMapping.GetMessage(response.errorCode);
-                Debug.LogError($"Character selection failed - ErrorCode: {errorCode}, Message: {message}");
+                Debug.LogError($"Commander selection failed - ErrorCode: {errorCode}, Message: {message}");
             }
         });
     }

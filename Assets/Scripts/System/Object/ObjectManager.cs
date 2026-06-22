@@ -1,4 +1,4 @@
-// 게임 오브젝트(함대, 투사체, 이펙트, 배경 데코) 생성·관리 및 Zone 전투(라운드 스폰·클리어) 제어
+﻿// 게임 오브젝트(함대, 투사체, 이펙트, 배경 데코) 생성·관리 및 Zone 전투(라운드 스폰·클리어) 제어
 //using Mono.Cecil;
 using NUnit.Framework.Constraints;
 using System;
@@ -238,10 +238,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private int GetInitialZoneIndex()
     {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null || character.m_characterInfo == null) return 1;
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander == null || commander.m_commanderInfo == null) return 1;
 
-        var clearedZones = character.m_characterInfo.clearedZones;
+        var clearedZones = commander.m_commanderInfo.clearedZones;
         if (clearedZones == null || clearedZones.Count == 0) return 1;
 
         string lastCleared = clearedZones[^1];
@@ -637,4 +637,5 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
 
 }
+
 

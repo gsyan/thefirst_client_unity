@@ -151,7 +151,7 @@ public class UIPopupConfirm : UIPopupBase
         sec.SetTitle("REQUIRE");
         sec.HideAllRows();
 
-        var ch = DataManager.Instance.m_currentCharacter;
+        var ch = DataManager.Instance.m_currentCommander;
         int currentTechLevel = ch != null ? ch.GetTechLevel() : 0;
         bool requireMet = currentTechLevel >= require.techLevel;
 
@@ -171,7 +171,7 @@ public class UIPopupConfirm : UIPopupBase
         sec.SetTitle("COST");
         sec.HideAllRows();
 
-        var ch = DataManager.Instance.m_currentCharacter;
+        var ch = DataManager.Instance.m_currentCommander;
         long current = 0;
         if (cost.costType == ECostType.Mineral)
             current = ch != null ? ch.GetMineral() : 0;

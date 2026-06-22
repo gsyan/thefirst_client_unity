@@ -455,14 +455,14 @@ public class UIManager : MonoSingleton<UIManager>
         });
     }
 
-    // 캐릭터 이름 변경 팝업
-    public void ShowRenameCharacterPopup(System.Action onRenameSuccess = null)
+    // 커맨더 이름 변경 팝업
+    public void ShowRenameCommanderPopup(System.Action onRenameSuccess = null)
     {
-        UIPopupRenameCharacter popup = GetOrCreatePopup<UIPopupRenameCharacter>("UIPopupRenameCharacter", EPopupLayer.Normal);
+        UIPopupRenameCommander popup = GetOrCreatePopup<UIPopupRenameCommander>("UIPopupRenameCommander", EPopupLayer.Normal);
         if (popup == null) return;
 
         ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopupRenameCharacter(
+        popup.ShowPopupRenameCommander(
             onClose: () => CloseTopPopup(EPopupLayer.Normal),
             onRenameSuccess: onRenameSuccess
         );

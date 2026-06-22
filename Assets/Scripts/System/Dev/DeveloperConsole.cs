@@ -564,7 +564,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
 
     private void UpdateResourceFromResponse(string data)
     {
-        if (DataManager.Instance?.m_currentCharacter == null) return;
+        if (DataManager.Instance?.m_currentCommander == null) return;
 
         string[] keyValue = data.Split(':');
         if (keyValue.Length != 2) return;
@@ -576,7 +576,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         {
             case "techlevel":
                 if (int.TryParse(value, out int techLevel))
-                    DataManager.Instance.m_currentCharacter.UpdateTechLevel(techLevel);
+                    DataManager.Instance.m_currentCommander.UpdateTechLevel(techLevel);
                 break;
             case "tech":
                 // 서버가 반환한 targetTechLevel까지 tech_level_1~N을 모두 완료 처리
@@ -584,32 +584,32 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 {
                     var ids = new string[tech];
                     for (int i = 1; i <= tech; i++) ids[i - 1] = "tech_level_" + i;
-                    DataManager.Instance.m_currentCharacter.SetCompletedResearchIds(ids);
+                    DataManager.Instance.m_currentCommander.SetCompletedResearchIds(ids);
                 }
                 break;
             case "mineral":
                 if (int.TryParse(value, out int mineral))
-                    DataManager.Instance.m_currentCharacter.UpdateMineral(mineral);
+                    DataManager.Instance.m_currentCommander.UpdateMineral(mineral);
                 break;
             case "techpoint":
                 if (int.TryParse(value, out int techPoint))
-                    DataManager.Instance.m_currentCharacter.UpdateTechPoint(techPoint);
+                    DataManager.Instance.m_currentCommander.UpdateTechPoint(techPoint);
                 break;
             case "modulepointmaxgot":
                 if (int.TryParse(value, out int mpMaxGot))
-                    DataManager.Instance.m_currentCharacter.UpdateModulePointMaxGot(mpMaxGot);
+                    DataManager.Instance.m_currentCommander.UpdateModulePointMaxGot(mpMaxGot);
                 break;
             case "modulepoint":
                 if (int.TryParse(value, out int modulePoint))
-                    DataManager.Instance.m_currentCharacter.UpdateModulePoint(modulePoint);
+                    DataManager.Instance.m_currentCommander.UpdateModulePoint(modulePoint);
                 break;
             case "pvppointmaxgot":
                 if (int.TryParse(value, out int pvpMaxGot))
-                    DataManager.Instance.m_currentCharacter.UpdatePvpPointMaxGot(pvpMaxGot);
+                    DataManager.Instance.m_currentCommander.UpdatePvpPointMaxGot(pvpMaxGot);
                 break;
             case "pvppoint":
                 if (int.TryParse(value, out int pvpPoint))
-                    DataManager.Instance.m_currentCharacter.UpdatePvpPoint(pvpPoint);
+                    DataManager.Instance.m_currentCommander.UpdatePvpPoint(pvpPoint);
                 break;
         }
     }

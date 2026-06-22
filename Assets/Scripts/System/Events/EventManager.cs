@@ -17,7 +17,7 @@ public static class EventManager
         }
     }
 
-    # region Character Tech, Mineral ----------------------------------------------------------------------
+    # region Commander Tech, Mineral ----------------------------------------------------------------------
     // TechLevel
     public static event Action<int> OnTechLevelChanged;
     public static void TriggerTechLevelChange(int techLevel)
@@ -66,7 +66,7 @@ public static class EventManager
     public static void Subscribe_PvpPointChanged(Action<int> callback)   { OnPvpPointChanged += callback; }
     public static void Unsubscribe_PvpPointChanged(Action<int> callback) { OnPvpPointChanged -= callback; }
 
-    #endregion Character Tech, Mineral ----------------------------------------------------------------------
+    #endregion Commander Tech, Mineral ----------------------------------------------------------------------
     
     # region Fleet ShipCount / HP----------------------------------------------------------------------
     public static event Action OnFleetShipCountChanged;

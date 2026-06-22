@@ -1027,11 +1027,11 @@ public class SpaceFleet : MonoBehaviour
             if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 1) == 0) continue;
             if (HasAnyDamagedShip() == false) continue;
 
-            Character character = DataManager.Instance.m_currentCharacter;
-            if (character == null) continue;
+            Commander commander = DataManager.Instance.m_currentCommander;
+            if (commander == null) continue;
 
             int cost = DataManager.Instance.m_dataTableConfig.gameSettings.battleRepairMineralPerSec;
-            character.TryConsumeMineral(cost);
+            commander.TryConsumeMineral(cost);
         }
     }
 

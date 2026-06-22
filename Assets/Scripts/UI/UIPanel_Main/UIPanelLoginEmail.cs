@@ -108,7 +108,7 @@ public class UIPanelLoginEmail : UIPanelBase
          {
                message = ErrorCodeMapping.Messages[errorCode];
                Debug.Log($"Email Login successful: {message}");
-               m_uiMain.GetCharacters();
+               m_uiMain.GetCommanders();
          }
          else
          {

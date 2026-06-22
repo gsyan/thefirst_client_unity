@@ -1,4 +1,4 @@
-// 에디터 전용 — SpaceScene을 직접 실행할 때 더미 캐릭터/함대 데이터를 주입
+﻿// 에디터 전용 — SpaceScene을 직접 실행할 때 더미 캐릭터/함대 데이터를 주입
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,10 +14,10 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
 #endif
 
 #if UNITY_EDITOR
-        if (DataManager.Instance.m_currentCharacter != null)
+        if (DataManager.Instance.m_currentCommander != null)
             return;
 
-        InjectDebugCharacter();
+        InjectDebugCommander();
         InjectDebugFleet();
 
         Debug.LogWarning("[DebugBootstrap] 에디터 직접 실행 감지 — 더미 캐릭터/함대 데이터 주입 완료");
@@ -25,12 +25,12 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void InjectDebugCharacter()
+    private void InjectDebugCommander()
     {
-        var characterInfo = new CharacterInfo
+        var commanderInfo = new CommanderInfo
         {
-            characterId   = 1,
-            characterName = "debug_player",
+            commanderId   = 1,
+            commanderName = "debug_player",
             mineral       = 999999,
             techPoint     = 999999,
             modulePoint   = 999999,
@@ -38,7 +38,7 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
             clearedZones  = new List<string>(),
             nameChangeCount = 2,
         };
-        DataManager.Instance.SetCharacterInfo(characterInfo);
+        DataManager.Instance.SetCommanderInfo(commanderInfo);
     }
 
     private void InjectDebugFleet()
@@ -79,3 +79,4 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
     }
 #endif
 }
+

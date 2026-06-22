@@ -27,7 +27,7 @@ public class UITabFleet : UITabBase
 
     private void InitializeUITabFleet()
     {
-        if (DataManager.Instance.m_currentCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.m_myFleet == null) return;
         m_playerFleet = ObjectManager.Instance.m_myFleet;
 
         if (m_shipSelectorContainer != null)
@@ -94,10 +94,10 @@ public class UITabFleet : UITabBase
 
     private void UpdateTechLevelDisplay()
     {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
-        int currentLevel = character.GetTechLevel();
+        int currentLevel = commander.GetTechLevel();
         
         int maxShips = DataManager.Instance.m_dataTableTechLevel.GetShipCount(currentLevel);
     }
@@ -265,7 +265,7 @@ public class UITabFleet : UITabBase
         {
             if (response.errorCode == 0)
             {
-                DataManager.Instance.m_currentCharacter.UpdateMineral(response.data.mineralRemain);
+                DataManager.Instance.m_currentCommander.UpdateMineral(response.data.mineralRemain);
                 m_playerFleet.FullRepair();
             }
             else
@@ -352,7 +352,7 @@ public class UITabFleet : UITabBase
 
     private void OnAddShipButtonClicked()
     {
-        if (DataManager.Instance.m_currentCharacter == null) return;
+        if (DataManager.Instance.m_currentCommander == null) return;
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         int currentShipCount = m_playerFleet.m_ships.Count;
@@ -372,8 +372,8 @@ public class UITabFleet : UITabBase
 
     private void ExecuteAddShip()
     {
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
         ServerErrorCode errorCode = CanAddShip();
         if (errorCode != ServerErrorCode.SUCCESS)
@@ -388,7 +388,7 @@ public class UITabFleet : UITabBase
         {
             if (response.errorCode == 0)
             {
-                character.UpdateModulePoint(response.data.modulePointRemain);
+                commander.UpdateModulePoint(response.data.modulePointRemain);
 
                 if (response.data.newShipInfo != null)
                 {
@@ -404,8 +404,8 @@ public class UITabFleet : UITabBase
 
     private ServerErrorCode CanAddShip()
     {
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return ServerErrorCode.CLIENT_CanAddShip_CHARACTER_NOT_FOUND;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return ServerErrorCode.CLIENT_CanAddShip_CHARACTER_NOT_FOUND;
 
         SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
         if (myFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;
@@ -415,10 +415,10 @@ public class UITabFleet : UITabBase
         int maxInCsv = DataManager.Instance.m_dataTableTechLevel.GetMaxShipCount();
         if (currentShipCount >= maxInCsv) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
-        int techLevel = character.GetTechLevel();
+        int techLevel = commander.GetTechLevel();
         int maxShipsAtTech = DataManager.Instance.m_dataTableTechLevel.GetShipCount(techLevel);
         if (currentShipCount >= maxShipsAtTech) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
-        if (character.m_characterInfo.modulePoint < gameSettings.addShipCost) return ServerErrorCode.ADD_SHIP_FAIL_INSUFFICIENT_MODULE_POINT;
+        if (commander.m_commanderInfo.modulePoint < gameSettings.addShipCost) return ServerErrorCode.ADD_SHIP_FAIL_INSUFFICIENT_MODULE_POINT;
 
         return ServerErrorCode.SUCCESS;
     }

@@ -37,7 +37,7 @@ public class ScrollViewRankingItem : MonoBehaviour
             m_rankText.text = entry.rank > 0 ? $"#{entry.rank}" : "-";
             m_rankText.color = GetRankTextColor(entry.rank, entry.score);
         }
-        if (m_nameText != null) m_nameText.text = Character.GetDisplayName(entry.characterName, entry.characterId);
+        if (m_nameText != null) m_nameText.text = Commander.GetDisplayName(entry.commanderName, entry.commanderId);
         if (m_scoreText != null) m_scoreText.text = entry.score ?? "";
         if (m_highlightImage != null) m_highlightImage.color = isMyRank ? CommonUtility.PaletteColor("GeneralBright1") : CommonUtility.PaletteColor("GeneralDark1");
         PopulateStats(entry);

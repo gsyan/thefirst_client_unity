@@ -16,7 +16,7 @@ public class UITabPvp : UITabBase
 
     public override void InitializeUITab()
     {
-        if (DataManager.Instance.m_currentCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.m_myFleet == null) return;
 
         m_innerTabSystem.InitializeTabBases();
         m_tabMyInfo.onAttackClicked = OnAttackClicked;
@@ -68,7 +68,7 @@ public class UITabPvp : UITabBase
         CapabilityProfile stats = CommonUtility.GetFleetCapabilityProfile(opponent.fleetInfo);
         int shipCount = (opponent.fleetInfo != null && opponent.fleetInfo.ships != null) ? opponent.fleetInfo.ships.Count : 0;
 
-        string title = Character.GetDisplayName(opponent.characterName, opponent.characterId);
+        string title = Commander.GetDisplayName(opponent.commanderName, opponent.commanderId);
         string message = LocalizationManager.Instance.Get("pvp_opponent_info", new object[] { opponent.pvpScore, opponent.rank });
 
         var rows = new System.Collections.Generic.List<(string icon, string value)>
@@ -93,7 +93,7 @@ public class UITabPvp : UITabBase
     private void ExecuteAttack(PvpOpponentInfo opponent)
     {
         m_isBattleInProgress = true;
-        var request = new PvpBattleStartRequest { opponentCharacterId = opponent.characterId };
+        var request = new PvpBattleStartRequest { opponentCommanderId = opponent.commanderId };
         NetworkManager.Instance.PvpBattleStart(request, OnBattleStartResponse);
     }
 
@@ -206,9 +206,9 @@ public class UITabPvp : UITabBase
         CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
         ZoneStageConfig returnZoneStage = null;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character != null && character.m_characterInfo != null && character.m_characterInfo.clearedZones != null && character.m_characterInfo.clearedZones.Count > 0)
-            returnZoneStage = m_datatableZone.GetZoneStageByName(character.m_characterInfo.clearedZones[^1]);
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander != null && commander.m_commanderInfo != null && commander.m_commanderInfo.clearedZones != null && commander.m_commanderInfo.clearedZones.Count > 0)
+            returnZoneStage = m_datatableZone.GetZoneStageByName(commander.m_commanderInfo.clearedZones[^1]);
         if (returnZoneStage == null)
             returnZoneStage = m_datatableZone.GetZoneFirstStage(1);
         if (returnZoneStage == null)

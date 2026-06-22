@@ -34,7 +34,7 @@ public class UITabTech : UITabBase
         m_colorActive   = CommonUtility.PaletteColor("GeneralBright1");
         m_colorInactive = CommonUtility.PaletteColor("GeneralDark1");
 
-        if (DataManager.Instance.m_currentCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.m_myFleet == null) return;
 
         if (m_shipImages != null)
         {
@@ -76,12 +76,12 @@ public class UITabTech : UITabBase
 
     private void UpdateTechLevelDisplay()
     {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
-        int currentLevel = character.GetTechLevel();
+        int currentLevel = commander.GetTechLevel();
         int maxShips = DataManager.Instance.m_dataTableTechLevel.GetShipCount(currentLevel);
-        TechLevelData nextNode = GetNextTechLevelNode(character);
+        TechLevelData nextNode = GetNextTechLevelNode(commander);
 
         // 기술레벨 요약: 레벨 / 자원 보관 캡 / 최대 함선 수
         if (m_techLevelText != null)
@@ -112,7 +112,7 @@ public class UITabTech : UITabBase
                 
         }
 
-        int currentTechPoint = character.GetTechPoint();
+        int currentTechPoint = commander.GetTechPoint();
         int currentLevelRequired = DataManager.Instance.m_dataTableTechLevel.GetRequiredTechPoint(currentLevel);
         int progressCurrent = currentTechPoint - currentLevelRequired;
 
@@ -145,9 +145,9 @@ public class UITabTech : UITabBase
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_techLevelText.transform as RectTransform);
     }
 
-    private TechLevelData GetNextTechLevelNode(Character character)
+    private TechLevelData GetNextTechLevelNode(Commander commander)
     {
-        int currentLevel = character.GetTechLevel();
+        int currentLevel = commander.GetTechLevel();
         var techList = DataManager.Instance.m_dataTableTechLevel.GetTechLevelDataList();
         for (int i = 0; i < techList.Count; i++)
         {

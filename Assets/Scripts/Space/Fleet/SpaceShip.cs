@@ -530,8 +530,8 @@ public class SpaceShip : MonoBehaviour
             bool isBattle = m_ownerFleet != null && m_ownerFleet.m_fleetState.IsBattleState() == true;
             if (isBattle && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 1) == 0) continue;
 
-            Character character = isPlayerFleet ? DataManager.Instance.m_currentCharacter : null;
-            if (isBattle && isPlayerFleet && (character == null || character.GetMineral() <= 0)) continue;
+            Commander commander = isPlayerFleet ? DataManager.Instance.m_currentCommander : null;
+            if (isBattle && isPlayerFleet && (commander == null || commander.GetMineral() <= 0)) continue;
 
             // 진형 회복력 보너스 적용 (cross_defensive 전용)
             float formationRepairMult = m_ownerFleet != null ? m_ownerFleet.GetFormationRepairMultiplier() : 1f;

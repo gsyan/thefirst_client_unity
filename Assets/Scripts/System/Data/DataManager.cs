@@ -23,21 +23,21 @@ public class DataManager : Singleton<DataManager>
     public bool m_isGoogleLinked;  // 구글 계정 연동 여부
     #endregion
 
-    #region Character Info Management ###########################################################
-    public Character m_currentCharacter;
+    #region Commander Info Management ###########################################################
+    public Commander m_currentCommander;
 
-    // 서버에서 받은 캐릭터 정보 설정 — 로컬 저장 없음
-    public void SetCharacterInfo(CharacterInfo characterInfo)
+    // 서버에서 받은 커맨더 정보 설정 — 로컬 저장 없음
+    public void SetCommanderInfo(CommanderInfo commanderInfo)
     {
-        if (m_currentCharacter == null)
-            m_currentCharacter = new Character(characterInfo);
+        if (m_currentCommander == null)
+            m_currentCommander = new Commander(commanderInfo);
 
-        m_currentCharacter.UpdateCharacterInfo(characterInfo);
+        m_currentCommander.UpdateCommanderInfo(commanderInfo);
     }
 
-    public void ClearCharacterData()
+    public void ClearCommanderData()
     {
-        m_currentCharacter = null;
+        m_currentCommander = null;
     }
     #endregion
 

@@ -88,16 +88,16 @@ public class UIPanelSpace : UIPanelBase
             if (response == null || response.errorCode != 0) return;
             if (response.data.mineralGained == 0) return;
 
-            var character = DataManager.Instance.m_currentCharacter;
-            if (character != null)
+            var commander = DataManager.Instance.m_currentCommander;
+            if (commander != null)
             {
-                int prevLevel = character.GetTechLevel();
-                character.UpdateMineral(response.data.mineralRemain);
-                character.UpdateTechPoint(response.data.techPointRemain);
-                character.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
-                character.UpdateModulePoint(response.data.modulePointRemain);
+                int prevLevel = commander.GetTechLevel();
+                commander.UpdateMineral(response.data.mineralRemain);
+                commander.UpdateTechPoint(response.data.techPointRemain);
+                commander.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
+                commander.UpdateModulePoint(response.data.modulePointRemain);
                 int newLevel = response.data.techLevel;
-                character.UpdateTechLevel(newLevel);
+                commander.UpdateTechLevel(newLevel);
                 if (newLevel > prevLevel)
                     UIManager.Instance.ShowTechLevelupNotify(newLevel);
             }
@@ -154,9 +154,9 @@ public class UIPanelSpace : UIPanelBase
 
             if (result.available == false) return;
 
-            var character = DataManager.Instance.m_currentCharacter;
-            if (character != null)
-                character.UpdateMineral(result.mineralRemain);
+            var commander = DataManager.Instance.m_currentCommander;
+            if (commander != null)
+                commander.UpdateMineral(result.mineralRemain);
 
             UIManager.Instance.ShowDailyBonusPopup(result.grantedMineral);
         });

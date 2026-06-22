@@ -182,7 +182,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                     {
                         UIMain uiMain = m_uIManager as UIMain;
                         if (uiMain != null)
-                            uiMain.GetCharacters();
+                            uiMain.GetCommanders();
                     }
                     else
                     {
@@ -546,35 +546,35 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 #endif
 
 
-    public void CreateCharacter(string name, System.Action<ApiResponse<CharacterResponse>> onComplete = null)
+    public void CreateCommander(string name, System.Action<ApiResponse<CommanderResponse>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() =>  m_apiClient.CreateCharacterAsync(name), onComplete));
+        StartCoroutine(RunAsync(() =>  m_apiClient.CreateCommanderAsync(name), onComplete));
     }
 
-    public void GetCharacters(System.Action<ApiResponse<System.Collections.Generic.List<CharacterResponse>>> onComplete = null)
+    public void GetCommanders(System.Action<ApiResponse<System.Collections.Generic.List<CommanderResponse>>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() =>  m_apiClient.GetAllCharactersAsync(), onComplete));        
+        StartCoroutine(RunAsync(() =>  m_apiClient.GetAllCommandersAsync(), onComplete));
     }
 
-    public void SelectCharacter(long characterId, System.Action<ApiResponse<AuthResponse>> onComplete = null)
+    public void SelectCommander(long commanderId, System.Action<ApiResponse<AuthResponse>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        // SelectCharacter는 단순히 선택만 하는 게 아니라, characterId가 포함된 새로운 토큰을 받기 위한 API
-        StartCoroutine(RunAsync(() => m_apiClient.SelectCharacterAsync(characterId), onComplete));
+        // SelectCommander는 단순히 선택만 하는 게 아니라, commanderId가 포함된 새로운 토큰을 받기 위한 API
+        StartCoroutine(RunAsync(() => m_apiClient.SelectCommanderAsync(commanderId), onComplete));
     }
 
-    public void ValidateCharacterName(string name, Action<ApiResponse<bool>> onComplete)
+    public void ValidateCommanderName(string name, Action<ApiResponse<bool>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ValidateCharacterNameAsync(name), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ValidateCommanderNameAsync(name), onComplete));
     }
 
-    public void RenameCharacter(CharacterRenameRequest request, Action<ApiResponse<CharacterRenameResponse>> onComplete)
+    public void RenameCommander(CommanderRenameRequest request, Action<ApiResponse<CommanderRenameResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.RenameCharacterAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.RenameCommanderAsync(request), onComplete));
     }
 
     public void AddShip(AddShipRequest request, System.Action<ApiResponse<AddShipResponse>> onComplete)
@@ -780,6 +780,13 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         StartCoroutine(RunAsync(() => m_apiClient.ClaimVipDailyRewardAsync(), onComplete));
     }
+
+#if UNITY_EDITOR
+    public void DebugForceVip(System.Action<ApiResponse<VipStatusResponse>> onComplete)
+    {
+        StartCoroutine(RunAsync(() => m_apiClient.DebugForceVipAsync(), onComplete));
+    }
+#endif
 
     public void Heartbeat()
     {

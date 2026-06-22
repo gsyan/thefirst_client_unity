@@ -18,7 +18,7 @@ public class UITabExploration : UITabBase
     private readonly List<UIZoneStageButton> m_buttonPool = new();
 
     private SpaceFleet m_playerFleet;
-    private Character m_myCharacter;
+    private Commander m_myCommander;
     private ZoneStageConfig m_currentZoneStage;  // 클리어 진행 위치
     private ZoneStageConfig m_battleZoneStage;   // 현재 전투 중인 존 (입장 시 set, 후퇴/완료 후 null)
     private ZoneStageConfig m_selectedZoneStage;
@@ -44,8 +44,8 @@ public class UITabExploration : UITabBase
 
     private void InitializeUITabExploration()
     {
-        m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        m_myCommander = DataManager.Instance.m_currentCommander;
+        if (m_myCommander == null || ObjectManager.Instance.m_myFleet == null) return;
         m_playerFleet = ObjectManager.Instance.m_myFleet;
         
 
@@ -66,7 +66,7 @@ public class UITabExploration : UITabBase
 
     private void SetInitialFleetPosition()
     {
-        var clearedZones = m_myCharacter.m_characterInfo != null ? m_myCharacter.m_characterInfo.clearedZones : null;
+        var clearedZones = m_myCommander.m_commanderInfo != null ? m_myCommander.m_commanderInfo.clearedZones : null;
 
         ZoneStageConfig targetStage = null;
         if (clearedZones != null && clearedZones.Count > 0)
@@ -112,7 +112,7 @@ public class UITabExploration : UITabBase
     {
         if (m_datatableZone == null) return;
 
-        var clearedZoneNames = m_myCharacter != null ? m_myCharacter.m_characterInfo.clearedZones : null;
+        var clearedZoneNames = m_myCommander != null ? m_myCommander.m_commanderInfo.clearedZones : null;
         if (clearedZoneNames != null && clearedZoneNames.Count > 0)
         {
             string lastCleared = clearedZoneNames[^1];
@@ -130,7 +130,7 @@ public class UITabExploration : UITabBase
 
         m_zoneButtonRoot.gameObject.SetActive(true); // RebuildLayout이 Canvas에 반영되려면 root가 활성 상태여야 함
 
-        var clearedZoneNames = m_myCharacter != null ? m_myCharacter.m_characterInfo.clearedZones : null;
+        var clearedZoneNames = m_myCommander != null ? m_myCommander.m_commanderInfo.clearedZones : null;
         Camera worldCam = CameraController.Instance != null ? CameraController.Instance.m_targetCamera : Camera.main;
 
         var groupStages = m_datatableZone.GetStagesByZone(groupIndex);
@@ -443,7 +443,7 @@ public class UITabExploration : UITabBase
 
     private ZoneStageConfig GetDefaultZoneStageForZone(int zoneIndex)
     {
-        var clearedZoneStages = m_myCharacter?.m_characterInfo.clearedZones;
+        var clearedZoneStages = m_myCommander?.m_commanderInfo.clearedZones;
         ZoneStageConfig highest = null;
         ZoneStageConfig lowestUncleared = null;
 
@@ -591,7 +591,7 @@ public class UITabExploration : UITabBase
 
     private bool IsAlreadyCleared(ZoneStageConfig zoneStage)
     {
-        var clearedZones = m_myCharacter.m_characterInfo.clearedZones;
+        var clearedZones = m_myCommander.m_commanderInfo.clearedZones;
         return clearedZones != null && clearedZones.Contains(zoneStage.zoneName);
     }
 
@@ -621,7 +621,7 @@ public class UITabExploration : UITabBase
             prevStageName = $"{group - 1}-{maxStage}";
         }
 
-        var cleared = m_myCharacter?.m_characterInfo.clearedZones;
+        var cleared = m_myCommander?.m_commanderInfo.clearedZones;
         return cleared != null && cleared.Contains(prevStageName);
     }
 
@@ -634,7 +634,7 @@ public class UITabExploration : UITabBase
         var request = new ClearZoneStageRequest
         {
             zoneName = m_battleZoneStage.zoneName,
-            mineralRemain = m_myCharacter != null ? m_myCharacter.GetMineral() : 0,
+            mineralRemain = m_myCommander != null ? m_myCommander.GetMineral() : 0,
         };
         NetworkManager.Instance.ClearZoneStage(request, OnClearZoneStageResponse);
     }
@@ -655,15 +655,15 @@ public class UITabExploration : UITabBase
             return;
         }
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (response.data.isFirstClear == true && character != null)
+        var commander = DataManager.Instance.m_currentCommander;
+        if (response.data.isFirstClear == true && commander != null)
         {
-            if (character.m_characterInfo.clearedZones == null)
-                character.m_characterInfo.clearedZones = new List<string>();
+            if (commander.m_commanderInfo.clearedZones == null)
+                commander.m_commanderInfo.clearedZones = new List<string>();
 
             string newlyCleared = response.data.clearedZoneName;
-            if (character.m_characterInfo.clearedZones.Contains(newlyCleared) == false)
-                character.m_characterInfo.clearedZones.Add(newlyCleared);
+            if (commander.m_commanderInfo.clearedZones.Contains(newlyCleared) == false)
+                commander.m_commanderInfo.clearedZones.Add(newlyCleared);
 
             if (m_zoneStageButtons.TryGetValue(newlyCleared, out UIZoneStageButton clearedBtn))
             {
@@ -685,9 +685,9 @@ public class UITabExploration : UITabBase
         m_pendingRewardIsFirstClear = response.data.isFirstClear;
 
         // 전투 소모 미네랄 반영
-        var characterForMineral = DataManager.Instance.m_currentCharacter;
-        if (characterForMineral != null)
-            characterForMineral.UpdateMineral(response.data.mineralRemain);
+        var commanderForMineral = DataManager.Instance.m_currentCommander;
+        if (commanderForMineral != null)
+            commanderForMineral.UpdateMineral(response.data.mineralRemain);
 
         StayInCurrentStage();
         string title = LocalizationManager.Instance.Get("exploration_battle_victory");
@@ -808,16 +808,16 @@ public class UITabExploration : UITabBase
             return;
         }
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null && character.m_characterInfo != null)
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander != null && commander.m_commanderInfo != null)
         {
-            int prevLevel = character.GetTechLevel();
-            character.UpdateMineral(response.data.mineralRemain);
-            character.UpdateTechPoint(response.data.techPointRemain);
-            character.UpdateModulePointMaxGot(response.data.modulePointMaxGot); // 이벤트 발생 전에 먼저 갱신
-            character.UpdateModulePoint(response.data.modulePointRemain);
+            int prevLevel = commander.GetTechLevel();
+            commander.UpdateMineral(response.data.mineralRemain);
+            commander.UpdateTechPoint(response.data.techPointRemain);
+            commander.UpdateModulePointMaxGot(response.data.modulePointMaxGot); // 이벤트 발생 전에 먼저 갱신
+            commander.UpdateModulePoint(response.data.modulePointRemain);
             int newLevel = response.data.techLevel;
-            character.UpdateTechLevel(newLevel);
+            commander.UpdateTechLevel(newLevel);
             if (newLevel > prevLevel)
                 UIManager.Instance.ShowTechLevelupNotify(newLevel);
         }

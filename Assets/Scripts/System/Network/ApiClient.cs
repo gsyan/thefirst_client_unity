@@ -292,31 +292,31 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<UnlinkGoogleResponse>>(request.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<CharacterResponse>> CreateCharacterAsync(string characterName)
+    public async Task<ApiResponse<CommanderResponse>> CreateCommanderAsync(string commanderName)
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<CharacterResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<CommanderResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        var requestDto = new CharacterCreateRequest { characterName = characterName };
+        var requestDto = new CommanderCreateRequest { commanderName = commanderName };
         string json = JsonConvert.SerializeObject(requestDto);
-        Debug.Log($"CreateCharacter JSON: {json}");
+        Debug.Log($"CreateCommander JSON: {json}");
 
-        using var request = new UnityWebRequest($"{m_baseUrl}/character/create", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/commander/create", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(request);
-        return JsonConvert.DeserializeObject<ApiResponse<CharacterResponse>>(request.downloadHandler.text);
+        return JsonConvert.DeserializeObject<ApiResponse<CommanderResponse>>(request.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<bool>> ValidateCharacterNameAsync(string name)
+    public async Task<ApiResponse<bool>> ValidateCommanderNameAsync(string name)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<bool>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        string json = JsonConvert.SerializeObject(new CharacterValidateNameRequest { name = name });
+        string json = JsonConvert.SerializeObject(new CommanderValidateNameRequest { name = name });
 
-        using var request = new UnityWebRequest($"{m_baseUrl}/character/validate-name", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/commander/validate-name", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -326,43 +326,43 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<bool>>(request.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<CharacterRenameResponse>> RenameCharacterAsync(CharacterRenameRequest renameRequest)
+    public async Task<ApiResponse<CommanderRenameResponse>> RenameCommanderAsync(CommanderRenameRequest renameRequest)
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<CharacterRenameResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<CommanderRenameResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
         string json = JsonConvert.SerializeObject(renameRequest);
-        Debug.Log($"RenameCharacter JSON: {json}");
+        Debug.Log($"RenameCommander JSON: {json}");
 
-        using var request = new UnityWebRequest($"{m_baseUrl}/character/rename", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/commander/rename", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(request);
-        var response = JsonConvert.DeserializeObject<ApiResponse<CharacterRenameResponse>>(request.downloadHandler.text);
-        Debug.Log($"RenameCharacter Response: {request.downloadHandler.text}");
+        var response = JsonConvert.DeserializeObject<ApiResponse<CommanderRenameResponse>>(request.downloadHandler.text);
+        Debug.Log($"RenameCommander Response: {request.downloadHandler.text}");
         return response;
     }
 
-    public async Task<ApiResponse<List<CharacterResponse>>> GetAllCharactersAsync()
+    public async Task<ApiResponse<List<CommanderResponse>>> GetAllCommandersAsync()
     {
-        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<List<CharacterResponse>>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<List<CommanderResponse>>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var request = new UnityWebRequest($"{m_baseUrl}/character/characters", "GET");
+        using var request = new UnityWebRequest($"{m_baseUrl}/commander/commanders", "GET");
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(request);
-        return JsonConvert.DeserializeObject<ApiResponse<List<CharacterResponse>>>(request.downloadHandler.text);
+        return JsonConvert.DeserializeObject<ApiResponse<List<CommanderResponse>>>(request.downloadHandler.text);
     }
 
-    public async Task<ApiResponse<AuthResponse>> SelectCharacterAsync(long characterId)
+    public async Task<ApiResponse<AuthResponse>> SelectCommanderAsync(long commanderId)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
-        using var request = new UnityWebRequest($"{m_baseUrl}/character/select-character/{characterId}", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/commander/select-commander/{commanderId}", "POST");
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
@@ -1051,6 +1051,22 @@ public class ApiClient
         await SendRequestAsync(webRequest);
         return JsonConvert.DeserializeObject<ApiResponse<DailyClaimResponse>>(webRequest.downloadHandler.text);
     }
+
+#if UNITY_EDITOR
+    public async Task<ApiResponse<VipStatusResponse>> DebugForceVipAsync()
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<VipStatusResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/iap/debug/vip/force", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(new byte[0]);
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<VipStatusResponse>>(webRequest.downloadHandler.text);
+    }
+#endif
     #endregion
 
     #region Progress API Methods ----------------------------------------------------------------------------------

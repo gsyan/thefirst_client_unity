@@ -177,6 +177,9 @@ public class UIVipButton : MonoBehaviour
 
     private void OnPurchaseButtonClicked()
     {
+#if UNITY_EDITOR
+        OnEditorVipPurchaseSimulate();
+#else
         if (IAPManager.Instance == null) return;
         if (IAPManager.Instance.IsStoreReady() == false)
         {
@@ -193,5 +196,37 @@ public class UIVipButton : MonoBehaviour
             if (success == true)
                 Refresh();
         });
+#endif
     }
+
+#if UNITY_EDITOR
+    private void OnEditorVipPurchaseSimulate()
+    {
+        m_purchaseButton.interactable = false;
+        NetworkManager.Instance.DebugForceVip(vipResponse =>
+        {
+            if (vipResponse == null || vipResponse.errorCode != (int)ServerErrorCode.SUCCESS)
+            {
+                Debug.LogError($"[UIVipButton][에디터] VIP 강제 세팅 실패 errorCode={vipResponse?.errorCode}");
+                if (m_purchaseButton != null) m_purchaseButton.interactable = true;
+                return;
+            }
+
+            if (vipResponse.data != null)
+                IAPManager.Instance.SetVipExpiry(vipResponse.data.vipExpiry);
+
+            Debug.Log($"[UIVipButton][에디터] VIP 강제 세팅 완료 expiry={vipResponse.data?.vipExpiry}");
+
+            DailyBonusManager.Instance.TryClaimDailyBonus(claimResult =>
+            {
+                if (m_purchaseButton != null) m_purchaseButton.interactable = true;
+
+                int granted = claimResult != null ? claimResult.grantedMineral : 0;
+                Debug.Log($"[UIVipButton][에디터] 일일보상 재청구 결과 granted={granted}");
+
+                Refresh();
+            });
+        });
+    }
+#endif
 }

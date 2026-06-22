@@ -66,7 +66,7 @@ public class UITabFleetTactics : UITabBase
 
     public override void InitializeUITab()
     {
-        if (DataManager.Instance.m_currentCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.m_myFleet == null) return;
         m_playerFleet = ObjectManager.Instance.m_myFleet;
 
         if (m_toTabFleet != null)

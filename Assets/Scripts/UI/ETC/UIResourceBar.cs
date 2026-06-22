@@ -50,10 +50,10 @@ public class UIResourceBar : MonoBehaviour
             m_pvpDdayColorBright = Color.HSVToRGB(h, s, Mathf.Min(v * 2f, 1f));
         }
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
-        InitAll(character);
+        InitAll(commander);
 
         EventManager.Subscribe_MineralChanged(OnMineralChanged);
         EventManager.Subscribe_ModulePointChanged(OnModulePointChanged);
@@ -70,20 +70,20 @@ public class UIResourceBar : MonoBehaviour
     }
 
     // 최초 1회 직접 갱신 — 애니메이션 없음
-    private void InitAll(Character character)
+    private void InitAll(Commander commander)
     {
-        var info = character.GetInfo();
+        var info = commander.GetInfo();
         if (info == null) return;
 
-        m_displayedMineral     = character.GetMineral();
-        m_displayedModulePoint = character.GetModulePoint();
-        m_displayedPvpPoint    = character.GetPvpPoint();
+        m_displayedMineral     = commander.GetMineral();
+        m_displayedModulePoint = commander.GetModulePoint();
+        m_displayedPvpPoint    = commander.GetPvpPoint();
 
         if (m_textMineralCurrent != null)     m_textMineralCurrent.text     = m_displayedMineral.ToString();
         if (m_textModulePointCurrent != null) m_textModulePointCurrent.text = m_displayedModulePoint.ToString();
-        if (m_textModulePointMaxGot != null)  m_textModulePointMaxGot.text  = $"/ {character.GetModulePointMaxGot()}";
+        if (m_textModulePointMaxGot != null)  m_textModulePointMaxGot.text  = $"/ {commander.GetModulePointMaxGot()}";
         if (m_textPvpPointCurrent != null)    m_textPvpPointCurrent.text    = m_displayedPvpPoint.ToString();
-        if (m_textPvpPointMaxGot != null)     m_textPvpPointMaxGot.text     = $"/ {character.GetPvpPointMaxGot()}";
+        if (m_textPvpPointMaxGot != null)     m_textPvpPointMaxGot.text     = $"/ {commander.GetPvpPointMaxGot()}";
 
         if (m_textMineralInvested != null)
             RefreshInvestedMineralUI(m_displayedInvestedMineral, m_displayedMineral);
@@ -150,9 +150,9 @@ public class UIResourceBar : MonoBehaviour
         StartFieldAnimation(ref m_coroutineModulePoint, m_textModulePointCurrent, m_displayedModulePoint, modulePoint);
         m_displayedModulePoint = modulePoint;
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null && m_textModulePointMaxGot != null)
-            m_textModulePointMaxGot.text = $"/ {character.GetModulePointMaxGot()}";
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander != null && m_textModulePointMaxGot != null)
+            m_textModulePointMaxGot.text = $"/ {commander.GetModulePointMaxGot()}";
     }
 
     private void OnPvpPointChanged(int pvpPoint)
@@ -160,9 +160,9 @@ public class UIResourceBar : MonoBehaviour
         StartFieldAnimation(ref m_coroutinePvpPoint, m_textPvpPointCurrent, m_displayedPvpPoint, pvpPoint);
         m_displayedPvpPoint = pvpPoint;
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null && m_textPvpPointMaxGot != null)
-            m_textPvpPointMaxGot.text = $"/ {character.GetPvpPointMaxGot()}";
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander != null && m_textPvpPointMaxGot != null)
+            m_textPvpPointMaxGot.text = $"/ {commander.GetPvpPointMaxGot()}";
     }
 
     private void StartFieldAnimation(ref Coroutine handle, TMP_Text textUI, long from, long to)

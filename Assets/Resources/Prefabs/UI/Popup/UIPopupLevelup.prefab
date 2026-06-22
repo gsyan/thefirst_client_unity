@@ -172,6 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
+  m_activeColorKey: GeneralBright1
+  m_inactiveColorKey: GeneralDark2
 --- !u!1 &168100528429976028
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +265,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 5697853470590188102}
   m_text: {fileID: 1384317770378288128}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &1515919752818283168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,6 +464,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4449076092432669416}
   m_text: {fileID: 6113716410268569263}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &7894347280776633316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,6 +573,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1012867614416704326}
   m_text: {fileID: 7187751021136168156}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &126212480086865476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,6 +952,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4276185711234196856}
   m_text: {fileID: 8619816354048224205}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &7158135282520329609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1604,6 +1622,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6428258414460388430}
   m_text: {fileID: 9126589131576664776}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &7291188284423056936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1945,6 +1967,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2121173094967288525}
   m_text: {fileID: 7316996040809717772}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &981007031735725831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2050,6 +2076,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2248147607332250623}
   m_text: {fileID: 5085131117628865862}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &6087831402438387254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4470,6 +4500,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7146770395549451467}
   m_text: {fileID: 3876721937306088911}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &1020707113058488602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5117,6 +5151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce942ebeba818594380dc86760e93037, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UISection
+  m_titleText: {fileID: 0}
 --- !u!114 &3104769659497389693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5240,6 +5275,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2569044491674410893}
   m_text: {fileID: 5643301986776471884}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &7654127835652815915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7023,7 +7062,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 365, y: -703.93}
+  m_AnchoredPosition: {x: 365, y: -488.93}
   m_SizeDelta: {x: 0, y: 84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6039867671201588787
@@ -7641,6 +7680,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1349357756342037145}
   m_text: {fileID: 3229366072388918688}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &1573792380748221802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8075,7 +8118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 365, y: -421.93}
+  m_AnchoredPosition: {x: 365, y: -314.43}
   m_SizeDelta: {x: 600, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2025049949489270942
@@ -8130,6 +8173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce942ebeba818594380dc86760e93037, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UISection
+  m_titleText: {fileID: 0}
 --- !u!114 &5737607460596770865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8359,6 +8403,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6139269882780299904}
   m_text: {fileID: 8526209754279523008}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &2728793325951243338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8686,6 +8734,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7213826637150839001}
   m_text: {fileID: 9066148255685738004}
+  m_image2: {fileID: 0}
+  m_imageColorKey: GeneralBright1
+  m_textColorKey: GeneralBright1
+  m_image2ColorKey: GeneralBright1
 --- !u!114 &5208955645475283008
 MonoBehaviour:
   m_ObjectHideFlags: 0

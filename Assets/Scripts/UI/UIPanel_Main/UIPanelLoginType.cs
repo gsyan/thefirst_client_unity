@@ -35,7 +35,7 @@ public class UIPanelLoginType : UIPanelBase
          ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
          if (errorCode == ServerErrorCode.SUCCESS)
          {
-               m_uiMain.GetCharacters();
+               m_uiMain.GetCommanders();
          }
          else
          {
@@ -53,7 +53,7 @@ public class UIPanelLoginType : UIPanelBase
          ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
          if (errorCode == ServerErrorCode.SUCCESS)
          {
-               m_uiMain.GetCharacters();
+               m_uiMain.GetCommanders();
          }
          else
          {

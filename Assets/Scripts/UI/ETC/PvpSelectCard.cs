@@ -36,7 +36,7 @@ public class PvpSelectCard : MonoBehaviour
         int shipCount = (opponentInfo.fleetInfo != null && opponentInfo.fleetInfo.ships != null)
             ? opponentInfo.fleetInfo.ships.Count : 0;
 
-        if (m_nameText != null)      m_nameText.text      = Character.GetDisplayName(opponentInfo.characterName, opponentInfo.characterId);
+        if (m_nameText != null)      m_nameText.text      = Commander.GetDisplayName(opponentInfo.commanderName, opponentInfo.commanderId);
         if (m_scoreRankText != null) m_scoreRankText.text = LocalizationManager.Instance.Get("UITabRank_ScoreRank", opponentInfo.pvpScore, opponentInfo.rank);
 
         PopulateStats(stats, shipCount);

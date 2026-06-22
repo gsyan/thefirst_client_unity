@@ -167,11 +167,12 @@ public class UIPopupRanking : UIPopupBase
     {
         if (itemObj.TryGetComponent<ScrollViewRankingItem>(out var item) == false) return;
 
-        long myCharId = DataManager.Instance.m_currentCharacter.m_characterInfo.characterId;
+        Commander currentCommander = DataManager.Instance.m_currentCommander;
+        long myCommanderId = (currentCommander != null && currentCommander.m_commanderInfo != null) ? currentCommander.m_commanderInfo.commanderId : 0;
         Dictionary<int, RankingEntry> cache = GetCurrentCache();
 
         if (cache.TryGetValue(dataIndex, out RankingEntry entry) == true)
-            item.SetData(entry, entry.characterId == myCharId);
+            item.SetData(entry, entry.commanderId == myCommanderId);
         else
             item.SetLoading();
     }
@@ -240,7 +241,10 @@ public class UIPopupRanking : UIPopupBase
     private void RefreshMyInfoName(RankingEntry info)
     {
         if (info == null) return;
-        info.characterName = DataManager.Instance.m_currentCharacter?.GetName() ?? info.characterName;
+        Commander currentCommander = DataManager.Instance.m_currentCommander;
+        if (currentCommander != null)
+            info.commanderName = currentCommander.GetName();
+
     }
 
     private void ApplyMyInfo(RankingEntry info)

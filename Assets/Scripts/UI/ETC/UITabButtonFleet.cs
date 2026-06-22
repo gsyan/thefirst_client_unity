@@ -26,8 +26,8 @@ public class UITabButtonFleet : MonoBehaviour
 
     private void Start()
     {
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
         m_fleet = ObjectManager.Instance.m_myFleet;
         if (m_fleet == null) return;

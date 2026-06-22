@@ -1,4 +1,4 @@
-// 함선/모듈 관리 UI — 헤더(함선 네비게이터+스탯2행), 모듈 맵, 모듈 디테일 카드
+﻿// 함선/모듈 관리 UI — 헤더(함선 네비게이터+스탯2행), 모듈 맵, 모듈 디테일 카드
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -66,7 +66,7 @@ public class UITabShip : UITabBase
 
     private bool bShow = false;
 
-    private Character  m_myCharacter;
+    private Commander  m_myCommander;
     private SpaceFleet m_playerFleet;
 
     private SpaceShip  m_selectedShip;
@@ -99,8 +99,8 @@ public class UITabShip : UITabBase
 
     private void InitializeUITabShip()
     {
-        m_myCharacter = DataManager.Instance.m_currentCharacter;
-        if (m_myCharacter == null || ObjectManager.Instance.m_myFleet == null) return;
+        m_myCommander = DataManager.Instance.m_currentCommander;
+        if (m_myCommander == null || ObjectManager.Instance.m_myFleet == null) return;
         m_playerFleet = ObjectManager.Instance.m_myFleet;
 
         m_selectorsBody    = m_moduleBodySelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
@@ -345,7 +345,7 @@ public class UITabShip : UITabBase
 #region 모듈 해금 begin -------------------------------------------------------------
     private void OnModuleUnlockClicked()
     {
-        if (m_myCharacter == null) return;
+        if (m_myCommander == null) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if ((m_selectedModule is ModulePlaceholder) == false) return;
 
@@ -358,7 +358,7 @@ public class UITabShip : UITabBase
     private void ExecuteModuleUnlock()
     {
         int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
-        long playerMineral = m_myCharacter.GetMineral();
+        long playerMineral = m_myCommander.GetMineral();
         if (playerMineral < unlockPrice)
         {
             ShowErrorMessage($"Insufficient mineral (need {CommonUtility.FormatBigNumber(unlockPrice)}, have {CommonUtility.FormatBigNumber(playerMineral)})");
@@ -386,10 +386,10 @@ public class UITabShip : UITabBase
     {
         if (unlockData == null) return;
 
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
-        character.UpdateModulePoint(unlockData.pointRemain);
+        commander.UpdateModulePoint(unlockData.pointRemain);
 
         SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet == null) return;
@@ -410,7 +410,7 @@ public class UITabShip : UITabBase
     private void ExecuteModuleUnlockMineral()
     {
         int  unlockPrice   = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
-        long playerMineral = m_myCharacter.GetMineral();
+        long playerMineral = m_myCommander.GetMineral();
         if (playerMineral < unlockPrice)
         {
             ShowErrorMessage($"Insufficient mineral (need {CommonUtility.FormatBigNumber(unlockPrice)}, have {CommonUtility.FormatBigNumber(playerMineral)})");
@@ -436,10 +436,10 @@ public class UITabShip : UITabBase
     private void Apply_ModuleUnlockMineral(ModuleUnlockResponse unlockData)
     {
         if (unlockData == null) return;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
-        character.UpdateMineral(unlockData.pointRemain);
+        commander.UpdateMineral(unlockData.pointRemain);
 
         SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet == null) return;
@@ -548,10 +548,10 @@ public class UITabShip : UITabBase
             return;
         }
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
         if (DataManager.Instance.GetModuleLevelUpCost(m_selectedModule.GetModuleSubType(), currentLevel, out long cost) == false) return;
-        if (character.CheckEnoughModulePoint(cost) == false)
+        if (commander.CheckEnoughModulePoint(cost) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_module_point"));
             OnLevelUpPointerUp();
@@ -575,12 +575,12 @@ public class UITabShip : UITabBase
     private void OnModuleLevelUpResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
         m_bModuleChanging = false;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
         if (response.errorCode == 0)
         {
-            character.UpdateModulePoint(response.data.pointRemain);
+            commander.UpdateModulePoint(response.data.pointRemain);
             Apply_ModuleLevelChange(response.data.shipId, response.data.bodyIndex, response.data.moduleType,
                 response.data.moduleSubType, response.data.slotIndex, response.data.newLevel, isLevelUp: true);
 
@@ -653,9 +653,9 @@ public class UITabShip : UITabBase
         }
 
         int  mineralCost  = nextData.mineralCost;
-        var  character    = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-        if (character.GetMineral() < mineralCost)
+        var  commander    = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+        if (commander.GetMineral() < mineralCost)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_mineral"));
             OnLevelUpPointerUp();
@@ -679,12 +679,12 @@ public class UITabShip : UITabBase
     private void OnModuleLevelUpMineralResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
         m_bModuleChanging = false;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
         if (response.errorCode == 0)
         {
-            character.UpdateMineral(response.data.pointRemain);
+            commander.UpdateMineral(response.data.pointRemain);
             Apply_ModuleLevelChangeMineral(response.data);
 
             if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
@@ -768,12 +768,12 @@ public class UITabShip : UITabBase
     private void OnModuleLevelDownResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
         m_bModuleChanging = false;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
         if (response.errorCode == 0)
         {
-            character.UpdateModulePoint(response.data.pointRemain);
+            commander.UpdateModulePoint(response.data.pointRemain);
 
             if (m_playerFleet == null) return;
             SpaceShip ship = m_playerFleet.FindShip(response.data.shipId);
@@ -831,12 +831,12 @@ public class UITabShip : UITabBase
     private void OnModuleLevelDownMineralResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
         m_bModuleChanging = false;
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
 
         if (response.errorCode == 0)
         {
-            character.UpdateMineral(response.data.pointRemain);
+            commander.UpdateMineral(response.data.pointRemain);
             Apply_ModuleLevelChangeMineral(response.data);
         }
         else
@@ -889,9 +889,9 @@ public class UITabShip : UITabBase
         long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(targetSubType);
         long totalCost        = levelUpToMaxCost + gradeUpCost;
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character == null) return;
-        if (character.GetMineral() < totalCost)
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+        if (commander.GetMineral() < totalCost)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_mineral"));
             return;
@@ -972,9 +972,9 @@ public class UITabShip : UITabBase
         if (changeData == null) return;
         if (m_playerFleet == null) return;
 
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateModulePoint(changeData.pointRemain);
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander != null)
+            commander.UpdateModulePoint(changeData.pointRemain);
 
         if (changeData.isShipRemoved == true)
         {
@@ -1021,9 +1021,9 @@ public class UITabShip : UITabBase
         if (data == null) return;
         if (m_playerFleet == null) return;
 
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateMineral(data.pointRemain);
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander != null)
+            commander.UpdateMineral(data.pointRemain);
 
         if (data.isShipRemoved == true)
         {
@@ -1158,18 +1158,18 @@ public class UITabShip : UITabBase
         // ModulePlaceholder는 investedMineral 없으므로 0으로 처리
         RefreshModeToggleButton(0);
 
-        var character   = DataManager.Instance.m_currentCharacter;
+        var commander   = DataManager.Instance.m_currentCommander;
         int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
 
         if (m_selectedModule.m_isMineralMode == true)
         {
-            long playerMineral = character != null ? character.GetMineral() : 0;
+            long playerMineral = commander != null ? commander.GetMineral() : 0;
             m_unlockModuleButton.SetActiveColorKey("Mineral");
             m_unlockModuleButton.SetInteractable(playerMineral >= unlockPrice);
         }
         else
         {
-            long playerPoint = character != null ? character.GetModulePoint() : 0;
+            long playerPoint = commander != null ? commander.GetModulePoint() : 0;
             m_unlockModuleButton.SetActiveColorKey("ModulePoint");
             m_unlockModuleButton.SetInteractable(playerPoint >= unlockPrice);
         }
@@ -1191,8 +1191,8 @@ public class UITabShip : UITabBase
         if (m_selectedModule.m_isMineralMode == true)
         {
             ApplyButtonColorKey("Mineral");
-            var  character     = DataManager.Instance.m_currentCharacter;
-            long playerMineral = character != null ? character.GetMineral() : 0;
+            var  commander     = DataManager.Instance.m_currentCommander;
+            long playerMineral = commander != null ? commander.GetMineral() : 0;
 
             RefreshMineralGradeUpButton(subType, level, nextSubType, playerMineral);
             RefreshMineralGradeDownButton(subType, level, prevSubType, investedMineral);
@@ -1202,9 +1202,9 @@ public class UITabShip : UITabBase
         else
         {
             ApplyButtonColorKey("ModulePoint");
-            var  character   = DataManager.Instance.m_currentCharacter;
-            int  playerTech  = character != null ? character.GetTechLevel() : 0;
-            long playerPoint = character != null ? character.GetModulePoint() : 0;
+            var  commander   = DataManager.Instance.m_currentCommander;
+            int  playerTech  = commander != null ? commander.GetTechLevel() : 0;
+            long playerPoint = commander != null ? commander.GetModulePoint() : 0;
 
             RefreshGradeUpButton(subType, level, nextSubType, playerTech, playerPoint);
             RefreshGradeDownButton(subType, level, prevSubType);
@@ -1489,8 +1489,8 @@ public class UITabShip : UITabBase
         long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(nextSubType);
         long totalCost        = levelUpToMaxCost + gradeUpCost;
 
-        var  character    = DataManager.Instance.m_currentCharacter;
-        int  playerTech   = character != null ? character.GetTechLevel() : 0;
+        var  commander    = DataManager.Instance.m_currentCommander;
+        int  playerTech   = commander != null ? commander.GetTechLevel() : 0;
         int  reqTier      = nextSubType.GetTechTier();
         bool hasTech      = playerTech >= reqTier;
         bool canUpgrade   = hasTech == true && playerMineral >= totalCost;
@@ -1641,9 +1641,9 @@ public class UITabShip : UITabBase
         if (data == null) return;
         if (m_playerFleet == null) return;
 
-        Character character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateMineral(data.pointRemain);
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander != null)
+            commander.UpdateMineral(data.pointRemain);
 
         if (data.isShipRemoved == true)
         {
@@ -1845,9 +1845,9 @@ public class UITabShip : UITabBase
         }
 
         var data = response.data;
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateModulePoint(data.modulePointRemain);
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander != null)
+            commander.UpdateModulePoint(data.modulePointRemain);
 
         RemoveShipFromFleet(data.removedShipId);
 
@@ -1863,9 +1863,9 @@ public class UITabShip : UITabBase
         }
 
         var data = response.data;
-        var character = DataManager.Instance.m_currentCharacter;
-        if (character != null)
-            character.UpdateModulePoint(data.pointRemain);
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander != null)
+            commander.UpdateModulePoint(data.pointRemain);
 
         SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
         if (fleet == null) return;
@@ -1949,3 +1949,4 @@ public class UITabShip : UITabBase
         }
     }
 }
+
