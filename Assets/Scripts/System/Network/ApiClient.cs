@@ -21,12 +21,15 @@ public class CustomException : Exception
 
 public static class ApiServerUrl
 {
-    //public const string Dev     = "http://192.168.0.51:8080/api";
-    public const string Dev     = "http://localhost:8080/api";
+    // Dev server
+    //public const string Dev     = "http://localhost:8080/api";
+    public const string Dev     = "http://192.168.0.51:8080/api";
 
+    // test server
     //public const string Test    = "http://192.168.0.61:8080/api";
     public const string Test    = "https://dev.fidforge.com/api";
     
+    // release server
     //public const string Release = "https://168.110.100.27/api";
     public const string Release = "https://www.fidforge.com/api";
 }
