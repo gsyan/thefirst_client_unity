@@ -179,8 +179,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (versionCheckTask.IsFaulted == false && versionCheckTask.Result.errorCode == 0)
         {
             VersionCheckResponse versionData = versionCheckTask.Result.data;
-            //if (versionData.updateRequired == true)
-            if (true) // 로컬라이즈 테스트용 임시 강제 실행
+            if (versionData.updateRequired == true)
             {
                 m_checkingInternetAccess = false;
                 string title   = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateTitle");
