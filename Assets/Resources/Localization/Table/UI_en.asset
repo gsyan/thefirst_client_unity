@@ -1023,6 +1023,18 @@ MonoBehaviour:
     m_Localized: Mineral enhancements have been reset after stage clear.
     m_Metadata:
       m_Items: []
+  - m_Id: 48702146362605568
+    m_Localized: Update Required
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48702148229070848
+    m_Localized: An update to version {0} is required.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48702148229070849
+    m_Localized: Update
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

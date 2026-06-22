@@ -959,6 +959,18 @@ MonoBehaviour:
     m_Key: UIPopupMessage_MineralResetMessage
     m_Metadata:
       m_Items: []
+  - m_Id: 48702146362605568
+    m_Key: UIPopupMessage_VersionUpdateTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48702148229070848
+    m_Key: UIPopupMessage_VersionUpdateMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48702148229070849
+    m_Key: UIPopupMessage_VersionUpdateButton
+    m_Metadata:
+      m_Items: []
   - m_Id: 14264662300164096
     m_Key: module_subtype_max_level_required
     m_Metadata:
