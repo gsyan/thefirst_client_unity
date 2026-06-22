@@ -235,6 +235,9 @@ UIPopupMessage_GoogleUnlink,,Unlinking Google will revert your account to guest 
 UIPopupMessage_TechLevelupTitle,,TECH LEVEL UP,기술 레벨업
 UIPopupMessage_MineralResetTitle,,MINERAL ENHANCEMENT RESET,미네랄 강화 초기화
 UIPopupMessage_MineralResetMessage,,Mineral enhancements have been reset after stage clear.,스테이지 클리어로 미네랄 강화가 초기화되었습니다.
+UIPopupMessage_VersionUpdateTitle,,Update Required,업데이트 필요
+UIPopupMessage_VersionUpdateMessage,,An update to version {0} is required.,버전 {0} 이상으로 업데이트가 필요합니다.
+UIPopupMessage_VersionUpdateButton,,Update,업데이트
 module_subtype_max_level_required,,Max level of {0}(Lv.{1} / Lv.{2}),{0} 최고 레벨 (Lv.{1} / Lv.{2})
 loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.
 loading_tip_1,,Tip: Upgrade ship modules to strengthen your fleet.,팁: 함선 모듈을 업그레이드하면 함대 전투력이 향상됩니다.

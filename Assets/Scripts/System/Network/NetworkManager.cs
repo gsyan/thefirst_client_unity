@@ -171,6 +171,33 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             yield break;
         }
 
+        // 버전 체크 — 서버 접속 직후, 로그인 전
+        var versionCheckTask = m_apiClient.CheckVersionAsync(GetAppVersionCode());
+        while (!versionCheckTask.IsCompleted)
+            yield return null;
+
+        if (versionCheckTask.IsFaulted == false && versionCheckTask.Result.errorCode == 0)
+        {
+            VersionCheckResponse versionData = versionCheckTask.Result.data;
+            if (versionData.updateRequired == true)
+            {
+                m_checkingInternetAccess = false;
+                string title   = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateTitle");
+                string message = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateMessage", versionData.minVersionName);
+                string btnText = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateButton");
+                UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+                {
+                    title        = title,
+                    message      = message,
+                    confirmText1 = btnText,
+                    onConfirm    = () => {
+                        Application.OpenURL("market://details?id=com.fidforge.thefirst");
+                    },
+                });
+                yield break;
+            }
+        }
+
         if (m_bConnected == false)
         {
             m_bConnected = true;
@@ -893,5 +920,20 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public ApiClient GetApiClient()
     {
         return m_apiClient;
+    }
+
+    private int GetAppVersionCode()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        var context     = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        var pkgManager  = context.Call<AndroidJavaObject>("getPackageManager");
+        string pkgName  = context.Call<string>("getPackageName");
+        var pkgInfo     = pkgManager.Call<AndroidJavaObject>("getPackageInfo", pkgName, 0);
+        int versionCode = pkgInfo.Get<int>("versionCode");
+        return versionCode;
+#else
+        return 0;
+#endif
     }
 }

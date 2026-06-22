@@ -692,4 +692,20 @@ public class DailyClaimResponse
     public int vipClaimedDaysMask;  // VIP 보상 수령 현황 비트마스크 (bit0=1일, bit27=28일)
     public int loginRewardMonth;    // 비트마스크 기준 달 (yyyyMM, e.g. 202606)
 }
+
+#region Version Data Classes ##################################################################################
+[System.Serializable]
+public class VersionCheckRequest
+{
+    public int versionCode;
+}
+
+[System.Serializable]
+public class VersionCheckResponse
+{
+    public bool updateRequired;
+    public int minVersionCode;
+    public string minVersionName;
+}
+#endregion
 #endregion

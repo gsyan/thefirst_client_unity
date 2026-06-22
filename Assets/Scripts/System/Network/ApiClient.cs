@@ -142,6 +142,22 @@ public class ApiClient
     };
     #endregion
 
+    #region Version API Methods -----------------------------------------------------------------------------------
+    public async Task<ApiResponse<VersionCheckResponse>> CheckVersionAsync(int versionCode)
+    {
+        var requestDto = new VersionCheckRequest { versionCode = versionCode };
+        string json = JsonConvert.SerializeObject(requestDto);
+
+        using var request = new UnityWebRequest($"{m_baseUrl}/version/check", "POST");
+        request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        await SendRequestAsync(request);
+        return JsonConvert.DeserializeObject<ApiResponse<VersionCheckResponse>>(request.downloadHandler.text);
+    }
+    #endregion
+
     #region Authentication API Methods ----------------------------------------------------------------------------
     public async Task<ApiResponse<string>> SignUpAsync(string email, string password)
     {
