@@ -17,6 +17,7 @@ public class UICalendarButton : MonoBehaviour
     
     private void OnCalendarButtonClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         UIManager.Instance.ShowDailyBonusCalendar();
     }
 }

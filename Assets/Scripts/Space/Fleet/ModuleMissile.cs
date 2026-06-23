@@ -88,9 +88,9 @@ public class ModuleMissile : ModuleBase
         // Zone 적 함선일 때 체력·공격력에 배율 적용
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_myShip.m_missileMultiplier;
-            m_healthMax *= m_myShip.m_missileMultiplier;
-            m_attack    *= m_myShip.m_missileMultiplier;
+            m_health    *= m_ownerShip.m_missileMultiplier;
+            m_healthMax *= m_ownerShip.m_missileMultiplier;
+            m_attack    *= m_ownerShip.m_missileMultiplier;
         }
 
         // 부모 바디에 이 무기 등록
@@ -153,7 +153,7 @@ public class ModuleMissile : ModuleBase
     {
         while (true)
         {
-            if (m_moduleState.IsBattleState() == false) yield return null;
+            if (m_moduleState.IsBattleState() == false) { yield return null; continue; }
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
             {

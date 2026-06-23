@@ -78,6 +78,7 @@ public class UIPopupLevelup : UIPopupBase
 
     private void OnPrevClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_targetLevel <= m_minTargetLevel) return;
         m_targetLevel--;
         UpdateDisplay();
@@ -85,6 +86,7 @@ public class UIPopupLevelup : UIPopupBase
 
     private void OnNextClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_targetLevel >= m_maxDataLevel) return;
         m_targetLevel++;
         UpdateDisplay();
@@ -92,12 +94,14 @@ public class UIPopupLevelup : UIPopupBase
 
     private void OnConfirmClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         m_onConfirm?.Invoke(m_targetLevel);
         HidePopup();
     }
 
     private void OnCancelClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         m_onCancel?.Invoke();
     }
 

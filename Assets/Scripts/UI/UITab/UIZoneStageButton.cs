@@ -41,6 +41,7 @@ public class UIZoneStageButton : MonoBehaviour
             m_enterButton.onClick.RemoveAllListeners();
             m_enterButton.onClick.AddListener(() =>
             {
+                SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
                 if (m_isExpanded == false)
                     onToggle?.Invoke();
                 else

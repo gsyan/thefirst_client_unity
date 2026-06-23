@@ -109,6 +109,7 @@ public class UITabSettings : UITabBase
 
     private void OnTestMineralButtonClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         DataTableZone table = DataManager.Instance.m_dataTableZone;
         if (table == null) return;
 
@@ -162,6 +163,7 @@ public class UITabSettings : UITabBase
 
     private void OnLanguageChanged(int index)
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         LocalizationManager.Instance.SetLocale(m_locales[index].Identifier.Code);
     }
 
@@ -200,6 +202,7 @@ public class UITabSettings : UITabBase
 
     private void OnGoogleAccountButtonClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (DataManager.Instance.m_isGoogleLinked == true)
             ShowUnlinkGoogleConfirm();
         else

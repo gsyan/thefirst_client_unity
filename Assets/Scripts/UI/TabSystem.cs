@@ -117,7 +117,7 @@ public class TabSystem : MonoBehaviour
                 childGraphics = tab.childGraphics,
                 activeColor = tab.activeColor,
                 inactiveColor = tab.inactiveColor,
-                onSelected = () => ActivatePanel(tabIndex),
+                onSelected = () => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); ActivatePanel(tabIndex); },
                 onDeselected = () => DeactivatePanel(tabIndex)
             };
             buttonGroup.items.Add(item);

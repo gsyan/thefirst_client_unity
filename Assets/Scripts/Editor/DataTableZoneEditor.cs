@@ -234,6 +234,8 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col.Length > 8 ? col[8] : "0", out float fpy);
             float.TryParse(col.Length > 9 ? col[9] : "0", out float fpz);
             float.TryParse(col.Length > 10 ? col[10] : "0", out float frotY);
+            float.TryParse(col.Length > 11 ? col[11] : "0", out float playerFireDelay);
+            float.TryParse(col.Length > 12 ? col[12] : "0", out float enemyFireDelay);
 
             string zoneName = $"{zoneIndex}-{stage}";
             enemyBackup.TryGetValue(zoneName, out FleetInfo fleet);
@@ -249,6 +251,8 @@ public class DataTableZoneEditor : Editor
                 modulePointClearReward = modPt,
                 fleetPosition          = new Vector3(fpx, fpy, fpz),
                 fleetRotationY         = frotY,
+                playerFireDelaySec     = playerFireDelay,
+                enemyFireDelaySec      = enemyFireDelay,
                 enemyFleet             = fleet != null ? fleet : new FleetInfo { fleetName = zoneName, ships = new List<ShipInfo>() },
             });
             count++;
@@ -584,6 +588,10 @@ public class DataTableZoneEditor : Editor
             EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
             zoneStage.delayBeforeSpawn      = EditorGUILayout.Slider("첫 스폰 지연 (초)", zoneStage.delayBeforeSpawn, 0f, 60f);
             zoneStage.shipSpawnInterval     = EditorGUILayout.Slider("함선 간 스폰 딜레이 (초)", zoneStage.shipSpawnInterval, 0f, 30f);
+            EditorGUILayout.Space(4);
+            EditorGUILayout.LabelField("발사 시작 딜레이 (0 = 즉시)", EditorStyles.miniLabel);
+            zoneStage.playerFireDelaySec    = EditorGUILayout.Slider("아군 발사 딜레이 (초)", zoneStage.playerFireDelaySec, 0f, 10f);
+            zoneStage.enemyFireDelaySec     = EditorGUILayout.Slider("적군 발사 딜레이 (초)", zoneStage.enemyFireDelaySec,  0f, 10f);
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Space(5);

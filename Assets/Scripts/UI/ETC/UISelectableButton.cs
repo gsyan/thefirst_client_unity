@@ -17,7 +17,7 @@ public class UISelectableButton : MonoBehaviour
     {
         if (m_label != null) m_label.text = labelText;
         m_button.onClick.RemoveAllListeners();
-        m_button.onClick.AddListener(onClick);
+        m_button.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); onClick?.Invoke(); });
     }
 
     public void SetSelected(bool selected)

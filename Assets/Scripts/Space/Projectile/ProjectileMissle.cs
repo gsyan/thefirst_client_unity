@@ -32,6 +32,7 @@ public class ProjectileMissile : ProjectileBase
     private EFlightPhase m_phase;
     private Vector3 m_prevLocalDir;
     private float m_splashRadius;
+    private EMissileSource m_missileSource;
 
     [Header("Trail Particles")]
     [SerializeField] private GameObject m_burstTail;
@@ -51,6 +52,7 @@ public class ProjectileMissile : ProjectileBase
      Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed, float projectileWidth)
     {
         base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection, ejectSpeed, projectileWidth);
+        m_missileSource = (sourceModuleBase is ModuleHanger) ? EMissileSource.Aircraft : EMissileSource.Ship;
         m_missileSpeed = moduleData.projectileSpeed;
         m_splashRadius = moduleData.splashRadius;
         m_ejectSpeed = ejectSpeed;
@@ -171,6 +173,9 @@ public class ProjectileMissile : ProjectileBase
                     ApplySplashDamage(hit.point, hitShip);
                 else
                     hitShip.TakeDamage(m_damage, hit.point);
+
+                EFx hitFx = (m_missileSource == EMissileSource.Aircraft) ? EFx.Explosion_Aircraft_Missile : EFx.Explosion_Missile;
+                SoundManager.Instance.PlayFX(hitFx, hit.point);
 
                 ReturnToPool(hitPosition: hit.point);
                 return true;

@@ -396,6 +396,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -11000, y: 0, z: 4687.7466}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -442,6 +444,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -8555.556, y: 0, z: -3408.129}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -488,6 +492,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -6111.111, y: 0, z: 1668.2173}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -534,6 +540,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -3666.6665, y: 0, z: 4024.5425}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -580,6 +588,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -1222.2222, y: 0, z: -1453.9286}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -626,6 +636,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 1222.2228, y: 0, z: 4486.655}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -672,6 +684,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 3666.667, y: 0, z: 2116.9683}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -718,6 +732,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 6111.1113, y: 0, z: -1507.802}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -771,6 +787,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 8555.556, y: 0, z: -3511.8577}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -831,6 +849,8 @@ MonoBehaviour:
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 10
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 11000, y: 0, z: 4649.591}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -877,6 +897,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -11000, y: 0, z: -2886.939}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -923,6 +945,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -8555.556, y: 0, z: 10.488776}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -969,6 +993,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -6111.111, y: 0, z: -2532.5269}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1015,6 +1041,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -3666.6665, y: 0, z: 31.811071}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1061,6 +1089,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -1222.2222, y: 0, z: -1615.5387}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1107,6 +1137,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 1222.2228, y: 0, z: 173.66585}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1153,6 +1185,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 3666.667, y: 0, z: 2790.5842}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1199,6 +1233,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 6111.1113, y: 0, z: -4760.7603}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1252,6 +1288,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 8555.556, y: 0, z: 1380.1188}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1312,6 +1350,8 @@ MonoBehaviour:
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 10
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 11000, y: 0, z: -3771.2917}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1358,6 +1398,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -11000, y: 0, z: -461.62476}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1404,6 +1446,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -8555.556, y: 0, z: 3429.1064}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1450,6 +1494,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -6111.111, y: 0, z: -355.80167}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1496,6 +1542,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -3666.6665, y: 0, z: 1517.5508}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1542,6 +1590,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -1222.2222, y: 0, z: -1769.6366}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1588,6 +1638,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 1222.2228, y: 0, z: 4474.9873}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1634,6 +1686,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 3666.667, y: 0, z: -4074.4014}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1680,6 +1734,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 6111.1113, y: 0, z: 3990.3376}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1733,6 +1789,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 8555.556, y: 0, z: -1889.3534}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1793,6 +1851,8 @@ MonoBehaviour:
     mineralClearReward: 30
     techPointClearReward: 1
     modulePointClearReward: 10
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 11000, y: 0, z: 1816.4825}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1873,6 +1933,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -11000, y: 0, z: 1963.6895}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -1953,6 +2015,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -8555.556, y: 0, z: -3152.276}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2033,6 +2097,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -6111.111, y: 0, z: -1367.8113}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2113,6 +2179,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -3666.6665, y: 0, z: 4353.3345}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2193,6 +2261,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -1222.2222, y: 0, z: -3819.9253}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2273,6 +2343,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 1222.2228, y: 0, z: -357.7008}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2353,6 +2425,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 3666.667, y: 0, z: 2741.435}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2433,6 +2507,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 6111.1113, y: 0, z: 4841.1743}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2527,6 +2603,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 8555.556, y: 0, z: 2530.9277}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2635,6 +2713,8 @@ MonoBehaviour:
     mineralClearReward: 40
     techPointClearReward: 1
     modulePointClearReward: 10
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 11000, y: 0, z: 716.19586}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2715,6 +2795,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -11000, y: 0, z: 4389.0034}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2795,6 +2877,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -8555.556, y: 0, z: 266.34155}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2875,6 +2959,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -6111.111, y: 0, z: -2379.8206}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -2955,6 +3041,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -3666.6665, y: 0, z: 4489.0303}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3035,6 +3123,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -1222.2222, y: 0, z: 77.88136}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3115,6 +3205,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 1222.2228, y: 0, z: 4343.7583}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3195,6 +3287,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 3666.667, y: 0, z: -2156.2073}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3275,6 +3369,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 6111.1113, y: 0, z: 3358.9995}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3369,6 +3465,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 8555.556, y: 0, z: 1492.5328}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3477,6 +3575,8 @@ MonoBehaviour:
     mineralClearReward: 50
     techPointClearReward: 1
     modulePointClearReward: 10
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 11000, y: 0, z: 3245.3728}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3557,6 +3657,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -11000, y: 0, z: -3185.6824}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3637,6 +3739,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -8555.556, y: 0, z: 3684.9592}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3717,6 +3821,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -6111.111, y: 0, z: -3391.8303}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3797,6 +3903,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -3666.6665, y: 0, z: 1239.1954}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3877,6 +3985,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -1222.2222, y: 0, z: -4025.2297}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -3957,6 +4067,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 1222.2228, y: 0, z: 3975.688}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4037,6 +4149,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 3666.667, y: 0, z: 2400.4563}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4117,6 +4231,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 6111.1113, y: 0, z: -471.80435}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4218,6 +4334,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 8555.556, y: 0, z: -2924.2998}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4340,6 +4458,8 @@ MonoBehaviour:
     mineralClearReward: 60
     techPointClearReward: 1
     modulePointClearReward: 10
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 11000, y: 0, z: 243.63043}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4447,6 +4567,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -11000, y: 0, z: -760.368}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4554,6 +4676,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -8555.556, y: 0, z: -2896.4233}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4661,6 +4785,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -6111.111, y: 0, z: -4403.84}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4768,6 +4894,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -3666.6665, y: 0, z: 4682.126}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4875,6 +5003,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -1222.2222, y: 0, z: -2539.4902}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -4982,6 +5112,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 1222.2228, y: 0, z: 457.15378}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5089,6 +5221,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 3666.667, y: 0, z: -4967.2417}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5196,6 +5330,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 6111.1113, y: 0, z: 4674.263}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5331,6 +5467,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 8555.556, y: 0, z: 1482.0037}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5494,6 +5632,8 @@ MonoBehaviour:
     mineralClearReward: 70
     techPointClearReward: 1
     modulePointClearReward: 10
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 11000, y: 0, z: 4624.5728}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5601,6 +5741,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -11000, y: 0, z: 1664.9463}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5708,6 +5850,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -8555.556, y: 0, z: 4584.1504}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5815,6 +5959,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -6111.111, y: 0, z: -1874.9434}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -5922,6 +6068,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -3666.6665, y: 0, z: 1771.3015}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6029,6 +6177,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -1222.2222, y: 0, z: -1486.1487}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6136,6 +6286,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 1222.2228, y: 0, z: 2897.0012}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6243,6 +6395,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 3666.667, y: 0, z: 4509.101}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6350,6 +6504,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 6111.1113, y: 0, z: -2254.1743}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6478,6 +6634,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 8555.556, y: 0, z: 1763.2865}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6627,6 +6785,8 @@ MonoBehaviour:
     mineralClearReward: 80
     techPointClearReward: 1
     modulePointClearReward: 10
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 11000, y: 0, z: -4611.2915}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6755,6 +6915,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -11000, y: 0, z: 4090.2603}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -6883,6 +7045,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -8555.556, y: 0, z: 1567.9872}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7011,6 +7175,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -6111.111, y: 0, z: -4330.892}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7139,6 +7305,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -3666.6665, y: 0, z: 4581.404}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7267,6 +7435,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: -1222.2222, y: 0, z: -1774.1987}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7395,6 +7565,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 1222.2228, y: 0, z: -3503.0767}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7523,6 +7695,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 3666.667, y: 0, z: -1506.1857}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7651,6 +7825,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 6111.1113, y: 0, z: -3896.8464}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -7821,6 +7997,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 5
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 8555.556, y: 0, z: -1613.8796}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}
@@ -8033,6 +8211,8 @@ MonoBehaviour:
     mineralClearReward: 90
     techPointClearReward: 1
     modulePointClearReward: 10
+    playerFireDelaySec: 0
+    enemyFireDelaySec: 0
     fleetPosition: {x: 11000, y: 0, z: 1992.5421}
     fleetRotationY: 0
     labelScreenOffset: {x: 80, y: 60}

@@ -865,6 +865,7 @@ public class SpaceFleet : MonoBehaviour
     public void FullRepair()
     {
         ApplyHealthRatio(1f);
+        SoundManager.Instance.PlayFX(EFx.Fleet_Recovery);
     }
 
     public float GetMissingHealth()
@@ -980,6 +981,15 @@ public class SpaceFleet : MonoBehaviour
                 }
                 m_ships.RemoveAt(i);
             }
+        }
+    }
+
+    public void StartCombat()
+    {
+        for (int i = 0; i < m_ships.Count; i++)
+        {
+            if (m_ships[i] != null && m_ships[i].IsAlive())
+                m_ships[i].StartFindingTargets();
         }
     }
 

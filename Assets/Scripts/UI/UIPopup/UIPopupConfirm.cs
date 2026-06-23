@@ -74,6 +74,22 @@ public class UIPopupConfirm : UIPopupBase
         if (m_confirmImage != null) m_defaultConfirmImage = m_confirmImage.sprite;
     }
 
+    private void OnCancelClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        StopAutoClose();
+        onCancelCallback?.Invoke();
+        HidePopup();
+    }
+
+    private void OnConfirmClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        StopAutoClose();
+        onConfirmCallback?.Invoke();
+        HidePopup();
+    }
+
     public void ShowPopupConfirm(ConfirmPopupConfig config)
     {
         base.ShowPopup();
@@ -323,18 +339,6 @@ public class UIPopupConfirm : UIPopupBase
             StopCoroutine(m_autoCloseCoroutine);
             m_autoCloseCoroutine = null;
         }
-    }
-
-    private void OnConfirmClicked()
-    {
-        StopAutoClose();
-        onConfirmCallback?.Invoke();
-    }
-
-    private void OnCancelClicked()
-    {
-        StopAutoClose();
-        onCancelCallback?.Invoke();
     }
 
     private static Color GetCostColor(ECostType costType)

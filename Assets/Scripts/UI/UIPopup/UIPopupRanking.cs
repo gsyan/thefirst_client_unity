@@ -62,6 +62,7 @@ public class UIPopupRanking : UIPopupBase
 
     private void OnTabClicked(RankingType type)
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_currentType == type) return;
         LoadTab(type);
     }
@@ -104,6 +105,7 @@ public class UIPopupRanking : UIPopupBase
 
     private void OnCloseClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         m_onClose?.Invoke();
     }
 

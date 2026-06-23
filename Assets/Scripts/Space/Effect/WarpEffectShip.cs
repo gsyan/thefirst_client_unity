@@ -164,6 +164,7 @@ public class WarpEffectShip : MonoBehaviour
         m_isWarping = true;
         SetEngineGlow(m_warpGlowIntensity);
         SetSpeedLinesActive(true);
+        SoundManager.Instance.PlayFX(EFx.Ship_Warp, transform.position);
 
         // 함선이 목적지에 도착할 때까지 스피드라인 위치 동기화
         while (m_spaceShip != null && m_spaceShip.m_formationMoveState == FormationMoveState.Moving)
@@ -190,6 +191,7 @@ public class WarpEffectShip : MonoBehaviour
         m_isWarping = true;
         SetEngineGlow(m_warpGlowIntensity);
         SetSpeedLinesActive(true);
+        SoundManager.Instance.PlayFX(EFx.Ship_Warp, transform.position);
 
         while (m_isWarping == true)
         {

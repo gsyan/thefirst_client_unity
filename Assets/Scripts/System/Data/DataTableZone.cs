@@ -80,6 +80,10 @@ public class ZoneStageConfig
     public int techPointClearReward = 0;   // [server] 최초 클리어 1회
     public int modulePointClearReward = 0; // [server] 최초 클리어 1회
 
+    [Header("전투 시작 딜레이 (초, 0 = 즉시 발사)")]
+    public float playerFireDelaySec = 0f;
+    public float enemyFireDelaySec  = 0f;
+
     [Header("아군 함대 위치/방향 (galaxyCameraTarget 기준 상대 좌표)")]
     public Vector3 fleetPosition;
     [Range(0f, 360f)] public float fleetRotationY;

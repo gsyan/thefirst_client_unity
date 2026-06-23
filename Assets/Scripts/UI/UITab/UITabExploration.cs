@@ -55,7 +55,7 @@ public class UITabExploration : UITabBase
         EventManager.Subscribe_PvpBattleStart(OnPvpBattleStarted);
 
         if (m_backgroundCloseButton != null)
-            m_backgroundCloseButton.onClick.AddListener(() => m_tabSystemParent.SwitchToTab(-1));
+            m_backgroundCloseButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); m_tabSystemParent.SwitchToTab(-1); });
 
         SetupZoneTabButtons();
         InitializeZoneStageButtons();
@@ -585,7 +585,7 @@ public class UITabExploration : UITabBase
     private void StartBattleInZone(ZoneStageConfig zoneStage)
     {
         m_isBattleEnded = false;
-        ObjectManager.Instance.StartSpawnEnemiesFromFleetInfo(m_pendingEnemyFleetInfo);
+        ObjectManager.Instance.StartSpawnEnemiesFromFleetInfo(m_pendingEnemyFleetInfo, zoneStage);
         m_pendingEnemyFleetInfo = null;
     }
 
@@ -710,6 +710,8 @@ public class UITabExploration : UITabBase
     private void ShowVictoryRewardPopup(string title, ZoneStageConfig pendingStage)
     {
         bool isFirstClear = m_pendingRewardIsFirstClear;
+        EFx clearFx = isFirstClear == true ? EFx.Stage_Clear_First : EFx.Stage_Clear;
+        SoundManager.Instance.PlayFX(clearFx);
         var rewards = new List<int>
         {
             pendingStage.mineralClearReward,
@@ -905,13 +907,18 @@ public class UITabExploration : UITabBase
     private IEnumerator ShowWipePopupAfterDelay(Vector3 retreatPosition, float retreatRotationY)
     {
         yield return m_wipePopupDelay;
+        SoundManager.Instance.PlayBGM(EBgm.Defeat);
         string title = LocalizationManager.Instance.Get("exploration_fleet_wiped");
         string message = LocalizationManager.Instance.Get("exploration_wipe_retreat");
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             title        = title,
             message      = message,
-            onConfirm    = () => ExecuteRetreat(retreatPosition, retreatRotationY),
+            onConfirm    = () =>
+            {
+                SoundManager.Instance.PlayBGM(EBgm.Space);
+                ExecuteRetreat(retreatPosition, retreatRotationY);
+            },
             autoCloseSec = 5f,
         });
     }

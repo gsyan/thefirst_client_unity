@@ -50,13 +50,13 @@ public class ShipSelector : MonoBehaviour
         }
 
         m_selectButton.onClick.RemoveAllListeners();
-        m_selectButton.onClick.AddListener(onSelect);
+        m_selectButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); onSelect?.Invoke(); });
         m_selectButton.interactable = true;
 
         if (m_manageButton != null)
         {
             m_manageButton.onClick.RemoveAllListeners();
-            m_manageButton.onClick.AddListener(onManage);
+            m_manageButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); onManage?.Invoke(); });
             m_manageButton.gameObject.SetActive(false);
         }
 

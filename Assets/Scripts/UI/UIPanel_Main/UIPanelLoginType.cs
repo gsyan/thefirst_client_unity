@@ -17,11 +17,11 @@ public class UIPanelLoginType : UIPanelBase
    public override void InitializeUIPanel()
    {
       if (m_emailLoginButton != null)
-         m_emailLoginButton.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelEmailLogin"));
+         m_emailLoginButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); UIManager.Instance.ShowPanel("UIPanelEmailLogin"); });
       if (m_googleLoginButton != null)
-         m_googleLoginButton.onClick.AddListener(() => GoogleLogin());
+         m_googleLoginButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); GoogleLogin(); });
       if (m_guestLoginButton != null)
-         m_guestLoginButton.onClick.AddListener(() => GuestLogin());
+         m_guestLoginButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); GuestLogin(); });
 
       if (SceneManager.GetActiveScene().name == "MainScene")
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uiMain);
@@ -29,6 +29,7 @@ public class UIPanelLoginType : UIPanelBase
 
    private void GoogleLogin()
    {
+      SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
       gameObject.SetActive(false);
 
       NetworkManager.Instance.GoogleLogin((response) => {
@@ -47,6 +48,7 @@ public class UIPanelLoginType : UIPanelBase
 
    private void GuestLogin()
    {
+      SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
       gameObject.SetActive(false);
 
       NetworkManager.Instance.GuestLogin((response) => {

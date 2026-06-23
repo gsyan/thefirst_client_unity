@@ -57,12 +57,13 @@ public class PanelButton : MonoBehaviour
     
     private void OnButtonClick()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (uiSpace == null)
         {
             Debug.LogWarning("UISpace is not assigned to PanelButton!");
             return;
         }
-        
+
         switch (actionType)
         {
             case PanelAction.Show:

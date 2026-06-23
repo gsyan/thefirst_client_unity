@@ -113,17 +113,17 @@ public class ModuleHanger : ModuleBase
         // Zone 적 함선일 때 격납고 체력·함재기 스탯에 배율 적용
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_myShip.m_hangerMultiplier;
-            m_healthMax *= m_myShip.m_hangerMultiplier;
+            m_health    *= m_ownerShip.m_hangerMultiplier;
+            m_healthMax *= m_ownerShip.m_hangerMultiplier;
             foreach (var info in m_aircraftPool)
             {
-                info.airHealth      *= m_myShip.m_hangerMultiplier;
-                info.airHealthMax   *= m_myShip.m_hangerMultiplier;
-                info.airAttack      *= m_myShip.m_hangerMultiplier;
-                info.airSpeed       *= m_myShip.m_hangerMultiplier;
-                info.airAttackRange *= m_myShip.m_hangerMultiplier;
-                info.airAmmo        = Mathf.Max(1, Mathf.RoundToInt(info.airAmmo    * m_myShip.m_hangerMultiplier));
-                info.airAmmoMax     = Mathf.Max(1, Mathf.RoundToInt(info.airAmmoMax * m_myShip.m_hangerMultiplier));
+                info.airHealth      *= m_ownerShip.m_hangerMultiplier;
+                info.airHealthMax   *= m_ownerShip.m_hangerMultiplier;
+                info.airAttack      *= m_ownerShip.m_hangerMultiplier;
+                info.airSpeed       *= m_ownerShip.m_hangerMultiplier;
+                info.airAttackRange *= m_ownerShip.m_hangerMultiplier;
+                info.airAmmo        = Mathf.Max(1, Mathf.RoundToInt(info.airAmmo    * m_ownerShip.m_hangerMultiplier));
+                info.airAmmoMax     = Mathf.Max(1, Mathf.RoundToInt(info.airAmmoMax * m_ownerShip.m_hangerMultiplier));
             }
         }
 
@@ -158,7 +158,7 @@ public class ModuleHanger : ModuleBase
     {
         while (true)
         {
-            if (m_moduleState.IsBattleState() == false) yield return null;
+            if (m_moduleState.IsBattleState() == false) { yield return null; continue; }
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
             {

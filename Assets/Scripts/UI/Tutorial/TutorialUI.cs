@@ -262,6 +262,7 @@ public class TutorialUI : UIPopupBase
 
     private void OnSkipClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         TutorialManager.Instance.SkipTutorial();
     }
 

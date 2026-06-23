@@ -170,7 +170,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             ShowFatalErrorPopup("Server Not Found", "The server is currently unavailable.\nPlease try again later.");
             yield break;
         }
-
+        
         // 버전 체크 — 서버 접속 직후, 로그인 전
         var versionCheckTask = m_apiClient.CheckVersionAsync(GetAppVersionCode());
         while (!versionCheckTask.IsCompleted)
@@ -924,7 +924,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     private int GetAppVersionCode()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_EDITOR
+        return int.MaxValue;
+#elif UNITY_ANDROID
         var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         var context     = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
         var pkgManager  = context.Call<AndroidJavaObject>("getPackageManager");

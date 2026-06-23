@@ -43,7 +43,7 @@ public class ModuleSelector : MonoBehaviour
         EnsureReferences();
 
         m_button.onClick.RemoveAllListeners();
-        m_button.onClick.AddListener(onClick);
+        m_button.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); onClick?.Invoke(); });
         m_button.interactable = true;
         m_buttonText.gameObject.SetActive(true);
 

@@ -17,6 +17,13 @@ public static class EventManager
         }
     }
 
+    #region ModuleBody -----------------------------------------------------------------------
+    public static event Action<ModuleBody> OnModuleBodyDestroyed;
+    public static void Trigger_ModuleBodyDestroyed(ModuleBody body) { OnModuleBodyDestroyed?.Invoke(body); }
+    public static void Subscribe_ModuleBodyDestroyed(Action<ModuleBody> cb)   { OnModuleBodyDestroyed += cb; }
+    public static void Unsubscribe_ModuleBodyDestroyed(Action<ModuleBody> cb) { OnModuleBodyDestroyed -= cb; }
+    #endregion
+
     # region Commander Tech, Mineral ----------------------------------------------------------------------
     // TechLevel
     public static event Action<int> OnTechLevelChanged;

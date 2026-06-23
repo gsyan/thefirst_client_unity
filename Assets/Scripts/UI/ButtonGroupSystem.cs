@@ -45,7 +45,7 @@ public class ButtonGroupSystem : MonoBehaviour
             if (items[i].button != null)
             {
                 int idx = i;
-                items[i].button.onClick.AddListener(() => Select(idx));
+                items[i].button.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); Select(idx); });
             }
         }
 

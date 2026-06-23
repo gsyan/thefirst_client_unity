@@ -43,8 +43,7 @@ public class LauncherAircraft : LauncherBase
 
         //ParticleSystem muzzleEffect = ObjectManager.Instance.m_poolManager.GetParticleSystem_Play_AutoReturn(EPoolName.EFFECT_BEAM_MUZZLE, m_firePoint);
 
-        if (m_audioSource != null && m_audioSource.clip != null)
-            m_audioSource.Play();
+        SoundManager.Instance.PlayFX(EFx.Aircraft_Launch, transform.position);
 
         //yield return new WaitForSeconds(muzzleEffect.main.duration * 0.5f);
         if (target == null)

@@ -404,6 +404,7 @@ public class UIManager : MonoSingleton<UIManager>
     // 기술 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출)
     public void ShowTechLevelupNotify(int newLevel)
     {
+        SoundManager.Instance.PlayFX(EFx.Tech_Level_Up);
         int shipCount = DataManager.Instance.m_dataTableTechLevel.GetShipCount(newLevel);
         var loc = LocalizationManager.Instance;
         string shipLabel  = loc.Get("UITabTech_ShipCountMaxTitle");

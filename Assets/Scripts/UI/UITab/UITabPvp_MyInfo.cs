@@ -125,6 +125,7 @@ public class UITabPvp_MyInfo : UITabBase
 
     private void OnRefreshClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_refreshRemain <= 0)
         {
             ShowErrorMessage("오늘 갱신 횟수를 모두 사용했습니다.");

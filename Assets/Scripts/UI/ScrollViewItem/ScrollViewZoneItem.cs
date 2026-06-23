@@ -29,7 +29,7 @@ public class ScrollViewZoneItem : MonoBehaviour
         m_zoneStageConfig = zoneStageConfig;
 
         m_enterButton.onClick.RemoveAllListeners();
-        m_enterButton.onClick.AddListener(actionEnter);
+        m_enterButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); actionEnter?.Invoke(); });
 
         m_zoneText.text = zoneStageConfig.zoneName;
 

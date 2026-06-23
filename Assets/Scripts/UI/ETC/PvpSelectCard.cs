@@ -30,6 +30,7 @@ public class PvpSelectCard : MonoBehaviour
         m_opponentInfo = opponentInfo;
 
         m_attackButton.onClick.RemoveAllListeners();
+        m_attackButton.onClick.AddListener(() => SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true));
         m_attackButton.onClick.AddListener(onAttack);
 
         CapabilityProfile stats = CommonUtility.GetFleetCapabilityProfile(opponentInfo.fleetInfo);

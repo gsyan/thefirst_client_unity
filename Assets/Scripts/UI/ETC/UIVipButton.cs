@@ -80,6 +80,7 @@ public class UIVipButton : MonoBehaviour
 
     private void OnToggleClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_isOpen == false)
             Open();
         // else
@@ -177,6 +178,7 @@ public class UIVipButton : MonoBehaviour
 
     private void OnPurchaseButtonClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
 #if UNITY_EDITOR
         OnEditorVipPurchaseSimulate();
 #else

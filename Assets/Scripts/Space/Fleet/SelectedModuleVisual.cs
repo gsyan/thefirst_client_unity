@@ -6,7 +6,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class SelectedModuleVisual : MonoBehaviour
 {
-    private SpaceShip m_myShip;
+    private SpaceShip m_ownerShip;
     private ModuleBase m_partsBase;
     [SerializeField] private bool m_isSelected = false;
 
@@ -17,7 +17,7 @@ public class SelectedModuleVisual : MonoBehaviour
 
     public void InitializeSelectedModuleVisual(SpaceShip ship, ModuleBase partsBase)
     {
-        m_myShip = ship;
+        m_ownerShip = ship;
         m_partsBase = partsBase;
 
         if (transform.childCount <= 0) return;

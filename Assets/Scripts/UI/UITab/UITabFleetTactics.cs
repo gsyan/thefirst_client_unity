@@ -125,6 +125,7 @@ public class UITabFleetTactics : UITabBase
 
     private void OnClickToggle(int idx)
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_playerFleet == null || m_toggleStates == null || idx >= m_toggleStates.Length) return;
 
         m_toggleStates[idx] = !m_toggleStates[idx];

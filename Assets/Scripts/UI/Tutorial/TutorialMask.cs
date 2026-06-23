@@ -179,6 +179,7 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
 
     private void OnFullScreenClick()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         m_onClick?.Invoke();
     }
 

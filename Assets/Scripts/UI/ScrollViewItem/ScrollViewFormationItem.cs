@@ -17,7 +17,7 @@ public class ScrollViewFormationItem : MonoBehaviour
     public void InitializeScrollViewFormationItem(UnityEngine.Events.UnityAction actionSelect, string formationName)
     {
         m_selectButton.onClick.RemoveAllListeners();
-        m_selectButton.onClick.AddListener(actionSelect);
+        m_selectButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); actionSelect?.Invoke(); });
         CommonUtility.SetUILocText(m_text, formationName);
 
         if (m_outline == null)

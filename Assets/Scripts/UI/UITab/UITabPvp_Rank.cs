@@ -60,6 +60,7 @@ public class UITabPvp_Rank : UITabBase
 
     private void OnRankingTabClicked(RankingType type)
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_currentType == type) return;
         LoadTab(type);
     }

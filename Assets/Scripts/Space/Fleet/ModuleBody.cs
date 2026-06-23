@@ -115,9 +115,9 @@ public class ModuleBody : ModuleBase
         // Zone 적 함선일 때 체력에 배율 적용
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_myShip.m_bodyMultiplier;
-            m_healthMax *= m_myShip.m_bodyMultiplier;
-            m_repair    *= m_myShip.m_bodyMultiplier;
+            m_health    *= m_ownerShip.m_bodyMultiplier;
+            m_healthMax *= m_ownerShip.m_bodyMultiplier;
+            m_repair    *= m_ownerShip.m_bodyMultiplier;
         }
 
         CollectAndSortModuleSlots();
@@ -484,7 +484,7 @@ public class ModuleBody : ModuleBase
         // 바디가 파괴되면 장착된 모든 모듈도 비활성화
         if (m_health <= 0)
         {
-            //Debug.Log($"[{GetFleetName()}] ModuleBody[{m_moduleBodyInfo.bodyIndex}] destroyed!");
+            EventManager.Trigger_ModuleBodyDestroyed(this);
 
             // 모든 슬롯의 모듈 비활성화
             foreach (ModuleSlot slot in m_moduleSlots)

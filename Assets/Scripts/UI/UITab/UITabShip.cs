@@ -146,6 +146,7 @@ public class UITabShip : UITabBase
 
     private void OnModeToggleClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_selectedModule == null) return;
         // 미네랄 투자 이력이 있으면 모듈포인트 모드로 복귀 불가
         if (m_selectedModule.m_isMineralMode == true && m_selectedModule.m_investedMineral > 0) return;
@@ -219,6 +220,7 @@ public class UITabShip : UITabBase
 
     private void OnPrevShipClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_playerFleet == null || m_playerFleet.m_ships.Count == 0) return;
         int idx = m_playerFleet.m_ships.IndexOf(m_selectedShip);
         int next = (idx - 1 + m_playerFleet.m_ships.Count) % m_playerFleet.m_ships.Count;
@@ -227,6 +229,7 @@ public class UITabShip : UITabBase
 
     private void OnNextShipClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_playerFleet == null || m_playerFleet.m_ships.Count == 0) return;
         int idx = m_playerFleet.m_ships.IndexOf(m_selectedShip);
         int next = (idx + 1) % m_playerFleet.m_ships.Count;
@@ -345,6 +348,7 @@ public class UITabShip : UITabBase
 #region 모듈 해금 begin -------------------------------------------------------------
     private void OnModuleUnlockClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_myCommander == null) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if ((m_selectedModule is ModulePlaceholder) == false) return;
@@ -580,6 +584,7 @@ public class UITabShip : UITabBase
 
         if (response.errorCode == 0)
         {
+            SoundManager.Instance.PlayFX(EFx.Level_Up, retrigger: true);
             commander.UpdateModulePoint(response.data.pointRemain);
             Apply_ModuleLevelChange(response.data.shipId, response.data.bodyIndex, response.data.moduleType,
                 response.data.moduleSubType, response.data.slotIndex, response.data.newLevel, isLevelUp: true);
@@ -684,6 +689,7 @@ public class UITabShip : UITabBase
 
         if (response.errorCode == 0)
         {
+            SoundManager.Instance.PlayFX(EFx.Level_Up, retrigger: true);
             commander.UpdateMineral(response.data.pointRemain);
             Apply_ModuleLevelChangeMineral(response.data);
 
@@ -726,6 +732,7 @@ public class UITabShip : UITabBase
     
     private void OnModuleLevelDownClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_bModuleChanging == true) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
@@ -773,6 +780,7 @@ public class UITabShip : UITabBase
 
         if (response.errorCode == 0)
         {
+            SoundManager.Instance.PlayFX(EFx.Level_Down, retrigger: true);
             commander.UpdateModulePoint(response.data.pointRemain);
 
             if (m_playerFleet == null) return;
@@ -836,6 +844,7 @@ public class UITabShip : UITabBase
 
         if (response.errorCode == 0)
         {
+            SoundManager.Instance.PlayFX(EFx.Level_Down, retrigger: true);
             commander.UpdateMineral(response.data.pointRemain);
             Apply_ModuleLevelChangeMineral(response.data);
         }
@@ -855,6 +864,7 @@ public class UITabShip : UITabBase
 #region 모듈 그래이드 업/다운 begin -------------------------------------------------------------
     private void OnModuleGradeUpClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_bModuleChanging == true) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
@@ -881,7 +891,7 @@ public class UITabShip : UITabBase
             moduleSubTypeCurrent = m_selectedModule.GetModuleSubType()
         };
         m_bModuleChanging = true;
-        NetworkManager.Instance.ModuleGradeUp(req, OnModuleGradeChangeResponse);
+        NetworkManager.Instance.ModuleGradeUp(req, OnModuleGradeUpResponse);
     }
     private void ExecuteModuleGradeUpMineral(EModuleSubType targetSubType)
     {
@@ -910,11 +920,12 @@ public class UITabShip : UITabBase
             slotIndex            = slotIndex
         };
         m_bModuleChanging = true;
-        NetworkManager.Instance.ModuleGradeUpMineral(req, OnModuleGradeChangeMineralResponse);
+        NetworkManager.Instance.ModuleGradeUpMineral(req, OnModuleGradeUpMineralResponse);
     }
 
     private void OnModuleGradeDownClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_bModuleChanging == true) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
@@ -939,7 +950,7 @@ public class UITabShip : UITabBase
             moduleSubTypeCurrent = m_selectedModule.GetModuleSubType()
         };
         m_bModuleChanging = true;
-        NetworkManager.Instance.ModuleGradeDown(req, OnModuleGradeChangeResponse);
+        NetworkManager.Instance.ModuleGradeDown(req, OnModuleGradeDownResponse);
     }
     private void ExecuteModuleGradeDownMineral()
     {
@@ -956,14 +967,28 @@ public class UITabShip : UITabBase
             slotIndex            = slotIndex
         };
         m_bModuleChanging = true;
-        NetworkManager.Instance.ModuleGradeDownMineral(req, OnModuleGradeChangeMineralResponse);
+        NetworkManager.Instance.ModuleGradeDownMineral(req, OnModuleGradeDownMineralResponse);
     }
 
-    private void OnModuleGradeChangeResponse(ApiResponse<ModuleGradeChangeResponse> response)
+    private void OnModuleGradeUpResponse(ApiResponse<ModuleGradeChangeResponse> response)
     {
         m_bModuleChanging = false;
         if (response.errorCode == 0)
+        {
+            SoundManager.Instance.PlayFX(EFx.Grade_Up, retrigger: true);
             Apply_ModuleGradeChange(response.data);
+        }
+        else
+            ShowErrorMessage($"Grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+    }
+    private void OnModuleGradeDownResponse(ApiResponse<ModuleGradeChangeResponse> response)
+    {
+        m_bModuleChanging = false;
+        if (response.errorCode == 0)
+        {
+            SoundManager.Instance.PlayFX(EFx.Grade_Down, retrigger: true);
+            Apply_ModuleGradeChange(response.data);
+        }
         else
             ShowErrorMessage($"Grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
     }
@@ -1008,11 +1033,25 @@ public class UITabShip : UITabBase
         }
     }
 
-    private void OnModuleGradeChangeMineralResponse(ApiResponse<ModuleGradeChangeResponse> response)
+    private void OnModuleGradeUpMineralResponse(ApiResponse<ModuleGradeChangeResponse> response)
     {
         m_bModuleChanging = false;
         if (response.errorCode == 0)
+        {
+            SoundManager.Instance.PlayFX(EFx.Grade_Up, retrigger: true);
             Apply_ModuleGradeChangeMineral(response.data);
+        }
+        else
+            ShowErrorMessage($"Mineral grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+    }
+    private void OnModuleGradeDownMineralResponse(ApiResponse<ModuleGradeChangeResponse> response)
+    {
+        m_bModuleChanging = false;
+        if (response.errorCode == 0)
+        {
+            SoundManager.Instance.PlayFX(EFx.Grade_Down, retrigger: true);
+            Apply_ModuleGradeChangeMineral(response.data);
+        }
         else
             ShowErrorMessage($"Mineral grade change failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
     }

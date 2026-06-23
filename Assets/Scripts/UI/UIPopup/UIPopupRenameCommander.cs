@@ -131,6 +131,7 @@ public class UIPopupRenameCommander : UIPopupBase
     // ── 확인 클릭 ─────────────────────────────────────────────────
     private void OnConfirmClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_isNameValid == false) return;
 
         m_confirmButton.SetInteractable(false);  // 중복 클릭 방지
@@ -162,6 +163,7 @@ public class UIPopupRenameCommander : UIPopupBase
     // ── 취소 ──────────────────────────────────────────────────────
     private void OnCancelClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_debounceCoroutine != null)
             StopCoroutine(m_debounceCoroutine);
 

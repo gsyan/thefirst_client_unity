@@ -64,6 +64,19 @@ public class SpaceShip : MonoBehaviour
             (m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player ||
              m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player_remote))
             StartRepairLoop(m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player);
+
+        EventManager.Subscribe_ModuleBodyDestroyed(OnModuleBodyDestroyed);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_ModuleBodyDestroyed(OnModuleBodyDestroyed);
+    }
+
+    private void OnModuleBodyDestroyed(ModuleBody destroyedBody)
+    {
+        if (m_currentTargetBody != destroyedBody) return;
+        StartFindingTargets();
     }
 
     private void InitializeGaugeDisplay()
@@ -150,6 +163,7 @@ public class SpaceShip : MonoBehaviour
                 m_shipState = EUnitState.Warp;
                 StopAutoCombat();
                 break;
+            case EUnitState.BattleReady:
             case EUnitState.BattleExploration:
             case EUnitState.BattlePvp:
                 m_shipState = m_ownerFleet.m_fleetState;
@@ -158,8 +172,7 @@ public class SpaceShip : MonoBehaviour
                     StopCoroutine(m_returnRotationCoroutine);
                     m_returnRotationCoroutine = null;
                 }
-                if (m_findTargetModuleBodyCoroutine == null)
-                    m_findTargetModuleBodyCoroutine = StartCoroutine(FindTargetModuleBody());
+                // FindTargetModuleBody는 SpaceFleet.StartCombat()에서 양쪽 모두 배틀 상태 후 시작
                 if (m_rotationCoroutine == null)
                     m_rotationCoroutine = StartCoroutine(RotateTowardTarget());
                 break;
@@ -174,6 +187,14 @@ public class SpaceShip : MonoBehaviour
     }
 
 
+
+    public void StartFindingTargets()
+    {
+        // if (m_findTargetModuleBodyCoroutine != null)
+        //     StopCoroutine(m_findTargetModuleBodyCoroutine);
+        // m_findTargetModuleBodyCoroutine = StartCoroutine(Co_FindTargetModuleBody());
+        FindTargetModuleBody();
+    }
 
     public void StopAutoCombat()
     {
@@ -193,7 +214,23 @@ public class SpaceShip : MonoBehaviour
         m_returnRotationCoroutine = StartCoroutine(ReturnToFleetForward());
     }
 
-    private IEnumerator FindTargetModuleBody()
+    private void FindTargetModuleBody()
+    {
+        CollectOpposingBodies(m_candidateBodies);
+        ModuleBody best = FindMinAngleBody(m_candidateBodies);
+        if (best == null) return;
+        
+        m_currentTargetBody = best;
+        m_targetShip = m_currentTargetBody.GetShip();
+
+        foreach (ModuleBody body in m_moduleBodys)
+        {
+            if (body != null && body.m_health > 0)
+                body.SetTarget(m_currentTargetBody);
+        }
+    }
+
+    private IEnumerator Co_FindTargetModuleBody()
     {
         while (true)
         {
@@ -204,7 +241,7 @@ public class SpaceShip : MonoBehaviour
 
             if (currentTargetAlive == false)
             {
-                CollectCandidateEnemyBodies(m_candidateBodies);
+                CollectOpposingBodies(m_candidateBodies);
                 ModuleBody best = FindMinAngleBody(m_candidateBodies);
 
                 if (best == null)
@@ -227,38 +264,31 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
-    private void CollectCandidateEnemyBodies(List<ModuleBody> result)
+    private void CollectOpposingBodies(List<ModuleBody> result)
     {
         result.Clear();
         if (m_ownerFleet != null && m_ownerFleet.IsEnemy == true)
         {
-            SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
-            if (myFleet == null) return;
-            foreach (SpaceShip ship in myFleet.m_ships)
-            {
-                if (ship == null || ship.IsAlive() == false) continue;
-                foreach (ModuleBody body in ship.m_moduleBodys)
-                {
-                    if (body != null && body.m_health > 0)
-                        result.Add(body);
-                }
-            }
+            CollectBodiesFromFleet(ObjectManager.Instance.m_myFleet, result);
         }
         else
         {
             List<SpaceFleet> enemyFleets = ObjectManager.Instance.m_enemyFleets;
             foreach (SpaceFleet fleet in enemyFleets)
+                CollectBodiesFromFleet(fleet, result);
+        }
+    }
+
+    private void CollectBodiesFromFleet(SpaceFleet opposingFleet, List<ModuleBody> result)
+    {
+        if (opposingFleet == null || opposingFleet.IsFleetAlive() == false || opposingFleet.m_fleetState.IsBattleState() == false) return;
+        foreach (SpaceShip ship in opposingFleet.m_ships)
+        {
+            if (ship == null || ship.IsAlive() == false || ship.IsWarping == true) continue;
+            foreach (ModuleBody body in ship.m_moduleBodys)
             {
-                if (fleet == null || fleet.IsFleetAlive() == false || fleet.m_fleetState.IsBattleState() == false) continue;
-                foreach (SpaceShip ship in fleet.m_ships)
-                {
-                    if (ship == null || ship.IsAlive() == false || ship.IsWarping == true) continue;
-                    foreach (ModuleBody body in ship.m_moduleBodys)
-                    {
-                        if (body != null && body.m_health > 0)
-                            result.Add(body);
-                    }
-                }
+                if (body != null && body.m_health > 0)
+                    result.Add(body);
             }
         }
     }
@@ -371,6 +401,7 @@ public class SpaceShip : MonoBehaviour
         EffectBase effect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_EXPLOSION_SHIP);
         effect.transform.position = transform.position;
         effect.PlayEffect();
+        SoundManager.Instance.PlayFX(EFx.Explosion_Ship, transform.position);
         // 파괴 처리
         Destroy(gameObject);
     }

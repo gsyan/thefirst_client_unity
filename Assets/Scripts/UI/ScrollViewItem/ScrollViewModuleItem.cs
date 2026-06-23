@@ -12,7 +12,7 @@ public class ScrollViewModuleItem : MonoBehaviour
     {
         m_selectButton.gameObject.SetActive(true);
         m_selectButton.onClick.RemoveAllListeners();
-        m_selectButton.onClick.AddListener(actionSelect);
+        m_selectButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); actionSelect?.Invoke(); });
         CommonUtility.SetUILocText(m_selectButtonText, text);
 
         // 초기 상태: 선택 상태 숨김

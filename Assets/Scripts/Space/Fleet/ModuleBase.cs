@@ -39,7 +39,7 @@ public class ModuleBase : MonoBehaviour
 
     // 함대 정보
     protected SpaceFleet m_ownerFleet;
-    protected SpaceShip m_myShip;
+    protected SpaceShip m_ownerShip;
 
     protected EUnitState m_moduleState;
 
@@ -50,7 +50,7 @@ public class ModuleBase : MonoBehaviour
 
     public virtual void ApplyShipStateToModule()
     {
-        switch (m_myShip.m_shipState)
+        switch (m_ownerShip.m_shipState)
         {
             case EUnitState.Idle:
             case EUnitState.Move:
@@ -59,7 +59,7 @@ public class ModuleBase : MonoBehaviour
                 break;
             case EUnitState.BattleExploration:
             case EUnitState.BattlePvp:
-                m_moduleState = m_myShip.m_shipState;
+                m_moduleState = m_ownerShip.m_shipState;
                 break;
             default:
                 m_moduleState = EUnitState.Idle;
@@ -128,17 +128,17 @@ public class ModuleBase : MonoBehaviour
     public virtual void SetFleetInfo(SpaceFleet fleet, SpaceShip ship)
     {
         m_ownerFleet = fleet;
-        m_myShip = ship;
+        m_ownerShip = ship;
     }
 
     // 함대 정보 자동 탐지 및 설정
     protected virtual void AutoDetectFleetInfo()
     {
-        if (m_myShip == null)
-            m_myShip = GetComponentInParent<SpaceShip>();
+        if (m_ownerShip == null)
+            m_ownerShip = GetComponentInParent<SpaceShip>();
 
-        if (m_ownerFleet == null && m_myShip != null)
-            m_ownerFleet = m_myShip.m_ownerFleet;
+        if (m_ownerFleet == null && m_ownerShip != null)
+            m_ownerFleet = m_ownerShip.m_ownerFleet;
     }
 
     // 함대 이름 반환 (로그용)
@@ -152,14 +152,14 @@ public class ModuleBase : MonoBehaviour
     // 함선 이름 반환 (로그용)
     public string GetShipName()
     {
-        if (m_myShip != null)
-            return m_myShip.gameObject.name;
+        if (m_ownerShip != null)
+            return m_ownerShip.gameObject.name;
         return "Unknown Ship";
     }
 
-    public SpaceShip GetMyShip()
+    public SpaceShip GetShip()
     {
-        return m_myShip;
+        return m_ownerShip;
     }
 
     // 모듈의 능력치 프로파일 반환 (하위 클래스에서 override)

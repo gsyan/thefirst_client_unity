@@ -84,9 +84,9 @@ public class ModuleBeam : ModuleBase
         // Zone 적 함선일 때 체력·공격력에 배율 적용
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_myShip.m_beamMultiplier;
-            m_healthMax *= m_myShip.m_beamMultiplier;
-            m_attack    *= m_myShip.m_beamMultiplier;
+            m_health    *= m_ownerShip.m_beamMultiplier;
+            m_healthMax *= m_ownerShip.m_beamMultiplier;
+            m_attack    *= m_ownerShip.m_beamMultiplier;
         }
 
         // 무기 서브 타입 초기화
@@ -133,15 +133,15 @@ public class ModuleBeam : ModuleBase
     {
         while (true)
         {
-            if (m_moduleState.IsBattleState() == false) yield return null;
+            if (m_moduleState.IsBattleState() == false) { yield return null; continue; }
 
             if (m_currentTarget != null && m_currentTarget.m_health > 0)
             {
                 if (Time.time >= m_lastAttackTime + m_attackCool)
                 {
                     bool isFacing = true;
-                    if (m_myShip != null)
-                        isFacing = m_myShip.IsFacingTarget(m_currentTarget.transform.position, k_beamFireAngle);
+                    if (m_ownerShip != null)
+                        isFacing = m_ownerShip.IsFacingTarget(m_currentTarget.transform.position, k_beamFireAngle);
                     if (isFacing == true)
                     {
                         ExecuteAttackOnTarget(m_currentTarget);

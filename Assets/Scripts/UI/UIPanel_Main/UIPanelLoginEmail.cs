@@ -20,7 +20,7 @@ public class UIPanelLoginEmail : UIPanelBase
    public override void InitializeUIPanel()
    {
       if (m_backButton != null)
-         m_backButton.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelLoginType"));
+         m_backButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); UIManager.Instance.ShowPanel("UIPanelLoginType"); });
 
       if (m_registerButton != null)
          //m_registerButton.onClick.AddListener(() => UIManager.Instance.ShowPanel("UIPanelRegisterEmail"));
@@ -45,6 +45,7 @@ public class UIPanelLoginEmail : UIPanelBase
 
    private void EmailRegister()
    {
+      SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
       string email = m_emailInput.text;
       string password = m_passwordInput.text;
 
@@ -84,6 +85,7 @@ public class UIPanelLoginEmail : UIPanelBase
 
    private void EmailLogin()
    {
+      SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
       string email = m_emailInput.text;
       string password = m_passwordInput.text;
 

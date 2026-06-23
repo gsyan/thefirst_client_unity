@@ -185,7 +185,10 @@ public class ProjectileBeam : ProjectileBase
 
         // 2단계: 데미지 처리
         if (hitTarget != null)
+        {
             hitTarget.TakeDamage(m_damage, finalHitPoint);
+            SoundManager.Instance.PlayFX(EFx.Beam_Impact1, finalHitPoint);
+        }
 
         // TakeDamage→전멸→CleanupAllProjectiles 동기 체인으로 이미 ReturnToPool 됐을 수 있음
         if (gameObject.activeInHierarchy == false) yield break;

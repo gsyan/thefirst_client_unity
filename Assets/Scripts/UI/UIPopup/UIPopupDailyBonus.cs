@@ -180,6 +180,7 @@ public class UIPopupDailyBonus : UIPopupBase
 
     private void OnConfirmClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         Action cb = m_onConfirm;
         m_onConfirm = null;
         cb?.Invoke();

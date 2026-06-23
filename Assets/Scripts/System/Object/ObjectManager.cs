@@ -127,6 +127,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (m_celestialBodySpawner != null)
             m_celestialBodySpawner.SpawnZone(GetInitialZoneIndex());
 
+        // SoundManager 이벤트 구독이 SpawnFleet→TriggerMyFleetStateChanged 이전에 완료되어야 함
+        SoundManager.Instance.InitializeSoundManager();
+
         SpawnFleet();
 
         NetworkManager.Instance.OnChangeScene();
@@ -282,7 +285,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
 
     // Zone 적 함대 — 서버 FleetInfo로 초기화 (PvP와 동일 구조, IsZoneEnemy 보장)
-    public void StartSpawnEnemiesFromFleetInfo(FleetInfo fleetInfo)
+    public void StartSpawnEnemiesFromFleetInfo(FleetInfo fleetInfo, ZoneStageConfig zoneStage)
     {
         if (fleetInfo == null || fleetInfo.ships == null || fleetInfo.ships.Count == 0)
         {
@@ -311,11 +314,16 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_enemyFleets.Add(newZoneFleet);
 
         GameSpeedController.RestoreSpeed();
-        if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.BattleExploration);
+        if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.BattleReady);
 
         // fleet_source_zone_data → IsZoneEnemy == true → 전멸 시 OnZoneEnemyFleetDefeated 호출
         newZoneFleet.InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EUnitState.Move);
-        newZoneFleet.StartFleetWarpIn(() => newZoneFleet.SetFleetState(EUnitState.BattleExploration));
+        newZoneFleet.StartFleetWarpIn(() =>
+        {
+            newZoneFleet.SetFleetState(EUnitState.BattleReady);
+            TryStartExploreCombat(newZoneFleet, zoneStage);
+        });
+        TryStartExploreCombat(newZoneFleet, zoneStage);
     }
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
@@ -339,10 +347,49 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
         enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EUnitState.Move);
-        enemyFleet.StartFleetWarpIn(() => enemyFleet.SetFleetState(EUnitState.BattlePvp));
-        m_myFleet.SetFleetState(EUnitState.BattlePvp);
+        enemyFleet.StartFleetWarpIn(() =>
+        {
+            enemyFleet.SetFleetState(EUnitState.BattleReady);
+            TryStartPvpCombat(enemyFleet);
+        });
+        m_myFleet.SetFleetState(EUnitState.BattleReady);
+        TryStartPvpCombat(enemyFleet);
 
         m_enemyFleets.Add(enemyFleet);
+    }
+
+    private void TryStartExploreCombat(SpaceFleet enemyFleet, ZoneStageConfig zoneStage)
+    {
+        if (m_myFleet == null || m_myFleet.m_fleetState != EUnitState.BattleReady) return;
+        if (enemyFleet == null || enemyFleet.m_fleetState != EUnitState.BattleReady) return;
+
+        m_myFleet.SetFleetState(EUnitState.BattleExploration);
+        enemyFleet.SetFleetState(EUnitState.BattleExploration);
+
+        float playerDelay = zoneStage != null ? zoneStage.playerFireDelaySec : 0f;
+        float enemyDelay  = zoneStage != null ? zoneStage.enemyFireDelaySec  : 0f;
+        StartCoroutine(DelayedStartCombat(m_myFleet,  playerDelay));
+        StartCoroutine(DelayedStartCombat(enemyFleet, enemyDelay));
+    }
+
+    private void TryStartPvpCombat(SpaceFleet enemyFleet)
+    {
+        if (m_myFleet == null || m_myFleet.m_fleetState != EUnitState.BattleReady) return;
+        if (enemyFleet == null || enemyFleet.m_fleetState != EUnitState.BattleReady) return;
+
+        m_myFleet.SetFleetState(EUnitState.BattlePvp);
+        enemyFleet.SetFleetState(EUnitState.BattlePvp);
+
+        StartCoroutine(DelayedStartCombat(m_myFleet,  0f));
+        StartCoroutine(DelayedStartCombat(enemyFleet, 0f));
+    }
+
+    private IEnumerator DelayedStartCombat(SpaceFleet fleet, float delaySec)
+    {
+        if (delaySec > 0f)
+            yield return new WaitForSeconds(delaySec);
+        if (fleet != null)
+            fleet.StartCombat();
     }
 
     // 이벤트에 의한 함대 파괴 — 정식 파괴는 이곳, cleanup loop(GetEnemy)는 안전망

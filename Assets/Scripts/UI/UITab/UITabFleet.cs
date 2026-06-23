@@ -113,6 +113,7 @@ public class UITabFleet : UITabBase
 
     private void OnFleetTacticsButtonClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_tabSystemParent == null) return;
         m_tabSystemParent.SwitchToTabByName("tab_fleettactics");
     }
@@ -388,6 +389,7 @@ public class UITabFleet : UITabBase
         {
             if (response.errorCode == 0)
             {
+                SoundManager.Instance.PlayFX(EFx.Add_Ship, retrigger: true);
                 commander.UpdateModulePoint(response.data.modulePointRemain);
 
                 if (response.data.newShipInfo != null)

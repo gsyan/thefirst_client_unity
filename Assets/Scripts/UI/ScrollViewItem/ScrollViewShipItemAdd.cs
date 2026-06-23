@@ -10,7 +10,7 @@ public class ScrollViewShipItemAdd : MonoBehaviour
     public void InitializeScrollViewShipItemAdd(string text, UnityEngine.Events.UnityAction action)
     {
         m_AddButton.gameObject.SetActive(true);
-        m_AddButton.onClick.AddListener(action);
+        m_AddButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); action?.Invoke(); });
         m_AddButtonText.text = text;
     }
     

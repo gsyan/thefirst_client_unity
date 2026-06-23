@@ -93,7 +93,7 @@ public class UIPanelCameraView : UIPanelBase
         for (int i = 0; i < m_tacticsButtons.Length; i++)
         {
             int idx = i;
-            m_tacticsButtons[idx].GetButton().onClick.AddListener(() => EventManager.Trigger_TacticToggleRequested(idx));
+            m_tacticsButtons[idx].GetButton().onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); EventManager.Trigger_TacticToggleRequested(idx); });
         }
     }
 
@@ -120,9 +120,9 @@ public class UIPanelCameraView : UIPanelBase
         {
             m_retreatButton.onClick.RemoveAllListeners();
             if (state == EUnitState.BattleExploration)
-                m_retreatButton.onClick.AddListener(EventManager.TriggerRetreatExploration);
+                m_retreatButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); EventManager.TriggerRetreatExploration(); });
             else if (state == EUnitState.BattlePvp)
-                m_retreatButton.onClick.AddListener(EventManager.TriggerRetreatPvp);
+                m_retreatButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); EventManager.TriggerRetreatPvp(); });
         }
 
         RefreshVisibility();
@@ -155,6 +155,7 @@ public class UIPanelCameraView : UIPanelBase
 
     private void OnSpeedButtonClicked()
     {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         GameSpeedController.CycleNext();
     }
 
