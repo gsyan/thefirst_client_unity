@@ -454,8 +454,13 @@ public class SpaceShip : MonoBehaviour
         EffectBase mark = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_SCORCH_MARK);
         DecalProjector decal = mark.GetComponent<DecalProjector>();
         mark.transform.SetParent(transform, true);
-        mark.transform.position = hitPosition;
-        mark.transform.rotation = Quaternion.LookRotation(hitPosition - transform.position);
+        Vector3 dirToCenter = transform.position - hitPosition;
+        // 방향을 빔 방향과 같게
+        Vector3 outwardDir = -dirToCenter.normalized;
+        float projectionDepth = decal.size.z;
+        // 위치는 뎁스 반 만큼 뒤로 뺀다. 그러면 타격점 근처의 솟아난 부분까지 데칼 효과가 나타나게되어 품질이 좋다
+        mark.transform.position = hitPosition + outwardDir * (projectionDepth * 0.5f);
+        mark.transform.rotation = Quaternion.LookRotation(dirToCenter);
         mark.PlayEffect();
         Coroutine co = StartCoroutine(ScorchMarkLifeCycle(decal, mark));
         m_scorchMarks.Add(mark);

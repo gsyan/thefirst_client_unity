@@ -49,12 +49,12 @@ public class ProjectileMissile : ProjectileBase
     public void SetPoolName(EPoolName poolName) { m_poolName = poolName; }
 
     public void InitializeProjectileMissile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
-     ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed)
+     ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed, float explosionMultiplier = 1f)
     {
         SetCommonData(firePointTransform, target, damage, sourceModuleBase);
         m_missileSource = (sourceModuleBase is ModuleHanger) ? EMissileSource.Aircraft : EMissileSource.Ship;
         m_missileSpeed = moduleData.projectileSpeed;
-        m_splashRadius = moduleData.splashRadius;
+        m_splashRadius = moduleData.splashRadius * explosionMultiplier;
         m_ejectSpeed = ejectSpeed;
         m_lifeTime = 0.0f;
         m_prevPosition = transform.position;

@@ -930,9 +930,17 @@ public class SpaceFleet : MonoBehaviour
         if (m_fleetSource == EFleetSource.fleet_source_player)
         {
             if (fleetState.IsBattleState() == true)
+            {
                 StartBattleRepairCostLoop();
+                StartMissileTacticCostLoop();
+                StartAircraftTacticCostLoop();
+            }
             else
+            {
                 StopBattleRepairCostLoop();
+                StopMissileTacticCostLoop();
+                StopAircraftTacticCostLoop();
+            }
         }
         if (m_fleetSide == EFleetSide.fleet_side_player)
             EventManager.TriggerMyFleetStateChanged(fleetState);
@@ -979,6 +987,95 @@ public class SpaceFleet : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    private bool HasAnyMissileModule()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null || ship.IsAlive() == false) continue;
+            foreach (ModuleBody body in ship.m_moduleBodys)
+            {
+                if (body != null && body.m_missiles.Count > 0) return true;
+            }
+        }
+        return false;
+    }
+
+    private bool HasAnyHangerModule()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null || ship.IsAlive() == false) continue;
+            foreach (ModuleBody body in ship.m_moduleBodys)
+            {
+                if (body != null && body.m_hangers.Count > 0) return true;
+            }
+        }
+        return false;
+    }
+
+    private Coroutine m_missileTacticCostCoroutine;
+    private Coroutine m_aircraftTacticCostCoroutine;
+
+    private void StartMissileTacticCostLoop()
+    {
+        if (m_missileTacticCostCoroutine != null) StopCoroutine(m_missileTacticCostCoroutine);
+        m_missileTacticCostCoroutine = StartCoroutine(MissileTacticCostLoop());
+    }
+
+    private void StopMissileTacticCostLoop()
+    {
+        if (m_missileTacticCostCoroutine == null) return;
+        StopCoroutine(m_missileTacticCostCoroutine);
+        m_missileTacticCostCoroutine = null;
+    }
+
+    private IEnumerator MissileTacticCostLoop()
+    {
+        while (true)
+        {
+            yield return k_battleRepairCostInterval;
+            if (m_fleetState.IsBattleState() == false) continue;
+            if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 2) == 0) continue;
+            if (HasAnyMissileModule() == false) continue;
+
+            Commander commander = DataManager.Instance.m_currentCommander;
+            if (commander == null) continue;
+
+            int cost = DataManager.Instance.m_dataTableConfig.gameSettings.missileTacticMineralPerSec;
+            commander.TryConsumeMineral(cost);
+        }
+    }
+
+    private void StartAircraftTacticCostLoop()
+    {
+        if (m_aircraftTacticCostCoroutine != null) StopCoroutine(m_aircraftTacticCostCoroutine);
+        m_aircraftTacticCostCoroutine = StartCoroutine(AircraftTacticCostLoop());
+    }
+
+    private void StopAircraftTacticCostLoop()
+    {
+        if (m_aircraftTacticCostCoroutine == null) return;
+        StopCoroutine(m_aircraftTacticCostCoroutine);
+        m_aircraftTacticCostCoroutine = null;
+    }
+
+    private IEnumerator AircraftTacticCostLoop()
+    {
+        while (true)
+        {
+            yield return k_battleRepairCostInterval;
+            if (m_fleetState.IsBattleState() == false) continue;
+            if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 4) == 0) continue;
+            if (HasAnyHangerModule() == false) continue;
+
+            Commander commander = DataManager.Instance.m_currentCommander;
+            if (commander == null) continue;
+
+            int cost = DataManager.Instance.m_dataTableConfig.gameSettings.aircraftTacticMineralPerSec;
+            commander.TryConsumeMineral(cost);
+        }
     }
 
     // 함대의 능력치 프로파일 계산

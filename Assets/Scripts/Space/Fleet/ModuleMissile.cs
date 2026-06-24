@@ -170,10 +170,17 @@ public class ModuleMissile : ModuleBase
 
     private void ExecuteAttackOnTarget(ModuleBody target)
     {
+        bool missileTacticOn = m_ownerFleet != null && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 2) != 0;
+        GameSettings settings = DataManager.Instance.m_dataTableConfig.gameSettings;
+        float damageMultiplier = missileTacticOn == true ? settings.missileTacticDamageMultiplier : 1f;
+        float finalDamage = m_attack * damageMultiplier;
+
+        float explosionMultiplier = missileTacticOn == true ? settings.missileTacticExplosionMultiplier : 1f;
+
         foreach (var launcher in m_launchers)
         {
             if (launcher != null)
-                launcher.FireAtTarget(target, m_attack, this);
+                launcher.FireAtTarget(target, finalDamage, this, explosionMultiplier: explosionMultiplier);
         }
     }
 

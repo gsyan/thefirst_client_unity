@@ -30,7 +30,7 @@ public class LauncherAircraft : LauncherBase
         m_isInitialized = true;
     }
 
-    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default)
+    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
     {
         if (m_isInitialized == false) return;
         StartCoroutine(FireCoroutine(target));
@@ -40,6 +40,19 @@ public class LauncherAircraft : LauncherBase
     {
         AircraftInfo aircraftInfo = m_moduleHanger.GetReadyAircraft();
         if (aircraftInfo == null) yield break;
+
+        // 함재기 전술 강화 ON: 출격 시 공격력·탄약 배율 적용 (귀환 시 UpdateAircraftInfo로 원복)
+        SpaceShip carrierShip = m_moduleHanger.GetSpaceShip();
+        SpaceFleet ownerFleet = carrierShip != null ? carrierShip.m_ownerFleet : null;
+        bool aircraftTacticOn = ownerFleet != null
+            && ownerFleet.m_fleetInfo != null
+            && (ownerFleet.m_fleetInfo.tacticOptions & 4) != 0;
+        if (aircraftTacticOn == true)
+        {
+            GameSettings settings = DataManager.Instance.m_dataTableConfig.gameSettings;
+            aircraftInfo.airAttack = aircraftInfo.airAttack * settings.aircraftTacticDamageMultiplier;
+            aircraftInfo.airAmmo   = Mathf.RoundToInt(aircraftInfo.airAmmoMax * settings.aircraftTacticAmmoMultiplier);
+        }
 
         //ParticleSystem muzzleEffect = ObjectManager.Instance.m_poolManager.GetParticleSystem_Play_AutoReturn(EPoolName.EFFECT_BEAM_MUZZLE, m_firePoint);
 

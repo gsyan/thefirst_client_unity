@@ -28,6 +28,22 @@ public class GameSettings
     public int battleRepairMineralPerSec = 1;
     [Tooltip("즉시 수리 비용 기준 시간(초) — 비용 = battleRepairMineralPerSec × instantRepairBaseSecs")]
     public int instantRepairBaseSecs = 60;
+
+    [Header("Tactic - Missile")]
+    [Tooltip("미사일 전술 강화 ON 시 1초당 소모하는 미네랄 (함대 단위)")]
+    public int missileTacticMineralPerSec = 1;
+    [Tooltip("미사일 전술 강화 ON 시 데미지 배율")]
+    public float missileTacticDamageMultiplier = 2f;
+    [Tooltip("미사일 전술 강화 ON 시 폭발 반경 배율")]
+    public float missileTacticExplosionMultiplier = 2f;
+
+    [Header("Tactic - Aircraft")]
+    [Tooltip("함재기 전술 강화 ON 시 1초당 소모하는 미네랄 (함대 단위)")]
+    public int aircraftTacticMineralPerSec = 1;
+    [Tooltip("함재기 전술 강화 ON 시 공격력 배율")]
+    public float aircraftTacticDamageMultiplier = 2f;
+    [Tooltip("함재기 전술 강화 ON 시 미사일 장착 개수 배율")]
+    public float aircraftTacticAmmoMultiplier = 2f;
 }
 
 [CreateAssetMenu(fileName = "DataTableConfig", menuName = "Custom/DataTableConfig")]

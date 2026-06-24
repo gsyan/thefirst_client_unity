@@ -8,6 +8,7 @@
 
 ## 서버 프로젝트(Java Spring)
 - 루트: D:\BK\thefirst\thefirst_server 또는 C:\bk\thefirst\thefirst_server
+- **[필수] 서버의 모든 DateTime은 반드시 UTC(`Instant.now()`)로 저장할 것** — `LocalDateTime.now()`, `LocalDate.now()` 사용 금지. 날짜 비교가 필요한 경우 `LocalDate.now(ZoneOffset.UTC)` 명시
 
 ## 코드 생성 도구
 - Python generator 경로: 서버경로\tools\generator
