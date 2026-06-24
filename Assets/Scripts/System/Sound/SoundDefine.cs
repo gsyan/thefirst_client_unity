@@ -16,7 +16,8 @@ public enum EMissileSource { Ship, Aircraft }
 public enum EFx
 {
     None = 0,
-    
+    Main,
+        
     // UI
     Grade_Up,
     Grade_Down,

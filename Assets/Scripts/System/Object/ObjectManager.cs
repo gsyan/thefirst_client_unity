@@ -34,11 +34,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         else
             Debug.LogError("ProjectileBeamPrefab not found at Resources/Prefabs/Projectile/ProjectileBeam");
 
-        ProjectileBeamInstant projectileBeamInstantPrefab = ResourceManager.Instance.Load<ProjectileBeamInstant>("Prefabs/Projectile/ProjectileBeamInstant");
-        if (projectileBeamInstantPrefab != null)
-            m_poolManager.CreatePool(EPoolName.PROJECTILE_BEAM_INSTANT, projectileBeamInstantPrefab, 1, 20);
+        ProjectileBeamHitscan projectileBeamHitscanPrefab = ResourceManager.Instance.Load<ProjectileBeamHitscan>("Prefabs/Projectile/ProjectileBeamHitscan");
+        if (projectileBeamHitscanPrefab != null)
+            m_poolManager.CreatePool(EPoolName.PROJECTILE_BEAM_HITSCAN, projectileBeamHitscanPrefab, 1, 20);
         else
-            Debug.LogWarning("ProjectileBeamInstant not found at Resources/Prefabs/Projectile/ProjectileBeamInstant");
+            Debug.LogWarning("ProjectileBeamHitscan not found at Resources/Prefabs/Projectile/ProjectileBeamHitscan");
 
         ProjectileMissile projectileMissileSmallPrefab = ResourceManager.Instance.Load<ProjectileMissile>("Prefabs/Projectile/ProjectileMissileSmall");
         if (projectileMissileSmallPrefab != null)
@@ -261,29 +261,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
 
 
-    // ZoneConfig 기반 적 함선 순차 스폰 — 슬롯 단위 관리, 큐 소진 + 전멸 시 클리어
-    public void StartSpawnEnemies(ZoneStageConfig zoneStageConfig)
-    {
-        if (zoneStageConfig == null || zoneStageConfig.enemyFleet == null || zoneStageConfig.enemyFleet.ships == null || zoneStageConfig.enemyFleet.ships.Count == 0)
-        {
-            EventManager.TriggerZoneStageBattleEnd(true);
-            return;
-        }
-
-        for (int i = 0; i < m_enemyFleets.Count; i++)
-        {
-            if (m_enemyFleets[i] != null && m_enemyFleets[i].IsZoneEnemy == true)
-                m_enemyFleets[i].StopSpawning();
-        }
-
-        SpaceFleet newZoneFleet = CreateEnemyFleetShell();
-        m_enemyFleets.Add(newZoneFleet);
-
-        GameSpeedController.RestoreSpeed();
-        if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.BattleExploration);
-        newZoneFleet.StartSpawning(zoneStageConfig);
-    }
-
     // Zone 적 함대 — 서버 FleetInfo로 초기화 (PvP와 동일 구조, IsZoneEnemy 보장)
     public void StartSpawnEnemiesFromFleetInfo(FleetInfo fleetInfo, ZoneStageConfig zoneStage)
     {
@@ -291,12 +268,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         {
             EventManager.TriggerZoneStageBattleEnd(true);
             return;
-        }
-
-        for (int i = 0; i < m_enemyFleets.Count; i++)
-        {
-            if (m_enemyFleets[i] != null && m_enemyFleets[i].IsZoneEnemy == true)
-                m_enemyFleets[i].StopSpawning();
         }
 
         Vector3 spawnPosition = GetEnemySpawnPosition();
@@ -318,12 +289,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         // fleet_source_zone_data → IsZoneEnemy == true → 전멸 시 OnZoneEnemyFleetDefeated 호출
         newZoneFleet.InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EUnitState.Move);
+        float playerDelay = zoneStage != null ? zoneStage.playerFireDelaySec : 0f;
+        float enemyDelay  = zoneStage != null ? zoneStage.enemyFireDelaySec  : 0f;
         newZoneFleet.StartFleetWarpIn(() =>
         {
             newZoneFleet.SetFleetState(EUnitState.BattleReady);
-            TryStartExploreCombat(newZoneFleet, zoneStage);
+            TryStartCombat(newZoneFleet, EUnitState.BattleExploration, playerDelay, enemyDelay);
         });
-        TryStartExploreCombat(newZoneFleet, zoneStage);
+        TryStartCombat(newZoneFleet, EUnitState.BattleExploration, playerDelay, enemyDelay);
     }
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
@@ -350,38 +323,23 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         enemyFleet.StartFleetWarpIn(() =>
         {
             enemyFleet.SetFleetState(EUnitState.BattleReady);
-            TryStartPvpCombat(enemyFleet);
+            TryStartCombat(enemyFleet, EUnitState.BattlePvp);
         });
         m_myFleet.SetFleetState(EUnitState.BattleReady);
-        TryStartPvpCombat(enemyFleet);
+        TryStartCombat(enemyFleet, EUnitState.BattlePvp);
 
         m_enemyFleets.Add(enemyFleet);
     }
 
-    private void TryStartExploreCombat(SpaceFleet enemyFleet, ZoneStageConfig zoneStage)
+    private void TryStartCombat(SpaceFleet enemyFleet, EUnitState battleState, float playerDelay = 0f, float enemyDelay = 0f)
     {
         if (m_myFleet == null || m_myFleet.m_fleetState != EUnitState.BattleReady) return;
         if (enemyFleet == null || enemyFleet.m_fleetState != EUnitState.BattleReady) return;
 
-        m_myFleet.SetFleetState(EUnitState.BattleExploration);
-        enemyFleet.SetFleetState(EUnitState.BattleExploration);
-
-        float playerDelay = zoneStage != null ? zoneStage.playerFireDelaySec : 0f;
-        float enemyDelay  = zoneStage != null ? zoneStage.enemyFireDelaySec  : 0f;
+        m_myFleet.SetFleetState(battleState);
+        enemyFleet.SetFleetState(battleState);
         StartCoroutine(DelayedStartCombat(m_myFleet,  playerDelay));
         StartCoroutine(DelayedStartCombat(enemyFleet, enemyDelay));
-    }
-
-    private void TryStartPvpCombat(SpaceFleet enemyFleet)
-    {
-        if (m_myFleet == null || m_myFleet.m_fleetState != EUnitState.BattleReady) return;
-        if (enemyFleet == null || enemyFleet.m_fleetState != EUnitState.BattleReady) return;
-
-        m_myFleet.SetFleetState(EUnitState.BattlePvp);
-        enemyFleet.SetFleetState(EUnitState.BattlePvp);
-
-        StartCoroutine(DelayedStartCombat(m_myFleet,  0f));
-        StartCoroutine(DelayedStartCombat(enemyFleet, 0f));
     }
 
     private IEnumerator DelayedStartCombat(SpaceFleet fleet, float delaySec)
@@ -404,15 +362,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             ForceEndBattle(true);
     }
 
-    // 적 스폰 중지 및 Zone 전투 상태 초기화
-    public void StopEnemySpawning()
-    {
-        for (int i = 0; i < m_enemyFleets.Count; i++)
-        {
-            if (m_enemyFleets[i] != null && m_enemyFleets[i].IsZoneEnemy == true)
-                m_enemyFleets[i].StopSpawning();
-        }
-    }
+    public void StopEnemySpawning() { }
 
     // 모든 적 함대 제거
     public void RemoveAllEnemyFleets()
@@ -481,26 +431,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
 
     
-
-    // 빈 적 함대 오브젝트 생성 — 이후 함선을 1척씩 추가할 껍데기
-    private SpaceFleet CreateEnemyFleetShell()
-    {
-        Vector3 spawnPosition = GetEnemySpawnPosition();
-        GameObject fleetObj = new GameObject("EnemyFleet");
-        fleetObj.transform.position = spawnPosition;
-
-        if (m_myFleet != null)
-        {
-            Vector3 dir = m_myFleet.transform.position - spawnPosition;
-            dir.y = 0;
-            if (dir != Vector3.zero)
-                fleetObj.transform.rotation = Quaternion.LookRotation(dir);
-        }
-
-        SpaceFleet fleet = fleetObj.AddComponent<SpaceFleet>();
-        fleet.InitializeAsZoneEnemyFleetShell("EnemyFleet", EFormationType.linear_horizontal);
-        return fleet;
-    }
 
     // SpaceFleet.SpawnShipCoroutine에서 전멸 판정 후 호출
     public void OnZoneEnemyFleetDefeated(SpaceFleet fleet)

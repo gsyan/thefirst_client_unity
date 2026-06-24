@@ -36,7 +36,7 @@ public class LauncherMissile : LauncherBase
         m_isInitialized = true;
     }
 
-    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
+    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default)
     {
         if (m_isInitialized == false) return;
         StartCoroutine(FireMissileCoroutine(target, damage, sourceModuleBase));
@@ -59,7 +59,7 @@ public class LauncherMissile : LauncherBase
         missile.SetPoolName(m_missilePoolName);
 
         // 함선 발사대: 발사구 위쪽 방향으로 콜드런치
-        missile.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.black, sourceModuleBase, m_firePoint.forward, m_ejectSpeed, 1f);
+        missile.InitializeProjectileMissile(m_firePoint, target, damage, m_moduleData, sourceModuleBase, m_firePoint.forward, m_ejectSpeed);
     }
 
 }

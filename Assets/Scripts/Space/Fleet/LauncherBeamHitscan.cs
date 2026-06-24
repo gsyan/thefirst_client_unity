@@ -1,4 +1,4 @@
-// 즉시 발사 빔 런처 - ProjectileBeamInstant 를 풀에서 꺼내 발사
+// Hitscan 빔 런처 - ProjectileBeamHitscan 을 풀에서 꺼내 발사
 using UnityEngine;
 using System.Collections;
 
@@ -28,20 +28,20 @@ public class LauncherBeamInstant : LauncherBase
         m_isInitialized = true;
     }
 
-    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
+    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default)
     {
         if (m_isInitialized == false) return;
-        StartCoroutine(FireCoroutine(target, damage, sourceModuleBase));
+        StartCoroutine(FireCoroutine(target, damage, sourceModuleBase, hitPoint));
     }
 
-    private IEnumerator FireCoroutine(ModuleBase target, float damage, ModuleBase sourceModuleBase)
+    private IEnumerator FireCoroutine(ModuleBase target, float damage, ModuleBase sourceModuleBase, Vector3 hitPoint)
     {
         if (target == null) yield break;
 
-        ProjectileBeamInstant beam = ObjectManager.Instance.m_poolManager.Get<ProjectileBeamInstant>(EPoolName.PROJECTILE_BEAM_INSTANT);
+        ProjectileBeamHitscan beam = ObjectManager.Instance.m_poolManager.Get<ProjectileBeamHitscan>(EPoolName.PROJECTILE_BEAM_HITSCAN);
         if (beam == null) yield break;
 
         beam.transform.position = m_firePoint.position;
-        beam.InitializeProjectile(m_firePoint, target, damage, m_moduleData, Color.white, sourceModuleBase, m_firePoint.forward, 1f, 1f);
+        beam.InitializeProjectileBeamHitscan(m_firePoint, target, damage, sourceModuleBase, hitPoint);
     }
 }

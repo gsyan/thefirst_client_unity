@@ -20,11 +20,13 @@ public class HangerFlightPath : MonoBehaviour
     public Transform ReturnPath => m_returnPath;
 
 #if UNITY_EDITOR
+    [HideInInspector] public bool bShowGizmos = true;
     private static readonly Color k_launchGizmoColor = new(0.3f, 0.85f, 1f, 0.95f);
     private static readonly Color k_returnGizmoColor = new(1f, 0.6f, 0.2f, 0.95f);
 
     private void OnDrawGizmos()
     {
+        if (bShowGizmos == false) return;
         DrawPathGizmo(m_launchPath, k_launchGizmoColor);
         DrawPathGizmo(m_returnPath, k_returnGizmoColor);
     }

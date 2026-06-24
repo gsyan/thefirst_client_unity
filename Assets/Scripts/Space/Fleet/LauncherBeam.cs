@@ -41,13 +41,13 @@ public class LauncherBeam : LauncherBase
         m_isInitialized = true;
     }
 
-    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
+    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default)
     {
         if (m_isInitialized == false) return;
-        StartCoroutine(FireBeamCoroutine(target, damage, sourceModuleBase));
+        StartCoroutine(FireBeamCoroutine(target, damage, sourceModuleBase, hitPoint));
     }
 
-    private IEnumerator FireBeamCoroutine(ModuleBase target, float damage, ModuleBase sourceModuleBase)
+    private IEnumerator FireBeamCoroutine(ModuleBase target, float damage, ModuleBase sourceModuleBase, Vector3 hitPoint)
     {
         //ParticleSystem muzzleEffect = ObjectManager.Instance.m_poolManager.GetParticleSystem_Play_AutoReturn(EPoolName.EFFECT_BEAM_MUZZLE, m_firePoint);
 
@@ -60,7 +60,7 @@ public class LauncherBeam : LauncherBase
         if (beam == null) yield break;
         beam.transform.position = m_firePoint.position;
 
-        beam.InitializeProjectile(m_firePoint, target, damage, m_moduleData, m_beamColor, sourceModuleBase, m_firePoint.forward, 1f, m_slotScale.x);
+        beam.InitializeProjectileBeam(m_firePoint, target, damage, m_moduleData, m_beamColor, sourceModuleBase, m_slotScale.x, hitPoint);
     }
 
 }

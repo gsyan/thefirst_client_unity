@@ -5,7 +5,7 @@ public class UIPanelFirst : UIPanelBase
 {
     public override void InitializeUIPanel()
     {
-        SoundManager.Instance.PlayBGM(EBgm.Main);
+        SoundManager.Instance.PlayFX(EFx.Main);
     }
 
 

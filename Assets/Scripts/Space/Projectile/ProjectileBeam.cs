@@ -56,10 +56,11 @@ public class ProjectileBeam : ProjectileBase
         m_flatWidthCurve.AddKey(1f, 1f);
     }
 
-    public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
-                          Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed, float projectileWidth)
+    public void InitializeProjectileBeam(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
+                          Color color, ModuleBase sourceModuleBase, float projectileWidth,
+                          Vector3 hitPoint = default)
     {
-        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection, ejectSpeed, projectileWidth);
+        SetCommonData(firePointTransform, target, damage, sourceModuleBase, hitPoint);
 
         m_beamHeadPos = m_firePointTransform.position;
         m_beamTailPos = m_firePointTransform.position;
@@ -118,7 +119,7 @@ public class ProjectileBeam : ProjectileBase
     //빠르게 목표까지 도달 → 데미지 → 흩어지며 소멸
     private IEnumerator BeamLifeCycle()
     {
-        Vector3 targetPosition = m_target != null ? m_target.transform.position : m_firePointTransform.position + m_firePointTransform.forward * 100f;
+        Vector3 targetPosition = m_hitPoint;
         m_beamTailPos = m_firePointTransform.position;
         m_direction = (targetPosition - m_beamTailPos).normalized;
         float maxDistance = Vector3.Distance(m_beamTailPos, targetPosition) + 10f; // 여유 거리

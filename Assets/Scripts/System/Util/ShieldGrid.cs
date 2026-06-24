@@ -554,7 +554,7 @@ public class ShieldGrid : MonoBehaviour
 
 #if UNITY_EDITOR
     [Header("Debug")]
-    [SerializeField] private bool bShowGrid = true;
+    [HideInInspector] public bool bShowGrid = true;
     [SerializeField] private Color vertexColor = Color.cyan;
     [SerializeField] private Color edgeColor = Color.yellow;
     [SerializeField] private Color cellColor = new Color(1f, 0.5f, 0f, 0.5f);

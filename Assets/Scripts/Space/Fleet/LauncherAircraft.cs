@@ -30,7 +30,7 @@ public class LauncherAircraft : LauncherBase
         m_isInitialized = true;
     }
 
-    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null)
+    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default)
     {
         if (m_isInitialized == false) return;
         StartCoroutine(FireCoroutine(target));

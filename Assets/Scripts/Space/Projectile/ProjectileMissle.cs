@@ -48,10 +48,10 @@ public class ProjectileMissile : ProjectileBase
 
     public void SetPoolName(EPoolName poolName) { m_poolName = poolName; }
 
-    public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
-     Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed, float projectileWidth)
+    public void InitializeProjectileMissile(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
+     ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed)
     {
-        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection, ejectSpeed, projectileWidth);
+        SetCommonData(firePointTransform, target, damage, sourceModuleBase);
         m_missileSource = (sourceModuleBase is ModuleHanger) ? EMissileSource.Aircraft : EMissileSource.Ship;
         m_missileSpeed = moduleData.projectileSpeed;
         m_splashRadius = moduleData.splashRadius;

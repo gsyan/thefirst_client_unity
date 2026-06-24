@@ -43,6 +43,61 @@ public class ShieldGridEditor : Editor
             EditorUtility.SetDirty(grid);
         }
 
+        EditorGUILayout.Space(5);
+        EditorGUILayout.LabelField("Hit Points", EditorStyles.boldLabel);
+
+        ModuleBody moduleBody = grid.GetComponent<ModuleBody>();
+        if (moduleBody != null)
+        {
+            bool newShow = EditorGUILayout.Toggle("Show Hit Point Gizmos", moduleBody.bShowHitPointGizmos);
+            if (newShow != moduleBody.bShowHitPointGizmos)
+            {
+                moduleBody.bShowHitPointGizmos = newShow;
+                EditorUtility.SetDirty(moduleBody);
+                SceneView.RepaintAll();
+            }
+
+            if (GUILayout.Button("Bake Hit Points", GUILayout.Height(30)))
+            {
+                var method = typeof(ModuleBody).GetMethod("BakeHitPoints",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                if (method != null)
+                {
+                    method.Invoke(moduleBody, null);
+                    EditorUtility.SetDirty(moduleBody);
+                }
+            }
+        }
+        else
+        {
+            EditorGUILayout.HelpBox("ModuleBody 컴포넌트가 없습니다.", MessageType.Warning);
+        }
+
+        EditorGUILayout.Space(5);
+        EditorGUILayout.LabelField("Gizmo 표시", EditorStyles.boldLabel);
+
+        // ShieldGrid 자신
+        bool newShowGrid = EditorGUILayout.Toggle("Shield Grid", grid.bShowGrid);
+        if (newShowGrid != grid.bShowGrid)
+        {
+            grid.bShowGrid = newShowGrid;
+            EditorUtility.SetDirty(grid);
+            SceneView.RepaintAll();
+        }
+
+        // HangerFlightPath
+        HangerFlightPath flightPath = grid.GetComponentInChildren<HangerFlightPath>(true);
+        if (flightPath != null)
+        {
+            bool newShowPath = EditorGUILayout.Toggle("Hanger Flight Path", flightPath.bShowGizmos);
+            if (newShowPath != flightPath.bShowGizmos)
+            {
+                flightPath.bShowGizmos = newShowPath;
+                EditorUtility.SetDirty(flightPath);
+                SceneView.RepaintAll();
+            }
+        }
+
         // 메시 에셋 생성
         EditorGUILayout.Space(5);
         if (grid.unitSphereMesh == null)

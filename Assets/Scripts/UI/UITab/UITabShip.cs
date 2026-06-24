@@ -72,6 +72,7 @@ public class UITabShip : UITabBase
     private SpaceShip  m_selectedShip;
     private ModuleBase m_selectedModule;
     private bool       m_bModuleChanging = false;
+    private bool       m_isUnlockPending = false;
 
     // 레벨업 롱프레스 연속 입력
     private bool      m_isLevelUpHolding     = false;
@@ -349,6 +350,7 @@ public class UITabShip : UITabBase
     private void OnModuleUnlockClicked()
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        if (m_isUnlockPending == true) return;
         if (m_myCommander == null) return;
         if (m_selectedShip == null || m_selectedModule == null) return;
         if ((m_selectedModule is ModulePlaceholder) == false) return;
@@ -377,14 +379,20 @@ public class UITabShip : UITabBase
             slotIndex  = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex
         };
 
+        m_isUnlockPending = true;
+        m_unlockModuleButton.SetInteractable(false);
         NetworkManager.Instance.UnlockModule(unlockRequest, OnModuleUnlockResponse);
     }
     private void OnModuleUnlockResponse(ApiResponse<ModuleUnlockResponse> response)
     {
+        m_isUnlockPending = false;
         if (response.errorCode == 0)
             Apply_ModuleUnlock(response.data);
         else
+        {
             ShowErrorMessage($"Module unlock failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+            RefreshUnlockButton();
+        }
     }
     private void Apply_ModuleUnlock(ModuleUnlockResponse unlockData)
     {
@@ -428,14 +436,20 @@ public class UITabShip : UITabBase
             moduleType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType,
             slotIndex  = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex
         };
+        m_isUnlockPending = true;
+        m_unlockModuleButton.SetInteractable(false);
         NetworkManager.Instance.ModuleUnlockMineral(req, OnModuleUnlockMineralResponse);
     }
     private void OnModuleUnlockMineralResponse(ApiResponse<ModuleUnlockResponse> response)
     {
+        m_isUnlockPending = false;
         if (response.errorCode == 0)
             Apply_ModuleUnlockMineral(response.data);
         else
+        {
             ShowErrorMessage($"Mineral unlock failed: {ErrorCodeMapping.GetMessage(response.errorCode)}");
+            RefreshUnlockButton();
+        }
     }
     private void Apply_ModuleUnlockMineral(ModuleUnlockResponse unlockData)
     {

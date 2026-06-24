@@ -14,6 +14,9 @@ public class ModuleBody : ModuleBase
     [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
     [HideInInspector] public List<ModuleHanger> m_hangers = new List<ModuleHanger>();
 
+    private const float k_hitPenetrationRatio = 0.1f; // 충돌 지점에서 중심부로 파고드는 비율
+    [SerializeField] private List<Vector3> m_hitPoints = new List<Vector3>(); // 에디터에서 베이킹, 로컬 좌표
+
     // 이 함체를 선택하거나 기함으로 볼 때 적용할 카메라 줌 범위 (프리팹에서 설정)
     [SerializeField] public float m_cameraMinZoom = 4f;
     [SerializeField] public float m_cameraMaxZoom = 20f;
@@ -128,6 +131,81 @@ public class ModuleBody : ModuleBase
 
         // 빈 슬롯에 서버 정보대로 모듈 생성 (savedModules 유무와 관계없이)
         CreateMissingModules(moduleBodyInfo);
+
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu("Bake Hit Points")]
+    private void BakeHitPoints()
+    {
+        m_hitPoints.Clear();
+
+        Transform pointsRoot = transform.Find("Points");
+        if (pointsRoot == null)
+        {
+            Debug.LogError($"[{name}] Points 자식을 찾을 수 없습니다.");
+            return;
+        }
+
+        Bounds bounds = CommonUtility.CalculateRendererBounds(transform, excludeParticles: true, excludeTrails: true, excludeDisabled: false);
+        Vector3 center = bounds.center;
+
+        MeshCollider meshCollider = GetComponentInChildren<MeshCollider>();
+        if (meshCollider == null)
+        {
+            Debug.LogError($"[{name}] MeshCollider를 찾을 수 없습니다.");
+            return;
+        }
+
+        int raycastHits = 0;
+        foreach (Transform point in pointsRoot)
+        {
+            Vector3 origin = point.position;
+            Vector3 dir = (center - origin).normalized;
+            float maxDist = Vector3.Distance(origin, center);
+
+            Vector3 worldHitPoint;
+            Ray ray = new Ray(origin, dir);
+            if (meshCollider.Raycast(ray, out RaycastHit hit, maxDist))
+            {
+                // 충돌 지점에서 중심까지 남은 거리의 비율로 depth 계산 → 부위마다 균일
+                float distHitToCenter = Vector3.Distance(hit.point, center);
+                float depth = distHitToCenter * k_hitPenetrationRatio;
+                worldHitPoint = hit.point + dir * depth;
+                raycastHits++;
+            }
+            else
+            {
+                // 레이 미스 시 Point에서 중심 방향으로 maxDist * ratio 만큼 들어간 지점으로 폴백
+                float depth = maxDist * k_hitPenetrationRatio;
+                worldHitPoint = origin + dir * depth;
+            }
+
+            m_hitPoints.Add(transform.InverseTransformPoint(worldHitPoint));
+        }
+
+        UnityEditor.EditorUtility.SetDirty(this);
+        Debug.Log($"[{name}] HitPoints 베이킹 완료: {m_hitPoints.Count}개 (레이캐스트 성공: {raycastHits}개)");
+    }
+
+    [HideInInspector] public bool bShowHitPointGizmos = true;
+    private void OnDrawGizmos()
+    {
+        if (bShowHitPointGizmos == false) return;
+        Gizmos.color = new Color(1f, 0.3f, 0.3f, 0.9f);
+        foreach (Vector3 local in m_hitPoints)
+        {
+            Vector3 world = transform.TransformPoint(local);
+            Gizmos.DrawSphere(world, 0.04f);
+        }
+    }
+#endif
+
+    public Vector3 GetRandomHitPoint()
+    {
+        if (m_hitPoints.Count == 0) return transform.position;
+        int idx = UnityEngine.Random.Range(0, m_hitPoints.Count);
+        return transform.TransformPoint(m_hitPoints[idx]);
     }
 
     // 슬롯에 실제 모듈(Beam/Missile/Hanger)이 배치된 경우만 true
@@ -479,10 +557,11 @@ public class ModuleBody : ModuleBase
 
     public override void TakeDamage(float damage)
     {
+        bool wasAlive = m_health > 0;
         base.TakeDamage(damage);
 
-        // 바디가 파괴되면 장착된 모든 모듈도 비활성화
-        if (m_health <= 0)
+        // 살아있다가 죽는 시점에만 발동 — 이미 0인 상태에서 중복 발동 방지
+        if (wasAlive == true && m_health <= 0)
         {
             EventManager.Trigger_ModuleBodyDestroyed(this);
 

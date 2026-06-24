@@ -143,9 +143,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -153,8 +153,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &265432771095874850
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,9 +238,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -248,8 +248,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &523279133789058027
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,9 +802,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_moduleBodyInfo:
     moduleType: 0
     moduleSubType: 0
@@ -813,15 +813,97 @@ MonoBehaviour:
     beams: []
     missiles: []
     hangers: []
-    unlockedSubTypes: 
     investedModulePoint: 0
     currentHealth: 0
+    investedMineral: 0
   m_moduleSlots: []
   m_beams: []
   m_missiles: []
   m_hangers: []
+  m_hitPoints:
+  - {x: -0.35592952, y: 0.46943823, z: 0.51263434}
+  - {x: -0.8487032, y: 0.3341757, z: 1.335109}
+  - {x: -0.28996143, y: 0.57921654, z: 1.5588785}
+  - {x: -0.4633178, y: 0.46553394, z: 1.0160204}
+  - {x: -0.20636615, y: 0.64099354, z: 0.42254287}
+  - {x: 0.000000093789524, y: 0.6409936, z: 1.1982386}
+  - {x: 0.2063663, y: 0.64099365, z: 0.42254272}
+  - {x: 0.00000007554416, y: 0.6409936, z: 0.64536035}
+  - {x: -0.20636617, y: 0.64099354, z: -0.0093559455}
+  - {x: 0.20636629, y: 0.6409936, z: -0.009355985}
+  - {x: 0.0000001417118, y: 0.7736864, z: -1.0065528}
+  - {x: 0.000000059604645, y: 0.6025042, z: -0.20374575}
+  - {x: -0.3559295, y: 0.46943843, z: -0.09944803}
+  - {x: -0.2583006, y: 0.52109677, z: -0.99803644}
+  - {x: -0.8487031, y: 0.33417553, z: -0.9219214}
+  - {x: -0.46331793, y: 0.46553394, z: -0.6028338}
+  - {x: -0.5367003, y: 0.46553394, z: 0.20659304}
+  - {x: -0.8487031, y: 0.19108644, z: -0.25875974}
+  - {x: -0.88411534, y: 0.1971012, z: 0.6913633}
+  - {x: -0.8487031, y: 0.33982188, z: 0.20659314}
+  - {x: 0.35592955, y: 0.46943858, z: 0.5126354}
+  - {x: 0.28996152, y: 0.5792163, z: 1.5588787}
+  - {x: 0.84870315, y: 0.33417568, z: 1.3351083}
+  - {x: 0.46331802, y: 0.465534, z: 1.0160205}
+  - {x: -0.16412777, y: 0.29449862, z: 1.7318323}
+  - {x: -0.64977777, y: 0.04693599, z: 1.5215647}
+  - {x: -0.17343675, y: -0.21466851, z: 1.8183419}
+  - {x: -0.3348676, y: 0.046935745, z: 1.7381995}
+  - {x: -0.88411534, y: -0.10322954, z: 0.6913633}
+  - {x: -0.84870297, y: -0.09721486, z: -0.2587597}
+  - {x: -0.66356134, y: -0.47060728, z: 0.20659328}
+  - {x: -0.8487031, y: -0.24595024, z: 0.20659325}
+  - {x: -0.80470854, y: 0.04693581, z: -1.4219154}
+  - {x: -0.1558502, y: 0.28201392, z: -1.241727}
+  - {x: -0.16674392, y: -0.20457327, z: -1.3429583}
+  - {x: -0.31456685, y: 0.046935804, z: -1.2321621}
+  - {x: 0.2583007, y: 0.5210968, z: -0.99803615}
+  - {x: 0.35592967, y: 0.4694385, z: -0.099447966}
+  - {x: 0.8487034, y: 0.3341757, z: -0.921922}
+  - {x: 0.46331826, y: 0.46553406, z: -0.6028342}
+  - {x: 0.5242671, y: -0.5753902, z: 0.6573778}
+  - {x: 0.8487032, y: -0.24030405, z: 1.3351084}
+  - {x: 0.31284252, y: -0.52734745, z: 1.6655881}
+  - {x: 0.6584736, y: -0.54798126, z: 1.3569617}
+  - {x: 0.2254962, y: -0.6021891, z: 0.44256034}
+  - {x: 0.00000026354428, y: -0.54798204, z: 1.1996744}
+  - {x: -0.22549553, y: -0.6021891, z: 0.44256034}
+  - {x: 0.00000009685755, y: -0.52846634, z: 0.6315813}
+  - {x: 0.16693573, y: -0.43361434, z: 0.031905748}
+  - {x: -0.16693544, y: -0.43361452, z: 0.031905748}
+  - {x: 0.000000059604645, y: -0.412431, z: -0.560216}
+  - {x: 0.00000023841858, y: -0.5711758, z: -0.24993968}
+  - {x: 0.524267, y: -0.5753902, z: -0.24419159}
+  - {x: 0.31392485, y: -0.529334, z: -1.2574492}
+  - {x: 0.8487034, y: -0.24030411, z: -0.9219219}
+  - {x: 0.65847456, y: -0.5479821, z: -0.94377667}
+  - {x: 0.66356146, y: -0.47060734, z: 0.20659328}
+  - {x: 0.8487034, y: -0.097214915, z: -0.25875992}
+  - {x: 0.88411546, y: -0.10322956, z: 0.69136333}
+  - {x: 0.84870327, y: -0.24595033, z: 0.2065931}
+  - {x: 0.1734369, y: -0.21466851, z: 1.8183419}
+  - {x: 0.6497778, y: 0.046935618, z: 1.5215647}
+  - {x: 0.16412765, y: 0.29449865, z: 1.7318323}
+  - {x: 0.3348676, y: 0.04693578, z: 1.7381992}
+  - {x: -0.524267, y: -0.57539034, z: 0.65737784}
+  - {x: -0.31284255, y: -0.5273473, z: 1.6655884}
+  - {x: -0.84870315, y: -0.24030411, z: 1.3351082}
+  - {x: -0.6584736, y: -0.54798156, z: 1.3569618}
+  - {x: -0.31392473, y: -0.5293341, z: -1.2574489}
+  - {x: -0.524267, y: -0.5753902, z: -0.24419138}
+  - {x: -0.84870297, y: -0.24030405, z: -0.92192173}
+  - {x: -0.6584747, y: -0.54798234, z: -0.9437774}
+  - {x: 0.80470884, y: 0.046935737, z: -1.4219158}
+  - {x: 0.166744, y: -0.20457329, z: -1.3429586}
+  - {x: 0.15585071, y: 0.28201395, z: -1.2417274}
+  - {x: 0.31456697, y: 0.04693582, z: -1.2321621}
+  - {x: 0.8841154, y: 0.19710116, z: 0.6913633}
+  - {x: 0.8487033, y: 0.19108643, z: -0.25875983}
+  - {x: 0.5367005, y: 0.46553406, z: 0.20659304}
+  - {x: 0.84870327, y: 0.3398219, z: 0.20659329}
   m_cameraMinZoom: 4
   m_cameraMaxZoom: 20
+  bShowHitPointGizmos: 1
 --- !u!114 &8408283221782546455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2524,9 +2606,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -2534,8 +2616,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &3677626046307748834
 GameObject:
   m_ObjectHideFlags: 0
@@ -3236,9 +3318,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -3246,8 +3328,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1 &4730713047119418654
 GameObject:
   m_ObjectHideFlags: 0
@@ -4185,6 +4267,7 @@ MonoBehaviour:
   - {fileID: 5477824466677880989}
   - {fileID: 2078815290592243974}
   m_returnTargetCount: 5
+  bShowGizmos: 1
 --- !u!1 &6691584577023342945
 GameObject:
   m_ObjectHideFlags: 0
@@ -5532,9 +5615,9 @@ MonoBehaviour:
   m_healthMax: 0
   m_attack: 0
   m_modulePointCostLevelup: 0
-  m_mineralCost: 0
-  m_unlockedSubTypes: 
   m_investedModulePoint: 0
+  m_investedMineral: 0
+  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -5542,8 +5625,8 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    unlockedSubTypes: 
     investedModulePoint: 0
+    investedMineral: 0
 --- !u!1001 &1113413027590789095
 PrefabInstance:
   m_ObjectHideFlags: 0

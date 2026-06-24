@@ -146,8 +146,6 @@ public class SpaceShip : MonoBehaviour
     
     public void ApplyFleetStateToShip()
     {
-        // 진형 이동 중이면 도착 후 FormationMovementLoop에서 재호출됨
-        if (m_formationMoveState == FormationMoveState.Moving) return;
 
         switch (m_ownerFleet.m_fleetState)
         {
@@ -1028,8 +1026,6 @@ public class SpaceShip : MonoBehaviour
                     transform.localPosition = m_formationTarget;
                     m_formationMoveState = FormationMoveState.Arrived;
                     m_formationCoroutine = null;
-                    // 진형 도달 후 함대 상태 적용 (워프 진입 시 전투 개시 방지)
-                    ApplyFleetStateToShip();
                     yield break;
                 }
             }

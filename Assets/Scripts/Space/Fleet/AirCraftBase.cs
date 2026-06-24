@@ -571,7 +571,7 @@ public abstract class AircraftBase : MonoBehaviour
 
         missile.transform.SetPositionAndRotation(m_firePointMissileList[0].position, m_firePointMissileList[0].rotation);
         missile.SetPoolName(m_missilePoolName);
-        missile.InitializeProjectile(m_firePointMissileList[0], m_targetModule, m_aircraftInfo.airAttack, m_moduleData, Color.black, m_moduleHanger, -m_firePointMissileList[0].up, 1f, 1f);
+        missile.InitializeProjectileMissile(m_firePointMissileList[0], m_targetModule, m_aircraftInfo.airAttack, m_moduleData, m_moduleHanger, -m_firePointMissileList[0].up, 1f);
 
         m_aircraftInfo.airAmmo--;
         m_lastAttackTime = Time.time;
@@ -650,8 +650,10 @@ public abstract class AircraftBase : MonoBehaviour
 
 
 #if UNITY_EDITOR
+    [HideInInspector] public bool bShowGizmos = true;
     private void OnDrawGizmos()
     {
+        if (bShowGizmos == false) return;
         if (m_targetModule == null)
             return;
 

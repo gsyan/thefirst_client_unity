@@ -31,9 +31,6 @@ public class SpaceFleet : MonoBehaviour
     public EFormationType m_currentFormationType = EFormationType.linear_horizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
 
-    // Zone 스폰 상태 (IsZoneEnemy 전용)
-    public Queue<ShipInfo> m_shipSpawnQueue;
-    private Coroutine m_spawnCoroutine;
     private Coroutine m_warpInCoroutine;
     
     // 자연 수리 임계값 저장: 10%~100% 돌파 시 서버 저장 (Idle 한정)
@@ -166,76 +163,7 @@ public class SpaceFleet : MonoBehaviour
         onArrived?.Invoke();
     }
 
-    public void InitializeZoneSpawn(ZoneStageConfig config)
-    {
-        m_shipSpawnQueue = new Queue<ShipInfo>();
-        if (config.enemyFleet == null || config.enemyFleet.ships == null) return;
-        foreach (var shipInfo in config.enemyFleet.ships)
-            m_shipSpawnQueue.Enqueue(shipInfo);
-    }
 
-    public void StartSpawning(ZoneStageConfig config)
-    {
-        InitializeZoneSpawn(config);
-        m_spawnCoroutine = StartCoroutine(SpawnShipCoroutine(config));
-    }
-
-    public void StopSpawning()
-    {
-        if (m_spawnCoroutine != null)
-        {
-            StopCoroutine(m_spawnCoroutine);
-            m_spawnCoroutine = null;
-        }
-        if (m_shipSpawnQueue != null)
-            m_shipSpawnQueue.Clear();
-    }
-
-    private IEnumerator SpawnShipCoroutine(ZoneStageConfig config)
-    {
-        if (config.delayBeforeSpawn > 0)
-            yield return new WaitForSeconds(config.delayBeforeSpawn);
-
-        while (m_shipSpawnQueue.Count > 0)
-        {
-            ShipInfo next = m_shipSpawnQueue.Dequeue();
-            SpawnSingleShip(next);
-
-            if (m_shipSpawnQueue.Count > 0)
-                yield return new WaitForSeconds(config.shipSpawnInterval);
-        }
-
-        m_spawnCoroutine = null;
-        if (IsFleetAlive() == false)
-            ObjectManager.Instance.OnZoneEnemyFleetDefeated(this);
-    }
-
-    private void SpawnSingleShip(ShipInfo shipInfo)
-    {
-        GameObject shipGo = new GameObject(shipInfo.shipName);
-        SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
-        spaceShip.m_bodyMultiplier    = shipInfo.bodyMultiplier;
-        spaceShip.m_beamMultiplier    = shipInfo.beamMultiplier;
-        spaceShip.m_missileMultiplier = shipInfo.missileMultiplier;
-        spaceShip.m_hangerMultiplier  = shipInfo.hangerMultiplier;
-        spaceShip.InitializeSpaceShip(this, shipInfo);
-        AddShip(spaceShip, bWarp: true);
-    }
-
-    // Zone 적 함선을 순차적으로 받아들이기 위한 빈 함대 초기화
-    public void InitializeAsZoneEnemyFleetShell(string fleetName, EFormationType formation)
-    {
-        m_fleetSide   = EFleetSide.fleet_side_enemy;
-        m_fleetSource = EFleetSource.fleet_source_zone_data;
-        m_fleetInfo   = new FleetInfo
-        {
-            fleetName = fleetName,
-            formation = formation,
-            ships     = new List<ShipInfo>()
-        };
-        m_currentFormationType = formation;
-        SetFleetState(EUnitState.BattleExploration);
-    }
 
     public void InitializeSpaceFleet(FleetInfo fleetInfo, EFleetSide side = EFleetSide.fleet_side_player, EFleetSource source = EFleetSource.fleet_source_player, EUnitState fleetState = EUnitState.Idle)
     {
@@ -904,8 +832,6 @@ public class SpaceFleet : MonoBehaviour
 
     public bool IsFleetAlive()
     {
-        if (m_shipSpawnQueue != null && m_shipSpawnQueue.Count > 0)
-            return true;
         foreach (SpaceShip ship in m_ships)
         {
             if (ship != null && ship.IsAlive() == true)

@@ -1,9 +1,9 @@
-// 즉시 발사 빔 투사체 - F3D 머티리얼 + 틱 데미지, 타겟 사망 시 짧은 유지 후 종료
+// Hitscan 빔 - 즉시 도달, 틱 데미지, 타겟 사망 시 짧은 유지 후 종료
 using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(LineRenderer))]
-public class ProjectileBeamInstant : ProjectileBase
+public class ProjectileBeamHitscan : ProjectileBase
 {
     private LineRenderer m_lineRenderer;
 
@@ -31,10 +31,11 @@ public class ProjectileBeamInstant : ProjectileBase
         m_mpb = new MaterialPropertyBlock();
     }
 
-    public override void InitializeProjectile(Transform firePointTransform, ModuleBase target, float damage,
-                                              ModuleData moduleData, Color color, ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed, float projectileWidth)
+    public void InitializeProjectileBeamHitscan(Transform firePointTransform, ModuleBase target, float damage,
+                                              ModuleBase sourceModuleBase,
+                                              Vector3 hitPoint = default)
     {
-        base.InitializeProjectile(firePointTransform, target, damage, moduleData, color, sourceModuleBase, initialDirection, ejectSpeed, projectileWidth);
+        SetCommonData(firePointTransform, target, damage, sourceModuleBase, hitPoint);
 
         m_uvTime = Random.Range(0f, 100f);
 
@@ -106,7 +107,7 @@ public class ProjectileBeamInstant : ProjectileBase
         if (m_firePointTransform == null || m_target == null) return;
 
         Vector3 origin = m_firePointTransform.position;
-        Vector3 end = m_target.transform.position;
+        Vector3 end = m_hitPoint;
 
         m_lineRenderer.SetPosition(0, origin);
         m_lineRenderer.SetPosition(1, end);
@@ -133,6 +134,6 @@ public class ProjectileBeamInstant : ProjectileBase
         }
 
         m_lineRenderer.enabled = false;
-        ObjectManager.Instance.m_poolManager.Return(EPoolName.PROJECTILE_BEAM_INSTANT, this);
+        ObjectManager.Instance.m_poolManager.Return(EPoolName.PROJECTILE_BEAM_HITSCAN, this);
     }
 }
