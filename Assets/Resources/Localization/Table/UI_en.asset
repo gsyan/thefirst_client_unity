@@ -735,7 +735,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 35979842818015233
-    m_Localized: Maximum Firepower Focused
+    m_Localized: Attack increased / Damage taken increased
     m_Metadata:
       m_Items: []
   - m_Id: 35979842818015234
@@ -743,31 +743,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 35979842818015235
-    m_Localized: Hull Defense Priority
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36001082114965504
-    m_Localized: In-Battle Auto Repair
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36001082144325632
-    m_Localized: '{0} Mineral / 1 HP healed'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36001082144325633
-    m_Localized: In-Battle Missiles
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36001082144325634
-    m_Localized: avg. {0} Mineral / launch
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36001082144325635
-    m_Localized: In-Battle Aircraft
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36001082144325636
-    m_Localized: avg. {0} Mineral / sortie
+    m_Localized: Attack decreased / Damage taken decreased
     m_Metadata:
       m_Items: []
   - m_Id: 36387413043314688
@@ -1033,6 +1009,42 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 48702148229070849
     m_Localized: Update
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49703030982836224
+    m_Localized: Repair Boost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49703031016390656
+    m_Localized: '{0} Mineral / sec'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49703031016390657
+    m_Localized: Missile Boost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49703031016390658
+    m_Localized: '{0} Mineral / sec'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49703031016390659
+    m_Localized: Aircraft Boost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49703031016390660
+    m_Localized: '{0} Mineral / sec'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49731971877568512
+    m_Localized: '( Fleet Synergy : x{0} )'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49760963871506432
+    m_Localized: PVP Season Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49760963913449472
+    m_Localized: Season reward has been granted.
     m_Metadata:
       m_Items: []
   references:

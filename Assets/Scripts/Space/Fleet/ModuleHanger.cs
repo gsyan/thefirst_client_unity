@@ -15,11 +15,15 @@ public class AircraftInfo
     public int airAmmo;
     public float airDetectRadius;
     public float airAvoidRadius;
+    public float airAdditionalDelay;
 
     public float airHealthMax;
     public int airAmmoMax;
     public float lastReturnTime;
     public bool isReady;
+
+    // 출격 시 누적된 공격 배율 (진형·함선수·전술). 귀환 시 UpdateAircraftInfo에서 1f로 원복
+    public float airAttackMultiplier;
 
     public AircraftInfo(ModuleData moduleData)
     {
@@ -30,18 +34,20 @@ public class AircraftInfo
 
     public void UpdateAircraftInfo(ModuleData moduleData)
     {
-        this.airLaunchDist = moduleData.airLaunchDist;
-        this.airHealth = moduleData.airHealth;
-        this.airAttack = moduleData.airAttack;
-        this.airAttackRange = moduleData.airAttackRange;
-        this.airAttackCool = moduleData.airAttackCool;
-        this.airSpeed = moduleData.airSpeed;
-        this.airAmmo = moduleData.airAmmo;
-        this.airDetectRadius = moduleData.airDetectRadius;
-        this.airAvoidRadius = moduleData.airAvoidRadius;
+        this.airLaunchDist       = moduleData.airLaunchDist;
+        this.airHealth           = moduleData.airHealth;
+        this.airAttack           = moduleData.airAttack;
+        this.airAttackRange      = moduleData.airAttackRange;
+        this.airAttackCool       = moduleData.airAttackCool;
+        this.airSpeed            = moduleData.airSpeed;
+        this.airAmmo             = moduleData.airAmmo;
+        this.airDetectRadius     = moduleData.airDetectRadius;
+        this.airAvoidRadius      = moduleData.airAvoidRadius;
+        this.airAdditionalDelay  = moduleData.airAdditionalDelay;
 
-        this.airHealthMax = moduleData.airHealth;
-        this.airAmmoMax = moduleData.airAmmo;
+        this.airHealthMax        = moduleData.airHealth;
+        this.airAmmoMax          = moduleData.airAmmo;
+        this.airAttackMultiplier = 1f;
     }
 }
 
@@ -160,9 +166,10 @@ public class ModuleHanger : ModuleBase
         {
             if (m_moduleState.IsBattleState() == false) { yield return null; continue; }
 
-            if (m_currentTarget != null && m_currentTarget.m_health > 0)
+            if (IsSilenced() == false && m_currentTarget != null && m_currentTarget.m_health > 0)
             {
-                if (Time.time >= m_lastLaunchTime + m_launchCool)
+                float hangerHarassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
+                if (Time.time >= m_lastLaunchTime + m_launchCool + hangerHarassDelay)
                 {
                     ExecuteLaunchOnTarget(m_currentTarget);
                     m_lastLaunchTime = Time.time;
@@ -175,10 +182,12 @@ public class ModuleHanger : ModuleBase
     
     private void ExecuteLaunchOnTarget(ModuleBody target)
     {
+        // LauncherAircraft는 DamageInfo를 사용하지 않음 — 배율은 출격 시 FireCoroutine에서 AircraftInfo에 저장
+        DamageInfo unused = default;
         foreach (var launcher in m_launchers)
         {
             if (launcher != null)
-                launcher.FireAtTarget(target, 0f, this);
+                launcher.FireAtTarget(target.transform, unused, this);
         }
     }
 

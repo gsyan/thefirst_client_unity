@@ -28,13 +28,13 @@ public class LauncherBeamInstant : LauncherBase
         m_isInitialized = true;
     }
 
-    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
+    public override void Fire(Transform target, DamageInfo damageInfo, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
     {
         if (m_isInitialized == false) return;
-        StartCoroutine(FireCoroutine(target, damage, sourceModuleBase, hitPoint));
+        StartCoroutine(FireCoroutine(target, damageInfo, sourceModuleBase, hitPoint));
     }
 
-    private IEnumerator FireCoroutine(ModuleBase target, float damage, ModuleBase sourceModuleBase, Vector3 hitPoint)
+    private IEnumerator FireCoroutine(Transform target, DamageInfo damageInfo, ModuleBase sourceModuleBase, Vector3 hitPoint)
     {
         if (target == null) yield break;
 
@@ -42,6 +42,6 @@ public class LauncherBeamInstant : LauncherBase
         if (beam == null) yield break;
 
         beam.transform.position = m_firePoint.position;
-        beam.InitializeProjectileBeamHitscan(m_firePoint, target, damage, sourceModuleBase, hitPoint);
+        beam.InitializeProjectileBeamHitscan(m_firePoint, target, damageInfo, sourceModuleBase, hitPoint);
     }
 }

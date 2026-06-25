@@ -1,5 +1,6 @@
 //------------------------------------------------------------------------------
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class ModuleBase : MonoBehaviour
@@ -71,14 +72,6 @@ public class ModuleBase : MonoBehaviour
     {
         m_health -= damage;
         if (m_health < 0.0f) m_health = 0.0f;
-    }
-
-    public virtual void Attack(SpaceShip target)
-    {
-        float finalAttack = m_attack;
-        if (m_ownerFleet != null)
-            finalAttack *= m_ownerFleet.GetShipCountAttackMultiplier() * m_ownerFleet.GetFormationAttackMultiplier();
-        target.TakeDamage(finalAttack, transform.position);
     }
 
     public virtual EModuleType GetModuleType()
@@ -166,6 +159,74 @@ public class ModuleBase : MonoBehaviour
     public virtual CapabilityProfile GetModuleCapabilityProfile(bool bByInfo = true)
     {
         return new CapabilityProfile();
+    }
+
+    // 침묵 — 무기 모듈 자동 공격 일시 정지
+    private float m_silenceEndTime = 0f;
+    private Coroutine m_silenceVisualCoroutine = null;
+    private MeshRenderer[] m_meshRenderers = null;
+    private MaterialPropertyBlock m_mpb = null;
+    private static readonly int k_colorId = Shader.PropertyToID("_BaseColor");
+    private static readonly Color k_silenceColor = new Color(0.3f, 0.3f, 0.8f, 1f);
+
+    public void ApplySilence(float duration)
+    {
+        float endTime = Time.time + duration;
+        if (endTime > m_silenceEndTime)
+            m_silenceEndTime = endTime;
+
+        if (m_silenceVisualCoroutine != null)
+            StopCoroutine(m_silenceVisualCoroutine);
+        m_silenceVisualCoroutine = StartCoroutine(SilenceVisualCoroutine());
+    }
+
+    private IEnumerator SilenceVisualCoroutine()
+    {
+        SetSilenceTint(true);
+        yield return new WaitUntil(() => IsSilenced() == false);
+        SetSilenceTint(false);
+        m_silenceVisualCoroutine = null;
+    }
+
+    private void SetSilenceTint(bool silenced)
+    {
+        if (m_meshRenderers == null)
+            m_meshRenderers = GetComponentsInChildren<MeshRenderer>();
+        if (m_mpb == null)
+            m_mpb = new MaterialPropertyBlock();
+
+        foreach (MeshRenderer mr in m_meshRenderers)
+        {
+            if (mr == null) continue;
+            if (silenced == true)
+            {
+                mr.GetPropertyBlock(m_mpb);
+                m_mpb.SetColor(k_colorId, k_silenceColor);
+                mr.SetPropertyBlock(m_mpb);
+            }
+            else
+            {
+                mr.SetPropertyBlock(null);
+            }
+        }
+    }
+
+    public bool IsSilenced()
+    {
+        return Time.time < m_silenceEndTime;
+    }
+
+    public float GetSilenceEndTime()
+    {
+        return m_silenceEndTime;
+    }
+
+    // 공격 딜레이 추가 — 현재 또는 예정된 쿨타임 만료 시점에서 delay만큼 연장
+    public void ApplyAdditionalDelay(float delay)
+    {
+        float lastAttack = GetLastAttackTime();
+        float effectiveBase = Mathf.Max(lastAttack, Time.time);
+        SetLastAttackTime(effectiveBase + delay);
     }
 
     // 코루틴 재시작 (Body 교체 등으로 모듈이 재활성화될 때 호출)

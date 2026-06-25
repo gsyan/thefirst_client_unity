@@ -46,6 +46,7 @@ public class ModuleData
     public float attackCool = 0f;       // 발사 쿨다운 빔, 미사일, 함재기
     [Header("Weapon Projectile Stats")]
     public float projectileSpeed = 0f;
+    public float silenceTime = 0f;      // 미사일 적중 시 무장 침묵 시간 (초)
 
     // Hanger ------------------------------------------------------------------------------------------------
     [Header("Hanger Stats")]
@@ -60,7 +61,8 @@ public class ModuleData
     public float airSpeed = 200f;             // 함재기 이동력
     public int airAmmo = 10;                  // 함재기 탄약
     public float airDetectRadius = 200f;      // 함재기 적 함재기 감지거리
-    public float airAvoidRadius = 200f;       // 함재기 적 회피 거리    
+    public float airAvoidRadius = 200f;       // 함재기 적 회피 거리
+    public float airAdditionalDelay = 0f;    // 함재기 피격 시 공격 딜레이 추가 (초)
 }
 
 [System.Serializable]
@@ -367,14 +369,15 @@ public class DataTableModule : ScriptableObject
         hangerGroups.Clear();
         InitializeSubTypeGroups();
 
+        // 컬럼 순서 (datatable_module.csv 헤더 기준 고정 인덱스)
+        // 0:sub_type, 1:level, 2:health, 3:repair, 4:speed, 5:attack,
+        // 6:splash_radius, 7:attack_count, 8:attack_cool, 9:projectile_speed,
+        // 10:silence_time, 11:air_count, 12:air_maintenance_time, 13:air_launch_dist,
+        // 14:air_health, 15:air_attack, 16:air_attack_range, 17:air_attack_cool,
+        // 18:air_speed, 19:air_ammo, 20:air_detect_radius, 21:air_avoid_radius,
+        // 22:air_additional_delay, 23:cost_mp, 24:cost_mineral, 25:description
         string[] lines = csvText.Split('\n');
         if (lines.Length < 2) return;
-
-        // 헤더로 컬럼명 → 인덱스 맵 구성
-        string[] headers = ParseCsvLine(lines[0].Trim());
-        var col = new Dictionary<string, int>();
-        for (int i = 0; i < headers.Length; i++)
-            col[headers[i].Trim()] = i;
 
         ModuleSlotInfo[] moduleSlotInfo = null;
         for (int i = 1; i < lines.Length; i++)
@@ -383,39 +386,42 @@ public class DataTableModule : ScriptableObject
             if (string.IsNullOrEmpty(line)) continue;
 
             string[] cols = ParseCsvLine(line);
+            if (cols.Length < 2) continue;
 
-            if (!int.TryParse(GetCol(cols, col, "sub_type"), out int subTypeInt)) continue;
-            if (!int.TryParse(GetCol(cols, col, "level"), out int level)) continue;
+            if (!int.TryParse(cols[0].Trim(), out int subTypeInt)) continue;
+            if (!int.TryParse(cols[1].Trim(), out int level)) continue;
 
             EModuleSubType moduleSubType = (EModuleSubType)subTypeInt;
 
             var module = new ModuleData
             {
-                moduleName = $"{moduleSubType} Lv.{level}",
-                moduleSubType = moduleSubType,
-                moduleLevel = level,
-                health                          = ParseCsvFloat(GetCol(cols, col, "health")),
-                repair                          = ParseCsvFloat(GetCol(cols, col, "repair")),
-                speed                           = ParseCsvFloat(GetCol(cols, col, "speed")),
-                attack                          = ParseCsvFloat(GetCol(cols, col, "attack")),
-                splashRadius                    = ParseCsvFloat(GetCol(cols, col, "splash_radius")),
-                attackFireCount                 = ParseCsvInt  (GetCol(cols, col, "attack_count")),
-                attackCool                      = ParseCsvFloat(GetCol(cols, col, "attack_cool")),
-                projectileSpeed                 = ParseCsvFloat(GetCol(cols, col, "projectile_speed")),
-                airCount                        = ParseCsvInt  (GetCol(cols, col, "air_count")),
-                airMaintenanceTime              = ParseCsvFloat(GetCol(cols, col, "air_maintenance_time")),
-                airLaunchDist                   = ParseCsvFloat(GetCol(cols, col, "air_launch_dist")),
-                airHealth                       = ParseCsvFloat(GetCol(cols, col, "air_health")),
-                airAttack                       = ParseCsvFloat(GetCol(cols, col, "air_attack")),
-                airAttackRange                  = ParseCsvFloat(GetCol(cols, col, "air_attack_range")),
-                airAttackCool                   = ParseCsvFloat(GetCol(cols, col, "air_attack_cool")),
-                airSpeed                        = ParseCsvFloat(GetCol(cols, col, "air_speed")),
-                airAmmo                         = ParseCsvInt  (GetCol(cols, col, "air_ammo")),
-                airDetectRadius                 = ParseCsvFloat(GetCol(cols, col, "air_detect_radius")),
-                airAvoidRadius                  = ParseCsvFloat(GetCol(cols, col, "air_avoid_radius")),
-                modulePointCost                 = ParseCsvInt(GetCol(cols, col, "cost_mp")),
-                mineralCost                     = ParseCsvInt(GetCol(cols, col, "cost_mineral")),
-                description                     = GetCol(cols, col, "description")
+                moduleName      = $"{moduleSubType} Lv.{level}",
+                moduleSubType   = moduleSubType,
+                moduleLevel     = level,
+                health              = ParseCsvFloat(cols, 2),
+                repair              = ParseCsvFloat(cols, 3),
+                speed               = ParseCsvFloat(cols, 4),
+                attack              = ParseCsvFloat(cols, 5),
+                splashRadius        = ParseCsvFloat(cols, 6),
+                attackFireCount     = ParseCsvInt  (cols, 7),
+                attackCool          = ParseCsvFloat(cols, 8),
+                projectileSpeed     = ParseCsvFloat(cols, 9),
+                silenceTime         = ParseCsvFloat(cols, 10),
+                airCount            = ParseCsvInt  (cols, 11),
+                airMaintenanceTime  = ParseCsvFloat(cols, 12),
+                airLaunchDist       = ParseCsvFloat(cols, 13),
+                airHealth           = ParseCsvFloat(cols, 14),
+                airAttack           = ParseCsvFloat(cols, 15),
+                airAttackRange      = ParseCsvFloat(cols, 16),
+                airAttackCool       = ParseCsvFloat(cols, 17),
+                airSpeed            = ParseCsvFloat(cols, 18),
+                airAmmo             = ParseCsvInt  (cols, 19),
+                airDetectRadius     = ParseCsvFloat(cols, 20),
+                airAvoidRadius      = ParseCsvFloat(cols, 21),
+                airAdditionalDelay  = ParseCsvFloat(cols, 22),
+                modulePointCost     = ParseCsvInt  (cols, 23),
+                mineralCost         = ParseCsvInt  (cols, 24),
+                description         = cols.Length > 25 ? cols[25].Trim() : ""
             };
 
             // body 모듈만 prefab에서 슬롯 정보 추출 (레벨1 프리팹 기준으로 모든 레벨 공통 적용)
@@ -434,11 +440,8 @@ public class DataTableModule : ScriptableObject
         EditorUtility.SetDirty(this);
     }
 
-    private string GetCol(string[] cols, Dictionary<string, int> colMap, string name)
-    {
-        if (colMap.TryGetValue(name, out int idx) == false || idx >= cols.Length) return "";
-        return cols[idx].Trim();
-    }
+    private float ParseCsvFloat(string[] cols, int idx) => idx < cols.Length ? ParseCsvFloat(cols[idx]) : 0f;
+    private int   ParseCsvInt  (string[] cols, int idx) => idx < cols.Length ? ParseCsvInt  (cols[idx]) : 0;
 
     private string[] ParseCsvLine(string line)
     {

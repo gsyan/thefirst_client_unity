@@ -24,9 +24,12 @@ public class GameSettings
     
     public int moduleUnlockPrice = 1;
 
-    [Tooltip("전투 중 수리 flag ON 시 1초당 소모하는 미네랄 (함대 단위)")]
-    public int battleRepairMineralPerSec = 1;
-    [Tooltip("즉시 수리 비용 기준 시간(초) — 비용 = battleRepairMineralPerSec × instantRepairBaseSecs")]
+    [Header("Tactic - Repair")]
+    [Tooltip("수리 부스트 ON 시 1초당 소모하는 미네랄 (함대 단위)")]
+    public int repairBoostMineralPerSec = 1;
+    [Tooltip("수리 부스트 ON 시 수리 속도 배율")]
+    public float repairBoostMultiplier = 2f;
+    [Tooltip("즉시 수리 비용 기준 시간(초) — 비용 = repairBoostMineralPerSec × instantRepairBaseSecs")]
     public int instantRepairBaseSecs = 60;
 
     [Header("Tactic - Missile")]

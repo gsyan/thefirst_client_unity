@@ -32,11 +32,6 @@ public class DataTablePvpSeasonEditor : Editor
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space(5);
 
-        // 기본 시즌 기간
-        dataTable.config.defaultSeasonDurationDays = EditorGUILayout.IntField(
-            "기본 시즌 기간 (일)", dataTable.config.defaultSeasonDurationDays);
-        EditorGUILayout.Space(10);
-
         // 티어 테이블 헤더
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Tier Table", EditorStyles.boldLabel);

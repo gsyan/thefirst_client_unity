@@ -141,19 +141,20 @@ UITabTech_NextModuleGrade,,Next Level Module Grade - T.{0},다음 레벨 모듈 
 UITabTech_PointsToNextLevel,,Points to next level : {0},다음 레벨업까지 남은 포인트 : {0}
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
+UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
 UITabFleetTactics_FormationType_LinearHorizontal,,Balanced,균형
-UITabFleetTactics_FormationType_LinearHorizontal_description,,Balanced Offense & Defense,공방 균형 유지
+UITabFleetTactics_FormationType_LinearHorizontal_description,,Balanced Offense & Defense,공방 균형
 UITabFleetTactics_FormationType_XOffensive,,Offensive,공격우선
-UITabFleetTactics_FormationType_XOffensive_description,,Maximum Firepower Focused,최대 화력 집중
+UITabFleetTactics_FormationType_XOffensive_description,,Attack increased / Damage taken increased,공격력 증가 / 받는 피해 증가
 UITabFleetTactics_FormationType_XDefensive,,Defensive,방어우선
-UITabFleetTactics_FormationType_XDefensive_description,,Hull Defense Priority,함채 방어 우선
-UITabFleetTactics_UseBattleRepair,,In-Battle Auto Repair,전투중 자동 수리
-UITabFleetTactics_UseBattleRepair_description,,{0} Mineral / 1 HP healed,광물 {0} / 회복 HP
-UITabFleetTactics_UseMissile,,In-Battle Missiles,전투중 미사일 사용
-UITabFleetTactics_UseMissile_description,,avg. {0} Mineral / launch,평균 광물 {0} / 발사
-UITabFleetTactics_UseAircraft,,In-Battle Aircraft,전투중 함재기 사용
-UITabFleetTactics_UseAircraft_description,,avg. {0} Mineral / sortie,평균 광물 {0} / 출격
+UITabFleetTactics_FormationType_XDefensive_description,,Attack decreased / Damage taken decreased,공격력 감소 / 받는 피해 감소
+UITabFleetTactics_RepairBoost,,Repair Boost,수리 부스트
+UITabFleetTactics_RepairBoost_description,,{0} Mineral / sec,미네랄 {0} / 초
+UITabFleetTactics_MissileBoost,,Missile Boost,미사일 부스트
+UITabFleetTactics_MissileBoost_description,,{0} Mineral / sec,미네랄 {0} / 초
+UITabFleetTactics_AircraftBoost,,Aircraft Boost,함재기 부스트
+UITabFleetTactics_AircraftBoost_description,,{0} Mineral / sec,미네랄 {0} / 초
 UITabFleetTactics_LockedTitle,,Locked,잠금
 UITabFleetTactics_LockedMessage,,Requires 3 or more ships in fleet,함선 3대 이상이 필요합니다
 UnlockButtonText,,UNLOCK,잠금해제
@@ -238,6 +239,8 @@ UIPopupMessage_MineralResetMessage,,Mineral enhancements have been reset after s
 UIPopupMessage_VersionUpdateTitle,,Update Required,업데이트 필요
 UIPopupMessage_VersionUpdateMessage,,An update to version {0} is required.,버전 {0} 이상으로 업데이트가 필요합니다.
 UIPopupMessage_VersionUpdateButton,,Update,업데이트
+UIPopupMessage_PvpSeasonRewardTitle,,PVP Season Reward,PVP 시즌 보상
+UIPopupMessage_PvpSeasonRewardMessage,,Season reward has been granted.,시즌 보상이 지급되었습니다.
 module_subtype_max_level_required,,Max level of {0}(Lv.{1} / Lv.{2}),{0} 최고 레벨 (Lv.{1} / Lv.{2})
 loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.
 loading_tip_1,,Tip: Upgrade ship modules to strengthen your fleet.,팁: 함선 모듈을 업그레이드하면 함대 전투력이 향상됩니다.

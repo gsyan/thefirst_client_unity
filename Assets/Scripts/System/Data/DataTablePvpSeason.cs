@@ -19,9 +19,6 @@ public class PvpSeasonTierEntry
 [System.Serializable]
 public class PvpSeasonConfig
 {
-    [Header("기본 시즌 기간 (일)")]
-    public int defaultSeasonDurationDays = 14;
-
     [Header("티어 목록 (minScore 오름차순)")]
     public List<PvpSeasonTierEntry> tiers = new List<PvpSeasonTierEntry>();
 }

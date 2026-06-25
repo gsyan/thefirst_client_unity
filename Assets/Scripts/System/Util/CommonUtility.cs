@@ -187,9 +187,9 @@ public static class CommonUtility
 
         foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
         {
-            // Body 고유 능력치
+            // Body 고유 능력치 (Zone 적 배율 반영)
             CapabilityProfile bodyStats = GetBodyCapabilityProfile(bodyInfo);
-            stats.health += bodyStats.health;
+            stats.health += bodyStats.health * shipInfo.bodyMultiplier;
             stats.repair += bodyStats.repair;
             stats.speed  += bodyStats.speed;
 

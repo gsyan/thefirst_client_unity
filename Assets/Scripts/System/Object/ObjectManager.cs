@@ -15,6 +15,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     public PoolManager m_poolManager = new PoolManager();
 
+    // 전투 종료 처리 중 데미지 차단 플래그
+    public bool m_isBattleEnding = false;
+
     protected override void OnInitialize()
     {
         DataManager.Instance.ApplyGameSettings();
@@ -120,6 +123,48 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     [HideInInspector] public SpaceFleet m_myFleet;
     [HideInInspector] public List<SpaceFleet> m_enemyFleets = new List<SpaceFleet>();
 
+    // 활성 미사일 추적 — 아군/적군 분리, 요격 타겟 탐색용
+    public List<ProjectileMissile> m_friendlyMissiles = new List<ProjectileMissile>();
+    public List<ProjectileMissile> m_enemyMissiles    = new List<ProjectileMissile>();
+
+    public void RegisterMissile(ProjectileMissile missile, bool isEnemy)
+    {
+        List<ProjectileMissile> list = isEnemy ? m_enemyMissiles : m_friendlyMissiles;
+        if (list.Contains(missile) == false)
+            list.Add(missile);
+    }
+
+    public void UnregisterMissile(ProjectileMissile missile)
+    {
+        m_friendlyMissiles.Remove(missile);
+        m_enemyMissiles.Remove(missile);
+    }
+
+    // 기준 위치에서 가장 가까운 적 미사일 반환 (없으면 null)
+    public ProjectileMissile GetNearestEnemyMissile(Vector3 from, bool isMysideFriendly)
+    {
+        List<ProjectileMissile> targets = isMysideFriendly ? m_enemyMissiles : m_friendlyMissiles;
+        ProjectileMissile nearest = null;
+        float nearestSqrDist = float.MaxValue;
+
+        for (int i = targets.Count - 1; i >= 0; i--)
+        {
+            ProjectileMissile m = targets[i];
+            if (m == null || m.gameObject.activeSelf == false)
+            {
+                targets.RemoveAt(i);
+                continue;
+            }
+            float sqrDist = (m.transform.position - from).sqrMagnitude;
+            if (sqrDist < nearestSqrDist)
+            {
+                nearestSqrDist = sqrDist;
+                nearest = m;
+            }
+        }
+        return nearest;
+    }
+
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
     {
@@ -163,6 +208,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 전투 강제 종료 (전멸/퇴각 공통)
     public void ForceEndBattle(bool isVictory)
     {
+        m_isBattleEnding = true;
         bool isPvp = m_myFleet != null && m_myFleet.m_fleetState == EUnitState.BattlePvp;
 
         GameSpeedController.Reset(); // timeScale 및 오디오 피치 복원
@@ -333,6 +379,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private void TryStartCombat(SpaceFleet enemyFleet, EUnitState battleState, float playerDelay = 0f, float enemyDelay = 0f)
     {
+        m_isBattleEnding = false;
         if (m_myFleet == null || m_myFleet.m_fleetState != EUnitState.BattleReady) return;
         if (enemyFleet == null || enemyFleet.m_fleetState != EUnitState.BattleReady) return;
 

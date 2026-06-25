@@ -134,9 +134,10 @@ public class ModuleBeam : ModuleBase
         {
             if (m_moduleState.IsBattleState() == false) { yield return null; continue; }
 
-            if (m_currentTarget != null && m_currentTarget.m_health > 0)
+            if (IsSilenced() == false && m_currentTarget != null && m_currentTarget.m_health > 0)
             {
-                if (Time.time >= m_lastAttackTime + m_attackCool)
+                float harassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
+                if (Time.time >= m_lastAttackTime + m_attackCool + harassDelay)
                 {
                     bool isFacing = true;
                     if (m_ownerShip != null)
@@ -158,12 +159,21 @@ public class ModuleBeam : ModuleBase
         if (m_animator != null)
             m_animator.SetTrigger("Fire");
 
+        float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
+        float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
+        DamageInfo damageInfo = new DamageInfo
+        {
+            baseDamage       = m_attack,
+            attackMultiplier = shipCountMultiplier * formationMultiplier,
+            damageType       = EDamageType.Beam,
+        };
+
         Vector3 hitPoint = target.GetRandomHitPoint();
 
         foreach (var launcher in m_launchers)
         {
             if (launcher == null) continue;
-            launcher.FireAtTarget(target, m_attack, this, hitPoint);
+            launcher.FireAtTarget(target.transform, damageInfo, this, hitPoint);
         }
     }
 

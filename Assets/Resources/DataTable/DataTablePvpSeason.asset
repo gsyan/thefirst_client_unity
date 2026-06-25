@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: DataTablePvpSeason
   m_EditorClassIdentifier: Assembly-CSharp::DataTablePvpSeason
   config:
-    defaultSeasonDurationDays: 14
     tiers:
     - tierName: Bronze
       minScore: 0

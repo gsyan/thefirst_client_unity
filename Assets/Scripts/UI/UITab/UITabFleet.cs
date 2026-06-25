@@ -4,6 +4,8 @@ using TMPro;
 
 public class UITabFleet : UITabBase
 {
+    [SerializeField] private TMP_Text m_fleetSynergyStepText;
+
     [Header("함선 선택 UI 부모")]
     [SerializeField] private RectTransform m_shipSelectorContainer;
     private ShipSelector[] m_shipSelectors;
@@ -181,6 +183,21 @@ public class UITabFleet : UITabBase
         int current = m_playerFleet.m_ships.Count;
         int max = DataManager.Instance.m_dataTableTechLevel.GetMaxShipCount();
         m_currentShipCountStatText.text = $"{current} / {max}";
+
+        UpdateFleetSynergyDisplay();
+    }
+
+    private void UpdateFleetSynergyDisplay()
+    {
+        if (m_fleetSynergyStepText == null || m_playerFleet == null) return;
+
+        float multiplier = m_playerFleet.GetShipCountAttackMultiplier();
+        string multiplierStr = multiplier.ToString("F2");
+        m_fleetSynergyStepText.text = LocalizationManager.Instance.Get("UITabFleet_FleetSynergyMultiply", (object)multiplierStr);
+
+        RectTransform parent = m_fleetSynergyStepText.transform.parent as RectTransform;
+        if (parent != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(parent);
     }
 
     private void RefreshShipHealthDisplay()
@@ -247,7 +264,7 @@ public class UITabFleet : UITabBase
 
         var loc          = LocalizationManager.Instance;
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
-        int cost         = gameSettings.battleRepairMineralPerSec * gameSettings.instantRepairBaseSecs;
+        int cost         = gameSettings.repairBoostMineralPerSec * gameSettings.instantRepairBaseSecs;
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {

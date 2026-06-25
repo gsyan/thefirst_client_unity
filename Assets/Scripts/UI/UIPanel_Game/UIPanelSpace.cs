@@ -56,6 +56,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         CheckAndShowDailyRewardPopup();
         CheckAndClaimPendingStageRewards();
+        CheckAndClaimPvpSeasonReward();
         m_tabSystem.ForceActivateTab();
     }
 
@@ -80,6 +81,24 @@ public class UIPanelSpace : UIPanelBase
     }
 
     // ── 미수령 존 보상 복구 ───────────────────────────────────────────────────
+
+    private void CheckAndClaimPvpSeasonReward()
+    {
+        NetworkManager.Instance.PvpClaimSeasonReward(response =>
+        {
+            if (response == null || response.errorCode != 0) return;
+            if (response.data.pvpPointGained <= 0) return;
+
+            var loc = LocalizationManager.Instance;
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                title   = loc.Get("UIPopupMessage_PvpSeasonRewardTitle"),
+                message = loc.Get("UIPopupMessage_PvpSeasonRewardMessage"),
+                rewardAmounts = new System.Collections.Generic.List<int> { 0, 0, 0, response.data.pvpPointGained },
+                onConfirm = () => { }
+            });
+        });
+    }
 
     private void CheckAndClaimPendingStageRewards()
     {

@@ -155,9 +155,18 @@ public class ModuleMissile : ModuleBase
         {
             if (m_moduleState.IsBattleState() == false) { yield return null; continue; }
 
-            if (m_currentTarget != null && m_currentTarget.m_health > 0)
+            float missileHarassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
+            if (IsSilenced() == false && Time.time >= m_lastAttackTime + m_attackCoolTime + missileHarassDelay)
             {
-                if (Time.time >= m_lastAttackTime + m_attackCoolTime)
+                // 적 미사일 우선 요격
+                bool isFriendly = m_ownerFleet != null && m_ownerFleet.IsEnemy == false;
+                ProjectileMissile interceptTarget = ObjectManager.Instance.GetNearestEnemyMissile(transform.position, isFriendly);
+                if (interceptTarget != null)
+                {
+                    ExecuteInterceptOnMissile(interceptTarget);
+                    m_lastAttackTime = Time.time;
+                }
+                else if (m_currentTarget != null && m_currentTarget.m_health > 0)
                 {
                     ExecuteAttackOnTarget(m_currentTarget);
                     m_lastAttackTime = Time.time;
@@ -168,19 +177,41 @@ public class ModuleMissile : ModuleBase
         }
     }
 
+    private void ExecuteInterceptOnMissile(ProjectileMissile target)
+    {
+        DamageInfo damageInfo = new DamageInfo
+        {
+            baseDamage       = m_attack,
+            attackMultiplier = 1f,
+        };
+
+        foreach (var launcher in m_launchers)
+        {
+            if (launcher != null)
+                launcher.FireAtTarget(target.transform, damageInfo, this);
+        }
+    }
+
     private void ExecuteAttackOnTarget(ModuleBody target)
     {
         bool missileTacticOn = m_ownerFleet != null && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 2) != 0;
         GameSettings settings = DataManager.Instance.m_dataTableConfig.gameSettings;
-        float damageMultiplier = missileTacticOn == true ? settings.missileTacticDamageMultiplier : 1f;
-        float finalDamage = m_attack * damageMultiplier;
+        float tacticMultiplier    = missileTacticOn == true ? settings.missileTacticDamageMultiplier : 1f;
+        float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
+        float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
+        DamageInfo damageInfo = new DamageInfo
+        {
+            baseDamage       = m_attack,
+            attackMultiplier = tacticMultiplier * shipCountMultiplier * formationMultiplier,
+            damageType       = EDamageType.Missile,
+        };
 
         float explosionMultiplier = missileTacticOn == true ? settings.missileTacticExplosionMultiplier : 1f;
 
         foreach (var launcher in m_launchers)
         {
             if (launcher != null)
-                launcher.FireAtTarget(target, finalDamage, this, explosionMultiplier: explosionMultiplier);
+                launcher.FireAtTarget(target.transform, damageInfo, this, explosionMultiplier: explosionMultiplier);
         }
     }
 

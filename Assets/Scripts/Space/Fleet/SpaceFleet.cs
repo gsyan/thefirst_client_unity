@@ -179,7 +179,10 @@ public class SpaceFleet : MonoBehaviour
 
             UpdateShipFormation(m_fleetInfo.formation, bSmooth: false);
         }
-        
+
+        if (source == EFleetSource.fleet_source_player)
+            StartRepairBoostCostLoop();
+
         SetFleetState(fleetState);
     }
     // m_fleetInfo.ships에서 id로 항목을 찾아 생성 — 외부에서 ShipInfo 객체 없이 id만 알 때 사용
@@ -931,13 +934,11 @@ public class SpaceFleet : MonoBehaviour
         {
             if (fleetState.IsBattleState() == true)
             {
-                StartBattleRepairCostLoop();
                 StartMissileTacticCostLoop();
                 StartAircraftTacticCostLoop();
             }
             else
             {
-                StopBattleRepairCostLoop();
                 StopMissileTacticCostLoop();
                 StopAircraftTacticCostLoop();
             }
@@ -946,35 +947,34 @@ public class SpaceFleet : MonoBehaviour
             EventManager.TriggerMyFleetStateChanged(fleetState);
     }
 
-    private static readonly WaitForSeconds k_battleRepairCostInterval = new WaitForSeconds(1f);
-    private Coroutine m_battleRepairCostCoroutine;
+    private static readonly WaitForSeconds k_repairBoostCostInterval = new WaitForSeconds(1f);
+    private Coroutine m_repairBoostCostCoroutine;
 
-    private void StartBattleRepairCostLoop()
+    public void StartRepairBoostCostLoop()
     {
-        if (m_battleRepairCostCoroutine != null) StopCoroutine(m_battleRepairCostCoroutine);
-        m_battleRepairCostCoroutine = StartCoroutine(BattleRepairCostLoop());
+        if (m_repairBoostCostCoroutine != null) StopCoroutine(m_repairBoostCostCoroutine);
+        m_repairBoostCostCoroutine = StartCoroutine(RepairBoostCostLoop());
     }
 
-    private void StopBattleRepairCostLoop()
+    public void StopRepairBoostCostLoop()
     {
-        if (m_battleRepairCostCoroutine == null) return;
-        StopCoroutine(m_battleRepairCostCoroutine);
-        m_battleRepairCostCoroutine = null;
+        if (m_repairBoostCostCoroutine == null) return;
+        StopCoroutine(m_repairBoostCostCoroutine);
+        m_repairBoostCostCoroutine = null;
     }
 
-    private IEnumerator BattleRepairCostLoop()
+    private IEnumerator RepairBoostCostLoop()
     {
         while (true)
         {
-            yield return k_battleRepairCostInterval;
-            if (m_fleetState.IsBattleState() == false) continue;
+            yield return k_repairBoostCostInterval;
             if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 1) == 0) continue;
             if (HasAnyDamagedShip() == false) continue;
 
             Commander commander = DataManager.Instance.m_currentCommander;
             if (commander == null) continue;
 
-            int cost = DataManager.Instance.m_dataTableConfig.gameSettings.battleRepairMineralPerSec;
+            int cost = DataManager.Instance.m_dataTableConfig.gameSettings.repairBoostMineralPerSec;
             commander.TryConsumeMineral(cost);
         }
     }
@@ -1035,7 +1035,7 @@ public class SpaceFleet : MonoBehaviour
     {
         while (true)
         {
-            yield return k_battleRepairCostInterval;
+            yield return k_repairBoostCostInterval;
             if (m_fleetState.IsBattleState() == false) continue;
             if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 2) == 0) continue;
             if (HasAnyMissileModule() == false) continue;
@@ -1065,7 +1065,7 @@ public class SpaceFleet : MonoBehaviour
     {
         while (true)
         {
-            yield return k_battleRepairCostInterval;
+            yield return k_repairBoostCostInterval;
             if (m_fleetState.IsBattleState() == false) continue;
             if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 4) == 0) continue;
             if (HasAnyHangerModule() == false) continue;
@@ -1124,7 +1124,7 @@ public class SpaceFleet : MonoBehaviour
         return count;
     }
 
-    // 함선 수 공격력 배율: 1척=1.0, 2척부터 보너스, 9척=3.0
+    // 함선 수 공격력 배율: 1척=1.0, 2척=1.25, 3척=1.5, 4척=1.75, 5척=2.0, 6척=2.25, 7척=2.5, 8척=2.75, 9척=3.0
     public float GetShipCountAttackMultiplier()
     {
         int n = GetAliveShipCount();

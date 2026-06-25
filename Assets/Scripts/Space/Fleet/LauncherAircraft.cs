@@ -30,35 +30,33 @@ public class LauncherAircraft : LauncherBase
         m_isInitialized = true;
     }
 
-    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
+    public override void Fire(Transform target, DamageInfo damageInfo, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
     {
         if (m_isInitialized == false) return;
         StartCoroutine(FireCoroutine(target));
     }
 
-    private IEnumerator FireCoroutine(ModuleBase target)
+    private IEnumerator FireCoroutine(Transform target)
     {
         AircraftInfo aircraftInfo = m_moduleHanger.GetReadyAircraft();
         if (aircraftInfo == null) yield break;
 
-        // 함재기 전술 강화 ON: 출격 시 공격력·탄약 배율 적용 (귀환 시 UpdateAircraftInfo로 원복)
+        // 출격 시 공격 배율 조립 — airAttack은 원본 유지, 배율만 airAttackMultiplier에 저장 (귀환 시 UpdateAircraftInfo로 1f 원복)
         SpaceShip carrierShip = m_moduleHanger.GetSpaceShip();
         SpaceFleet ownerFleet = carrierShip != null ? carrierShip.m_ownerFleet : null;
         bool aircraftTacticOn = ownerFleet != null
             && ownerFleet.m_fleetInfo != null
             && (ownerFleet.m_fleetInfo.tacticOptions & 4) != 0;
+        GameSettings settings = DataManager.Instance.m_dataTableConfig.gameSettings;
+        float tacticMultiplier    = aircraftTacticOn == true ? settings.aircraftTacticDamageMultiplier : 1f;
+        float shipCountMultiplier = ownerFleet != null ? ownerFleet.GetShipCountAttackMultiplier() : 1f;
+        float formationMultiplier = ownerFleet != null ? ownerFleet.GetFormationAttackMultiplier() : 1f;
+        aircraftInfo.airAttackMultiplier = tacticMultiplier * shipCountMultiplier * formationMultiplier;
         if (aircraftTacticOn == true)
-        {
-            GameSettings settings = DataManager.Instance.m_dataTableConfig.gameSettings;
-            aircraftInfo.airAttack = aircraftInfo.airAttack * settings.aircraftTacticDamageMultiplier;
-            aircraftInfo.airAmmo   = Mathf.RoundToInt(aircraftInfo.airAmmoMax * settings.aircraftTacticAmmoMultiplier);
-        }
-
-        //ParticleSystem muzzleEffect = ObjectManager.Instance.m_poolManager.GetParticleSystem_Play_AutoReturn(EPoolName.EFFECT_BEAM_MUZZLE, m_firePoint);
+            aircraftInfo.airAmmo = Mathf.RoundToInt(aircraftInfo.airAmmoMax * settings.aircraftTacticAmmoMultiplier);
 
         SoundManager.Instance.PlayFX(EFx.Aircraft_Launch, transform.position);
 
-        //yield return new WaitForSeconds(muzzleEffect.main.duration * 0.5f);
         if (target == null)
         {
             m_moduleHanger.ReturnAircraft(aircraftInfo);

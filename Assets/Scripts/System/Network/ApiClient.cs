@@ -830,6 +830,22 @@ public class ApiClient
     }
 
 
+    public async Task<ApiResponse<PvpClaimSeasonRewardResponse>> PvpClaimSeasonRewardAsync()
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<PvpClaimSeasonRewardResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(new PvpClaimSeasonRewardRequest());
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/pvp/pvp-season/claim-reward", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<PvpClaimSeasonRewardResponse>>(webRequest.downloadHandler.text);
+    }
+
     public async Task<ApiResponse<PendingStageRewardResponse>> ClaimPendingStageRewardsAsync()
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<PendingStageRewardResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);

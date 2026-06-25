@@ -39,16 +39,16 @@ public class UITabFleetTactics : UITabBase
 
     private static readonly string[] k_toggleNameKeys =
     {
-        "UITabFleetTactics_UseBattleRepair",
-        "UITabFleetTactics_UseMissile",
-        "UITabFleetTactics_UseAircraft",
+        "UITabFleetTactics_RepairBoost",
+        "UITabFleetTactics_MissileBoost",
+        "UITabFleetTactics_AircraftBoost",
     };
 
     private static readonly string[] k_toggleDescKeys =
     {
-        "UITabFleetTactics_UseBattleRepair_description",
-        "UITabFleetTactics_UseMissile_description",
-        "UITabFleetTactics_UseAircraft_description",
+        "UITabFleetTactics_RepairBoost_description",
+        "UITabFleetTactics_MissileBoost_description",
+        "UITabFleetTactics_AircraftBoost_description",
     };
 
     void Awake()
@@ -100,13 +100,21 @@ public class UITabFleetTactics : UITabBase
         m_toggleButtons = m_toggleButtonContainer.GetComponentsInChildren<ToggleButton>();
         m_toggleStates  = new bool[m_toggleButtons.Length];
 
+        var gs = DataManager.Instance.m_dataTableConfig.gameSettings;
+        int[] k_toggleDescArgs =
+        {
+            gs.repairBoostMineralPerSec,
+            gs.missileTacticMineralPerSec,
+            gs.aircraftTacticMineralPerSec,
+        };
+
         int savedOptions = m_playerFleet.m_fleetInfo.tacticOptions;
         for (int i = 0; i < m_toggleButtons.Length; i++)
         {
             m_toggleStates[i] = (savedOptions & (1 << i)) != 0;
 
             if (i < k_toggleNameKeys.Length)
-                m_toggleButtons[i].SetTexts(k_toggleNameKeys[i], k_toggleDescKeys[i]);
+                m_toggleButtons[i].SetTexts(k_toggleNameKeys[i], k_toggleDescKeys[i], k_toggleDescArgs[i]);
 
             int idx = i;
             m_toggleButtons[idx].button.onClick.AddListener(() => OnClickToggle(idx));

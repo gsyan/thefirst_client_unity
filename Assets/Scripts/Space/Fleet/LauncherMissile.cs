@@ -36,13 +36,13 @@ public class LauncherMissile : LauncherBase
         m_isInitialized = true;
     }
 
-    public override void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
+    public override void Fire(Transform target, DamageInfo damageInfo, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
     {
         if (m_isInitialized == false) return;
-        StartCoroutine(FireMissileCoroutine(target, damage, sourceModuleBase, explosionMultiplier));
+        StartCoroutine(FireMissileCoroutine(target, damageInfo, sourceModuleBase, explosionMultiplier));
     }
 
-    private IEnumerator FireMissileCoroutine(ModuleBase target, float damage, ModuleBase sourceModuleBase, float explosionMultiplier)
+    private IEnumerator FireMissileCoroutine(Transform target, DamageInfo damageInfo, ModuleBase sourceModuleBase, float explosionMultiplier)
     {
         //ParticleSystem muzzleEffect = ObjectManager.Instance.m_poolManager.GetParticleSystem_Play_AutoReturn(EPoolName.EFFECT_BEAM_MUZZLE, m_firePoint);
 
@@ -59,7 +59,7 @@ public class LauncherMissile : LauncherBase
         missile.SetPoolName(m_missilePoolName);
 
         // 함선 발사대: 발사구 위쪽 방향으로 콜드런치
-        missile.InitializeProjectileMissile(m_firePoint, target, damage, m_moduleData, sourceModuleBase, m_firePoint.forward, m_ejectSpeed, explosionMultiplier);
+        missile.InitializeProjectileMissile(m_firePoint, target, damageInfo, m_moduleData, sourceModuleBase, m_firePoint.forward, m_ejectSpeed, explosionMultiplier);
     }
 
 }

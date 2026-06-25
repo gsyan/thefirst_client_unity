@@ -583,6 +583,10 @@ MonoBehaviour:
     m_Key: UITabFleet_AddShipText
     m_Metadata:
       m_Items: []
+  - m_Id: 49731971877568512
+    m_Key: UITabFleet_FleetSynergyMultiply
+    m_Metadata:
+      m_Items: []
   - m_Id: 35928926043635712
     m_Key: UITabFleetTactics_Name
     m_Metadata:
@@ -611,28 +615,28 @@ MonoBehaviour:
     m_Key: UITabFleetTactics_FormationType_XDefensive_description
     m_Metadata:
       m_Items: []
-  - m_Id: 36001082114965504
-    m_Key: UITabFleetTactics_UseBattleRepair
+  - m_Id: 49703030982836224
+    m_Key: UITabFleetTactics_RepairBoost
     m_Metadata:
       m_Items: []
-  - m_Id: 36001082144325632
-    m_Key: UITabFleetTactics_UseBattleRepair_description
+  - m_Id: 49703031016390656
+    m_Key: UITabFleetTactics_RepairBoost_description
     m_Metadata:
       m_Items: []
-  - m_Id: 36001082144325633
-    m_Key: UITabFleetTactics_UseMissile
+  - m_Id: 49703031016390657
+    m_Key: UITabFleetTactics_MissileBoost
     m_Metadata:
       m_Items: []
-  - m_Id: 36001082144325634
-    m_Key: UITabFleetTactics_UseMissile_description
+  - m_Id: 49703031016390658
+    m_Key: UITabFleetTactics_MissileBoost_description
     m_Metadata:
       m_Items: []
-  - m_Id: 36001082144325635
-    m_Key: UITabFleetTactics_UseAircraft
+  - m_Id: 49703031016390659
+    m_Key: UITabFleetTactics_AircraftBoost
     m_Metadata:
       m_Items: []
-  - m_Id: 36001082144325636
-    m_Key: UITabFleetTactics_UseAircraft_description
+  - m_Id: 49703031016390660
+    m_Key: UITabFleetTactics_AircraftBoost_description
     m_Metadata:
       m_Items: []
   - m_Id: 36387413043314688
@@ -969,6 +973,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 48702148229070849
     m_Key: UIPopupMessage_VersionUpdateButton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49760963871506432
+    m_Key: UIPopupMessage_PvpSeasonRewardTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49760963913449472
+    m_Key: UIPopupMessage_PvpSeasonRewardMessage
     m_Metadata:
       m_Items: []
   - m_Id: 14264662300164096

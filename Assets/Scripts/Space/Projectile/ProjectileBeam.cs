@@ -56,11 +56,11 @@ public class ProjectileBeam : ProjectileBase
         m_flatWidthCurve.AddKey(1f, 1f);
     }
 
-    public void InitializeProjectileBeam(Transform firePointTransform, ModuleBase target, float damage, ModuleData moduleData,
+    public void InitializeProjectileBeam(Transform firePointTransform, Transform target, DamageInfo damageInfo, ModuleData moduleData,
                           Color color, ModuleBase sourceModuleBase, float projectileWidth,
                           Vector3 hitPoint = default)
     {
-        SetCommonData(firePointTransform, target, damage, sourceModuleBase, hitPoint);
+        SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase, hitPoint);
 
         m_beamHeadPos = m_firePointTransform.position;
         m_beamTailPos = m_firePointTransform.position;
@@ -187,7 +187,7 @@ public class ProjectileBeam : ProjectileBase
         // 2단계: 데미지 처리
         if (hitTarget != null)
         {
-            hitTarget.TakeDamage(m_damage, finalHitPoint);
+            hitTarget.TakeDamage(m_damageInfo, finalHitPoint);
             SoundManager.Instance.PlayFX(EFx.Beam_Impact1, finalHitPoint);
         }
 

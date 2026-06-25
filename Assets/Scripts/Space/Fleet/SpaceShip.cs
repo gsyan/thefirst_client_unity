@@ -353,23 +353,106 @@ public class SpaceShip : MonoBehaviour
         return Vector3.Angle(transform.forward, toTarget) <= angleThreshold;
     }
 
-    virtual public void TakeDamage(float attackPower, Vector3 hitPosition)
+    // 함재기 교란 — AttackShip 페이즈 유지 중인 함재기 목록과 합산 딜레이
+    private List<AircraftBase> m_harassingAircrafts = new List<AircraftBase>();
+    private float m_totalHarassDelay = 0f;
+
+    public void RegisterHarassingAircraft(AircraftBase aircraft, float delay)
     {
+        if (m_harassingAircrafts.Contains(aircraft) == false)
+        {
+            m_harassingAircrafts.Add(aircraft);
+            m_totalHarassDelay += delay;
+        }
+    }
+
+    public void UnregisterHarassingAircraft(AircraftBase aircraft, float delay)
+    {
+        if (m_harassingAircrafts.Remove(aircraft) == true)
+            m_totalHarassDelay = Mathf.Max(0f, m_totalHarassDelay - delay);
+    }
+
+    // 현재 교란 중인 함재기들의 합산 추가 쿨타임 (초)
+    public float GetHarassAdditionalCool()
+    {
+        return m_totalHarassDelay;
+    }
+
+    public void ApplySilenceToRandomModule(float duration)
+    {
+        if (duration <= 0f) return;
+
+        var free    = new System.Collections.Generic.List<ModuleBase>();
+        var silenced = new System.Collections.Generic.List<ModuleBase>();
+
+        foreach (ModuleBody body in m_moduleBodys)
+        {
+            if (body == null || body.m_health <= 0) continue;
+            foreach (ModuleBeam    m in body.m_beams)
+            {
+                if (m == null) continue;
+                if (m.IsSilenced() == true)
+                    silenced.Add(m);
+                else
+                    free.Add(m);
+            }
+            foreach (ModuleMissile m in body.m_missiles)
+            {
+                if (m == null) continue;
+                if (m.IsSilenced() == true)
+                    silenced.Add(m);
+                else
+                    free.Add(m);
+            }
+            foreach (ModuleHanger m in body.m_hangers)
+            {
+                if (m == null) continue;
+                if (m.IsSilenced() == true)
+                    silenced.Add(m);
+                else
+                    free.Add(m);
+            }
+        }
+
+        if (free.Count > 0)
+        {
+            free[UnityEngine.Random.Range(0, free.Count)].ApplySilence(duration);
+            return;
+        }
+
+        // 모두 침묵 중이면 종료 시간이 가장 짧은 것 선택
+        if (silenced.Count == 0) return;
+
+        ModuleBase shortest = silenced[0];
+        for (int i = 1; i < silenced.Count; i++)
+        {
+            if (silenced[i].GetSilenceEndTime() < shortest.GetSilenceEndTime())
+                shortest = silenced[i];
+        }
+        shortest.ApplySilence(duration);
+    }
+
+    virtual public void TakeDamage(DamageInfo damageInfo, Vector3 hitPosition)
+    {
+        // 전투 종료 처리 중 데미지 차단
+        if (ObjectManager.Instance.m_isBattleEnding == true) return;
         // 이미 죽었다면 리턴
         if (IsAlive() == false) return;
+
+        float incomingDamage = damageInfo.GetFinalDamage();
 
         // 진형 데미지 차감 (x_defensive 전용)
         if (m_ownerFleet != null)
         {
             float reduction = m_ownerFleet.GetFormationDefenseReduction();
-            attackPower *= (1f - reduction);
+            incomingDamage *= (1f - reduction);
         }
 
         // 살아있는 바디 중 하나에 랜덤으로 데미지 분산 (또는 첫 번째 바디에)
         ModuleBody targetBody = GetRandomAliveBody();
         if (targetBody != null)
         {
-            targetBody.TakeDamage(attackPower);
+            targetBody.TakeDamage(incomingDamage);
         }
 
         // 전체 함선 체력 재계산
@@ -382,7 +465,8 @@ public class SpaceShip : MonoBehaviour
         if (IsAlive() == true)
         {
             UpdateFireEffects(hitPosition);
-            SpawnScorchMark(hitPosition);
+            if (damageInfo.damageType == EDamageType.Beam)
+                SpawnScorchMark(hitPosition);
             return;
         }
 
@@ -561,15 +645,12 @@ public class SpaceShip : MonoBehaviour
             float ownRepair = m_spaceShipStatsCur.repair;
             if (ownRepair <= 0f) continue;
 
-            bool isBattle = m_ownerFleet != null && m_ownerFleet.m_fleetState.IsBattleState() == true;
-            if (isBattle && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 1) == 0) continue;
-
-            Commander commander = isPlayerFleet ? DataManager.Instance.m_currentCommander : null;
-            if (isBattle && isPlayerFleet && (commander == null || commander.GetMineral() <= 0)) continue;
-
             // 진형 회복력 보너스 적용 (cross_defensive 전용)
             float formationRepairMult = m_ownerFleet != null ? m_ownerFleet.GetFormationRepairMultiplier() : 1f;
-            float effectiveRepair = ownRepair * formationRepairMult;
+
+            bool isRepairBoost = m_ownerFleet != null && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 1) != 0;
+            float boostMult = isRepairBoost ? DataManager.Instance.m_dataTableConfig.gameSettings.repairBoostMultiplier : 1f;
+            float effectiveRepair = ownRepair * formationRepairMult * boostMult;
 
             // 자기 HP 미달 → 자신만 수리
             if (GetHealthRatio() < 1f)

@@ -475,6 +475,15 @@ public class GetStageEnemiesResponse
 }
 
 [System.Serializable]
+public class PvpClaimSeasonRewardRequest { }
+
+[System.Serializable]
+public class PvpClaimSeasonRewardResponse
+{
+    public int pvpPointGained;
+}
+
+[System.Serializable]
 public class PendingStageRewardRequest { }
 
 [System.Serializable]

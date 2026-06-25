@@ -31,11 +31,11 @@ public class ProjectileBeamHitscan : ProjectileBase
         m_mpb = new MaterialPropertyBlock();
     }
 
-    public void InitializeProjectileBeamHitscan(Transform firePointTransform, ModuleBase target, float damage,
+    public void InitializeProjectileBeamHitscan(Transform firePointTransform, Transform target, DamageInfo damageInfo,
                                               ModuleBase sourceModuleBase,
                                               Vector3 hitPoint = default)
     {
-        SetCommonData(firePointTransform, target, damage, sourceModuleBase, hitPoint);
+        SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase, hitPoint);
 
         m_uvTime = Random.Range(0f, 100f);
 
@@ -50,7 +50,7 @@ public class ProjectileBeamHitscan : ProjectileBase
     private IEnumerator BeamLifeCycle()
     {
         // 아군 체크 후 데미지 대상 SpaceShip 확정
-        SpaceShip targetShip = m_target != null ? m_target.GetComponentInParent<SpaceShip>() : null;
+        SpaceShip targetShip = m_target != null ? m_target.GetComponentInParent<SpaceShip>() : null; // Transform.GetComponentInParent 사용
         if (targetShip != null && m_sourceShip != null)
         {
             SpaceFleet myFleet = m_sourceShip.GetComponentInParent<SpaceFleet>();
@@ -59,7 +59,9 @@ public class ProjectileBeamHitscan : ProjectileBase
                 targetShip = null;
         }
 
-        float tickDamage = m_holdTime > 0f ? m_damage * (m_tickInterval / m_holdTime) : m_damage;
+        float totalDamage = m_damageInfo.GetFinalDamage();
+        float tickDamage = m_holdTime > 0f ? totalDamage * (m_tickInterval / m_holdTime) : totalDamage;
+        DamageInfo tickDamageInfo = new DamageInfo { baseDamage = tickDamage, attackMultiplier = 1f };
         float elapsed = 0f;
         float tickAccum = 0f;
 
@@ -81,7 +83,7 @@ public class ProjectileBeamHitscan : ProjectileBase
             {
                 tickAccum -= m_tickInterval;
                 if (targetShip != null)
-                    targetShip.TakeDamage(tickDamage, m_target.transform.position);
+                    targetShip.TakeDamage(tickDamageInfo, m_target.position);
             }
 
             yield return null;

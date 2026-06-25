@@ -18,7 +18,7 @@ public enum EAircraftState
 public abstract class AircraftBase : MonoBehaviour
 {
     [SerializeField] protected Transform m_firePoint;
-    [SerializeField] protected ModuleBase m_targetModule;
+    [SerializeField] protected Transform m_targetModule;
     [SerializeField] protected ModuleHanger m_moduleHanger;
     [SerializeField] protected AircraftInfo m_aircraftInfo;
 
@@ -28,6 +28,23 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected EModuleSubType m_hangerModuleSubType;
     [SerializeField] protected int m_hangerSlotIndex;
     protected bool m_isEnemyAircraft = false; // 초기화 시 캐싱, 모함 소멸 후 null이 돼도 판별 가능
+
+    private SpaceShip m_harassedShip = null;  // 현재 교란 중인 함선 (AttackShip 페이즈 전용)
+    private float m_harassDelay = 0f;
+
+    private void RegisterHarass(SpaceShip ship)
+    {
+        m_harassedShip = ship;
+        m_harassDelay  = m_aircraftInfo != null ? m_aircraftInfo.airAdditionalDelay : 0f;
+        ship.RegisterHarassingAircraft(this, m_harassDelay);
+    }
+
+    private void UnregisterHarass()
+    {
+        if (m_harassedShip == null) return;
+        m_harassedShip.UnregisterHarassingAircraft(this, m_harassDelay);
+        m_harassedShip = null;
+    }
     
 
     [SerializeField] protected float m_repositionMinDistanceMultiplier = 1.5f;
@@ -49,15 +66,15 @@ public abstract class AircraftBase : MonoBehaviour
     protected ModuleData m_moduleData;
     protected EPoolName m_missilePoolName = EPoolName.PROJECTILE_MISSILE_SMALL;
 
-    public virtual void InitializeAirCraft(Transform firePointTransform, ModuleBase target, AircraftInfo aircraftInfo, ModuleHanger moduleHanger, Color color)
+    public virtual void InitializeAirCraft(Transform firePointTransform, Transform target, AircraftInfo aircraftInfo, ModuleHanger moduleHanger, Color color)
     {
         m_firePoint = firePointTransform;
         m_targetModule = target;
         m_aircraftInfo = aircraftInfo;
         m_moduleHanger = moduleHanger;
         m_flightPath = ResolveFlightPath();
-        // 미사일 발사 전용 — projectileSpeed만 사용 (함재기 속도 * 2)
-        m_moduleData = new ModuleData { projectileSpeed = aircraftInfo.airSpeed * 2f };
+        // 미사일 발사 전용 — projectileSpeed, airAdditionalDelay만 사용
+        m_moduleData = new ModuleData { projectileSpeed = aircraftInfo.airSpeed * 2f, airAdditionalDelay = aircraftInfo.airAdditionalDelay };
 
         //m_aircraftInfo.attackPower = 0f; // test
         //m_aircraftInfo.moveSpeed = 100f; // test
@@ -169,7 +186,7 @@ public abstract class AircraftBase : MonoBehaviour
         Vector3 attackApproachPoint = Vector3.zero;
         if (m_targetModule != null)
         {
-            SpaceShip targetShip = m_targetModule.GetSpaceShip();
+            SpaceShip targetShip = m_targetModule.GetComponentInParent<SpaceShip>();
             attackApproachPoint = GetLateralShieldVertex(targetShip);
         }
 
@@ -297,15 +314,17 @@ public abstract class AircraftBase : MonoBehaviour
             if (TryReassignTarget()) { m_state = EAircraftState.MoveToTarget; yield break; }
             m_state = EAircraftState.ReturnToApproach; yield break;
         }
-        SpaceShip targetShip = m_targetModule.GetSpaceShip();
+        SpaceShip targetShip = m_targetModule.GetComponentInParent<SpaceShip>();
         if (targetShip == null) { m_state = EAircraftState.ReturnToApproach; yield break; }
-        
+
         ShieldGrid targetShieldGrid = targetShip.m_shieldGrid;
         if (targetShieldGrid == null || targetShieldGrid.m_vertices == null || targetShieldGrid.m_vertices.Count == 0)
         {
             Debug.LogWarning("No ShieldGrid vertices on target ship!");
             yield break;
         }
+
+        RegisterHarass(targetShip);
 
         List<ShieldVertex> points = targetShieldGrid.m_vertices;
         // 시작 시, 가장 가까운 포인트 찾기
@@ -314,16 +333,18 @@ public abstract class AircraftBase : MonoBehaviour
 
         while (true)
         {
-            if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
+            if (IsCarrierFleetDestroyed() == true) { UnregisterHarass(); ReturnToPool(); yield break; }
             // 종료 조건: 탄약 소진 시 무조건 귀환
             if (m_aircraftInfo.airAmmo <= 0)
             {
+                UnregisterHarass();
                 m_state = EAircraftState.ReturnToApproach;
                 yield break;
             }
             // 목표 상실 시 모함 타겟으로 재할당 시도
             if (m_targetModule == null || !m_targetModule.gameObject.activeSelf)
             {
+                UnregisterHarass();
                 if (TryReassignTarget())
                 {
                     m_state = EAircraftState.MoveToTarget;
@@ -569,15 +590,24 @@ public abstract class AircraftBase : MonoBehaviour
         ProjectileMissile missile = ObjectManager.Instance.m_poolManager.Get<ProjectileMissile>(m_missilePoolName);
         if (missile == null) return;
 
+        DamageInfo damageInfo = new DamageInfo
+        {
+            baseDamage       = m_aircraftInfo.airAttack,
+            attackMultiplier = m_aircraftInfo.airAttackMultiplier,
+            damageType       = EDamageType.Aircraft,
+        };
+
         missile.transform.SetPositionAndRotation(m_firePointMissileList[0].position, m_firePointMissileList[0].rotation);
         missile.SetPoolName(m_missilePoolName);
-        missile.InitializeProjectileMissile(m_firePointMissileList[0], m_targetModule, m_aircraftInfo.airAttack, m_moduleData, m_moduleHanger, -m_firePointMissileList[0].up, 1f);
+        missile.InitializeProjectileMissile(m_firePointMissileList[0], m_targetModule, damageInfo, m_moduleData, m_moduleHanger, -m_firePointMissileList[0].up, 1f); // m_targetModule은 Transform
 
         m_aircraftInfo.airAmmo--;
         m_lastAttackTime = Time.time;
     }
     public virtual void TakeDamage(float damage)
     {
+        // 전투 종료 처리 중 데미지 차단
+        if (ObjectManager.Instance.m_isBattleEnding == true) return;
         m_aircraftInfo.airHealth -= damage;
         if (m_aircraftInfo.airHealth <= 0)
         {
@@ -597,7 +627,7 @@ public abstract class AircraftBase : MonoBehaviour
             ModuleBody carrierTarget = m_moduleHanger.GetCurrentTarget();
             if (carrierTarget != null)
             {
-                m_targetModule = carrierTarget;
+                m_targetModule = carrierTarget.transform;
                 return true;
             }
         }
@@ -629,7 +659,7 @@ public abstract class AircraftBase : MonoBehaviour
         ModuleBody enemyBody = enemyFleet.GetRandomAliveBodyPart();
         if (enemyBody == null) return false;
 
-        m_targetModule = enemyBody;
+        m_targetModule = enemyBody.transform;
         return true;
     }
 
@@ -642,6 +672,7 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual void ReturnToPool()
     {
+        UnregisterHarass();
         EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChanged);
     }
 

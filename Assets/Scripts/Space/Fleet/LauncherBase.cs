@@ -13,13 +13,13 @@ public class LauncherBase : MonoBehaviour
         EventManager.Subscribe_GameSpeedChanged(OnGameSpeedChanged);
     }
 
-    public void FireAtTarget(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
+    public void FireAtTarget(Transform target, DamageInfo damageInfo, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
     {
         if (target != null)
-            Fire(target, damage, sourceModuleBase, hitPoint, explosionMultiplier);
+            Fire(target, damageInfo, sourceModuleBase, hitPoint, explosionMultiplier);
     }
 
-    public virtual void Fire(ModuleBase target, float damage, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
+    public virtual void Fire(Transform target, DamageInfo damageInfo, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
     {
         if (m_isInitialized == false) return;
     }
