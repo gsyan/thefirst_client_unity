@@ -6,6 +6,7 @@ pipeline {
         string(name: 'VERSION_MAJOR', defaultValue: '0', description: '메이저 버전')
         string(name: 'VERSION_MINOR', defaultValue: '1', description: '마이너 버전')
         string(name: 'VERSION_PATCH', defaultValue: '18', description: '패치 버전')
+        string(name: 'PRODUCT_NAME',  defaultValue: 'Space Fleet', description: '앱 표시 이름 (Google Play 등록명)')
         booleanParam(name: 'IS_SHIPPING',          defaultValue: false, description: '배포용 빌드 (체크 시 개발자 도구/콘솔 비활성화, 미체크 = 개발 빌드)')
         booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드')
         booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드')
@@ -40,6 +41,7 @@ pipeline {
                             string(name: 'VERSION_MAJOR', defaultValue: "${params.VERSION_MAJOR}", description: '메이저 버전'),
                             string(name: 'VERSION_MINOR', defaultValue: "${params.VERSION_MINOR}", description: '마이너 버전'),
                             string(name: 'VERSION_PATCH', defaultValue: "${params.VERSION_PATCH}", description: '패치 버전'),
+                            string(name: 'PRODUCT_NAME',  defaultValue: "${params.PRODUCT_NAME}",  description: '앱 표시 이름 (Google Play 등록명)'),
                             booleanParam(name: 'IS_SHIPPING',          defaultValue: false, description: '배포용 빌드 (체크 시 개발자 도구/콘솔 비활성화, 미체크 = 개발 빌드)'),
                             booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드'),
                             booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드'),
@@ -66,6 +68,7 @@ pipeline {
                           -executeMethod BuildScript.BuildAndroid ^
                           -outputPath "${env.OUTPUT_APK}" ^
                           -versionName "${env.VERSION_NAME}" ^
+                          -productName "${params.PRODUCT_NAME}" ^
                           ${devFlag} ^
                           -logFile "${env.WORKSPACE}/build/unity_build_apk.log"
                     """
@@ -95,6 +98,7 @@ pipeline {
                           -executeMethod BuildScript.BuildAndroid ^
                           -outputPath "${env.OUTPUT_AAB}" ^
                           -versionName "${env.VERSION_NAME}" ^
+                          -productName "${params.PRODUCT_NAME}" ^
                           -buildAAB ^
                           -logFile "${env.WORKSPACE}/build/unity_build_aab.log"
                     """
