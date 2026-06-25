@@ -16,12 +16,17 @@ public static class BuildScript
         string keyaliasPass = GetEnv("KEY_ALIAS_PASS");
         string versionCode = GetEnv("BUILD_NUMBER"); // Jenkins BUILD_NUMBER
         string versionName = GetArg("-versionName");
+        string productName = GetArg("-productName");
 
         // 버전 설정
         Debug.Log($"[Build] ARG -versionName = '{versionName ?? "(null)"}'");
+        Debug.Log($"[Build] ARG -productName = '{productName ?? "(null)"}'");
         Debug.Log($"[Build] ENV BUILD_NUMBER = '{versionCode ?? "(null)"}'");
         Debug.Log($"[Build] PlayerSettings.bundleVersion (before) = '{PlayerSettings.bundleVersion}'");
         Debug.Log($"[Build] PlayerSettings.bundleVersionCode (before) = {PlayerSettings.Android.bundleVersionCode}");
+
+        if (!string.IsNullOrEmpty(productName))
+            PlayerSettings.productName = productName;
 
         if (!string.IsNullOrEmpty(versionName))
             PlayerSettings.bundleVersion = versionName;
