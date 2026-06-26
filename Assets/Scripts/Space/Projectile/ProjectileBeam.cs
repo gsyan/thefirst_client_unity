@@ -115,6 +115,7 @@ public class ProjectileBeam : ProjectileBase
 
     private const int m_layerShield = 13;
     private LayerMask m_layerMaskShield = 1 << m_layerShield;
+    private static readonly RaycastHit[] s_beamHits = new RaycastHit[16];
 
     //빠르게 목표까지 도달 → 데미지 → 흩어지며 소멸
     private IEnumerator BeamLifeCycle()
@@ -128,8 +129,8 @@ public class ProjectileBeam : ProjectileBase
         Vector3 finalHitPoint = targetPosition;
         SpaceShip hitTarget = null;
 
-        // Raycast로 충돌 지점 미리 계산
-        if (Physics.Raycast(m_beamTailPos, m_direction, out RaycastHit hit, maxDistance, pickMask))
+        // 초기 Raycast — 함선 감지 및 finalHitPoint 확정 (Trigger 무시)
+        if (Physics.Raycast(m_beamTailPos, m_direction, out RaycastHit hit, maxDistance, pickMask, QueryTriggerInteraction.Ignore))
         {
             hitTarget = hit.collider.GetComponentInParent<SpaceShip>();
             if (hitTarget != null && m_sourceShip != null)
@@ -137,23 +138,23 @@ public class ProjectileBeam : ProjectileBase
                 SpaceFleet myFleet = m_sourceShip.GetComponentInParent<SpaceFleet>();
                 SpaceFleet targetFleet = hitTarget.GetComponentInParent<SpaceFleet>();
                 if (myFleet != null && targetFleet != null && myFleet == targetFleet)
-                    hitTarget = null; // 아군이면 무시
+                    hitTarget = null;
             }
-            finalHitPoint = hit.point;   
+            finalHitPoint = hit.point;
         }
 
-        // 1단계: 빔 연장 (빠르게 목표까지) - 시각적으로 타겟 위치까지 도달
-        float totalDistance = Vector3.Distance(m_beamTailPos, targetPosition);
+        // 1단계: 빔 연장
+        float totalDistance = Vector3.Distance(m_beamTailPos, finalHitPoint);
         float currentLength = 0f;
+        ProjectileMissile interceptedMissile = null;
 
         while (currentLength < totalDistance)
         {
             m_lifeTime += Time.deltaTime;
             if (m_lifeTime >= MAX_LIFE_TIME)
             {
-                if (!gameObject.activeInHierarchy) yield break;
-                yield return StartCoroutine(BeamScatterAndReturn());
-                yield break;
+                currentLength = totalDistance;
+                continue;
             }
 
             // 함선 회전 시 발사구 위치 추적
@@ -167,6 +168,72 @@ public class ProjectileBeam : ProjectileBase
             float frameMove = m_beamSpeed * Time.deltaTime;
             currentLength = Mathf.Min(currentLength + frameMove, totalDistance);
             m_beamHeadPos = m_beamTailPos + m_direction * currentLength;
+
+            // 테일→헤드 전체 구간 실시간 RaycastNonAlloc — 아군 함재기/미사일 통과, 적 감지
+            float beamLen       = Vector3.Distance(m_beamTailPos, m_beamHeadPos);
+            bool bSourceIsEnemy = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy;
+            int hitCount        = beamLen > 0.001f ? Physics.RaycastNonAlloc(m_beamTailPos, m_direction, s_beamHits, beamLen, pickMask, QueryTriggerInteraction.Collide) : 0;
+
+            RaycastHit liveHit = default;
+            bool hasLiveHit    = false;
+            for (int h = 0; h < hitCount; h++)
+            {
+                // 아군 함재기 건너뜀
+                AircraftBase checkAircraft  = s_beamHits[h].collider.GetComponentInParent<AircraftBase>();
+                if (checkAircraft != null && checkAircraft.m_isEnemyAircraft == bSourceIsEnemy) continue;
+
+                // 아군 미사일 건너뜀
+                ProjectileMissile checkMissile = s_beamHits[h].collider.GetComponentInParent<ProjectileMissile>();
+                bool isFriendlyMissile = checkMissile != null
+                    && (bSourceIsEnemy == false
+                        ? ObjectManager.Instance.m_friendlyMissiles.Contains(checkMissile)
+                        : ObjectManager.Instance.m_enemyMissiles.Contains(checkMissile));
+                if (isFriendlyMissile == true) continue;
+
+                if (hasLiveHit == false || s_beamHits[h].distance < liveHit.distance)
+                {
+                    liveHit    = s_beamHits[h];
+                    hasLiveHit = true;
+                }
+            }
+
+            if (hasLiveHit == true)
+            {
+                ProjectileMissile hitMissile = liveHit.collider.GetComponentInParent<ProjectileMissile>();
+                SpaceShip liveHitShip       = liveHit.collider.GetComponentInParent<SpaceShip>();
+                AircraftBase hitAircraft    = liveHit.collider.GetComponentInParent<AircraftBase>();
+
+                if (hitMissile != null)
+                {
+                    bool isMysideFriendly  = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy == false;
+                    bool hitMissileIsEnemy = isMysideFriendly
+                        ? ObjectManager.Instance.m_enemyMissiles.Contains(hitMissile)
+                        : ObjectManager.Instance.m_friendlyMissiles.Contains(hitMissile);
+                    if (hitMissileIsEnemy == true)
+                    {
+                        interceptedMissile = hitMissile;
+                        m_beamHeadPos      = liveHit.point;
+                        finalHitPoint      = liveHit.point;
+                        currentLength      = totalDistance;
+                    }
+                }
+                else if (hitAircraft != null && hitAircraft.m_isEnemyAircraft != (m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy))
+                {
+                    // 적 함재기 — 빔에 맞으면 폭발
+                    m_beamHeadPos = liveHit.point;
+                    finalHitPoint = liveHit.point;
+                    currentLength = totalDistance;
+                    hitAircraft.TakeDamage(m_damageInfo.GetFinalDamage());
+                    SoundManager.Instance.PlayFX(EFx.Explosion_Aircraft_Missile, liveHit.point);
+                }
+                else if (liveHitShip != null && (m_sourceShip == null || liveHitShip.m_ownerFleet != m_sourceShip.m_ownerFleet))
+                {
+                    hitTarget     = liveHitShip;
+                    finalHitPoint = liveHit.point;
+                    m_beamHeadPos = finalHitPoint;
+                    currentLength = totalDistance;
+                }
+            }
 
             // LineRenderer 업데이트
             m_lineRenderer.SetPosition(0, m_beamHeadPos);
@@ -184,8 +251,13 @@ public class ProjectileBeam : ProjectileBase
             yield return null;
         }
 
-        // 2단계: 데미지 처리
-        if (hitTarget != null)
+        // 2단계: 데미지/요격 처리
+        if (interceptedMissile != null)
+        {
+            SoundManager.Instance.PlayFX(EFx.Explosion_Missile, finalHitPoint);
+            interceptedMissile.ReturnToPool(hitPosition: finalHitPoint);
+        }
+        else if (hitTarget != null)
         {
             hitTarget.TakeDamage(m_damageInfo, finalHitPoint);
             SoundManager.Instance.PlayFX(EFx.Beam_Impact1, finalHitPoint);

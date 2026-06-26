@@ -73,5 +73,7 @@ MonoBehaviour:
     color: {r: 0.024, g: 0.714, b: 0.831, a: 1}
   - key: PvpDiamond
     color: {r: 0.506, g: 0.549, b: 0.973, a: 1}
+  - key: Silence
+    color: {r: 0.2, g: 0.2, b: 1, a: 1}
   - key: Black
     color: {r: 0, g: 0, b: 0, a: 1}

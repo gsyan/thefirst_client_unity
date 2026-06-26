@@ -223,7 +223,7 @@ UIVipStatus_Expired,,(Expired),(만료)
 UIVipStatus_ExpiryDays,,(D-{0}),(D-{0})
 UIVipStatus_Benefit_NoAds,,No Ads,광고 없음
 UIVipStatus_Benefit_Daily,,Exclusive Daily Rewards,전용 일일 보상
-UIVipStatus_Benefit_Mineral,,Stage Mineral Rewards x{0} (Excl. Tech & Module Points),스테이지 미네랄 보상 {0}배(기술, 모듈 포인트 제외)
+UIVipStatus_Benefit_Mineral,,Stage Mineral Rewards x{0} (Excl. Tech & Module Points),스테이지 미네랄 보상 {0}배(기술/모듈 포인트 제외)
 UIVipStatus_Benefit_InstantFleetRestore,,Instantly Restore Fleet HP After Battle,전투 후 함대 체력 즉시 회복
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
 UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}day(s) Left),{0} ({1} 패스 D-{2})
@@ -241,6 +241,7 @@ UIPopupMessage_VersionUpdateMessage,,An update to version {0} is required.,버�
 UIPopupMessage_VersionUpdateButton,,Update,업데이트
 UIPopupMessage_PvpSeasonRewardTitle,,PVP Season Reward,PVP 시즌 보상
 UIPopupMessage_PvpSeasonRewardMessage,,Season reward has been granted.,시즌 보상이 지급되었습니다.
+UICOMMON_AdmiralFeature,,Admiral Feature,제독 기능
 module_subtype_max_level_required,,Max level of {0}(Lv.{1} / Lv.{2}),{0} 최고 레벨 (Lv.{1} / Lv.{2})
 loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.
 loading_tip_1,,Tip: Upgrade ship modules to strengthen your fleet.,팁: 함선 모듈을 업그레이드하면 함대 전투력이 향상됩니다.

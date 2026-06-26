@@ -16,6 +16,8 @@ public class AircraftStandard : AircraftBase
 
     protected override void ReturnToPool()
     {
+        if (gameObject.activeInHierarchy == false) return;
+
         base.ReturnToPool();
 
         if (m_lifeCycleCoroutine != null)

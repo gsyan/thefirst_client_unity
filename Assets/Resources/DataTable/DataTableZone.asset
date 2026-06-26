@@ -390,9 +390,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 0.4
-        beamMultiplier: 0.1
-        missileMultiplier: 0.1
-        hangerMultiplier: 0.1
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -438,9 +438,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 0.5
-        beamMultiplier: 0.1
-        missileMultiplier: 0.1
-        hangerMultiplier: 0.1
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -475,7 +475,7 @@ MonoBehaviour:
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 2
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -486,9 +486,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 0.6
-        beamMultiplier: 0.1
-        missileMultiplier: 0.1
-        hangerMultiplier: 0.1
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -523,7 +523,7 @@ MonoBehaviour:
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 2
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -534,9 +534,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 0.7
-        beamMultiplier: 0.2
-        missileMultiplier: 0.2
-        hangerMultiplier: 0.2
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -571,7 +571,7 @@ MonoBehaviour:
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 3
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -582,9 +582,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 0.8
-        beamMultiplier: 0.2
-        missileMultiplier: 0.2
-        hangerMultiplier: 0.2
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -619,7 +619,7 @@ MonoBehaviour:
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 3
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -630,9 +630,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 0.9
-        beamMultiplier: 0.3
-        missileMultiplier: 0.3
-        hangerMultiplier: 0.3
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -667,7 +667,7 @@ MonoBehaviour:
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 4
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -678,9 +678,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 1
-        beamMultiplier: 0.4
-        missileMultiplier: 0.4
-        hangerMultiplier: 0.4
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -715,7 +715,7 @@ MonoBehaviour:
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 4
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -726,9 +726,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 1
-        beamMultiplier: 0.5
-        missileMultiplier: 0.5
-        hangerMultiplier: 0.5
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -758,12 +758,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 1
+          moduleLevel: 2
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 5
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -781,9 +781,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 1
-        beamMultiplier: 0.6
-        missileMultiplier: 0.6
-        hangerMultiplier: 0.6
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -813,12 +813,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 1
+          moduleLevel: 3
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 5
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -843,9 +843,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 1
-        beamMultiplier: 0.7
-        missileMultiplier: 0.7
-        hangerMultiplier: 0.7
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 10
     techPointClearReward: 1
     modulePointClearReward: 10
@@ -875,12 +875,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 1
+          moduleLevel: 4
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 6
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -891,9 +891,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 1
-        beamMultiplier: 0.8
-        missileMultiplier: 0.8
-        hangerMultiplier: 0.8
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -923,12 +923,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 1
+          moduleLevel: 5
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 6
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -939,9 +939,9 @@ MonoBehaviour:
           currentHealth: 0
           investedMineral: 0
         bodyMultiplier: 1
-        beamMultiplier: 0.9
-        missileMultiplier: 0.9
-        hangerMultiplier: 0.9
+        beamMultiplier: 1
+        missileMultiplier: 1
+        hangerMultiplier: 1
     mineralClearReward: 20
     techPointClearReward: 1
     modulePointClearReward: 5
@@ -971,12 +971,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 1
+          moduleLevel: 5
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 1
+            moduleLevel: 7
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -1019,12 +1019,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 2
+          moduleLevel: 5
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 2
+            moduleLevel: 7
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -1067,12 +1067,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 3
+          moduleLevel: 5
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 3
+            moduleLevel: 8
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -1115,12 +1115,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 4
+          moduleLevel: 6
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 4
+            moduleLevel: 8
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -1163,12 +1163,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 5
+          moduleLevel: 7
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 5
+            moduleLevel: 9
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -1211,12 +1211,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 6
+          moduleLevel: 8
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 6
+            moduleLevel: 9
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -1259,12 +1259,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 7
+          moduleLevel: 9
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 7
+            moduleLevel: 10
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -1314,12 +1314,12 @@ MonoBehaviour:
         bodies:
         - moduleType: 1
           moduleSubType: 10101
-          moduleLevel: 8
+          moduleLevel: 10
           bodyIndex: 0
           beams:
           - moduleType: 2
             moduleSubType: 20101
-            moduleLevel: 8
+            moduleLevel: 10
             bodyIndex: 0
             slotIndex: 0
             investedModulePoint: 0
@@ -1610,8 +1610,8 @@ MonoBehaviour:
       ships:
       - id: 0
         fleetId: 0
-        shipName: EnemyShip_1
-        positionIndex: 1
+        shipName: EnemyShip_0
+        positionIndex: 0
         description: 
         bodies:
         - moduleType: 1
@@ -1706,8 +1706,8 @@ MonoBehaviour:
       ships:
       - id: 0
         fleetId: 0
-        shipName: EnemyShip_1
-        positionIndex: 1
+        shipName: EnemyShip_0
+        positionIndex: 0
         description: 
         bodies:
         - moduleType: 1
@@ -1809,8 +1809,8 @@ MonoBehaviour:
       ships:
       - id: 0
         fleetId: 0
-        shipName: EnemyShip_1
-        positionIndex: 1
+        shipName: EnemyShip_0
+        positionIndex: 0
         description: 
         bodies:
         - moduleType: 1

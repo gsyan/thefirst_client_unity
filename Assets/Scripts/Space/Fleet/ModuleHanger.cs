@@ -202,8 +202,6 @@ public class ModuleHanger : ModuleBase
                     float elapsedTime = Time.time - aircraft.lastReturnTime;
                     if (elapsedTime >= m_airMaintenanceTime)
                     {
-                        aircraft.airHealth = aircraft.airHealthMax;
-                        aircraft.airAmmo = aircraft.airAmmoMax;
                         aircraft.isReady = true;
                     }
                 }
@@ -228,13 +226,10 @@ public class ModuleHanger : ModuleBase
 
     public void ReturnAircraft(AircraftInfo aircraftInfo)
     {
-        // 복귀 시 현재 격납고의 최신 스펙으로 재정비
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        if (moduleData != null)
-            aircraftInfo.UpdateAircraftInfo(moduleData);
-
+        if (m_aircraftPool.Contains(aircraftInfo) == true) return; // 중복 반환 방지
+        aircraftInfo.airHealth      = 0f;
         aircraftInfo.lastReturnTime = Time.time;
-        aircraftInfo.isReady = false;
+        aircraftInfo.isReady        = false;
         m_aircraftPool.Add(aircraftInfo);
     }
 

@@ -166,14 +166,16 @@ public class ModuleBase : MonoBehaviour
     private Coroutine m_silenceVisualCoroutine = null;
     private MeshRenderer[] m_meshRenderers = null;
     private MaterialPropertyBlock m_mpb = null;
-    private static readonly int k_colorId = Shader.PropertyToID("_BaseColor");
-    private static readonly Color k_silenceColor = new Color(0.3f, 0.3f, 0.8f, 1f);
+    private static readonly int k_baseColorId = Shader.PropertyToID("_BaseColor");
 
     public void ApplySilence(float duration)
     {
         float endTime = Time.time + duration;
         if (endTime > m_silenceEndTime)
             m_silenceEndTime = endTime;
+
+        // 라스트 어택 시간에 침묵 시간을 더해 침묵 기간만큼 쿨타임 밀림
+        SetLastAttackTime(GetLastAttackTime() + duration);
 
         if (m_silenceVisualCoroutine != null)
             StopCoroutine(m_silenceVisualCoroutine);
@@ -201,7 +203,8 @@ public class ModuleBase : MonoBehaviour
             if (silenced == true)
             {
                 mr.GetPropertyBlock(m_mpb);
-                m_mpb.SetColor(k_colorId, k_silenceColor);
+                Color silenceColor = DataManager.Instance.m_colorPalette.GetColor("Silence");
+                m_mpb.SetColor(k_baseColorId, silenceColor);
                 mr.SetPropertyBlock(m_mpb);
             }
             else

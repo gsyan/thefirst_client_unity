@@ -9,7 +9,7 @@ public class UIPanelCameraView : UIPanelBase
     [SerializeField] private ButtonGroupSystem buttonGroup;
 
     [Header("Game Speed")]
-    [SerializeField] private Button m_speedButton;
+    [SerializeField] private UIButtonHasChildren m_speedButton;
     [SerializeField] private TextMeshProUGUI m_speedLabel;
 
     [Header("존 진행 정보")]
@@ -66,7 +66,7 @@ public class UIPanelCameraView : UIPanelBase
         // 버튼 콜백은 OnFleetStateChanged에서 전투 종류에 따라 동적으로 세팅
 
         if (m_speedButton != null)
-            m_speedButton.onClick.AddListener(OnSpeedButtonClicked);
+            m_speedButton.GetButton().onClick.AddListener(OnSpeedButtonClicked);
 
         RefreshSpeedLabel(GameSpeedController.CurrentSpeed);
     }
@@ -167,8 +167,16 @@ public class UIPanelCameraView : UIPanelBase
     private void RefreshSpeedLabel(float speed)
     {
         if (m_speedLabel == null) return;
-        // 0.5 → "x0.5", 1.0 → "x1", 1.5 → "x1.5" 형태로 표시
-        m_speedLabel.text = speed == (int)speed ? $"x{(int)speed}" : $"x{speed:F1}";
+
+        bool isVip = IAPManager.Instance.IsVipActive();
+#if UNITY_EDITOR
+        //isVip = true;
+#endif
+        if (m_speedButton != null)
+            m_speedButton.SetInteractable(isVip);
+        m_speedLabel.text = isVip == true
+            ? (speed == (int)speed ? $"x{(int)speed}" : $"x{speed:F1}")
+            : LocalizationManager.Instance.Get("UICOMMON_AdmiralFeature");
     }
 
     public override void OnShowUIPanel()

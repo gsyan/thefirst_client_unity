@@ -1,17 +1,18 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
-using UnityEngine.Purchasing.Extension;
 using Unity.Services.Core;
 
-public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
+public class IAPManager : MonoSingleton<IAPManager>
 {
     public const string PRODUCT_VIP = "vip_month";
 
-    private IStoreController m_storeController;
-    private IExtensionProvider m_storeExtensionProvider;
+    private IProductService m_productService;
+    private IPurchaseService m_purchaseService;
 
     private Action<bool, string> m_onVipPurchaseComplete;
+    private PendingOrder m_pendingOrder;
     private DateTime? m_vipExpiry;          // UTC, null이면 VIP 아님
     private int m_mineralRewardMultiplier;  // 서버 설정 보상 배율
 
@@ -31,14 +32,55 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
             Debug.LogWarning($"[IAPManager] UGS 초기화 실패: {e.Message}");
         }
 
-        var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-        builder.AddProduct(PRODUCT_VIP, ProductType.Consumable);
-        UnityPurchasing.Initialize(this, builder);
+        try
+        {
+            IStoreService storeService = UnityIAPServices.DefaultStore();
+            storeService.OnStoreConnected += OnStoreConnected;
+            storeService.OnStoreDisconnected += OnStoreDisconnected;
+            await storeService.Connect();
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"[IAPManager] 스토어 연결 실패: {e.Message}");
+        }
+    }
+
+    private void OnStoreConnected()
+    {
+        m_productService = UnityIAPServices.DefaultProduct();
+        m_productService.OnProductsFetched += OnProductsFetched;
+        m_productService.OnProductsFetchFailed += OnProductsFetchFailed;
+
+        m_purchaseService = UnityIAPServices.DefaultPurchase();
+        m_purchaseService.OnPurchasePending += OnPurchasePending;
+        m_purchaseService.OnPurchaseConfirmed += OnPurchaseConfirmed;
+        m_purchaseService.OnPurchaseFailed += OnPurchaseFailed;
+
+        var productDefs = new List<ProductDefinition>
+        {
+            new ProductDefinition(PRODUCT_VIP, ProductType.Consumable)
+        };
+        m_productService.FetchProducts(productDefs);
+    }
+
+    private void OnStoreDisconnected(StoreConnectionFailureDescription desc)
+    {
+        Debug.LogWarning($"[IAPManager] 스토어 연결 끊김: {desc.Message}");
+    }
+
+    private void OnProductsFetched(List<Product> products)
+    {
+        Debug.Log("[IAPManager] IAP 초기화 완료");
+    }
+
+    private void OnProductsFetchFailed(ProductFetchFailed failed)
+    {
+        Debug.LogWarning($"[IAPManager] 상품 조회 실패: {failed.FailureReason}");
     }
 
     public bool IsStoreReady()
     {
-        return m_storeController != null;
+        return m_purchaseService != null;
     }
 
     public bool IsVipActive()
@@ -56,8 +98,8 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
     // 스토어에서 현지화된 가격 문자열 반환 (예: "$4.99", "₩6,500")
     public string GetVipLocalizedPrice()
     {
-        if (m_storeController == null) return string.Empty;
-        var product = m_storeController.products.WithID(PRODUCT_VIP);
+        if (m_productService == null) return string.Empty;
+        Product product = m_productService.GetProductById(PRODUCT_VIP);
         if (product == null) return string.Empty;
         return product.metadata.localizedPriceString;
     }
@@ -111,87 +153,98 @@ public class IAPManager : MonoSingleton<IAPManager>, IDetailedStoreListener
 
     public void PurchaseVip(Action<bool, string> onComplete)
     {
-        if (m_storeController == null)
+        if (m_purchaseService == null)
         {
             Debug.LogWarning("[IAPManager] Store 초기화 안 됨");
             onComplete?.Invoke(false, null);
             return;
         }
-        m_onVipPurchaseComplete = onComplete;
-        m_storeController.InitiatePurchase(PRODUCT_VIP);
-    }
-
-    // ── IDetailedStoreListener ──────────────────────────────────────────────
-
-    public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
-    {
-        m_storeController = controller;
-        m_storeExtensionProvider = extensions;
-        Debug.Log("[IAPManager] IAP 초기화 완료");
-    }
-
-    public void OnInitializeFailed(InitializationFailureReason error)
-    {
-        Debug.LogWarning($"[IAPManager] 초기화 실패: {error}");
-    }
-
-    public void OnInitializeFailed(InitializationFailureReason error, string message)
-    {
-        Debug.LogWarning($"[IAPManager] 초기화 실패: {error} — {message}");
-    }
-
-    // IDetailedStoreListener 인터페이스 메서드라 Unity IAP 시스템이 구매 완료 시 자동으로 호출
-    public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
-    {
-        if (args.purchasedProduct.definition.id == PRODUCT_VIP)
+        Product product = m_productService.GetProductById(PRODUCT_VIP);
+        if (product == null)
         {
-            string receipt = args.purchasedProduct.receipt;
+            Debug.LogWarning("[IAPManager] VIP 상품을 찾을 수 없음");
+            onComplete?.Invoke(false, null);
+            return;
+        }
+        m_onVipPurchaseComplete = onComplete;
+        m_purchaseService.PurchaseProduct(product);
+    }
+
+    // ── IPurchaseService 이벤트 핸들러 ──────────────────────────────────────
+
+    private void OnPurchasePending(PendingOrder pendingOrder)
+    {
+        bool isVipProduct = false;
+        var cartItems = pendingOrder.CartOrdered.Items();
+        if (cartItems != null)
+        {
+            foreach (var item in cartItems)
+            {
+                if (item.Product.definition.id == PRODUCT_VIP)
+                {
+                    isVipProduct = true;
+                    break;
+                }
+            }
+        }
+
+        if (isVipProduct == false) return;
+
+        m_pendingOrder = pendingOrder;
+        string receipt = pendingOrder.Info.Receipt;
+
 #if UNITY_EDITOR
-            Debug.Log("[IAPManager] 에디터 모드 — 서버 검증 생략, VIP 이번 달 말일 즉시 적용");
-            var now = DateTime.UtcNow;
-            var endOfMonth = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 23, 59, 59, DateTimeKind.Utc);
-            SetVipExpiry(endOfMonth.ToString("O"));
-            m_onVipPurchaseComplete?.Invoke(true, receipt);
-            m_onVipPurchaseComplete = null;
+        Debug.Log("[IAPManager] 에디터 모드 — 서버 검증 생략, VIP 이번 달 말일 즉시 적용");
+        var now = DateTime.UtcNow;
+        var endOfMonth = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 23, 59, 59, DateTimeKind.Utc);
+        SetVipExpiry(endOfMonth.ToString("O"));
+        m_purchaseService.ConfirmPurchase(m_pendingOrder);
+        m_onVipPurchaseComplete?.Invoke(true, receipt);
+        m_onVipPurchaseComplete = null;
+        m_pendingOrder = null;
 #else
     #if UNITY_ANDROID
-            string platform = "GooglePlay";
+        string platform = "GooglePlay";
     #elif UNITY_IOS
-            string platform = "AppleAppStore";
+        string platform = "AppleAppStore";
     #endif
-            var request = new VipPurchaseRequest { receipt = receipt, platform = platform };
-            NetworkManager.Instance.PurchaseVip(request, response =>
+        var request = new VipPurchaseRequest { receipt = receipt, platform = platform };
+        NetworkManager.Instance.PurchaseVip(request, response =>
+        {
+            if (response == null)
             {
-                if (response == null)
-                {
-                    Debug.LogError("[IAPManager] PurchaseVip 서버 응답 null");
-                    m_onVipPurchaseComplete?.Invoke(false, null);
-                    m_onVipPurchaseComplete = null;
-                    return;
-                }
-                Debug.Log($"[IAPManager] PurchaseVip 응답 errorCode={response.errorCode} vipExpiry={response.data?.vipExpiry}");
-                bool ok = response.errorCode == (int)ServerErrorCode.SUCCESS;
-                if (ok == true && response.data != null)
-                    SetVipExpiry(response.data.vipExpiry);
-                m_onVipPurchaseComplete?.Invoke(ok, ok ? receipt : null);
+                Debug.LogError("[IAPManager] PurchaseVip 서버 응답 null");
+                m_onVipPurchaseComplete?.Invoke(false, null);
                 m_onVipPurchaseComplete = null;
-            });
+                m_pendingOrder = null;
+                return;
+            }
+            string vipExpiry = response.data != null ? response.data.vipExpiry : "null";
+            Debug.Log($"[IAPManager] PurchaseVip 응답 errorCode={response.errorCode} vipExpiry={vipExpiry}");
+            bool ok = response.errorCode == (int)ServerErrorCode.SUCCESS;
+            if (ok == true && response.data != null)
+            {
+                SetVipExpiry(response.data.vipExpiry);
+                m_purchaseService.ConfirmPurchase(m_pendingOrder);
+            }
+            if (m_onVipPurchaseComplete != null)
+                m_onVipPurchaseComplete.Invoke(ok, ok ? receipt : null);
+            m_onVipPurchaseComplete = null;
+            m_pendingOrder = null;
+        });
 #endif
-        }
-        return PurchaseProcessingResult.Complete;
     }
 
-    public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
+    private void OnPurchaseConfirmed(Order order)
     {
-        Debug.LogWarning($"[IAPManager] 구매 실패: {product.definition.id} — {failureReason}");
-        m_onVipPurchaseComplete?.Invoke(false, null);
-        m_onVipPurchaseComplete = null;
+        Debug.Log("[IAPManager] 구매 확정 완료");
     }
 
-    public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
+    private void OnPurchaseFailed(FailedOrder failedOrder)
     {
-        Debug.LogWarning($"[IAPManager] 구매 실패: {product.definition.id} — {failureDescription.message}");
+        Debug.LogWarning($"[IAPManager] 구매 실패: {failedOrder.FailureReason} — {failedOrder.Details}");
         m_onVipPurchaseComplete?.Invoke(false, null);
         m_onVipPurchaseComplete = null;
+        m_pendingOrder = null;
     }
 }

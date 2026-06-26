@@ -27,7 +27,15 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected EModuleType m_hangerModuleType;
     [SerializeField] protected EModuleSubType m_hangerModuleSubType;
     [SerializeField] protected int m_hangerSlotIndex;
-    protected bool m_isEnemyAircraft = false; // 초기화 시 캐싱, 모함 소멸 후 null이 돼도 판별 가능
+    public bool m_isEnemyAircraft = false; // 초기화 시 캐싱, 모함 소멸 후 null이 돼도 판별 가능
+    public DogfightSphere m_dogfightSphere = null;
+
+    public void LeaveDogfightSphere()
+    {
+        if (m_dogfightSphere == null) return;
+        m_dogfightSphere.LeaveDogFightSphere(this);
+        m_dogfightSphere = null;
+    }
 
     private SpaceShip m_harassedShip = null;  // 현재 교란 중인 함선 (AttackShip 페이즈 전용)
     private float m_harassDelay = 0f;
@@ -108,14 +116,25 @@ public abstract class AircraftBase : MonoBehaviour
     // 적 함재기이고 모함 참조가 null이면 함대 소멸로 간주
     private bool IsCarrierFleetDestroyed()
     {
-        if (m_isEnemyAircraft == false) return false;
         return m_carrierShip == null || m_carrierShip.m_ownerFleet == null;
     }
+
+    private const float k_maxDistFromCarrier = 100f;
 
     protected virtual IEnumerator AircraftLifeCycle()
     {
         while (m_aircraftInfo.airHealth > 0)
         {
+            // 모함과 거리가 너무 멀면 강제 귀환
+            if (m_carrierShip != null)
+            {
+                float distFromCarrier = Vector3.Distance(transform.position, m_carrierShip.transform.position);
+                if (distFromCarrier > k_maxDistFromCarrier)
+                {
+                    ReturnToPool();
+                    yield break;
+                }
+            }
 
             //DebugOverlay.Instance.SetText($"m_state: {m_state}");
 
@@ -174,7 +193,7 @@ public abstract class AircraftBase : MonoBehaviour
                 continue;
             }
 
-            SmoothRotateAndMove(toWp, 1f, CalculateAvoidance(), 1f);
+            SmoothRotateAndMove(toWp, angularMultiplier: 20f, avoidance: CalculateAvoidance(), speedMultiplier: 1f);
             yield return null;
         }
 
@@ -213,15 +232,16 @@ public abstract class AircraftBase : MonoBehaviour
                 yield break;
             }
 
-            Vector3 toTarget = (attackApproachPoint - transform.position).normalized;
-            float dotValue = Vector3.Dot(transform.forward, toTarget);
-            if(dotValue < 0.0f)
+            Vector3 toTarget       = (attackApproachPoint - transform.position).normalized;
+            float distToApproach   = Vector3.Distance(transform.position, attackApproachPoint);
+            float dotValue         = Vector3.Dot(transform.forward, toTarget);
+            if (dotValue < 0.0f && distToApproach < 3f)
             {
                 m_state = EAircraftState.AttackShip;
                 yield break;
             }
 
-            SmoothRotateAndMove(toTarget, 1f, CalculateAvoidance(), 1f);
+            SmoothRotateAndMove(toTarget, angularMultiplier: 20f, avoidance: CalculateAvoidance(), speedMultiplier: 1f);
 
             yield return null;
         }
@@ -258,27 +278,53 @@ public abstract class AircraftBase : MonoBehaviour
     }
 
 
+    private const float k_dogfightSphereRadius = 2.5f;
+
     protected virtual IEnumerator Phase_Dogfight()
     {
         AircraftBase currentDogfightTarget = DetectEnemyAircraft();
-        if (currentDogfightTarget == null) {
+        if (currentDogfightTarget == null)
+        {
             m_state = EAircraftState.MoveToTarget;
             yield break;
         }
 
-        m_currentDirection = transform.forward.normalized;
+        // 스피어 설정 — 상대가 이미 스피어를 가지면 합류, 없으면 새로 생성
+        if (currentDogfightTarget.m_dogfightSphere != null)
+        {
+            m_dogfightSphere = currentDogfightTarget.m_dogfightSphere;
+        }
+        else
+        {
+            Vector3 center = (transform.position + currentDogfightTarget.transform.position) * 0.5f;
+            m_dogfightSphere = DogfightSphere.Get(center, k_dogfightSphereRadius);
+        }
+        m_dogfightSphere.Join(this);
+
         while (true)
         {
             if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
-            if (currentDogfightTarget == null || currentDogfightTarget.m_aircraftInfo.airHealth <= 0)
+            if (currentDogfightTarget.m_aircraftInfo.airHealth <= 0)
             {
+                LeaveDogfightSphere();
                 m_state = EAircraftState.MoveToTarget;
                 yield break;
             }
 
-            Vector3 moveDir = (currentDogfightTarget.transform.position - transform.position).normalized;
-            SmoothRotateAndMove(moveDir, 1f, Vector3.zero, 1f);
+            Vector3 targetDir = (currentDogfightTarget.transform.position - transform.position).normalized;
 
+            // 구체 경계를 벗어났을 때만 안쪽 방향으로 약하게 유도
+            float distFromCenter = Vector3.Distance(transform.position, m_dogfightSphere.center);
+            if (distFromCenter > m_dogfightSphere.radius)
+            {
+                Vector3 inwardDir = (m_dogfightSphere.center - transform.position).normalized;
+                float   overRatio = Mathf.Clamp01((distFromCenter - m_dogfightSphere.radius) / m_dogfightSphere.radius);
+                targetDir = Vector3.Lerp(targetDir, inwardDir, overRatio * 2f).normalized;
+            }
+
+            SmoothRotateAndMove(targetDir, angularMultiplier: 20f, avoidance: Vector3.zero, speedMultiplier: 1f);
+
+            // 공격 범위 안이면 공격
             float distance = Vector3.Distance(transform.position, currentDogfightTarget.transform.position);
             if (distance <= m_aircraftInfo.airAttackRange && Time.time >= m_lastAttackTime + m_aircraftInfo.airAttackCool)
             {
@@ -290,8 +336,6 @@ public abstract class AircraftBase : MonoBehaviour
         }
     }
 
-    // 이동 속도(airSpeed)와 회전 각속도를 분리 — 스케일 변경 후 airSpeed가 작아져도 회전은 독립적으로 조정
-    protected float m_angularSpeedMultiplier = 20f;
     // 방향 회전 + 이동 공통 처리 — avoidance 전달 시 방향 블렌딩, m_currentDirection 갱신 후 이동
     private void SmoothRotateAndMove(Vector3 targetDirection, float angularMultiplier, Vector3 avoidance, float speedMultiplier)
     {
@@ -300,7 +344,7 @@ public abstract class AircraftBase : MonoBehaviour
         if (targetDirection.sqrMagnitude < 0.001f) return;
 
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * m_angularSpeedMultiplier * angularMultiplier * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, m_aircraftInfo.airSpeed * angularMultiplier * Time.deltaTime);
 
         m_currentDirection = transform.forward;
         transform.position += m_currentDirection * (m_aircraftInfo.airSpeed * speedMultiplier * Time.deltaTime);
@@ -321,7 +365,7 @@ public abstract class AircraftBase : MonoBehaviour
         if (targetShieldGrid == null || targetShieldGrid.m_vertices == null || targetShieldGrid.m_vertices.Count == 0)
         {
             Debug.LogWarning("No ShieldGrid vertices on target ship!");
-            yield break;
+            m_state = EAircraftState.ReturnToApproach; yield break;
         }
 
         RegisterHarass(targetShip);
@@ -333,24 +377,33 @@ public abstract class AircraftBase : MonoBehaviour
 
         while (true)
         {
-            if (IsCarrierFleetDestroyed() == true) { UnregisterHarass(); ReturnToPool(); yield break; }
-            // 종료 조건: 탄약 소진 시 무조건 귀환
+            if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
+            // 종료 조건
+            // 1) 탄약 소진 시 무조건 귀환
             if (m_aircraftInfo.airAmmo <= 0)
             {
                 UnregisterHarass();
                 m_state = EAircraftState.ReturnToApproach;
                 yield break;
             }
-            // 목표 상실 시 모함 타겟으로 재할당 시도
-            if (m_targetModule == null || !m_targetModule.gameObject.activeSelf)
+            // 2) 목표 상실 시 모함 타겟으로 재할당 시도
+            if (m_targetModule == null)
             {
                 UnregisterHarass();
-                if (TryReassignTarget())
+                if (TryReassignTarget() == true)
                 {
                     m_state = EAircraftState.MoveToTarget;
                     yield break;
                 }
                 m_state = EAircraftState.ReturnToApproach;
+                yield break;
+            }
+            // 3) 도그 파이팅
+            AircraftBase enemyAircraft = DetectEnemyAircraft();
+            if (enemyAircraft != null)
+            {
+                UnregisterHarass();
+                m_state = EAircraftState.Dogfight;
                 yield break;
             }
 
@@ -364,7 +417,7 @@ public abstract class AircraftBase : MonoBehaviour
                 currentIndex = GetNextIndexByAlignment(points, currentIndex, m_currentDirection);
             }
 
-            SmoothRotateAndMove(toTarget, 1f, Vector3.zero, 0.5f);
+            SmoothRotateAndMove(toTarget, angularMultiplier: 20f, avoidance: Vector3.zero, speedMultiplier: 1f);
 
             // 공격 처리
             if (Time.time >= m_lastAttackTime + m_aircraftInfo.airAttackCool)
@@ -417,7 +470,7 @@ public abstract class AircraftBase : MonoBehaviour
     // 격납고 출입구 앞 접근 지점까지 ReturnPath WP를 따라 비행, 완료 시 Docking으로 전환
     protected virtual IEnumerator Phase_ReturnToApproach()
     {
-        if (m_firePoint == null || m_moduleHanger == null || m_moduleHanger == null)
+        if (m_firePoint == null || m_moduleHanger == null)
         {
             if (TryResolveHangerRefs() == false) { ReturnToPool(); yield break; }
         }
@@ -440,13 +493,20 @@ public abstract class AircraftBase : MonoBehaviour
         int currentIndex = 0;
         while (currentIndex < waypoints.Count)
         {
-            yield return null;
-
             if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
-            if (m_firePoint == null || m_moduleHanger == null || m_moduleHanger == null || waypoints[currentIndex] == null)
+            // 종료 조건
+            // 1) 복귀시 필요한 정보 없으면, 다른 격납고 찾기
+            if (m_firePoint == null || m_moduleHanger == null || waypoints[currentIndex] == null)
             {
                 if (TryResolveHangerRefs() == false) { ReturnToPool(); yield break; }
                 m_state = EAircraftState.ReturnToApproach;
+                yield break;
+            }
+            // 2) 도그 파이팅
+            AircraftBase enemyAircraft = DetectEnemyAircraft();
+            if (enemyAircraft != null)
+            {
+                m_state = EAircraftState.Dogfight;
                 yield break;
             }
 
@@ -465,7 +525,8 @@ public abstract class AircraftBase : MonoBehaviour
             // WP 진행에 따라 1.0 → k_returnMinSpeed 로 선형 감속
             float t = waypoints.Count > 1 ? (float)currentIndex / (waypoints.Count - 1) : 1f;
             float speedMult = Mathf.Lerp(1f, k_returnMinSpeed, t);
-            SmoothRotateAndMove(toWp, 2f, Vector3.zero, speedMult);
+            SmoothRotateAndMove(toWp, angularMultiplier: 40f, avoidance: Vector3.zero, speedMultiplier: speedMult);
+            yield return null;
         }
 
         m_state = EAircraftState.Docking;
@@ -492,13 +553,11 @@ public abstract class AircraftBase : MonoBehaviour
             Vector3 toDock = (m_firePoint.position - transform.position).normalized;
             if (Vector3.Dot(-m_firePoint.forward, toDock) < 0f)
             {
-                if (m_moduleHanger != null)
-                    m_moduleHanger.ReturnAircraft(m_aircraftInfo);
                 ReturnToPool();
                 yield break;
             }
 
-            SmoothRotateAndMove(toDock, 2f, Vector3.zero, k_returnMinSpeed);
+            SmoothRotateAndMove(toDock, angularMultiplier: 40f, avoidance: Vector3.zero, speedMultiplier: k_returnMinSpeed);
         }
     }
 
@@ -575,8 +634,8 @@ public abstract class AircraftBase : MonoBehaviour
 
         foreach (Collider col in nearbyObjects)
         {
-            AircraftBase otherAircraft = col.GetComponent<AircraftBase>();
-            if (otherAircraft != null && otherAircraft.m_moduleHanger != m_moduleHanger && otherAircraft.m_aircraftInfo.airHealth > 0)
+            AircraftBase otherAircraft = col.GetComponentInParent<AircraftBase>();
+            if (otherAircraft != null && otherAircraft.m_isEnemyAircraft != m_isEnemyAircraft && otherAircraft.m_aircraftInfo.airHealth > 0)
                 return otherAircraft;
         }
 
@@ -612,6 +671,13 @@ public abstract class AircraftBase : MonoBehaviour
         if (m_aircraftInfo.airHealth <= 0)
         {
             m_aircraftInfo.airHealth = 0;
+            EffectBase explosion = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_EXPLOSION_MISSILE_SMALL);
+            if (explosion != null)
+            {
+                explosion.transform.position = transform.position;
+                explosion.PlayEffect();
+            }
+            SoundManager.Instance.PlayFX(EFx.Explosion_Aircraft_Missile, transform.position);
             ReturnToPool();
         }
     }
@@ -672,6 +738,15 @@ public abstract class AircraftBase : MonoBehaviour
 
     protected virtual void ReturnToPool()
     {
+        if (m_aircraftInfo != null)
+        {
+            m_aircraftInfo.airHealth      = 0f;
+            m_aircraftInfo.lastReturnTime = Time.time;
+            m_aircraftInfo.isReady        = false;
+        }
+        if (m_moduleHanger != null)
+            m_moduleHanger.ReturnAircraft(m_aircraftInfo);
+        LeaveDogfightSphere();
         UnregisterHarass();
         EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChanged);
     }
@@ -685,11 +760,17 @@ public abstract class AircraftBase : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (bShowGizmos == false) return;
-        if (m_targetModule == null)
-            return;
 
-        if(m_state == EAircraftState.MoveToTarget)
+        if (m_state == EAircraftState.MoveToTarget && m_targetModule != null)
             DrawDonut(m_targetModule.transform, m_aircraftInfo.airAttackRange);
+
+        if (m_dogfightSphere != null)
+        {
+            Gizmos.color = new Color(1f, 0.5f, 0f, 0.15f);
+            Gizmos.DrawSphere(m_dogfightSphere.center, m_dogfightSphere.radius);
+            Gizmos.color = new Color(1f, 0.5f, 0f, 0.8f);
+            Gizmos.DrawWireSphere(m_dogfightSphere.center, m_dogfightSphere.radius);
+        }
     }
 
     private void DrawDonut(Transform target, float radius)

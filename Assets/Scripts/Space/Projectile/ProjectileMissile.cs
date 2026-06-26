@@ -14,21 +14,24 @@ public class ProjectileMissile : ProjectileBase
     private static readonly WaitForFixedUpdate s_waitFixedUpdate = new();
 
     private Rigidbody m_rb;
+    private MeshRenderer m_meshRenderer;
+    private float m_halfLength = 0.5f; // 미사일 절반 길이 (Awake에서 MeshRenderer bounds로 계산)
     private Vector3 m_saveTargetPosition;
     private Coroutine m_lifeCycleCoroutine;
     private float m_lifeTime;
     private const float MAX_LIFE_TIME = 10f;
 
     private float m_ejectSpeed = 1f;
-    private const float STEERING_ROTATION_SPEED = 160f;
+    private const float STEERING_ROTATION_SPEED          = 160f;
+    private const float STEERING_ROTATION_SPEED_INTERCEPT = 360f; // 미사일 요격 시 빠른 선회
+    private float m_currentSteeringSpeed = STEERING_ROTATION_SPEED;
 
     private const float COLD_LAUNCH_DOT_THRESHOLD = 0.85f;
     private const float BURST_TAIL_DOT_THRESHOLD = 0.95f;
-    private const float STEERING_BRAKE_RATE = 4f; // 콜드런치 속도 감속 계수
+    private const float STEERING_BRAKE_RATE = 8f; // 콜드런치 속도 감속 계수
 
     private float m_missileSpeed;
     private float m_silenceTime;
-    private float m_initialFlightDuration;
     private EPoolName m_poolName;
     private Vector3 m_prevPosition;
     private EFlightPhase m_phase;
@@ -46,6 +49,9 @@ public class ProjectileMissile : ProjectileBase
     private void Awake()
     {
         m_rb = GetComponent<Rigidbody>();
+        m_meshRenderer = GetComponentInChildren<MeshRenderer>();
+        if (m_meshRenderer != null)
+            m_halfLength = m_meshRenderer.bounds.size.z * 0.5f;
     }
 
     public void SetPoolName(EPoolName poolName) { m_poolName = poolName; }
@@ -68,7 +74,6 @@ public class ProjectileMissile : ProjectileBase
         m_ejectSpeed = ejectSpeed;
         m_lifeTime = 0.0f;
         m_prevPosition = transform.position;
-        m_initialFlightDuration = Random.Range(0.05f, 0.05f);
 
         m_phase = EFlightPhase.Eject;
 
@@ -80,6 +85,10 @@ public class ProjectileMissile : ProjectileBase
         m_prevLocalDir = Vector3.zero;
 
         m_saveTargetPosition = target != null ? target.position : firePointTransform.position + firePointTransform.forward * 50f;
+
+        // 타겟이 미사일이면 빠른 선회 적용
+        bool targetIsMissile = target != null && target.GetComponent<ProjectileMissile>() != null;
+        m_currentSteeringSpeed = targetIsMissile == true ? STEERING_ROTATION_SPEED_INTERCEPT : STEERING_ROTATION_SPEED;
 
         if (m_lifeCycleCoroutine != null) StopCoroutine(m_lifeCycleCoroutine);
         m_lifeCycleCoroutine = StartCoroutine(MissleLifeCycle());
@@ -111,10 +120,14 @@ public class ProjectileMissile : ProjectileBase
             ReturnToPool(showHitEffect: false);
             return false;
         }
-        if (m_target != null)
+        if (m_target != null && m_target.gameObject.activeInHierarchy == true)
             m_saveTargetPosition = m_target.position;
         else
+        {
             m_target = FindNewTarget();
+            // 함선으로 타겟 전환 시 일반 선회 속도로 복원
+            m_currentSteeringSpeed = STEERING_ROTATION_SPEED;
+        }
         return true;
     }
 
@@ -266,10 +279,17 @@ public class ProjectileMissile : ProjectileBase
         }
     }
 
-    // 발사 방향 고정 이동 → initialFlightDuration 경과 즉시 Steering 전환
+    // 꼬리가 발사구를 벗어났으면 Steering 전환
     private void Phase_Eject()
     {
-        if (m_lifeTime >= m_initialFlightDuration)
+        if (m_firePointTransform == null)
+        {
+            m_phase = EFlightPhase.Steering;
+            return;
+        }
+        Vector3 fromLaunch  = transform.position - m_firePointTransform.position;
+        float   exitedDist  = Vector3.Dot(fromLaunch, transform.forward);
+        if (exitedDist >= m_halfLength)
             m_phase = EFlightPhase.Steering;
     }
 
@@ -277,7 +297,7 @@ public class ProjectileMissile : ProjectileBase
     private void Phase_Steering()
     {
         Vector3 toTarget = (m_saveTargetPosition - transform.position).normalized;
-        Quaternion newRot = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), STEERING_ROTATION_SPEED * Time.deltaTime);
+        Quaternion newRot = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), m_currentSteeringSpeed * Time.deltaTime);
         m_rb.MoveRotation(newRot);
         UpdateBurstDirectional(toTarget);
 
@@ -291,7 +311,7 @@ public class ProjectileMissile : ProjectileBase
     private void Phase_Homing()
     {
         Vector3 toTarget = (m_saveTargetPosition - transform.position).normalized;
-        Quaternion newRot = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), STEERING_ROTATION_SPEED * Time.deltaTime);
+        Quaternion newRot = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), m_currentSteeringSpeed * Time.deltaTime);
         m_rb.MoveRotation(newRot);
         UpdateBurstDirectional(toTarget);
 
@@ -305,7 +325,14 @@ public class ProjectileMissile : ProjectileBase
         }
 
         if (Vector3.Dot(transform.forward, toTarget) < 0f)
-            ReturnToPool();
+        {
+            // 타겟이 미사일이었으면 함선으로 재탐색, 그 외는 소멸
+            bool targetIsMissile = m_target != null && m_target.GetComponent<ProjectileMissile>() != null;
+            if (targetIsMissile == true)
+                m_target = FindNewTarget();
+            else
+                ReturnToPool();
+        }
     }
 
     // 회전 중 해당 노즐 ON/OFF, 정렬 완료 순간 반대 노즐 Pulse로 역추진 표현
@@ -355,6 +382,8 @@ public class ProjectileMissile : ProjectileBase
 
     public void ReturnToPool(bool showHitEffect = true, Vector3 hitPosition = default)
     {
+        if (gameObject.activeInHierarchy == false) return;
+
         if (m_lifeCycleCoroutine != null)
         {
             StopCoroutine(m_lifeCycleCoroutine);

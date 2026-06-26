@@ -1047,6 +1047,10 @@ MonoBehaviour:
     m_Localized: Season reward has been granted.
     m_Metadata:
       m_Items: []
+  - m_Id: 50053580165349376
+    m_Localized: Admiral Feature
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -91,8 +91,9 @@ public class TabSystem : MonoBehaviour
     private bool IsTabVisibleInState(TabData tab, EUnitState state)
     {
         if (tab.tabPanel == null) return true;
-        if (state == EUnitState.BattleExploration || state == EUnitState.Warp)
-            return tab.tabPanel.GetComponent<UITabPvp>() == null;
+        bool isPvpTab = tab.tabPanel.GetComponent<UITabPvp>() != null;
+        if (isPvpTab == true)
+            return state == EUnitState.Idle || state == EUnitState.Move;
         if (state == EUnitState.BattlePvp)
             return tab.tabPanel.GetComponent<UITabTech>() != null
                 || tab.tabPanel.GetComponent<UITabFleet>() != null;

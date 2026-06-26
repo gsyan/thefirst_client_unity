@@ -983,6 +983,10 @@ MonoBehaviour:
     m_Key: UIPopupMessage_PvpSeasonRewardMessage
     m_Metadata:
       m_Items: []
+  - m_Id: 50053580165349376
+    m_Key: UICOMMON_AdmiralFeature
+    m_Metadata:
+      m_Items: []
   - m_Id: 14264662300164096
     m_Key: module_subtype_max_level_required
     m_Metadata:

@@ -355,7 +355,7 @@ public class SpaceShip : MonoBehaviour
 
     // 함재기 교란 — AttackShip 페이즈 유지 중인 함재기 목록과 합산 딜레이
     private List<AircraftBase> m_harassingAircrafts = new List<AircraftBase>();
-    private float m_totalHarassDelay = 0f;
+    public float m_totalHarassDelay = 0f;
 
     public void RegisterHarassingAircraft(AircraftBase aircraft, float delay)
     {
