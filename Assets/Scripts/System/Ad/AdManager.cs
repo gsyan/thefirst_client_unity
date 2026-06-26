@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Ump.Api;
 
 public enum EAdResult { Rewarded, UserClosed, Failed }
 
@@ -48,6 +49,61 @@ public class AdManager : MonoSingleton<AdManager>
                 return;
             }
         }
+
+        StartCoroutine(RequestConsentThenInitAds());
+    }
+
+    private IEnumerator RequestConsentThenInitAds()
+    {
+        bool consentDone = false;
+
+        var consentParams = new ConsentRequestParameters();
+#if DEVELOPMENT_BUILD
+        // 개발 빌드: EEA 지역으로 강제하여 동의 팝업 테스트 가능
+        consentParams = new ConsentRequestParameters
+        {
+            ConsentDebugSettings = new ConsentDebugSettings
+            {
+                DebugGeography = DebugGeography.EEA,
+            }
+        };
+#endif
+
+        ConsentInformation.Update(consentParams, error =>
+        {
+            if (error != null)
+            {
+                Debug.LogWarning($"[AdManager] UMP 동의 정보 요청 실패: {error}");
+                consentDone = true;
+                return;
+            }
+
+            bool isConsentRequired = ConsentInformation.IsConsentFormAvailable();
+            if (isConsentRequired == false)
+            {
+                consentDone = true;
+                return;
+            }
+
+            ConsentForm.Load((form, loadError) =>
+            {
+                if (loadError != null)
+                {
+                    Debug.LogWarning($"[AdManager] UMP 동의 폼 로드 실패: {loadError}");
+                    consentDone = true;
+                    return;
+                }
+
+                form.Show(showError =>
+                {
+                    if (showError != null)
+                        Debug.LogWarning($"[AdManager] UMP 동의 폼 표시 실패: {showError}");
+                    consentDone = true;
+                });
+            });
+        });
+
+        yield return new WaitUntil(() => consentDone == true);
 
         var requestConfig = new RequestConfiguration();
 #if DEVELOPMENT_BUILD

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_android_client_id,@string/default_web_client_id">
+  <string name="gcm_defaultSenderId" translatable="false">527468162306</string>
+  <string name="google_storage_bucket" translatable="false">thefirst-fd116.firebasestorage.app</string>
+  <string name="project_id" translatable="false">thefirst-fd116</string>
+  <string name="google_api_key" translatable="false">AIzaSyBlyyd9RmWU1zSD0-Mq9vrJ7-kfBozEgUA</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBlyyd9RmWU1zSD0-Mq9vrJ7-kfBozEgUA</string>
+  <string name="google_app_id" translatable="false">1:527468162306:android:fdd9d29003b29326e2261b</string>
+  <string name="default_android_client_id" translatable="false">527468162306-5c5a6mfdfel69j1f5119cc14jine71u3.apps.googleusercontent.com</string>
+  <string name="default_web_client_id" translatable="false">527468162306-m77vtlkevpa42hf41arcodjmcio5fs85.apps.googleusercontent.com</string>
+</resources>
