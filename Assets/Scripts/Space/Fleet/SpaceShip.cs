@@ -1112,6 +1112,9 @@ public class SpaceShip : MonoBehaviour
                     transform.localPosition = m_formationTarget;
                     m_formationMoveState = FormationMoveState.Arrived;
                     m_formationCoroutine = null;
+                    ApplyFleetStateToShip();
+                    if (m_ownerFleet != null && m_ownerFleet.m_fleetState.IsBattleState() == true)
+                        StartFindingTargets();
                     yield break;
                 }
             }

@@ -10,13 +10,14 @@ using System;
 using UnityEditor.Android;
 #if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 #endif
 using UnityEditor.Callbacks;
 using UnityEditor;
 using UnityEngine;
 
 #if UNITY_2018_1_OR_NEWER
-public class UnityWebViewPostprocessBuild : IPreprocessBuild, IPostGenerateGradleAndroidProject
+public class UnityWebViewPostprocessBuild : IPreprocessBuildWithReport, IPostGenerateGradleAndroidProject
 #else
 public class UnityWebViewPostprocessBuild
 #endif
@@ -28,7 +29,8 @@ public class UnityWebViewPostprocessBuild
     //// cf. https://github.com/Over17/UnityAndroidManifestCallback
 
 #if UNITY_2018_1_OR_NEWER
-    public void OnPreprocessBuild(BuildTarget buildTarget, string path) {
+    public void OnPreprocessBuild(BuildReport report) {
+        var buildTarget = report.summary.platform;
         if (buildTarget == BuildTarget.Android) {
             var dev = "Packages/net.gree.unity-webview/Assets/Plugins/Android/WebViewPlugin-development.aar.tmpl";
             var rel = "Packages/net.gree.unity-webview/Assets/Plugins/Android/WebViewPlugin-release.aar.tmpl";

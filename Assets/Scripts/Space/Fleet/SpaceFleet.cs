@@ -975,7 +975,9 @@ public class SpaceFleet : MonoBehaviour
             if (commander == null) continue;
 
             int cost = DataManager.Instance.m_dataTableConfig.gameSettings.repairBoostMineralPerSec;
-            commander.TryConsumeMineral(cost);
+            bool consumed = commander.TryConsumeMineral(cost);
+            if (consumed == true)
+                EventManager.Trigger_TacticMineralConsumed(0, cost);
         }
     }
 
@@ -1044,7 +1046,9 @@ public class SpaceFleet : MonoBehaviour
             if (commander == null) continue;
 
             int cost = DataManager.Instance.m_dataTableConfig.gameSettings.missileTacticMineralPerSec;
-            commander.TryConsumeMineral(cost);
+            bool consumed = commander.TryConsumeMineral(cost);
+            if (consumed == true)
+                EventManager.Trigger_TacticMineralConsumed(1, cost);
         }
     }
 
@@ -1074,7 +1078,9 @@ public class SpaceFleet : MonoBehaviour
             if (commander == null) continue;
 
             int cost = DataManager.Instance.m_dataTableConfig.gameSettings.aircraftTacticMineralPerSec;
-            commander.TryConsumeMineral(cost);
+            bool consumed = commander.TryConsumeMineral(cost);
+            if (consumed == true)
+                EventManager.Trigger_TacticMineralConsumed(2, cost);
         }
     }
 

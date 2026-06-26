@@ -108,19 +108,20 @@ public class UIPanelSpace : UIPanelBase
             if (response.data.mineralGained == 0) return;
 
             var commander = DataManager.Instance.m_currentCommander;
+            int newLevel  = 0;
+            int prevLevel = 0;
             if (commander != null)
             {
-                int prevLevel = commander.GetTechLevel();
+                prevLevel = commander.GetTechLevel();
                 commander.UpdateMineral(response.data.mineralRemain);
                 commander.UpdateTechPoint(response.data.techPointRemain);
                 commander.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
                 commander.UpdateModulePoint(response.data.modulePointRemain);
-                int newLevel = response.data.techLevel;
+                newLevel = response.data.techLevel;
                 commander.UpdateTechLevel(newLevel);
-                if (newLevel > prevLevel)
-                    UIManager.Instance.ShowTechLevelupNotify(newLevel);
             }
 
+            // 보상 획득 후 기술 레벨업 순서로 표시
             UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
             {
                 title   = LocalizationManager.Instance.Get("pending_reward_title"),
@@ -134,6 +135,9 @@ public class UIPanelSpace : UIPanelBase
                 },
                 onConfirm = () => { }
             });
+
+            if (newLevel > prevLevel)
+                UIManager.Instance.ShowTechLevelupNotify(newLevel);
 
             if (response.data.mineralSettingReset == true && response.data.updatedFleetInfo != null)
             {

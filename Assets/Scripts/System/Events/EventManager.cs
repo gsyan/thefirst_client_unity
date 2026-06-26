@@ -371,6 +371,12 @@ public static class EventManager
     public static void Subscribe_TacticToggleRequested(Action<int> callback)   { OnTacticToggleRequested += callback; }
     public static void Unsubscribe_TacticToggleRequested(Action<int> callback) { OnTacticToggleRequested -= callback; }
 
+    // 전술 미네랄 소비 (tacticIdx: 0=수리, 1=미사일, 2=함재기)
+    public static event Action<int, int> OnTacticMineralConsumed;
+    public static void Trigger_TacticMineralConsumed(int tacticIdx, int cost) { OnTacticMineralConsumed?.Invoke(tacticIdx, cost); }
+    public static void Subscribe_TacticMineralConsumed(Action<int, int> callback)   { OnTacticMineralConsumed += callback; }
+    public static void Unsubscribe_TacticMineralConsumed(Action<int, int> callback) { OnTacticMineralConsumed -= callback; }
+
     // Module Replaced (oldModule, newModule)
     public static event Action<ModuleBase, ModuleBase> OnModuleReplaced;
     public static void TriggerModuleReplaced(ModuleBase oldModule, ModuleBase newModule)

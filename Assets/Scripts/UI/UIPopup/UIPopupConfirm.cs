@@ -79,7 +79,6 @@ public class UIPopupConfirm : UIPopupBase
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         StopAutoClose();
         onCancelCallback?.Invoke();
-        HidePopup();
     }
 
     private void OnConfirmClicked()
@@ -87,7 +86,6 @@ public class UIPopupConfirm : UIPopupBase
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         StopAutoClose();
         onConfirmCallback?.Invoke();
-        HidePopup();
     }
 
     public void ShowPopupConfirm(ConfirmPopupConfig config)

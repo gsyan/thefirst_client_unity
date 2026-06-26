@@ -514,7 +514,7 @@ public abstract class AircraftBase : MonoBehaviour
             // 첫 WP는 진입 각도 불확실 → 거리 기준, 이후 WP는 dot 기준
             bool wpReached = currentIndex == 0
                 ? Vector3.Distance(transform.position, waypoints[0].position) < 1f
-                : Vector3.Dot(transform.forward, toWp) < 0f;
+                : Vector3.Dot(transform.forward, toWp) <= 0f;
             if (wpReached)
             {
                 //Debug.Log($"{gameObject.name} wp currentIndex:{currentIndex} done");
@@ -551,7 +551,7 @@ public abstract class AircraftBase : MonoBehaviour
 
             // 격납고 진입 방향(-firePoint.forward) 기준으로 firePoint를 지나쳤으면 종료
             Vector3 toDock = (m_firePoint.position - transform.position).normalized;
-            if (Vector3.Dot(-m_firePoint.forward, toDock) < 0f)
+            if (Vector3.Dot(-m_firePoint.forward, toDock) <= 0f)
             {
                 ReturnToPool();
                 yield break;

@@ -71,8 +71,10 @@ public class TabSystem : MonoBehaviour
 
     private void OnMyFleetStateChanged(EUnitState state)
     {
-        // 탭이 열려있는 동안은 적용하지 않음
-        if (currentActiveTab >= 0) return;
+        // Idle 복귀 시에는 탭이 열려있어도 pvp 버튼 등 갱신이 필요함
+        bool isTabOpen = currentActiveTab >= 0;
+        bool isIdleRestored = state == EUnitState.Idle;
+        if (isTabOpen == true && isIdleRestored == false) return;
         RefreshTabButtonsByFleetState();
     }
 
