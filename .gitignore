@@ -117,5 +117,8 @@ InitTestScene*.unity*
 
 # Firebase 대용량 네이티브 바이너리 (GitHub 100MB 제한 초과)
 /[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp*.so
+/[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp*.so.meta
 /[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp*.bundle
+/[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp*.bundle.meta
 /[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp*.dll
+/[Aa]ssets/Firebase/Plugins/x86_64/FirebaseCppApp*.dll.meta
