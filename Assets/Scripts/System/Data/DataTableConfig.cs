@@ -33,7 +33,7 @@ public class GameSettings
     public int instantRepairBaseSecs = 60;
 
     [Header("Tactic - Missile")]
-    [Tooltip("미사일 전술 강화 ON 시 1초당 소모하는 미네랄 (함대 단위)")]
+    [Tooltip("미사일 전술 강화 ON 시 개방된 슬롯 1개당 1초당 소모하는 미네랄")]
     public int missileTacticMineralPerSec = 1;
     [Tooltip("미사일 전술 강화 ON 시 데미지 배율")]
     public float missileTacticDamageMultiplier = 2f;
@@ -41,7 +41,7 @@ public class GameSettings
     public float missileTacticExplosionMultiplier = 2f;
 
     [Header("Tactic - Aircraft")]
-    [Tooltip("함재기 전술 강화 ON 시 1초당 소모하는 미네랄 (함대 단위)")]
+    [Tooltip("함재기 전술 강화 ON 시 개방된 슬롯 1개당 1초당 소모하는 미네랄")]
     public int aircraftTacticMineralPerSec = 1;
     [Tooltip("함재기 전술 강화 ON 시 공격력 배율")]
     public float aircraftTacticDamageMultiplier = 2f;

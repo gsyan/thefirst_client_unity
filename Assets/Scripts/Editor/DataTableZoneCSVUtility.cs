@@ -61,42 +61,64 @@ public static class DataTableZoneCSVUtility
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }
 
-    // enemyFleet.ships → datatable_zone_enemy.csv
+    // enemyFleets.fleetInfo.ships → datatable_zone_enemy.csv (함선 정보만)
     public static void ExportEnemy(DataTableZone table)
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("zone_stage,stage,ship_index,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio");
+        sb.AppendLine("zone_stage,stage,fleet_index,ship_index,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio");
         foreach (ZoneStageConfig s in table.zoneStageList)
         {
-            if (s.enemyFleet == null || s.enemyFleet.ships == null) continue;
+            if (s.enemyFleets == null || s.enemyFleets.Count == 0) continue;
             int stage = ParseStage(s.zoneName);
-            foreach (ShipInfo ship in s.enemyFleet.ships)
+            foreach (StageEnemyFleetSpawnConfig fleetSpawn in s.enemyFleets)
             {
-                ModuleBodyInfo body = (ship.bodies != null && ship.bodies.Count > 0) ? ship.bodies[0] : null;
-                EModuleSubType bodySubType = body != null ? body.moduleSubType : EModuleSubType.none;
-                int bodyLevel = body != null ? body.moduleLevel : 1;
+                if (fleetSpawn.fleetInfo == null || fleetSpawn.fleetInfo.ships == null) continue;
+                foreach (ShipInfo ship in fleetSpawn.fleetInfo.ships)
+                {
+                    ModuleBodyInfo body = (ship.bodies != null && ship.bodies.Count > 0) ? ship.bodies[0] : null;
+                    EModuleSubType bodySubType = body != null ? body.moduleSubType : EModuleSubType.none;
+                    int bodyLevel = body != null ? body.moduleLevel : 1;
 
-                var beams    = body != null && body.beams    != null ? body.beams.Where(m    => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
-                var missiles = body != null && body.missiles != null ? body.missiles.Where(m => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
-                var hangers  = body != null && body.hangers  != null ? body.hangers.Where(m  => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
+                    var beams    = body != null && body.beams    != null ? body.beams.Where(m    => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
+                    var missiles = body != null && body.missiles != null ? body.missiles.Where(m => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
+                    var hangers  = body != null && body.hangers  != null ? body.hangers.Where(m  => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
 
-                string beamType    = beams.Count > 0    ? beams[0].moduleSubType.ToString()    : "";
-                string beamLv      = beams.Count > 0    ? beams[0].moduleLevel.ToString()      : "";
-                string beamCnt     = beams.Count > 0    ? beams.Count.ToString()               : "";
-                string missileType = missiles.Count > 0 ? missiles[0].moduleSubType.ToString() : "";
-                string missileLv   = missiles.Count > 0 ? missiles[0].moduleLevel.ToString()   : "";
-                string missileCnt  = missiles.Count > 0 ? missiles.Count.ToString()            : "";
-                string hangerType  = hangers.Count > 0  ? hangers[0].moduleSubType.ToString()  : "";
-                string hangerLv    = hangers.Count > 0  ? hangers[0].moduleLevel.ToString()    : "";
-                string hangerCnt   = hangers.Count > 0  ? hangers.Count.ToString()             : "";
+                    string beamType    = beams.Count > 0    ? beams[0].moduleSubType.ToString()    : "";
+                    string beamLv      = beams.Count > 0    ? beams[0].moduleLevel.ToString()      : "";
+                    string beamCnt     = beams.Count > 0    ? beams.Count.ToString()               : "";
+                    string missileType = missiles.Count > 0 ? missiles[0].moduleSubType.ToString() : "";
+                    string missileLv   = missiles.Count > 0 ? missiles[0].moduleLevel.ToString()   : "";
+                    string missileCnt  = missiles.Count > 0 ? missiles.Count.ToString()            : "";
+                    string hangerType  = hangers.Count > 0  ? hangers[0].moduleSubType.ToString()  : "";
+                    string hangerLv    = hangers.Count > 0  ? hangers[0].moduleLevel.ToString()    : "";
+                    string hangerCnt   = hangers.Count > 0  ? hangers.Count.ToString()             : "";
 
-                sb.AppendLine(
-                    $"{s.zoneIndex},{stage},{ship.positionIndex},{bodySubType},{bodyLevel}," +
-                    $"{beamType},{beamLv},{beamCnt}," +
-                    $"{missileType},{missileLv},{missileCnt}," +
-                    $"{hangerType},{hangerLv},{hangerCnt}," +
-                    $"{ship.bodyMultiplier},{ship.beamMultiplier},{ship.missileMultiplier},{ship.hangerMultiplier}");
+                    sb.AppendLine(
+                        $"{s.zoneIndex},{stage},{fleetSpawn.fleetIndex},{ship.positionIndex},{bodySubType},{bodyLevel}," +
+                        $"{beamType},{beamLv},{beamCnt}," +
+                        $"{missileType},{missileLv},{missileCnt}," +
+                        $"{hangerType},{hangerLv},{hangerCnt}," +
+                        $"{ship.bodyMultiplier},{ship.beamMultiplier},{ship.missileMultiplier},{ship.hangerMultiplier}");
+                }
+            }
+        }
+        File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
+    }
+
+    // enemyFleets 스폰 정보 → datatable_zone_enemy_fleet.csv
+    public static void ExportEnemyFleet(DataTableZone table)
+    {
+        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_enemy_fleet.csv";
+        var sb = new StringBuilder();
+        sb.AppendLine("zone_stage,stage,fleet_index,term,distance,rotx,roty,rotz");
+        foreach (ZoneStageConfig s in table.zoneStageList)
+        {
+            if (s.enemyFleets == null || s.enemyFleets.Count == 0) continue;
+            int stage = ParseStage(s.zoneName);
+            foreach (StageEnemyFleetSpawnConfig fleetSpawn in s.enemyFleets)
+            {
+                sb.AppendLine($"{s.zoneIndex},{stage},{fleetSpawn.fleetIndex},{fleetSpawn.term},{fleetSpawn.distance},{fleetSpawn.rotX},{fleetSpawn.rotY},{fleetSpawn.rotZ}");
             }
         }
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);

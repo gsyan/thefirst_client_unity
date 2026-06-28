@@ -468,10 +468,22 @@ public class GetStageEnemiesRequest
 }
 
 [System.Serializable]
+public class StageEnemyFleetSpawnConfig
+{
+    public int fleetIndex;
+    public float term;
+    public float distance;
+    public float rotX;
+    public float rotY;
+    public float rotZ;
+    public FleetInfo fleetInfo;
+}
+
+[System.Serializable]
 public class GetStageEnemiesResponse
 {
     public string zoneName;
-    public FleetInfo enemyFleet;
+    public List<StageEnemyFleetSpawnConfig> enemyFleets;
 }
 
 [System.Serializable]

@@ -73,7 +73,7 @@ public class ZoneStageConfig
 
     public float delayBeforeSpawn = 3f;
     public float shipSpawnInterval = 1.5f;   // 함선 간 스폰 딜레이
-    public FleetInfo enemyFleet; // [server]
+    public List<StageEnemyFleetSpawnConfig> enemyFleets = new List<StageEnemyFleetSpawnConfig>(); // [server]
 
     [Header("클리어 보상")]
     public int mineralClearReward = 0;     // [server] 매 클리어마다
@@ -215,7 +215,7 @@ public class DataTableZone : ScriptableObject
         return GetZoneCenter(stage.zoneIndex) + stage.fleetPosition;
     }
 
-    // 서버용 export — enemyFleet은 FleetInfo 그대로 직렬화
+    // 서버용 export — enemyFleets 리스트 직렬화
     public string ExportToJson()
     {
         var serverData = new List<object>();
@@ -227,7 +227,7 @@ public class DataTableZone : ScriptableObject
                 mineralClearReward     = zoneStage.mineralClearReward,
                 techPointClearReward   = zoneStage.techPointClearReward,
                 modulePointClearReward = zoneStage.modulePointClearReward,
-                enemyFleet             = zoneStage.enemyFleet
+                enemyFleets            = zoneStage.enemyFleets
             });
         }
         return JsonConvert.SerializeObject(new { zoneStages = serverData }, Formatting.Indented);

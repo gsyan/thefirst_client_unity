@@ -424,7 +424,7 @@ public class UITabFleet : UITabBase
     private ServerErrorCode CanAddShip()
     {
         Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null) return ServerErrorCode.CLIENT_CanAddShip_CHARACTER_NOT_FOUND;
+        if (commander == null) return ServerErrorCode.CLIENT_CanAddShip_COMMANDER_NOT_FOUND;
 
         SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
         if (myFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;

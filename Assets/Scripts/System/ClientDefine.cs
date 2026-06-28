@@ -28,7 +28,6 @@ public enum EUnitState
     Idle,
     Move,
     Warp,
-    BattleReady,        // 워프 완료 대기 — 타겟팅 시작, 발사 대기
     BattleExploration,
     BattlePvp,
 }
@@ -37,8 +36,7 @@ public static class EUnitStateExtensions
 {
     public static bool IsBattleState(this EUnitState state)
     {
-        return state == EUnitState.BattleReady
-            || state == EUnitState.BattleExploration
+        return state == EUnitState.BattleExploration
             || state == EUnitState.BattlePvp;
     }
 }

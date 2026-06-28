@@ -108,9 +108,9 @@ public class UIPopupRenameCommander : UIPopupBase
         if (response == null || response.errorCode != 0)
         {
             string msg;
-            if (response != null && response.errorCode == (int)ServerErrorCode.CHARACTER_VALIDATE_NAME_DUPLICATE)
+            if (response != null && response.errorCode == (int)ServerErrorCode.COMMANDER_VALIDATE_NAME_DUPLICATE)
                 msg = LocalizationManager.Instance.Get("ui_rename_char_duplicate");
-            else if (response != null && response.errorCode == (int)ServerErrorCode.CHARACTER_VALIDATE_NAME_PROFANITY)
+            else if (response != null && response.errorCode == (int)ServerErrorCode.COMMANDER_VALIDATE_NAME_PROFANITY)
                 msg = LocalizationManager.Instance.Get("ui_rename_char_profanity");
             else
                 msg = LocalizationManager.Instance.Get("ui_rename_char_format_err");

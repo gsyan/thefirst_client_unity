@@ -161,7 +161,6 @@ public class SpaceShip : MonoBehaviour
                 m_shipState = EUnitState.Warp;
                 StopAutoCombat();
                 break;
-            case EUnitState.BattleReady:
             case EUnitState.BattleExploration:
             case EUnitState.BattlePvp:
                 m_shipState = m_ownerFleet.m_fleetState;
@@ -320,9 +319,21 @@ public class SpaceShip : MonoBehaviour
                 Vector3 toTarget = m_currentTargetBody.transform.position - transform.position;
                 if (toTarget.sqrMagnitude > 0.001f)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(toTarget.normalized);
                     float angularSpeed = m_spaceShipStatsCur.speed * k_angularSpeedMult;
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, angularSpeed * Time.deltaTime);
+                    bool isFlagship = m_shipInfo != null && m_shipInfo.positionIndex == 0;
+                    if (isFlagship == true && m_ownerFleet != null)
+                    {
+                        // 기함: 함대 transform을 서서히 적 방향으로 회전
+                        Vector3 dir = toTarget;
+                        dir.y = 0f;
+                        Quaternion targetFleetRot = Quaternion.LookRotation(dir.normalized);
+                        m_ownerFleet.transform.rotation = Quaternion.RotateTowards(m_ownerFleet.transform.rotation, targetFleetRot, angularSpeed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(toTarget.normalized);
+                        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, angularSpeed * Time.deltaTime);
+                    }
                 }
             }
             yield return null;

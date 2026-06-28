@@ -50,7 +50,13 @@ public class AdManager : MonoSingleton<AdManager>
             }
         }
 
+#if UNITY_EDITOR
+        // 에디터: UMP 동의 생략, 바로 초기화
+        MobileAds.SetRequestConfiguration(new RequestConfiguration());
+        InitializeMobileAds();
+#else
         StartCoroutine(RequestConsentThenInitAds());
+#endif
     }
 
     private IEnumerator RequestConsentThenInitAds()
@@ -59,7 +65,7 @@ public class AdManager : MonoSingleton<AdManager>
 
         var consentParams = new ConsentRequestParameters();
 #if DEVELOPMENT_BUILD
-        // 개발 빌드: EEA 지역으로 강제하여 동의 팝업 테스트 가능
+        // 개발 빌드 실기기: EEA 지역으로 강제하여 동의 팝업 테스트 가능
         consentParams = new ConsentRequestParameters
         {
             ConsentDebugSettings = new ConsentDebugSettings

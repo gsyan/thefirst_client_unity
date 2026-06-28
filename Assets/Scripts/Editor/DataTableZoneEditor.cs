@@ -101,10 +101,11 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Utility Tools", EditorStyles.boldLabel);
 
-        DrawImportExportRow("Zone Camera",  ImportCamera,    () => { DataTableZoneCSVUtility.ExportZone(m_dataTableZone);     AssetDatabase.Refresh(); });
-        DrawImportExportRow("Celestial",    ImportCelestial, () => { DataTableZoneCSVUtility.ExportCelestial(m_dataTableZone); AssetDatabase.Refresh(); });
-        DrawImportExportRow("Stage",        ImportStage,     () => { DataTableZoneCSVUtility.ExportZoneStage(m_dataTableZone); AssetDatabase.Refresh(); });
-        DrawImportExportRow("Enemy",        ImportEnemy,     () => { DataTableZoneCSVUtility.ExportEnemy(m_dataTableZone);     AssetDatabase.Refresh(); });
+        DrawImportExportRow("Zone Camera",  ImportCamera,       () => { DataTableZoneCSVUtility.ExportZone(m_dataTableZone);        AssetDatabase.Refresh(); });
+        DrawImportExportRow("Celestial",    ImportCelestial,    () => { DataTableZoneCSVUtility.ExportCelestial(m_dataTableZone);   AssetDatabase.Refresh(); });
+        DrawImportExportRow("Stage",        ImportStage,        () => { DataTableZoneCSVUtility.ExportZoneStage(m_dataTableZone);   AssetDatabase.Refresh(); });
+        DrawImportExportRow("Enemy Fleet",  ImportEnemyFleet,   () => { DataTableZoneCSVUtility.ExportEnemyFleet(m_dataTableZone);  AssetDatabase.Refresh(); });
+        DrawImportExportRow("Enemy Ships",  ImportEnemy,        () => { DataTableZoneCSVUtility.ExportEnemy(m_dataTableZone);       AssetDatabase.Refresh(); });
 
         EditorGUILayout.EndVertical();
     }
@@ -117,10 +118,11 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndHorizontal();
     }
 
-    private static readonly string k_cameraCSV    = "Assets/Resources/DataTable/Zone/datatable_zone_camera.csv";
-    private static readonly string k_celestialCSV = "Assets/Resources/DataTable/Zone/datatable_zone_celestial.csv";
-    private static readonly string k_stageCSV     = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
-    private static readonly string k_enemyCSV     = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
+    private static readonly string k_cameraCSV      = "Assets/Resources/DataTable/Zone/datatable_zone_camera.csv";
+    private static readonly string k_celestialCSV   = "Assets/Resources/DataTable/Zone/datatable_zone_celestial.csv";
+    private static readonly string k_stageCSV       = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
+    private static readonly string k_enemyCSV       = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
+    private static readonly string k_enemyFleetCSV  = "Assets/Resources/DataTable/Zone/datatable_zone_enemy_fleet.csv";
 
     private void ImportCamera()
     {
@@ -207,12 +209,12 @@ public class DataTableZoneEditor : Editor
     {
         if (!File.Exists(k_stageCSV)) { EditorUtility.DisplayDialog("Error", $"파일 없음:\n{k_stageCSV}", "OK"); return; }
 
-        // 기존 enemyFleet 보존
-        var enemyBackup = new Dictionary<string, FleetInfo>();
+        // 기존 enemyFleets 보존
+        var enemyBackup = new Dictionary<string, List<StageEnemyFleetSpawnConfig>>();
         for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
         {
             ZoneStageConfig zs = m_dataTableZone.zoneStageList[j];
-            if (zs.enemyFleet != null) enemyBackup[zs.zoneName] = zs.enemyFleet;
+            if (zs.enemyFleets != null && zs.enemyFleets.Count > 0) enemyBackup[zs.zoneName] = zs.enemyFleets;
         }
 
         m_dataTableZone.zoneStageList.Clear();
@@ -238,7 +240,7 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col.Length > 12 ? col[12] : "0", out float enemyFireDelay);
 
             string zoneName = $"{zoneIndex}-{stage}";
-            enemyBackup.TryGetValue(zoneName, out FleetInfo fleet);
+            enemyBackup.TryGetValue(zoneName, out List<StageEnemyFleetSpawnConfig> fleets);
             m_dataTableZone.zoneStageList.Add(new ZoneStageConfig
             {
                 zoneName               = zoneName,
@@ -253,7 +255,7 @@ public class DataTableZoneEditor : Editor
                 fleetRotationY         = frotY,
                 playerFireDelaySec     = playerFireDelay,
                 enemyFireDelaySec      = enemyFireDelay,
-                enemyFleet             = fleet != null ? fleet : new FleetInfo { fleetName = zoneName, ships = new List<ShipInfo>() },
+                enemyFleets            = fleets != null ? fleets : new List<StageEnemyFleetSpawnConfig>(),
             });
             count++;
         }
@@ -263,12 +265,75 @@ public class DataTableZoneEditor : Editor
         EditorUtility.DisplayDialog("완료", $"Stage import 완료 ({count}개)", "OK");
     }
 
+    private void ImportEnemyFleet()
+    {
+        if (!File.Exists(k_enemyFleetCSV)) { EditorUtility.DisplayDialog("Error", $"파일 없음:\n{k_enemyFleetCSV}", "OK"); return; }
+
+        // 기존 fleetInfo(ships) 보존
+        var shipsBackup = new Dictionary<string, Dictionary<int, FleetInfo>>();
+        for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
+        {
+            ZoneStageConfig zs = m_dataTableZone.zoneStageList[j];
+            if (zs.enemyFleets == null) continue;
+            shipsBackup[zs.zoneName] = new Dictionary<int, FleetInfo>();
+            for (int fi = 0; fi < zs.enemyFleets.Count; fi++)
+            {
+                StageEnemyFleetSpawnConfig fc = zs.enemyFleets[fi];
+                if (fc.fleetInfo != null) shipsBackup[zs.zoneName][fc.fleetIndex] = fc.fleetInfo;
+            }
+        }
+
+        // zoneName → fleet 목록 재구성
+        var fleetMap = new Dictionary<string, Dictionary<int, StageEnemyFleetSpawnConfig>>();
+        string[] lines = File.ReadAllLines(k_enemyFleetCSV);
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+            string[] col = line.Split(',');
+            if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stageNum)) continue;
+
+            string zoneName = $"{zoneIndex}-{stageNum}";
+            if (!fleetMap.ContainsKey(zoneName)) fleetMap[zoneName] = new Dictionary<int, StageEnemyFleetSpawnConfig>();
+
+            int.TryParse(col[2], out int fleetIdx);
+            float.TryParse(col[3], out float term);
+            float.TryParse(col[4], out float distance);
+            float.TryParse(col[5], out float rotX);
+            float.TryParse(col[6], out float rotY);
+            float.TryParse(col[7], out float rotZ);
+
+            shipsBackup.TryGetValue(zoneName, out var shipDict);
+            FleetInfo savedFleet = null;
+            if (shipDict != null) shipDict.TryGetValue(fleetIdx, out savedFleet);
+
+            fleetMap[zoneName][fleetIdx] = new StageEnemyFleetSpawnConfig
+            {
+                fleetIndex = fleetIdx, term = term, distance = distance,
+                rotX = rotX, rotY = rotY, rotZ = rotZ,
+                fleetInfo = savedFleet != null ? savedFleet : new FleetInfo { fleetName = $"{zoneName}_fleet{fleetIdx}", ships = new List<ShipInfo>() }
+            };
+        }
+
+        for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
+        {
+            ZoneStageConfig zs = m_dataTableZone.zoneStageList[j];
+            if (!fleetMap.TryGetValue(zs.zoneName, out Dictionary<int, StageEnemyFleetSpawnConfig> fleetDict)) continue;
+            zs.enemyFleets = new List<StageEnemyFleetSpawnConfig>(fleetDict.Values);
+            zs.enemyFleets.Sort((a, b) => a.fleetIndex.CompareTo(b.fleetIndex));
+        }
+        EditorUtility.SetDirty(m_dataTableZone);
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("완료", "Enemy Fleet import 완료", "OK");
+    }
+
     private void ImportEnemy()
     {
         if (!File.Exists(k_enemyCSV)) { EditorUtility.DisplayDialog("Error", $"파일 없음:\n{k_enemyCSV}", "OK"); return; }
 
-        // zoneName → enemyFleet 재구성
-        var enemyMap = new Dictionary<string, List<ShipInfo>>();
+        // zoneName+fleetIndex → ships 재구성
+        // 컬럼: zone_stage,stage,fleet_index,ship_index,body_type,body_level,...
+        var shipMap = new Dictionary<string, Dictionary<int, List<ShipInfo>>>();
         string[] lines = File.ReadAllLines(k_enemyCSV);
         for (int i = 1; i < lines.Length; i++)
         {
@@ -278,23 +343,26 @@ public class DataTableZoneEditor : Editor
             if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stageNum)) continue;
 
             string zoneName = $"{zoneIndex}-{stageNum}";
-            if (!enemyMap.ContainsKey(zoneName)) enemyMap[zoneName] = new List<ShipInfo>();
+            if (!shipMap.ContainsKey(zoneName)) shipMap[zoneName] = new Dictionary<int, List<ShipInfo>>();
 
-            int.TryParse(col[2], out int shipIdx);
-            System.Enum.TryParse(col[3], out EModuleSubType bodyType);
-            int.TryParse(col[4], out int bodyLv);
+            int.TryParse(col[2], out int fleetIdx);
+            if (!shipMap[zoneName].ContainsKey(fleetIdx)) shipMap[zoneName][fleetIdx] = new List<ShipInfo>();
+
+            int.TryParse(col[3], out int shipIdx);
+            System.Enum.TryParse(col[4], out EModuleSubType bodyType);
+            int.TryParse(col[5], out int bodyLv);
 
             var beams = new List<ModuleInfo>(); var missiles = new List<ModuleInfo>(); var hangers = new List<ModuleInfo>();
-            if (!string.IsNullOrEmpty(col[5]) && System.Enum.TryParse(col[5], out EModuleSubType beamType) && int.TryParse(col[6], out int beamLv))
-            { int cnt = col.Length > 7 && int.TryParse(col[7], out int bc) ? bc : 1; for (int s = 0; s < cnt; s++) beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = beamType, moduleLevel = beamLv, bodyIndex = 0, slotIndex = s }); }
-            if (!string.IsNullOrEmpty(col[8]) && System.Enum.TryParse(col[8], out EModuleSubType missileType) && int.TryParse(col[9], out int missileLv))
-            { int cnt = col.Length > 10 && int.TryParse(col[10], out int mc) ? mc : 1; for (int s = 0; s < cnt; s++) missiles.Add(new ModuleInfo { moduleType = EModuleType.missile, moduleSubType = missileType, moduleLevel = missileLv, bodyIndex = 0, slotIndex = s }); }
-            if (!string.IsNullOrEmpty(col[11]) && System.Enum.TryParse(col[11], out EModuleSubType hangerType) && int.TryParse(col[12], out int hangerLv))
-            { int cnt = col.Length > 13 && int.TryParse(col[13], out int hc) ? hc : 1; for (int s = 0; s < cnt; s++) hangers.Add(new ModuleInfo { moduleType = EModuleType.hanger, moduleSubType = hangerType, moduleLevel = hangerLv, bodyIndex = 0, slotIndex = s }); }
+            if (!string.IsNullOrEmpty(col[6]) && System.Enum.TryParse(col[6], out EModuleSubType beamType) && int.TryParse(col[7], out int beamLv))
+            { int cnt = col.Length > 8 && int.TryParse(col[8], out int bc) ? bc : 1; for (int s = 0; s < cnt; s++) beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = beamType, moduleLevel = beamLv, bodyIndex = 0, slotIndex = s }); }
+            if (!string.IsNullOrEmpty(col[9]) && System.Enum.TryParse(col[9], out EModuleSubType missileType) && int.TryParse(col[10], out int missileLv))
+            { int cnt = col.Length > 11 && int.TryParse(col[11], out int mc) ? mc : 1; for (int s = 0; s < cnt; s++) missiles.Add(new ModuleInfo { moduleType = EModuleType.missile, moduleSubType = missileType, moduleLevel = missileLv, bodyIndex = 0, slotIndex = s }); }
+            if (!string.IsNullOrEmpty(col[12]) && System.Enum.TryParse(col[12], out EModuleSubType hangerType) && int.TryParse(col[13], out int hangerLv))
+            { int cnt = col.Length > 14 && int.TryParse(col[14], out int hc) ? hc : 1; for (int s = 0; s < cnt; s++) hangers.Add(new ModuleInfo { moduleType = EModuleType.hanger, moduleSubType = hangerType, moduleLevel = hangerLv, bodyIndex = 0, slotIndex = s }); }
 
-            float.TryParse(col[14], out float bodyR); float.TryParse(col[15], out float beamR);
-            float.TryParse(col[16], out float missileR); float.TryParse(col[17], out float hangerR);
-            enemyMap[zoneName].Add(new ShipInfo
+            float.TryParse(col[15], out float bodyR); float.TryParse(col[16], out float beamR);
+            float.TryParse(col[17], out float missileR); float.TryParse(col[18], out float hangerR);
+            shipMap[zoneName][fleetIdx].Add(new ShipInfo
             {
                 shipName = $"EnemyShip_{shipIdx}", positionIndex = shipIdx,
                 bodyMultiplier = bodyR, beamMultiplier = beamR, missileMultiplier = missileR, hangerMultiplier = hangerR,
@@ -305,13 +373,19 @@ public class DataTableZoneEditor : Editor
         for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
         {
             ZoneStageConfig zs = m_dataTableZone.zoneStageList[j];
-            if (!enemyMap.TryGetValue(zs.zoneName, out List<ShipInfo> ships)) continue;
-            if (zs.enemyFleet == null) zs.enemyFleet = new FleetInfo { fleetName = zs.zoneName };
-            zs.enemyFleet.ships = ships;
+            if (!shipMap.TryGetValue(zs.zoneName, out Dictionary<int, List<ShipInfo>> fleetShips)) continue;
+            if (zs.enemyFleets == null) continue;
+            for (int fi = 0; fi < zs.enemyFleets.Count; fi++)
+            {
+                StageEnemyFleetSpawnConfig fc = zs.enemyFleets[fi];
+                if (!fleetShips.TryGetValue(fc.fleetIndex, out List<ShipInfo> ships)) continue;
+                if (fc.fleetInfo == null) fc.fleetInfo = new FleetInfo { fleetName = $"{zs.zoneName}_fleet{fc.fleetIndex}" };
+                fc.fleetInfo.ships = ships;
+            }
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("완료", "Enemy import 완료", "OK");
+        EditorUtility.DisplayDialog("완료", "Enemy Ships import 완료", "OK");
     }
 
 
@@ -505,7 +579,7 @@ public class DataTableZoneEditor : Editor
             }
             else
             {
-                // 새 스테이지 추가 (enemyFleet 기본값)
+                // 새 스테이지 추가 (enemyFleets 기본값)
                 m_dataTableZone.zoneStageList.Add(new ZoneStageConfig
                 {
                     zoneName          = stageName,
@@ -514,7 +588,7 @@ public class DataTableZoneEditor : Editor
                     delayBeforeSpawn  = 3f,
                     shipSpawnInterval = 1.5f,
                     fleetPosition     = new Vector3(x, 0f, z),
-                    enemyFleet        = new FleetInfo { fleetName = stageName, ships = new List<ShipInfo>() },
+                    enemyFleets       = new List<StageEnemyFleetSpawnConfig>(),
                 });
             }
         }
@@ -548,9 +622,13 @@ public class DataTableZoneEditor : Editor
 
         // Zone Header
         EditorGUILayout.BeginHorizontal();
-        int shipCount = (zoneStage.enemyFleet != null && zoneStage.enemyFleet.ships != null) ? zoneStage.enemyFleet.ships.Count : 0;
+        int totalShipCount = 0;
+        if (zoneStage.enemyFleets != null)
+            for (int fi = 0; fi < zoneStage.enemyFleets.Count; fi++)
+                if (zoneStage.enemyFleets[fi].fleetInfo != null && zoneStage.enemyFleets[fi].fleetInfo.ships != null)
+                    totalShipCount += zoneStage.enemyFleets[fi].fleetInfo.ships.Count;
         zoneFoldouts[zoneName] = EditorGUILayout.Foldout(zoneFoldouts[zoneName],
-            $"Zone {zoneStage.zoneName} (Ships: {shipCount})", true, EditorStyles.foldoutHeader);
+            $"Zone {zoneStage.zoneName} (Fleets: {zoneStage.enemyFleets.Count}, Ships: {totalShipCount})", true, EditorStyles.foldoutHeader);
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
@@ -604,28 +682,26 @@ public class DataTableZoneEditor : Editor
 
             EditorGUILayout.Space(5);
 
-            // 적 함대 구성 함선 템플릿 (전체가 한 함대로 스폰)
+            // 적 함대 목록 (복수 웨이브)
             EditorGUILayout.BeginHorizontal();
-            int fleetShipCount = (zoneStage.enemyFleet != null && zoneStage.enemyFleet.ships != null) ? zoneStage.enemyFleet.ships.Count : 0;
-            EditorGUILayout.LabelField($"함선 템플릿 ({fleetShipCount})", EditorStyles.boldLabel);
-            if (GUILayout.Button("+ Add Ship", GUILayout.Width(100)))
+            EditorGUILayout.LabelField($"적 함대 ({zoneStage.enemyFleets.Count})", EditorStyles.boldLabel);
+            if (GUILayout.Button("+ Add Fleet", GUILayout.Width(100)))
             {
-                if (zoneStage.enemyFleet == null)
-                    zoneStage.enemyFleet = new FleetInfo { fleetName = zoneStage.zoneName, ships = new List<ShipInfo>() };
-                if (zoneStage.enemyFleet.ships == null)
-                    zoneStage.enemyFleet.ships = new List<ShipInfo>();
-                var body = new ModuleBodyInfo { moduleType = EModuleType.body, moduleSubType = EModuleSubType.body_t1_m1, moduleLevel = 1, bodyIndex = 0, beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangers = new List<ModuleInfo>() };
-                zoneStage.enemyFleet.ships.Add(new ShipInfo { shipName = $"EnemyShip_{fleetShipCount}", positionIndex = fleetShipCount, bodyMultiplier = 1f, beamMultiplier = 1f, missileMultiplier = 1f, hangerMultiplier = 1f, bodies = new List<ModuleBodyInfo> { body } });
+                if (zoneStage.enemyFleets == null) zoneStage.enemyFleets = new List<StageEnemyFleetSpawnConfig>();
+                int nextIdx = zoneStage.enemyFleets.Count;
+                zoneStage.enemyFleets.Add(new StageEnemyFleetSpawnConfig
+                {
+                    fleetIndex = nextIdx,
+                    fleetInfo  = new FleetInfo { fleetName = $"{zoneStage.zoneName}_fleet{nextIdx}", ships = new List<ShipInfo>() }
+                });
                 EditorUtility.SetDirty(m_dataTableZone);
             }
             EditorGUILayout.EndHorizontal();
 
-            if (zoneStage.enemyFleet != null && zoneStage.enemyFleet.ships != null)
+            if (zoneStage.enemyFleets != null)
             {
-                for (int shipIndex = 0; shipIndex < zoneStage.enemyFleet.ships.Count; shipIndex++)
-                {
-                    DrawShips(zoneName, shipIndex, zoneStage.enemyFleet.ships[shipIndex], zoneStage);
-                }
+                for (int fi = 0; fi < zoneStage.enemyFleets.Count; fi++)
+                    DrawEnemyFleetSpawn(zoneName, fi, zoneStage.enemyFleets[fi], zoneStage);
             }
 
             EditorGUI.indentLevel--;
@@ -634,7 +710,65 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawShips(string zoneName, int shipIndex, ShipInfo ship, ZoneStageConfig zoneStage)
+    private Dictionary<string, bool> m_fleetFoldouts = new Dictionary<string, bool>();
+
+    private void DrawEnemyFleetSpawn(string zoneName, int fleetIdx, StageEnemyFleetSpawnConfig fleetSpawn, ZoneStageConfig zoneStage)
+    {
+        string foldKey = $"{zoneName}_fleet{fleetIdx}";
+        if (!m_fleetFoldouts.ContainsKey(foldKey)) m_fleetFoldouts[foldKey] = false;
+
+        var originalColor = GUI.backgroundColor;
+        GUI.backgroundColor = multiplierColor;
+        EditorGUILayout.BeginVertical("box");
+        GUI.backgroundColor = originalColor;
+
+        EditorGUILayout.BeginHorizontal();
+        int shipCount = fleetSpawn.fleetInfo != null && fleetSpawn.fleetInfo.ships != null ? fleetSpawn.fleetInfo.ships.Count : 0;
+        m_fleetFoldouts[foldKey] = EditorGUILayout.Foldout(m_fleetFoldouts[foldKey],
+            $"Fleet [{fleetSpawn.fleetIndex}]  term:{fleetSpawn.term}s  dist:{fleetSpawn.distance}  ({shipCount} ships)", true);
+        if (GUILayout.Button("X", GUILayout.Width(25)))
+        {
+            zoneStage.enemyFleets.RemoveAt(fleetIdx);
+            EditorUtility.SetDirty(m_dataTableZone);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+            return;
+        }
+        EditorGUILayout.EndHorizontal();
+
+        if (m_fleetFoldouts[foldKey] == true)
+        {
+            EditorGUI.indentLevel++;
+            fleetSpawn.fleetIndex = EditorGUILayout.IntField("Fleet Index", fleetSpawn.fleetIndex);
+            fleetSpawn.term       = EditorGUILayout.FloatField("Term (초)", fleetSpawn.term);
+            fleetSpawn.distance   = EditorGUILayout.FloatField("Distance", fleetSpawn.distance);
+            fleetSpawn.rotX       = EditorGUILayout.FloatField("Rot X", fleetSpawn.rotX);
+            fleetSpawn.rotY       = EditorGUILayout.FloatField("Rot Y", fleetSpawn.rotY);
+            fleetSpawn.rotZ       = EditorGUILayout.FloatField("Rot Z", fleetSpawn.rotZ);
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField($"함선 ({shipCount})", EditorStyles.boldLabel);
+            if (GUILayout.Button("+ Add Ship", GUILayout.Width(100)))
+            {
+                if (fleetSpawn.fleetInfo == null)
+                    fleetSpawn.fleetInfo = new FleetInfo { fleetName = $"{zoneName}_fleet{fleetIdx}", ships = new List<ShipInfo>() };
+                var body = new ModuleBodyInfo { moduleType = EModuleType.body, moduleSubType = EModuleSubType.body_t1_m1, moduleLevel = 1, bodyIndex = 0, beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangers = new List<ModuleInfo>() };
+                fleetSpawn.fleetInfo.ships.Add(new ShipInfo { shipName = $"EnemyShip_{shipCount}", positionIndex = shipCount, bodyMultiplier = 1f, beamMultiplier = 1f, missileMultiplier = 1f, hangerMultiplier = 1f, bodies = new List<ModuleBodyInfo> { body } });
+                EditorUtility.SetDirty(m_dataTableZone);
+            }
+            EditorGUILayout.EndHorizontal();
+
+            if (fleetSpawn.fleetInfo != null && fleetSpawn.fleetInfo.ships != null)
+            {
+                for (int si = 0; si < fleetSpawn.fleetInfo.ships.Count; si++)
+                    DrawShips(foldKey, si, fleetSpawn.fleetInfo.ships[si], fleetSpawn);
+            }
+            EditorGUI.indentLevel--;
+        }
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawShips(string zoneName, int shipIndex, ShipInfo ship, StageEnemyFleetSpawnConfig fleetSpawn)
     {
         if (!shipFoldouts.ContainsKey(zoneName))
             shipFoldouts[zoneName] = new Dictionary<int, bool>();
@@ -657,7 +791,7 @@ public class DataTableZoneEditor : Editor
 
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
-            zoneStage.enemyFleet.ships.RemoveAt(shipIndex);
+            fleetSpawn.fleetInfo.ships.RemoveAt(shipIndex);
             EditorUtility.SetDirty(m_dataTableZone);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();

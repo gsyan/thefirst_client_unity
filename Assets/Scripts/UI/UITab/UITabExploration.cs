@@ -31,7 +31,7 @@ public class UITabExploration : UITabBase
 
     private Vector3 m_pendingFleetPos;
     private float m_pendingFleetRotY;
-    private FleetInfo m_pendingEnemyFleetInfo;
+    private List<StageEnemyFleetSpawnConfig> m_pendingEnemyFleetSpawns;
 
     private bool m_isFleetWiped;
     private bool m_isBattleEnded;
@@ -533,7 +533,7 @@ public class UITabExploration : UITabBase
         m_isBattleEnded = true;
         EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
 
-        ZoneStageConfig retreatStage = m_currentZoneStage;
+        ZoneStageConfig retreatStage = isVictory ? m_battleZoneStage : m_currentZoneStage;
 
         Vector3 retreatPosition;
         float retreatRotationY;
@@ -553,6 +553,8 @@ public class UITabExploration : UITabBase
 
         if (m_isFleetWiped == true)
             ObjectManager.Instance.StartCoroutine(ShowWipePopupAfterDelay(retreatPosition, retreatRotationY));
+        else if (isVictory == true)
+            ExecuteVictoryStay();
         else
             ExecuteRetreat(retreatPosition, retreatRotationY);
     }
@@ -578,15 +580,15 @@ public class UITabExploration : UITabBase
             });
             return;
         }
-        m_pendingEnemyFleetInfo = response.data.enemyFleet;
+        m_pendingEnemyFleetSpawns = response.data.enemyFleets;
         EnterZoneStage(zoneStage);
     }
 
     private void StartBattleInZone(ZoneStageConfig zoneStage)
     {
         m_isBattleEnded = false;
-        ObjectManager.Instance.StartSpawnEnemiesFromFleetInfo(m_pendingEnemyFleetInfo, zoneStage);
-        m_pendingEnemyFleetInfo = null;
+        ObjectManager.Instance.StartZoneEnemyWaves(m_pendingEnemyFleetSpawns, zoneStage);
+        m_pendingEnemyFleetSpawns = null;
     }
 
     private bool IsAlreadyCleared(ZoneStageConfig zoneStage)
@@ -921,6 +923,13 @@ public class UITabExploration : UITabBase
             },
             autoCloseSec = 5f,
         });
+    }
+
+    private void ExecuteVictoryStay()
+    {
+        m_battleZoneStage = null;
+        if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
+        RefreshTabButtons();
     }
 
     private void ExecuteRetreat(Vector3 retreatPosition, float retreatRotationY)

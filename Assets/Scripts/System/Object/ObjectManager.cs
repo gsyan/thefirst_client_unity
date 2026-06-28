@@ -307,42 +307,86 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
 
 
-    // Zone 적 함대 — 서버 FleetInfo로 초기화 (PvP와 동일 구조, IsZoneEnemy 보장)
-    public void StartSpawnEnemiesFromFleetInfo(FleetInfo fleetInfo, ZoneStageConfig zoneStage)
+    // Zone 적 함대 웨이브 — term 기준 순차 스폰, 전멸 시 다음 웨이브 즉시 스폰
+    private List<StageEnemyFleetSpawnConfig> m_pendingWaves;
+    private bool[] m_waveSpawned;
+    private Coroutine[] m_waveTimerCoroutines;
+    private float m_wavesBattleStartTime;
+    private ZoneStageConfig m_currentWaveStage;
+
+    public void StartZoneEnemyWaves(List<StageEnemyFleetSpawnConfig> waves, ZoneStageConfig zoneStage)
     {
-        if (fleetInfo == null || fleetInfo.ships == null || fleetInfo.ships.Count == 0)
+        if (waves == null || waves.Count == 0)
         {
             EventManager.TriggerZoneStageBattleEnd(true);
             return;
         }
 
-        Vector3 spawnPosition = GetEnemySpawnPosition();
-        GameObject fleetObj = new GameObject("EnemyFleet");
-        fleetObj.transform.position = spawnPosition;
-        if (m_myFleet != null)
-        {
-            Vector3 dir = m_myFleet.transform.position - spawnPosition;
-            dir.y = 0;
-            if (dir != Vector3.zero)
-                fleetObj.transform.rotation = Quaternion.LookRotation(dir);
-        }
-
-        SpaceFleet newZoneFleet = fleetObj.AddComponent<SpaceFleet>();
-        m_enemyFleets.Add(newZoneFleet);
+        m_pendingWaves             = waves;
+        m_waveSpawned              = new bool[waves.Count];
+        m_waveTimerCoroutines      = new Coroutine[waves.Count];
+        m_wavesBattleStartTime     = Time.time;
+        m_currentWaveStage         = zoneStage;
 
         GameSpeedController.RestoreSpeed();
-        if (m_myFleet != null) m_myFleet.SetFleetState(EUnitState.BattleReady);
+
+        for (int i = 0; i < waves.Count; i++)
+        {
+            int idx = i;
+            m_waveTimerCoroutines[idx] = StartCoroutine(WaveTimerCoroutine(idx));
+        }
+    }
+
+    private IEnumerator WaveTimerCoroutine(int waveIndex)
+    {
+        float elapsed   = Time.time - m_wavesBattleStartTime;
+        float remaining = m_pendingWaves[waveIndex].term - elapsed;
+        if (remaining > 0f)
+            yield return new WaitForSeconds(remaining);
+
+        if (m_waveSpawned[waveIndex] == false)
+            SpawnWave(waveIndex);
+    }
+
+    private void SpawnWave(int waveIndex)
+    {
+        if (m_waveSpawned[waveIndex] == true) return;
+        m_waveSpawned[waveIndex] = true;
+
+        StageEnemyFleetSpawnConfig wave = m_pendingWaves[waveIndex];
+        if (wave.fleetInfo == null || wave.fleetInfo.ships == null || wave.fleetInfo.ships.Count == 0) return;
+
+        Vector3 spawnPos = GetEnemySpawnPositionFromWave(wave);
+        Vector3 dirToPlayer = m_myFleet != null ? m_myFleet.transform.position - spawnPos : Vector3.zero;
+        dirToPlayer.y = 0f;
+        Quaternion spawnRot = dirToPlayer != Vector3.zero ? Quaternion.LookRotation(dirToPlayer) : Quaternion.identity;
+
+        GameObject fleetObj = new GameObject($"EnemyFleet_{waveIndex}");
+        fleetObj.transform.position = spawnPos;
+        fleetObj.transform.rotation = spawnRot;
+
+        SpaceFleet newFleet = fleetObj.AddComponent<SpaceFleet>();
+        m_enemyFleets.Add(newFleet);
 
         // fleet_source_zone_data → IsZoneEnemy == true → 전멸 시 OnZoneEnemyFleetDefeated 호출
-        newZoneFleet.InitializeSpaceFleet(fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EUnitState.Move);
-        float playerDelay = zoneStage != null ? zoneStage.playerFireDelaySec : 0f;
-        float enemyDelay  = zoneStage != null ? zoneStage.enemyFireDelaySec  : 0f;
-        newZoneFleet.StartFleetWarpIn(() =>
+        newFleet.InitializeSpaceFleet(wave.fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EUnitState.Move);
+        float playerDelay = m_currentWaveStage != null ? m_currentWaveStage.playerFireDelaySec : 0f;
+        float enemyDelay  = m_currentWaveStage != null ? m_currentWaveStage.enemyFireDelaySec  : 0f;
+        newFleet.StartFleetWarpIn(() =>
         {
-            newZoneFleet.SetFleetState(EUnitState.BattleReady);
-            TryStartCombat(newZoneFleet, EUnitState.BattleExploration, playerDelay, enemyDelay);
+            TryStartCombat(newFleet, EUnitState.BattleExploration, playerDelay, enemyDelay);
         });
-        TryStartCombat(newZoneFleet, EUnitState.BattleExploration, playerDelay, enemyDelay);
+    }
+
+    private Vector3 GetEnemySpawnPositionFromWave(StageEnemyFleetSpawnConfig wave)
+    {
+        if (m_myFleet == null) return Vector3.zero;
+        Vector3 basePos      = m_myFleet.transform.position;
+        Vector3 localDir     = Quaternion.Euler(wave.rotX, wave.rotY, wave.rotZ) * Vector3.forward;
+        Vector3 worldDir     = m_myFleet.transform.TransformDirection(localDir);
+        Vector3 spawnPos     = basePos + worldDir * wave.distance;
+        spawnPos.y = 0f;
+        return spawnPos;
     }
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
@@ -368,11 +412,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EUnitState.Move);
         enemyFleet.StartFleetWarpIn(() =>
         {
-            enemyFleet.SetFleetState(EUnitState.BattleReady);
             TryStartCombat(enemyFleet, EUnitState.BattlePvp);
         });
-        m_myFleet.SetFleetState(EUnitState.BattleReady);
-        TryStartCombat(enemyFleet, EUnitState.BattlePvp);
 
         m_enemyFleets.Add(enemyFleet);
     }
@@ -380,8 +421,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     private void TryStartCombat(SpaceFleet enemyFleet, EUnitState battleState, float playerDelay = 0f, float enemyDelay = 0f)
     {
         m_isBattleEnding = false;
-        if (m_myFleet == null || m_myFleet.m_fleetState != EUnitState.BattleReady) return;
-        if (enemyFleet == null || enemyFleet.m_fleetState != EUnitState.BattleReady) return;
+        if (m_myFleet == null) return;
+        if (enemyFleet == null) return;
 
         m_myFleet.SetFleetState(battleState);
         enemyFleet.SetFleetState(battleState);
@@ -483,7 +524,30 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public void OnZoneEnemyFleetDefeated(SpaceFleet fleet)
     {
         RemoveEnemyFleet(fleet);
-        EventManager.Trigger_EnemyFleetKilled();
+
+        if (m_pendingWaves == null) return;
+
+        // 미스폰 웨이브 중 가장 앞의 것을 즉시 스폰 (term 타이머 취소)
+        for (int i = 0; i < m_waveSpawned.Length; i++)
+        {
+            if (m_waveSpawned[i] == false)
+            {
+                if (m_waveTimerCoroutines[i] != null)
+                {
+                    StopCoroutine(m_waveTimerCoroutines[i]);
+                    m_waveTimerCoroutines[i] = null;
+                }
+                SpawnWave(i);
+                return;
+            }
+        }
+
+        // 모든 웨이브 스폰 완료 + 적 전멸 → 클리어
+        if (m_enemyFleets.Count == 0)
+        {
+            EventManager.Trigger_EnemyFleetKilled();
+            EventManager.TriggerZoneStageBattleEnd(true);
+        }
     }
 
     #region Prefabs ---------------------------------------------------------------

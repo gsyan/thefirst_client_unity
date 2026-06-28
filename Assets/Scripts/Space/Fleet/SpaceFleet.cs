@@ -482,6 +482,14 @@ public class SpaceFleet : MonoBehaviour
         return null;
     }
 
+    public void FaceToward(Vector3 targetWorldPos)
+    {
+        Vector3 dir = targetWorldPos - transform.position;
+        dir.y = 0f;
+        if (dir == Vector3.zero) return;
+        transform.rotation = Quaternion.LookRotation(dir);
+    }
+
     public void UpdateShipFormation(EFormationType formationType = EFormationType.linear_horizontal, bool bSmooth = true)
     {
         m_currentFormationType = formationType;
@@ -991,30 +999,34 @@ public class SpaceFleet : MonoBehaviour
         return false;
     }
 
-    private bool HasAnyMissileModule()
+    // 생존 함선의 개방된 미사일 슬롯(= 장착된 ModuleMissile) 합계
+    private int CountUnlockedMissileSlots()
     {
+        int count = 0;
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null || ship.IsAlive() == false) continue;
             foreach (ModuleBody body in ship.m_moduleBodys)
             {
-                if (body != null && body.m_missiles.Count > 0) return true;
+                if (body != null) count += body.m_missiles.Count;
             }
         }
-        return false;
+        return count;
     }
 
-    private bool HasAnyHangerModule()
+    // 생존 함선의 개방된 함재기 슬롯(= 장착된 ModuleHanger) 합계
+    private int CountUnlockedHangerSlots()
     {
+        int count = 0;
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null || ship.IsAlive() == false) continue;
             foreach (ModuleBody body in ship.m_moduleBodys)
             {
-                if (body != null && body.m_hangers.Count > 0) return true;
+                if (body != null) count += body.m_hangers.Count;
             }
         }
-        return false;
+        return count;
     }
 
     private Coroutine m_missileTacticCostCoroutine;
@@ -1040,12 +1052,15 @@ public class SpaceFleet : MonoBehaviour
             yield return k_repairBoostCostInterval;
             if (m_fleetState.IsBattleState() == false) continue;
             if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 2) == 0) continue;
-            if (HasAnyMissileModule() == false) continue;
+
+            int slotCount = CountUnlockedMissileSlots();
+            if (slotCount == 0) continue;
 
             Commander commander = DataManager.Instance.m_currentCommander;
             if (commander == null) continue;
 
-            int cost = DataManager.Instance.m_dataTableConfig.gameSettings.missileTacticMineralPerSec;
+            int perSlot = DataManager.Instance.m_dataTableConfig.gameSettings.missileTacticMineralPerSec;
+            int cost    = perSlot * slotCount;
             bool consumed = commander.TryConsumeMineral(cost);
             if (consumed == true)
                 EventManager.Trigger_TacticMineralConsumed(1, cost);
@@ -1072,12 +1087,15 @@ public class SpaceFleet : MonoBehaviour
             yield return k_repairBoostCostInterval;
             if (m_fleetState.IsBattleState() == false) continue;
             if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 4) == 0) continue;
-            if (HasAnyHangerModule() == false) continue;
+
+            int slotCount = CountUnlockedHangerSlots();
+            if (slotCount == 0) continue;
 
             Commander commander = DataManager.Instance.m_currentCommander;
             if (commander == null) continue;
 
-            int cost = DataManager.Instance.m_dataTableConfig.gameSettings.aircraftTacticMineralPerSec;
+            int perSlot = DataManager.Instance.m_dataTableConfig.gameSettings.aircraftTacticMineralPerSec;
+            int cost    = perSlot * slotCount;
             bool consumed = commander.TryConsumeMineral(cost);
             if (consumed == true)
                 EventManager.Trigger_TacticMineralConsumed(2, cost);
