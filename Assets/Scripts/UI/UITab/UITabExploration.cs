@@ -12,9 +12,20 @@ public class UITabExploration : UITabBase
     [SerializeField] private UIZoneStageButton m_zoneStageButtonPrefab;
     [SerializeField] private UnityEngine.UI.Button m_backgroundCloseButton; // 빈 곳 클릭 시 탭 닫기용 투명 풀스크린 버튼
     
-    [Header("그룹 탭")]
-    [SerializeField] private Transform m_zoneTabButtonContainer;
-    private UISelectableButton[] m_zoneTabButtons;
+    [Header("존 탭 스크롤")]
+    [SerializeField] private InfiniteScrollViewH m_zoneTabScroll;
+    [SerializeField] private GameObject m_zoneTabNodePrefab;
+    [SerializeField] private UnityEngine.UI.Button m_zoneNavPrev10;
+    [SerializeField] private UnityEngine.UI.Button m_zoneNavPrev1;
+    [SerializeField] private UnityEngine.UI.Button m_zoneNavNext1;
+    [SerializeField] private UnityEngine.UI.Button m_zoneNavNext10;
+    [SerializeField] private UnityEngine.UI.Image m_stageBlockOverlay; // 스테이지 선택 영역 터치 차단 (디바운스 중)
+
+    private int m_zoneGroupCount;
+    private int m_currentGroupIndex = 1;
+    private Coroutine m_debounceCoroutine;
+    private static readonly WaitForSeconds s_stageDebounceWait = new WaitForSeconds(0.2f);
+
     private readonly List<UIZoneStageButton> m_buttonPool = new();
 
     private SpaceFleet m_playerFleet;
@@ -57,7 +68,7 @@ public class UITabExploration : UITabBase
         if (m_backgroundCloseButton != null)
             m_backgroundCloseButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); m_tabSystemParent.SwitchToTab(-1); });
 
-        SetupZoneTabButtons();
+        InitializeZoneTabScroll();
         InitializeZoneStageButtons();
         SetFleetState(EUnitState.Idle);
 
@@ -82,29 +93,110 @@ public class UITabExploration : UITabBase
         CameraController.Instance.SnapToTarget();
     }
 
-    private void SetupZoneTabButtons()
+    private void InitializeZoneTabScroll()
     {
-        if (m_zoneTabButtonContainer == null) return;
-        m_zoneTabButtons = m_zoneTabButtonContainer.GetComponentsInChildren<UISelectableButton>();
-        for (int i = 0; i < m_zoneTabButtons.Length; i++)
-        {
-            int groupIndex = i + 1;
-            m_zoneTabButtons[i].Setup($"Z{groupIndex}", () => OnGroupTabClicked(groupIndex));
-        }
+        if (m_zoneTabScroll == null || m_zoneTabNodePrefab == null) return;
+
+        m_zoneGroupCount = GetZoneGroupCount();
+        if (m_zoneGroupCount <= 0) return;
+
+        m_zoneTabScroll.onItemBind = OnZoneTabNodeBind;
+        m_zoneTabScroll.onCenterIndexChanged = OnZoneScrollCenterChanged;
+        m_zoneTabScroll.Initialize(m_zoneGroupCount, m_zoneTabNodePrefab);
+
+        if (m_zoneNavPrev10 != null) m_zoneNavPrev10.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex - 10); });
+        if (m_zoneNavPrev1  != null) m_zoneNavPrev1.onClick.AddListener(()  => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex - 1); });
+        if (m_zoneNavNext1  != null) m_zoneNavNext1.onClick.AddListener(()  => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex + 1); });
+        if (m_zoneNavNext10 != null) m_zoneNavNext10.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex + 10); });
+
+        if (m_stageBlockOverlay != null) m_stageBlockOverlay.gameObject.SetActive(false);
     }
 
-    private void OnGroupTabClicked(int groupIndex)
+    private int GetZoneGroupCount()
     {
+        if (m_datatableZone == null) return 9;
+        int count = 0;
+        for (int i = 1; i <= 200; i++)
+        {
+            var stages = m_datatableZone.GetStagesByZone(i);
+            if (stages == null || stages.Count == 0) break;
+            count = i;
+        }
+        return Mathf.Max(1, count);
+    }
+
+    // 버튼 또는 초기화로 직접 이동 — 디바운스 없이 즉시 스테이지 갱신
+    private void NavigateToGroup(int groupIndex)
+    {
+        groupIndex = Mathf.Clamp(groupIndex, 1, m_zoneGroupCount);
+        if (groupIndex == m_currentGroupIndex) return;
+        m_currentGroupIndex = groupIndex;
+
+        if (m_debounceCoroutine != null)
+        {
+            StopCoroutine(m_debounceCoroutine);
+            m_debounceCoroutine = null;
+        }
+        UnblockStageArea();
+
+        m_zoneTabScroll.ScrollToCenter(groupIndex - 1);
+        // ScrollToCenter 내부에서 RefreshView → onItemBind 호출되므로 별도 RefreshVisible 불필요
+
         ObjectManager.Instance.ChangeZone(groupIndex);
         SetupButtonsForGroup(groupIndex);
-        UpdateGroupTabVisual(groupIndex);
     }
 
-    private void UpdateGroupTabVisual(int groupIndex)
+    private void OnZoneTabNodeBind(int dataIndex, GameObject obj)
     {
-        if (m_zoneTabButtons == null) return;
-        for (int i = 0; i < m_zoneTabButtons.Length; i++)
-            m_zoneTabButtons[i].SetSelected((i + 1) == groupIndex);
+        UIZoneTabNode node = obj.GetComponent<UIZoneTabNode>();
+        if (node == null) return;
+        node.SetData(dataIndex, OnZoneTabNodeClicked);
+        node.SetSelected(dataIndex + 1 == m_currentGroupIndex);
+    }
+
+    private void OnZoneTabNodeClicked(int groupIndex)
+    {
+        // 이미 선택된 존이면 무시
+        int targetGroup = groupIndex + 1;
+        if (targetGroup == m_currentGroupIndex) return;
+        NavigateToGroup(targetGroup);
+    }
+
+    // 스크롤 드래그로 중앙 인덱스 변경 — 0.2초 디바운스 후 스테이지 갱신
+    private void OnZoneScrollCenterChanged(int dataIndex)
+    {
+        int newGroupIndex = dataIndex + 1;
+        if (newGroupIndex == m_currentGroupIndex) return;
+        m_currentGroupIndex = newGroupIndex;
+
+        // 선택 노드 하이라이트 즉시 갱신
+        m_zoneTabScroll.RefreshVisible();
+
+        BlockStageArea();
+        if (m_debounceCoroutine != null)
+            StopCoroutine(m_debounceCoroutine);
+        m_debounceCoroutine = StartCoroutine(StageUpdateDebounce());
+    }
+
+    private IEnumerator StageUpdateDebounce()
+    {
+        yield return s_stageDebounceWait;
+        UnblockStageArea();
+        ObjectManager.Instance.ChangeZone(m_currentGroupIndex);
+        SetupButtonsForGroup(m_currentGroupIndex);
+        m_debounceCoroutine = null;
+    }
+
+    private void BlockStageArea()
+    {
+        if (m_stageBlockOverlay != null)
+            m_stageBlockOverlay.gameObject.SetActive(true);
+    }
+
+    private void UnblockStageArea()
+    {
+        if (m_stageBlockOverlay != null)
+            m_stageBlockOverlay.gameObject.SetActive(false);
     }
 
     // 초기 그룹 인덱스 및 현재 함대 스테이지 결정 — 버튼 생성은 OnTabActivated의 SetupButtonsForGroup에서
@@ -249,8 +341,10 @@ public class UITabExploration : UITabBase
                     zoneConfig.galaxyCameraRotY);
         }
 
+        m_currentGroupIndex = groupIndex;
         SetupButtonsForGroup(groupIndex);
-        UpdateGroupTabVisual(groupIndex);
+        if (m_zoneTabScroll != null)
+            m_zoneTabScroll.ScrollToCenter(groupIndex - 1);
 
         if (m_zoneButtonRoot != null) m_zoneButtonRoot.gameObject.SetActive(false);
 
@@ -262,6 +356,13 @@ public class UITabExploration : UITabBase
     {
         if (CameraController.Instance != null)
             EventManager.Unsubscribe_GalaxyViewSettled(OnCameraGalaxyViewSettled);
+
+        if (m_debounceCoroutine != null)
+        {
+            StopCoroutine(m_debounceCoroutine);
+            m_debounceCoroutine = null;
+        }
+        UnblockStageArea();
 
         ReturnAllButtonsToPool();
         EventManager.TriggerExplorationTabClosed();
@@ -957,8 +1058,9 @@ public class UITabExploration : UITabBase
             RefreshCurrentZoneStageButton();
 
             SetFleetState(EUnitState.Idle);
-            
-            UpdateGroupTabVisual(retreatGroup);
+
+            m_currentGroupIndex = retreatGroup;
+            if (m_zoneTabScroll != null) m_zoneTabScroll.ScrollToCenter(retreatGroup - 1);
             SetupButtonsForGroup(retreatGroup);
 
             if (m_isFleetWiped == true)
@@ -1000,7 +1102,8 @@ public class UITabExploration : UITabBase
 
         int battleGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : (m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1);
         if (battleGroup <= 0) battleGroup = 1;
-        UpdateGroupTabVisual(battleGroup);
+        m_currentGroupIndex = battleGroup;
+        if (m_zoneTabScroll != null) m_zoneTabScroll.ScrollToCenter(battleGroup - 1);
         SetupButtonsForGroup(battleGroup);
     }
 
