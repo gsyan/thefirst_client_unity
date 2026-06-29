@@ -17,8 +17,9 @@ public class GameSettings
     public int addShipCost = 10;
 
 [Header("Pvp Settings")]
+    public int pvpMinTechLevel = 2;
     public int pvpListCount = 3;
-    public int pvpListRefreshCount = 5;    
+    public int pvpListRefreshCount = 5;
     public int pvpRankScoreInit = 1000;
     public int pvpRankScorePenalty = 1;
     

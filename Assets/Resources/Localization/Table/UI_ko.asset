@@ -1070,6 +1070,23 @@ MonoBehaviour:
     m_Localized: "\uC81C\uB3C5 \uAE30\uB2A5"
     m_Metadata:
       m_Items: []
+  - m_Id: 51131395925213184
+    m_Localized: "PVP \uC7A0\uAE40"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51131395925213185
+    m_Localized: "PVP \uCC38\uAC00\uB294 \uAE30\uC220 \uB808\uBCA8 {0} \uC774\uC0C1\uC774
+      \uD544\uC694\uD569\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51134935167008768
+    m_Localized: "\uBC30\uACBD\uC74C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51134935167008769
+    m_Localized: "\uD6A8\uACFC\uC74C"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

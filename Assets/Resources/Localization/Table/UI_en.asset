@@ -1051,6 +1051,22 @@ MonoBehaviour:
     m_Localized: Admiral Feature
     m_Metadata:
       m_Items: []
+  - m_Id: 51131395925213184
+    m_Localized: PVP Locked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51131395925213185
+    m_Localized: Tech Level {0} or above is required to enter PVP.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51134935167008768
+    m_Localized: BGM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51134935167008769
+    m_Localized: FX
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

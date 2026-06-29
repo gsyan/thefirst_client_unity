@@ -15,6 +15,7 @@ MonoBehaviour:
   gameSettings:
     version: 0.0.1
     addShipCost: 10
+    pvpMinTechLevel: 2
     pvpListCount: 3
     pvpListRefreshCount: 5
     pvpRankScoreInit: 1000
@@ -29,10 +30,11 @@ MonoBehaviour:
     aircraftTacticMineralPerSec: 1
     aircraftTacticDamageMultiplier: 2
     aircraftTacticAmmoMultiplier: 2
-  exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"addShipCost\": 10,\r\n  \"pvpListCount\":
-    3,\r\n  \"pvpListRefreshCount\": 5,\r\n  \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\":
-    1,\r\n  \"moduleUnlockPrice\": 1,\r\n  \"repairBoostMineralPerSec\": 1,\r\n 
-    \"repairBoostMultiplier\": 2.0,\r\n  \"instantRepairBaseSecs\": 60,\r\n  \"missileTacticMineralPerSec\":
-    1,\r\n  \"missileTacticDamageMultiplier\": 2.0,\r\n  \"missileTacticExplosionMultiplier\":
-    2.0,\r\n  \"aircraftTacticMineralPerSec\": 1,\r\n  \"aircraftTacticDamageMultiplier\":
-    2.0,\r\n  \"aircraftTacticAmmoMultiplier\": 2.0\r\n}"
+  exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"addShipCost\": 10,\r\n  \"pvpMinTechLevel\":
+    2,\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\": 5,\r\n  \"pvpRankScoreInit\":
+    1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\": 1,\r\n  \"repairBoostMineralPerSec\":
+    1,\r\n  \"repairBoostMultiplier\": 2.0,\r\n  \"instantRepairBaseSecs\": 60,\r\n 
+    \"missileTacticMineralPerSec\": 1,\r\n  \"missileTacticDamageMultiplier\": 2.0,\r\n 
+    \"missileTacticExplosionMultiplier\": 2.0,\r\n  \"aircraftTacticMineralPerSec\":
+    1,\r\n  \"aircraftTacticDamageMultiplier\": 2.0,\r\n  \"aircraftTacticAmmoMultiplier\":
+    2.0\r\n}"

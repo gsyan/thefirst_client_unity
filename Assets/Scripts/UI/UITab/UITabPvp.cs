@@ -65,6 +65,20 @@ public class UITabPvp : UITabBase
     private void OnAttackClicked(PvpOpponentInfo opponent)
     {
         if (m_isBattleInProgress == true) return;
+
+        int minTechLevel = DataManager.Instance.m_dataTableConfig.gameSettings.pvpMinTechLevel;
+        int myTechLevel  = DataManager.Instance.m_currentCommander.m_commanderInfo.techLevel;
+        if (myTechLevel < minTechLevel)
+        {
+            var loc = LocalizationManager.Instance;
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                title     = loc.Get("UIPopupMessage_PvpTechLevelRequiredTitle"),
+                message   = loc.Get("UIPopupMessage_PvpTechLevelRequiredMessage", minTechLevel),
+                onConfirm = () => { },
+            });
+            return;
+        }
         CapabilityProfile stats = CommonUtility.GetFleetCapabilityProfile(opponent.fleetInfo);
         int shipCount = (opponent.fleetInfo != null && opponent.fleetInfo.ships != null) ? opponent.fleetInfo.ships.Count : 0;
 

@@ -14,12 +14,23 @@ public class UITabSettings : UITabBase
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private Button m_renameCommanderButton;
     [SerializeField] private Button m_googleAccountButton;  // 연동/해제 공용 버튼
+    [SerializeField] private TMP_Text m_googleAccountButtonText;
     [SerializeField] private Button m_logoutButton;
 
     [Header("General")]
     [SerializeField] private TMP_Text m_sectionGeneralText;
     [SerializeField] private TMP_Text m_languageText;
     [SerializeField] private TMP_Dropdown m_languageDropdown;
+    [SerializeField] private Button m_bgmButton;
+    [SerializeField] private Image  m_bgmButtonImage;
+    [SerializeField] private Slider m_bgmSlider;
+    [SerializeField] private Button m_fxButton;
+    [SerializeField] private Image  m_fxButtonImage;
+    [SerializeField] private Slider m_fxSlider;
+
+    private float m_bgmVolumeBeforeMute;
+    private float m_fxVolumeBeforeMute;
+
 
     [Header("라이센스")]
     [SerializeField] private TMP_Text m_sectionInfolText;
@@ -82,8 +93,89 @@ public class UITabSettings : UITabBase
         }
 
         InitializeLanguageDropdown();
+        InitializeSoundSettings();
         RefreshGoogleLinkUI();
         RefreshStaticLocText();
+    }
+
+    private void InitializeSoundSettings()
+    {
+        SoundManager sm = SoundManager.Instance;
+
+        float bgmVol = sm.GetBGMVolume();
+        float fxVol  = sm.GetFXVolume();
+        m_bgmVolumeBeforeMute = bgmVol;
+        m_fxVolumeBeforeMute  = fxVol;
+
+        if (m_bgmSlider != null)
+        {
+            m_bgmSlider.value = bgmVol;
+            m_bgmSlider.onValueChanged.AddListener(OnBgmSliderChanged);
+        }
+        if (m_fxSlider != null)
+        {
+            m_fxSlider.value = fxVol;
+            m_fxSlider.onValueChanged.AddListener(OnFxSliderChanged);
+        }
+        if (m_bgmButton != null)
+            m_bgmButton.onClick.AddListener(OnBgmMuteToggle);
+        if (m_fxButton != null)
+            m_fxButton.onClick.AddListener(OnFxMuteToggle);
+
+        RefreshSoundButtonImage(m_bgmButtonImage, bgmVol);
+        RefreshSoundButtonImage(m_fxButtonImage,  fxVol);
+    }
+
+    private void OnBgmSliderChanged(float value)
+    {
+        SoundManager.Instance.SetBGMVolume(value);
+        if (value > 0f) m_bgmVolumeBeforeMute = value;
+        RefreshSoundButtonImage(m_bgmButtonImage, value);
+    }
+
+    private void OnFxSliderChanged(float value)
+    {
+        SoundManager.Instance.SetFXVolume(value);
+        if (value > 0f) m_fxVolumeBeforeMute = value;
+        RefreshSoundButtonImage(m_fxButtonImage, value);
+    }
+
+    private void OnBgmMuteToggle()
+    {
+        bool isMuted = SoundManager.Instance.GetBGMVolume() <= 0f;
+        if (isMuted == true)
+        {
+            float restore = m_bgmVolumeBeforeMute > 0f ? m_bgmVolumeBeforeMute : 0.7f;
+            m_bgmSlider.value = restore;
+        }
+        else
+        {
+            m_bgmVolumeBeforeMute = SoundManager.Instance.GetBGMVolume();
+            m_bgmSlider.value = 0f;
+        }
+    }
+
+    private void OnFxMuteToggle()
+    {
+        bool isMuted = SoundManager.Instance.GetFXVolume() <= 0f;
+        if (isMuted == true)
+        {
+            float restore = m_fxVolumeBeforeMute > 0f ? m_fxVolumeBeforeMute : 1f;
+            m_fxSlider.value = restore;
+        }
+        else
+        {
+            m_fxVolumeBeforeMute = SoundManager.Instance.GetFXVolume();
+            m_fxSlider.value = 0f;
+        }
+    }
+
+    private void RefreshSoundButtonImage(Image buttonImage, float volume)
+    {
+        if (buttonImage == null) return;
+        string spriteName = volume <= 0f ? "speaker-off" : "speaker";
+        Sprite sprite = UISpriteCache.Get(spriteName);
+        if (sprite != null) buttonImage.sprite = sprite;
     }
 
     // 섹션 헤더·라벨 등 고정 문자열 로컬라이즈
@@ -195,9 +287,8 @@ public class UITabSettings : UITabBase
     {
         if (m_googleAccountButton == null) return;
         bool linked = DataManager.Instance.m_isGoogleLinked;
-        var label = m_googleAccountButton.GetComponentInChildren<TMP_Text>();
-        if (label != null)
-            CommonUtility.SetUILocText(label, linked ? "UITabSettings_GoogleUnlink" : "UITabSettings_GoogleLink");
+        if (m_googleAccountButtonText != null)
+            CommonUtility.SetUILocText(m_googleAccountButtonText, linked ? "UITabSettings_GoogleUnlink" : "UITabSettings_GoogleLink");
     }
 
     private void OnGoogleAccountButtonClicked()
