@@ -61,7 +61,11 @@ public class UIPanelCameraView : UIPanelBase
         {
             buttonGroup.items[0].onSelected = () => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
             buttonGroup.items[1].onSelected = () => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_center);
-            buttonGroup.items[2].onSelected = () => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_enemy_fleet);
+            // 적 함대 버튼은 이미 선택된 상태에서도 순환이 필요하므로 onSelected 대신 onClick 직접 사용
+            // ButtonGroupSystem은 같은 인덱스 재클릭 시 onSelected를 호출하지 않으므로 우회
+            Button enemyFleetBtn = buttonGroup.items[2].button;
+            if (enemyFleetBtn != null)
+                enemyFleetBtn.onClick.AddListener(() => CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_enemy_fleet));
         }
 
         buttonGroup.defaultIndex = (int)CameraController.Instance.FocusTarget;

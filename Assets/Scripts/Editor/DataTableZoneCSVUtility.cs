@@ -48,13 +48,13 @@ public static class DataTableZoneCSVUtility
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("zone,stage,mineral_clear_reward,tech_point_clear_reward,module_point_clear_reward,spawn_delay,ship_spawn_interval,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y,player_fire_delay,enemy_fire_delay");
+        sb.AppendLine("zone,stage,mineral_reward,exp_reward,module_point_reward,spawn_term,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y,player_fire_delay,enemy_fire_delay");
         foreach (ZoneStageConfig s in table.zoneStageList)
         {
             int stage = ParseStage(s.zoneName);
             sb.AppendLine(
-                $"{s.zoneIndex},{stage},{s.mineralClearReward},{s.techPointClearReward},{s.modulePointClearReward}," +
-                $"{s.delayBeforeSpawn},{s.shipSpawnInterval}," +
+                $"{s.zoneIndex},{stage},{s.mineralClearReward},{s.expClearReward},{s.modulePointClearReward}," +
+                $"{s.spawnTerm}," +
                 $"{s.fleetPosition.x},{s.fleetPosition.y},{s.fleetPosition.z}," +
                 $"{s.fleetRotationY},{s.playerFireDelaySec},{s.enemyFireDelaySec}");
         }
@@ -106,20 +106,15 @@ public static class DataTableZoneCSVUtility
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }
 
-    // enemyFleets 스폰 정보 → datatable_zone_enemy_fleet.csv
+    // fleetPositionPresets → datatable_zone_enemy_fleet_position.csv
     public static void ExportEnemyFleet(DataTableZone table)
     {
-        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_enemy_fleet.csv";
+        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_enemy_fleet_position.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("zone_stage,stage,fleet_index,term,distance,rotx,roty,rotz");
-        foreach (ZoneStageConfig s in table.zoneStageList)
+        sb.AppendLine("index,distance,rotx,roty,rotz");
+        foreach (FleetPositionPreset p in table.fleetPositionPresets)
         {
-            if (s.enemyFleets == null || s.enemyFleets.Count == 0) continue;
-            int stage = ParseStage(s.zoneName);
-            foreach (StageEnemyFleetSpawnConfig fleetSpawn in s.enemyFleets)
-            {
-                sb.AppendLine($"{s.zoneIndex},{stage},{fleetSpawn.fleetIndex},{fleetSpawn.term},{fleetSpawn.distance},{fleetSpawn.rotX},{fleetSpawn.rotY},{fleetSpawn.rotZ}");
-            }
+            sb.AppendLine($"{p.index},{p.distance},{p.rotX},{p.rotY},{p.rotZ}");
         }
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }

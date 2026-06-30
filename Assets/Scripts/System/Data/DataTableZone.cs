@@ -48,6 +48,17 @@ public class CelestialBodyConfig
     [Range(0f, 0.4f)] public float poleIceWidth = 0.12f;
 }
 
+// 적 함대 스폰 위치 프리셋 — index로 참조 (datatable_zone_enemy_fleet_position.csv)
+[System.Serializable]
+public class FleetPositionPreset
+{
+    public int   index;
+    public float distance;
+    public float rotX;
+    public float rotY;
+    public float rotZ;
+}
+
 // Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 천체·카메라 설정을 공유
 [System.Serializable]
 public class ZoneConfig
@@ -71,13 +82,12 @@ public class ZoneStageConfig
     public string zoneDescription;
     public int zoneIndex = 1;      // 그룹 키 (X-Y의 X, 스카이박스 공유 단위)
 
-    public float delayBeforeSpawn = 3f;
-    public float shipSpawnInterval = 1.5f;   // 함선 간 스폰 딜레이
+    public float spawnTerm = 20f;   // 두 번째 함대부터의 등장 간격(초). fleetIndex번째 함대 등장 시각 = fleetIndex * spawnTerm
     public List<StageEnemyFleetSpawnConfig> enemyFleets = new List<StageEnemyFleetSpawnConfig>(); // [server]
 
     [Header("클리어 보상")]
     public int mineralClearReward = 0;     // [server] 매 클리어마다
-    public int techPointClearReward = 0;   // [server] 최초 클리어 1회
+    public int expClearReward = 0;         // [server] 매 클리어마다
     public int modulePointClearReward = 0; // [server] 최초 클리어 1회
 
     [Header("전투 시작 딜레이 (초, 0 = 즉시 발사)")]
@@ -98,6 +108,7 @@ public class DataTableZone : ScriptableObject
     // 함선개수(x) 그룹별 행성 세트 — 같은 그룹의 모든 스테이지가 공유
     public List<ZoneConfig> zoneList = new List<ZoneConfig>();
     public List<ZoneStageConfig> zoneStageList = new List<ZoneStageConfig>();   // 인스팩터 에서만 사용
+    public List<FleetPositionPreset> fleetPositionPresets = new List<FleetPositionPreset>(); // 적 함대 스폰 위치 프리셋
     private Dictionary<int, List<ZoneStageConfig>> m_stagesByZone;              // 게임 로직에 사용
 
     private void OnEnable()
@@ -168,6 +179,19 @@ public class DataTableZone : ScriptableObject
         return -1;
     }
 
+    // zoneStageList 순서 기준 1-1부터 stageName까지(포함) expClearReward 누적합 — 커맨더 레벨 require_exp 산출용
+    public int GetCumulativeExpUpToStage(string stageName)
+    {
+        if (string.IsNullOrEmpty(stageName)) return 0;
+        int endIndex = GetZoneStageIndex(stageName);
+        if (endIndex < 0) return 0;
+
+        int sum = 0;
+        for (int i = 0; i <= endIndex; i++)
+            sum += zoneStageList[i].expClearReward;
+        return sum;
+    }
+
     // 이름 목록으로 ZoneConfig 반환 (순서 무관, Zone-0 제외)
     public List<ZoneStageConfig> GetZoneStagesByNames(List<string> zoneNames)
     {
@@ -190,6 +214,17 @@ public class DataTableZone : ScriptableObject
         {
             if (zoneList[i].zoneIndex == zoneIndex)
                 return zoneList[i];
+        }
+        return null;
+    }
+
+    // positionIndex로 함대 스폰 위치 프리셋 조회 — 없으면 null
+    public FleetPositionPreset GetFleetPosition(int positionIndex)
+    {
+        for (int i = 0; i < fleetPositionPresets.Count; i++)
+        {
+            if (fleetPositionPresets[i].index == positionIndex)
+                return fleetPositionPresets[i];
         }
         return null;
     }
@@ -225,7 +260,7 @@ public class DataTableZone : ScriptableObject
             {
                 zoneName               = zoneStage.zoneName,
                 mineralClearReward     = zoneStage.mineralClearReward,
-                techPointClearReward   = zoneStage.techPointClearReward,
+                expClearReward         = zoneStage.expClearReward,
                 modulePointClearReward = zoneStage.modulePointClearReward,
                 enemyFleets            = zoneStage.enemyFleets
             });

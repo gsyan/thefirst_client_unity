@@ -110,8 +110,8 @@ public class CommanderInfo
     public long commanderId;
     public string commanderName;
     public int mineral;
-    public int techLevel;
-    public int techPoint;
+    public int commanderLevel;
+    public int exp;
     public int modulePoint;
     public int modulePointMaxGot;    // 누적 획득량 (리셋 환급 반영)
     public int pvpPoint;
@@ -165,7 +165,7 @@ public class AuthResponse
     public string refreshToken;
     public FleetInfo activeFleetInfo;
     public CommanderInfo commanderInfo;
-    public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록 (tech_level_N 등)
+    public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
     public VipStatusResponse vipStatus;   // 로그인/캐릭터 선택 시 VIP 상태 포함
 }
@@ -452,8 +452,8 @@ public class ClaimZoneRewardResponse
     public string zoneName;
     public bool watchedAd;
     public int mineralRemain;
-    public int techLevel;
-    public int techPointRemain;
+    public int commanderLevel;
+    public int totalExp;
     public int modulePointRemain;
     public int modulePointMaxGot;
     public bool mineralSettingReset;    // 미네랄 부족으로 강화 세팅이 초기화된 경우 true
@@ -471,11 +471,7 @@ public class GetStageEnemiesRequest
 public class StageEnemyFleetSpawnConfig
 {
     public int fleetIndex;
-    public float term;
-    public float distance;
-    public float rotX;
-    public float rotY;
-    public float rotZ;
+    public int positionIndex; // DataTableZone.fleetPositionPresets 참조 — 등장 시각은 zoneStage.spawnTerm * fleetIndex
     public FleetInfo fleetInfo;
 }
 
@@ -502,11 +498,11 @@ public class PendingStageRewardRequest { }
 public class PendingStageRewardResponse
 {
     public int mineralGained;           // 합산 획득량 (*1 고정), 0이면 미수령 없음
-    public int techPointGained;
+    public int expGained;
     public int modulePointGained;
     public int mineralRemain;           // 처리 후 잔액
-    public int techLevel;
-    public int techPointRemain;
+    public int commanderLevel;
+    public int totalExp;
     public int modulePointRemain;
     public int modulePointMaxGot;
     public bool mineralSettingReset;    // 미네랄 부족으로 강화 세팅이 초기화된 경우 true

@@ -24,20 +24,20 @@ public static class EventManager
     public static void Unsubscribe_ModuleBodyDestroyed(Action<ModuleBody> cb) { OnModuleBodyDestroyed -= cb; }
     #endregion
 
-    # region Commander Tech, Mineral ----------------------------------------------------------------------
-    // TechLevel
-    public static event Action<int> OnTechLevelChanged;
-    public static void TriggerTechLevelChange(int techLevel)
+    # region Commander Level, Mineral ----------------------------------------------------------------------
+    // CommanderLevel
+    public static event Action<int> OnCommanderLevelChanged;
+    public static void TriggerCommanderLevelChange(int commanderLevel)
     {
-        OnTechLevelChanged?.Invoke(techLevel);
+        OnCommanderLevelChanged?.Invoke(commanderLevel);
     }
-    public static void Subscribe_TechLevelChanged(Action<int> callback)
+    public static void Subscribe_CommanderLevelChanged(Action<int> callback)
     {
-        OnTechLevelChanged += callback;
+        OnCommanderLevelChanged += callback;
     }
-    public static void Unsubscribe_TechLevelChanged(Action<int> callback)
+    public static void Unsubscribe_CommanderLevelChanged(Action<int> callback)
     {
-        OnTechLevelChanged -= callback;
+        OnCommanderLevelChanged -= callback;
     }
 
     // mineral
@@ -314,19 +314,19 @@ public static class EventManager
         OnZoneEntered -= callback;
     }
 
-    // Zone 적 함대 격멸 (kill 보상용)
-    public static event Action OnEnemyFleetKilled;
-    public static void Trigger_EnemyFleetKilled()
+    // Zone 모든 적 함대 격멸 (kill 보상용)
+    public static event Action OnAllEnemyFleetKilled;
+    public static void Trigger_AllEnemyFleetKilled()
     {
-        OnEnemyFleetKilled?.Invoke();
+        OnAllEnemyFleetKilled?.Invoke();
     }
-    public static void Subscribe_EnemyFleetKilled(Action callback)
+    public static void Subscribe_AllEnemyFleetKilled(Action callback)
     {
-        OnEnemyFleetKilled += callback;
+        OnAllEnemyFleetKilled += callback;
     }
-    public static void Unsubscribe_EnemyFleetKilled(Action callback)
+    public static void Unsubscribe_AllEnemyFleetKilled(Action callback)
     {
-        OnEnemyFleetKilled -= callback;
+        OnAllEnemyFleetKilled -= callback;
     }
 
     // PvP 전투 결과 (isVictory, scoreChange, newScore, newRank)

@@ -82,11 +82,11 @@ public class UIZoneStageButton : MonoBehaviour
             else
                 m_rewardTexts[0].Hide();
         }
-        // [1] 기술포인트 (최초 클리어 — 클리어 상태면 숨김)
+        // [1] 경험치 (매 클리어)
         if (m_rewardTexts.Length > 1)
         {
-            if (config.techPointClearReward > 0 && isCleared == false)
-                m_rewardTexts[1].SetTextWithInt(config.techPointClearReward);
+            if (config.expClearReward > 0)
+                m_rewardTexts[1].SetTextWithInt(config.expClearReward);
             else
                 m_rewardTexts[1].Hide();
         }

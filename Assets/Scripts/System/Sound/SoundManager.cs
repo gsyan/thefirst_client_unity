@@ -150,7 +150,7 @@ public class SoundManager : MonoSingleton<SoundManager>
 
     private static bool IsStageClearFx(EFx fx)
     {
-        return fx == EFx.Tech_Level_Up
+        return fx == EFx.Commander_Level_Up
             || fx == EFx.Stage_Clear_First
             || fx == EFx.Stage_Clear;
     }

@@ -30,10 +30,6 @@ MonoBehaviour:
     m_Localized: Level
     m_Metadata:
       m_Items: []
-  - m_Id: 29007716294721536
-    m_Localized: Max Ship Slots
-    m_Metadata:
-      m_Items: []
   - m_Id: 394150433325056
     m_Localized: Mineral
     m_Metadata:
@@ -154,14 +150,6 @@ MonoBehaviour:
     m_Localized: My PVP Info
     m_Metadata:
       m_Items: []
-  - m_Id: 2973369905315840
-    m_Localized: Tech
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3089099820761088
-    m_Localized: Already Researched
-    m_Metadata:
-      m_Items: []
   - m_Id: 3370864741318656
     m_Localized: 
     m_Metadata:
@@ -278,84 +266,8 @@ MonoBehaviour:
     m_Localized: Commander
     m_Metadata:
       m_Items: []
-  - m_Id: 10728497219502080
-    m_Localized: Research
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10734488233312256
-    m_Localized: Current Tech Lv
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10734488275255296
-    m_Localized: Target Tech Lv
-    m_Metadata:
-      m_Items: []
   - m_Id: 10734488275255297
     m_Localized: Offline Cap (After)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10734488275255298
-    m_Localized: Upgrade to Tech Level {0}?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482391085056
-    m_Localized: Tech Level 1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250880
-    m_Localized: Tech Level 2
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250881
-    m_Localized: Tech Level 3
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250882
-    m_Localized: Tech Level 4
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250883
-    m_Localized: Tech Level 5
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250884
-    m_Localized: Tech Level 6
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250885
-    m_Localized: Tech Level 7
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250886
-    m_Localized: Tech Level 8
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250887
-    m_Localized: Tech Level 9
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250888
-    m_Localized: Tech Level 10
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250889
-    m_Localized: Tech Level 11
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250890
-    m_Localized: Tech Level 12
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250891
-    m_Localized: Tech Level 13
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250892
-    m_Localized: Tech Level 14
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250893
-    m_Localized: Tech Level 15
     m_Metadata:
       m_Items: []
   - m_Id: 10761965592772608
@@ -380,10 +292,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 11674320577101824
     m_Localized: Focus Repair
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12029587550502913
-    m_Localized: "Lv.{0} <voffset=6>\u2192</voffset> {1}"
     m_Metadata:
       m_Items: []
   - m_Id: 12029587550502914
@@ -432,14 +340,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 13892162051506176
     m_Localized: Max Collectable
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13959242268409856
-    m_Localized: '[ On reaching Lv.{0} ]'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13959242310352896
-    m_Localized: Tech Level Info
     m_Metadata:
       m_Items: []
   - m_Id: 13982624544325632
@@ -498,10 +398,6 @@ MonoBehaviour:
     m_Localized: Launch
     m_Metadata:
       m_Items: []
-  - m_Id: 19274147397763072
-    m_Localized: Tech Level Up
-    m_Metadata:
-      m_Items: []
   - m_Id: 26465664587661312
     m_Localized: Error
     m_Metadata:
@@ -554,20 +450,8 @@ MonoBehaviour:
     m_Localized: RESTART
     m_Metadata:
       m_Items: []
-  - m_Id: 29004056152113153
-    m_Localized: TECH
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29004056152113154
-    m_Localized: TECH LEVEL
-    m_Metadata:
-      m_Items: []
   - m_Id: 29033643212931072
     m_Localized: DONE
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29029334198910976
-    m_Localized: ships
     m_Metadata:
       m_Items: []
   - m_Id: 29032478144331777
@@ -954,14 +838,6 @@ MonoBehaviour:
     m_Localized: Claimed rewards from completed zones.
     m_Metadata:
       m_Items: []
-  - m_Id: 46108790423945216
-    m_Localized: New Module Grade
-    m_Metadata:
-      m_Items: []
-  - m_Id: 46114131756843008
-    m_Localized: 'Points to next level : {0}'
-    m_Metadata:
-      m_Items: []
   - m_Id: 46124173239386112
     m_Localized: ADD SHIP
     m_Metadata:
@@ -977,10 +853,6 @@ MonoBehaviour:
   - m_Id: 46124173268746242
     m_Localized: Logging out as a guest will permanently delete your account and
       all data. Continue?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 46124173268746243
-    m_Localized: TECH LEVEL UP
     m_Metadata:
       m_Items: []
   - m_Id: 46125335501996032
@@ -1051,20 +923,52 @@ MonoBehaviour:
     m_Localized: Admiral Feature
     m_Metadata:
       m_Items: []
-  - m_Id: 51131395925213184
-    m_Localized: PVP Locked
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51131395925213185
-    m_Localized: Tech Level {0} or above is required to enter PVP.
-    m_Metadata:
-      m_Items: []
   - m_Id: 51134935167008768
     m_Localized: BGM
     m_Metadata:
       m_Items: []
   - m_Id: 51134935167008769
     m_Localized: FX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51571244754927616
+    m_Localized: COMMANDER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51571244796870656
+    m_Localized: Module Point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51571244805259264
+    m_Localized: TECH LEVEL UP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51571244805259265
+    m_Localized: PVP Locked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51571244805259266
+    m_Localized: Tech Level {0} or above is required to enter PVP.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51578528474202112
+    m_Localized: 'EXP to next level : {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51579544800198656
+    m_Localized: COMMANDER LEVEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51580479907692544
+    m_Localized: Max Ship Slots
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51580479907692545
+    m_Localized: ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51580715690491904
+    m_Localized: Module Grade
     m_Metadata:
       m_Items: []
   references:

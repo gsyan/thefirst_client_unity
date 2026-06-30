@@ -39,11 +39,13 @@ public class UIPanelSpace : UIPanelBase
 
         EventManager.Subscribe_TabSelectionChanged(OnTabSelectionChanged);
 
-        // 760px 고정 UI 너비 → 캔버스 너비 기준으로 카메라 viewport 비율 계산
+        // 760px 고정 UI 너비 + 우측 여백 → 캔버스 너비 기준으로 카메라 viewport 비율 계산
         const float uiPanelWidth = 760f;
+        const float uiPanelRightMargin = 100f;
         RectTransform canvasRect = m_shipTabRect != null ? m_shipTabRect.root as RectTransform : null;
         float canvasWidth = canvasRect != null ? canvasRect.rect.width : 1920f;
-        m_openCameraWidth = (canvasWidth - uiPanelWidth) / canvasWidth;
+        float occupiedWidth = uiPanelWidth + uiPanelRightMargin;
+        m_openCameraWidth = (canvasWidth - occupiedWidth) / canvasWidth;
         SetViewport(open:false);
     }
 
@@ -112,13 +114,13 @@ public class UIPanelSpace : UIPanelBase
             int prevLevel = 0;
             if (commander != null)
             {
-                prevLevel = commander.GetTechLevel();
+                prevLevel = commander.GetCommanderLevel();
                 commander.UpdateMineral(response.data.mineralRemain);
-                commander.UpdateTechPoint(response.data.techPointRemain);
+                commander.UpdateExp(response.data.totalExp);
                 commander.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
                 commander.UpdateModulePoint(response.data.modulePointRemain);
-                newLevel = response.data.techLevel;
-                commander.UpdateTechLevel(newLevel);
+                newLevel = response.data.commanderLevel;
+                commander.UpdateCommanderLevel(newLevel);
             }
 
             // 보상 획득 후 기술 레벨업 순서로 표시
@@ -129,7 +131,7 @@ public class UIPanelSpace : UIPanelBase
                 rewardAmounts = new System.Collections.Generic.List<int>
                 {
                     response.data.mineralGained,
-                    response.data.techPointGained,
+                    response.data.expGained,
                     response.data.modulePointGained,
                     0
                 },
@@ -137,7 +139,7 @@ public class UIPanelSpace : UIPanelBase
             });
 
             if (newLevel > prevLevel)
-                UIManager.Instance.ShowTechLevelupNotify(newLevel);
+                UIManager.Instance.ShowCommanderLevelupNotify(newLevel);
 
             if (response.data.mineralSettingReset == true && response.data.updatedFleetInfo != null)
             {

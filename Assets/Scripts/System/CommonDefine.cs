@@ -97,6 +97,20 @@ public static class EModuleSubTypeExtensions
     public static EModuleType GetModuleTypeEnum(this EModuleSubType subType)
         => (EModuleType)((int)subType / 10000);
 
+    // tier+1 서브타입 반환 (없으면 EModuleSubType.none) — prerequisites 체인 없이 인코딩 산술로 계산
+    public static EModuleSubType GetNextSubType(this EModuleSubType subType)
+    {
+        int nextVal = (int)subType + 100;
+        return System.Enum.IsDefined(typeof(EModuleSubType), nextVal) ? (EModuleSubType)nextVal : EModuleSubType.none;
+    }
+
+    // tier-1 서브타입 반환 (없으면 EModuleSubType.none)
+    public static EModuleSubType GetPrevSubType(this EModuleSubType subType)
+    {
+        int prevVal = (int)subType - 100;
+        return System.Enum.IsDefined(typeof(EModuleSubType), prevVal) ? (EModuleSubType)prevVal : EModuleSubType.none;
+    }
+
     // 로컬라이즈된 서브타입 표시명 생성 (예: "함체.T1.M1")
     // CSV에 개별 키 없이, module_type_{type} 키 + tier/model 조합으로 동적 생성
     public static string GetLocalizedName(this EModuleSubType subType)

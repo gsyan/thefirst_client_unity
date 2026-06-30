@@ -1,0 +1,315 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c85390b9471f95f43bf1836ab0f32646, type: 3}
+  m_Name: DataTableCommanderLevel
+  m_EditorClassIdentifier: Assembly-CSharp::DataTableCommanderLevel
+  commanderLevelDataList:
+  - commanderLevel: 1
+    requireExpBaseStage: 
+    requireExp: 0
+    modulePointReward: 0
+    shipCount: 1
+    subtypeLevel: 1
+  - commanderLevel: 2
+    requireExpBaseStage: 1-4
+    requireExp: 0
+    modulePointReward: 2
+    shipCount: 1
+    subtypeLevel: 1
+  - commanderLevel: 3
+    requireExpBaseStage: 1-9
+    requireExp: 0
+    modulePointReward: 3
+    shipCount: 1
+    subtypeLevel: 1
+  - commanderLevel: 4
+    requireExpBaseStage: 2-4
+    requireExp: 0
+    modulePointReward: 4
+    shipCount: 1
+    subtypeLevel: 2
+  - commanderLevel: 5
+    requireExpBaseStage: 2-10
+    requireExp: 0
+    modulePointReward: 5
+    shipCount: 1
+    subtypeLevel: 2
+  - commanderLevel: 6
+    requireExpBaseStage: 3-7
+    requireExp: 0
+    modulePointReward: 6
+    shipCount: 2
+    subtypeLevel: 3
+  - commanderLevel: 7
+    requireExpBaseStage: 4-4
+    requireExp: 0
+    modulePointReward: 7
+    shipCount: 2
+    subtypeLevel: 3
+  - commanderLevel: 8
+    requireExpBaseStage: 5-2
+    requireExp: 0
+    modulePointReward: 8
+    shipCount: 2
+    subtypeLevel: 4
+  - commanderLevel: 9
+    requireExpBaseStage: 6-1
+    requireExp: 0
+    modulePointReward: 9
+    shipCount: 2
+    subtypeLevel: 4
+  - commanderLevel: 10
+    requireExpBaseStage: 7-1
+    requireExp: 0
+    modulePointReward: 10
+    shipCount: 2
+    subtypeLevel: 5
+  - commanderLevel: 11
+    requireExpBaseStage: 8-1
+    requireExp: 0
+    modulePointReward: 11
+    shipCount: 2
+    subtypeLevel: 5
+  - commanderLevel: 12
+    requireExpBaseStage: 9-2
+    requireExp: 0
+    modulePointReward: 12
+    shipCount: 3
+    subtypeLevel: 6
+  - commanderLevel: 13
+    requireExpBaseStage: 10-3
+    requireExp: 0
+    modulePointReward: 13
+    shipCount: 3
+    subtypeLevel: 6
+  - commanderLevel: 14
+    requireExpBaseStage: 11-5
+    requireExp: 0
+    modulePointReward: 14
+    shipCount: 3
+    subtypeLevel: 6
+  - commanderLevel: 15
+    requireExpBaseStage: 12-8
+    requireExp: 0
+    modulePointReward: 15
+    shipCount: 3
+    subtypeLevel: 6
+  - commanderLevel: 16
+    requireExpBaseStage: 14-2
+    requireExp: 0
+    modulePointReward: 16
+    shipCount: 3
+    subtypeLevel: 7
+  - commanderLevel: 17
+    requireExpBaseStage: 15-6
+    requireExp: 0
+    modulePointReward: 17
+    shipCount: 3
+    subtypeLevel: 7
+  - commanderLevel: 18
+    requireExpBaseStage: 17-1
+    requireExp: 0
+    modulePointReward: 18
+    shipCount: 3
+    subtypeLevel: 7
+  - commanderLevel: 19
+    requireExpBaseStage: 18-7
+    requireExp: 0
+    modulePointReward: 19
+    shipCount: 3
+    subtypeLevel: 7
+  - commanderLevel: 20
+    requireExpBaseStage: 20-3
+    requireExp: 0
+    modulePointReward: 20
+    shipCount: 3
+    subtypeLevel: 8
+  - commanderLevel: 21
+    requireExpBaseStage: 21-10
+    requireExp: 0
+    modulePointReward: 21
+    shipCount: 3
+    subtypeLevel: 8
+  - commanderLevel: 22
+    requireExpBaseStage: 23-8
+    requireExp: 0
+    modulePointReward: 22
+    shipCount: 3
+    subtypeLevel: 8
+  - commanderLevel: 23
+    requireExpBaseStage: 25-6
+    requireExp: 0
+    modulePointReward: 23
+    shipCount: 3
+    subtypeLevel: 8
+  - commanderLevel: 24
+    requireExpBaseStage: 27-5
+    requireExp: 0
+    modulePointReward: 24
+    shipCount: 3
+    subtypeLevel: 9
+  - commanderLevel: 25
+    requireExpBaseStage: 29-5
+    requireExp: 0
+    modulePointReward: 25
+    shipCount: 4
+    subtypeLevel: 9
+  - commanderLevel: 26
+    requireExpBaseStage: 31-5
+    requireExp: 0
+    modulePointReward: 26
+    shipCount: 4
+    subtypeLevel: 9
+  - commanderLevel: 27
+    requireExpBaseStage: 33-6
+    requireExp: 0
+    modulePointReward: 27
+    shipCount: 4
+    subtypeLevel: 9
+  - commanderLevel: 28
+    requireExpBaseStage: 35-8
+    requireExp: 0
+    modulePointReward: 28
+    shipCount: 4
+    subtypeLevel: 10
+  - commanderLevel: 29
+    requireExpBaseStage: 37-10
+    requireExp: 0
+    modulePointReward: 29
+    shipCount: 4
+    subtypeLevel: 10
+  - commanderLevel: 30
+    requireExpBaseStage: 40-4
+    requireExp: 0
+    modulePointReward: 30
+    shipCount: 4
+    subtypeLevel: 10
+  - commanderLevel: 31
+    requireExpBaseStage: 42-7
+    requireExp: 0
+    modulePointReward: 31
+    shipCount: 4
+    subtypeLevel: 10
+  - commanderLevel: 32
+    requireExpBaseStage: 45-2
+    requireExp: 0
+    modulePointReward: 32
+    shipCount: 4
+    subtypeLevel: 11
+  - commanderLevel: 33
+    requireExpBaseStage: 47-7
+    requireExp: 0
+    modulePointReward: 33
+    shipCount: 4
+    subtypeLevel: 11
+  - commanderLevel: 34
+    requireExpBaseStage: 50-3
+    requireExp: 0
+    modulePointReward: 34
+    shipCount: 4
+    subtypeLevel: 11
+  - commanderLevel: 35
+    requireExpBaseStage: 52-10
+    requireExp: 0
+    modulePointReward: 35
+    shipCount: 4
+    subtypeLevel: 11
+  - commanderLevel: 36
+    requireExpBaseStage: 55-7
+    requireExp: 0
+    modulePointReward: 36
+    shipCount: 4
+    subtypeLevel: 12
+  - commanderLevel: 37
+    requireExpBaseStage: 58-5
+    requireExp: 0
+    modulePointReward: 37
+    shipCount: 4
+    subtypeLevel: 12
+  - commanderLevel: 38
+    requireExpBaseStage: 61-3
+    requireExp: 0
+    modulePointReward: 38
+    shipCount: 4
+    subtypeLevel: 12
+  - commanderLevel: 39
+    requireExpBaseStage: 64-3
+    requireExp: 0
+    modulePointReward: 39
+    shipCount: 4
+    subtypeLevel: 12
+  - commanderLevel: 40
+    requireExpBaseStage: 67-3
+    requireExp: 0
+    modulePointReward: 40
+    shipCount: 4
+    subtypeLevel: 13
+  - commanderLevel: 41
+    requireExpBaseStage: 70-3
+    requireExp: 0
+    modulePointReward: 41
+    shipCount: 5
+    subtypeLevel: 13
+  - commanderLevel: 42
+    requireExpBaseStage: 73-5
+    requireExp: 0
+    modulePointReward: 42
+    shipCount: 5
+    subtypeLevel: 13
+  - commanderLevel: 43
+    requireExpBaseStage: 76-7
+    requireExp: 0
+    modulePointReward: 43
+    shipCount: 5
+    subtypeLevel: 13
+  - commanderLevel: 44
+    requireExpBaseStage: 79-9
+    requireExp: 0
+    modulePointReward: 44
+    shipCount: 5
+    subtypeLevel: 14
+  - commanderLevel: 45
+    requireExpBaseStage: 83-3
+    requireExp: 0
+    modulePointReward: 45
+    shipCount: 5
+    subtypeLevel: 14
+  - commanderLevel: 46
+    requireExpBaseStage: 86-7
+    requireExp: 0
+    modulePointReward: 46
+    shipCount: 5
+    subtypeLevel: 14
+  - commanderLevel: 47
+    requireExpBaseStage: 90-2
+    requireExp: 0
+    modulePointReward: 47
+    shipCount: 5
+    subtypeLevel: 14
+  - commanderLevel: 48
+    requireExpBaseStage: 93-7
+    requireExp: 0
+    modulePointReward: 48
+    shipCount: 5
+    subtypeLevel: 14
+  - commanderLevel: 49
+    requireExpBaseStage: 97-3
+    requireExp: 0
+    modulePointReward: 49
+    shipCount: 5
+    subtypeLevel: 14
+  - commanderLevel: 50
+    requireExpBaseStage: 100-10
+    requireExp: 0
+    modulePointReward: 50
+    shipCount: 5
+    subtypeLevel: 14

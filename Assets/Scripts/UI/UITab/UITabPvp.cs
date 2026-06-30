@@ -66,15 +66,15 @@ public class UITabPvp : UITabBase
     {
         if (m_isBattleInProgress == true) return;
 
-        int minTechLevel = DataManager.Instance.m_dataTableConfig.gameSettings.pvpMinTechLevel;
-        int myTechLevel  = DataManager.Instance.m_currentCommander.m_commanderInfo.techLevel;
-        if (myTechLevel < minTechLevel)
+        int minCommanderLevel = DataManager.Instance.m_dataTableConfig.gameSettings.pvpMinCommanderLevel;
+        int myCommanderLevel  = DataManager.Instance.m_currentCommander.m_commanderInfo.commanderLevel;
+        if (myCommanderLevel < minCommanderLevel)
         {
             var loc = LocalizationManager.Instance;
             UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
             {
-                title     = loc.Get("UIPopupMessage_PvpTechLevelRequiredTitle"),
-                message   = loc.Get("UIPopupMessage_PvpTechLevelRequiredMessage", minTechLevel),
+                title     = loc.Get("UIPopupMessage_PvpTechCommanderRequiredTitle"),
+                message   = loc.Get("UIPopupMessage_PvpCommanderLevelRequiredMessage", minCommanderLevel),
                 onConfirm = () => { },
             });
             return;

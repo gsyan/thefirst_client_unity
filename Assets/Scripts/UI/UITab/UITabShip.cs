@@ -825,6 +825,13 @@ public class UITabShip : UITabBase
     {
         int currentLevel = m_selectedModule.GetModuleLevel();
 
+        // Lv.1은 해당 그레이드의 최저 레벨이라 내릴 레벨이 없음 → 그레이드다운과 동일하게 처리
+        if (currentLevel == 1)
+        {
+            ExecuteModuleGradeDownMineral();
+            return;
+        }
+
         bool hasBaseline = DataManager.Instance.CalcModulePointBaseline(
             m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
             out EModuleSubType baselineSubType, out int baselineLevel);
@@ -910,7 +917,7 @@ public class UITabShip : UITabBase
     private void ExecuteModuleGradeUpMineral(EModuleSubType targetSubType)
     {
         long levelUpToMaxCost = CalcMineralLevelUpToMaxCost(m_selectedModule.GetModuleSubType(), m_selectedModule.GetModuleLevel());
-        long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(targetSubType);
+        long gradeUpCost      = DataManager.Instance.m_dataTableUpgradeCost.GetCost(targetSubType);
         long totalCost        = levelUpToMaxCost + gradeUpCost;
 
         var commander = DataManager.Instance.m_currentCommander;
@@ -1166,6 +1173,7 @@ public class UITabShip : UITabBase
                 m_moduleLevelText.SetText("{0}", level);
                 m_moduleLevelName.SetActive(true);
                 m_moduleLevelText.gameObject.SetActive(true);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleLevelText.transform.parent as RectTransform);
 
                 EModuleType moduleType = m_selectedModule.GetModuleType();
                 if (moduleType == EModuleType.body && m_statsRows.Count >= 4)
@@ -1250,23 +1258,24 @@ public class UITabShip : UITabBase
             RefreshMineralGradeUpButton(subType, level, nextSubType, playerMineral);
             RefreshMineralGradeDownButton(subType, level, prevSubType, investedMineral);
             RefreshMineralLevelUpButton(subType, level, isMaxLevel, playerMineral);
-            RefreshMineralLevelDownButton(level, investedMineral);
+            RefreshMineralLevelDownButton(subType, level, prevSubType, investedMineral);
         }
         else
         {
             ApplyButtonColorKey("ModulePoint");
             var  commander   = DataManager.Instance.m_currentCommander;
-            int  playerTech  = commander != null ? commander.GetTechLevel() : 0;
-            long playerPoint = commander != null ? commander.GetModulePoint() : 0;
+            int  commanderLevel = commander != null ? commander.GetCommanderLevel() : 0;
+            int  playerSubtypeLevel  = DataManager.Instance.m_dataTableCommanderLevel.GetSubtypeLevel(commanderLevel);
+            long playerModulePoint = commander != null ? commander.GetModulePoint() : 0;
 
-            RefreshGradeUpButton(subType, level, nextSubType, playerTech, playerPoint);
+            RefreshGradeUpButton(subType, level, nextSubType, playerSubtypeLevel, playerModulePoint);
             RefreshGradeDownButton(subType, level, prevSubType);
-            RefreshLevelUpButton(subType, level, isMaxLevel, playerTech, playerPoint);
+            RefreshLevelUpButton(subType, level, isMaxLevel, playerSubtypeLevel, playerModulePoint);
             RefreshLevelDownButton(subType, level, prevSubType);
         }
     }
 
-    private void RefreshGradeUpButton(EModuleSubType subType, int level, EModuleSubType nextSubType, int playerTech, long playerPoint)
+    private void RefreshGradeUpButton(EModuleSubType subType, int level, EModuleSubType nextSubType, int playerSubtypeLevel, long playerModulePoint)
     {
         if (nextSubType == EModuleSubType.none)
         {
@@ -1277,11 +1286,11 @@ public class UITabShip : UITabBase
         }
 
         long levelUpToMaxCost = CalcLevelUpToMaxCost(subType, level);
-        long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(nextSubType);
+        long gradeUpCost      = DataManager.Instance.m_dataTableUpgradeCost.GetCost(nextSubType);
         long totalCost        = levelUpToMaxCost + gradeUpCost;
         int  reqTier          = nextSubType.GetTechTier();
-        bool hasTech          = playerTech >= reqTier;
-        bool hasPoint         = playerPoint >= totalCost;
+        bool hasTech          = playerSubtypeLevel >= reqTier;
+        bool hasPoint         = playerModulePoint >= totalCost;
         bool canUpgrade       = hasTech == true && hasPoint == true;
 
         m_gradeUpModuleButton.SetInteractable(canUpgrade);
@@ -1331,7 +1340,7 @@ public class UITabShip : UITabBase
         if (prevSubType != EModuleSubType.none)
         {
             // 그레이드 업 비용: 현재 서브타입 리서치 비용
-            long currentResearchCost = DataManager.Instance.m_dataTableResearch.GetResearchCost(currentSubType);
+            long currentResearchCost = DataManager.Instance.m_dataTableUpgradeCost.GetCost(currentSubType);
 
             // 현재 서브타입 Lv.1~currentLevel-1 레벨업 합계 (moduleLevel=n 비용은 Lv.n→n+1 비용)
             long currentLevelUpTotal = 0;
@@ -1360,7 +1369,7 @@ public class UITabShip : UITabBase
         m_gradeDownModuleButtonText2.SetRow("module-point", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
     }
 
-    private void RefreshLevelUpButton(EModuleSubType subType, int level, bool isMaxLevel, int playerTech, long playerPoint)
+    private void RefreshLevelUpButton(EModuleSubType subType, int level, bool isMaxLevel, int playerSubtypeLevel, long playerPoint)
     {
         if (isMaxLevel == true)
         {
@@ -1374,7 +1383,7 @@ public class UITabShip : UITabBase
 
         DataManager.Instance.GetModuleLevelUpCost(subType, level, out long levelUpCost);
         int  reqTier  = subType.GetTechTier();
-        bool hasTech  = playerTech >= reqTier;
+        bool hasTech  = playerSubtypeLevel >= reqTier;
         bool hasPoint = playerPoint >= levelUpCost;
         bool canLevel = hasTech == true && hasPoint == true;
 
@@ -1427,7 +1436,7 @@ public class UITabShip : UITabBase
         else if (prevSubType != EModuleSubType.none)
         {
             // Lv.1 레벨다운 = 서브타입 다운과 동일하지만 환급은 T→currentSubType 업그레이드 비용만
-            long gradeDownRefund = DataManager.Instance.m_dataTableResearch.GetResearchCost(subType);
+            long gradeDownRefund = DataManager.Instance.m_dataTableUpgradeCost.GetCost(subType);
             m_levelDownModuleButtonText2.SetRow("module-point", $"+{CommonUtility.FormatBigNumber(gradeDownRefund)}");
         }
         else
@@ -1492,7 +1501,7 @@ public class UITabShip : UITabBase
         }
     }
 
-    private void RefreshMineralLevelDownButton(int currentLevel, int investedMineral)
+    private void RefreshMineralLevelDownButton(EModuleSubType subType, int currentLevel, EModuleSubType prevSubType, int investedMineral)
     {
         if (m_levelDownModuleButtonText1 != null)
             m_levelDownModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_LevelDown");
@@ -1505,10 +1514,23 @@ public class UITabShip : UITabBase
             return;
         }
 
+        // Lv.1은 해당 그레이드의 최저 레벨이라 내릴 레벨이 없음 → 그레이드다운과 동일하게 처리
+        if (currentLevel == 1)
+        {
+            m_levelDownModuleButton.SetInteractable(true);
+            if (m_levelDownModuleButtonText2 != null)
+            {
+                long refund = CalcMineralGradeDownRefund(subType, currentLevel, prevSubType, investedMineral);
+                m_levelDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
+                m_levelDownModuleButtonText2.SetTextColor(Color.white);
+            }
+            return;
+        }
+
         bool hasBaseline    = DataManager.Instance.CalcModulePointBaseline(
             m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
             out EModuleSubType baselineSubType, out int baselineLevel);
-        bool isSameSubType  = hasBaseline == true && baselineSubType == m_selectedModule.GetModuleSubType();
+        bool isSameSubType  = hasBaseline == true && baselineSubType == subType;
         int  modulePointLevel = isSameSubType == true ? baselineLevel : 0;
         bool canDown          = currentLevel > modulePointLevel;
 
@@ -1517,7 +1539,6 @@ public class UITabShip : UITabBase
         {
             if (canDown == true)
             {
-                EModuleSubType subType = m_selectedModule.GetModuleSubType();
                 ModuleData curData     = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
                 int refundMineral      = curData != null ? curData.mineralCost : 0;
                 m_levelDownModuleButtonText2.SetRow("mineral_basic", refundMineral > 0 ? $"+{CommonUtility.FormatBigNumber(refundMineral)}" : "");
@@ -1539,13 +1560,14 @@ public class UITabShip : UITabBase
         }
 
         long levelUpToMaxCost = CalcMineralLevelUpToMaxCost(subType, level);
-        long gradeUpCost      = DataManager.Instance.m_dataTableResearch.GetResearchCost(nextSubType);
+        long gradeUpCost      = DataManager.Instance.m_dataTableUpgradeCost.GetCost(nextSubType);
         long totalCost        = levelUpToMaxCost + gradeUpCost;
 
-        var  commander    = DataManager.Instance.m_currentCommander;
-        int  playerTech   = commander != null ? commander.GetTechLevel() : 0;
+        var  commander       = DataManager.Instance.m_currentCommander;
+        int  commanderLevel  = commander != null ? commander.GetCommanderLevel() : 0;
+        int  playerSubtypeLevel      = DataManager.Instance.m_dataTableCommanderLevel.GetSubtypeLevel(commanderLevel);
         int  reqTier      = nextSubType.GetTechTier();
-        bool hasTech      = playerTech >= reqTier;
+        bool hasTech      = playerSubtypeLevel >= reqTier;
         bool canUpgrade   = hasTech == true && playerMineral >= totalCost;
 
         m_gradeUpModuleButton.SetInteractable(canUpgrade);
@@ -1587,45 +1609,61 @@ public class UITabShip : UITabBase
 
         if (m_gradeDownModuleButtonText2 == null) return;
 
+        long refund = CalcMineralGradeDownRefund(currentSubType, currentLevel, prevSubType, investedMineral);
+
+        m_gradeDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
+        m_gradeDownModuleButtonText2.SetTextColor(Color.white);
+    }
+
+    // 그레이드다운(미네랄) 환급액 계산 — 그레이드다운 버튼, Lv1에서의 레벨다운 버튼이 공용으로 사용
+    private long CalcMineralGradeDownRefund(EModuleSubType currentSubType, int currentLevel, EModuleSubType prevSubType, int investedMineral)
+    {
         bool hasBaseline     = DataManager.Instance.CalcModulePointBaseline(
             m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
-            out EModuleSubType baselineSubType, out _);
+            out EModuleSubType baselineSubType, out int baselineLevel);
         int  currentVal      = (int)currentSubType;
         int  baselineVal     = hasBaseline == true ? (int)baselineSubType : 0;
         bool isAtBaseline    = currentVal <= baselineVal;
 
-        long refund;
         if (prevSubType == EModuleSubType.none || isAtBaseline == true)
         {
             // 리셋 경로: 투자된 전체 미네랄 환급
-            refund = investedMineral;
+            return investedMineral;
         }
-        else
+
+        // 다운그레이드 경로: 현재 등급업 비용 + 현재 레벨업 비용 + 이전 등급 전체 레벨업 비용
+        long gradeUpCost = DataManager.Instance.m_dataTableUpgradeCost.GetCost(currentSubType);
+
+        long currentLevelUpTotal = 0;
+        for (int lv = 1; lv < currentLevel; lv++)
         {
-            // 다운그레이드 경로: 현재 등급업 비용 + 현재 레벨업 비용 + 이전 등급 전체 레벨업 비용
-            long gradeUpCost = DataManager.Instance.m_dataTableResearch.GetResearchCost(currentSubType);
+            var nextData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(currentSubType, lv + 1);
+            if (nextData != null) currentLevelUpTotal += nextData.mineralCost;
+        }
 
-            long currentLevelUpTotal = 0;
-            for (int lv = 1; lv < currentLevel; lv++)
-            {
-                var nextData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(currentSubType, lv + 1);
-                if (nextData != null) currentLevelUpTotal += nextData.mineralCost;
-            }
+        int  prevMaxLevel     = DataManager.Instance.GetMaxModuleLevel(prevSubType);
+        long prevLevelUpTotal = 0;
+        for (int lv = 1; lv < prevMaxLevel; lv++)
+        {
+            var nextData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(prevSubType, lv + 1);
+            if (nextData != null) prevLevelUpTotal += nextData.mineralCost;
+        }
 
-            int  prevMaxLevel     = DataManager.Instance.GetMaxModuleLevel(prevSubType);
-            long prevLevelUpTotal = 0;
-            for (int lv = 1; lv < prevMaxLevel; lv++)
+        // prevSubType이 baseline(모듈포인트로 도달한 등급)과 같다면, baseline 레벨까지는 미네랄 투입분이 아니므로 환급 대상에서 제외
+        if (hasBaseline == true && baselineSubType == prevSubType)
+        {
+            long baselineLevelUpTotal = 0;
+            for (int lv = 1; lv < baselineLevel; lv++)
             {
                 var nextData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(prevSubType, lv + 1);
-                if (nextData != null) prevLevelUpTotal += nextData.mineralCost;
+                if (nextData != null) baselineLevelUpTotal += nextData.mineralCost;
             }
-
-            refund = gradeUpCost + currentLevelUpTotal + prevLevelUpTotal;
-            if (refund < 0) refund = 0;
+            prevLevelUpTotal -= baselineLevelUpTotal;
         }
 
-        m_gradeDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
-        m_gradeDownModuleButtonText2.SetTextColor(Color.white);
+        long refund = gradeUpCost + currentLevelUpTotal + prevLevelUpTotal;
+        if (refund < 0) refund = 0;
+        return refund;
     }
 
     private void SetDisabledReason(RowImageText row, bool hasTech, int reqTier, long cost)

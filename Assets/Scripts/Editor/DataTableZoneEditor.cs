@@ -101,28 +101,46 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("Utility Tools", EditorStyles.boldLabel);
 
-        DrawImportExportRow("Zone Camera",  ImportCamera,       () => { DataTableZoneCSVUtility.ExportZone(m_dataTableZone);        AssetDatabase.Refresh(); });
-        DrawImportExportRow("Celestial",    ImportCelestial,    () => { DataTableZoneCSVUtility.ExportCelestial(m_dataTableZone);   AssetDatabase.Refresh(); });
-        DrawImportExportRow("Stage",        ImportStage,        () => { DataTableZoneCSVUtility.ExportZoneStage(m_dataTableZone);   AssetDatabase.Refresh(); });
-        DrawImportExportRow("Enemy Fleet",  ImportEnemyFleet,   () => { DataTableZoneCSVUtility.ExportEnemyFleet(m_dataTableZone);  AssetDatabase.Refresh(); });
-        DrawImportExportRow("Enemy Ships",  ImportEnemy,        () => { DataTableZoneCSVUtility.ExportEnemy(m_dataTableZone);       AssetDatabase.Refresh(); });
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Import All", GUILayout.Height(28))) ImportAll();
+        if (GUILayout.Button("Export All", GUILayout.Height(28))) ExportAll();
+        EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space(10);
+        DrawEnemyGeneratorTool();
     }
 
-    private void DrawImportExportRow(string label, System.Action onImport, System.Action onExport)
+    // CSV 간 의존 순서(Stage가 먼저 있어야 Enemy Fleet/Enemy가 붙을 zoneStageList가 존재)를 내부적으로 처리
+    private void ImportAll()
     {
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button($"Import {label}")) onImport();
-        if (GUILayout.Button($"Export {label}")) onExport();
-        EditorGUILayout.EndHorizontal();
+        ImportCamera();
+        ImportCelestial();
+        ImportStage();
+        ImportEnemyFleet();
+        ImportEnemy();
+        LoadEnemyConfigCsv();
+        EditorUtility.DisplayDialog("완료", "전체 Import 완료", "OK");
+    }
+
+    private void ExportAll()
+    {
+        DataTableZoneCSVUtility.ExportZone(m_dataTableZone);
+        DataTableZoneCSVUtility.ExportCelestial(m_dataTableZone);
+        DataTableZoneCSVUtility.ExportZoneStage(m_dataTableZone);
+        DataTableZoneCSVUtility.ExportEnemyFleet(m_dataTableZone);
+        DataTableZoneCSVUtility.ExportEnemy(m_dataTableZone);
+        if (m_genZoneConfigs != null) SaveEnemyConfigCsv(showDialog: false);
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("완료", "전체 Export 완료", "OK");
     }
 
     private static readonly string k_cameraCSV      = "Assets/Resources/DataTable/Zone/datatable_zone_camera.csv";
     private static readonly string k_celestialCSV   = "Assets/Resources/DataTable/Zone/datatable_zone_celestial.csv";
     private static readonly string k_stageCSV       = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
     private static readonly string k_enemyCSV       = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
-    private static readonly string k_enemyFleetCSV  = "Assets/Resources/DataTable/Zone/datatable_zone_enemy_fleet.csv";
+    private static readonly string k_enemyFleetCSV  = "Assets/Resources/DataTable/Zone/datatable_zone_enemy_fleet_position.csv";
 
     private void ImportCamera()
     {
@@ -159,7 +177,7 @@ public class DataTableZoneEditor : Editor
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("완료", $"Zone Camera import 완료 ({m_dataTableZone.zoneList.Count}개)", "OK");
+        Debug.Log($"[DataTableZone] Zone Camera import 완료 ({m_dataTableZone.zoneList.Count}개)");
     }
 
     private void ImportCelestial()
@@ -202,7 +220,7 @@ public class DataTableZoneEditor : Editor
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("완료", "Celestial import 완료", "OK");
+        Debug.Log("[DataTableZone] Celestial import 완료");
     }
 
     private void ImportStage()
@@ -228,16 +246,15 @@ public class DataTableZoneEditor : Editor
             if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stage)) continue;
 
             int.TryParse(col[2], out int clearReward);
-            int.TryParse(col.Length > 3 ? col[3] : "0", out int techPt);
+            int.TryParse(col.Length > 3 ? col[3] : "0", out int expPt);
             int.TryParse(col.Length > 4 ? col[4] : "0", out int modPt);
-            float.TryParse(col.Length > 5 ? col[5] : "0", out float spawnDelay);
-            float.TryParse(col.Length > 6 ? col[6] : "0", out float spawnInterval);
-            float.TryParse(col.Length > 7 ? col[7] : "0", out float fpx);
-            float.TryParse(col.Length > 8 ? col[8] : "0", out float fpy);
-            float.TryParse(col.Length > 9 ? col[9] : "0", out float fpz);
-            float.TryParse(col.Length > 10 ? col[10] : "0", out float frotY);
-            float.TryParse(col.Length > 11 ? col[11] : "0", out float playerFireDelay);
-            float.TryParse(col.Length > 12 ? col[12] : "0", out float enemyFireDelay);
+            float.TryParse(col.Length > 5 ? col[5] : "0", out float spawnTerm);
+            float.TryParse(col.Length > 6 ? col[6] : "0", out float fpx);
+            float.TryParse(col.Length > 7 ? col[7] : "0", out float fpy);
+            float.TryParse(col.Length > 8 ? col[8] : "0", out float fpz);
+            float.TryParse(col.Length > 9 ? col[9] : "0", out float frotY);
+            float.TryParse(col.Length > 10 ? col[10] : "0", out float playerFireDelay);
+            float.TryParse(col.Length > 11 ? col[11] : "0", out float enemyFireDelay);
 
             string zoneName = $"{zoneIndex}-{stage}";
             enemyBackup.TryGetValue(zoneName, out List<StageEnemyFleetSpawnConfig> fleets);
@@ -246,10 +263,9 @@ public class DataTableZoneEditor : Editor
                 zoneName               = zoneName,
                 zoneDescription        = $"Zone {zoneName}",
                 zoneIndex              = zoneIndex,
-                delayBeforeSpawn       = spawnDelay > 0 ? spawnDelay : 3f,
-                shipSpawnInterval      = spawnInterval > 0 ? spawnInterval : 1.5f,
+                spawnTerm              = spawnTerm > 0 ? spawnTerm : 20f,
                 mineralClearReward     = clearReward,
-                techPointClearReward   = techPt,
+                expClearReward         = expPt,
                 modulePointClearReward = modPt,
                 fleetPosition          = new Vector3(fpx, fpy, fpz),
                 fleetRotationY         = frotY,
@@ -262,69 +278,34 @@ public class DataTableZoneEditor : Editor
         m_dataTableZone.BuildRuntimeCache();
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("완료", $"Stage import 완료 ({count}개)", "OK");
+        Debug.Log($"[DataTableZone] Stage import 완료 ({count}개)");
     }
 
     private void ImportEnemyFleet()
     {
         if (!File.Exists(k_enemyFleetCSV)) { EditorUtility.DisplayDialog("Error", $"파일 없음:\n{k_enemyFleetCSV}", "OK"); return; }
 
-        // 기존 fleetInfo(ships) 보존
-        var shipsBackup = new Dictionary<string, Dictionary<int, FleetInfo>>();
-        for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
-        {
-            ZoneStageConfig zs = m_dataTableZone.zoneStageList[j];
-            if (zs.enemyFleets == null) continue;
-            shipsBackup[zs.zoneName] = new Dictionary<int, FleetInfo>();
-            for (int fi = 0; fi < zs.enemyFleets.Count; fi++)
-            {
-                StageEnemyFleetSpawnConfig fc = zs.enemyFleets[fi];
-                if (fc.fleetInfo != null) shipsBackup[zs.zoneName][fc.fleetIndex] = fc.fleetInfo;
-            }
-        }
-
-        // zoneName → fleet 목록 재구성
-        var fleetMap = new Dictionary<string, Dictionary<int, StageEnemyFleetSpawnConfig>>();
+        var presets = new List<FleetPositionPreset>();
         string[] lines = File.ReadAllLines(k_enemyFleetCSV);
         for (int i = 1; i < lines.Length; i++)
         {
             string line = lines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
-            if (!int.TryParse(col[0], out int zoneIndex) || !int.TryParse(col[1], out int stageNum)) continue;
+            if (!int.TryParse(col[0], out int index)) continue;
 
-            string zoneName = $"{zoneIndex}-{stageNum}";
-            if (!fleetMap.ContainsKey(zoneName)) fleetMap[zoneName] = new Dictionary<int, StageEnemyFleetSpawnConfig>();
+            float.TryParse(col[1], out float distance);
+            float.TryParse(col[2], out float rotX);
+            float.TryParse(col[3], out float rotY);
+            float.TryParse(col[4], out float rotZ);
 
-            int.TryParse(col[2], out int fleetIdx);
-            float.TryParse(col[3], out float term);
-            float.TryParse(col[4], out float distance);
-            float.TryParse(col[5], out float rotX);
-            float.TryParse(col[6], out float rotY);
-            float.TryParse(col[7], out float rotZ);
-
-            shipsBackup.TryGetValue(zoneName, out var shipDict);
-            FleetInfo savedFleet = null;
-            if (shipDict != null) shipDict.TryGetValue(fleetIdx, out savedFleet);
-
-            fleetMap[zoneName][fleetIdx] = new StageEnemyFleetSpawnConfig
-            {
-                fleetIndex = fleetIdx, term = term, distance = distance,
-                rotX = rotX, rotY = rotY, rotZ = rotZ,
-                fleetInfo = savedFleet != null ? savedFleet : new FleetInfo { fleetName = $"{zoneName}_fleet{fleetIdx}", ships = new List<ShipInfo>() }
-            };
+            presets.Add(new FleetPositionPreset { index = index, distance = distance, rotX = rotX, rotY = rotY, rotZ = rotZ });
         }
 
-        for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
-        {
-            ZoneStageConfig zs = m_dataTableZone.zoneStageList[j];
-            if (!fleetMap.TryGetValue(zs.zoneName, out Dictionary<int, StageEnemyFleetSpawnConfig> fleetDict)) continue;
-            zs.enemyFleets = new List<StageEnemyFleetSpawnConfig>(fleetDict.Values);
-            zs.enemyFleets.Sort((a, b) => a.fleetIndex.CompareTo(b.fleetIndex));
-        }
+        m_dataTableZone.fleetPositionPresets = presets;
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("완료", "Enemy Fleet import 완료", "OK");
+        Debug.Log("[DataTableZone] Enemy Fleet Position import 완료");
     }
 
     private void ImportEnemy()
@@ -385,10 +366,318 @@ public class DataTableZoneEditor : Editor
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("완료", "Enemy Ships import 완료", "OK");
+        Debug.Log("[DataTableZone] Enemy Ships import 완료");
     }
 
+    #region 적 함대 절차적 생성 (zoneStageList 직접 수정, CSV 거치지 않음)
 
+    // T1~T14 함체 프리팹의 빔/미사일/격납고 슬롯 개수 상한 (datatable_module.csv 기준, moduleLevel=1 슬롯 구성)
+    private static readonly Dictionary<int, (int beam, int missile, int hanger)> k_slotCap = new()
+    {
+        { 1,  (1, 1, 1) }, { 2,  (2, 1, 1) }, { 3,  (2, 1, 1) }, { 4,  (2, 2, 1) },
+        { 5,  (2, 2, 2) }, { 6,  (2, 2, 2) }, { 7,  (3, 2, 2) }, { 8,  (3, 3, 2) },
+        { 9,  (3, 3, 3) }, { 10, (4, 3, 3) }, { 11, (4, 4, 3) }, { 12, (4, 4, 4) },
+        { 13, (5, 4, 4) }, { 14, (5, 5, 4) },
+    };
+
+    private const string k_enemyConfigCSV = "Assets/Resources/DataTable/Zone/datatable_zone_enemy_config.csv";
+
+    private class ZoneEnemyConfigRow
+    {
+        public int zone;
+        public int fleets;
+        public int budget;
+        public int maxTier;
+        public int deviation;
+    }
+
+    private int m_genZoneStart = 1;
+    private int m_genZoneEnd   = 100;
+    private int m_genMaxTier   = 14;
+    private int m_genMaxShips  = 5;
+    private int m_genRandomSeed = 12345; // 공용 시드 — 같으면 항상 같은 결과(재현 가능), 바뀌면 다른 패턴
+    private List<ZoneEnemyConfigRow> m_genZoneConfigs;                      // zone 순서 보존
+    private Dictionary<int, ZoneEnemyConfigRow> m_genZoneConfigMap = new(); // zone → row 빠른 조회
+    private Vector2 m_genGridScroll;
+    private bool[] m_genMissileStages = new bool[10] { false, true, false, true, false, true, false, true, false, true }; // stage1~10 중 미사일 장착할 스테이지
+    private bool[] m_genHangerStages  = new bool[10] { false, false, false, false, false, false, false, false, false, true }; // stage1~10 중 격납고 장착할 스테이지 — 켜지면 전체 함선에 슬롯 풀로 장착
+    private bool m_genFoldout = false;
+
+    private void DrawEnemyGeneratorTool()
+    {
+        EditorGUILayout.BeginVertical("box");
+        m_genFoldout = EditorGUILayout.Foldout(m_genFoldout, "적 함대 절차적 생성", true, EditorStyles.foldoutHeader);
+        if (m_genFoldout)
+        {
+            EditorGUILayout.HelpBox("zoneStart 이전 데이터(사람이 손으로 짠 기준 데이터)는 건드리지 않습니다.\n대상 존의 zoneStageList가 이미 존재해야 합니다(Import Stage 선행 필요).", MessageType.Info);
+
+            EditorGUI.indentLevel++;
+            m_genZoneStart = EditorGUILayout.IntField("Zone Start", m_genZoneStart);
+            m_genZoneEnd   = EditorGUILayout.IntField("Zone End",   m_genZoneEnd);
+            EditorGUILayout.Space(4);
+            m_genMaxTier   = EditorGUILayout.IntField("Max Tier",                m_genMaxTier);
+            m_genMaxShips  = EditorGUILayout.IntField("Max Ships Per Fleet",     m_genMaxShips);
+            EditorGUILayout.Space(4);
+            m_genRandomSeed = EditorGUILayout.IntField("Random Seed (공용)", m_genRandomSeed);
+            EditorGUILayout.Space(4);
+            EditorGUILayout.LabelField("존별 함체 그레이드 예산 / 상한", EditorStyles.miniBoldLabel);
+            EditorGUILayout.HelpBox($"CSV: {k_enemyConfigCSV}\nBudget을 MaxTier만큼씩 깎아 함선을 만들고, 남은 잔여로 마지막 함선을 만듭니다.\n예) Budget16, MaxTier14 → [14, 2] (2척)\nDeviation>0이면 [MaxTier-Deviation, MaxTier] 범위에서 시드 기반으로 선택(같은 시드면 항상 같은 결과).", MessageType.None);
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Load Config CSV")) LoadEnemyConfigCsv();
+            if (GUILayout.Button("Save Config CSV")) SaveEnemyConfigCsv();
+            EditorGUILayout.EndHorizontal();
+
+            if (m_genZoneConfigs == null) LoadEnemyConfigCsv();
+
+            if (m_genZoneConfigs != null)
+            {
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("", GUILayout.Width(EditorGUIUtility.labelWidth));
+                GUILayout.Label("Fleets", GUILayout.Width(50));
+                GUILayout.Label("Budget", GUILayout.Width(55));
+                GUILayout.Label("MaxTier", GUILayout.Width(55));
+                GUILayout.Label("Deviation", GUILayout.Width(60));
+                EditorGUILayout.EndHorizontal();
+
+                m_genGridScroll = EditorGUILayout.BeginScrollView(m_genGridScroll, GUILayout.Height(300));
+                for (int i = 0; i < m_genZoneConfigs.Count; i++)
+                {
+                    ZoneEnemyConfigRow row = m_genZoneConfigs[i];
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField($"Zone {row.zone}", GUILayout.Width(EditorGUIUtility.labelWidth));
+                    row.fleets    = EditorGUILayout.IntField(row.fleets,    GUILayout.Width(50));
+                    row.budget    = EditorGUILayout.IntField(row.budget,    GUILayout.Width(55));
+                    row.maxTier   = EditorGUILayout.IntField(row.maxTier,   GUILayout.Width(55));
+                    row.deviation = EditorGUILayout.IntField(row.deviation, GUILayout.Width(60));
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUILayout.EndScrollView();
+            }
+            EditorGUILayout.Space(4);
+            DrawStageToggleRow("Missile Stages", m_genMissileStages);
+            DrawStageToggleRow("Hanger Stages (전체 함선)", m_genHangerStages);
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space(4);
+            if (GUILayout.Button("Generate", GUILayout.Height(30)))
+            {
+                if (EditorUtility.DisplayDialog("적 함대 절차적 생성",
+                    $"zone{m_genZoneStart}~{m_genZoneEnd} 구간의 적 함대 데이터를 재생성합니다.\n계속하시겠습니까?", "Generate", "Cancel"))
+                {
+                    GenerateEnemyData();
+                }
+            }
+        }
+        EditorGUILayout.EndVertical();
+    }
+
+    // stage 1~10 토글을 한 줄에 컴팩트하게 표시
+    private void DrawStageToggleRow(string label, bool[] stages)
+    {
+        EditorGUILayout.LabelField(label, EditorStyles.miniBoldLabel);
+        EditorGUILayout.BeginHorizontal();
+        for (int i = 0; i < 10; i++)
+            stages[i] = GUILayout.Toggle(stages[i], $"{i + 1}", "Button", GUILayout.Width(24), GUILayout.Height(20));
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private void LoadEnemyConfigCsv()
+    {
+        m_genZoneConfigs = new List<ZoneEnemyConfigRow>();
+        m_genZoneConfigMap = new Dictionary<int, ZoneEnemyConfigRow>();
+
+        if (File.Exists(k_enemyConfigCSV) == false)
+        {
+            Debug.LogWarning($"[EnemyGen] {k_enemyConfigCSV} 없음");
+            return;
+        }
+
+        string[] lines = File.ReadAllLines(k_enemyConfigCSV);
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+            string[] col = line.Split(',');
+            if (col.Length < 5) continue;
+            if (int.TryParse(col[0], out int zone) == false) continue;
+
+            var row = new ZoneEnemyConfigRow
+            {
+                zone      = zone,
+                fleets    = int.TryParse(col[1], out int f) ? f : 1,
+                budget    = int.TryParse(col[2], out int b) ? b : 1,
+                maxTier   = int.TryParse(col[3], out int m) ? m : 1,
+                deviation = int.TryParse(col[4], out int d) ? d : 0,
+            };
+            m_genZoneConfigs.Add(row);
+            m_genZoneConfigMap[zone] = row;
+        }
+    }
+
+    private void SaveEnemyConfigCsv(bool showDialog = true)
+    {
+        if (m_genZoneConfigs == null) return;
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("zone,fleets,budget,max_tier,deviation");
+        foreach (ZoneEnemyConfigRow row in m_genZoneConfigs)
+            sb.AppendLine($"{row.zone},{row.fleets},{row.budget},{row.maxTier},{row.deviation}");
+
+        File.WriteAllText(k_enemyConfigCSV, sb.ToString(), System.Text.Encoding.UTF8);
+        AssetDatabase.Refresh();
+        if (showDialog) EditorUtility.DisplayDialog("완료", "Enemy Config CSV 저장 완료", "OK");
+    }
+
+    private ZoneEnemyConfigRow GetZoneConfig(int zone)
+    {
+        if (m_genZoneConfigMap.TryGetValue(zone, out ZoneEnemyConfigRow row))
+            return row;
+        return new ZoneEnemyConfigRow { zone = zone, fleets = 1, budget = 1, maxTier = 1, deviation = 0 };
+    }
+
+    private int GetBlockFleets(int zone) => Mathf.Max(1, GetZoneConfig(zone).fleets);
+
+    private int GetGradeBudget(int zone) => Mathf.Max(1, GetZoneConfig(zone).budget);
+
+    // 시드 기반 [MaxTier-Deviation, MaxTier] 범위 선택 — 같은 시드+zone+stage면 항상 같은 결과(재현 가능한 의사랜덤)
+    private int GetBlockMaxTier(int zone, int stage)
+    {
+        ZoneEnemyConfigRow cfg = GetZoneConfig(zone);
+        int baseTier = cfg.maxTier;
+        int deviation = Mathf.Max(0, cfg.deviation);
+
+        int tier = baseTier;
+        if (deviation > 0)
+        {
+            var rng = new System.Random(m_genRandomSeed ^ (zone * 73856093) ^ (stage * 19349663));
+            int delta = rng.Next(0, deviation + 1); // 0~deviation 포함
+            tier = baseTier - delta;
+        }
+
+        return Mathf.Clamp(tier, 1, m_genMaxTier);
+    }
+
+    // budget을 1~blockMaxTier 사이에서 매번 랜덤하게(시드 기반, 재현 가능) 떼어내 함선을 만듦
+    // 예) budget=4, blockMaxTier=2 → [2,2] 또는 [2,1,1] 또는 [1,2,1] 등 시드에 따라 다른 조합
+    private List<int> GenGradePartition(int budget, int blockMaxTier, int zone, int stage, int fleetIndex)
+    {
+        var grades = new List<int>();
+        int remaining = budget;
+        var rng = new System.Random(m_genRandomSeed ^ (zone * 73856093) ^ (stage * 19349663) ^ (fleetIndex * 83492791));
+
+        while (remaining > 0 && grades.Count < m_genMaxShips - 1)
+        {
+            int maxPiece = Mathf.Min(remaining, blockMaxTier);
+            int grade = rng.Next(1, maxPiece + 1); // 1~maxPiece 포함
+            grades.Add(grade);
+            remaining -= grade;
+        }
+        if (remaining > 0)
+            grades.Add(Mathf.Min(remaining, blockMaxTier)); // 마지막 잔여(척수 상한 도달 시 blockMaxTier로 클램프)
+
+        if (grades.Count == 0) grades.Add(1);
+        grades.Sort((a, b) => b.CompareTo(a)); // 내림차순 — ship_index 0(기함)이 항상 최고 티어
+        return grades;
+    }
+
+    // 전체 데이터셋 통틀어 zone1 stage1~5에서만 0.4→0.8로 램프업 (호출 범위와 무관하게 고정 zone1 기준), 그 외는 항상 1.0
+    private float GenBodyRatio(int zone, int stage)
+    {
+        if (zone == 1 && stage <= 5)
+            return Mathf.Round((0.3f + stage * 0.1f) * 100f) / 100f;
+        return 1f;
+    }
+
+    private void GenerateEnemyData()
+    {
+        var stageMap = new Dictionary<string, ZoneStageConfig>();
+        for (int i = 0; i < m_dataTableZone.zoneStageList.Count; i++)
+        {
+            ZoneStageConfig zs = m_dataTableZone.zoneStageList[i];
+            stageMap[zs.zoneName] = zs;
+        }
+
+        int touched = 0;
+        for (int zone = m_genZoneStart; zone <= m_genZoneEnd; zone++)
+        {
+            int fleets = GetBlockFleets(zone);
+            int budget = GetGradeBudget(zone);
+
+            for (int stage = 1; stage <= 10; stage++)
+            {
+                int blockMaxTier = GetBlockMaxTier(zone, stage);
+                string zoneName = $"{zone}-{stage}";
+                if (!stageMap.TryGetValue(zoneName, out ZoneStageConfig zs)) continue; // Import Stage 선행 필요
+
+                var enemyFleets = new List<StageEnemyFleetSpawnConfig>();
+                for (int fidx = 0; fidx < fleets; fidx++)
+                {
+                    var ships2 = new List<ShipInfo>();
+                    List<int> grades = GenGradePartition(budget, blockMaxTier, zone, stage, fidx); // budget을 1~blockMaxTier 랜덤 분할(시드 기반)로 함선 그레이드 결정
+
+                    for (int sidx = 0; sidx < grades.Count; sidx++)
+                    {
+                        int shipTier = grades[sidx];
+                        int bodyLevel = stage; // 티어 내 레벨은 스테이지 그대로 사용(1~10), 정체 허용
+                        if (k_slotCap.TryGetValue(shipTier, out var cap) == false)
+                            cap = k_slotCap[14]; // 프리팹에 존재하지 않는 티어 — T14 슬롯으로 대체
+
+                        var beams = new List<ModuleInfo>();
+                        for (int b = 0; b < cap.beam; b++) // 주력무기: 슬롯을 항상 풀로 채움
+                            beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = ParseSubType($"beam_t{shipTier}_m1"), moduleLevel = bodyLevel, bodyIndex = 0, slotIndex = b });
+
+                        var missiles = new List<ModuleInfo>();
+                        bool hasMissile = m_genMissileStages[stage - 1];
+                        if (hasMissile)
+                            for (int m = 0; m < cap.missile; m++)
+                                missiles.Add(new ModuleInfo { moduleType = EModuleType.missile, moduleSubType = ParseSubType($"missile_t{shipTier}_m1"), moduleLevel = 1, bodyIndex = 0, slotIndex = m });
+
+                        var hangers = new List<ModuleInfo>();
+                        bool hasHanger = m_genHangerStages[stage - 1];
+                        if (hasHanger)
+                            for (int h = 0; h < cap.hanger; h++) // 켜진 스테이지의 모든 함선에 슬롯 풀로 장착
+                                hangers.Add(new ModuleInfo { moduleType = EModuleType.hanger, moduleSubType = ParseSubType($"hanger_t{shipTier}_m1"), moduleLevel = 1, bodyIndex = 0, slotIndex = h });
+
+                        var body = new ModuleBodyInfo
+                        {
+                            moduleType = EModuleType.body, moduleSubType = ParseSubType($"body_t{shipTier}_m1"), moduleLevel = bodyLevel, bodyIndex = 0,
+                            beams = beams, missiles = missiles, hangers = hangers,
+                        };
+
+                        float ratio = GenBodyRatio(zone, stage);
+                        ships2.Add(new ShipInfo
+                        {
+                            shipName = $"EnemyShip_{sidx}", positionIndex = sidx,
+                            bodyMultiplier = ratio, beamMultiplier = 1f, missileMultiplier = 1f, hangerMultiplier = 1f,
+                            bodies = new List<ModuleBodyInfo> { body },
+                        });
+                    }
+
+                    enemyFleets.Add(new StageEnemyFleetSpawnConfig
+                    {
+                        fleetIndex = fidx, positionIndex = fidx, // 0번 함대 = 0번 위치 프리셋
+                        fleetInfo = new FleetInfo { fleetName = $"{zoneName}_fleet{fidx}", ships = ships2 },
+                    });
+                }
+
+                zs.enemyFleets = enemyFleets;
+                touched++;
+            }
+        }
+
+        EditorUtility.SetDirty(m_dataTableZone);
+        m_dataTableZone.BuildRuntimeCache();
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("완료", $"적 함대 생성 완료! ({touched}개 스테이지)", "OK");
+    }
+
+    private EModuleSubType ParseSubType(string name)
+    {
+        return System.Enum.TryParse(name, out EModuleSubType result) ? result : EModuleSubType.none;
+    }
+
+    #endregion
 
     private void DrawZoneList()
     {
@@ -585,8 +874,7 @@ public class DataTableZoneEditor : Editor
                     zoneName          = stageName,
                     zoneDescription   = $"Zone {stageName}",
                     zoneIndex         = zoneIndex,
-                    delayBeforeSpawn  = 3f,
-                    shipSpawnInterval = 1.5f,
+                    spawnTerm         = 20f,
                     fleetPosition     = new Vector3(x, 0f, z),
                     enemyFleets       = new List<StageEnemyFleetSpawnConfig>(),
                 });
@@ -655,7 +943,7 @@ public class DataTableZoneEditor : Editor
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("클리어 보상", EditorStyles.boldLabel);
             zoneStage.mineralClearReward     = EditorGUILayout.IntField("Mineral (매 클리어)",      zoneStage.mineralClearReward);
-            zoneStage.techPointClearReward   = EditorGUILayout.IntField("TechPoint (최초 클리어)", zoneStage.techPointClearReward);
+            zoneStage.expClearReward         = EditorGUILayout.IntField("Exp (매 클리어)",          zoneStage.expClearReward);
             zoneStage.modulePointClearReward = EditorGUILayout.IntField("ModulePoint (최초 클리어)", zoneStage.modulePointClearReward);
             EditorGUILayout.EndVertical();
 
@@ -664,8 +952,7 @@ public class DataTableZoneEditor : Editor
             // 전투 설정
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("전투 설정", EditorStyles.boldLabel);
-            zoneStage.delayBeforeSpawn      = EditorGUILayout.Slider("첫 스폰 지연 (초)", zoneStage.delayBeforeSpawn, 0f, 60f);
-            zoneStage.shipSpawnInterval     = EditorGUILayout.Slider("함선 간 스폰 딜레이 (초)", zoneStage.shipSpawnInterval, 0f, 30f);
+            zoneStage.spawnTerm             = EditorGUILayout.Slider("함대 등장 간격 (초, 2번째 함대부터)", zoneStage.spawnTerm, 0f, 60f);
             EditorGUILayout.Space(4);
             EditorGUILayout.LabelField("발사 시작 딜레이 (0 = 즉시)", EditorStyles.miniLabel);
             zoneStage.playerFireDelaySec    = EditorGUILayout.Slider("아군 발사 딜레이 (초)", zoneStage.playerFireDelaySec, 0f, 10f);
@@ -691,8 +978,9 @@ public class DataTableZoneEditor : Editor
                 int nextIdx = zoneStage.enemyFleets.Count;
                 zoneStage.enemyFleets.Add(new StageEnemyFleetSpawnConfig
                 {
-                    fleetIndex = nextIdx,
-                    fleetInfo  = new FleetInfo { fleetName = $"{zoneStage.zoneName}_fleet{nextIdx}", ships = new List<ShipInfo>() }
+                    fleetIndex    = nextIdx,
+                    positionIndex = nextIdx,
+                    fleetInfo     = new FleetInfo { fleetName = $"{zoneStage.zoneName}_fleet{nextIdx}", ships = new List<ShipInfo>() }
                 });
                 EditorUtility.SetDirty(m_dataTableZone);
             }
@@ -725,7 +1013,7 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.BeginHorizontal();
         int shipCount = fleetSpawn.fleetInfo != null && fleetSpawn.fleetInfo.ships != null ? fleetSpawn.fleetInfo.ships.Count : 0;
         m_fleetFoldouts[foldKey] = EditorGUILayout.Foldout(m_fleetFoldouts[foldKey],
-            $"Fleet [{fleetSpawn.fleetIndex}]  term:{fleetSpawn.term}s  dist:{fleetSpawn.distance}  ({shipCount} ships)", true);
+            $"Fleet [{fleetSpawn.fleetIndex}]  term:{fleetSpawn.fleetIndex * zoneStage.spawnTerm}s  pos:{fleetSpawn.positionIndex}  ({shipCount} ships)", true);
         if (GUILayout.Button("X", GUILayout.Width(25)))
         {
             zoneStage.enemyFleets.RemoveAt(fleetIdx);
@@ -739,12 +1027,8 @@ public class DataTableZoneEditor : Editor
         if (m_fleetFoldouts[foldKey] == true)
         {
             EditorGUI.indentLevel++;
-            fleetSpawn.fleetIndex = EditorGUILayout.IntField("Fleet Index", fleetSpawn.fleetIndex);
-            fleetSpawn.term       = EditorGUILayout.FloatField("Term (초)", fleetSpawn.term);
-            fleetSpawn.distance   = EditorGUILayout.FloatField("Distance", fleetSpawn.distance);
-            fleetSpawn.rotX       = EditorGUILayout.FloatField("Rot X", fleetSpawn.rotX);
-            fleetSpawn.rotY       = EditorGUILayout.FloatField("Rot Y", fleetSpawn.rotY);
-            fleetSpawn.rotZ       = EditorGUILayout.FloatField("Rot Z", fleetSpawn.rotZ);
+            fleetSpawn.fleetIndex    = EditorGUILayout.IntField("Fleet Index", fleetSpawn.fleetIndex);
+            fleetSpawn.positionIndex = EditorGUILayout.IntField("Position Index", fleetSpawn.positionIndex);
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField($"함선 ({shipCount})", EditorStyles.boldLabel);

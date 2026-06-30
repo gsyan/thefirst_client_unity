@@ -45,7 +45,7 @@ public class UITabFleet : UITabBase
         EventManager.Subscribe_FleetShipCountChanged(OnShipCountChanged);
         EventManager.Subscribe_FleetUpdateHP(OnFleetHPUpdated);
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
-        EventManager.Subscribe_TechLevelChanged(OnTechLevelChanged);
+        EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Subscribe_ShipStatsChanged(OnShipStatsChanged);
     }
 
@@ -53,7 +53,7 @@ public class UITabFleet : UITabBase
     {
         base.OnTabActivated();
         HideTabButtons();
-        UpdateTechLevelDisplay();
+        UpdateCommanderLevelDisplay();
 
         if (m_needsLayoutRebuild == true)
         {
@@ -92,21 +92,21 @@ public class UITabFleet : UITabBase
         }
     }
 
-    // ── Tech Level ────────────────────────────────────────────────────
+    // ── Commander Level ────────────────────────────────────────────────────
 
-    private void UpdateTechLevelDisplay()
+    private void UpdateCommanderLevelDisplay()
     {
         var commander = DataManager.Instance.m_currentCommander;
         if (commander == null) return;
 
-        int currentLevel = commander.GetTechLevel();
-        
-        int maxShips = DataManager.Instance.m_dataTableTechLevel.GetShipCount(currentLevel);
+        int currentLevel = commander.GetCommanderLevel();
+
+        int maxShips = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(currentLevel);
     }
 
-    private void OnTechLevelChanged(int techLevel)
+    private void OnCommanderLevelChanged(int commanderLevel)
     {
-        UpdateTechLevelDisplay();
+        UpdateCommanderLevelDisplay();
     }
 
     // ── Fleet Stats ────────────────────────────────────────────────────
@@ -135,7 +135,7 @@ public class UITabFleet : UITabBase
         m_selectedShipSelector = null;
 
         int shipCount  = m_playerFleet.m_ships.Count;
-        int maxInCsv   = DataManager.Instance.m_dataTableTechLevel.GetMaxShipCount();
+        int maxInCsv   = DataManager.Instance.m_dataTableCommanderLevel.GetMaxShipCount();
         bool canAdd    = shipCount < maxInCsv;
 
         for (int i = 0; i < m_shipSelectors.Length; i++)
@@ -181,7 +181,7 @@ public class UITabFleet : UITabBase
     {
         if (m_currentShipCountStatText == null || m_playerFleet == null) return;
         int current = m_playerFleet.m_ships.Count;
-        int max = DataManager.Instance.m_dataTableTechLevel.GetMaxShipCount();
+        int max = DataManager.Instance.m_dataTableCommanderLevel.GetMaxShipCount();
         m_currentShipCountStatText.text = $"{current} / {max}";
 
         UpdateFleetSynergyDisplay();
@@ -374,8 +374,8 @@ public class UITabFleet : UITabBase
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         int currentShipCount = m_playerFleet.m_ships.Count;
-        int requiredTechLevel = DataManager.Instance.m_dataTableTechLevel.GetRequiredTechLevel(currentShipCount + 1);
-        var require = new RequireStruct(requiredTechLevel);
+        int requiredCommanderLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevel(currentShipCount + 1);
+        var require = new RequireStruct(requiredCommanderLevel);
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
@@ -431,12 +431,12 @@ public class UITabFleet : UITabBase
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         int currentShipCount = myFleet.m_ships.Count;
-        int maxInCsv = DataManager.Instance.m_dataTableTechLevel.GetMaxShipCount();
+        int maxInCsv = DataManager.Instance.m_dataTableCommanderLevel.GetMaxShipCount();
         if (currentShipCount >= maxInCsv) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
-        int techLevel = commander.GetTechLevel();
-        int maxShipsAtTech = DataManager.Instance.m_dataTableTechLevel.GetShipCount(techLevel);
-        if (currentShipCount >= maxShipsAtTech) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_TECH_LEVEL;
+        int commanderLevel = commander.GetCommanderLevel();
+        int maxShipsAtTech = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(commanderLevel);
+        if (currentShipCount >= maxShipsAtTech) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_COMMANDER_LEVEL;
         if (commander.m_commanderInfo.modulePoint < gameSettings.addShipCost) return ServerErrorCode.ADD_SHIP_FAIL_INSUFFICIENT_MODULE_POINT;
 
         return ServerErrorCode.SUCCESS;

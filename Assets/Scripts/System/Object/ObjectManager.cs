@@ -316,12 +316,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     public void StartZoneEnemyWaves(List<StageEnemyFleetSpawnConfig> waves, ZoneStageConfig zoneStage)
     {
-        if (waves == null || waves.Count == 0)
-        {
-            EventManager.TriggerZoneStageBattleEnd(true);
-            return;
-        }
-
         m_pendingWaves             = waves;
         m_waveSpawned              = new bool[waves.Count];
         m_waveTimerCoroutines      = new Coroutine[waves.Count];
@@ -340,7 +334,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     private IEnumerator WaveTimerCoroutine(int waveIndex)
     {
         float elapsed   = Time.time - m_wavesBattleStartTime;
-        float remaining = m_pendingWaves[waveIndex].term - elapsed;
+        float spawnTime = m_pendingWaves[waveIndex].fleetIndex * m_currentWaveStage.spawnTerm;
+        float remaining = spawnTime - elapsed;
         if (remaining > 0f)
             yield return new WaitForSeconds(remaining);
 
@@ -381,10 +376,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     private Vector3 GetEnemySpawnPositionFromWave(StageEnemyFleetSpawnConfig wave)
     {
         if (m_myFleet == null) return Vector3.zero;
+        FleetPositionPreset preset = DataManager.Instance.m_dataTableZone.GetFleetPosition(wave.positionIndex);
+        if (preset == null) return Vector3.zero;
+
         Vector3 basePos      = m_myFleet.transform.position;
-        Vector3 localDir     = Quaternion.Euler(wave.rotX, wave.rotY, wave.rotZ) * Vector3.forward;
+        Vector3 localDir     = Quaternion.Euler(preset.rotX, preset.rotY, preset.rotZ) * Vector3.forward;
         Vector3 worldDir     = m_myFleet.transform.TransformDirection(localDir);
-        Vector3 spawnPos     = basePos + worldDir * wave.distance;
+        Vector3 spawnPos     = basePos + worldDir * preset.distance;
         spawnPos.y = 0f;
         return spawnPos;
     }
@@ -450,7 +448,23 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             ForceEndBattle(true);
     }
 
-    public void StopEnemySpawning() { }
+    public void StopEnemySpawning()
+    {
+        if (m_waveTimerCoroutines != null)
+        {
+            for (int i = 0; i < m_waveTimerCoroutines.Length; i++)
+            {
+                if (m_waveTimerCoroutines[i] != null)
+                {
+                    StopCoroutine(m_waveTimerCoroutines[i]);
+                    m_waveTimerCoroutines[i] = null;
+                }
+            }
+        }
+        m_pendingWaves   = null;
+        m_waveSpawned    = null;
+        m_currentWaveStage = null;
+    }
 
     // 모든 적 함대 제거
     public void RemoveAllEnemyFleets()
@@ -545,7 +559,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 모든 웨이브 스폰 완료 + 적 전멸 → 클리어
         if (m_enemyFleets.Count == 0)
         {
-            EventManager.Trigger_EnemyFleetKilled();
+            EventManager.Trigger_AllEnemyFleetKilled();
             EventManager.TriggerZoneStageBattleEnd(true);
         }
     }

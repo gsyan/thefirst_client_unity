@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -82,6 +83,7 @@ public class CameraController : MonoSingleton<CameraController>
     // 카메라 중심점 타겟
     private ECameraFocusTarget m_focusTarget = ECameraFocusTarget.camera_focus_my_fleet;
     public ECameraFocusTarget FocusTarget => m_focusTarget;
+    private int m_enemyFleetFocusIndex = 0;
 
     // LayerMask
     private const int m_layerShield = 13;
@@ -159,12 +161,12 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_currentTarget != null && m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
             m_targetPosition = m_currentTarget.position;
 
-        // Center 모드: 매 프레임 두 함대의 중간점을 갱신 (적 없으면 마지막 스폰 위치 사용)
+        // Center 모드: 매 프레임 두 함대의 중간점을 갱신 (기함이 타겟 중인 적 함대 기준)
         if (m_focusTarget == ECameraFocusTarget.camera_focus_center && m_currentTarget == null)
         {
             var objMgr = ObjectManager.Instance;
             if (objMgr != null && objMgr.m_myFleet != null)
-                m_targetPosition = (objMgr.m_myFleet.transform.position + objMgr.GetEnemySpawnPosition()) * 0.5f;
+                m_targetPosition = (objMgr.m_myFleet.transform.position + GetCenterModeEnemyPosition(objMgr, objMgr.m_myFleet)) * 0.5f;
         }
 
         bool galaxyViewJustSettled = false;
@@ -545,6 +547,15 @@ public class CameraController : MonoSingleton<CameraController>
         EventManager.TriggerCameraFocusTargetChanged(ECameraFocusTarget.camera_focus_my_fleet);
     }
 
+    // 기함이 타겟 중인 적 함선이 속한 함대 위치 반환 (타겟 없으면 레거시 스폰 위치로 폴백)
+    private Vector3 GetCenterModeEnemyPosition(ObjectManager objMgr, SpaceFleet myFleet)
+    {
+        SpaceShip flagship = myFleet.GetFlagship();
+        if (flagship != null && flagship.m_targetShip != null && flagship.m_targetShip.m_ownerFleet != null)
+            return flagship.m_targetShip.m_ownerFleet.transform.position;
+        return objMgr.GetEnemySpawnPosition();
+    }
+
     // 현재 FocusTarget 기준 월드 위치 반환 (상태 변경 없음)
     public Vector3 GetFocusTargetPosition()
     {
@@ -553,7 +564,7 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_focusTarget == ECameraFocusTarget.camera_focus_enemy_fleet && objMgr != null)
             return objMgr.GetEnemySpawnPosition();
         if (m_focusTarget == ECameraFocusTarget.camera_focus_center && objMgr != null && myFleet != null)
-            return (myFleet.transform.position + objMgr.GetEnemySpawnPosition()) * 0.5f;
+            return (myFleet.transform.position + GetCenterModeEnemyPosition(objMgr, myFleet)) * 0.5f;
         // camera_focus_my_fleet
         if (m_currentTarget != null) return m_currentTarget.position;
         return myFleet != null ? myFleet.transform.position : m_targetPosition;
@@ -709,8 +720,53 @@ public class CameraController : MonoSingleton<CameraController>
     // 카메라 중심점 전환 (적함대, 중간, 우리함대)
     public void SetCameraFocusTarget(ECameraFocusTarget focusTarget)
     {
-        if( m_focusTarget == focusTarget) return;
+        if (focusTarget == ECameraFocusTarget.camera_focus_enemy_fleet)
+        {
+            var objMgr = ObjectManager.Instance;
+            if (objMgr == null) return;
+
+            List<SpaceFleet> aliveEnemies = new List<SpaceFleet>();
+            foreach (SpaceFleet fleet in objMgr.m_enemyFleets)
+            {
+                if (fleet != null && fleet.IsFleetAlive() == true)
+                    aliveEnemies.Add(fleet);
+            }
+
+            if (aliveEnemies.Count == 0) return;
+
+            bool isAlreadyEnemyFocus = m_focusTarget == ECameraFocusTarget.camera_focus_enemy_fleet;
+            if (isAlreadyEnemyFocus == true)
+            {
+                m_enemyFleetFocusIndex = (m_enemyFleetFocusIndex + 1) % aliveEnemies.Count;
+            }
+            else
+            {
+                m_enemyFleetFocusIndex = 0;
+            }
+
+            ApplyEnemyFleetFocus(aliveEnemies[m_enemyFleetFocusIndex]);
+            return;
+        }
+
+        if (m_focusTarget == focusTarget) return;
         ApplyFocusTarget(focusTarget);
+    }
+
+    private void ApplyEnemyFleetFocus(SpaceFleet targetFleet)
+    {
+        if (m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
+        {
+            m_currentTargetBackup = m_currentTarget;
+        }
+
+        ExitCenterMode();
+        m_currentTarget  = targetFleet.transform;
+        m_targetPosition = targetFleet.transform.position;
+
+        ApplyZoomRangeFromShip(targetFleet.GetFlagship());
+
+        m_focusTarget = ECameraFocusTarget.camera_focus_enemy_fleet;
+        EventManager.TriggerCameraFocusTargetChanged(ECameraFocusTarget.camera_focus_enemy_fleet);
     }
 
     // 현재 focusTarget에 따라 카메라 타겟을 적용
@@ -725,16 +781,7 @@ public class CameraController : MonoSingleton<CameraController>
         switch (focusTarget)
         {
             case ECameraFocusTarget.camera_focus_enemy_fleet:
-                if (m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
-                {
-                    m_currentTargetBackup = m_currentTarget;
-                    m_currentTarget = null;
-                }
-                ExitCenterMode();
-                m_targetPosition = objMgr.GetEnemySpawnPosition();
-                // 적 기함 크기 기준 줌 범위 적용
-                if (objMgr.m_enemyFleets.Count > 0)
-                    ApplyZoomRangeFromShip(objMgr.m_enemyFleets[0].GetFlagship());
+                // SetCameraFocusTarget에서 처리하므로 여기에 오지 않음
                 break;
             case ECameraFocusTarget.camera_focus_center:
                 if (m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
@@ -742,7 +789,7 @@ public class CameraController : MonoSingleton<CameraController>
                     m_currentTargetBackup = m_currentTarget;
                     m_currentTarget = null;
                 }
-                m_targetPosition = (myFleet.transform.position + objMgr.GetEnemySpawnPosition()) * 0.5f;
+                m_targetPosition = (myFleet.transform.position + GetCenterModeEnemyPosition(objMgr, myFleet)) * 0.5f;
                 EnterCenterMode();
                 break;
             case ECameraFocusTarget.camera_focus_my_fleet:

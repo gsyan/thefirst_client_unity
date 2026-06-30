@@ -9,8 +9,8 @@ public class DataManager : Singleton<DataManager>
     protected override void OnInitialize()
     {
         LoadDataTableModule();
-        LoadDataTableModuleResearch();
-        LoadDataTableTechLevel();
+        LoadDataTableUpgradeCost();
+        LoadDataTableCommanderLevel();
         LoadDataTableConfig();
         LoadDataTableZone();
         LoadDataTablePvpSeason();
@@ -191,7 +191,8 @@ public class DataManager : Singleton<DataManager>
 
         if (investedModulePoint <= 0) return false;
 
-        int unlockCost    = m_dataTableConfig.gameSettings.moduleUnlockPrice;
+        // 함체는 언락의 대상이 아님, 언락 비용 없음 (서버 calcModulePointBaseline과 동일 처리)
+        int unlockCost    = moduleType != EModuleType.body ? m_dataTableConfig.gameSettings.moduleUnlockPrice : 0;
         int remaining     = investedModulePoint - unlockCost;
         EModuleSubType currentSubType = GetFirstSubType(moduleType);
 
@@ -237,35 +238,35 @@ public class DataManager : Singleton<DataManager>
     }
     #endregion
 
-    #region Data Table Module Research ###############################################################
-    public DataTableResearch m_dataTableResearch;
+    #region Data Table Upgrade Cost ###################################################################
+    public DataTableUpgradeCost m_dataTableUpgradeCost;
 
-    private void LoadDataTableModuleResearch()
+    private void LoadDataTableUpgradeCost()
     {
-        m_dataTableResearch = ResourceManager.Instance.Load<DataTableResearch>("DataTable/DataTableResearch");
-        if (m_dataTableResearch == null)
-            Debug.LogError("DataTableResearch is not exist");
+        m_dataTableUpgradeCost = ResourceManager.Instance.Load<DataTableUpgradeCost>("DataTable/DataTableUpgradeCost");
+        if (m_dataTableUpgradeCost == null)
+            Debug.LogError("DataTableUpgradeCost is not exist");
         else
-            Debug.Log("DataTableResearch loaded successfully");
+            Debug.Log("DataTableUpgradeCost loaded successfully");
     }
 
     public long GetModuleResearchCost(EModuleSubType subType)
     {
-        if (m_dataTableResearch == null) return 0;
-        return m_dataTableResearch.GetResearchCost(subType);
+        if (m_dataTableUpgradeCost == null) return 0;
+        return m_dataTableUpgradeCost.GetCost(subType);
     }
     #endregion
 
-    #region Data Table Tech Level ###############################################################
-    public DataTableTechLevel m_dataTableTechLevel;
+    #region Data Table Commander Level ###########################################################
+    public DataTableCommanderLevel m_dataTableCommanderLevel;
 
-    private void LoadDataTableTechLevel()
+    private void LoadDataTableCommanderLevel()
     {
-        m_dataTableTechLevel = ResourceManager.Instance.Load<DataTableTechLevel>("DataTable/DataTableTechLevel");
-        if (m_dataTableTechLevel == null)
-            Debug.LogError("DataTableTechLevel is not exist");
+        m_dataTableCommanderLevel = ResourceManager.Instance.Load<DataTableCommanderLevel>("DataTable/DataTableCommanderLevel");
+        if (m_dataTableCommanderLevel == null)
+            Debug.LogError("DataTableCommanderLevel is not exist");
         else
-            Debug.Log("DataTableTechLevel loaded successfully");
+            Debug.Log("DataTableCommanderLevel loaded successfully");
     }
     #endregion
 

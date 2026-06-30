@@ -11,7 +11,6 @@ fleet_add_ship_button,,Add\nShip,함선\n추가
 fleet_formation_change,,Change Formation,진형 변경
 fleet_btn_ship_manage,,Manage Ship,함선 관리
 fleet_btn_ship_repair,,Focus Repair,집중 수리
-fleet_tech_level_btn,,Lv.{0} <voffset=6>→</voffset> {1},Lv.{0} <voffset=6>→</voffset> {1}
 research_complete,,Research complete,연구가 완료되었습니다
 error_insufficient_resources,,Insufficient resources,자원이 부족합니다
 ship_status,,Ship Status,함선 정보
@@ -22,7 +21,6 @@ ship_module_status,,Module Status,모듈 정보
 ship_module_type,,Type,타입
 ship_module_unlock,,Unlock Module,모듈 잠금 해제
 ship_module_levelup,,Level up Module,모듈 레벨업
-tech_level_levelup,,Tech Level Up,기술 레벨업
 ship_module_subtype_manage,,Manage Module Type,모듈 타입 관리
 ship_module_researched_list,,Module Researched List,연구 완료 모듈 목록
 exploration_zone_list_name,,Zone,지역
@@ -45,9 +43,6 @@ exploration_wipe_retreat,,Retreating to previous zone,이전 구역으로 후퇴
 harvest_offline_elapsed,,Offline,오프라인
 harvest_online_uncollected,,Online (Uncollected),온라인 미수집
 harvest_total,,Total,합계
-research_button_name,,Research,연구
-research_tech_name,,Tech,기술
-research_already,,Already Researched,연구 완료
 pvp_opponent_list,,PVP List,상대방 목록
 pvp_refresh_confirm,,Refresh opponent list? ({0} remaining),상대 목록을 갱신하시겠습니까? (잔여 {0}회)
 pvp_score_mine_head,,My PVP Info,내 PVP 정보
@@ -86,59 +81,32 @@ module_type_beam,,Beam,빔
 module_type_missile,,Missile,미사일
 module_type_hanger,,Hanger,격납고
 mineral_amount,,Mineral,광물
-mineral_rare_amount,,Mineral.R,광물.R
-mineral_exotic_amount,,Mineral.E,광물.E
-mineral_dark_amount,,Mineral.D,광물.D
 cost_text,,Cost,비용
 details_text,,Details,세부정보
-ship_module_select_body,,B,체
-ship_module_select_engine,,e,엔
-ship_module_select_beam,,b,빔
-ship_module_select_missile,,m,미
-ship_module_select_hanger,,h,격
 ui_rename_char_checking,,Checking...,확인 중...
 ui_rename_char_available,,Name is available,사용 가능한 이름입니다
 ui_rename_char_duplicate,,Name already taken,이미 사용 중인 이름입니다
 ui_rename_char_profanity,,Name not allowed,사용할 수 없는 이름입니다
 ui_rename_char_format_err,,English/Korean/Numbers 2-16 chars,한글/영문/숫자 2~16자
 char_default_name,,Commander,지휘관
-tech_level_current,,Current Tech Lv,현재 기술레벨
-tech_level_target,,Target Tech Lv,목표 기술레벨
 offline_cap_after,,Offline Cap (After),오프라인 캡 (이후)
-popup_message_tech_research,,Upgrade to Tech Level {0}?,기술레벨 {0}으로 업그레이드 할까요?
-tech_level_1,,Tech Level 1,기술레벨 1
-tech_level_2,,Tech Level 2,기술레벨 2
-tech_level_3,,Tech Level 3,기술레벨 3
-tech_level_4,,Tech Level 4,기술레벨 4
-tech_level_5,,Tech Level 5,기술레벨 5
-tech_level_6,,Tech Level 6,기술레벨 6
-tech_level_7,,Tech Level 7,기술레벨 7
-tech_level_8,,Tech Level 8,기술레벨 8
-tech_level_9,,Tech Level 9,기술레벨 9
-tech_level_10,,Tech Level 10,기술레벨 10
-tech_level_11,,Tech Level 11,기술레벨 11
-tech_level_12,,Tech Level 12,기술레벨 12
-tech_level_13,,Tech Level 13,기술레벨 13
-tech_level_14,,Tech Level 14,기술레벨 14
-tech_level_15,,Tech Level 15,기술레벨 15
-tech_level_on_reach,,[ On reaching Lv.{0} ],[ Lv.{0} 달성 시 ]
-tech_level_detail_title,,Tech Level Info,기술레벨 정보
 error_message_title,,Error,오류
 ship_reset,,Reset Ship,함선 초기화
 ship_reset_confirm,,Reset this ship and recover all invested resources?,이 함선의 모든 투자 자원을 회수하고 초기화하시겠습니까?
 ship_reset_flagship_forbidden,,The flagship cannot be reset.,기함은 초기화할 수 없습니다.
 ship_reset_no_refund,,Nothing to recover,회수할 자원 없음
 Restart,,RESTART,재시작
-UITabButton_Tech,,TECH,기술
+UITabButton_Commander,,COMMANDER,지휘
 UITabButton_Fleet,,FLEET,함대
-UITabTech_TechLevelTitle,,TECH LEVEL,기술 레벨
-UITabTech_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
-UITabTech_ShipCountUnit,,ships,척
-UITabTech_ModuleGradeTitle,,New Module Grade,새 모듈 등급
+UITabCommander_Title,,COMMANDER LEVEL,지휘 레벨
+UITabCommander_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
+UITabCommander_ShipCountUnit,,ships,척
+UITabCommander_ModuleGradeTitle,,Module Grade,모듈 등급
 UITabTech_NextUnlockTitle,,Next Level - Lv.{0},다음 레벨 - Lv.{0}
 UITabTech_NextUnlockShipCount,,{0} Next Level Ship Slots,다음 레벨 함선 슬롯 {0}척
 UITabTech_NextModuleGrade,,Next Level Module Grade - T.{0},다음 레벨 모듈 그래이드 - T.{0}
-UITabTech_PointsToNextLevel,,Points to next level : {0},다음 레벨업까지 남은 포인트 : {0}
+UITabCommander_PointsToNextLevel,,EXP to next level : {0},다음 레벨업까지 남은 경험치 : {0}
+UITabTech_ModulePointGetTitle,,Module Point,모듈 포인트
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
@@ -235,7 +203,7 @@ UIPopupMessage_Logout,,Are you sure you want to logout?,로그아웃 하시겠�
 UIPopupMessage_LogoutGuest,,Logging out as a guest will permanently delete your account and all data. Continue?,게스트 로그아웃 시 계정과 모든 데이터가 영구 삭제됩니다. 계속하시겠습니까?
 UIPopupMessage_GoogleLink,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
 UIPopupMessage_GoogleUnlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
-UIPopupMessage_TechLevelupTitle,,TECH LEVEL UP,기술 레벨업
+UIPopupMessage_CommanderLevelupTitle,,TECH LEVEL UP,기술 레벨업
 UIPopupMessage_MineralResetTitle,,MINERAL ENHANCEMENT RESET,미네랄 강화 초기화
 UIPopupMessage_MineralResetMessage,,Mineral enhancements have been reset after stage clear.,스테이지 클리어로 미네랄 강화가 초기화되었습니다.
 UIPopupMessage_VersionUpdateTitle,,Update Required,업데이트 필요
@@ -243,8 +211,8 @@ UIPopupMessage_VersionUpdateMessage,,An update to version {0} is required.,버�
 UIPopupMessage_VersionUpdateButton,,Update,업데이트
 UIPopupMessage_PvpSeasonRewardTitle,,PVP Season Reward,PVP 시즌 보상
 UIPopupMessage_PvpSeasonRewardMessage,,Season reward has been granted.,시즌 보상이 지급되었습니다.
-UIPopupMessage_PvpTechLevelRequiredTitle,,PVP Locked,PVP 잠김
-UIPopupMessage_PvpTechLevelRequiredMessage,,Tech Level {0} or above is required to enter PVP.,PVP 참가는 기술 레벨 {0} 이상이 필요합니다.
+UIPopupMessage_PvpTechCommanderRequiredTitle,,PVP Locked,PVP 잠김
+UIPopupMessage_PvpCommanderLevelRequiredMessage,,Tech Level {0} or above is required to enter PVP.,PVP 참가는 기술 레벨 {0} 이상이 필요합니다.
 UICOMMON_AdmiralFeature,,Admiral Feature,제독 기능
 module_subtype_max_level_required,,Max level of {0}(Lv.{1} / Lv.{2}),{0} 최고 레벨 (Lv.{1} / Lv.{2})
 loading_tip_0,,Tip: Clearing exploration zones unlocks new areas.,팁: 탐사 지역을 클리어하면 새 지역이 개방됩니다.

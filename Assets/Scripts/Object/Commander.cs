@@ -32,16 +32,16 @@ public class Commander
         return m_commanderInfo.mineral;
     }
 
-    public int GetTechPoint()
+    public int GetExp()
     {
         if (m_commanderInfo == null) return 0;
-        return m_commanderInfo.techPoint;
+        return m_commanderInfo.exp;
     }
 
-    public void UpdateTechPoint(int techPoint)
+    public void UpdateExp(int exp)
     {
         if (m_commanderInfo == null) return;
-        m_commanderInfo.techPoint = techPoint;
+        m_commanderInfo.exp = exp;
     }
 
     public int GetModulePoint()
@@ -94,19 +94,19 @@ public class Commander
         m_commanderInfo.pvpPointMaxGot = pvpPointMaxGot;
     }
 
-    public int GetTechLevel()
+    public int GetCommanderLevel()
     {
         if (m_commanderInfo == null) return 1;
-        int level = m_commanderInfo.techLevel;
+        int level = m_commanderInfo.commanderLevel;
         return level > 0 ? level : 1;
     }
 
-    // 서버 응답 techLevel로 갱신 후 이벤트 발생
-    public void UpdateTechLevel(int newLevel)
+    // 서버 응답 commanderLevel로 갱신 후 이벤트 발생
+    public void UpdateCommanderLevel(int newLevel)
     {
         if (m_commanderInfo == null) return;
-        m_commanderInfo.techLevel = newLevel;
-        EventManager.TriggerTechLevelChange(newLevel);
+        m_commanderInfo.commanderLevel = newLevel;
+        EventManager.TriggerCommanderLevelChange(newLevel);
     }
 
     public CommanderInfo GetInfo()
@@ -150,10 +150,10 @@ public class Commander
         return true;
     }
 
-    public bool CheckEnoughTechPoint(long cost)
+    public bool CheckEnoughExp(long cost)
     {
         if (m_commanderInfo == null) return false;
-        return m_commanderInfo.techPoint >= cost;
+        return m_commanderInfo.exp >= cost;
     }
 
     public bool CheckEnoughModulePoint(long cost)
@@ -165,7 +165,7 @@ public class Commander
 
 
 
-    // 문자열 기반 완료 연구 ID 목록 세팅 (모듈 연구용, techLevel과 무관)
+    // 문자열 기반 완료 연구 ID 목록 세팅 (모듈 연구용)
     public void SetCompletedResearchIds(string[] ids)
     {
         m_completedResearchIds.Clear();

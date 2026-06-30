@@ -97,7 +97,7 @@ public class TabSystem : MonoBehaviour
         if (isPvpTab == true)
             return state == EUnitState.Idle || state == EUnitState.Move;
         if (state == EUnitState.BattlePvp)
-            return tab.tabPanel.GetComponent<UITabTech>() != null
+            return tab.tabPanel.GetComponent<UITabCommander>() != null
                 || tab.tabPanel.GetComponent<UITabFleet>() != null;
         return true;
     }

@@ -458,8 +458,8 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
-        // usage: addminerals [mineral] [techPoint] [modulePoint] [pvpPoint] — 0이면 해당 타입 스킵
-        RegisterCommand("addminerals", "Add resources (usage: addminerals [mineral] [techPoint] [modulePoint] [pvpPoint])", (args) =>
+        // usage: addminerals [mineral] [levelUp] [modulePoint] [pvpPoint] — 0이면 해당 타입 스킵, levelUp>0이면 정확히 1레벨만 증가
+        RegisterCommand("addminerals", "Add resources (usage: addminerals [mineral] [levelUp] [modulePoint] [pvpPoint])", (args) =>
         {
             if (args.Length < 4) return;
             if (NetworkManager.Instance == null) return;
@@ -574,26 +574,17 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
 
         switch (key.ToLower())
         {
-            case "techlevel":
-                if (int.TryParse(value, out int techLevel))
-                    DataManager.Instance.m_currentCommander.UpdateTechLevel(techLevel);
+            case "commanderlevel":
+                if (int.TryParse(value, out int commanderLevel))
+                    DataManager.Instance.m_currentCommander.UpdateCommanderLevel(commanderLevel);
                 break;
-            case "tech":
-                // 서버가 반환한 targetTechLevel까지 tech_level_1~N을 모두 완료 처리
-                if (int.TryParse(value, out int tech))
-                {
-                    var ids = new string[tech];
-                    for (int i = 1; i <= tech; i++) ids[i - 1] = "tech_level_" + i;
-                    DataManager.Instance.m_currentCommander.SetCompletedResearchIds(ids);
-                }
+            case "exp":
+                if (int.TryParse(value, out int exp))
+                    DataManager.Instance.m_currentCommander.UpdateExp(exp);
                 break;
             case "mineral":
                 if (int.TryParse(value, out int mineral))
                     DataManager.Instance.m_currentCommander.UpdateMineral(mineral);
-                break;
-            case "techpoint":
-                if (int.TryParse(value, out int techPoint))
-                    DataManager.Instance.m_currentCommander.UpdateTechPoint(techPoint);
                 break;
             case "modulepointmaxgot":
                 if (int.TryParse(value, out int mpMaxGot))

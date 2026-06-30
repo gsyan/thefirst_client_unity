@@ -32,7 +32,7 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
             commanderId   = 1,
             commanderName = "debug_player",
             mineral       = 999999,
-            techPoint     = 999999,
+            exp           = 999999,
             modulePoint   = 999999,
             pvpPoint      = 0,
             clearedZones  = new List<string>(),

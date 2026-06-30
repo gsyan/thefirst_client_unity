@@ -976,13 +976,18 @@ public class SpaceFleet : MonoBehaviour
         while (true)
         {
             yield return k_repairBoostCostInterval;
+            if (m_fleetState.IsBattleState() == false) continue;
             if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 1) == 0) continue;
             if (HasAnyDamagedShip() == false) continue;
+
+            int shipCount = CountAliveShips();
+            if (shipCount == 0) continue;
 
             Commander commander = DataManager.Instance.m_currentCommander;
             if (commander == null) continue;
 
-            int cost = DataManager.Instance.m_dataTableConfig.gameSettings.repairBoostMineralPerSec;
+            int perShip = DataManager.Instance.m_dataTableConfig.gameSettings.repairBoostMineralPerSec;
+            int cost    = perShip * shipCount;
             bool consumed = commander.TryConsumeMineral(cost);
             if (consumed == true)
                 EventManager.Trigger_TacticMineralConsumed(0, cost);
@@ -997,6 +1002,17 @@ public class SpaceFleet : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    private int CountAliveShips()
+    {
+        int count = 0;
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship != null && ship.IsAlive() == true)
+                count++;
+        }
+        return count;
     }
 
     // 생존 함선의 개방된 미사일 슬롯(= 장착된 ModuleMissile) 합계

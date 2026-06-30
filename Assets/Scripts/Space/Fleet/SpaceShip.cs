@@ -659,7 +659,7 @@ public class SpaceShip : MonoBehaviour
             // 진형 회복력 보너스 적용 (cross_defensive 전용)
             float formationRepairMult = m_ownerFleet != null ? m_ownerFleet.GetFormationRepairMultiplier() : 1f;
 
-            bool isRepairBoost = m_ownerFleet != null && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 1) != 0;
+            bool isRepairBoost = m_ownerFleet != null && m_ownerFleet.m_fleetState.IsBattleState() == true && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 1) != 0;
             float boostMult = isRepairBoost ? DataManager.Instance.m_dataTableConfig.gameSettings.repairBoostMultiplier : 1f;
             float effectiveRepair = ownRepair * formationRepairMult * boostMult;
 
@@ -1394,6 +1394,9 @@ public class SpaceShip : MonoBehaviour
             newBody.m_health = newBody.m_healthMax * healthRatio;
             EventManager.TriggerModuleReplaced(null, newBody);
         }
+
+        // 7. oldBody 파괴 완료 후 발행 — 적 함선이 새로 생성된 newBody로 타겟 재탐색하도록 (전투 중 업그레이드 시 타겟 소실 방지)
+        EventManager.Trigger_ModuleBodyDestroyed(oldBody);
     }
 
     // private void OnDrawGizmos()

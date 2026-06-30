@@ -158,7 +158,7 @@ public class UIPopupConfirm : UIPopupBase
 
     private bool BuildRequireSection(RequireStruct require, ref int sectionIdx)
     {
-        if (require == null || require.techLevel <= 0)
+        if (require == null || require.commanderLevel <= 0)
             return true;
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
@@ -166,11 +166,11 @@ public class UIPopupConfirm : UIPopupBase
         sec.HideAllRows();
 
         var ch = DataManager.Instance.m_currentCommander;
-        int currentTechLevel = ch != null ? ch.GetTechLevel() : 0;
-        bool requireMet = currentTechLevel >= require.techLevel;
+        int currentCommanderLevel = ch != null ? ch.GetCommanderLevel() : 0;
+        bool requireMet = currentCommanderLevel >= require.commanderLevel;
 
-        string icon = require.techLevel > 0 ? "icon_tech" : string.Empty;
-        string text = LocalizationManager.Instance.Get("require_level_compare", require.techLevel, currentTechLevel);
+        string icon = require.commanderLevel > 0 ? "icon_tech" : string.Empty;
+        string text = LocalizationManager.Instance.Get("require_level_compare", require.commanderLevel, currentCommanderLevel);
         sec.SetRow(0, icon, CommonUtility.PaletteColor("GeneralBright1"), requireMet ? text : $"<color=red>{text}</color>");
 
         return requireMet;
@@ -190,7 +190,7 @@ public class UIPopupConfirm : UIPopupBase
         if (cost.costType == ECostType.Mineral)
             current = ch != null ? ch.GetMineral() : 0;
         else if (cost.costType == ECostType.TechPoint)
-            current = ch != null ? ch.GetTechPoint() : 0;
+            current = ch != null ? ch.GetExp() : 0;
         else if (cost.costType == ECostType.ModulePoint)
             current = ch != null ? ch.GetModulePoint() : 0;
         else if (cost.costType == ECostType.PvpPoint)

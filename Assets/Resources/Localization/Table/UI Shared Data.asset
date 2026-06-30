@@ -63,10 +63,6 @@ MonoBehaviour:
     m_Key: fleet_btn_ship_repair
     m_Metadata:
       m_Items: []
-  - m_Id: 12029587550502913
-    m_Key: fleet_tech_level_btn
-    m_Metadata:
-      m_Items: []
   - m_Id: 12029587550502914
     m_Key: research_complete
     m_Metadata:
@@ -105,10 +101,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 11055826378555392
     m_Key: ship_module_levelup
-    m_Metadata:
-      m_Items: []
-  - m_Id: 19274147397763072
-    m_Key: tech_level_levelup
     m_Metadata:
       m_Items: []
   - m_Id: 11055826416304128
@@ -197,18 +189,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 13164879321890817
     m_Key: harvest_total
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10728497219502080
-    m_Key: research_button_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2973369905315840
-    m_Key: research_tech_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3089099820761088
-    m_Key: research_already
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636952
@@ -427,88 +407,8 @@ MonoBehaviour:
     m_Key: char_default_name
     m_Metadata:
       m_Items: []
-  - m_Id: 10734488233312256
-    m_Key: tech_level_current
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10734488275255296
-    m_Key: tech_level_target
-    m_Metadata:
-      m_Items: []
   - m_Id: 10734488275255297
     m_Key: offline_cap_after
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10734488275255298
-    m_Key: popup_message_tech_research
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482391085056
-    m_Key: tech_level_1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250880
-    m_Key: tech_level_2
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250881
-    m_Key: tech_level_3
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250882
-    m_Key: tech_level_4
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250883
-    m_Key: tech_level_5
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250884
-    m_Key: tech_level_6
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250885
-    m_Key: tech_level_7
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250886
-    m_Key: tech_level_8
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250887
-    m_Key: tech_level_9
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250888
-    m_Key: tech_level_10
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250889
-    m_Key: tech_level_11
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250890
-    m_Key: tech_level_12
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250891
-    m_Key: tech_level_13
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250892
-    m_Key: tech_level_14
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10739482416250893
-    m_Key: tech_level_15
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13959242268409856
-    m_Key: tech_level_on_reach
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13959242310352896
-    m_Key: tech_level_detail_title
     m_Metadata:
       m_Items: []
   - m_Id: 26465664587661312
@@ -535,28 +435,28 @@ MonoBehaviour:
     m_Key: Restart
     m_Metadata:
       m_Items: []
-  - m_Id: 29004056152113153
-    m_Key: UITabButton_Tech
+  - m_Id: 51571244754927616
+    m_Key: UITabButton_Commander
     m_Metadata:
       m_Items: []
   - m_Id: 29169225431908352
     m_Key: UITabButton_Fleet
     m_Metadata:
       m_Items: []
-  - m_Id: 29004056152113154
-    m_Key: UITabTech_TechLevelTitle
+  - m_Id: 51579544800198656
+    m_Key: UITabCommander_Title
     m_Metadata:
       m_Items: []
-  - m_Id: 29007716294721536
-    m_Key: UITabTech_ShipCountMaxTitle
+  - m_Id: 51580479907692544
+    m_Key: UITabCommander_ShipCountMaxTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 29029334198910976
-    m_Key: UITabTech_ShipCountUnit
+  - m_Id: 51580479907692545
+    m_Key: UITabCommander_ShipCountUnit
     m_Metadata:
       m_Items: []
-  - m_Id: 46108790423945216
-    m_Key: UITabTech_ModuleGradeTitle
+  - m_Id: 51580715690491904
+    m_Key: UITabCommander_ModuleGradeTitle
     m_Metadata:
       m_Items: []
   - m_Id: 29007716294721538
@@ -571,8 +471,12 @@ MonoBehaviour:
     m_Key: UITabTech_NextModuleGrade
     m_Metadata:
       m_Items: []
-  - m_Id: 46114131756843008
-    m_Key: UITabTech_PointsToNextLevel
+  - m_Id: 51578528474202112
+    m_Key: UITabCommander_PointsToNextLevel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51571244796870656
+    m_Key: UITabTech_ModulePointGetTitle
     m_Metadata:
       m_Items: []
   - m_Id: 29120731337850880
@@ -959,8 +863,8 @@ MonoBehaviour:
     m_Key: UIPopupMessage_GoogleUnlink
     m_Metadata:
       m_Items: []
-  - m_Id: 46124173268746243
-    m_Key: UIPopupMessage_TechLevelupTitle
+  - m_Id: 51571244805259264
+    m_Key: UIPopupMessage_CommanderLevelupTitle
     m_Metadata:
       m_Items: []
   - m_Id: 46939500441370624
@@ -991,12 +895,12 @@ MonoBehaviour:
     m_Key: UIPopupMessage_PvpSeasonRewardMessage
     m_Metadata:
       m_Items: []
-  - m_Id: 51131395925213184
-    m_Key: UIPopupMessage_PvpTechLevelRequiredTitle
+  - m_Id: 51571244805259265
+    m_Key: UIPopupMessage_PvpTechCommanderRequiredTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 51131395925213185
-    m_Key: UIPopupMessage_PvpTechLevelRequiredMessage
+  - m_Id: 51571244805259266
+    m_Key: UIPopupMessage_PvpCommanderLevelRequiredMessage
     m_Metadata:
       m_Items: []
   - m_Id: 50053580165349376

@@ -12,9 +12,7 @@ public class UIZoneTabNode : MonoBehaviour
 
     [SerializeField] private Color m_colorSelected = new Color(1f, 0.8f, 0.2f, 1f);
     [SerializeField] private Color m_colorNormal   = Color.white;
-    [SerializeField] private float m_bgAlphaSelected = 0.3f;
-    [SerializeField] private float m_bgAlphaNormal   = 0.05f;
-
+    
     private int m_groupIndex;
 
     public void SetData(int groupIndex, Action<int> onClicked)
@@ -41,7 +39,6 @@ public class UIZoneTabNode : MonoBehaviour
         if (m_bgImage != null)
         {
             Color bg = labelColor;
-            //bg.a = selected ? m_bgAlphaSelected : m_bgAlphaNormal;
             m_bgImage.color = bg;
         }
     }

@@ -1,5 +1,5 @@
 // 게임 전역 설정 ScriptableObject — 함선 추가 비용(addShipCost), PvP 설정, 모듈 해금 비용 관리
-// 기술레벨별 최대 함선 수(ship_count)는 DataTableResearch.GetShipCount()에서 조회
+// 커맨더 레벨별 최대 함선 수(ship_count)는 DataTableCommanderLevel.GetShipCount()에서 조회
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -17,7 +17,7 @@ public class GameSettings
     public int addShipCost = 10;
 
 [Header("Pvp Settings")]
-    public int pvpMinTechLevel = 2;
+    public int pvpMinCommanderLevel = 2;
     public int pvpListCount = 3;
     public int pvpListRefreshCount = 5;
     public int pvpRankScoreInit = 1000;

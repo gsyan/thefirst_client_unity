@@ -209,13 +209,12 @@ public class UITabSettings : UITabBase
         int zoneListCount = table.zoneList.Count;
         int targetZoneIndex = (zoneListCount > 0) ? table.zoneList[clickCount % zoneListCount].zoneIndex : 1;
 
-        int totalMineral = 0, totalTechPoint = 0, totalModulePoint = 0;
+        int totalMineral = 0, totalModulePoint = 0;
         for (int i = 0; i < table.zoneStageList.Count; i++)
         {
             if (table.zoneStageList[i].zoneIndex == targetZoneIndex)
             {
                 totalMineral     += table.zoneStageList[i].mineralClearReward;
-                totalTechPoint   += table.zoneStageList[i].techPointClearReward;
                 totalModulePoint += table.zoneStageList[i].modulePointClearReward;
             }
         }
@@ -224,11 +223,12 @@ public class UITabSettings : UITabBase
         PlayerPrefs.Save();
 
         string mineral     = (m_toggleMineral     != null && m_toggleMineral.isOn     == true) ? totalMineral.ToString()     : "0";
-        string techPoint   = (m_toggleTechPoint   != null && m_toggleTechPoint.isOn   == true) ? totalTechPoint.ToString()   : "0";
+        // 서버 addminerals 2번째 파라미터는 raw exp가 아닌 "1레벨 증가" 트리거 플래그
+        string levelUp     = (m_toggleTechPoint   != null && m_toggleTechPoint.isOn   == true) ? "1" : "0";
         string modulePoint = (m_toggleModulePoint != null && m_toggleModulePoint.isOn == true) ? totalModulePoint.ToString() : "0";
         string pvpPoint    = (m_togglePvpPoint    != null && m_togglePvpPoint.isOn    == true) ? "100" : "0";
 
-        DeveloperConsole.ExecuteCommandStatic($"addminerals {mineral} {techPoint} {modulePoint} {pvpPoint}");
+        DeveloperConsole.ExecuteCommandStatic($"addminerals {mineral} {levelUp} {modulePoint} {pvpPoint}");
     }
 
     private void InitializeLanguageDropdown()

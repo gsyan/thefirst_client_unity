@@ -401,22 +401,26 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupConfirm(config);
     }
 
-    // 기술 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출)
-    public void ShowTechLevelupNotify(int newLevel)
+    // 커맨더 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출)
+    public void ShowCommanderLevelupNotify(int newLevel)
     {
-        SoundManager.Instance.PlayFX(EFx.Tech_Level_Up);
-        int shipCount = DataManager.Instance.m_dataTableTechLevel.GetShipCount(newLevel);
+        SoundManager.Instance.PlayFX(EFx.Commander_Level_Up);
+        int shipCount       = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(newLevel);
+        int modulePointGain = DataManager.Instance.m_dataTableCommanderLevel.GetModulePointReward(newLevel);
         var loc = LocalizationManager.Instance;
-        string shipLabel  = loc.Get("UITabTech_ShipCountMaxTitle");
-        string gradeLabel = loc.Get("UITabTech_ModuleGradeTitle");
+        string shipLabel        = loc.Get("UITabCommander_ShipCountMaxTitle");
+        string gradeLabel       = loc.Get("UITabCommander_ModuleGradeTitle");
+        string modulePointLabel = loc.Get("UITabTech_ModulePointGetTitle");
         var rows = new List<(string icon, string value)>
         {
             ("icon_ship",   $"{shipLabel}  {shipCount}"),
             ("cargo-crane", $"{gradeLabel}  T.{newLevel}"),
         };
+        if (modulePointGain > 0)
+            rows.Add(("mineral_basic", $"{modulePointLabel}  {modulePointGain}"));
         ShowConfirmPopup(new ConfirmPopupConfig
         {
-            title              = LocalizationManager.Instance.Get("UIPopupMessage_TechLevelupTitle"),
+            title              = LocalizationManager.Instance.Get("UIPopupMessage_CommanderLevelupTitle"),
             resultRows         = rows,
             resultRowsVertical = true,
             onConfirm          = () => { },

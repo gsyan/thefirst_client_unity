@@ -27,7 +27,7 @@ public enum EFx
     Button_Clicked,
 
     // Stage
-    Tech_Level_Up,
+    Commander_Level_Up,
     Stage_Clear_First,
     Stage_Clear,
     

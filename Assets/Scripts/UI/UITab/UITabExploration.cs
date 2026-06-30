@@ -480,7 +480,7 @@ public class UITabExploration : UITabBase
 
     private void OnPvpBattleStarted()
     {
-        EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+        EventManager.Unsubscribe_AllEnemyFleetKilled(OnAllEnemyFleetKilled);
         m_battleZoneStage = null;
         m_pendingClaimZoneName = null;
     }
@@ -533,7 +533,7 @@ public class UITabExploration : UITabBase
             rewardAmounts = new System.Collections.Generic.List<int>
             {
                 zoneStage.mineralClearReward,
-                isFirstClear ? zoneStage.techPointClearReward    : 0,
+                zoneStage.expClearReward,
                 isFirstClear ? zoneStage.modulePointClearReward  : 0,
                 0
             },
@@ -585,7 +585,7 @@ public class UITabExploration : UITabBase
     {
         if (m_playerFleet.m_fleetState.IsBattleState() == true)
         {
-            EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+            EventManager.Unsubscribe_AllEnemyFleetKilled(OnAllEnemyFleetKilled);
             ObjectManager.Instance.StopEnemySpawning();
             ObjectManager.Instance.OrderAllAircraftReturn();
             ObjectManager.Instance.CleanupAllProjectiles();
@@ -600,7 +600,7 @@ public class UITabExploration : UITabBase
 
         m_battleZoneStage = zoneStage;
         RefreshCurrentZoneStageButton();
-        EventManager.Subscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+        EventManager.Subscribe_AllEnemyFleetKilled(OnAllEnemyFleetKilled);
 
         m_pendingFleetPos  = m_datatableZone.ResolveFleetWorldPosition(zoneStage);
         m_pendingFleetRotY = zoneStage.fleetRotationY;
@@ -632,7 +632,7 @@ public class UITabExploration : UITabBase
     {
         if (m_isBattleEnded == true) return;
         m_isBattleEnded = true;
-        EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+        EventManager.Unsubscribe_AllEnemyFleetKilled(OnAllEnemyFleetKilled);
 
         ZoneStageConfig retreatStage = isVictory ? m_battleZoneStage : m_currentZoneStage;
 
@@ -728,7 +728,7 @@ public class UITabExploration : UITabBase
         return cleared != null && cleared.Contains(prevStageName);
     }
 
-    private void OnEnemyFleetKilled()
+    private void OnAllEnemyFleetKilled()
     {
         if (m_battleZoneStage == null) return;
 
@@ -818,7 +818,7 @@ public class UITabExploration : UITabBase
         var rewards = new List<int>
         {
             pendingStage.mineralClearReward,
-            isFirstClear ? pendingStage.techPointClearReward   : 0,
+            pendingStage.expClearReward,
             isFirstClear ? pendingStage.modulePointClearReward : 0,
             0
         };
@@ -916,15 +916,15 @@ public class UITabExploration : UITabBase
         var commander = DataManager.Instance.m_currentCommander;
         if (commander != null && commander.m_commanderInfo != null)
         {
-            int prevLevel = commander.GetTechLevel();
+            int prevLevel = commander.GetCommanderLevel();
             commander.UpdateMineral(response.data.mineralRemain);
-            commander.UpdateTechPoint(response.data.techPointRemain);
+            commander.UpdateExp(response.data.totalExp);
             commander.UpdateModulePointMaxGot(response.data.modulePointMaxGot); // 이벤트 발생 전에 먼저 갱신
             commander.UpdateModulePoint(response.data.modulePointRemain);
-            int newLevel = response.data.techLevel;
-            commander.UpdateTechLevel(newLevel);
+            int newLevel = response.data.commanderLevel;
+            commander.UpdateCommanderLevel(newLevel);
             if (newLevel > prevLevel)
-                UIManager.Instance.ShowTechLevelupNotify(newLevel);
+                UIManager.Instance.ShowCommanderLevelupNotify(newLevel);
         }
         m_battleZoneStage = null;
         m_pendingClaimZoneName = null;
@@ -1028,7 +1028,7 @@ public class UITabExploration : UITabBase
 
     private void ExecuteVictoryStay()
     {
-        m_battleZoneStage = null;
+        //m_battleZoneStage = null; 하지 않는다 OnClearZoneStageResponse 에서 m_battleZoneStage을 사용하므로
         if (m_tabSystemParent != null) m_tabSystemParent.CloseAllTabs();
         RefreshTabButtons();
     }
@@ -1080,7 +1080,7 @@ public class UITabExploration : UITabBase
 
     private void StayInCurrentStage()
     {
-        EventManager.Unsubscribe_EnemyFleetKilled(OnEnemyFleetKilled);
+        EventManager.Unsubscribe_AllEnemyFleetKilled(OnAllEnemyFleetKilled);
         ObjectManager.Instance.StopEnemySpawning();
         ObjectManager.Instance.OrderAllAircraftReturn();
         ObjectManager.Instance.RemoveAllEnemyFleets();

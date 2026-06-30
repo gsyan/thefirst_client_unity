@@ -19,7 +19,7 @@ public class UIVipButton : MonoBehaviour
     [SerializeField] private Button m_purchaseButton;
     [SerializeField] private GameObject m_purchaseButtonParent;
     [SerializeField] private TMP_Text   m_purchaseLabel1;  // TextBecomeAdmiral
-    [SerializeField] private TMP_Text   m_purchaseLabel2;  // TextTechLevel2
+    [SerializeField] private TMP_Text   m_purchaseLabel2;  // TextCommanderLevel2
 
     private bool          m_isOpen = false;
     private RectTransform m_rectTransform;
