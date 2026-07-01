@@ -1,7 +1,6 @@
 public enum ECostType
 {
     Mineral,
-    TechPoint,
     ModulePoint,
     PvpPoint
 }

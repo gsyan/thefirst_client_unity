@@ -405,26 +405,32 @@ public class UIManager : MonoSingleton<UIManager>
     public void ShowCommanderLevelupNotify(int newLevel)
     {
         SoundManager.Instance.PlayFX(EFx.Commander_Level_Up);
-        int shipCount       = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(newLevel);
-        int modulePointGain = DataManager.Instance.m_dataTableCommanderLevel.GetModulePointReward(newLevel);
+        int prevLevel        = newLevel - 1;
+        int shipCount        = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(newLevel);
+        int prevShipCount    = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(prevLevel);
+        int subtypeLevel     = DataManager.Instance.m_dataTableCommanderLevel.GetSubtypeLevel(newLevel);
+        int prevSubtypeLevel = DataManager.Instance.m_dataTableCommanderLevel.GetSubtypeLevel(prevLevel);
+        int modulePointGain  = DataManager.Instance.m_dataTableCommanderLevel.GetModulePointReward(newLevel);
         var loc = LocalizationManager.Instance;
         string shipLabel        = loc.Get("UITabCommander_ShipCountMaxTitle");
         string gradeLabel       = loc.Get("UITabCommander_ModuleGradeTitle");
         string modulePointLabel = loc.Get("UITabTech_ModulePointGetTitle");
-        var rows = new List<(string icon, string value)>
-        {
-            ("icon_ship",   $"{shipLabel}  {shipCount}"),
-            ("cargo-crane", $"{gradeLabel}  T.{newLevel}"),
-        };
+        Color defaultColor     = CommonUtility.PaletteColor("GeneralBright1");
+        Color modulePointColor = CommonUtility.PaletteColor("ModulePoint");
+        var rows = new List<(string icon, string value, Color color)>();
+        if (shipCount != prevShipCount)
+            rows.Add(("icon_ship", $"{shipLabel}  {shipCount}", defaultColor));
+        if (subtypeLevel != prevSubtypeLevel)
+            rows.Add(("cargo-crane", $"{gradeLabel}  T.{subtypeLevel}", defaultColor));
         if (modulePointGain > 0)
-            rows.Add(("mineral_basic", $"{modulePointLabel}  {modulePointGain}"));
+            rows.Add(("mineral_basic", $"{modulePointLabel}  {modulePointGain}", modulePointColor));
         ShowConfirmPopup(new ConfirmPopupConfig
         {
             title              = LocalizationManager.Instance.Get("UIPopupMessage_CommanderLevelupTitle"),
             resultRows         = rows,
             resultRowsVertical = true,
             onConfirm          = () => { },
-            autoCloseSec       = 5f,
+            autoCloseSec       = 10f,
         });
     }
 

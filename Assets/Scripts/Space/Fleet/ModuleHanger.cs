@@ -70,6 +70,12 @@ public class ModuleHanger : ModuleBase
     private Coroutine m_autoAttackCoroutine;
     private Coroutine m_maintenanceCoroutine;
 
+    // Body 교체 시 기존 모듈 승계용 — 새 부모 body로 갱신
+    public void SetParentBody(ModuleBody parentBody)
+    {
+        m_parentBody = parentBody;
+    }
+
     public void InitializeModuleHanger(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
     {
         m_moduleInfo = moduleInfo;
@@ -227,10 +233,40 @@ public class ModuleHanger : ModuleBase
     public void ReturnAircraft(AircraftInfo aircraftInfo)
     {
         if (m_aircraftPool.Contains(aircraftInfo) == true) return; // 중복 반환 방지
+        if (m_aircraftPool.Count >= m_airCount) return;            // 교체/업그레이드 후 한도 초과 방지
         aircraftInfo.airHealth      = 0f;
         aircraftInfo.lastReturnTime = Time.time;
         aircraftInfo.isReady        = false;
         m_aircraftPool.Add(aircraftInfo);
+    }
+
+    // 모듈 교체 전 상태 캡처용 스냅샷 (호출 즉시 복사해서 사용할 것)
+    public List<AircraftInfo> GetAircraftPoolSnapshot()
+    {
+        return m_aircraftPool;
+    }
+
+    // 모듈 교체 시 이전 격납고의 함재기 상태 승계 — 출격 중이던 수량만큼 슬롯을 비워둬 복귀 시 초과 폐기 방지
+    public void InheritAircraftPool(List<AircraftInfo> previousPool, int previousOutstandingCount)
+    {
+        m_aircraftPool.Clear();
+
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        if (moduleData == null) return;
+
+        foreach (AircraftInfo aircraftInfo in previousPool)
+        {
+            if (m_aircraftPool.Count >= m_airCount) break;
+            aircraftInfo.UpdateAircraftInfo(moduleData);
+            m_aircraftPool.Add(aircraftInfo);
+        }
+
+        int reservedForOutstanding = Mathf.Min(previousOutstandingCount, m_airCount - m_aircraftPool.Count);
+        int remainingNewSlots = m_airCount - m_aircraftPool.Count - reservedForOutstanding;
+        for (int i = 0; i < remainingNewSlots; i++)
+        {
+            m_aircraftPool.Add(new AircraftInfo(moduleData));
+        }
     }
 
     public int GetReadyAircraftCount()
@@ -338,7 +374,12 @@ public class ModuleHanger : ModuleBase
         m_moduleInfo.bodyIndex = bodyIndex;
     }
 
-    
+    // 비전투→전투 전환 시 호출 — 미귀환 상태인 풀 내 함재기도 준비 상태로 초기화
+    public void ReadyAllAircraft()
+    {
+        for (int i = 0; i < m_aircraftPool.Count; i++)
+            m_aircraftPool[i].isReady = true;
+    }
 
     public int GetHangarCapability() => m_airCount;
     public float GetLaunchCool() => m_launchCool;

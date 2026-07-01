@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7340862187155879977}
   - component: {fileID: 1379965848629862129}
   - component: {fileID: 3297036175119449407}
+  - component: {fileID: 6101110142774246451}
   m_Layer: 0
   m_Name: BurstDown
   m_TagString: Untagged
@@ -103,6 +104,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0858ff131624914cb2f39b5825fc1bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BurstNozzle
+--- !u!114 &6101110142774246451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143190320828781284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009788c740aa0b64d96ae1c7123b3dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EngineFlameColorizer
 --- !u!1 &2467885698538881258
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,6 +128,7 @@ GameObject:
   - component: {fileID: 6539385214498972054}
   - component: {fileID: 1701825500508747650}
   - component: {fileID: 3381466072787555101}
+  - component: {fileID: 287280463397663399}
   m_Layer: 0
   m_Name: BurstRight
   m_TagString: Untagged
@@ -206,6 +220,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0858ff131624914cb2f39b5825fc1bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BurstNozzle
+--- !u!114 &287280463397663399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2467885698538881258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009788c740aa0b64d96ae1c7123b3dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EngineFlameColorizer
 --- !u!1 &4779478689229376094
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +244,7 @@ GameObject:
   - component: {fileID: 830537963128881460}
   - component: {fileID: 8842178911185538038}
   - component: {fileID: 6124389276253266715}
+  - component: {fileID: 5632729480633150189}
   m_Layer: 0
   m_Name: BurstUp
   m_TagString: Untagged
@@ -309,6 +336,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0858ff131624914cb2f39b5825fc1bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BurstNozzle
+--- !u!114 &5632729480633150189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779478689229376094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009788c740aa0b64d96ae1c7123b3dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EngineFlameColorizer
 --- !u!1 &6584007939868518308
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,6 +360,7 @@ GameObject:
   - component: {fileID: 3856455646745344809}
   - component: {fileID: 8136404428810226744}
   - component: {fileID: 7556193475762178709}
+  - component: {fileID: 2226189261057709925}
   m_Layer: 0
   m_Name: BurstLeft
   m_TagString: Untagged
@@ -412,6 +452,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0858ff131624914cb2f39b5825fc1bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BurstNozzle
+--- !u!114 &2226189261057709925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6584007939868518308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009788c740aa0b64d96ae1c7123b3dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EngineFlameColorizer
 --- !u!1 &8494355853903263280
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,6 +580,7 @@ GameObject:
   - component: {fileID: 4132414584433794891}
   - component: {fileID: 2208129406806325407}
   - component: {fileID: 9055604689273838341}
+  - component: {fileID: 7599702797406655109}
   m_Layer: 0
   m_Name: BurstTail
   m_TagString: Untagged
@@ -607,6 +660,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7599702797406655109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8794876944766148218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009788c740aa0b64d96ae1c7123b3dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EngineFlameColorizer
 --- !u!1001 &2946644309992163444
 PrefabInstance:
   m_ObjectHideFlags: 0

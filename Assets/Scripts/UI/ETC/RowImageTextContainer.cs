@@ -35,6 +35,18 @@ public class RowImageTextContainer : MonoBehaviour
         m_rows[index].SetTextWithString(text);
     }
 
+    public void SetRowImageColor(int index, Color color)
+    {
+        if (m_rows == null || index < 0 || index >= m_rows.Length) return;
+        m_rows[index].SetImageColor(color);
+    }
+
+    public void SetRowTextColor(int index, Color color)
+    {
+        if (m_rows == null || index < 0 || index >= m_rows.Length) return;
+        m_rows[index].SetTextColor(color);
+    }
+
     public void HideRow(int index)
     {
         if (m_rows == null || index < 0 || index >= m_rows.Length) return;

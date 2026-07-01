@@ -34,18 +34,6 @@ MonoBehaviour:
     m_Localized: Mineral
     m_Metadata:
       m_Items: []
-  - m_Id: 394150433325057
-    m_Localized: Mineral.R
-    m_Metadata:
-      m_Items: []
-  - m_Id: 394150433325058
-    m_Localized: Mineral.E
-    m_Metadata:
-      m_Items: []
-  - m_Id: 394150433325059
-    m_Localized: Mineral.D
-    m_Metadata:
-      m_Items: []
   - m_Id: 767916345524224
     m_Localized: Engine(Locked)
     m_Metadata:
@@ -168,26 +156,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5949497784991744
     m_Localized: Module Select
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323392
-    m_Localized: B
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323393
-    m_Localized: e
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323394
-    m_Localized: b
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323395
-    m_Localized: m
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323396
-    m_Localized: h
     m_Metadata:
       m_Items: []
   - m_Id: 6655868837691392
@@ -691,7 +659,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 40210342097059841
-    m_Localized: Stage Mineral Rewards x{0} (Excl. Tech & Module Points)
+    m_Localized: Stage Mineral Rewards x{0} (Excl. Commander & Module Points)
     m_Metadata:
       m_Items: []
   - m_Id: 40210342097059842
@@ -711,7 +679,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 42163135078858753
-    m_Localized: 'Tip: Research raises your Tech Level and unlocks new modules.'
+    m_Localized: 'Tip: Earn EXP in expeditions to raise your Commander Level and
+      unlock new modules.'
     m_Metadata:
       m_Items: []
   - m_Id: 42163135078858754
@@ -940,7 +909,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 51571244805259264
-    m_Localized: TECH LEVEL UP
+    m_Localized: COMMANDER LEVEL UP
     m_Metadata:
       m_Items: []
   - m_Id: 51571244805259265
@@ -948,7 +917,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 51571244805259266
-    m_Localized: Tech Level {0} or above is required to enter PVP.
+    m_Localized: Commander Level {0} or above is required to enter PVP.
     m_Metadata:
       m_Items: []
   - m_Id: 51578528474202112

@@ -114,6 +114,41 @@ public class UISection : MonoBehaviour
         }
     }
 
+    public void SetRows(List<(string icon, string value, Color color)> rows)
+    {
+        if (m_containers == null) return;
+        int globalIdx = 0;
+        for (int c = 0; c < m_containers.Length; c++)
+        {
+            m_containers[c].HideAll();
+            bool hasContent = rows != null && globalIdx < rows.Count;
+            m_containers[c].gameObject.SetActive(hasContent);
+            if (hasContent == false) continue;
+            int count = m_containers[c].GetRowCount();
+            for (int r = 0; r < count && globalIdx < rows.Count; r++, globalIdx++)
+            {
+                m_containers[c].SetRow(r, rows[globalIdx].icon, rows[globalIdx].value);
+                m_containers[c].SetRowImageColor(r, rows[globalIdx].color);
+                m_containers[c].SetRowTextColor(r, rows[globalIdx].color);
+            }
+        }
+    }
+
+    public void SetRowsVertical(List<(string icon, string value, Color color)> rows)
+    {
+        if (m_containers == null) return;
+        for (int i = 0; i < m_containers.Length; i++)
+        {
+            m_containers[i].HideAll();
+            bool hasContent = rows != null && i < rows.Count;
+            m_containers[i].gameObject.SetActive(hasContent);
+            if (hasContent == false) continue;
+            m_containers[i].SetRow(0, rows[i].icon, rows[i].value);
+            m_containers[i].SetRowImageColor(0, rows[i].color);
+            m_containers[i].SetRowTextColor(0, rows[i].color);
+        }
+    }
+
     // Row → Container → Section 순서로 레이아웃 재빌드 (ContentSizeFitter가 있는 경우 bottom-up 필수)
     public void RebuildLayout()
     {

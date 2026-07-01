@@ -259,6 +259,24 @@ public class ModuleBody : ModuleBase
                 if (myShip != null && myFleet != null)
                     module.SetFleetInfo(myFleet, myShip);
 
+                // 새 body로 부모 참조 갱신 및 이 body의 무기/함재기 리스트에 재등록
+                // (RemoveMissile/RemoveHanger 등이 옛 body가 아닌 새 body를 대상으로 동작하도록)
+                if (module is ModuleBeam beam)
+                {
+                    beam.SetParentBody(this);
+                    AddBeam(beam);
+                }
+                else if (module is ModuleMissile missile)
+                {
+                    missile.SetParentBody(this);
+                    AddMissile(missile);
+                }
+                else if (module is ModuleHanger hanger)
+                {
+                    hanger.SetParentBody(this);
+                    AddHanger(hanger);
+                }
+
                 // 코루틴 재시작 (각 모듈에서 필요시 override)
                 module.RestartCoroutines();
 
@@ -657,6 +675,8 @@ public class ModuleBody : ModuleBase
 
         // 기존 모듈 제거
         float inheritedLastAttackTime = 0f;
+        List<AircraftInfo> inheritedAircraftPool = null;
+        int inheritedOutstandingAircraftCount = 0;
         if (targetSlot.transform.childCount > 0)
         {
             ModuleBase existingModule = targetSlot.GetComponentInChildren<ModuleBase>();
@@ -679,7 +699,12 @@ public class ModuleBody : ModuleBase
                     else if (existingModule is ModuleMissile missile)
                         RemoveMissile(missile, bRemoveFromInfo: true);
                     else if (existingModule is ModuleHanger hanger)
+                    {
+                        // 교체 전 함재기 풀/출격 중 수량 캡처 — 신 격납고에 승계해 출격 중이던 함재기가 복귀할 자리 보존
+                        inheritedAircraftPool = new List<AircraftInfo>(hanger.GetAircraftPoolSnapshot());
+                        inheritedOutstandingAircraftCount = hanger.GetHangarCapability() - inheritedAircraftPool.Count;
                         RemoveHanger(hanger, bRemoveFromInfo: true);
+                    }
 
                     DestroyImmediate(existingModule.gameObject);
                 }
@@ -687,6 +712,9 @@ public class ModuleBody : ModuleBase
         }
 
         ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel);
+
+        if (newModule is ModuleHanger newHanger && inheritedAircraftPool != null)
+            newHanger.InheritAircraftPool(inheritedAircraftPool, inheritedOutstandingAircraftCount);
 
         // 전투 중 추가 시 즉시 전함 상태 적용 (뚜껑 열림 등 애니메이터 반영)
         if (newModule != null)

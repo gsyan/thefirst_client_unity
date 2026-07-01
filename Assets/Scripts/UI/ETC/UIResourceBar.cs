@@ -1,4 +1,4 @@
-// 상단 리소스 패널 - mineral / techPoint / modulePoint / pvpPoint 실시간 표시
+// 상단 리소스 패널 - mineral / modulePoint / pvpPoint 실시간 표시
 using System;
 using System.Collections;
 using System.Globalization;
@@ -34,7 +34,6 @@ public class UIResourceBar : MonoBehaviour
 
     // 자원별 롤링 애니메이션 코루틴 핸들
     private Coroutine m_coroutineMineral;
-    private Coroutine m_coroutineTechPoint;
     private Coroutine m_coroutineModulePoint;
     private Coroutine m_coroutinePvpPoint;
 

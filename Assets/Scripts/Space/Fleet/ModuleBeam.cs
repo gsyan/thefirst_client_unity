@@ -22,6 +22,12 @@ public class ModuleBeam : ModuleBase
     private Animator m_animator;
     private const float k_beamFireAngle = 5f;
 
+    // Body 교체 시 기존 모듈 승계용 — 새 부모 body로 갱신
+    public void SetParentBody(ModuleBody parentBody)
+    {
+        m_parentBody = parentBody;
+    }
+
 
     public override EModuleType GetModuleType()
     {

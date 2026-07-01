@@ -30,6 +30,8 @@ public abstract class AircraftBase : MonoBehaviour
     public bool m_isEnemyAircraft = false; // 초기화 시 캐싱, 모함 소멸 후 null이 돼도 판별 가능
     public DogfightSphere m_dogfightSphere = null;
 
+    private EngineFlameColorizer[] m_engineFlames;
+
     public void LeaveDogfightSphere()
     {
         if (m_dogfightSphere == null) return;
@@ -99,6 +101,11 @@ public abstract class AircraftBase : MonoBehaviour
         }
 
         m_isEnemyAircraft = m_carrierShip != null && m_carrierShip.m_ownerFleet != null && m_carrierShip.m_ownerFleet.IsEnemy;
+
+        if (m_engineFlames == null)
+            m_engineFlames = GetComponentsInChildren<EngineFlameColorizer>(true);
+        for (int i = 0; i < m_engineFlames.Length; i++)
+            m_engineFlames[i].SetEnemyColor(m_isEnemyAircraft);
 
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
 
@@ -480,7 +487,6 @@ public abstract class AircraftBase : MonoBehaviour
         Transform returnContainer = m_flightPath != null ? m_flightPath.ReturnPath : null;
         if (returnContainer == null || returnContainer.childCount == 0)
         {
-            Debug.LogError("Phase_ReturnToApproach: returnContainer null or empty!");
             ReturnToPool();
             yield break;
         }

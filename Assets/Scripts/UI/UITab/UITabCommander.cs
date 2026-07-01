@@ -89,14 +89,15 @@ public class UITabCommander : UITabBase
         if (m_shipCountText != null)
             m_shipCountText.text = $"{maxShips}";
 
+        int currentSubtypeLevel = DataManager.Instance.m_dataTableCommanderLevel.GetSubtypeLevel(currentLevel);
         if (m_moduleGradeLimitText != null)
-            m_moduleGradeLimitText.text = $"T.{currentLevel}";
+            m_moduleGradeLimitText.text = $"T.{currentSubtypeLevel}";
 
         RefreshShipSlots(maxShips);
 
         if (nextNode != null)
         {
-            m_nextModuleGradeText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextModuleGrade"), nextNode.commanderLevel);
+            m_nextModuleGradeText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextModuleGrade"), nextNode.subtypeLevel);
             m_nextLevelShipCountText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextUnlockShipCount"), nextNode.shipCount);
         }
         else
@@ -105,9 +106,9 @@ public class UITabCommander : UITabBase
             m_nextLevelShipCountText.gameObject.SetActive(false);
         }
 
-        int currentTechPoint = commander.GetExp();
+        int currentExp = commander.GetExp();
         int currentLevelRequired = DataManager.Instance.m_dataTableCommanderLevel.GetRequireExp(currentLevel);
-        int progressCurrent = currentTechPoint - currentLevelRequired;
+        int progressCurrent = currentExp - currentLevelRequired;
 
         if (m_expGaugeText != null)
         {

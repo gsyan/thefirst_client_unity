@@ -629,6 +629,7 @@ public class DataTableZoneEditor : Editor
 
                         var missiles = new List<ModuleInfo>();
                         bool hasMissile = m_genMissileStages[stage - 1];
+                        if (zone <= 2 && stage < 9) hasMissile = false; // zone1~2는 stage9,10에서만 미사일 허용
                         if (hasMissile)
                             for (int m = 0; m < cap.missile; m++)
                                 missiles.Add(new ModuleInfo { moduleType = EModuleType.missile, moduleSubType = ParseSubType($"missile_t{shipTier}_m1"), moduleLevel = 1, bodyIndex = 0, slotIndex = m });

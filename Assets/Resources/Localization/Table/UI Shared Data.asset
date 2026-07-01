@@ -343,44 +343,12 @@ MonoBehaviour:
     m_Key: mineral_amount
     m_Metadata:
       m_Items: []
-  - m_Id: 394150433325057
-    m_Key: mineral_rare_amount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 394150433325058
-    m_Key: mineral_exotic_amount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 394150433325059
-    m_Key: mineral_dark_amount
-    m_Metadata:
-      m_Items: []
   - m_Id: 4035192935022592
     m_Key: cost_text
     m_Metadata:
       m_Items: []
   - m_Id: 4035192976965632
     m_Key: details_text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323392
-    m_Key: ship_module_select_body
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323393
-    m_Key: ship_module_select_engine
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323394
-    m_Key: ship_module_select_beam
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323395
-    m_Key: ship_module_select_missile
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497835323396
-    m_Key: ship_module_select_hanger
     m_Metadata:
       m_Items: []
   - m_Id: 8166668865765377

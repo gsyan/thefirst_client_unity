@@ -180,9 +180,6 @@ public class SpaceFleet : MonoBehaviour
             UpdateShipFormation(m_fleetInfo.formation, bSmooth: false);
         }
 
-        if (source == EFleetSource.fleet_source_player)
-            StartRepairBoostCostLoop();
-
         SetFleetState(fleetState);
     }
     // m_fleetInfo.ships에서 id로 항목을 찾아 생성 — 외부에서 ShipInfo 객체 없이 id만 알 때 사용
@@ -932,6 +929,7 @@ public class SpaceFleet : MonoBehaviour
 
     public void SetFleetState(EUnitState fleetState)
     {
+        bool prevWasNotBattle = m_fleetState.IsBattleState() == false;
         m_fleetState = fleetState;
         foreach (SpaceShip ship in m_ships)
         {
@@ -942,11 +940,15 @@ public class SpaceFleet : MonoBehaviour
         {
             if (fleetState.IsBattleState() == true)
             {
+                if (prevWasNotBattle == true)
+                    ReadyAllHangerAircrafts();
+                StartRepairBoostCostLoop();
                 StartMissileTacticCostLoop();
                 StartAircraftTacticCostLoop();
             }
             else
             {
+                StopRepairBoostCostLoop();
                 StopMissileTacticCostLoop();
                 StopAircraftTacticCostLoop();
             }
@@ -955,16 +957,31 @@ public class SpaceFleet : MonoBehaviour
             EventManager.TriggerMyFleetStateChanged(fleetState);
     }
 
+    private void ReadyAllHangerAircrafts()
+    {
+        for (int s = 0; s < m_ships.Count; s++)
+        {
+            SpaceShip ship = m_ships[s];
+            if (ship == null || ship.IsAlive() == false) continue;
+            for (int b = 0; b < ship.m_moduleBodys.Count; b++)
+            {
+                List<ModuleHanger> hangers = ship.m_moduleBodys[b].m_hangers;
+                for (int h = 0; h < hangers.Count; h++)
+                    hangers[h].ReadyAllAircraft();
+            }
+        }
+    }
+
     private static readonly WaitForSeconds k_repairBoostCostInterval = new WaitForSeconds(1f);
     private Coroutine m_repairBoostCostCoroutine;
 
-    public void StartRepairBoostCostLoop()
+    private void StartRepairBoostCostLoop()
     {
         if (m_repairBoostCostCoroutine != null) StopCoroutine(m_repairBoostCostCoroutine);
         m_repairBoostCostCoroutine = StartCoroutine(RepairBoostCostLoop());
     }
 
-    public void StopRepairBoostCostLoop()
+    private void StopRepairBoostCostLoop()
     {
         if (m_repairBoostCostCoroutine == null) return;
         StopCoroutine(m_repairBoostCostCoroutine);

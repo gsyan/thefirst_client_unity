@@ -12,7 +12,7 @@ public class ConfirmPopupConfig
     public string title;
     public string message;
     public string detailText;
-    public List<(string icon, string value)> resultRows;
+    public List<(string icon, string value, Color color)> resultRows;
     public bool resultRowsVertical; // true면 컨테이너당 1개씩 세로 배치
     public List<(string icon, string value)> pvpOpponentRows; // STATUS 섹션 (GeneralBright1 색)
     public RequireStruct require;
@@ -189,8 +189,6 @@ public class UIPopupConfirm : UIPopupBase
         long current = 0;
         if (cost.costType == ECostType.Mineral)
             current = ch != null ? ch.GetMineral() : 0;
-        else if (cost.costType == ECostType.TechPoint)
-            current = ch != null ? ch.GetExp() : 0;
         else if (cost.costType == ECostType.ModulePoint)
             current = ch != null ? ch.GetModulePoint() : 0;
         else if (cost.costType == ECostType.PvpPoint)
@@ -204,7 +202,7 @@ public class UIPopupConfirm : UIPopupBase
         return canAfford;
     }
 
-    private void BuildResultRows(List<(string icon, string value)> rows, bool vertical, ref int sectionIdx)
+    private void BuildResultRows(List<(string icon, string value, Color color)> rows, bool vertical, ref int sectionIdx)
     {
         if (rows == null || rows.Count <= 0)
             return;
@@ -269,7 +267,7 @@ public class UIPopupConfirm : UIPopupBase
     private static Color GetRewardColor(int rewardIndex)
     {
         if (rewardIndex == 0) return CommonUtility.PaletteColor("Mineral");
-        if (rewardIndex == 1) return CommonUtility.PaletteColor("TechPoint");
+        if (rewardIndex == 1) return CommonUtility.PaletteColor("Commander");
         if (rewardIndex == 2) return CommonUtility.PaletteColor("ModulePoint");
         return CommonUtility.PaletteColor("GeneralBright1");
     }
@@ -342,7 +340,6 @@ public class UIPopupConfirm : UIPopupBase
     private static Color GetCostColor(ECostType costType)
     {
         if (costType == ECostType.Mineral)     return CommonUtility.PaletteColor("Mineral");
-        if (costType == ECostType.TechPoint)   return CommonUtility.PaletteColor("TechPoint");
         if (costType == ECostType.ModulePoint) return CommonUtility.PaletteColor("ModulePoint");
         if (costType == ECostType.PvpPoint)    return CommonUtility.PaletteColor("PvpPoint");
         return Color.white;

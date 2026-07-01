@@ -95,10 +95,13 @@ public class DataTableCommanderLevelEditor : Editor
             {
                 string csvText = System.IO.File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
                 dataTable.LoadFromCsv(csvText);
+                if (m_dataTableZone != null)
+                    dataTable.ApplyRequireExpFromZone(m_dataTableZone);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
+                string expMsg = m_dataTableZone != null ? "\nRequire Exp 자동 계산 완료" : "\n※ DataTableZone 미연결 — Require Exp 미계산";
                 EditorUtility.DisplayDialog("Complete",
-                    $"Import 완료!\n커맨더 레벨: {dataTable.GetCommanderLevelDataList().Count}개", "OK");
+                    $"Import 완료!\n커맨더 레벨: {dataTable.GetCommanderLevelDataList().Count}개{expMsg}", "OK");
             }
         }
 

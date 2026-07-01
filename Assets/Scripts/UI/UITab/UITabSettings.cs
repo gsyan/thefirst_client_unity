@@ -41,7 +41,7 @@ public class UITabSettings : UITabBase
     [SerializeField] private Button   m_devConsoleButton;
     [SerializeField] private Button   m_testMineralButton;    
     [SerializeField] private Toggle   m_toggleMineral;
-    [SerializeField] private Toggle   m_toggleTechPoint;
+    [SerializeField] private Toggle   m_toggleCommander;
     [SerializeField] private Toggle   m_toggleModulePoint;
     [SerializeField] private Toggle   m_togglePvpPoint;
 
@@ -224,7 +224,7 @@ public class UITabSettings : UITabBase
 
         string mineral     = (m_toggleMineral     != null && m_toggleMineral.isOn     == true) ? totalMineral.ToString()     : "0";
         // 서버 addminerals 2번째 파라미터는 raw exp가 아닌 "1레벨 증가" 트리거 플래그
-        string levelUp     = (m_toggleTechPoint   != null && m_toggleTechPoint.isOn   == true) ? "1" : "0";
+        string levelUp     = (m_toggleCommander   != null && m_toggleCommander.isOn   == true) ? "1" : "0";
         string modulePoint = (m_toggleModulePoint != null && m_toggleModulePoint.isOn == true) ? totalModulePoint.ToString() : "0";
         string pvpPoint    = (m_togglePvpPoint    != null && m_togglePvpPoint.isOn    == true) ? "100" : "0";
 

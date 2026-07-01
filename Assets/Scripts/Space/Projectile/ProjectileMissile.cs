@@ -46,12 +46,23 @@ public class ProjectileMissile : ProjectileBase
     [SerializeField] private BurstNozzle m_burstLeft;
     [SerializeField] private BurstNozzle m_burstRight;
 
+    private EngineFlameColorizer[] m_engineFlames;
+
     private void Awake()
     {
         m_rb = GetComponent<Rigidbody>();
         m_meshRenderer = GetComponentInChildren<MeshRenderer>();
         if (m_meshRenderer != null)
             m_halfLength = m_meshRenderer.bounds.size.z * 0.5f;
+
+        m_engineFlames = GetComponentsInChildren<EngineFlameColorizer>(true);
+    }
+
+    // 엔진 화염(꼬리/측면 노즐) 색상을 소속에 맞게 갱신 — 풀링 재사용 시마다 호출 필요
+    private void ApplyEngineFlameColor(bool isEnemy)
+    {
+        for (int i = 0; i < m_engineFlames.Length; i++)
+            m_engineFlames[i].SetEnemyColor(isEnemy);
     }
 
     public void SetPoolName(EPoolName poolName) { m_poolName = poolName; }
@@ -62,12 +73,13 @@ public class ProjectileMissile : ProjectileBase
         SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase);
         m_missileSource = (sourceModuleBase is ModuleHanger) ? EMissileSource.Aircraft : EMissileSource.Ship;
 
+        bool isEnemy = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy;
+        ApplyEngineFlameColor(isEnemy);
+
         // 함재기 미사일은 요격 대상에서 제외
         if (m_missileSource != EMissileSource.Aircraft)
-        {
-            bool isEnemy = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy;
             ObjectManager.Instance.RegisterMissile(this, isEnemy);
-        }
+
         m_missileSpeed = moduleData.projectileSpeed;
         m_silenceTime  = moduleData.silenceTime;
         m_splashRadius = moduleData.splashRadius * explosionMultiplier;
