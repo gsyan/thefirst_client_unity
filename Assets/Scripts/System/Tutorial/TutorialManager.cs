@@ -155,7 +155,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         }
 
         // UI 표시
-        m_tutorialUI?.ShowStep(step);
+        m_tutorialUI?.ShowStep(step, m_currentTutorial.tutorialId);
     }
 
     // 튜토리얼 완료
@@ -235,7 +235,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // 데이터 로드
     private TutorialData LoadTutorialData(string tutorialId)
     {
-        string path = $"DataTable/Tutorial/{tutorialId}";
+        string path = $"DataTable/{tutorialId}";
         return ResourceManager.Instance.Load<TutorialData>(path);
     }
 

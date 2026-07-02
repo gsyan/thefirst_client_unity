@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Tutorial_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 0ded921c495564e4396ea127f3f166c8, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 2876399026176
+    m_Localized: "Stellar Year 1592.\n\nAs humanity\u2019s civilization flourished,\na
+      war broke out between the AIs it had created."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2876445163520
+    m_Localized: 'One faction believed in diversity and coexistence.
+
+      The other
+      sought absolute order, ruled by a single, god-like AI.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2876453552128
+    m_Localized: 'As the endless war raged on,
+
+      human civilization was gradually
+      destroyed.
+
+      In the end, the God AI faction emerged victorious.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2876453552129
+    m_Localized: Before long, most of humanity vanished.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2876461940736
+    m_Localized: 'Yet, with the help of the AIs who stood for diversity,
+
+      a
+      small number of humans survived.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2876461940737
+    m_Localized: 'Divided among nearly a thousand ships,
+
+      they set out on an
+      unknown journey into deep space.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2876466135040
+    m_Localized: 'Hunted relentlessly by the fleets of the God AI,
+
+      they fight
+      to escape,'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2876470329344
+    m_Localized: "to survive, and to become the final spark of hope for humanity\u2019s
+      rebirth."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -234,7 +234,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             return;
         }
 
-        bool bTest = true;
+        bool bTest = false;
         if (bTest == true)
             PassTutorial();
         else

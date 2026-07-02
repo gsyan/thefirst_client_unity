@@ -1,5 +1,10 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 // 튜토리얼 트리거 타입
 public enum ETutorialTrigger
@@ -77,4 +82,183 @@ public class TutorialData : ScriptableObject
 
     [Header("스텝 목록")]
     public List<TutorialStep> steps = new List<TutorialStep>();
+
+    private static readonly string[] CSV_HEADER = new string[]
+    {
+        "stepId", "message", "triggerType", "targetPanelName", "targetUIId",
+        "showArrow", "arrowDirection", "highlightTarget",
+        "textBoxOffsetX", "textBoxOffsetY", "textBoxSizeX", "textBoxSizeY", "textBoxPositionX", "textBoxPositionY",
+        "autoNextDelay", "preActionPanelName",
+        "conditionType", "conditionThreshold", "conditionCount", "targetModuleType"
+    };
+
+    public string ExportToCsv()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine(string.Join(",", CSV_HEADER));
+
+        foreach (TutorialStep step in steps)
+        {
+            string[] fields = new string[]
+            {
+                CsvEscape(step.stepId),
+                CsvEscape(step.message),
+                CsvEscape(step.triggerType.ToString()),
+                CsvEscape(step.targetPanelName),
+                CsvEscape(step.targetUIId),
+                CsvEscape(step.showArrow.ToString()),
+                CsvEscape(step.arrowDirection.ToString()),
+                CsvEscape(step.highlightTarget.ToString()),
+                CsvEscape(step.textBoxOffset.x.ToString()),
+                CsvEscape(step.textBoxOffset.y.ToString()),
+                CsvEscape(step.textBoxSize.x.ToString()),
+                CsvEscape(step.textBoxSize.y.ToString()),
+                CsvEscape(step.textBoxPosition.x.ToString()),
+                CsvEscape(step.textBoxPosition.y.ToString()),
+                CsvEscape(step.autoNextDelay.ToString()),
+                CsvEscape(step.preActionPanelName),
+                CsvEscape(step.conditionType.ToString()),
+                CsvEscape(step.conditionThreshold.ToString()),
+                CsvEscape(step.conditionCount.ToString()),
+                CsvEscape(step.targetModuleType.ToString())
+            };
+            sb.AppendLine(string.Join(",", fields));
+        }
+
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(this);
+#endif
+        return sb.ToString();
+    }
+
+    public void ImportFromCsv(string csv)
+    {
+        List<List<string>> rows = ParseCsv(csv);
+        if (rows.Count == 0) return;
+
+        List<TutorialStep> imported = new List<TutorialStep>();
+        for (int i = 1; i < rows.Count; i++)
+        {
+            List<string> cols = rows[i];
+            if (cols.Count < CSV_HEADER.Length) continue;
+            if (string.IsNullOrEmpty(cols[0])) continue;
+
+            TutorialStep step = new TutorialStep();
+            step.stepId = cols[0];
+            step.message = cols[1];
+            System.Enum.TryParse(cols[2], out step.triggerType);
+            step.targetPanelName = cols[3];
+            step.targetUIId = cols[4];
+            bool.TryParse(cols[5], out step.showArrow);
+            System.Enum.TryParse(cols[6], out step.arrowDirection);
+            bool.TryParse(cols[7], out step.highlightTarget);
+
+            float offsetX, offsetY, sizeX, sizeY, posX, posY, autoNextDelay, conditionThreshold;
+            float.TryParse(cols[8], out offsetX);
+            float.TryParse(cols[9], out offsetY);
+            float.TryParse(cols[10], out sizeX);
+            float.TryParse(cols[11], out sizeY);
+            float.TryParse(cols[12], out posX);
+            float.TryParse(cols[13], out posY);
+            step.textBoxOffset = new Vector2(offsetX, offsetY);
+            step.textBoxSize = new Vector2(sizeX, sizeY);
+            step.textBoxPosition = new Vector2(posX, posY);
+
+            float.TryParse(cols[14], out autoNextDelay);
+            step.autoNextDelay = autoNextDelay;
+            step.preActionPanelName = cols[15];
+
+            System.Enum.TryParse(cols[16], out step.conditionType);
+            float.TryParse(cols[17], out conditionThreshold);
+            step.conditionThreshold = conditionThreshold;
+            int.TryParse(cols[18], out step.conditionCount);
+            System.Enum.TryParse(cols[19], out step.targetModuleType);
+
+            imported.Add(step);
+        }
+
+        steps = imported;
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(this);
+#endif
+    }
+
+    private static string CsvEscape(string field)
+    {
+        if (string.IsNullOrEmpty(field)) return string.Empty;
+
+        bool needsQuote = field.IndexOf(',') >= 0 || field.IndexOf('"') >= 0 || field.IndexOf('\n') >= 0 || field.IndexOf('\r') >= 0;
+        if (needsQuote == false) return field;
+
+        return "\"" + field.Replace("\"", "\"\"") + "\"";
+    }
+
+    // 따옴표로 감싼 필드 안의 줄바꿈/쉼표를 지원하는 CSV 파서
+    private static List<List<string>> ParseCsv(string csv)
+    {
+        List<List<string>> rows = new List<List<string>>();
+        List<string> currentRow = new List<string>();
+        StringBuilder field = new StringBuilder();
+        bool inQuotes = false;
+
+        for (int i = 0; i < csv.Length; i++)
+        {
+            char c = csv[i];
+
+            if (inQuotes == true)
+            {
+                if (c == '"')
+                {
+                    if (i + 1 < csv.Length && csv[i + 1] == '"')
+                    {
+                        field.Append('"');
+                        i++;
+                    }
+                    else
+                    {
+                        inQuotes = false;
+                    }
+                }
+                else
+                {
+                    field.Append(c);
+                }
+            }
+            else
+            {
+                if (c == '"')
+                {
+                    inQuotes = true;
+                }
+                else if (c == ',')
+                {
+                    currentRow.Add(field.ToString());
+                    field.Clear();
+                }
+                else if (c == '\r')
+                {
+                    // 다음 \n에서 처리
+                }
+                else if (c == '\n')
+                {
+                    currentRow.Add(field.ToString());
+                    field.Clear();
+                    rows.Add(currentRow);
+                    currentRow = new List<string>();
+                }
+                else
+                {
+                    field.Append(c);
+                }
+            }
+        }
+
+        if (field.Length > 0 || currentRow.Count > 0)
+        {
+            currentRow.Add(field.ToString());
+            rows.Add(currentRow);
+        }
+
+        return rows;
+    }
 }

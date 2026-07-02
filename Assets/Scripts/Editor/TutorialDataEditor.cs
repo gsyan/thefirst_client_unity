@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEditor;
+using System.IO;
 
 [CustomEditor(typeof(TutorialData))]
 public class TutorialDataEditor : Editor
 {
+    private const string CSV_FOLDER = "Assets/Resources/DataTable/Tutorial";
+
     private SerializedProperty m_tutorialId;
     private SerializedProperty m_tutorialName;
     private SerializedProperty m_priority;
@@ -17,6 +20,46 @@ public class TutorialDataEditor : Editor
         m_tutorialName = serializedObject.FindProperty("tutorialName");
         m_priority = serializedObject.FindProperty("priority");
         m_steps = serializedObject.FindProperty("steps");
+    }
+
+    private void DrawCsvButtons()
+    {
+        TutorialData tutorialData = (TutorialData)target;
+        string csvPath = CSV_FOLDER + "/datatable_tutorial_" + tutorialData.tutorialId + ".csv";
+
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.LabelField("CSV Export / Import", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField(csvPath, EditorStyles.miniLabel);
+        EditorGUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Export CSV"))
+        {
+            File.WriteAllText(csvPath, tutorialData.ExportToCsv(), System.Text.Encoding.UTF8);
+            AssetDatabase.Refresh();
+            EditorUtility.DisplayDialog("완료", $"CSV Export 완료:\n{csvPath}", "OK");
+        }
+
+        if (GUILayout.Button("Import CSV"))
+        {
+            if (File.Exists(csvPath) == false)
+            {
+                EditorUtility.DisplayDialog("실패", $"파일이 없습니다:\n{csvPath}", "OK");
+            }
+            else
+            {
+                string csv = File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
+                Undo.RecordObject(tutorialData, "Import Tutorial CSV");
+                tutorialData.ImportFromCsv(csv);
+                EditorUtility.SetDirty(tutorialData);
+                AssetDatabase.SaveAssets();
+                UpdateFoldouts();
+                EditorUtility.DisplayDialog("완료", $"CSV Import 완료\n{tutorialData.steps.Count}개 스텝 로드됨", "OK");
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.Space(5);
     }
 
     private void UpdateFoldouts()
@@ -37,6 +80,8 @@ public class TutorialDataEditor : Editor
     {
         serializedObject.Update();
         UpdateFoldouts();
+
+        DrawCsvButtons();
 
         // 기본 정보
         EditorGUILayout.PropertyField(m_tutorialId);

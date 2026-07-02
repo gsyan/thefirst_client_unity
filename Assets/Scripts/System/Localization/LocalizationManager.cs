@@ -33,12 +33,20 @@ public class LocalizationManager : MonoSingleton<LocalizationManager>
     }
 
     // 키로 로컬라이즈된 문자열 가져오기
+    // GetLocalizedString은 키가 없을 때 null이 아니라 "No translation found..." 문자열을 반환하므로
+    // 테이블에서 엔트리 존재 여부를 직접 확인해서 키로 폴백한다
     public string Get(string key, string table = DEFAULT_TABLE)
     {
         if (string.IsNullOrEmpty(key)) return string.Empty;
 
-        var entry = LocalizationSettings.StringDatabase.GetLocalizedString(table, key);
-        return string.IsNullOrEmpty(entry) ? key : entry;
+        var stringTable = LocalizationSettings.StringDatabase.GetTable(table);
+        if (stringTable == null) return key;
+
+        var entry = stringTable.GetEntry(key);
+        if (entry == null) return key;
+
+        string value = entry.GetLocalizedString();
+        return string.IsNullOrEmpty(value) ? key : value;
     }
 
     // 포맷 지원: Get("welcome", playerName)

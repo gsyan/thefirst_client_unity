@@ -1,0 +1,18 @@
+﻿stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,highlightTarget,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,conditionType,conditionThreshold,conditionCount,targetModuleType
+story_first_1,"Stellar Year 1592.
+
+As humanity’s civilization flourished,
+a war broke out between the AIs it had created.",AnyClick,,,False,Up,False,0,0,800,0,0,0,0,,None,90,3,none
+story_first_2,"One faction believed in diversity and coexistence.
+The other sought absolute order, ruled by a single, god-like AI.",AnyClick,,,False,Up,False,0,0,0,0,0,0,0,,None,90,3,none
+story_first_3,"As the endless war raged on,
+human civilization was gradually destroyed.
+In the end, the God AI faction emerged victorious.",AnyClick,,,False,Up,False,0,0,0,0,0,0,0,,None,90,3,none
+story_first_4,"Before long, most of humanity vanished.",AnyClick,,,False,Up,False,0,0,0,0,0,0,0,,None,90,3,none
+story_first_5,"Yet, with the help of the AIs who stood for diversity,
+a small number of humans survived.",AnyClick,,,False,Up,False,0,0,0,0,0,0,0,,None,90,3,none
+story_first_6,"Divided among nearly a thousand ships,
+they set out on an unknown journey into deep space.",AnyClick,,,False,Up,False,0,0,0,0,0,0,0,,None,90,3,none
+story_first_7,"Hunted relentlessly by the fleets of the God AI,
+they fight to escape,",AnyClick,,,False,Up,False,0,0,0,0,0,0,0,,None,90,3,none
+story_first_8,"to survive, and to become the final spark of hope for humanity’s rebirth.",AnyClick,,,False,Up,False,0,0,0,0,0,0,0,,None,90,3,none

@@ -17,6 +17,7 @@ public class TutorialUI : UIPopupBase
     [SerializeField] private float m_borderPadding = 8f;
 
     private TutorialStep m_currentStep;
+    private string m_currentTutorialId;
     private RectTransform m_targetRect;
     private Coroutine m_autoNextCoroutine;
     private Coroutine m_waitTargetCoroutine;
@@ -33,9 +34,10 @@ public class TutorialUI : UIPopupBase
     }
 
     // 스텝 표시
-    public void ShowStep(TutorialStep step)
+    public void ShowStep(TutorialStep step, string tutorialId)
     {
         m_currentStep = step;
+        m_currentTutorialId = tutorialId;
 
         // 진행 중인 코루틴 취소
         if (m_autoNextCoroutine != null)
@@ -93,12 +95,17 @@ public class TutorialUI : UIPopupBase
         if (m_targetRect != null)
             Canvas.ForceUpdateCanvases();
 
-        // 텍스트 표시 (로컬라이제이션 적용 - message를 키로 사용, 키가 없으면 그대로 표시)
+        // 텍스트 표시 (로컬라이제이션 적용 - tutorialId_stepId를 키로 사용, 키가 없으면 message를 그대로 표시)
         if (m_textBox != null)
         {
-            string message = LocalizationManager.Instance != null
-                ? LocalizationManager.Instance.Get(step.message)
-                : step.message;
+            string localizationKey = m_currentTutorialId + "_" + step.stepId;
+            string message = step.message;
+            if (LocalizationManager.Instance != null)
+            {
+                string localized = LocalizationManager.Instance.Get(localizationKey, "Tutorial");
+                if (localized != localizationKey)
+                    message = localized;
+            }
             m_textBox.ShowMessage(message, step.textBoxOffset, m_targetRect, step.textBoxSize, step.textBoxPosition);
         }
 
