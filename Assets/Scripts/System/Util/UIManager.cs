@@ -479,6 +479,16 @@ public class UIManager : MonoSingleton<UIManager>
         );
     }
 
+    // 보상코드 입력 팝업
+    public void ShowRedeemCodePopup()
+    {
+        UIPopupRedeemCode popup = GetOrCreatePopup<UIPopupRedeemCode>("UIPopupRedeemCode", EPopupLayer.Normal);
+        if (popup == null) return;
+
+        ReplacePopup(popup, EPopupLayer.Normal);
+        popup.ShowPopupRedeemCode(onClose: () => CloseTopPopup(EPopupLayer.Normal));
+    }
+
     // 외부 라이센스 고지 팝업
     public void ShowLicensePopup()
     {

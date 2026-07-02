@@ -604,6 +604,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.RenameCommanderAsync(request), onComplete));
     }
 
+    public void RedeemCode(RedeemCodeRequest request, Action<ApiResponse<RedeemCodeResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.RedeemCodeAsync(request), onComplete));
+    }
+
     public void AddShip(AddShipRequest request, System.Action<ApiResponse<AddShipResponse>> onComplete)
     {
         if (m_bConnected == false) return;
@@ -686,6 +692,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.ModuleResetMineralAsync(request), onComplete));
+    }
+
+    public void FleetResetAllInvestedMineral(FleetResetAllInvestedMineralRequest request, Action<ApiResponse<FleetResetAllInvestedMineralResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.FleetResetAllInvestedMineralAsync(request), onComplete));
     }
 
 

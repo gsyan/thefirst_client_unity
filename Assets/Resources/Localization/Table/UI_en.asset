@@ -940,6 +940,23 @@ MonoBehaviour:
     m_Localized: Module Grade
     m_Metadata:
       m_Items: []
+  - m_Id: 52355318322954240
+    m_Localized: Code redeemed successfully
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52355318373285888
+    m_Localized: REDEEM CODE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52375965195436032
+    m_Localized: RESET ALL INVESTED MINERAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52375965233184768
+    m_Localized: All modules across your fleet will be reset and the invested mineral
+      will be fully refunded. Continue?
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

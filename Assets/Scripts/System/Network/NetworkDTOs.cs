@@ -213,6 +213,22 @@ public class CommanderRenameResponse
     public string commanderName;
     public int nameChangeCount;  // 변경 후 남은 횟수
 }
+
+[System.Serializable]
+public class RedeemCodeRequest
+{
+    public string code;
+}
+
+[System.Serializable]
+public class RedeemCodeResponse
+{
+    // 보상타입별 필드를 옵셔널로 추가해나가는 방식 (ClaimZoneRewardResponse 패턴 참고)
+    public int commanderLevel;
+    public int exp;
+    public int modulePoint;
+    public int modulePointMaxGot;
+}
 #endregion
 
 #region Development Data Classes ##############################################################################
@@ -363,6 +379,20 @@ public class ModuleResetResponse
     public bool isModuleRemoved;
     public bool isShipRemoved;
     public long removedShipId;
+}
+
+[System.Serializable]
+public class FleetResetAllInvestedMineralRequest
+{
+    public long fleetId;
+}
+
+[System.Serializable]
+public class FleetResetAllInvestedMineralResponse
+{
+    public int mineralRemain;
+    public int totalRefundedMineral;
+    public FleetInfo updatedFleetInfo;
 }
 
 [System.Serializable]

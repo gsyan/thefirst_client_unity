@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class UIResourceBar : MonoBehaviour
 {
+    [SerializeField] private Button  m_resetMineralInvestedButton;
     [SerializeField] private TMP_Text  m_textMineralCurrent;
     [SerializeField] private Image     m_imageMineralInvested;
     [SerializeField] private TMP_Text  m_textMineralInvested;
@@ -49,6 +50,9 @@ public class UIResourceBar : MonoBehaviour
             m_pvpDdayColorBright = Color.HSVToRGB(h, s, Mathf.Min(v * 2f, 1f));
         }
 
+        if (m_resetMineralInvestedButton != null)
+            m_resetMineralInvestedButton.onClick.AddListener(OnResetMineralInvestedButtonClicked);
+
         var commander = DataManager.Instance.m_currentCommander;
         if (commander == null) return;
 
@@ -66,6 +70,48 @@ public class UIResourceBar : MonoBehaviour
         EventManager.Unsubscribe_ModulePointChanged(OnModulePointChanged);
         EventManager.Unsubscribe_PvpPointChanged(OnPvpPointChanged);
         EventManager.Unsubscribe_InvestedMineralChanged(OnInvestedMineralChanged);
+    }
+
+    private void OnResetMineralInvestedButtonClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        if (m_displayedInvestedMineral <= 0) return;
+
+        var loc = LocalizationManager.Instance;
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title        = loc.Get("UIPopupMessage_ResetAllInvestedMineralTitle"),
+            message      = loc.Get("UIPopupMessage_ResetAllInvestedMineralMessage"),
+            refundAmount = m_displayedInvestedMineral,
+            onConfirm    = SendResetAllInvestedMineral,
+            onCancel     = () => { },
+        });
+    }
+
+    private void SendResetAllInvestedMineral()
+    {
+        SpaceFleet playerFleet = ObjectManager.Instance.m_myFleet;
+        if (playerFleet == null || playerFleet.m_fleetInfo == null) return;
+
+        var request = new FleetResetAllInvestedMineralRequest { fleetId = playerFleet.m_fleetInfo.id };
+        NetworkManager.Instance.FleetResetAllInvestedMineral(request, OnResetAllInvestedMineralResponse);
+    }
+
+    private void OnResetAllInvestedMineralResponse(ApiResponse<FleetResetAllInvestedMineralResponse> response)
+    {
+        if (response == null || response.errorCode != 0)
+        {
+            Debug.LogWarning($"[UIResourceBar] FleetResetAllInvestedMineral 실패: {ErrorCodeMapping.GetMessage(response != null ? response.errorCode : 0)}");
+            return;
+        }
+
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander != null)
+            commander.UpdateMineral(response.data.mineralRemain);
+
+        SpaceFleet playerFleet = ObjectManager.Instance.m_myFleet;
+        if (playerFleet != null && response.data.updatedFleetInfo != null)
+            playerFleet.ApplyMineralReset(response.data.updatedFleetInfo);
     }
 
     // 최초 1회 직접 갱신 — 애니메이션 없음

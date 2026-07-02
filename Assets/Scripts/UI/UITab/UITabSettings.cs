@@ -8,11 +8,13 @@ using TMPro;
 
 public class UITabSettings : UITabBase
 {
-    
+    [SerializeField] private TMP_Text m_versionText;
+
     [Header("계정")]
     [SerializeField] private TMP_Text m_sectionAccountText;
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private Button m_renameCommanderButton;
+    [SerializeField] private Button m_redeemCodeButton;
     [SerializeField] private Button m_googleAccountButton;  // 연동/해제 공용 버튼
     [SerializeField] private TMP_Text m_googleAccountButtonText;
     [SerializeField] private Button m_logoutButton;
@@ -68,6 +70,9 @@ public class UITabSettings : UITabBase
         if (m_renameCommanderButton != null)
             m_renameCommanderButton.onClick.AddListener(OnRenameCommanderButtonClicked);
 
+        if (m_redeemCodeButton != null)
+            m_redeemCodeButton.onClick.AddListener(() => UIManager.Instance.ShowRedeemCodePopup());
+
         if (m_googleAccountButton != null)
             m_googleAccountButton.onClick.AddListener(OnGoogleAccountButtonClicked);
 
@@ -96,6 +101,13 @@ public class UITabSettings : UITabBase
         InitializeSoundSettings();
         RefreshGoogleLinkUI();
         RefreshStaticLocText();
+        RefreshVersionText();
+    }
+
+    private void RefreshVersionText()
+    {
+        if (m_versionText == null) return;
+        m_versionText.text = "ver-" + Application.version;
     }
 
     private void InitializeSoundSettings()
@@ -188,6 +200,7 @@ public class UITabSettings : UITabBase
 
         // 버튼 라벨
         SetButtonLocText(m_renameCommanderButton, "UITabSettings_NameChange");
+        SetButtonLocText(m_redeemCodeButton,      "UITabSettings_RedeemCode");
         SetButtonLocText(m_logoutButton,          "UITabSettings_Logout");
         SetButtonLocText(m_licenseButton,         "UITabSettings_License");
     }

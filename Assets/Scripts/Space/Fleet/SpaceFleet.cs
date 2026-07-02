@@ -394,6 +394,8 @@ public class SpaceFleet : MonoBehaviour
 
             EventManager.Trigger_ShipStatsChanged(ship);
         }
+
+        NotifyInvestedMineralChanged();
     }
 
     private void ApplyMineralResetBody(SpaceShip ship, ModuleBodyInfo updatedBody)

@@ -371,6 +371,10 @@ MonoBehaviour:
     m_Key: ui_rename_char_format_err
     m_Metadata:
       m_Items: []
+  - m_Id: 52355318322954240
+    m_Key: UIPopupRedeemCode_Success
+    m_Metadata:
+      m_Items: []
   - m_Id: 8795249610457088
     m_Key: char_default_name
     m_Metadata:
@@ -549,6 +553,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 31773314347040769
     m_Key: UITabSettings_NameChange
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52355318373285888
+    m_Key: UITabSettings_RedeemCode
     m_Metadata:
       m_Items: []
   - m_Id: 31783074207236097
@@ -841,6 +849,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 46939500504285184
     m_Key: UIPopupMessage_MineralResetMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52375965195436032
+    m_Key: UIPopupMessage_ResetAllInvestedMineralTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52375965233184768
+    m_Key: UIPopupMessage_ResetAllInvestedMineralMessage
     m_Metadata:
       m_Items: []
   - m_Id: 48702146362605568

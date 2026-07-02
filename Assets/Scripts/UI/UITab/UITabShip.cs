@@ -134,11 +134,38 @@ public class UITabShip : UITabBase
         EventManager.Subscribe_ShipUpdateHP(UpdateShipHeader);
         EventManager.Subscribe_SpaceShipModuleSelected(OnSpaceShipModuleSelected);
         EventManager.Subscribe_ModulePointChanged(OnModulePointChanged);
+        EventManager.Subscribe_ShipStatsChanged(OnShipStatsChangedRefreshModules);
     }
 
     private void OnDestroy()
     {
         EventManager.Unsubscribe_ModulePointChanged(OnModulePointChanged);
+        EventManager.Unsubscribe_ShipStatsChanged(OnShipStatsChangedRefreshModules);
+    }
+
+    // 함대 전체 리셋 등 외부에서 함선 모듈이 갱신된 경우 — 현재 선택 중인 함선이면 모듈 UI 재구성
+    // 기존 선택 모듈 오브젝트가 리셋으로 파괴/교체됐을 수 있어 유효성 확인 후 필요 시에만 기본 모듈로 재선택
+    private void OnShipStatsChangedRefreshModules(SpaceShip ship)
+    {
+        if (bShow == false) return;
+        if (ship == null || ship != m_selectedShip) return;
+        if (ship.m_moduleBodys.Count == 0) return;
+
+        if (m_selectedModule == null)
+        {
+            if (ship.m_moduleBodys[0].m_beams.Count > 0)
+                m_selectedModule = ship.m_moduleBodys[0].m_beams[0];
+            else if (ship.m_moduleBodys[0].m_missiles.Count > 0)
+                m_selectedModule = ship.m_moduleBodys[0].m_missiles[0];
+            else
+                m_selectedModule = ship.m_moduleBodys[0];
+
+            EventManager.TriggerSpaceShipModuleSelected(m_selectedShip, m_selectedModule);
+        }
+
+        UpdateShipHeader();
+        UpdateModuleStatsDisplay();
+        PopulateModuleSelectButtons();
     }
 
     // ─────────────────────────────────────────────

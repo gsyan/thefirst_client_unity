@@ -1227,6 +1227,9 @@ public class SpaceShip : MonoBehaviour
             {
                 newModule.SetInvestedModulePoint(investedModulePoint);
                 newModule.SetInvestedMineral(investedMineral);
+
+                if (investedMineral > 0 && m_ownerFleet != null)
+                    m_ownerFleet.NotifyInvestedMineralChanged();
             }
         }
 

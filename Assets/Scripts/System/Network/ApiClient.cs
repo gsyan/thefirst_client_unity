@@ -361,6 +361,22 @@ public class ApiClient
         return response;
     }
 
+    public async Task<ApiResponse<RedeemCodeResponse>> RedeemCodeAsync(RedeemCodeRequest redeemCodeRequest)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<RedeemCodeResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(redeemCodeRequest);
+
+        using var request = new UnityWebRequest($"{m_baseUrl}/redeem-code", "POST");
+        request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(request);
+        return JsonConvert.DeserializeObject<ApiResponse<RedeemCodeResponse>>(request.downloadHandler.text);
+    }
+
     public async Task<ApiResponse<List<CommanderResponse>>> GetAllCommandersAsync()
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<List<CommanderResponse>>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
@@ -792,6 +808,21 @@ public class ApiClient
 
         await SendRequestAsync(webRequest);
         return JsonConvert.DeserializeObject<ApiResponse<ModuleResetResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<FleetResetAllInvestedMineralResponse>> FleetResetAllInvestedMineralAsync(FleetResetAllInvestedMineralRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<FleetResetAllInvestedMineralResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/reset-all-invested-mineral", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<FleetResetAllInvestedMineralResponse>>(webRequest.downloadHandler.text);
     }
     #endregion
 
