@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cec351f6132315419d794e5ec26a741, type: 3}
-  m_Name: Tutorial_FirstPlay_Complete
+  m_Name: Tutorial_MineralModeUnlock
   m_EditorClassIdentifier: 
-  tutorialId: Tutorial_FirstPlay_Complete
-  tutorialName: "\uCD08\uBC18 \uD29C\uD1A0\uB9AC\uC5BC \uC644\uB8CC"
+  tutorialId: Tutorial_MineralModeUnlock
+  tutorialName: "\uBBF8\uB124\uB784 \uAC15\uD654 \uC5B8\uB77D"
   priority: 0
   steps:
   - stepId: step1
-    message: Tutorial_FirstPlay_Escape
+    message: Tutorial_MineralUnlock_Intro
     triggerType: 1
     targetPanelName: 
     targetUIId: 
@@ -36,7 +36,45 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step2
-    message: Tutorial_FirstPlay_Complete
+    message: Tutorial_MineralUnlock_ToggleButton
+    triggerType: 0
+    targetPanelName: TabShip
+    targetUIId: ResourceChangeButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: UIPanelSpace
+    preActionTabName: tab_ship
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step3
+    message: Tutorial_MineralUnlock_ExplainUiPosition
+    triggerType: 1
+    targetPanelName: UIResourceBarContainer
+    targetUIId: TextMineralInvested
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step4
+    message: Tutorial_MineralUnlock_ExplainCost
     triggerType: 1
     targetPanelName: 
     targetUIId: 
@@ -51,25 +89,6 @@ MonoBehaviour:
     preActionPanelName: 
     preActionTabName: 
     conditionType: 0
-    conditionThreshold: 90
-    conditionCount: 3
-    targetModuleType: 0
-  - stepId: step3
-    message: 
-    triggerType: 3
-    targetPanelName: 
-    targetUIId: 
-    showArrow: 0
-    arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
-    textBoxOffset: {x: 0, y: 0}
-    textBoxSize: {x: 800, y: 0}
-    textBoxPosition: {x: 0, y: -500}
-    autoNextDelay: 0
-    preActionPanelName: 
-    preActionTabName: 
-    conditionType: 13
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0

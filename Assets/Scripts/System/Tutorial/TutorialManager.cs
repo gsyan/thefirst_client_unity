@@ -9,6 +9,9 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private const string TUTORIAL_UI_PATH = "Prefabs/UI/Tutorial/UITutorial";
     private const string PROGRESS_CATEGORY = "tutorial";
 
+    // 모듈 미네랄 강화 모드 언락 — 이 튜토리얼의 완료 여부 자체를 언락 플래그로 사용 (별도 서버 필드 불필요)
+    public const string MINERAL_MODE_UNLOCK_TUTORIAL_ID = "Tutorial_MineralModeUnlock";
+
     private TutorialData m_currentTutorial;
     private int m_currentStepIndex;
     private bool m_isPlaying;
@@ -27,9 +30,13 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private SpaceFleet m_cinematicFleetA;
     private SpaceShip m_pendingNewShip; // ShipArrivedAtFormation 조건이 대기할 함선 (UITabFleet에서 함선 생성 직후 등록)
     private SpaceFleet m_escapeFleet;   // EscapeShipDistanceFromFlagship 조건이 스폰/추적하는 탈출 함대 — 이후 실제 유저 함대의 기함이 됨
+    private Coroutine m_escapeFleetMoveCoroutine; // m_customConditionCoroutine과 별개로 관리 — step 전환(StopTutorialCondition)에 끊기지 않고 계속 이동
+    private float m_escapeFleetSpeedMultiplier = 1f; // 워프 연출 시 MoveEscapeFleetForward 재시작 없이 속도만 배가
+    private WarpEffectShip m_escapeWarpEffect; // Tutorial_FirstPlay_Complete까지 유지했다가 CleanupEscapeFleet()에서 정지
     private const float ESCAPE_SHIP_SPEED = 10f;
     private readonly List<SpaceFleet> m_enemyWaveFleets = new List<SpaceFleet>(); // EnemyWave1/2 조건이 스폰한 적 함대 목록
     private readonly Dictionary<int, SpaceFleet> m_waveIndexOccupancy = new Dictionary<int, SpaceFleet>(); // positionIndex → 그 자리를 차지한 함대 (전멸하면 자리 반납)
+    private static readonly WaitForSeconds k_cameraTransitionWait = new WaitForSeconds(3f); // 카메라가 탈출 함선으로 넘어갈 시간
 
     // 튜토리얼 완료 이벤트 (tutorialId 전달)
     public event System.Action<string> OnTutorialCompleted;
@@ -82,6 +89,19 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         {
             Debug.LogWarning($"[Tutorial] 서버 로드 실패: {e.Message}");
         }
+    }
+
+    // 모듈 미네랄 강화 모드 언락 여부 — 이미 언락됐으면 true
+    public bool IsMineralModeUnlocked()
+    {
+        return IsTutorialCompleted(MINERAL_MODE_UNLOCK_TUTORIAL_ID);
+    }
+
+    // 특정 스테이지 이후 전멸/후퇴 시 호출 — 아직 언락 전이면 설명 튜토리얼 시작(완료되면 그 자체가 언락 플래그)
+    public void TryUnlockMineralMode()
+    {
+        if (IsMineralModeUnlocked() == true) return;
+        StartTutorial(MINERAL_MODE_UNLOCK_TUTORIAL_ID);
     }
 
     // 튜토리얼 시작 (콜백 버전)
@@ -320,6 +340,8 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             {
                 SpaceFleet siegfriedFleet = ObjectManager.Instance.GetMyFleet();
                 m_escapeFleet = TutorialCinematicController.SpawnEscapeFleet(siegfriedFleet);
+                // 이동은 별도 코루틴으로 분리 — step 전환 시 StopTutorialCondition()에 끊기지 않고 계속 이동
+                m_escapeFleetMoveCoroutine = StartCoroutine(MoveEscapeFleetForward());
                 m_customConditionCoroutine = StartCoroutine(CheckEscapeShipDistance(siegfriedFleet, step.conditionThreshold));
                 break;
             }
@@ -346,6 +368,15 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             case ETutorialConditionType.FlagshipHealthBelowPercent:
                 // conditionThreshold는 CSV에 비율(0~1)로 직접 기재 — 런타임 변환 없이 그대로 사용
                 m_customConditionCoroutine = StartCoroutine(CheckFlagshipHealthBelowPercent(step.conditionThreshold));
+                break;
+
+            case ETutorialConditionType.SiegfriedFlagshipExplosion:
+                m_customConditionCoroutine = StartCoroutine(PlaySiegfriedFlagshipExplosion(step.conditionThreshold));
+                break;
+
+            case ETutorialConditionType.CleanupEscapeFleet:
+                CleanupEscapeFleet();
+                NextStep();
                 break;
         }
     }
@@ -468,7 +499,103 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         }
     }
 
-    // 탈출 함선을 기함 반대 방향으로 계속 이동시키며, 기함과의 거리가 threshold 이상 벌어질 때까지 대기
+    // 카메라를 탈출 함선으로 전환하고, 지크프리트 기함을 연출로 파괴한 뒤 waitSeconds초 대기 후 다음 스텝
+    private IEnumerator PlaySiegfriedFlagshipExplosion(float waitSeconds)
+    {
+        SpaceFleet siegfriedFleet = ObjectManager.Instance.GetMyFleet();
+        SpaceShip flagship = siegfriedFleet != null ? siegfriedFleet.GetFlagship() : null;
+
+        if (m_escapeFleet != null && CameraController.Instance != null)
+        {
+            CameraController.Instance.SetTargetOfCameraController(m_escapeFleet.transform);
+
+            // 탈출선 정면 기준 좌로 10도, 위로 10도 꺾인 각도 + 그 함선의 최대 줌
+            float escapeYaw = m_escapeFleet.transform.eulerAngles.y;
+            CameraController.Instance.SetTargetRotation(escapeYaw + 180f + 30f, +30f);
+
+            SpaceShip escapeShip = m_escapeFleet.GetFlagship();
+            if (escapeShip != null && escapeShip.m_moduleBodys.Count > 0 && escapeShip.m_moduleBodys[0] != null)
+            {
+                CameraController.Instance.ApplyZoomRangeFromShip(escapeShip);
+                CameraController.Instance.SetTargetZoom(escapeShip.m_moduleBodys[0].m_cameraMaxZoom);
+            }
+        }
+
+        // 카메라가 탈출 함선으로 넘어갈 시간을 벌어준 뒤 기함 폭발
+        yield return k_cameraTransitionWait;
+
+        if (flagship != null)
+            flagship.DestroyForCinematic();
+
+        // 워프 배속(SpaceFleet.SpawnApproachSpeedMult, 기존 워프 진입과 동일한 배율)으로 가속 + 워프 이펙트
+        // 탈출선은 화면 밖으로 사라지는 연출용일 뿐 실제 함대로 승격하지 않음 — Tutorial_FirstPlay_Complete까지 그대로 날아가다가
+        // CleanupEscapeFleet()(StartNormalPlay 직전)에서 한 번에 정리됨
+        SpaceShip escapeFlagship = m_escapeFleet != null ? m_escapeFleet.GetFlagship() : null;
+        if (escapeFlagship != null)
+        {
+            m_escapeFleetSpeedMultiplier = m_escapeFleet.SpawnApproachSpeedMult;
+
+            if (escapeFlagship.TryGetComponent(out m_escapeWarpEffect) == false)
+            {
+                m_escapeWarpEffect = escapeFlagship.gameObject.AddComponent<WarpEffectShip>();
+                m_escapeWarpEffect.InitializeWarpEffect();
+            }
+            m_escapeWarpEffect.StartFleetWarpIn();
+
+            // 카메라 lerp 추적 속도로는 워프 가속을 못 따라가 화면 밖으로 벗어나므로, 이 구간만 위치를 매 프레임 그대로 스냅
+            if (CameraController.Instance != null)
+                CameraController.Instance.SetInstantFollow(true);
+        }
+
+        yield return new WaitForSeconds(waitSeconds);
+
+        // 튜토리얼 전투를 위해 존재했던 적 함대/발사체/함재기 전부 정리 (탈출선/워프 이펙트/이동은 유지)
+        ObjectManager.Instance.RemoveAllEnemyFleets();
+        ObjectManager.Instance.CleanupAllProjectiles();
+        ObjectManager.Instance.DestroyAllAircraft();
+
+        // 지크프리트 잔존 함대만 여기서 제거 — 탈출선은 Tutorial_FirstPlay_Complete가 끝날 때까지 유지
+        ObjectManager.Instance.DestroyTutorialFleet(siegfriedFleet);
+
+        NextStep();
+    }
+
+    // Tutorial_FirstPlay_Complete까지 끝난 뒤(StartNormalPlay 직전) 탈출선/워프이펙트/이동 코루틴을 한 번에 정리
+    public void CleanupEscapeFleet()
+    {
+        if (m_escapeWarpEffect != null)
+        {
+            m_escapeWarpEffect.StopWarp();
+            m_escapeWarpEffect = null;
+        }
+
+        if (CameraController.Instance != null)
+            CameraController.Instance.SetInstantFollow(false);
+
+        if (m_escapeFleetMoveCoroutine != null)
+        {
+            StopCoroutine(m_escapeFleetMoveCoroutine);
+            m_escapeFleetMoveCoroutine = null;
+        }
+
+        if (m_escapeFleet != null)
+        {
+            TutorialCinematicController.DespawnCinematicFleet(m_escapeFleet);
+            m_escapeFleet = null;
+        }
+    }
+
+    // 탈출 함선을 계속 기존 방향/속도로 전진시킴 — step 전환과 무관하게 별도 코루틴으로 유지
+    private IEnumerator MoveEscapeFleetForward()
+    {
+        while (m_isPlaying && m_escapeFleet != null)
+        {
+            m_escapeFleet.transform.position += m_escapeFleet.transform.forward * (ESCAPE_SHIP_SPEED * m_escapeFleetSpeedMultiplier * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    // 기함과의 거리가 threshold 이상 벌어질 때까지 대기 (이동 자체는 MoveEscapeFleetForward가 담당)
     private IEnumerator CheckEscapeShipDistance(SpaceFleet siegfriedFleet, float threshold)
     {
         while (m_isPlaying)
@@ -478,8 +605,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
                 yield return null;
                 continue;
             }
-
-            m_escapeFleet.transform.position += m_escapeFleet.transform.forward * ESCAPE_SHIP_SPEED * Time.deltaTime;
 
             SpaceShip flagship = siegfriedFleet.GetFlagship();
             if (flagship != null)

@@ -147,8 +147,11 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
         m_onClick = onClick;
         m_isFullScreenClickable = clickable;
 
+        // 트리거 타입과 무관하게 항상 활성화 — 배경 UI(탭 버튼 등)로 클릭이 새는 것을 항상 차단하기 위함.
+        // hasHole=true인 스텝에서는 IsRaycastLocationValid가 hole 영역만 통과시키므로 대상 UI 클릭은 그대로 동작함.
+        // onClick이 null이면(clickable=false) 클릭해도 그냥 소비만 되고 아무 동작 안 함.
         if (m_fullScreenButton != null)
-            m_fullScreenButton.gameObject.SetActive(clickable);
+            m_fullScreenButton.gameObject.SetActive(true);
 
         // 항상 raycastTarget 활성화 (ICanvasRaycastFilter로 구멍 영역 제어)
         if (m_maskImage != null)

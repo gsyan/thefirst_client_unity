@@ -6,6 +6,7 @@ using UnityEngine;
 public class PoolManager
 {
     private readonly Dictionary<EPoolName, object> m_pools = new();
+    private readonly Dictionary<EPoolName, Transform> m_poolParents = new();
     private Transform m_poolRoot;
     private MonoBehaviour m_owner;
 
@@ -30,6 +31,23 @@ public class PoolManager
 
         ObjectPool<T> pool = new ObjectPool<T>(prefab, initialSize, maxSize, poolParent);
         m_pools[poolName] = pool;
+        m_poolParents[poolName] = poolParent;
+    }
+
+    // 씬 전체를 스캔하는 FindObjectsByType 대신, 풀 하위(자식)만 순회해 활성 상태인 인스턴스만 반환
+    // (Get()으로 나간 인스턴스도 부모는 그대로 풀 하위에 남아있음 — SetActive만 바뀜)
+    public List<T> GetActiveInstances<T>(EPoolName poolName) where T : Component
+    {
+        List<T> result = new List<T>();
+        if (m_poolParents.TryGetValue(poolName, out Transform parent) == false) return result;
+
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.gameObject.activeSelf == true && child.TryGetComponent(out T component))
+                result.Add(component);
+        }
+        return result;
     }
 
     public T Get<T>(EPoolName poolName) where T : Component

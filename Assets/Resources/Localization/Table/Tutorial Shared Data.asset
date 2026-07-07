@@ -135,6 +135,22 @@ MonoBehaviour:
     m_Key: Tutorial_FirstPlay_Complete
     m_Metadata:
       m_Items: []
+  - m_Id: 1726800145022976
+    m_Key: Tutorial_MineralUnlock_Intro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1726800233103360
+    m_Key: Tutorial_MineralUnlock_ToggleButton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1726800233103361
+    m_Key: Tutorial_MineralUnlock_ExplainUiPosition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1726800233103362
+    m_Key: Tutorial_MineralUnlock_ExplainCost
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

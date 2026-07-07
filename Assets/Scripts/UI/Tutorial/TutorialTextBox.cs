@@ -28,7 +28,7 @@ public class TutorialTextBox : MonoBehaviour
             m_originalWidth = m_boxRect.sizeDelta.x;
     }
 
-    // 메시지 표시
+    // 메시지 표시 — message가 비어있으면 박스 자체를 숨김
     public void ShowMessage(string message, Vector2 offset, RectTransform targetUI, Vector2 customSize = default, Vector2 customPosition = default)
     {
         if (m_typewriterCoroutine != null)
@@ -36,6 +36,13 @@ public class TutorialTextBox : MonoBehaviour
             StopCoroutine(m_typewriterCoroutine);
             m_typewriterCoroutine = null;
         }
+
+        if (string.IsNullOrEmpty(message) == true)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        gameObject.SetActive(true);
 
         // 위치 설정
         if (m_boxRect != null)

@@ -215,6 +215,7 @@ public class SpaceFleet : MonoBehaviour
     }
     // 워프 진입 시 이동 속도 배율
     private float m_spawnApproachSpeedMult = 60f;
+    public float SpawnApproachSpeedMult => m_spawnApproachSpeedMult;
 
     public void AddShip(SpaceShip ship, bool bWarp = false, bool bFillNullSlot = false)
     {
@@ -861,6 +862,12 @@ public class SpaceFleet : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    // 교전 상대 후보로 유효한지(살아있고 전투 상태) — 함선/함재기/미사일 타겟 탐색에서 공용으로 사용
+    public bool IsValidCombatTarget()
+    {
+        return IsFleetAlive() == true && m_fleetState.IsBattleState() == true;
     }
 
     public SpaceShip GetRandomAliveShip()

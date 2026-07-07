@@ -541,33 +541,35 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         enemyTeamFleets.Clear();
     }
 
-    // 모든 활성 빔/미사일: 코루틴/이펙트 정리 후 풀 반환
+    // 모든 활성 빔/미사일: 코루틴/이펙트 정리 후 풀 반환 — 씬 전체 스캔 대신 풀 하위만 순회
     public void CleanupAllProjectiles()
     {
-        ProjectileBeam[] beams = FindObjectsByType<ProjectileBeam>(FindObjectsSortMode.None);
-        foreach (var beam in beams)
-        {
-            if (beam != null && beam.gameObject.activeSelf)
-                beam.ReturnToPool();
-        }
+        foreach (var beam in m_poolManager.GetActiveInstances<ProjectileBeam>(EPoolName.PROJECTILE_BEAM))
+            beam.ReturnToPool();
 
-        ProjectileMissile[] missiles = FindObjectsByType<ProjectileMissile>(FindObjectsSortMode.None);
-        foreach (var missile in missiles)
-        {
-            if (missile != null && missile.gameObject.activeSelf)
-                missile.ReturnToPool(showHitEffect: false);
-        }
+        foreach (var beam in m_poolManager.GetActiveInstances<ProjectileBeamHitscan>(EPoolName.PROJECTILE_BEAM_HITSCAN))
+            beam.ReturnToPool();
+
+        foreach (var missile in m_poolManager.GetActiveInstances<ProjectileMissile>(EPoolName.PROJECTILE_MISSILE_SMALL))
+            missile.ReturnToPool(showHitEffect: false);
+        foreach (var missile in m_poolManager.GetActiveInstances<ProjectileMissile>(EPoolName.PROJECTILE_MISSILE_MEDIUM))
+            missile.ReturnToPool(showHitEffect: false);
+        foreach (var missile in m_poolManager.GetActiveInstances<ProjectileMissile>(EPoolName.PROJECTILE_MISSILE_LARGE))
+            missile.ReturnToPool(showHitEffect: false);
     }
 
-    // 모든 함재기에게 귀환 명령
+    // 모든 함재기에게 귀환 명령 — 씬 전체 스캔 대신 풀 하위만 순회
     public void OrderAllAircraftReturn()
     {
-        AircraftBase[] aircrafts = FindObjectsByType<AircraftBase>(FindObjectsSortMode.None);
-        foreach (var aircraft in aircrafts)
-        {
-            if (aircraft != null && aircraft.gameObject.activeSelf)
-                aircraft.ForceReturnToCarrier();
-        }
+        foreach (var aircraft in m_poolManager.GetActiveInstances<AircraftStandard>(EPoolName.AIRCRAFT_STANDARD))
+            aircraft.ForceReturnToCarrier();
+    }
+
+    // 귀환 연출 없이 활성화된 모든 함재기를 즉시 풀로 반환 — 튜토리얼 종료 등 즉시 정리가 필요할 때 사용
+    public void DestroyAllAircraft()
+    {
+        foreach (var aircraft in m_poolManager.GetActiveInstances<AircraftStandard>(EPoolName.AIRCRAFT_STANDARD))
+            aircraft.ForceReturnToPoolImmediate();
     }
 
     // 튜토리얼 중에는 서버에 반영되지 않는 임시 모듈포인트 지급 — 실제 값은 백업해뒀다가 튜토리얼 종료 시 복원
@@ -596,17 +598,21 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         commander.UpdateCommanderLevel(requiredLevel);
     }
 
+    // 튜토리얼 임시 함대(지크프리트 등 연출용)만 제거 — 실제 함대 스폰은 하지 않음
+    // (탈출 함선 폭발 연출 직후처럼, 실제 스폰은 StartNormalPlay()에서 한 번만 일어나야 할 때 사용)
+    public void DestroyTutorialFleet(SpaceFleet fleet)
+    {
+        if (fleet == null) return;
+        GetTeamFleets(m_myTeam).Remove(fleet);
+        Destroy(fleet.gameObject);
+    }
+
     // 지크프리트(연출용) 함대를 제거하고 실제 함대 + 실제 모듈포인트로 전환
     private void SwitchFromSiegfriedFleetToRealFleet()
     {
         m_isSiegfriedFleetActive = false;
 
-        SpaceFleet siegfriedFleet = GetMyFleet();
-        if (siegfriedFleet != null)
-        {
-            GetTeamFleets(m_myTeam).Remove(siegfriedFleet);
-            Destroy(siegfriedFleet.gameObject);
-        }
+        DestroyTutorialFleet(GetMyFleet());
 
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander != null)
@@ -615,25 +621,26 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             commander.UpdateCommanderLevel(m_realCommanderLevelBackup);
         }
 
-        SpawnFleet();
+        SpawnFleet(warpIn: true);
     }
 
-    private void SpawnFleet()
+    private void SpawnFleet(bool warpIn = false)
     {
         // 서버에서 받은 함대 정보가 없으면 스폰하지 않음
         if (DataManager.Instance.m_currentFleetInfo == null) return;
 
-        SpawnFleetWithInfo(DataManager.Instance.m_currentFleetInfo);
+        SpawnFleetWithInfo(DataManager.Instance.m_currentFleetInfo, warpIn);
     }
 
-    private void SpawnFleetWithInfo(FleetInfo fleetInfo)
+    // warpIn=true면 Trigger_MyFleetSet으로 위치가 확정된 직후 그 자리로 워프인 연출(튜토리얼 종료 후 첫 함대 등장 등)
+    private void SpawnFleetWithInfo(FleetInfo fleetInfo, bool warpIn = false)
     {
         GameObject fleetObj = new GameObject("MyFleet");
         SpaceFleet myFleet = fleetObj.AddComponent<SpaceFleet>();
         myFleet.InitializeSpaceFleet(fleetInfo, m_myTeam, EFleetSource.fleet_source_player, EUnitState.Idle);
         GetTeamFleets(m_myTeam).Add(myFleet);
 
-        // 함대 스폰/교체를 UI 등 늦게 초기화되는 쪽에서도 알 수 있도록 알림
+        // 함대 스폰/교체를 UI 등 늦게 초기화되는 쪽에서도 알 수 있도록 알림 (존 초기 위치도 이 안에서 확정됨)
         EventManager.Trigger_MyFleetSet();
 
         // 카메라가 함대를 타겟으로 설정
@@ -643,6 +650,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         SpaceShip flagship = myFleet.GetFlagship();
         if (flagship != null)
             EventManager.Trigger_SpaceShipSelected(flagship);
+
+        if (warpIn == true)
+            myFleet.StartFleetWarpIn();
     }
 
     // 워프 완료 시점에 호출 — 아군 함대를 존별 지정 위치로 텔레포트
@@ -820,7 +830,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             // Find random alive enemy ship
             foreach (SpaceFleet fleet in enemyTeamFleets)
             {
-                if (fleet != null && fleet.IsFleetAlive() == true && fleet.m_fleetState.IsBattleState() == true)
+                if (fleet != null && fleet.IsValidCombatTarget() == true)
                 {
                     SpaceShip enemyShip = fleet.GetRandomAliveShipWarpDone();
                     if (enemyShip != null)

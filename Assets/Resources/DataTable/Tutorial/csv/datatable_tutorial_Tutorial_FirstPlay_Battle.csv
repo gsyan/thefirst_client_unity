@@ -1,7 +1,10 @@
 ﻿stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,hasHole,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType,dimBackground
-step1,Tutorial_FirstPlay_EnemyAlert,AnyClick,,,False,Auto,False,0,0,800,0,0,-500,0,,,None,90,3,none,False
-step2,Tutorial_FirstPlay_EnemyFleetWrapIn,Custom,,,False,Auto,False,0,0,800,0,0,-500,0,,,EnemyWave1,90,3,none,False
-step3,Tutorial_FirstPlay_FleetBattle,AnyClick,,,False,Auto,False,0,0,800,0,0,-500,0,,,None,90,3,none,False
-step4,Tutorial_FirstPlay_EnemyFleetWrapIn2,Custom,,,False,Auto,False,0,0,800,0,0,-500,0,,,EnemyWave2,90,3,none,False
-step5,Tutorial_FirstPlay_Defeat,AnyClick,,,False,Auto,False,0,0,800,0,0,-500,0,,,None,90,3,none,False
-step6,Tutorial_FirstPlay_EscapeAlert,Custom,,,False,Auto,False,0,0,800,0,0,-500,0,,,EscapeShipDistanceFromFlagship,20,3,none,False
+step1,Tutorial_FirstPlay_EnemyAlert,AnyClick,,,False,Auto,False,0,0,1000,100,0,-520,0,,,None,90,3,none,False
+step2,Tutorial_FirstPlay_EnemyFleetWrapIn,AutoNext,,,False,Auto,False,0,0,800,0,0,-500,3,,,None,90,3,none,False
+step3,,Custom,,,False,Auto,False,0,0,800,0,0,-500,0,,,EnemyWave1,90,3,none,False
+step4,Tutorial_FirstPlay_FleetBattle,AnyClick,,,False,Auto,False,0,0,800,0,0,-500,0,,,None,90,3,none,False
+step5,Tutorial_FirstPlay_EnemyFleetWrapIn2,AutoNext,,,False,Auto,False,0,0,800,0,0,-500,3,,,None,90,3,none,False
+step6,,Custom,,,False,Auto,False,0,0,800,0,0,-500,0,,,EnemyWave2,90,3,none,False
+step7,Tutorial_FirstPlay_Defeat,AnyClick,,,False,Auto,False,0,0,800,0,0,-500,0,,,None,90,3,none,False
+step8,Tutorial_FirstPlay_EscapeAlert,Custom,,,False,Auto,False,0,0,800,0,0,-500,0,,,EscapeShipDistanceFromFlagship,20,3,none,False
+step9,,Custom,,,False,Auto,False,0,0,800,0,0,-500,0,,,SiegfriedFlagshipExplosion,3,3,none,False

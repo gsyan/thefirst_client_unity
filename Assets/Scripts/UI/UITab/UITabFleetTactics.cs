@@ -62,12 +62,12 @@ public class UITabFleetTactics : UITabBase
         EventManager.Unsubscribe_TacticToggleRequested(OnClickToggle);
         EventManager.Unsubscribe_TacticOptionsChanged(RefreshToggleUI);
         EventManager.Unsubscribe_FormationChanged(OnExternalFormationChanged);
+        EventManager.Unsubscribe_MyFleetSet(OnMyFleetSet);
     }
 
     public override void InitializeUITab()
     {
-        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.GetMyFleet() == null) return;
-        m_playerFleet = ObjectManager.Instance.GetMyFleet();
+        if (DataManager.Instance.m_currentCommander == null) return;
 
         if (m_toTabFleet != null)
             m_toTabFleet.onClick.AddListener(() =>
@@ -75,6 +75,22 @@ public class UITabFleetTactics : UITabBase
                 if (m_tabSystemParent != null)
                     m_tabSystemParent.SwitchToTabByName("tab_fleet");
             });
+
+        EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
+
+        BindPlayerFleet();
+    }
+
+    // 함대 스폰/교체(튜토리얼→실제 함대 전환 포함) 시 호출 — 매번 탭 열 때 체크하지 않아도 되도록 이벤트로 처리
+    private void OnMyFleetSet()
+    {
+        BindPlayerFleet();
+    }
+
+    private void BindPlayerFleet()
+    {
+        m_playerFleet = ObjectManager.Instance.GetMyFleet();
+        if (m_playerFleet == null) return;
 
         SetupToggleButtons();
         SetupFormationButtons();
@@ -117,10 +133,13 @@ public class UITabFleetTactics : UITabBase
                 m_toggleButtons[i].SetTexts(k_toggleNameKeys[i], k_toggleDescKeys[i], k_toggleDescArgs[i]);
 
             int idx = i;
+            m_toggleButtons[idx].button.onClick.RemoveAllListeners();
             m_toggleButtons[idx].button.onClick.AddListener(() => OnClickToggle(idx));
         }
 
         RefreshToggleUI(savedOptions);
+        // 함대 재바인딩 시(튜토리얼→실제 함대 전환 등) 중복 구독 방지
+        EventManager.Unsubscribe_TacticOptionsChanged(RefreshToggleUI);
         EventManager.Subscribe_TacticOptionsChanged(RefreshToggleUI);
     }
 

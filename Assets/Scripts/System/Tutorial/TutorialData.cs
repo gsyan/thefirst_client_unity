@@ -30,6 +30,8 @@ public enum ETutorialConditionType
     EnemyWave1, // step2 — 5개 함대([7,3,3] 구성), 10초 간격 스폰, 전멸까지 대기
     EnemyWave2, // step4 — 10개 함대([9,5,5,3,3] 구성), 5초 간격 스폰. 애초에 전멸이 불가능한 물량 — 다음 스텝 전환은 FlagshipHealthBelowPercent가 별도로 감시
     FlagshipHealthBelowPercent, // 내 함대 기함 체력 비율이 conditionThreshold(0~1) 이하로 떨어질 때까지 대기
+    SiegfriedFlagshipExplosion, // step7 — 카메라를 탈출 함선으로 전환 + 지크프리트 기함 폭발 연출 후 conditionThreshold초 대기, 완료되면 다음 스텝
+    CleanupEscapeFleet, // Tutorial_FirstPlay_Complete 마지막 스텝 — 탈출선 연출(워프이펙트/이동) 정리 후 즉시 다음 스텝(=튜토리얼 종료)
 }
 
 // 화살표 방향 — Auto면 TutorialArrow가 화면 여유 공간을 보고 자동 결정, 그 외는 강제 지정

@@ -288,7 +288,7 @@ public class SpaceShip : MonoBehaviour
 
         foreach (SpaceFleet fleet in candidates)
         {
-            if (fleet == null || fleet.IsFleetAlive() == false || fleet.m_fleetState.IsBattleState() == false) continue;
+            if (fleet == null || fleet.IsValidCombatTarget() == false) continue;
 
             Vector3 toFleet = (fleet.transform.position - myPos).normalized;
             float angle = Vector3.Angle(forward, toFleet);
@@ -303,7 +303,7 @@ public class SpaceShip : MonoBehaviour
 
     private void CollectBodiesFromFleet(SpaceFleet opposingFleet, List<ModuleBody> result)
     {
-        if (opposingFleet == null || opposingFleet.IsFleetAlive() == false || opposingFleet.m_fleetState.IsBattleState() == false) return;
+        if (opposingFleet == null || opposingFleet.IsValidCombatTarget() == false) return;
         foreach (SpaceShip ship in opposingFleet.m_ships)
         {
             if (ship == null || ship.IsAlive() == false || ship.IsWarping == true) continue;
@@ -523,7 +523,12 @@ public class SpaceShip : MonoBehaviour
             return;
         }
 
-        // 사망 처리
+        HandleShipDestroyed();
+    }
+
+    // 전투 피격으로 인한 사망 처리 — 폭발 이펙트/사운드 후 파괴
+    private void HandleShipDestroyed()
+    {
         ClearAllFireEffects();
         ClearAllScorchMarks();
         // 코루틴 중지
@@ -539,6 +544,12 @@ public class SpaceShip : MonoBehaviour
         SoundManager.Instance.PlayFX(EFx.Explosion_Ship, transform.position);
         // 파괴 처리
         Destroy(gameObject);
+    }
+
+    // 전투 데미지가 아니라 연출(시네마틱)로 함선을 강제 파괴 — m_minHealthRatio 하한과 무관하게 즉시 파괴
+    public void DestroyForCinematic()
+    {
+        HandleShipDestroyed();
     }
 
     private void UpdateFireEffects(Vector3 hitPosition)

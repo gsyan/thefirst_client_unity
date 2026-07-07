@@ -33,3 +33,7 @@ Tutorial_FirstPlay_Defeat,,"The battle situation is very unfavorable. All person
 Tutorial_FirstPlay_EscapeAlert,,"Evacuating immediately.","지금 즉시 탈출합니다."
 Tutorial_FirstPlay_Escape,,"You are now the commander of this ship.","당신은 이제 이 함선의 지휘관입니다."
 Tutorial_FirstPlay_Complete,,"Please lead this ship and fleet well, so you can reach the farthest ends of space, beyond the enemy's reach.","적들의 손길이 닿지 않을 만큼 멀고 먼 우주의 끝에 도달할 수 있도록 이 함선, 함대를 잘 이끌어 주시기 바랍니다."
+Tutorial_MineralUnlock_Intro,,"Module Points alone won't be enough to overcome the enemies ahead.","이제부터는 모듈 포인트만으로는 앞으로 만날 적들을 이겨내기 어려울 것입니다."
+Tutorial_MineralUnlock_ToggleButton,,"You can now upgrade modules with Mineral too. Try switching to Mineral upgrade mode.","이제 미네랄로도 모듈을 강화할 수 있습니다. 미네랄 강화 모드로 변경해 보세요."
+Tutorial_MineralUnlock_ExplainUiPosition,,"The total amount of Mineral used for upgrades is shown next to your Mineral balance.","미네랄 강화에 사용한 미네랄의 총량은 보유 미네랄 옆에 표시됩니다."
+Tutorial_MineralUnlock_ExplainCost,,"Mineral used for upgrades can be reclaimed anytime, but is permanently deducted once you win the battle.","미네랄 강화에 사용한 미네랄은 언제든 회수할 수 있지만, 전투에서 승리하면 영구적으로 차감됩니다."

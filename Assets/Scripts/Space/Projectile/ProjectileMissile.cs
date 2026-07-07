@@ -155,7 +155,7 @@ public class ProjectileMissile : ProjectileBase
         for (int i = 0; i < opposingFleets.Count; i++)
         {
             SpaceFleet fleet = opposingFleets[i];
-            if (fleet == null || fleet.IsFleetAlive() == false) continue;
+            if (fleet == null || fleet.IsValidCombatTarget() == false) continue;
             SearchFleetForNearestBody(fleet, myPos, ref nearest, ref nearestSqrDist);
         }
         return nearest;

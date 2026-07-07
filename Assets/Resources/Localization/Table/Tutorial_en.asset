@@ -147,6 +147,25 @@ MonoBehaviour:
     m_Localized: You are now the commander of this ship.
     m_Metadata:
       m_Items: []
+  - m_Id: 1726800145022976
+    m_Localized: Module Points alone won't be enough to overcome the enemies ahead.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1726800233103360
+    m_Localized: You can now upgrade modules with Mineral too. Try switching to Mineral
+      upgrade mode.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1726800233103361
+    m_Localized: The total amount of Mineral used for upgrades is shown next to your
+      Mineral balance.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1726800233103362
+    m_Localized: Mineral used for upgrades can be reclaimed anytime, but is permanently
+      deducted once you win the battle.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

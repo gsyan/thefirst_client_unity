@@ -218,7 +218,10 @@ public class UIPanelCameraView : UIPanelBase
 
     private void RefreshVisibility()
     {
-        if (m_fleetState.IsBattleState() == true && m_isExplorationOpen == false)
+        // Tutorial_FirstPlay_Battle 연출 중에는 이 패널(존 정보/전술 토글 등)을 노출하지 않음
+        bool isTutorialBattle = TutorialActionGate.IsTutorial("Tutorial_FirstPlay_Battle");
+
+        if (m_fleetState.IsBattleState() == true && m_isExplorationOpen == false && isTutorialBattle == false)
             UIManager.Instance.ShowPanel(panelName);
         else
             UIManager.Instance.HidePanel(panelName);

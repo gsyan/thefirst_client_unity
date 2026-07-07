@@ -27,6 +27,7 @@ public class CameraController : MonoSingleton<CameraController>
     private Transform m_currentTargetBackup; // (Optional) 움직이는 타겟을 따라가기 위한 Transform
     private Vector3 m_targetPosition; // 카메라가 바라보는 목표 위치
     private Vector3 m_interpolatedTargetPosition; // 부드럽게 보간된 타겟 위치
+    private bool m_instantFollow = false; // true면 위치를 lerp 없이 매 프레임 그대로 스냅 (초고속 이동 타겟이 화면 밖으로 벗어나는 것 방지용)
     [SerializeField] private float m_currentZoom;
     public float CurrentZoom => m_currentZoom;
     private float m_currentRotationY = 20f;
@@ -272,7 +273,10 @@ public class CameraController : MonoSingleton<CameraController>
                     m_hasTargetZoom = false;
                 }
             }
-            m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, k_positionLerpSpeed * Time.unscaledDeltaTime);
+            if (m_instantFollow == true)
+                m_interpolatedTargetPosition = m_targetPosition;
+            else
+                m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, k_positionLerpSpeed * Time.unscaledDeltaTime);
 
             // 카메라 이동 완료 시 입력 자동 활성화 (갤럭시 뷰 중에는 입력 유지 차단)
             if (m_inputEnabled == false && m_isGalaxyView == false
@@ -312,6 +316,12 @@ public class CameraController : MonoSingleton<CameraController>
     private void Update()
     {
         HandleInput();
+    }
+
+    // 타겟(함선 등)의 이동은 각자의 Update()에서 일어나므로, 그 이후인 LateUpdate에서 위치를 읽어야
+    // 이번 프레임 이동이 반영된 최신 위치를 스냅/보간할 수 있음 (한 프레임 지연 방지)
+    private void LateUpdate()
+    {
         UpdateCameraTransform();
     }
 
@@ -453,6 +463,21 @@ public class CameraController : MonoSingleton<CameraController>
     public void SetZoom(float normalizedZoom)
     {
         m_currentZoom = Mathf.Lerp(m_minZoom, m_maxZoom, normalizedZoom);
+    }
+
+    // true면 위치 추적을 lerp 없이 매 프레임 그대로 스냅 — 타겟이 순간적으로 초고속 이동(워프 등)할 때 화면 밖으로 벗어나는 것 방지
+    public void SetInstantFollow(bool enabled)
+    {
+        m_instantFollow = enabled;
+    }
+
+    // 목표 회전각을 직접 설정 (Lerp로 부드럽게 회전) — rotY/rotX는 절대각(월드 기준)
+    public void SetTargetRotation(float rotY, float rotX)
+    {
+        m_hasTargetRotationY = true;
+        m_targetRotationY = rotY;
+        m_hasTargetRotationX = true;
+        m_targetRotationX = Mathf.Clamp(rotX, -80f, 80f);
     }
 
     // 줌 목표값을 직접 설정 (Lerp로 부드럽게 이동)

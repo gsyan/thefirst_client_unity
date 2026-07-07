@@ -1,0 +1,5 @@
+﻿stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,hasHole,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType,dimBackground
+step1,Tutorial_MineralUnlock_Intro,AnyClick,,,False,Auto,False,0,0,800,0,0,-500,0,,,None,90,3,none,False
+step2,Tutorial_MineralUnlock_ToggleButton,UIClick,TabShip,ResourceChangeButton,True,Auto,True,0,0,800,0,0,-500,0,UIPanelSpace,tab_ship,None,90,3,none,True
+step3,Tutorial_MineralUnlock_ExplainUiPosition,AnyClick,UIResourceBarContainer,TextMineralInvested,True,Auto,True,0,0,800,0,0,-500,0,,,None,90,3,none,True
+step4,Tutorial_MineralUnlock_ExplainCost,AnyClick,,,False,Auto,False,0,0,800,0,0,-500,0,,,None,90,3,none,False

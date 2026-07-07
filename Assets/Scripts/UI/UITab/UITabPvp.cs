@@ -16,7 +16,7 @@ public class UITabPvp : UITabBase
 
     public override void InitializeUITab()
     {
-        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.GetMyFleet() == null) return;
+        if (DataManager.Instance.m_currentCommander == null) return;
 
         m_innerTabSystem.InitializeTabBases();
         m_tabMyInfo.onAttackClicked = OnAttackClicked;

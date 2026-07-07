@@ -194,6 +194,10 @@ public class UITabShip : UITabBase
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_selectedModule == null) return;
+        // 언락 전에는 버튼을 숨기지만, 방어적으로 한 번 더 체크 (언락 튜토리얼 진행 중에는 예외)
+        bool isUnlockedOrTutorial = TutorialManager.Instance.IsMineralModeUnlocked()
+            || TutorialActionGate.IsTutorial(TutorialManager.MINERAL_MODE_UNLOCK_TUTORIAL_ID);
+        if (isUnlockedOrTutorial == false) return;
         // 미네랄 투자 이력이 있으면 모듈포인트 모드로 복귀 불가
         if (m_selectedModule.m_isMineralMode == true && m_selectedModule.m_investedMineral > 0) return;
         m_selectedModule.m_isMineralMode = !m_selectedModule.m_isMineralMode;
@@ -206,6 +210,14 @@ public class UITabShip : UITabBase
     private void RefreshModeToggleButton(int investedMineral)
     {
         if (m_btnModeToggle == null) return;
+
+        // 미네랄 강화 모드는 특정 스테이지 이후 전멸/후퇴로 언락되기 전까지 버튼 자체를 숨김
+        // 단, 언락 튜토리얼 진행 중에는 완료 전이라도 버튼을 보여줘야 함(이 튜토리얼이 곧 언락 완료 조건이므로)
+        bool isUnlocked = TutorialManager.Instance.IsMineralModeUnlocked()
+            || TutorialActionGate.IsTutorial(TutorialManager.MINERAL_MODE_UNLOCK_TUTORIAL_ID);
+        m_btnModeToggle.gameObject.SetActive(isUnlocked);
+        if (isUnlocked == false) return;
+
         // 미네랄 투자 이력이 있으면 모드 고정 → 토글 비활성화
         string colorKey = m_selectedModule.m_isMineralMode == true ? "Mineral" : "ModulePoint";
         m_btnModeToggle.SetActiveColorKey(colorKey);
@@ -1430,7 +1442,8 @@ public class UITabShip : UITabBase
         if (canUpgrade == true)
         {
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
-            m_gradeUpModuleButtonText2.SetRow("mineral-basic", $"-{CommonUtility.FormatBigNumber(totalCost)}");
+            m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{totalCost}");
+            m_gradeUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
         }
         else if (hasTech == false)
         {
@@ -1498,7 +1511,8 @@ public class UITabShip : UITabBase
         {
             refund = m_selectedModule.m_investedModulePoint;
         }
-        m_gradeDownModuleButtonText2.SetRow("module-point", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
+        m_gradeDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
+        m_gradeDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
     }
 
     private void RefreshLevelUpButton(EModuleSubType subType, int level, bool isMaxLevel, int playerSubtypeLevel, long playerPoint)
@@ -1526,7 +1540,10 @@ public class UITabShip : UITabBase
             if (m_levelUpModuleButtonText1 != null)
                 m_levelUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_LevelUp");
             if (m_levelUpModuleButtonText2 != null)
-                m_levelUpModuleButtonText2.SetRow("module-point", $"-{CommonUtility.FormatBigNumber(levelUpCost)}");
+            {
+                m_levelUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(levelUpCost)}");
+                m_levelUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
+            }
         }
         else
         {
@@ -1564,18 +1581,21 @@ public class UITabShip : UITabBase
         if (level > 1)
         {
             DataManager.Instance.GetModuleLevelUpCost(subType, level - 1, out int levelDownRefund);
-            m_levelDownModuleButtonText2.SetRow("module-point", $"+{CommonUtility.FormatBigNumber(levelDownRefund)}");
+            m_levelDownModuleButtonText2.SetRow("mineral_basic", $"+{CommonUtility.FormatBigNumber(levelDownRefund)}");
+            m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
         }
         else if (prevSubType != EModuleSubType.none)
         {
             // Lv.1 레벨다운 = 서브타입 다운과 동일하지만 환급은 T→currentSubType 업그레이드 비용만
             long gradeDownRefund = DataManager.Instance.m_dataTableUpgradeCost.GetCost(subType);
-            m_levelDownModuleButtonText2.SetRow("module-point", $"+{CommonUtility.FormatBigNumber(gradeDownRefund)}");
+            m_levelDownModuleButtonText2.SetRow("mineral_basic", $"+{CommonUtility.FormatBigNumber(gradeDownRefund)}");
+            m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
         }
         else
         {
             long fullRefund = m_selectedModule.m_investedModulePoint;
-            m_levelDownModuleButtonText2.SetRow("module-point", fullRefund > 0 ? $"+{CommonUtility.FormatBigNumber(fullRefund)}" : "");
+            m_levelDownModuleButtonText2.SetRow("mineral_basic", fullRefund > 0 ? $"+{CommonUtility.FormatBigNumber(fullRefund)}" : "");
+            m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
         }
     }
 
@@ -1630,6 +1650,7 @@ public class UITabShip : UITabBase
         if (m_levelUpModuleButtonText2 != null)
         {
             m_levelUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(mineralCost)}");
+            m_levelUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
             m_levelUpModuleButtonText2.SetTextColor(canLevel == true ? Color.white : Color.red);
         }
     }
@@ -1655,6 +1676,7 @@ public class UITabShip : UITabBase
             {
                 long refund = CalcMineralGradeDownRefund(subType, currentLevel, prevSubType, investedMineral);
                 m_levelDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
+                m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
                 m_levelDownModuleButtonText2.SetTextColor(Color.white);
             }
             return;
@@ -1675,6 +1697,7 @@ public class UITabShip : UITabBase
                 ModuleData curData     = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, currentLevel);
                 int refundMineral      = curData != null ? curData.mineralCost : 0;
                 m_levelDownModuleButtonText2.SetRow("mineral_basic", refundMineral > 0 ? $"+{CommonUtility.FormatBigNumber(refundMineral)}" : "");
+                m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
                 m_levelDownModuleButtonText2.SetTextColor(Color.white);
             }
             else
@@ -1709,6 +1732,7 @@ public class UITabShip : UITabBase
         {
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
             m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(totalCost)}");
+            m_gradeUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
             m_gradeUpModuleButtonText2.SetTextColor(Color.white);
         }
         else if (hasTech == false)
@@ -1722,6 +1746,7 @@ public class UITabShip : UITabBase
         {
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
             m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(totalCost)}");
+            m_gradeUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
             m_gradeUpModuleButtonText2.SetTextColor(Color.red);
         }
     }
@@ -1745,6 +1770,7 @@ public class UITabShip : UITabBase
         long refund = CalcMineralGradeDownRefund(currentSubType, currentLevel, prevSubType, investedMineral);
 
         m_gradeDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
+        m_gradeDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
         m_gradeDownModuleButtonText2.SetTextColor(Color.white);
     }
 

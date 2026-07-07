@@ -79,7 +79,7 @@ public static class TutorialCinematicController
     }
 
     // 탈출 함선 1척 스폰 — 지크프리트 기함 뒤쪽(후방)에서 등장, 이 함선이 이후 실제 유저 함대의 기함이 됨
-    public static SpaceFleet SpawnEscapeFleet(SpaceFleet siegfriedFleet, int gradeLevel = 1, float spawnOffset = 10f)
+    public static SpaceFleet SpawnEscapeFleet(SpaceFleet siegfriedFleet, int gradeLevel = 1)
     {
         if (siegfriedFleet == null) return null;
         SpaceShip flagship = siegfriedFleet.GetFlagship();
@@ -87,7 +87,7 @@ public static class TutorialCinematicController
 
         // 기함이 바라보는 방향의 반대(후방)에서 등장, 계속 그 방향으로 나아가면 자연스럽게 멀어짐
         Quaternion escapeRotation = flagship.transform.rotation * Quaternion.Euler(0f, 180f, 0f);
-        Vector3 escapePosition = flagship.transform.position + escapeRotation * Vector3.forward * spawnOffset;
+        Vector3 escapePosition = flagship.transform.position + escapeRotation * Vector3.forward;
 
         FleetInfo fleetInfo = new FleetInfo { fleetName = "Escape Fleet", ships = new List<ShipInfo> { BuildCinematicShipInfo(gradeLevel, 0) } };
         return SpawnCinematicFleet(fleetInfo, ETeam.TeamA, escapePosition, escapeRotation);

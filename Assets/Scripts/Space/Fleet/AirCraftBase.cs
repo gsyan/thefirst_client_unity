@@ -713,7 +713,7 @@ public abstract class AircraftBase : MonoBehaviour
         List<SpaceFleet> opposingFleets = ObjectManager.Instance.GetOpposingTeamFleets(m_carrierShip.m_ownerFleet.m_team);
         for (int i = 0; i < opposingFleets.Count; i++)
         {
-            if (opposingFleets[i] != null && opposingFleets[i].IsFleetAlive())
+            if (opposingFleets[i] != null && opposingFleets[i].IsValidCombatTarget() == true)
             {
                 enemyFleet = opposingFleets[i];
                 break;
@@ -734,6 +734,12 @@ public abstract class AircraftBase : MonoBehaviour
     {
         if (m_state == EAircraftState.None) return;
         m_state = EAircraftState.ReturnToApproach;
+    }
+
+    // 귀환 연출 없이 즉시 풀로 반환 (튜토리얼 정리 등 즉시 제거가 필요할 때 사용)
+    public void ForceReturnToPoolImmediate()
+    {
+        ReturnToPool();
     }
 
     protected virtual void ReturnToPool()

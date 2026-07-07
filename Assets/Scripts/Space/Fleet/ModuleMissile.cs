@@ -14,6 +14,10 @@ public class ModuleMissile : ModuleBase
 
     [SerializeField] private float m_lastAttackTime;
 
+    // 요격 시도 최소 거리 — 이 거리 미만이면 요격 대신 함선 타겟 공격
+    private const float INTERCEPT_MIN_DISTANCE = 25f;
+    private const float INTERCEPT_MIN_SQR_DISTANCE = INTERCEPT_MIN_DISTANCE * INTERCEPT_MIN_DISTANCE;
+
     // 발사대 관련
     [SerializeField] private List<LauncherBase> m_launchers = new List<LauncherBase>();
 
@@ -163,10 +167,11 @@ public class ModuleMissile : ModuleBase
             float missileHarassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
             if (IsSilenced() == false && Time.time >= m_lastAttackTime + m_attackCoolTime + missileHarassDelay)
             {
-                // 적 미사일 우선 요격
+                // 적 미사일 우선 요격 — 단, 25유닛 이상 거리에 있을 때만 요격 시도
                 bool isFriendly = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
                 ProjectileMissile interceptTarget = ObjectManager.Instance.GetNearestEnemyMissile(transform.position, isFriendly);
-                if (interceptTarget != null)
+                float interceptSqrDist = interceptTarget != null ? (interceptTarget.transform.position - transform.position).sqrMagnitude : 0f;
+                if (interceptTarget != null && interceptSqrDist >= INTERCEPT_MIN_SQR_DISTANCE)
                 {
                     ExecuteInterceptOnMissile(interceptTarget);
                     m_lastAttackTime = Time.time;

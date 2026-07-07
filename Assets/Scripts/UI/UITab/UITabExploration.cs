@@ -56,22 +56,35 @@ public class UITabExploration : UITabBase
     private void InitializeUITabExploration()
     {
         m_myCommander = DataManager.Instance.m_currentCommander;
-        if (m_myCommander == null || ObjectManager.Instance.GetMyFleet() == null) return;
-        m_playerFleet = ObjectManager.Instance.GetMyFleet();
-        
 
         EventManager.Subscribe_RetreatExploration(OnRetreatZoneStage);
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
         EventManager.Subscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
         EventManager.Subscribe_PvpBattleStart(OnPvpBattleStarted);
+        EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
 
         if (m_backgroundCloseButton != null)
             m_backgroundCloseButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); m_tabSystemParent.SwitchToTab(-1); });
 
         InitializeZoneTabScroll();
         InitializeZoneStageButtons();
-        SetFleetState(EUnitState.Idle);
 
+        BindPlayerFleet();
+    }
+
+    // 함대 스폰/교체(튜토리얼→실제 함대 전환 포함) 시 호출 — 매번 탭 열 때 체크하지 않아도 되도록 이벤트로 처리
+    private void OnMyFleetSet()
+    {
+        BindPlayerFleet();
+    }
+
+    private void BindPlayerFleet()
+    {
+        if (m_myCommander == null) return;
+        m_playerFleet = ObjectManager.Instance.GetMyFleet();
+        if (m_playerFleet == null) return;
+
+        SetFleetState(EUnitState.Idle);
         SetInitialFleetPosition();
     }
 
@@ -473,6 +486,7 @@ public class UITabExploration : UITabBase
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
         EventManager.Unsubscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
         EventManager.Unsubscribe_PvpBattleStart(OnPvpBattleStarted);
+        EventManager.Unsubscribe_MyFleetSet(OnMyFleetSet);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterEnterZone);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredTabRefresh);
@@ -1035,6 +1049,9 @@ public class UITabExploration : UITabBase
 
     private void ExecuteRetreat(Vector3 retreatPosition, float retreatRotationY)
     {
+        // m_battleZoneStage가 곧 null 처리되므로, 미네랄 강화 언락 판정에 쓸 스테이지 이름을 미리 저장
+        string battleStageName = m_battleZoneStage?.zoneName;
+
         // 카메라를 먼저 후퇴 위치로 이동
         CameraController.Instance.ExitGalaxyView(retreatPosition);
         // CloseAllTabs 전에 함대 상태를 battle -> warp 로 변경
@@ -1075,6 +1092,14 @@ public class UITabExploration : UITabBase
             bool isVip = IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
             if (isVip == true)
                 m_playerFleet.FullRepair();
+
+            // 특정 스테이지(4-10) 이후 전멸/후퇴 시 미네랄 강화 모드 언락 튜토리얼 트리거
+            const string MINERAL_UNLOCK_HURDLE_STAGE = "4-10"; // TODO: 테스트용 임시값 — 실제 배치 시 4-10으로 복원
+            if (string.IsNullOrEmpty(battleStageName) == false &&
+                m_datatableZone.GetZoneStageIndex(battleStageName) >= m_datatableZone.GetZoneStageIndex(MINERAL_UNLOCK_HURDLE_STAGE))
+            {
+                TutorialManager.Instance.TryUnlockMineralMode();
+            }
         });
     }
 
