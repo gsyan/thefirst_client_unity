@@ -23,7 +23,8 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    highlightTarget: 0
+    hasHole: 1
+    dimBackground: 1
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -41,7 +42,8 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    highlightTarget: 0
+    hasHole: 1
+    dimBackground: 1
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
