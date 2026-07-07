@@ -15,4 +15,18 @@ platform :android do
       skip_upload_screenshots: true,
     )
   end
+
+  desc "비공개 테스트(검수 요청) 트랙에 AAB 업로드"
+  lane :closed_testing do
+    upload_to_play_store(
+      track: "검수 요청 테스트",
+      json_key: ENV["GOOGLE_PLAY_JSON_KEY"],
+      aab: ENV["APK_PATH"],
+      version_name: ENV["VERSION_NAME"],
+      release_status: "completed",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
 end

@@ -9,6 +9,7 @@ pipeline {
         string(name: 'PRODUCT_NAME',  defaultValue: 'Space Fleet', description: '앱 표시 이름 (Google Play 등록명)')
         booleanParam(name: 'IS_SHIPPING',          defaultValue: false, description: '배포용 빌드 (체크 시 개발자 도구/콘솔 비활성화, 미체크 = 개발 빌드)')
         booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드')
+        booleanParam(name: 'RELEASE_PLAY_CLOSED',  defaultValue: false, description: 'Google Play 비공개 테스트(검수 요청 테스트) 트랙에 AAB 업로드')
         booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드')
         booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드')
         booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\bk_server\\bk\\thefirst_client_build\\dev|release)에 APK 업로드')
@@ -44,6 +45,7 @@ pipeline {
                             string(name: 'PRODUCT_NAME',  defaultValue: "${params.PRODUCT_NAME}",  description: '앱 표시 이름 (Google Play 등록명)'),
                             booleanParam(name: 'IS_SHIPPING',          defaultValue: false, description: '배포용 빌드 (체크 시 개발자 도구/콘솔 비활성화, 미체크 = 개발 빌드)'),
                             booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드'),
+                            booleanParam(name: 'RELEASE_PLAY_CLOSED',  defaultValue: false, description: 'Google Play 비공개 테스트(검수 요청 테스트) 트랙에 AAB 업로드'),
                             booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드'),
                             booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드'),
                             booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\\\\\bk_server\\\\bk\\\\thefirst_client_build\\\\dev|release)에 APK 업로드'),
@@ -54,9 +56,9 @@ pipeline {
         }
 
         stage('Build APK') {
-            // RELEASE_PLAY 만 단독 체크된 경우가 아니면 APK 빌드
+            // RELEASE_PLAY / RELEASE_PLAY_CLOSED 만 단독 체크된 경우가 아니면 APK 빌드
             when {
-                expression { params.RELEASE_PLAY == false || params.RELEASE_GITHUB == true || params.RELEASE_FIREBASE == true }
+                expression { (params.RELEASE_PLAY == false && params.RELEASE_PLAY_CLOSED == false) || params.RELEASE_GITHUB == true || params.RELEASE_FIREBASE == true }
             }
             steps {
                 script {
@@ -86,7 +88,7 @@ pipeline {
 
         stage('Build AAB') {
             when {
-                expression { params.RELEASE_PLAY == true }
+                expression { params.RELEASE_PLAY == true || params.RELEASE_PLAY_CLOSED == true }
             }
             steps {
                 script {
@@ -151,6 +153,22 @@ pipeline {
             }
         }
 
+        stage('Google Play Closed Testing') {
+            when {
+                expression { params.RELEASE_PLAY_CLOSED == true }
+            }
+            steps {
+                withCredentials([file(credentialsId: 'GOOGLE_PLAY_DEPLOY', variable: 'GOOGLE_PLAY_JSON_KEY')]) {
+                    bat """
+                        set APK_PATH=${env.OUTPUT_AAB}
+                        set GOOGLE_PLAY_JSON_KEY=%GOOGLE_PLAY_JSON_KEY%
+                        set VERSION_NAME=${env.VERSION_NAME}
+                        C:\\Ruby34-x64\\bin\\fastlane android closed_testing
+                    """
+                }
+            }
+        }
+
         stage('Firebase Distribution') {
             when {
                 expression { params.RELEASE_FIREBASE == true }
@@ -170,7 +188,7 @@ pipeline {
 
         stage('NAS Upload') {
             when {
-                expression { params.RELEASE_NAS == true && params.RELEASE_PLAY == false }
+                expression { params.RELEASE_NAS == true && params.RELEASE_PLAY == false && params.RELEASE_PLAY_CLOSED == false }
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nas-smb-cred', usernameVariable: 'NAS_USER', passwordVariable: 'NAS_PASS')]) {
