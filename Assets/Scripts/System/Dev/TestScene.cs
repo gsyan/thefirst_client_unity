@@ -80,17 +80,20 @@ public class TestScene : MonoBehaviour
     // 내 함대 전체 재스폰
     public void RespawnMyFleet()
     {
-        if (ObjectManager.Instance.m_myFleet != null)
+        List<SpaceFleet> myTeamFleets = ObjectManager.Instance.GetTeamFleets(ObjectManager.Instance.m_myTeam);
+        SpaceFleet existingFleet = ObjectManager.Instance.GetMyFleet();
+        if (existingFleet != null)
         {
-            Destroy(ObjectManager.Instance.m_myFleet.gameObject);
-            ObjectManager.Instance.m_myFleet = null;
+            Destroy(existingFleet.gameObject);
+            myTeamFleets.Remove(existingFleet);
         }
 
         if (m_shipInfos == null || m_shipInfos.Length == 0) return;
 
         GameObject fleetGo = new GameObject("TestFleet_My");
         SpaceFleet fleet = fleetGo.AddComponent<SpaceFleet>();
-        ObjectManager.Instance.m_myFleet = fleet;
+        fleet.m_team = ObjectManager.Instance.m_myTeam;
+        myTeamFleets.Add(fleet);
 
         for (int i = 0; i < m_shipInfos.Length; i++)
             SpawnTestShip(fleet, m_shipInfos[i], i);
@@ -144,7 +147,7 @@ public class TestScene : MonoBehaviour
     private void SpawnEffectAtFlagship(GameObject prefab)
     {
         if (ObjectManager.Instance == null) return;
-        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
+        SpaceFleet fleet = ObjectManager.Instance.GetMyFleet();
         if (fleet == null) return;
 
         SpaceShip flagship = fleet.GetFlagship();

@@ -63,8 +63,7 @@ public class UIManager : MonoSingleton<UIManager>
     {
         m_gaugeBarContainer = CreateContainer("UIGaugeBarContainer");
         m_generalContainer  = CreateContainer("UIGeneralContainer");
-        m_tutorialContainer = CreateContainer("UITutorialContainer");
-
+        
         int layerCount = (int)EPopupLayer.Count;
         m_popupContainers = new RectTransform[layerCount];
         m_popupStacks     = new Stack<UIPopupBase>[layerCount];
@@ -74,6 +73,8 @@ public class UIManager : MonoSingleton<UIManager>
 
         for (int i = 0; i < layerCount; i++)
             m_popupStacks[i] = new Stack<UIPopupBase>();
+        
+        m_tutorialContainer = CreateContainer("UITutorialContainer");
     }
 
     private RectTransform CreateContainer(string name)

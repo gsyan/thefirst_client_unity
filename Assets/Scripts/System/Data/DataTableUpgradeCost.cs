@@ -14,7 +14,7 @@ public class DataTableUpgradeCost : ScriptableObject
 
     public List<UpgradeCostData> GetUpgradeCostDataList() { return upgradeCostDataList; }
 
-    public long GetCost(int subtypeGrade)
+    public int GetCost(int subtypeGrade)
     {
         for (int i = 0; i < upgradeCostDataList.Count; i++)
         {
@@ -24,7 +24,7 @@ public class DataTableUpgradeCost : ScriptableObject
         return 0;
     }
 
-    public long GetCost(EModuleSubType subType)
+    public int GetCost(EModuleSubType subType)
     {
         return GetCost(subType.GetTechTier());
     }
@@ -77,7 +77,7 @@ public class DataTableUpgradeCost : ScriptableObject
             upgradeCostDataList.Add(new UpgradeCostData
             {
                 subtypeGrade    = grade,
-                modulePointCost = ParseLong(GetCol(cols, 1)),
+                modulePointCost = ParseInt(GetCol(cols, 1)),
             });
         }
 
@@ -112,10 +112,10 @@ public class DataTableUpgradeCost : ScriptableObject
         return result.ToArray();
     }
 
-    private long ParseLong(string s)
+    private int ParseInt(string s)
     {
         s = s.Replace(",", "").Trim();
-        return long.TryParse(s, out long r) ? r : 0L;
+        return int.TryParse(s, out int r) ? r : 0;
     }
 #endif
 
@@ -126,5 +126,5 @@ public class DataTableUpgradeCost : ScriptableObject
 public class UpgradeCostData
 {
     public int subtypeGrade;
-    public long modulePointCost;
+    public int modulePointCost;
 }

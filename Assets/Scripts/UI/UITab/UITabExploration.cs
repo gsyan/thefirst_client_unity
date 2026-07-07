@@ -56,8 +56,8 @@ public class UITabExploration : UITabBase
     private void InitializeUITabExploration()
     {
         m_myCommander = DataManager.Instance.m_currentCommander;
-        if (m_myCommander == null || ObjectManager.Instance.m_myFleet == null) return;
-        m_playerFleet = ObjectManager.Instance.m_myFleet;
+        if (m_myCommander == null || ObjectManager.Instance.GetMyFleet() == null) return;
+        m_playerFleet = ObjectManager.Instance.GetMyFleet();
         
 
         EventManager.Subscribe_RetreatExploration(OnRetreatZoneStage);
@@ -941,7 +941,7 @@ public class UITabExploration : UITabBase
                 autoCloseSec = 5f,
                 onConfirm    = () =>
                 {
-                    SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
+                    SpaceFleet fleet = ObjectManager.Instance.GetMyFleet();
                     if (fleet != null)
                         fleet.ApplyMineralReset(m_pendingUpdatedFleetInfo);
                     m_pendingUpdatedFleetInfo = null;

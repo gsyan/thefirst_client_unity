@@ -111,7 +111,7 @@ public class ModuleBeam : ModuleBase
         for(int i=0; i< moduleData.attackFireCount; i++)
         {
             LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
-            launcher.InitializeLauncherBeam(moduleData, i, m_ownerFleet != null && m_ownerFleet.IsEnemy, slotScale);
+            launcher.InitializeLauncherBeam(moduleData, i, m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet), slotScale);
             m_launchers.Add(launcher);
         }
     }

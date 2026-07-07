@@ -73,7 +73,7 @@ public class ProjectileMissile : ProjectileBase
         SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase);
         m_missileSource = (sourceModuleBase is ModuleHanger) ? EMissileSource.Aircraft : EMissileSource.Ship;
 
-        bool isEnemy = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy;
+        bool isEnemy = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_sourceShip.m_ownerFleet);
         ApplyEngineFlameColor(isEnemy);
 
         // 함재기 미사일은 요격 대상에서 제외
@@ -145,28 +145,18 @@ public class ProjectileMissile : ProjectileBase
 
     private Transform FindNewTarget()
     {
-        if (m_sourceShip == null) return null;
+        if (m_sourceShip == null || m_sourceShip.m_ownerFleet == null) return null;
 
-        bool isEnemySource = m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy;
         Vector3 myPos = transform.position;
         Transform nearest = null;
         float nearestSqrDist = float.MaxValue;
 
-        if (isEnemySource)
+        List<SpaceFleet> opposingFleets = ObjectManager.Instance.GetOpposingTeamFleets(m_sourceShip.m_ownerFleet.m_team);
+        for (int i = 0; i < opposingFleets.Count; i++)
         {
-            SpaceFleet playerFleet = ObjectManager.Instance.m_myFleet;
-            if (playerFleet == null || playerFleet.IsFleetAlive() == false) return null;
-            SearchFleetForNearestBody(playerFleet, myPos, ref nearest, ref nearestSqrDist);
-        }
-        else
-        {
-            List<SpaceFleet> enemyFleets = ObjectManager.Instance.m_enemyFleets;
-            for (int i = 0; i < enemyFleets.Count; i++)
-            {
-                SpaceFleet fleet = enemyFleets[i];
-                if (fleet == null || fleet.IsFleetAlive() == false) continue;
-                SearchFleetForNearestBody(fleet, myPos, ref nearest, ref nearestSqrDist);
-            }
+            SpaceFleet fleet = opposingFleets[i];
+            if (fleet == null || fleet.IsFleetAlive() == false) continue;
+            SearchFleetForNearestBody(fleet, myPos, ref nearest, ref nearestSqrDist);
         }
         return nearest;
     }
@@ -230,7 +220,7 @@ public class ProjectileMissile : ProjectileBase
             ProjectileMissile hitMissile = hit.collider.GetComponentInParent<ProjectileMissile>();
             if (hitMissile != null)
             {
-                bool isMysideFriendly = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy == false;
+                bool isMysideFriendly = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_sourceShip.m_ownerFleet) == false;
                 bool hitMissileIsEnemy = isMysideFriendly
                     ? ObjectManager.Instance.m_enemyMissiles.Contains(hitMissile)
                     : ObjectManager.Instance.m_friendlyMissiles.Contains(hitMissile);

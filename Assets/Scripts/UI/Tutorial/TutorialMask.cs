@@ -17,7 +17,8 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     private Material m_maskMaterial;
     private System.Action m_onClick;
     private RectTransform m_currentTarget;
-    private bool m_isHighlighting;
+    private bool m_hasHole;
+    private bool m_isFullScreenClickable; // true면 FullScreenButton이 hole 필터를 상속받지 않도록 IsRaycastLocationValid에서 우회
     private Canvas m_canvas;
     private Camera m_canvasCamera;
 
@@ -73,7 +74,7 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     public void ShowDimOnly()
     {
         m_currentTarget = null;
-        m_isHighlighting = false;
+        m_hasHole = false;
 
         if (m_maskImage != null)
             m_maskImage.gameObject.SetActive(true);
@@ -82,10 +83,10 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     }
 
     // 대상 강조
-    public void HighlightTarget(RectTransform target)
+    public void ShowDimWithHole(RectTransform target)
     {
         m_currentTarget = target;
-        m_isHighlighting = true;
+        m_hasHole = true;
 
         if (m_maskImage != null)
             m_maskImage.gameObject.SetActive(true);
@@ -130,7 +131,7 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     // 강조 해제
     public void HideHighlight()
     {
-        m_isHighlighting = false;
+        m_hasHole = false;
         m_currentTarget = null;
         SetHoleOff();
 
@@ -139,11 +140,12 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     }
 
     // 클릭 가능 설정
-    // clickable=true: 마스크 어디든 클릭하면 onClick 호출
+    // clickable=true: 마스크 어디든 클릭하면 onClick 호출 (구멍 유무 무관 — FullScreenButton이 자식이라 hole 필터를 그대로 상속받으므로 별도 플래그로 우회)
     // clickable=false: 구멍 영역만 클릭 통과, 나머지는 차단
     public void SetClickable(bool clickable, System.Action onClick)
     {
         m_onClick = onClick;
+        m_isFullScreenClickable = clickable;
 
         if (m_fullScreenButton != null)
             m_fullScreenButton.gameObject.SetActive(clickable);
@@ -151,30 +153,6 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
         // 항상 raycastTarget 활성화 (ICanvasRaycastFilter로 구멍 영역 제어)
         if (m_maskImage != null)
             m_maskImage.raycastTarget = true;
-    }
-
-    // 화면 상단 영역 통과 설정 (3D 공간 터치용)
-    // ratio: 상단에서부터 통과시킬 비율 (0.5 = 상단 50%)
-    public void SetTopPassthrough(bool enable, float ratio = 0.5f)
-    {
-        if (enable && m_maskMaterial != null)
-        {
-            // 상단 영역에 큰 구멍 뚫기
-            ratio = Mathf.Clamp01(ratio);
-            float centerY = 1f - (ratio * 0.5f);  // 상단 50% → centerY = 0.75
-            float halfHeight = ratio * 0.5f;      // 상단 50% → halfHeight = 0.25
-            m_maskMaterial.SetVector(HoleCenterID, new Vector4(0.5f, centerY, 0, 0));
-            m_maskMaterial.SetVector(HoleSizeID, new Vector4(0.5f, halfHeight, 0, 0));
-            m_isHighlighting = true;
-            m_currentTarget = null;
-
-            if (m_maskImage != null)
-                m_maskImage.gameObject.SetActive(true);
-        }
-        else if (!enable)
-        {
-            SetHoleOff();
-        }
     }
 
     private void OnFullScreenClick()
@@ -186,7 +164,7 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     private void LateUpdate()
     {
         // 타겟이 움직일 경우 위치 업데이트
-        if (m_isHighlighting && m_currentTarget != null)
+        if (m_hasHole && m_currentTarget != null)
             UpdateHolePosition();
     }
 
@@ -197,11 +175,14 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     }
 
     // ICanvasRaycastFilter: 구멍 영역만 클릭 통과
+    // 주의: Graphic.Raycast()는 부모 계층의 ICanvasRaycastFilter도 함께 검사하므로,
+    // 자식인 FullScreenButton의 클릭 유효성 판정에도 이 필터가 그대로 적용됨 — AnyClick 모드에선 이를 우회해야 함
     public bool IsRaycastLocationValid(Vector2 screenPoint, Camera eventCamera)
     {
-        if (!m_isHighlighting) return true;
+        if (m_isFullScreenClickable) return true;
+        if (!m_hasHole) return true;
 
-        // 타겟이 있으면 타겟 기준으로 구멍 영역 체크
+        // 타겟 기준으로 구멍 영역 체크 (ShowDimWithHole이 항상 m_currentTarget을 설정하므로 null일 수 없음)
         if (m_currentTarget != null)
         {
             Vector3[] corners = new Vector3[4];
@@ -215,23 +196,6 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
 
             if (screenPoint.x >= min.x && screenPoint.x <= max.x &&
                 screenPoint.y >= min.y && screenPoint.y <= max.y)
-            {
-                return false;
-            }
-        }
-        else if (m_maskMaterial != null)
-        {
-            // 타겟 없이 구멍이 설정된 경우 (SetTopPassthrough 등)
-            Vector4 center = m_maskMaterial.GetVector(HoleCenterID);
-            Vector4 halfSize = m_maskMaterial.GetVector(HoleSizeID);
-
-            // 스크린 좌표를 0-1로 정규화
-            float normalizedX = screenPoint.x / Screen.width;
-            float normalizedY = screenPoint.y / Screen.height;
-
-            // 구멍 영역 체크
-            if (Mathf.Abs(normalizedX - center.x) <= halfSize.x &&
-                Mathf.Abs(normalizedY - center.y) <= halfSize.y)
             {
                 return false;
             }

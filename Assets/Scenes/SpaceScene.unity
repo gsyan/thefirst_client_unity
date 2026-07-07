@@ -1028,7 +1028,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 52467354}
+  m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1103,8 +1103,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77bbe59c34295e547823840ed38c20c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_myFleet: {fileID: 0}
-  m_enemyFleets: []
+  m_isBattleEnding: 0
+  m_teamAFleets: []
+  m_teamBFleets: []
+  m_teamCFleets: []
+  m_myTeam: 0
+  m_friendlyMissiles: []
+  m_enemyMissiles: []
 --- !u!4 &2008579212
 Transform:
   m_ObjectHideFlags: 0

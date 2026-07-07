@@ -142,19 +142,20 @@ public class ApiClient
     };
     #endregion
 
-    #region Version API Methods -----------------------------------------------------------------------------------
-    public async Task<ApiResponse<VersionCheckResponse>> CheckVersionAsync(int versionCode)
+    #region Server Status API Methods -----------------------------------------------------------------------------
+    // 버전 체크 + 점검 상태를 한 번에 조회 (왕복 최소화)
+    public async Task<ApiResponse<ServerStatusResponse>> CheckServerStatusAsync(int versionCode)
     {
-        var requestDto = new VersionCheckRequest { versionCode = versionCode };
+        var requestDto = new ServerStatusRequest { versionCode = versionCode };
         string json = JsonConvert.SerializeObject(requestDto);
 
-        using var request = new UnityWebRequest($"{m_baseUrl}/version/check", "POST");
+        using var request = new UnityWebRequest($"{m_baseUrl}/status", "POST");
         request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
         await SendRequestAsync(request);
-        return JsonConvert.DeserializeObject<ApiResponse<VersionCheckResponse>>(request.downloadHandler.text);
+        return JsonConvert.DeserializeObject<ApiResponse<ServerStatusResponse>>(request.downloadHandler.text);
     }
     #endregion
 

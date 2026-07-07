@@ -164,7 +164,7 @@ public class ModuleMissile : ModuleBase
             if (IsSilenced() == false && Time.time >= m_lastAttackTime + m_attackCoolTime + missileHarassDelay)
             {
                 // 적 미사일 우선 요격
-                bool isFriendly = m_ownerFleet != null && m_ownerFleet.IsEnemy == false;
+                bool isFriendly = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
                 ProjectileMissile interceptTarget = ObjectManager.Instance.GetNearestEnemyMissile(transform.position, isFriendly);
                 if (interceptTarget != null)
                 {

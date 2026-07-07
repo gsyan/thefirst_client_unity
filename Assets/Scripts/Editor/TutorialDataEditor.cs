@@ -5,7 +5,7 @@ using System.IO;
 [CustomEditor(typeof(TutorialData))]
 public class TutorialDataEditor : Editor
 {
-    private const string CSV_FOLDER = "Assets/Resources/DataTable/Tutorial";
+    private const string CSV_FOLDER = "Assets/Resources/DataTable/Tutorial/csv";
 
     private SerializedProperty m_tutorialId;
     private SerializedProperty m_tutorialName;
@@ -32,13 +32,6 @@ public class TutorialDataEditor : Editor
         EditorGUILayout.LabelField(csvPath, EditorStyles.miniLabel);
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Export CSV"))
-        {
-            File.WriteAllText(csvPath, tutorialData.ExportToCsv(), System.Text.Encoding.UTF8);
-            AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("완료", $"CSV Export 완료:\n{csvPath}", "OK");
-        }
-
         if (GUILayout.Button("Import CSV"))
         {
             if (File.Exists(csvPath) == false)
@@ -55,6 +48,13 @@ public class TutorialDataEditor : Editor
                 UpdateFoldouts();
                 EditorUtility.DisplayDialog("완료", $"CSV Import 완료\n{tutorialData.steps.Count}개 스텝 로드됨", "OK");
             }
+        }
+
+        if (GUILayout.Button("Export CSV"))
+        {
+            File.WriteAllText(csvPath, tutorialData.ExportToCsv(), System.Text.Encoding.UTF8);
+            AssetDatabase.Refresh();
+            EditorUtility.DisplayDialog("완료", $"CSV Export 완료:\n{csvPath}", "OK");
         }
 
         EditorGUILayout.EndHorizontal();

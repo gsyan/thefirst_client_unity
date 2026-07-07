@@ -104,6 +104,21 @@ public static class EventManager
         OnFleetUpdateHP -= callback;
     }
 
+    // 함대 스폰/교체 시점 (튜토리얼→실제 함대 전환 포함) — 스폰 시점에 UI가 아직 없어도 이 이벤트로 뒤늦게 바인딩 가능
+    public static event Action OnMyFleetSet;
+    public static void Trigger_MyFleetSet()
+    {
+        OnMyFleetSet?.Invoke();
+    }
+    public static void Subscribe_MyFleetSet(Action callback)
+    {
+        OnMyFleetSet += callback;
+    }
+    public static void Unsubscribe_MyFleetSet(Action callback)
+    {
+        OnMyFleetSet -= callback;
+    }
+
     public static event Action<EFormationType> OnFormationChanged;
     public static void Trigger_FormationChanged(EFormationType formation)
     {

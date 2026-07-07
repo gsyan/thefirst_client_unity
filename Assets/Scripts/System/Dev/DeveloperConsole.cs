@@ -408,7 +408,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         RegisterCommand("killallenemies", "Destroy all enemy fleets", (args) =>
         {
             if (ObjectManager.Instance == null) return;
-            var enemyFleets = ObjectManager.Instance.m_enemyFleets.ToList();
+            var enemyFleets = ObjectManager.Instance.GetEnemyFleets().ToList();
             foreach (var fleet in enemyFleets)
                 ObjectManager.Instance.RemoveEnemyFleet(fleet);
         });
@@ -493,9 +493,9 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 return;
 
             var objectManager = ObjectManager.Instance;
-            if (objectManager?.m_myFleet == null) return;
+            if (objectManager?.GetMyFleet() == null) return;
 
-            var fleet = objectManager.m_myFleet;
+            var fleet = objectManager.GetMyFleet();
             var request = new ChangeFormationRequest { fleetId = fleet.m_fleetInfo.id, formationType = formationType };
             NetworkManager.Instance.ChangeFormation(request, (response) =>
             {
@@ -550,7 +550,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                                 DataManager.Instance.AddFleetShip(addShipResponse.newShipInfo);
 
                             if (ObjectManager.Instance != null && addShipResponse.newShipInfo != null)
-                                ObjectManager.Instance.m_myFleet.CreateSpaceShipById(addShipResponse.newShipInfo.id);
+                                ObjectManager.Instance.GetMyFleet().CreateSpaceShipById(addShipResponse.newShipInfo.id);
                         }
                     }
                     catch (System.Exception e)

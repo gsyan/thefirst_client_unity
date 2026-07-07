@@ -171,19 +171,19 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             yield break;
         }
         
-        // 버전 체크 — 서버 접속 직후, 로그인 전
-        var versionCheckTask = m_apiClient.CheckVersionAsync(GetAppVersionCode());
-        while (!versionCheckTask.IsCompleted)
+        // 버전 체크 + 점검 상태 체크 — 서버 접속 직후, 로그인 전 (한 번의 호출로 처리)
+        var serverStatusTask = m_apiClient.CheckServerStatusAsync(GetAppVersionCode());
+        while (!serverStatusTask.IsCompleted)
             yield return null;
 
-        if (versionCheckTask.IsFaulted == false && versionCheckTask.Result.errorCode == 0)
+        if (serverStatusTask.IsFaulted == false && serverStatusTask.Result.errorCode == 0)
         {
-            VersionCheckResponse versionData = versionCheckTask.Result.data;
-            if (versionData.updateRequired == true)
+            ServerStatusResponse serverStatus = serverStatusTask.Result.data;
+            if (serverStatus.updateRequired == true)
             {
                 m_checkingInternetAccess = false;
                 string title   = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateTitle");
-                string message = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateMessage", (object)versionData.minVersionName);
+                string message = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateMessage", (object)serverStatus.minVersionName);
                 string btnText = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateButton");
                 UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
                 {
@@ -192,6 +192,29 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                     confirmText1 = btnText,
                     onConfirm    = () => {
                         Application.OpenURL("market://details?id=com.fidforge.thefirst");
+                    },
+                });
+                yield break;
+            }
+
+            if (serverStatus.working == false)
+            {
+                m_checkingInternetAccess = false;
+                string title       = LocalizationManager.Instance.Get("UIPopupMessage_MaintenanceTitle");
+                string reason      = LocalizationManager.Instance.Get("UIPopupMessage_MaintenanceInProgress");
+                string endTimeText = FormatMaintenanceEndTime(serverStatus.endTime);
+                string body        = string.IsNullOrEmpty(endTimeText) == false ? $"{reason}\n{endTimeText}" : reason;
+                UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+                {
+                    title        = title,
+                    message      = body,
+                    confirmText1 = LocalizationManager.Instance.Get("ok"),
+                    onConfirm    = () => {
+#if UNITY_EDITOR
+                        UnityEditor.EditorApplication.isPlaying = false;
+#else
+                        Application.Quit();
+#endif
                     },
                 });
                 yield break;
@@ -955,5 +978,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 #else
         return 0;
 #endif
+    }
+
+    // 서버에서 내려준 UTC ISO8601 문자열을 로컬 시간 표시용으로 변환
+    private string FormatMaintenanceEndTime(string endTimeUtc)
+    {
+        if (string.IsNullOrEmpty(endTimeUtc) == true) return "";
+
+        DateTime parsedUtc;
+        bool parsed = DateTime.TryParse(endTimeUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out parsedUtc);
+        if (parsed == false) return "";
+
+        DateTime localTime = parsedUtc.ToLocalTime();
+        return localTime.ToString("yyyy-MM-dd HH:mm");
     }
 }

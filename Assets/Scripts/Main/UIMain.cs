@@ -115,12 +115,13 @@ public class UIMain : UIManager
                     DataManager.Instance.m_isGoogleLinked = response.data.bGoogleLinked;
                     IAPManager.Instance.ApplyVipStatus(response.data.vipStatus);
 
+                    // SpaceScene 진입 전 튜토리얼 진행도 미리 확보 — 지크프리트 함대 스폰 여부를 씬 로드 전에 결정 가능
+                    if (TutorialManager.Instance != null)
+                        TutorialManager.Instance.ApplyProgressList(response.data.progressList);
+
                     if (response.data.commanderInfo != null)
                     {
                         DataManager.Instance.SetCommanderInfo(response.data.commanderInfo);
-
-                        if (response.data.researchedIds != null)
-                            DataManager.Instance.m_currentCommander.SetCompletedResearchIds(response.data.researchedIds);
                     }
                     else
                     {

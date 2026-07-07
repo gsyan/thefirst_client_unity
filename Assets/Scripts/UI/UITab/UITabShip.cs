@@ -101,8 +101,8 @@ public class UITabShip : UITabBase
     private void InitializeUITabShip()
     {
         m_myCommander = DataManager.Instance.m_currentCommander;
-        if (m_myCommander == null || ObjectManager.Instance.m_myFleet == null) return;
-        m_playerFleet = ObjectManager.Instance.m_myFleet;
+        if (m_myCommander == null)
+        { Debug.LogError("UITabShip / InitializeUITabShip m_myCommander == null"); return; }
 
         m_selectorsBody    = m_moduleBodySelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
         m_selectorsBeam    = m_moduleBeamSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
@@ -135,6 +135,24 @@ public class UITabShip : UITabBase
         EventManager.Subscribe_SpaceShipModuleSelected(OnSpaceShipModuleSelected);
         EventManager.Subscribe_ModulePointChanged(OnModulePointChanged);
         EventManager.Subscribe_ShipStatsChanged(OnShipStatsChangedRefreshModules);
+
+        // 탭 초기화 시점에 함대가 아직 스폰되지 않았을 수 있음(튜토리얼 등) — 스폰/교체 시점에 뒤늦게 바인딩
+        EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
+
+        // 이미 함대가 존재하면 즉시 바인딩
+        if (ObjectManager.Instance.GetMyFleet() != null)
+            BindPlayerFleet();
+    }
+
+    // 함대 스폰/교체(튜토리얼→실제 함대 전환 포함) 시 호출
+    private void OnMyFleetSet()
+    {
+        BindPlayerFleet();
+    }
+
+    private void BindPlayerFleet()
+    {
+        m_playerFleet = ObjectManager.Instance.GetMyFleet();
     }
 
     private void OnDestroy()
@@ -217,6 +235,8 @@ public class UITabShip : UITabBase
     public override void OnTabActivated()
     {
         base.OnTabActivated();
+
+        if (m_playerFleet == null) { Debug.LogError("UITabShip / OnTabActivated / m_playerFleet == null"); return;} 
 
         if (m_selectedShip == null)
             m_selectedShip = m_playerFleet.m_ships[0];
@@ -390,11 +410,10 @@ public class UITabShip : UITabBase
 
     private void ExecuteModuleUnlock()
     {
-        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
-        long playerMineral = m_myCommander.GetMineral();
-        if (playerMineral < unlockPrice)
+        // 튜토리얼 중(지크프리트 함대)에는 서버 미등록 함선이라 서버 호출이 항상 실패하므로 로컬에서만 처리
+        if (TutorialActionGate.IsTutorial("Tutorial_FirstPlay_ManageShip"))
         {
-            ShowErrorMessage($"Insufficient mineral (need {CommonUtility.FormatBigNumber(unlockPrice)}, have {CommonUtility.FormatBigNumber(playerMineral)})");
+            ExecuteModuleUnlockTutorialOnly();
             return;
         }
 
@@ -409,6 +428,24 @@ public class UITabShip : UITabBase
         m_isUnlockPending = true;
         m_unlockModuleButton.SetInteractable(false);
         NetworkManager.Instance.UnlockModule(unlockRequest, OnModuleUnlockResponse);
+    }
+
+    // 튜토리얼 전용 — 서버 호출 없이 클라이언트에서만 모듈 언락 (지크프리트 함대는 서버 기록 대상 아님)
+    private void ExecuteModuleUnlockTutorialOnly()
+    {
+        int unlockPrice = DataManager.Instance.m_dataTableConfig.gameSettings.moduleUnlockPrice;
+        if (TutorialActionGate.TryConsumeModulePoint(unlockPrice) == false) return;
+
+        EModuleType moduleType = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.moduleType;
+        EModuleSubType firstSubType = DataManager.Instance.GetFirstSubType(moduleType);
+
+        m_selectedShip.Apply_UnlockModule(m_selectedModule.GetModuleBodyIndex(), moduleType, firstSubType,
+            m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex, unlockPrice, 0);
+        EventManager.Trigger_ShipStatsChanged(m_selectedShip);
+
+        PopulateModuleSelectButtons();
+        ReselectReplacedModule(m_selectedShip, m_selectedModule.GetModuleBodyIndex(), moduleType, firstSubType,
+            m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex);
     }
     private void OnModuleUnlockResponse(ApiResponse<ModuleUnlockResponse> response)
     {
@@ -430,7 +467,7 @@ public class UITabShip : UITabBase
 
         commander.UpdateModulePoint(unlockData.pointRemain);
 
-        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
+        SpaceFleet fleet = ObjectManager.Instance.GetMyFleet();
         if (fleet == null) return;
         SpaceShip targetShip = fleet.FindShip(unlockData.shipId);
         if (targetShip == null) return;
@@ -486,7 +523,7 @@ public class UITabShip : UITabBase
 
         commander.UpdateMineral(unlockData.pointRemain);
 
-        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
+        SpaceFleet fleet = ObjectManager.Instance.GetMyFleet();
         if (fleet == null) return;
         SpaceShip targetShip = fleet.FindShip(unlockData.shipId);
         if (targetShip == null) return;
@@ -577,6 +614,13 @@ public class UITabShip : UITabBase
         if (m_selectedShip == null || m_selectedModule == null) return;
         if (m_selectedModule is ModulePlaceholder == true) return;
 
+        // 튜토리얼 중(지크프리트 함대)에는 서버 미등록 함선이라 서버 호출이 항상 실패하므로 로컬에서만 처리
+        if (TutorialActionGate.IsTutorial("Tutorial_FirstPlay_ManageShip"))
+        {
+            ExecuteModuleLevelUpTutorialOnly();
+            return;
+        }
+
         if (m_selectedModule.m_isMineralMode == true)
         {
             ExecuteModuleLevelUpMineral();
@@ -595,7 +639,7 @@ public class UITabShip : UITabBase
 
         var commander = DataManager.Instance.m_currentCommander;
         if (commander == null) return;
-        if (DataManager.Instance.GetModuleLevelUpCost(m_selectedModule.GetModuleSubType(), currentLevel, out long cost) == false) return;
+        if (DataManager.Instance.GetModuleLevelUpCost(m_selectedModule.GetModuleSubType(), currentLevel, out int cost) == false) return;
         if (commander.CheckEnoughModulePoint(cost) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_module_point"));
@@ -616,6 +660,40 @@ public class UITabShip : UITabBase
         m_bModuleChanging    = true;
         m_levelUpRequestTime = Time.time;
         NetworkManager.Instance.LevelUpModule(req, OnModuleLevelUpResponse);
+    }
+
+    // 튜토리얼 전용 — 서버 호출 없이 클라이언트에서만 레벨업 (지크프리트 함대는 서버 기록 대상 아님)
+    private void ExecuteModuleLevelUpTutorialOnly()
+    {
+        int currentLevel = m_selectedModule.GetModuleLevel();
+        int targetLevel  = currentLevel + 1;
+
+        if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), targetLevel) == null)
+        {
+            ShowErrorMessage(LocalizationManager.Instance.Get("LevelupButtonTextMax"));
+            OnLevelUpPointerUp();
+            return;
+        }
+
+        if (DataManager.Instance.GetModuleLevelUpCost(m_selectedModule.GetModuleSubType(), currentLevel, out int cost) == false) return;
+        if (TutorialActionGate.TryConsumeModulePoint(cost) == false)
+        {
+            ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_module_point"));
+            OnLevelUpPointerUp();
+            return;
+        }
+
+        m_levelUpRequestTime = Time.time;
+        SoundManager.Instance.PlayFX(EFx.Level_Up, retrigger: true);
+        Apply_ModuleLevelChange(m_selectedShip.m_shipInfo.id, m_selectedModule.GetModuleBodyIndex(), m_selectedModule.GetModuleType(),
+            m_selectedModule.GetModuleSubType(), m_selectedModule.GetSlotIndex(), targetLevel, isLevelUp: true);
+
+        if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
+        {
+            float elapsed = Time.time - m_levelUpRequestTime;
+            float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
+            m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
+        }
     }
     private void OnModuleLevelUpResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
@@ -667,8 +745,8 @@ public class UITabShip : UITabBase
         int toLv       = Mathf.Max(prevLevel, newLevel);
         for (int lv = fromLv; lv < toLv; lv++)
         {
-            if (DataManager.Instance.GetModuleLevelUpCost(moduleSubType, lv, out long cost) == true)
-                pointDelta += (int)cost;
+            if (DataManager.Instance.GetModuleLevelUpCost(moduleSubType, lv, out int cost) == true)
+                pointDelta += cost;
         }
         int newInvestedPoint = isLevelUp == true
             ? prevInvestedPoint + pointDelta
@@ -930,6 +1008,13 @@ public class UITabShip : UITabBase
         if (m_selectedModule.GetModuleType() != EModuleType.body)
             slotIndex = m_selectedModule.m_moduleSlot.m_moduleSlotInfo.slotIndex;
 
+        // 튜토리얼 중(지크프리트 함대)에는 서버 미등록 함선이라 서버 호출이 항상 실패하므로 로컬에서만 처리
+        if (TutorialActionGate.IsTutorial("Tutorial_FirstPlay_ManageShip"))
+        {
+            ExecuteModuleGradeUpTutorialOnly(slotIndex);
+            return;
+        }
+
         var req = new ModuleGradeChangeRequest
         {
             shipId               = m_selectedShip.m_shipInfo.id,
@@ -940,6 +1025,25 @@ public class UITabShip : UITabBase
         };
         m_bModuleChanging = true;
         NetworkManager.Instance.ModuleGradeUp(req, OnModuleGradeUpResponse);
+    }
+
+    // 튜토리얼 전용 — 서버 호출 없이 클라이언트에서만 그레이드업 (지크프리트 함대는 서버 기록 대상 아님)
+    // 비용은 레벨업과 동일하게 DataTableUpgradeCost(등급별 모듈포인트 비용 테이블)에서 조회
+    private void ExecuteModuleGradeUpTutorialOnly(int slotIndex)
+    {
+        EModuleSubType nextSubType = GetNextSubType(m_selectedModule.GetModuleSubType());
+        if (nextSubType == EModuleSubType.none) return;
+
+        int cost = DataManager.Instance.GetModuleResearchCost(nextSubType);
+        if (TutorialActionGate.TryConsumeModulePoint(cost) == false) return;
+
+        int bodyIndex = m_selectedModule.GetModuleBodyIndex();
+        EModuleType moduleType = m_selectedModule.GetModuleType();
+
+        m_selectedShip.ApplyModuleChange(bodyIndex, moduleType, nextSubType, slotIndex, 1, 0, cost);
+
+        PopulateModuleSelectButtons();
+        ReselectReplacedModule(m_selectedShip, bodyIndex, moduleType, nextSubType, slotIndex);
     }
     private void ExecuteModuleGradeUpMineral(EModuleSubType targetSubType)
     {
@@ -1345,8 +1449,9 @@ public class UITabShip : UITabBase
         if (m_gradeDownModuleButtonText1 != null)
             m_gradeDownModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeDown");
 
+        bool bFlagShip = m_selectedShip.IsFlagship();
         bool isFlagshipBodyMin = m_selectedShip != null
-            && m_selectedShip.m_shipInfo.positionIndex == 0
+            && bFlagShip == true
             && m_selectedModule != null
             && m_selectedModule.GetModuleType() == EModuleType.body
             && prevSubType == EModuleSubType.none
@@ -1373,7 +1478,7 @@ public class UITabShip : UITabBase
             long currentLevelUpTotal = 0;
             for (int lv = 1; lv < currentLevel; lv++)
             {
-                DataManager.Instance.GetModuleLevelUpCost(currentSubType, lv, out long lvCost);
+                DataManager.Instance.GetModuleLevelUpCost(currentSubType, lv, out int lvCost);
                 currentLevelUpTotal += lvCost;
             }
 
@@ -1382,7 +1487,7 @@ public class UITabShip : UITabBase
             long prevLevelUpTotal = 0;
             for (int lv = 1; lv < prevMaxLevel; lv++)
             {
-                DataManager.Instance.GetModuleLevelUpCost(prevSubType, lv, out long lvCost);
+                DataManager.Instance.GetModuleLevelUpCost(prevSubType, lv, out int lvCost);
                 prevLevelUpTotal += lvCost;
             }
 
@@ -1408,7 +1513,7 @@ public class UITabShip : UITabBase
             return;
         }
 
-        DataManager.Instance.GetModuleLevelUpCost(subType, level, out long levelUpCost);
+        DataManager.Instance.GetModuleLevelUpCost(subType, level, out int levelUpCost);
         int  reqTier  = subType.GetTechTier();
         bool hasTech  = playerSubtypeLevel >= reqTier;
         bool hasPoint = playerPoint >= levelUpCost;
@@ -1437,8 +1542,9 @@ public class UITabShip : UITabBase
         if (m_levelDownModuleButtonText1 != null)
             m_levelDownModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_LevelDown");
 
+        bool bFlagShip = m_selectedShip.IsFlagship();
         bool isFlagshipBodyMin = m_selectedShip != null
-            && m_selectedShip.m_shipInfo.positionIndex == 0
+            && bFlagShip == true
             && m_selectedModule != null
             && m_selectedModule.GetModuleType() == EModuleType.body
             && prevSubType == EModuleSubType.none
@@ -1457,7 +1563,7 @@ public class UITabShip : UITabBase
 
         if (level > 1)
         {
-            DataManager.Instance.GetModuleLevelUpCost(subType, level - 1, out long levelDownRefund);
+            DataManager.Instance.GetModuleLevelUpCost(subType, level - 1, out int levelDownRefund);
             m_levelDownModuleButtonText2.SetRow("module-point", $"+{CommonUtility.FormatBigNumber(levelDownRefund)}");
         }
         else if (prevSubType != EModuleSubType.none)
@@ -1479,7 +1585,7 @@ public class UITabShip : UITabBase
         int  lv    = currentLevel;
         while (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, lv + 1) != null)
         {
-            if (DataManager.Instance.GetModuleLevelUpCost(subType, lv, out long cost))
+            if (DataManager.Instance.GetModuleLevelUpCost(subType, lv, out int cost))
                 total += cost;
             lv++;
         }
@@ -1985,7 +2091,7 @@ public class UITabShip : UITabBase
         if (commander != null)
             commander.UpdateModulePoint(data.pointRemain);
 
-        SpaceFleet fleet = ObjectManager.Instance.m_myFleet;
+        SpaceFleet fleet = ObjectManager.Instance.GetMyFleet();
         if (fleet == null) return;
         SpaceShip targetShip = fleet.FindShip(data.shipId);
         if (targetShip == null) return;

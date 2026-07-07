@@ -16,7 +16,7 @@ public class UITabPvp : UITabBase
 
     public override void InitializeUITab()
     {
-        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.m_myFleet == null) return;
+        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.GetMyFleet() == null) return;
 
         m_innerTabSystem.InitializeTabBases();
         m_tabMyInfo.onAttackClicked = OnAttackClicked;
@@ -120,7 +120,7 @@ public class UITabPvp : UITabBase
             return;
         }
 
-        SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet != null && myFleet.m_fleetState == EUnitState.BattleExploration)
         {
             ObjectManager.Instance.StopEnemySpawning();
@@ -141,7 +141,7 @@ public class UITabPvp : UITabBase
             ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(pvpZoneStage), pvpZoneStage.fleetRotationY);
         CameraController.Instance.SnapToTarget();
 
-        ObjectManager.Instance.m_myFleet.StartFleetWarpIn(onArrived: () =>
+        ObjectManager.Instance.GetMyFleet().StartFleetWarpIn(onArrived: () =>
         {
             ObjectManager.Instance.StartPvpBattle(opponentFleetInfo);
         });
@@ -241,7 +241,7 @@ public class UITabPvp : UITabBase
         ObjectManager.Instance.ChangeZone(zoneGroup);
         ObjectManager.Instance.SetMyFleetPosition(m_datatableZone.ResolveFleetWorldPosition(returnZoneStage), returnZoneStage.fleetRotationY);
         CameraController.Instance.SnapToTarget();
-        SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         myFleet.StartFleetWarpIn(onArrived: () =>
         {
             if (myFleet.IsFleetAlive() == false)

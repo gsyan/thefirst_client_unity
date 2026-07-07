@@ -111,10 +111,10 @@ public static class DataTableZoneCSVUtility
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_enemy_fleet_position.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("index,distance,rotx,roty,rotz");
+        sb.AppendLine("grade,index,distance,rotx,roty,rotz");
         foreach (FleetPositionPreset p in table.fleetPositionPresets)
         {
-            sb.AppendLine($"{p.index},{p.distance},{p.rotX},{p.rotY},{p.rotZ}");
+            sb.AppendLine($"{p.grade},{p.index},{p.distance},{p.rotX},{p.rotY},{p.rotZ}");
         }
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }

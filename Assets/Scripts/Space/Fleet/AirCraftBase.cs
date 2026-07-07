@@ -27,7 +27,7 @@ public abstract class AircraftBase : MonoBehaviour
     [SerializeField] protected EModuleType m_hangerModuleType;
     [SerializeField] protected EModuleSubType m_hangerModuleSubType;
     [SerializeField] protected int m_hangerSlotIndex;
-    public bool m_isEnemyAircraft = false; // 초기화 시 캐싱, 모함 소멸 후 null이 돼도 판별 가능
+    public ETeam m_team = ETeam.TeamA; // 초기화 시 캐싱, 모함 소멸 후 null이 돼도 판별 가능
     public DogfightSphere m_dogfightSphere = null;
 
     private EngineFlameColorizer[] m_engineFlames;
@@ -100,12 +100,13 @@ public abstract class AircraftBase : MonoBehaviour
             }
         }
 
-        m_isEnemyAircraft = m_carrierShip != null && m_carrierShip.m_ownerFleet != null && m_carrierShip.m_ownerFleet.IsEnemy;
+        m_team = m_carrierShip != null && m_carrierShip.m_ownerFleet != null ? m_carrierShip.m_ownerFleet.m_team : ETeam.TeamA;
 
         if (m_engineFlames == null)
             m_engineFlames = GetComponentsInChildren<EngineFlameColorizer>(true);
+        bool isEnemyColor = ObjectManager.Instance.IsEnemyOfMyTeam(m_carrierShip != null ? m_carrierShip.m_ownerFleet : null);
         for (int i = 0; i < m_engineFlames.Length; i++)
-            m_engineFlames[i].SetEnemyColor(m_isEnemyAircraft);
+            m_engineFlames[i].SetEnemyColor(isEnemyColor);
 
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
 
@@ -641,7 +642,7 @@ public abstract class AircraftBase : MonoBehaviour
         foreach (Collider col in nearbyObjects)
         {
             AircraftBase otherAircraft = col.GetComponentInParent<AircraftBase>();
-            if (otherAircraft != null && otherAircraft.m_isEnemyAircraft != m_isEnemyAircraft && otherAircraft.m_aircraftInfo.airHealth > 0)
+            if (otherAircraft != null && otherAircraft.m_team != m_team && otherAircraft.m_aircraftInfo.airHealth > 0)
                 return otherAircraft;
         }
 
@@ -709,20 +710,13 @@ public abstract class AircraftBase : MonoBehaviour
 
         // 적 함대에서 살아있는 모듈 직접 탐색
         SpaceFleet enemyFleet = null;
-        if (m_carrierShip.m_ownerFleet.IsEnemy)
+        List<SpaceFleet> opposingFleets = ObjectManager.Instance.GetOpposingTeamFleets(m_carrierShip.m_ownerFleet.m_team);
+        for (int i = 0; i < opposingFleets.Count; i++)
         {
-            enemyFleet = ObjectManager.Instance.m_myFleet;
-        }
-        else
-        {
-            List<SpaceFleet> enemyFleets = ObjectManager.Instance.m_enemyFleets;
-            for (int i = 0; i < enemyFleets.Count; i++)
+            if (opposingFleets[i] != null && opposingFleets[i].IsFleetAlive())
             {
-                if (enemyFleets[i] != null && enemyFleets[i].IsFleetAlive())
-                {
-                    enemyFleet = enemyFleets[i];
-                    break;
-                }
+                enemyFleet = opposingFleets[i];
+                break;
             }
         }
 

@@ -12,7 +12,7 @@ public class ModuleBase : MonoBehaviour
     [HideInInspector] public float m_healthMax;
     [HideInInspector] public float m_attack;
 
-    [HideInInspector] public long m_modulePointCostLevelup;
+    [HideInInspector] public int m_modulePointCostLevelup;
 
     // 리셋 시 환급할 투자 이력
     [HideInInspector] public int m_investedModulePoint;

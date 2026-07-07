@@ -292,14 +292,15 @@ public class DataTableZoneEditor : Editor
             string line = lines[i].Trim();
             if (string.IsNullOrEmpty(line)) continue;
             string[] col = line.Split(',');
-            if (!int.TryParse(col[0], out int index)) continue;
+            if (!int.TryParse(col[0], out int grade)) continue;
 
-            float.TryParse(col[1], out float distance);
-            float.TryParse(col[2], out float rotX);
-            float.TryParse(col[3], out float rotY);
-            float.TryParse(col[4], out float rotZ);
+            int.TryParse(col[1], out int index);
+            float.TryParse(col[2], out float distance);
+            float.TryParse(col[3], out float rotX);
+            float.TryParse(col[4], out float rotY);
+            float.TryParse(col[5], out float rotZ);
 
-            presets.Add(new FleetPositionPreset { index = index, distance = distance, rotX = rotX, rotY = rotY, rotZ = rotZ });
+            presets.Add(new FleetPositionPreset { index = index, grade = grade, distance = distance, rotX = rotX, rotY = rotY, rotZ = rotZ });
         }
 
         m_dataTableZone.fleetPositionPresets = presets;

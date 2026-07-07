@@ -23,6 +23,14 @@ public struct CapabilityProfile
     public int airCount;                // 함재기 수
 }
 
+// 자동 타겟팅 후보 필터링 룰 — 조합 가능(bitmask), 신규 룰은 값 추가 + SpaceShip.ApplyTargetingRules()에 처리 분기만 추가하면 됨
+[Flags]
+public enum ETargetingRule
+{
+    None = 0,
+    FlagshipLast = 1 << 0, // 기함 아닌 함선이 하나라도 남아있으면 기함을 후보에서 제외, 기함만 남으면 타격 허용
+}
+
 public class SpaceShip : MonoBehaviour
 {
     [SerializeField] public ShipInfo m_shipInfo;
@@ -34,6 +42,12 @@ public class SpaceShip : MonoBehaviour
     public SpaceFleet m_ownerFleet;
     public EUnitState m_shipState;
     [HideInInspector] public Outline m_shipOutline;
+
+    // 자동 타겟팅 후보 필터링 룰 (기본값 None = 기존 동작과 동일). 시네마틱 등 특수 전투용 함선에만 설정
+    public ETargetingRule m_targetingRule = ETargetingRule.None;
+
+    // 전투 피격으로 실제 파괴되지 않도록 막는 체력 비율 하한선 (기본값 0 = 하한 없음, 기존 동작과 동일). 튜토리얼 지크프리트 기함처럼 스크립트로만 파괴되어야 하는 함선에 설정
+    public float m_minHealthRatio = 0f;
 
     // Zone 적 전용 — 함선별 스탯 배율 (InitializeSpaceShip 전에 세팅, 기본값 1.0)
     public float m_bodyMultiplier    = 1.0f;
@@ -137,13 +151,11 @@ public class SpaceShip : MonoBehaviour
     }
 
     private ModuleBody m_currentTargetBody;
-    private Coroutine m_findTargetModuleBodyCoroutine;
     private Coroutine m_rotationCoroutine;
     private Coroutine m_returnRotationCoroutine;
     private const float k_angularSpeedMult = 2f;
     private List<ModuleBody> m_candidateBodies = new List<ModuleBody>();
-    private readonly WaitForSeconds m_waitOneSecond = new WaitForSeconds(1.0f);
-    
+
     public void ApplyFleetStateToShip()
     {
 
@@ -187,19 +199,11 @@ public class SpaceShip : MonoBehaviour
 
     public void StartFindingTargets()
     {
-        // if (m_findTargetModuleBodyCoroutine != null)
-        //     StopCoroutine(m_findTargetModuleBodyCoroutine);
-        // m_findTargetModuleBodyCoroutine = StartCoroutine(Co_FindTargetModuleBody());
         FindTargetModuleBody();
     }
 
     public void StopAutoCombat()
     {
-        if (m_findTargetModuleBodyCoroutine != null)
-        {
-            StopCoroutine(m_findTargetModuleBodyCoroutine);
-            m_findTargetModuleBodyCoroutine = null;
-        }
         if (m_rotationCoroutine != null)
         {
             StopCoroutine(m_rotationCoroutine);
@@ -211,12 +215,17 @@ public class SpaceShip : MonoBehaviour
         m_returnRotationCoroutine = StartCoroutine(ReturnToFleetForward());
     }
 
+    // 1단계: 최소회전으로 교전 상대 함대(팀) 탐색 → 2단계: 그 함대 안에서 최소회전 바디 탐색
     private void FindTargetModuleBody()
     {
-        CollectOpposingBodies(m_candidateBodies);
+        SpaceFleet targetFleet = FindMinAngleFleet(GetOpposingFleets());
+        if (targetFleet == null) return;
+
+        m_candidateBodies.Clear();
+        ApplyTargetingRules(targetFleet, m_candidateBodies);
         ModuleBody best = FindMinAngleBody(m_candidateBodies);
         if (best == null) return;
-        
+
         m_currentTargetBody = best;
         m_targetShip = m_currentTargetBody.GetShip();
 
@@ -227,53 +236,69 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
-    private IEnumerator Co_FindTargetModuleBody()
+    // targetFleet에서 후보 바디를 수집한 뒤, m_targetingRule에 설정된 룰들을 순서대로 적용해 걸러냄. 신규 룰 추가 시 여기에 분기만 추가
+    private void ApplyTargetingRules(SpaceFleet targetFleet, List<ModuleBody> result)
     {
-        while (true)
+        CollectBodiesFromFleet(targetFleet, result);
+
+        if ((m_targetingRule & ETargetingRule.FlagshipLast) != 0)
+            ApplyFlagshipLastRule(targetFleet, result);
+    }
+
+    // 기함 아닌 함선이 후보에 하나라도 있으면 기함 바디를 후보에서 제외 (기함만 남았을 때만 타격 허용)
+    // targetFleet.GetFlagship()은 원래 기함이 죽으면 살아있는 다음 함선으로 자동 승계되므로 그 결과를 그대로 사용
+    private void ApplyFlagshipLastRule(SpaceFleet targetFleet, List<ModuleBody> candidates)
+    {
+        SpaceShip currentFlagship = targetFleet != null ? targetFleet.GetFlagship() : null;
+        if (currentFlagship == null) return;
+
+        bool bFind = false;
+        for (int i = 0; i < candidates.Count; i++)
         {
-            // 현재 타겟이 살아있으면 유지 — 죽었거나 없을 때만 재선택
-            bool currentTargetAlive = m_currentTargetBody != null
-                && m_currentTargetBody.gameObject.activeSelf
-                && m_currentTargetBody.m_health > 0;
-
-            if (currentTargetAlive == false)
+            if (candidates[i].GetShip() != currentFlagship)
             {
-                CollectOpposingBodies(m_candidateBodies);
-                ModuleBody best = FindMinAngleBody(m_candidateBodies);
-
-                if (best == null)
-                {
-                    yield return m_waitOneSecond;
-                    continue;
-                }
-
-                m_currentTargetBody = best;
-                m_targetShip = best.GetComponentInParent<SpaceShip>();
-
-                foreach (ModuleBody body in m_moduleBodys)
-                {
-                    if (body != null && body.m_health > 0)
-                        body.SetTarget(m_currentTargetBody);
-                }
+                bFind = true;
+                break;
             }
+        }
+        // 기함 아닌 함선이 하나도 없으면(=기함만 남음) candidates를 건드리지 않고 그대로 반환 → 기함이 후보에 남아 타격 대상이 됨
+        if (bFind == false) return;
 
-            yield return m_waitOneSecond;
+        for (int i = candidates.Count - 1; i >= 0; i--)
+        {
+            if (candidates[i].GetShip() == currentFlagship)
+                candidates.RemoveAt(i);
         }
     }
 
-    private void CollectOpposingBodies(List<ModuleBody> result)
+    private static readonly List<SpaceFleet> s_emptyOpposingFleets = new List<SpaceFleet>();
+
+    private List<SpaceFleet> GetOpposingFleets()
     {
-        result.Clear();
-        if (m_ownerFleet != null && m_ownerFleet.IsEnemy == true)
+        if (m_ownerFleet == null) return s_emptyOpposingFleets;
+        return ObjectManager.Instance.GetOpposingTeamFleets(m_ownerFleet.m_team);
+    }
+
+    private SpaceFleet FindMinAngleFleet(List<SpaceFleet> candidates)
+    {
+        SpaceFleet best = null;
+        float bestAngle = float.MaxValue;
+        Vector3 forward = transform.forward;
+        Vector3 myPos = transform.position;
+
+        foreach (SpaceFleet fleet in candidates)
         {
-            CollectBodiesFromFleet(ObjectManager.Instance.m_myFleet, result);
+            if (fleet == null || fleet.IsFleetAlive() == false || fleet.m_fleetState.IsBattleState() == false) continue;
+
+            Vector3 toFleet = (fleet.transform.position - myPos).normalized;
+            float angle = Vector3.Angle(forward, toFleet);
+            if (angle < bestAngle)
+            {
+                bestAngle = angle;
+                best = fleet;
+            }
         }
-        else
-        {
-            List<SpaceFleet> enemyFleets = ObjectManager.Instance.m_enemyFleets;
-            foreach (SpaceFleet fleet in enemyFleets)
-                CollectBodiesFromFleet(fleet, result);
-        }
+        return best;
     }
 
     private void CollectBodiesFromFleet(SpaceFleet opposingFleet, List<ModuleBody> result)
@@ -320,7 +345,7 @@ public class SpaceShip : MonoBehaviour
                 if (toTarget.sqrMagnitude > 0.001f)
                 {
                     float angularSpeed = m_spaceShipStatsCur.speed * k_angularSpeedMult;
-                    bool isFlagship = m_shipInfo != null && m_shipInfo.positionIndex == 0;
+                    bool isFlagship = IsFlagship();
                     if (isFlagship == true && m_ownerFleet != null)
                     {
                         // 기함: 함대 transform을 서서히 적 방향으로 회전
@@ -457,6 +482,23 @@ public class SpaceShip : MonoBehaviour
         {
             float reduction = m_ownerFleet.GetFormationDefenseReduction();
             incomingDamage *= (1f - reduction);
+        }
+
+        // 체력 비율 하한선이 설정된 함선(튜토리얼 기함 등)은 그 이하로 실제 파괴되지 않도록 데미지를 클램프
+        if (m_minHealthRatio > 0f)
+        {
+            float totalHealth = 0f;
+            float totalHealthMax = 0f;
+            foreach (ModuleBody body in m_moduleBodys)
+            {
+                if (body == null) continue;
+                totalHealth += body.m_health;
+                totalHealthMax += body.m_healthMax;
+            }
+
+            float floorHealth = m_minHealthRatio * totalHealthMax;
+            float allowedDamage = totalHealth - floorHealth;
+            incomingDamage = Mathf.Clamp(incomingDamage, 0f, Mathf.Max(0f, allowedDamage));
         }
 
         // 살아있는 바디 중 하나에 랜덤으로 데미지 분산 (또는 첫 번째 바디에)
@@ -602,6 +644,12 @@ public class SpaceShip : MonoBehaviour
     {
         for (int i = m_scorchMarks.Count - 1; i >= 0; i--)
             ReturnScorchMarkAt(i);
+    }
+
+    // 이 함선이 함대의 현재 기함인지 확인 (기함 승계 반영)
+    public bool IsFlagship()
+    {
+        return m_ownerFleet.GetFlagship() == this;
     }
 
     // 함선이 살아있는지 확인

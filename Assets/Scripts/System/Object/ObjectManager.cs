@@ -120,8 +120,66 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private CelestialBodySpawner m_celestialBodySpawner;
 
-    [HideInInspector] public SpaceFleet m_myFleet;
-    [HideInInspector] public List<SpaceFleet> m_enemyFleets = new List<SpaceFleet>();
+    [HideInInspector] public List<SpaceFleet> m_teamAFleets = new List<SpaceFleet>();
+    [HideInInspector] public List<SpaceFleet> m_teamBFleets = new List<SpaceFleet>();
+    [HideInInspector] public List<SpaceFleet> m_teamCFleets = new List<SpaceFleet>();
+    private static readonly List<SpaceFleet> s_emptyTeamFleets = new List<SpaceFleet>();
+
+    // 지금 이 클라이언트를 플레이 중인 유저가 속한 팀 — 현재는 항상 TeamA지만, 향후 멀티플레이(같은 전투에 여러 유저)에서 B가 될 수도 있어 값으로 분리해둠
+    [HideInInspector] public ETeam m_myTeam = ETeam.TeamA;
+
+    // 지크프리트(튜토리얼 연출용) 함대 사용 중 여부 — 튜토리얼 종료 시 실제 함대/모듈포인트로 전환하는 데 사용
+    private bool m_isSiegfriedFleetActive = false;
+    private int m_realModulePointBackup;
+    private int m_realCommanderLevelBackup;
+
+    // 내 팀의 대표 함대(=기존 m_myFleet) — 팀 리스트 순서(index)가 아닌 fleetSource로 실제 플레이어 함대를 식별
+    // (시네마틱 함대도 같은 TeamA에 등록될 수 있어 리스트 첫 번째로 판단하면 오판 가능)
+    public SpaceFleet GetMyFleet()
+    {
+        List<SpaceFleet> fleets = GetTeamFleets(m_myTeam);
+        for (int i = 0; i < fleets.Count; i++)
+        {
+            if (fleets[i] != null && fleets[i].m_fleetSource == EFleetSource.fleet_source_player)
+                return fleets[i];
+        }
+        return null;
+    }
+
+    // 내 팀 기준 적 팀 함대 목록(=기존 m_enemyFleets) — UI/카메라 등 "플레이어 관점" 참조용
+    public List<SpaceFleet> GetEnemyFleets()
+    {
+        return GetOpposingTeamFleets(m_myTeam);
+    }
+
+    // fleet이 내 팀이 아니면 true(=기존 IsEnemy) — 플레이어 관점의 아군/적 판정
+    public bool IsEnemyOfMyTeam(SpaceFleet fleet)
+    {
+        return fleet != null && fleet.m_team != m_myTeam;
+    }
+
+    public List<SpaceFleet> GetTeamFleets(ETeam team)
+    {
+        if (team == ETeam.TeamA) return m_teamAFleets;
+        if (team == ETeam.TeamB) return m_teamBFleets;
+        return m_teamCFleets;
+    }
+
+    // team 소속 함대의 교전 상대 팀 반환 (TeamA<->TeamB만 서로 적대, TeamC는 기본적으로 교전 없음)
+    public List<SpaceFleet> GetOpposingTeamFleets(ETeam team)
+    {
+        if (team == ETeam.TeamA) return m_teamBFleets;
+        if (team == ETeam.TeamB) return m_teamAFleets;
+        return s_emptyTeamFleets;
+    }
+
+    // TeamA<->TeamB만 서로 적대 팀으로 취급 (TeamC는 자기 자신 반환 — 교전 상대 없음)
+    public ETeam GetOpposingTeam(ETeam team)
+    {
+        if (team == ETeam.TeamA) return ETeam.TeamB;
+        if (team == ETeam.TeamB) return ETeam.TeamA;
+        return ETeam.TeamC;
+    }
 
     // 활성 미사일 추적 — 아군/적군 분리, 요격 타겟 탐색용
     public List<ProjectileMissile> m_friendlyMissiles = new List<ProjectileMissile>();
@@ -168,30 +226,21 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
     private void Start()
     {
+        NetworkManager.Instance.OnChangeScene();
+        UIManager.Instance.InitializeUIManager();// UI 초기화
+        SoundManager.Instance.InitializeSoundManager();// SoundManager 이벤트 구독이 SpawnFleet→TriggerMyFleetStateChanged 이전에 완료되어야 함
         m_celestialBodySpawner = GetComponent<CelestialBodySpawner>();
         if (m_celestialBodySpawner != null)
             m_celestialBodySpawner.SpawnZone(GetInitialZoneIndex());
+        AdManager.Instance.ToString();// 광고 초기화 (존 입장 전 미리 로드)
 
-        // SoundManager 이벤트 구독이 SpawnFleet→TriggerMyFleetStateChanged 이전에 완료되어야 함
-        SoundManager.Instance.InitializeSoundManager();
-
-        SpawnFleet();
-
-        NetworkManager.Instance.OnChangeScene();
-
-        // UI 초기화
-        UIManager.Instance.InitializeUIManager();
-
-        // 플레이어 함대 전멸 이벤트 구독
-        EventManager.Subscribe_MyFleetDestroyed(OnMyFleetDestroyed);
-
-        // 광고 초기화 (존 입장 전 미리 로드)
-        AdManager.Instance.ToString();
-
-        // 튜토리얼 초기화
-        //TutorialManager.Instance.ResetAllTutorials();
-        // 튜토리얼 체크 및 시작, StartGameplay
-        StartTutorialIfNeeded();
+        // 튜토리얼 진행도는 SelectCommander 응답 시점(UIMain.cs)에 이미 확보되어 있음 — 씬 로드 중 깜빡임 없이 바로 결정
+        bool bPassTutorial = false;
+        if (bPassTutorial == true)
+            StartNormalPlay();
+        else
+            // UI 초기화 후 약간의 딜레이 후 시작
+            StartCoroutine(StartTutorial());
     }
 
     protected override void OnDestroy()
@@ -209,11 +258,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public void ForceEndBattle(bool isVictory)
     {
         m_isBattleEnding = true;
-        bool isPvp = m_myFleet != null && m_myFleet.m_fleetState == EUnitState.BattlePvp;
+        SpaceFleet myFleet = GetMyFleet();
+        bool isPvp = myFleet != null && myFleet.m_fleetState == EUnitState.BattlePvp;
 
         GameSpeedController.Reset(); // timeScale 및 오디오 피치 복원
-        if (m_myFleet != null)
-            m_myFleet.SetFleetState(EUnitState.Idle);
+        if (myFleet != null)
+            myFleet.SetFleetState(EUnitState.Idle);
         StopEnemySpawning();
         OrderAllAircraftReturn();
         CleanupAllProjectiles();
@@ -225,64 +275,70 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             EventManager.TriggerZoneStageBattleEnd(isVictory);
     }
 
-    // 튜토리얼 시작 체크
-    private void StartTutorialIfNeeded()
+    // 순서대로 진행할 튜토리얼 목록 — 단계를 늘리려면 이 배열에만 추가하면 됨
+    private static readonly string[] TUTORIAL_SEQUENCE =
     {
-        if (TutorialManager.Instance == null)
-        {
-            StartGameplay();
-            return;
-        }
-
-        bool bTest = false;
-        if (bTest == true)
-            PassTutorial();
-        else
-            // UI 초기화 후 약간의 딜레이 후 시작
-            StartCoroutine(StartTutorial());
-    }
+        "Tutorial_FirstPlay",
+        "Tutorial_FirstPlay_ManageShip",
+        "Tutorial_FirstPlay_Battle",
+        "Tutorial_FirstPlay_Complete"
+    };
 
     private IEnumerator StartTutorial()
     {
-        // 서버에서 튜토리얼 진행도 로드 대기
+        if (TutorialManager.Instance == null)
+        { Debug.LogError("TutorialManager.Instance == null"); yield break; }
+            
+        if (TutorialManager.Instance.IsTutorialCompleted("Tutorial_FirstPlay_Complete") == true)
+        { StartNormalPlay(); yield break; } 
+
+        SpawnFleetWithInfo(TutorialCinematicController.BuildSiegfriedFleetInfo("Siegfried Fleet"));
+        m_isSiegfriedFleetActive = true;
+
+        // 원점(0,0,0)이 아니라 실제 스테이지 1-10 위치에서 시작 — 배경/천체가 있는 위치로 배치
+        ZoneStageConfig siegfriedStage = DataManager.Instance.m_dataTableZone.GetZoneStageByName("1-10");
+        if (siegfriedStage != null)
+            SetMyFleetPosition(DataManager.Instance.m_dataTableZone.ResolveFleetWorldPosition(siegfriedStage), siegfriedStage.fleetRotationY);
+
+        GrantTutorialModulePoint();
+        GrantTutorialCommanderLevel();
+        
+        // Tutorial 안에 함선추가 등 실제 UI 조작 스텝이 있어 메인 패널(TapButtons 등)이 미리 열려있어야 함
+        UIManager.Instance.ShowMainPanel();
+
+        // 서버에서 튜토리얼 진행도 로드 대기 — UIMain.cs에서 이미 확보됐으면 즉시 반환(no-op)
         var loadTask = TutorialManager.Instance.LoadProgressFromServerAsync();
         while (!loadTask.IsCompleted)
         {
             yield return null;
         }
+        RunTutorialSequence(0);
+    }
 
-        // 튜토리얼 시작 (완료 시 StartGameplay 호출)
-        TutorialManager.Instance.StartTutorial("Tutorial_FirstPlay", (tutorialId) =>
+    // TUTORIAL_SEQUENCE를 index부터 순서대로 진행 — 마지막까지 끝나면 StartGameplay 호출
+    private void RunTutorialSequence(int index)
+    {
+        if (index >= TUTORIAL_SEQUENCE.Length)
         {
-            // 스토리 튜토리얼 완료
-            TutorialManager.Instance.StartTutorial("Tutorial_Mineral", (tutorialId) =>
-            {
-                // 자원 튜토리얼 완료 → 메인 패널 표시
-                UIManager.Instance.ShowMainPanel();
+            StartNormalPlay();
+            return;
+        }
 
-                TutorialManager.Instance.StartTutorial("Tutorial_Fleet", (tutorialId) =>
-                {
-                    StartGameplay();
-                });
-            });
+        TutorialManager.Instance.StartTutorial(TUTORIAL_SEQUENCE[index], (tutorialId) =>
+        {
+            RunTutorialSequence(index + 1);
         });
     }
 
-    // 튜토리얼 완료 후 게임플레이 시작
-    private void StartGameplay()
+    private void StartNormalPlay()
     {
-        
-    }
-
-    private void PassTutorial()
-    {
-        ShowGamePanels();
-    }
-
-    private void ShowGamePanels()
-    {
+        if (m_isSiegfriedFleetActive == true)
+            SwitchFromSiegfriedFleetToRealFleet();
+        else
+            SpawnFleet();
+        EventManager.Subscribe_MyFleetDestroyed(OnMyFleetDestroyed);// 플레이어 함대 전멸 이벤트 구독
         NetworkManager.Instance.StartHeartbeat();
-        UIManager.Instance.ShowMainPanel();
+        UIManager.Instance.ShowMainPanel();        
     }
 
     private int GetInitialZoneIndex()
@@ -351,20 +407,21 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         StageEnemyFleetSpawnConfig wave = m_pendingWaves[waveIndex];
         if (wave.fleetInfo == null || wave.fleetInfo.ships == null || wave.fleetInfo.ships.Count == 0) return;
 
+        SpaceFleet myFleet = GetMyFleet();
         Vector3 spawnPos = GetEnemySpawnPositionFromWave(wave);
-        Vector3 dirToPlayer = m_myFleet != null ? m_myFleet.transform.position - spawnPos : Vector3.zero;
-        dirToPlayer.y = 0f;
+        Vector3 dirToPlayer = myFleet != null ? myFleet.transform.position - spawnPos : Vector3.zero;
         Quaternion spawnRot = dirToPlayer != Vector3.zero ? Quaternion.LookRotation(dirToPlayer) : Quaternion.identity;
 
         GameObject fleetObj = new GameObject($"EnemyFleet_{waveIndex}");
         fleetObj.transform.position = spawnPos;
         fleetObj.transform.rotation = spawnRot;
 
+        ETeam enemyTeam = GetOpposingTeam(m_myTeam);
         SpaceFleet newFleet = fleetObj.AddComponent<SpaceFleet>();
-        m_enemyFleets.Add(newFleet);
+        GetTeamFleets(enemyTeam).Add(newFleet);
 
         // fleet_source_zone_data → IsZoneEnemy == true → 전멸 시 OnZoneEnemyFleetDefeated 호출
-        newFleet.InitializeSpaceFleet(wave.fleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_zone_data, EUnitState.Move);
+        newFleet.InitializeSpaceFleet(wave.fleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, EUnitState.Move);
         float playerDelay = m_currentWaveStage != null ? m_currentWaveStage.playerFireDelaySec : 0f;
         float enemyDelay  = m_currentWaveStage != null ? m_currentWaveStage.enemyFireDelaySec  : 0f;
         newFleet.StartFleetWarpIn(() =>
@@ -375,22 +432,24 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private Vector3 GetEnemySpawnPositionFromWave(StageEnemyFleetSpawnConfig wave)
     {
-        if (m_myFleet == null) return Vector3.zero;
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null) return Vector3.zero;
         FleetPositionPreset preset = DataManager.Instance.m_dataTableZone.GetFleetPosition(wave.positionIndex);
         if (preset == null) return Vector3.zero;
 
-        Vector3 basePos      = m_myFleet.transform.position;
+        // 내 함대를 중심으로 한 구 표면 위에 배치 — distance가 항상 실제 거리(구의 반지름)가 되도록 y를 눌러 깎지 않음
+        Vector3 basePos      = myFleet.transform.position;
         Vector3 localDir     = Quaternion.Euler(preset.rotX, preset.rotY, preset.rotZ) * Vector3.forward;
-        Vector3 worldDir     = m_myFleet.transform.TransformDirection(localDir);
+        Vector3 worldDir     = myFleet.transform.TransformDirection(localDir);
         Vector3 spawnPos     = basePos + worldDir * preset.distance;
-        spawnPos.y = 0f;
         return spawnPos;
     }
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
     public void StartPvpBattle(FleetInfo opponentFleetInfo)
     {
-        if (opponentFleetInfo == null || m_myFleet == null)
+        SpaceFleet myFleet = GetMyFleet();
+        if (opponentFleetInfo == null || myFleet == null)
         {
             EventManager.TriggerPvpBattleEnd(false);
             return;
@@ -401,30 +460,32 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         GameObject fleetObj = new GameObject("PvpEnemyFleet");
         fleetObj.transform.position = spawnPosition;
 
-        Vector3 directionToPlayer = m_myFleet.transform.position - spawnPosition;
+        Vector3 directionToPlayer = myFleet.transform.position - spawnPosition;
         directionToPlayer.y = 0;
         if (directionToPlayer != Vector3.zero)
             fleetObj.transform.rotation = Quaternion.LookRotation(directionToPlayer);
 
+        ETeam enemyTeam = GetOpposingTeam(m_myTeam);
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
-        enemyFleet.InitializeSpaceFleet(opponentFleetInfo, EFleetSide.fleet_side_enemy, EFleetSource.fleet_source_player_remote, EUnitState.Move);
+        enemyFleet.InitializeSpaceFleet(opponentFleetInfo, enemyTeam, EFleetSource.fleet_source_player_remote, EUnitState.Move);
         enemyFleet.StartFleetWarpIn(() =>
         {
             TryStartCombat(enemyFleet, EUnitState.BattlePvp);
         });
 
-        m_enemyFleets.Add(enemyFleet);
+        GetTeamFleets(enemyTeam).Add(enemyFleet);
     }
 
     private void TryStartCombat(SpaceFleet enemyFleet, EUnitState battleState, float playerDelay = 0f, float enemyDelay = 0f)
     {
         m_isBattleEnding = false;
-        if (m_myFleet == null) return;
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null) return;
         if (enemyFleet == null) return;
 
-        m_myFleet.SetFleetState(battleState);
+        myFleet.SetFleetState(battleState);
         enemyFleet.SetFleetState(battleState);
-        StartCoroutine(DelayedStartCombat(m_myFleet,  playerDelay));
+        StartCoroutine(DelayedStartCombat(myFleet,    playerDelay));
         StartCoroutine(DelayedStartCombat(enemyFleet, enemyDelay));
     }
 
@@ -441,10 +502,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         if (fleet == null) return;
 
-        m_enemyFleets.Remove(fleet);
+        List<SpaceFleet> enemyTeamFleets = GetOpposingTeamFleets(m_myTeam);
+        enemyTeamFleets.Remove(fleet);
         Destroy(fleet.gameObject);
 
-        if (m_myFleet != null && m_myFleet.m_fleetState == EUnitState.BattlePvp && m_enemyFleets.Count == 0)
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet != null && myFleet.m_fleetState == EUnitState.BattlePvp && enemyTeamFleets.Count == 0)
             ForceEndBattle(true);
     }
 
@@ -469,12 +532,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 모든 적 함대 제거
     public void RemoveAllEnemyFleets()
     {
-        for (int i = m_enemyFleets.Count - 1; i >= 0; i--)
+        List<SpaceFleet> enemyTeamFleets = GetOpposingTeamFleets(m_myTeam);
+        for (int i = enemyTeamFleets.Count - 1; i >= 0; i--)
         {
-            if (m_enemyFleets[i] != null)
-                Destroy(m_enemyFleets[i].gameObject);
+            if (enemyTeamFleets[i] != null)
+                Destroy(enemyTeamFleets[i].gameObject);
         }
-        m_enemyFleets.Clear();
+        enemyTeamFleets.Clear();
     }
 
     // 모든 활성 빔/미사일: 코루틴/이펙트 정리 후 풀 반환
@@ -506,20 +570,77 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         }
     }
 
+    // 튜토리얼 중에는 서버에 반영되지 않는 임시 모듈포인트 지급 — 실제 값은 백업해뒀다가 튜토리얼 종료 시 복원
+    private void GrantTutorialModulePoint()
+    {
+        const int TUTORIAL_MODULE_POINT = 100;
+
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+
+        m_realModulePointBackup = commander.GetModulePoint();
+        commander.UpdateModulePoint(TUTORIAL_MODULE_POINT);
+    }
+
+    // 튜토리얼 중 함선 추가(4→5번째) 시 지휘 레벨 요구사항에 막히지 않도록 임시로 레벨 지급
+    private void GrantTutorialCommanderLevel()
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+
+        SpaceFleet siegfriedFleet = GetMyFleet();
+        int nextShipCount = siegfriedFleet != null ? siegfriedFleet.m_ships.Count + 1 : 1;
+        int requiredLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevel(nextShipCount);
+
+        m_realCommanderLevelBackup = commander.GetCommanderLevel();
+        commander.UpdateCommanderLevel(requiredLevel);
+    }
+
+    // 지크프리트(연출용) 함대를 제거하고 실제 함대 + 실제 모듈포인트로 전환
+    private void SwitchFromSiegfriedFleetToRealFleet()
+    {
+        m_isSiegfriedFleetActive = false;
+
+        SpaceFleet siegfriedFleet = GetMyFleet();
+        if (siegfriedFleet != null)
+        {
+            GetTeamFleets(m_myTeam).Remove(siegfriedFleet);
+            Destroy(siegfriedFleet.gameObject);
+        }
+
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander != null)
+        {
+            commander.UpdateModulePoint(m_realModulePointBackup);
+            commander.UpdateCommanderLevel(m_realCommanderLevelBackup);
+        }
+
+        SpawnFleet();
+    }
+
     private void SpawnFleet()
     {
         // 서버에서 받은 함대 정보가 없으면 스폰하지 않음
         if (DataManager.Instance.m_currentFleetInfo == null) return;
 
+        SpawnFleetWithInfo(DataManager.Instance.m_currentFleetInfo);
+    }
+
+    private void SpawnFleetWithInfo(FleetInfo fleetInfo)
+    {
         GameObject fleetObj = new GameObject("MyFleet");
-        m_myFleet = fleetObj.AddComponent<SpaceFleet>();
-        m_myFleet.InitializeSpaceFleet(DataManager.Instance.m_currentFleetInfo);
+        SpaceFleet myFleet = fleetObj.AddComponent<SpaceFleet>();
+        myFleet.InitializeSpaceFleet(fleetInfo, m_myTeam, EFleetSource.fleet_source_player, EUnitState.Idle);
+        GetTeamFleets(m_myTeam).Add(myFleet);
+
+        // 함대 스폰/교체를 UI 등 늦게 초기화되는 쪽에서도 알 수 있도록 알림
+        EventManager.Trigger_MyFleetSet();
 
         // 카메라가 함대를 타겟으로 설정
-        CameraController.Instance.SetTargetOfCameraController(m_myFleet.transform);
+        CameraController.Instance.SetTargetOfCameraController(myFleet.transform);
 
         // 기함을 초기 선택 상태로 설정 (줌 범위 적용 및 UI 초기화)
-        SpaceShip flagship = m_myFleet.GetFlagship();
+        SpaceShip flagship = myFleet.GetFlagship();
         if (flagship != null)
             EventManager.Trigger_SpaceShipSelected(flagship);
     }
@@ -527,9 +648,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 워프 완료 시점에 호출 — 아군 함대를 존별 지정 위치로 텔레포트
     public void SetMyFleetPosition(Vector3 position, float rotationY = 0f)
     {
-        if (m_myFleet == null) return;
-        m_myFleet.transform.position = position;
-        m_myFleet.transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null) return;
+        myFleet.transform.position = position;
+        myFleet.transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
     }
 
     
@@ -557,7 +679,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         }
 
         // 모든 웨이브 스폰 완료 + 적 전멸 → 클리어
-        if (m_enemyFleets.Count == 0)
+        if (GetOpposingTeamFleets(m_myTeam).Count == 0)
         {
             EventManager.Trigger_AllEnemyFleetKilled();
             EventManager.TriggerZoneStageBattleEnd(true);
@@ -681,21 +803,22 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     public SpaceShip GetEnemy()
     {
-        if (m_enemyFleets.Count > 0)
+        List<SpaceFleet> enemyTeamFleets = GetOpposingTeamFleets(m_myTeam);
+        if (enemyTeamFleets.Count > 0)
         {
             // Clean dead fleets first
-            for (int i = m_enemyFleets.Count - 1; i >= 0; i--)
+            for (int i = enemyTeamFleets.Count - 1; i >= 0; i--)
             {
-                if (m_enemyFleets[i] == null) { m_enemyFleets.RemoveAt(i); continue; }
-                if (m_enemyFleets[i].IsFleetAlive() == false)
+                if (enemyTeamFleets[i] == null) { enemyTeamFleets.RemoveAt(i); continue; }
+                if (enemyTeamFleets[i].IsFleetAlive() == false)
                 {
-                    Destroy(m_enemyFleets[i].gameObject);
-                    m_enemyFleets.RemoveAt(i);
+                    Destroy(enemyTeamFleets[i].gameObject);
+                    enemyTeamFleets.RemoveAt(i);
                 }
             }
 
             // Find random alive enemy ship
-            foreach (SpaceFleet fleet in m_enemyFleets)
+            foreach (SpaceFleet fleet in enemyTeamFleets)
             {
                 if (fleet != null && fleet.IsFleetAlive() == true && fleet.m_fleetState.IsBattleState() == true)
                 {
@@ -715,24 +838,25 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     public Vector3 GetEnemySpawnPosition()
     {
-        if (m_myFleet == null || m_myFleet.transform == null) return Vector3.zero;
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null || myFleet.transform == null) return Vector3.zero;
 
         // 내 함선 중 z 사이즈가 가장 큰 것의 절반을 기준 오프셋으로 사용
         float maxZ = 0f;
         float maxHalfZ = 0f;
-        foreach (SpaceShip ship in m_myFleet.m_ships)
+        foreach (SpaceShip ship in myFleet.m_ships)
         {
             if (ship == null) continue;
             float sizeZ = ship.CalculateShipBounds().size.z;
             if (sizeZ > maxZ)
             {
-                maxZ = sizeZ;  
+                maxZ = sizeZ;
                 maxHalfZ = maxZ * 0.5f;
-            } 
+            }
         }
 
-        Vector3 basePos = m_myFleet.transform.position;
-        Vector3 spawnPosition = basePos + m_myFleet.transform.forward * (maxHalfZ + 50f);
+        Vector3 basePos = myFleet.transform.position;
+        Vector3 spawnPosition = basePos + myFleet.transform.forward * (maxHalfZ + 50f);
         spawnPosition.y = 0f;
 
         return spawnPosition;

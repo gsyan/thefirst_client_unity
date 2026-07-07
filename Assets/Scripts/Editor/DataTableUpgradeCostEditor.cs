@@ -52,7 +52,7 @@ public class DataTableUpgradeCostEditor : Editor
                 EditorGUILayout.LabelField($"Grade {data.subtypeGrade}", EditorStyles.boldLabel);
                 EditorGUI.indentLevel++;
                 data.subtypeGrade    = EditorGUILayout.IntField("Subtype Grade",     data.subtypeGrade);
-                data.modulePointCost = EditorGUILayout.LongField("Module Point Cost", data.modulePointCost);
+                data.modulePointCost = EditorGUILayout.IntField("Module Point Cost", data.modulePointCost);
                 EditorGUI.indentLevel--;
                 EditorGUILayout.EndVertical();
             }

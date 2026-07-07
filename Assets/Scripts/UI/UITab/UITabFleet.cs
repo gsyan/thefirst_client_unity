@@ -29,9 +29,6 @@ public class UITabFleet : UITabBase
 
     private void InitializeUITabFleet()
     {
-        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.m_myFleet == null) return;
-        m_playerFleet = ObjectManager.Instance.m_myFleet;
-
         if (m_shipSelectorContainer != null)
             m_shipSelectors = m_shipSelectorContainer.GetComponentsInChildren<ShipSelector>(true);
 
@@ -39,14 +36,33 @@ public class UITabFleet : UITabBase
 
         if (m_addShipButton != null) m_addShipButton.onClick.AddListener(OnAddShipButtonClicked);
         if (m_btnShipRepair != null) m_btnShipRepair.onClick.AddListener(OnShipRepairClicked);
-        PopulateShipSelectorGrid();
-        UpdateShipActionButtons();
 
+        // 탭 초기화 시점에 함대가 아직 스폰되지 않았을 수 있음(튜토리얼 등) — 스폰/교체 시점에 뒤늦게 바인딩
+        EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
         EventManager.Subscribe_FleetShipCountChanged(OnShipCountChanged);
         EventManager.Subscribe_FleetUpdateHP(OnFleetHPUpdated);
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelected);
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Subscribe_ShipStatsChanged(OnShipStatsChanged);
+
+        // 이미 함대가 존재하면 즉시 바인딩
+        if (DataManager.Instance.m_currentCommander != null && ObjectManager.Instance.GetMyFleet() != null)
+            BindPlayerFleet();
+    }
+
+    // 함대 스폰/교체(튜토리얼→실제 함대 전환 포함) 시 호출 — 매번 탭 열 때 체크하지 않아도 되도록 이벤트로 처리
+    private void OnMyFleetSet()
+    {
+        BindPlayerFleet();
+    }
+
+    private void BindPlayerFleet()
+    {
+        m_playerFleet = ObjectManager.Instance.GetMyFleet();
+        if (m_playerFleet == null) return;
+
+        PopulateShipSelectorGrid();
+        UpdateShipActionButtons();
     }
 
     public override void OnTabActivated()
@@ -370,12 +386,15 @@ public class UITabFleet : UITabBase
 
     private void OnAddShipButtonClicked()
     {
-        if (DataManager.Instance.m_currentCommander == null) return;
+        bool isTutorial = TutorialActionGate.IsTutorial("Tutorial_FirstPlay_ManageShip");
+        if (isTutorial == false && DataManager.Instance.m_currentCommander == null) return;
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
+
+        // 튜토리얼 중(지크프리트 함대)에도 요구사항 UI는 그대로 보여줌 — GrantTutorialCommanderLevel이 임시로 레벨을 충족시켜둠
         int currentShipCount = m_playerFleet.m_ships.Count;
         int requiredCommanderLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevel(currentShipCount + 1);
-        var require = new RequireStruct(requiredCommanderLevel);
+        RequireStruct require = new RequireStruct(requiredCommanderLevel);
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
@@ -388,8 +407,36 @@ public class UITabFleet : UITabBase
         });
     }
 
+    // 튜토리얼 전용 — 서버 호출 없이 클라이언트에서만 T1 함선을 추가 (지크프리트 함대는 서버 기록 대상 아님, 비용은 ExecuteAddShip에서 TutorialActionGate로 차감)
+    private void ExecuteAddShipTutorialOnly()
+    {
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet == null) return;
+
+        int newPositionIndex = myFleet.m_ships.Count;
+        ShipInfo newShipInfo = TutorialCinematicController.BuildCinematicShipInfo(1, newPositionIndex);
+
+        SoundManager.Instance.PlayFX(EFx.Add_Ship, retrigger: true);
+        SpaceShip newShip = myFleet.CreateSpaceShipByInfo(newShipInfo, bWarp: true);
+        EventManager.Trigger_FleetShipCountChanged();
+
+        // 대형 자리에 도착할 때까지 대기하는 튜토리얼 스텝(ShipArrivedAtFormation)이 참조할 수 있도록 등록
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.SetPendingNewShip(newShip);
+    }
+
     private void ExecuteAddShip()
     {
+        // 튜토리얼 진행 중(지크프리트 함대)에는 서버 요청 없이 튜토리얼용 로컬 모듈포인트에서만 차감
+        if (TutorialActionGate.IsTutorial("Tutorial_FirstPlay_ManageShip"))
+        {
+            int addShipCost = DataManager.Instance.m_dataTableConfig.gameSettings.addShipCost;
+            if (TutorialActionGate.TryConsumeModulePoint(addShipCost) == false) return;
+
+            ExecuteAddShipTutorialOnly();
+            return;
+        }
+
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander == null) return;
 
@@ -412,8 +459,9 @@ public class UITabFleet : UITabBase
                 if (response.data.newShipInfo != null)
                 {
                     DataManager.Instance.AddFleetShip(response.data.newShipInfo);
-                    if (ObjectManager.Instance.m_myFleet != null)
-                        ObjectManager.Instance.m_myFleet.CreateSpaceShipById(response.data.newShipInfo.id, bWarp: true);
+                    SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+                    if (myFleet != null)
+                        myFleet.CreateSpaceShipById(response.data.newShipInfo.id, bWarp: true);
                 }
 
                 EventManager.Trigger_FleetShipCountChanged();
@@ -426,7 +474,7 @@ public class UITabFleet : UITabBase
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander == null) return ServerErrorCode.CLIENT_CanAddShip_COMMANDER_NOT_FOUND;
 
-        SpaceFleet myFleet = ObjectManager.Instance.m_myFleet;
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return ServerErrorCode.FLEET_NOT_FOUND;
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;

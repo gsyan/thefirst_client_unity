@@ -18,55 +18,133 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 2876399026176
-    m_Localized: "Stellar Year 1592.\n\nAs humanity\u2019s civilization flourished,\na
-      war broke out between the AIs it had created."
+  - m_Id: 267705026215936
+    m_Localized: The Siegfried Fleet needs a new ship right now. Please follow my
+      instructions and proceed.
     m_Metadata:
       m_Items: []
-  - m_Id: 2876445163520
-    m_Localized: 'One faction believed in diversity and coexistence.
+  - m_Id: 263406917386240
+    m_Localized: 'Hello again, Commander. This is your training AI.
 
-      The other
-      sought absolute order, ruled by a single, god-like AI.'
+      Let''s
+      continue today''s training to become a fleet commander.'
     m_Metadata:
       m_Items: []
-  - m_Id: 2876453552128
-    m_Localized: 'As the endless war raged on,
-
-      human civilization was gradually
-      destroyed.
-
-      In the end, the God AI faction emerged victorious.'
+  - m_Id: 267705026215937
+    m_Localized: Open the Fleet tab.
     m_Metadata:
       m_Items: []
-  - m_Id: 2876453552129
-    m_Localized: Before long, most of humanity vanished.
+  - m_Id: 267705026215938
+    m_Localized: Press the Add Ship button.
     m_Metadata:
       m_Items: []
-  - m_Id: 2876461940736
-    m_Localized: 'Yet, with the help of the AIs who stood for diversity,
-
-      a
-      small number of humans survived.'
+  - m_Id: 1319437449691136
+    m_Localized: Adding a ship requires a certain Commander Level, and you currently
+      meet it.
     m_Metadata:
       m_Items: []
-  - m_Id: 2876461940737
-    m_Localized: 'Divided among nearly a thousand ships,
-
-      they set out on an
-      unknown journey into deep space.'
+  - m_Id: 1319437483245568
+    m_Localized: Adding a ship consumes Module Points, but they can be recovered
+      anytime, so don't worry.
     m_Metadata:
       m_Items: []
-  - m_Id: 2876466135040
-    m_Localized: 'Hunted relentlessly by the fleets of the God AI,
-
-      they fight
-      to escape,'
+  - m_Id: 1319437483245569
+    m_Localized: Please confirm adding the ship.
     m_Metadata:
       m_Items: []
-  - m_Id: 2876470329344
-    m_Localized: "to survive, and to become the final spark of hope for humanity\u2019s
-      rebirth."
+  - m_Id: 1328699047542784
+    m_Localized: Please lead this ship and fleet well, so you can reach the farthest
+      ends of space, beyond the enemy's reach.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1336507092566016
+    m_Localized: The new ship has been added.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444003811328
+    m_Localized: The new ship has been added. Touch the ship.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444041560064
+    m_Localized: Touch the Ship Management button.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444049948672
+    m_Localized: Select the Beam module.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444054142976
+    m_Localized: Upgrade the Beam module. You still have enough Module Points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444058337280
+    m_Localized: Select the Missile module.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444062531584
+    m_Localized: Unlock the Missile module. You still have enough Module Points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444066725888
+    m_Localized: Upgrade the Missile module. You still have enough Module Points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444075114496
+    m_Localized: Select the Hangar module.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444079308800
+    m_Localized: Unlock the Hangar module. You still have enough Module Points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444083503104
+    m_Localized: Upgrade the Hangar module. You still have enough Module Points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444087697408
+    m_Localized: Select the Hull module.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444091891712
+    m_Localized: Upgrade the Hull module. You still have enough Module Points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444096086016
+    m_Localized: Upgrading the Hull module increases not only the ship's HP but also
+      the number of attack modules.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098930245632
+    m_Localized: This concludes the ship management training.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098980577280
+    m_Localized: Emergency! Multiple enemy fleets approaching!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098984771584
+    m_Localized: The enemy fleet is warping in.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098988965888
+    m_Localized: Is it fortunate or unfortunate to experience a fleet battle?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098993160192
+    m_Localized: A massive enemy fleet is warping in.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098997354496
+    m_Localized: The battle situation is very unfavorable. All personnel except essential
+      combat commanders must board the escape ship immediately.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380099001548800
+    m_Localized: Evacuating immediately.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380099005743104
+    m_Localized: You are now the commander of this ship.
     m_Metadata:
       m_Items: []
   references:

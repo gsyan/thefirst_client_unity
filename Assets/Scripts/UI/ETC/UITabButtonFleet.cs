@@ -29,7 +29,7 @@ public class UITabButtonFleet : MonoBehaviour
         var commander = DataManager.Instance.m_currentCommander;
         if (commander == null) return;
 
-        m_fleet = ObjectManager.Instance.m_myFleet;
+        m_fleet = ObjectManager.Instance.GetMyFleet();
         if (m_fleet == null) return;
 
         EventManager.Subscribe_ShipStatsChanged(OnShipStatsChanged);

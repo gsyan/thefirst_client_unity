@@ -1,0 +1,379 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cec351f6132315419d794e5ec26a741, type: 3}
+  m_Name: Tutorial_FirstPlay_ManageShip
+  m_EditorClassIdentifier: 
+  tutorialId: Tutorial_FirstPlay_ManageShip
+  tutorialName: "\uD568\uC120 \uAD00\uB9AC"
+  priority: 0
+  steps:
+  - stepId: step1
+    message: Tutorial_FirstPlay_OpenFleetTab
+    triggerType: 0
+    targetPanelName: 
+    targetUIId: FleetButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step2
+    message: Tutorial_FirstPlay_AddShip
+    triggerType: 0
+    targetPanelName: TabFleet
+    targetUIId: AddShipButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step3
+    message: Tutorial_FirstPlay_CheckCommanderLevel
+    triggerType: 1
+    targetPanelName: UIPopupConfirm
+    targetUIId: UISection_Require
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step4
+    message: Tutorial_FirstPlay_CheckModulePoint
+    triggerType: 1
+    targetPanelName: UIPopupConfirm
+    targetUIId: UISection_Cost
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step5
+    message: Tutorial_FirstPlay_AddShipConfirm
+    triggerType: 0
+    targetPanelName: UIPopupConfirm
+    targetUIId: ConfirmButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step6
+    message: 
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    hasHole: 0
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 7
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step7
+    message: Tutorial_FirstPlay_AddShipComplete
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    hasHole: 0
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step8
+    message: Tutorial_FirstPlay_TouchShipSelector
+    triggerType: 0
+    targetPanelName: ShipSelector5
+    targetUIId: ShipSelectButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step9
+    message: Tutorial_FirstPlay_TouchShipManage
+    triggerType: 0
+    targetPanelName: ShipSelector5
+    targetUIId: ShipManageButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step10
+    message: Tutorial_FirstPlay_TouchModuleBeam
+    triggerType: 0
+    targetPanelName: ModuleContainer
+    targetUIId: ModuleBeamSelector1
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step11
+    message: Tutorial_FirstPlay_LevelUpModuleBeam
+    triggerType: 0
+    targetPanelName: ModuleLevelContainer
+    targetUIId: UpButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step12
+    message: Tutorial_FirstPlay_TouchModuleMissile
+    triggerType: 0
+    targetPanelName: ModuleContainer
+    targetUIId: ModuleMissileSelector1
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step13
+    message: Tutorial_FirstPlay_LevelUpModuleMissile
+    triggerType: 0
+    targetPanelName: ModuleLevelContainer
+    targetUIId: UpButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step14
+    message: Tutorial_FirstPlay_TouchModuleHanger
+    triggerType: 0
+    targetPanelName: ModuleContainer
+    targetUIId: ModuleHangerSelector1
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step15
+    message: Tutorial_FirstPlay_LevelUpModuleHanger
+    triggerType: 0
+    targetPanelName: ModuleLevelContainer
+    targetUIId: UpButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step16
+    message: Tutorial_FirstPlay_TouchModuleBody
+    triggerType: 0
+    targetPanelName: ModuleContainer
+    targetUIId: ModuleBodySelector1
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step17
+    message: Tutorial_FirstPlay_UpgradeModuleBody
+    triggerType: 0
+    targetPanelName: ModuleSubTypeContainer
+    targetUIId: UpButton
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step18
+    message: Tutorial_FirstPlay_UpgradeModuleBodyEffect
+    triggerType: 1
+    targetPanelName: ModuleContainer
+    targetUIId: ModuleBeamSelector2
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 1
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step19
+    message: Tutorial_FirstPlay_ManageShipComplete
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 1
+    arrowDirection: 0
+    hasHole: 0
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0

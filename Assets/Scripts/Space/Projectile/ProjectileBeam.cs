@@ -171,7 +171,8 @@ public class ProjectileBeam : ProjectileBase
 
             // 테일→헤드 전체 구간 실시간 RaycastNonAlloc — 아군 함재기/미사일 통과, 적 감지
             float beamLen       = Vector3.Distance(m_beamTailPos, m_beamHeadPos);
-            bool bSourceIsEnemy = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy;
+            bool bSourceIsEnemy = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_sourceShip.m_ownerFleet);
+            ETeam sourceTeam    = m_sourceShip != null && m_sourceShip.m_ownerFleet != null ? m_sourceShip.m_ownerFleet.m_team : ETeam.TeamA;
             int hitCount        = beamLen > 0.001f ? Physics.RaycastNonAlloc(m_beamTailPos, m_direction, s_beamHits, beamLen, pickMask, QueryTriggerInteraction.Collide) : 0;
 
             RaycastHit liveHit = default;
@@ -180,7 +181,7 @@ public class ProjectileBeam : ProjectileBase
             {
                 // 아군 함재기 건너뜀
                 AircraftBase checkAircraft  = s_beamHits[h].collider.GetComponentInParent<AircraftBase>();
-                if (checkAircraft != null && checkAircraft.m_isEnemyAircraft == bSourceIsEnemy) continue;
+                if (checkAircraft != null && checkAircraft.m_team == sourceTeam) continue;
 
                 // 아군 미사일 건너뜀
                 ProjectileMissile checkMissile = s_beamHits[h].collider.GetComponentInParent<ProjectileMissile>();
@@ -205,7 +206,7 @@ public class ProjectileBeam : ProjectileBase
 
                 if (hitMissile != null)
                 {
-                    bool isMysideFriendly  = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy == false;
+                    bool isMysideFriendly  = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_sourceShip.m_ownerFleet) == false;
                     bool hitMissileIsEnemy = isMysideFriendly
                         ? ObjectManager.Instance.m_enemyMissiles.Contains(hitMissile)
                         : ObjectManager.Instance.m_friendlyMissiles.Contains(hitMissile);
@@ -217,7 +218,7 @@ public class ProjectileBeam : ProjectileBase
                         currentLength      = totalDistance;
                     }
                 }
-                else if (hitAircraft != null && hitAircraft.m_isEnemyAircraft != (m_sourceShip != null && m_sourceShip.m_ownerFleet != null && m_sourceShip.m_ownerFleet.IsEnemy))
+                else if (hitAircraft != null && hitAircraft.m_team != sourceTeam)
                 {
                     // 적 함재기 — 빔에 맞으면 폭발
                     m_beamHeadPos = liveHit.point;

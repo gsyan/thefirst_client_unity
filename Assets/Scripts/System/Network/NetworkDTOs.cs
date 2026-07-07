@@ -165,9 +165,9 @@ public class AuthResponse
     public string refreshToken;
     public FleetInfo activeFleetInfo;
     public CommanderInfo commanderInfo;
-    public string[] researchedIds;         // 문자열 기반 완료 연구 ID 목록
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
     public VipStatusResponse vipStatus;   // 로그인/캐릭터 선택 시 VIP 상태 포함
+    public List<ProgressInfo> progressList; // 튜토리얼 등 진행도 목록 (SpaceScene 진입 전 미리 확보용)
 }
 
 [System.Serializable]
@@ -742,17 +742,19 @@ public class DailyClaimResponse
 
 #region Version Data Classes ##################################################################################
 [System.Serializable]
-public class VersionCheckRequest
+public class ServerStatusRequest
 {
     public int versionCode;
 }
 
 [System.Serializable]
-public class VersionCheckResponse
+public class ServerStatusResponse
 {
     public bool updateRequired;
     public int minVersionCode;
     public string minVersionName;
+    public bool working;
+    public string endTime;
 }
 #endregion
 #endregion

@@ -213,6 +213,8 @@ UIPopupMessage_ResetAllInvestedMineralMessage,,All modules across your fleet wil
 UIPopupMessage_VersionUpdateTitle,,Update Required,업데이트 필요
 UIPopupMessage_VersionUpdateMessage,,An update to version {0} is required.,버전 {0} 이상으로 업데이트가 필요합니다.
 UIPopupMessage_VersionUpdateButton,,Update,업데이트
+UIPopupMessage_MaintenanceTitle,,Under Maintenance,점검 안내
+UIPopupMessage_MaintenanceInProgress,,The server is currently under maintenance.,서버 점검 중입니다.
 UIPopupMessage_PvpSeasonRewardTitle,,PVP Season Reward,PVP 시즌 보상
 UIPopupMessage_PvpSeasonRewardMessage,,Season reward has been granted.,시즌 보상이 지급되었습니다.
 UIPopupMessage_PvpTechCommanderRequiredTitle,,PVP Locked,PVP 잠김

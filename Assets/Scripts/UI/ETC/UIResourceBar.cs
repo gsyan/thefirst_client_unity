@@ -90,7 +90,7 @@ public class UIResourceBar : MonoBehaviour
 
     private void SendResetAllInvestedMineral()
     {
-        SpaceFleet playerFleet = ObjectManager.Instance.m_myFleet;
+        SpaceFleet playerFleet = ObjectManager.Instance.GetMyFleet();
         if (playerFleet == null || playerFleet.m_fleetInfo == null) return;
 
         var request = new FleetResetAllInvestedMineralRequest { fleetId = playerFleet.m_fleetInfo.id };
@@ -109,7 +109,7 @@ public class UIResourceBar : MonoBehaviour
         if (commander != null)
             commander.UpdateMineral(response.data.mineralRemain);
 
-        SpaceFleet playerFleet = ObjectManager.Instance.m_myFleet;
+        SpaceFleet playerFleet = ObjectManager.Instance.GetMyFleet();
         if (playerFleet != null && response.data.updatedFleetInfo != null)
             playerFleet.ApplyMineralReset(response.data.updatedFleetInfo);
     }

@@ -1,27 +1,35 @@
 Key,Id,English(en),Korean(ko)
-Tutorial_FirstPlay_story_first_1,,"Stellar Year 1592.
+Tutorial_FirstPlay_AiFirstHello,,"Hello again, Commander. This is your training AI.
+Let's continue today's training to become a fleet commander.","안녕하세요, 지휘관님. 훈련 AI입니다.
+오늘도 함대 지휘관이 되기 위한 훈련을 이어 가겠습니다."
+Tutorial_FirstPlay_SiegfriedAddShip,,"The Siegfried Fleet needs a new ship right now. Please follow my instructions and proceed.","지크프리트 함대는 지금 새로운 함선을 추가해야 합니다. 제 설명에 따라 진행해 주세요."
+Tutorial_FirstPlay_OpenFleetTab,,"Open the Fleet tab.","함대 탭을 열어보세요."
+Tutorial_FirstPlay_AddShip,,"Press the Add Ship button.","함선 추가 버튼을 눌러보세요."
+Tutorial_FirstPlay_CheckCommanderLevel,,"Adding a ship requires a certain Commander Level, and you currently meet it.","함선을 추가하려면 일정 수준의 지휘 레벨이 필요한데, 지금은 충분하네요."
+Tutorial_FirstPlay_CheckModulePoint,,"Adding a ship consumes Module Points, but they can be recovered anytime, so don't worry.","함선을 추가할 때는 모듈 포인트가 소모됩니다. 모듈 포인트는 언제든 회수할 수 있으니 걱정 마세요."
+Tutorial_FirstPlay_AddShipConfirm,,"Please confirm adding the ship.","함선 추가를 결정 해주세요."
+Tutorial_FirstPlay_AddShipComplete,,"The new ship has been added.","함선이 추가되었습니다."
 
-As humanity’s civilization flourished,
-a war broke out between the AIs it had created.","성력 1592년.
+Tutorial_FirstPlay_TouchShipSelector,,"The new ship has been added. Touch the ship.","함선이 추가되었습니다. 함선을 터치하세요."
+Tutorial_FirstPlay_TouchShipManage,,"Touch the Ship Management button.","함선 관리 버튼을 터치하세요."
+Tutorial_FirstPlay_TouchModuleBeam,,"Select the Beam module.","빔 모듈을 선택하세요."
+Tutorial_FirstPlay_LevelUpModuleBeam,,"Upgrade the Beam module. You still have enough Module Points.","빔 모듈을 강화하세요. 모듈 포인트가 아직 충분합니다."
+Tutorial_FirstPlay_TouchModuleMissile,,"Select the Missile module.","미사일 모듈을 선택하세요."
+Tutorial_FirstPlay_UnlockModuleMissile,,"Unlock the Missile module. You still have enough Module Points.","미사일 모듈을 잠금 해제하세요. 모듈 포인트가 아직 충분합니다."
+Tutorial_FirstPlay_LevelUpModuleMissile,,"Upgrade the Missile module. You still have enough Module Points.","미사일 모듈을 강화하세요. 모듈 포인트가 아직 충분합니다."
+Tutorial_FirstPlay_TouchModuleHanger,,"Select the Hangar module.","격납고 모듈을 선택하세요."
+Tutorial_FirstPlay_UnlockModuleHanger,,"Unlock the Hangar module. You still have enough Module Points.","격납고 모듈을 잠금 해제하세요. 모듈 포인트가 아직 충분합니다."
+Tutorial_FirstPlay_LevelUpModuleHanger,,"Upgrade the Hangar module. You still have enough Module Points.","격납고 모듈을 강화하세요. 모듈 포인트가 아직 충분합니다."
+Tutorial_FirstPlay_TouchModuleBody,,"Select the Hull module.","함체 모듈을 선택하세요."
+Tutorial_FirstPlay_UpgradeModuleBody,,"Upgrade the Hull module. You still have enough Module Points.","함체 모듈을 강화하세요. 모듈 포인트가 아직 충분합니다."
+Tutorial_FirstPlay_UpgradeModuleBodyEffect,,"Upgrading the Hull module increases not only the ship's HP but also the number of attack modules.","함체 모듈을 강화하면 함선의 체력뿐 아니라 공격 모듈의 개수도 늘어납니다."
+Tutorial_FirstPlay_ManageShipComplete,,"This concludes the ship management training.","함선 관리 훈련 과정은 이만 마치도록 하겠습니다."
 
-인류의 문명이 번영하던 중,
-인류가 창조한 AI들 사이에서 전쟁이 발발했다."
-Tutorial_FirstPlay_story_first_2,,"One faction believed in diversity and coexistence.
-The other sought absolute order, ruled by a single, god-like AI.","한 파벌은 다양성과 공존을 믿었다.
-다른 파벌은 신과 같은 단 하나의 AI가 지배하는 절대적 질서를 추구했다."
-Tutorial_FirstPlay_story_first_3,,"As the endless war raged on,
-human civilization was gradually destroyed.
-In the end, the God AI faction emerged victorious.","끝없는 전쟁이 계속되며
-인류 문명은 서서히 파괴되어갔다.
-결국, 신 AI 파벌이 승리를 거두었다."
-Tutorial_FirstPlay_story_first_4,,"Before long, most of humanity vanished.","머지않아 인류 대부분이 사라졌다."
-Tutorial_FirstPlay_story_first_5,,"Yet, with the help of the AIs who stood for diversity,
-a small number of humans survived.","그러나 다양성을 지지하던 AI들의 도움으로,
-소수의 인류가 살아남았다."
-Tutorial_FirstPlay_story_first_6,,"Divided among nearly a thousand ships,
-they set out on an unknown journey into deep space.","그들은 천여 척에 가까운 함선에 나뉘어 타고,
-미지의 심우주를 향한 여정을 떠났다."
-Tutorial_FirstPlay_story_first_7,,"Hunted relentlessly by the fleets of the God AI,
-they fight to escape,","신 AI의 함대에게 끊임없이 추격당하며,
-그들은 탈출하기 위해 싸운다,"
-Tutorial_FirstPlay_story_first_8,,"to survive, and to become the final spark of hope for humanity’s rebirth.","살아남기 위해, 그리고 인류 재건의 마지막 희망의 불씨가 되기 위해."
+Tutorial_FirstPlay_EnemyAlert,,"Emergency! Multiple enemy fleets approaching!!","긴급 상황, 적 함대 다수 접근 중!!"
+Tutorial_FirstPlay_EnemyFleetWrapIn,,"The enemy fleet is warping in.","적 함대가 워프인하고 있습니다."
+Tutorial_FirstPlay_FleetBattle,,"Is it fortunate or unfortunate to experience a fleet battle?","함대 간 전투를 경험해 보는 건 운이 좋은 걸까요, 나쁜 걸까요?"
+Tutorial_FirstPlay_EnemyFleetWrapIn2,,"A massive enemy fleet is warping in.","엄청난 규모의 적 함대가 워프인하고 있습니다."
+Tutorial_FirstPlay_Defeat,,"The battle situation is very unfavorable. All personnel except essential combat commanders must board the escape ship immediately.","전황이 매우 불리합니다. 필수 전투 지휘관을 제외한 모든 자원은 지금 즉시 탈출 함선에 탑승 바랍니다."
+Tutorial_FirstPlay_EscapeAlert,,"Evacuating immediately.","지금 즉시 탈출합니다."
+Tutorial_FirstPlay_Escape,,"You are now the commander of this ship.","당신은 이제 이 함선의 지휘관입니다."
+Tutorial_FirstPlay_Complete,,"Please lead this ship and fleet well, so you can reach the farthest ends of space, beyond the enemy's reach.","적들의 손길이 닿지 않을 만큼 멀고 먼 우주의 끝에 도달할 수 있도록 이 함선, 함대를 잘 이끌어 주시기 바랍니다."

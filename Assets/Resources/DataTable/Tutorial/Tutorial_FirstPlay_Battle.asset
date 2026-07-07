@@ -1,0 +1,132 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cec351f6132315419d794e5ec26a741, type: 3}
+  m_Name: Tutorial_FirstPlay_Battle
+  m_EditorClassIdentifier: 
+  tutorialId: Tutorial_FirstPlay_Battle
+  tutorialName: "\uC804\uD22C"
+  priority: 0
+  steps:
+  - stepId: step1
+    message: Tutorial_FirstPlay_EnemyAlert
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    hasHole: 0
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step2
+    message: Tutorial_FirstPlay_EnemyFleetWrapIn
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    hasHole: 0
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 9
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step3
+    message: Tutorial_FirstPlay_FleetBattle
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    hasHole: 0
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step4
+    message: Tutorial_FirstPlay_EnemyFleetWrapIn2
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    hasHole: 0
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 10
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step5
+    message: Tutorial_FirstPlay_Defeat
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    hasHole: 0
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step6
+    message: Tutorial_FirstPlay_EscapeAlert
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    hasHole: 0
+    dimBackground: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 8
+    conditionThreshold: 20
+    conditionCount: 3
+    targetModuleType: 0

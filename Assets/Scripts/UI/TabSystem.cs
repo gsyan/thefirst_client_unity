@@ -80,7 +80,7 @@ public class TabSystem : MonoBehaviour
 
     public void RefreshTabButtonsByFleetState()
     {
-        SpaceFleet myFleet = ObjectManager.Instance != null ? ObjectManager.Instance.m_myFleet : null;
+        SpaceFleet myFleet = ObjectManager.Instance != null ? ObjectManager.Instance.GetMyFleet() : null;
         EUnitState state = myFleet != null ? myFleet.m_fleetState : EUnitState.Idle;
         for (int i = 0; i < tabs.Count; i++)
         {

@@ -162,6 +162,7 @@ public class UIPopupConfirm : UIPopupBase
             return true;
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.gameObject.name = "UISection_Require";
         sec.SetTitle("REQUIRE");
         sec.HideAllRows();
 
@@ -182,6 +183,7 @@ public class UIPopupConfirm : UIPopupBase
             return true;
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.gameObject.name = "UISection_Cost";
         sec.SetTitle("COST");
         sec.HideAllRows();
 
@@ -208,6 +210,7 @@ public class UIPopupConfirm : UIPopupBase
             return;
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.gameObject.name = "UISection_Result";
         sec.SetTitle("RESULT");
         if (vertical)
             sec.SetRowsVertical(rows);
@@ -221,6 +224,7 @@ public class UIPopupConfirm : UIPopupBase
             return;
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.gameObject.name = "UISection_Status";
         sec.SetTitle("STATUS");
         sec.SetRows(rows, CommonUtility.PaletteColor("GeneralBright1"));
     }
@@ -231,6 +235,7 @@ public class UIPopupConfirm : UIPopupBase
             return;
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.gameObject.name = "UISection_Refund";
         sec.SetTitle("REFUND");
         sec.HideAllRows();
         sec.SetRowText(0, CommonUtility.FormatBigNumber(refundAmount));
@@ -250,6 +255,7 @@ public class UIPopupConfirm : UIPopupBase
             return;
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
+        sec.gameObject.name = "UISection_Reward";
         sec.SetTitle("REWARD");
         sec.HideAllRows();
         for (int i = 0; i < amounts.Count; i++)

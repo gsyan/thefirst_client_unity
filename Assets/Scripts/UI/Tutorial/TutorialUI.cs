@@ -7,17 +7,15 @@ public class TutorialUI : UIPopupBase
 {
     [Header("UI 요소")]
     [SerializeField] private TutorialTextBox m_textBox;
-    //[SerializeField] private TutorialArrow m_arrow;
+    [SerializeField] private TutorialArrow m_arrow;
     [SerializeField] private TutorialMask m_mask;
     [SerializeField] private UIBorderFrame m_borderFrame;
     [SerializeField] private Button m_skipButton;
-    [SerializeField] private CanvasGroup m_canvasGroup;
 
     [Header("테두리 설정")]
-    [SerializeField] private float m_borderPadding = 8f;
+    private float m_borderPadding = 10f;
 
     private TutorialStep m_currentStep;
-    private string m_currentTutorialId;
     private RectTransform m_targetRect;
     private Coroutine m_autoNextCoroutine;
     private Coroutine m_waitTargetCoroutine;
@@ -34,10 +32,9 @@ public class TutorialUI : UIPopupBase
     }
 
     // 스텝 표시
-    public void ShowStep(TutorialStep step, string tutorialId)
+    public void ShowStep(TutorialStep step)
     {
         m_currentStep = step;
-        m_currentTutorialId = tutorialId;
 
         // 진행 중인 코루틴 취소
         if (m_autoNextCoroutine != null)
@@ -95,38 +92,42 @@ public class TutorialUI : UIPopupBase
         if (m_targetRect != null)
             Canvas.ForceUpdateCanvases();
 
-        // 텍스트 표시 (로컬라이제이션 적용 - tutorialId_stepId를 키로 사용, 키가 없으면 message를 그대로 표시)
+        // 텍스트 표시 (message를 Tutorial 테이블 키로 직접 사용 — 번역 누락 시 키가 그대로 노출되어 실수를 바로 알 수 있음)
         if (m_textBox != null)
         {
-            string localizationKey = m_currentTutorialId + "_" + step.stepId;
-            string message = step.message;
-            if (LocalizationManager.Instance != null)
-            {
-                string localized = LocalizationManager.Instance.Get(localizationKey, "Tutorial");
-                if (localized != localizationKey)
-                    message = localized;
-            }
+            string message = LocalizationManager.Instance != null
+                ? LocalizationManager.Instance.Get(step.message, "Tutorial")
+                : step.message;
             m_textBox.ShowMessage(message, step.textBoxOffset, m_targetRect, step.textBoxSize, step.textBoxPosition);
         }
 
         // 마스크(강조) 표시
         if (m_mask != null)
         {
-            if (step.highlightTarget && m_targetRect != null)
-                m_mask.HighlightTarget(m_targetRect);
-            else if (m_targetRect == null)
+            if (step.hasHole && m_targetRect != null)
+                m_mask.ShowDimWithHole(m_targetRect);
+            else if (m_targetRect == null && step.dimBackground)
                 m_mask.ShowDimOnly(); // 스토리 텍스트용 (구멍 없이 전체 어둡게)
             else
-                m_mask.HideHighlight();
+                m_mask.HideHighlight(); // dimBackground=false면 대상 UI 없이도 완전 투명 (대기 스텝 등)
 
             // 클릭 핸들러 설정
             SetupClickHandler(step);
         }
 
+        // 화살표 표시
+        if (m_arrow != null)
+        {
+            if (step.showArrow && m_targetRect != null)
+                m_arrow.Show(m_targetRect, step.arrowDirection);
+            else
+                m_arrow.Hide();
+        }
+
         // 테두리 표시
         if (m_borderFrame != null)
         {
-            if (step.highlightTarget && m_targetRect != null)
+            if (step.hasHole && m_targetRect != null)
             {
                 RectTransform borderRect = m_borderFrame.rectTransform;
 
@@ -167,6 +168,7 @@ public class TutorialUI : UIPopupBase
         }
 
         if (m_mask != null) m_mask.HideHighlight();
+        if (m_arrow != null) m_arrow.Hide();
         if (m_borderFrame != null) m_borderFrame.gameObject.SetActive(false);
         HidePopup();
     }
@@ -234,9 +236,6 @@ public class TutorialUI : UIPopupBase
     // 클릭 핸들러 설정
     private void SetupClickHandler(TutorialStep step)
     {
-        // 기본값: 상단 통과 해제
-        m_mask.SetTopPassthrough(false);
-
         switch (step.triggerType)
         {
             case ETutorialTrigger.AnyClick:
@@ -249,16 +248,28 @@ public class TutorialUI : UIPopupBase
                 break;
 
             case ETutorialTrigger.UIClick:
-                // 대상 UI 클릭을 TutorialClickHandler로 감지
+                // 대상 UI 클릭을 TutorialClickHandler로 감지 — 없으면 자동 부착(에디터에서 수동으로 붙일 필요 없음)
                 m_mask.SetClickable(false, null);
+                EnsureClickHandler(step.targetUIId);
                 break;
 
             case ETutorialTrigger.Custom:
+                // 마스크 dim/hole 상태는 위쪽 공통 로직(hasHole/dimBackground)에서 이미 결정됨 — 여기선 건드리지 않음
                 m_mask.SetClickable(false, null);
-                m_mask.SetTopPassthrough(true, 0.5f);  // 상단 50% 터치 가능
                 TutorialManager.Instance.StartTutorialCondition(step);
                 break;
         }
+    }
+
+    // targetUIId로 찾은 UI에 TutorialClickHandler가 없으면 부착 — 매 스텝마다 에디터에서 수동으로 붙일 필요 없게 함
+    private void EnsureClickHandler(string targetId)
+    {
+        if (m_targetRect == null) return;
+
+        TutorialClickHandler handler = m_targetRect.GetComponent<TutorialClickHandler>();
+        if (handler == null)
+            handler = m_targetRect.gameObject.AddComponent<TutorialClickHandler>();
+        handler.SetTargetId(targetId);
     }
 
     private IEnumerator AutoNextCoroutine(float delay)

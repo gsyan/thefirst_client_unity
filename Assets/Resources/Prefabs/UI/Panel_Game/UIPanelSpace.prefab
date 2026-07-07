@@ -1719,7 +1719,7 @@ GameObject:
   - component: {fileID: 451636507868442135}
   - component: {fileID: 3986846006869552539}
   m_Layer: 5
-  m_Name: ModuleSelector (4)
+  m_Name: ModuleMissileSelector5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2796,7 +2796,7 @@ GameObject:
   - component: {fileID: 6745034339290672241}
   - component: {fileID: 6868583590328959465}
   m_Layer: 5
-  m_Name: ModuleSelector (2)
+  m_Name: ModuleBodySelector3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4792,7 +4792,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 380, y: -105}
+  m_AnchoredPosition: {x: 380, y: -125}
   m_SizeDelta: {x: 740, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3142408911949785875
@@ -6823,7 +6823,7 @@ GameObject:
   - component: {fileID: 3975886624376471801}
   - component: {fileID: 8267765828386186796}
   m_Layer: 5
-  m_Name: ShipSelector (1)
+  m_Name: ShipSelector2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10037,7 +10037,7 @@ GameObject:
   - component: {fileID: 558425214333680742}
   - component: {fileID: 7136804920516180050}
   m_Layer: 5
-  m_Name: ModuleSelector (2)
+  m_Name: ModuleMissileSelector3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10658,7 +10658,7 @@ GameObject:
   - component: {fileID: 6441042773184794702}
   - component: {fileID: 3935076845852660381}
   m_Layer: 5
-  m_Name: ModuleSelector (4)
+  m_Name: ModuleHangerSelector4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12620,7 +12620,7 @@ GameObject:
   - component: {fileID: 7551036607156705939}
   - component: {fileID: 1119400324306470571}
   m_Layer: 5
-  m_Name: ShipSelector (3)
+  m_Name: ShipSelector4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15721,7 +15721,7 @@ GameObject:
   - component: {fileID: 8326448825904700790}
   - component: {fileID: 252723573581751363}
   m_Layer: 5
-  m_Name: ModuleSelector (2)
+  m_Name: ModuleBeamSelector3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16145,7 +16145,7 @@ GameObject:
   - component: {fileID: 1238337823197678466}
   - component: {fileID: 3812676223971617353}
   m_Layer: 5
-  m_Name: ShipSelector (6)
+  m_Name: ShipSelector7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19247,7 +19247,7 @@ GameObject:
   - component: {fileID: 4618942851943848703}
   - component: {fileID: 4930835711586045650}
   m_Layer: 5
-  m_Name: ModuleSelector (1)
+  m_Name: ModuleBeamSelector2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21800,7 +21800,7 @@ GameObject:
   - component: {fileID: 1059207884232768075}
   - component: {fileID: 2934430787560347036}
   m_Layer: 5
-  m_Name: ModuleSelector (5)
+  m_Name: ModuleHangerSelector5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23476,7 +23476,7 @@ GameObject:
   - component: {fileID: 2702676544278792736}
   - component: {fileID: 7342777390943691082}
   m_Layer: 5
-  m_Name: ModuleSelector (5)
+  m_Name: ModuleMissileSelector6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25317,7 +25317,7 @@ GameObject:
   - component: {fileID: 7841734450896215249}
   - component: {fileID: 1229739177852341124}
   m_Layer: 5
-  m_Name: ModuleSelector (5)
+  m_Name: ModuleBodySelector6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27409,7 +27409,7 @@ GameObject:
   - component: {fileID: 6261113154635165178}
   - component: {fileID: 1960310091893217579}
   m_Layer: 5
-  m_Name: ModuleSelector (1)
+  m_Name: ModuleHangerSelector2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29409,7 +29409,7 @@ GameObject:
   - component: {fileID: 3707256029240297319}
   - component: {fileID: 2444932029150007237}
   m_Layer: 5
-  m_Name: ModuleSelector (4)
+  m_Name: ModuleBodySelector5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30777,7 +30777,7 @@ MonoBehaviour:
   tabs:
   - tabButton: {fileID: 3594345987459063219}
     tabPanel: {fileID: 2595751887195910180}
-    tabName: tab_satellite
+    tabName: tab_commander
     activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
     inactiveColor: {r: 1, g: 1, b: 1, a: 1}
     childGraphics: []
@@ -31591,7 +31591,7 @@ GameObject:
   - component: {fileID: 3028640942550122474}
   - component: {fileID: 4334684276867783432}
   m_Layer: 5
-  m_Name: ModuleSelector (3)
+  m_Name: ModuleBeamSelector4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34076,7 +34076,7 @@ GameObject:
   - component: {fileID: 7987740210219439018}
   - component: {fileID: 879117574233754252}
   m_Layer: 5
-  m_Name: ShipSelector (7)
+  m_Name: ShipSelector8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44351,7 +44351,7 @@ GameObject:
   - component: {fileID: 4904603097975882841}
   - component: {fileID: 1633070131389360479}
   m_Layer: 5
-  m_Name: ModuleSelector
+  m_Name: ModuleBodySelector1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46130,7 +46130,7 @@ GameObject:
   - component: {fileID: 4543091405595356295}
   - component: {fileID: 7498001287627021597}
   m_Layer: 5
-  m_Name: ModuleSelector (1)
+  m_Name: ModuleBodySelector2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47719,7 +47719,7 @@ GameObject:
   - component: {fileID: 5115784266903926240}
   - component: {fileID: 3957690506945718072}
   m_Layer: 5
-  m_Name: ModuleSelector (3)
+  m_Name: ModuleBodySelector4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48003,7 +48003,7 @@ GameObject:
   - component: {fileID: 4803991145072643365}
   - component: {fileID: 4769126637025625274}
   m_Layer: 5
-  m_Name: ModuleSelector (5)
+  m_Name: ModuleBeamSelector5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49540,7 +49540,7 @@ GameObject:
   - component: {fileID: 9161133261355921409}
   - component: {fileID: 9197763644257036898}
   m_Layer: 5
-  m_Name: ShipSelector (5)
+  m_Name: ShipSelector6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53374,7 +53374,7 @@ GameObject:
   - component: {fileID: 262551290416755121}
   - component: {fileID: 4515345895845555708}
   m_Layer: 5
-  m_Name: ModuleSelector
+  m_Name: ModuleBeamSelector1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56513,7 +56513,7 @@ GameObject:
   - component: {fileID: 352935787275301962}
   - component: {fileID: 1415173427150988952}
   m_Layer: 5
-  m_Name: ModuleSelector (4)
+  m_Name: ModuleBeamSelector4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57603,7 +57603,7 @@ GameObject:
   - component: {fileID: 3834021115318004143}
   - component: {fileID: 7825194307744262588}
   m_Layer: 5
-  m_Name: ShipSelector (2)
+  m_Name: ShipSelector3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58780,7 +58780,7 @@ GameObject:
   - component: {fileID: 8300321946592142686}
   - component: {fileID: 1695945989353033407}
   m_Layer: 5
-  m_Name: ModuleSelector (1)
+  m_Name: ModuleMissileSelector2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60013,7 +60013,7 @@ GameObject:
   - component: {fileID: 5872839548572396716}
   - component: {fileID: 6523317380763780556}
   m_Layer: 5
-  m_Name: ModuleSelector
+  m_Name: ModuleMissileSelector1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62025,7 +62025,7 @@ GameObject:
   - component: {fileID: 7502744340705615340}
   - component: {fileID: 7533252828691598657}
   m_Layer: 5
-  m_Name: ModuleSelector (2)
+  m_Name: ModuleHangerSelector3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64821,7 +64821,7 @@ GameObject:
   - component: {fileID: 7653591281130138346}
   - component: {fileID: 3521298861203332593}
   m_Layer: 5
-  m_Name: ShipSelector (8)
+  m_Name: ShipSelector9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69168,7 +69168,7 @@ GameObject:
   - component: {fileID: 3314044328284909572}
   - component: {fileID: 7635439079625805641}
   m_Layer: 5
-  m_Name: ShipSelector (4)
+  m_Name: ShipSelector5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76530,7 +76530,7 @@ GameObject:
   - component: {fileID: 2300188069993650704}
   - component: {fileID: 8198322279619203925}
   m_Layer: 5
-  m_Name: ShipSelector
+  m_Name: ShipSelector1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76656,7 +76656,7 @@ GameObject:
   - component: {fileID: 6898682019470983446}
   - component: {fileID: 3764666943198228554}
   m_Layer: 5
-  m_Name: ModuleSelector
+  m_Name: ModuleHangerSelector1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79814,7 +79814,7 @@ GameObject:
   - component: {fileID: 4608876433749188293}
   - component: {fileID: 301764488253158310}
   m_Layer: 5
-  m_Name: ModuleSelector (3)
+  m_Name: ModuleHangerSelector4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81838,7 +81838,7 @@ GameObject:
   - component: {fileID: 2696379216718790370}
   - component: {fileID: 565970413119113543}
   m_Layer: 5
-  m_Name: ModuleSelector (3)
+  m_Name: ModuleMissileSelector4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

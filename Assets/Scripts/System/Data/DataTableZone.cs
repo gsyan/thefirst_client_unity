@@ -49,9 +49,11 @@ public class CelestialBodyConfig
 }
 
 // 적 함대 스폰 위치 프리셋 — index로 참조 (datatable_zone_enemy_fleet_position.csv)
+// grade: 이 프리셋 세트가 유효한 기함 함체 그레이드 상한 — 스폰할 함대의 기함 그레이드 이하인 것 중 가장 작은 grade 그룹을 사용
 [System.Serializable]
 public class FleetPositionPreset
 {
+    public int   grade;
     public int   index;
     public float distance;
     public float rotX;
@@ -227,6 +229,40 @@ public class DataTableZone : ScriptableObject
                 return fleetPositionPresets[i];
         }
         return null;
+    }
+
+    // shipGradeLevel(기함 함체 그레이드) 이상인 grade 값 중 가장 작은 그룹에서 positionIndex로 조회
+    // 그레이드가 높을수록(함선이 커질수록) 더 넓은 distance/각도 세트를 쓰도록 grade별로 프리셋을 나눠둘 수 있음
+    public FleetPositionPreset GetFleetPosition(int shipGradeLevel, int positionIndex)
+    {
+        for (int i = fleetPositionPresets.Count - 1; i >= 0; i--)
+        {
+            FleetPositionPreset preset = fleetPositionPresets[i];
+            if (shipGradeLevel >= preset.grade && positionIndex == preset.index)
+                return preset;
+        }
+        return null;
+    }
+
+    // shipGradeLevel에 적용되는 grade 그룹에 몇 개의 positionIndex가 있는지 (0 = 해당 그레이드용 프리셋 없음)
+    public int GetFleetPositionCount(int shipGradeLevel)
+    {
+        int bestGrade = int.MaxValue;
+        for (int i = 0; i < fleetPositionPresets.Count; i++)
+        {
+            int grade = fleetPositionPresets[i].grade;
+            if (grade >= shipGradeLevel && grade < bestGrade)
+                bestGrade = grade;
+        }
+        if (bestGrade == int.MaxValue) return 0;
+
+        int count = 0;
+        for (int i = 0; i < fleetPositionPresets.Count; i++)
+        {
+            if (fleetPositionPresets[i].grade == bestGrade)
+                count++;
+        }
+        return count;
     }
 
     // 존의 x-0 스폰 마커 스테이지 반환 — 없으면 null

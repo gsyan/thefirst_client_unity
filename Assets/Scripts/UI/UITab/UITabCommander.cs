@@ -33,7 +33,7 @@ public class UITabCommander : UITabBase
         m_colorActive   = CommonUtility.PaletteColor("GeneralBright1");
         m_colorInactive = CommonUtility.PaletteColor("GeneralDark1");
 
-        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.m_myFleet == null) return;
+        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.GetMyFleet() == null) return;
 
         if (m_shipImages != null)
         {

@@ -24,11 +24,18 @@ public enum ETutorialConditionType
     ModuleSelected,           // 아무 모듈 선택
     ModuleSelectedCount,      // 서로 다른 모듈 N개 선택
     SpecificModuleSelected,   // 특정 모듈 선택
+    CinematicOpeningBattle,   // 튜토리얼 오프닝 관전 전투 연출 시작 (TutorialCinematicController.SpawnOpeningBattle)
+    ShipArrivedAtFormation,   // TutorialManager.SetPendingNewShip으로 등록된 함선이 대형 자리에 도착할 때까지 대기
+    EscapeShipDistanceFromFlagship, // 지크프리트 기함 뒤에서 탈출 함선을 스폰하고, conditionThreshold 거리만큼 멀어질 때까지 대기
+    EnemyWave1, // step2 — 5개 함대([7,3,3] 구성), 10초 간격 스폰, 전멸까지 대기
+    EnemyWave2, // step4 — 10개 함대([9,5,5,3,3] 구성), 5초 간격 스폰. 애초에 전멸이 불가능한 물량 — 다음 스텝 전환은 FlagshipHealthBelowPercent가 별도로 감시
+    FlagshipHealthBelowPercent, // 내 함대 기함 체력 비율이 conditionThreshold(0~1) 이하로 떨어질 때까지 대기
 }
 
-// 화살표 방향
+// 화살표 방향 — Auto면 TutorialArrow가 화면 여유 공간을 보고 자동 결정, 그 외는 강제 지정
 public enum EArrowDirection
 {
+    Auto,
     Up,
     Down,
     Left,
@@ -52,8 +59,9 @@ public class TutorialStep
 
     [Header("표시 옵션")]
     public bool showArrow = true;
-    public EArrowDirection arrowDirection = EArrowDirection.Down;
-    public bool highlightTarget = true;
+    public EArrowDirection arrowDirection = EArrowDirection.Auto;
+    public bool hasHole = true;
+    public bool dimBackground = true; // false면 대상 UI 없이도 화면 전체 어둡게 하지 않음 (대기 스텝 등에 사용)
     public Vector2 textBoxOffset = new Vector2(0, 100f);
     public Vector2 textBoxSize = Vector2.zero;      // (0,0)이면 기본값 사용
     public Vector2 textBoxPosition = Vector2.zero;  // (0,0)이 아니면 절대 위치 사용
@@ -63,6 +71,7 @@ public class TutorialStep
 
     [Header("사전 액션")]
     public string preActionPanelName; // 스텝 시작 전 열 패널 (선택)
+    public string preActionTabName;   // 스텝 시작 전 전환할 TabSystem 탭 이름 (선택, targetUIId가 탭 안에 있을 때 사용)
 
     [Header("커스텀 조건 (triggerType이 Custom일 때 사용)")]
     public ETutorialConditionType conditionType = ETutorialConditionType.None;
@@ -86,10 +95,10 @@ public class TutorialData : ScriptableObject
     private static readonly string[] CSV_HEADER = new string[]
     {
         "stepId", "message", "triggerType", "targetPanelName", "targetUIId",
-        "showArrow", "arrowDirection", "highlightTarget",
+        "showArrow", "arrowDirection", "hasHole",
         "textBoxOffsetX", "textBoxOffsetY", "textBoxSizeX", "textBoxSizeY", "textBoxPositionX", "textBoxPositionY",
-        "autoNextDelay", "preActionPanelName",
-        "conditionType", "conditionThreshold", "conditionCount", "targetModuleType"
+        "autoNextDelay", "preActionPanelName", "preActionTabName",
+        "conditionType", "conditionThreshold", "conditionCount", "targetModuleType", "dimBackground"
     };
 
     public string ExportToCsv()
@@ -108,7 +117,7 @@ public class TutorialData : ScriptableObject
                 CsvEscape(step.targetUIId),
                 CsvEscape(step.showArrow.ToString()),
                 CsvEscape(step.arrowDirection.ToString()),
-                CsvEscape(step.highlightTarget.ToString()),
+                CsvEscape(step.hasHole.ToString()),
                 CsvEscape(step.textBoxOffset.x.ToString()),
                 CsvEscape(step.textBoxOffset.y.ToString()),
                 CsvEscape(step.textBoxSize.x.ToString()),
@@ -117,10 +126,12 @@ public class TutorialData : ScriptableObject
                 CsvEscape(step.textBoxPosition.y.ToString()),
                 CsvEscape(step.autoNextDelay.ToString()),
                 CsvEscape(step.preActionPanelName),
+                CsvEscape(step.preActionTabName),
                 CsvEscape(step.conditionType.ToString()),
                 CsvEscape(step.conditionThreshold.ToString()),
                 CsvEscape(step.conditionCount.ToString()),
-                CsvEscape(step.targetModuleType.ToString())
+                CsvEscape(step.targetModuleType.ToString()),
+                CsvEscape(step.dimBackground.ToString())
             };
             sb.AppendLine(string.Join(",", fields));
         }
@@ -151,7 +162,7 @@ public class TutorialData : ScriptableObject
             step.targetUIId = cols[4];
             bool.TryParse(cols[5], out step.showArrow);
             System.Enum.TryParse(cols[6], out step.arrowDirection);
-            bool.TryParse(cols[7], out step.highlightTarget);
+            bool.TryParse(cols[7], out step.hasHole);
 
             float offsetX, offsetY, sizeX, sizeY, posX, posY, autoNextDelay, conditionThreshold;
             float.TryParse(cols[8], out offsetX);
@@ -167,12 +178,14 @@ public class TutorialData : ScriptableObject
             float.TryParse(cols[14], out autoNextDelay);
             step.autoNextDelay = autoNextDelay;
             step.preActionPanelName = cols[15];
+            step.preActionTabName = cols[16];
 
-            System.Enum.TryParse(cols[16], out step.conditionType);
-            float.TryParse(cols[17], out conditionThreshold);
+            System.Enum.TryParse(cols[17], out step.conditionType);
+            float.TryParse(cols[18], out conditionThreshold);
             step.conditionThreshold = conditionThreshold;
-            int.TryParse(cols[18], out step.conditionCount);
-            System.Enum.TryParse(cols[19], out step.targetModuleType);
+            int.TryParse(cols[19], out step.conditionCount);
+            System.Enum.TryParse(cols[20], out step.targetModuleType);
+            bool.TryParse(cols[21], out step.dimBackground);
 
             imported.Add(step);
         }

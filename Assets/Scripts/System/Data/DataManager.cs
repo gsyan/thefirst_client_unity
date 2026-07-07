@@ -154,7 +154,7 @@ public class DataManager : Singleton<DataManager>
             Debug.LogError("DataTableModule is not exist");
     }
 
-    public bool GetModuleLevelUpCost(EModuleSubType subType, int moduleLevel, out long modulePointCost)
+    public bool GetModuleLevelUpCost(EModuleSubType subType, int moduleLevel, out int modulePointCost)
     {
         modulePointCost = 0;
         ModuleData moduleData = m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel + 1);
@@ -202,8 +202,7 @@ public class DataManager : Singleton<DataManager>
 
             for (int lv = 1; lv < maxLevel; lv++)
             {
-                if (GetModuleLevelUpCost(currentSubType, lv, out long levelCost) == false) break;
-                int cost = (int)levelCost;
+                if (GetModuleLevelUpCost(currentSubType, lv, out int cost) == false) break;
                 if (remaining < cost)
                 {
                     baselineSubType = currentSubType;
@@ -223,7 +222,7 @@ public class DataManager : Singleton<DataManager>
             }
 
             EModuleSubType nextSubType = (EModuleSubType)nextVal;
-            int gradeUpCost = (int)GetModuleResearchCost(nextSubType);
+            int gradeUpCost = GetModuleResearchCost(nextSubType);
             if (remaining < gradeUpCost)
             {
                 baselineSubType = currentSubType;
@@ -250,7 +249,7 @@ public class DataManager : Singleton<DataManager>
             Debug.Log("DataTableUpgradeCost loaded successfully");
     }
 
-    public long GetModuleResearchCost(EModuleSubType subType)
+    public int GetModuleResearchCost(EModuleSubType subType)
     {
         if (m_dataTableUpgradeCost == null) return 0;
         return m_dataTableUpgradeCost.GetCost(subType);

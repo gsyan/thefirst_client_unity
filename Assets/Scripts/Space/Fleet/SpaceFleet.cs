@@ -4,30 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum EFleetSide
-{
-    fleet_side_player,
-    fleet_side_enemy
-}
-
 public enum EFleetSource
 {
     fleet_source_player,
     fleet_source_player_remote,
     fleet_source_zone_data,
+    fleet_source_cinematic, // 튜토리얼 등 연출 전용 NPC 함대 — 전멸해도 실제 게임 상태(진행도/이벤트) 변경 없음
+}
+
+// 팀 소속 — ObjectManager의 팀별 함대 리스트(m_teamAFleets/m_teamBFleets/m_teamCFleets) 구성, 자동 타겟팅 범위, 무기 피격(아군/적 판정)에 모두 사용되는 단일 기준
+// TeamA/B/C는 "내 편/상대편" 같은 의미를 고정하지 않는 범용 슬롯 — 실제 플레이어 전투는 A=플레이어, B=적으로 사용, 시네마틱 등은 자유롭게 배정
+public enum ETeam
+{
+    TeamA,
+    TeamB,
+    TeamC
 }
 
 public class SpaceFleet : MonoBehaviour
 {
     public FleetInfo m_fleetInfo;
-    public EFleetSide m_fleetSide = EFleetSide.fleet_side_player;
     public EFleetSource m_fleetSource = EFleetSource.fleet_source_player;
     public EUnitState m_fleetState = EUnitState.Idle;
+    public ETeam m_team = ETeam.TeamA;
 
     // 편의 프로퍼티
-    public bool IsEnemy => m_fleetSide == EFleetSide.fleet_side_enemy;
     public bool IsZoneEnemy => m_fleetSource == EFleetSource.fleet_source_zone_data;
     public bool IsPvpEnemy => m_fleetSource == EFleetSource.fleet_source_player_remote;
+    public bool IsCinematic => m_fleetSource == EFleetSource.fleet_source_cinematic;
     public EFormationType m_currentFormationType = EFormationType.linear_horizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
 
@@ -165,10 +169,10 @@ public class SpaceFleet : MonoBehaviour
 
 
 
-    public void InitializeSpaceFleet(FleetInfo fleetInfo, EFleetSide side = EFleetSide.fleet_side_player, EFleetSource source = EFleetSource.fleet_source_player, EUnitState fleetState = EUnitState.Idle)
+    public void InitializeSpaceFleet(FleetInfo fleetInfo, ETeam team, EFleetSource source, EUnitState fleetState)
     {
         m_fleetInfo = fleetInfo;
-        m_fleetSide = side;
+        m_team = team;
         m_fleetSource = source;
         m_fleetState = fleetState;
 
@@ -197,7 +201,7 @@ public class SpaceFleet : MonoBehaviour
 
     // bWarp: 항상 후방 스폰. true면 워프 이펙트+고속 이동, false면 UpdateShipFormation이 배치 담당
     // bFillNullSlot: true면 파괴된 슬롯(null) 자리에 복원, false면 신규 추가(null 슬롯 무시)
-    public void CreateSpaceShipByInfo(ShipInfo shipInfo, bool bWarp = false, bool bFillNullSlot = false)
+    public SpaceShip CreateSpaceShipByInfo(ShipInfo shipInfo, bool bWarp = false, bool bFillNullSlot = false)
     {
         GameObject shipGo = new GameObject($"{shipInfo.shipName}");
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
@@ -207,6 +211,7 @@ public class SpaceFleet : MonoBehaviour
         spaceShip.m_hangerMultiplier  = shipInfo.hangerMultiplier;
         spaceShip.InitializeSpaceShip(this, shipInfo);
         AddShip(spaceShip, bWarp: bWarp, bFillNullSlot: bFillNullSlot);
+        return spaceShip;
     }
     // 워프 진입 시 이동 속도 배율
     private float m_spawnApproachSpeedMult = 60f;
@@ -707,9 +712,13 @@ public class SpaceFleet : MonoBehaviour
 
         if (IsFleetAlive() == false)
         {
-            if (IsZoneEnemy)
+            if (IsCinematic)
+            {
+                // 연출용 NPC 함대 — 실제 게임 상태(진행도/이벤트) 변경 없음. 시네마틱 컨트롤러가 직접 IsFleetAlive()로 감시
+            }
+            else if (IsZoneEnemy)
                 ObjectManager.Instance.OnZoneEnemyFleetDefeated(this);
-            else if (IsEnemy)
+            else if (IsPvpEnemy)
                 ObjectManager.Instance.RemoveEnemyFleet(this);
             else
                 EventManager.Trigger_MyFleetDestroyed();
@@ -729,9 +738,13 @@ public class SpaceFleet : MonoBehaviour
         }
         else
         {
-            if (IsZoneEnemy)
+            if (IsCinematic)
+            {
+                // 연출용 NPC 함대 — 실제 게임 상태(진행도/이벤트) 변경 없음. 시네마틱 컨트롤러가 직접 IsFleetAlive()로 감시
+            }
+            else if (IsZoneEnemy)
                 ObjectManager.Instance.OnZoneEnemyFleetDefeated(this);
-            else if (IsEnemy)
+            else if (IsPvpEnemy)
                 ObjectManager.Instance.RemoveEnemyFleet(this);
             else
                 EventManager.Trigger_MyFleetDestroyed();
@@ -954,9 +967,8 @@ public class SpaceFleet : MonoBehaviour
                 StopMissileTacticCostLoop();
                 StopAircraftTacticCostLoop();
             }
-        }
-        if (m_fleetSide == EFleetSide.fleet_side_player)
             EventManager.TriggerMyFleetStateChanged(fleetState);
+        }
     }
 
     private void ReadyAllHangerAircrafts()

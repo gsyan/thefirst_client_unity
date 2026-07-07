@@ -74,7 +74,7 @@ public class UIPanelSpace : UIPanelBase
         //SetTabNavVisible(true);
         SetViewport(open:false);
 
-        CameraController.Instance.SetTargetOfCameraController(ObjectManager.Instance.m_myFleet.transform);
+        CameraController.Instance.SetTargetOfCameraController(ObjectManager.Instance.GetMyFleet().transform);
     }
 
     private void OnDestroy()
@@ -144,7 +144,7 @@ public class UIPanelSpace : UIPanelBase
             if (response.data.mineralSettingReset == true && response.data.updatedFleetInfo != null)
             {
                 var loc = LocalizationManager.Instance;
-                var fleet = ObjectManager.Instance.m_myFleet;
+                var fleet = ObjectManager.Instance.GetMyFleet();
                 FleetInfo fleetInfoToApply = response.data.updatedFleetInfo;
                 UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
                 {

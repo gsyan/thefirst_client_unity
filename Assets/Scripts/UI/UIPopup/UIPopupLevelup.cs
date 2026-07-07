@@ -192,7 +192,7 @@ public class UIPopupLevelup : UIPopupBase
         long total = 0;
         for (int lv = fromLevel; lv < toLevel; lv++)
         {
-            if (DataManager.Instance.GetModuleLevelUpCost(m_subType, lv, out long c) == false) break;
+            if (DataManager.Instance.GetModuleLevelUpCost(m_subType, lv, out int c) == false) break;
             total += c;
         }
         return total;

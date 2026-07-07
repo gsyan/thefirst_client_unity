@@ -125,7 +125,7 @@ public class CameraController : MonoSingleton<CameraController>
     // 함선 선택 시 해당 함선 기준 줌 범위 적용 (내 함대만)
     private void OnSpaceShipSelectedForZoom(SpaceShip ship)
     {
-        if (ship == null || ship.m_ownerFleet == null || ship.m_ownerFleet.IsEnemy == true) return;
+        if (ship == null || ship.m_ownerFleet == null || ObjectManager.Instance.IsEnemyOfMyTeam(ship.m_ownerFleet) == true) return;
         ApplyZoomRangeFromShip(ship);
     }
 
@@ -165,8 +165,9 @@ public class CameraController : MonoSingleton<CameraController>
         if (m_focusTarget == ECameraFocusTarget.camera_focus_center && m_currentTarget == null)
         {
             var objMgr = ObjectManager.Instance;
-            if (objMgr != null && objMgr.m_myFleet != null)
-                m_targetPosition = (objMgr.m_myFleet.transform.position + GetCenterModeEnemyPosition(objMgr, objMgr.m_myFleet)) * 0.5f;
+            SpaceFleet myFleet = objMgr != null ? objMgr.GetMyFleet() : null;
+            if (myFleet != null)
+                m_targetPosition = (myFleet.transform.position + GetCenterModeEnemyPosition(objMgr, myFleet)) * 0.5f;
         }
 
         bool galaxyViewJustSettled = false;
@@ -364,7 +365,7 @@ public class CameraController : MonoSingleton<CameraController>
         }
 
         SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
-        if (ship == null || ship.m_ownerFleet == null || ship.m_ownerFleet.IsEnemy)
+        if (ship == null || ship.m_ownerFleet == null || ObjectManager.Instance.IsEnemyOfMyTeam(ship.m_ownerFleet))
         {
             EventManager.Trigger_EmptySpaceTapped();
             return;
@@ -497,9 +498,9 @@ public class CameraController : MonoSingleton<CameraController>
     public float CalcCenterZoom()
     {
         var objMgr = ObjectManager.Instance;
-        if (objMgr == null || objMgr.m_myFleet == null) return m_currentZoom;
+        if (objMgr == null || objMgr.GetMyFleet() == null) return m_currentZoom;
 
-        float dist = Vector3.Distance(objMgr.m_myFleet.transform.position, objMgr.GetEnemySpawnPosition());
+        float dist = Vector3.Distance(objMgr.GetMyFleet().transform.position, objMgr.GetEnemySpawnPosition());
         // camera.aspect는 rect.width를 이미 반영 (pixelWidth/pixelHeight 기준)
         float aspect = m_targetCamera != null ? m_targetCamera.aspect : (16f / 9f);
         float vFovRad = (m_targetCamera != null ? m_targetCamera.fieldOfView : 60f) * Mathf.Deg2Rad;
@@ -560,7 +561,7 @@ public class CameraController : MonoSingleton<CameraController>
     public Vector3 GetFocusTargetPosition()
     {
         var objMgr = ObjectManager.Instance;
-        var myFleet = objMgr != null ? objMgr.m_myFleet : null;
+        var myFleet = objMgr != null ? objMgr.GetMyFleet() : null;
         if (m_focusTarget == ECameraFocusTarget.camera_focus_enemy_fleet && objMgr != null)
             return objMgr.GetEnemySpawnPosition();
         if (m_focusTarget == ECameraFocusTarget.camera_focus_center && objMgr != null && myFleet != null)
@@ -576,7 +577,7 @@ public class CameraController : MonoSingleton<CameraController>
     public void SnapToTarget()
     {
         var objMgr = ObjectManager.Instance;
-        var myFleet = objMgr != null ? objMgr.m_myFleet : null;
+        var myFleet = objMgr != null ? objMgr.GetMyFleet() : null;
         switch (m_focusTarget)
         {
             case ECameraFocusTarget.camera_focus_my_fleet:
@@ -726,7 +727,7 @@ public class CameraController : MonoSingleton<CameraController>
             if (objMgr == null) return;
 
             List<SpaceFleet> aliveEnemies = new List<SpaceFleet>();
-            foreach (SpaceFleet fleet in objMgr.m_enemyFleets)
+            foreach (SpaceFleet fleet in objMgr.GetEnemyFleets())
             {
                 if (fleet != null && fleet.IsFleetAlive() == true)
                     aliveEnemies.Add(fleet);
@@ -775,7 +776,7 @@ public class CameraController : MonoSingleton<CameraController>
         var objMgr = ObjectManager.Instance;
         if (objMgr == null) return;
 
-        SpaceFleet myFleet = objMgr.m_myFleet;
+        SpaceFleet myFleet = objMgr.GetMyFleet();
         if (myFleet == null) return;
 
         switch (focusTarget)

@@ -15,36 +15,124 @@ MonoBehaviour:
   m_TableCollectionName: Tutorial
   m_TableCollectionNameGuidString: 0ded921c495564e4396ea127f3f166c8
   m_Entries:
-  - m_Id: 2876399026176
-    m_Key: Tutorial_FirstPlay_story_first_1
+  - m_Id: 263406917386240
+    m_Key: Tutorial_FirstPlay_AiFirstHello
     m_Metadata:
       m_Items: []
-  - m_Id: 2876445163520
-    m_Key: Tutorial_FirstPlay_story_first_2
+  - m_Id: 267705026215936
+    m_Key: Tutorial_FirstPlay_SiegfriedAddShip
     m_Metadata:
       m_Items: []
-  - m_Id: 2876453552128
-    m_Key: Tutorial_FirstPlay_story_first_3
+  - m_Id: 267705026215937
+    m_Key: Tutorial_FirstPlay_OpenFleetTab
     m_Metadata:
       m_Items: []
-  - m_Id: 2876453552129
-    m_Key: Tutorial_FirstPlay_story_first_4
+  - m_Id: 267705026215938
+    m_Key: Tutorial_FirstPlay_AddShip
     m_Metadata:
       m_Items: []
-  - m_Id: 2876461940736
-    m_Key: Tutorial_FirstPlay_story_first_5
+  - m_Id: 1319437449691136
+    m_Key: Tutorial_FirstPlay_CheckCommanderLevel
     m_Metadata:
       m_Items: []
-  - m_Id: 2876461940737
-    m_Key: Tutorial_FirstPlay_story_first_6
+  - m_Id: 1319437483245568
+    m_Key: Tutorial_FirstPlay_CheckModulePoint
     m_Metadata:
       m_Items: []
-  - m_Id: 2876466135040
-    m_Key: Tutorial_FirstPlay_story_first_7
+  - m_Id: 1319437483245569
+    m_Key: Tutorial_FirstPlay_AddShipConfirm
     m_Metadata:
       m_Items: []
-  - m_Id: 2876470329344
-    m_Key: Tutorial_FirstPlay_story_first_8
+  - m_Id: 1336507092566016
+    m_Key: Tutorial_FirstPlay_AddShipComplete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444003811328
+    m_Key: Tutorial_FirstPlay_TouchShipSelector
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444041560064
+    m_Key: Tutorial_FirstPlay_TouchShipManage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444049948672
+    m_Key: Tutorial_FirstPlay_TouchModuleBeam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444054142976
+    m_Key: Tutorial_FirstPlay_LevelUpModuleBeam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444058337280
+    m_Key: Tutorial_FirstPlay_TouchModuleMissile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444062531584
+    m_Key: Tutorial_FirstPlay_UnlockModuleMissile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444066725888
+    m_Key: Tutorial_FirstPlay_LevelUpModuleMissile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444075114496
+    m_Key: Tutorial_FirstPlay_TouchModuleHanger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444079308800
+    m_Key: Tutorial_FirstPlay_UnlockModuleHanger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444083503104
+    m_Key: Tutorial_FirstPlay_LevelUpModuleHanger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444087697408
+    m_Key: Tutorial_FirstPlay_TouchModuleBody
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444091891712
+    m_Key: Tutorial_FirstPlay_UpgradeModuleBody
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1368444096086016
+    m_Key: Tutorial_FirstPlay_UpgradeModuleBodyEffect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098930245632
+    m_Key: Tutorial_FirstPlay_ManageShipComplete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098980577280
+    m_Key: Tutorial_FirstPlay_EnemyAlert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098984771584
+    m_Key: Tutorial_FirstPlay_EnemyFleetWrapIn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098988965888
+    m_Key: Tutorial_FirstPlay_FleetBattle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098993160192
+    m_Key: Tutorial_FirstPlay_EnemyFleetWrapIn2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380098997354496
+    m_Key: Tutorial_FirstPlay_Defeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380099001548800
+    m_Key: Tutorial_FirstPlay_EscapeAlert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1380099005743104
+    m_Key: Tutorial_FirstPlay_Escape
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1328699047542784
+    m_Key: Tutorial_FirstPlay_Complete
     m_Metadata:
       m_Items: []
   m_Metadata:
