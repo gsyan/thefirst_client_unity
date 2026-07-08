@@ -20,7 +20,7 @@ platform :android do
   lane :closed_testing do
     upload_to_play_store(
       track: "internal",
-      track_promote_to: "Alpha",
+      track_promote_to: "4699219595168378744",
       json_key: ENV["GOOGLE_PLAY_JSON_KEY"],
       version_name: ENV["VERSION_NAME"],
       release_status: "completed",
