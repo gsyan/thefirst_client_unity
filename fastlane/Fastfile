@@ -2,6 +2,22 @@
 default_platform(:android)
 
 platform :android do
+  desc "[임시 디버그] Google Play 실제 트랙 ID 목록 출력"
+  lane :list_tracks do
+    require 'supply'
+    Supply.config = FastlaneCore::Configuration.create(
+      Supply::Options.available_options,
+      {
+        package_name: "com.fidforge.thefirst",
+        json_key: ENV["GOOGLE_PLAY_JSON_KEY"],
+      }
+    )
+    client = Supply::Client.make_from_config
+    client.tracks("com.fidforge.thefirst").each do |t|
+      UI.message("track id = #{t.track}")
+    end
+  end
+
   desc "내부 테스트 트랙에 AAB 업로드"
   lane :internal do
     upload_to_play_store(
