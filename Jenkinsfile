@@ -122,20 +122,6 @@ pipeline {
             }
         }
 
-        stage('Google Play List Tracks (Debug)') {
-            when {
-                expression { params.GOOGLE_PLAY_CLOSED_TEST == true }
-            }
-            steps {
-                withCredentials([file(credentialsId: 'GOOGLE_PLAY_DEPLOY', variable: 'GOOGLE_PLAY_JSON_KEY')]) {
-                    bat """
-                        set GOOGLE_PLAY_JSON_KEY=%GOOGLE_PLAY_JSON_KEY%
-                        C:\\Ruby34-x64\\bin\\fastlane android list_tracks
-                    """
-                }
-            }
-        }
-
         stage('Google Play') {
             when {
                 expression { params.GOOGLE_PLAY_INNER_TEST == true }
