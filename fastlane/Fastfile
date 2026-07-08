@@ -16,17 +16,19 @@ platform :android do
     )
   end
 
-  desc "비공개 테스트(검수 요청) 트랙에 AAB 업로드"
+  desc "내부 테스트 트랙 빌드를 비공개 테스트(검수 요청) 트랙으로 승격"
   lane :closed_testing do
     upload_to_play_store(
-      track: "Alpha",
+      track: "internal",
+      track_promote_to: "Alpha",
       json_key: ENV["GOOGLE_PLAY_JSON_KEY"],
-      aab: ENV["APK_PATH"],
       version_name: ENV["VERSION_NAME"],
       release_status: "completed",
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
+      skip_upload_aab: true,
+      skip_upload_apk: true,
     )
   end
 end

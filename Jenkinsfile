@@ -7,12 +7,13 @@ pipeline {
         string(name: 'VERSION_MINOR', defaultValue: '1', description: '마이너 버전')
         string(name: 'VERSION_PATCH', defaultValue: '18', description: '패치 버전')
         string(name: 'PRODUCT_NAME',  defaultValue: 'Space Fleet', description: '앱 표시 이름 (Google Play 등록명)')
-        booleanParam(name: 'IS_SHIPPING',          defaultValue: false, description: '배포용 빌드 (체크 시 개발자 도구/콘솔 비활성화, 미체크 = 개발 빌드)')
-        booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드')
-        booleanParam(name: 'RELEASE_PLAY_CLOSED',  defaultValue: false, description: 'Google Play 비공개 테스트(검수 요청 테스트) 트랙에 AAB 업로드')
-        booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드')
-        booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드')
-        booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\bk_server\\bk\\thefirst_client_build\\dev|release)에 APK 업로드')
+        booleanParam(name: 'IS_SHIPPING',              defaultValue: false, description: 'true = AAB 빌드(release), false = APK 빌드(development)')
+        booleanParam(name: 'BUILD',                    defaultValue: true,  description: '프로젝트 빌드 여부')
+        booleanParam(name: 'GOOGLE_PLAY_INNER_TEST',   defaultValue: false, description: '독립적으로 Google Play 내부 테스트 트랙에 AAB 업로드 (워크스페이스의 build/thefirst.aab 사용)')
+        booleanParam(name: 'GOOGLE_PLAY_CLOSED_TEST',  defaultValue: false, description: '독립적으로 Google Play 비공개 테스트 트랙으로 최신 내부 테스트 버전 승격 (재업로드 없음)')
+        booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드 (IS_SHIPPING=false 필요)')
+        booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드 (IS_SHIPPING=false 필요)')
+        booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\bk_server\\bk\\thefirst_client_build\\dev|release)에 APK 업로드 (IS_SHIPPING=false 필요)')
     }
 
     environment {
@@ -43,75 +44,59 @@ pipeline {
                             string(name: 'VERSION_MINOR', defaultValue: "${params.VERSION_MINOR}", description: '마이너 버전'),
                             string(name: 'VERSION_PATCH', defaultValue: "${params.VERSION_PATCH}", description: '패치 버전'),
                             string(name: 'PRODUCT_NAME',  defaultValue: "${params.PRODUCT_NAME}",  description: '앱 표시 이름 (Google Play 등록명)'),
-                            booleanParam(name: 'IS_SHIPPING',          defaultValue: false, description: '배포용 빌드 (체크 시 개발자 도구/콘솔 비활성화, 미체크 = 개발 빌드)'),
-                            booleanParam(name: 'RELEASE_PLAY',         defaultValue: false, description: 'Google Play 내부 테스트 트랙에 AAB 업로드'),
-                            booleanParam(name: 'RELEASE_PLAY_CLOSED',  defaultValue: false, description: 'Google Play 비공개 테스트(검수 요청 테스트) 트랙에 AAB 업로드'),
-                            booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드'),
-                            booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드'),
-                            booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\\\\\bk_server\\\\bk\\\\thefirst_client_build\\\\dev|release)에 APK 업로드'),
+                            booleanParam(name: 'IS_SHIPPING',              defaultValue: false, description: 'true = AAB 빌드(release), false = APK 빌드(development)'),
+                            booleanParam(name: 'BUILD',                    defaultValue: true,  description: '프로젝트 빌드 여부'),
+                            booleanParam(name: 'GOOGLE_PLAY_INNER_TEST',   defaultValue: false, description: '독립적으로 Google Play 내부 테스트 트랙에 AAB 업로드 (워크스페이스의 build/thefirst.aab 사용)'),
+                            booleanParam(name: 'GOOGLE_PLAY_CLOSED_TEST',  defaultValue: false, description: '독립적으로 Google Play 비공개 테스트 트랙으로 최신 내부 테스트 버전 승격 (재업로드 없음)'),
+                            booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드 (IS_SHIPPING=false 필요)'),
+                            booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드 (IS_SHIPPING=false 필요)'),
+                            booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\\\\\bk_server\\\\bk\\\\thefirst_client_build\\\\dev|release)에 APK 업로드 (IS_SHIPPING=false 필요)'),
                         ])
                     ])
                 }
             }
         }
 
-        stage('Build APK') {
-            // RELEASE_PLAY / RELEASE_PLAY_CLOSED 만 단독 체크된 경우가 아니면 APK 빌드
+        stage('Build') {
+            // IS_SHIPPING=true → AAB(release), false → APK(development)
             when {
-                expression { (params.RELEASE_PLAY == false && params.RELEASE_PLAY_CLOSED == false) || params.RELEASE_GITHUB == true || params.RELEASE_FIREBASE == true }
+                expression { params.BUILD == true }
             }
             steps {
                 script {
-                    def devFlag = params.IS_SHIPPING ? "" : "-isDev"
-                    bat """
-                        "${env.UNITY_PATH}" ^
-                          -batchmode -quit -nographics ^
-                          -projectPath "${env.PROJECT_PATH}" ^
-                          -executeMethod BuildScript.BuildAndroid ^
-                          -outputPath "${env.OUTPUT_APK}" ^
-                          -versionName "${env.VERSION_NAME}" ^
-                          -productName "${params.PRODUCT_NAME}" ^
-                          ${devFlag} ^
-                          -logFile "${env.WORKSPACE}/build/unity_build_apk.log"
-                    """
+                    if (params.IS_SHIPPING == true) {
+                        bat """
+                            "${env.UNITY_PATH}" ^
+                              -batchmode -quit -nographics ^
+                              -projectPath "${env.PROJECT_PATH}" ^
+                              -executeMethod BuildScript.BuildAndroid ^
+                              -outputPath "${env.OUTPUT_AAB}" ^
+                              -versionName "${env.VERSION_NAME}" ^
+                              -productName "${params.PRODUCT_NAME}" ^
+                              -buildAAB ^
+                              -logFile "${env.WORKSPACE}/build/unity_build.log"
+                        """
+                    } else {
+                        bat """
+                            "${env.UNITY_PATH}" ^
+                              -batchmode -quit -nographics ^
+                              -projectPath "${env.PROJECT_PATH}" ^
+                              -executeMethod BuildScript.BuildAndroid ^
+                              -outputPath "${env.OUTPUT_APK}" ^
+                              -versionName "${env.VERSION_NAME}" ^
+                              -productName "${params.PRODUCT_NAME}" ^
+                              -isDev ^
+                              -logFile "${env.WORKSPACE}/build/unity_build.log"
+                        """
+                    }
                 }
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'build/unity_build_apk.log', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'build/unity_build.log', allowEmptyArchive: true
                 }
                 success {
-                    archiveArtifacts artifacts: 'build/*.apk', allowEmptyArchive: true
-                }
-            }
-        }
-
-        stage('Build AAB') {
-            when {
-                expression { params.RELEASE_PLAY == true || params.RELEASE_PLAY_CLOSED == true }
-            }
-            steps {
-                script {
-                    // AAB는 Play Store 배포용 → 항상 release buildType (AGP 8.x + minSdk>=24에서 debug buildType은 v1 서명 비활성화 → 업로드 불가)
-                    bat """
-                        "${env.UNITY_PATH}" ^
-                          -batchmode -quit -nographics ^
-                          -projectPath "${env.PROJECT_PATH}" ^
-                          -executeMethod BuildScript.BuildAndroid ^
-                          -outputPath "${env.OUTPUT_AAB}" ^
-                          -versionName "${env.VERSION_NAME}" ^
-                          -productName "${params.PRODUCT_NAME}" ^
-                          -buildAAB ^
-                          -logFile "${env.WORKSPACE}/build/unity_build_aab.log"
-                    """
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'build/unity_build_aab.log', allowEmptyArchive: true
-                }
-                success {
-                    archiveArtifacts artifacts: 'build/*.aab', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'build/*.apk,build/*.aab', allowEmptyArchive: true
                     echo "빌드 성공: v${env.VERSION_NAME}"
                 }
             }
@@ -119,7 +104,7 @@ pipeline {
 
         stage('GitHub Release') {
             when {
-                expression { params.RELEASE_GITHUB == true }
+                expression { params.RELEASE_GITHUB == true && params.IS_SHIPPING == false }
             }
             steps {
                 script {
@@ -139,7 +124,7 @@ pipeline {
 
         stage('Google Play') {
             when {
-                expression { params.RELEASE_PLAY == true }
+                expression { params.GOOGLE_PLAY_INNER_TEST == true }
             }
             steps {
                 withCredentials([file(credentialsId: 'GOOGLE_PLAY_DEPLOY', variable: 'GOOGLE_PLAY_JSON_KEY')]) {
@@ -155,7 +140,7 @@ pipeline {
 
         stage('Google Play Closed Testing') {
             when {
-                expression { params.RELEASE_PLAY_CLOSED == true }
+                expression { params.GOOGLE_PLAY_CLOSED_TEST == true }
             }
             steps {
                 withCredentials([file(credentialsId: 'GOOGLE_PLAY_DEPLOY', variable: 'GOOGLE_PLAY_JSON_KEY')]) {
@@ -171,7 +156,7 @@ pipeline {
 
         stage('Firebase Distribution') {
             when {
-                expression { params.RELEASE_FIREBASE == true }
+                expression { params.RELEASE_FIREBASE == true && params.IS_SHIPPING == false }
             }
             steps {
                 withCredentials([file(credentialsId: 'FIREBASE_SERVICE_ACCOUNT', variable: 'FIREBASE_JSON_KEY')]) {
@@ -188,7 +173,7 @@ pipeline {
 
         stage('NAS Upload') {
             when {
-                expression { params.RELEASE_NAS == true && params.RELEASE_PLAY == false && params.RELEASE_PLAY_CLOSED == false }
+                expression { params.RELEASE_NAS == true && params.IS_SHIPPING == false }
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nas-smb-cred', usernameVariable: 'NAS_USER', passwordVariable: 'NAS_PASS')]) {
