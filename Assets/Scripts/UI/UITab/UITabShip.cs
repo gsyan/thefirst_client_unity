@@ -1,9 +1,7 @@
 ﻿// 함선/모듈 관리 UI — 헤더(함선 네비게이터+스탯2행), 모듈 맵, 모듈 디테일 카드
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UITabShip : UITabBase
@@ -74,17 +72,6 @@ public class UITabShip : UITabBase
     private bool       m_bModuleChanging = false;
     private bool       m_isUnlockPending = false;
 
-    // 레벨업 롱프레스 연속 입력
-    private bool      m_isLevelUpHolding     = false;
-    private bool      m_levelUpContinuous     = false;
-    private float     m_levelUpRequestTime    = 0f;
-    private Coroutine m_levelUpHoldCoroutine  = null;
-    private Coroutine m_levelUpChainCoroutine = null;
-
-    private const float LEVELUP_HOLD_START_DELAY = 0.5f;
-    private const float LEVELUP_MIN_INTERVAL     = 0.35f;
-
-
     // 행별 셀렉터 캐시 (prefab에 미리 배치된 버튼들)
     private ModuleSelector[] m_selectorsBody;
     private ModuleSelector[] m_selectorsBeam;
@@ -142,6 +129,20 @@ public class UITabShip : UITabBase
         // 이미 함대가 존재하면 즉시 바인딩
         if (ObjectManager.Instance.GetMyFleet() != null)
             BindPlayerFleet();
+
+        // 함선 관리 튜토리얼(모듈 강화 단계 포함)이 끝나면 이 탭을 자동으로 닫음
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.OnTutorialCompleted += OnTutorialCompleted;
+    }
+
+    // 함선 관리 튜토리얼 완료 시 호출 — 탭을 열어둔 채로 다음 스텝(전투 등)이 진행되지 않도록 닫음
+    private void OnTutorialCompleted(string tutorialId)
+    {
+        if (tutorialId != "Tutorial_FirstPlay_ManageShip") return;
+
+        TutorialManager.Instance.OnTutorialCompleted -= OnTutorialCompleted; // 1회성 처리라 사용 즉시 구독 해제
+        if (m_tabSystemParent != null)
+            m_tabSystemParent.SwitchToTab(-1);
     }
 
     // 함대 스폰/교체(튜토리얼→실제 함대 전환 포함) 시 호출
@@ -159,6 +160,8 @@ public class UITabShip : UITabBase
     {
         EventManager.Unsubscribe_ModulePointChanged(OnModulePointChanged);
         EventManager.Unsubscribe_ShipStatsChanged(OnShipStatsChangedRefreshModules);
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.OnTutorialCompleted -= OnTutorialCompleted;
     }
 
     // 함대 전체 리셋 등 외부에서 함선 모듈이 갱신된 경우 — 현재 선택 중인 함선이면 모듈 UI 재구성
@@ -554,70 +557,13 @@ public class UITabShip : UITabBase
 #region 모듈 레벨 업/다운 begin -------------------------------------------------------------
     private void RegisterLevelUpPointerEvents()
     {
-        Button btn = m_levelUpModuleButton.GetButton();
-        EventTrigger trigger = btn.gameObject.AddComponent<EventTrigger>();
-
-        var down = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
-        down.callback.AddListener(_ => OnLevelUpPointerDown());
-        trigger.triggers.Add(down);
-
-        var up = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
-        up.callback.AddListener(_ => OnLevelUpPointerUp());
-        trigger.triggers.Add(up);
-
-        var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
-        exit.callback.AddListener(_ => OnLevelUpPointerUp());
-        trigger.triggers.Add(exit);
+        m_levelUpModuleButton.GetButton().onClick.AddListener(OnLevelUpButtonClicked);
     }
 
-    private void OnLevelUpPointerDown()
+    private void OnLevelUpButtonClicked()
     {
         if (m_levelUpModuleButton.GetButton().interactable == false) return;
         if (m_bModuleChanging == true) return;
-        m_isLevelUpHolding = true;
-        ExecuteModuleLevelUp();
-        m_levelUpHoldCoroutine = StartCoroutine(LevelUpHoldRoutine());
-    }
-
-    private void OnLevelUpPointerUp()
-    {
-        m_isLevelUpHolding  = false;
-        m_levelUpContinuous = false;
-        if (m_levelUpHoldCoroutine != null)
-        {
-            StopCoroutine(m_levelUpHoldCoroutine);
-            m_levelUpHoldCoroutine = null;
-        }
-        if (m_levelUpChainCoroutine != null)
-        {
-            StopCoroutine(m_levelUpChainCoroutine);
-            m_levelUpChainCoroutine = null;
-        }
-    }
-
-    private IEnumerator LevelUpHoldRoutine()
-    {
-        yield return new WaitForSeconds(LEVELUP_HOLD_START_DELAY);
-        m_levelUpContinuous    = true;
-        m_levelUpHoldCoroutine = null;
-
-        // 응답이 이미 도착해서 체인이 끊긴 경우 재시동
-        if (m_isLevelUpHolding == true && m_bModuleChanging == false
-            && m_levelUpModuleButton.IsInteractable() == true)
-        {
-            float elapsed = Time.time - m_levelUpRequestTime;
-            float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
-            m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
-        }
-    }
-    private IEnumerator LevelUpChainRoutine(float delay)
-    {
-        if (delay > 0f)
-            yield return new WaitForSeconds(delay);
-        m_levelUpChainCoroutine = null;
-        if (m_isLevelUpHolding == false || m_levelUpContinuous == false) yield break;
-        if (m_bModuleChanging == true) yield break;
-        if (m_levelUpModuleButton.IsInteractable() == false) yield break;
         ExecuteModuleLevelUp();
     }
 
@@ -645,7 +591,6 @@ public class UITabShip : UITabBase
         if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), targetLevel) == null)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("LevelupButtonTextMax"));
-            OnLevelUpPointerUp();
             return;
         }
 
@@ -655,7 +600,6 @@ public class UITabShip : UITabBase
         if (commander.CheckEnoughModulePoint(cost) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_module_point"));
-            OnLevelUpPointerUp();
             return;
         }
 
@@ -669,8 +613,7 @@ public class UITabShip : UITabBase
             currentLevel  = currentLevel,
             targetLevel   = targetLevel
         };
-        m_bModuleChanging    = true;
-        m_levelUpRequestTime = Time.time;
+        m_bModuleChanging = true;
         NetworkManager.Instance.LevelUpModule(req, OnModuleLevelUpResponse);
     }
 
@@ -683,7 +626,6 @@ public class UITabShip : UITabBase
         if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_selectedModule.GetModuleSubType(), targetLevel) == null)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("LevelupButtonTextMax"));
-            OnLevelUpPointerUp();
             return;
         }
 
@@ -691,21 +633,12 @@ public class UITabShip : UITabBase
         if (TutorialActionGate.TryConsumeModulePoint(cost) == false)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_module_point"));
-            OnLevelUpPointerUp();
             return;
         }
 
-        m_levelUpRequestTime = Time.time;
         SoundManager.Instance.PlayFX(EFx.Level_Up, retrigger: true);
         Apply_ModuleLevelChange(m_selectedShip.m_shipInfo.id, m_selectedModule.GetModuleBodyIndex(), m_selectedModule.GetModuleType(),
             m_selectedModule.GetModuleSubType(), m_selectedModule.GetSlotIndex(), targetLevel, isLevelUp: true);
-
-        if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
-        {
-            float elapsed = Time.time - m_levelUpRequestTime;
-            float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
-            m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
-        }
     }
     private void OnModuleLevelUpResponse(ApiResponse<ModuleLevelChangeResponse> response)
     {
@@ -719,21 +652,12 @@ public class UITabShip : UITabBase
             commander.UpdateModulePoint(response.data.pointRemain);
             Apply_ModuleLevelChange(response.data.shipId, response.data.bodyIndex, response.data.moduleType,
                 response.data.moduleSubType, response.data.slotIndex, response.data.newLevel, isLevelUp: true);
-
-            // 연속 모드: HOLD_START_DELAY가 지났고 버튼을 아직 누르고 있으면 다음 요청 예약
-            if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
-            {
-                float elapsed = Time.time - m_levelUpRequestTime;
-                float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
-                m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
-            }
         }
         else
         {
             string msg = ErrorCodeMapping.GetMessage(response.errorCode);
             Debug.LogError($"LevelUp failed: {msg}");
             ShowErrorMessage($"LevelUp failed: {msg}");
-            OnLevelUpPointerUp();
         }
     }
     private void Apply_ModuleLevelChange(long shipId, int bodyIndex, EModuleType moduleType,
@@ -784,7 +708,6 @@ public class UITabShip : UITabBase
         if (nextData == null)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("LevelupButtonTextMax"));
-            OnLevelUpPointerUp();
             return;
         }
 
@@ -794,7 +717,6 @@ public class UITabShip : UITabBase
         if (commander.GetMineral() < mineralCost)
         {
             ShowErrorMessage(LocalizationManager.Instance.Get("insufficient_mineral"));
-            OnLevelUpPointerUp();
             return;
         }
 
@@ -808,8 +730,7 @@ public class UITabShip : UITabBase
             currentLevel  = currentLevel,
             targetLevel   = targetLevel
         };
-        m_bModuleChanging    = true;
-        m_levelUpRequestTime = Time.time;
+        m_bModuleChanging = true;
         NetworkManager.Instance.ModuleLevelUpMineral(req, OnModuleLevelUpMineralResponse);
     }
     private void OnModuleLevelUpMineralResponse(ApiResponse<ModuleLevelChangeResponse> response)
@@ -823,20 +744,12 @@ public class UITabShip : UITabBase
             SoundManager.Instance.PlayFX(EFx.Level_Up, retrigger: true);
             commander.UpdateMineral(response.data.pointRemain);
             Apply_ModuleLevelChangeMineral(response.data);
-
-            if (m_levelUpContinuous == true && m_isLevelUpHolding == true)
-            {
-                float elapsed = Time.time - m_levelUpRequestTime;
-                float delay   = Mathf.Max(0f, LEVELUP_MIN_INTERVAL - elapsed);
-                m_levelUpChainCoroutine = StartCoroutine(LevelUpChainRoutine(delay));
-            }
         }
         else
         {
             string msg = ErrorCodeMapping.GetMessage(response.errorCode);
             Debug.LogError($"Mineral LevelUp failed: {msg}");
             ShowErrorMessage($"Mineral LevelUp failed: {msg}");
-            OnLevelUpPointerUp();
         }
     }
     private void Apply_ModuleLevelChangeMineral(ModuleLevelChangeResponse data)

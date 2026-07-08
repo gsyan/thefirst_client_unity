@@ -413,6 +413,24 @@ public static class EventManager
     public static void Subscribe_EmptySpaceTapped(Action callback) { OnEmptySpaceTapped += callback; }
     public static void Unsubscribe_EmptySpaceTapped(Action callback) { OnEmptySpaceTapped -= callback; }
 
+    // 튜토리얼 AnyClick(화면 아무 곳이나 클릭) 대기 상태 변경 — HandleInputMouse/HandleInputTouch가 로컬 캐시 갱신용으로 구독
+    public static event Action<bool> OnTutorialWaitingForAnyClickChanged;
+    public static void Trigger_TutorialWaitingForAnyClickChanged(bool isWaiting) { OnTutorialWaitingForAnyClickChanged?.Invoke(isWaiting); }
+    public static void Subscribe_TutorialWaitingForAnyClickChanged(Action<bool> callback) { OnTutorialWaitingForAnyClickChanged += callback; }
+    public static void Unsubscribe_TutorialWaitingForAnyClickChanged(Action<bool> callback) { OnTutorialWaitingForAnyClickChanged -= callback; }
+
+    // 화면 클릭으로 튜토리얼 AnyClick 소비 요청 — HandleInputMouse/HandleInputTouch가 release 시점에 발행, TutorialManager가 구독해서 실제 진행 처리
+    public static event Action OnConsumeAnyClick;
+    public static void Trigger_ConsumeAnyClick() { OnConsumeAnyClick?.Invoke(); }
+    public static void Subscribe_ConsumeAnyClick(Action callback) { OnConsumeAnyClick += callback; }
+    public static void Unsubscribe_ConsumeAnyClick(Action callback) { OnConsumeAnyClick -= callback; }
+
+    // 튜토리얼 dim 없는(hasHole 없는) 스텝에서 일반 UI(상단 탭 버튼 등) 차단 여부 변경 — 3D 카메라 조작과는 무관
+    public static event Action<bool> OnTutorialGeneralUIBlockedChanged;
+    public static void Trigger_TutorialGeneralUIBlockedChanged(bool isBlocked) { OnTutorialGeneralUIBlockedChanged?.Invoke(isBlocked); }
+    public static void Subscribe_TutorialGeneralUIBlockedChanged(Action<bool> callback) { OnTutorialGeneralUIBlockedChanged += callback; }
+    public static void Unsubscribe_TutorialGeneralUIBlockedChanged(Action<bool> callback) { OnTutorialGeneralUIBlockedChanged -= callback; }
+
     // Tab Selection Changed — 탭 선택 변경 (systemName: TabSystem 고유 이름, tabIndex: -1이면 전체 닫힘)
     public static event Action<string, int> OnTabSelectionChanged;
     public static void Trigger_TabSelectionChanged(string systemName, int tabIndex) { OnTabSelectionChanged?.Invoke(systemName, tabIndex); }

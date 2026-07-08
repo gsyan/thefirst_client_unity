@@ -15,6 +15,7 @@ MonoBehaviour:
   tutorialId: Tutorial_FirstPlay_Battle
   tutorialName: "\uC804\uD22C"
   priority: 0
+  isHideSkipButton: 0
   steps:
   - stepId: step1
     message: Tutorial_FirstPlay_EnemyAlert
@@ -23,8 +24,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 1000, y: 100}
     textBoxPosition: {x: 0, y: -520}
@@ -42,8 +41,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -61,8 +58,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -80,8 +75,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -99,8 +92,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -118,8 +109,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -137,8 +126,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -156,8 +143,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -175,8 +160,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}

@@ -1094,7 +1094,7 @@ public class UITabExploration : UITabBase
                 m_playerFleet.FullRepair();
 
             // 특정 스테이지(4-10) 이후 전멸/후퇴 시 미네랄 강화 모드 언락 튜토리얼 트리거
-            const string MINERAL_UNLOCK_HURDLE_STAGE = "4-10"; // TODO: 테스트용 임시값 — 실제 배치 시 4-10으로 복원
+            const string MINERAL_UNLOCK_HURDLE_STAGE = "1-4";
             if (string.IsNullOrEmpty(battleStageName) == false &&
                 m_datatableZone.GetZoneStageIndex(battleStageName) >= m_datatableZone.GetZoneStageIndex(MINERAL_UNLOCK_HURDLE_STAGE))
             {

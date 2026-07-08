@@ -7,7 +7,6 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
 {
     [Header("UI 요소")]
     [SerializeField] private Image m_maskImage;
-    [SerializeField] private Button m_fullScreenButton;
 
     [Header("설정")]
     [SerializeField] private Color m_dimColor = new Color(0, 0, 0, 0.7f);
@@ -15,10 +14,8 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     [SerializeField] private float m_edgeSoftness = 0.005f;
 
     private Material m_maskMaterial;
-    private System.Action m_onClick;
     private RectTransform m_currentTarget;
     private bool m_hasHole;
-    private bool m_isFullScreenClickable; // true면 FullScreenButton이 hole 필터를 상속받지 않도록 IsRaycastLocationValid에서 우회
     private Canvas m_canvas;
     private Camera m_canvasCamera;
 
@@ -30,9 +27,6 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
 
     private void Awake()
     {
-        if (m_fullScreenButton != null)
-            m_fullScreenButton.onClick.AddListener(OnFullScreenClick);
-
         // 캔버스 캐싱
         m_canvas = GetComponentInParent<Canvas>();
         if (m_canvas != null)
@@ -68,18 +62,6 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
         if (m_maskMaterial == null) return;
         m_maskMaterial.SetVector(HoleCenterID, new Vector4(-10, -10, 0, 0));
         m_maskMaterial.SetVector(HoleSizeID, Vector4.zero);
-    }
-
-    // 전체 어둡게 표시 (구멍 없이) - 스토리 텍스트용
-    public void ShowDimOnly()
-    {
-        m_currentTarget = null;
-        m_hasHole = false;
-
-        if (m_maskImage != null)
-            m_maskImage.gameObject.SetActive(true);
-
-        SetHoleOff();
     }
 
     // 대상 강조
@@ -129,7 +111,7 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     }
 
     // 강조 해제
-    public void HideHighlight()
+    public void HideDim()
     {
         m_hasHole = false;
         m_currentTarget = null;
@@ -137,31 +119,6 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
 
         if (m_maskImage != null)
             m_maskImage.gameObject.SetActive(false);
-    }
-
-    // 클릭 가능 설정
-    // clickable=true: 마스크 어디든 클릭하면 onClick 호출 (구멍 유무 무관 — FullScreenButton이 자식이라 hole 필터를 그대로 상속받으므로 별도 플래그로 우회)
-    // clickable=false: 구멍 영역만 클릭 통과, 나머지는 차단
-    public void SetClickable(bool clickable, System.Action onClick)
-    {
-        m_onClick = onClick;
-        m_isFullScreenClickable = clickable;
-
-        // 트리거 타입과 무관하게 항상 활성화 — 배경 UI(탭 버튼 등)로 클릭이 새는 것을 항상 차단하기 위함.
-        // hasHole=true인 스텝에서는 IsRaycastLocationValid가 hole 영역만 통과시키므로 대상 UI 클릭은 그대로 동작함.
-        // onClick이 null이면(clickable=false) 클릭해도 그냥 소비만 되고 아무 동작 안 함.
-        if (m_fullScreenButton != null)
-            m_fullScreenButton.gameObject.SetActive(true);
-
-        // 항상 raycastTarget 활성화 (ICanvasRaycastFilter로 구멍 영역 제어)
-        if (m_maskImage != null)
-            m_maskImage.raycastTarget = true;
-    }
-
-    private void OnFullScreenClick()
-    {
-        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
-        m_onClick?.Invoke();
     }
 
     private void LateUpdate()
@@ -179,10 +136,9 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
 
     // ICanvasRaycastFilter: 구멍 영역만 클릭 통과
     // 주의: Graphic.Raycast()는 부모 계층의 ICanvasRaycastFilter도 함께 검사하므로,
-    // 자식인 FullScreenButton의 클릭 유효성 판정에도 이 필터가 그대로 적용됨 — AnyClick 모드에선 이를 우회해야 함
+    // 자식인 FullScreenButton의 클릭 유효성 판정에도 이 필터가 그대로 적용됨
     public bool IsRaycastLocationValid(Vector2 screenPoint, Camera eventCamera)
     {
-        if (m_isFullScreenClickable) return true;
         if (!m_hasHole) return true;
 
         // 타겟 기준으로 구멍 영역 체크 (ShowDimWithHole이 항상 m_currentTarget을 설정하므로 null일 수 없음)

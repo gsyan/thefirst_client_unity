@@ -15,6 +15,7 @@ MonoBehaviour:
   tutorialId: Tutorial_FirstPlay
   tutorialName: "\uCCAB \uD50C\uB808\uC774 \uD29C\uD1A0\uB9AC\uC5BC"
   priority: 0
+  isHideSkipButton: 0
   steps:
   - stepId: first_play_ai_hi
     message: Tutorial_FirstPlay_AiFirstHello
@@ -23,8 +24,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -42,8 +41,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}

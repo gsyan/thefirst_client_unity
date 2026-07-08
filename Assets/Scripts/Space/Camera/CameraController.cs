@@ -121,6 +121,8 @@ public class CameraController : MonoSingleton<CameraController>
 
         EventManager.Unsubscribe_SpaceShipSelected(OnSpaceShipSelectedForZoom);
         EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChangedForZoom);
+        m_handleInputMouse?.Unsubscribe();
+        m_handleInputTouch?.Unsubscribe();
     }
 
     // 함선 선택 시 해당 함선 기준 줌 범위 적용 (내 함대만)

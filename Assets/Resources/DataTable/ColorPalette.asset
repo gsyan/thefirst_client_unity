@@ -75,5 +75,7 @@ MonoBehaviour:
     color: {r: 0.506, g: 0.549, b: 0.973, a: 1}
   - key: Silence
     color: {r: 0.2, g: 0.2, b: 1, a: 1}
+  - key: Tutorial
+    color: {r: 0.8867924, g: 0.7862094, b: 0.11294055, a: 1}
   - key: Black
     color: {r: 0, g: 0, b: 0, a: 1}

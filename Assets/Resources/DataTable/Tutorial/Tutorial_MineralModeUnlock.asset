@@ -15,6 +15,7 @@ MonoBehaviour:
   tutorialId: Tutorial_MineralModeUnlock
   tutorialName: "\uBBF8\uB124\uB784 \uAC15\uD654 \uC5B8\uB77D"
   priority: 0
+  isHideSkipButton: 1
   steps:
   - stepId: step1
     message: Tutorial_MineralUnlock_Intro
@@ -23,8 +24,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -42,8 +41,6 @@ MonoBehaviour:
     targetUIId: ResourceChangeButton
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -61,8 +58,6 @@ MonoBehaviour:
     targetUIId: TextMineralInvested
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -80,8 +75,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}

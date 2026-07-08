@@ -252,13 +252,14 @@ public class TabSystem : MonoBehaviour
         return canvasGroup;
     }
 
-    // 외부 API
+    // 외부 API — 이미 그 탭이 열려있으면 아무 것도 안 함 (allowDeselect 토글 때문에 재선택 시 닫히는 것 방지)
     public void SwitchToTabByName(string tabName)
     {
         for (int i = 0; i < tabs.Count; i++)
         {
             if (tabs[i].tabName == tabName)
             {
+                if (i == currentActiveTab) return;
                 SwitchToTab(i);
                 return;
             }
@@ -324,6 +325,16 @@ public class TabSystem : MonoBehaviour
     {
         if (currentActiveTab == -1) return;
         tabs[currentActiveTab].onActivate?.Invoke();
+    }
+
+    // 튜토리얼 등에서 탭 전환 자체를 막아야 할 때 사용 — 이미 열려있는 탭 내용은 그대로 두고 버튼 클릭만 차단
+    public void SetTabButtonsInteractable(bool interactable)
+    {
+        for (int i = 0; i < tabs.Count; i++)
+        {
+            if (tabs[i].tabButton != null)
+                tabs[i].tabButton.interactable = interactable;
+        }
     }
 
     public void ForceDeactivateTab()

@@ -10,11 +10,25 @@ public class HandleInputMouse
     private CameraController m_camera;
     private bool m_inputBlockedByUI;
     private Collider m_tapHitCollider;
+    private bool m_tutorialWaitingForAnyClick;
+    private bool m_wasWaitingForAnyClickAtPress;
     public Vector3 m_lastInputScreenPosition;
 
     public HandleInputMouse(CameraController camera)
     {
         m_camera = camera;
+        EventManager.Subscribe_TutorialWaitingForAnyClickChanged(OnTutorialWaitingForAnyClickChanged);
+    }
+
+    // CameraController.OnDestroy에서 호출 — EventManager 정적 이벤트에 걸린 구독을 해제
+    public void Unsubscribe()
+    {
+        EventManager.Unsubscribe_TutorialWaitingForAnyClickChanged(OnTutorialWaitingForAnyClickChanged);
+    }
+
+    private void OnTutorialWaitingForAnyClickChanged(bool isWaiting)
+    {
+        m_tutorialWaitingForAnyClick = isWaiting;
     }
 
     public void Process()
@@ -37,6 +51,9 @@ public class HandleInputMouse
         {
             m_lastInputScreenPosition = mousePos;
             m_inputBlockedByUI = IsPointerOverUIObject(mousePos);
+            // press 시점 스냅샷 — 이 클릭 자체가(TargetClick 등으로) 스텝을 AnyClick으로 바꿔도,
+            // 같은 클릭이 새 스텝의 AnyClick까지 이어서 소비하지 않도록 제스처 시작 시점 값을 고정
+            m_wasWaitingForAnyClickAtPress = m_tutorialWaitingForAnyClick;
             if (m_inputBlockedByUI == false)
             {
                 m_tapHitCollider = m_camera.GetCameraRaycast(out RaycastHit downHit, s_pickMask, 3000f, mousePos)
@@ -45,7 +62,20 @@ public class HandleInputMouse
         }
         else if (mouse.leftButton.wasReleasedThisFrame == true)
         {
-            if (m_inputBlockedByUI == false)
+            // 튜토리얼이 AnyClick(화면 아무 곳이나 클릭) 대기 중이었으면(press 시점 기준) 이 클릭은 튜토리얼이 우선 소비 —
+            // 3D 탭 처리(HandleModuleSelection/EmptySpaceTapped)와 별도 폴링 루프가 같은 클릭을 다투는 경쟁 상태 자체를 없앰.
+            // TutorialManager를 직접 참조하지 않고 EventManager로 상태 구독/소비 요청만 주고받음
+            if (m_wasWaitingForAnyClickAtPress == true)
+            {
+                EventManager.Trigger_ConsumeAnyClick();
+                m_inputBlockedByUI = false;
+                m_tapHitCollider = null;
+                return;
+            }
+
+            // press~release 사이에 새 UI(튜토리얼 등)가 열렸을 수 있어 release 시점도 다시 확인 —
+            // 단 press 때 이미 UI 위였다면(버튼 누르고 3D로 끌고 나가는 경우) 여전히 차단
+            if (m_inputBlockedByUI == false && IsPointerOverUIObject(mousePos) == false)
             {
                 if (m_tapHitCollider != null)
                 {

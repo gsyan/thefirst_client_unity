@@ -15,6 +15,7 @@ MonoBehaviour:
   tutorialId: Tutorial_FirstPlay_ManageShip
   tutorialName: "\uD568\uC120 \uAD00\uB9AC"
   priority: 0
+  isHideSkipButton: 0
   steps:
   - stepId: step1
     message: Tutorial_FirstPlay_OpenFleetTab
@@ -23,8 +24,6 @@ MonoBehaviour:
     targetUIId: FleetButton
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -42,8 +41,6 @@ MonoBehaviour:
     targetUIId: AddShipButton
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -61,8 +58,6 @@ MonoBehaviour:
     targetUIId: UISection_Require
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -80,8 +75,6 @@ MonoBehaviour:
     targetUIId: UISection_Cost
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -99,8 +92,6 @@ MonoBehaviour:
     targetUIId: ConfirmButton
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -118,8 +109,6 @@ MonoBehaviour:
     targetUIId: 
     showArrow: 0
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 800, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -131,33 +120,29 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step7
-    message: Tutorial_FirstPlay_AddShipComplete
-    triggerType: 1
-    targetPanelName: 
-    targetUIId: 
-    showArrow: 0
-    arrowDirection: 0
-    hasHole: 0
-    dimBackground: 1
-    textBoxOffset: {x: 0, y: 0}
-    textBoxSize: {x: 800, y: 0}
-    textBoxPosition: {x: 0, y: -500}
-    autoNextDelay: 0
-    preActionPanelName: 
-    preActionTabName: 
-    conditionType: 0
-    conditionThreshold: 90
-    conditionCount: 3
-    targetModuleType: 0
-  - stepId: step8
     message: Tutorial_FirstPlay_TouchShipSelector
     triggerType: 0
     targetPanelName: ShipSelector5
     targetUIId: ShipSelectButton
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: UIPanelSpace
+    preActionTabName: tab_fleet
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step8
+    message: Tutorial_FirstPlay_TouchShipManage
+    triggerType: 0
+    targetPanelName: ShipSelector5
+    targetUIId: ShipManageButton
+    showArrow: 1
+    arrowDirection: 0
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -169,14 +154,12 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step9
-    message: Tutorial_FirstPlay_TouchShipManage
+    message: Tutorial_FirstPlay_TouchModuleBeam
     triggerType: 0
-    targetPanelName: ShipSelector5
-    targetUIId: ShipManageButton
+    targetPanelName: ModuleContainer
+    targetUIId: ModuleBeamSelector1
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -188,14 +171,12 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step10
-    message: Tutorial_FirstPlay_TouchModuleBeam
+    message: Tutorial_FirstPlay_LevelUpModuleBeam
     triggerType: 0
-    targetPanelName: ModuleContainer
-    targetUIId: ModuleBeamSelector1
+    targetPanelName: ModuleLevelContainer
+    targetUIId: UpButton
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -207,14 +188,12 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step11
-    message: Tutorial_FirstPlay_LevelUpModuleBeam
+    message: Tutorial_FirstPlay_TouchModuleMissile
     triggerType: 0
-    targetPanelName: ModuleLevelContainer
-    targetUIId: UpButton
+    targetPanelName: ModuleContainer
+    targetUIId: ModuleMissileSelector1
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -226,14 +205,12 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step12
-    message: Tutorial_FirstPlay_TouchModuleMissile
+    message: Tutorial_FirstPlay_LevelUpModuleMissile
     triggerType: 0
-    targetPanelName: ModuleContainer
-    targetUIId: ModuleMissileSelector1
+    targetPanelName: ModuleLevelContainer
+    targetUIId: UpButton
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -245,14 +222,12 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step13
-    message: Tutorial_FirstPlay_LevelUpModuleMissile
+    message: Tutorial_FirstPlay_TouchModuleHanger
     triggerType: 0
-    targetPanelName: ModuleLevelContainer
-    targetUIId: UpButton
+    targetPanelName: ModuleContainer
+    targetUIId: ModuleHangerSelector1
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -264,14 +239,12 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step14
-    message: Tutorial_FirstPlay_TouchModuleHanger
+    message: Tutorial_FirstPlay_LevelUpModuleHanger
     triggerType: 0
-    targetPanelName: ModuleContainer
-    targetUIId: ModuleHangerSelector1
+    targetPanelName: ModuleLevelContainer
+    targetUIId: UpButton
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -283,14 +256,12 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step15
-    message: Tutorial_FirstPlay_LevelUpModuleHanger
+    message: Tutorial_FirstPlay_TouchModuleBody
     triggerType: 0
-    targetPanelName: ModuleLevelContainer
-    targetUIId: UpButton
+    targetPanelName: ModuleContainer
+    targetUIId: ModuleBodySelector1
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -302,14 +273,12 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step16
-    message: Tutorial_FirstPlay_TouchModuleBody
+    message: Tutorial_FirstPlay_UpgradeModuleBody
     triggerType: 0
-    targetPanelName: ModuleContainer
-    targetUIId: ModuleBodySelector1
+    targetPanelName: ModuleSubTypeContainer
+    targetUIId: UpButton
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -321,33 +290,12 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step17
-    message: Tutorial_FirstPlay_UpgradeModuleBody
-    triggerType: 0
-    targetPanelName: ModuleSubTypeContainer
-    targetUIId: UpButton
-    showArrow: 1
-    arrowDirection: 0
-    hasHole: 1
-    dimBackground: 1
-    textBoxOffset: {x: 0, y: 100}
-    textBoxSize: {x: 0, y: 0}
-    textBoxPosition: {x: 0, y: -500}
-    autoNextDelay: 0
-    preActionPanelName: 
-    preActionTabName: 
-    conditionType: 0
-    conditionThreshold: 90
-    conditionCount: 3
-    targetModuleType: 0
-  - stepId: step18
     message: Tutorial_FirstPlay_UpgradeModuleBodyEffect
     triggerType: 1
     targetPanelName: ModuleContainer
     targetUIId: ModuleBeamSelector2
     showArrow: 1
     arrowDirection: 0
-    hasHole: 1
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
@@ -358,15 +306,13 @@ MonoBehaviour:
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step19
+  - stepId: step18
     message: Tutorial_FirstPlay_ManageShipComplete
     triggerType: 1
     targetPanelName: 
     targetUIId: 
     showArrow: 1
     arrowDirection: 0
-    hasHole: 0
-    dimBackground: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}

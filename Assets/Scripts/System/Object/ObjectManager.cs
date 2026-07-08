@@ -133,6 +133,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     private int m_realModulePointBackup;
     private int m_realCommanderLevelBackup;
 
+    // 온보딩 튜토리얼(TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE) 진행 중 스킵 버튼을 눌렀는지 여부
+    private bool m_isOnboardingTutorialSkipped = false;
+
     // 내 팀의 대표 함대(=기존 m_myFleet) — 팀 리스트 순서(index)가 아닌 fleetSource로 실제 플레이어 함대를 식별
     // (시네마틱 함대도 같은 TeamA에 등록될 수 있어 리스트 첫 번째로 판단하면 오판 가능)
     public SpaceFleet GetMyFleet()
@@ -246,6 +249,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     protected override void OnDestroy()
     {
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetDestroyed);
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.OnTutorialSkipRequested -= OnOnboardingTutorialSkipRequested;
         base.OnDestroy();
     }
 
@@ -275,22 +280,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             EventManager.TriggerZoneStageBattleEnd(isVictory);
     }
 
-    // 순서대로 진행할 튜토리얼 목록 — 단계를 늘리려면 이 배열에만 추가하면 됨
-    private static readonly string[] TUTORIAL_SEQUENCE =
-    {
-        "Tutorial_FirstPlay",
-        "Tutorial_FirstPlay_ManageShip",
-        "Tutorial_FirstPlay_Battle",
-        "Tutorial_FirstPlay_Complete"
-    };
-
     private IEnumerator StartTutorial()
     {
         if (TutorialManager.Instance == null)
         { Debug.LogError("TutorialManager.Instance == null"); yield break; }
-            
+
         if (TutorialManager.Instance.IsTutorialCompleted("Tutorial_FirstPlay_Complete") == true)
-        { StartNormalPlay(); yield break; } 
+        { StartNormalPlay(); yield break; }
 
         SpawnFleetWithInfo(TutorialCinematicController.BuildSiegfriedFleetInfo("Siegfried Fleet"));
         m_isSiegfriedFleetActive = true;
@@ -302,7 +298,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         GrantTutorialModulePoint();
         GrantTutorialCommanderLevel();
-        
+
         // Tutorial 안에 함선추가 등 실제 UI 조작 스텝이 있어 메인 패널(TapButtons 등)이 미리 열려있어야 함
         UIManager.Instance.ShowMainPanel();
 
@@ -312,22 +308,35 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         {
             yield return null;
         }
+
+        // 스킵 버튼으로 온보딩 시퀀스 전체를 건너뛴 경우 다음 튜토리얼로 이어가지 않고 바로 노말 플레이로 전환
+        TutorialManager.Instance.OnTutorialSkipRequested += OnOnboardingTutorialSkipRequested;
         RunTutorialSequence(0);
     }
 
-    // TUTORIAL_SEQUENCE를 index부터 순서대로 진행 — 마지막까지 끝나면 StartGameplay 호출
+    // TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE를 index부터 순서대로 진행 — 마지막까지 끝나면 StartNormalPlay 호출
     private void RunTutorialSequence(int index)
     {
-        if (index >= TUTORIAL_SEQUENCE.Length)
+        if (m_isOnboardingTutorialSkipped == true) return;
+
+        if (index >= TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE.Length)
         {
             StartNormalPlay();
             return;
         }
 
-        TutorialManager.Instance.StartTutorial(TUTORIAL_SEQUENCE[index], (tutorialId) =>
+        TutorialManager.Instance.StartTutorial(TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE[index], (tutorialId) =>
         {
             RunTutorialSequence(index + 1);
         });
+    }
+
+    // 스킵 버튼 클릭으로 온보딩 시퀀스 전체가 완료 처리됐을 때 호출 — 남은 시퀀스 진행 없이 바로 노말 플레이로 전환
+    private void OnOnboardingTutorialSkipRequested()
+    {
+        TutorialManager.Instance.OnTutorialSkipRequested -= OnOnboardingTutorialSkipRequested;
+        m_isOnboardingTutorialSkipped = true;
+        StartNormalPlay();
     }
 
     private void StartNormalPlay()
@@ -338,7 +347,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             SpawnFleet();
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetDestroyed);// 플레이어 함대 전멸 이벤트 구독
         NetworkManager.Instance.StartHeartbeat();
-        UIManager.Instance.ShowMainPanel();        
+        UIManager.Instance.ShowMainPanel();
+
+        // 튜토리얼이 끝난 뒤(또는 애초에 없던 경우) 진입하는 지점이므로 여기서만 일일 보상 팝업 체크
+        if (DailyBonusManager.Instance != null)
+            DailyBonusManager.Instance.CheckAndShowDailyRewardPopup();
     }
 
     private int GetInitialZoneIndex()

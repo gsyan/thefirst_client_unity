@@ -56,7 +56,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Subscribe_VipButtonOpened(OnVipButtonOpened);
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
-        CheckAndShowDailyRewardPopup();
+        EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
         CheckAndClaimPendingStageRewards();
         CheckAndClaimPvpSeasonReward();
         m_tabSystem.ForceActivateTab();
@@ -69,6 +69,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Unsubscribe_VipButtonOpened(OnVipButtonOpened);
         EventManager.Unsubscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
+        EventManager.Unsubscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
         m_tabSystem.ForceDeactivateTab();
 
         //SetTabNavVisible(true);
@@ -163,28 +164,12 @@ public class UIPanelSpace : UIPanelBase
     }
 
     // ── VIP 일일 미네랄 팝업 ──────────────────────────────────────────────────
+    // 최초 진입 시점 체크는 ObjectManager.StartNormalPlay()에서 담당 — 튜토리얼 진행 중에는 호출되지 않도록 보장
 
     private void OnVipStatusChangedForDailyReward()
     {
-        CheckAndShowDailyRewardPopup();
-    }
-
-    private void CheckAndShowDailyRewardPopup()
-    {
         if (DailyBonusManager.Instance == null) return;
-
-        DailyBonusManager.Instance.TryClaimDailyBonus(result =>
-        {
-            if (result == null) return;
-
-            if (result.available == false) return;
-
-            var commander = DataManager.Instance.m_currentCommander;
-            if (commander != null)
-                commander.UpdateMineral(result.mineralRemain);
-
-            UIManager.Instance.ShowDailyBonusPopup(result.grantedMineral);
-        });
+        DailyBonusManager.Instance.CheckAndShowDailyRewardPopup();
     }
 
     private void OnTabSelectionChanged(string systemName, int tabIndex)
@@ -253,11 +238,19 @@ public class UIPanelSpace : UIPanelBase
     // }
 
     // 모듈이 선택될 때만 UITabShip 로 자동 전환 (함선 클릭만으로는 전환 안 함)
+    // 튜토리얼 진행 중에는 자동 전환 안 함 — 튜토리얼 스텝이 preActionTabName 등으로 탭 전환을 직접 제어함
     private void OnModuleSelectedAutoTabSwitch(SpaceShip ship, ModuleBase module)
     {
+        if (TutorialManager.Instance != null && TutorialManager.Instance.IsPlaying) return;
         if (m_moduleTabIndex < 0) return;
         if (m_tabSystem.GetCurrentActiveTab() == m_moduleTabIndex) return;
         m_tabSystem.SwitchToTab(m_moduleTabIndex);
+    }
+
+    // 튜토리얼 dim 없는 스텝에서 상단 탭 버튼(Fleet/Ship/Settings/Pvp/Exploration) 클릭 차단 — 3D 카메라 조작은 별개라 영향 없음
+    private void OnTutorialGeneralUIBlockedChanged(bool isBlocked)
+    {
+        m_tabSystem.SetTabButtonsInteractable(!isBlocked);
     }
 
 }

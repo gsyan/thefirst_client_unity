@@ -12,6 +12,16 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // 모듈 미네랄 강화 모드 언락 — 이 튜토리얼의 완료 여부 자체를 언락 플래그로 사용 (별도 서버 필드 불필요)
     public const string MINERAL_MODE_UNLOCK_TUTORIAL_ID = "Tutorial_MineralModeUnlock";
 
+    // 순서대로 진행되는 온보딩 튜토리얼 — ObjectManager.RunTutorialSequence가 이 순서대로 재생하고,
+    // 스킵 버튼 클릭 시(SkipTutorial) 이 목록 전체를 한 번에 완료 처리한 뒤 노말 플레이로 전환함
+    public static readonly string[] ONBOARDING_TUTORIAL_SEQUENCE =
+    {
+        "Tutorial_FirstPlay",
+        "Tutorial_FirstPlay_ManageShip",
+        "Tutorial_FirstPlay_Battle",
+        "Tutorial_FirstPlay_Complete"
+    };
+
     private TutorialData m_currentTutorial;
     private int m_currentStepIndex;
     private bool m_isPlaying;
@@ -41,10 +51,15 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // 튜토리얼 완료 이벤트 (tutorialId 전달)
     public event System.Action<string> OnTutorialCompleted;
 
+    // 스킵 버튼으로 튜토리얼을 도중에 끝낼 때 발생 — 온보딩 시퀀스를 진행하던 쪽(ObjectManager)이
+    // 이 이벤트를 받아 다음 튜토리얼로 이어가지 않고 바로 노말 플레이로 전환하도록 함
+    public event System.Action OnTutorialSkipRequested;
+
     protected override bool ShouldDontDestroyOnLoad => true;
 
     protected override void OnInitialize()
     {
+        EventManager.Subscribe_ConsumeAnyClick(ConsumeAnyClick);
     }
 
     // SelectCommander 응답에 이미 포함된 진행도를 그대로 주입 — SpaceScene 진입 전 미리 확보 가능(별도 네트워크 호출 불필요)
@@ -104,6 +119,13 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         StartTutorial(MINERAL_MODE_UNLOCK_TUTORIAL_ID);
     }
 
+    // 현재 진행 중인 튜토리얼이 스킵 버튼을 숨기도록 설정됐는지 — TutorialUI가 스킵 버튼 표시 여부를 결정할 때 사용
+    public bool IsSkipButtonHiddenForCurrentTutorial()
+    {
+        if (m_currentTutorial == null) return false;
+        return m_currentTutorial.isHideSkipButton;
+    }
+
     // 튜토리얼 시작 (콜백 버전)
     public void StartTutorial(string tutorialId, System.Action<string> onComplete = null)
     {
@@ -152,7 +174,57 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     {
         if (!m_isPlaying) return;
         StopTutorialCondition();
+        CleanupTutorialCombatArtifacts();
+
+        string tutorialId = m_currentTutorial != null ? m_currentTutorial.tutorialId : null;
+        bool isOnboardingTutorial = System.Array.IndexOf(ONBOARDING_TUTORIAL_SEQUENCE, tutorialId) >= 0;
+        if (isOnboardingTutorial == true)
+        {
+            SkipOnboardingSequence();
+            return;
+        }
+
         CompleteTutorial();
+    }
+
+    // Tutorial_FirstPlay* 온보딩 시퀀스는 어느 단계에서 스킵하든 전부 완료 처리하고 곧바로 노말 플레이로 전환
+    private void SkipOnboardingSequence()
+    {
+        foreach (string tutorialId in ONBOARDING_TUTORIAL_SEQUENCE)
+            CompleteTutorialWithoutPlaying(tutorialId);
+
+        m_isPlaying = false;
+        m_pendingNewShip = null;
+        m_onCompleteCallback = null; // 다음 튜토리얼로 이어가는 콜백 체인을 버림 — 노말 플레이로 바로 전환
+        if (m_tutorialUI != null)
+            m_tutorialUI.HideTutorialUI();
+        NotifyWaitingForAnyClickChanged();
+
+        string completedId = m_currentTutorial != null ? m_currentTutorial.tutorialId : null;
+        Debug.Log($"[Tutorial] 온보딩 스킵: {completedId}");
+        m_currentTutorial = null;
+
+        OnTutorialSkipRequested?.Invoke();
+    }
+
+    // 스킵 등으로 튜토리얼을 도중에 끝낼 때 남아있는 연출용 함대(탈출선/오프닝 전투/적 웨이브)를 정리
+    private void CleanupTutorialCombatArtifacts()
+    {
+        CleanupEscapeFleet();
+
+        if (m_cinematicFleetA != null)
+        {
+            TutorialCinematicController.DespawnCinematicFleet(m_cinematicFleetA);
+            m_cinematicFleetA = null;
+        }
+
+        foreach (SpaceFleet fleet in m_enemyWaveFleets)
+        {
+            if (fleet != null)
+                TutorialCinematicController.DespawnCinematicFleet(fleet);
+        }
+        m_enemyWaveFleets.Clear();
+        m_waveIndexOccupancy.Clear();
     }
 
     // 특정 UI 클릭 시 호출
@@ -163,10 +235,37 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         if (m_currentStepIndex >= m_currentTutorial.steps.Count) return;
 
         TutorialStep currentStep = m_currentTutorial.steps[m_currentStepIndex];
-        if (currentStep.targetUIId == targetId && currentStep.triggerType == ETutorialTrigger.UIClick)
+        if (currentStep.targetUIId == targetId && currentStep.triggerType == ETutorialTrigger.TargetClick)
         {
             NextStep();
         }
+    }
+
+    // 현재 스텝이 AnyClick(화면 아무 곳이나 클릭) 대기 중인지
+    private bool IsWaitingForAnyClick()
+    {
+        if (!m_isPlaying) return false;
+        if (m_currentTutorial == null) return false;
+        if (m_currentStepIndex >= m_currentTutorial.steps.Count) return false;
+
+        return m_currentTutorial.steps[m_currentStepIndex].triggerType == ETutorialTrigger.AnyClick;
+    }
+
+    // 스텝이 바뀔 때마다 호출 — HandleInputMouse/HandleInputTouch는 이 이벤트로만 상태를 알고, TutorialManager 타입을 직접 참조하지 않음
+    private void NotifyWaitingForAnyClickChanged()
+    {
+        EventManager.Trigger_TutorialWaitingForAnyClickChanged(IsWaitingForAnyClick());
+    }
+
+    // EventManager.OnConsumeAnyClick 구독 핸들러 — 화면 클릭 시 HandleInputMouse/HandleInputTouch가 발행
+    // (HandleInputMouse/HandleInputTouch가 press 시점 스냅샷으로 판단하므로, 같은 클릭이 방금 바뀐 새 스텝의
+    // AnyClick까지 이어서 소비하는 문제는 입력 레이어에서 이미 걸러짐)
+    private void ConsumeAnyClick()
+    {
+        if (IsWaitingForAnyClick() == false) return;
+
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        NextStep();
     }
 
     // 완료 여부 확인
@@ -214,6 +313,8 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         // UI 표시
         m_tutorialUI?.ShowStep(step);
+
+        NotifyWaitingForAnyClickChanged();
     }
 
     // 튜토리얼 완료
@@ -230,7 +331,8 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         m_isPlaying = false;
         m_pendingNewShip = null;
-        m_tutorialUI?.Hide();
+        m_tutorialUI?.HideTutorialUI();
+        NotifyWaitingForAnyClickChanged();
 
         Debug.Log($"[Tutorial] 완료: {completedId}");
         m_currentTutorial = null;
@@ -242,6 +344,19 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         // 이벤트 발생
         OnTutorialCompleted?.Invoke(completedId);
+    }
+
+    // 스킵으로 플레이하지 않고 건너뛴 튜토리얼을 완료 처리 — 다음 실행 시 다시 뜨지 않도록 서버에도 저장
+    private void CompleteTutorialWithoutPlaying(string tutorialId)
+    {
+        if (string.IsNullOrEmpty(tutorialId)) return;
+        if (m_completedTutorials.Contains(tutorialId) == true) return;
+
+        m_completedTutorials.Add(tutorialId);
+        SaveTutorialToServer(tutorialId);
+
+        // 정상 완료가 아니어도 OnTutorialCompleted 구독자(UITabShip 등)는 동일하게 통지받아야 함
+        OnTutorialCompleted?.Invoke(tutorialId);
     }
 
     // 서버에 튜토리얼 완료 저장 (fire and forget)

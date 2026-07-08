@@ -31,6 +31,22 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
         });
     }
 
+    // VIP 일일 미네랄 팝업 — 튜토리얼 진행 중에는 호출하면 안 됨(ObjectManager.StartNormalPlay에서만 호출)
+    public void CheckAndShowDailyRewardPopup()
+    {
+        TryClaimDailyBonus(result =>
+        {
+            if (result == null) return;
+            if (result.available == false) return;
+
+            var commander = DataManager.Instance.m_currentCommander;
+            if (commander != null)
+                commander.UpdateMineral(result.mineralRemain);
+
+            UIManager.Instance.ShowDailyBonusPopup(result.grantedMineral);
+        });
+    }
+
     public void ApplyResponse(DailyClaimResponse result)
     {
         m_claimedDaysMask    = result.claimedDaysMask;

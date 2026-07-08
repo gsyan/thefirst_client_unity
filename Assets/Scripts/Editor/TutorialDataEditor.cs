@@ -10,6 +10,7 @@ public class TutorialDataEditor : Editor
     private SerializedProperty m_tutorialId;
     private SerializedProperty m_tutorialName;
     private SerializedProperty m_priority;
+    private SerializedProperty m_isHideSkipButton;
     private SerializedProperty m_steps;
 
     private bool[] m_foldouts = new bool[0];
@@ -19,6 +20,7 @@ public class TutorialDataEditor : Editor
         m_tutorialId = serializedObject.FindProperty("tutorialId");
         m_tutorialName = serializedObject.FindProperty("tutorialName");
         m_priority = serializedObject.FindProperty("priority");
+        m_isHideSkipButton = serializedObject.FindProperty("isHideSkipButton");
         m_steps = serializedObject.FindProperty("steps");
     }
 
@@ -87,6 +89,7 @@ public class TutorialDataEditor : Editor
         EditorGUILayout.PropertyField(m_tutorialId);
         EditorGUILayout.PropertyField(m_tutorialName);
         EditorGUILayout.PropertyField(m_priority);
+        EditorGUILayout.PropertyField(m_isHideSkipButton);
 
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("스텝 목록", EditorStyles.boldLabel);

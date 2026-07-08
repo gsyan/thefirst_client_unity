@@ -19,7 +19,7 @@ platform :android do
   desc "비공개 테스트(검수 요청) 트랙에 AAB 업로드"
   lane :closed_testing do
     upload_to_play_store(
-      track: "검수 요청 테스트",
+      track: "Alpha",
       json_key: ENV["GOOGLE_PLAY_JSON_KEY"],
       aab: ENV["APK_PATH"],
       version_name: ENV["VERSION_NAME"],

@@ -15,7 +15,6 @@ public class TutorialUI : UIPopupBase
     [Header("테두리 설정")]
     private float m_borderPadding = 10f;
 
-    private TutorialStep m_currentStep;
     private RectTransform m_targetRect;
     private Coroutine m_autoNextCoroutine;
     private Coroutine m_waitTargetCoroutine;
@@ -34,8 +33,6 @@ public class TutorialUI : UIPopupBase
     // 스텝 표시
     public void ShowStep(TutorialStep step)
     {
-        m_currentStep = step;
-
         // 진행 중인 코루틴 취소
         if (m_autoNextCoroutine != null)
         {
@@ -88,6 +85,10 @@ public class TutorialUI : UIPopupBase
     // 실제 스텝 UI 표시
     private void DisplayStep(TutorialStep step)
     {
+        // 스킵 버튼 표시 여부 — 튜토리얼(TutorialData) 단위 설정
+        if (m_skipButton != null)
+            m_skipButton.gameObject.SetActive(TutorialManager.Instance.IsSkipButtonHiddenForCurrentTutorial() == false);
+
         // 레이아웃 강제 업데이트 (ContentSizeFitter/LayoutGroup 계산 완료 보장)
         if (m_targetRect != null)
             Canvas.ForceUpdateCanvases();
@@ -104,16 +105,14 @@ public class TutorialUI : UIPopupBase
         // 마스크(강조) 표시
         if (m_mask != null)
         {
-            if (step.hasHole && m_targetRect != null)
-                m_mask.ShowDimWithHole(m_targetRect);
-            else if (m_targetRect == null && step.dimBackground)
-                m_mask.ShowDimOnly(); // 스토리 텍스트용 (구멍 없이 전체 어둡게)
+            if (m_targetRect != null)
+                m_mask.ShowDimWithHole(m_targetRect); // targetUIId가 있으면 dim+hole 표시
             else
-                m_mask.HideHighlight(); // dimBackground=false면 대상 UI 없이도 완전 투명 (대기 스텝 등)
-
-            // 클릭 핸들러 설정
-            SetupClickHandler(step);
+                m_mask.HideDim(); // targetUIId가 없으면 dim 없이 완전히 열림
         }
+
+        // dim 없는 스텝(m_targetRect == null)에서는 3D 조작은 열어두되 상단 탭 버튼 등 일반 UI는 차단
+        EventManager.Trigger_TutorialGeneralUIBlockedChanged(m_targetRect == null);
 
         // 화살표 표시
         if (m_arrow != null)
@@ -127,7 +126,7 @@ public class TutorialUI : UIPopupBase
         // 테두리 표시
         if (m_borderFrame != null)
         {
-            if (step.hasHole && m_targetRect != null)
+            if (m_targetRect != null)
             {
                 RectTransform borderRect = m_borderFrame.rectTransform;
 
@@ -151,10 +150,14 @@ public class TutorialUI : UIPopupBase
                 m_borderFrame.gameObject.SetActive(false);
             }
         }
+
+        // 트리거 설정 — 현재 스텝 UI 반영이 모두 끝난 뒤에 호출 (Custom 트리거가 NextStep()을 동기 재귀 호출해도
+        // 다음 스텝 UI가 이 스텝의 나머지 코드에 의해 덮어써지지 않도록 항상 마지막에 실행)
+        SetupStepTrigger(step);
     }
 
     // 숨기기
-    public void Hide()
+    public void HideTutorialUI()
     {
         if (m_autoNextCoroutine != null)
         {
@@ -167,9 +170,10 @@ public class TutorialUI : UIPopupBase
             m_waitTargetCoroutine = null;
         }
 
-        if (m_mask != null) m_mask.HideHighlight();
+        if (m_mask != null) m_mask.HideDim();
         if (m_arrow != null) m_arrow.Hide();
         if (m_borderFrame != null) m_borderFrame.gameObject.SetActive(false);
+        EventManager.Trigger_TutorialGeneralUIBlockedChanged(false); // 튜토리얼 종료 — 일반 UI 차단 해제
         HidePopup();
     }
 
@@ -233,29 +237,27 @@ public class TutorialUI : UIPopupBase
         return null;
     }
 
-    // 클릭 핸들러 설정
-    private void SetupClickHandler(TutorialStep step)
+    // 스텝 진행 트리거 설정
+    private void SetupStepTrigger(TutorialStep step)
     {
         switch (step.triggerType)
         {
-            case ETutorialTrigger.AnyClick:
-                m_mask.SetClickable(true, () => TutorialManager.Instance.NextStep());
-                break;
-
-            case ETutorialTrigger.AutoNext:
-                m_mask.SetClickable(false, null);
-                m_autoNextCoroutine = StartCoroutine(AutoNextCoroutine(step.autoNextDelay));
-                break;
-
-            case ETutorialTrigger.UIClick:
+            case ETutorialTrigger.TargetClick:
                 // 대상 UI 클릭을 TutorialClickHandler로 감지 — 없으면 자동 부착(에디터에서 수동으로 붙일 필요 없음)
-                m_mask.SetClickable(false, null);
                 EnsureClickHandler(step.targetUIId);
                 break;
 
+            case ETutorialTrigger.AnyClick:
+                // HandleInputMouse/HandleInputTouch가 release 시점에 TutorialManager.IsWaitingForAnyClick()을 직접 확인해서 소비함 —
+                // 여기서는 별도로 할 일 없음(마스크 활성 상태와 무관하게 항상 작동)
+                break;
+
+            case ETutorialTrigger.AutoNext:
+                m_autoNextCoroutine = StartCoroutine(AutoNextCoroutine(step.autoNextDelay));
+                break;
+
             case ETutorialTrigger.Custom:
-                // 마스크 dim/hole 상태는 위쪽 공통 로직(hasHole/dimBackground)에서 이미 결정됨 — 여기선 건드리지 않음
-                m_mask.SetClickable(false, null);
+                // 마스크 dim/hole 상태는 위쪽 공통 로직(targetUIId 존재 여부)에서 이미 결정됨 — 여기선 건드리지 않음
                 TutorialManager.Instance.StartTutorialCondition(step);
                 break;
         }
