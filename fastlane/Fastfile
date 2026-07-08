@@ -13,9 +13,11 @@ platform :android do
       }
     )
     client = Supply::Client.make_from_config
+    client.begin_edit(package_name: "com.fidforge.thefirst")
     client.tracks("com.fidforge.thefirst").each do |t|
       UI.message("track id = #{t.track}")
     end
+    client.abort_current_edit
   end
 
   desc "내부 테스트 트랙에 AAB 업로드"
