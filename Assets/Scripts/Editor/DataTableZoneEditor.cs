@@ -110,6 +110,10 @@ public class DataTableZoneEditor : Editor
 
         EditorGUILayout.Space(10);
         DrawEnemyGeneratorTool();
+        EditorGUILayout.Space(10);
+        DrawPlanetGeneratorTool();
+        EditorGUILayout.Space(10);
+        DrawFleetPositionBatchGeneratorTool();
     }
 
     // CSV 간 의존 순서(Stage가 먼저 있어야 Enemy Fleet/Enemy가 붙을 zoneStageList가 존재)를 내부적으로 처리
@@ -677,6 +681,299 @@ public class DataTableZoneEditor : Editor
     private EModuleSubType ParseSubType(string name)
     {
         return System.Enum.TryParse(name, out EModuleSubType result) ? result : EModuleSubType.none;
+    }
+
+    #endregion
+
+    #region 행성 절차적 생성 (zoneList.celestialBodies 직접 수정)
+
+    // 행성 타입 템플릿 — zone1~9의 수작업 팔레트를 기준으로 삼고, 색은 타입 내에서만 hue/sat/val을 살짝 흔들어 재사용
+    private class PlanetTypeTemplate
+    {
+        public string name;
+        public Color deepSea, shallowSea, lowlandSand, lowlandGreen, plainsDesert, plainsGrass, plainsForest, highlandSnow;
+        public Color iceColor, iceColorEdge, cloudColor, atmosphereColor;
+        public float landCoverage, biomeBlend, gBlend;
+        public bool  hasPolarIce;
+        public float poleIceWidth = 0.12f;
+        public bool  hasClouds;
+        public float cloudCoverage = 0.5f, cloudMidLatOpacity = 0.5f, cloudMidLatCenter = 0.3f, cloudMidLatWidth = 0.2f, cloudSoftness = 0.4f;
+    }
+
+    private static readonly PlanetTypeTemplate[] k_planetTypes = new PlanetTypeTemplate[]
+    {
+        new PlanetTypeTemplate { name = "지구형(온대)", // Zone 1 기준
+            deepSea = CommonUtility.HexColor("#0D2673"), shallowSea = CommonUtility.HexColor("#1959A5"),
+            lowlandSand = CommonUtility.HexColor("#BFB380"), lowlandGreen = CommonUtility.HexColor("#90C060"),
+            plainsDesert = CommonUtility.HexColor("#A99159"), plainsGrass = CommonUtility.HexColor("#478C2E"), plainsForest = CommonUtility.HexColor("#236523"),
+            highlandSnow = CommonUtility.HexColor("#E8F0F5"), iceColor = CommonUtility.HexColor("#F2F9FF"), iceColorEdge = CommonUtility.HexColor("#ADD1EF"),
+            cloudColor = CommonUtility.HexColor("#FFFFFFD8"), atmosphereColor = CommonUtility.HexColor("#4C99FF"),
+            landCoverage = 0.5f, biomeBlend = 0.1f, gBlend = 0.8f, hasPolarIce = false, hasClouds = true, cloudCoverage = 0.5f },
+
+        new PlanetTypeTemplate { name = "지구형(해양)", // Zone 2 기준
+            deepSea = CommonUtility.HexColor("#0D2673"), shallowSea = CommonUtility.HexColor("#1A59A6"),
+            lowlandSand = CommonUtility.HexColor("#BFB380"), lowlandGreen = CommonUtility.HexColor("#90C060"),
+            plainsDesert = CommonUtility.HexColor("#A99159"), plainsGrass = CommonUtility.HexColor("#478C2E"), plainsForest = CommonUtility.HexColor("#236523"),
+            highlandSnow = CommonUtility.HexColor("#E8F0F5"), iceColor = CommonUtility.HexColor("#F2FAFF"), iceColorEdge = CommonUtility.HexColor("#ADD1F0"),
+            cloudColor = CommonUtility.HexColor("#FFFFFFD9"), atmosphereColor = CommonUtility.HexColor("#4D99FF"),
+            landCoverage = 0.4f, biomeBlend = 0.07f, gBlend = 0.3f, hasPolarIce = false, hasClouds = true, cloudCoverage = 0.2f },
+
+        new PlanetTypeTemplate { name = "용암형", // Zone 3 기준
+            deepSea = CommonUtility.HexColor("#D66600"), shallowSea = CommonUtility.HexColor("#F7CA11"),
+            lowlandSand = CommonUtility.HexColor("#BFB380"), lowlandGreen = CommonUtility.HexColor("#E3F084"),
+            plainsDesert = CommonUtility.HexColor("#A99159"), plainsGrass = CommonUtility.HexColor("#E4DA64"), plainsForest = CommonUtility.HexColor("#C23D25"),
+            highlandSnow = CommonUtility.HexColor("#C52225"), iceColor = CommonUtility.HexColor("#F2FAFF"), iceColorEdge = CommonUtility.HexColor("#ADD1F0"),
+            cloudColor = CommonUtility.HexColor("#A50000D9"), atmosphereColor = CommonUtility.HexColor("#FCC705"),
+            landCoverage = 0.28f, biomeBlend = 0f, gBlend = 0f, hasPolarIce = false, hasClouds = true, cloudCoverage = 0.48f },
+
+        new PlanetTypeTemplate { name = "극지형", // Zone 4 기준
+            deepSea = CommonUtility.HexColor("#0D2673"), shallowSea = CommonUtility.HexColor("#3E6EAA"),
+            lowlandSand = CommonUtility.HexColor("#BFB380"), lowlandGreen = CommonUtility.HexColor("#90C060"),
+            plainsDesert = CommonUtility.HexColor("#D6C08E"), plainsGrass = CommonUtility.HexColor("#478C2E"), plainsForest = CommonUtility.HexColor("#5F845F"),
+            highlandSnow = CommonUtility.HexColor("#E8F0F5"), iceColor = CommonUtility.HexColor("#F2FAFF"), iceColorEdge = CommonUtility.HexColor("#ADD1F0"),
+            cloudColor = CommonUtility.HexColor("#FFFFFFD9"), atmosphereColor = CommonUtility.HexColor("#4D99FF"),
+            landCoverage = 0.611f, biomeBlend = 0.07f, gBlend = 0.78f, hasPolarIce = true, hasClouds = false },
+
+        new PlanetTypeTemplate { name = "외계(보라)형", // Zone 5 기준
+            deepSea = CommonUtility.HexColor("#6F38D9"), shallowSea = CommonUtility.HexColor("#6D19A6"),
+            lowlandSand = CommonUtility.HexColor("#590090"), lowlandGreen = CommonUtility.HexColor("#6860C0"),
+            plainsDesert = CommonUtility.HexColor("#5968A9"), plainsGrass = CommonUtility.HexColor("#2D5B8C"), plainsForest = CommonUtility.HexColor("#76297A"),
+            highlandSnow = CommonUtility.HexColor("#71336A"), iceColor = CommonUtility.HexColor("#F2FAFF"), iceColorEdge = CommonUtility.HexColor("#ADD1F0"),
+            cloudColor = CommonUtility.HexColor("#FFFFFFD9"), atmosphereColor = CommonUtility.HexColor("#FF4DF6"),
+            landCoverage = 0.637f, biomeBlend = 0.09f, gBlend = 1.57f, hasPolarIce = false, hasClouds = false },
+
+        new PlanetTypeTemplate { name = "사막형", // Zone 6 기준
+            deepSea = CommonUtility.HexColor("#896C28"), shallowSea = CommonUtility.HexColor("#A89260"),
+            lowlandSand = CommonUtility.HexColor("#BB9F5C"), lowlandGreen = CommonUtility.HexColor("#998147"),
+            plainsDesert = CommonUtility.HexColor("#B6A170"), plainsGrass = CommonUtility.HexColor("#B27E05"), plainsForest = CommonUtility.HexColor("#6E6144"),
+            highlandSnow = CommonUtility.HexColor("#E8F0F5"), iceColor = CommonUtility.HexColor("#F2FAFF"), iceColorEdge = CommonUtility.HexColor("#ADD1F0"),
+            cloudColor = CommonUtility.HexColor("#FFFFFFD9"), atmosphereColor = CommonUtility.HexColor("#BC9F5D"),
+            landCoverage = 0.5f, biomeBlend = 0.1f, gBlend = 0.61f, hasPolarIce = false, hasClouds = false },
+
+        new PlanetTypeTemplate { name = "오션(청록)형", // Zone 7 기준
+            deepSea = CommonUtility.HexColor("#0D2673"), shallowSea = CommonUtility.HexColor("#1A59A6"),
+            lowlandSand = CommonUtility.HexColor("#576BCC"), lowlandGreen = CommonUtility.HexColor("#0F2156"),
+            plainsDesert = CommonUtility.HexColor("#6EB2A8"), plainsGrass = CommonUtility.HexColor("#2D6C8C"), plainsForest = CommonUtility.HexColor("#233665"),
+            highlandSnow = CommonUtility.HexColor("#E8F0F5"), iceColor = CommonUtility.HexColor("#F2FAFF"), iceColorEdge = CommonUtility.HexColor("#ADD1F0"),
+            cloudColor = CommonUtility.HexColor("#FFFFFFD9"), atmosphereColor = CommonUtility.HexColor("#4D99FF"),
+            landCoverage = 0.5f, biomeBlend = 0.01f, gBlend = 0.47f, hasPolarIce = false, hasClouds = true, cloudCoverage = 0.34f },
+
+        new PlanetTypeTemplate { name = "화성(적색)형", // Zone 8 기준
+            deepSea = CommonUtility.HexColor("#73330D"), shallowSea = CommonUtility.HexColor("#A64C19"),
+            lowlandSand = CommonUtility.HexColor("#A16A5B"), lowlandGreen = CommonUtility.HexColor("#C06D60"),
+            plainsDesert = CommonUtility.HexColor("#A95F59"), plainsGrass = CommonUtility.HexColor("#8C522D"), plainsForest = CommonUtility.HexColor("#653A23"),
+            highlandSnow = CommonUtility.HexColor("#D65941"), iceColor = CommonUtility.HexColor("#F2FAFF"), iceColorEdge = CommonUtility.HexColor("#ADD1F0"),
+            cloudColor = CommonUtility.HexColor("#FFFFFFD9"), atmosphereColor = CommonUtility.HexColor("#D65A42"),
+            landCoverage = 0.618f, biomeBlend = 0.01f, gBlend = 0.61f, hasPolarIce = true, hasClouds = false },
+
+        new PlanetTypeTemplate { name = "지구형(심림)", // Zone 9 기준
+            deepSea = CommonUtility.HexColor("#0D2673"), shallowSea = CommonUtility.HexColor("#1A59A6"),
+            lowlandSand = CommonUtility.HexColor("#265D24"), lowlandGreen = CommonUtility.HexColor("#90C060"),
+            plainsDesert = CommonUtility.HexColor("#11540D"), plainsGrass = CommonUtility.HexColor("#478C2E"), plainsForest = CommonUtility.HexColor("#236523"),
+            highlandSnow = CommonUtility.HexColor("#E8F0F5"), iceColor = CommonUtility.HexColor("#F2FAFF"), iceColorEdge = CommonUtility.HexColor("#ADD1F0"),
+            cloudColor = CommonUtility.HexColor("#FFFFFFD9"), atmosphereColor = CommonUtility.HexColor("#4D99FF"),
+            landCoverage = 0.578f, biomeBlend = 0.01f, gBlend = 0.68f, hasPolarIce = false, hasClouds = true, cloudCoverage = 0.24f },
+
+        new PlanetTypeTemplate { name = "독성/유독형", // 신규
+            deepSea = CommonUtility.HexColor("#0D3B1A"), shallowSea = CommonUtility.HexColor("#4CBB17"),
+            lowlandSand = CommonUtility.HexColor("#4A5D23"), lowlandGreen = CommonUtility.HexColor("#6FBF3C"),
+            plainsDesert = CommonUtility.HexColor("#355E1F"), plainsGrass = CommonUtility.HexColor("#8FD400"), plainsForest = CommonUtility.HexColor("#1B3B0E"),
+            highlandSnow = CommonUtility.HexColor("#C8FFB0"), iceColor = CommonUtility.HexColor("#E4FFD0"), iceColorEdge = CommonUtility.HexColor("#B0E890"),
+            cloudColor = CommonUtility.HexColor("#7FFF0090"), atmosphereColor = CommonUtility.HexColor("#39FF14"),
+            landCoverage = 0.5f, biomeBlend = 0.05f, gBlend = 0.5f, hasPolarIce = false, hasClouds = true, cloudCoverage = 0.35f },
+
+        new PlanetTypeTemplate { name = "얼음/동결형", // 신규
+            deepSea = CommonUtility.HexColor("#1B3A57"), shallowSea = CommonUtility.HexColor("#6FA8DC"),
+            lowlandSand = CommonUtility.HexColor("#DCEEFB"), lowlandGreen = CommonUtility.HexColor("#BFE3F0"),
+            plainsDesert = CommonUtility.HexColor("#E8F4FA"), plainsGrass = CommonUtility.HexColor("#D2ECF9"), plainsForest = CommonUtility.HexColor("#A9CEDC"),
+            highlandSnow = CommonUtility.HexColor("#FFFFFF"), iceColor = CommonUtility.HexColor("#FFFFFF"), iceColorEdge = CommonUtility.HexColor("#CFE9FF"),
+            cloudColor = CommonUtility.HexColor("#FFFFFFE0"), atmosphereColor = CommonUtility.HexColor("#CFE9FF"),
+            landCoverage = 0.8f, biomeBlend = 0.05f, gBlend = 0.5f, hasPolarIce = true, poleIceWidth = 0.3f, hasClouds = true, cloudCoverage = 0.3f },
+
+        new PlanetTypeTemplate { name = "가스/거인형", // 신규 (용암형과 같은 셰이더를 색만 바꿔 밴드 느낌)
+            deepSea = CommonUtility.HexColor("#D9A441"), shallowSea = CommonUtility.HexColor("#E8C170"),
+            lowlandSand = CommonUtility.HexColor("#C97B3D"), lowlandGreen = CommonUtility.HexColor("#E0B080"),
+            plainsDesert = CommonUtility.HexColor("#B5651D"), plainsGrass = CommonUtility.HexColor("#D2955B"), plainsForest = CommonUtility.HexColor("#8B4A1E"),
+            highlandSnow = CommonUtility.HexColor("#F5E1C8"), iceColor = CommonUtility.HexColor("#F2FAFF"), iceColorEdge = CommonUtility.HexColor("#ADD1F0"),
+            cloudColor = CommonUtility.HexColor("#FFF3D9C0"), atmosphereColor = CommonUtility.HexColor("#FFD27F"),
+            landCoverage = 0.5f, biomeBlend = 0.15f, gBlend = 2.0f, hasPolarIce = false, hasClouds = true, cloudCoverage = 0.6f },
+    };
+
+    private int  m_genPlanetZoneStart = 10;
+    private int  m_genPlanetZoneEnd   = 100;
+    private int  m_genPlanetSeed      = 20260709;
+    private bool m_genPlanetFoldout   = false;
+
+    private void DrawPlanetGeneratorTool()
+    {
+        EditorGUILayout.BeginVertical("box");
+        m_genPlanetFoldout = EditorGUILayout.Foldout(m_genPlanetFoldout, "행성 절차적 생성", true, EditorStyles.foldoutHeader);
+        if (m_genPlanetFoldout)
+        {
+            EditorGUILayout.HelpBox($"zoneStart~zoneEnd 구간의 zoneList[].celestialBodies[0]을 타입 템플릿({k_planetTypes.Length}종) 중 하나로 재생성합니다.\n" +
+                "타입은 존마다 시드 기반으로 하나 골라 그 팔레트 안에서만 hue/채도/명도를 살짝 흔듭니다(완전 랜덤 RGB 아님).", MessageType.Info);
+
+            EditorGUI.indentLevel++;
+            m_genPlanetZoneStart = EditorGUILayout.IntField("Zone Start", m_genPlanetZoneStart);
+            m_genPlanetZoneEnd   = EditorGUILayout.IntField("Zone End",   m_genPlanetZoneEnd);
+            m_genPlanetSeed      = EditorGUILayout.IntField("Random Seed", m_genPlanetSeed);
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space(4);
+            if (GUILayout.Button("Generate", GUILayout.Height(30)))
+            {
+                if (EditorUtility.DisplayDialog("행성 절차적 생성",
+                    $"zone{m_genPlanetZoneStart}~{m_genPlanetZoneEnd} 구간의 행성 데이터를 재생성합니다.\n계속하시겠습니까?", "Generate", "Cancel"))
+                {
+                    GeneratePlanetData();
+                }
+            }
+        }
+        EditorGUILayout.EndVertical();
+    }
+
+    private Color JitterColor(Color c, System.Random rng, float hueJitter, float satJitter, float valJitter)
+    {
+        Color.RGBToHSV(c, out float h, out float s, out float v);
+        h = Mathf.Repeat(h + ((float)rng.NextDouble() * 2f - 1f) * hueJitter, 1f);
+        s = Mathf.Clamp01(s + ((float)rng.NextDouble() * 2f - 1f) * satJitter);
+        v = Mathf.Clamp01(v + ((float)rng.NextDouble() * 2f - 1f) * valJitter);
+        Color result = Color.HSVToRGB(h, s, v);
+        result.a = c.a;
+        return result;
+    }
+
+    // base 주변 ±range로 흔들고 min~max로 clamp (완전 랜덤이 아니라 타입의 base 수치 근처로만 변형)
+    private float JitterFloat(float baseValue, float range, System.Random rng, float min, float max)
+    {
+        float v = baseValue + ((float)rng.NextDouble() * 2f - 1f) * range;
+        return Mathf.Clamp(v, min, max);
+    }
+
+    private void GeneratePlanetData()
+    {
+        var zoneMap = new Dictionary<int, ZoneConfig>();
+        for (int i = 0; i < m_dataTableZone.zoneList.Count; i++)
+            zoneMap[m_dataTableZone.zoneList[i].zoneIndex] = m_dataTableZone.zoneList[i];
+
+        int touched = 0;
+        for (int zone = m_genPlanetZoneStart; zone <= m_genPlanetZoneEnd; zone++)
+        {
+            if (!zoneMap.TryGetValue(zone, out ZoneConfig zoneConfig))
+            {
+                zoneConfig = new ZoneConfig { zoneIndex = zone };
+                m_dataTableZone.zoneList.Add(zoneConfig);
+                zoneMap[zone] = zoneConfig;
+            }
+
+            var rng = new System.Random(m_genPlanetSeed ^ (zone * 73856093));
+            PlanetTypeTemplate type = k_planetTypes[rng.Next(0, k_planetTypes.Length)];
+
+            var body = new CelestialBodyConfig
+            {
+                position = Vector3.zero,
+                rotation = new Vector3(JitterFloat(0f, 20f, rng, -40f, 40f), rng.Next(0, 360), JitterFloat(0f, 20f, rng, -40f, 40f)),
+                scale    = new Vector3(500f, 500f, 500f),
+
+                deepSeaColor      = JitterColor(type.deepSea,      rng, 0.03f, 0.08f, 0.08f),
+                shallowSeaColor   = JitterColor(type.shallowSea,   rng, 0.03f, 0.08f, 0.08f),
+                lowlandSandColor  = JitterColor(type.lowlandSand,  rng, 0.03f, 0.08f, 0.08f),
+                lowlandGreenColor = JitterColor(type.lowlandGreen, rng, 0.03f, 0.08f, 0.08f),
+                plainsDesertColor = JitterColor(type.plainsDesert, rng, 0.03f, 0.08f, 0.08f),
+                plainsGrassColor  = JitterColor(type.plainsGrass,  rng, 0.03f, 0.08f, 0.08f),
+                plainsForestColor = JitterColor(type.plainsForest, rng, 0.03f, 0.08f, 0.08f),
+                highlandSnowColor = JitterColor(type.highlandSnow, rng, 0.03f, 0.05f, 0.05f),
+
+                landCoverage = JitterFloat(type.landCoverage, 0.1f, rng, 0f, 1f),
+                biomeBlend   = JitterFloat(type.biomeBlend,   0.02f, rng, 0f, 0.2f),
+                gBlend       = JitterFloat(type.gBlend,       0.2f, rng, 0f, 5f),
+
+                hasPolarIce  = type.hasPolarIce,
+                iceColor     = JitterColor(type.iceColor,     rng, 0.02f, 0.05f, 0.05f),
+                iceColorEdge = JitterColor(type.iceColorEdge, rng, 0.02f, 0.05f, 0.05f),
+                poleIceWidth = type.poleIceWidth,
+
+                hasClouds          = type.hasClouds,
+                cloudColor         = JitterColor(type.cloudColor, rng, 0.02f, 0.05f, 0.05f),
+                cloudCoverage      = JitterFloat(type.cloudCoverage, 0.15f, rng, 0f, 1f),
+                cloudRotation      = rng.Next(0, 360),
+                cloudScale         = 1.01f,
+                cloudMidLatOpacity = type.cloudMidLatOpacity,
+                cloudMidLatCenter  = type.cloudMidLatCenter,
+                cloudMidLatWidth   = type.cloudMidLatWidth,
+                cloudSoftness      = type.cloudSoftness,
+
+                hasAtmosphere   = true,
+                atmosphereColor = JitterColor(type.atmosphereColor, rng, 0.02f, 0.05f, 0.05f),
+                atmosphereScale = 1.01f,
+            };
+
+            zoneConfig.celestialBodies = new List<CelestialBodyConfig> { body };
+            touched++;
+        }
+
+        EditorUtility.SetDirty(m_dataTableZone);
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("완료", $"행성 생성 완료! ({touched}개 존)", "OK");
+    }
+
+    #endregion
+
+    #region 함대 스폰 위치 일괄 자동 배치 (존별 "함대 위치 자동 배치" 도구를 zoneStart~zoneEnd 전체에 반복 적용)
+
+    private int  m_genFleetZoneStart  = 10;
+    private int  m_genFleetZoneEnd    = 100;
+    private int  m_genFleetSeed       = 20260709;
+    private float m_genFleetXRange    = 11000f;
+    private float m_genFleetZRange    = 5000f;
+    private float m_genFleetMinZGap   = 1500f;
+    private int  m_genFleetStageCount = 10;
+    private bool m_genFleetFoldout    = false;
+
+    private void DrawFleetPositionBatchGeneratorTool()
+    {
+        EditorGUILayout.BeginVertical("box");
+        m_genFleetFoldout = EditorGUILayout.Foldout(m_genFleetFoldout, "함대 스폰 위치 일괄 자동 배치", true, EditorStyles.foldoutHeader);
+        if (m_genFleetFoldout)
+        {
+            EditorGUILayout.HelpBox("zoneStart~zoneEnd 구간의 각 Zone에 대해 '함대 위치 자동 배치'를 반복 실행합니다.\n" +
+                "존마다 Seed에 zoneIndex를 섞어 서로 다른 배치를 만듭니다. 해당 Zone의 기존 스테이지는 전체 교체됩니다.", MessageType.Info);
+
+            EditorGUI.indentLevel++;
+            m_genFleetZoneStart  = EditorGUILayout.IntField("Zone Start", m_genFleetZoneStart);
+            m_genFleetZoneEnd    = EditorGUILayout.IntField("Zone End",   m_genFleetZoneEnd);
+            m_genFleetSeed       = EditorGUILayout.IntField("Random Seed (공용)", m_genFleetSeed);
+            EditorGUILayout.Space(4);
+            m_genFleetXRange     = EditorGUILayout.FloatField("X Range",   m_genFleetXRange);
+            m_genFleetZRange     = EditorGUILayout.FloatField("Z Range",   m_genFleetZRange);
+            m_genFleetMinZGap    = EditorGUILayout.FloatField("Min Z Gap", m_genFleetMinZGap);
+            m_genFleetStageCount = EditorGUILayout.IntSlider("스테이지 수", m_genFleetStageCount, 1, 10);
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space(4);
+            if (GUILayout.Button("Generate", GUILayout.Height(30)))
+            {
+                if (EditorUtility.DisplayDialog("함대 스폰 위치 일괄 자동 배치",
+                    $"zone{m_genFleetZoneStart}~{m_genFleetZoneEnd} 구간의 스테이지를 각각 {m_genFleetStageCount}개로 전체 교체합니다.\n계속하시겠습니까?", "Generate", "Cancel"))
+                {
+                    GenerateFleetPositionsBatch();
+                }
+            }
+        }
+        EditorGUILayout.EndVertical();
+    }
+
+    private void GenerateFleetPositionsBatch()
+    {
+        int touched = 0;
+        for (int zone = m_genFleetZoneStart; zone <= m_genFleetZoneEnd; zone++)
+        {
+            int zoneSeed = m_genFleetSeed ^ (zone * 73856093);
+            GenerateFleetPositions(zone, zoneSeed, m_genFleetXRange, m_genFleetZRange, m_genFleetMinZGap, m_genFleetStageCount);
+            touched++;
+        }
+
+        EditorUtility.DisplayDialog("완료", $"함대 스폰 위치 일괄 생성 완료! ({touched}개 존)", "OK");
     }
 
     #endregion
