@@ -62,6 +62,8 @@ public class ModuleBodyInfo
     public List<ModuleInfo> hangers;
     // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
     public int investedModulePoint;
+    // addShip 시 배분된 modulePoint (baseline 계산에서 제외용)
+    public int addShipModulePoint;
     // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
     public float currentHealth;
     // 투자한 미네랄 이력 (전투 승리 시 소모 + 초기화, 그 전까지 환급 가능)
@@ -78,6 +80,8 @@ public class ModuleInfo
     public int slotIndex;
     // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
     public int investedModulePoint;
+    // addShip 시 배분된 modulePoint (baseline 계산에서 제외용)
+    public int addShipModulePoint;
     // 투자한 미네랄 이력 (전투 승리 시 소모 + 초기화, 그 전까지 환급 가능)
     public int investedMineral;
 }

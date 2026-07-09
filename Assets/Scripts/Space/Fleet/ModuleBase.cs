@@ -27,6 +27,14 @@ public class ModuleBase : MonoBehaviour
         return m_investedModulePoint > 0;
     }
 
+    // addShip 시 배분된 modulePoint (baseline 계산에서 제외용) — 생성 시 한 번만 세팅, 이후 불변
+    [HideInInspector] public int m_addShipModulePoint;
+
+    public void SetAddShipModulePoint(int point)
+    {
+        m_addShipModulePoint = point;
+    }
+
     // 미네랄 투자 이력 (전투 승리 시 소멸)
     [HideInInspector] public int m_investedMineral;
 

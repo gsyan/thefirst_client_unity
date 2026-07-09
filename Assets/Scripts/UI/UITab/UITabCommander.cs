@@ -33,8 +33,6 @@ public class UITabCommander : UITabBase
         m_colorActive   = CommonUtility.PaletteColor("GeneralBright1");
         m_colorInactive = CommonUtility.PaletteColor("GeneralDark1");
 
-        if (DataManager.Instance.m_currentCommander == null || ObjectManager.Instance.GetMyFleet() == null) return;
-
         if (m_shipImages != null)
         {
             m_shipSlots = new Image[m_shipImages.childCount];
@@ -42,7 +40,19 @@ public class UITabCommander : UITabBase
                 m_shipSlots[i] = m_shipImages.GetChild(i).GetComponent<Image>();
         }
 
+        // 탭 초기화 시점에 함대가 아직 스폰되지 않았을 수 있음 — 스폰 시점에 뒤늦게 갱신
+        EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
+
+        // 이미 함대가 존재하면 즉시 갱신
+        if (DataManager.Instance.m_currentCommander != null && ObjectManager.Instance.GetMyFleet() != null)
+            UpdateCommanderLevelDisplay();
+    }
+
+    // 함대 스폰/교체 시 호출 — 매번 탭 열 때 체크하지 않아도 되도록 이벤트로 처리
+    private void OnMyFleetSet()
+    {
+        UpdateCommanderLevelDisplay();
     }
 
     public override void OnTabActivated()

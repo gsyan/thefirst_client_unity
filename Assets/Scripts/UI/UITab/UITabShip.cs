@@ -855,23 +855,31 @@ public class UITabShip : UITabBase
     {
         int currentLevel = m_selectedModule.GetModuleLevel();
 
-        // Lv.1은 해당 그레이드의 최저 레벨이라 내릴 레벨이 없음 → 그레이드다운과 동일하게 처리
+        // Lv.1은 해당 그레이드의 최저 레벨 — 더 내릴 이전 그레이드가 없으면 리셋(그레이드다운)으로 위임
         if (currentLevel == 1)
         {
-            ExecuteModuleGradeDownMineral();
-            return;
+            EModuleSubType prevSubType = GetPrevSubType(m_selectedModule.GetModuleSubType());
+            if (prevSubType == EModuleSubType.none)
+            {
+                ExecuteModuleGradeDownMineral();
+                return;
+            }
+            // T2 이상 Lv.1: targetLevel=0 으로 서버에 이전 등급 맥스레벨 처리 위임 (그레이드업 비용만 환급)
         }
-
-        bool hasBaseline = DataManager.Instance.CalcModulePointBaseline(
-            m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
-            out EModuleSubType baselineSubType, out int baselineLevel);
-        bool isSameSubType  = hasBaseline == true && baselineSubType == m_selectedModule.GetModuleSubType();
-        bool atOrBelowBaseline = isSameSubType == true && currentLevel <= baselineLevel;
-
-        if (atOrBelowBaseline == true)
+        else
         {
-            ShowErrorMessage("미네랄 기준점 아래로 내릴 수 없습니다");
-            return;
+            int  pureModuleInvestedPoint = Mathf.Max(0, m_selectedModule.m_investedModulePoint - m_selectedModule.m_addShipModulePoint);
+            bool hasBaseline = DataManager.Instance.CalcModulePointBaseline(
+                m_selectedModule.GetModuleType(), pureModuleInvestedPoint,
+                out EModuleSubType baselineSubType, out int baselineLevel);
+            bool isSameSubType  = hasBaseline == true && baselineSubType == m_selectedModule.GetModuleSubType();
+            bool atOrBelowBaseline = isSameSubType == true && currentLevel <= baselineLevel;
+
+            if (atOrBelowBaseline == true)
+            {
+                ShowErrorMessage("미네랄 기준점 아래로 내릴 수 없습니다");
+                return;
+            }
         }
 
         var req = new ModuleLevelChangeRequest
@@ -882,7 +890,7 @@ public class UITabShip : UITabBase
             moduleSubType = m_selectedModule.GetModuleSubType(),
             slotIndex     = m_selectedModule.GetSlotIndex(),
             currentLevel  = currentLevel,
-            targetLevel   = currentLevel - 1
+            targetLevel   = currentLevel - 1  // Lv.1이면 0 → 서버에서 이전 등급 맥스레벨 처리
         };
         m_bModuleChanging = true;
         NetworkManager.Instance.ModuleLevelDownMineral(req, OnModuleLevelDownMineralResponse);
@@ -1581,13 +1589,15 @@ public class UITabShip : UITabBase
             return;
         }
 
-        // Lv.1은 해당 그레이드의 최저 레벨이라 내릴 레벨이 없음 → 그레이드다운과 동일하게 처리
+        // Lv.1은 해당 그레이드의 최저 레벨 — 이전 그레이드가 있으면 그레이드업 취소(맥스레벨 복귀), 없으면 리셋
         if (currentLevel == 1)
         {
             m_levelDownModuleButton.SetInteractable(true);
             if (m_levelDownModuleButtonText2 != null)
             {
-                long refund = CalcMineralGradeDownRefund(subType, currentLevel, prevSubType, investedMineral);
+                long refund = prevSubType == EModuleSubType.none
+                    ? CalcMineralGradeDownRefund(subType, currentLevel, prevSubType, investedMineral)
+                    : DataManager.Instance.m_dataTableUpgradeCost.GetCost(subType);
                 m_levelDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
                 m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
                 m_levelDownModuleButtonText2.SetTextColor(Color.white);
@@ -1595,8 +1605,9 @@ public class UITabShip : UITabBase
             return;
         }
 
+        int  pureModuleInvestedPoint = Mathf.Max(0, m_selectedModule.m_investedModulePoint - m_selectedModule.m_addShipModulePoint);
         bool hasBaseline    = DataManager.Instance.CalcModulePointBaseline(
-            m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
+            m_selectedModule.GetModuleType(), pureModuleInvestedPoint,
             out EModuleSubType baselineSubType, out int baselineLevel);
         bool isSameSubType  = hasBaseline == true && baselineSubType == subType;
         int  modulePointLevel = isSameSubType == true ? baselineLevel : 0;
@@ -1690,8 +1701,9 @@ public class UITabShip : UITabBase
     // 그레이드다운(미네랄) 환급액 계산 — 그레이드다운 버튼, Lv1에서의 레벨다운 버튼이 공용으로 사용
     private long CalcMineralGradeDownRefund(EModuleSubType currentSubType, int currentLevel, EModuleSubType prevSubType, int investedMineral)
     {
+        int  pureModuleInvestedPoint = Mathf.Max(0, m_selectedModule.m_investedModulePoint - m_selectedModule.m_addShipModulePoint);
         bool hasBaseline     = DataManager.Instance.CalcModulePointBaseline(
-            m_selectedModule.GetModuleType(), m_selectedModule.m_investedModulePoint,
+            m_selectedModule.GetModuleType(), pureModuleInvestedPoint,
             out EModuleSubType baselineSubType, out int baselineLevel);
         int  currentVal      = (int)currentSubType;
         int  baselineVal     = hasBaseline == true ? (int)baselineSubType : 0;

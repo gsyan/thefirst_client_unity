@@ -902,6 +902,50 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
+    // 모듈 교체(레벨/그레이드 변경)로 인스턴스가 재생성돼도 addShip 배분값이 유지되도록 재적용
+    private void SetModuleAddShipModulePoint(int bodyIndex, EModuleType moduleType, int slotIndex, int point)
+    {
+        ModuleBase module = FindModule(bodyIndex, moduleType, slotIndex);
+        if (module == null) return;
+        module.SetAddShipModulePoint(point);
+
+        if (m_shipInfo == null || m_shipInfo.bodies == null) return;
+        ModuleBodyInfo bodyInfo = null;
+        for (int i = 0; i < m_shipInfo.bodies.Count; i++)
+        {
+            if (m_shipInfo.bodies[i].bodyIndex == bodyIndex)
+            {
+                bodyInfo = m_shipInfo.bodies[i];
+                break;
+            }
+        }
+        if (bodyInfo == null) return;
+
+        if (moduleType == EModuleType.body)
+        {
+            bodyInfo.addShipModulePoint = point;
+            return;
+        }
+
+        List<ModuleInfo> moduleList = null;
+        if (moduleType == EModuleType.beam)
+            moduleList = bodyInfo.beams;
+        else if (moduleType == EModuleType.missile)
+            moduleList = bodyInfo.missiles;
+        else if (moduleType == EModuleType.hanger)
+            moduleList = bodyInfo.hangers;
+
+        if (moduleList == null) return;
+        for (int i = 0; i < moduleList.Count; i++)
+        {
+            if (moduleList[i].slotIndex == slotIndex)
+            {
+                moduleList[i].addShipModulePoint = point;
+                break;
+            }
+        }
+    }
+
     public int GetTotalInvestedMineral()
     {
         int total = 0;
@@ -1324,6 +1368,10 @@ public class SpaceShip : MonoBehaviour
     // module 교체 (외부 호출용 - 모듈 교체 UI에서 사용)
     public void ApplyModuleChange(int bodyIndex, EModuleType moduleType, EModuleSubType moduleSubTypeNew, int slotIndex, int moduleNewLevel, int investedMineral, int investedModulePoint)
     {
+        // 모듈 교체로 인스턴스가 재생성되기 전에 addShip 배분값을 보존 (재생성 후 SetModuleAddShipModulePoint로 재적용)
+        ModuleBase moduleBeforeChange = FindModule(bodyIndex, moduleType, slotIndex);
+        int preservedAddShipModulePoint = moduleBeforeChange != null ? moduleBeforeChange.m_addShipModulePoint : 0;
+
         if (moduleType == EModuleType.body)
         {
             // Body 교체 처리 — 완료 후 relay 재설정 및 크기 변경 이벤트 발화
@@ -1351,6 +1399,7 @@ public class SpaceShip : MonoBehaviour
 
         SetModuleInvestedMineral(bodyIndex, moduleType, slotIndex, investedMineral);
         SetModuleInvestedModulePoint(bodyIndex, moduleType, slotIndex, investedModulePoint);
+        SetModuleAddShipModulePoint(bodyIndex, moduleType, slotIndex, preservedAddShipModulePoint);
 
         // Outline 갱신 (새로 생성된 모듈들을 포함하도록)
         if (m_shipOutline != null)

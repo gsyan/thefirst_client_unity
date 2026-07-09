@@ -94,6 +94,7 @@ public class ModuleBody : ModuleBase
         m_moduleBodyInfo = moduleBodyInfo;
         m_moduleSlot = null;
         SetInvestedModulePoint(moduleBodyInfo.investedModulePoint);
+        SetAddShipModulePoint(moduleBodyInfo.addShipModulePoint);
         SetInvestedMineral(moduleBodyInfo.investedMineral);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원

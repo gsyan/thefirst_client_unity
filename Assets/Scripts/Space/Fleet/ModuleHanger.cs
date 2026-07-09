@@ -82,6 +82,7 @@ public class ModuleHanger : ModuleBase
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
         SetInvestedModulePoint(moduleInfo.investedModulePoint);
+        SetAddShipModulePoint(moduleInfo.addShipModulePoint);
         SetInvestedMineral(moduleInfo.investedMineral);
 
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
@@ -374,11 +375,20 @@ public class ModuleHanger : ModuleBase
         m_moduleInfo.bodyIndex = bodyIndex;
     }
 
-    // 비전투→전투 전환 시 호출 — 미귀환 상태인 풀 내 함재기도 준비 상태로 초기화
+    // 비전투→전투 전환 시 호출 — 미귀환 상태인 풀 내 함재기도 준비 상태로 초기화, 정원 대비 부족분은 신규 보충
     public void ReadyAllAircraft()
     {
         for (int i = 0; i < m_aircraftPool.Count; i++)
             m_aircraftPool[i].isReady = true;
+
+        int shortageCount = m_airCount - m_aircraftPool.Count;
+        if (shortageCount <= 0) return;
+
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        if (moduleData == null) return;
+
+        for (int i = 0; i < shortageCount; i++)
+            m_aircraftPool.Add(new AircraftInfo(moduleData));
     }
 
     public int GetHangarCapability() => m_airCount;

@@ -409,9 +409,10 @@ public class SpaceFleet : MonoBehaviour
         ModuleBase bodyModule = ship.FindModule(updatedBody.bodyIndex, EModuleType.body, 0);
         if (bodyModule != null)
         {
-            bool bodySubTypeChanged = bodyModule.GetModuleSubType() != updatedBody.moduleSubType;
-            bool bodyLevelChanged   = bodyModule.GetModuleLevel()   != updatedBody.moduleLevel;
-            if (bodySubTypeChanged == true || bodyLevelChanged == true)
+            bool bodySubTypeChanged      = bodyModule.GetModuleSubType() != updatedBody.moduleSubType;
+            bool bodyLevelChanged        = bodyModule.GetModuleLevel()   != updatedBody.moduleLevel;
+            bool bodyInvestedMineralChanged = bodyModule.m_investedMineral != updatedBody.investedMineral;
+            if (bodySubTypeChanged == true || bodyLevelChanged == true || bodyInvestedMineralChanged == true)
                 ship.ApplyModuleChange(updatedBody.bodyIndex, EModuleType.body, updatedBody.moduleSubType, 0, updatedBody.moduleLevel, updatedBody.investedMineral, updatedBody.investedModulePoint);
         }
 
@@ -448,9 +449,10 @@ public class SpaceFleet : MonoBehaviour
             ModuleBase existing = ship.FindModule(bodyIndex, moduleType, updatedModule.slotIndex);
             if (existing == null) continue;
 
-            bool subTypeChanged = existing.GetModuleSubType() != updatedModule.moduleSubType;
-            bool levelChanged   = existing.GetModuleLevel()   != updatedModule.moduleLevel;
-            if (subTypeChanged == true || levelChanged == true)
+            bool subTypeChanged         = existing.GetModuleSubType() != updatedModule.moduleSubType;
+            bool levelChanged           = existing.GetModuleLevel()   != updatedModule.moduleLevel;
+            bool investedMineralChanged = existing.m_investedMineral != updatedModule.investedMineral;
+            if (subTypeChanged == true || levelChanged == true || investedMineralChanged == true)
                 ship.ApplyModuleChange(bodyIndex, moduleType, updatedModule.moduleSubType, updatedModule.slotIndex, updatedModule.moduleLevel, updatedModule.investedMineral, updatedModule.investedModulePoint);
         }
 
