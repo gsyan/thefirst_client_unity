@@ -964,11 +964,11 @@ public class SpaceShip : MonoBehaviour
         return total;
     }
 
-    private void SetModuleInvestedMineral(int bodyIndex, EModuleType moduleType, int slotIndex, int mineral)
+    private void SetModuleInvestedMineral(int bodyIndex, EModuleType moduleType, int slotIndex, int mineralInvested)
     {
         ModuleBase module = FindModule(bodyIndex, moduleType, slotIndex);
         if (module == null) return;
-        module.SetInvestedMineral(mineral);
+        module.SetInvestedMineral(mineralInvested);
 
         if (m_ownerFleet != null)
             m_ownerFleet.NotifyInvestedMineralChanged();
@@ -987,7 +987,7 @@ public class SpaceShip : MonoBehaviour
 
         if (moduleType == EModuleType.body)
         {
-            bodyInfo.investedMineral = mineral;
+            bodyInfo.investedMineral = mineralInvested;
             return;
         }
 
@@ -1004,7 +1004,7 @@ public class SpaceShip : MonoBehaviour
         {
             if (moduleList[i].slotIndex == slotIndex)
             {
-                moduleList[i].investedMineral = mineral;
+                moduleList[i].investedMineral = mineralInvested;
                 break;
             }
         }

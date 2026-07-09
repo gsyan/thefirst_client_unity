@@ -15,10 +15,8 @@ public class UITabExploration : UITabBase
     [Header("존 탭 스크롤")]
     [SerializeField] private InfiniteScrollViewH m_zoneTabScroll;
     [SerializeField] private GameObject m_zoneTabNodePrefab;
-    [SerializeField] private UnityEngine.UI.Button m_zoneNavPrev10;
     [SerializeField] private UnityEngine.UI.Button m_zoneNavPrev1;
     [SerializeField] private UnityEngine.UI.Button m_zoneNavNext1;
-    [SerializeField] private UnityEngine.UI.Button m_zoneNavNext10;
     [SerializeField] private UnityEngine.UI.Image m_stageBlockOverlay; // 스테이지 선택 영역 터치 차단 (디바운스 중)
 
     private int m_zoneGroupCount;
@@ -117,10 +115,8 @@ public class UITabExploration : UITabBase
         m_zoneTabScroll.onCenterIndexChanged = OnZoneScrollCenterChanged;
         m_zoneTabScroll.Initialize(m_zoneGroupCount, m_zoneTabNodePrefab);
 
-        if (m_zoneNavPrev10 != null) m_zoneNavPrev10.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex - 10); });
-        if (m_zoneNavPrev1  != null) m_zoneNavPrev1.onClick.AddListener(()  => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex - 1); });
-        if (m_zoneNavNext1  != null) m_zoneNavNext1.onClick.AddListener(()  => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex + 1); });
-        if (m_zoneNavNext10 != null) m_zoneNavNext10.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex + 10); });
+        if (m_zoneNavPrev1 != null) m_zoneNavPrev1.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex - 1); });
+        if (m_zoneNavNext1 != null) m_zoneNavNext1.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToGroup(m_currentGroupIndex + 1); });
 
         if (m_stageBlockOverlay != null) m_stageBlockOverlay.gameObject.SetActive(false);
     }
@@ -226,8 +222,16 @@ public class UITabExploration : UITabBase
     }
 
     // 선택 그룹 버튼을 풀에서 꺼내 배치 — 이전 그룹 버튼은 먼저 풀로 반납
+    // 첫 존/마지막 존에서는 더 이상 이동할 곳이 없으므로 해당 방향 버튼 비활성화
+    private void RefreshZoneNavButtons(int groupIndex)
+    {
+        if (m_zoneNavPrev1 != null) m_zoneNavPrev1.interactable = groupIndex > 1;
+        if (m_zoneNavNext1 != null) m_zoneNavNext1.interactable = groupIndex < m_zoneGroupCount;
+    }
+
     private void SetupButtonsForGroup(int groupIndex)
     {
+        RefreshZoneNavButtons(groupIndex);
         ReturnAllButtonsToPool();
         m_currentZoneStageButton = null;
 

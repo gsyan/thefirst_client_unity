@@ -1,6 +1,7 @@
 // 우주 공간 UI 패널 — 탭 시스템 초기화, UITabShip/UITabStation 탭 시 카메라 viewport 애니메이션, 모듈 선택 자동 전환
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIPanelSpace : UIPanelBase
 {
@@ -18,6 +19,11 @@ public class UIPanelSpace : UIPanelBase
 
     // 각 탭 anchorMin.x 기준 카메라 뷰포트 너비
     private float m_openCameraWidth;
+
+    // 카메라 rect(viewport)가 축소되는 동안 그 바깥 영역(경계면 3D 잔상)을 가리는 배경
+    // 탭 alpha 페이드(TabSystem.AnimatePanel)와 별도 오브젝트라 페이드 타이밍에 영향받지 않음
+    private RectTransform m_cameraViewportBgRect;
+    private Image m_cameraViewportBgImage;
 
     public override void InitializeUIPanel()
     {
@@ -46,7 +52,46 @@ public class UIPanelSpace : UIPanelBase
         float canvasWidth = canvasRect != null ? canvasRect.rect.width : 1920f;
         float occupiedWidth = uiPanelWidth + uiPanelRightMargin;
         m_openCameraWidth = (canvasWidth - occupiedWidth) / canvasWidth;
+
+        CreateCameraViewportBackground();
         SetViewport(open:false);
+    }
+
+    // 탭 콘텐츠보다 먼저(가장 아래) 그려지도록 UIPanelSpace 최상위의 첫 자식으로 생성
+    private void CreateCameraViewportBackground()
+    {
+        GameObject bgObj = new GameObject("CameraViewportBg");
+        m_cameraViewportBgRect = bgObj.AddComponent<RectTransform>();
+        bgObj.AddComponent<CanvasRenderer>();
+        m_cameraViewportBgImage = bgObj.AddComponent<Image>();
+        m_cameraViewportBgImage.color = Color.black;
+        m_cameraViewportBgImage.raycastTarget = false;
+
+        m_cameraViewportBgRect.SetParent(transform, false);
+        m_cameraViewportBgRect.SetAsFirstSibling();
+        m_cameraViewportBgRect.anchorMin = new Vector2(1f, 0f);
+        m_cameraViewportBgRect.anchorMax = Vector2.one;
+        m_cameraViewportBgRect.offsetMin = Vector2.zero;
+        m_cameraViewportBgRect.offsetMax = Vector2.zero;
+
+        bgObj.SetActive(false);
+    }
+
+    // 카메라 rect width에 맞춰 배경이 덮는 영역(camWidth ~ 1)을 갱신
+    private void UpdateCameraViewportBackground(float camWidth)
+    {
+        if (m_cameraViewportBgRect == null) return;
+
+        if (camWidth >= 1f)
+        {
+            m_cameraViewportBgRect.gameObject.SetActive(false);
+            return;
+        }
+
+        m_cameraViewportBgRect.gameObject.SetActive(true);
+        Vector2 anchorMin = m_cameraViewportBgRect.anchorMin;
+        anchorMin.x = camWidth;
+        m_cameraViewportBgRect.anchorMin = anchorMin;
     }
 
     public override void OnShowUIPanel()
@@ -211,6 +256,7 @@ public class UIPanelSpace : UIPanelBase
 
             float camWidth = Mathf.Lerp(startCamWidth, targetCamWidth, t);
             CameraController.Instance.SetViewportWidth(camWidth);
+            UpdateCameraViewportBackground(camWidth);
             EventManager.TriggerCameraViewportChanged(Mathf.InverseLerp(1f, openCameraWidth, camWidth));
 
             yield return null;
@@ -223,7 +269,9 @@ public class UIPanelSpace : UIPanelBase
     private void SetViewport(bool open, float openCameraWidth = 0f)
     {
         if (openCameraWidth <= 0f) openCameraWidth = m_openCameraWidth;
-        CameraController.Instance.SetViewportWidth(open ? openCameraWidth : 1f);
+        float camWidth = open ? openCameraWidth : 1f;
+        CameraController.Instance.SetViewportWidth(camWidth);
+        UpdateCameraViewportBackground(camWidth);
         EventManager.TriggerCameraViewportChanged(open ? 1f : 0f);
     }
 
