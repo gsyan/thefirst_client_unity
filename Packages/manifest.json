@@ -1,5 +1,16 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "OpenUPM",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "extensions.unity.playerprefsex"
+      ]
+    }
+  ],
   "dependencies": {
+    "com.ivanmurzak.unity.mcp": "https://github.com/IvanMurzak/Unity-MCP.git?path=/Unity-MCP-Plugin/Packages/com.ivanmurzak.unity.mcp",
+    "extensions.unity.playerprefsex": "2.1.5",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.11",
     "com.unity.collab-proxy": "2.11.4",

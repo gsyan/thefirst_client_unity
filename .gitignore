@@ -105,6 +105,27 @@ InitTestScene*.unity*
 # Claude Code - 로컬 개인 설정만 무시, 프로젝트 공용 설정(settings.json, 훅 등)은 커밋
 .claude/settings.local.json
 
+# Unity-MCP - 로컬 머신 전용 값(포트/경로 해시) 및 자동 생성 도구 문서
+.mcp.json
+/[Aa]ssets/Plugins/NuGet/
+/[Aa]ssets/Plugins/NuGet.meta
+.claude/skills/assets-*/
+.claude/skills/console-*/
+.claude/skills/editor-*/
+.claude/skills/gameobject-*/
+.claude/skills/object-*/
+.claude/skills/package-*/
+.claude/skills/ping/
+.claude/skills/profiler-*/
+.claude/skills/reflection-*/
+.claude/skills/scene-*/
+.claude/skills/screenshot-*/
+.claude/skills/script-*/
+.claude/skills/tests-*/
+.claude/skills/tool-*/
+.claude/skills/type-*/
+.claude/skills/unity-*/
+
 .vsconfig
 .vscode/
 /thefirst_client_unity.slnx
