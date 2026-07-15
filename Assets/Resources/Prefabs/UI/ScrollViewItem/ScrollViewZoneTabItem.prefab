@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6700228634123392167}
   - component: {fileID: -2249897375165381728}
-  - component: {fileID: 5511223827799496114}
   m_Layer: 5
   m_Name: ScrollViewZoneTabItem
   m_TagString: Untagged
@@ -55,26 +54,6 @@ MonoBehaviour:
   m_bgImage: {fileID: 2173651355228919464}
   m_colorSelected: {r: 1, g: 0.8, b: 0.2, a: 1}
   m_colorNormal: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
-  m_bgAlphaSelected: 0.3
-  m_bgAlphaNormal: 0.05
---- !u!114 &5511223827799496114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5462337805853882846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 2173651355228919464}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 2615329731200302286}
-    colorRole: General
 --- !u!1 &6882349054949763340
 GameObject:
   m_ObjectHideFlags: 0

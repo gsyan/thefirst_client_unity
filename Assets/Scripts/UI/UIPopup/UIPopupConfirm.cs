@@ -68,7 +68,11 @@ public class UIPopupConfirm : UIPopupBase
     {
         base.Awake();
         if (cancelButton != null) cancelButton.onClick.AddListener(OnCancelClicked);
-        if (confirmButton != null) confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
+        if (confirmButton != null)
+        {
+            confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
+            confirmButton.SetActiveColorKey("Action.Primary");
+        }
 
         if (m_cancelImage != null) m_defaultCancelImage = m_cancelImage.sprite;
         if (m_confirmImage != null) m_defaultConfirmImage = m_confirmImage.sprite;

@@ -75,7 +75,6 @@ GameObject:
   - component: {fileID: 3314141046527163942}
   - component: {fileID: 2229893439218703756}
   - component: {fileID: 5181488253047727873}
-  - component: {fileID: 7915549631378552390}
   m_Layer: 5
   m_Name: RetreatButtonContainer
   m_TagString: Untagged
@@ -141,24 +140,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7915549631378552390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87916600111121113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 5181488253047727873}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 2686773566920064384}
-    colorRole: GeneralBright1
 --- !u!1 &534791808937896285
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,7 +723,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4137567435401370870}
   - component: {fileID: 1582797093710509399}
-  - component: {fileID: 591820021723627790}
   - component: {fileID: 2118200205491794608}
   m_Layer: 5
   m_Name: FleetTactics
@@ -800,34 +780,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &591820021723627790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1987626385150569402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 3524102949968930251}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 1050727416602057123}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 5379095651239942074}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 7955762162123385900}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 4349013718214610946}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 6521874102498936533}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 8513663411783844846}
-    colorRole: GeneralDark1
 --- !u!114 &2118200205491794608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -852,7 +804,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3834885295824480180}
   - component: {fileID: 2290035327882509726}
-  - component: {fileID: 772827175359549922}
   - component: {fileID: 7089726663038417158}
   m_Layer: 5
   m_Name: CameraViewBottom
@@ -910,36 +861,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &772827175359549922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2600239020577048401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 2337242772702104400}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 2377583614027347484}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 1436219185177587985}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 9022794927343323345}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 7958991675641794675}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 3336726810873293244}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 5415164657175261895}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 7565305902548190469}
-    colorRole: GeneralDark1
 --- !u!114 &7089726663038417158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1088,7 +1009,6 @@ GameObject:
   - component: {fileID: 3502012010287837997}
   - component: {fileID: 5913999584975766683}
   - component: {fileID: 3861254330700913340}
-  - component: {fileID: 9157713454577829051}
   - component: {fileID: 3023075592107134432}
   - component: {fileID: 5185698081354431222}
   m_Layer: 5
@@ -1202,22 +1122,6 @@ MonoBehaviour:
     childGraphics: []
   defaultIndex: 0
   allowDeselect: 0
---- !u!114 &9157713454577829051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3510599058195240527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 3502012010287837997}
-    colorRole: GeneralDark1
 --- !u!114 &3023075592107134432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1555,7 +1459,6 @@ GameObject:
   - component: {fileID: 5594308685492610809}
   - component: {fileID: 6473840675326757401}
   - component: {fileID: 251050619479448333}
-  - component: {fileID: 744103769682901424}
   m_Layer: 5
   m_Name: StageName
   m_TagString: Untagged
@@ -1682,22 +1585,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &744103769682901424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5472748332012422750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 251050619479448333}
-    colorRole: GeneralDark1
 --- !u!1 &5550049320969187966
 GameObject:
   m_ObjectHideFlags: 0
@@ -2118,7 +2005,8 @@ GameObject:
   - component: {fileID: 41409515658633938}
   - component: {fileID: 2197184872790795942}
   - component: {fileID: 3524102949968930251}
-  - component: {fileID: 6161386817559434026}
+  - component: {fileID: 6418773707531805754}
+  - component: {fileID: 3736927938411019939}
   m_Layer: 5
   m_Name: TacticsName
   m_TagString: Untagged
@@ -2140,10 +2028,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4137567435401370870}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 97.1517, y: 80}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -40}
+  m_SizeDelta: {x: 104.54, y: 80}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2197184872790795942
 CanvasRenderer:
@@ -2173,7 +2061,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tactics
+  m_text: TACTICS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2245,7 +2133,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &6161386817559434026
+--- !u!114 &6418773707531805754
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2254,13 +2142,51 @@ MonoBehaviour:
   m_GameObject: {fileID: 6795338935288598769}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 3524102949968930251}
-    colorRole: GeneralDark1
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
+    m_TableEntryReference:
+      m_KeyId: 56724262160826368
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3524102949968930251}
+        m_TargetAssemblyTypeName: TMPro.TextMeshProUGUI, Unity.TextMeshPro
+        m_MethodName: SetText
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &3736927938411019939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795338935288598769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!1 &7146030591017988328
 GameObject:
   m_ObjectHideFlags: 0

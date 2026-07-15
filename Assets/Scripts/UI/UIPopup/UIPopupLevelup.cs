@@ -42,7 +42,11 @@ public class UIPopupLevelup : UIPopupBase
         base.Awake();
         m_prevButton?.onClick.AddListener(OnPrevClicked);
         m_nextButton?.onClick.AddListener(OnNextClicked);
-        if (m_confirmButton != null) m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
+        if (m_confirmButton != null)
+        {
+            m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
+            m_confirmButton.SetActiveColorKey("Action.Primary");
+        }
         m_cancelButton?.onClick.AddListener(OnCancelClicked);
     }
 

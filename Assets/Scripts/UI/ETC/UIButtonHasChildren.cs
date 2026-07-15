@@ -6,8 +6,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class UIButtonHasChildren : MonoBehaviour
 {
-    [SerializeField] private string m_activeColorKey   = "GeneralBright1";
-    [SerializeField] private string m_inactiveColorKey = "GeneralDark2";
+    // 인스펙터에서 지정하지 않음 — 사용하는 쪽 코드가 초기화 시점에 SetActiveColorKey()로 명시적으로 지정해야 함
+    private string m_activeColorKey   = "Action.Primary";
+    private string m_inactiveColorKey = "State.Disabled";
 
     private Button    m_button;
     private Graphic[] m_graphics;

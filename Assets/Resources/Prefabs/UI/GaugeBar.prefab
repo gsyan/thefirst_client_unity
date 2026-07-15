@@ -90,7 +90,6 @@ GameObject:
   - component: {fileID: 680667842995189992}
   - component: {fileID: 5147400824389294067}
   - component: {fileID: 1014003293044300429}
-  - component: {fileID: 471674303592153666}
   m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
@@ -155,22 +154,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &471674303592153666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5831333691043779283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 1014003293044300429}
-    colorRole: GeneralDark1
 --- !u!1 &6308991321190326557
 GameObject:
   m_ObjectHideFlags: 0

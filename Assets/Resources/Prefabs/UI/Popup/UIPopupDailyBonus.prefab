@@ -1356,7 +1356,6 @@ GameObject:
   - component: {fileID: 5725711568506096527}
   - component: {fileID: 2269934703961384226}
   - component: {fileID: 5741106394339521301}
-  - component: {fileID: 4440951411672833790}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1465,26 +1464,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &4440951411672833790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3304164571057751963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 5725711568506096527}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 1624992340876330773}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 2544851973035186441}
-    colorRole: GeneralDark1
 --- !u!1 &3320135506324582828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,7 +1537,6 @@ GameObject:
   - component: {fileID: 6711368009149993888}
   - component: {fileID: 1005794173549372683}
   - component: {fileID: 1080419592477731529}
-  - component: {fileID: 410096384894398717}
   m_Layer: 5
   m_Name: CancleButton
   m_TagString: Untagged
@@ -1682,28 +1660,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_tutorialTargetId: ConfirmButton
---- !u!114 &410096384894398717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3559457881197151698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 6711368009149993888}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 259491254986148872}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 328737400085455059}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 4265679742899598258}
-    colorRole: GeneralBright1
 --- !u!1 &4032829383038097435
 GameObject:
   m_ObjectHideFlags: 0
@@ -1717,7 +1673,6 @@ GameObject:
   - component: {fileID: 1928210583056727490}
   - component: {fileID: 8102772182830076038}
   - component: {fileID: 4377806017870917015}
-  - component: {fileID: 609538688749302109}
   - component: {fileID: 6533089249962096726}
   m_Layer: 5
   m_Name: ConfirmButton
@@ -1842,28 +1797,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_tutorialTargetId: ConfirmButton
---- !u!114 &609538688749302109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4032829383038097435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 1928210583056727490}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 4472693167236957073}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 702868210318319230}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 6874762380913346963}
-    colorRole: GeneralBright1
 --- !u!114 &6533089249962096726
 MonoBehaviour:
   m_ObjectHideFlags: 0

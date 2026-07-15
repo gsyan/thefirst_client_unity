@@ -36,7 +36,11 @@ public class UIPopupRenameCommander : UIPopupBase
     {
         base.Awake();
         m_forbiddenWords = ResourceManager.Instance.Load<DataTableForbiddenWords>("DataTable/DataTableForbiddenWords");
-        if (m_confirmButton != null) m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
+        if (m_confirmButton != null)
+        {
+            m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
+            m_confirmButton.SetActiveColorKey("Action.Primary");
+        }
         if (m_cancelButton != null)  m_cancelButton.onClick.AddListener(OnCancelClicked);
         if (m_nameInput != null)
         {

@@ -112,6 +112,7 @@ UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
+UITabFleetTactics_NameShort,,TACTICS,전술
 UITabFleetTactics_FormationType_LinearHorizontal,,Balanced,균형
 UITabFleetTactics_FormationType_LinearHorizontal_description,,Balanced Offense & Defense,공방 균형
 UITabFleetTactics_FormationType_XOffensive,,Offensive,공격우선

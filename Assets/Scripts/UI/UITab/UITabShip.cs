@@ -1572,7 +1572,7 @@ public class UITabShip : UITabBase
         {
             m_levelUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(mineralCost)}");
             m_levelUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-            m_levelUpModuleButtonText2.SetTextColor(canLevel == true ? Color.white : Color.red);
+            m_levelUpModuleButtonText2.SetTextColor(canLevel == true ? CommonUtility.PaletteColor("Text.Normal") : CommonUtility.PaletteColor("Text.Warning"));
         }
     }
 
@@ -1600,7 +1600,7 @@ public class UITabShip : UITabBase
                     : DataManager.Instance.m_dataTableUpgradeCost.GetCost(subType);
                 m_levelDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
                 m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-                m_levelDownModuleButtonText2.SetTextColor(Color.white);
+                m_levelDownModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Normal"));
             }
             return;
         }
@@ -1622,7 +1622,7 @@ public class UITabShip : UITabBase
                 int refundMineral      = curData != null ? curData.mineralCost : 0;
                 m_levelDownModuleButtonText2.SetRow("mineral_basic", refundMineral > 0 ? $"+{CommonUtility.FormatBigNumber(refundMineral)}" : "");
                 m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-                m_levelDownModuleButtonText2.SetTextColor(Color.white);
+                m_levelDownModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Normal"));
             }
             else
                 m_levelDownModuleButtonText2.Hide();
@@ -1657,21 +1657,21 @@ public class UITabShip : UITabBase
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
             m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(totalCost)}");
             m_gradeUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-            m_gradeUpModuleButtonText2.SetTextColor(Color.white);
+            m_gradeUpModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Normal"));
         }
         else if (hasTech == false)
         {
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
             m_gradeUpModuleButtonText2.SetRow("icon_tech", $"{reqTier}");
             m_gradeUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("GeneralDark1"));
-            m_gradeUpModuleButtonText2.SetTextColor(Color.red);
+            m_gradeUpModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Warning"));
         }
         else
         {
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_Require");
             m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(totalCost)}");
             m_gradeUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-            m_gradeUpModuleButtonText2.SetTextColor(Color.red);
+            m_gradeUpModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Warning"));
         }
     }
 
@@ -1695,7 +1695,7 @@ public class UITabShip : UITabBase
 
         m_gradeDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
         m_gradeDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-        m_gradeDownModuleButtonText2.SetTextColor(Color.white);
+        m_gradeDownModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Normal"));
     }
 
     // 그레이드다운(미네랄) 환급액 계산 — 그레이드다운 버튼, Lv1에서의 레벨다운 버튼이 공용으로 사용
@@ -1754,7 +1754,7 @@ public class UITabShip : UITabBase
     {
         if (hasTech == false)
         {
-            row.SetRow("icon_tech", $"{reqTier}");
+            row.SetRow("icon_tech", $"T.{reqTier}");
             row.SetImageColor(CommonUtility.PaletteColor("GeneralDark1"));
         }
         else
@@ -1762,7 +1762,7 @@ public class UITabShip : UITabBase
             row.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(cost)}");
             row.SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
         }
-        row.SetTextColor(Color.red);
+        row.SetTextColor(CommonUtility.PaletteColor("Text.Warning"));
     }
 
     

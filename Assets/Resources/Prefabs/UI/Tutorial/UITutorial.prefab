@@ -812,7 +812,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2718822309170969134}
   - component: {fileID: 5460311872313361085}
-  - component: {fileID: 3189610462938443025}
   m_Layer: 5
   m_Name: UITutorial
   m_TagString: Untagged
@@ -861,28 +860,6 @@ MonoBehaviour:
   m_mask: {fileID: 5387103357454179106}
   m_borderFrame: {fileID: 6339652505396362962}
   m_skipButton: {fileID: 1885108830050596154}
---- !u!114 &3189610462938443025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6333081282745753869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 7468854029760313526}
-    colorRole: Tutorial
-  - graphic: {fileID: 819030628472936031}
-    colorRole: Tutorial
-  - graphic: {fileID: 3922397511789921367}
-    colorRole: Tutorial
-  - graphic: {fileID: 7916618912662167472}
-    colorRole: Tutorial
 --- !u!1 &8240610570824590568
 GameObject:
   m_ObjectHideFlags: 0

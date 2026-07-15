@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4538082879151504855}
   - component: {fileID: 963285621390742952}
-  - component: {fileID: 3772310995076119106}
   - component: {fileID: 3332609625029093707}
   m_Layer: 5
   m_Name: Buttons
@@ -67,32 +66,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &3772310995076119106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 122989620852584981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 3922252632602695483}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 678479656108330871}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 1729621683693138201}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 2376478151903540462}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 6461313257214663354}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 7655871760278151669}
-    colorRole: GeneralDark1
 --- !u!114 &3332609625029093707
 MonoBehaviour:
   m_ObjectHideFlags: 0

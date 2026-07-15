@@ -19,7 +19,7 @@ public class UIResourceBar : MonoBehaviour
     [SerializeField] private Image    m_imagePvpPointDday;
     [SerializeField] private TMP_Text m_textPvpPointDday;
 
-    private static readonly Color s_colorInvestedInsufficient = Color.red;
+    private static Color s_colorInvestedInsufficient => CommonUtility.PaletteColor("Text.Warning");
 
     private Color m_pvpDdayColorBase;
     private Color m_pvpDdayColorBright;
@@ -126,12 +126,16 @@ public class UIResourceBar : MonoBehaviour
 
         if (m_textMineralCurrent != null)     m_textMineralCurrent.text     = m_displayedMineral.ToString();
         if (m_textModulePointCurrent != null) m_textModulePointCurrent.text = m_displayedModulePoint.ToString();
-        if (m_textModulePointMaxGot != null)  m_textModulePointMaxGot.text  = $"/ {commander.GetModulePointMaxGot()}";
+        if (m_textModulePointMaxGot != null)  m_textModulePointMaxGot.text  = $"/{commander.GetModulePointMaxGot()}";
         if (m_textPvpPointCurrent != null)    m_textPvpPointCurrent.text    = m_displayedPvpPoint.ToString();
-        if (m_textPvpPointMaxGot != null)     m_textPvpPointMaxGot.text     = $"/ {commander.GetPvpPointMaxGot()}";
+        if (m_textPvpPointMaxGot != null)     m_textPvpPointMaxGot.text     = $"/{commander.GetPvpPointMaxGot()}";
 
         if (m_textMineralInvested != null)
+        {
+            SpaceFleet playerFleet = ObjectManager.Instance.GetMyFleet();
+            m_displayedInvestedMineral = playerFleet != null ? playerFleet.GetTotalInvestedMineral() : 0;
             RefreshInvestedMineralUI(m_displayedInvestedMineral, m_displayedMineral);
+        }
 
         TryParseExpiry(info.pvpPointExpiry, out m_pvpExpiry);
 
@@ -178,8 +182,9 @@ public class UIResourceBar : MonoBehaviour
 
         if (totalInvested <= 0)
         {
-            m_imageMineralInvested.color = Color.gray;
-            m_textMineralInvested.color  = Color.gray;
+            Color emptyColor = CommonUtility.PaletteColor("State.Disabled");
+            m_imageMineralInvested.color = emptyColor;
+            m_textMineralInvested.color  = emptyColor;
             return;
         }
 

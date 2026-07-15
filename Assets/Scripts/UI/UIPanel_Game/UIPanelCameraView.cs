@@ -77,7 +77,10 @@ public class UIPanelCameraView : UIPanelBase
         // 버튼 콜백은 OnFleetStateChanged에서 전투 종류에 따라 동적으로 세팅
 
         if (m_speedButton != null)
+        {
             m_speedButton.GetButton().onClick.AddListener(OnSpeedButtonClicked);
+            m_speedButton.SetActiveColorKey("Action.Secondary");
+        }
 
         RefreshSpeedLabel(GameSpeedController.CurrentSpeed);
     }
@@ -303,6 +306,7 @@ public class UIPanelCameraView : UIPanelBase
     {
         if (m_tacticsFormationButton == null) return;
         m_tacticsFormationButton.GetButton().onClick.AddListener(OnFormationButtonClicked);
+        m_tacticsFormationButton.SetActiveColorKey("Action.Primary");
         RefreshFormationButton();
     }
 

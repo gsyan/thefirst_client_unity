@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6547834983219883628}
   - component: {fileID: 3306995491425981325}
   - component: {fileID: 8834553257245696848}
-  - component: {fileID: 5511902994715183979}
   - component: {fileID: 7517101270941065279}
   m_Layer: 5
   m_Name: ConfirmButton
@@ -138,28 +137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_tutorialTargetId: ConfirmButton
---- !u!114 &5511902994715183979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87154291328169163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 6547834983219883628}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 4239428644960873330}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 6195292888178795896}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 3668317102298638751}
-    colorRole: Locked
 --- !u!114 &7517101270941065279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,7 +296,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9064121633718974961
 CanvasRenderer:
@@ -627,7 +604,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4434927528754467385
 CanvasRenderer:
@@ -717,7 +694,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2658887695555494484
 CanvasRenderer:
@@ -807,7 +784,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7285522099129178623
 CanvasRenderer:
@@ -1006,7 +983,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8538675898457986910
 CanvasRenderer:
@@ -2583,7 +2560,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8534969749912829764
 CanvasRenderer:
@@ -3557,7 +3534,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2246813843270842091
 CanvasRenderer:
@@ -4021,7 +3998,6 @@ GameObject:
   - component: {fileID: 8974982005272060205}
   - component: {fileID: 1641816265583949722}
   - component: {fileID: 8133237316905409984}
-  - component: {fileID: 3258789865760003079}
   m_Layer: 5
   m_Name: CancleButton
   m_TagString: Untagged
@@ -4145,28 +4121,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_tutorialTargetId: ConfirmButton
---- !u!114 &3258789865760003079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4143238938834854782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 8974982005272060205}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 4250005146836889124}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 4379171723611194694}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 8042094658840433129}
-    colorRole: Locked
 --- !u!1 &4319724009482336616
 GameObject:
   m_ObjectHideFlags: 0
@@ -4355,7 +4309,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1053656668727549193
 CanvasRenderer:
@@ -4747,7 +4701,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3674530546560955062
 CanvasRenderer:
@@ -5084,7 +5038,6 @@ GameObject:
   - component: {fileID: 3628196201560364285}
   - component: {fileID: 3482469443777760948}
   - component: {fileID: 4509512031072235786}
-  - component: {fileID: 3104769659497389693}
   m_Layer: 5
   m_Name: SectionCost
   m_TagString: Untagged
@@ -5152,38 +5105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UISection
   m_titleText: {fileID: 0}
---- !u!114 &3104769659497389693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5373496171595338984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 4290154316054761192}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 7146770395549451467}
-    colorRole: Mineral
-  - graphic: {fileID: 3876721937306088911}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 2121173094967288525}
-    colorRole: TechPoint
-  - graphic: {fileID: 7316996040809717772}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 1012867614416704326}
-    colorRole: ModulePoint
-  - graphic: {fileID: 7187751021136168156}
-    colorRole: GeneralBright2
-  - graphic: {fileID: 1349357756342037145}
-    colorRole: PvpPoint
-  - graphic: {fileID: 3229366072388918688}
-    colorRole: GeneralDark1
 --- !u!1 &5537170094577850060
 GameObject:
   m_ObjectHideFlags: 0
@@ -5560,7 +5481,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1367138045577673583
 CanvasRenderer:
@@ -7769,7 +7690,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6975410879135039229
 CanvasRenderer:
@@ -8092,7 +8013,6 @@ GameObject:
   - component: {fileID: 2025049949489270942}
   - component: {fileID: 2333361736679749165}
   - component: {fileID: 7412112285847727113}
-  - component: {fileID: 5737607460596770865}
   m_Layer: 5
   m_Name: SectionResult
   m_TagString: Untagged
@@ -8174,54 +8094,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UISection
   m_titleText: {fileID: 0}
---- !u!114 &5737607460596770865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8812643997871554903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 2131900957620459874}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 2248147607332250623}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 5085131117628865862}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 5697853470590188102}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 1384317770378288128}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 6139269882780299904}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 8526209754279523008}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 2569044491674410893}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 5643301986776471884}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 7213826637150839001}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 9066148255685738004}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 6428258414460388430}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 9126589131576664776}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 4449076092432669416}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 6113716410268569263}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 4276185711234196856}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 8619816354048224205}
-    colorRole: GeneralDark1
 --- !u!1 &8889869140361445846
 GameObject:
   m_ObjectHideFlags: 0
@@ -8258,7 +8130,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7762003951279140072
 CanvasRenderer:

@@ -126,7 +126,6 @@ GameObject:
   - component: {fileID: 5075816446855135744}
   - component: {fileID: 2308953360924271979}
   - component: {fileID: 8144002257436958725}
-  - component: {fileID: 1937493380808080217}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -194,24 +193,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1937493380808080217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 515803226169586432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 8144002257436958725}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 9092366819890212139}
-    colorRole: GeneralDark1
 --- !u!1 &1572669170628417721
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +261,6 @@ GameObject:
   - component: {fileID: 3447126860578674660}
   - component: {fileID: 1264828904469910359}
   - component: {fileID: 7702255523515192024}
-  - component: {fileID: 1483762326631883981}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -378,32 +358,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1483762326631883981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1890969586561214404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 1264828904469910359}
-    colorRole: Black
-  - graphic: {fileID: 1336952425308904650}
-    colorRole: GeneralDark2
-  - graphic: {fileID: 8442308752035215198}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 439806946687507259}
-    colorRole: GeneralDark2
-  - graphic: {fileID: 8774041929787747446}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 6061514549053016570}
-    colorRole: GeneralDark2
 --- !u!1 &2796986819449124809
 GameObject:
   m_ObjectHideFlags: 0
@@ -1779,7 +1733,6 @@ GameObject:
   - component: {fileID: 1057454427879207196}
   - component: {fileID: 625800609780941113}
   - component: {fileID: 3376030116527074007}
-  - component: {fileID: 8400037563105035402}
   m_Layer: 5
   m_Name: ConfirmButton
   m_TagString: Untagged
@@ -1903,28 +1856,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_tutorialTargetId: ConfirmButton
---- !u!114 &8400037563105035402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8867601516653306026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 1057454427879207196}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 4698508472921533024}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 6848388935708370861}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 5141726496089310355}
-    colorRole: Locked
 --- !u!1 &8941854767122388444
 GameObject:
   m_ObjectHideFlags: 0

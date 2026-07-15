@@ -1057,7 +1057,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5621646235784870946
 CanvasRenderer:
@@ -1163,8 +1163,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIZoneStageButton
   m_rectTransform: {fileID: 4389696603548398307}
   m_myFleetMarker: {fileID: 4823128514329394711}
-  m_pointMarker: {fileID: 3719091298263943433}
-  m_pointMarkerSelected: {fileID: 3487672851025624661}
   m_labelAnchorImage: {fileID: 5659073183362497848}
   m_detailText: {fileID: 6705613114156473886}
   m_rewardContainer: {fileID: 5913176396578368913}
@@ -1264,7 +1262,6 @@ GameObject:
   - component: {fileID: 2650754772536471755}
   - component: {fileID: 8430768021181209937}
   - component: {fileID: 3487672851025624661}
-  - component: {fileID: 6725475008528334880}
   m_Layer: 5
   m_Name: SelectedCircle
   m_TagString: Untagged
@@ -1329,22 +1326,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6725475008528334880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4615576982025175201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 3487672851025624661}
-    colorRole: Selected
 --- !u!1 &5446948819439273174
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,7 +1623,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3945225725538172213
 CanvasRenderer:
@@ -1732,7 +1713,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3158903670355826897
 CanvasRenderer:

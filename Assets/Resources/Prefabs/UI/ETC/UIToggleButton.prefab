@@ -564,7 +564,6 @@ GameObject:
   m_Component:
   - component: {fileID: 93238520064023264}
   - component: {fileID: 5299965626638621085}
-  - component: {fileID: 1191812136389445856}
   - component: {fileID: 5677451344048308218}
   - component: {fileID: 463434650814105467}
   m_Layer: 5
@@ -607,28 +606,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleButton
   button: {fileID: 1759086267556328133}
---- !u!114 &1191812136389445856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7966767780227511859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 463434650814105467}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 5468329131810220911}
-    colorRole: GeneralDark1
-  - graphic: {fileID: 2415333852341839520}
-    colorRole: GeneralBright1
-  - graphic: {fileID: 7159248303737975250}
-    colorRole: GeneralDark1
 --- !u!222 &5677451344048308218
 CanvasRenderer:
   m_ObjectHideFlags: 0
