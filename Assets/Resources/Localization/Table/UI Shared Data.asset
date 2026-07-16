@@ -31,10 +31,6 @@ MonoBehaviour:
     m_Key: tab_ship
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636929
-    m_Key: tab_exploration
-    m_Metadata:
-      m_Items: []
   - m_Id: 2924654624636930
     m_Key: tab_research
     m_Metadata:
@@ -71,24 +67,12 @@ MonoBehaviour:
     m_Key: error_insufficient_resources
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619717
-    m_Key: ship_status
-    m_Metadata:
-      m_Items: []
   - m_Id: 2924654624636936
     m_Key: ship_module_weapon_count
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636937
     m_Key: ship_module_engine_count
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497784991744
-    m_Key: ship_module_select_text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636938
-    m_Key: ship_module_status
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636939
@@ -265,78 +249,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 63232261619720
     m_Key: level
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504414609408
-    m_Key: attack
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552448
-    m_Key: health
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552449
-    m_Key: speed
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552450
-    m_Key: repair
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552451
-    m_Key: air_attack
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552452
-    m_Key: air_health
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552453
-    m_Key: air_speed
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504460746752
-    m_Key: air_count
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504460746753
-    m_Key: air_launch_count
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916345524224
-    m_Key: module_type_engine_placeholder
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916345524225
-    m_Key: module_type_beam_placeholder
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718528
-    m_Key: module_type_missile_placeholder
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718529
-    m_Key: module_type_hanger_placeholder
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718530
-    m_Key: module_type_body
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718531
-    m_Key: module_type_engine
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718532
-    m_Key: module_type_beam
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718533
-    m_Key: module_type_missile
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718534
-    m_Key: module_type_hanger
     m_Metadata:
       m_Items: []
   - m_Id: 394150433325056
@@ -635,6 +547,10 @@ MonoBehaviour:
     m_Key: UITabRank_Exploration
     m_Metadata:
       m_Items: []
+  - m_Id: 57108516506042368
+    m_Key: UITabExploration_exploration
+    m_Metadata:
+      m_Items: []
   - m_Id: 33428911052161024
     m_Key: UITabExploration_TryZone
     m_Metadata:
@@ -663,6 +579,22 @@ MonoBehaviour:
     m_Key: require_level_compare
     m_Metadata:
       m_Items: []
+  - m_Id: 57012466176884736
+    m_Key: UITabShip_ShipNameHeader
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57014645939896320
+    m_Key: UITabShip_ModuleSelectSectionText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57014645939896321
+    m_Key: UITabShip_ModuleStatusSectionText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57014645944090624
+    m_Key: UITabShip_ModuleEnhanceSectionText
+    m_Metadata:
+      m_Items: []
   - m_Id: 34285289010495488
     m_Key: UITabShip_ModuleReset
     m_Metadata:
@@ -689,6 +621,110 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 43020881659559938
     m_Key: UITabShip_LevelDown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978713284608
+    m_Key: Simple_Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978742644736
+    m_Key: Simple_Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839040
+    m_Key: Simple_Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839041
+    m_Key: Simple_Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839042
+    m_Key: Simple_AirAttack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839043
+    m_Key: Simple_AirHealth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839044
+    m_Key: Simple_AirSpeed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839045
+    m_Key: Simple_AirCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839046
+    m_Key: Simple_AirLaunchCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646889299968
+    m_Key: Simple_AttackFireCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465792
+    m_Key: Simple_AttackCool
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465793
+    m_Key: Simple_ProjectileSpeed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465794
+    m_Key: Simple_SilenceTime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465795
+    m_Key: Simple_AirMaintenanceTime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465796
+    m_Key: Simple_AirAttackRange
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465797
+    m_Key: Simple_AirAttackCool
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465798
+    m_Key: Simple_AirAmmo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465799
+    m_Key: Simple_AirAdditionalDelay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916345524225
+    m_Key: module_type_beam_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718528
+    m_Key: module_type_missile_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718529
+    m_Key: module_type_hanger_placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718530
+    m_Key: module_type_body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718531
+    m_Key: module_type_engine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718532
+    m_Key: module_type_beam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718533
+    m_Key: module_type_missile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767916349718534
+    m_Key: module_type_hanger
     m_Metadata:
       m_Items: []
   - m_Id: 34285289056632833

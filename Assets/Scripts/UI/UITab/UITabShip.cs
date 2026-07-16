@@ -10,12 +10,11 @@ public class UITabShip : UITabBase
     [SerializeField] private Button    m_btnPrevShip;
     [SerializeField] private Button    m_btnNextShip;
     [SerializeField] private TMP_Text  m_textShipName;
-    // 1행: ATK / HP / REP / SPD
+    // ATK / HP / 함재기 공격력 / 함재기 수 상시 노출 (REP/SPD는 m_btnMoreStats 팝업으로 이동)
     [SerializeField] private Transform  m_shipRitContainer;
     private RowImageText[] m_shipStatRows;
-    // 2행: 함재기 능력 — aircraft_count == 0 이면 숨김
-    [SerializeField] private Transform  m_aircraftRitContainer;
-    private RowImageText[] m_aircraftStatRows;
+    // REP/SPD 등 나머지 스탯을 보여주는 상세 팝업 버튼
+    [SerializeField] private Button    m_btnMoreStats;
 
     [Header("모듈 맵 — 행 컨테이너 (레이블 + 셀렉터 포함)")]
     [SerializeField] private RectTransform m_moduleBodySelectButtonContainer;
@@ -29,6 +28,8 @@ public class UITabShip : UITabBase
     [SerializeField] private GameObject m_moduleLevelName;
     [SerializeField] private TMP_Text   m_moduleLevelText;
     [SerializeField] private Transform  m_moduleStatsContainer;
+    // 현재 레벨 모듈 스탯 상세 팝업 버튼 (모듈 상태 헤더 옆 돋보기)
+    [SerializeField] private Button     m_btnModuleMoreStats;
     [SerializeField] private RectTransform  m_investedTotal;
     [SerializeField] private RectTransform  m_investedModulePoint;
     [SerializeField] private TMP_Text   m_investedModulePointText;
@@ -40,6 +41,7 @@ public class UITabShip : UITabBase
     [SerializeField] private TMP_Text   m_unlockModuleButtonText;
     [SerializeField] private TMP_Text   m_unlockModuleSubTypeText;
     [SerializeField] private Transform  m_moduleStatusContainer;
+    [SerializeField] private Transform  m_moduleEnhanceButtonContainer;
 
     [SerializeField] private UIButtonHasChildren    m_gradeDownModuleButton;
     [SerializeField] private TMP_Text               m_gradeDownModuleButtonText1;
@@ -97,12 +99,13 @@ public class UITabShip : UITabBase
         m_selectorsHanger  = m_moduleHangerSelectButtonContainer.GetComponentsInChildren<ModuleSelector>(true);
 
         m_shipStatRows     = m_shipRitContainer.GetComponentsInChildren<RowImageText>(true);
-        m_aircraftStatRows = m_aircraftRitContainer.GetComponentsInChildren<RowImageText>(true);
 
         m_statsRows.AddRange(m_moduleStatsContainer.GetComponentsInChildren<RowImageText>(true));
         
         if (m_btnPrevShip != null) m_btnPrevShip.onClick.AddListener(OnPrevShipClicked);
         if (m_btnNextShip != null) m_btnNextShip.onClick.AddListener(OnNextShipClicked);
+        if (m_btnMoreStats != null) m_btnMoreStats.onClick.AddListener(OnMoreStatsClicked);
+        if (m_btnModuleMoreStats != null) m_btnModuleMoreStats.onClick.AddListener(OnModuleMoreStatsClicked);
 
         m_unlockModuleButton.GetButton().onClick.AddListener(OnModuleUnlockClicked);
         if (m_unlockModuleButtonText != null)
@@ -383,31 +386,131 @@ public class UITabShip : UITabBase
         if (m_selectedShip == null) return;
 
         if (m_textShipName != null)
-            m_textShipName.text = CommonUtility.GetShipDisplayName(m_selectedShip);
+        {
+            string shipName = CommonUtility.GetShipDisplayName(m_selectedShip);
+            m_textShipName.text = LocalizationManager.Instance.Get("UITabShip_ShipNameHeader", (object)shipName);
+        }
 
         CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
         CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
 
-        foreach (var row in m_shipStatRows)    row.Hide();
-        foreach (var row in m_aircraftStatRows) row.Hide();
+        foreach (var row in m_shipStatRows) row.Hide();
 
-        m_shipStatRows[0].SetRow("bubbling-beam",   $"{statsCur.attack:F0}");
-        m_shipStatRows[1].SetRow("techno-heart",    $"{statsCur.health:F0}");
-        m_shipStatRows[2].SetRow("auto-repair",     $"{statsCur.repair:F0}");
-        m_shipStatRows[3].SetRow("rocket-thruster", $"{statsCur.speed:F0}");
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipRitContainer as RectTransform);
+        // REP/SPD 등 나머지 스탯은 m_btnMoreStats 팝업(OnMoreStatsClicked)에서 표시
+        m_shipStatRows[0].SetRow("bubbling-beam", $"{statsCur.attack:F0}");
+        m_shipStatRows[1].SetRow("techno-heart",  $"{statsCur.health:F0}");
 
+        // 함재기 없는 함선은 airAttack/airCount 행 숨김
         bool hasAircraft = statsOrg.airCount > 0;
-        m_aircraftRitContainer.gameObject.SetActive(hasAircraft);
         if (hasAircraft)
         {
-            m_aircraftStatRows[0].SetRow("strafe",      $"{statsCur.airAttack:F0}");
-            m_aircraftStatRows[1].SetRow("jet-fighter", $"{statsOrg.airCount}");
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_aircraftRitContainer as RectTransform);
+            m_shipStatRows[2].SetRow("strafe",      $"{statsCur.airAttack:F0}");
+            m_shipStatRows[3].SetRow("jet-fighter", $"{statsOrg.airCount}");
         }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipRitContainer as RectTransform);
     }
 
-    
+    // 함선의 모든 합산 스탯(상시 노출 4개 + REP/SPD)을 팝업으로 표시
+    private void OnMoreStatsClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        if (m_selectedShip == null) return;
+
+        CapabilityProfile statsOrg = m_selectedShip.m_spaceShipStatsOrg;
+        CapabilityProfile statsCur = m_selectedShip.m_spaceShipStatsCur;
+        var loc = LocalizationManager.Instance;
+
+        // color를 null로 넘겨 RowImageText 자체 기본색(GeneralDark1/Text.Dark1)을 그대로 사용
+        // <pos=Xpx>로 숫자 칼럼 시작 위치 고정 + <mspace>로 자리수 폭 고정 + 자릿수 패딩({0,4})으로 우측 정렬 흉내
+        const string numPos    = "<pos=400>";
+        const string numMspace = "<mspace=0.6em>";
+        const string numEnd    = "</mspace>";
+        var rows = new List<(string icon, string value, Color? color)>
+        {
+            ("bubbling-beam",   $"({loc.Get("Simple_Attack")}){numPos}{numMspace}{statsCur.attack,4:F0}{numEnd}", null),
+            ("techno-heart",    $"({loc.Get("Simple_Health")}){numPos}{numMspace}{statsCur.health,4:F0}{numEnd}", null),
+            ("auto-repair",     $"({loc.Get("Simple_Repair")}){numPos}{numMspace}{statsCur.repair,4:F0}{numEnd}", null),
+            ("rocket-thruster", $"({loc.Get("Simple_Speed")}){numPos}{numMspace}{statsCur.speed,4:F0}{numEnd}",   null),
+        };
+        if (statsOrg.airCount > 0)
+        {
+            rows.Add(("strafe",      $"({loc.Get("Simple_AirAttack")}){numPos}{numMspace}{statsCur.airAttack,4:F0}{numEnd}", null));
+            rows.Add(("jet-fighter", $"({loc.Get("Simple_AirCount")}){numPos}{numMspace}{statsOrg.airCount,4}{numEnd}",       null));
+        }
+
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title              = LocalizationManager.Instance.Get("UITabShip_ShipNameHeader", (object)CommonUtility.GetShipDisplayName(m_selectedShip)),
+            resultRows         = rows,
+            resultRowsVertical = true, // UISection 컨테이너 15개로 확장됨 — 한 줄에 하나씩 표시
+            resultSectionTitle = "DETAIL",
+            onConfirm          = () => { },
+        });
+    }
+
+    // 선택된 모듈의 현재 레벨 스탯 상세를 팝업으로 표시
+    private void OnModuleMoreStatsClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        if (m_selectedModule == null) return;
+        if (m_selectedModule is ModulePlaceholder) return;
+
+        EModuleSubType subType = m_selectedModule.GetModuleSubType();
+        int            level   = m_selectedModule.GetModuleLevel();
+        ModuleData     cur     = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, level);
+        if (cur == null) return;
+
+        var loc = LocalizationManager.Instance;
+
+        // color를 null로 넘겨 RowImageText 자체 기본색(GeneralDark1/Text.Dark1)을 그대로 사용
+        // <pos=Xpx>로 숫자 칼럼 시작 위치 고정 + <mspace>로 자리수 폭 고정 + 자릿수 패딩({0,4})으로 우측 정렬 흉내
+        const string numPos    = "<pos=400>";
+        const string numMspace = "<mspace=0.6em>";
+        const string numEnd    = "</mspace>";
+
+        var rows = new List<(string icon, string value, Color? color)>();
+        EModuleType moduleType = m_selectedModule.GetModuleType();
+        if (moduleType == EModuleType.body)
+        {
+            rows.Add(("techno-heart",    $"({loc.Get("Simple_Health")}){numPos}{numMspace}{cur.health,4:F0}{numEnd}", null));
+            rows.Add(("auto-repair",     $"({loc.Get("Simple_Repair")}){numPos}{numMspace}{cur.repair,4:F0}{numEnd}", null));
+            rows.Add(("rocket-thruster", $"({loc.Get("Simple_Speed")}){numPos}{numMspace}{cur.speed,4:F0}{numEnd}",   null));
+            
+        }
+        else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
+        {
+            rows.Add(("bubbling-beam",      $"({loc.Get("Simple_Attack")}){numPos}{numMspace}{cur.attack,4:F0}{numEnd}",              null));
+            rows.Add(("missile-swarm",      $"({loc.Get("Simple_AttackFireCount")}){numPos}{numMspace}{cur.attackFireCount,4}{numEnd}", null));
+            rows.Add(("clockwise-rotation", $"({loc.Get("Simple_AttackCool")}){numPos}{numMspace}{cur.attackCool,4:F2}{numEnd}",       null));
+            rows.Add(("rocket-flight",      $"({loc.Get("Simple_ProjectileSpeed")}){numPos}{numMspace}{cur.projectileSpeed,4:F0}{numEnd}", null));
+            if (moduleType == EModuleType.missile && cur.silenceTime > 0f)
+                rows.Add(("sight-disabled", $"({loc.Get("Simple_SilenceTime")}){numPos}{numMspace}{cur.silenceTime,4:F1}{numEnd}", null));
+        }
+        else if (moduleType == EModuleType.hanger)
+        {
+            rows.Add(("strafe",             $"({loc.Get("Simple_AirAttack")}){numPos}{numMspace}{cur.airAttack,4:F0}{numEnd}",                 null));
+            rows.Add(("jet-fighter",        $"({loc.Get("Simple_AirCount")}){numPos}{numMspace}{cur.airCount,4}{numEnd}",                      null));
+            rows.Add(("heart-wings",        $"({loc.Get("Simple_AirHealth")}){numPos}{numMspace}{cur.airHealth,4:F0}{numEnd}",                 null));
+            rows.Add(("light-fighter",      $"({loc.Get("Simple_AirSpeed")}){numPos}{numMspace}{cur.airSpeed,4:F0}{numEnd}",                   null));
+            rows.Add(("lightning-spanner",  $"({loc.Get("Simple_AirMaintenanceTime")}){numPos}{numMspace}{cur.airMaintenanceTime,4:F1}{numEnd}", null));
+            rows.Add(("radar-sweep",        $"({loc.Get("Simple_AirAttackRange")}){numPos}{numMspace}{cur.airAttackRange,4:F0}{numEnd}",       null));
+            rows.Add(("clockwise-rotation", $"({loc.Get("Simple_AirAttackCool")}){numPos}{numMspace}{cur.airAttackCool,4:F2}{numEnd}",         null));
+            rows.Add(("heavy-bullets",      $"({loc.Get("Simple_AirAmmo")}){numPos}{numMspace}{cur.airAmmo,4}{numEnd}",                        null));
+            if (cur.airAdditionalDelay > 0f)
+                rows.Add(("misdirection", $"({loc.Get("Simple_AirAdditionalDelay")}){numPos}{numMspace}{cur.airAdditionalDelay,4:F1}{numEnd}", null));
+        }
+
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            title              = subType.GetLocalizedName(),
+            resultRows         = rows,
+            resultRowsVertical = true, // UISection 컨테이너 15개로 확장됨 — 한 줄에 하나씩 표시
+            resultSectionTitle = "DETAIL",
+            onConfirm          = () => { },
+        });
+    }
+
+
 #region 모듈 해금 begin -------------------------------------------------------------
     private void OnModuleUnlockClicked()
     {
@@ -1206,6 +1309,7 @@ public class UITabShip : UITabBase
         {
             m_unlockModuleContainer.SetActive(true);
             m_moduleStatusContainer.gameObject.SetActive(false);
+            m_moduleEnhanceButtonContainer.gameObject.SetActive(false);
             //if (m_btnResetModule != null) m_btnResetModule.gameObject.SetActive(false);
             string placeholderText = LocalizationManager.Instance.Get($"module_type_{m_selectedModule.GetModuleType()}_placeholder");
             if (m_unlockModuleSubTypeText != null) m_unlockModuleSubTypeText.text = placeholderText;
@@ -1215,6 +1319,7 @@ public class UITabShip : UITabBase
         {
             m_unlockModuleContainer.SetActive(false);
             m_moduleStatusContainer.gameObject.SetActive(true);
+            m_moduleEnhanceButtonContainer.gameObject.SetActive(true);
 
             EModuleSubType subType = m_selectedModule.GetModuleSubType();
             int level              = m_selectedModule.GetModuleLevel();
@@ -1253,9 +1358,9 @@ public class UITabShip : UITabBase
                 else if (moduleType == EModuleType.hanger && m_statsRows.Count >= 5)
                 {
                     m_statsRows[0].SetRow("strafe",        $"{cur.airAttack:F0}");
-                    m_statsRows[1].SetRow("heart-wings",   $"{cur.airHealth:F0}");
-                    m_statsRows[2].SetRow("light-fighter", $"{cur.airSpeed:F0}");
-                    m_statsRows[3].SetRow("jet-fighter",   $"{cur.airCount:F0}");
+                    m_statsRows[1].SetRow("jet-fighter",   $"{cur.airCount:F0}");
+                    m_statsRows[2].SetRow("heart-wings",   $"{cur.airHealth:F0}");
+                    m_statsRows[3].SetRow("light-fighter", $"{cur.airSpeed:F0}");
                 }
             }
 
@@ -1263,6 +1368,11 @@ public class UITabShip : UITabBase
             m_investedMineralText.SetText("{0}", investedMineral);
             m_investedMineral.gameObject.SetActive(investedMineral > 0);
             RefreshModuleActionButtons();
+
+            // ModuleStatusTop(HorizontalLayoutGroup+ContentSizeFitter)은 코드로 내용을 건드리지 않아
+            // 초기 활성화 시 레이아웃이 갱신 안 된 상태로 남을 수 있음 — 강제 리빌드로 보정
+            if (m_btnModuleMoreStats != null)
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_btnModuleMoreStats.transform.parent as RectTransform);
 
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_moduleStatsContainer as RectTransform);
@@ -1572,7 +1682,8 @@ public class UITabShip : UITabBase
         {
             m_levelUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(mineralCost)}");
             m_levelUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-            m_levelUpModuleButtonText2.SetTextColor(canLevel == true ? CommonUtility.PaletteColor("Text.Normal") : CommonUtility.PaletteColor("Text.Warning"));
+            if (canLevel == false)
+                m_levelUpModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Warning"));
         }
     }
 
@@ -1600,7 +1711,6 @@ public class UITabShip : UITabBase
                     : DataManager.Instance.m_dataTableUpgradeCost.GetCost(subType);
                 m_levelDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
                 m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-                m_levelDownModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Normal"));
             }
             return;
         }
@@ -1622,7 +1732,6 @@ public class UITabShip : UITabBase
                 int refundMineral      = curData != null ? curData.mineralCost : 0;
                 m_levelDownModuleButtonText2.SetRow("mineral_basic", refundMineral > 0 ? $"+{CommonUtility.FormatBigNumber(refundMineral)}" : "");
                 m_levelDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-                m_levelDownModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Normal"));
             }
             else
                 m_levelDownModuleButtonText2.Hide();
@@ -1657,7 +1766,6 @@ public class UITabShip : UITabBase
             m_gradeUpModuleButtonText1.text = LocalizationManager.Instance.Get("UITabShip_GradeUp");
             m_gradeUpModuleButtonText2.SetRow("mineral_basic", $"-{CommonUtility.FormatBigNumber(totalCost)}");
             m_gradeUpModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-            m_gradeUpModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Normal"));
         }
         else if (hasTech == false)
         {
@@ -1695,7 +1803,6 @@ public class UITabShip : UITabBase
 
         m_gradeDownModuleButtonText2.SetRow("mineral_basic", refund > 0 ? $"+{CommonUtility.FormatBigNumber(refund)}" : "");
         m_gradeDownModuleButtonText2.SetImageColor(CommonUtility.PaletteColor("Mineral"));
-        m_gradeDownModuleButtonText2.SetTextColor(CommonUtility.PaletteColor("Text.Normal"));
     }
 
     // 그레이드다운(미네랄) 환급액 계산 — 그레이드다운 버튼, Lv1에서의 레벨다운 버튼이 공용으로 사용

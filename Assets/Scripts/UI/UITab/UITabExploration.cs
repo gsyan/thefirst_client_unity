@@ -10,6 +10,8 @@ public class UITabExploration : UITabBase
     [Header("존 스테이지 버튼 (World Space)")]
     [SerializeField] private RectTransform m_zoneButtonRoot;       // Screen Space 오버레이 루트 (stretch 전체)
     [SerializeField] private UIZoneStageButton m_zoneStageButtonPrefab;
+    [SerializeField] private UIZoneConnector m_zoneConnectorPrefab; // 스테이지 노드 간 연결선 (순번 순서대로 직선 연결)
+    [SerializeField] private RectTransform m_zoneConnectorRoot;     // 연결선이 버튼보다 아래(z-order상 먼저) 그려지도록 별도 루트
     [SerializeField] private UnityEngine.UI.Button m_backgroundCloseButton; // 빈 곳 클릭 시 탭 닫기용 투명 풀스크린 버튼
     
     [Header("존 탭 스크롤")]
@@ -25,6 +27,8 @@ public class UITabExploration : UITabBase
     private static readonly WaitForSeconds s_stageDebounceWait = new WaitForSeconds(0.2f);
 
     private readonly List<UIZoneStageButton> m_buttonPool = new();
+    private readonly List<UIZoneConnector> m_connectorPool = new();
+    private readonly List<UIZoneConnector> m_activeConnectors = new();
 
     private SpaceFleet m_playerFleet;
     private Commander m_myCommander;
@@ -160,7 +164,10 @@ public class UITabExploration : UITabBase
         UIZoneTabNode node = obj.GetComponent<UIZoneTabNode>();
         if (node == null) return;
         node.SetData(dataIndex, OnZoneTabNodeClicked);
-        node.SetSelected(dataIndex + 1 == m_currentGroupIndex);
+        bool selected  = dataIndex + 1 == m_currentGroupIndex;
+        bool isCleared = IsZoneGroupCleared(dataIndex + 1);
+        bool isLocked  = IsZoneGroupLocked(dataIndex + 1);
+        node.SetState(selected, isCleared, isLocked);
     }
 
     private void OnZoneTabNodeClicked(int groupIndex)
@@ -238,6 +245,7 @@ public class UITabExploration : UITabBase
         if (m_zoneButtonRoot == null || m_zoneStageButtonPrefab == null || m_datatableZone == null) return;
 
         m_zoneButtonRoot.gameObject.SetActive(true); // RebuildLayout이 Canvas에 반영되려면 root가 활성 상태여야 함
+        if (m_zoneConnectorRoot != null) m_zoneConnectorRoot.gameObject.SetActive(true);
 
         var clearedZoneNames = m_myCommander != null ? m_myCommander.m_commanderInfo.clearedZones : null;
         Camera worldCam = CameraController.Instance != null ? CameraController.Instance.m_targetCamera : Camera.main;
@@ -253,7 +261,11 @@ public class UITabExploration : UITabBase
             btn.name = zoneStage.zoneName;
 
             bool isCleared = clearedZoneNames != null && clearedZoneNames.Contains(zoneStage.zoneName);
-            EZoneState state = isCleared == true ? EZoneState.Cleared : EZoneState.NotCleared;
+            EZoneState state = EZoneState.NotCleared;
+            if (isCleared == true)
+                state = EZoneState.Cleared;
+            else if (IsPreviousStageCleared(zoneStage) == false)
+                state = EZoneState.Locked;
 
             btn.gameObject.SetActive(true);  // Initialize 전에 활성화해야 RebuildLayout이 Canvas에 반영됨
 
@@ -268,6 +280,8 @@ public class UITabExploration : UITabBase
         // 풀에서 꺼낸 버튼의 이전 위치 잔류 방지 — OnCameraGalaxyViewSettled가 재발생하지 않는 경우(탭 이미 열림)에도 올바른 위치 보장
         foreach (var kv in m_zoneStageButtons)
             kv.Value.UpdateScreenPosition();
+
+        RefreshZoneConnectors();
 
         // 함대 마커 버튼 갱신 (선택과 분리)
         if (m_currentZoneStage != null && ParseZoneGroup(m_currentZoneStage.zoneName) == groupIndex)
@@ -308,6 +322,93 @@ public class UITabExploration : UITabBase
             sorted[i].transform.SetSiblingIndex(i);
     }
 
+    // 순번(스테이지 번호) 순서대로 인접한 노드끼리 직선 연결선을 그린다
+    private void RefreshZoneConnectors()
+    {
+        ReturnAllConnectorsToPool();
+        if (m_zoneConnectorPrefab == null) return;
+
+        var sorted = new List<UIZoneStageButton>(m_zoneStageButtons.Count);
+        foreach (var kv in m_zoneStageButtons)
+            sorted.Add(kv.Value);
+        sorted.Sort((a, b) => ParseZoneStage(a.name).CompareTo(ParseZoneStage(b.name)));
+
+        for (int i = 0; i < sorted.Count - 1; i++)
+        {
+            UIZoneStageButton from = sorted[i];
+            UIZoneStageButton to   = sorted[i + 1];
+            bool fromCleared = from.ZoneStageConfig != null && IsAlreadyCleared(from.ZoneStageConfig);
+
+            const float ExpandedGap = -10f;
+            float fromGap = from.IsExpanded == true ? ExpandedGap : 0f;
+            float toGap   = to.IsExpanded == true ? ExpandedGap : 0f;
+            Rect fromRect = InsetRect(from.GetLabelAnchorScreenRect(), fromGap);
+            Rect toRect   = InsetRect(to.GetLabelAnchorScreenRect(), toGap);
+            Vector3 fromCenter = fromRect.center;
+            Vector3 toCenter   = toRect.center;
+            Vector3 fromEdge = ClampPointToRectEdge(fromCenter, fromRect, toCenter);
+            Vector3 toEdge   = ClampPointToRectEdge(toCenter, toRect, fromCenter);
+
+            UIZoneConnector connector = GetConnectorFromPool();
+            connector.transform.SetSiblingIndex(i);
+            connector.gameObject.SetActive(true);
+            connector.SetPoints(fromEdge, toEdge, fromCleared);
+            m_activeConnectors.Add(connector);
+        }
+    }
+
+    // rect를 사방으로 gap만큼 안쪽으로 줄인다 — 확장된 LabelAnchor에도 선 끝점이 여백을 두고 멈추도록
+    private static Rect InsetRect(Rect rect, float gap)
+    {
+        float insetWidth  = Mathf.Max(0f, rect.width - gap * 2f);
+        float insetHeight = Mathf.Max(0f, rect.height - gap * 2f);
+        return new Rect(rect.x + gap, rect.y + gap, insetWidth, insetHeight);
+    }
+
+    // center에서 towardPoint 방향으로 rect 경계와 만나는 지점을 계산 — 각도에 상관없이 항상 자연스럽게 이어지도록(축 스냅 없음)
+    private static Vector3 ClampPointToRectEdge(Vector3 center, Rect rect, Vector3 towardPoint)
+    {
+        if (rect.width <= 0f || rect.height <= 0f) return center;
+
+        Vector2 dir = towardPoint - center;
+        if (dir.sqrMagnitude < 0.0001f) return center;
+
+        float tx = float.PositiveInfinity;
+        if (dir.x > 0f) tx = (rect.xMax - center.x) / dir.x;
+        else if (dir.x < 0f) tx = (rect.xMin - center.x) / dir.x;
+
+        float ty = float.PositiveInfinity;
+        if (dir.y > 0f) ty = (rect.yMax - center.y) / dir.y;
+        else if (dir.y < 0f) ty = (rect.yMin - center.y) / dir.y;
+
+        float t = Mathf.Min(tx, ty);
+        if (float.IsInfinity(t) || t < 0f) return center;
+
+        return center + (Vector3)(dir * t);
+    }
+
+    private UIZoneConnector GetConnectorFromPool()
+    {
+        if (m_connectorPool.Count > 0)
+        {
+            UIZoneConnector c = m_connectorPool[^1];
+            m_connectorPool.RemoveAt(m_connectorPool.Count - 1);
+            return c;
+        }
+        RectTransform root = m_zoneConnectorRoot != null ? m_zoneConnectorRoot : m_zoneButtonRoot;
+        return Instantiate(m_zoneConnectorPrefab, root);
+    }
+
+    private void ReturnAllConnectorsToPool()
+    {
+        for (int i = 0; i < m_activeConnectors.Count; i++)
+        {
+            m_activeConnectors[i].gameObject.SetActive(false);
+            m_connectorPool.Add(m_activeConnectors[i]);
+        }
+        m_activeConnectors.Clear();
+    }
+
     private UIZoneStageButton GetButtonFromPool()
     {
         if (m_buttonPool.Count > 0)
@@ -327,6 +428,7 @@ public class UITabExploration : UITabBase
             m_buttonPool.Add(kv.Value);
         }
         m_zoneStageButtons.Clear();
+        ReturnAllConnectorsToPool();
     }
 
     public override void OnTabActivated()
@@ -364,6 +466,7 @@ public class UITabExploration : UITabBase
             m_zoneTabScroll.ScrollToCenter(groupIndex - 1);
 
         if (m_zoneButtonRoot != null) m_zoneButtonRoot.gameObject.SetActive(false);
+        if (m_zoneConnectorRoot != null) m_zoneConnectorRoot.gameObject.SetActive(false);
 
         HideTabButtons();
         EventManager.TriggerExplorationTabOpened();
@@ -457,9 +560,12 @@ public class UITabExploration : UITabBase
     private void OnCameraGalaxyViewSettled()
     {
         if (m_zoneButtonRoot != null) m_zoneButtonRoot.gameObject.SetActive(true);
+        if (m_zoneConnectorRoot != null) m_zoneConnectorRoot.gameObject.SetActive(true);
 
         foreach (var kv in m_zoneStageButtons)
             kv.Value.UpdateScreenPosition();
+
+        RefreshZoneConnectors();
     }
 
     private void SetFleetState(EUnitState unitState)
@@ -526,6 +632,9 @@ public class UITabExploration : UITabBase
         m_selectedZoneStage = zoneStage;
         if (m_zoneStageButtons.TryGetValue(zoneStage.zoneName, out UIZoneStageButton btn))
             btn.SetSelectedUIZoneStageButton(true);
+
+        // 선택 전환으로 LabelAnchor 크기(Expand/Collapse)가 바뀌므로 연결선 지점을 다시 계산한다
+        RefreshZoneConnectors();
     }
 
     private void OnEnterZoneStageFromButton(ZoneStageConfig zoneStage)
@@ -714,6 +823,31 @@ public class UITabExploration : UITabBase
     {
         var clearedZones = m_myCommander.m_commanderInfo.clearedZones;
         return clearedZones != null && clearedZones.Contains(zoneStage.zoneName);
+    }
+
+    // 존 그룹 내 모든 스테이지(x-0 스폰 마커 제외)가 클리어됐는지 — 존 탭 색상 표시용
+    private bool IsZoneGroupCleared(int groupIndex)
+    {
+        var groupStages = m_datatableZone.GetStagesByZone(groupIndex);
+        if (groupStages == null || groupStages.Count == 0) return false;
+
+        var clearedZones = m_myCommander != null ? m_myCommander.m_commanderInfo.clearedZones : null;
+        if (clearedZones == null) return false;
+
+        for (int i = 0; i < groupStages.Count; i++)
+        {
+            ZoneStageConfig zoneStage = groupStages[i];
+            if (ParseZoneStage(zoneStage.zoneName) == 0) continue; // x-0 스폰 마커 제외
+            if (clearedZones.Contains(zoneStage.zoneName) == false) return false;
+        }
+        return true;
+    }
+
+    // 이전 존 그룹을 아직 다 클리어하지 못해서 진입 자체가 안 되는 상태인지 — 존 탭 색상 표시용
+    private bool IsZoneGroupLocked(int groupIndex)
+    {
+        if (groupIndex <= 1) return false;
+        return IsZoneGroupCleared(groupIndex - 1) == false;
     }
 
     private bool IsPreviousStageCleared(ZoneStageConfig zoneStage)

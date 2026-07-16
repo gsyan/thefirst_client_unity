@@ -22,20 +22,12 @@ MonoBehaviour:
     m_Localized: Fleet Status
     m_Metadata:
       m_Items: []
-  - m_Id: 63232261619717
-    m_Localized: Ship Status
-    m_Metadata:
-      m_Items: []
   - m_Id: 63232261619720
     m_Localized: Level
     m_Metadata:
       m_Items: []
   - m_Id: 394150433325056
     m_Localized: Mineral
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916345524224
-    m_Localized: Engine(Locked)
     m_Metadata:
       m_Items: []
   - m_Id: 767916345524225
@@ -90,10 +82,6 @@ MonoBehaviour:
     m_Localized: Ship
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636929
-    m_Localized: Exploration
-    m_Metadata:
-      m_Items: []
   - m_Id: 2924654624636930
     m_Localized: Research
     m_Metadata:
@@ -112,10 +100,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2924654624636937
     m_Localized: Engines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636938
-    m_Localized: Module Status
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636939
@@ -152,10 +136,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4035192976965632
     m_Localized: Details
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5949497784991744
-    m_Localized: Module Select
     m_Metadata:
       m_Items: []
   - m_Id: 6655868837691392
@@ -328,42 +308,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 15625537795784706
     m_Localized: Commander
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504414609408
-    m_Localized: Att
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552448
-    m_Localized: HP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552449
-    m_Localized: Spd
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552450
-    m_Localized: Repair
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552451
-    m_Localized: Att(Air)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552452
-    m_Localized: HP(Air)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504456552453
-    m_Localized: Spd(Air)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504460746752
-    m_Localized: Aircrafts
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15678504460746753
-    m_Localized: Launch
     m_Metadata:
       m_Items: []
   - m_Id: 26465664587661312
@@ -967,6 +911,98 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 56724262198575105
     m_Localized: The server is currently under maintenance.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57012466176884736
+    m_Localized: SHIP {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57014645939896320
+    m_Localized: Module Select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57014645939896321
+    m_Localized: Module Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57014645944090624
+    m_Localized: Module Enhancement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978713284608
+    m_Localized: Att
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978742644736
+    m_Localized: HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839040
+    m_Localized: Spd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839041
+    m_Localized: Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839042
+    m_Localized: Aircraft Att
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839043
+    m_Localized: Aircraft HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839044
+    m_Localized: Aircraft Spd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839045
+    m_Localized: Aircrafts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57079978746839046
+    m_Localized: Launch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646889299968
+    m_Localized: Fire Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465792
+    m_Localized: Cooldown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465793
+    m_Localized: Projectile Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465794
+    m_Localized: Silence Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465795
+    m_Localized: Aircraft Maintenance Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465796
+    m_Localized: Aircraft Attack Range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465797
+    m_Localized: Aircraft Attack Cooldown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465798
+    m_Localized: Aircraft Ammo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57098646914465799
+    m_Localized: Additional Delay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57108516506042368
+    m_Localized: EXPLORATION
     m_Metadata:
       m_Items: []
   references:

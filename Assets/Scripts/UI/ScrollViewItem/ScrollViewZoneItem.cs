@@ -7,6 +7,7 @@ public enum EZoneState
 {
     Cleared,
     NotCleared,
+    Locked, // 이전 스테이지 미클리어로 진입 불가
 }
 
 public class ScrollViewZoneItem : MonoBehaviour

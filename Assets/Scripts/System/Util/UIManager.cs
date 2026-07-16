@@ -44,6 +44,7 @@ public class UIManager : MonoSingleton<UIManager>
     protected RectTransform m_gaugeBarContainer;
     protected RectTransform m_generalContainer;
     protected RectTransform m_tutorialContainer;
+    private RectTransform m_safeAreaRoot;                                    // 동적 컨테이너들의 공통 부모, SafeAreaAdapter 부착
 
     protected override void Awake()
     {
@@ -61,6 +62,8 @@ public class UIManager : MonoSingleton<UIManager>
     // 컨테이너 초기화 (하이라키 순서 = 렌더 순서)
     protected void InitializeContainers()
     {
+        m_safeAreaRoot = CreateSafeAreaRoot();
+
         m_gaugeBarContainer = CreateContainer("UIGaugeBarContainer");
         m_generalContainer  = CreateContainer("UIGeneralContainer");
         
@@ -77,10 +80,27 @@ public class UIManager : MonoSingleton<UIManager>
         m_tutorialContainer = CreateContainer("UITutorialContainer");
     }
 
+    // 곡면(엣지) 화면 대비 안전영역 부모 — SafeAreaAdapter가 여기서 anchor를 깎음
+    private RectTransform CreateSafeAreaRoot()
+    {
+        GameObject rootObj = new("SafeAreaRoot");
+        rootObj.transform.SetParent(transform, false);
+
+        RectTransform rect = rootObj.AddComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+
+        rootObj.AddComponent<SafeAreaAdapter>();
+
+        return rect;
+    }
+
     private RectTransform CreateContainer(string name)
     {
         GameObject containerObj = new(name);
-        containerObj.transform.SetParent(transform, false);
+        containerObj.transform.SetParent(m_safeAreaRoot, false);
 
         RectTransform rect = containerObj.AddComponent<RectTransform>();
         rect.anchorMin = Vector2.zero;
@@ -418,7 +438,7 @@ public class UIManager : MonoSingleton<UIManager>
         string modulePointLabel = loc.Get("UITabTech_ModulePointGetTitle");
         Color defaultColor     = CommonUtility.PaletteColor("GeneralBright1");
         Color modulePointColor = CommonUtility.PaletteColor("ModulePoint");
-        var rows = new List<(string icon, string value, Color color)>();
+        var rows = new List<(string icon, string value, Color? color)>();
         if (shipCount != prevShipCount)
             rows.Add(("icon_ship", $"{shipLabel}  {shipCount}", defaultColor));
         if (subtypeLevel != prevSubtypeLevel)

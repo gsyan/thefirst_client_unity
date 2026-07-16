@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class UIResourceBar : MonoBehaviour
 {
+    private RectTransform m_rectTransform;
     [SerializeField] private Button  m_resetMineralInvestedButton;
     [SerializeField] private TMP_Text  m_textMineralCurrent;
     [SerializeField] private Image     m_imageMineralInvested;
@@ -41,6 +42,11 @@ public class UIResourceBar : MonoBehaviour
     private static readonly WaitForSeconds s_wait1Sec    = new(0.5f);
     private static readonly WaitForSeconds s_waitFlicker = new(0.05f);
 
+    void Awake()
+    {
+        m_rectTransform = GetComponent<RectTransform>();
+    }
+
     void Start()
     {
         if (m_textPvpPointDday != null)
@@ -52,6 +58,9 @@ public class UIResourceBar : MonoBehaviour
 
         if (m_resetMineralInvestedButton != null)
             m_resetMineralInvestedButton.onClick.AddListener(OnResetMineralInvestedButtonClicked);
+
+        EventManager.Subscribe_CameraViewportChanged(OnCameraViewportChanged);
+        RepositionForViewport();
 
         var commander = DataManager.Instance.m_currentCommander;
         if (commander == null) return;
@@ -66,10 +75,33 @@ public class UIResourceBar : MonoBehaviour
 
     private void OnDestroy()
     {
+        EventManager.Unsubscribe_CameraViewportChanged(OnCameraViewportChanged);
         EventManager.Unsubscribe_MineralChanged(OnMineralChanged);
         EventManager.Unsubscribe_ModulePointChanged(OnModulePointChanged);
         EventManager.Unsubscribe_PvpPointChanged(OnPvpPointChanged);
         EventManager.Unsubscribe_InvestedMineralChanged(OnInvestedMineralChanged);
+    }
+
+    // UITabShip 등 3D 뷰포트 오른쪽을 잠식하는 패널이 열리면 카메라 viewport가 좁아짐 — 그 우측 경계에 맞춰 항상 "뷰포트 우상단"을 유지
+    private void OnCameraViewportChanged(float ratio)
+    {
+        RepositionForViewport();
+    }
+
+    private void RepositionForViewport()
+    {
+        if (m_rectTransform == null) return;
+
+        CameraController cam = CameraController.Instance;
+        if (cam == null) return;
+
+        float viewportRight = cam.GetViewportWidth();
+        Vector2 anchorMin = m_rectTransform.anchorMin;
+        Vector2 anchorMax = m_rectTransform.anchorMax;
+        anchorMin.x = viewportRight;
+        anchorMax.x = viewportRight;
+        m_rectTransform.anchorMin = anchorMin;
+        m_rectTransform.anchorMax = anchorMax;
     }
 
     private void OnResetMineralInvestedButtonClicked()
@@ -124,11 +156,11 @@ public class UIResourceBar : MonoBehaviour
         m_displayedModulePoint = commander.GetModulePoint();
         m_displayedPvpPoint    = commander.GetPvpPoint();
 
-        if (m_textMineralCurrent != null)     m_textMineralCurrent.text     = m_displayedMineral.ToString();
-        if (m_textModulePointCurrent != null) m_textModulePointCurrent.text = m_displayedModulePoint.ToString();
-        if (m_textModulePointMaxGot != null)  m_textModulePointMaxGot.text  = $"/{commander.GetModulePointMaxGot()}";
-        if (m_textPvpPointCurrent != null)    m_textPvpPointCurrent.text    = m_displayedPvpPoint.ToString();
-        if (m_textPvpPointMaxGot != null)     m_textPvpPointMaxGot.text     = $"/{commander.GetPvpPointMaxGot()}";
+        if (m_textMineralCurrent != null)     m_textMineralCurrent.text     = CommonUtility.FormatNumber(m_displayedMineral);
+        if (m_textModulePointCurrent != null) m_textModulePointCurrent.text = CommonUtility.FormatNumber(m_displayedModulePoint);
+        if (m_textModulePointMaxGot != null)  m_textModulePointMaxGot.text  = $"/{CommonUtility.FormatNumber(commander.GetModulePointMaxGot())}";
+        if (m_textPvpPointCurrent != null)    m_textPvpPointCurrent.text    = CommonUtility.FormatNumber(m_displayedPvpPoint);
+        if (m_textPvpPointMaxGot != null)     m_textPvpPointMaxGot.text     = $"/{CommonUtility.FormatNumber(commander.GetPvpPointMaxGot())}";
 
         if (m_textMineralInvested != null)
         {
@@ -171,7 +203,7 @@ public class UIResourceBar : MonoBehaviour
     {
         if (m_textMineralInvested == null) return;
 
-        m_textMineralInvested.text = $"{totalInvested}";
+        m_textMineralInvested.text = CommonUtility.FormatNumber(totalInvested);
 
         RefreshInvestedMineralColor(totalInvested, currentMineral);
     }
@@ -202,7 +234,7 @@ public class UIResourceBar : MonoBehaviour
 
         var commander = DataManager.Instance.m_currentCommander;
         if (commander != null && m_textModulePointMaxGot != null)
-            m_textModulePointMaxGot.text = $"/ {commander.GetModulePointMaxGot()}";
+            m_textModulePointMaxGot.text = $"/ {CommonUtility.FormatNumber(commander.GetModulePointMaxGot())}";
     }
 
     private void OnPvpPointChanged(int pvpPoint)
@@ -212,7 +244,7 @@ public class UIResourceBar : MonoBehaviour
 
         var commander = DataManager.Instance.m_currentCommander;
         if (commander != null && m_textPvpPointMaxGot != null)
-            m_textPvpPointMaxGot.text = $"/ {commander.GetPvpPointMaxGot()}";
+            m_textPvpPointMaxGot.text = $"/ {CommonUtility.FormatNumber(commander.GetPvpPointMaxGot())}";
     }
 
     private void StartFieldAnimation(ref Coroutine handle, TMP_Text textUI, long from, long to)
@@ -227,7 +259,7 @@ public class UIResourceBar : MonoBehaviour
     {
         if (from < 0 || from == to)
         {
-            textUI.text = to.ToString();
+            textUI.text = CommonUtility.FormatNumber(to);
             yield break;
         }
 
@@ -238,11 +270,11 @@ public class UIResourceBar : MonoBehaviour
             elapsed += Time.deltaTime;
             float t       = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
             long  current = from + (long)((to - from) * t);
-            textUI.text = current.ToString();
+            textUI.text = CommonUtility.FormatNumber(current);
             yield return null;
         }
 
-        textUI.text = to.ToString();
+        textUI.text = CommonUtility.FormatNumber(to);
     }
 
     private IEnumerator RunDdayUpdate()

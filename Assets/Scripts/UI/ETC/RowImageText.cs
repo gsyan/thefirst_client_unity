@@ -8,10 +8,11 @@ public class RowImageText : MonoBehaviour
     [SerializeField] private Image    m_image;
     [SerializeField] private TMP_Text m_text;
     [SerializeField] private Image    m_image2;
-    [SerializeField] private string   m_imageColorKey  = "GeneralBright1";
-    [SerializeField] private string   m_textColorKey   = "GeneralBright1";
-    [SerializeField] private string   m_image2ColorKey = "GeneralBright1";
 
+    // 아이콘/텍스트 색상은 항상 이 Semantic 키로 통일 (개별 커스터마이징 사례 없어 필드 제거)
+    private const string IMAGE_COLOR_KEY = "GeneralDark1";
+    private const string TEXT_COLOR_KEY  = "Text.Dark1";
+    
     private void Awake()
     {
         if (m_image == null)
@@ -25,8 +26,8 @@ public class RowImageText : MonoBehaviour
     public void SetRow(string spriteName, string text)
     {
         SetImage(spriteName);
-        SetImageColor(CommonUtility.PaletteColor(m_imageColorKey));
-        SetTextColor(CommonUtility.PaletteColor(m_textColorKey));
+        SetImageColor(CommonUtility.PaletteColor(IMAGE_COLOR_KEY));
+        SetTextColor(CommonUtility.PaletteColor(TEXT_COLOR_KEY));
         SetTextWithString(text);
         if (m_image2 != null)
             m_image2.gameObject.SetActive(false);
@@ -45,7 +46,7 @@ public class RowImageText : MonoBehaviour
         Sprite sprite = UISpriteCache.Get(spriteName);
         if (sprite != null)
             m_image2.sprite = sprite;
-        m_image2.color = CommonUtility.PaletteColor(m_image2ColorKey);
+        m_image2.color = CommonUtility.PaletteColor(IMAGE_COLOR_KEY);
         m_image2.gameObject.SetActive(true);
     }
 

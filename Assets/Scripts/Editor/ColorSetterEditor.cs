@@ -29,20 +29,13 @@ public class ColorSetterEditor : Editor
 
             entry.graphic = (Graphic)EditorGUILayout.ObjectField(entry.graphic, typeof(Graphic), true, GUILayout.Width(180));
 
-            if (keyArray.Length > 0)
-            {
-                int idx = keys.IndexOf(entry.colorRole);
-                if (idx < 0) idx = 0;
-                int newIdx = EditorGUILayout.Popup(idx, keyArray);
-                entry.colorRole = keyArray[newIdx];
+            entry.colorRole = EditorGUILayout.TextField(entry.colorRole);
 
+            if (setter.palette != null && string.IsNullOrEmpty(entry.colorRole) == false)
+            {
                 Color preview = setter.palette.GetColor(entry.colorRole);
                 Rect r = GUILayoutUtility.GetRect(20, 18, GUILayout.Width(20));
                 EditorGUI.DrawRect(r, new Color(preview.r, preview.g, preview.b, 1f));
-            }
-            else
-            {
-                entry.colorRole = EditorGUILayout.TextField(entry.colorRole);
             }
 
             if (GUILayout.Button("✕", GUILayout.Width(24)))

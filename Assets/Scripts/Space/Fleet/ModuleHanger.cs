@@ -417,7 +417,9 @@ public class ModuleHanger : ModuleBase
         stats.totalWeapons = 1;
         // 함재기 데이터로부터 계산
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        stats.airAttack = moduleData.airAttack;
+        // airAttack은 함재기 1기당 공격력이라, 이 격납고의 총 화력(1기당 공격력 × 함재기 수)으로 환산
+        // — 함선에 격납고가 여러 개면 상위(ModuleBody)에서 단순 합산되므로 여기서 미리 곱해둬야 총 화력 합산이 맞음
+        stats.airAttack = moduleData.airAttack * moduleData.airCount;
         stats.airCount = moduleData.airCount;
 
         return stats;

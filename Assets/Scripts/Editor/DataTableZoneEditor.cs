@@ -921,12 +921,12 @@ public class DataTableZoneEditor : Editor
 
     #region 함대 스폰 위치 일괄 자동 배치 (존별 "함대 위치 자동 배치" 도구를 zoneStart~zoneEnd 전체에 반복 적용)
 
-    private int  m_genFleetZoneStart  = 10;
+    private int  m_genFleetZoneStart  = 1;
     private int  m_genFleetZoneEnd    = 100;
     private int  m_genFleetSeed       = 20260709;
     private float m_genFleetXRange    = 11000f;
     private float m_genFleetZRange    = 5000f;
-    private float m_genFleetMinZGap   = 1500f;
+    private float m_genFleetMinZGap   = 2500f;
     private int  m_genFleetStageCount = 10;
     private bool m_genFleetFoldout    = false;
 

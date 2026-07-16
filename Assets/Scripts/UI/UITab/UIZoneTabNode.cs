@@ -10,9 +10,6 @@ public class UIZoneTabNode : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_label;
     [SerializeField] private Image m_bgImage;
 
-    [SerializeField] private Color m_colorSelected = new Color(1f, 0.8f, 0.2f, 1f);
-    [SerializeField] private Color m_colorNormal   = Color.white;
-    
     private int m_groupIndex;
 
     public void SetData(int groupIndex, Action<int> onClicked)
@@ -31,15 +28,19 @@ public class UIZoneTabNode : MonoBehaviour
         }
     }
 
-    public void SetSelected(bool selected)
+    // selected(현재 보고 있는 존) > cleared(클리어 완료) > locked(진입 불가) > 그 외(진행 중) 순으로 색 결정
+    public void SetState(bool selected, bool isCleared, bool isLocked)
     {
-        Color labelColor = selected ? m_colorSelected : m_colorNormal;
-        if (m_label != null) m_label.color = labelColor;
+        string colorKey = "General";
+        if (selected == true)
+            colorKey = "Selected";
+        else if (isCleared == true)
+            colorKey = "Unlocked";
+        else if (isLocked == true)
+            colorKey = "Zone.Locked";
 
-        if (m_bgImage != null)
-        {
-            Color bg = labelColor;
-            m_bgImage.color = bg;
-        }
+        Color color = CommonUtility.PaletteColor(colorKey);
+        if (m_label != null)   m_label.color   = color;
+        if (m_bgImage != null) m_bgImage.color = color;
     }
 }

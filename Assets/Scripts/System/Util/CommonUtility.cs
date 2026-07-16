@@ -129,7 +129,7 @@ public static class CommonUtility
         }
         else if (moduleInfo.moduleType == EModuleType.hanger)
         {
-            stats.airAttack = moduleData.airAttack;             // 함재기 공격력
+            stats.airAttack = moduleData.airAttack * moduleData.airCount; // 함재기 1기당 공격력 × 함재기 수 = 이 격납고의 총 화력
             stats.airCount = moduleData.airCount;              // 함재기 수
             stats.totalWeapons = 1;
         }
@@ -319,6 +319,12 @@ public static class CommonUtility
     public static string FormatBigNumber(long value)
     {
         return FormatBigNumber((float)value);
+    }
+
+    // 세 자리마다 콤마로 구분된 전체 숫자 문자열 (축약 없음) — 자원 UI 등 전체 값을 그대로 보여줘야 할 때 사용
+    public static string FormatNumber(long value)
+    {
+        return value.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public static Color HexColor(string hex)

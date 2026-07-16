@@ -522,7 +522,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 151.13501, y: -190.86}
+  m_AnchoredPosition: {x: 400, y: -229.97}
   m_SizeDelta: {x: 0, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3969859062878126943
@@ -599,7 +599,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 151.13501, y: -125.86}
+  m_AnchoredPosition: {x: 400, y: -164.97}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8874910723368467574
@@ -823,6 +823,7 @@ GameObject:
   - component: {fileID: 5725711568506096527}
   - component: {fileID: 2269934703961384226}
   - component: {fileID: 5741106394339521301}
+  - component: {fileID: 202808674063704272}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -931,6 +932,26 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &202808674063704272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3304164571057751963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
+  m_IgnoreLayout: 0
+  m_MinWidth: 800
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &3559457881197151698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,8 +1237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
-  m_activeColorKey: GeneralBright1
-  m_inactiveColorKey: GeneralDark2
 --- !u!1 &4260668388836245021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,8 +1427,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 151.13501, y: -57.93}
-  m_SizeDelta: {x: 0, y: 55.86}
+  m_AnchoredPosition: {x: 400, y: -57.93}
+  m_SizeDelta: {x: 92.34, y: 55.86}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4868785058980810898
 CanvasRenderer:
@@ -1663,8 +1682,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 151.13501, y: -105.86}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 400, y: -105.86}
+  m_SizeDelta: {x: 202.27, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3667631248586655796
 CanvasRenderer:

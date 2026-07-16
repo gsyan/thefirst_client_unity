@@ -3,7 +3,7 @@ empty_text,,,
 ok,,OK,확인
 tab_fleet,,Fleet,함대
 tab_ship,,Ship,함선
-tab_exploration,,Exploration,탐사
+
 tab_research,,Research,연구
 fleet_status,,Fleet Status,함대 정보
 fleet_ship_count,,Ships,함선 수
@@ -13,11 +13,8 @@ fleet_btn_ship_manage,,Manage Ship,함선 관리
 fleet_btn_ship_repair,,Focus Repair,집중 수리
 research_complete,,Research complete,연구가 완료되었습니다
 error_insufficient_resources,,Insufficient resources,자원이 부족합니다
-ship_status,,Ship Status,함선 정보
 ship_module_weapon_count,,Weapons,무장 수
 ship_module_engine_count,,Engines,엔진 수
-ship_module_select_text,,Module Select,모듈 선택
-ship_module_status,,Module Status,모듈 정보
 ship_module_type,,Type,타입
 ship_module_unlock,,Unlock Module,모듈 잠금 해제
 ship_module_levelup,,Level up Module,모듈 레벨업
@@ -62,24 +59,6 @@ camera_focus_enemy_fleet,,Enemy Fleet,적 함대
 camera_focus_center,,Center,중앙
 camera_focus_my_fleet,,My Fleet,내 함대
 level,,Level,레벨
-attack,,Att,공격
-health,,HP,체력
-speed,,Spd,이동
-repair,,Repair,정비
-air_attack,,Att(Air),공격(함)
-air_health,,HP(Air),체력(함)
-air_speed,,Spd(Air),이동(함)
-air_count,,Aircrafts,함재기수
-air_launch_count,,Launch,발진수
-module_type_engine_placeholder,,Engine(Locked),엔진(잠김)
-module_type_beam_placeholder,,Beam(Locked),빔(잠김)
-module_type_missile_placeholder,,Missile(Locked),미사일(잠김)
-module_type_hanger_placeholder,,Hanger(Locked),격납고(잠김)
-module_type_body,,Body,함체
-module_type_engine,,Engine,엔진
-module_type_beam,,Beam,빔
-module_type_missile,,Missile,미사일
-module_type_hanger,,Hanger,격납고
 mineral_amount,,Mineral,광물
 cost_text,,Cost,비용
 details_text,,Details,세부정보
@@ -154,6 +133,7 @@ UITabRank_refresh,,REFRESH({0}/{1}),새로고침({0}/{1})
 UITabRank_MyInfo,,MY INFO,내 정보
 UITabRank_Pvp,,PVP,PVP
 UITabRank_Exploration,,EXPLORATION,탐사
+UITabExploration_exploration,,EXPLORATION,탐사
 UITabExploration_TryZone,,Enter,입장
 UITabExploration_PreviousStageRequired,,Clear the previous stage first.,이전 스테이지를 먼저 클리어해야 합니다.
 UITabExploration_RetreatTitle,,Retreat,퇴각
@@ -161,6 +141,10 @@ UITabExploration_RetreatConfirm,,Retreat to the previous zone?,이전 구역으�
 UITabPvp_RetreatTitle,,Retreat,퇴각
 UITabPvp_RetreatConfirm,,Retreat from the PvP battle?,PvP 전투에서 퇴각하시겠습니까?
 require_level_compare,,Lv.{0} (Current Lv.{1}),Lv.{0} (현재 Lv.{1})
+UITabShip_ShipNameHeader,,SHIP {0},함선 {0}
+UITabShip_ModuleSelectSectionText,,Module Select,모듈 선택
+UITabShip_ModuleStatusSectionText,,Module Status,모듈 상태
+UITabShip_ModuleEnhanceSectionText,,Module Enhancement,모듈 강화
 UITabShip_ModuleReset,,Reset Module,모듈 초기화
 UITabShip_ModuleResetConfirm,,Reset this module and recover invested resources?,이 모듈에 투자한 자원을 회수하고 초기화하시겠습니까?
 UITabShip_GradeUp,,UPGRADE,업그래이드
@@ -168,6 +152,32 @@ UITabShip_Require,,REQUIRE,요구조건
 UITabShip_GradeDown,,REFUND,회수
 UITabShip_LevelUp,,LV UP,레벨업
 UITabShip_LevelDown,,REFUND,회수
+Simple_Attack,,Att,공격
+Simple_Health,,HP,체력
+Simple_Speed,,Spd,이동
+Simple_Repair,,Repair,정비
+Simple_AirAttack,,Aircraft Att,함재기 공격
+Simple_AirHealth,,Aircraft HP,함재기 체력
+Simple_AirSpeed,,Aircraft Spd,함재기 이동
+Simple_AirCount,,Aircrafts,함재기 수
+Simple_AirLaunchCount,,Launch,함재기 출격수
+Simple_AttackFireCount,,Fire Count,발사 수
+Simple_AttackCool,,Cooldown,쿨타임
+Simple_ProjectileSpeed,,Projectile Speed,발사체 속도
+Simple_SilenceTime,,Silence Time,침묵 시간
+Simple_AirMaintenanceTime,,Aircraft Maintenance Time,함재기 정비 시간
+Simple_AirAttackRange,,Aircraft Attack Range,함재기 공격 범위
+Simple_AirAttackCool,,Aircraft Attack Cooldown,함재기 공격 쿨타임
+Simple_AirAmmo,,Aircraft Ammo,함재기 탄약
+Simple_AirAdditionalDelay,,Additional Delay,추가 지연
+module_type_beam_placeholder,,Beam(Locked),빔(잠김)
+module_type_missile_placeholder,,Missile(Locked),미사일(잠김)
+module_type_hanger_placeholder,,Hanger(Locked),격납고(잠김)
+module_type_body,,Body,함체
+module_type_engine,,Engine,엔진
+module_type_beam,,Beam,빔
+module_type_missile,,Missile,미사일
+module_type_hanger,,Hanger,격납고
 UIButton_Reset,,RESET,초기화
 Simple_WatchAD,,WATCH AD,광고 보기
 Simple_NoThanks,,NO THANKS,건너뛰기

@@ -12,8 +12,9 @@ public class ConfirmPopupConfig
     public string title;
     public string message;
     public string detailText;
-    public List<(string icon, string value, Color color)> resultRows;
+    public List<(string icon, string value, Color? color)> resultRows;
     public bool resultRowsVertical; // true면 컨테이너당 1개씩 세로 배치
+    public string resultSectionTitle = "RESULT"; // resultRows 섹션 헤더 텍스트
     public List<(string icon, string value)> pvpOpponentRows; // STATUS 섹션 (GeneralBright1 색)
     public RequireStruct require;
     public CostStruct cost;
@@ -107,7 +108,7 @@ public class UIPopupConfirm : UIPopupBase
         }
 
         int sectionIdx = 0;
-        BuildResultRows(config.resultRows, config.resultRowsVertical, ref sectionIdx);
+        BuildResultRows(config.resultRows, config.resultRowsVertical, config.resultSectionTitle, ref sectionIdx);
         BuildPvpOpponentSection(config.pvpOpponentRows, ref sectionIdx);
         bool requireMet = BuildRequireSection(config.require, ref sectionIdx);
         bool canAfford  = BuildCostSection(config.cost, ref sectionIdx);
@@ -208,14 +209,14 @@ public class UIPopupConfirm : UIPopupBase
         return canAfford;
     }
 
-    private void BuildResultRows(List<(string icon, string value, Color color)> rows, bool vertical, ref int sectionIdx)
+    private void BuildResultRows(List<(string icon, string value, Color? color)> rows, bool vertical, string title, ref int sectionIdx)
     {
         if (rows == null || rows.Count <= 0)
             return;
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
         sec.gameObject.name = "UISection_Result";
-        sec.SetTitle("RESULT");
+        sec.SetTitle(title);
         if (vertical)
             sec.SetRowsVertical(rows);
         else
@@ -242,7 +243,7 @@ public class UIPopupConfirm : UIPopupBase
         sec.gameObject.name = "UISection_Refund";
         sec.SetTitle("REFUND");
         sec.HideAllRows();
-        sec.SetRowText(0, CommonUtility.FormatBigNumber(refundAmount));
+        sec.SetRow(0, "mineral_basic", CommonUtility.PaletteColor("Mineral"), CommonUtility.FormatBigNumber(refundAmount));
     }
 
     private void BuildRewardSection(List<int> amounts, int mineralVipMultiplier, ref int sectionIdx)

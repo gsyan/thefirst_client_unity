@@ -41,6 +41,7 @@ public class UIPanelSpace : UIPanelBase
             if (tabData.tabPanel.TryGetComponent<UITabShip>(out _) == false) continue;
             m_moduleTabIndex = i;
             m_shipTabRect = tabData.tabPanel.GetComponent<RectTransform>();
+            tabData.deferReveal = true; // 카메라 viewport 애니메이션이 끝난 뒤에 보이도록 — Co_AnimateViewport에서 RevealDeferredPanel 호출
         }
 
         EventManager.Subscribe_TabSelectionChanged(OnTabSelectionChanged);
@@ -263,6 +264,8 @@ public class UIPanelSpace : UIPanelBase
         }
 
         SetViewport(open, openCameraWidth);
+        if (open == true)
+            m_tabSystem.RevealDeferredPanel(m_moduleTabIndex);
         m_viewportCoroutine = null;
     }
 

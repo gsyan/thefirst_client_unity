@@ -17,6 +17,9 @@ public class TabData
     [Header("Callbacks")]
     public System.Action onActivate;
     public System.Action onDeactivate;
+    // true면 ActivatePanel에서 패널을 바로 보여주지 않고 대기 — 외부에서 RevealDeferredPanel()을 호출해야 실제로 보임
+    // (예: UIPanelSpace가 카메라 viewport 애니메이션이 끝난 뒤에 보여주기 위해 UITabShip에 사용)
+    public bool deferReveal = false;
 }
 
 public class TabSystem : MonoBehaviour
@@ -164,21 +167,35 @@ public class TabSystem : MonoBehaviour
         var tab = tabs[tabIndex];
         currentActiveTab = tabIndex;
 
-        if (tab.tabPanel != null)
-        {
-            if (useAnimation)
-            {
-                StopPanelCoroutine(tab.tabPanel);
-                m_animCoroutines[tab.tabPanel] = StartCoroutine(AnimatePanel(tab.tabPanel, true));
-            }
-            else
-            {
-                tab.tabPanel.SetActive(true);
-            }
-        }
+        if (tab.tabPanel != null && tab.deferReveal == false)
+            RevealPanelNow(tab);
 
         tab.onActivate?.Invoke();
         EventManager.Trigger_TabSelectionChanged(m_systemName, tabIndex);
+    }
+
+    private void RevealPanelNow(TabData tab)
+    {
+        if (useAnimation)
+        {
+            StopPanelCoroutine(tab.tabPanel);
+            m_animCoroutines[tab.tabPanel] = StartCoroutine(AnimatePanel(tab.tabPanel, true));
+        }
+        else
+        {
+            tab.tabPanel.SetActive(true);
+        }
+    }
+
+    // deferReveal=true인 탭을 실제로 보여줌 — 해당 탭이 여전히 활성 상태일 때만 동작(대기 중 다른 탭으로 전환된 경우 무시)
+    public void RevealDeferredPanel(int tabIndex)
+    {
+        if (tabIndex < 0 || tabIndex >= tabs.Count) return;
+        if (currentActiveTab != tabIndex) return;
+
+        var tab = tabs[tabIndex];
+        if (tab.tabPanel == null) return;
+        RevealPanelNow(tab);
     }
 
     private void DeactivatePanel(int tabIndex)

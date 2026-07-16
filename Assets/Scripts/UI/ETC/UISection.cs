@@ -114,7 +114,7 @@ public class UISection : MonoBehaviour
         }
     }
 
-    public void SetRows(List<(string icon, string value, Color color)> rows)
+    public void SetRows(List<(string icon, string value, Color? color)> rows)
     {
         if (m_containers == null) return;
         int globalIdx = 0;
@@ -128,13 +128,17 @@ public class UISection : MonoBehaviour
             for (int r = 0; r < count && globalIdx < rows.Count; r++, globalIdx++)
             {
                 m_containers[c].SetRow(r, rows[globalIdx].icon, rows[globalIdx].value);
-                m_containers[c].SetRowImageColor(r, rows[globalIdx].color);
-                m_containers[c].SetRowTextColor(r, rows[globalIdx].color);
+                // color가 null이면 RowImageText 자체 기본색(GeneralDark1/Text.Dark1)을 그대로 둠
+                if (rows[globalIdx].color.HasValue)
+                {
+                    m_containers[c].SetRowImageColor(r, rows[globalIdx].color.Value);
+                    m_containers[c].SetRowTextColor(r, rows[globalIdx].color.Value);
+                }
             }
         }
     }
 
-    public void SetRowsVertical(List<(string icon, string value, Color color)> rows)
+    public void SetRowsVertical(List<(string icon, string value, Color? color)> rows)
     {
         if (m_containers == null) return;
         for (int i = 0; i < m_containers.Length; i++)
@@ -144,8 +148,12 @@ public class UISection : MonoBehaviour
             m_containers[i].gameObject.SetActive(hasContent);
             if (hasContent == false) continue;
             m_containers[i].SetRow(0, rows[i].icon, rows[i].value);
-            m_containers[i].SetRowImageColor(0, rows[i].color);
-            m_containers[i].SetRowTextColor(0, rows[i].color);
+            // color가 null이면 RowImageText 자체 기본색(GeneralDark1/Text.Dark1)을 그대로 둠
+            if (rows[i].color.HasValue)
+            {
+                m_containers[i].SetRowImageColor(0, rows[i].color.Value);
+                m_containers[i].SetRowTextColor(0, rows[i].color.Value);
+            }
         }
     }
 

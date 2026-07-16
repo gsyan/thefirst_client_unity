@@ -85,6 +85,9 @@ MonoBehaviour:
   - key: Slate300
     primitiveKey: 
     color: {r: 0.5803922, g: 0.6392157, b: 0.72156864, a: 1}
+  - key: Slate500
+    primitiveKey: 
+    color: {r: 0.4513617, g: 0.51093584, b: 0.5943396, a: 1}
   - key: Slate900
     primitiveKey: 
     color: {r: 0.14509805, g: 0.20784314, b: 0.28627452, a: 1}
@@ -214,6 +217,9 @@ MonoBehaviour:
   - key: Text.Accent
     primitiveKey: Teal300
     color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Text.Dark1
+    primitiveKey: Slate300
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Text.Heading
     primitiveKey: Teal300
     color: {r: 1, g: 1, b: 1, a: 1}
@@ -235,3 +241,6 @@ MonoBehaviour:
   - key: UnlockedSelected
     primitiveKey: Teal400
     color: {r: 0.1764706, g: 0.9098039, b: 0.627451, a: 1}
+  - key: Zone.Locked
+    primitiveKey: Slate500
+    color: {r: 0.4513617, g: 0.51093584, b: 0.5943396, a: 1}

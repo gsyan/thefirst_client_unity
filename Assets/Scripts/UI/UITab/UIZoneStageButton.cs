@@ -14,16 +14,14 @@ public class UIZoneStageButton : MonoBehaviour
     [SerializeField] private Button              m_enterButton;
     [SerializeField] private Image               m_enterButtonBg;
     [SerializeField] private TMP_Text            m_enterButtonText;
-
-    [Header("상태별 색상")]
-    [SerializeField] private Color m_colorNotCleared = new(1.0f, 0.0f, 0.0f, 0.8f);
-    [SerializeField] private Color m_colorCleared    = new(0.3f, 0.7f, 0.3f, 0.9f);
+    [SerializeField] private Image               m_lockIcon;
 
     private Camera  m_worldCamera;
     private Vector3 m_worldPos;
     private bool    m_isExpanded;
     private ZoneStageConfig m_config;
     private System.Action m_onEnter;
+    private EZoneState m_currentState;
 
     public ZoneStageConfig ZoneStageConfig { get; private set; }
     public bool IsExpanded => m_isExpanded;
@@ -44,9 +42,16 @@ public class UIZoneStageButton : MonoBehaviour
                 SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
                 if (m_isExpanded == false)
                     onToggle?.Invoke();
-                else
+                else if (m_currentState != EZoneState.Locked)
                     m_onEnter?.Invoke();
             });
+        }
+
+        if (m_lockIcon != null)
+        {
+            Sprite lockSprite = UISpriteCache.Get("padlock");
+            if (lockSprite != null) m_lockIcon.sprite = lockSprite;
+            m_lockIcon.gameObject.SetActive(false);
         }
 
         CacheRewardTexts();
@@ -78,7 +83,11 @@ public class UIZoneStageButton : MonoBehaviour
         if (m_rewardTexts.Length > 0)
         {
             if (config.mineralClearReward > 0)
+            {
                 m_rewardTexts[0].SetTextWithString(CommonUtility.FormatBigNumber(config.mineralClearReward));
+                m_rewardTexts[0].SetImageColor(CommonUtility.PaletteColor("Mineral"));
+                m_rewardTexts[0].SetTextColor(CommonUtility.PaletteColor("Text.Dark1"));
+            }
             else
                 m_rewardTexts[0].Hide();
         }
@@ -86,7 +95,10 @@ public class UIZoneStageButton : MonoBehaviour
         if (m_rewardTexts.Length > 1)
         {
             if (config.expClearReward > 0)
+            {
                 m_rewardTexts[1].SetTextWithInt(config.expClearReward);
+                m_rewardTexts[1].SetTextColor(CommonUtility.PaletteColor("Text.Dark1"));
+            }
             else
                 m_rewardTexts[1].Hide();
         }
@@ -94,7 +106,11 @@ public class UIZoneStageButton : MonoBehaviour
         if (m_rewardTexts.Length > 2)
         {
             if (config.modulePointClearReward > 0 && isCleared == false)
+            {
                 m_rewardTexts[2].SetTextWithInt(config.modulePointClearReward);
+                m_rewardTexts[2].SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
+                m_rewardTexts[2].SetTextColor(CommonUtility.PaletteColor("Text.Dark1"));
+            }
             else
                 m_rewardTexts[2].Hide();
         }
@@ -124,6 +140,7 @@ public class UIZoneStageButton : MonoBehaviour
         if (m_enterButtonText != null && m_config != null)
             m_enterButtonText.text = m_config.zoneName;
         if (m_labelAnchorImage != null)     m_labelAnchorImage.enabled = false;
+        RebuildLayout();
     }
 
     private void OnEnable()
@@ -141,9 +158,27 @@ public class UIZoneStageButton : MonoBehaviour
 
     public void SetStateUIZoneStageButton(EZoneState state)
     {
-        Color color = state == EZoneState.Cleared ? m_colorCleared : m_colorNotCleared;
+        Color color = CommonUtility.PaletteColor("General");
+        if (state == EZoneState.Cleared)
+            color = CommonUtility.PaletteColor("Unlocked");
+        else if (state == EZoneState.Locked)
+            color = CommonUtility.PaletteColor("Zone.Locked");
+
+        m_currentState = state;
+
         if (m_labelAnchorImage != null) m_labelAnchorImage.color = color;
         if (m_enterButtonBg != null)    m_enterButtonBg.color = color;
+        if (m_detailText != null)       m_detailText.color = color;
+        if (m_enterButtonText != null)
+        {
+            m_enterButtonText.color = color;
+            m_enterButtonText.gameObject.SetActive(state != EZoneState.Locked);
+        }
+        if (m_lockIcon != null)
+        {
+            m_lockIcon.gameObject.SetActive(state == EZoneState.Locked);
+            m_lockIcon.color = CommonUtility.PaletteColor("Zone.Locked");
+        }
     }
 
     public void SetMyFleetMarker(bool active)
@@ -167,5 +202,20 @@ public class UIZoneStageButton : MonoBehaviour
         m_rectTransform.position = new Vector3(screenPos.x, screenPos.y, 0f);
     }
 
-    public Vector3 GetScreenPosition() => m_rectTransform != null ? m_rectTransform.position : Vector3.zero;
+    // 연결선이 LabelAnchor 박스 경계(실제로 눈에 보이는 라벨 영역)에 정확히 닿도록 — screen-space 사각 경계 반환
+    // ContentSizeFitter/VerticalLayoutGroup 때문에 크기가 방금 바뀌었을 수 있어 즉시 리빌드 후 측정한다
+    public Rect GetLabelAnchorScreenRect()
+    {
+        if (m_labelAnchorImage == null) return default;
+        RectTransform labelAnchorRect = m_labelAnchorImage.rectTransform;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(labelAnchorRect);
+
+        Vector3[] corners = new Vector3[4];
+        labelAnchorRect.GetWorldCorners(corners); // Screen Space Overlay에서는 world corner == screen 좌표
+        float xMin = Mathf.Min(corners[0].x, corners[2].x);
+        float xMax = Mathf.Max(corners[0].x, corners[2].x);
+        float yMin = Mathf.Min(corners[0].y, corners[2].y);
+        float yMax = Mathf.Max(corners[0].y, corners[2].y);
+        return new Rect(xMin, yMin, xMax - xMin, yMax - yMin);
+    }
 }
