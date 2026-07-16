@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.ivanmurzak.unity.mcp": {
-      "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=/Unity-MCP-Plugin/Packages/com.ivanmurzak.unity.mcp",
+      "version": "https://github.com/IvanMurzak/Unity-MCP.git?path=/Unity-MCP-Plugin/Packages/com.ivanmurzak.unity.mcp#0.84.1",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -9,7 +9,7 @@
         "com.unity.modules.uielements": "1.0.0",
         "extensions.unity.playerprefsex": "2.1.5"
       },
-      "hash": "3f0bf57475cc6032b3361d1f0f344fd6fd3d5545"
+      "hash": "7a145ea76d18abc2a7ae567e37fa9b8393ace4ba"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

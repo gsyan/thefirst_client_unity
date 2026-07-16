@@ -442,11 +442,4 @@ public static class EventManager
     public static void TriggerVipStatusChanged() { OnVipStatusChanged?.Invoke(); }
     public static void Subscribe_VipStatusChanged(Action callback)   { OnVipStatusChanged += callback; }
     public static void Unsubscribe_VipStatusChanged(Action callback) { OnVipStatusChanged -= callback; }
-
-    // VIP 버튼 확장 (UIVipButton.Open 시 발행 — 탭 닫기 등 다른 UI 반응용)
-    public static event Action OnVipButtonOpened;
-    public static void Trigger_VipButtonOpened() { OnVipButtonOpened?.Invoke(); }
-    public static void Subscribe_VipButtonOpened(Action callback)   { OnVipButtonOpened += callback; }
-    public static void Unsubscribe_VipButtonOpened(Action callback) { OnVipButtonOpened -= callback; }
-
 }

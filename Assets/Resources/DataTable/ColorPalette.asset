@@ -80,8 +80,11 @@ MonoBehaviour:
     primitiveKey: 
     color: {r: 0.40392157, g: 0.05490196, b: 0.09803922, a: 1}
   - key: Rose500
-    primitiveKey: 
+    primitiveKey:
     color: {r: 1, g: 0.43529412, b: 0.5686275, a: 1}
+  - key: RoseDark
+    primitiveKey:
+    color: {r: 0.45, g: 0.19588236, b: 0.25588235, a: 1}
   - key: Slate300
     primitiveKey: 
     color: {r: 0.5803922, g: 0.6392157, b: 0.72156864, a: 1}

@@ -74,9 +74,20 @@ public class ShipSelector : MonoBehaviour
 
         if (m_statRows != null && m_statRows.Length > 0)
         {
-            m_statRows[0].SetTextWithString($"{CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}");
-            for (int i = 1; i < m_statRows.Length; i++)
-                m_statRows[i].Hide();
+            m_statRows[0].SetRow("bubbling-beam", $"{CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}");
+
+            // 함재기 보유 함선만 함재기 공격력/수 표시, 나머지는 숨김
+            bool hasAircraft = Ship.m_spaceShipStatsOrg.airCount > 0;
+            if (hasAircraft == true && m_statRows.Length > 2)
+            {
+                m_statRows[1].SetRow("strafe", $"{CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.airAttack)}");
+                m_statRows[2].SetRow("jet-fighter", $"{Ship.m_spaceShipStatsOrg.airCount}");
+            }
+            else
+            {
+                for (int i = 1; i < m_statRows.Length; i++)
+                    m_statRows[i].Hide();
+            }
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipStatsContainer as RectTransform);

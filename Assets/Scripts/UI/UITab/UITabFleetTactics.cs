@@ -237,6 +237,9 @@ public class UITabFleetTactics : UITabBase
             RequestChangeFormation(k_formationByIndex[idx]);
     }
 
+    // 잠김 상태에서는 색상을 Locked로 표시하고, 기본 진형(균형=index 0)에 체크마크를 초기값으로 표시
+    private const int LOCKED_DEFAULT_FORMATION_IDX = 0;
+
     private void RefreshFormationButtonLock()
     {
         if (m_formationButtons == null) return;
@@ -244,11 +247,15 @@ public class UITabFleetTactics : UITabBase
         if (IsFormationLocked() == true)
         {
             for (int i = 0; i < m_formationButtons.Length; i++)
-                m_formationButtons[i].SetSelected(false);
+                m_formationButtons[i].SetLockedVisual(i == LOCKED_DEFAULT_FORMATION_IDX);
             m_selectedFormationIdx = -1;
         }
         else
         {
+            // 잠김→해제 전환 시 Locked 색이 남아있는 버튼들을 정상 색으로 복원
+            for (int i = 0; i < m_formationButtons.Length; i++)
+                m_formationButtons[i].SetSelected(false);
+
             int currentIdx = GetFormationIndex(m_playerFleet.m_currentFormationType);
             m_suppressFormationCallback = true;
             SelectFormation(currentIdx);

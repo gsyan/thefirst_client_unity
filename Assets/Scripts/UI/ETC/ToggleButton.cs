@@ -10,6 +10,7 @@ public class ToggleButton : MonoBehaviour
 
     private Color     m_colorSelected;
     private Color     m_colorUnselected;
+    private Color     m_colorLocked;
     private TMP_Text  m_text;
     private TMP_Text  m_textDescription;
     private Image     m_checkmark;
@@ -17,8 +18,9 @@ public class ToggleButton : MonoBehaviour
 
     private void Awake()
     {
-        m_colorSelected   = CommonUtility.PaletteColor("GeneralBright1");
-        m_colorUnselected = CommonUtility.PaletteColor("GeneralDark1");
+        m_colorSelected   = CommonUtility.PaletteColor("Rose500");
+        m_colorUnselected = CommonUtility.PaletteColor("RoseDark");
+        m_colorLocked     = CommonUtility.PaletteColor("State.Disabled");
 
         if (button == null)
             button = GetComponentInChildren<Button>();
@@ -31,10 +33,15 @@ public class ToggleButton : MonoBehaviour
         m_text            = texts.Length >= 1 ? texts[0] : null;
         m_textDescription = texts.Length >= 2 ? texts[1] : null;
 
+        // 텍스트는 선택/잠김 상태와 무관하게 항상 Text.Dark1 고정 (색상 전환 대상에서 제외)
+        Color textColor = CommonUtility.PaletteColor("Text.Dark1");
+        if (m_text != null)            m_text.color            = textColor;
+        if (m_textDescription != null) m_textDescription.color = textColor;
+
         var all = button.GetComponentsInChildren<Graphic>(true);
         var list = new System.Collections.Generic.List<Graphic>(all.Length);
         foreach (var g in all)
-            if (g != m_checkmark) list.Add(g);
+            if (g != m_checkmark && g != (Graphic)m_text && g != (Graphic)m_textDescription) list.Add(g);
         m_graphics = list.ToArray();
     }
 
@@ -57,5 +64,12 @@ public class ToggleButton : MonoBehaviour
         Color c = selected ? m_colorSelected : m_colorUnselected;
         foreach (var g in m_graphics) g.color = c;
         if (m_checkmark != null) m_checkmark.gameObject.SetActive(selected);
+    }
+
+    // 잠김 상태 표시 — 색은 Locked 팔레트로 고정, 체크마크는 잠김 상태에서의 기본값 표시용으로 별도 제어
+    public void SetLockedVisual(bool checkmarkOn)
+    {
+        foreach (var g in m_graphics) g.color = m_colorLocked;
+        if (m_checkmark != null) m_checkmark.gameObject.SetActive(checkmarkOn);
     }
 }

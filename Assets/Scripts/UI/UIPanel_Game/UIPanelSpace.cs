@@ -100,7 +100,6 @@ public class UIPanelSpace : UIPanelBase
         CameraController.Instance.SetShipSelectionEnabled(true);
         EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
-        EventManager.Subscribe_VipButtonOpened(OnVipButtonOpened);
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
         CheckAndClaimPendingStageRewards();
@@ -113,7 +112,6 @@ public class UIPanelSpace : UIPanelBase
         CameraController.Instance.SetShipSelectionEnabled(false);
         EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
         EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
-        EventManager.Unsubscribe_VipButtonOpened(OnVipButtonOpened);
         EventManager.Unsubscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Unsubscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
         m_tabSystem.ForceDeactivateTab();
@@ -236,11 +234,6 @@ public class UIPanelSpace : UIPanelBase
     {
         if (m_tabSystem.GetCurrentActiveTab() >= 0)
             m_tabSystem.SwitchToTab(-1);
-    }
-
-    private void OnVipButtonOpened()
-    {
-        m_tabSystem.CloseAllTabs();
     }
 
     // 카메라 viewport width 애니메이션
