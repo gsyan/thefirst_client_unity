@@ -2,6 +2,7 @@
 // 환경변수로 keystore 정보, 버전 코드 등을 주입받음
 using System;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 
 public static class BuildScript
@@ -36,6 +37,11 @@ public static class BuildScript
 
         Debug.Log($"[Build] PlayerSettings.bundleVersion (after) = '{PlayerSettings.bundleVersion}'");
         Debug.Log($"[Build] PlayerSettings.bundleVersionCode (after) = {PlayerSettings.Android.bundleVersionCode}");
+
+        // Unity-MCP(개발용 AI 에디터 툴) 패키지 리졸버가 플랫폼 전환 시 컴파일 에러를 막으려고
+        // UNITY_MCP_READY를 Android 등 모든 빌드 타겟에 자동으로 걸어두는데, 이 상태로 실제 빌드하면
+        // 에디터 전용 어셈블리가 플레이어 빌드에 딸려 들어가려다 컴파일 에러가 남 — 실제 빌드 직전에 여기서 확실히 제거
+        StripUnityMcpReadyDefine(NamedBuildTarget.Android);
 
         // 메모리 변경을 디스크에 저장해야 Bee 증분 빌드가 새 값으로 재빌드함
         AssetDatabase.SaveAssets();
@@ -91,6 +97,25 @@ public static class BuildScript
             Debug.LogError($"[Build] 실패: {report.summary.result}");
             EditorApplication.Exit(1);
         }
+    }
+
+    // Unity-MCP 리졸버(RecompileGate)가 걸어둔 UNITY_MCP_READY define을 이 빌드 타겟에서만 제거 —
+    // 개발용 AI 에디터 툴 코드가 실제 플레이어 빌드에 절대 포함되면 안 되므로 빌드 스크립트 자체에서 강제
+    static void StripUnityMcpReadyDefine(NamedBuildTarget target)
+    {
+        const string readyDefine = "UNITY_MCP_READY";
+
+        PlayerSettings.GetScriptingDefineSymbols(target, out string[] defines);
+        if (Array.IndexOf(defines, readyDefine) < 0)
+        {
+            Debug.Log($"[Build] {readyDefine} 없음 - 제거 불필요");
+            return;
+        }
+
+        var filtered = new System.Collections.Generic.List<string>(defines);
+        filtered.Remove(readyDefine);
+        PlayerSettings.SetScriptingDefineSymbols(target, filtered.ToArray());
+        Debug.Log($"[Build] {readyDefine} 제거 완료 (Unity-MCP는 개발용 에디터 툴 - 빌드에 포함 안 함)");
     }
 
     static string[] GetEnabledScenes()
