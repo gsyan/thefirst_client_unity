@@ -1,3 +1,6 @@
+// Unity-MCP 패키지(개발자 로컬 전용 AI 에디터 툴)가 설치되어 있을 때만 컴파일 — 미설치 환경(Jenkins CI 등)에선
+// UNITY_MCP_READY define 자체가 없어서 이 파일 전체가 컴파일 대상에서 빠짐 (Packages/UNITY_MCP_SETUP.md 참고)
+#if UNITY_MCP_READY
 #nullable enable
 using System;
 using System.ComponentModel;
@@ -46,3 +49,4 @@ namespace com.IvanMurzak.Unity.MCP.Editor.API
         }
     }
 }
+#endif
