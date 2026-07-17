@@ -79,7 +79,8 @@ public class UIPanelCameraView : UIPanelBase
         if (m_speedButton != null)
         {
             m_speedButton.GetButton().onClick.AddListener(OnSpeedButtonClicked);
-            m_speedButton.SetActiveColorKey("Action.Secondary");
+            m_speedButton.SetActiveColorKey("Vip");
+            m_speedButton.SetInactiveColorKey("VipDark");
         }
 
         RefreshSpeedLabel(GameSpeedController.CurrentSpeed);
@@ -180,8 +181,8 @@ public class UIPanelCameraView : UIPanelBase
     {
         if (m_tacticsButtons == null) return;
 
-        Color colorOn  = CommonUtility.PaletteColor("GeneralBright1");
-        Color colorOff = CommonUtility.PaletteColor("GeneralDark1");
+        Color colorOn  = CommonUtility.PaletteColor("Mineral");
+        Color colorOff = CommonUtility.PaletteColor("MineralDark");
 
         for (int i = 0; i < m_tacticsButtons.Length; i++)
             m_tacticsButtons[i].SetColor((options & (1 << i)) != 0 ? colorOn : colorOff);
@@ -198,7 +199,12 @@ public class UIPanelCameraView : UIPanelBase
         if (m_retreatButton != null)
         {
             m_retreatButton.onClick.RemoveAllListeners();
-            if (state == EUnitState.BattleExploration)
+
+            // Tutorial_Exploration 중 첫 실제 전투는 후퇴 기능을 막고 끝까지 진행시킴
+            bool isTutorialExploration = TutorialActionGate.IsTutorial("Tutorial_Exploration");
+            m_retreatButton.interactable = isTutorialExploration == false;
+
+            if (isTutorialExploration == false && state == EUnitState.BattleExploration)
                 m_retreatButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); EventManager.TriggerRetreatExploration(); });
             else if (state == EUnitState.BattlePvp)
                 m_retreatButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); EventManager.TriggerRetreatPvp(); });
@@ -280,6 +286,7 @@ public class UIPanelCameraView : UIPanelBase
         {
             string label = LocalizationManager.Instance.Get("exploration_zone_list_name");
             m_zoneNameText.text = $"{label} {zoneName}";
+            m_zoneNameText.color = CommonUtility.PaletteColor("Text.Dark1");
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_zoneNameText.transform.parent as RectTransform);
         }
     }

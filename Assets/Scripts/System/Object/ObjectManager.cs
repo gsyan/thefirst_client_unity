@@ -349,9 +349,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         NetworkManager.Instance.StartHeartbeat();
         UIManager.Instance.ShowMainPanel();
 
-        // 튜토리얼이 끝난 뒤(또는 애초에 없던 경우) 진입하는 지점이므로 여기서만 일일 보상 팝업 체크
+        // 온보딩(ONBOARDING_TUTORIAL_SEQUENCE) 완료 후 실제 함대로 최초 진입한 시점 — 이미 완료된 경우 StartTutorial이 즉시 no-op
+        // 일일 보상 팝업(달력)이 화면을 가리고 있으면 튜토리얼이 탐사 버튼을 가리켜도 안 보이므로,
+        // 팝업이 닫힌 뒤(또는 애초에 안 떴으면 즉시)에 시작하도록 콜백으로 순서를 맞춤
         if (DailyBonusManager.Instance != null)
-            DailyBonusManager.Instance.CheckAndShowDailyRewardPopup();
+            DailyBonusManager.Instance.CheckAndShowDailyRewardPopup(() => TutorialManager.Instance.StartTutorial("Tutorial_Exploration"));
+        else
+            TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
     }
 
     private int GetInitialZoneIndex()
@@ -597,7 +601,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         commander.UpdateModulePoint(TUTORIAL_MODULE_POINT);
     }
 
-    // 튜토리얼 중 함선 추가(4→5번째) 시 지휘 레벨 요구사항에 막히지 않도록 임시로 레벨 지급
+    // 튜토리얼 중 함선 추가(4→5번째) 및 지크프리트 함대(T14 기함 포함)의 모듈 레벨업이 지휘 레벨 요구사항에
+    // 막히지 않도록 임시로 레벨 지급 — 함선 수 요구 레벨과 T14 서브타입 상한 요구 레벨 중 더 높은 쪽을 지급
     private void GrantTutorialCommanderLevel()
     {
         Commander commander = DataManager.Instance.m_currentCommander;
@@ -605,7 +610,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         SpaceFleet siegfriedFleet = GetMyFleet();
         int nextShipCount = siegfriedFleet != null ? siegfriedFleet.m_ships.Count + 1 : 1;
-        int requiredLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevel(nextShipCount);
+        int shipCountRequiredLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevel(nextShipCount);
+        int subtypeTierRequiredLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevelForSubtypeTier(TutorialCinematicController.SIEGFRIED_FLAGSHIP_GRADE);
+        int requiredLevel = Mathf.Max(shipCountRequiredLevel, subtypeTierRequiredLevel);
 
         m_realCommanderLevelBackup = commander.GetCommanderLevel();
         commander.UpdateCommanderLevel(requiredLevel);

@@ -1,3 +1,3 @@
 ﻿stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
-first_play_ai_hi,Tutorial_FirstPlay_AiFirstHello,AnyClick,,,False,Auto,0,0,800,0,0,-500,0,,,None,90,3,none
-first_play_siegfried_intro,Tutorial_FirstPlay_SiegfriedAddShip,AnyClick,,,False,Auto,0,0,800,0,0,-500,0,,,None,90,3,none
+first_play_ai_hi,Tutorial_FirstPlay_AiFirstHello,AnyClick,,,False,Auto,0,0,900,0,0,-500,0,,,None,90,3,none
+first_play_siegfried_intro,Tutorial_FirstPlay_SiegfriedAddShip,AnyClick,,,False,Auto,0,0,900,0,0,-500,0,,,None,90,3,none

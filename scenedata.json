@@ -1,0 +1,29 @@
+
+Run Tool
+  Tool: scene-get-data
+  URL: http://localhost:28068/api/tools/scene-get-data
+  Auth: from config
+──────────────────────────────────────────────────
+Calling scene-get-data...
+SUCCESS: scene-get-data completed
+SUCCESS: Response:
+{
+  "status": "success",
+  "structured": {
+    "result": {
+      "Name": "SpaceScene",
+      "IsLoaded": true,
+      "IsDirty": false,
+      "IsSubScene": false,
+      "IsValidScene": true,
+      "RootCount": 12,
+      "path": "Assets/Scenes/SpaceScene.unity",
+      "buildIndex": 2,
+      "instanceID": -1876746740
+    }
+  }
+}
+
+  Update available: 0.83.1 → 0.84.1
+  Run npm i -g unity-mcp-cli to update
+

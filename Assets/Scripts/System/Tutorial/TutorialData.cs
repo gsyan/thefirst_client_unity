@@ -16,22 +16,27 @@ public enum ETutorialTrigger
 }
 
 // 커스텀 조건 타입
+// [주의] 이 enum 값은 TutorialData .asset(ScriptableObject)에 정수로 직렬화되어 저장됨 —
+// 항목을 중간에서 삭제/재배치하면 뒤따르는 모든 값의 번호가 밀려서 이미 저장된 .asset들의
+// conditionType이 전부 엉뚱한 값으로 깨진다(실제로 CinematicOpeningBattle 삭제 시 이 사고가 났었음).
+// 항목을 없앨 땐 이름만 지우지 말고 그 번호를 반드시 명시적으로 비워둘 것.
 public enum ETutorialConditionType
 {
-    None,
-    CameraRotationChanged,    // 카메라 누적 회전량 체크
-    CameraZoomChanged,        // 카메라 줌 인/아웃 변화량 체크
-    ModuleSelected,           // 아무 모듈 선택
-    ModuleSelectedCount,      // 서로 다른 모듈 N개 선택
-    SpecificModuleSelected,   // 특정 모듈 선택
-    CinematicOpeningBattle,   // 튜토리얼 오프닝 관전 전투 연출 시작 (TutorialCinematicController.SpawnOpeningBattle)
-    ShipArrivedAtFormation,   // TutorialManager.SetPendingNewShip으로 등록된 함선이 대형 자리에 도착할 때까지 대기
-    EscapeShipDistanceFromFlagship, // 지크프리트 기함 뒤에서 탈출 함선을 스폰하고, conditionThreshold 거리만큼 멀어질 때까지 대기
-    EnemyWave1, // step2 — 5개 함대([7,3,3] 구성), 10초 간격 스폰, 전멸까지 대기
-    EnemyWave2, // step4 — 10개 함대([9,5,5,3,3] 구성), 5초 간격 스폰. 애초에 전멸이 불가능한 물량 — 다음 스텝 전환은 FlagshipHealthBelowPercent가 별도로 감시
-    FlagshipHealthBelowPercent, // 내 함대 기함 체력 비율이 conditionThreshold(0~1) 이하로 떨어질 때까지 대기
-    SiegfriedFlagshipExplosion, // step7 — 카메라를 탈출 함선으로 전환 + 지크프리트 기함 폭발 연출 후 conditionThreshold초 대기, 완료되면 다음 스텝
-    CleanupEscapeFleet, // Tutorial_FirstPlay_Complete 마지막 스텝 — 탈출선 연출(워프이펙트/이동) 정리 후 즉시 다음 스텝(=튜토리얼 종료)
+    None = 0,
+    CameraRotationChanged = 1,    // 카메라 누적 회전량 체크
+    CameraZoomChanged = 2,        // 카메라 줌 인/아웃 변화량 체크
+    ModuleSelected = 3,           // 아무 모듈 선택
+    ModuleSelectedCount = 4,      // 서로 다른 모듈 N개 선택
+    SpecificModuleSelected = 5,   // 특정 모듈 선택
+    // 6 = (구)CinematicOpeningBattle, 삭제됨 — 기존 .asset 직렬화 값 호환을 위해 번호 재사용 금지
+    ShipArrivedAtFormation = 7,   // TutorialManager.SetPendingNewShip으로 등록된 함선이 대형 자리에 도착할 때까지 대기
+    EscapeShipDistanceFromFlagship = 8, // 지크프리트 기함 뒤에서 탈출 함선을 스폰하고, conditionThreshold 거리만큼 멀어질 때까지 대기
+    EnemyWave1 = 9, // step2 — 5개 함대([7,3,3] 구성), 10초 간격 스폰, 전멸까지 대기
+    EnemyWave2 = 10, // step4 — 10개 함대([9,5,5,3,3] 구성), 5초 간격 스폰. 애초에 전멸이 불가능한 물량 — 다음 스텝 전환은 FlagshipHealthBelowPercent가 별도로 감시
+    FlagshipHealthBelowPercent = 11, // 내 함대 기함 체력 비율이 conditionThreshold(0~1) 이하로 떨어질 때까지 대기
+    SiegfriedFlagshipExplosion = 12, // step7 — 카메라를 탈출 함선으로 전환 + 지크프리트 기함 폭발 연출 후 conditionThreshold초 대기, 완료되면 다음 스텝
+    CleanupEscapeFleet = 13, // Tutorial_FirstPlay_Complete 마지막 스텝 — 탈출선 연출(워프이펙트/이동) 정리 후 즉시 다음 스텝(=튜토리얼 종료)
+    WaitForZoneBattleEnd = 14, // Tutorial_Exploration — 실제 Zone 전투(EventManager.ZoneStageBattleEnd)가 끝날 때까지 대기, 승패 무관하게 진행
 }
 
 // 화살표 방향 — Auto면 TutorialArrow가 화면 여유 공간을 보고 자동 결정, 그 외는 강제 지정

@@ -63,6 +63,10 @@ MonoBehaviour:
     m_Key: Tutorial_FirstPlay_LevelUpModuleBeam
     m_Metadata:
       m_Items: []
+  - m_Id: 5376173907247104
+    m_Key: Tutorial_FirstPlay_LevelUpModuleBeamResult
+    m_Metadata:
+      m_Items: []
   - m_Id: 1368444058337280
     m_Key: Tutorial_FirstPlay_TouchModuleMissile
     m_Metadata:
@@ -73,6 +77,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1368444066725888
     m_Key: Tutorial_FirstPlay_LevelUpModuleMissile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5376173940801536
+    m_Key: Tutorial_FirstPlay_LevelUpModuleMissileResult
     m_Metadata:
       m_Items: []
   - m_Id: 1368444075114496
@@ -87,12 +95,20 @@ MonoBehaviour:
     m_Key: Tutorial_FirstPlay_LevelUpModuleHanger
     m_Metadata:
       m_Items: []
+  - m_Id: 5376173940801537
+    m_Key: Tutorial_FirstPlay_LevelUpModuleHangerResult
+    m_Metadata:
+      m_Items: []
   - m_Id: 1368444087697408
     m_Key: Tutorial_FirstPlay_TouchModuleBody
     m_Metadata:
       m_Items: []
   - m_Id: 1368444091891712
     m_Key: Tutorial_FirstPlay_UpgradeModuleBody
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5376173940801538
+    m_Key: Tutorial_FirstPlay_UpgradeModuleBodyResult
     m_Metadata:
       m_Items: []
   - m_Id: 1368444096086016
@@ -149,6 +165,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1726800233103362
     m_Key: Tutorial_MineralUnlock_ExplainCost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5392725658435584
+    m_Key: Tutorial_Exploration_Intro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5392725700378624
+    m_Key: Tutorial_Exploration_CheckResource
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5392725700378625
+    m_Key: Tutorial_Exploration_Enter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5392725700378626
+    m_Key: Tutorial_Exploration_Confirm
     m_Metadata:
       m_Items: []
   m_Metadata:

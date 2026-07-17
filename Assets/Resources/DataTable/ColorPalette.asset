@@ -34,6 +34,9 @@ MonoBehaviour:
   - key: Blue700
     primitiveKey: 
     color: {r: 0.2, g: 0.2, b: 1, a: 1}
+  - key: Blue900
+    primitiveKey: 
+    color: {r: 0.14117648, g: 0.21960784, b: 0.3019608, a: 1}
   - key: Bronze600
     primitiveKey: 
     color: {r: 1, g: 0.5764706, b: 0.43529412, a: 1}
@@ -140,10 +143,10 @@ MonoBehaviour:
     primitiveKey: Teal300
     color: {r: 0, g: 1, b: 0.51, a: 1}
   - key: DailyBonus.Future
-    primitiveKey:
+    primitiveKey: 
     color: {r: 0.05, g: 0.04, b: 0.07, a: 1}
   - key: DailyBonus.Passed
-    primitiveKey:
+    primitiveKey: 
     color: {r: 0.04, g: 0.09, b: 0.07, a: 1}
   - key: General
     primitiveKey: Teal500
@@ -248,8 +251,11 @@ MonoBehaviour:
     primitiveKey: Red600
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Tutorial
-    primitiveKey: Amber300
+    primitiveKey: Blue500
     color: {r: 0.8867924, g: 0.7862094, b: 0.11294055, a: 1}
+  - key: Tutorial.Dark
+    primitiveKey: Blue900
+    color: {r: 0.1254902, g: 0.29411766, b: 0.4745098, a: 1}
   - key: Unlocked
     primitiveKey: Teal800
     color: {r: 0.106532566, g: 0.3962264, b: 0.28468654, a: 1}
@@ -263,7 +269,7 @@ MonoBehaviour:
     primitiveKey: Amber700
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: VipDark2
-    primitiveKey:
+    primitiveKey: 
     color: {r: 0.32, g: 0.22, b: 0.03, a: 1}
   - key: Zone.Locked
     primitiveKey: Slate500

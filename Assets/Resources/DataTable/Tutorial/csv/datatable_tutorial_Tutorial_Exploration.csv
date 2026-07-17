@@ -1,0 +1,6 @@
+stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
+step1,Tutorial_Exploration_Intro,TargetClick,,ExplorationButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step2,Tutorial_Exploration_CheckResource,AnyClick,1-1,RewardContainer,True,Auto,0,100,0,0,0,-500,0,,,None,90,3,none
+step3,Tutorial_Exploration_Enter,TargetClick,1-1,Button,True,Auto,0,100,0,0,0,-500,0,,,None,90,3,none
+step4,Tutorial_Exploration_Confirm,TargetClick,UIPopupConfirm,ConfirmButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step5,,Custom,,,False,Auto,0,0,800,0,0,-500,0,,,WaitForZoneBattleEnd,90,3,none

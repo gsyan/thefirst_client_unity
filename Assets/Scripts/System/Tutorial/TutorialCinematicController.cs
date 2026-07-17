@@ -49,6 +49,9 @@ public static class TutorialCinematicController
 
         return new ShipInfo
         {
+            // id를 안 채우면 전부 기본값 0이 되어 SpaceFleet.FindShip(id)가 함대 내 모든 함선을 기함(첫 매치)으로 착각함
+            // — 서버 등록 함선의 양수 id와 절대 겹치지 않도록 음수로 지정, 같은 함대 안에서 positionIndex 기준 유일성만 보장하면 충분
+            id = -(positionIndex + 1),
             shipName = $"CinematicShip_{positionIndex}",
             positionIndex = positionIndex,
             bodies = new List<ModuleBodyInfo> { body },
@@ -65,9 +68,13 @@ public static class TutorialCinematicController
         return new FleetInfo { fleetName = fleetName, ships = ships };
     }
 
+    // 지크프리트 기함 등급 — 이 등급의 모듈을 레벨업하려면 커맨더가 이 등급까지 서브타입 상한이 열려있어야 함
+    // (ObjectManager.GrantTutorialCommanderLevel이 참조)
+    public const int SIEGFRIED_FLAGSHIP_GRADE = 14;
+
     // 지크프리트 함대 초기 구성 — 기함 T14, 1번함 T8, 2번함 T6, 3번함 T4 (모두 슬롯 풀 오픈)
     // 4번함(유저가 튜토리얼 중 직접 추가)은 이 함대에 포함하지 않음 — ExecuteAddShipTutorialOnly가 별도 추가
-    private static readonly int[] k_siegfriedGradeLevels = { 14, 8, 6, 4 };
+    private static readonly int[] k_siegfriedGradeLevels = { SIEGFRIED_FLAGSHIP_GRADE, 8, 6, 4 };
 
     public static FleetInfo BuildSiegfriedFleetInfo(string fleetName)
     {
@@ -132,6 +139,8 @@ public static class TutorialCinematicController
         SpaceFleet fleet = fleetObj.AddComponent<SpaceFleet>();
         fleet.InitializeSpaceFleet(fleetInfo, ETeam.TeamB, EFleetSource.fleet_source_cinematic, EUnitState.Move);
         ObjectManager.Instance.GetTeamFleets(ETeam.TeamB).Add(fleet);
+        // TEMP DEBUG — 튜토리얼 적함대 잔존 버그 추적용, 확인 끝나면 제거
+        Debug.Log($"[Tutorial][DEBUG] SpawnEnemyWaveFleet: {fleetObj.name} spawned, instanceID={fleet.GetInstanceID()}, TeamB count={ObjectManager.Instance.GetTeamFleets(ETeam.TeamB).Count}");
 
         // 지크프리트 기함은 다른 함선이 모두 전멸하기 전까지 공격 대상에서 제외
         foreach (SpaceShip ship in fleet.m_ships)
@@ -171,51 +180,11 @@ public static class TutorialCinematicController
     {
         if (fleet == null) return;
 
+        // TEMP DEBUG — 튜토리얼 적함대 잔존 버그 추적용, 확인 끝나면 제거
+        Debug.Log($"[Tutorial][DEBUG] DespawnCinematicFleet: {fleet.name} instanceID={fleet.GetInstanceID()} team={fleet.m_team}");
+
         ObjectManager.Instance.GetTeamFleets(fleet.m_team).Remove(fleet);
         Object.Destroy(fleet.gameObject);
-    }
-
-    // 튜토리얼 오프닝 전투 스폰 — A함대(TeamA) vs B/C/D 3개 함대(모두 TeamB, A를 협공) 배치 후 교전 시작
-    // gradeLevel/shipCount는 임시값 — 실제 수치는 기획 확정 후 조정
-    public static SpaceFleet SpawnOpeningBattle()
-    {
-        const int gradeLevel = 14;
-        const int shipCountA = 9;
-        const int shipCountEnemy = 9;
-        const float enemyDistance = 300f;
-
-        Vector3 posA = Vector3.zero;
-        SpaceFleet fleetA = SpawnCinematicFleet(BuildCinematicFleetInfo("CinematicFleetA", gradeLevel, shipCountA), ETeam.TeamA, posA, Quaternion.identity);
-        foreach (SpaceShip ship in fleetA.m_ships)
-        {
-            if (ship != null)
-                ship.m_targetingRule = ETargetingRule.FlagshipLast;
-        }
-
-        // B/C/D를 A 전방 부채꼴로 배치 (좌/정면/우)
-        float[] enemyAngles = { -30f, 0f, 30f };
-        string[] enemyNames = { "CinematicFleetB", "CinematicFleetC", "CinematicFleetD" };
-        List<SpaceFleet> enemyFleets = new List<SpaceFleet>();
-
-        for (int i = 0; i < enemyNames.Length; i++)
-        {
-            Vector3 dirFromA = Quaternion.Euler(0f, enemyAngles[i], 0f) * Vector3.forward;
-            Vector3 enemyPos = posA + dirFromA * enemyDistance;
-            Quaternion enemyRot = Quaternion.LookRotation((posA - enemyPos).normalized);
-
-            SpaceFleet enemyFleet = SpawnCinematicFleet(BuildCinematicFleetInfo(enemyNames[i], gradeLevel, shipCountEnemy), ETeam.TeamB, enemyPos, enemyRot);
-            enemyFleets.Add(enemyFleet);
-        }
-
-        fleetA.SetFleetState(EUnitState.BattleExploration);
-        fleetA.StartCombat();
-        foreach (SpaceFleet enemyFleet in enemyFleets)
-        {
-            enemyFleet.SetFleetState(EUnitState.BattleExploration);
-            enemyFleet.StartCombat();
-        }
-
-        return fleetA;
     }
 
     private static EModuleSubType ParseSubType(string name)

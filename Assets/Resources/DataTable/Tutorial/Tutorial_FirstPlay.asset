@@ -25,7 +25,7 @@ MonoBehaviour:
     showArrow: 0
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 0}
-    textBoxSize: {x: 800, y: 0}
+    textBoxSize: {x: 900, y: 0}
     textBoxPosition: {x: 0, y: -500}
     autoNextDelay: 0
     preActionPanelName: 
@@ -42,7 +42,7 @@ MonoBehaviour:
     showArrow: 0
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 0}
-    textBoxSize: {x: 800, y: 0}
+    textBoxSize: {x: 900, y: 0}
     textBoxPosition: {x: 0, y: -500}
     autoNextDelay: 0
     preActionPanelName: 

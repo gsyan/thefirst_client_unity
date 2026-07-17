@@ -32,18 +32,23 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
     }
 
     // VIP 일일 미네랄 팝업 — 튜토리얼 진행 중에는 호출하면 안 됨(ObjectManager.StartNormalPlay에서만 호출)
-    public void CheckAndShowDailyRewardPopup()
+    // onClosed: 팝업이 실제로 떴다가 닫힌 시점(또는 애초에 뜨지 않은 경우 즉시) 호출 — 이 팝업이 화면을 막고 있는 동안
+    // 다른 튜토리얼(Tutorial_Exploration 등)이 UI를 가리키지 않도록 시작 시점을 늦추는 용도
+    public void CheckAndShowDailyRewardPopup(System.Action onClosed = null)
     {
         TryClaimDailyBonus(result =>
         {
-            if (result == null) return;
-            if (result.available == false) return;
+            if (result == null || result.available == false)
+            {
+                onClosed?.Invoke();
+                return;
+            }
 
             var commander = DataManager.Instance.m_currentCommander;
             if (commander != null)
                 commander.UpdateMineral(result.mineralRemain);
 
-            UIManager.Instance.ShowDailyBonusPopup(result.grantedMineral);
+            UIManager.Instance.ShowDailyBonusPopup(result.grantedMineral, onClosed);
         });
     }
 

@@ -79,6 +79,19 @@ public class DataTableCommanderLevel : ScriptableObject
         return minLevel == int.MaxValue ? 1 : minLevel;
     }
 
+    // subtypeTier(모듈 등급)까지 서브타입 상한을 열어주는 최소 커맨더 레벨 반환
+    public int GetRequiredCommanderLevelForSubtypeTier(int subtypeTier)
+    {
+        int minLevel = int.MaxValue;
+        for (int i = 0; i < commanderLevelDataList.Count; i++)
+        {
+            var data = commanderLevelDataList[i];
+            if (data.subtypeLevel >= subtypeTier && data.commanderLevel < minLevel)
+                minLevel = data.commanderLevel;
+        }
+        return minLevel == int.MaxValue ? 1 : minLevel;
+    }
+
     private void RebuildCache()
     {
         int max = 1;

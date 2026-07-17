@@ -63,4 +63,11 @@ public class UIButtonHasChildren : MonoBehaviour
         if (GetButton().interactable == true)
             SetInteractable(true);
     }
+
+    public void SetInactiveColorKey(string colorKey)
+    {
+        m_inactiveColorKey = colorKey;
+        if (GetButton().interactable == false)
+            SetInteractable(false);
+    }
 }

@@ -37,16 +37,9 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private Quaternion m_lastCameraRotation;
     private float m_cameraZoomAccumulated;
     private float m_lastCameraZoom;
-    private SpaceFleet m_cinematicFleetA;
     private SpaceShip m_pendingNewShip; // ShipArrivedAtFormation 조건이 대기할 함선 (UITabFleet에서 함선 생성 직후 등록)
-    private SpaceFleet m_escapeFleet;   // EscapeShipDistanceFromFlagship 조건이 스폰/추적하는 탈출 함대 — 이후 실제 유저 함대의 기함이 됨
-    private Coroutine m_escapeFleetMoveCoroutine; // m_customConditionCoroutine과 별개로 관리 — step 전환(StopTutorialCondition)에 끊기지 않고 계속 이동
-    private float m_escapeFleetSpeedMultiplier = 1f; // 워프 연출 시 MoveEscapeFleetForward 재시작 없이 속도만 배가
-    private WarpEffectShip m_escapeWarpEffect; // Tutorial_FirstPlay_Complete까지 유지했다가 CleanupEscapeFleet()에서 정지
-    private const float ESCAPE_SHIP_SPEED = 10f;
-    private readonly List<SpaceFleet> m_enemyWaveFleets = new List<SpaceFleet>(); // EnemyWave1/2 조건이 스폰한 적 함대 목록
-    private readonly Dictionary<int, SpaceFleet> m_waveIndexOccupancy = new Dictionary<int, SpaceFleet>(); // positionIndex → 그 자리를 차지한 함대 (전멸하면 자리 반납)
-    private static readonly WaitForSeconds k_cameraTransitionWait = new WaitForSeconds(3f); // 카메라가 탈출 함선으로 넘어갈 시간
+    private TutorialBattleCinematic m_battleCinematic; // Tutorial_FirstPlay_Battle/Complete 전용 전투 연출(웨이브/탈출함선/기함폭발) 상태 및 로직 — OnInitialize에서 생성
+    private System.Action<bool> m_zoneBattleEndHandler; // WaitForZoneBattleEnd 조건용 — StopTutorialCondition에서 해제
 
     // 튜토리얼 완료 이벤트 (tutorialId 전달)
     public event System.Action<string> OnTutorialCompleted;
@@ -60,6 +53,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     protected override void OnInitialize()
     {
         EventManager.Subscribe_ConsumeAnyClick(ConsumeAnyClick);
+        m_battleCinematic = new TutorialBattleCinematic(this);
     }
 
     // SelectCommander 응답에 이미 포함된 진행도를 그대로 주입 — SpaceScene 진입 전 미리 확보 가능(별도 네트워크 호출 불필요)
@@ -207,24 +201,10 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         OnTutorialSkipRequested?.Invoke();
     }
 
-    // 스킵 등으로 튜토리얼을 도중에 끝낼 때 남아있는 연출용 함대(탈출선/오프닝 전투/적 웨이브)를 정리
+    // 스킵 등으로 튜토리얼을 도중에 끝낼 때 남아있는 연출용 함대(탈출선/적 웨이브)를 정리
     private void CleanupTutorialCombatArtifacts()
     {
-        CleanupEscapeFleet();
-
-        if (m_cinematicFleetA != null)
-        {
-            TutorialCinematicController.DespawnCinematicFleet(m_cinematicFleetA);
-            m_cinematicFleetA = null;
-        }
-
-        foreach (SpaceFleet fleet in m_enemyWaveFleets)
-        {
-            if (fleet != null)
-                TutorialCinematicController.DespawnCinematicFleet(fleet);
-        }
-        m_enemyWaveFleets.Clear();
-        m_waveIndexOccupancy.Clear();
+        m_battleCinematic.Cleanup();
     }
 
     // 특정 UI 클릭 시 호출
@@ -419,18 +399,23 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     {
         StopTutorialCondition();
 
+        // 이 스텝을 시작한 시점의 스텝 인덱스를 소유권 토큰으로 캡처 — 조건 코루틴이 나중에 깨어났을 때
+        // 이미 다른 스텝으로 넘어가 있다면(m_currentStepIndex가 달라짐) RequestNextStep()이 조용히 무시함.
+        // 코루틴을 일일이 추적/취소하는 대신 "advance 시도" 자체를 스텝 소유권으로 검증하는 구조.
+        int ownerStepIndex = m_currentStepIndex;
+
         switch (step.conditionType)
         {
             case ETutorialConditionType.CameraRotationChanged:
                 m_cameraRotationAccumulated = 0f;
                 m_lastCameraRotation = Camera.main.transform.rotation;
-                m_customConditionCoroutine = StartCoroutine(CheckCameraRotation(step.conditionThreshold));
+                m_customConditionCoroutine = StartCoroutine(CheckCameraRotation(step.conditionThreshold, ownerStepIndex));
                 break;
 
             case ETutorialConditionType.CameraZoomChanged:
                 m_cameraZoomAccumulated = 0f;
                 m_lastCameraZoom = CameraController.Instance.CurrentZoom;
-                m_customConditionCoroutine = StartCoroutine(CheckCameraZoom(step.conditionThreshold));
+                m_customConditionCoroutine = StartCoroutine(CheckCameraZoom(step.conditionThreshold, ownerStepIndex));
                 break;
 
             case ETutorialConditionType.ModuleSelected:
@@ -440,61 +425,37 @@ public class TutorialManager : MonoSingleton<TutorialManager>
                 EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelected);
                 break;
 
-            case ETutorialConditionType.CinematicOpeningBattle:
-                m_cinematicFleetA = TutorialCinematicController.SpawnOpeningBattle();
-                if (m_cinematicFleetA != null && CameraController.Instance != null)
-                    CameraController.Instance.SetTargetOfCameraController(m_cinematicFleetA.transform);
-                // 완료 조건(A함대 거의 전멸 감지)은 다음 단계에서 구현 — 지금은 스킵 버튼으로만 다음 스텝 진행
+            case ETutorialConditionType.ShipArrivedAtFormation:
+                m_customConditionCoroutine = StartCoroutine(CheckShipArrivedAtFormation(ownerStepIndex));
                 break;
 
-            case ETutorialConditionType.ShipArrivedAtFormation:
-                m_customConditionCoroutine = StartCoroutine(CheckShipArrivedAtFormation());
+            case ETutorialConditionType.WaitForZoneBattleEnd:
+                m_zoneBattleEndHandler = (isVictory) => RequestNextStep(ownerStepIndex);
+                EventManager.Subscribe_ZoneStageBattleEnd(m_zoneBattleEndHandler);
                 break;
 
             case ETutorialConditionType.EscapeShipDistanceFromFlagship:
-            {
-                SpaceFleet siegfriedFleet = ObjectManager.Instance.GetMyFleet();
-                m_escapeFleet = TutorialCinematicController.SpawnEscapeFleet(siegfriedFleet);
-                // 이동은 별도 코루틴으로 분리 — step 전환 시 StopTutorialCondition()에 끊기지 않고 계속 이동
-                m_escapeFleetMoveCoroutine = StartCoroutine(MoveEscapeFleetForward());
-                m_customConditionCoroutine = StartCoroutine(CheckEscapeShipDistance(siegfriedFleet, step.conditionThreshold));
-                break;
-            }
-
             case ETutorialConditionType.EnemyWave1:
-            {
-                // 지크프리트 기함은 전투 데미지로는 실제 파괴되지 않고 10%에서 버티다가 이후 연출(폭발)로만 파괴됨
-                SpaceFleet siegfriedFleet = ObjectManager.Instance.GetMyFleet();
-                SpaceShip flagship = siegfriedFleet != null ? siegfriedFleet.GetFlagship() : null;
-                if (flagship != null)
-                    flagship.m_minHealthRatio = 0.1f;
-
-                m_customConditionCoroutine = StartCoroutine(SpawnEnemyWaveRoutine(new int[] { 7, 3, 3 }, fleetCount: 5, spawnInterval: 5f));
-                break;
-            }
-
             case ETutorialConditionType.EnemyWave2:
-                // 애초에 전멸이 불가능한 물량 — 스폰 코루틴은 전멸 대기 없이 스폰만 담당하고,
-                // 다음 스텝 전환은 별도로 띄운 FlagshipHealthBelowPercent 코루틴이 담당
-                m_customConditionCoroutine = StartCoroutine(SpawnEnemyWaveRoutine(new int[] { 7, 4, 4, 3, 3 }, fleetCount: 10, spawnInterval: 5f, waitForFullClear: false));
-                StartCoroutine(CheckFlagshipHealthBelowPercent(0.1f));
-                break;
-
             case ETutorialConditionType.FlagshipHealthBelowPercent:
-                // conditionThreshold는 CSV에 비율(0~1)로 직접 기재 — 런타임 변환 없이 그대로 사용
-                m_customConditionCoroutine = StartCoroutine(CheckFlagshipHealthBelowPercent(step.conditionThreshold));
-                break;
-
             case ETutorialConditionType.SiegfriedFlagshipExplosion:
-                m_customConditionCoroutine = StartCoroutine(PlaySiegfriedFlagshipExplosion(step.conditionThreshold));
-                break;
-
             case ETutorialConditionType.CleanupEscapeFleet:
-                CleanupEscapeFleet();
-                NextStep();
+                // Tutorial_FirstPlay_Battle/Complete 전용 연출 조건 — TutorialBattleCinematic로 위임
+                m_battleCinematic.StartCondition(step, ownerStepIndex);
                 break;
         }
     }
+
+    // 조건 코루틴이 자기 소유 스텝에서만 다음 스텝으로 넘어가게 함 — ownerStepIndex가 코루틴 시작 시점에 캡처한
+    // 스텝 인덱스와 다르면(이미 다른 스텝으로 넘어간 뒤 뒤늦게 깨어난 코루틴) 조용히 무시하고 반환.
+    public void RequestNextStep(int ownerStepIndex)
+    {
+        if (ownerStepIndex != m_currentStepIndex) return;
+        NextStep();
+    }
+
+    // 조건 코루틴이 매 반복마다 "내 스텝이 아직 유효한지" 확인해서 스폰 등 부작용을 계속 이어갈지 판단하는 용도
+    public int GetCurrentStepIndex() => m_currentStepIndex;
 
     public void StopTutorialCondition()
     {
@@ -507,236 +468,30 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelected);
         m_selectedModuleIds.Clear();
         m_cameraRotationAccumulated = 0f;
+
+        if (m_zoneBattleEndHandler != null)
+        {
+            EventManager.Unsubscribe_ZoneStageBattleEnd(m_zoneBattleEndHandler);
+            m_zoneBattleEndHandler = null;
+        }
     }
 
     // m_pendingNewShip이 대형 자리에 도착(Moving 상태 해제)할 때까지 대기
-    private IEnumerator CheckShipArrivedAtFormation()
+    private IEnumerator CheckShipArrivedAtFormation(int ownerStepIndex)
     {
         while (m_isPlaying)
         {
             if (m_pendingNewShip != null && m_pendingNewShip.m_formationMoveState != FormationMoveState.Moving)
             {
                 m_pendingNewShip = null;
-                NextStep();
+                RequestNextStep(ownerStepIndex);
                 yield break;
             }
             yield return null;
         }
     }
 
-    // maxCount 범위 안에서 비어있는(한 번도 안 쓰였거나, 배정된 함대가 전멸한) 가장 낮은 인덱스를 반환 — 자리가 없으면 -1
-    private int GetLowestFreeWaveIndex(int maxCount)
-    {
-        for (int i = 0; i < maxCount; i++)
-        {
-            if (m_waveIndexOccupancy.TryGetValue(i, out SpaceFleet fleet) == false)
-                return i;
-            if (fleet == null || fleet.IsFleetAlive() == false)
-                return i;
-        }
-        return -1;
-    }
-
-    // fleetCount개의 적 함대를 spawnInterval 간격으로 순차 스폰한 뒤, waitForFullClear가 true면 전부 전멸할 때까지 대기 후 NextStep
-    // waitForFullClear가 false면 스폰만 담당하고 끝남 — 애초에 전멸 불가능한 물량용, 다음 스텝 전환은 별도 조건이 담당
-    // positionIndex 자리가 꽉 차 있으면(그레이드 그룹의 프리셋 수보다 fleetCount가 많은 경우) 빈 자리가 날 때까지 대기 후 스폰
-    private IEnumerator SpawnEnemyWaveRoutine(int[] shipGradeLevels, int fleetCount, float spawnInterval, bool waitForFullClear = true)
-    {
-        m_enemyWaveFleets.Clear();
-        m_waveIndexOccupancy.Clear();
-
-        int flagshipGrade = shipGradeLevels.Length > 0 ? shipGradeLevels[0] : 1;
-        int maxPositions = DataManager.Instance.m_dataTableZone.GetFleetPositionCount(flagshipGrade);
-
-        for (int i = 0; i < fleetCount; i++)
-        {
-            int positionIndex = GetLowestFreeWaveIndex(maxPositions);
-            while (m_isPlaying && positionIndex < 0)
-            {
-                yield return null;
-                positionIndex = GetLowestFreeWaveIndex(maxPositions);
-            }
-            if (!m_isPlaying) yield break;
-
-            SpaceFleet fleet = TutorialCinematicController.SpawnEnemyWaveFleet(shipGradeLevels, positionIndex);
-            if (fleet != null)
-            {
-                m_enemyWaveFleets.Add(fleet);
-                m_waveIndexOccupancy[positionIndex] = fleet;
-            }
-
-            if (i < fleetCount - 1)
-                yield return new WaitForSeconds(spawnInterval);
-        }
-
-        if (waitForFullClear == false) yield break;
-
-        while (m_isPlaying)
-        {
-            bool anyAlive = false;
-            foreach (SpaceFleet fleet in m_enemyWaveFleets)
-            {
-                if (fleet != null && fleet.IsFleetAlive())
-                {
-                    anyAlive = true;
-                    break;
-                }
-            }
-
-            if (anyAlive == false)
-            {
-                NextStep();
-                yield break;
-            }
-
-            yield return null;
-        }
-    }
-
-    // 내 함대(지크프리트) 기함 체력 비율이 ratioThreshold(0~1) 이하로 떨어질 때까지 대기
-    private IEnumerator CheckFlagshipHealthBelowPercent(float ratioThreshold)
-    {
-        while (m_isPlaying)
-        {
-            SpaceFleet siegfriedFleet = ObjectManager.Instance.GetMyFleet();
-            SpaceShip flagship = siegfriedFleet != null ? siegfriedFleet.GetFlagship() : null;
-            if (flagship != null && flagship.IsAlive() == true)
-            {
-                float healthRatio = flagship.GetHealthRatio();
-                if (healthRatio <= ratioThreshold)
-                {
-                    NextStep();
-                    yield break;
-                }
-            }
-
-            yield return null;
-        }
-    }
-
-    // 카메라를 탈출 함선으로 전환하고, 지크프리트 기함을 연출로 파괴한 뒤 waitSeconds초 대기 후 다음 스텝
-    private IEnumerator PlaySiegfriedFlagshipExplosion(float waitSeconds)
-    {
-        SpaceFleet siegfriedFleet = ObjectManager.Instance.GetMyFleet();
-        SpaceShip flagship = siegfriedFleet != null ? siegfriedFleet.GetFlagship() : null;
-
-        if (m_escapeFleet != null && CameraController.Instance != null)
-        {
-            CameraController.Instance.SetTargetOfCameraController(m_escapeFleet.transform);
-
-            // 탈출선 정면 기준 좌로 10도, 위로 10도 꺾인 각도 + 그 함선의 최대 줌
-            float escapeYaw = m_escapeFleet.transform.eulerAngles.y;
-            CameraController.Instance.SetTargetRotation(escapeYaw + 180f + 30f, +30f);
-
-            SpaceShip escapeShip = m_escapeFleet.GetFlagship();
-            if (escapeShip != null && escapeShip.m_moduleBodys.Count > 0 && escapeShip.m_moduleBodys[0] != null)
-            {
-                CameraController.Instance.ApplyZoomRangeFromShip(escapeShip);
-                CameraController.Instance.SetTargetZoom(escapeShip.m_moduleBodys[0].m_cameraMaxZoom);
-            }
-        }
-
-        // 카메라가 탈출 함선으로 넘어갈 시간을 벌어준 뒤 기함 폭발
-        yield return k_cameraTransitionWait;
-
-        if (flagship != null)
-            flagship.DestroyForCinematic();
-
-        // 워프 배속(SpaceFleet.SpawnApproachSpeedMult, 기존 워프 진입과 동일한 배율)으로 가속 + 워프 이펙트
-        // 탈출선은 화면 밖으로 사라지는 연출용일 뿐 실제 함대로 승격하지 않음 — Tutorial_FirstPlay_Complete까지 그대로 날아가다가
-        // CleanupEscapeFleet()(StartNormalPlay 직전)에서 한 번에 정리됨
-        SpaceShip escapeFlagship = m_escapeFleet != null ? m_escapeFleet.GetFlagship() : null;
-        if (escapeFlagship != null)
-        {
-            m_escapeFleetSpeedMultiplier = m_escapeFleet.SpawnApproachSpeedMult;
-
-            if (escapeFlagship.TryGetComponent(out m_escapeWarpEffect) == false)
-            {
-                m_escapeWarpEffect = escapeFlagship.gameObject.AddComponent<WarpEffectShip>();
-                m_escapeWarpEffect.InitializeWarpEffect();
-            }
-            m_escapeWarpEffect.StartFleetWarpIn();
-
-            // 카메라 lerp 추적 속도로는 워프 가속을 못 따라가 화면 밖으로 벗어나므로, 이 구간만 위치를 매 프레임 그대로 스냅
-            if (CameraController.Instance != null)
-                CameraController.Instance.SetInstantFollow(true);
-        }
-
-        yield return new WaitForSeconds(waitSeconds);
-
-        // 튜토리얼 전투를 위해 존재했던 적 함대/발사체/함재기 전부 정리 (탈출선/워프 이펙트/이동은 유지)
-        ObjectManager.Instance.RemoveAllEnemyFleets();
-        ObjectManager.Instance.CleanupAllProjectiles();
-        ObjectManager.Instance.DestroyAllAircraft();
-
-        // 지크프리트 잔존 함대만 여기서 제거 — 탈출선은 Tutorial_FirstPlay_Complete가 끝날 때까지 유지
-        ObjectManager.Instance.DestroyTutorialFleet(siegfriedFleet);
-
-        NextStep();
-    }
-
-    // Tutorial_FirstPlay_Complete까지 끝난 뒤(StartNormalPlay 직전) 탈출선/워프이펙트/이동 코루틴을 한 번에 정리
-    public void CleanupEscapeFleet()
-    {
-        if (m_escapeWarpEffect != null)
-        {
-            m_escapeWarpEffect.StopWarp();
-            m_escapeWarpEffect = null;
-        }
-
-        if (CameraController.Instance != null)
-            CameraController.Instance.SetInstantFollow(false);
-
-        if (m_escapeFleetMoveCoroutine != null)
-        {
-            StopCoroutine(m_escapeFleetMoveCoroutine);
-            m_escapeFleetMoveCoroutine = null;
-        }
-
-        if (m_escapeFleet != null)
-        {
-            TutorialCinematicController.DespawnCinematicFleet(m_escapeFleet);
-            m_escapeFleet = null;
-        }
-    }
-
-    // 탈출 함선을 계속 기존 방향/속도로 전진시킴 — step 전환과 무관하게 별도 코루틴으로 유지
-    private IEnumerator MoveEscapeFleetForward()
-    {
-        while (m_isPlaying && m_escapeFleet != null)
-        {
-            m_escapeFleet.transform.position += m_escapeFleet.transform.forward * (ESCAPE_SHIP_SPEED * m_escapeFleetSpeedMultiplier * Time.deltaTime);
-            yield return null;
-        }
-    }
-
-    // 기함과의 거리가 threshold 이상 벌어질 때까지 대기 (이동 자체는 MoveEscapeFleetForward가 담당)
-    private IEnumerator CheckEscapeShipDistance(SpaceFleet siegfriedFleet, float threshold)
-    {
-        while (m_isPlaying)
-        {
-            if (m_escapeFleet == null || siegfriedFleet == null)
-            {
-                yield return null;
-                continue;
-            }
-
-            SpaceShip flagship = siegfriedFleet.GetFlagship();
-            if (flagship != null)
-            {
-                float sqrDistance = (m_escapeFleet.transform.position - flagship.transform.position).sqrMagnitude;
-                if (sqrDistance >= threshold * threshold)
-                {
-                    NextStep();
-                    yield break;
-                }
-            }
-
-            yield return null;
-        }
-    }
-
-    private IEnumerator CheckCameraRotation(float threshold)
+    private IEnumerator CheckCameraRotation(float threshold, int ownerStepIndex)
     {
         while (m_isPlaying)
         {
@@ -753,7 +508,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
             if (m_cameraRotationAccumulated >= threshold)
             {
-                NextStep();
+                RequestNextStep(ownerStepIndex);
                 yield break;
             }
 
@@ -761,7 +516,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         }
     }
 
-    private IEnumerator CheckCameraZoom(float threshold)
+    private IEnumerator CheckCameraZoom(float threshold, int ownerStepIndex)
     {
         while (m_isPlaying)
         {
@@ -778,7 +533,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
             if (m_cameraZoomAccumulated >= threshold)
             {
-                NextStep();
+                RequestNextStep(ownerStepIndex);
                 yield break;
             }
 

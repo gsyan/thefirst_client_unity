@@ -329,12 +329,12 @@ public class CameraController : MonoSingleton<CameraController>
 
     private void HandleInput()
     {
-        if (m_inputEnabled == false) return;
-
+        // m_inputEnabled==false(갤럭시뷰 등)여도 튜토리얼 AnyClick 감지는 계속 동작해야 하므로 여기서 조기 return하지 않고,
+        // 카메라 조작(드래그/줌/레이캐스트) 여부만 Process()에 넘겨서 그 안에서 게이트함
 #if UNITY_EDITOR || UNITY_STANDALONE
-        m_handleInputMouse.Process();
+        m_handleInputMouse.Process(m_inputEnabled);
 #elif UNITY_ANDROID || UNITY_IOS
-        m_handleInputTouch.Process();
+        m_handleInputTouch.Process(m_inputEnabled);
 #endif
     }
 

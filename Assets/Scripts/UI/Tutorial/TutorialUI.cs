@@ -207,8 +207,25 @@ public class TutorialUI : UIPopupBase
 
         if (searchRoot == null) return null;
 
-        // 이름으로 검색
-        Transform target = FindChildRecursive(searchRoot, targetId);
+        // "[N]/나머지경로" 형식이면 이름이 아니라 searchRoot의 N번째 자식으로 먼저 진입 — 유니티가 복제 시 자동으로
+        // 붙이는 "Xxx (N)" 이름에 의존하지 않기 위함(그 이름은 하이러키 재배치/재복제 시 언제든 바뀔 수 있음).
+        // 예: targetPanelName=ShipSelectorContainer, targetUIId=[4]/ShipSelectButton
+        //     → ShipSelectorContainer의 5번째(0-based 4) 자식으로 들어간 뒤 그 안에서 "ShipSelectButton" 검색
+        string remainingPath = targetId;
+        if (remainingPath.Length > 0 && remainingPath[0] == '[')
+        {
+            int closeIdx = remainingPath.IndexOf(']');
+            if (closeIdx > 0 && int.TryParse(remainingPath.Substring(1, closeIdx - 1), out int childIndex))
+            {
+                if (childIndex < 0 || childIndex >= searchRoot.childCount) return null;
+
+                searchRoot = searchRoot.GetChild(childIndex);
+                remainingPath = closeIdx + 1 < remainingPath.Length ? remainingPath.Substring(closeIdx + 2) : "";
+            }
+        }
+
+        // 이름으로 검색 ("[N]"만 있고 나머지 경로가 없으면 그 자식 자체가 대상)
+        Transform target = string.IsNullOrEmpty(remainingPath) ? searchRoot : FindChildRecursive(searchRoot, remainingPath);
         if (target == null) return null;
 
         RectTransform result = target.GetComponent<RectTransform>();

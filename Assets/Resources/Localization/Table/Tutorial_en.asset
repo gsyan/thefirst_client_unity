@@ -166,6 +166,40 @@ MonoBehaviour:
       deducted once you win the battle.
     m_Metadata:
       m_Items: []
+  - m_Id: 5376173907247104
+    m_Localized: The Beam module is now Level 2.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5376173940801536
+    m_Localized: The Missile module is now Level 2.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5376173940801537
+    m_Localized: The Hangar module is now Level 2.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5376173940801538
+    m_Localized: The Hull module is now Tier 2.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5392725658435584
+    m_Localized: To grow your fleet and withstand the enemies in pursuit, you need
+      to explore to gain resources and strengthen your fleet. Try tapping the Exploration
+      button.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5392725700378624
+    m_Localized: Check the resources you can earn by clearing this stage.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5392725700378625
+    m_Localized: Enter the stage.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5392725700378626
+    m_Localized: Confirm your entry.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
