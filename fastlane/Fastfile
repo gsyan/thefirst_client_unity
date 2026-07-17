@@ -30,5 +30,18 @@ platform :android do
       skip_upload_aab: true,
       skip_upload_apk: true,
     )
+
+    upload_to_play_store(
+      track: "internal",
+      track_promote_to: "검수 요청 테스트",
+      json_key: ENV["GOOGLE_PLAY_JSON_KEY"],
+      version_name: ENV["VERSION_NAME"],
+      release_status: "completed",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+    )
   end
 end
