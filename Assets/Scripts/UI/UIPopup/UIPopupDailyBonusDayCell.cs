@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,21 +7,8 @@ public class UIPopupDailyBonusDayCell : MonoBehaviour
     [SerializeField] private TMP_Text m_dayText;
     [SerializeField] private Image m_background;
     [SerializeField] private Image m_borderHighlight;
-    [SerializeField] private RectTransform m_rewardContainer;
-
-    [Header("Colors")]
-    [SerializeField] private Color m_colorPassed  = new Color(0.3f, 0.3f, 0.3f, 1f);
-    [SerializeField] private Color m_colorFuture  = new Color(0.15f, 0.15f, 0.15f, 1f);
-
-    private readonly List<RowImageText> m_rows = new List<RowImageText>();
-    private static RowImageText s_rowPrefab;
-
-    private static RowImageText GetRowPrefab()
-    {
-        if (s_rowPrefab == null)
-            s_rowPrefab = ResourceManager.Instance.Load<RowImageText>("Prefabs/UI/ETC/RowImageText");
-        return s_rowPrefab;
-    }
+    // 하루 보상은 항상 일반(0)+VIP(1) 2줄 고정 — 프리팹에 미리 배치
+    [SerializeField] private UIPopupDailyBonusRewardRow[] m_rewardRows;
 
     public void SetupDailyBonusDayCell(int day, bool claimed, bool vipClaimed, bool bToday, bool passed, DailyBonusRewardEntry[] rewards)
     {
@@ -37,53 +23,55 @@ public class UIPopupDailyBonusDayCell : MonoBehaviour
         }
 
         if (m_background != null)
-            m_background.color = passed == true ? m_colorPassed : m_colorFuture;
+            m_background.color = CommonUtility.PaletteColor(passed == true ? "DailyBonus.Passed" : "DailyBonus.Future");
 
         RefreshRewards(rewards, claimed, vipClaimed);
     }
 
     private void RefreshRewards(DailyBonusRewardEntry[] rewards, bool isClaimed, bool vipClaimed)
     {
-        if (m_rewardContainer == null) return;
+        if (m_rewardRows == null) return;
 
         int rewardCount = (rewards == null) ? 0 : rewards.Length;
 
-        // 부족한 row는 생성
-        if (rewardCount > m_rows.Count)
+        for (int i = 0; i < m_rewardRows.Length; i++)
         {
-            RowImageText prefab = GetRowPrefab();
-            if (prefab == null)
-            {
-                Debug.LogError("[UIPopupDailyBonusDayCell] RowImageText 프리팹 로드 실패");
-                return;
-            }
-            while (m_rows.Count < rewardCount)
-                m_rows.Add(Instantiate(prefab, m_rewardContainer));
-        }
+            if (m_rewardRows[i] == null) continue;
 
-        // 사용하는 row는 내용 갱신
-        for (int i = 0; i < rewardCount; i++)
-        {
+            if (i >= rewardCount)
+            {
+                m_rewardRows[i].gameObject.SetActive(false);
+                continue;
+            }
+
+            m_rewardRows[i].gameObject.SetActive(true);
+            RowImageText row = m_rewardRows[i].GetRow();
+
             string spriteName = GetSpriteName(rewards[i].rewardType);
-            string text = $"+{rewards[i].amount}";
+            string text = $"{rewards[i].amount}";
             bool isVipTier = rewards[i].tier == EDailyBonusTier.VIP;
             bool rowClaimed = isVipTier ? vipClaimed : isClaimed;
 
-            if (isVipTier == true)
-                m_rows[i].SetRow(spriteName, text, "rank-3");
-            else
-                m_rows[i].SetRow(spriteName, text);
+            row.SetRow(spriteName, text);
+            // 획득 여부에 따라 숫자 색 이원화 — 획득함=Text.Dark1, 못함=Text.Dark2(같은 계열, 더 어둡게)
+            row.SetTextColor(CommonUtility.PaletteColor(rowClaimed ? "Text.Dark1" : "Text.Dark2"));
 
-            Color claimedColor = CommonUtility.PaletteColor(rowClaimed ? "GeneralBright1" : "GeneralDark2");
-            m_rows[i].SetImageColor(CommonUtility.PaletteColor("Mineral"));
-            m_rows[i].SetTextColor(claimedColor);
-            if (isVipTier == true)
-                m_rows[i].SetImage2Color(claimedColor);
+            // VIP 줄은 앰버 계열로 포인트 — 일반 줄과 색으로 구분되도록
+            string accentBright = isVipTier ? "Vip"     : "General";
+            string accentDark   = isVipTier ? "VipDark" : "GeneralDark2";
+
+            row.SetImageColor(CommonUtility.PaletteColor(rowClaimed ? "Mineral" : "MineralDark"));
+
+            Image vipIcon = m_rewardRows[i].GetVipIcon();
+            if (isVipTier == true && vipIcon != null)
+                vipIcon.color = CommonUtility.PaletteColor(rowClaimed ? "Vip" : "VipDark");
+
+            // 체크마크는 줄(row) 단위로 독립 — 일반/VIP 중 하나만 받아도 그 줄만 체크됨
+            // 정렬 유지를 위해 SetActive 대신 alpha만 조절 (비활성화 시 레이아웃에서 공간이 사라짐)
+            Color checkColor = CommonUtility.PaletteColor(rowClaimed ? accentBright : accentDark);
+            checkColor.a = rowClaimed ? 1f : 0f;
+            m_rewardRows[i].GetCheckmark().color = checkColor;
         }
-
-        // 남는 row는 숨김
-        for (int i = rewardCount; i < m_rows.Count; i++)
-            m_rows[i].Hide();
     }
 
     private static string GetSpriteName(EDailyBonusRewardType type)

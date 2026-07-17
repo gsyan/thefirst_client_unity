@@ -7,20 +7,17 @@ public class RowImageText : MonoBehaviour
 {
     [SerializeField] private Image    m_image;
     [SerializeField] private TMP_Text m_text;
-    [SerializeField] private Image    m_image2;
 
     // 아이콘/텍스트 색상은 항상 이 Semantic 키로 통일 (개별 커스터마이징 사례 없어 필드 제거)
     private const string IMAGE_COLOR_KEY = "GeneralDark1";
     private const string TEXT_COLOR_KEY  = "Text.Dark1";
-    
+
     private void Awake()
     {
         if (m_image == null)
             m_image = GetComponent<RectTransform>().GetChild(0).GetComponent<Image>();
         if (m_text == null)
             m_text = GetComponent<RectTransform>().GetChild(1).GetComponent<TMP_Text>();
-        if (m_image2 != null)
-            m_image2.gameObject.SetActive(false);
     }
 
     public void SetRow(string spriteName, string text)
@@ -29,31 +26,6 @@ public class RowImageText : MonoBehaviour
         SetImageColor(CommonUtility.PaletteColor(IMAGE_COLOR_KEY));
         SetTextColor(CommonUtility.PaletteColor(TEXT_COLOR_KEY));
         SetTextWithString(text);
-        if (m_image2 != null)
-            m_image2.gameObject.SetActive(false);
-    }
-
-    // 아이템 이미지 - 텍스트 - tier 이미지 3단 구성
-    public void SetRow(string spriteName, string text, string image2SpriteName)
-    {
-        SetRow(spriteName, text);
-        SetImage2(image2SpriteName);
-    }
-
-    public void SetImage2(string spriteName)
-    {
-        if (m_image2 == null) return;
-        Sprite sprite = UISpriteCache.Get(spriteName);
-        if (sprite != null)
-            m_image2.sprite = sprite;
-        m_image2.color = CommonUtility.PaletteColor(IMAGE_COLOR_KEY);
-        m_image2.gameObject.SetActive(true);
-    }
-
-    public void SetImage2Color(Color color)
-    {
-        if (m_image2 == null) return;
-        m_image2.color = color;
     }
 
     public void Hide()

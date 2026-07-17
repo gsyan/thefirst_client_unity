@@ -108,6 +108,7 @@ public class UITabSettings : UITabBase
     {
         if (m_versionText == null) return;
         m_versionText.text = "ver-" + Application.version;
+        m_versionText.color = CommonUtility.PaletteColor("Text.Dark2");
     }
 
     private void InitializeSoundSettings()
@@ -197,6 +198,8 @@ public class UITabSettings : UITabBase
         CommonUtility.SetUILocText(m_sectionGeneralText, "UITabSettings_General");
         CommonUtility.SetUILocText(m_sectionInfolText,   "UITabSettings_Info");
         CommonUtility.SetUILocText(m_languageText,       "UITabSettings_Language");
+        if (m_languageText != null)
+            m_languageText.color = CommonUtility.PaletteColor("Text.Dark1");
 
         // 버튼 라벨
         SetButtonLocText(m_renameCommanderButton, "UITabSettings_NameChange");
@@ -286,6 +289,7 @@ public class UITabSettings : UITabBase
         if (m_nameText == null) return;
         Commander currentCommander = DataManager.Instance.m_currentCommander;
         m_nameText.text = (currentCommander != null) ? currentCommander.GetName() : string.Empty;
+        m_nameText.color = CommonUtility.PaletteColor("Text.Dark1");
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_nameText.transform.parent as RectTransform);
     }
 

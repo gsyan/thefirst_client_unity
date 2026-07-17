@@ -258,7 +258,13 @@ public class UIPanelSpace : UIPanelBase
 
         SetViewport(open, openCameraWidth);
         if (open == true)
+        {
             m_tabSystem.RevealDeferredPanel(m_moduleTabIndex);
+            // deferReveal로 인해 비활성 상태에서 세팅됐던 스탯 UI 레이아웃을, 패널이 실제로 보이는 이 시점에 재빌드
+            UITabShip tabShip = m_shipTabRect.GetComponent<UITabShip>();
+            if (tabShip != null)
+                tabShip.RebuildStatLayout();
+        }
         m_viewportCoroutine = null;
     }
 

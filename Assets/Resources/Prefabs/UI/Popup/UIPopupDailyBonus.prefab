@@ -1809,8 +1809,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
-  m_activeColorKey: GeneralBright1
-  m_inactiveColorKey: GeneralDark2
 --- !u!1 &4260668388836245021
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,8 +12,6 @@ public class UIPopupLicense : UIPopupBase
     [SerializeField] private Button       m_backgroundButton;
 
     private static readonly string LICENSE_CONTENT =
-        "=== 외부 라이센스 고지 ===\n\n" +
-
         "[ game-icons.net ]\n" +
         "License: CC BY 3.0\n" +
         "Authors: Lorc, Delapouite, and contributors\n" +
@@ -40,12 +38,7 @@ public class UIPopupLicense : UIPopupBase
         "License: Pixabay Content License (No attribution required)\n" +
         "https://pixabay.com/sound-effects/\n\n" +
 
-        
-        
-        
-        "------------------------\n\n";
-
-        
+        "\n\n";        
 
     protected override void Awake()
     {

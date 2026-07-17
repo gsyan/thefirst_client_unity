@@ -10,6 +10,7 @@ public class UITabVip : UITabBase
 
     [Header("상세 영역")]
     [SerializeField] private TMP_Text      m_benefitName;     // TextBenefitName
+    [SerializeField] private Image         m_badgeIcon;       // 상단 뱃지 아이콘(rank-3)
     [SerializeField] private RectTransform m_benefitRT;
     private TMP_Text[] m_benefits;
 
@@ -69,7 +70,7 @@ public class UITabVip : UITabBase
         for (int i = 0; i < 4; i++)
         {
             if (m_benefits[i] == null) continue;
-            m_benefits[i].text = texts[i];
+            m_benefits[i].text = $"• {texts[i]}";
         }
     }
 
@@ -88,9 +89,20 @@ public class UITabVip : UITabBase
             m_benefitName.text = loc.Get("UIVipStatus_BenefitTitle") + " " + status;
         }
 
+        Color titleColor = isAdmiral
+            ? CommonUtility.PaletteColor("Vip")
+            : CommonUtility.PaletteColor("VipDark");
+
+        // 혜택 목록은 VipDark 대비 차이가 미미해서 더 어두운 VipDark2 사용
         Color benefitColor = isAdmiral
-            ? CommonUtility.PaletteColor("GeneralBright1")
-            : CommonUtility.PaletteColor("GeneralDark1");
+            ? CommonUtility.PaletteColor("Vip")
+            : CommonUtility.PaletteColor("VipDark2");
+
+        if (m_benefitName != null)
+            m_benefitName.color = titleColor;
+
+        if (m_badgeIcon != null)
+            m_badgeIcon.color = titleColor;
 
         if (m_benefits != null)
         {

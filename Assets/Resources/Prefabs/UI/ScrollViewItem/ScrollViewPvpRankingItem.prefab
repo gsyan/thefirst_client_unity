@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1912814441017916742}
   - component: {fileID: 2465894727915080565}
   - component: {fileID: 7627839201457893670}
+  - component: {fileID: 9159623187490256442}
   m_Layer: 5
   m_Name: NameText
   m_TagString: Untagged
@@ -74,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286775040
-  m_fontColor: {r: 0, g: 1, b: 0.50980395, a: 1}
+    rgba: 4290290580
+  m_fontColor: {r: 0.5803922, g: 0.6392157, b: 0.72156864, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -137,6 +138,22 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &9159623187490256442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187986120840177348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
+  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
+  targets:
+  - graphic: {fileID: 7627839201457893670}
+    colorRole: Text.Dark1
 --- !u!1 &346665799190967888
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,9 +281,6 @@ MonoBehaviour:
   m_image: {fileID: 4356423081965479427}
   m_text: {fileID: 3046716833242189146}
   m_image2: {fileID: 0}
-  m_imageColorKey: GeneralBright1
-  m_textColorKey: GeneralBright1
-  m_image2ColorKey: GeneralBright1
 --- !u!114 &6438299959368270522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,6 +493,7 @@ GameObject:
   - component: {fileID: 1425217382281452471}
   - component: {fileID: 810374097365104119}
   - component: {fileID: 1760092094062915190}
+  - component: {fileID: 2088972507220573732}
   m_Layer: 5
   m_Name: ScoreText
   m_TagString: Untagged
@@ -542,8 +557,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286748160
-  m_fontColor: {r: 0, g: 0.588, b: 0.51, a: 1}
+    rgba: 4290290580
+  m_fontColor: {r: 0.5803922, g: 0.6392157, b: 0.72156864, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -605,6 +620,22 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2088972507220573732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197316342367363355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
+  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
+  targets:
+  - graphic: {fileID: 1760092094062915190}
+    colorRole: Text.Dark1
 --- !u!1 &1316660979094051856
 GameObject:
   m_ObjectHideFlags: 0
@@ -959,9 +990,6 @@ MonoBehaviour:
   m_image: {fileID: 4983325760436637277}
   m_text: {fileID: 69982518268944704}
   m_image2: {fileID: 0}
-  m_imageColorKey: GeneralBright1
-  m_textColorKey: GeneralBright1
-  m_image2ColorKey: GeneralBright1
 --- !u!114 &8762708051062946095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1228,9 +1256,6 @@ MonoBehaviour:
   m_image: {fileID: 5127676001010992538}
   m_text: {fileID: 4890692865368668377}
   m_image2: {fileID: 0}
-  m_imageColorKey: GeneralBright1
-  m_textColorKey: GeneralBright1
-  m_image2ColorKey: GeneralBright1
 --- !u!114 &7189373623079872251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1614,9 +1639,6 @@ MonoBehaviour:
   m_image: {fileID: 7108349077140239511}
   m_text: {fileID: 4788976003205579246}
   m_image2: {fileID: 0}
-  m_imageColorKey: GeneralBright1
-  m_textColorKey: GeneralBright1
-  m_image2ColorKey: GeneralBright1
 --- !u!114 &3209674044831115480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2319,9 +2341,6 @@ MonoBehaviour:
   m_image: {fileID: 5218304348292035600}
   m_text: {fileID: 4760367637108832009}
   m_image2: {fileID: 0}
-  m_imageColorKey: GeneralBright1
-  m_textColorKey: GeneralBright1
-  m_image2ColorKey: GeneralBright1
 --- !u!114 &7621367876885538353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2830,9 +2849,6 @@ MonoBehaviour:
   m_image: {fileID: 1111889269917534603}
   m_text: {fileID: 3979696790785553746}
   m_image2: {fileID: 0}
-  m_imageColorKey: GeneralBright1
-  m_textColorKey: GeneralBright1
-  m_image2ColorKey: GeneralBright1
 --- !u!114 &4097079680918238300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3009,9 +3025,6 @@ MonoBehaviour:
   m_image: {fileID: 794377191348367998}
   m_text: {fileID: 3306530554129518227}
   m_image2: {fileID: 0}
-  m_imageColorKey: GeneralBright1
-  m_textColorKey: GeneralBright1
-  m_image2ColorKey: GeneralBright1
 --- !u!114 &7747799791794248299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3769,9 +3782,6 @@ MonoBehaviour:
   m_image: {fileID: 8232783591780139026}
   m_text: {fileID: 5132057059928753363}
   m_image2: {fileID: 0}
-  m_imageColorKey: GeneralBright1
-  m_textColorKey: GeneralBright1
-  m_image2ColorKey: GeneralBright1
 --- !u!114 &2841950297773705297
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -280,6 +280,33 @@ public class UITabShip : UITabBase
             m_playerFleet.ClearAllSelectedModule();
     }
 
+    // deferReveal로 인해 OnTabActivated 시점엔 패널이 비활성 상태라 레이아웃 계산이 스킵됨
+    // UIPanelSpace.Co_AnimateViewport가 카메라 애니메이션을 끝내고 패널을 실제로 활성화한 직후 호출
+    public void RebuildStatLayout()
+    {
+        RebuildLayoutBottomUp(m_shipRitContainer as RectTransform);
+        RebuildLayoutBottomUp(m_moduleStatsContainer as RectTransform);
+    }
+
+    // 리프 컨테이너에서 시작해 이 탭 루트(this.transform)까지 부모를 거슬러 올라가며
+    // LayoutGroup / ContentSizeFitter를 가진 RectTransform만 순서대로 재빌드
+    // SetActive(true) 직후엔 상위 컨테이너들의 rect가 비활성 시점 값으로 남아있어 자식 먼저 → 부모 순으로 처리해야 함
+    private void RebuildLayoutBottomUp(RectTransform leaf)
+    {
+        Transform t = leaf;
+        while (t != null)
+        {
+            RectTransform rt = t as RectTransform;
+            bool hasLayoutGroup = t.GetComponent<LayoutGroup>() != null;
+            bool hasContentSizeFitter = t.GetComponent<ContentSizeFitter>() != null;
+            if (rt != null && (hasLayoutGroup == true || hasContentSizeFitter == true))
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+
+            if (t == transform) break;
+            t = t.parent;
+        }
+    }
+
     // ─────────────────────────────────────────────
     // 함선 네비게이터 (< / >)
     // ─────────────────────────────────────────────
