@@ -24,6 +24,14 @@ Jenkins 같은 CI 워크스페이스도 이 패키지를 그대로 받아서 **�
 3. 설치/컴파일이 끝나면 **`Packages/manifest.json`의 해당 줄은 다시 지우고 커밋하지 말 것** —
    로컬 테스트/사용 후 커밋 전에 원복하거나, `git checkout -- Packages/manifest.json`으로 되돌린다.
    (실수로 커밋해도 당장 문제는 없지만, CI가 이 패키지를 다시 받으려고 시도하게 되므로 권장하지 않음)
+4. **커스텀 MCP 툴 스크립트 복사** — 이 저장소에서 직접 추가한 커스텀 AI 툴(`Tool_UISimulateClick.cs` 등)은
+   원본 패키지 저장소엔 없으므로 git URL 설치만으로는 따라오지 않는다. `Packages/UnityMcpCustomTools/`(git 추적 대상)에
+   `.cs.txt`로 보관해뒀으니, 패키지 설치가 끝난 뒤 아래처럼 확장자를 바꿔 실제 패키지 폴더에 복사해 넣을 것:
+   ```
+   Packages/UnityMcpCustomTools/Tool_UISimulateClick.cs.txt
+     → Packages/com.ivanmurzak.unity.mcp/Editor/Scripts/Tool_UISimulateClick.cs
+   ```
+   (새 커스텀 툴을 추가할 때도 같은 패턴으로: 실제 동작 파일은 패키지 폴더에, 백업용 `.cs.txt` 사본은 여기에 추가)
 
 ## 알려진 이슈 (재설치/트러블슈팅 시 참고)
 
