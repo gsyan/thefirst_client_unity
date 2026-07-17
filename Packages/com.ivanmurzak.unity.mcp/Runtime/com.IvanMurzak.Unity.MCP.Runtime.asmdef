@@ -4,7 +4,9 @@
     "references": [
         "Extensions.Unity.PlayerPrefsEx"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
@@ -22,8 +24,7 @@
     ],
     "autoReferenced": true,
     "defineConstraints": [
-        "UNITY_MCP_READY",
-        "UNITY_EDITOR"
+        "UNITY_MCP_READY"
     ],
     "versionDefines": [],
     "noEngineReferences": false
