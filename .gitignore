@@ -109,6 +109,10 @@ InitTestScene*.unity*
 .mcp.json
 /[Aa]ssets/Plugins/NuGet/
 /[Aa]ssets/Plugins/NuGet.meta
+# Unity-MCP 패키지 자체 — 개발용 AI 에디터 툴이라 프로젝트/빌드와 무관, 커밋 대상에서 제외
+# (설치 방법은 Packages/UNITY_MCP_SETUP.md 참고)
+/Packages/com.ivanmurzak.unity.mcp/
+/Packages/com.ivanmurzak.unity.mcp.meta
 .claude/skills/assets-*/
 .claude/skills/console-*/
 .claude/skills/editor-*/
