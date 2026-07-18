@@ -87,6 +87,9 @@ public class TutorialBattleCinematic
         }
         m_enemyWaveFleets.Clear();
         m_waveIndexOccupancy.Clear();
+
+        // 워프 가속 배율은 CleanupEscapeFleet()이 건드리지 않으므로 다음 세션에 새어 들어가지 않게 여기서 리셋
+        m_escapeFleetSpeedMultiplier = 1f;
     }
 
     // maxCount 범위 안에서 비어있는(한 번도 안 쓰였거나, 배정된 함대가 전멸한) 가장 낮은 인덱스를 반환 — 자리가 없으면 -1

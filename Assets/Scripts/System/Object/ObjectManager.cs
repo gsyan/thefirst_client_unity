@@ -262,6 +262,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 전투 강제 종료 (전멸/퇴각 공통)
     public void ForceEndBattle(bool isVictory)
     {
+        // 양 함대가 거의 동시에 전멸하는 등 승패 판정이 근접 타이밍에 중복 발생할 수 있음 —
+        // 먼저 확정된 결과만 인정하고 뒤이어 들어오는 결과는 무시
+        if (m_isBattleEnding == true) return;
         m_isBattleEnding = true;
         SpaceFleet myFleet = GetMyFleet();
         bool isPvp = myFleet != null && myFleet.m_fleetState == EUnitState.BattlePvp;
@@ -711,6 +714,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 모든 웨이브 스폰 완료 + 적 전멸 → 클리어
         if (GetOpposingTeamFleets(m_myTeam).Count == 0)
         {
+            // 내 함대도 거의 동시에 전멸해 ForceEndBattle(false)가 먼저 확정됐을 수 있음 — 그 경우 승리로 뒤집지 않음
+            if (m_isBattleEnding == true) return;
+            m_isBattleEnding = true;
+
             EventManager.Trigger_AllEnemyFleetKilled();
             EventManager.TriggerZoneStageBattleEnd(true);
         }

@@ -117,8 +117,9 @@ public class HandleInputTouch
             {
                 // 튜토리얼이 AnyClick(화면 아무 곳이나 클릭) 대기 중이었으면(press 시점 기준) 이 터치는 튜토리얼이 우선 소비 —
                 // 3D 탭 처리(HandleModuleSelection/EmptySpaceTapped)와 별도 폴링 루프가 같은 터치를 다투는 경쟁 상태 자체를 없앰.
-                // TutorialManager를 직접 참조하지 않고 EventManager로 상태 구독/소비 요청만 주고받음 — cameraInputEnabled와 무관하게 항상 동작
-                if (m_wasWaitingForAnyClickAtPress == true)
+                // TutorialManager를 직접 참조하지 않고 EventManager로 상태 구독/소비 요청만 주고받음 — cameraInputEnabled와 무관하게 항상 동작.
+                // 단, 카메라 드래그(회전) 중이었다면 클릭으로 보면 안 되므로 AnyClick 소비 대상에서 제외
+                if (m_wasWaitingForAnyClickAtPress == true && m_isDragging == false)
                 {
                     EventManager.Trigger_ConsumeAnyClick();
                     m_isDragging = false;

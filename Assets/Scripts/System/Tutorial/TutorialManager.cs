@@ -56,6 +56,37 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         m_battleCinematic = new TutorialBattleCinematic(this);
     }
 
+    // 로그아웃 시 호출 — TutorialManager는 DontDestroyOnLoad라 로그아웃해도 인스턴스가 안 죽어서
+    // OnInitialize()가 다시 실행되지 않음. EventManager.UnsubscribeAll()이 지운 구독을 복구하고,
+    // 이전 세션(진행 중이던 튜토리얼 스텝/코루틴/조건 상태)이 다음 로그인으로 새어 들어가지 않도록 초기화
+    public void ResetForLogout()
+    {
+        StopTutorialCondition();
+        CleanupTutorialCombatArtifacts();
+
+        m_currentTutorial = null;
+        m_currentStepIndex = 0;
+        m_isPlaying = false;
+        m_onCompleteCallback = null;
+        m_pendingNewShip = null;
+        m_lastCameraRotation = default;
+        m_lastCameraZoom = 0f;
+
+        if (m_tutorialUI != null)
+        {
+            m_tutorialUI.HideTutorialUI();
+            m_tutorialUI = null;
+        }
+
+        m_completedTutorials.Clear();
+        m_isServerLoaded = false;
+
+        // EventManager.UnsubscribeAll()로 지워진 이 매니저 자신의 구독 복구 —
+        // 먼저 해제 후 재구독해야 호출 시점과 무관하게 항상 구독이 정확히 1개만 남음(중복 구독 방지)
+        EventManager.Unsubscribe_ConsumeAnyClick(ConsumeAnyClick);
+        EventManager.Subscribe_ConsumeAnyClick(ConsumeAnyClick);
+    }
+
     // SelectCommander 응답에 이미 포함된 진행도를 그대로 주입 — SpaceScene 진입 전 미리 확보 가능(별도 네트워크 호출 불필요)
     public void ApplyProgressList(List<ProgressInfo> progressList)
     {

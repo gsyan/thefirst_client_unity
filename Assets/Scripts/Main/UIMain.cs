@@ -12,6 +12,12 @@ public class UIMain : UIManager
 {
     private void Start()
     {
+        // TutorialManager는 DontDestroyOnLoad라 로그아웃 등으로 MainScene에 돌아와도 인스턴스가 안 죽어서
+        // EventManager.UnsubscribeAll()로 지워진 구독이 복구 안 되고 이전 세션 상태가 남아있음 —
+        // MainScene 진입은 항상 새 세션의 시작점이므로 여기서 초기화 (최초 실행 시엔 이미 기본값이라 무해함)
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.ResetForLogout();
+
         InitializeUIManager();
         NetworkManager.Instance.OnChangeScene();
     }

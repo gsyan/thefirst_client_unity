@@ -46,7 +46,6 @@ public class UITabExploration : UITabBase
     private float m_pendingFleetRotY;
     private List<StageEnemyFleetSpawnConfig> m_pendingEnemyFleetSpawns;
 
-    private bool m_isFleetWiped;
     private bool m_isBattleEnded;
     private readonly WaitForSeconds m_wipePopupDelay = new WaitForSeconds(2f);
 
@@ -60,7 +59,6 @@ public class UITabExploration : UITabBase
         m_myCommander = DataManager.Instance.m_currentCommander;
 
         EventManager.Subscribe_RetreatExploration(OnRetreatZoneStage);
-        EventManager.Subscribe_MyFleetDestroyed(OnMyFleetWiped);
         EventManager.Subscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
         EventManager.Subscribe_PvpBattleStart(OnPvpBattleStarted);
         EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
@@ -573,11 +571,6 @@ public class UITabExploration : UITabBase
         m_playerFleet.SetFleetState(unitState);
     }
 
-    private void OnMyFleetWiped()
-    {
-        m_isFleetWiped = true;
-    }
-
     private void OnFleetViewRestoredAfterBattleReturn()
     {
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredAfterBattleReturn);
@@ -593,7 +586,6 @@ public class UITabExploration : UITabBase
     private void OnDestroy()
     {
         EventManager.Unsubscribe_RetreatExploration(OnRetreatZoneStage);
-        EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetWiped);
         EventManager.Unsubscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
         EventManager.Unsubscribe_PvpBattleStart(OnPvpBattleStarted);
         EventManager.Unsubscribe_MyFleetSet(OnMyFleetSet);
@@ -779,10 +771,11 @@ public class UITabExploration : UITabBase
             retreatRotationY = spawnStage != null ? spawnStage.fleetRotationY : 0f;
         }
 
-        if (m_isFleetWiped == true)
-            ObjectManager.Instance.StartCoroutine(ShowWipePopupAfterDelay(retreatPosition, retreatRotationY));
-        else if (isVictory == true)
+        // isVictory가 이 전투의 확정된 결과이므로 최우선 — 전멸 팝업은 패배가 확정됐고 실제로 함대가 전멸했을 때만
+        if (isVictory == true)
             ExecuteVictoryStay();
+        else if (m_playerFleet != null && m_playerFleet.IsFleetAlive() == false)
+            ObjectManager.Instance.StartCoroutine(ShowWipePopupAfterDelay(retreatPosition, retreatRotationY));
         else
             ExecuteRetreat(retreatPosition, retreatRotationY);
     }
@@ -1218,15 +1211,11 @@ public class UITabExploration : UITabBase
             if (m_zoneTabScroll != null) m_zoneTabScroll.ScrollToCenter(retreatGroup - 1);
             SetupButtonsForGroup(retreatGroup);
 
-            if (m_isFleetWiped == true)
-            {
+            if (m_playerFleet.IsFleetAlive() == false)
                 m_playerFleet.RebuildFleet(0.1f);
-                m_isFleetWiped = false;
-            }
             else
-            {
                 m_playerFleet.RestoreDestroyedShips(0.1f);
-            }
+
             bool isVip = IAPManager.Instance != null && IAPManager.Instance.IsVipActive();
             if (isVip == true)
                 m_playerFleet.FullRepair();
@@ -1256,15 +1245,10 @@ public class UITabExploration : UITabBase
 
         if (m_playerFleet != null)
         {
-            if (m_isFleetWiped == true)
-            {
+            if (m_playerFleet.IsFleetAlive() == false)
                 m_playerFleet.RebuildFleet(0.1f);
-                m_isFleetWiped = false;
-            }
             else
-            {
                 m_playerFleet.RestoreDestroyedShips(0.1f);
-            }
         }
 
         int battleGroup = m_battleZoneStage != null ? ParseZoneGroup(m_battleZoneStage.zoneName) : (m_currentZoneStage != null ? ParseZoneGroup(m_currentZoneStage.zoneName) : 1);

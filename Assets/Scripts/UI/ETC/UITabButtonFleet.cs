@@ -26,18 +26,15 @@ public class UITabButtonFleet : MonoBehaviour
 
     private void Start()
     {
-        var commander = DataManager.Instance.m_currentCommander;
-        if (commander == null) return;
-
-        m_fleet = ObjectManager.Instance.GetMyFleet();
-        if (m_fleet == null) return;
-
         EventManager.Subscribe_ShipStatsChanged(OnShipStatsChanged);
         EventManager.Subscribe_FleetUpdateHP(RefreshText);
         EventManager.Subscribe_TacticOptionsChanged(RefreshTactics);
+        // 탭 초기화 시점에 함대가 아직 스폰되지 않았을 수 있음(튜토리얼 등) — 스폰/교체(튜토리얼→실제 함대 전환 포함) 시점에 뒤늦게 바인딩
+        EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
 
-        RefreshText();
-        RefreshTactics(m_fleet.m_fleetInfo.tacticOptions);
+        // 이미 함대가 존재하면 즉시 바인딩
+        if (DataManager.Instance.m_currentCommander != null && ObjectManager.Instance.GetMyFleet() != null)
+            BindPlayerFleet();
     }
 
     private void OnDestroy()
@@ -45,6 +42,22 @@ public class UITabButtonFleet : MonoBehaviour
         EventManager.Unsubscribe_ShipStatsChanged(OnShipStatsChanged);
         EventManager.Unsubscribe_FleetUpdateHP(RefreshText);
         EventManager.Unsubscribe_TacticOptionsChanged(RefreshTactics);
+        EventManager.Unsubscribe_MyFleetSet(OnMyFleetSet);
+    }
+
+    // 함대 스폰/교체(튜토리얼→실제 함대 전환 포함) 시 호출 — 파괴된 이전 함대 참조가 고착되지 않도록 재바인딩
+    private void OnMyFleetSet()
+    {
+        BindPlayerFleet();
+    }
+
+    private void BindPlayerFleet()
+    {
+        m_fleet = ObjectManager.Instance.GetMyFleet();
+        if (m_fleet == null) return;
+
+        RefreshText();
+        RefreshTactics(m_fleet.m_fleetInfo.tacticOptions);
     }
 
     private void OnShipStatsChanged(SpaceShip ship) => RefreshText();

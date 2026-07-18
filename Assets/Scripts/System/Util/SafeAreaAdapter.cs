@@ -24,6 +24,16 @@ public class SafeAreaAdapter : MonoBehaviour
         ApplySafeArea();
     }
 
+    // 프리팹 없이 코드로 AddComponent 하는 경우(UIManager) Inspector로 마진을 못 넣으므로 직접 설정
+    public void SetExtraMargins(float left, float right, float top, float bottom)
+    {
+        m_extraMarginLeft = left;
+        m_extraMarginRight = right;
+        m_extraMarginTop = top;
+        m_extraMarginBottom = bottom;
+        ApplySafeArea();
+    }
+
     private void Update()
     {
         if (m_lastSafeArea != Screen.safeArea || m_lastScreenWidth != Screen.width || m_lastScreenHeight != Screen.height)

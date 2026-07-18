@@ -46,16 +46,24 @@ public class UIPanelSpace : UIPanelBase
 
         EventManager.Subscribe_TabSelectionChanged(OnTabSelectionChanged);
 
-        // 760px 고정 UI 너비 + 우측 여백 → 캔버스 너비 기준으로 카메라 viewport 비율 계산
-        const float uiPanelWidth = 760f;
-        const float uiPanelRightMargin = 100f;
-        RectTransform canvasRect = m_shipTabRect != null ? m_shipTabRect.root as RectTransform : null;
-        float canvasWidth = canvasRect != null ? canvasRect.rect.width : 1920f;
-        float occupiedWidth = uiPanelWidth + uiPanelRightMargin;
-        m_openCameraWidth = (canvasWidth - occupiedWidth) / canvasWidth;
+        m_openCameraWidth = ComputeOpenCameraWidth();
 
         CreateCameraViewportBackground();
         SetViewport(open:false);
+    }
+
+    // TabShip 좌측 경계의 실제 스크린 좌표 기준으로 카메라 viewport 비율 계산
+    // Screen Space - Overlay 캔버스는 world 좌표가 곧 스크린 픽셀 좌표와 1:1이라
+    // CanvasScaler 스케일팩터/레퍼런스 해상도와 무관하게 항상 정확한 비율이 나옴
+    private float ComputeOpenCameraWidth()
+    {
+        if (m_shipTabRect == null) return 1f;
+
+        Vector3[] corners = new Vector3[4];
+        m_shipTabRect.GetWorldCorners(corners);
+        float leftEdgeScreenX = corners[0].x;
+
+        return Mathf.Clamp01(leftEdgeScreenX / Screen.width);
     }
 
     // 탭 콘텐츠보다 먼저(가장 아래) 그려지도록 UIPanelSpace 최상위의 첫 자식으로 생성

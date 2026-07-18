@@ -92,7 +92,8 @@ public class UIManager : MonoSingleton<UIManager>
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
 
-        rootObj.AddComponent<SafeAreaAdapter>();
+        // 곡면(엣지) 디스플레이는 Screen.safeArea로 안 잡히는 기종이 있어 좌우 2% 고정 마진 추가
+        rootObj.AddComponent<SafeAreaAdapter>().SetExtraMargins(0.02f, 0.02f, 0f, 0f);
 
         return rect;
     }
