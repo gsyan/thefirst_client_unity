@@ -122,6 +122,9 @@ public class GaugeBar : MonoBehaviour
         }
     }
 
+    // 카메라 viewport가 UI 패널 레이아웃(함선탭 열림 등)이나 세이프에어리어 마진으로 화면 전체보다 좁아질 수 있음
+    // Screen.width/height 전체를 기준으로 판정하면, 카메라가 실제로 렌더링하지 않는(=Clear Flags가 지워주지 않는) 영역에서도
+    // 게이지바가 계속 활성 상태로 남아 이전 프레임 픽셀이 지워지지 않고 잔상으로 남는 문제가 있었음
     public bool IsInScreenBounds()
     {
         if (m_targetTransform == null || m_mainCamera == null)
@@ -130,9 +133,11 @@ public class GaugeBar : MonoBehaviour
         Vector3 worldPos = CalculateWorldPosition();
         Vector3 screenPos = m_mainCamera.WorldToScreenPoint(worldPos);
 
+        Rect viewportPixelRect = m_mainCamera.pixelRect;
+
         bool isInFrontOfCamera = screenPos.z > 0;
-        bool isInScreenBounds = screenPos.x >= -m_screenMargin && screenPos.x <= Screen.width + m_screenMargin &&
-                                screenPos.y >= -m_screenMargin && screenPos.y <= Screen.height + m_screenMargin;
+        bool isInScreenBounds = screenPos.x >= viewportPixelRect.xMin - m_screenMargin && screenPos.x <= viewportPixelRect.xMax + m_screenMargin &&
+                                screenPos.y >= viewportPixelRect.yMin - m_screenMargin && screenPos.y <= viewportPixelRect.yMax + m_screenMargin;
 
         return isInFrontOfCamera && isInScreenBounds;
     }

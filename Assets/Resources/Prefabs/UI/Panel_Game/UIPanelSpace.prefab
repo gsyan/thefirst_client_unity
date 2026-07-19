@@ -33490,8 +33490,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleButton
   button: {fileID: 4284642665473676264}
-  m_selectedColorKey: Rose500
-  m_unselectedColorKey: RoseDark
+  m_selectedColorKey: GeneralBright1
+  m_unselectedColorKey: GeneralDark1
 --- !u!1 &3486235163521687363
 GameObject:
   m_ObjectHideFlags: 0
@@ -33630,8 +33630,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleButton
   button: {fileID: 6302156383684946492}
-  m_selectedColorKey: Rose500
-  m_unselectedColorKey: RoseDark
+  m_selectedColorKey: GeneralBright1
+  m_unselectedColorKey: GeneralDark1
 --- !u!1 &3486619561753191010
 GameObject:
   m_ObjectHideFlags: 0
@@ -73398,8 +73398,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleButton
   button: {fileID: 4497064671664449705}
-  m_selectedColorKey: Rose500
-  m_unselectedColorKey: RoseDark
+  m_selectedColorKey: GeneralBright1
+  m_unselectedColorKey: GeneralDark1
 --- !u!1 &7429400731151000371
 GameObject:
   m_ObjectHideFlags: 0

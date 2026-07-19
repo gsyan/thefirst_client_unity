@@ -256,6 +256,9 @@ public class UITabFleetTactics : UITabBase
             for (int i = 0; i < m_formationButtons.Length; i++)
                 m_formationButtons[i].SetSelected(false);
 
+            // SetSelected(false)로 체크마크를 껐으므로, SelectFormation의 "이미 선택된 idx면 무시" 가드에 막히지 않도록 상태 초기화
+            m_selectedFormationIdx = -1;
+
             int currentIdx = GetFormationIndex(m_playerFleet.m_currentFormationType);
             m_suppressFormationCallback = true;
             SelectFormation(currentIdx);
