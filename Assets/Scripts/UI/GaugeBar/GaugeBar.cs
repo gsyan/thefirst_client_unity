@@ -122,9 +122,11 @@ public class GaugeBar : MonoBehaviour
         }
     }
 
-    // 카메라 viewport가 UI 패널 레이아웃(함선탭 열림 등)이나 세이프에어리어 마진으로 화면 전체보다 좁아질 수 있음
+    // 카메라 viewport가 UI 패널 레이아웃(함선탭 열림 등)으로 화면 전체보다 좁아질 수 있음
     // Screen.width/height 전체를 기준으로 판정하면, 카메라가 실제로 렌더링하지 않는(=Clear Flags가 지워주지 않는) 영역에서도
     // 게이지바가 계속 활성 상태로 남아 이전 프레임 픽셀이 지워지지 않고 잔상으로 남는 문제가 있었음
+    // 곡면(엣지) 마진(UIManager.CURVED_EDGE_MARGIN)은 카메라 rect가 아니라 레터박스 UI 바로 가리므로, 카메라 렌더링 여부와 무관하게
+    // 여기서 직접 제외해야 컬링이 실제로 동작함 (안 그러면 바 뒤에서 계속 그려지기만 하고 숨겨지지 않음)
     public bool IsInScreenBounds()
     {
         if (m_targetTransform == null || m_mainCamera == null)
@@ -134,9 +136,13 @@ public class GaugeBar : MonoBehaviour
         Vector3 screenPos = m_mainCamera.WorldToScreenPoint(worldPos);
 
         Rect viewportPixelRect = m_mainCamera.pixelRect;
+        float curvedEdgeMarginPixels = UIManager.CURVED_EDGE_MARGIN * Screen.width;
+
+        float xMin = Mathf.Max(viewportPixelRect.xMin - m_screenMargin, curvedEdgeMarginPixels);
+        float xMax = Mathf.Min(viewportPixelRect.xMax + m_screenMargin, Screen.width - curvedEdgeMarginPixels);
 
         bool isInFrontOfCamera = screenPos.z > 0;
-        bool isInScreenBounds = screenPos.x >= viewportPixelRect.xMin - m_screenMargin && screenPos.x <= viewportPixelRect.xMax + m_screenMargin &&
+        bool isInScreenBounds = screenPos.x >= xMin && screenPos.x <= xMax &&
                                 screenPos.y >= viewportPixelRect.yMin - m_screenMargin && screenPos.y <= viewportPixelRect.yMax + m_screenMargin;
 
         return isInFrontOfCamera && isInScreenBounds;

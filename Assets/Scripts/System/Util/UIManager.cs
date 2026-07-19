@@ -2,6 +2,7 @@
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum EPopupLayer
 {
@@ -59,6 +60,9 @@ public class UIManager : MonoSingleton<UIManager>
         InitializeContainers();
     }
 
+    // 곡면(엣지) 디스플레이 대비 좌우 마진 비율 — SafeAreaRoot·레터박스 커버 바·GaugeBar 컬링이 공유
+    public const float CURVED_EDGE_MARGIN = 0.02f;
+
     // 컨테이너 초기화 (하이라키 순서 = 렌더 순서)
     protected void InitializeContainers()
     {
@@ -66,7 +70,7 @@ public class UIManager : MonoSingleton<UIManager>
 
         m_gaugeBarContainer = CreateContainer("UIGaugeBarContainer");
         m_generalContainer  = CreateContainer("UIGeneralContainer");
-        
+
         int layerCount = (int)EPopupLayer.Count;
         m_popupContainers = new RectTransform[layerCount];
         m_popupStacks     = new Stack<UIPopupBase>[layerCount];
@@ -76,8 +80,11 @@ public class UIManager : MonoSingleton<UIManager>
 
         for (int i = 0; i < layerCount; i++)
             m_popupStacks[i] = new Stack<UIPopupBase>();
-        
+
         m_tutorialContainer = CreateContainer("UITutorialContainer");
+
+        // 커브드 엣지 마진으로 새는 UI(게이지바, 튜토리얼 화살표 등)를 가리기 위해 항상 최상단에 위치해야 함
+        CreateLetterboxCover();
     }
 
     // 곡면(엣지) 화면 대비 안전영역 부모 — SafeAreaAdapter가 여기서 anchor를 깎음
@@ -92,10 +99,35 @@ public class UIManager : MonoSingleton<UIManager>
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
 
-        // 곡면(엣지) 디스플레이는 Screen.safeArea로 안 잡히는 기종이 있어 좌우 2% 고정 마진 추가
-        rootObj.AddComponent<SafeAreaAdapter>().SetExtraMargins(0.02f, 0.02f, 0f, 0f);
+        // 곡면(엣지) 디스플레이는 Screen.safeArea로 안 잡히는 기종이 있어 좌우 고정 마진 추가
+        rootObj.AddComponent<SafeAreaAdapter>().SetExtraMargins(CURVED_EDGE_MARGIN, CURVED_EDGE_MARGIN, 0f, 0f);
 
         return rect;
+    }
+
+    // 곡면(엣지) 영역을 카메라 rect를 좁혀서 가리면, 카메라가 그리지 않는 그 스트립을 아무도 매 프레임 지우지 않아
+    // 그 위를 지나간 UI(체력바 등)가 잔상으로 남는 문제가 있었음 — 카메라는 항상 풀스크린으로 그리게 두고,
+    // 대신 화면 절대 좌표 기준 불투명 바로 가려서 커브드 엣지를 숨김 (매 프레임 Canvas가 정상적으로 다시 그려주므로 잔상 없음)
+    private void CreateLetterboxCover()
+    {
+        CreateLetterboxBar("LetterboxBarLeft",  Vector2.zero,                              new Vector2(CURVED_EDGE_MARGIN, 1f));
+        CreateLetterboxBar("LetterboxBarRight", new Vector2(1f - CURVED_EDGE_MARGIN, 0f),   Vector2.one);
+    }
+
+    private void CreateLetterboxBar(string name, Vector2 anchorMin, Vector2 anchorMax)
+    {
+        GameObject barObj = new(name);
+        barObj.transform.SetParent(transform, false);
+
+        RectTransform rect = barObj.AddComponent<RectTransform>();
+        rect.anchorMin = anchorMin;
+        rect.anchorMax = anchorMax;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+
+        Image image = barObj.AddComponent<Image>();
+        image.color = Color.black;
+        image.raycastTarget = false;
     }
 
     private RectTransform CreateContainer(string name)

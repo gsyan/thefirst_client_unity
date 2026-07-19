@@ -139,7 +139,10 @@ public class UIResourceBar : MonoBehaviour
 
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander != null)
+        {
             commander.UpdateMineral(response.data.mineralRemain);
+            commander.UpdateModulePoint(response.data.modulePointRemain);
+        }
 
         SpaceFleet playerFleet = ObjectManager.Instance.GetMyFleet();
         if (playerFleet != null && response.data.updatedFleetInfo != null)

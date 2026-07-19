@@ -396,6 +396,7 @@ public class FleetResetAllInvestedMineralResponse
 {
     public int mineralRemain;
     public int totalRefundedMineral;
+    public int modulePointRemain;
     public FleetInfo updatedFleetInfo;
 }
 

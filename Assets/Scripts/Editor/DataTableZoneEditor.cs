@@ -22,8 +22,8 @@ public class DataTableZoneEditor : Editor
     // 자동 배치 생성 파라미터 (에디터 전용)
     private Dictionary<int, int>   m_autoGenSeed       = new Dictionary<int, int>();
     private Dictionary<int, float> m_autoGenXRange     = new Dictionary<int, float>();
-    private Dictionary<int, float> m_autoGenZRange     = new Dictionary<int, float>();
-    private Dictionary<int, float> m_autoGenMinZGap    = new Dictionary<int, float>();
+    private Dictionary<int, float> m_autoGenYRange     = new Dictionary<int, float>();
+    private Dictionary<int, float> m_autoGenMinYGap    = new Dictionary<int, float>();
     private Dictionary<int, int>   m_autoGenStageCount = new Dictionary<int, int>();
     private readonly Color zoneColor       = new Color(0.7f, 0.85f, 0.95f);
     private readonly Color shipColor       = new Color(0.85f, 0.95f, 0.85f);
@@ -924,9 +924,9 @@ public class DataTableZoneEditor : Editor
     private int  m_genFleetZoneStart  = 1;
     private int  m_genFleetZoneEnd    = 100;
     private int  m_genFleetSeed       = 20260709;
-    private float m_genFleetXRange    = 11000f;
-    private float m_genFleetZRange    = 5000f;
-    private float m_genFleetMinZGap   = 2500f;
+    private float m_genFleetXRange    = 0.35f;  // 뷰포트 중심(0.5) 기준 X 반경 — 화면 밖으로 안 나가게 0.5 미만 권장
+    private float m_genFleetYRange    = 0.32f;  // 뷰포트 중심(0.5) 기준 Y 반경
+    private float m_genFleetMinYGap   = 0.14f;  // 인접 스테이지 간 최소 화면(뷰포트) Y 간격
     private int  m_genFleetStageCount = 10;
     private bool m_genFleetFoldout    = false;
 
@@ -937,6 +937,7 @@ public class DataTableZoneEditor : Editor
         if (m_genFleetFoldout)
         {
             EditorGUILayout.HelpBox("zoneStart~zoneEnd 구간의 각 Zone에 대해 '함대 위치 자동 배치'를 반복 실행합니다.\n" +
+                "화면(뷰포트) 좌표를 먼저 정하고(2D 소스), 각 Zone의 갤럭시 카메라 앵커를 통해 3D 월드 위치로 역투영합니다.\n" +
                 "존마다 Seed에 zoneIndex를 섞어 서로 다른 배치를 만듭니다. 해당 Zone의 기존 스테이지는 전체 교체됩니다.", MessageType.Info);
 
             EditorGUI.indentLevel++;
@@ -944,9 +945,9 @@ public class DataTableZoneEditor : Editor
             m_genFleetZoneEnd    = EditorGUILayout.IntField("Zone End",   m_genFleetZoneEnd);
             m_genFleetSeed       = EditorGUILayout.IntField("Random Seed (공용)", m_genFleetSeed);
             EditorGUILayout.Space(4);
-            m_genFleetXRange     = EditorGUILayout.FloatField("X Range",   m_genFleetXRange);
-            m_genFleetZRange     = EditorGUILayout.FloatField("Z Range",   m_genFleetZRange);
-            m_genFleetMinZGap    = EditorGUILayout.FloatField("Min Z Gap", m_genFleetMinZGap);
+            m_genFleetXRange     = EditorGUILayout.Slider("X Range (화면 반경)",   m_genFleetXRange,   0.05f, 0.49f);
+            m_genFleetYRange     = EditorGUILayout.Slider("Y Range (화면 반경)",   m_genFleetYRange,   0.05f, 0.49f);
+            m_genFleetMinYGap    = EditorGUILayout.Slider("Min Y Gap (화면)",      m_genFleetMinYGap,  0.01f, m_genFleetYRange);
             m_genFleetStageCount = EditorGUILayout.IntSlider("스테이지 수", m_genFleetStageCount, 1, 10);
             EditorGUI.indentLevel--;
 
@@ -969,7 +970,7 @@ public class DataTableZoneEditor : Editor
         for (int zone = m_genFleetZoneStart; zone <= m_genFleetZoneEnd; zone++)
         {
             int zoneSeed = m_genFleetSeed ^ (zone * 73856093);
-            GenerateFleetPositions(zone, zoneSeed, m_genFleetXRange, m_genFleetZRange, m_genFleetMinZGap, m_genFleetStageCount);
+            GenerateFleetPositions(zone, zoneSeed, m_genFleetXRange, m_genFleetYRange, m_genFleetMinYGap, m_genFleetStageCount);
             touched++;
         }
 
@@ -1098,18 +1099,18 @@ public class DataTableZoneEditor : Editor
     private void DrawAutoPlacementUI(int zoneIndex)
     {
         if (!m_autoGenSeed.ContainsKey(zoneIndex))        m_autoGenSeed[zoneIndex]       = zoneIndex * 100;
-        if (!m_autoGenXRange.ContainsKey(zoneIndex))     m_autoGenXRange[zoneIndex]     = 11000f;
-        if (!m_autoGenZRange.ContainsKey(zoneIndex))     m_autoGenZRange[zoneIndex]     = 5000f;
-        if (!m_autoGenMinZGap.ContainsKey(zoneIndex))    m_autoGenMinZGap[zoneIndex]    = 1500f;
+        if (!m_autoGenXRange.ContainsKey(zoneIndex))     m_autoGenXRange[zoneIndex]     = 0.35f;
+        if (!m_autoGenYRange.ContainsKey(zoneIndex))     m_autoGenYRange[zoneIndex]     = 0.32f;
+        if (!m_autoGenMinYGap.ContainsKey(zoneIndex))    m_autoGenMinYGap[zoneIndex]    = 0.14f;
         if (!m_autoGenStageCount.ContainsKey(zoneIndex)) m_autoGenStageCount[zoneIndex] = 10;
 
         EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField("함대 위치 자동 배치", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("함대 위치 자동 배치 (화면 좌표 소스 → 3D 역투영)", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
         m_autoGenSeed[zoneIndex]        = EditorGUILayout.IntField("Seed",        m_autoGenSeed[zoneIndex]);
-        m_autoGenXRange[zoneIndex]      = EditorGUILayout.FloatField("X Range",   m_autoGenXRange[zoneIndex]);
-        m_autoGenZRange[zoneIndex]      = EditorGUILayout.FloatField("Z Range",   m_autoGenZRange[zoneIndex]);
-        m_autoGenMinZGap[zoneIndex]     = EditorGUILayout.FloatField("Min Z Gap", m_autoGenMinZGap[zoneIndex]);
+        m_autoGenXRange[zoneIndex]      = EditorGUILayout.Slider("X Range (화면 반경)", m_autoGenXRange[zoneIndex], 0.05f, 0.49f);
+        m_autoGenYRange[zoneIndex]      = EditorGUILayout.Slider("Y Range (화면 반경)", m_autoGenYRange[zoneIndex], 0.05f, 0.49f);
+        m_autoGenMinYGap[zoneIndex]     = EditorGUILayout.Slider("Min Y Gap (화면)",    m_autoGenMinYGap[zoneIndex], 0.01f, m_autoGenYRange[zoneIndex]);
         m_autoGenStageCount[zoneIndex]  = EditorGUILayout.IntSlider("스테이지 수",  m_autoGenStageCount[zoneIndex],  1, 10);
         EditorGUI.indentLevel--;
 
@@ -1123,15 +1124,25 @@ public class DataTableZoneEditor : Editor
             if (confirm == true)
             {
                 GenerateFleetPositions(zoneIndex, m_autoGenSeed[zoneIndex],
-                    m_autoGenXRange[zoneIndex], m_autoGenZRange[zoneIndex],
-                    m_autoGenMinZGap[zoneIndex], m_autoGenStageCount[zoneIndex]);
+                    m_autoGenXRange[zoneIndex], m_autoGenYRange[zoneIndex],
+                    m_autoGenMinYGap[zoneIndex], m_autoGenStageCount[zoneIndex]);
             }
         }
         EditorGUILayout.EndVertical();
     }
 
-    private void GenerateFleetPositions(int zoneIndex, int seed, float xRange, float zRange, float minZGap, int stageCount)
+    // 화면(뷰포트) 좌표를 1차 소스로 스테이지 노드를 배치한 뒤, 갤럭시 뷰 카메라 앵커를 통해 3D 월드 좌표로 역투영한다.
+    // xRange/yRange는 뷰포트 중심(0.5, 0.5) 기준 반경 — 노드 UI가 화면 밖으로 잘리지 않도록 0.5 미만으로 제한할 것.
+    // y는 위쪽 절반/아래쪽 절반을 번갈아 랜덤 샘플링 — 화면 위/아래 영역을 고르게 사용하면서 minYGap 이상 간격도 보장한다.
+    private void GenerateFleetPositions(int zoneIndex, int seed, float xRange, float yRange, float minYGap, int stageCount)
     {
+        ZoneConfig zoneConfig = m_dataTableZone.GetZoneByZoneIndex(zoneIndex);
+        if (zoneConfig == null)
+        {
+            Debug.LogWarning($"[AutoPlace] Zone {zoneIndex}: 갤럭시 카메라 앵커(ZoneConfig)가 없어 3D 역투영이 불가능합니다. 카메라 앵커를 먼저 설정하세요.");
+            return;
+        }
+
         // 기존 스테이지 맵 수집 (fleetPosition/Rotation 외 데이터 보존용)
         var existingMap = new Dictionary<string, ZoneStageConfig>();
         for (int j = 0; j < m_dataTableZone.zoneStageList.Count; j++)
@@ -1140,29 +1151,100 @@ public class DataTableZoneEditor : Editor
             if (zs.zoneIndex == zoneIndex) existingMap[zs.zoneName] = zs;
         }
 
-        // 위치 계산
         int N = stageCount;
         var rng = new System.Random(seed);
-        float prevZ = float.MaxValue;
+
+        // 1) 2D 화면(뷰포트) 좌표 계산 — 컬럼(x)은 균등 배치
+        // 행(y)은 위쪽 절반/아래쪽 절반을 번갈아 랜덤 샘플링 — N개 버킷으로 잘게 쪼개면 지그재그 경로가 중앙에서 수렴할 때 인접 간격이
+        // 거의 0에 가까워지므로(버킷폭=span/N), 대신 반(half)span 안에서 뽑아 인접 간격을 넓게 유지하면서 화면 위/아래를 고르게 사용한다.
+        float[] viewportX = new float[N];
+        float[] viewportY = new float[N];
+
+        for (int i = 0; i < N; i++)
+            viewportX[i] = N == 1 ? 0.5f : Mathf.Lerp(0.5f - xRange, 0.5f + xRange, (float)i / (N - 1));
+
+        float yMin = 0.5f - yRange;
+        float yMax = 0.5f + yRange;
+        float yMid = (yMin + yMax) * 0.5f;
 
         for (int i = 0; i < N; i++)
         {
-            float x = N == 1 ? 0f : Mathf.Lerp(-xRange, xRange, (float)i / (N - 1));
+            // 매 스텝마다 위/아래를 독립적으로 랜덤 선택 — 위위아래/아래아래위처럼 불규칙한 런(run)이 나오게 함
+            bool upper = rng.Next(2) == 0;
+            float rangeLo = upper ? yMid : yMin;
+            float rangeHi = upper ? yMax : yMid;
 
-            float z = 0f;
-            for (int attempt = 0; attempt < 20; attempt++)
+            float y = Mathf.Lerp(rangeLo, rangeHi, (float)rng.NextDouble());
+            for (int attempt = 0; attempt < 20 && i > 0 && Mathf.Abs(y - viewportY[i - 1]) < minYGap; attempt++)
+                y = Mathf.Lerp(rangeLo, rangeHi, (float)rng.NextDouble());
+
+            if (i > 0 && Mathf.Abs(y - viewportY[i - 1]) < minYGap)
             {
-                z = (float)(rng.NextDouble() * 2.0 - 1.0) * zRange;
-                if (prevZ == float.MaxValue || Mathf.Abs(z - prevZ) >= minZGap)
-                    break;
+                // 재시도로도 부족하면 최소 간격만큼 강제로 밀어냄 (half 영역 경계 안에서)
+                float pushDir = y >= viewportY[i - 1] ? 1f : -1f;
+                y = Mathf.Clamp(viewportY[i - 1] + pushDir * minYGap, rangeLo, rangeHi);
             }
-            prevZ = z;
+
+            viewportY[i] = y;
+        }
+
+        // 인접 인덱스(i, i-1)만 검사하면 놓치는 경우 방지 — 컬럼이 가까운(X가 가까운) 모든 쌍에 대해 Y 간격도 재검사.
+        // 선택된 스테이지의 정보 라벨 패널(호버 시 커짐)이 세로로 크기 때문에, X가 가까운 노드끼리는 Y도 충분히 떨어져야 겹치지 않는다.
+        float columnGap = N > 1 ? (xRange * 2f) / (N - 1) : xRange * 2f;
+        float minXSafeDist = columnGap * 0.9f;
+        for (int i = 1; i < N; i++)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                float dx = Mathf.Abs(viewportX[i] - viewportX[j]);
+                if (dx >= minXSafeDist) continue; // 컬럼이 충분히 떨어져 있으면 겹칠 위험 없음
+
+                float dy = Mathf.Abs(viewportY[i] - viewportY[j]);
+                if (dy >= minYGap) continue;
+
+                float pushDir = viewportY[i] >= viewportY[j] ? 1f : -1f;
+                viewportY[i] = Mathf.Clamp(viewportY[j] + pushDir * minYGap, yMin, yMax);
+            }
+        }
+
+        // 2) 갤럭시 뷰 카메라를 가상으로 재현 (CameraController.LateUpdate와 동일한 구면좌표 공식)해 뷰포트 → 월드 역투영
+        Camera refCam = Camera.main != null ? Camera.main : Object.FindFirstObjectByType<Camera>();
+        float fov    = refCam != null ? refCam.fieldOfView : 60f;
+        float aspect = refCam != null ? refCam.aspect       : 16f / 9f;
+
+        Vector3 target    = zoneConfig.galaxyCameraTarget;
+        float radiansY    = (zoneConfig.galaxyCameraRotY + 180f) * Mathf.Deg2Rad;
+        float radiansX    = zoneConfig.galaxyCameraRotX * Mathf.Deg2Rad;
+        float horizDist   = zoneConfig.galaxyCameraZoom * Mathf.Cos(radiansX);
+        Vector3 camOffset = new Vector3(
+            Mathf.Sin(radiansY) * horizDist,
+            zoneConfig.galaxyCameraZoom * Mathf.Sin(radiansX),
+            Mathf.Cos(radiansY) * horizDist);
+
+        GameObject tempCamGO = new GameObject("TempGalaxyCam_AutoPlace") { hideFlags = HideFlags.HideAndDontSave };
+        Camera virtualCam = tempCamGO.AddComponent<Camera>();
+        virtualCam.fieldOfView       = fov;
+        virtualCam.aspect            = aspect;
+        virtualCam.transform.position = target + camOffset;
+        virtualCam.transform.LookAt(target);
+
+        Plane groundPlane = new Plane(Vector3.up, new Vector3(0f, target.y, 0f));
+
+        for (int i = 0; i < N; i++)
+        {
+            Ray ray = virtualCam.ViewportPointToRay(new Vector3(viewportX[i], viewportY[i], 0f));
+            Vector3 worldPos = target;
+            if (groundPlane.Raycast(ray, out float enter))
+                worldPos = ray.GetPoint(enter);
+
+            Vector3 fleetPos = worldPos - target;
+            fleetPos.y = 0f;
 
             string stageName = $"{zoneIndex}-{i + 1}";
             if (existingMap.TryGetValue(stageName, out ZoneStageConfig existing))
             {
                 // 기존 스테이지 — fleetPosition/Rotation만 업데이트
-                existing.fleetPosition  = new Vector3(x, 0f, z);
+                existing.fleetPosition  = fleetPos;
                 existing.fleetRotationY = 0f;
             }
             else
@@ -1174,11 +1256,13 @@ public class DataTableZoneEditor : Editor
                     zoneDescription   = $"Zone {stageName}",
                     zoneIndex         = zoneIndex,
                     spawnTerm         = 20f,
-                    fleetPosition     = new Vector3(x, 0f, z),
+                    fleetPosition     = fleetPos,
                     enemyFleets       = new List<StageEnemyFleetSpawnConfig>(),
                 });
             }
         }
+
+        Object.DestroyImmediate(tempCamGO);
 
         m_dataTableZone.zoneStageList.Sort((a, b) =>
         {
@@ -1193,7 +1277,7 @@ public class DataTableZoneEditor : Editor
 
         m_dataTableZone.BuildRuntimeCache();
         EditorUtility.SetDirty(m_dataTableZone);
-        Debug.Log($"[AutoPlace] Zone {zoneIndex}: {N}개 스테이지 fleetPosition 생성 완료 (seed={seed})");
+        Debug.Log($"[AutoPlace] Zone {zoneIndex}: {N}개 스테이지 fleetPosition 생성 완료 (seed={seed}, 화면 좌표 기반 역투영)");
     }
 
     private void DrawZoneStage(int listIndex, string zoneName)
