@@ -873,6 +873,7 @@ public class UITabShip : UITabBase
         {
             SoundManager.Instance.PlayFX(EFx.Level_Up, retrigger: true);
             commander.UpdateMineral(response.data.pointRemain);
+            commander.UpdateModulePoint(response.data.modulePointRemain);
             Apply_ModuleLevelChangeMineral(response.data);
         }
         else
@@ -1035,6 +1036,7 @@ public class UITabShip : UITabBase
         {
             SoundManager.Instance.PlayFX(EFx.Level_Down, retrigger: true);
             commander.UpdateMineral(response.data.pointRemain);
+            commander.UpdateModulePoint(response.data.modulePointRemain);
             Apply_ModuleLevelChangeMineral(response.data);
         }
         else
@@ -1277,7 +1279,10 @@ public class UITabShip : UITabBase
 
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander != null)
+        {
             commander.UpdateMineral(data.pointRemain);
+            commander.UpdateModulePoint(data.modulePointRemain);
+        }
 
         if (data.isShipRemoved == true)
         {
@@ -1581,7 +1586,7 @@ public class UITabShip : UITabBase
             if (m_levelUpModuleButtonText1 != null)
                 m_levelUpModuleButtonText1.text = LocalizationManager.Instance.Get("LevelupButtonTextMax");
             if (m_levelUpModuleButtonText2 != null)
-                m_levelUpModuleButtonText2.SetRow("", "");
+                m_levelUpModuleButtonText2.Hide();
             return;
         }
 
@@ -1952,7 +1957,10 @@ public class UITabShip : UITabBase
 
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander != null)
+        {
             commander.UpdateMineral(data.pointRemain);
+            commander.UpdateModulePoint(data.modulePointRemain);
+        }
 
         if (data.isShipRemoved == true)
         {

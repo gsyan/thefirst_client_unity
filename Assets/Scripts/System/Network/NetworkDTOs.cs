@@ -328,6 +328,7 @@ public class ModuleLevelChangeResponse
     public int newLevel;
     public int pointRemain;
     public int investedPoint;
+    public int modulePointRemain;
 }
 
 [System.Serializable]
@@ -353,6 +354,7 @@ public class ModuleGradeChangeResponse
     public int moduleNewLevel;
     public int pointRemain;
     public int investedPoint;
+    public int modulePointRemain;
     public bool isModuleRemoved;
     public bool isShipRemoved;
     public long removedShipId;
@@ -380,6 +382,7 @@ public class ModuleResetResponse
     public int moduleNewLevel;
     public int pointRemain;
     public int investedPoint;
+    public int modulePointRemain;
     public bool isModuleRemoved;
     public bool isShipRemoved;
     public long removedShipId;
