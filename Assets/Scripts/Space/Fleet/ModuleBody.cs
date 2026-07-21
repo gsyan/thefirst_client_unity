@@ -89,7 +89,8 @@ public class ModuleBody : ModuleBase
     }
 
     // Body 초기화 (기존 모듈 재사용 가능)
-    public void InitializeModuleBody(ModuleBodyInfo moduleBodyInfo, List<ModuleBase> savedModules)
+    // statOverride: 성능포인트 프리셋 기반 스폰 시 테이블 값 대신 사용할 계산값(체력/수리력/슬롯별 공격력). null이면 기존처럼 테이블값 그대로 사용
+    public void InitializeModuleBody(ModuleBodyInfo moduleBodyInfo, List<ModuleBase> savedModules, ShipFinalStats? statOverride = null)
     {
         m_moduleBodyInfo = moduleBodyInfo;
         m_moduleSlot = null;
@@ -101,22 +102,22 @@ public class ModuleBody : ModuleBase
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType, moduleBodyInfo.moduleLevel);
         if (moduleData == null) return;
 
-        // 복원된 데이터로 초기화
-        m_healthMax = moduleData.health;
+        // 복원된 데이터로 초기화 — 체력/수리력은 프리셋 계산값 있으면 그걸로 대체, 없으면 기존처럼 테이블값
+        m_healthMax = statOverride?.health ?? moduleData.health;
         m_health = moduleBodyInfo.currentHealth > 0f ? Mathf.Min(moduleBodyInfo.currentHealth, m_healthMax) : m_healthMax;
         // 업그레이드 비용 설정
         m_modulePointCostLevelup = moduleData.modulePointCost;
-        
+
         m_attack = 0.0f; // Body는 직접 공격하지 않음
 
         // Body 전용 능력치
-        m_repair = moduleData.repair;
-        m_speed  = moduleData.speed;
+        m_repair = statOverride?.repair ?? moduleData.repair;
+        m_speed  = moduleData.speed; // 선회력(turnRate) 반영은 후속 작업
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
 
-        // Zone 적 함선일 때 체력에 배율 적용
+        // Zone 적 함선일 때 체력에 배율 적용 (프리셋 스폰은 배율 1.0 고정이라 실질적으로 no-op)
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
             m_health    *= m_ownerShip.m_bodyMultiplier;
@@ -131,7 +132,7 @@ public class ModuleBody : ModuleBase
             RestoreSavedModules(savedModules);
 
         // 빈 슬롯에 서버 정보대로 모듈 생성 (savedModules 유무와 관계없이)
-        CreateMissingModules(moduleBodyInfo);
+        CreateMissingModules(moduleBodyInfo, statOverride);
 
     }
 
@@ -291,7 +292,8 @@ public class ModuleBody : ModuleBase
     }
     
     // 서버 정보에 있지만 재배치되지 못한 모듈들을 생성
-    private void CreateMissingModules(ModuleBodyInfo bodyInfo)
+    // statOverride: 성능포인트 프리셋 기반 스폰 시 슬롯별(beamInfo.slotIndex 기준) 공격력 계산값 — null이면 기존처럼 테이블값 사용
+    private void CreateMissingModules(ModuleBodyInfo bodyInfo, ShipFinalStats? statOverride = null)
     {
         // Beam 생성
         if (bodyInfo.beams != null)
@@ -302,7 +304,8 @@ public class ModuleBody : ModuleBase
                 if (slot != null && !HasRealModule(slot))
                 {
                     DisablePlaceholderIfExists(slot);
-                    InitializeBeam(beamInfo);
+                    float? attackOverride = GetSlotAttackOverride(statOverride?.beamAttacks, beamInfo.slotIndex);
+                    InitializeBeam(beamInfo, attackOverride);
                 }
             }
         }
@@ -316,7 +319,8 @@ public class ModuleBody : ModuleBase
                 if (slot != null && !HasRealModule(slot))
                 {
                     DisablePlaceholderIfExists(slot);
-                    InitializeMissile(missileInfo);
+                    float? attackOverride = GetSlotAttackOverride(statOverride?.missileAttacks, missileInfo.slotIndex);
+                    InitializeMissile(missileInfo, attackOverride);
                 }
             }
         }
@@ -339,14 +343,21 @@ public class ModuleBody : ModuleBase
         FillEmptySlotsWithPlaceholders();
     }
 
-    private void InitializeBeam(ModuleInfo moduleInfo)
+    // 프리셋 계산값 배열에서 slotIndex에 해당하는 값을 안전하게 조회 (범위 밖/null이면 override 없음)
+    private float? GetSlotAttackOverride(float[] attackArray, int slotIndex)
+    {
+        if (attackArray == null || slotIndex < 0 || slotIndex >= attackArray.Length) return null;
+        return attackArray[slotIndex];
+    }
+
+    private void InitializeBeam(ModuleInfo moduleInfo, float? attackOverride = null)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString());
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
         if (HasRealModule(targetSlot)) return;
-        
+
         GameObject beamObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         beamObj.transform.SetParent(targetSlot.transform);
         beamObj.transform.localScale = Vector3.one;
@@ -355,17 +366,17 @@ public class ModuleBody : ModuleBase
         if (moduleBeam == null)
             moduleBeam = beamObj.AddComponent<ModuleBeam>();
 
-        moduleBeam.InitializeModuleBeam(moduleInfo, this, targetSlot);
+        moduleBeam.InitializeModuleBeam(moduleInfo, this, targetSlot, attackOverride);
     }
 
-    private void InitializeMissile(ModuleInfo moduleInfo)
+    private void InitializeMissile(ModuleInfo moduleInfo, float? attackOverride = null)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString());
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
         if (HasRealModule(targetSlot)) return;
-        
+
         GameObject missileObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
         missileObj.transform.SetParent(targetSlot.transform);
         missileObj.transform.localScale = Vector3.one;
@@ -374,7 +385,7 @@ public class ModuleBody : ModuleBase
         if (moduleMissile == null)
             moduleMissile = missileObj.AddComponent<ModuleMissile>();
 
-        moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot);
+        moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot, attackOverride);
     }
 
     private void InitializeHanger(ModuleInfo moduleInfo)

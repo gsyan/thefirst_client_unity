@@ -48,6 +48,88 @@ public class GameSettings
     public float aircraftTacticDamageMultiplier = 2f;
     [Tooltip("함재기 전술 강화 ON 시 미사일 장착 개수 배율")]
     public float aircraftTacticAmmoMultiplier = 2f;
+
+    [Header("Exploration - Ship Stat Formula")]
+    public ShipStatFormulaSettings shipStatFormula = new ShipStatFormulaSettings();
+}
+
+// 성능포인트 1000 배분 → 최종 전투 수치 변환 공식의 기준값/계수
+// Docs/Exploration_Revamp.md §1-1(장착+강화), §1-4(실드/요격체) 확정 공식 참고
+// 카테고리별 중첩 클래스 — Inspector에서 각각 폴드아웃으로 접고 펼 수 있음
+[System.Serializable]
+public class ShipStatFormulaSettings
+{
+    [Tooltip("카테고리(빔/미사일/함재기/요격체)별 슬롯 상한 — 프리셋 데이터의 슬롯 배열 크기 기준값")]
+    public int maxModuleSlots = 6;
+
+    public BeamFormula beam = new BeamFormula();
+    public MissileFormula missile = new MissileFormula();
+    public HangarFormula hangar = new HangarFormula();
+    public ShieldFormula shield = new ShieldFormula();
+    public InterceptorFormula interceptor = new InterceptorFormula();
+    public FlatStatFormula flatStats = new FlatStatFormula();
+}
+
+[System.Serializable]
+public class BeamFormula
+{
+    public int installCost = 200;
+    public float baseAttack = 20f;
+    [Tooltip("강화 1포인트당 공격력 가산")]
+    public float reinforcePerPoint = 0.1f;
+}
+
+[System.Serializable]
+public class MissileFormula
+{
+    public int installCost = 200;
+    public float baseAttack = 20f;
+    [Tooltip("강화 1포인트당 공격력 가산")]
+    public float reinforcePerPoint = 0.1f;
+}
+
+[System.Serializable]
+public class HangarFormula
+{
+    public int installCost = 200;
+    public float baseShipAttack = 10f;
+    public float baseFighterAttack = 10f;
+    public float baseAmmo = 10f;
+    public float baseHealth = 50f;
+    [Tooltip("강화 서브스탯(4종) 1포인트당 가산")]
+    public float reinforcePerPoint = 0.1f;
+}
+
+[System.Serializable]
+public class ShieldFormula
+{
+    public int installCost = 200;
+    public float baseGauge = 100f;
+    public float baseDelay = 5f;
+    public float baseRegenRate = 5f;
+    public float gaugePerPoint = 0.5f;
+    public float delayReductionPerPoint = 0.02f;
+    public float regenRatePerPoint = 0.1f;
+    public float delayFloor = 1f;
+}
+
+[System.Serializable]
+public class InterceptorFormula
+{
+    [Tooltip("딜레이/회복속도 기본값·계수는 실드와 동일하게 임시 적용 — 실측 후 별도 조정 필요 (미확정)")]
+    public int installCost = 100;
+    public float baseDelay = 5f;
+    public float baseRegenRate = 5f;
+    public float delayReductionPerPoint = 0.02f;
+    public float regenRatePerPoint = 0.1f;
+    public float delayFloor = 1f;
+}
+
+[System.Serializable]
+public class FlatStatFormula
+{
+    [Tooltip("체력/선회력/수리능력 — 장착 개념 없는 순수 포인트 배분. 기본값/계수 미확정 — 임시값")]
+    public float perPoint = 0.1f;
 }
 
 [CreateAssetMenu(fileName = "DataTableConfig", menuName = "Custom/DataTableConfig")]

@@ -1,4 +1,6 @@
 ﻿// PvP 탭 - 상대 목록, 전투 시작/결과, 랭킹 보드(InfiniteScrollView) 관리
+// 함선 시스템 대격변으로 전체 주석처리 — 구식 ShipInfo/FleetInfo 기반 PvP 로직, 마이그레이션 전까지 비활성화(삭제 아님)
+#if false
 using UnityEngine;
 
 public class UITabPvp : UITabBase
@@ -254,4 +256,5 @@ public class UITabPvp : UITabBase
         });
     }
 }
+#endif
 

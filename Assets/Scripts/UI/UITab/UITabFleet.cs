@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if false
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -490,4 +491,5 @@ public class UITabFleet : UITabBase
         return ServerErrorCode.SUCCESS;
     }
 }
+#endif
 

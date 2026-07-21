@@ -57,7 +57,8 @@ public class UITabButtonFleet : MonoBehaviour
         if (m_fleet == null) return;
 
         RefreshText();
-        RefreshTactics(m_fleet.m_fleetInfo.tacticOptions);
+        // 프리셋 기반 신규 함대는 m_fleetInfo(구식 FleetInfo)를 채우지 않음 — 전술 옵션은 새 시스템에 아직 없어 0으로 처리
+        RefreshTactics(m_fleet.m_fleetInfo != null ? m_fleet.m_fleetInfo.tacticOptions : 0);
     }
 
     private void OnShipStatsChanged(SpaceShip ship) => RefreshText();

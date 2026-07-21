@@ -1005,6 +1005,18 @@ MonoBehaviour:
     m_Localized: EXPLORATION
     m_Metadata:
       m_Items: []
+  - m_Id: 59175371185979392
+    m_Localized: Light Beam Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59175371223728128
+    m_Localized: Heavy Missile Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59175371223728129
+    m_Localized: Carrier
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

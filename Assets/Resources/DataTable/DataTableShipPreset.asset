@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed28e35bb0b4cc46ab7d8c2f1350c7c, type: 3}
+  m_Name: DataTableShipPreset
+  m_EditorClassIdentifier: Assembly-CSharp::DataTableShipPreset
+  shipPresetDataList:
+  - presetId: beam_light_01
+    displayNameKey: ShipPreset_BeamLight01
+    prefabName: body_t1_m1
+    commandCost: 100
+    statAllocation:
+      healthPoints: 300
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1_m1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamReinforcePoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileReinforcePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorSlotInstalled: 010100000000
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldInstalled: 0
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: missile_heavy_01
+    displayNameKey: ShipPreset_MissileHeavy01
+    prefabName: body_t3_m1
+    commandCost: 250
+    statAllocation:
+      healthPoints: 350
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamReinforcePoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - missile_t3_m1
+      - missile_t3_m1
+      - 
+      - 
+      - 
+      - 
+      missileReinforcePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 0
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorSlotInstalled: 000000000000
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldInstalled: 0
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: carrier_01
+    displayNameKey: ShipPreset_Carrier01
+    prefabName: body_t2_m1
+    commandCost: 500
+    statAllocation:
+      healthPoints: 400
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamReinforcePoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileReinforcePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - hanger_t2_m1
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorSlotInstalled: 000101000000
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldInstalled: 0
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0

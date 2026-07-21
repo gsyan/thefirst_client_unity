@@ -913,6 +913,89 @@ public class ApiClient
 
     #endregion
 
+    #region Exploration Grid API Methods --------------------------------------------------------------------------
+    public async Task<ApiResponse<EnterExplorationCellResponse>> EnterExplorationCellAsync(EnterExplorationCellRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<EnterExplorationCellResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/exploration/enter-cell", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<EnterExplorationCellResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<ClearExplorationCellResponse>> ClearExplorationCellAsync(ClearExplorationCellRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ClearExplorationCellResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/exploration/clear-cell", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<ClearExplorationCellResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<EscapeExplorationZoneResponse>> EscapeExplorationZoneAsync(EscapeExplorationZoneRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<EscapeExplorationZoneResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/exploration/escape-zone", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<EscapeExplorationZoneResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<IncreaseCommandPowerMaxResponse>> IncreaseCommandPowerMaxAsync(IncreaseCommandPowerMaxRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<IncreaseCommandPowerMaxResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/exploration/increase-command-power", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<IncreaseCommandPowerMaxResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<UnlockShipPresetResponse>> UnlockShipPresetAsync(UnlockShipPresetRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<UnlockShipPresetResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/exploration/unlock-ship-preset", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<UnlockShipPresetResponse>>(webRequest.downloadHandler.text);
+    }
+
+    #endregion
+
     #region Heartbeat API Methods ---------------------------------------------------------------------------------
     public async Task<ApiResponse<HeartbeatResponse>> HeartbeatAsync()
     {

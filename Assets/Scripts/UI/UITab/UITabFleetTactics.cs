@@ -1,4 +1,5 @@
 ﻿// 함대 전략 설정 UI — 진형 선택(라디오) + 전투 옵션 토글
+#if false
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -315,4 +316,5 @@ public class UITabFleetTactics : UITabBase
         m_suppressFormationCallback = false;
     }
 }
+#endif
 

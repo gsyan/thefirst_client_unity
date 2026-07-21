@@ -100,13 +100,14 @@ public class SpaceShip : MonoBehaviour
             m_gaugeBars = gameObject.AddComponent<GaugeBars>();
     }
 
-    public void InitializeSpaceShip(SpaceFleet fleet, ShipInfo shipInfo)
+    // statOverride: 성능포인트 프리셋 기반 스폰 시 테이블 값 대신 사용할 계산값. null이면 기존처럼 테이블값 그대로 사용
+    public void InitializeSpaceShip(SpaceFleet fleet, ShipInfo shipInfo, ShipFinalStats? statOverride = null)
     {
         m_ownerFleet = fleet;
         m_shipInfo = shipInfo;
         if (shipInfo.bodies == null || shipInfo.bodies.Count == 0) return;
         foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
-            InitSpaceShipBody(bodyInfo, null);
+            InitSpaceShipBody(bodyInfo, null, statOverride);
 
         m_spaceShipStatsOrg = GetShipCapabilityProfile(true);
         m_spaceShipStatsCur = GetShipCapabilityProfile(false);
@@ -128,14 +129,14 @@ public class SpaceShip : MonoBehaviour
     }
 
    // Body 초기화 (기존 모듈 재사용 가능)
-    private ModuleBody InitSpaceShipBody(ModuleBodyInfo bodyInfo, List<ModuleBase> savedModules)
+    private ModuleBody InitSpaceShipBody(ModuleBodyInfo bodyInfo, List<ModuleBase> savedModules, ShipFinalStats? statOverride = null)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType.ToString());
         if (modulePrefab == null)
         {
             Debug.LogError("No prefab");
-            return null;  
-        } 
+            return null;
+        }
 
         GameObject bodyObj = Instantiate(modulePrefab, transform.position, transform.rotation);
         bodyObj.transform.SetParent(transform);
@@ -144,7 +145,7 @@ public class SpaceShip : MonoBehaviour
         if (moduleBody == null)
             moduleBody = bodyObj.AddComponent<ModuleBody>();
 
-        moduleBody.InitializeModuleBody(bodyInfo, savedModules);
+        moduleBody.InitializeModuleBody(bodyInfo, savedModules, statOverride);
         m_moduleBodys.Add(moduleBody);
         moduleBody.ApplyShipStateToModule(); // 모듈 변경시를 위해 필요
         return moduleBody;

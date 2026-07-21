@@ -1,5 +1,7 @@
 // PVP/Zone 랭킹 탭 - 탭 버튼 전환 + InfiniteScrollView 랭킹 리스트
 // 서버가 내려준 nextUpdatedAt 기준으로 캐시 재활용, 만료 시 재요청
+// 함선 시스템 대격변으로 전체 주석처리 — UITabPvp(부모 탭)와 함께 비활성화(삭제 아님)
+#if false
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -258,3 +260,4 @@ public class UITabPvp_Rank : UITabBase
         return null;
     }
 }
+#endif

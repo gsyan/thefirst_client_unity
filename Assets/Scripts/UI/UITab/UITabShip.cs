@@ -1,4 +1,6 @@
 ﻿// 함선/모듈 관리 UI — 헤더(함선 네비게이터+스탯2행), 모듈 맵, 모듈 디테일 카드
+// 함선 시스템 대격변으로 전체 주석처리 — 구식 ModuleInfo/DataTableModule 투자(모듈포인트/미네랄) 기반 강화 UI, 완전 폐기 예정(삭제는 아직 보류, 롤백 여지)
+#if false
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -2266,4 +2268,5 @@ public class UITabShip : UITabBase
         }
     }
 }
+#endif
 

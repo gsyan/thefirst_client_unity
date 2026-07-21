@@ -38,10 +38,12 @@ public class UIPanelSpace : UIPanelBase
         {
             var tabData = m_tabSystem.tabs[i];
             if (tabData.tabPanel == null) continue;
+#if false // UITabShip 주석처리로 임시 비활성화 — m_moduleTabIndex가 -1로 남아 카메라 축소 로직은 자연히 no-op됨
             if (tabData.tabPanel.TryGetComponent<UITabShip>(out _) == false) continue;
             m_moduleTabIndex = i;
             m_shipTabRect = tabData.tabPanel.GetComponent<RectTransform>();
             tabData.deferReveal = true; // 카메라 viewport 애니메이션이 끝난 뒤에 보이도록 — Co_AnimateViewport에서 RevealDeferredPanel 호출
+#endif
         }
 
         EventManager.Subscribe_TabSelectionChanged(OnTabSelectionChanged);
@@ -111,7 +113,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
         CheckAndClaimPendingStageRewards();
-        CheckAndClaimPvpSeasonReward();
+        // CheckAndClaimPvpSeasonReward(); // PvP 주석처리로 임시 비활성화
         m_tabSystem.ForceActivateTab();
     }
 
@@ -137,6 +139,8 @@ public class UIPanelSpace : UIPanelBase
 
     // ── 미수령 존 보상 복구 ───────────────────────────────────────────────────
 
+    // PvP 주석처리로 임시 비활성화(삭제 아님)
+    /*
     private void CheckAndClaimPvpSeasonReward()
     {
         NetworkManager.Instance.PvpClaimSeasonReward(response =>
@@ -154,6 +158,7 @@ public class UIPanelSpace : UIPanelBase
             });
         });
     }
+    */
 
     private void CheckAndClaimPendingStageRewards()
     {
@@ -268,10 +273,12 @@ public class UIPanelSpace : UIPanelBase
         if (open == true)
         {
             m_tabSystem.RevealDeferredPanel(m_moduleTabIndex);
+#if false // UITabShip 주석처리로 임시 비활성화
             // deferReveal로 인해 비활성 상태에서 세팅됐던 스탯 UI 레이아웃을, 패널이 실제로 보이는 이 시점에 재빌드
             UITabShip tabShip = m_shipTabRect.GetComponent<UITabShip>();
             if (tabShip != null)
                 tabShip.RebuildStatLayout();
+#endif
         }
         m_viewportCoroutine = null;
     }

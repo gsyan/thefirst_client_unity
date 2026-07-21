@@ -1,5 +1,7 @@
 ﻿// 탐사 탭 — 그룹 탭(Z1~Z9) + 존 스테이지 버튼(3D 월드 좌표 → Screen Space), 존 진입/재진입/킬 보상 처리
 // 패배 시: 현재 존에서 클리어 스테이지 있으면 최고 클리어 위치로, 없으면 해당 존 x-0 스폰 마커 위치로 복귀
+// 함선 시스템 대격변으로 전체 주석처리 — 구식 ShipInfo/FleetInfo 기반 구존-스테이지 적함대 로직, UITabExplorationGrid로 대체됨(삭제는 아직 보류)
+#if false
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -1259,4 +1261,5 @@ public class UITabExploration : UITabBase
     }
 
 }
+#endif
 

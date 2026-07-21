@@ -38,7 +38,9 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private float m_cameraZoomAccumulated;
     private float m_lastCameraZoom;
     private SpaceShip m_pendingNewShip; // ShipArrivedAtFormation 조건이 대기할 함선 (UITabFleet에서 함선 생성 직후 등록)
+#if false // TutorialBattleCinematic 주석처리로 임시 비활성화
     private TutorialBattleCinematic m_battleCinematic; // Tutorial_FirstPlay_Battle/Complete 전용 전투 연출(웨이브/탈출함선/기함폭발) 상태 및 로직 — OnInitialize에서 생성
+#endif
     private System.Action<bool> m_zoneBattleEndHandler; // WaitForZoneBattleEnd 조건용 — StopTutorialCondition에서 해제
 
     // 튜토리얼 완료 이벤트 (tutorialId 전달)
@@ -53,7 +55,9 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     protected override void OnInitialize()
     {
         EventManager.Subscribe_ConsumeAnyClick(ConsumeAnyClick);
+#if false // TutorialBattleCinematic 주석처리로 임시 비활성화
         m_battleCinematic = new TutorialBattleCinematic(this);
+#endif
     }
 
     // 로그아웃 시 호출 — TutorialManager는 DontDestroyOnLoad라 로그아웃해도 인스턴스가 안 죽어서
@@ -235,7 +239,9 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // 스킵 등으로 튜토리얼을 도중에 끝낼 때 남아있는 연출용 함대(탈출선/적 웨이브)를 정리
     private void CleanupTutorialCombatArtifacts()
     {
+#if false // TutorialBattleCinematic 주석처리로 임시 비활성화
         m_battleCinematic.Cleanup();
+#endif
     }
 
     // 특정 UI 클릭 시 호출
@@ -471,8 +477,10 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             case ETutorialConditionType.FlagshipHealthBelowPercent:
             case ETutorialConditionType.SiegfriedFlagshipExplosion:
             case ETutorialConditionType.CleanupEscapeFleet:
-                // Tutorial_FirstPlay_Battle/Complete 전용 연출 조건 — TutorialBattleCinematic로 위임
+                // Tutorial_FirstPlay_Battle/Complete 전용 연출 조건 — TutorialBattleCinematic 주석처리로 임시 비활성화
+#if false
                 m_battleCinematic.StartCondition(step, ownerStepIndex);
+#endif
                 break;
         }
     }

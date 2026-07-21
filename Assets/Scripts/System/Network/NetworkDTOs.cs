@@ -123,6 +123,7 @@ public class CommanderInfo
     public string pvpPointExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
     public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
     public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
+    public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
 }
 
 
@@ -167,7 +168,7 @@ public class AuthResponse
 {
     public string accessToken;
     public string refreshToken;
-    public FleetInfo activeFleetInfo;
+    public TempFleetInfo activeFleetInfo;
     public CommanderInfo commanderInfo;
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
     public VipStatusResponse vipStatus;   // 로그인/캐릭터 선택 시 VIP 상태 포함
@@ -545,6 +546,92 @@ public class PendingStageRewardResponse
     public int modulePointMaxGot;
     public bool mineralSettingReset;    // 미네랄 부족으로 강화 세팅이 초기화된 경우 true
     public FleetInfo updatedFleetInfo;  // mineralSettingReset == true 일 때만 유효
+}
+
+#endregion
+
+#region Exploration Grid Data Classes ##########################################################################
+[System.Serializable]
+public class ExplorationShipSlot
+{
+    public string shipPresetId;
+    public bool isFront;
+}
+
+[System.Serializable]
+public class TempFleetInfo
+{
+    // 기존 FleetInfo/ShipInfo는 대격변으로 폐기 예정 — TempFleetInfo가 최종적으로 그 자리를 대체할 임시 명칭
+    public List<ExplorationShipSlot> ships;
+}
+
+[System.Serializable]
+public class EnterExplorationCellRequest
+{
+    public int zoneNumber;
+    public int cellX;
+    public int cellY;
+    public TempFleetInfo fleetInfo; // 전투시작 요청에 함대 배치 동봉 (별도 실시간 동기화 없음)
+}
+
+[System.Serializable]
+public class EnterExplorationCellResponse
+{
+    public int zoneNumber;
+    public int cellX;
+    public int cellY;
+    public List<StageEnemyFleetSpawnConfig> enemyFleets;
+}
+
+[System.Serializable]
+public class ClearExplorationCellRequest
+{
+    public int zoneNumber;
+    public int cellX;
+    public int cellY;
+}
+
+[System.Serializable]
+public class ClearExplorationCellResponse
+{
+    public int explorationPointGained; // 적 함대 총 성능포인트만큼 적립 (미확정 상태, 탈출 시 확정 정산)
+}
+
+[System.Serializable]
+public class EscapeExplorationZoneRequest
+{
+    public int zoneNumber;
+    public bool isSuccess; // true=탈출 성공(100% 지급), false=실패(50% 지급)
+}
+
+[System.Serializable]
+public class EscapeExplorationZoneResponse
+{
+    public int explorationPointGained;   // 확정 지급된 탐험 포인트
+    public int explorationPointRemain;   // 확정 지급 후 은행 잔액
+}
+
+[System.Serializable]
+public class IncreaseCommandPowerMaxRequest { } // 은행 탐험 포인트 소모, 고정 증가폭은 서버 정의
+
+[System.Serializable]
+public class IncreaseCommandPowerMaxResponse
+{
+    public int commandPowerMax;        // 갱신된 지휘력 최대치
+    public int explorationPointRemain; // 소모 후 은행 잔액
+}
+
+[System.Serializable]
+public class UnlockShipPresetRequest
+{
+    public string shipPresetId;
+}
+
+[System.Serializable]
+public class UnlockShipPresetResponse
+{
+    public string shipPresetId;
+    public int explorationPointRemain; // 소모 후 은행 잔액
 }
 
 #endregion

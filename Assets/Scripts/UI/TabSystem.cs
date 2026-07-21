@@ -96,12 +96,18 @@ public class TabSystem : MonoBehaviour
     private bool IsTabVisibleInState(TabData tab, EUnitState state)
     {
         if (tab.tabPanel == null) return true;
+#if false // UITabPvp 주석처리로 임시 비활성화
         bool isPvpTab = tab.tabPanel.GetComponent<UITabPvp>() != null;
+#else
+        bool isPvpTab = false;
+#endif
         if (isPvpTab == true)
             return state == EUnitState.Idle || state == EUnitState.Move;
+#if false // UITabFleet 주석처리로 임시 비활성화
         if (state == EUnitState.BattlePvp)
             return tab.tabPanel.GetComponent<UITabCommander>() != null
                 || tab.tabPanel.GetComponent<UITabFleet>() != null;
+#endif
         return true;
     }
 

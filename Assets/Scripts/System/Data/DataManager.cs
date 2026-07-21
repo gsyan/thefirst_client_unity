@@ -13,6 +13,7 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableCommanderLevel();
         LoadDataTableConfig();
         LoadDataTableZone();
+        LoadDataTableShipPreset();
         LoadDataTablePvpSeason();
         LoadDataTableDailyBonus();
         LoadColorPalette();
@@ -42,71 +43,17 @@ public class DataManager : Singleton<DataManager>
     #endregion
 
     #region Fleet Info Management ###############################################################
-    public FleetInfo m_currentFleetInfo;
+    public TempFleetInfo m_currentFleetInfo;
 
     // 초기화 전용 — 로그인/씬 진입 시 최초 1회만 사용
-    public void SetFleetData(FleetInfo fleetInfo)
+    public void SetFleetData(TempFleetInfo fleetInfo)
     {
         m_currentFleetInfo = fleetInfo;
-    }
-
-    // 서버에서 전체 함선 목록을 받을 때 통째 교체 (초기화 또는 전체 갱신)
-    public void ApplyFleetShips(List<ShipInfo> ships)
-    {
-        if (m_currentFleetInfo == null) return;
-        m_currentFleetInfo.ships = ships;
-    }
-
-    // 함선 1척 추가 — SpaceShip.m_shipInfo 참조 보존을 위해 서버 응답 ShipInfo를 리스트에 직접 추가
-    public void AddFleetShip(ShipInfo ship)
-    {
-        if (m_currentFleetInfo == null || m_currentFleetInfo.ships == null) return;
-        m_currentFleetInfo.ships.Add(ship);
-    }
-
-    // 함선 1척 제거
-    public void RemoveFleetShip(long shipId)
-    {
-        if (m_currentFleetInfo == null || m_currentFleetInfo.ships == null) return;
-        for (int i = m_currentFleetInfo.ships.Count - 1; i >= 0; i--)
-        {
-            if (m_currentFleetInfo.ships[i].id == shipId)
-            {
-                m_currentFleetInfo.ships.RemoveAt(i);
-                break;
-            }
-        }
-    }
-
-    // 진형 변경 시
-    public void ApplyFleetFormation(EFormationType formation)
-    {
-        if (m_currentFleetInfo == null) return;
-        m_currentFleetInfo.formation = formation;
-    }
-
-    // 전술 옵션 변경 시
-    public void ApplyFleetTacticOptions(int tacticOptions)
-    {
-        if (m_currentFleetInfo == null) return;
-        m_currentFleetInfo.tacticOptions = tacticOptions;
     }
 
     public void ClearFleetData()
     {
         m_currentFleetInfo = null;
-    }
-
-    public ShipInfo GetShipAtPosition(int positionIndex)
-    {
-        if (m_currentFleetInfo?.ships == null) return null;
-
-        foreach (var shipInfo in m_currentFleetInfo.ships)
-        {
-            if (shipInfo.positionIndex == positionIndex)
-                return shipInfo;
-        }
-        return null;
     }
 
     public int GetShipCount()
@@ -277,6 +224,17 @@ public class DataManager : Singleton<DataManager>
         m_dataTableZone = ResourceManager.Instance.Load<DataTableZone>("DataTable/DataTableZone");
         if (m_dataTableZone == null)
             Debug.LogError("DataTableZone is not exist");
+    }
+    #endregion
+
+    #region Data Table Ship Preset ###############################################################
+    public DataTableShipPreset m_dataTableShipPreset;
+
+    private void LoadDataTableShipPreset()
+    {
+        m_dataTableShipPreset = ResourceManager.Instance.Load<DataTableShipPreset>("DataTable/DataTableShipPreset");
+        if (m_dataTableShipPreset == null)
+            Debug.LogError("DataTableShipPreset is not exist");
     }
     #endregion
 

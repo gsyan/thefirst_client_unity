@@ -1,3 +1,5 @@
+// TutorialCinematicController(구식 그레이드 기반) 의존으로 전체 주석처리 — 프리셋 기반으로 재작성 전까지 비활성화
+#if false
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -314,3 +316,4 @@ public class TutorialBattleCinematic
         }
     }
 }
+#endif

@@ -84,7 +84,7 @@ public class UIPopupRanking : UIPopupBase
             }
             m_pvpCache.Clear();
             var req = new PvpRankingRequest { offset = 0, limit = PAGE_SIZE };
-            NetworkManager.Instance.PvpRanking(req, OnPvpInitResponse);
+            // NetworkManager.Instance.PvpRanking(req, OnPvpInitResponse); // PvP 주석처리로 임시 비활성화
         }
         else if (type == RankingType.Zone)
         {
@@ -199,7 +199,7 @@ public class UIPopupRanking : UIPopupBase
             if (capturedType == RankingType.Pvp)
             {
                 var req = new PvpRankingRequest { offset = pageOffset, limit = PAGE_SIZE };
-                NetworkManager.Instance.PvpRanking(req, res => OnPvpPageResponse(res, captured));
+                // NetworkManager.Instance.PvpRanking(req, res => OnPvpPageResponse(res, captured)); // PvP 주석처리로 임시 비활성화
             }
             else
             {

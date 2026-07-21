@@ -238,12 +238,23 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         AdManager.Instance.ToString();// 광고 초기화 (존 입장 전 미리 로드)
 
         // 튜토리얼 진행도는 SelectCommander 응답 시점(UIMain.cs)에 이미 확보되어 있음 — 씬 로드 중 깜빡임 없이 바로 결정
+        // 지크프리트 오프닝 시네마틱(TutorialCinematicController)이 주석처리되어 있어 튜토리얼 시작 자체를 임시로 막아둠 — 프리셋 기반으로 재작성 전까지
+        /*
         bool bPassTutorial = false;
         if (bPassTutorial == true)
             StartNormalPlay();
         else
             // UI 초기화 후 약간의 딜레이 후 시작
             StartCoroutine(StartTutorial());
+        */
+
+        StartNormalPlay();
+
+        // 튜토리얼(SetMyFleetPosition 호출부)이 비활성화된 상태라 함대 초기 위치가 원점(0,0,0)으로 남는 문제 방지 —
+        // 함대 스폰(StartNormalPlay) 직후 초기 존의 첫 스테이지 위치로 명시적으로 배치
+        ZoneStageConfig initialStage = DataManager.Instance.m_dataTableZone.GetZoneFirstStage(GetInitialZoneIndex());
+        if (initialStage != null)
+            SetMyFleetPosition(DataManager.Instance.m_dataTableZone.ResolveFleetWorldPosition(initialStage), initialStage.fleetRotationY);
     }
 
     protected override void OnDestroy()
@@ -291,7 +302,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (TutorialManager.Instance.IsTutorialCompleted("Tutorial_FirstPlay_Complete") == true)
         { StartNormalPlay(); yield break; }
 
-        SpawnFleetWithInfo(TutorialCinematicController.BuildSiegfriedFleetInfo("Siegfried Fleet"));
+        // TutorialCinematicController 주석처리로 임시 비활성화 — 프리셋 기반으로 재작성 전까지 시네마틱 함대 스폰 안 함
         m_isSiegfriedFleetActive = true;
 
         // 원점(0,0,0)이 아니라 실제 스테이지 1-10 위치에서 시작 — 배경/천체가 있는 위치로 배치
@@ -361,7 +372,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
     }
 
-    private int GetInitialZoneIndex()
+    public int GetInitialZoneIndex()
     {
         var commander = DataManager.Instance.m_currentCommander;
         if (commander == null || commander.m_commanderInfo == null) return 1;
@@ -384,12 +395,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
 
     // Zone 적 함대 웨이브 — term 기준 순차 스폰, 전멸 시 다음 웨이브 즉시 스폰
+    // 함선 시스템 대격변으로 구존-스테이지 로직 전체 주석처리 — 삭제 아님, UITabExploration.cs와 함께 비활성화
     private List<StageEnemyFleetSpawnConfig> m_pendingWaves;
     private bool[] m_waveSpawned;
     private Coroutine[] m_waveTimerCoroutines;
     private float m_wavesBattleStartTime;
     private ZoneStageConfig m_currentWaveStage;
 
+    /*
     public void StartZoneEnemyWaves(List<StageEnemyFleetSpawnConfig> waves, ZoneStageConfig zoneStage)
     {
         m_pendingWaves             = waves;
@@ -464,8 +477,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         Vector3 spawnPos     = basePos + worldDir * preset.distance;
         return spawnPos;
     }
+    */
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
+    // 함선 시스템 대격변으로 PvP 로직 전체 주석처리 — 삭제 아님, UITabPvp.cs와 함께 비활성화
+    /*
     public void StartPvpBattle(FleetInfo opponentFleetInfo)
     {
         SpaceFleet myFleet = GetMyFleet();
@@ -495,6 +511,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         GetTeamFleets(enemyTeam).Add(enemyFleet);
     }
+    */
 
     private void TryStartCombat(SpaceFleet enemyFleet, EUnitState battleState, float playerDelay = 0f, float enemyDelay = 0f)
     {
@@ -614,8 +631,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         SpaceFleet siegfriedFleet = GetMyFleet();
         int nextShipCount = siegfriedFleet != null ? siegfriedFleet.m_ships.Count + 1 : 1;
         int shipCountRequiredLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevel(nextShipCount);
-        int subtypeTierRequiredLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevelForSubtypeTier(TutorialCinematicController.SIEGFRIED_FLAGSHIP_GRADE);
-        int requiredLevel = Mathf.Max(shipCountRequiredLevel, subtypeTierRequiredLevel);
+        int requiredLevel = shipCountRequiredLevel; // TutorialCinematicController 주석처리로 지크프리트 서브타입 티어 요구치는 임시 제외
 
         m_realCommanderLevelBackup = commander.GetCommanderLevel();
         commander.UpdateCommanderLevel(requiredLevel);
@@ -652,15 +668,35 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 서버에서 받은 함대 정보가 없으면 스폰하지 않음
         if (DataManager.Instance.m_currentFleetInfo == null) return;
 
-        SpawnFleetWithInfo(DataManager.Instance.m_currentFleetInfo, warpIn);
+        SpawnFleetFromPreset(DataManager.Instance.m_currentFleetInfo, warpIn);
     }
 
     // warpIn=true면 Trigger_MyFleetSet으로 위치가 확정된 직후 그 자리로 워프인 연출(튜토리얼 종료 후 첫 함대 등장 등)
-    private void SpawnFleetWithInfo(FleetInfo fleetInfo, bool warpIn = false)
+    private void SpawnFleetFromPreset(TempFleetInfo fleetInfo, bool warpIn = false)
     {
         GameObject fleetObj = new GameObject("MyFleet");
         SpaceFleet myFleet = fleetObj.AddComponent<SpaceFleet>();
-        myFleet.InitializeSpaceFleet(fleetInfo, m_myTeam, EFleetSource.fleet_source_player, EUnitState.Idle);
+        myFleet.m_team = m_myTeam;
+        myFleet.m_fleetSource = EFleetSource.fleet_source_player;
+        myFleet.m_fleetState = EUnitState.Idle;
+
+        DataTableShipPreset presetTable = DataManager.Instance.m_dataTableShipPreset;
+        ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
+        if (fleetInfo.ships != null)
+        {
+            foreach (ExplorationShipSlot shipSlot in fleetInfo.ships)
+            {
+                ShipPresetData preset = presetTable.GetShipPreset(shipSlot.shipPresetId);
+                if (preset == null)
+                {
+                    Debug.LogError($"ShipPresetData not found: {shipSlot.shipPresetId}");
+                    continue;
+                }
+                ShipFinalStats finalStats = ShipStatCalculator.Calculate(preset.statAllocation, formula);
+                ExplorationShipSpawnBridge.SpawnShip(myFleet, preset, finalStats);
+            }
+        }
+        myFleet.SetFleetState(EUnitState.Idle);
         GetTeamFleets(m_myTeam).Add(myFleet);
 
         // 함대 스폰/교체를 UI 등 늦게 초기화되는 쪽에서도 알 수 있도록 알림 (존 초기 위치도 이 안에서 확정됨)
@@ -697,6 +733,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (m_pendingWaves == null) return;
 
         // 미스폰 웨이브 중 가장 앞의 것을 즉시 스폰 (term 타이머 취소)
+        // 구존-스테이지 로직 주석처리(StartZoneEnemyWaves 비활성화)로 m_pendingWaves는 항상 null이라 이 블록은 도달 불가 — SpawnWave 재활성화 시 함께 복원
+        /*
         for (int i = 0; i < m_waveSpawned.Length; i++)
         {
             if (m_waveSpawned[i] == false)
@@ -710,6 +748,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 return;
             }
         }
+        */
 
         // 모든 웨이브 스폰 완료 + 적 전멸 → 클리어
         if (GetOpposingTeamFleets(m_myTeam).Count == 0)

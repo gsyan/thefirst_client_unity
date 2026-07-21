@@ -60,7 +60,8 @@ public class ModuleMissile : ModuleBase
 
 
 
-    public void InitializeModuleMissile(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
+    // attackOverride: 성능포인트 프리셋 기반 스폰 시 테이블 공격력 대신 사용할 계산값 (null이면 기존처럼 테이블값 그대로 사용)
+    public void InitializeModuleMissile(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot, float? attackOverride = null)
     {
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
@@ -77,10 +78,10 @@ public class ModuleMissile : ModuleBase
             return;
         }
 
-        // 복원된 데이터로 스탯 설정
+        // 복원된 데이터로 스탯 설정 — 발사수/쿨다운/체력은 테이블(티어) 기준, 공격력만 프리셋 계산값 있으면 그걸로 대체
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
-        m_attack = moduleData.attack;
+        m_attack = attackOverride ?? moduleData.attack;
         m_attackFireCount = moduleData.attackFireCount;
         m_attackCoolTime = moduleData.attackCool;
 

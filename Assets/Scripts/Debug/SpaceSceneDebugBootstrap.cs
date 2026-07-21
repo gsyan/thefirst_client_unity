@@ -46,33 +46,12 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
         if (DataManager.Instance.m_currentFleetInfo != null)
             return;
 
-        var body = new ModuleBodyInfo
+        var fleet = new TempFleetInfo
         {
-            moduleType    = EModuleType.body,
-            moduleSubType = EModuleSubType.body_t1_m1,
-            moduleLevel   = 1,
-            bodyIndex     = 0,
-            beams         = new List<ModuleInfo>(),
-            missiles      = new List<ModuleInfo>(),
-            hangers       = new List<ModuleInfo>(),
-        };
-
-        var ship = new ShipInfo
-        {
-            id            = 1,
-            fleetId       = 1,
-            shipName      = "Debug Ship",
-            positionIndex = 0,
-            description   = "",
-            bodies        = new List<ModuleBodyInfo> { body },
-        };
-
-        var fleet = new FleetInfo
-        {
-            id        = 1,
-            fleetName = "Debug Fleet",
-            formation = EFormationType.linear_horizontal,
-            ships     = new List<ShipInfo> { ship },
+            ships = new List<ExplorationShipSlot>
+            {
+                new ExplorationShipSlot { shipPresetId = "beam_light_01", isFront = true },
+            },
         };
 
         DataManager.Instance.SetFleetData(fleet);

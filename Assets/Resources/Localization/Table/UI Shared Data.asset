@@ -999,6 +999,18 @@ MonoBehaviour:
     m_Key: ShipName_8
     m_Metadata:
       m_Items: []
+  - m_Id: 59175371185979392
+    m_Key: ShipPreset_BeamLight01
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59175371223728128
+    m_Key: ShipPreset_MissileHeavy01
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59175371223728129
+    m_Key: ShipPreset_Carrier01
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

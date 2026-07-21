@@ -246,3 +246,6 @@ ShipName_5,,Foxtrot,폭스트롯
 ShipName_6,,Golf,골프
 ShipName_7,,Hotel,호텔
 ShipName_8,,India,인디아
+ShipPreset_BeamLight01,,Light Beam Ship,경량 빔함
+ShipPreset_MissileHeavy01,,Heavy Missile Ship,중장갑 미사일함
+ShipPreset_Carrier01,,Carrier,항모형

@@ -30,6 +30,40 @@ MonoBehaviour:
     aircraftTacticMineralPerSec: 1
     aircraftTacticDamageMultiplier: 2
     aircraftTacticAmmoMultiplier: 2
+    shipStatFormula:
+      beam:
+        installCost: 200
+        baseAttack: 20
+        reinforcePerPoint: 0.1
+      missile:
+        installCost: 200
+        baseAttack: 20
+        reinforcePerPoint: 0.1
+      hangar:
+        installCost: 200
+        baseShipAttack: 10
+        baseFighterAttack: 10
+        baseAmmo: 10
+        baseHealth: 50
+        reinforcePerPoint: 0.1
+      shield:
+        installCost: 200
+        baseGauge: 100
+        baseDelay: 5
+        baseRegenRate: 5
+        gaugePerPoint: 0.5
+        delayReductionPerPoint: 0.02
+        regenRatePerPoint: 0.1
+        delayFloor: 1
+      interceptor:
+        installCost: 100
+        baseDelay: 5
+        baseRegenRate: 5
+        delayReductionPerPoint: 0.02
+        regenRatePerPoint: 0.1
+        delayFloor: 1
+      flatStats:
+        perPoint: 0.1
   exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"addShipCost\": 10,\r\n  \"pvpMinCommanderLevel\":
     2,\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\": 5,\r\n  \"pvpRankScoreInit\":
     1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\": 1,\r\n  \"repairBoostMineralPerSec\":

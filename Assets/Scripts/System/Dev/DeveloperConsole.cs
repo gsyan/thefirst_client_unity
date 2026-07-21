@@ -474,6 +474,8 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
+        // 진형 개념 주석처리 — 새 시스템은 함선 단위 전위/후위만 사용
+        /*
         RegisterCommand("changeformation", "Change fleet formation (usage: changeformation [formation name] or [index])", (args) =>
         {
             EFormationType[] formations = (EFormationType[])System.Enum.GetValues(typeof(EFormationType));
@@ -506,6 +508,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 }
             });
         });
+        */
 
         RegisterCommand("addtech", "Add technology level (usage: addtech [amount])", (args) =>
         {
@@ -534,6 +537,8 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
+        // 구식 ShipInfo 기반 함선 추가 주석처리
+        /*
         RegisterCommand("addship", "Add a new ship to the fleet", (args) =>
         {
             if (NetworkManager.Instance == null) return;
@@ -560,6 +565,7 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 }
             });
         });
+        */
     }
 
     private void UpdateResourceFromResponse(string data)

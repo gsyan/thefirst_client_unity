@@ -1,3 +1,5 @@
+// 구식 그레이드 기반 함대 구성 전체 주석처리 — 프리셋 기반으로 재작성 전까지 비활성화
+#if false
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -192,3 +194,4 @@ public static class TutorialCinematicController
         return System.Enum.TryParse(name, out EModuleSubType result) ? result : EModuleSubType.none;
     }
 }
+#endif

@@ -1,3 +1,5 @@
+// 함선 시스템 대격변으로 전체 주석처리 — UITabPvp와 함께 비활성화(삭제 아님)
+#if false
 using TMPro;
 using System;
 using System.Collections.Generic;
@@ -159,3 +161,4 @@ public class UITabPvp_MyInfo : UITabBase
         SetOpponentList(response.data.opponents);
     }
 }
+#endif

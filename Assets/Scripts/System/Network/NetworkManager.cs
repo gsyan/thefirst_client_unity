@@ -816,11 +816,14 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClaimZoneRewardAsync(request), onComplete));
     }
 
+    // PvP 주석처리로 임시 비활성화(삭제 아님)
+    /*
     public void PvpClaimSeasonReward(System.Action<ApiResponse<PvpClaimSeasonRewardResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.PvpClaimSeasonRewardAsync(), onComplete));
     }
+    */
 
     public void ClaimPendingStageRewards(System.Action<ApiResponse<PendingStageRewardResponse>> onComplete)
     {
@@ -832,6 +835,36 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.GetStageEnemiesAsync(request), onComplete));
+    }
+
+    public void EnterExplorationCell(EnterExplorationCellRequest request, System.Action<ApiResponse<EnterExplorationCellResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.EnterExplorationCellAsync(request), onComplete));
+    }
+
+    public void ClearExplorationCell(ClearExplorationCellRequest request, System.Action<ApiResponse<ClearExplorationCellResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ClearExplorationCellAsync(request), onComplete));
+    }
+
+    public void EscapeExplorationZone(EscapeExplorationZoneRequest request, System.Action<ApiResponse<EscapeExplorationZoneResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.EscapeExplorationZoneAsync(request), onComplete));
+    }
+
+    public void IncreaseCommandPowerMax(IncreaseCommandPowerMaxRequest request, System.Action<ApiResponse<IncreaseCommandPowerMaxResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.IncreaseCommandPowerMaxAsync(request), onComplete));
+    }
+
+    public void UnlockShipPreset(UnlockShipPresetRequest request, System.Action<ApiResponse<UnlockShipPresetResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.UnlockShipPresetAsync(request), onComplete));
     }
 
     public void PurchaseVip(VipPurchaseRequest request, System.Action<ApiResponse<VipStatusResponse>> onComplete)
@@ -915,7 +948,8 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (hasFocus) HeartbeatOnResume();
     }
 
-    // PvP API
+    // PvP API — 주석처리로 임시 비활성화(삭제 아님)
+    /*
     public void PvpList(PvpListRequest request, System.Action<ApiResponse<PvpListResponse>> onComplete)
     {
         if (m_bConnected == false) return;
@@ -951,6 +985,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.PvpMyRankAsync(request), onComplete));
     }
+    */
 
     public void ZoneRanking(ZoneRankingRequest request, System.Action<ApiResponse<ZoneRankingResponse>> onComplete)
     {
