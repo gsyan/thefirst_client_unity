@@ -62,23 +62,6 @@ public class ModuleBody : ModuleBase
         m_moduleBodyInfo.moduleLevel = level;
     }
 
-    public override void ApplyModuleLevelUp(int newLevel)
-    {
-        // 레벨 설정
-        SetModuleLevel(newLevel);
-
-        // 새 레벨의 ModuleData 가져오기
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleBodyInfo.moduleSubType, newLevel);
-        if (moduleData == null) return;
-        
-        // 스탯 갱신
-        m_healthMax = moduleData.health;
-        m_health = Mathf.Min(m_health, m_healthMax);
-        m_repair = moduleData.repair;
-        m_speed  = moduleData.speed;
-        m_modulePointCostLevelup = moduleData.modulePointCost;
-    }
-
     public override int GetModuleBodyIndex()
     {
         return m_moduleBodyInfo.bodyIndex;
@@ -99,14 +82,12 @@ public class ModuleBody : ModuleBase
         SetInvestedMineral(moduleBodyInfo.investedMineral);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType, moduleBodyInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType);
         if (moduleData == null) return;
 
         // 복원된 데이터로 초기화 — 체력/수리력은 프리셋 계산값 있으면 그걸로 대체, 없으면 기존처럼 테이블값
         m_healthMax = statOverride?.health ?? moduleData.health;
         m_health = moduleBodyInfo.currentHealth > 0f ? Mathf.Min(moduleBodyInfo.currentHealth, m_healthMax) : m_healthMax;
-        // 업그레이드 비용 설정
-        m_modulePointCostLevelup = moduleData.modulePointCost;
 
         m_attack = 0.0f; // Body는 직접 공격하지 않음
 
@@ -647,146 +628,6 @@ public class ModuleBody : ModuleBase
     public float GetHealthRatio()
     {
         return m_healthMax > 0 ? m_health / m_healthMax : 0f;
-    }
-
-    // 슬롯의 모듈을 플레이스홀더로 복귀 (언락 리셋용)
-    public bool ResetModuleToPlaceholder(EModuleType moduleType, int slotIndex)
-    {
-        ModuleSlot targetSlot = FindModuleSlot(moduleType, slotIndex);
-        if (targetSlot == null)
-        {
-            Debug.LogError($"ResetModuleToPlaceholder: Cannot find slot - moduleType: {moduleType}, slotIndex: {slotIndex}");
-            return false;
-        }
-
-        ModuleBase existingModule = targetSlot.GetComponentInChildren<ModuleBase>();
-        if (existingModule != null && (existingModule is ModulePlaceholder) == false)
-        {
-            EventManager.TriggerModuleReplaced(existingModule, null);
-            if (existingModule is ModuleBeam beam)             RemoveBeam(beam, bRemoveFromInfo: true);
-            else if (existingModule is ModuleMissile missile)  RemoveMissile(missile, bRemoveFromInfo: true);
-            else if (existingModule is ModuleHanger hanger)    RemoveHanger(hanger, bRemoveFromInfo: true);
-            DestroyImmediate(existingModule.gameObject);
-            // placeholder는 파괴하지 않았으므로 FillEmptySlotsWithPlaceholders가 재활성화함
-        }
-
-        FillEmptySlotsWithPlaceholders();
-        return true;
-    }
-
-    // 슬롯의 모듈을 교체
-    public bool ReplaceModuleInSlot(EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel, int slotIndex)
-    {
-        // 슬롯 찾기
-        ModuleSlot targetSlot = FindModuleSlot(moduleType, slotIndex);
-        if (targetSlot == null)
-        {
-            Debug.LogError($"ReplaceModuleInSlot: Cannot find slot - moduleType: {moduleType}, slotIndex: {slotIndex}");
-            return false;
-        }
-
-        // 기존 모듈 제거
-        float inheritedLastAttackTime = 0f;
-        List<AircraftInfo> inheritedAircraftPool = null;
-        int inheritedOutstandingAircraftCount = 0;
-        if (targetSlot.transform.childCount > 0)
-        {
-            ModuleBase existingModule = targetSlot.GetComponentInChildren<ModuleBase>();
-            if (existingModule != null)
-            {
-                // 교체 전 공격 타이머 캡처 — 신 모듈에 승계해 즉시발사 방지
-                inheritedLastAttackTime = existingModule.GetLastAttackTime();
-
-                EventManager.TriggerModuleReplaced(existingModule, null);
-
-                if (existingModule is ModulePlaceholder)
-                {
-                    // placeholder는 리셋 시 재사용을 위해 비활성화만 함
-                    existingModule.gameObject.SetActive(false);
-                }
-                else
-                {
-                    if (existingModule is ModuleBeam beam)
-                        RemoveBeam(beam, bRemoveFromInfo: true);
-                    else if (existingModule is ModuleMissile missile)
-                        RemoveMissile(missile, bRemoveFromInfo: true);
-                    else if (existingModule is ModuleHanger hanger)
-                    {
-                        // 교체 전 함재기 풀/출격 중 수량 캡처 — 신 격납고에 승계해 출격 중이던 함재기가 복귀할 자리 보존
-                        inheritedAircraftPool = new List<AircraftInfo>(hanger.GetAircraftPoolSnapshot());
-                        inheritedOutstandingAircraftCount = hanger.GetHangarCapability() - inheritedAircraftPool.Count;
-                        RemoveHanger(hanger, bRemoveFromInfo: true);
-                    }
-
-                    DestroyImmediate(existingModule.gameObject);
-                }
-            }
-        }
-
-        ModuleBase newModule = CreateAndPlaceModule(targetSlot, moduleType, moduleSubType, moduleLevel);
-
-        if (newModule is ModuleHanger newHanger && inheritedAircraftPool != null)
-            newHanger.InheritAircraftPool(inheritedAircraftPool, inheritedOutstandingAircraftCount);
-
-        // 전투 중 추가 시 즉시 전함 상태 적용 (뚜껑 열림 등 애니메이터 반영)
-        if (newModule != null)
-            newModule.ApplyShipStateToModule();
-
-        // 구 모듈의 공격 타이머 승계 — 레벨업 시 m_lastAttackTime=0으로 리셋되어 즉시발사되는 버그 방지
-        if (newModule != null && inheritedLastAttackTime > 0f)
-            newModule.SetLastAttackTime(inheritedLastAttackTime);
-
-        // 새 모듈 생성 이벤트 발행
-        if (newModule != null)
-            EventManager.TriggerModuleReplaced(null, newModule);
-
-        return newModule != null;
-    }
-
-    private ModuleBase CreateAndPlaceModule(ModuleSlot targetSlot, EModuleType moduleType, EModuleSubType moduleSubType, int moduleLevel)
-    {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleType.ToString(), moduleSubType.ToString());
-        if (modulePrefab == null) return null;
-        GameObject moduleObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
-        moduleObj.transform.SetParent(targetSlot.transform);
-        moduleObj.transform.localScale = Vector3.one;
-        ModuleInfo moduleInfo = new ModuleInfo
-        {
-            moduleType = moduleType,
-            moduleSubType = moduleSubType,
-            moduleLevel = moduleLevel,
-            slotIndex = targetSlot.m_moduleSlotInfo.slotIndex
-        };
-
-        // 타입별 컴포넌트 추가 및 초기화
-        switch (moduleType)
-        {
-            case EModuleType.beam:
-                ModuleBeam moduleBeam = moduleObj.GetComponent<ModuleBeam>();
-                if (moduleBeam == null)
-                    moduleBeam = moduleObj.AddComponent<ModuleBeam>();
-                moduleBeam.InitializeModuleBeam(moduleInfo, this, targetSlot);
-                return moduleBeam;
-
-            case EModuleType.missile:
-                ModuleMissile moduleMissile = moduleObj.GetComponent<ModuleMissile>();
-                if (moduleMissile == null)
-                    moduleMissile = moduleObj.AddComponent<ModuleMissile>();
-                moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot);
-                return moduleMissile;
-
-            case EModuleType.hanger:
-                ModuleHanger moduleHanger = moduleObj.GetComponent<ModuleHanger>();
-                if (moduleHanger == null)
-                    moduleHanger = moduleObj.AddComponent<ModuleHanger>();
-                moduleHanger.InitializeModuleHanger(moduleInfo, this, targetSlot);
-                return moduleHanger;
-
-            default:
-                Debug.LogError($"CreateAndPlaceModule: Unsupported module type: {moduleType}");
-                Destroy(moduleObj); // 생성한 오브젝트 정리
-                return null;
-        }
     }
 
 }

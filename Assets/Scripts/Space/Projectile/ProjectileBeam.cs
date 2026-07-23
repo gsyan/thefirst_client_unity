@@ -65,7 +65,7 @@ public class ProjectileBeam : ProjectileBase
         m_beamHeadPos = m_firePointTransform.position;
         m_beamTailPos = m_firePointTransform.position;
         m_beamWidth = projectileWidth;
-        m_beamSpeed = moduleData.projectileSpeed;
+        m_beamSpeed = moduleData.speed; // 발사체 이동속도는 speed 필드 재사용(빔 행은 body 이동속도 개념이 없음)
         m_beamColor = color;
         
 

@@ -1,6 +1,5 @@
 #if UNITY_EDITOR
 using System.IO;
-using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -8,23 +7,36 @@ using UnityEngine;
 // DataTableZone CSV 입출력 공통 유틸리티 — DataTableZoneEditor / ZonePreviewComponentEditor 공유
 public static class DataTableZoneCSVUtility
 {
-    // 4개 CSV 전부 내보내기 (AssetDatabase.Refresh 포함)
+    // CSV 전부 내보내기 (AssetDatabase.Refresh 포함)
     public static void ExportAll(DataTableZone table)
     {
         ExportZone(table);
-        ExportZoneStage(table);
-        ExportEnemy(table);
+        ExportCelestial(table);
+        ExportGrid(table);
+        AssetDatabase.Refresh();
+    }
+
+    // ZonePreview에서 편집하는 2개만 내보내기
+    public static void ExportZoneAndCelestial(DataTableZone table)
+    {
+        ExportZone(table);
         ExportCelestial(table);
         AssetDatabase.Refresh();
     }
 
-    // ZonePreview에서 편집하는 3개만 내보내기
-    public static void ExportZoneAndCelestial(DataTableZone table)
+    // zoneList.gridWidth/gridHeight/enemy* → datatable_zone_grid.csv
+    public static void ExportGrid(DataTableZone table)
     {
-        ExportZone(table);
-        ExportZoneStage(table);
-        ExportCelestial(table);
-        AssetDatabase.Refresh();
+        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_grid.csv";
+        var sb = new StringBuilder();
+        sb.AppendLine("zone_index,grid_width,grid_height,enemy_fleets,enemy_budget,enemy_max_cost,enemy_deviation,enemy_max_ships_per_fleet");
+        foreach (ZoneConfig z in table.zoneList)
+        {
+            sb.AppendLine(
+                $"{z.zoneIndex},{z.gridWidth},{z.gridHeight}," +
+                $"{z.enemyFleetsPerCell},{z.enemyBudget},{z.enemyMaxCost},{z.enemyDeviation},{z.enemyMaxShipsPerFleet}");
+        }
+        File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }
 
     // zoneList → datatable_zone_camera.csv
@@ -39,82 +51,6 @@ public static class DataTableZoneCSVUtility
                 $"{z.zoneIndex}," +
                 $"{z.galaxyCameraTarget.x},{z.galaxyCameraTarget.y},{z.galaxyCameraTarget.z}," +
                 $"{z.galaxyCameraZoom},{z.galaxyCameraRotX},{z.galaxyCameraRotY}");
-        }
-        File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
-    }
-
-    // zoneStageList → datatable_zone_stage.csv
-    public static void ExportZoneStage(DataTableZone table)
-    {
-        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_stage.csv";
-        var sb = new StringBuilder();
-        sb.AppendLine("zone,stage,mineral_reward,exp_reward,module_point_reward,spawn_term,fleet_pos_x,fleet_pos_y,fleet_pos_z,fleet_rot_y,player_fire_delay,enemy_fire_delay");
-        foreach (ZoneStageConfig s in table.zoneStageList)
-        {
-            int stage = ParseStage(s.zoneName);
-            sb.AppendLine(
-                $"{s.zoneIndex},{stage},{s.mineralClearReward},{s.expClearReward},{s.modulePointClearReward}," +
-                $"{s.spawnTerm}," +
-                $"{s.fleetPosition.x},{s.fleetPosition.y},{s.fleetPosition.z}," +
-                $"{s.fleetRotationY},{s.playerFireDelaySec},{s.enemyFireDelaySec}");
-        }
-        File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
-    }
-
-    // enemyFleets.fleetInfo.ships → datatable_zone_enemy.csv (함선 정보만)
-    public static void ExportEnemy(DataTableZone table)
-    {
-        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_enemy.csv";
-        var sb = new StringBuilder();
-        sb.AppendLine("zone_stage,stage,fleet_index,ship_index,body_type,body_level,beam_type,beam_level,beam_count,missile_type,missile_level,missile_count,hanger_type,hanger_level,hanger_count,body_ratio,beam_ratio,missile_ratio,hanger_ratio");
-        foreach (ZoneStageConfig s in table.zoneStageList)
-        {
-            if (s.enemyFleets == null || s.enemyFleets.Count == 0) continue;
-            int stage = ParseStage(s.zoneName);
-            foreach (StageEnemyFleetSpawnConfig fleetSpawn in s.enemyFleets)
-            {
-                if (fleetSpawn.fleetInfo == null || fleetSpawn.fleetInfo.ships == null) continue;
-                foreach (ShipInfo ship in fleetSpawn.fleetInfo.ships)
-                {
-                    ModuleBodyInfo body = (ship.bodies != null && ship.bodies.Count > 0) ? ship.bodies[0] : null;
-                    EModuleSubType bodySubType = body != null ? body.moduleSubType : EModuleSubType.none;
-                    int bodyLevel = body != null ? body.moduleLevel : 1;
-
-                    var beams    = body != null && body.beams    != null ? body.beams.Where(m    => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
-                    var missiles = body != null && body.missiles != null ? body.missiles.Where(m => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
-                    var hangers  = body != null && body.hangers  != null ? body.hangers.Where(m  => m.moduleSubType != EModuleSubType.none).OrderBy(m => m.slotIndex).ToList() : new System.Collections.Generic.List<ModuleInfo>();
-
-                    string beamType    = beams.Count > 0    ? beams[0].moduleSubType.ToString()    : "";
-                    string beamLv      = beams.Count > 0    ? beams[0].moduleLevel.ToString()      : "";
-                    string beamCnt     = beams.Count > 0    ? beams.Count.ToString()               : "";
-                    string missileType = missiles.Count > 0 ? missiles[0].moduleSubType.ToString() : "";
-                    string missileLv   = missiles.Count > 0 ? missiles[0].moduleLevel.ToString()   : "";
-                    string missileCnt  = missiles.Count > 0 ? missiles.Count.ToString()            : "";
-                    string hangerType  = hangers.Count > 0  ? hangers[0].moduleSubType.ToString()  : "";
-                    string hangerLv    = hangers.Count > 0  ? hangers[0].moduleLevel.ToString()    : "";
-                    string hangerCnt   = hangers.Count > 0  ? hangers.Count.ToString()             : "";
-
-                    sb.AppendLine(
-                        $"{s.zoneIndex},{stage},{fleetSpawn.fleetIndex},{ship.positionIndex},{bodySubType},{bodyLevel}," +
-                        $"{beamType},{beamLv},{beamCnt}," +
-                        $"{missileType},{missileLv},{missileCnt}," +
-                        $"{hangerType},{hangerLv},{hangerCnt}," +
-                        $"{ship.bodyMultiplier},{ship.beamMultiplier},{ship.missileMultiplier},{ship.hangerMultiplier}");
-                }
-            }
-        }
-        File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
-    }
-
-    // fleetPositionPresets → datatable_zone_enemy_fleet_position.csv
-    public static void ExportEnemyFleet(DataTableZone table)
-    {
-        const string path = "Assets/Resources/DataTable/Zone/datatable_zone_enemy_fleet_position.csv";
-        var sb = new StringBuilder();
-        sb.AppendLine("grade,index,distance,rotx,roty,rotz");
-        foreach (FleetPositionPreset p in table.fleetPositionPresets)
-        {
-            sb.AppendLine($"{p.grade},{p.index},{p.distance},{p.rotX},{p.rotY},{p.rotZ}");
         }
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }

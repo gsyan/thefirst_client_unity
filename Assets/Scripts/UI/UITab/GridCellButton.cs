@@ -1,4 +1,5 @@
-// 탐사 그리드 셀 버튼 — 고정 그리드 좌표 기반 배치(월드좌표 변환 불필요), 상태별 색상 표시, 클릭 콜백
+// 탐사 그리드 셀 버튼 — 고정 그리드 좌표 기반 배치, 상태별 색상 표시, 클릭 콜백
+// 3D 월드 좌표가 필요하면(셀 진입 시 등) 이 버튼의 화면 좌표(GetScreenPosition)에서 카메라로 광선을 쏴 역산 — UITabExplorationGrid에서 처리
 // 이음선(UIZoneConnector) 불필요 — 격자 배치라 인접 여부가 위치만으로 이미 명확함
 using System.Collections;
 using UnityEngine;
@@ -6,16 +7,18 @@ using UnityEngine.UI;
 
 public enum EGridCellVisualState
 {
-    Locked,    // 인접하지 않음 — 클릭 불가
+    Unvisited, // 안 가본 곳 — 인접하지 않고 클리어도 안 됨, 클릭 불가
     Reachable, // 인접함 — 깜빡임 강조, 클릭 가능
     Current,   // 현재 위치
     Cleared,   // 클리어됨 — 재방문 가능
+    Blocked,   // 완전 통행불가(절차적 생성 시 막힌 셀) — 버튼 자체를 숨김, 자리만 차지
 }
 
 public class GridCellButton : MonoBehaviour
 {
     [SerializeField] private RectTransform m_rectTransform;
     [SerializeField] private Image m_backgroundImage;
+    [SerializeField] private Image m_borderImage;
     [SerializeField] private Image m_startIcon;
     [SerializeField] private Image m_escapeIcon;
     [SerializeField] private Button m_button;
@@ -54,16 +57,48 @@ public class GridCellButton : MonoBehaviour
         m_rectTransform.anchoredPosition = anchoredPos;
     }
 
+    // Screen Space Overlay 캔버스에서는 rectTransform.position이 곧 화면 좌표 — 3D 월드 좌표 역산에 사용
+    public Vector3 GetScreenPosition()
+    {
+        return m_rectTransform != null ? m_rectTransform.position : Vector3.zero;
+    }
+
     public void SetVisualState(EGridCellVisualState state)
     {
         StopBlink();
 
-        Color color = CommonUtility.PaletteColor("General");
-        if (state == EGridCellVisualState.Cleared) color = CommonUtility.PaletteColor("Unlocked");
-        else if (state == EGridCellVisualState.Locked) color = CommonUtility.PaletteColor("Zone.Locked");
-        else if (state == EGridCellVisualState.Current) color = CommonUtility.PaletteColor("Unlocked");
+        // 완전 통행불가 셀은 자리만 차지 — 보이지도, 눌리지도 않음
+        if (state == EGridCellVisualState.Blocked)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        if (gameObject.activeSelf == false) gameObject.SetActive(true);
 
-        if (m_backgroundImage != null) m_backgroundImage.color = color;
+        Color fillColor;
+        Color borderColor;
+        switch (state)
+        {
+            case EGridCellVisualState.Current:
+                fillColor = CommonUtility.PaletteColor("Selected");
+                borderColor = CommonUtility.PaletteColor("GeneralBright1");
+                break;
+            case EGridCellVisualState.Reachable:
+                fillColor = CommonUtility.PaletteColor("Unlocked");
+                borderColor = CommonUtility.PaletteColor("UnlockedSelected");
+                break;
+            case EGridCellVisualState.Cleared:
+                fillColor = CommonUtility.PaletteColor("GeneralDark1");
+                borderColor = CommonUtility.PaletteColor("Unlocked");
+                break;
+            default: // Unvisited
+                fillColor = CommonUtility.PaletteColor("Zone.Locked");
+                borderColor = CommonUtility.PaletteColor("GeneralDark1");
+                break;
+        }
+
+        if (m_backgroundImage != null) m_backgroundImage.color = fillColor;
+        if (m_borderImage != null) m_borderImage.color = borderColor;
 
         bool interactable = state == EGridCellVisualState.Reachable || state == EGridCellVisualState.Cleared;
         if (m_button != null) m_button.interactable = interactable;

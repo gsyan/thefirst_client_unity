@@ -1,6 +1,6 @@
 // 함선 프리셋 ScriptableObject — 성능포인트 배분 결과값(고정)을 담는 그릇
 // CSV Import(에디터 전용) → ScriptableObject 갱신 → JSON Export → 서버 배포 순서로 사용
-// CSV: Assets/Resources/DataTable/Exploration/datatable_ship_preset.csv
+// CSV: Assets/Resources/DataTable/ShipPreset/datatable_ship_preset.csv
 // 카테고리별 슬롯 개수는 DataTableConfig.gameSettings.shipStatFormula.maxModuleSlots 기준 고정 컬럼 — 빈 칸이면 미장착
 using UnityEngine;
 using System.Collections.Generic;
@@ -75,40 +75,51 @@ public class DataTableShipPreset : ScriptableObject
         return config.gameSettings.shipStatFormula.maxModuleSlots;
     }
 
+    private DataTableModule LoadModuleTable()
+    {
+        string[] guids = AssetDatabase.FindAssets("t:DataTableModule");
+        if (guids.Length == 0) return null;
+        return AssetDatabase.LoadAssetAtPath<DataTableModule>(AssetDatabase.GUIDToAssetPath(guids[0]));
+    }
+
     public string ExportToCsv()
     {
         int slotCount = GetSlotCount();
+        DataTableModule moduleTable = LoadModuleTable();
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.Append("preset_id,display_name_key,prefab_name,command_cost,health_points,turn_rate_points,repair_points");
-        for (int i = 1; i <= slotCount; i++) sb.Append($",beam_slot{i}_subtype,beam_slot{i}_reinforce");
-        for (int i = 1; i <= slotCount; i++) sb.Append($",missile_slot{i}_subtype,missile_slot{i}_reinforce");
+        sb.Append("preset_id,unlock_commander_level,display_name_key,prefab_name,command_cost,health_points,turn_rate_points,repair_points");
+        for (int i = 1; i <= slotCount; i++) sb.Append($",beam_slot{i}_subtype,beam_slot{i}_attack,beam_slot{i}_firerate,beam_slot{i}_projectilespeed");
+        for (int i = 1; i <= slotCount; i++) sb.Append($",missile_slot{i}_subtype,missile_slot{i}_attack,missile_slot{i}_firerate,missile_slot{i}_projectilespeed,missile_slot{i}_silence");
         for (int i = 1; i <= slotCount; i++) sb.Append($",hangar_slot{i}_subtype,hangar_slot{i}_ship,hangar_slot{i}_fighter,hangar_slot{i}_ammo,hangar_slot{i}_health");
-        for (int i = 1; i <= slotCount; i++) sb.Append($",interceptor_slot{i}_delay,interceptor_slot{i}_regen");
-        sb.AppendLine(",shield_installed,shield_gauge_points,shield_delay_points,shield_regen_rate_points");
+        for (int i = 1; i <= slotCount; i++) sb.Append($",interceptor_slot{i}_subtype,interceptor_slot{i}_delay,interceptor_slot{i}_regen");
+        sb.AppendLine(",shield_subtype,shield_gauge_points,shield_delay_points,shield_regen_rate_points");
 
         for (int i = 0; i < shipPresetDataList.Count; i++)
         {
             ShipPresetData data = shipPresetDataList[i];
             ShipStatAllocation alloc = data.statAllocation;
+            // command_cost는 저장된 캐시값이 아니라 Export 시점에 항상 새로 계산 — Inspector를 열어보지 않아도 최신 값 보장
+            int commandCost = alloc.GetTotalPointsUsed(moduleTable, data.prefabName);
 
-            sb.Append(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6}",
-                data.presetId, data.displayNameKey, data.prefabName, data.commandCost,
+            sb.Append(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6},{7}",
+                data.presetId, data.unlockCommanderLevel, data.displayNameKey, data.prefabName, commandCost,
                 alloc.healthPoints, alloc.turnRatePoints, alloc.repairPoints));
 
-            AppendSingleStatSlots(sb, slotCount, alloc.beamModuleSubType, alloc.beamReinforcePoints);
-            AppendSingleStatSlots(sb, slotCount, alloc.missileModuleSubType, alloc.missileReinforcePoints);
+            AppendWeaponSlots(sb, slotCount, alloc.beamModuleSubType, alloc.beamAttackPoints, alloc.beamFireRatePoints, alloc.beamProjectileSpeedPoints, null);
+            AppendWeaponSlots(sb, slotCount, alloc.missileModuleSubType, alloc.missileAttackPoints, alloc.missileFireRatePoints, alloc.missileProjectileSpeedPoints, alloc.missileSilencePoints);
             AppendHangarSlots(sb, slotCount, alloc);
             AppendInterceptorSlots(sb, slotCount, alloc);
 
             sb.AppendLine(string.Format(ic, ",{0},{1},{2},{3}",
-                alloc.shieldInstalled ? 1 : 0, alloc.shieldGaugePoints, alloc.shieldDelayPoints, alloc.shieldRegenRatePoints));
+                alloc.shieldModuleSubType, alloc.shieldGaugePoints, alloc.shieldDelayPoints, alloc.shieldRegenRatePoints));
         }
 
         return sb.ToString();
     }
 
-    private void AppendSingleStatSlots(System.Text.StringBuilder sb, int slotCount, string[] moduleSubType, int[] reinforcePoints)
+    // 빔/미사일 공용 — silencePoints는 미사일 전용(빔은 null 전달)
+    private void AppendWeaponSlots(System.Text.StringBuilder sb, int slotCount, string[] moduleSubType, int[] attackPoints, int[] fireRatePoints, int[] projectileSpeedPoints, int[] silencePoints)
     {
         for (int i = 0; i < slotCount; i++)
         {
@@ -116,7 +127,16 @@ public class DataTableShipPreset : ScriptableObject
             sb.Append(',');
             if (installed) sb.Append(moduleSubType[i]);
             sb.Append(',');
-            if (installed) sb.Append(reinforcePoints[i]);
+            if (installed) sb.Append(attackPoints[i]);
+            sb.Append(',');
+            if (installed) sb.Append(fireRatePoints[i]);
+            sb.Append(',');
+            if (installed) sb.Append(projectileSpeedPoints[i]);
+            if (silencePoints != null)
+            {
+                sb.Append(',');
+                if (installed) sb.Append(silencePoints[i]);
+            }
         }
     }
 
@@ -142,7 +162,9 @@ public class DataTableShipPreset : ScriptableObject
     {
         for (int i = 0; i < slotCount; i++)
         {
-            bool installed = i < alloc.interceptorSlotInstalled.Length && alloc.interceptorSlotInstalled[i];
+            bool installed = i < alloc.interceptorModuleSubType.Length && string.IsNullOrEmpty(alloc.interceptorModuleSubType[i]) == false;
+            sb.Append(',');
+            if (installed) sb.Append(alloc.interceptorModuleSubType[i]);
             sb.Append(',');
             if (installed) sb.Append(alloc.interceptorDelayPoints[i]);
             sb.Append(',');
@@ -155,6 +177,7 @@ public class DataTableShipPreset : ScriptableObject
     public void LoadFromCsv(string csvText)
     {
         int slotCount = GetSlotCount();
+        DataTableModule moduleTable = LoadModuleTable();
         shipPresetDataList.Clear();
 
         string[] lines = csvText.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.None);
@@ -169,29 +192,32 @@ public class DataTableShipPreset : ScriptableObject
             string presetId = GetCol(cols, 0);
             if (string.IsNullOrEmpty(presetId)) continue;
 
-            int col = 4; // 0~3은 preset_id/display_name_key/prefab_name/command_cost
+            int col = 5; // 0~4는 preset_id/unlock_commander_level/display_name_key/prefab_name/command_cost
 
             ShipStatAllocation alloc = new ShipStatAllocation();
             alloc.healthPoints = ParseInt(GetCol(cols, col++));
             alloc.turnRatePoints = ParseInt(GetCol(cols, col++));
             alloc.repairPoints = ParseInt(GetCol(cols, col++));
 
-            ReadSingleStatSlots(cols, slotCount, ref col, out alloc.beamModuleSubType, out alloc.beamReinforcePoints);
-            ReadSingleStatSlots(cols, slotCount, ref col, out alloc.missileModuleSubType, out alloc.missileReinforcePoints);
+            ReadWeaponSlots(cols, slotCount, ref col, out alloc.beamModuleSubType, out alloc.beamAttackPoints, out alloc.beamFireRatePoints, out alloc.beamProjectileSpeedPoints, out _, hasSilence: false);
+            ReadWeaponSlots(cols, slotCount, ref col, out alloc.missileModuleSubType, out alloc.missileAttackPoints, out alloc.missileFireRatePoints, out alloc.missileProjectileSpeedPoints, out alloc.missileSilencePoints, hasSilence: true);
             ReadHangarSlots(cols, slotCount, ref col, alloc);
             ReadInterceptorSlots(cols, slotCount, ref col, alloc);
 
-            alloc.shieldInstalled = ParseInt(GetCol(cols, col++)) != 0;
+            alloc.shieldModuleSubType = GetCol(cols, col++);
             alloc.shieldGaugePoints = ParseInt(GetCol(cols, col++));
             alloc.shieldDelayPoints = ParseInt(GetCol(cols, col++));
             alloc.shieldRegenRatePoints = ParseInt(GetCol(cols, col++));
 
+            // command_cost는 더 이상 CSV 값을 신뢰하지 않음 — 성능포인트 총합(GetTotalPointsUsed, 몸체 설치 비용 포함)이 그대로 지휘력이 됨
+            string prefabName = GetCol(cols, 3);
             shipPresetDataList.Add(new ShipPresetData
             {
-                presetId       = presetId,
-                displayNameKey = GetCol(cols, 1),
-                prefabName     = GetCol(cols, 2),
-                commandCost    = ParseInt(GetCol(cols, 3)),
+                presetId             = presetId,
+                unlockCommanderLevel = ParseInt(GetCol(cols, 1)),
+                displayNameKey       = GetCol(cols, 2),
+                prefabName           = prefabName,
+                commandCost          = alloc.GetTotalPointsUsed(moduleTable, prefabName),
                 statAllocation = alloc,
             });
         }
@@ -200,16 +226,30 @@ public class DataTableShipPreset : ScriptableObject
         EditorUtility.SetDirty(this);
     }
 
-    private void ReadSingleStatSlots(string[] cols, int slotCount, ref int col, out string[] moduleSubType, out int[] reinforcePoints)
+    // 빔/미사일 공용 — hasSilence가 true면 미사일 전용 침묵 컬럼까지 읽음(빔은 false, silencePoints는 slotCount 크기의 빈 배열)
+    private void ReadWeaponSlots(string[] cols, int slotCount, ref int col, out string[] moduleSubType, out int[] attackPoints, out int[] fireRatePoints, out int[] projectileSpeedPoints, out int[] silencePoints, bool hasSilence)
     {
         moduleSubType = new string[slotCount];
-        reinforcePoints = new int[slotCount];
+        attackPoints = new int[slotCount];
+        fireRatePoints = new int[slotCount];
+        projectileSpeedPoints = new int[slotCount];
+        silencePoints = new int[slotCount];
+
         for (int i = 0; i < slotCount; i++)
         {
             string subTypeCell = GetCol(cols, col++);
-            string reinforceCell = GetCol(cols, col++);
+            string attackCell = GetCol(cols, col++);
+            string fireRateCell = GetCol(cols, col++);
+            string projectileSpeedCell = GetCol(cols, col++);
+            string silenceCell = hasSilence ? GetCol(cols, col++) : null;
+
+            bool installed = string.IsNullOrEmpty(subTypeCell) == false;
             moduleSubType[i] = subTypeCell;
-            reinforcePoints[i] = string.IsNullOrEmpty(subTypeCell) == false ? ParseInt(reinforceCell) : 0;
+            attackPoints[i] = installed ? ParseInt(attackCell) : 0;
+            fireRatePoints[i] = installed ? ParseInt(fireRateCell) : 0;
+            projectileSpeedPoints[i] = installed ? ParseInt(projectileSpeedCell) : 0;
+            if (hasSilence)
+                silencePoints[i] = installed ? ParseInt(silenceCell) : 0;
         }
     }
 
@@ -240,17 +280,18 @@ public class DataTableShipPreset : ScriptableObject
 
     private void ReadInterceptorSlots(string[] cols, int slotCount, ref int col, ShipStatAllocation alloc)
     {
-        alloc.interceptorSlotInstalled = new bool[slotCount];
+        alloc.interceptorModuleSubType = new string[slotCount];
         alloc.interceptorDelayPoints = new int[slotCount];
         alloc.interceptorRegenRatePoints = new int[slotCount];
 
         for (int i = 0; i < slotCount; i++)
         {
+            string subTypeCell = GetCol(cols, col++);
             string delayCell = GetCol(cols, col++);
             string regenCell = GetCol(cols, col++);
 
-            bool installed = string.IsNullOrEmpty(delayCell) == false;
-            alloc.interceptorSlotInstalled[i] = installed;
+            bool installed = string.IsNullOrEmpty(subTypeCell) == false;
+            alloc.interceptorModuleSubType[i] = subTypeCell;
             alloc.interceptorDelayPoints[i] = installed ? ParseInt(delayCell) : 0;
             alloc.interceptorRegenRatePoints[i] = installed ? ParseInt(regenCell) : 0;
         }

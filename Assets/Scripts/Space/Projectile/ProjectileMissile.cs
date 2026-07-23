@@ -80,7 +80,7 @@ public class ProjectileMissile : ProjectileBase
         if (m_missileSource != EMissileSource.Aircraft)
             ObjectManager.Instance.RegisterMissile(this, isEnemy);
 
-        m_missileSpeed = moduleData.projectileSpeed;
+        m_missileSpeed = moduleData.speed; // 발사체 이동속도는 speed 필드 재사용(미사일 행은 body 이동속도 개념이 없음)
         m_silenceTime  = moduleData.silenceTime;
         m_splashRadius = moduleData.splashRadius * explosionMultiplier;
         m_ejectSpeed = ejectSpeed;

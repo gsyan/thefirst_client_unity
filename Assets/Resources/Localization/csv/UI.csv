@@ -81,7 +81,7 @@ UITabButton_Fleet,,FLEET,함대
 UITabCommander_Title,,COMMANDER LEVEL,지휘 레벨
 UITabCommander_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
 UITabCommander_ShipCountUnit,,ships,척
-UITabCommander_ModuleGradeTitle,,Module Grade,모듈 등급
+UITabCommander_CommandPower,,Command Power,지휘력
 UITabTech_NextUnlockTitle,,Next Level - Lv.{0},다음 레벨 - Lv.{0}
 UITabTech_NextUnlockShipCount,,{0} Next Level Ship Slots,다음 레벨 함선 슬롯 {0}척
 UITabTech_NextModuleGrade,,Next Level Module Grade - T.{0},다음 레벨 모듈 그래이드 - T.{0}
@@ -90,6 +90,12 @@ UITabTech_ModulePointGetTitle,,Module Point,모듈 포인트
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
+UITabFleetComposition_Front,,Front,전방
+UITabFleetComposition_Rear,,Rear,후방
+UITabFleetComposition_PlacedShipCount,,Placed Ships,배치 함선 수
+UITabFleetComposition_PlacedShipsTitle,,Fleet,함대구성
+UITabFleetComposition_StatsTitle,,Stats,성능
+UITabFleetComposition_AvailablePresetsTitle,,Available Ships,배치가능 함선
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
 UITabFleetTactics_NameShort,,TACTICS,전술
 UITabFleetTactics_FormationType_LinearHorizontal,,Balanced,균형
@@ -138,6 +144,9 @@ UITabExploration_TryZone,,Enter,입장
 UITabExploration_PreviousStageRequired,,Clear the previous stage first.,이전 스테이지를 먼저 클리어해야 합니다.
 UITabExploration_RetreatTitle,,Retreat,퇴각
 UITabExploration_RetreatConfirm,,Retreat to the previous zone?,이전 구역으로 퇴각하시겠습니까?
+UIPrepareBattle_Retreat,,Retreat,퇴각
+UIPrepareBattle_FleetSettings,,Fleet Settings,함대 설정
+UIPrepareBattle_StartBattle,,Start Battle,전투 시작
 UITabPvp_RetreatTitle,,Retreat,퇴각
 UITabPvp_RetreatConfirm,,Retreat from the PvP battle?,PvP 전투에서 퇴각하시겠습니까?
 require_level_compare,,Lv.{0} (Current Lv.{1}),Lv.{0} (현재 Lv.{1})
@@ -217,6 +226,7 @@ UIPopupMessage_LogoutGuest,,Logging out as a guest will permanently delete your 
 UIPopupMessage_GoogleLink,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
 UIPopupMessage_GoogleUnlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
 UIPopupMessage_CommanderLevelupTitle,,COMMANDER LEVEL UP,지휘 레벨업
+UIPopupMessage_ConfirmTryCell,,Are you sure you want to move to this cell?,선택한 셀로 이동 하시겠습니까?
 UIPopupMessage_MineralResetTitle,,MINERAL ENHANCEMENT RESET,미네랄 강화 초기화
 UIPopupMessage_MineralResetMessage,,Mineral enhancements have been reset after stage clear.,스테이지 클리어로 미네랄 강화가 초기화되었습니다.
 UIPopupMessage_ResetAllInvestedMineralTitle,,RESET ALL INVESTED MINERAL,전체 투자 미네랄 환급

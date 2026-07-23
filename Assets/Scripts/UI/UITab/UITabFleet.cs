@@ -118,7 +118,7 @@ public class UITabFleet : UITabBase
 
         int currentLevel = commander.GetCommanderLevel();
 
-        int maxShips = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(currentLevel);
+        int maxShips = DataManager.Instance.m_dataTableCommander.GetShipCount(currentLevel);
     }
 
     private void OnCommanderLevelChanged(int commanderLevel)
@@ -152,7 +152,7 @@ public class UITabFleet : UITabBase
         m_selectedShipSelector = null;
 
         int shipCount  = m_playerFleet.m_ships.Count;
-        int maxInCsv   = DataManager.Instance.m_dataTableCommanderLevel.GetMaxShipCount();
+        int maxInCsv   = DataManager.Instance.m_dataTableCommander.GetMaxShipCount();
         bool canAdd    = shipCount < maxInCsv;
 
         for (int i = 0; i < m_shipSelectors.Length; i++)
@@ -198,7 +198,7 @@ public class UITabFleet : UITabBase
     {
         if (m_currentShipCountStatText == null || m_playerFleet == null) return;
         int current = m_playerFleet.m_ships.Count;
-        int max = DataManager.Instance.m_dataTableCommanderLevel.GetMaxShipCount();
+        int max = DataManager.Instance.m_dataTableCommander.GetMaxShipCount();
         m_currentShipCountStatText.text = $"{current} / {max}";
 
         UpdateFleetSynergyDisplay();
@@ -394,7 +394,7 @@ public class UITabFleet : UITabBase
 
         // 튜토리얼 중(지크프리트 함대)에도 요구사항 UI는 그대로 보여줌 — GrantTutorialCommanderLevel이 임시로 레벨을 충족시켜둠
         int currentShipCount = m_playerFleet.m_ships.Count;
-        int requiredCommanderLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevel(currentShipCount + 1);
+        int requiredCommanderLevel = DataManager.Instance.m_dataTableCommander.GetRequiredCommanderLevel(currentShipCount + 1);
         RequireStruct require = new RequireStruct(requiredCommanderLevel);
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
@@ -480,11 +480,11 @@ public class UITabFleet : UITabBase
 
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
         int currentShipCount = myFleet.m_ships.Count;
-        int maxInCsv = DataManager.Instance.m_dataTableCommanderLevel.GetMaxShipCount();
+        int maxInCsv = DataManager.Instance.m_dataTableCommander.GetMaxShipCount();
         if (currentShipCount >= maxInCsv) return ServerErrorCode.CLIENT_CanAddShip_FLEET_MAX_SHIPS_REACHED;
 
         int commanderLevel = commander.GetCommanderLevel();
-        int maxShipsAtTech = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(commanderLevel);
+        int maxShipsAtTech = DataManager.Instance.m_dataTableCommander.GetShipCount(commanderLevel);
         if (currentShipCount >= maxShipsAtTech) return ServerErrorCode.CLIENT_CanAddShip_INSUFFICIENT_COMMANDER_LEVEL;
         if (commander.m_commanderInfo.modulePoint < gameSettings.addShipCost) return ServerErrorCode.ADD_SHIP_FAIL_INSUFFICIENT_MODULE_POINT;
 

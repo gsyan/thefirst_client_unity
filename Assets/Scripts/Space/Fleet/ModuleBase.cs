@@ -12,8 +12,6 @@ public class ModuleBase : MonoBehaviour
     [HideInInspector] public float m_healthMax;
     [HideInInspector] public float m_attack;
 
-    [HideInInspector] public int m_modulePointCostLevelup;
-
     // 리셋 시 환급할 투자 이력
     [HideInInspector] public int m_investedModulePoint;
 
@@ -102,12 +100,6 @@ public class ModuleBase : MonoBehaviour
     {
     }
 
-    // 모듈 레벨업 시 스탯 갱신 (각 모듈에서 override) - 모듈 프리팹 갱신까지 하는 경우는 ReplaceModuleInSlot 을 사용
-    public virtual void ApplyModuleLevelUp(int newLevel)
-    {
-        // 기본 구현: 레벨만 설정
-        SetModuleLevel(newLevel);
-    }
     // 교체 시 구 모듈의 공격 타이머를 신 모듈에 승계 — 무기 모듈에서 override
     public virtual float GetLastAttackTime() { return 0f; }
     public virtual void SetLastAttackTime(float t) { }

@@ -307,6 +307,22 @@ public class CameraController : MonoSingleton<CameraController>
 
     private bool m_inputEnabled = true;
 
+    // 화면이 좌/우로 분할되어 메인카메라가 일부만 차지할 때(함대편성 UI 등), 그 영역 밖 터치는 카메라 조작으로 받지 않기 위한 허용 구간(스크린 비율 0~1) — 분할 비율은 호출하는 쪽 레이아웃에 따라 유동적
+    private float m_inputScreenXMin = 0f;
+    private float m_inputScreenXMax = 1f;
+
+    public void SetInputScreenXRange(float xMin, float xMax)
+    {
+        m_inputScreenXMin = xMin;
+        m_inputScreenXMax = xMax;
+    }
+
+    public bool IsScreenPositionInInputRange(Vector2 screenPos)
+    {
+        float normalizedX = screenPos.x / Screen.width;
+        return normalizedX >= m_inputScreenXMin && normalizedX <= m_inputScreenXMax;
+    }
+
     // Input handling
     private HandleInputMouse m_handleInputMouse;
     private HandleInputTouch m_handleInputTouch;
@@ -421,19 +437,31 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetZoom = Mathf.Clamp(moduleSlot.m_cameraZoom, m_minZoom, m_maxZoom);
     }
 
-    // 카메라 viewport width를 즉시 설정 (UIPanelSpace에서 레이아웃 애니메이션 구동용)
+    // 카메라 viewport width를 즉시 설정 (UIPanelSpace에서 레이아웃 애니메이션 구동용) — x는 항상 0(좌측 고정), 오른쪽만 줄어드는 용도
     public void SetViewportWidth(float width)
     {
-        if (m_targetCamera == null) return;
-        Rect r = m_targetCamera.rect;
-        r.width = Mathf.Clamp01(width);
-        m_targetCamera.rect = r;
-        RefreshCenterModeZoom();
+        SetViewportRect(0f, width);
     }
 
     public float GetViewportWidth()
     {
         return m_targetCamera != null ? m_targetCamera.rect.width : 1f;
+    }
+
+    // 카메라 viewport의 x(시작 위치)와 width를 함께 설정 — 화면 좌/우 어느 쪽으로도 이동 가능(함대편성 UI의 우측↔좌측 전환 등)
+    public void SetViewportRect(float x, float width)
+    {
+        if (m_targetCamera == null) return;
+        Rect r = m_targetCamera.rect;
+        r.x = Mathf.Clamp01(x);
+        r.width = Mathf.Clamp01(width);
+        m_targetCamera.rect = r;
+        RefreshCenterModeZoom();
+    }
+
+    public float GetViewportX()
+    {
+        return m_targetCamera != null ? m_targetCamera.rect.x : 0f;
     }
 
     public void ZoomCamera(float deltaZoom)
@@ -640,6 +668,33 @@ public class CameraController : MonoSingleton<CameraController>
     public Vector3 GetTargetPosition()
     {
         return m_targetPosition;
+    }
+
+    // 갤럭시뷰 자세(zoom/rotX/rotY)로 카메라를 순간 이동시킨 뒤 action을 실행하고 같은 프레임 안에서 즉시 원래 자세로 복구 —
+    // 실제로 갤럭시뷰에 진입하지 않고도 "그 자세라면 어떻게 보일지" 기준으로 계산이 필요할 때 사용
+    // (예: 그리드 UI를 연 적 없는 로그인 시점에 시작 셀의 화면 위치 → 3D 좌표 역산)
+    public void SimulateGalaxyViewPose(Vector3 target, float zoom, float rotX, float rotY, System.Action action)
+    {
+        if (m_targetCamera == null) return;
+
+        Vector3 originalPos = m_targetCamera.transform.position;
+        Quaternion originalRot = m_targetCamera.transform.rotation;
+
+        float radiansY = (rotY + 180f) * Mathf.Deg2Rad;
+        float radiansX = rotX * Mathf.Deg2Rad;
+        float horizontalDistance = zoom * Mathf.Cos(radiansX);
+        Vector3 rotatedOffset = new Vector3(
+            Mathf.Sin(radiansY) * horizontalDistance,
+            zoom * Mathf.Sin(radiansX),
+            Mathf.Cos(radiansY) * horizontalDistance);
+
+        m_targetCamera.transform.position = target + rotatedOffset;
+        m_targetCamera.transform.LookAt(target);
+
+        action?.Invoke();
+
+        m_targetCamera.transform.position = originalPos;
+        m_targetCamera.transform.rotation = originalRot;
     }
 
     // 갤럭시 뷰 진입 — 현재 상태에서 목표까지 고정 시간 선형 이동

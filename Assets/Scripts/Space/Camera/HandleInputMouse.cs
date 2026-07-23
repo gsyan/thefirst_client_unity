@@ -39,8 +39,9 @@ public class HandleInputMouse
         if (mouse == null) return;
 
         Vector3 mousePos = mouse.position.ReadValue();
+        bool cameraInputAllowed = cameraInputEnabled == true && m_camera.IsScreenPositionInInputRange(mousePos);
 
-        if (cameraInputEnabled == true)
+        if (cameraInputAllowed == true)
         {
             if (mouse.rightButton.wasPressedThisFrame == true)
             {
@@ -59,7 +60,7 @@ public class HandleInputMouse
             // press 시점 스냅샷 — 이 클릭 자체가(TargetClick 등으로) 스텝을 AnyClick으로 바꿔도,
             // 같은 클릭이 새 스텝의 AnyClick까지 이어서 소비하지 않도록 제스처 시작 시점 값을 고정
             m_wasWaitingForAnyClickAtPress = m_tutorialWaitingForAnyClick;
-            if (cameraInputEnabled == true && m_inputBlockedByUI == false)
+            if (cameraInputAllowed == true && m_inputBlockedByUI == false)
             {
                 m_tapHitCollider = m_camera.GetCameraRaycast(out RaycastHit downHit, s_pickMask, 3000f, mousePos)
                     ? downHit.collider : null;
@@ -80,7 +81,7 @@ public class HandleInputMouse
 
             // press~release 사이에 새 UI(튜토리얼 등)가 열렸을 수 있어 release 시점도 다시 확인 —
             // 단 press 때 이미 UI 위였다면(버튼 누르고 3D로 끌고 나가는 경우) 여전히 차단
-            if (cameraInputEnabled == true && m_inputBlockedByUI == false && IsPointerOverUIObject(mousePos) == false)
+            if (cameraInputAllowed == true && m_inputBlockedByUI == false && IsPointerOverUIObject(mousePos) == false)
             {
                 if (m_tapHitCollider != null)
                 {
@@ -96,7 +97,7 @@ public class HandleInputMouse
             m_tapHitCollider = null;
         }
 
-        if (cameraInputEnabled == true)
+        if (cameraInputAllowed == true)
         {
             float scrollDelta = mouse.scroll.ReadValue().y;
             if (Mathf.Abs(scrollDelta) > 0.01f)

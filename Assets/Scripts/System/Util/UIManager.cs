@@ -297,6 +297,13 @@ public class UIManager : MonoSingleton<UIManager>
         return canvasGroup;
     }
 
+    // panelDictionary는 UIPanelBase로만 저장되어 있어, 개별 패널 고유 API(버튼 콜백 주입 등)를 호출하려면 구체 타입으로 캐스팅해서 꺼내야 함
+    public T GetPanel<T>(string panelName) where T : UIPanelBase
+    {
+        if (panelDictionary.TryGetValue(panelName, out UIPanelBase panel) == false) return null;
+        return panel as T;
+    }
+
     public void AddPanel(UIPanelBase panelBase)
     {
         panelDictionary[panelBase.panelName] = panelBase;
@@ -460,24 +467,14 @@ public class UIManager : MonoSingleton<UIManager>
     {
         SoundManager.Instance.PlayFX(EFx.Commander_Level_Up);
         int prevLevel        = newLevel - 1;
-        int shipCount        = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(newLevel);
-        int prevShipCount    = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(prevLevel);
-        int subtypeLevel     = DataManager.Instance.m_dataTableCommanderLevel.GetSubtypeLevel(newLevel);
-        int prevSubtypeLevel = DataManager.Instance.m_dataTableCommanderLevel.GetSubtypeLevel(prevLevel);
-        int modulePointGain  = DataManager.Instance.m_dataTableCommanderLevel.GetModulePointReward(newLevel);
+        int shipCount        = DataManager.Instance.m_dataTableCommander.GetShipCount(newLevel);
+        int prevShipCount    = DataManager.Instance.m_dataTableCommander.GetShipCount(prevLevel);
         var loc = LocalizationManager.Instance;
-        string shipLabel        = loc.Get("UITabCommander_ShipCountMaxTitle");
-        string gradeLabel       = loc.Get("UITabCommander_ModuleGradeTitle");
-        string modulePointLabel = loc.Get("UITabTech_ModulePointGetTitle");
-        Color defaultColor     = CommonUtility.PaletteColor("GeneralBright1");
-        Color modulePointColor = CommonUtility.PaletteColor("ModulePoint");
+        string shipLabel   = loc.Get("UITabCommander_ShipCountMaxTitle");
+        Color defaultColor = CommonUtility.PaletteColor("GeneralBright1");
         var rows = new List<(string icon, string value, Color? color)>();
         if (shipCount != prevShipCount)
             rows.Add(("icon_ship", $"{shipLabel}  {shipCount}", defaultColor));
-        if (subtypeLevel != prevSubtypeLevel)
-            rows.Add(("cargo-crane", $"{gradeLabel}  T.{subtypeLevel}", defaultColor));
-        if (modulePointGain > 0)
-            rows.Add(("mineral_basic", $"{modulePointLabel}  {modulePointGain}", modulePointColor));
         ShowConfirmPopup(new ConfirmPopupConfig
         {
             title              = LocalizationManager.Instance.Get("UIPopupMessage_CommanderLevelupTitle"),
@@ -553,15 +550,14 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupLicense(() => CloseTopPopup(EPopupLayer.Normal));
     }
 
-    public void ShowModuleLevelupPopup(EModuleSubType subType, EModuleType moduleType, int currentLevel, System.Action<int> onConfirm)
+    // 함선 프리셋 상세 스탯 팝업 (함대편성 UI — 배치가능 프리셋 클릭 시)
+    public void ShowShipStatsPopup(ShipPresetData preset)
     {
-        UIPopupLevelup popup = GetOrCreatePopup<UIPopupLevelup>("UIPopupLevelup", EPopupLayer.Normal);
+        UIPopupShipStats popup = GetOrCreatePopup<UIPopupShipStats>("UIPopupShipStats", EPopupLayer.Normal);
         if (popup == null) return;
 
         ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowModule(subType, moduleType, currentLevel,
-            onConfirm: targetLevel => { onConfirm?.Invoke(targetLevel); CloseTopPopup(EPopupLayer.Normal); },
-            onCancel:  () => CloseTopPopup(EPopupLayer.Normal)
-        );
+        popup.ShowPopupShipStats(preset, onClose: () => CloseTopPopup(EPopupLayer.Normal));
     }
+
 }

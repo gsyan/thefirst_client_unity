@@ -225,15 +225,8 @@ public class UITabSettings : UITabBase
         int zoneListCount = table.zoneList.Count;
         int targetZoneIndex = (zoneListCount > 0) ? table.zoneList[clickCount % zoneListCount].zoneIndex : 1;
 
+        // 함선 시스템 대격변으로 ZoneStageConfig.mineralClearReward/modulePointClearReward 제거됨 — 그리드 기반 보상 설계로 재작성 전까지 0 고정
         int totalMineral = 0, totalModulePoint = 0;
-        for (int i = 0; i < table.zoneStageList.Count; i++)
-        {
-            if (table.zoneStageList[i].zoneIndex == targetZoneIndex)
-            {
-                totalMineral     += table.zoneStageList[i].mineralClearReward;
-                totalModulePoint += table.zoneStageList[i].modulePointClearReward;
-            }
-        }
 
         PlayerPrefs.SetInt("DevMineralClickCount", clickCount + 1);
         PlayerPrefs.Save();

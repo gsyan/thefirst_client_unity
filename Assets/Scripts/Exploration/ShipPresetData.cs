@@ -3,6 +3,7 @@
 public class ShipPresetData
 {
     public string presetId;
+    public int unlockCommanderLevel = 1; // 이 프리셋을 사용할 수 있는 최소 커맨더 레벨 (예: 10 = 10레벨부터 사용 가능)
     public string displayNameKey; // Assets/Resources/Localization/csv/UI.csv 참조 키
     public string prefabName;
     public int commandCost;

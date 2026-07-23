@@ -83,8 +83,8 @@ public abstract class AircraftBase : MonoBehaviour
         m_aircraftInfo = aircraftInfo;
         m_moduleHanger = moduleHanger;
         m_flightPath = ResolveFlightPath();
-        // 미사일 발사 전용 — projectileSpeed, airAdditionalDelay만 사용
-        m_moduleData = new ModuleData { projectileSpeed = aircraftInfo.airSpeed * 2f, airAdditionalDelay = aircraftInfo.airAdditionalDelay };
+        // 미사일 발사 전용 — speed(발사체 이동속도로 재사용), airAdditionalDelay만 사용
+        m_moduleData = new ModuleData { speed = aircraftInfo.airSpeed * 2f, airAdditionalDelay = aircraftInfo.airAdditionalDelay };
 
         //m_aircraftInfo.attackPower = 0f; // test
         //m_aircraftInfo.moveSpeed = 100f; // test

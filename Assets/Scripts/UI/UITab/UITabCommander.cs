@@ -8,11 +8,11 @@ public class UITabCommander : UITabBase
     [SerializeField] private TMP_Text m_commanderLevelText;
     [SerializeField] private TMP_Text m_shipCountText;
     [SerializeField] private Transform m_shipImages;
-    [SerializeField] private TMP_Text m_moduleGradeLimitText;    
+    [SerializeField] private TMP_Text m_commandPowerText;    
     [SerializeField] private Image m_expGaugeImage;       // 기술 포인트 게이지 Fill Image
     [SerializeField] private TMP_Text m_expGaugeText;           // 경험치 게이지 위 텍스트
     [SerializeField] private TMP_Text m_nextLevelShipCountText;
-    [SerializeField] private TMP_Text m_nextModuleGradeText;    
+    //[SerializeField] private TMP_Text m_nextLevelOpenShipsText;
     
     private static readonly Vector2 k_sizeActive   = new Vector2(10f, 50f);
     private static readonly Vector2 k_sizeInactive = new Vector2(10f, 25f);
@@ -89,8 +89,8 @@ public class UITabCommander : UITabBase
         if (commander == null) return;
 
         int currentLevel = commander.GetCommanderLevel();
-        int maxShips = DataManager.Instance.m_dataTableCommanderLevel.GetShipCount(currentLevel);
-        CommanderLevelData nextNode = GetNextCommanderLevelNode(commander);
+        int maxShips = DataManager.Instance.m_dataTableCommander.GetShipCount(currentLevel);
+        CommanderData nextNode = GetNextCommanderLevelNode(commander);
 
         // 기술레벨 요약: 레벨 / 자원 보관 캡 / 최대 함선 수
         if (m_commanderLevelText != null)
@@ -99,25 +99,34 @@ public class UITabCommander : UITabBase
         if (m_shipCountText != null)
             m_shipCountText.text = $"{maxShips}";
 
-        int currentSubtypeLevel = DataManager.Instance.m_dataTableCommanderLevel.GetSubtypeLevel(currentLevel);
-        if (m_moduleGradeLimitText != null)
-            m_moduleGradeLimitText.text = $"T.{currentSubtypeLevel}";
+        // 이 탭은 총량만 표시 — 사용량(배치 현황)은 함대편성 UI에서 별도로 보여줄 예정
+        FleetComposition fleetComposition = DataManager.Instance.m_currentFleetComposition;
+        if (m_commandPowerText != null)
+        {
+            if (fleetComposition != null)
+            {
+                m_commandPowerText.gameObject.SetActive(true);
+                m_commandPowerText.text = $"{fleetComposition.GetMaxCommandPower()}";
+            }
+            else
+            {
+                m_commandPowerText.gameObject.SetActive(false);
+            }
+        }
 
         RefreshShipSlots(maxShips);
 
         if (nextNode != null)
         {
-            m_nextModuleGradeText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextModuleGrade"), nextNode.subtypeLevel);
             m_nextLevelShipCountText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextUnlockShipCount"), nextNode.shipCount);
         }
         else
         {
-            m_nextModuleGradeText.gameObject.SetActive(false);
             m_nextLevelShipCountText.gameObject.SetActive(false);
         }
 
         int currentExp = commander.GetExp();
-        int currentLevelRequired = DataManager.Instance.m_dataTableCommanderLevel.GetRequireExp(currentLevel);
+        int currentLevelRequired = DataManager.Instance.m_dataTableCommander.GetRequireExp(currentLevel);
         int progressCurrent = currentExp - currentLevelRequired;
 
         if (m_expGaugeText != null)
@@ -149,10 +158,10 @@ public class UITabCommander : UITabBase
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commanderLevelText.transform as RectTransform);
     }
 
-    private CommanderLevelData GetNextCommanderLevelNode(Commander commander)
+    private CommanderData GetNextCommanderLevelNode(Commander commander)
     {
         int currentLevel = commander.GetCommanderLevel();
-        var levelList = DataManager.Instance.m_dataTableCommanderLevel.GetCommanderLevelDataList();
+        var levelList = DataManager.Instance.m_dataTableCommander.GetCommanderDataList();
         for (int i = 0; i < levelList.Count; i++)
         {
             if (levelList[i].commanderLevel > currentLevel)

@@ -102,13 +102,6 @@ public class ModuleSlotInfo
 }
 
 [System.Serializable]
-public class ModuleChangeCostEntry
-{
-    public EModuleSubType moduleSubType;
-    public int modulePointCost;
-}
-
-[System.Serializable]
 public class CommanderInfo
 {
     public long commanderId;
@@ -124,6 +117,7 @@ public class CommanderInfo
     public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
     public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
     public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
+    public int commandPowerMax;  // 탐험 함대 편성 지휘력 최대치 — IncreaseCommandPowerMaxRequest로 영구 증가
 }
 
 
@@ -286,125 +280,6 @@ public class ChangeTacticOptionsResponse
 }
 
 [System.Serializable]
-public class ModuleUnlockRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public int slotIndex;
-}
-
-[System.Serializable]
-public class ModuleUnlockResponse
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public int slotIndex;
-    public int pointRemain;
-    public int investedPoint;
-}
-
-[System.Serializable]
-public class ModuleLevelChangeRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public int slotIndex;
-    public int currentLevel;
-    public int targetLevel;
-}
-
-[System.Serializable]
-public class ModuleLevelChangeResponse
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public int slotIndex;
-    public int newLevel;
-    public int pointRemain;
-    public int investedPoint;
-    public int modulePointRemain;
-}
-
-[System.Serializable]
-public class ModuleGradeChangeRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubTypeCurrent;
-    public int slotIndex;
-}
-
-[System.Serializable]
-public class ModuleGradeChangeResponse
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleTypeCurrent;
-    public EModuleSubType moduleSubTypeCurrent;
-    public EModuleType moduleTypeNew;
-    public EModuleSubType moduleSubTypeNew;
-    public int slotIndex;
-    public int moduleNewLevel;
-    public int pointRemain;
-    public int investedPoint;
-    public int modulePointRemain;
-    public bool isModuleRemoved;
-    public bool isShipRemoved;
-    public long removedShipId;
-}
-
-
-
-[System.Serializable]
-public class ModuleResetRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public int slotIndex;
-}
-
-[System.Serializable]
-public class ModuleResetResponse
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
-    public int slotIndex;
-    public int moduleNewLevel;
-    public int pointRemain;
-    public int investedPoint;
-    public int modulePointRemain;
-    public bool isModuleRemoved;
-    public bool isShipRemoved;
-    public long removedShipId;
-}
-
-[System.Serializable]
-public class FleetResetAllInvestedMineralRequest
-{
-    public long fleetId;
-}
-
-[System.Serializable]
-public class FleetResetAllInvestedMineralResponse
-{
-    public int mineralRemain;
-    public int totalRefundedMineral;
-    public int modulePointRemain;
-    public FleetInfo updatedFleetInfo;
-}
-
-[System.Serializable]
 public class ShipResetRemoveRequest
 {
     public long shipId;
@@ -415,23 +290,6 @@ public class ShipResetRemoveResponse
 {
     public long removedShipId;
     public int modulePointRemain;
-}
-
-[System.Serializable]
-public class ModuleBodyRemoveRequest
-{
-    public long shipId;
-    public int bodyIndex;
-}
-
-[System.Serializable]
-public class ModuleInstallRequest
-{
-    public long shipId;
-    public int bodyIndex;
-    public EModuleType moduleType;
-    public int moduleLevel;
-    public int slotIndex;
 }
 
 
@@ -552,7 +410,7 @@ public class PendingStageRewardResponse
 
 #region Exploration Grid Data Classes ##########################################################################
 [System.Serializable]
-public class ExplorationShipSlot
+public class TempShipInfo
 {
     public string shipPresetId;
     public bool isFront;
@@ -562,7 +420,7 @@ public class ExplorationShipSlot
 public class TempFleetInfo
 {
     // 기존 FleetInfo/ShipInfo는 대격변으로 폐기 예정 — TempFleetInfo가 최종적으로 그 자리를 대체할 임시 명칭
-    public List<ExplorationShipSlot> ships;
+    public List<TempShipInfo> ships;
 }
 
 [System.Serializable]

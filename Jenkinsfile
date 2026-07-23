@@ -14,6 +14,8 @@ pipeline {
         booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드 (IS_SHIPPING=false 필요)')
         booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드 (IS_SHIPPING=false 필요)')
         booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\bk_server\\bk\\thefirst_client_build\\dev|release)에 APK 업로드 (IS_SHIPPING=false 필요)')
+        string(name: 'LAST_VERSION_NAME', defaultValue: '', description: '[자동관리] 릴리즈노트 기준점이 되었던 마지막 버전. 직접 수정 금지')
+        string(name: 'BASELINE_COMMIT',   defaultValue: '', description: '[자동관리] 릴리즈노트 기준 커밋 해시. 직접 수정 금지')
     }
 
     environment {
@@ -37,6 +39,25 @@ pipeline {
             steps {
                 checkout scm
                 script {
+                    // 릴리즈 노트 생성: 버전이 바뀐 시점(BASELINE_COMMIT)부터 HEAD까지의 "R: " 커밋만 누적 정리
+                    // 같은 버전으로 재빌드(테스트 실패 후 재시도 등)해도 기준점이 그대로라 계속 누적됨
+                    def previousVersion = params.LAST_VERSION_NAME
+                    def baselineCommit  = params.BASELINE_COMMIT?.trim()
+                    def logRange        = baselineCommit ? "${baselineCommit}..HEAD" : "HEAD"
+
+                    def rawLog = bat(script: "@git log ${logRange} --grep=\"^R: \" --pretty=format:\"%%s\"", returnStdout: true).trim()
+                    def noteLines = rawLog ? rawLog.readLines().collect { it.replaceFirst('^R: ', '- ') } : []
+                    def notesText = noteLines ? noteLines.join('\n') : '- 이번 버전에 사용자 대상 변경사항 없음'
+
+                    bat 'if not exist build mkdir build'
+                    writeFile file: 'build/release_notes.txt', text: "v${env.VERSION_NAME}\n\n${notesText}\n"
+                    echo "[ReleaseNotes] 범위: ${logRange}\n${notesText}"
+
+                    // 버전이 바뀐 첫 빌드일 때만 다음 기준점을 현재 HEAD로 갱신 (동일 버전 재빌드 시엔 유지)
+                    env.NEW_BASELINE_COMMIT = previousVersion != env.VERSION_NAME
+                        ? bat(script: '@git rev-parse HEAD', returnStdout: true).trim()
+                        : baselineCommit
+
                     // 현재 파라미터 값으로 Job의 defaultValue 갱신 → 다음 빌드에 반영
                     properties([
                         parameters([
@@ -51,6 +72,8 @@ pipeline {
                             booleanParam(name: 'RELEASE_GITHUB',   defaultValue: false, description: 'GitHub Release 에 APK 업로드 (IS_SHIPPING=false 필요)'),
                             booleanParam(name: 'RELEASE_FIREBASE', defaultValue: false, description: 'Firebase App Distribution에 APK 업로드 (IS_SHIPPING=false 필요)'),
                             booleanParam(name: 'RELEASE_NAS',      defaultValue: true,  description: 'NAS(\\\\\\\\bk_server\\\\bk\\\\thefirst_client_build\\\\dev|release)에 APK 업로드 (IS_SHIPPING=false 필요)'),
+                            string(name: 'LAST_VERSION_NAME', defaultValue: "${env.VERSION_NAME}", description: '[자동관리] 릴리즈노트 기준점이 되었던 마지막 버전. 직접 수정 금지'),
+                            string(name: 'BASELINE_COMMIT',   defaultValue: "${env.NEW_BASELINE_COMMIT}", description: '[자동관리] 릴리즈노트 기준 커밋 해시. 직접 수정 금지'),
                         ])
                     ])
                 }
@@ -112,7 +135,7 @@ pipeline {
                     bat """
                         gh release create ${tag} "${env.OUTPUT_APK}" ^
                           --title "${tag}" ^
-                          --notes "Build #%BUILD_NUMBER%" ^
+                          --notes-file "${env.WORKSPACE}/build/release_notes.txt" ^
                           --repo ${env.GH_REPO} ^
                           || gh release upload ${tag} "${env.OUTPUT_APK}" ^
                                --repo ${env.GH_REPO} ^
@@ -165,7 +188,7 @@ pipeline {
                     "${env.FIREBASE_CMD}" appdistribution:distribute "${env.OUTPUT_APK}" ^
                       --app ${env.FIREBASE_APP_ID} ^
                       --groups "fidforge,testers" ^
-                      --release-notes "v${env.VERSION_NAME} Build #%BUILD_NUMBER%"
+                      --release-notes-file "${env.WORKSPACE}/build/release_notes.txt"
                     """
                 }
             }

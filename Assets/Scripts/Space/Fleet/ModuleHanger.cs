@@ -32,9 +32,12 @@ public class AircraftInfo
         this.isReady = true;
     }
 
+    // 함재기 출격 시 초기 직진 거리 — 데이터 테이블 값이 아닌 고정값
+    private const float k_airLaunchDist = 1f;
+
     public void UpdateAircraftInfo(ModuleData moduleData)
     {
-        this.airLaunchDist       = moduleData.airLaunchDist;
+        this.airLaunchDist       = k_airLaunchDist;
         this.airHealth           = moduleData.airHealth;
         this.airAttack           = moduleData.airAttack;
         this.airAttackRange      = moduleData.airAttackRange;
@@ -85,7 +88,7 @@ public class ModuleHanger : ModuleBase
         SetAddShipModulePoint(moduleInfo.addShipModulePoint);
         SetInvestedMineral(moduleInfo.investedMineral);
 
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
         if (moduleData == null)
         {
             Debug.LogError("Failed to restore module data for ModuleHanger");
@@ -95,16 +98,13 @@ public class ModuleHanger : ModuleBase
         // 복원된 데이터로 스탯 설정
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
-        
+
 
         m_airCount = moduleData.airCount;
         //m_airCount = 1; // test
         m_launchCool = moduleData.attackCool;
         m_airMaintenanceTime = moduleData.airMaintenanceTime;
         //m_airMaintenanceTime = 1; // test
-
-        // 업그레이드 비용 설정
-        m_modulePointCostLevelup = moduleData.modulePointCost;
 
         m_lastLaunchTime = 0f;
 
@@ -241,35 +241,6 @@ public class ModuleHanger : ModuleBase
         m_aircraftPool.Add(aircraftInfo);
     }
 
-    // 모듈 교체 전 상태 캡처용 스냅샷 (호출 즉시 복사해서 사용할 것)
-    public List<AircraftInfo> GetAircraftPoolSnapshot()
-    {
-        return m_aircraftPool;
-    }
-
-    // 모듈 교체 시 이전 격납고의 함재기 상태 승계 — 출격 중이던 수량만큼 슬롯을 비워둬 복귀 시 초과 폐기 방지
-    public void InheritAircraftPool(List<AircraftInfo> previousPool, int previousOutstandingCount)
-    {
-        m_aircraftPool.Clear();
-
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
-        if (moduleData == null) return;
-
-        foreach (AircraftInfo aircraftInfo in previousPool)
-        {
-            if (m_aircraftPool.Count >= m_airCount) break;
-            aircraftInfo.UpdateAircraftInfo(moduleData);
-            m_aircraftPool.Add(aircraftInfo);
-        }
-
-        int reservedForOutstanding = Mathf.Min(previousOutstandingCount, m_airCount - m_aircraftPool.Count);
-        int remainingNewSlots = m_airCount - m_aircraftPool.Count - reservedForOutstanding;
-        for (int i = 0; i < remainingNewSlots; i++)
-        {
-            m_aircraftPool.Add(new AircraftInfo(moduleData));
-        }
-    }
-
     public int GetReadyAircraftCount()
     {
         int count = 0;
@@ -303,68 +274,6 @@ public class ModuleHanger : ModuleBase
         m_moduleInfo.moduleLevel = level;
     }
 
-    public override void ApplyModuleLevelUp(int newLevel)
-    {
-        // 레벨 설정
-        SetModuleLevel(newLevel);
-
-        // 새 레벨의 ModuleData 가져오기
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, newLevel);
-        if (moduleData == null) return;
-        
-        // 스탯 갱신
-        m_healthMax = moduleData.health;
-        m_health = Mathf.Min(m_health, m_healthMax);
-        
-        // 함재기 관련 스탯 (레벨업 전 용량 저장)
-        int oldCapacity = m_airCount; // 이전 레벨의 총 함재기 수
-
-        m_airCount = moduleData.airCount; // 새 레벨의 총 함재기 수
-        m_launchCool = moduleData.attackCool;
-        m_airMaintenanceTime = moduleData.airMaintenanceTime;
-
-        m_modulePointCostLevelup = moduleData.modulePointCost;
-
-        // 함재기 풀 재조정 (데이터상 총 함재기 수 비교)
-        int newCapacity = m_airCount;
-
-        int capacityDiff = newCapacity - oldCapacity;
-
-        if (capacityDiff > 0)
-        {
-            // 용량 증가: 새 함재기를 격납고에 추가
-            for (int i = 0; i < capacityDiff; i++)
-            {
-                AircraftInfo aircraftInfo = new AircraftInfo(moduleData);
-                m_aircraftPool.Add(aircraftInfo);
-            }
-        }
-        else if (capacityDiff < 0)
-        {
-            // 용량 감소: 격납고에서 함재기 제거 (정비 중인 것 우선)
-            int toRemove = -capacityDiff;
-            // 정비 중인 함재기부터 제거
-            for (int i = m_aircraftPool.Count - 1; i >= 0 && toRemove > 0; i--)
-            {
-                if (!m_aircraftPool[i].isReady)
-                {
-                    m_aircraftPool.RemoveAt(i);
-                    toRemove--;
-                }
-            }
-            // 아직 제거할 게 남았다면 준비된 함재기도 제거
-            for (int i = m_aircraftPool.Count - 1; i >= 0 && toRemove > 0; i--)
-            {
-                m_aircraftPool.RemoveAt(i);
-                toRemove--;
-            }
-        }
-
-        // 격납고에 있는 함재기들의 스펙 업데이트 (출격 중인 함재기는 복귀 시 자동 업데이트)
-        foreach (var aircraft in m_aircraftPool)
-            aircraft.UpdateAircraftInfo(moduleData);
-    }
-
     public override int GetModuleBodyIndex()
     {
         return m_moduleInfo.bodyIndex;
@@ -384,7 +293,7 @@ public class ModuleHanger : ModuleBase
         int shortageCount = m_airCount - m_aircraftPool.Count;
         if (shortageCount <= 0) return;
 
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
         if (moduleData == null) return;
 
         for (int i = 0; i < shortageCount; i++)
@@ -416,7 +325,7 @@ public class ModuleHanger : ModuleBase
         CapabilityProfile stats = new CapabilityProfile();
         stats.totalWeapons = 1;
         // 함재기 데이터로부터 계산
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
         // airAttack은 함재기 1기당 공격력이라, 이 격납고의 총 화력(1기당 공격력 × 함재기 수)으로 환산
         // — 함선에 격납고가 여러 개면 상위(ModuleBody)에서 단순 합산되므로 여기서 미리 곱해둬야 총 화력 합산이 맞음
         stats.airAttack = moduleData.airAttack * moduleData.airCount;

@@ -11,13 +11,18 @@ public class ShipStatAllocation
     public int turnRatePoints;
     public int repairPoints;
 
-    // Beam — 슬롯당 장착 서브타입(EModuleSubType 이름, 예: beam_t1_m1) + 강화 포인트. 빈 문자열 = 미장착. 장착 코스트는 shipStatFormula.beam.installCost
+    // Beam — 슬롯당 장착 서브타입(EModuleSubType 이름, 예: beam_t1_m1) + 속성별 강화 포인트(공격력/연사력/발사체속도). 빈 문자열 = 미장착. 장착 코스트는 shipStatFormula.beam.installCost
     public string[] beamModuleSubType = new string[0];
-    public int[] beamReinforcePoints = new int[0];
+    public int[] beamAttackPoints = new int[0];
+    public int[] beamFireRatePoints = new int[0];
+    public int[] beamProjectileSpeedPoints = new int[0];
 
-    // Missile — 빔과 동일 구조
+    // Missile — 빔과 동일 구조 + 적중 시 대상 무장 침묵 시간 강화(미사일 전용)
     public string[] missileModuleSubType = new string[0];
-    public int[] missileReinforcePoints = new int[0];
+    public int[] missileAttackPoints = new int[0];
+    public int[] missileFireRatePoints = new int[0];
+    public int[] missileProjectileSpeedPoints = new int[0];
+    public int[] missileSilencePoints = new int[0];
 
     // Hangar — 슬롯당 장착 서브타입 + 4개 서브스탯
     public string[] hangarModuleSubType = new string[0];
@@ -26,47 +31,66 @@ public class ShipStatAllocation
     public int[] hangarAmmoPoints = new int[0];
     public int[] hangarHealthPoints = new int[0];
 
-    // Interceptor — 슬롯당 장착 여부 + 2개 서브스탯
-    public bool[] interceptorSlotInstalled = new bool[0];
+    // Interceptor — 슬롯당 장착 서브타입(예: interceptor_t1_m1) + 2개 서브스탯. 빈 문자열 = 미장착. 장착 코스트는 DataTableModule의 해당 subType(level 1) cost_mp
+    public string[] interceptorModuleSubType = new string[0];
     public int[] interceptorDelayPoints = new int[0];
     public int[] interceptorRegenRatePoints = new int[0];
 
-    // Shield — 장착 여부(0/1), 코스트는 shipStatFormula.shield.installCost. 강화 서브스탯 3종은 1p=1선택
-    public bool shieldInstalled;
+    // Shield — 장착 서브타입(예: shield_t1_m1). 빈 문자열 = 미장착. 코스트는 DataTableModule의 해당 subType(level 1) cost_mp. 강화 서브스탯 3종은 1p=1선택
+    public string shieldModuleSubType = "";
     public int shieldGaugePoints;
     public int shieldDelayPoints;
     public int shieldRegenRatePoints; // 회복속도(초당 게이지 회복량)
 
-    public int GetTotalPointsUsed(ShipStatFormulaSettings formula)
+    // 슬롯 설치 코스트는 티어(subType)마다 다름 — DataTableModule.GetModuleDataFromTable(subType).statPoint 조회
+    // bodyPrefabName: 함체(prefabName) 자체의 설치 비용도 지휘력에 포함시키기 위한 body subType 이름(예: body_t1_m1). 생략 시 0으로 취급
+    public int GetTotalPointsUsed(DataTableModule moduleTable, string bodyPrefabName = "")
     {
         int total = healthPoints + turnRatePoints + repairPoints;
+        if (string.IsNullOrEmpty(bodyPrefabName) == false)
+            total += GetInstallCost(moduleTable, bodyPrefabName);
 
         for (int i = 0; i < beamModuleSubType.Length; i++)
         {
             if (string.IsNullOrEmpty(beamModuleSubType[i]) == false)
-                total += formula.beam.installCost + beamReinforcePoints[i];
+                total += GetInstallCost(moduleTable, beamModuleSubType[i]) + GetAt(beamAttackPoints, i) + GetAt(beamFireRatePoints, i) + GetAt(beamProjectileSpeedPoints, i);
         }
 
         for (int i = 0; i < missileModuleSubType.Length; i++)
         {
             if (string.IsNullOrEmpty(missileModuleSubType[i]) == false)
-                total += formula.missile.installCost + missileReinforcePoints[i];
+                total += GetInstallCost(moduleTable, missileModuleSubType[i]) + GetAt(missileAttackPoints, i) + GetAt(missileFireRatePoints, i) + GetAt(missileProjectileSpeedPoints, i) + GetAt(missileSilencePoints, i);
         }
 
         for (int i = 0; i < hangarModuleSubType.Length; i++)
         {
             if (string.IsNullOrEmpty(hangarModuleSubType[i]) == false)
-                total += formula.hangar.installCost + hangarShipAttackPoints[i] + hangarFighterAttackPoints[i] + hangarAmmoPoints[i] + hangarHealthPoints[i];
+                total += GetInstallCost(moduleTable, hangarModuleSubType[i]) + hangarShipAttackPoints[i] + hangarFighterAttackPoints[i] + hangarAmmoPoints[i] + hangarHealthPoints[i];
         }
 
-        for (int i = 0; i < interceptorSlotInstalled.Length; i++)
+        for (int i = 0; i < interceptorModuleSubType.Length; i++)
         {
-            if (interceptorSlotInstalled[i])
-                total += formula.interceptor.installCost + interceptorDelayPoints[i] + interceptorRegenRatePoints[i];
+            if (string.IsNullOrEmpty(interceptorModuleSubType[i]) == false)
+                total += GetInstallCost(moduleTable, interceptorModuleSubType[i]) + interceptorDelayPoints[i] + interceptorRegenRatePoints[i];
         }
 
-        total += shieldInstalled ? formula.shield.installCost + shieldGaugePoints + shieldDelayPoints + shieldRegenRatePoints : 0;
+        if (string.IsNullOrEmpty(shieldModuleSubType) == false)
+            total += GetInstallCost(moduleTable, shieldModuleSubType) + shieldGaugePoints + shieldDelayPoints + shieldRegenRatePoints;
 
         return total;
+    }
+
+    // 신규 추가 필드는 기존 프리셋 데이터에서 배열 크기가 subType 배열과 다를 수 있어 범위를 벗어나면 0으로 취급
+    private static int GetAt(int[] array, int index)
+    {
+        return index < array.Length ? array[index] : 0;
+    }
+
+    private static int GetInstallCost(DataTableModule moduleTable, string subTypeName)
+    {
+        if (moduleTable == null) return 0;
+        if (System.Enum.TryParse(subTypeName, out EModuleSubType subType) == false) return 0;
+        ModuleData data = moduleTable.GetModuleDataFromTable(subType);
+        return data != null ? data.statPoint : 0;
     }
 }

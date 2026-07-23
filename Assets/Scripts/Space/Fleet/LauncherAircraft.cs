@@ -43,9 +43,9 @@ public class LauncherAircraft : LauncherBase
         AircraftInfo aircraftInfo = m_moduleHanger.GetReadyAircraft();
         if (aircraftInfo == null) yield break;
 
-        // 출격 시 최신 격납고 스펙으로 세팅 (정비 중 레벨업 반영)
+        // 출격 시 최신 격납고 스펙으로 세팅
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(
-            m_moduleHanger.m_moduleInfo.moduleSubType, m_moduleHanger.m_moduleInfo.moduleLevel);
+            m_moduleHanger.m_moduleInfo.moduleSubType);
         if (moduleData != null)
             aircraftInfo.UpdateAircraftInfo(moduleData);
 

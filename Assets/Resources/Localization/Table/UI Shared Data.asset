@@ -339,8 +339,8 @@ MonoBehaviour:
     m_Key: UITabCommander_ShipCountUnit
     m_Metadata:
       m_Items: []
-  - m_Id: 51580715690491904
-    m_Key: UITabCommander_ModuleGradeTitle
+  - m_Id: 59873222333431808
+    m_Key: UITabCommander_CommandPower
     m_Metadata:
       m_Items: []
   - m_Id: 29007716294721538
@@ -373,6 +373,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 49731971877568512
     m_Key: UITabFleet_FleetSynergyMultiply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59903847635484672
+    m_Key: UITabFleetComposition_Front
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59903847673233408
+    m_Key: UITabFleetComposition_Rear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59903847673233409
+    m_Key: UITabFleetComposition_PlacedShipCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59907776112885760
+    m_Key: UITabFleetComposition_PlacedShipsTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59907776146440192
+    m_Key: UITabFleetComposition_StatsTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59907776146440193
+    m_Key: UITabFleetComposition_AvailablePresetsTitle
     m_Metadata:
       m_Items: []
   - m_Id: 35928926043635712
@@ -565,6 +589,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 37053841400528896
     m_Key: UITabExploration_RetreatConfirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59723571462537216
+    m_Key: UIPrepareBattle_Retreat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59723571500285952
+    m_Key: UIPrepareBattle_FleetSettings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59723571500285953
+    m_Key: UIPrepareBattle_StartBattle
     m_Metadata:
       m_Items: []
   - m_Id: 43649151207866368
@@ -881,6 +917,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 51571244805259264
     m_Key: UIPopupMessage_CommanderLevelupTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59435713895989248
+    m_Key: UIPopupMessage_ConfirmTryCell
     m_Metadata:
       m_Items: []
   - m_Id: 46939500441370624

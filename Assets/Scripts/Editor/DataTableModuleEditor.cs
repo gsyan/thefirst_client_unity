@@ -16,19 +16,24 @@ public class DataTableModuleEditor : Editor
     private Dictionary<EModuleSubType, bool> beamSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> missileSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> hangerSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<EModuleSubType, bool> shieldSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<EModuleSubType, bool> interceptorSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<ModuleData, bool> moduleSlotFoldouts = new Dictionary<ModuleData, bool>();
 
     private bool showBodyModules = false;
     private bool showBeamModules = false;
     private bool showMissileModules = false;
     private bool showHangerModules = false;
+    private bool showShieldModules = false;
+    private bool showInterceptorModules = false;
     private bool showUtilityTools = true;
 
     private readonly Color bodyColor = new Color(0.7f, 0.9f, 0.7f);
-    private readonly Color engineColor = new Color(0.7f, 0.7f, 0.9f);
     private readonly Color beamColor = new Color(0.9f, 0.7f, 0.7f);
     private readonly Color missileColor = new Color(0.9f, 0.7f, 0.7f);
     private readonly Color hangerColor = new Color(0.9f, 0.9f, 0.7f);
+    private readonly Color shieldColor = new Color(0.7f, 0.9f, 0.9f);
+    private readonly Color interceptorColor = new Color(0.9f, 0.7f, 0.9f);
 
     private void OnEnable()
     {
@@ -58,6 +63,8 @@ public class DataTableModuleEditor : Editor
         DrawBeamModuleSection();
         DrawMissileModuleSection();
         DrawHangerModuleSection();
+        DrawShieldModuleSection();
+        DrawInterceptorModuleSection();
 
         EditorGUILayout.EndScrollView();
 
@@ -74,7 +81,9 @@ public class DataTableModuleEditor : Editor
         GUILayout.Label("Data Table Module", EditorStyles.largeLabel);
         GUILayout.FlexibleSpace();
 
-        int totalModules = dataTableModule.BodyModules.Count + dataTableModule.BeamModules.Count + dataTableModule.MissileModules.Count + dataTableModule.HangerModules.Count;
+        int totalModules = dataTableModule.BodyModules.Count + dataTableModule.BeamModules.Count
+            + dataTableModule.MissileModules.Count + dataTableModule.HangerModules.Count
+            + dataTableModule.ShieldModules.Count + dataTableModule.InterceptorModules.Count;
         GUILayout.Label($"Total: {totalModules}", EditorStyles.miniLabel);
 
         EditorGUILayout.EndHorizontal();
@@ -94,69 +103,15 @@ public class DataTableModuleEditor : Editor
         {
             foreach (var group in dataTableModule.BodyGroups)
             {
-                DrawBodySubTypeGroup(group);
+                DrawSubTypeGroup(group, bodySubTypeFoldouts, DrawBodyModuleDetails);
             }
         }
 
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawBodySubTypeGroup(ModuleSubTypeGroup group)
+    private void DrawBodyModuleDetails(ModuleData module)
     {
-        if (!bodySubTypeFoldouts.ContainsKey(group.subType))
-            bodySubTypeFoldouts[group.subType] = false;
-
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-
-        bodySubTypeFoldouts[group.subType] = EditorGUILayout.Foldout(bodySubTypeFoldouts[group.subType], $"{group.subType} ({group.modules.Count})", true);
-
-        if (GUILayout.Button("Add", GUILayout.Width(50)))
-        {
-            var moduleData = new ModuleData
-            {
-                moduleName = $"{group.subType} LV.{group.modules.Count + 1}",
-                moduleSubType = group.subType,
-                moduleLevel = group.modules.Count + 1,
-                health = 200f,
-                repair = 1f,
-                description = $"{group.subType} LV.{group.modules.Count + 1}"
-            };
-            group.modules.Add(moduleData);
-            EditorUtility.SetDirty(dataTableModule);
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        if (bodySubTypeFoldouts[group.subType])
-        {
-            for (int i = 0; i < group.modules.Count; i++)
-            {
-                EditorGUILayout.BeginVertical("box");
-                DrawBodyModuleDetails(group.modules[i], group, i);
-                EditorGUILayout.EndVertical();
-            }
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawBodyModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
-    {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
-
-        if (GUILayout.Button("Remove", GUILayout.Width(70)))
-        {
-            group.modules.RemoveAt(index);
-            EditorUtility.SetDirty(dataTableModule);
-            return;
-        }
-        EditorGUILayout.EndHorizontal();
-
-        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
-
         // Module Slots (from prefab)
         int slotCount = module.moduleSlots != null ? module.moduleSlots.Length : 0;
         if (!moduleSlotFoldouts.ContainsKey(module))
@@ -177,13 +132,9 @@ public class DataTableModuleEditor : Editor
         module.health = EditorGUILayout.FloatField("Health", module.health);
         module.repair = EditorGUILayout.FloatField("Repair", module.repair);
         module.speed = EditorGUILayout.FloatField("Speed", module.speed);
-        
-        EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
-        EditorGUILayout.LabelField("Using Cost", EditorStyles.boldLabel);
-        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
+        module.turnRate = EditorGUILayout.FloatField("Turn Rate", module.turnRate);
 
-        module.description = EditorGUILayout.TextField("Description", module.description);
+        DrawCostFields(module);
     }
     #endregion
 
@@ -201,86 +152,23 @@ public class DataTableModuleEditor : Editor
         {
             foreach (var group in dataTableModule.BeamGroups)
             {
-                DrawBeamSubTypeGroup(group);
+                DrawSubTypeGroup(group, beamSubTypeFoldouts, DrawBeamModuleDetails);
             }
         }
 
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawBeamSubTypeGroup(ModuleSubTypeGroup group)
+    private void DrawBeamModuleDetails(ModuleData module)
     {
-        if (!beamSubTypeFoldouts.ContainsKey(group.subType))
-            beamSubTypeFoldouts[group.subType] = false;
-
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-
-        beamSubTypeFoldouts[group.subType] = EditorGUILayout.Foldout(beamSubTypeFoldouts[group.subType], $"{group.subType} ({group.modules.Count})", true);
-
-        if (GUILayout.Button("Add", GUILayout.Width(50)))
-        {
-            EModuleType moduleType = (EModuleType)group.subType.GetModuleType();
-            var module = new ModuleData
-            {
-                moduleName = $"{group.subType} LV{group.modules.Count + 1}",
-                moduleSubType = group.subType,
-                moduleLevel = group.modules.Count + 1,
-                health = 0f,
-                attack = 25f,
-                attackFireCount = 1,
-                attackCool = 2f,
-                description = $"{group.subType} LV{group.modules.Count + 1}"
-            };
-            group.modules.Add(module);
-            EditorUtility.SetDirty(dataTableModule);
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        if (beamSubTypeFoldouts[group.subType])
-        {
-            for (int i = 0; i < group.modules.Count; i++)
-            {
-                EditorGUILayout.BeginVertical("box");
-                DrawBeamModuleDetails(group.modules[i], group, i);
-                EditorGUILayout.EndVertical();
-            }
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawBeamModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
-    {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
-
-        if (GUILayout.Button("Remove", GUILayout.Width(70)))
-        {
-            group.modules.RemoveAt(index);
-            EditorUtility.SetDirty(dataTableModule);
-            return;
-        }
-        EditorGUILayout.EndHorizontal();
-
-        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
-
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.attack = EditorGUILayout.FloatField("Attack", module.attack);
-        module.attackFireCount = EditorGUILayout.IntField("Fire Count", module.attackFireCount);
         module.attackCool = EditorGUILayout.FloatField("Cool", module.attackCool);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
+        module.speed = EditorGUILayout.FloatField("Projectile Speed (speed 재사용)", module.speed);
 
-        EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
-        EditorGUILayout.LabelField("Using Cost", EditorStyles.boldLabel);
-        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
-
-        module.description = EditorGUILayout.TextField("Description", module.description);
+        DrawCostFields(module);
     }
     #endregion
 
@@ -298,86 +186,24 @@ public class DataTableModuleEditor : Editor
         {
             foreach (var group in dataTableModule.MissileGroups)
             {
-                DrawMissileSubTypeGroup(group);
+                DrawSubTypeGroup(group, missileSubTypeFoldouts, DrawMissileModuleDetails);
             }
         }
 
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawMissileSubTypeGroup(ModuleSubTypeGroup group)
+    private void DrawMissileModuleDetails(ModuleData module)
     {
-        if (!missileSubTypeFoldouts.ContainsKey(group.subType))
-            missileSubTypeFoldouts[group.subType] = false;
-
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-
-        missileSubTypeFoldouts[group.subType] = EditorGUILayout.Foldout(missileSubTypeFoldouts[group.subType], $"{group.subType} ({group.modules.Count})", true);
-
-        if (GUILayout.Button("Add", GUILayout.Width(50)))
-        {
-            var module = new ModuleData
-            {
-                moduleName = $"{group.subType} LV{group.modules.Count + 1}",
-                moduleSubType = group.subType,
-                moduleLevel = group.modules.Count + 1,
-                health = 00f,
-                attack = 25f,
-                attackFireCount = 1,
-                attackCool = 2f,
-                description = $"{group.subType} LV{group.modules.Count + 1}"
-            };
-            group.modules.Add(module);
-            EditorUtility.SetDirty(dataTableModule);
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        if (missileSubTypeFoldouts[group.subType])
-        {
-            for (int i = 0; i < group.modules.Count; i++)
-            {
-                EditorGUILayout.BeginVertical("box");
-                DrawMissileModuleDetails(group.modules[i], group, i);
-                EditorGUILayout.EndVertical();
-            }
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawMissileModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
-    {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
-
-        if (GUILayout.Button("Remove", GUILayout.Width(70)))
-        {
-            group.modules.RemoveAt(index);
-            EditorUtility.SetDirty(dataTableModule);
-            return;
-        }
-        EditorGUILayout.EndHorizontal();
-
-        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
-
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.attack = EditorGUILayout.FloatField("Attack", module.attack);
-        module.attackFireCount = EditorGUILayout.IntField("Fire Count", module.attackFireCount);
         module.attackCool = EditorGUILayout.FloatField("Attack Cool", module.attackCool);
 
         EditorGUILayout.LabelField("Projectile Stats", EditorStyles.boldLabel);
-        module.projectileSpeed = EditorGUILayout.FloatField("Projectile Speed", module.projectileSpeed);
+        module.speed = EditorGUILayout.FloatField("Projectile Speed (speed 재사용)", module.speed);
         module.silenceTime     = EditorGUILayout.FloatField("Silence Time", module.silenceTime);
 
-        EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
-        EditorGUILayout.LabelField("Using Cost", EditorStyles.boldLabel);
-        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
-
-        module.description = EditorGUILayout.TextField("Description", module.description);
+        DrawCostFields(module);
     }
     #endregion
 
@@ -395,87 +221,21 @@ public class DataTableModuleEditor : Editor
         {
             foreach (var group in dataTableModule.HangerGroups)
             {
-                DrawHangerSubTypeGroup(group);
+                DrawSubTypeGroup(group, hangerSubTypeFoldouts, DrawHangerModuleDetails);
             }
         }
 
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawHangerSubTypeGroup(ModuleSubTypeGroup group)
+    private void DrawHangerModuleDetails(ModuleData module)
     {
-        if (!hangerSubTypeFoldouts.ContainsKey(group.subType))
-            hangerSubTypeFoldouts[group.subType] = false;
-
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-
-        hangerSubTypeFoldouts[group.subType] = EditorGUILayout.Foldout(hangerSubTypeFoldouts[group.subType], $"{group.subType} ({group.modules.Count})", true);
-
-        if (GUILayout.Button("Add", GUILayout.Width(50)))
-        {
-            var module = new ModuleData
-            {
-                moduleName = $"{group.subType} LV{group.modules.Count + 1}",
-                moduleSubType = group.subType,
-                moduleLevel = group.modules.Count + 1,
-                health = 0f,
-                airCount = 5,
-                attackCool = 1f,
-                attackFireCount = 1,
-                airMaintenanceTime = 10f,
-                airLaunchDist = 100f,
-                airHealth = 50f,
-                airAttack = 10f,
-                airAttackRange = 100f,
-                airAttackCool = 10f,
-                airDetectRadius = 200f,
-                airAvoidRadius = 200f,
-                description = $"{group.subType} LV{group.modules.Count + 1}"
-            };
-            group.modules.Add(module);
-            EditorUtility.SetDirty(dataTableModule);
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        if (hangerSubTypeFoldouts[group.subType])
-        {
-            for (int i = 0; i < group.modules.Count; i++)
-            {
-                EditorGUILayout.BeginVertical("box");
-                DrawHangerModuleDetails(group.modules[i], group, i);
-                EditorGUILayout.EndVertical();
-            }
-        }
-
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawHangerModuleDetails(ModuleData module, ModuleSubTypeGroup group, int index)
-    {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField($"Level {module.moduleLevel}", EditorStyles.boldLabel, GUILayout.Width(80));
-
-        if (GUILayout.Button("Remove", GUILayout.Width(70)))
-        {
-            group.modules.RemoveAt(index);
-            EditorUtility.SetDirty(dataTableModule);
-            return;
-        }
-        EditorGUILayout.EndHorizontal();
-
-        module.moduleName = EditorGUILayout.TextField("Name", module.moduleName);
-        module.moduleLevel = EditorGUILayout.IntField("Level", module.moduleLevel);
-
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.airCount = EditorGUILayout.IntField("Aircraft Count", module.airCount);
         module.attackCool = EditorGUILayout.FloatField("Attack Cool", module.attackCool);
-        module.attackFireCount = EditorGUILayout.IntField("Attack Count", module.attackFireCount);
         module.airMaintenanceTime = EditorGUILayout.FloatField("Air Maintenance Time", module.airMaintenanceTime);
 
         EditorGUILayout.LabelField("Aircraft Stats", EditorStyles.boldLabel);
-        module.airLaunchDist = EditorGUILayout.FloatField("Aircraft Launch Dist", module.airLaunchDist);
         module.airHealth = EditorGUILayout.FloatField("Aircraft Health", module.airHealth);
         module.airAttack = EditorGUILayout.FloatField("Aircraft Attack Power", module.airAttack);
         module.airAttackRange = EditorGUILayout.FloatField("Aircraft Attack Range", module.airAttackRange);
@@ -486,14 +246,101 @@ public class DataTableModuleEditor : Editor
         module.airAvoidRadius      = EditorGUILayout.FloatField("Aircraft Avoid Radius",    module.airAvoidRadius);
         module.airAdditionalDelay  = EditorGUILayout.FloatField("Air Additional Delay",     module.airAdditionalDelay);
 
-        EditorGUILayout.LabelField("Upgrade Cost", EditorStyles.boldLabel);
-        module.modulePointCost = EditorGUILayout.IntField("ModulePoint", module.modulePointCost);
-        EditorGUILayout.LabelField("Using Cost", EditorStyles.boldLabel);
-        module.mineralCost = EditorGUILayout.IntField("Mineral", module.mineralCost);
-
-        module.description = EditorGUILayout.TextField("Description", module.description);
+        DrawCostFields(module);
     }
     #endregion
+
+    #region Shield Modules
+    private void DrawShieldModuleSection()
+    {
+        EditorGUILayout.BeginVertical("box");
+
+        var originalColor = GUI.backgroundColor;
+        GUI.backgroundColor = shieldColor;
+        showShieldModules = EditorGUILayout.Foldout(showShieldModules, $"Shield Modules ({dataTableModule.ShieldModules.Count})", true, EditorStyles.foldoutHeader);
+        GUI.backgroundColor = originalColor;
+
+        if (showShieldModules)
+        {
+            foreach (var group in dataTableModule.ShieldGroups)
+            {
+                DrawSubTypeGroup(group, shieldSubTypeFoldouts, DrawShieldModuleDetails);
+            }
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawShieldModuleDetails(ModuleData module)
+    {
+        EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
+        module.health           = EditorGUILayout.FloatField("Health", module.health);
+        module.shieldGauge       = EditorGUILayout.FloatField("Shield Gauge", module.shieldGauge);
+        module.shieldDelay       = EditorGUILayout.FloatField("Shield Delay", module.shieldDelay);
+        module.shieldRegenRate   = EditorGUILayout.FloatField("Shield Regen Rate", module.shieldRegenRate);
+
+        DrawCostFields(module);
+    }
+    #endregion
+
+    #region Interceptor Modules
+    private void DrawInterceptorModuleSection()
+    {
+        EditorGUILayout.BeginVertical("box");
+
+        var originalColor = GUI.backgroundColor;
+        GUI.backgroundColor = interceptorColor;
+        showInterceptorModules = EditorGUILayout.Foldout(showInterceptorModules, $"Interceptor Modules ({dataTableModule.InterceptorModules.Count})", true, EditorStyles.foldoutHeader);
+        GUI.backgroundColor = originalColor;
+
+        if (showInterceptorModules)
+        {
+            foreach (var group in dataTableModule.InterceptorGroups)
+            {
+                DrawSubTypeGroup(group, interceptorSubTypeFoldouts, DrawInterceptorModuleDetails);
+            }
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawInterceptorModuleDetails(ModuleData module)
+    {
+        EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
+        module.health               = EditorGUILayout.FloatField("Health", module.health);
+        module.interceptorCount     = EditorGUILayout.IntField("Interceptor Count", module.interceptorCount);
+        module.interceptorDelay     = EditorGUILayout.FloatField("Interceptor Delay", module.interceptorDelay);
+        module.interceptorRegenRate = EditorGUILayout.FloatField("Interceptor Regen Rate", module.interceptorRegenRate);
+
+        DrawCostFields(module);
+    }
+    #endregion
+
+    // 서브타입(티어)당 1개뿐인 모듈 항목을 공통으로 그림 — 레벨 축 삭제로 Add/Remove 없음
+    private void DrawSubTypeGroup(ModuleSubTypeGroup group, Dictionary<EModuleSubType, bool> foldouts, System.Action<ModuleData> drawDetails)
+    {
+        if (!foldouts.ContainsKey(group.subType))
+            foldouts[group.subType] = false;
+
+        EditorGUILayout.BeginVertical("box");
+        foldouts[group.subType] = EditorGUILayout.Foldout(foldouts[group.subType], $"{group.subType}", true);
+
+        if (foldouts[group.subType] && group.modules.Count > 0)
+        {
+            EditorGUILayout.BeginVertical("box");
+            drawDetails(group.modules[0]);
+            group.modules[0].description = EditorGUILayout.TextField("Description", group.modules[0].description);
+            EditorGUILayout.EndVertical();
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawCostFields(ModuleData module)
+    {
+        EditorGUILayout.LabelField("Install Cost", EditorStyles.boldLabel);
+        module.statPoint = EditorGUILayout.IntField("Stat Point", module.statPoint);
+    }
 
     #region Utility Tools
     private void DrawUtilityTools()
@@ -545,29 +392,33 @@ public class DataTableModuleEditor : Editor
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("sub_type,level,health,repair,speed,attack,splash_radius,attack_count,attack_cool,projectile_speed,silence_time,air_count,air_maintenance_time,air_launch_dist,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_additional_delay,cost_mp,cost_mineral,description");
+        sb.AppendLine("sub_type,stat_point,health,repair,speed,turn_rate,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_additional_delay,shield_gauge,shield_delay,shield_regen_rate,interceptor_count,interceptor_delay,interceptor_regen_rate,description");
 
         var allGroups = new List<ModuleSubTypeGroup>();
         allGroups.AddRange(dataTableModule.BodyGroups);
         allGroups.AddRange(dataTableModule.BeamGroups);
         allGroups.AddRange(dataTableModule.MissileGroups);
         allGroups.AddRange(dataTableModule.HangerGroups);
+        allGroups.AddRange(dataTableModule.ShieldGroups);
+        allGroups.AddRange(dataTableModule.InterceptorGroups);
 
         foreach (var group in allGroups)
         {
             foreach (var d in group.modules)
             {
                 sb.AppendLine(string.Format(ic,
-                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25}",
-                    (int)d.moduleSubType, d.moduleLevel,
-                    d.health, d.repair, d.speed,
-                    d.attack, d.splashRadius, d.attackFireCount, d.attackCool,
-                    d.projectileSpeed, d.silenceTime,
-                    d.airCount, d.airMaintenanceTime, d.airLaunchDist,
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27}",
+                    (int)d.moduleSubType,
+                    d.statPoint,
+                    d.health, d.repair, d.speed, d.turnRate,
+                    d.attack, d.splashRadius, d.attackCool,
+                    d.silenceTime,
+                    d.airCount, d.airMaintenanceTime,
                     d.airHealth, d.airAttack, d.airAttackRange,
                     d.airAttackCool, d.airSpeed, d.airAmmo,
                     d.airDetectRadius, d.airAvoidRadius, d.airAdditionalDelay,
-                    d.modulePointCost, d.mineralCost,
+                    d.shieldGauge, d.shieldDelay, d.shieldRegenRate,
+                    d.interceptorCount, d.interceptorDelay, d.interceptorRegenRate,
                     d.description));
             }
         }

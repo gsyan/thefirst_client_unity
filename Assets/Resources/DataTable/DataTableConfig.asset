@@ -31,14 +31,27 @@ MonoBehaviour:
     aircraftTacticDamageMultiplier: 2
     aircraftTacticAmmoMultiplier: 2
     shipStatFormula:
+      maxModuleSlots: 6
       beam:
         installCost: 200
         baseAttack: 20
-        reinforcePerPoint: 0.1
+        attackPerPoint: 0.1
+        baseAttackCool: 3
+        attackCoolReductionPerPoint: 0.02
+        attackCoolFloor: 0.5
+        baseProjectileSpeed: 50
+        projectileSpeedPerPoint: 1
       missile:
         installCost: 200
         baseAttack: 20
-        reinforcePerPoint: 0.1
+        attackPerPoint: 0.1
+        baseAttackCool: 3
+        attackCoolReductionPerPoint: 0.02
+        attackCoolFloor: 0.5
+        baseProjectileSpeed: 50
+        projectileSpeedPerPoint: 1
+        baseSilenceTime: 0
+        silenceTimePerPoint: 0.1
       hangar:
         installCost: 200
         baseShipAttack: 10
@@ -71,4 +84,22 @@ MonoBehaviour:
     \"missileTacticMineralPerSec\": 1,\r\n  \"missileTacticDamageMultiplier\": 2.0,\r\n 
     \"missileTacticExplosionMultiplier\": 2.0,\r\n  \"aircraftTacticMineralPerSec\":
     1,\r\n  \"aircraftTacticDamageMultiplier\": 2.0,\r\n  \"aircraftTacticAmmoMultiplier\":
-    2.0\r\n}"
+    2.0,\r\n  \"shipStatFormula\": {\r\n    \"maxModuleSlots\": 6,\r\n    \"beam\":
+    {\r\n      \"installCost\": 200,\r\n      \"baseAttack\": 20.0,\r\n      \"attackPerPoint\":
+    0.1,\r\n      \"baseAttackCool\": 3.0,\r\n      \"attackCoolReductionPerPoint\":
+    0.02,\r\n      \"attackCoolFloor\": 0.5,\r\n      \"baseProjectileSpeed\": 50.0,\r\n     
+    \"projectileSpeedPerPoint\": 1.0\r\n    },\r\n    \"missile\": {\r\n      \"installCost\":
+    200,\r\n      \"baseAttack\": 20.0,\r\n      \"attackPerPoint\": 0.1,\r\n     
+    \"baseAttackCool\": 3.0,\r\n      \"attackCoolReductionPerPoint\": 0.02,\r\n     
+    \"attackCoolFloor\": 0.5,\r\n      \"baseProjectileSpeed\": 50.0,\r\n      \"projectileSpeedPerPoint\":
+    1.0,\r\n      \"baseSilenceTime\": 0.0,\r\n      \"silenceTimePerPoint\": 0.1\r\n   
+    },\r\n    \"hangar\": {\r\n      \"installCost\": 200,\r\n      \"baseShipAttack\":
+    10.0,\r\n      \"baseFighterAttack\": 10.0,\r\n      \"baseAmmo\": 10.0,\r\n     
+    \"baseHealth\": 50.0,\r\n      \"reinforcePerPoint\": 0.1\r\n    },\r\n    \"shield\":
+    {\r\n      \"installCost\": 200,\r\n      \"baseGauge\": 100.0,\r\n      \"baseDelay\":
+    5.0,\r\n      \"baseRegenRate\": 5.0,\r\n      \"gaugePerPoint\": 0.5,\r\n     
+    \"delayReductionPerPoint\": 0.02,\r\n      \"regenRatePerPoint\": 0.1,\r\n     
+    \"delayFloor\": 1.0\r\n    },\r\n    \"interceptor\": {\r\n      \"installCost\":
+    100,\r\n      \"baseDelay\": 5.0,\r\n      \"baseRegenRate\": 5.0,\r\n      \"delayReductionPerPoint\":
+    0.02,\r\n      \"regenRatePerPoint\": 0.1,\r\n      \"delayFloor\": 1.0\r\n   
+    },\r\n    \"flatStats\": {\r\n      \"perPoint\": 0.1\r\n    }\r\n  }\r\n}"

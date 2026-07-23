@@ -19,6 +19,25 @@ public static class CommonUtility
     public static void DebugLog(string message) => Debug.Log($"[DEV] {message}");
 
 
+    #region Exploration Grid World Mapping begin -------------------------------------------------------------------
+    // 탐사 그리드 시드 — 존/커맨더별 고정 시드가 같으면 항상 같은 결과(그리드 UI를 실제로 연 적이 없어도 계산 가능)
+    // ObjectManager(로그인 시 초기 함대 배치)와 UITabExplorationGrid(그리드 UI) 양쪽에서 동일하게 사용
+    public static int ComputeExplorationZoneSeed(int zoneNumber, int explorationSeedBase)
+    {
+        return explorationSeedBase ^ (zoneNumber * 486187739);
+    }
+
+    // 화면 좌표(Screen Space Overlay 캔버스 rectTransform.position과 동일)에서 카메라로 광선을 쏴 Y=groundY 평면과의 교차점(3D 월드 좌표)을 구함 —
+    // 그리드 셀 버튼의 실제 화면 위치를 그대로 3D 좌표로 역산할 때 사용(카메라 줌/각도와 무관하게 항상 화면에 보이는 그대로의 위치)
+    public static Vector3 RaycastScreenPointToGroundPlane(Camera cam, Vector3 screenPoint, float groundY)
+    {
+        if (cam == null) return Vector3.zero;
+        Ray ray = cam.ScreenPointToRay(screenPoint);
+        Plane groundPlane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
+        return groundPlane.Raycast(ray, out float dist) ? ray.GetPoint(dist) : Vector3.zero;
+    }
+    #endregion Exploration Grid World Mapping end -------------------------------------------------------------------
+
     #region Fleet Utility begin -----------------------------------------------------------------------------------
     public static Vector3 CalculateFleetCenter(Vector3[] shipPositions)
     {
@@ -118,13 +137,13 @@ public static class CommonUtility
     {
         CapabilityProfile stats = new CapabilityProfile();
         if (moduleInfo == null) return stats;
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleInfo.moduleSubType, moduleInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleInfo.moduleSubType);
         if (moduleData == null) return stats;
 
         // 모듈 타입에 따라 능력치 설정
         if (moduleInfo.moduleType == EModuleType.beam || moduleInfo.moduleType == EModuleType.missile)
         {
-            stats.attack = moduleData.attack * moduleData.attackFireCount;// 공격력 × 발사 개수
+            stats.attack = moduleData.attack;
             stats.totalWeapons = 1;
         }
         else if (moduleInfo.moduleType == EModuleType.hanger)
@@ -143,7 +162,7 @@ public static class CommonUtility
         CapabilityProfile stats = new CapabilityProfile();
         if (bodyInfo == null) return stats;
 
-        ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodyInfo.moduleSubType, bodyInfo.moduleLevel);
+        ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodyInfo.moduleSubType);
         if (bodyData != null)
         {
             stats.health = bodyData.health;
@@ -253,41 +272,6 @@ public static class CommonUtility
         return defaultSubType;
     }
 
-    // 모듈 타입별 스탯 행을 (아이콘이름, 수치문자열) 쌍으로 반환 — Row UI 표시용
-    public static List<(string icon, string value)> GetModuleStatRows(EModuleType moduleType, EModuleSubType subType, int fromLevel, int toLevel)
-    {
-        bool showRange = fromLevel != toLevel;
-        ModuleData cur = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, fromLevel);
-        ModuleData nxt = showRange ? DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(subType, toLevel) : null;
-        if (cur == null) return null;
-        if (showRange && nxt == null) return null;
-
-        string V(float c, float n) => showRange ? $"{c:F0} <voffset=6>→</voffset> {n:F0}" : $"{c:F0}";
-        string Vi(int c, int n)    => showRange ? $"{c} <voffset=6>→</voffset> {n}"       : $"{c}";
-
-        var rows = new List<(string, string)>();
-
-        if (moduleType == EModuleType.body)
-        {
-            rows.Add(("techno-heart",    V(cur.health, nxt?.health ?? 0f)));
-            rows.Add(("auto-repair",     V(cur.repair, nxt?.repair ?? 0f)));
-            rows.Add(("rocket-thruster", V(cur.speed,  nxt?.speed  ?? 0f)));
-        }
-        else if (moduleType == EModuleType.beam || moduleType == EModuleType.missile)
-        {
-            rows.Add(("bubbling-beam", V(cur.attack, nxt?.attack ?? 0f)));
-        }
-        else if (moduleType == EModuleType.hanger)
-        {
-            rows.Add(("strafe",        V(cur.airAttack, nxt?.airAttack ?? 0f)));
-            rows.Add(("heart-wings",   V(cur.airHealth, nxt?.airHealth ?? 0f)));
-            rows.Add(("light-fighter", V(cur.airSpeed,  nxt?.airSpeed  ?? 0f)));
-            rows.Add(("jet-fighter",   Vi(cur.airCount, nxt?.airCount  ?? 0)));
-        }
-
-        return rows;
-    }
-    
     #endregion Module Type end -----------------------------------------------------------------------------------
 
 

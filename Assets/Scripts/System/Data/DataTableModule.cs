@@ -18,11 +18,9 @@ public class ModuleData
     public string moduleName = "Module";
     public EModuleSubType moduleSubType = EModuleSubType.none;
     // moduleType은 moduleSubType에서 유추: (EModuleType)moduleSubType.GetModuleType()
-    public int moduleLevel = 1;
 
     // common ---------------------------------------------------------------------------
-    public int modulePointCost;
-    public int mineralCost;     // 발동 1회당 소모 Mineral (수리/미사일/격납고)
+    public int statPoint; // 이 서브타입(티어)을 슬롯에 설치할 때 드는 성능포인트 비용 — 티어가 오를수록 가파르게 증가
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -37,15 +35,14 @@ public class ModuleData
     public float health = 0f;
     public float repair = 0f;
     public float speed = 0f;
+    public float turnRate = 0f; // 선회력 — 함선 프리셋 Flat Stats(Turn Rate Points)의 기본 수치로 사용됨
 
     // Weapon ---------------------------------------------------------------------------
+    // 발사체 이동속도는 speed 필드를 재사용(빔/미사일 행은 body 이동속도 개념이 없으므로 겸용)
     [Header("Weapon Stats")]
-    public int attackFireCount = 0;     // 발사당 빔, 미사일, 함재기 수
     public float attack = 0f;
     public float splashRadius = 0f;     // 0 = 단일 타겟, >0 = 범위 공격 반경
     public float attackCool = 0f;       // 발사 쿨다운 빔, 미사일, 함재기
-    [Header("Weapon Projectile Stats")]
-    public float projectileSpeed = 0f;
     public float silenceTime = 0f;      // 미사일 적중 시 무장 침묵 시간 (초)
 
     // Hanger ------------------------------------------------------------------------------------------------
@@ -53,7 +50,6 @@ public class ModuleData
     public int airCount = 5;                  // 총 함재기 수
     public float airMaintenanceTime = 10f;    // 돌아온 함재기 재출격 까지 정비 시간, 함재기당 재출격에 걸리는 시간
     [Header("Aircraft Stats")]
-    public float airLaunchDist = 100f;        // 함재기 출격시 직진 거리
     public float airHealth = 50f;             // 함재기 체력
     public float airAttack = 10f;             // 함재기 공격력
     public float airAttackRange = 100f;       // 함재기 공격 거리
@@ -63,6 +59,18 @@ public class ModuleData
     public float airDetectRadius = 200f;      // 함재기 적 함재기 감지거리
     public float airAvoidRadius = 200f;       // 함재기 적 회피 거리
     public float airAdditionalDelay = 0f;    // 함재기 피격 시 공격 딜레이 추가 (초)
+
+    // Shield ---------------------------------------------------------------------------
+    [Header("Shield Stats")]
+    public float shieldGauge = 0f;      // 기본 게이지
+    public float shieldDelay = 0f;      // 재가동 딜레이(초)
+    public float shieldRegenRate = 0f;  // 초당 게이지 회복량
+
+    // Interceptor ------------------------------------------------------------------------
+    [Header("Interceptor Stats")]
+    public int interceptorCount = 0;         // 요격체 재고 수
+    public float interceptorDelay = 0f;      // 소모 후 보충 딜레이(초)
+    public float interceptorRegenRate = 0f;  // 요격체 재고 회복 속도
 }
 
 [System.Serializable]
@@ -106,6 +114,12 @@ public class DataTableModule : ScriptableObject
     [Header("Hanger Modules by SubType")]
     [SerializeField] private List<ModuleSubTypeGroup> hangerGroups = new();
 
+    [Header("Shield Modules by SubType")]
+    [SerializeField] private List<ModuleSubTypeGroup> shieldGroups = new();
+
+    [Header("Interceptor Modules by SubType")]
+    [SerializeField] private List<ModuleSubTypeGroup> interceptorGroups = new();
+
     [Header("Export/Import")]
     [SerializeField, TextArea(5, 15)] private string exportedJson = "";
 
@@ -113,6 +127,8 @@ public class DataTableModule : ScriptableObject
     public List<ModuleSubTypeGroup> BeamGroups => beamGroups;
     public List<ModuleSubTypeGroup> MissileGroups => missileGroups;
     public List<ModuleSubTypeGroup> HangerGroups => hangerGroups;
+    public List<ModuleSubTypeGroup> ShieldGroups => shieldGroups;
+    public List<ModuleSubTypeGroup> InterceptorGroups => interceptorGroups;
 
     public ModuleDataList BodyModules
     {
@@ -162,6 +178,30 @@ public class DataTableModule : ScriptableObject
         }
     }
 
+    public ModuleDataList ShieldModules
+    {
+        get
+        {
+            var list = new ModuleDataList();
+            foreach (var group in shieldGroups)
+                foreach (var module in group.modules)
+                    list.Add(module);
+            return list;
+        }
+    }
+
+    public ModuleDataList InterceptorModules
+    {
+        get
+        {
+            var list = new ModuleDataList();
+            foreach (var group in interceptorGroups)
+                foreach (var module in group.modules)
+                    list.Add(module);
+            return list;
+        }
+    }
+
 
     #region Public Methods
 
@@ -169,22 +209,22 @@ public class DataTableModule : ScriptableObject
     {
         EModuleType moduleType = (EModuleType)data.moduleSubType.GetModuleType();
         ModuleSubTypeGroup group = null;
-        if (moduleType == EModuleType.body)
-            group = bodyGroups.Find(g => g.subType == data.moduleSubType);
-        else if (moduleType == EModuleType.beam)
-            group = beamGroups.Find(g => g.subType == data.moduleSubType);
-        else if (moduleType == EModuleType.missile)
-            group = missileGroups.Find(g => g.subType == data.moduleSubType);
-        else if (moduleType == EModuleType.hanger)
-            group = hangerGroups.Find(g => g.subType == data.moduleSubType);
+        if (moduleType == EModuleType.body)               group = bodyGroups.Find(g => g.subType == data.moduleSubType);
+        else if (moduleType == EModuleType.beam)          group = beamGroups.Find(g => g.subType == data.moduleSubType);
+        else if (moduleType == EModuleType.missile)       group = missileGroups.Find(g => g.subType == data.moduleSubType);
+        else if (moduleType == EModuleType.hanger)        group = hangerGroups.Find(g => g.subType == data.moduleSubType);
+        else if (moduleType == EModuleType.shield)        group = shieldGroups.Find(g => g.subType == data.moduleSubType);
+        else if (moduleType == EModuleType.interceptor)   group = interceptorGroups.Find(g => g.subType == data.moduleSubType);
 
         if (group == null)
         {
             group = new ModuleSubTypeGroup { subType = data.moduleSubType };
-            if (moduleType == EModuleType.body)          bodyGroups.Add(group);
-            else if (moduleType == EModuleType.beam)     beamGroups.Add(group);
-            else if (moduleType == EModuleType.missile)  missileGroups.Add(group);
-            else if (moduleType == EModuleType.hanger)   hangerGroups.Add(group);
+            if (moduleType == EModuleType.body)               bodyGroups.Add(group);
+            else if (moduleType == EModuleType.beam)          beamGroups.Add(group);
+            else if (moduleType == EModuleType.missile)       missileGroups.Add(group);
+            else if (moduleType == EModuleType.hanger)        hangerGroups.Add(group);
+            else if (moduleType == EModuleType.shield)        shieldGroups.Add(group);
+            else if (moduleType == EModuleType.interceptor)   interceptorGroups.Add(group);
         }
         group.modules.Add(data);
 #if UNITY_EDITOR
@@ -192,19 +232,12 @@ public class DataTableModule : ScriptableObject
 #endif
     }
 
-    public ModuleData GetModuleDataFromTable(EModuleSubType subType, int level)
+    // 서브타입(티어)당 데이터 1개 — 레벨 축은 삭제됨(강화는 추후 별도 정률 공식으로 처리 예정)
+    public ModuleData GetModuleDataFromTable(EModuleSubType subType)
     {
         ModuleSubTypeGroup group = FindGroup(subType);
-        if (group == null) return null;
-        return group.modules.Find(m => m.moduleLevel == level);
-    }
-
-    // 해당 subType의 최대 레벨 반환 (데이터가 없으면 0)
-    public int GetMaxLevel(EModuleSubType subType)
-    {
-        ModuleSubTypeGroup group = FindGroup(subType);
-        if (group == null) return 0;
-        return group.modules.Count;
+        if (group == null || group.modules.Count == 0) return null;
+        return group.modules[0];
     }
 
     private ModuleSubTypeGroup FindGroup(EModuleSubType subType)
@@ -214,6 +247,8 @@ public class DataTableModule : ScriptableObject
         if (moduleType == EModuleType.beam) return beamGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.missile) return missileGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.hanger) return hangerGroups.Find(g => g.subType == subType);
+        if (moduleType == EModuleType.shield) return shieldGroups.Find(g => g.subType == subType);
+        if (moduleType == EModuleType.interceptor) return interceptorGroups.Find(g => g.subType == subType);
         return null;
     }
 
@@ -231,6 +266,10 @@ public class DataTableModule : ScriptableObject
                 missileGroups.Add(new ModuleSubTypeGroup { subType = subType });
             else if (moduleType == EModuleType.hanger)
                 hangerGroups.Add(new ModuleSubTypeGroup { subType = subType });
+            else if (moduleType == EModuleType.shield)
+                shieldGroups.Add(new ModuleSubTypeGroup { subType = subType });
+            else if (moduleType == EModuleType.interceptor)
+                interceptorGroups.Add(new ModuleSubTypeGroup { subType = subType });
         }
 
 #if UNITY_EDITOR
@@ -250,7 +289,9 @@ public class DataTableModule : ScriptableObject
             { (int)EModuleType.body, BodyModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.beam, BeamModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.missile, MissileModules.modules.Cast<object>().ToList() },
-            { (int)EModuleType.hanger, HangerModules.modules.Cast<object>().ToList() }
+            { (int)EModuleType.hanger, HangerModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.shield, ShieldModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.interceptor, InterceptorModules.modules.Cast<object>().ToList() }
         };
 
         var exportData = new { modules = modulesDict };
@@ -283,6 +324,8 @@ public class DataTableModule : ScriptableObject
                 beamGroups.Clear();
                 missileGroups.Clear();
                 hangerGroups.Clear();
+                shieldGroups.Clear();
+                interceptorGroups.Clear();
                 InitializeSubTypeGroups();
 
                 int bodyKey = (int)EModuleType.body;
@@ -314,6 +357,22 @@ public class DataTableModule : ScriptableObject
                 {
                     var hangerList = modulesObj[hangerKey.ToString()].ToObject<List<ModuleData>>();
                     foreach (var module in hangerList)
+                        AddModuleDataToTable(module);
+                }
+
+                int shieldKey = (int)EModuleType.shield;
+                if (modulesObj[shieldKey.ToString()] != null)
+                {
+                    var shieldList = modulesObj[shieldKey.ToString()].ToObject<List<ModuleData>>();
+                    foreach (var module in shieldList)
+                        AddModuleDataToTable(module);
+                }
+
+                int interceptorKey = (int)EModuleType.interceptor;
+                if (modulesObj[interceptorKey.ToString()] != null)
+                {
+                    var interceptorList = modulesObj[interceptorKey.ToString()].ToObject<List<ModuleData>>();
+                    foreach (var module in interceptorList)
                         AddModuleDataToTable(module);
                 }
 
@@ -367,19 +426,22 @@ public class DataTableModule : ScriptableObject
         beamGroups.Clear();
         missileGroups.Clear();
         hangerGroups.Clear();
+        shieldGroups.Clear();
+        interceptorGroups.Clear();
         InitializeSubTypeGroups();
 
-        // 컬럼 순서 (datatable_module.csv 헤더 기준 고정 인덱스)
-        // 0:sub_type, 1:level, 2:health, 3:repair, 4:speed, 5:attack,
-        // 6:splash_radius, 7:attack_count, 8:attack_cool, 9:projectile_speed,
-        // 10:silence_time, 11:air_count, 12:air_maintenance_time, 13:air_launch_dist,
-        // 14:air_health, 15:air_attack, 16:air_attack_range, 17:air_attack_cool,
-        // 18:air_speed, 19:air_ammo, 20:air_detect_radius, 21:air_avoid_radius,
-        // 22:air_additional_delay, 23:cost_mp, 24:cost_mineral, 25:description
+        // 컬럼 순서 (datatable_module.csv 헤더 기준 고정 인덱스) — 레벨 축 삭제됨, 서브타입(티어)당 1행
+        // 0:sub_type, 1:stat_point, 2:health, 3:repair, 4:speed, 5:turn_rate,
+        // 6:attack, 7:splash_radius, 8:attack_cool, 9:silence_time,
+        // 10:air_count, 11:air_maintenance_time, 12:air_health, 13:air_attack,
+        // 14:air_attack_range, 15:air_attack_cool, 16:air_speed, 17:air_ammo,
+        // 18:air_detect_radius, 19:air_avoid_radius, 20:air_additional_delay,
+        // 21:shield_gauge, 22:shield_delay, 23:shield_regen_rate,
+        // 24:interceptor_count, 25:interceptor_delay, 26:interceptor_regen_rate, 27:description
+        // 발사체 이동속도(빔/미사일)는 별도 컬럼 없이 speed 컬럼을 재사용
         string[] lines = csvText.Split('\n');
         if (lines.Length < 2) return;
 
-        ModuleSlotInfo[] moduleSlotInfo = null;
         for (int i = 1; i < lines.Length; i++)
         {
             string line = lines[i].Trim();
@@ -389,53 +451,51 @@ public class DataTableModule : ScriptableObject
             if (cols.Length < 2) continue;
 
             if (!int.TryParse(cols[0].Trim(), out int subTypeInt)) continue;
-            if (!int.TryParse(cols[1].Trim(), out int level)) continue;
 
             EModuleSubType moduleSubType = (EModuleSubType)subTypeInt;
 
             var module = new ModuleData
             {
-                moduleName      = $"{moduleSubType} Lv.{level}",
+                moduleName      = $"{moduleSubType}",
                 moduleSubType   = moduleSubType,
-                moduleLevel     = level,
+                statPoint           = ParseCsvInt  (cols, 1),
                 health              = ParseCsvFloat(cols, 2),
                 repair              = ParseCsvFloat(cols, 3),
                 speed               = ParseCsvFloat(cols, 4),
-                attack              = ParseCsvFloat(cols, 5),
-                splashRadius        = ParseCsvFloat(cols, 6),
-                attackFireCount     = ParseCsvInt  (cols, 7),
+                turnRate            = ParseCsvFloat(cols, 5),
+                attack              = ParseCsvFloat(cols, 6),
+                splashRadius        = ParseCsvFloat(cols, 7),
                 attackCool          = ParseCsvFloat(cols, 8),
-                projectileSpeed     = ParseCsvFloat(cols, 9),
-                silenceTime         = ParseCsvFloat(cols, 10),
-                airCount            = ParseCsvInt  (cols, 11),
-                airMaintenanceTime  = ParseCsvFloat(cols, 12),
-                airLaunchDist       = ParseCsvFloat(cols, 13),
-                airHealth           = ParseCsvFloat(cols, 14),
-                airAttack           = ParseCsvFloat(cols, 15),
-                airAttackRange      = ParseCsvFloat(cols, 16),
-                airAttackCool       = ParseCsvFloat(cols, 17),
-                airSpeed            = ParseCsvFloat(cols, 18),
-                airAmmo             = ParseCsvInt  (cols, 19),
-                airDetectRadius     = ParseCsvFloat(cols, 20),
-                airAvoidRadius      = ParseCsvFloat(cols, 21),
-                airAdditionalDelay  = ParseCsvFloat(cols, 22),
-                modulePointCost     = ParseCsvInt  (cols, 23),
-                mineralCost         = ParseCsvInt  (cols, 24),
-                description         = cols.Length > 25 ? cols[25].Trim() : ""
+                silenceTime         = ParseCsvFloat(cols, 9),
+                airCount            = ParseCsvInt  (cols, 10),
+                airMaintenanceTime  = ParseCsvFloat(cols, 11),
+                airHealth           = ParseCsvFloat(cols, 12),
+                airAttack           = ParseCsvFloat(cols, 13),
+                airAttackRange      = ParseCsvFloat(cols, 14),
+                airAttackCool       = ParseCsvFloat(cols, 15),
+                airSpeed            = ParseCsvFloat(cols, 16),
+                airAmmo             = ParseCsvInt  (cols, 17),
+                airDetectRadius     = ParseCsvFloat(cols, 18),
+                airAvoidRadius      = ParseCsvFloat(cols, 19),
+                airAdditionalDelay  = ParseCsvFloat(cols, 20),
+                shieldGauge         = ParseCsvFloat(cols, 21),
+                shieldDelay         = ParseCsvFloat(cols, 22),
+                shieldRegenRate     = ParseCsvFloat(cols, 23),
+                interceptorCount        = ParseCsvInt  (cols, 24),
+                interceptorDelay        = ParseCsvFloat(cols, 25),
+                interceptorRegenRate    = ParseCsvFloat(cols, 26),
+                description         = cols.Length > 27 ? cols[27].Trim() : ""
             };
 
-            // body 모듈만 prefab에서 슬롯 정보 추출 (레벨1 프리팹 기준으로 모든 레벨 공통 적용)
-            if (moduleSubType.GetModuleType() == (int)EModuleType.body && module.moduleLevel == 1)
-            {
-                moduleSlotInfo = null;
-                moduleSlotInfo = ExtractModuleSlotsFromPrefab(moduleSubType);
-            }
-            module.moduleSlots = moduleSlotInfo;
+            // body 모듈만 prefab에서 슬롯 정보 추출
+            if (moduleSubType.GetModuleType() == (int)EModuleType.body)
+                module.moduleSlots = ExtractModuleSlotsFromPrefab(moduleSubType);
 
             AddModuleDataToTable(module);
         }
 
-        int total = BodyModules.Count + BeamModules.Count + MissileModules.Count + HangerModules.Count;
+        int total = BodyModules.Count + BeamModules.Count + MissileModules.Count + HangerModules.Count
+                  + ShieldModules.Count + InterceptorModules.Count;
         Debug.Log($"[DataTableModule] CSV Import 완료: {total}개 모듈");
         EditorUtility.SetDirty(this);
     }

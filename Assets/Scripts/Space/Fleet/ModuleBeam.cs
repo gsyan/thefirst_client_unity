@@ -9,7 +9,6 @@ public class ModuleBeam : ModuleBase
     public ModuleInfo m_moduleInfo;
 
     // 무기 전용 스탯
-    [SerializeField] private int m_attackFireCount;
     [SerializeField] private float m_attackCool;
 
     [SerializeField] private float m_lastAttackTime;
@@ -66,7 +65,7 @@ public class ModuleBeam : ModuleBase
         SetInvestedMineral(moduleInfo.investedMineral);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
         if (moduleData == null)
         {
             Debug.LogError("Failed to restore module data for ModuleBeam");
@@ -77,11 +76,7 @@ public class ModuleBeam : ModuleBase
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
         m_attack = attackOverride ?? moduleData.attack;
-        m_attackFireCount = moduleData.attackFireCount;
         m_attackCool = moduleData.attackCool;
-
-        // 업그레이드 비용 설정
-        m_modulePointCostLevelup = moduleData.modulePointCost;
 
         m_lastAttackTime = 0f;
 
@@ -110,12 +105,9 @@ public class ModuleBeam : ModuleBase
     {
         Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
         slotScale *= 0.1f;
-        for(int i=0; i< moduleData.attackFireCount; i++)
-        {
-            LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
-            launcher.InitializeLauncherBeam(moduleData, i, m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet), slotScale);
-            m_launchers.Add(launcher);
-        }
+        LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
+        launcher.InitializeLauncherBeam(moduleData, 0, m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet), slotScale);
+        m_launchers.Add(launcher);
     }
 
 
@@ -191,29 +183,11 @@ public class ModuleBeam : ModuleBase
 
         CapabilityProfile stats = new CapabilityProfile();
         stats.totalWeapons = 1;
-        stats.attack = m_attack * m_attackFireCount;// 공격력 × 발사 개수
+        stats.attack = m_attack;
         return stats;
     }
 
     
-
-    public override void ApplyModuleLevelUp(int newLevel)
-    {
-        // 레벨 설정
-        SetModuleLevel(newLevel);
-
-        // 새 레벨의 ModuleData 가져오기
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, newLevel);
-        if (moduleData == null) return;
-        
-        // 스탯 갱신
-        m_healthMax = moduleData.health;
-        m_health = Mathf.Min(m_health, m_healthMax);
-        m_attack = moduleData.attack;
-        m_attackCool = moduleData.attackCool;
-        m_attackFireCount = moduleData.attackFireCount;
-        m_modulePointCostLevelup = moduleData.modulePointCost;
-    }
 
     public override int GetModuleBodyIndex()
     {
@@ -237,7 +211,6 @@ public class ModuleBeam : ModuleBase
     }
     
     // 무기 스탯 Getter들
-    public int GetAttackFireCount() { return m_attackFireCount; }
     public float GetAttackCoolTime() { return m_attackCool; }
 
 

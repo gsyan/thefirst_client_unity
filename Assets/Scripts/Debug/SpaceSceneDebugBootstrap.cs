@@ -48,9 +48,9 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
 
         var fleet = new TempFleetInfo
         {
-            ships = new List<ExplorationShipSlot>
+            ships = new List<TempShipInfo>
             {
-                new ExplorationShipSlot { shipPresetId = "beam_light_01", isFront = true },
+                new TempShipInfo { shipPresetId = "beam_light_01", isFront = true },
             },
         };
 

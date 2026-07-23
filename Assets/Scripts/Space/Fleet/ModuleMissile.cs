@@ -9,7 +9,6 @@ public class ModuleMissile : ModuleBase
     public ModuleInfo m_moduleInfo;
 
     // 무기 전용 스탯
-    [SerializeField] private int m_attackFireCount;
     [SerializeField] private float m_attackCoolTime;
 
     [SerializeField] private float m_lastAttackTime;
@@ -71,7 +70,7 @@ public class ModuleMissile : ModuleBase
         SetInvestedMineral(moduleInfo.investedMineral);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, m_moduleInfo.moduleLevel);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
         if (moduleData == null)
         {
             Debug.LogError("Failed to restore module data for ModuleMissile");
@@ -82,11 +81,7 @@ public class ModuleMissile : ModuleBase
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
         m_attack = attackOverride ?? moduleData.attack;
-        m_attackFireCount = moduleData.attackFireCount;
         m_attackCoolTime = moduleData.attackCool;
-
-        // 업그레이드 비용 설정
-        m_modulePointCostLevelup = moduleData.modulePointCost;
 
         m_lastAttackTime = 0f;
 
@@ -116,23 +111,15 @@ public class ModuleMissile : ModuleBase
         EPoolName poolName = GetMissilePoolName(m_moduleInfo.moduleSubType);
         float ejectSpeed = m_moduleSlot != null ? m_moduleSlot.m_missileEjectSpeed * m_moduleSlot.transform.lossyScale.x : 1f;
         Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
-        for (int i = 0; i < moduleData.attackFireCount; i++)
-        {
-            LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
-            launcher.InitializeLauncherMissile(moduleData, i, poolName, ejectSpeed, slotScale);
-            m_launchers.Add(launcher);
-        }
+        LauncherMissile launcher = gameObject.AddComponent<LauncherMissile>();
+        launcher.InitializeLauncherMissile(moduleData, 0, poolName, ejectSpeed, slotScale);
+        m_launchers.Add(launcher);
     }
 
-    // 서브타입별 미사일 프리팹 풀 결정
+    // 서브타입별 미사일 프리팹 풀 결정 — 현재는 외형 타입이 t1 하나뿐이라 고정값
     private static EPoolName GetMissilePoolName(EModuleSubType subType)
     {
-        switch (subType)
-        {
-            case EModuleSubType.missile_t1_m1:  return EPoolName.PROJECTILE_MISSILE_MEDIUM;
-            case EModuleSubType.missile_t2_m1:  return EPoolName.PROJECTILE_MISSILE_MEDIUM;
-            default:                                  return EPoolName.PROJECTILE_MISSILE_MEDIUM;
-        }
+        return EPoolName.PROJECTILE_MISSILE_MEDIUM;
     }
 
 
@@ -233,33 +220,11 @@ public class ModuleMissile : ModuleBase
 
         CapabilityProfile stats = new CapabilityProfile();
         stats.totalWeapons = 1;
-        stats.attack = m_attack * m_attackFireCount; // 공격력 × 발사 개수
+        stats.attack = m_attack;
         return stats;
     }
 
     
-
-    public override void ApplyModuleLevelUp(int newLevel)
-    {
-        // 레벨 설정
-        SetModuleLevel(newLevel);
-
-        // 새 레벨의 ModuleData 가져오기
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType, newLevel);
-        if (moduleData == null)
-        {
-            Debug.LogError($"Failed to restore module data for level {newLevel}");
-            return;
-        }
-
-        // 스탯 갱신
-        m_healthMax = moduleData.health;
-        m_health = Mathf.Min(m_health, m_healthMax);
-        m_attack = moduleData.attack;
-        m_attackCoolTime = moduleData.attackCool;
-        m_attackFireCount = moduleData.attackFireCount;
-        m_modulePointCostLevelup = moduleData.modulePointCost;
-    }
 
     public override int GetModuleBodyIndex()
     {
@@ -283,7 +248,6 @@ public class ModuleMissile : ModuleBase
     }
     
     // 무기 스탯 Getter들
-    public int GetAttackFireCount() { return m_attackFireCount; }
     public float GetAttackCoolTime() { return m_attackCoolTime; }
 
     // 파괴 시 정리

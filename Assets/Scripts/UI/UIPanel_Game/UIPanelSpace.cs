@@ -1,4 +1,4 @@
-// 우주 공간 UI 패널 — 탭 시스템 초기화, UITabShip/UITabStation 탭 시 카메라 viewport 애니메이션, 모듈 선택 자동 전환
+// 우주 공간 UI 패널 — 탭 시스템 초기화, UITabFleetComposition 탭 시 카메라 viewport 애니메이션, 모듈 선택 자동 전환
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,10 +8,10 @@ public class UIPanelSpace : UIPanelBase
     [Header("Tab System")]
     public TabSystem m_tabSystem;
 
-    [Header("Layout Animation (UITabShip / UITabStation)")]
+    [Header("Layout Animation (UITabFleetComposition)")]
     public float m_animDuration = 0.3f;
 
-    // UITabShip / UITabStation 탭 인덱스 및 RectTransform (카메라 뷰포트용)
+    // UITabFleetComposition 탭 인덱스 및 RectTransform (카메라 뷰포트용) — 예전 UITabShip 전용이던 걸 재사용
     private int m_moduleTabIndex = -1;
     private RectTransform m_shipTabRect;
     private bool m_isUIOpen = false;
@@ -38,12 +38,10 @@ public class UIPanelSpace : UIPanelBase
         {
             var tabData = m_tabSystem.tabs[i];
             if (tabData.tabPanel == null) continue;
-#if false // UITabShip 주석처리로 임시 비활성화 — m_moduleTabIndex가 -1로 남아 카메라 축소 로직은 자연히 no-op됨
-            if (tabData.tabPanel.TryGetComponent<UITabShip>(out _) == false) continue;
+            if (tabData.tabPanel.TryGetComponent<UITabFleetComposition>(out _) == false) continue;
             m_moduleTabIndex = i;
             m_shipTabRect = tabData.tabPanel.GetComponent<RectTransform>();
             tabData.deferReveal = true; // 카메라 viewport 애니메이션이 끝난 뒤에 보이도록 — Co_AnimateViewport에서 RevealDeferredPanel 호출
-#endif
         }
 
         EventManager.Subscribe_TabSelectionChanged(OnTabSelectionChanged);
@@ -54,7 +52,7 @@ public class UIPanelSpace : UIPanelBase
         SetViewport(open:false);
     }
 
-    // TabShip 좌측 경계의 실제 스크린 좌표 기준으로 카메라 viewport 비율 계산
+    // m_shipTabRect(현재 UITabFleetComposition 패널) 좌측 경계의 실제 스크린 좌표 기준으로 카메라 viewport 비율 계산
     // Screen Space - Overlay 캔버스는 world 좌표가 곧 스크린 픽셀 좌표와 1:1이라
     // CanvasScaler 스케일팩터/레퍼런스 해상도와 무관하게 항상 정확한 비율이 나옴
     private float ComputeOpenCameraWidth()
@@ -112,7 +110,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
-        CheckAndClaimPendingStageRewards();
+        // CheckAndClaimPendingStageRewards(); // 서버 claimPendingStageRewards 주석처리(구 ZoneStageConfig 제거)로 임시 비활성화
         // CheckAndClaimPvpSeasonReward(); // PvP 주석처리로 임시 비활성화
         m_tabSystem.ForceActivateTab();
     }
@@ -160,6 +158,8 @@ public class UIPanelSpace : UIPanelBase
     }
     */
 
+    // 서버 claimPendingStageRewards 주석처리(구 ZoneStageConfig 제거)로 임시 비활성화
+    /*
     private void CheckAndClaimPendingStageRewards()
     {
         NetworkManager.Instance.ClaimPendingStageRewards(response =>
@@ -219,6 +219,7 @@ public class UIPanelSpace : UIPanelBase
             }
         });
     }
+    */
 
     // ── VIP 일일 미네랄 팝업 ──────────────────────────────────────────────────
     // 최초 진입 시점 체크는 ObjectManager.StartNormalPlay()에서 담당 — 튜토리얼 진행 중에는 호출되지 않도록 보장
@@ -273,12 +274,11 @@ public class UIPanelSpace : UIPanelBase
         if (open == true)
         {
             m_tabSystem.RevealDeferredPanel(m_moduleTabIndex);
-#if false // UITabShip 주석처리로 임시 비활성화
-            // deferReveal로 인해 비활성 상태에서 세팅됐던 스탯 UI 레이아웃을, 패널이 실제로 보이는 이 시점에 재빌드
-            UITabShip tabShip = m_shipTabRect.GetComponent<UITabShip>();
-            if (tabShip != null)
-                tabShip.RebuildStatLayout();
-#endif
+
+            // deferReveal로 인해 비활성 상태에서 세팅됐던 3열 데이터/레이아웃을, 패널이 실제로 보이는 이 시점에 재계산
+            UITabFleetComposition tabFleetComposition = m_shipTabRect.GetComponent<UITabFleetComposition>();
+            if (tabFleetComposition != null)
+                tabFleetComposition.RefreshFleetComposition();
         }
         m_viewportCoroutine = null;
     }
@@ -302,7 +302,7 @@ public class UIPanelSpace : UIPanelBase
     //     }
     // }
 
-    // 모듈이 선택될 때만 UITabShip 로 자동 전환 (함선 클릭만으로는 전환 안 함)
+    // 모듈이 선택될 때만 UITabFleetComposition 으로 자동 전환 (함선 클릭만으로는 전환 안 함 — 모듈까지 맞아야 전환됨, 함선 터치만으로도 열려야 하면 후속 조정 필요)
     // 튜토리얼 진행 중에는 자동 전환 안 함 — 튜토리얼 스텝이 preActionTabName 등으로 탭 전환을 직접 제어함
     private void OnModuleSelectedAutoTabSwitch(SpaceShip ship, ModuleBase module)
     {

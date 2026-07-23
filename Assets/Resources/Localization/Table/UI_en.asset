@@ -880,10 +880,6 @@ MonoBehaviour:
     m_Localized: ships
     m_Metadata:
       m_Items: []
-  - m_Id: 51580715690491904
-    m_Localized: Module Grade
-    m_Metadata:
-      m_Items: []
   - m_Id: 52355318322954240
     m_Localized: Code redeemed successfully
     m_Metadata:
@@ -1015,6 +1011,50 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 59175371223728129
     m_Localized: Carrier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59435713895989248
+    m_Localized: Are you sure you want to move to this cell?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59723571462537216
+    m_Localized: Retreat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59723571500285952
+    m_Localized: Fleet Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59723571500285953
+    m_Localized: Start Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59873222333431808
+    m_Localized: Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59903847635484672
+    m_Localized: Front
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59903847673233408
+    m_Localized: Rear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59903847673233409
+    m_Localized: Placed Ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59907776112885760
+    m_Localized: Fleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59907776146440192
+    m_Localized: Stats
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59907776146440193
+    m_Localized: Available Ships
     m_Metadata:
       m_Items: []
   references:

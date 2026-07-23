@@ -10,14 +10,13 @@ public static class ExplorationGridGenerator
     private const float k_emptyCellProbability = 0.05f;
     private const float k_blockedCellProbability = 0.15f;
 
-    public static ExplorationGridData Generate(int zoneNumber, int seed, DataTableZoneGridSize gridSizeTable)
+    public static ExplorationGridData Generate(int seed, int gridWidth, int gridHeight)
     {
-        GridDimensions dimensions = gridSizeTable.GetGridDimensions(zoneNumber);
-        ExplorationGridData gridData = new ExplorationGridData(dimensions.width, dimensions.height);
+        ExplorationGridData gridData = new ExplorationGridData(gridWidth, gridHeight);
 
         System.Random random = new System.Random(seed);
 
-        int minDistance = (int)((dimensions.width + dimensions.height) * 0.5f * k_minStartEscapeDistanceRatio);
+        int minDistance = (int)((gridWidth + gridHeight) * 0.5f * k_minStartEscapeDistanceRatio);
         PlaceStartAndEscape(gridData, random, minDistance);
         PlaceEmptyCells(gridData, random);
         PlaceBlockedCells(gridData, random);

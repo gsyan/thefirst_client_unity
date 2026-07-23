@@ -1,5 +1,5 @@
 // 게임 전역 설정 ScriptableObject — 함선 추가 비용(addShipCost), PvP 설정, 모듈 해금 비용 관리
-// 커맨더 레벨별 최대 함선 수(ship_count)는 DataTableCommanderLevel.GetShipCount()에서 조회
+// 커맨더 레벨별 최대 함선 수(ship_count)는 DataTableCommander.GetShipCount()에서 조회
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -75,8 +75,16 @@ public class BeamFormula
 {
     public int installCost = 200;
     public float baseAttack = 20f;
-    [Tooltip("강화 1포인트당 공격력 가산")]
-    public float reinforcePerPoint = 0.1f;
+    [Tooltip("공격력 강화 1포인트당 가산")]
+    public float attackPerPoint = 0.1f;
+    [Tooltip("연사력(쿨다운) 기본값 — 낮을수록 빠른 연사")]
+    public float baseAttackCool = 3f;
+    [Tooltip("연사력 강화 1포인트당 쿨다운 감소량")]
+    public float attackCoolReductionPerPoint = 0.02f;
+    public float attackCoolFloor = 0.5f;
+    public float baseProjectileSpeed = 50f;
+    [Tooltip("발사체 속도 강화 1포인트당 가산")]
+    public float projectileSpeedPerPoint = 1f;
 }
 
 [System.Serializable]
@@ -84,8 +92,20 @@ public class MissileFormula
 {
     public int installCost = 200;
     public float baseAttack = 20f;
-    [Tooltip("강화 1포인트당 공격력 가산")]
-    public float reinforcePerPoint = 0.1f;
+    [Tooltip("공격력 강화 1포인트당 가산")]
+    public float attackPerPoint = 0.1f;
+    [Tooltip("연사력(쿨다운) 기본값 — 낮을수록 빠른 연사")]
+    public float baseAttackCool = 3f;
+    [Tooltip("연사력 강화 1포인트당 쿨다운 감소량")]
+    public float attackCoolReductionPerPoint = 0.02f;
+    public float attackCoolFloor = 0.5f;
+    public float baseProjectileSpeed = 50f;
+    [Tooltip("발사체 속도 강화 1포인트당 가산")]
+    public float projectileSpeedPerPoint = 1f;
+    [Tooltip("적중 시 대상 무장 침묵 시간 기본값(초)")]
+    public float baseSilenceTime = 0f;
+    [Tooltip("침묵 강화 1포인트당 침묵 시간 가산(초)")]
+    public float silenceTimePerPoint = 0.1f;
 }
 
 [System.Serializable]

@@ -251,10 +251,31 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         StartNormalPlay();
 
         // 튜토리얼(SetMyFleetPosition 호출부)이 비활성화된 상태라 함대 초기 위치가 원점(0,0,0)으로 남는 문제 방지 —
-        // 함대 스폰(StartNormalPlay) 직후 초기 존의 첫 스테이지 위치로 명시적으로 배치
-        ZoneStageConfig initialStage = DataManager.Instance.m_dataTableZone.GetZoneFirstStage(GetInitialZoneIndex());
-        if (initialStage != null)
-            SetMyFleetPosition(DataManager.Instance.m_dataTableZone.ResolveFleetWorldPosition(initialStage), initialStage.fleetRotationY);
+        // 함대 스폰(StartNormalPlay) 직후 초기 존의 탐사 그리드 시작 셀 위치로 명시적으로 배치.
+        // 구식 스테이지 좌표(GetZoneFirstStage/ResolveFleetWorldPosition, 수천~만 단위 오프셋)는 신규 탐사 그리드가 쓰는
+        // 좌표 공간(ZoneConfig.galaxyCameraTarget 기준)과 전혀 달라 그리드로 진입 시 함대가 엉뚱한 곳에서 튀어옴 —
+        // 그리드 UI를 연 적이 없어도 동일한 계산식으로 시작 셀 좌표를 미리 구해서 배치
+        PlaceMyFleetAtInitialGridStartCell();
+    }
+
+    // 탐사 그리드를 연 적이 없어도, UITabExplorationGrid가 실제로 계산할 것과 동일한 시작 셀 월드좌표를 미리 구해서 배치
+    private void PlaceMyFleetAtInitialGridStartCell()
+    {
+        int zoneNumber = GetInitialZoneIndex();
+        ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
+        if (zoneConfig == null) return;
+
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        int seedBase = commanderInfo != null ? commanderInfo.explorationSeedBase : 0;
+        int seed = CommonUtility.ComputeExplorationZoneSeed(zoneNumber, seedBase);
+
+        ExplorationGridData gridData = ExplorationGridGenerator.Generate(seed, zoneConfig.gridWidth, zoneConfig.gridHeight);
+
+        UITabExplorationGrid gridTab = FindFirstObjectByType<UITabExplorationGrid>(FindObjectsInactive.Include);
+        if (gridTab == null) return;
+
+        Vector3 startPos = gridTab.ComputeCellWorldPositionWithoutOpening(zoneNumber, gridData.startX, gridData.startY, gridData.width, gridData.height);
+        SetMyFleetPosition(startPos, 0f);
     }
 
     protected override void OnDestroy()
@@ -304,11 +325,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         // TutorialCinematicController 주석처리로 임시 비활성화 — 프리셋 기반으로 재작성 전까지 시네마틱 함대 스폰 안 함
         m_isSiegfriedFleetActive = true;
-
-        // 원점(0,0,0)이 아니라 실제 스테이지 1-10 위치에서 시작 — 배경/천체가 있는 위치로 배치
-        ZoneStageConfig siegfriedStage = DataManager.Instance.m_dataTableZone.GetZoneStageByName("1-10");
-        if (siegfriedStage != null)
-            SetMyFleetPosition(DataManager.Instance.m_dataTableZone.ResolveFleetWorldPosition(siegfriedStage), siegfriedStage.fleetRotationY);
 
         GrantTutorialModulePoint();
         GrantTutorialCommanderLevel();
@@ -396,13 +412,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     // Zone 적 함대 웨이브 — term 기준 순차 스폰, 전멸 시 다음 웨이브 즉시 스폰
     // 함선 시스템 대격변으로 구존-스테이지 로직 전체 주석처리 — 삭제 아님, UITabExploration.cs와 함께 비활성화
+    // ZoneStageConfig 자체가 제거되어 필드 선언도 함께 주석 처리 — 복원 시 함께 되살릴 것
+    /*
     private List<StageEnemyFleetSpawnConfig> m_pendingWaves;
     private bool[] m_waveSpawned;
     private Coroutine[] m_waveTimerCoroutines;
     private float m_wavesBattleStartTime;
     private ZoneStageConfig m_currentWaveStage;
 
-    /*
     public void StartZoneEnemyWaves(List<StageEnemyFleetSpawnConfig> waves, ZoneStageConfig zoneStage)
     {
         m_pendingWaves             = waves;
@@ -513,7 +530,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
     */
 
-    private void TryStartCombat(SpaceFleet enemyFleet, EUnitState battleState, float playerDelay = 0f, float enemyDelay = 0f)
+    public void TryStartCombat(SpaceFleet enemyFleet, EUnitState battleState, float playerDelay = 0f, float enemyDelay = 0f)
     {
         m_isBattleEnding = false;
         SpaceFleet myFleet = GetMyFleet();
@@ -548,22 +565,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             ForceEndBattle(true);
     }
 
+    // 함선 시스템 대격변으로 구존-스테이지 웨이브 필드(m_pendingWaves 등)가 주석 처리되어 현재는 no-op — 복원 시 함께 되살릴 것
     public void StopEnemySpawning()
     {
-        if (m_waveTimerCoroutines != null)
-        {
-            for (int i = 0; i < m_waveTimerCoroutines.Length; i++)
-            {
-                if (m_waveTimerCoroutines[i] != null)
-                {
-                    StopCoroutine(m_waveTimerCoroutines[i]);
-                    m_waveTimerCoroutines[i] = null;
-                }
-            }
-        }
-        m_pendingWaves   = null;
-        m_waveSpawned    = null;
-        m_currentWaveStage = null;
     }
 
     // 모든 적 함대 제거
@@ -630,7 +634,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         SpaceFleet siegfriedFleet = GetMyFleet();
         int nextShipCount = siegfriedFleet != null ? siegfriedFleet.m_ships.Count + 1 : 1;
-        int shipCountRequiredLevel = DataManager.Instance.m_dataTableCommanderLevel.GetRequiredCommanderLevel(nextShipCount);
+        int shipCountRequiredLevel = DataManager.Instance.m_dataTableCommander.GetRequiredCommanderLevel(nextShipCount);
         int requiredLevel = shipCountRequiredLevel; // TutorialCinematicController 주석처리로 지크프리트 서브타입 티어 요구치는 임시 제외
 
         m_realCommanderLevelBackup = commander.GetCommanderLevel();
@@ -668,23 +672,25 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 서버에서 받은 함대 정보가 없으면 스폰하지 않음
         if (DataManager.Instance.m_currentFleetInfo == null) return;
 
-        SpawnFleetFromPreset(DataManager.Instance.m_currentFleetInfo, warpIn);
+        SpawnMyFleetFromPreset(DataManager.Instance.m_currentFleetInfo, warpIn);
     }
 
-    // warpIn=true면 Trigger_MyFleetSet으로 위치가 확정된 직후 그 자리로 워프인 연출(튜토리얼 종료 후 첫 함대 등장 등)
-    private void SpawnFleetFromPreset(TempFleetInfo fleetInfo, bool warpIn = false)
+    // 프리셋 함대 정보로 팀 소속 함대를 생성 — 플레이어/적 스폰 공통 로직
+    // 카메라 타겟팅, Trigger_MyFleetSet 등 플레이어 전용 후처리는 호출부 책임
+    public SpaceFleet SpawnFleetFromPreset(TempFleetInfo fleetInfo, ETeam team, EFleetSource source, Vector3 position, Quaternion rotation, string fleetName)
     {
-        GameObject fleetObj = new GameObject("MyFleet");
-        SpaceFleet myFleet = fleetObj.AddComponent<SpaceFleet>();
-        myFleet.m_team = m_myTeam;
-        myFleet.m_fleetSource = EFleetSource.fleet_source_player;
-        myFleet.m_fleetState = EUnitState.Idle;
+        GameObject fleetObj = new GameObject(fleetName);
+        fleetObj.transform.SetPositionAndRotation(position, rotation);
+        SpaceFleet fleet = fleetObj.AddComponent<SpaceFleet>();
+        fleet.m_team = team;
+        fleet.m_fleetSource = source;
+        fleet.m_fleetState = EUnitState.Idle;
 
         DataTableShipPreset presetTable = DataManager.Instance.m_dataTableShipPreset;
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
-        if (fleetInfo.ships != null)
+        if (fleetInfo != null && fleetInfo.ships != null)
         {
-            foreach (ExplorationShipSlot shipSlot in fleetInfo.ships)
+            foreach (TempShipInfo shipSlot in fleetInfo.ships)
             {
                 ShipPresetData preset = presetTable.GetShipPreset(shipSlot.shipPresetId);
                 if (preset == null)
@@ -692,13 +698,48 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                     Debug.LogError($"ShipPresetData not found: {shipSlot.shipPresetId}");
                     continue;
                 }
-                ShipFinalStats finalStats = ShipStatCalculator.Calculate(preset.statAllocation, formula);
-                ExplorationShipSpawnBridge.SpawnShip(myFleet, preset, finalStats);
+                ModuleData bodyModuleData = null;
+                if (System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType))
+                    bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodySubType);
+
+                ShipFinalStats finalStats = ShipStatCalculator.Calculate(preset.statAllocation, formula, bodyModuleData);
+                ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats);
             }
         }
-        myFleet.SetFleetState(EUnitState.Idle);
-        GetTeamFleets(m_myTeam).Add(myFleet);
+        fleet.SetFleetState(EUnitState.Idle);
+        GetTeamFleets(team).Add(fleet);
+        return fleet;
+    }
 
+    // warpIn=true면 Trigger_MyFleetSet으로 위치가 확정된 직후 그 자리로 워프인 연출(튜토리얼 종료 후 첫 함대 등장 등)
+    private void SpawnMyFleetFromPreset(TempFleetInfo fleetInfo, bool warpIn = false)
+    {
+        SpaceFleet myFleet = SpawnFleetFromPreset(fleetInfo, m_myTeam, EFleetSource.fleet_source_player, Vector3.zero, Quaternion.identity, "MyFleet");
+        FinalizeMyFleetSpawn(myFleet, warpIn);
+    }
+
+    // 함대편성 UI(FleetComposition)에서 배치를 바꿀 때마다 호출 — 연출 없이 기존 함선 전체를 파괴하고 같은 위치에 재생성
+    public void RebuildMyFleetFromComposition(FleetComposition composition)
+    {
+        if (composition == null) return;
+
+        SpaceFleet oldFleet = GetMyFleet();
+        Vector3 position = oldFleet != null ? oldFleet.transform.position : Vector3.zero;
+        Quaternion rotation = oldFleet != null ? oldFleet.transform.rotation : Quaternion.identity;
+
+        if (oldFleet != null)
+        {
+            GetTeamFleets(m_myTeam).Remove(oldFleet);
+            Destroy(oldFleet.gameObject);
+        }
+
+        SpaceFleet newFleet = SpawnFleetFromPreset(composition.ToNetworkFleetInfo(), m_myTeam, EFleetSource.fleet_source_player, position, rotation, "MyFleet");
+        FinalizeMyFleetSpawn(newFleet, warpIn: false);
+    }
+
+    // 함대 스폰/재구성 공통 후처리 — UI에 함대 교체를 알리고, 카메라 타겟과 초기 선택 함선을 설정
+    private void FinalizeMyFleetSpawn(SpaceFleet myFleet, bool warpIn)
+    {
         // 함대 스폰/교체를 UI 등 늦게 초기화되는 쪽에서도 알 수 있도록 알림 (존 초기 위치도 이 안에서 확정됨)
         EventManager.Trigger_MyFleetSet();
 
@@ -730,11 +771,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         RemoveEnemyFleet(fleet);
 
-        if (m_pendingWaves == null) return;
-
         // 미스폰 웨이브 중 가장 앞의 것을 즉시 스폰 (term 타이머 취소)
         // 구존-스테이지 로직 주석처리(StartZoneEnemyWaves 비활성화)로 m_pendingWaves는 항상 null이라 이 블록은 도달 불가 — SpawnWave 재활성화 시 함께 복원
         /*
+        if (m_pendingWaves == null) return;
         for (int i = 0; i < m_waveSpawned.Length; i++)
         {
             if (m_waveSpawned[i] == false)

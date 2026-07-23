@@ -9,8 +9,7 @@ public class DataManager : Singleton<DataManager>
     protected override void OnInitialize()
     {
         LoadDataTableModule();
-        LoadDataTableUpgradeCost();
-        LoadDataTableCommanderLevel();
+        LoadDataTableCommander();
         LoadDataTableConfig();
         LoadDataTableZone();
         LoadDataTableShipPreset();
@@ -34,12 +33,20 @@ public class DataManager : Singleton<DataManager>
             m_currentCommander = new Commander(commanderInfo);
 
         m_currentCommander.UpdateCommanderInfo(commanderInfo);
+
+        // 탐험 함대 편성 — 지휘력 최대치는 서버 값, 프리셋 카탈로그는 로그인 이전(OnInitialize)에 이미 로드되어 있음
+        m_currentFleetComposition = new FleetComposition(commanderInfo.commandPowerMax, m_dataTableShipPreset.BuildLookupTable());
     }
 
     public void ClearCommanderData()
     {
         m_currentCommander = null;
+        m_currentFleetComposition = null;
     }
+    #endregion
+
+    #region Fleet Composition Management #########################################################
+    public FleetComposition m_currentFleetComposition;
     #endregion
 
     #region Fleet Info Management ###############################################################
@@ -101,118 +108,18 @@ public class DataManager : Singleton<DataManager>
             Debug.LogError("DataTableModule is not exist");
     }
 
-    public bool GetModuleLevelUpCost(EModuleSubType subType, int moduleLevel, out int modulePointCost)
-    {
-        modulePointCost = 0;
-        ModuleData moduleData = m_dataTableModule.GetModuleDataFromTable(subType, moduleLevel + 1);
-        if (moduleData == null) return false;
-
-        modulePointCost = moduleData.modulePointCost;
-        return true;
-    }
-
-    // level+1 데이터가 없으면 현재 레벨이 최대
-    public int GetMaxModuleLevel(EModuleSubType subType)
-    {
-        int level = 1;
-        while (m_dataTableModule.GetModuleDataFromTable(subType, level + 1) != null)
-            level++;
-        return level;
-    }
-
-    public EModuleSubType GetFirstSubType(EModuleType moduleType)
-    {
-        if (moduleType == EModuleType.body)    return EModuleSubType.body_t1_m1;
-        if (moduleType == EModuleType.beam)    return EModuleSubType.beam_t1_m1;
-        if (moduleType == EModuleType.missile) return EModuleSubType.missile_t1_m1;
-        if (moduleType == EModuleType.hanger)  return EModuleSubType.hanger_t1_m1;
-        return EModuleSubType.none;
-    }
-
-    // investedModulePoint → (baselineSubType, baselineLevel) 역산
-    // unlock(1) → T1 레벨업 → T2 그레이드업 → T2 레벨업 → ... 순서로 차감
-    public bool CalcModulePointBaseline(EModuleType moduleType, int investedModulePoint, out EModuleSubType baselineSubType, out int baselineLevel)
-    {
-        baselineSubType = EModuleSubType.none;
-        baselineLevel   = 0;
-
-        if (investedModulePoint <= 0) return false;
-
-        // 함체는 언락의 대상이 아님, 언락 비용 없음 (서버 calcModulePointBaseline과 동일 처리)
-        int unlockCost    = moduleType != EModuleType.body ? m_dataTableConfig.gameSettings.moduleUnlockPrice : 0;
-        int remaining     = investedModulePoint - unlockCost;
-        EModuleSubType currentSubType = GetFirstSubType(moduleType);
-
-        while (currentSubType != EModuleSubType.none)
-        {
-            int maxLevel = GetMaxModuleLevel(currentSubType);
-
-            for (int lv = 1; lv < maxLevel; lv++)
-            {
-                if (GetModuleLevelUpCost(currentSubType, lv, out int cost) == false) break;
-                if (remaining < cost)
-                {
-                    baselineSubType = currentSubType;
-                    baselineLevel   = lv;
-                    return true;
-                }
-                remaining -= cost;
-            }
-
-            // 최대레벨 도달 → 다음 그레이드
-            int nextVal = (int)currentSubType + 100;
-            if (System.Enum.IsDefined(typeof(EModuleSubType), nextVal) == false)
-            {
-                baselineSubType = currentSubType;
-                baselineLevel   = maxLevel;
-                return true;
-            }
-
-            EModuleSubType nextSubType = (EModuleSubType)nextVal;
-            int gradeUpCost = GetModuleResearchCost(nextSubType);
-            if (remaining < gradeUpCost)
-            {
-                baselineSubType = currentSubType;
-                baselineLevel   = maxLevel;
-                return true;
-            }
-            remaining     -= gradeUpCost;
-            currentSubType = nextSubType;
-        }
-
-        return false;
-    }
     #endregion
 
-    #region Data Table Upgrade Cost ###################################################################
-    public DataTableUpgradeCost m_dataTableUpgradeCost;
+    #region Data Table Commander ###########################################################
+    public DataTableCommander m_dataTableCommander;
 
-    private void LoadDataTableUpgradeCost()
+    private void LoadDataTableCommander()
     {
-        m_dataTableUpgradeCost = ResourceManager.Instance.Load<DataTableUpgradeCost>("DataTable/DataTableUpgradeCost");
-        if (m_dataTableUpgradeCost == null)
-            Debug.LogError("DataTableUpgradeCost is not exist");
+        m_dataTableCommander = ResourceManager.Instance.Load<DataTableCommander>("DataTable/DataTableCommander");
+        if (m_dataTableCommander == null)
+            Debug.LogError("DataTableCommander is not exist");
         else
-            Debug.Log("DataTableUpgradeCost loaded successfully");
-    }
-
-    public int GetModuleResearchCost(EModuleSubType subType)
-    {
-        if (m_dataTableUpgradeCost == null) return 0;
-        return m_dataTableUpgradeCost.GetCost(subType);
-    }
-    #endregion
-
-    #region Data Table Commander Level ###########################################################
-    public DataTableCommanderLevel m_dataTableCommanderLevel;
-
-    private void LoadDataTableCommanderLevel()
-    {
-        m_dataTableCommanderLevel = ResourceManager.Instance.Load<DataTableCommanderLevel>("DataTable/DataTableCommanderLevel");
-        if (m_dataTableCommanderLevel == null)
-            Debug.LogError("DataTableCommanderLevel is not exist");
-        else
-            Debug.Log("DataTableCommanderLevel loaded successfully");
+            Debug.Log("DataTableCommander loaded successfully");
     }
     #endregion
 

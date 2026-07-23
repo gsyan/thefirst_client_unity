@@ -22,17 +22,18 @@ public class ScrollViewZoneItem : MonoBehaviour
     [SerializeField] private float m_outlineWidth  = 4f;
     
     private UnityEngine.UI.Outline m_outline;
-    public ZoneStageConfig m_zoneStageConfig { get; private set; }
+    public string m_zoneName { get; private set; }
     private EZoneState m_state;
 
-    public void InitializeScrollViewZoneItem(ZoneStageConfig zoneStageConfig, UnityEngine.Events.UnityAction actionEnter, EZoneState state)
+    // 함선 시스템 대격변으로 ZoneStageConfig 제거됨 — zoneName 문자열만 표시
+    public void InitializeScrollViewZoneItem(string zoneName, UnityEngine.Events.UnityAction actionEnter, EZoneState state)
     {
-        m_zoneStageConfig = zoneStageConfig;
+        m_zoneName = zoneName;
 
         m_enterButton.onClick.RemoveAllListeners();
         m_enterButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); actionEnter?.Invoke(); });
 
-        m_zoneText.text = zoneStageConfig.zoneName;
+        m_zoneText.text = zoneName;
 
         m_outline = m_enterButton.GetComponent<UnityEngine.UI.Outline>();
         if (m_outline == null)

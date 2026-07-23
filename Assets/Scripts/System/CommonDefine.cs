@@ -16,102 +16,68 @@ public enum EModuleType
     beam            = 2,
     missile         = 3,
     hanger          = 4,
-    max             = 5
+    shield          = 5,
+    interceptor     = 6,
+    max             = 7
 }
-// 7자리 인코딩: T_tt_gg_vv (type 1자리, tech 2자리, model 2자리)
-// 파싱: type=val/10000, tech=(val/100)%100, model=val%100
+// 6자리 인코딩: T_tt_mmm (type 1자리, 타입(외형) 2자리, m 3자리)
+// 파싱: type=val/100000, tier=(val/1000)%100, m=val%1000
+// body만 m이 의미를 가짐(예: m111 = 빔1/미사일1/격납고1 슬롯 수) — 그 외 타입은 m=000 고정
 [System.Serializable]
 public enum EModuleSubType
 {
     none                = 0,
     // Body SubType
-    body_t1_m1          = 10101,
-    body_t2_m1          = 10201,
-    body_t3_m1          = 10301,
-    body_t4_m1          = 10401,
-    body_t5_m1          = 10501,
-    body_t6_m1          = 10601,    
-    body_t7_m1          = 10701,
-    body_t8_m1          = 10801,
-    body_t9_m1          = 10901,
-    body_t10_m1         = 11001,
-    body_t11_m1         = 11101,
-    body_t12_m1         = 11201,
-    body_t13_m1         = 11301,
-    body_t14_m1         = 11401,
+    body_t1_m111        = 101111,
+    body_t1_m211        = 101211,
+    body_t1_m221        = 101221,
+    body_t1_m222        = 101222,
+    body_t1_m322        = 101322,
+    body_t1_m332        = 101332,   
+    body_t1_m333        = 101333,
+    body_t1_m433        = 101433,
+    body_t1_m443        = 101443,
+    body_t1_m444        = 101444,
+    body_t1_m544        = 101544,
+    body_t1_m554        = 101554,
     // Beam SubType
-    beam_t1_m1          = 20101,
-    beam_t2_m1          = 20201,
-    beam_t3_m1          = 20301,
-    beam_t4_m1          = 20401,
-    beam_t5_m1          = 20501,
-    beam_t6_m1          = 20601,
-    beam_t7_m1          = 20701,
-    beam_t8_m1          = 20801,
-    beam_t9_m1          = 20901,
-    beam_t10_m1         = 21001,
-    beam_t11_m1         = 21101,
-    beam_t12_m1         = 21201,
-    beam_t13_m1         = 21301,
-    beam_t14_m1         = 21401,
+    beam_t1             = 201000,
     // Missile SubType
-    missile_t1_m1       = 30101,
-    missile_t2_m1       = 30201,
-    missile_t3_m1       = 30301,
-    missile_t4_m1       = 30401,
-    missile_t5_m1       = 30501,
-    missile_t6_m1       = 30601,
-    missile_t7_m1       = 30701,
-    missile_t8_m1       = 30801,
-    missile_t9_m1       = 30901,
-    missile_t10_m1      = 31001,
-    missile_t11_m1      = 31101,
-    missile_t12_m1      = 31201,
-    missile_t13_m1      = 31301,
-    missile_t14_m1      = 31401,
+    missile_t1          = 301000,
     // Hanger SubType
-    hanger_t1_m1        = 40101,
-    hanger_t2_m1        = 40201,
-    hanger_t3_m1        = 40301,
-    hanger_t4_m1        = 40401,
-    hanger_t5_m1        = 40501,
-    hanger_t6_m1        = 40601,
-    hanger_t7_m1        = 40701,
-    hanger_t8_m1        = 40801,
-    hanger_t9_m1        = 40901,
-    hanger_t10_m1       = 41001,
-    hanger_t11_m1       = 41101,
-    hanger_t12_m1       = 41201,
-    hanger_t13_m1       = 41301,
-    hanger_t14_m1       = 41401,
+    hanger_t1           = 401000,
+    // Shield SubType
+    shield_t1           = 501000,
+    // Interceptor SubType
+    interceptor_t1      = 601000,
 }
 
-// EModuleSubType 7자리 인코딩 파싱 유틸
+// EModuleSubType 6자리 인코딩 파싱 유틸
 public static class EModuleSubTypeExtensions
 {
-    public static int GetModuleType(this EModuleSubType subType)    => (int)subType / 10000;
-    public static int GetTechTier(this EModuleSubType subType) => ((int)subType / 100) % 100;
-    public static int GetModuleModel(this EModuleSubType subType)    => (int)subType % 100;
+    public static int GetModuleType(this EModuleSubType subType)    => (int)subType / 100000;
+    public static int GetTechTier(this EModuleSubType subType) => ((int)subType / 1000) % 100;
+    public static int GetModuleModel(this EModuleSubType subType)    => (int)subType % 1000;
 
     // 인코딩에서 EModuleType 추출
     public static EModuleType GetModuleTypeEnum(this EModuleSubType subType)
-        => (EModuleType)((int)subType / 10000);
+        => (EModuleType)((int)subType / 100000);
 
-    // tier+1 서브타입 반환 (없으면 EModuleSubType.none) — prerequisites 체인 없이 인코딩 산술로 계산
+    // 타입(외형)+1 서브타입 반환 (없으면 EModuleSubType.none) — prerequisites 체인 없이 인코딩 산술로 계산
     public static EModuleSubType GetNextSubType(this EModuleSubType subType)
     {
-        int nextVal = (int)subType + 100;
+        int nextVal = (int)subType + 1000;
         return System.Enum.IsDefined(typeof(EModuleSubType), nextVal) ? (EModuleSubType)nextVal : EModuleSubType.none;
     }
 
-    // tier-1 서브타입 반환 (없으면 EModuleSubType.none)
+    // 타입(외형)-1 서브타입 반환 (없으면 EModuleSubType.none)
     public static EModuleSubType GetPrevSubType(this EModuleSubType subType)
     {
-        int prevVal = (int)subType - 100;
+        int prevVal = (int)subType - 1000;
         return System.Enum.IsDefined(typeof(EModuleSubType), prevVal) ? (EModuleSubType)prevVal : EModuleSubType.none;
     }
 
-    // 로컬라이즈된 서브타입 표시명 생성 (예: "함체.T1.M1")
+    // 로컬라이즈된 서브타입 표시명 생성 (예: "함체.T1.M111")
     // CSV에 개별 키 없이, module_type_{type} 키 + tier/model 조합으로 동적 생성
     public static string GetLocalizedName(this EModuleSubType subType)
     {
@@ -136,6 +102,10 @@ public static class EModuleTypeExtensions
                 return new UnityEngine.Color(0.9f, 0.7f, 0.7f);
             case EModuleType.hanger:
                 return new UnityEngine.Color(0.9f, 0.9f, 0.7f);
+            case EModuleType.shield:
+                return new UnityEngine.Color(0.7f, 0.85f, 0.95f);
+            case EModuleType.interceptor:
+                return new UnityEngine.Color(0.85f, 0.75f, 0.95f);
             default:
                 return UnityEngine.Color.white;
         }

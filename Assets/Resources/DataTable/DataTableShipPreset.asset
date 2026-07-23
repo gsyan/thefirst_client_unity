@@ -13,22 +13,25 @@ MonoBehaviour:
   m_Name: DataTableShipPreset
   m_EditorClassIdentifier: Assembly-CSharp::DataTableShipPreset
   shipPresetDataList:
-  - presetId: beam_light_01
-    displayNameKey: ShipPreset_BeamLight01
-    prefabName: body_t1_m1
-    commandCost: 100
+  - presetId: m111b1
+    unlockCommanderLevel: 1
+    displayNameKey: ShipPreset_M111B1
+    prefabName: body_t1_m111
+    commandCost: 220
     statAllocation:
-      healthPoints: 300
+      healthPoints: 0
       turnRatePoints: 0
       repairPoints: 0
       beamModuleSubType:
-      - beam_t1_m1
+      - beam_t1
       - 
       - 
       - 
       - 
       - 
-      beamReinforcePoints: 000000000000000000000000000000000000000000000000
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
       missileModuleSubType:
       - 
       - 
@@ -36,7 +39,10 @@ MonoBehaviour:
       - 
       - 
       - 
-      missileReinforcePoints: 000000000000000000000000000000000000000000000000
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
       hangarModuleSubType:
       - 
       - 
@@ -48,81 +54,105 @@ MonoBehaviour:
       hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
       hangarAmmoPoints: 000000000000000000000000000000000000000000000000
       hangarHealthPoints: 000000000000000000000000000000000000000000000000
-      interceptorSlotInstalled: 010100000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
       interceptorDelayPoints: 000000000000000000000000000000000000000000000000
       interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
-      shieldInstalled: 0
+      shieldModuleSubType: 
       shieldGaugePoints: 0
       shieldDelayPoints: 0
       shieldRegenRatePoints: 0
-  - presetId: missile_heavy_01
-    displayNameKey: ShipPreset_MissileHeavy01
-    prefabName: body_t3_m1
-    commandCost: 250
+  - presetId: m111b1m1
+    unlockCommanderLevel: 1
+    displayNameKey: ShipPreset_M111B1M1
+    prefabName: body_t1_m111
+    commandCost: 240
     statAllocation:
-      healthPoints: 350
+      healthPoints: 0
       turnRatePoints: 0
       repairPoints: 0
       beamModuleSubType:
+      - beam_t1
       - 
       - 
       - 
       - 
       - 
-      - 
-      beamReinforcePoints: 000000000000000000000000000000000000000000000000
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
       missileModuleSubType:
-      - missile_t3_m1
-      - missile_t3_m1
+      - missile_t1
       - 
       - 
       - 
       - 
-      missileReinforcePoints: 000000000000000000000000000000000000000000000000
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
       hangarModuleSubType:
       - 
       - 
       - 
       - 
       - 
-      - 0
+      - 
       hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
       hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
       hangarAmmoPoints: 000000000000000000000000000000000000000000000000
       hangarHealthPoints: 000000000000000000000000000000000000000000000000
-      interceptorSlotInstalled: 000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
       interceptorDelayPoints: 000000000000000000000000000000000000000000000000
       interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
-      shieldInstalled: 0
+      shieldModuleSubType: 
       shieldGaugePoints: 0
       shieldDelayPoints: 0
       shieldRegenRatePoints: 0
-  - presetId: carrier_01
-    displayNameKey: ShipPreset_Carrier01
-    prefabName: body_t2_m1
-    commandCost: 500
+  - presetId: m111b1m1h1
+    unlockCommanderLevel: 1
+    displayNameKey: ShipPreset_M111B1M1H1
+    prefabName: body_t1_m111
+    commandCost: 260
     statAllocation:
-      healthPoints: 400
+      healthPoints: 0
       turnRatePoints: 0
       repairPoints: 0
       beamModuleSubType:
+      - beam_t1
       - 
       - 
       - 
       - 
       - 
-      - 
-      beamReinforcePoints: 000000000000000000000000000000000000000000000000
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
       missileModuleSubType:
+      - missile_t1
       - 
       - 
       - 
       - 
       - 
-      - 
-      missileReinforcePoints: 000000000000000000000000000000000000000000000000
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
       hangarModuleSubType:
-      - hanger_t2_m1
+      - hanger_t1
       - 
       - 
       - 
@@ -132,10 +162,70 @@ MonoBehaviour:
       hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
       hangarAmmoPoints: 000000000000000000000000000000000000000000000000
       hangarHealthPoints: 000000000000000000000000000000000000000000000000
-      interceptorSlotInstalled: 000101000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
       interceptorDelayPoints: 000000000000000000000000000000000000000000000000
       interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
-      shieldInstalled: 0
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m211b2
+    unlockCommanderLevel: 1
+    displayNameKey: ShipPreset_M211B2
+    prefabName: body_t1_m211
+    commandCost: 540
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - beam_t1
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
       shieldGaugePoints: 0
       shieldDelayPoints: 0
       shieldRegenRatePoints: 0

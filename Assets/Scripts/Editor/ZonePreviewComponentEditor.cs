@@ -8,7 +8,6 @@ public class ZonePreviewComponentEditor : Editor
 {
     private bool m_zoneFoldout      = true;
     private bool m_celestialFoldout = true;
-    private bool m_stagesFoldout    = true;
 
     public override void OnInspectorGUI()
     {
@@ -68,9 +67,7 @@ public class ZonePreviewComponentEditor : Editor
         if (zone != null)
         {
             DrawZoneInspector(comp, zone);
-            EditorGUILayout.Space(4);
-            DrawStagesInspector(comp.dataTableZone, zone.zoneIndex);
-        }        
+        }
     }
 
     private void DrawZoneInspector(ZonePreviewComponent comp, ZoneConfig zone)
@@ -105,44 +102,6 @@ public class ZonePreviewComponentEditor : Editor
             EditorUtility.SetDirty(comp.dataTableZone);
             comp.RefreshPreview();
         }
-    }
-
-    private void DrawStagesInspector(DataTableZone table, int zoneIndex)
-    {
-        m_stagesFoldout = EditorGUILayout.Foldout(m_stagesFoldout, "Stage 함대 스폰 위치", true, EditorStyles.foldoutHeader);
-        if (m_stagesFoldout == false) return;
-
-        EditorGUI.indentLevel++;
-
-        // 존 중심점 표시 (참고용)
-        Vector3 zoneCenter = table.GetZoneCenter(zoneIndex);
-        EditorGUILayout.HelpBox($"Zone Center (galaxyCameraTarget): {zoneCenter}  — Fleet Position은 이 점 기준 상대 좌표", MessageType.None);
-
-        EditorGUI.BeginChangeCheck();
-
-        bool hasAny = false;
-        foreach (ZoneStageConfig stage in table.zoneStageList)
-        {
-            if (stage.zoneIndex != zoneIndex) continue;
-            hasAny = true;
-
-            EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.LabelField(stage.zoneName, EditorStyles.boldLabel);
-            stage.fleetPosition  = EditorGUILayout.Vector3Field("Fleet Position (상대)", stage.fleetPosition);
-            stage.fleetRotationY = EditorGUILayout.Slider("Fleet Rotation Y", stage.fleetRotationY, 0f, 360f);
-            EditorGUILayout.EndVertical();
-        }
-
-        if (hasAny == false)
-            EditorGUILayout.HelpBox("이 Zone에 속한 Stage가 없습니다.", MessageType.None);
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            EditorUtility.SetDirty(table);
-            SceneView.RepaintAll();
-        }
-
-        EditorGUI.indentLevel--;
     }
 
     private void OnSceneGUI()
@@ -200,53 +159,6 @@ public class ZonePreviewComponentEditor : Editor
             }
         }
 
-        // 스테이지별 함대 스폰 위치 핸들 — 초록
-        // fleetPosition은 상대좌표이므로 zoneCenter를 더해 절대좌표로 씬에 표시,
-        // 드래그 결과는 다시 zoneCenter를 빼서 상대좌표로 저장
-        Vector3 zoneCenter = comp.dataTableZone.GetZoneCenter(zone.zoneIndex);
-        Handles.color = new Color(0.2f, 1f, 0.3f, 0.9f);
-        foreach (ZoneStageConfig stage in comp.dataTableZone.zoneStageList)
-        {
-            if (stage.zoneIndex != zone.zoneIndex) continue;
-
-            Vector3 worldPos = zoneCenter + stage.fleetPosition;
-
-            Handles.DrawWireDisc(worldPos, Vector3.up,    5f);
-            Handles.DrawWireDisc(worldPos, Vector3.right, 5f);
-
-            EditorGUI.BeginChangeCheck();
-            Quaternion stageRot = Quaternion.Euler(0f, stage.fleetRotationY, 0f);
-            Quaternion newRot   = Handles.RotationHandle(stageRot, worldPos);
-            EditorGUI.EndChangeCheck();
-            if (stageRot != newRot)
-            {
-                Undo.RecordObject(comp.dataTableZone, "Rotate Fleet");
-                stage.fleetRotationY = newRot.eulerAngles.y;
-                EditorUtility.SetDirty(comp.dataTableZone);
-                SceneView.RepaintAll();
-            }
-
-            EditorGUI.BeginChangeCheck();
-            Vector3 newWorldPos = Handles.PositionHandle(worldPos, Quaternion.identity);
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RecordObject(comp.dataTableZone, "Move Fleet Position");
-                stage.fleetPosition = newWorldPos - zoneCenter; // 상대좌표로 저장
-                EditorUtility.SetDirty(comp.dataTableZone);
-            }
-
-            Handles.color = Color.yellow;
-            float arrowLen = HandleUtility.GetHandleSize(worldPos) * 0.45f;
-            Vector3 fwd   = Quaternion.Euler(0f, stage.fleetRotationY, 0f) * Vector3.forward;
-            Vector3 tip   = worldPos + fwd * arrowLen;
-            Handles.DrawLine(worldPos, tip, 3f);
-            Vector3 right = Vector3.Cross(Vector3.up, fwd).normalized;
-            Handles.DrawLine(tip, tip - fwd * arrowLen * 0.25f + right * arrowLen * 0.15f, 2f);
-            Handles.DrawLine(tip, tip - fwd * arrowLen * 0.25f - right * arrowLen * 0.15f, 2f);
-            Handles.color = new Color(0.2f, 1f, 0.3f, 0.9f);
-
-            Handles.Label(worldPos + Vector3.up * 8f, $"[Fleet] {stage.zoneName}", boldWhite);
-        }
     }
 
 }

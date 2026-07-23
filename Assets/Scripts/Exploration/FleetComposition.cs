@@ -22,7 +22,14 @@ public class FleetComposition
         m_presetTable = presetTable;
     }
 
+    // 리스트 끝에 추가 — 순서가 상관없을 때 사용
     public EFleetPlaceResult TryPlaceShip(string shipPresetId, bool isFront)
+    {
+        return TryPlaceShipAt(m_placedShips.Count, shipPresetId, isFront);
+    }
+
+    // 드래그로 특정 행 위치에 놓았을 때처럼, 삽입 위치를 지정해야 하는 경우 사용
+    public EFleetPlaceResult TryPlaceShipAt(int index, string shipPresetId, bool isFront)
     {
         ShipPresetData presetData;
         bool found = m_presetTable.TryGetValue(shipPresetId, out presetData);
@@ -38,7 +45,8 @@ public class FleetComposition
             return EFleetPlaceResult.NotEnoughCommandPower;
         }
 
-        m_placedShips.Add(new FleetSlotEntry(shipPresetId, isFront));
+        int clampedIndex = index < 0 ? 0 : index > m_placedShips.Count ? m_placedShips.Count : index;
+        m_placedShips.Insert(clampedIndex, new FleetSlotEntry(shipPresetId, isFront));
         return EFleetPlaceResult.Success;
     }
 
@@ -91,11 +99,11 @@ public class FleetComposition
     public TempFleetInfo ToNetworkFleetInfo()
     {
         var fleetInfo = new TempFleetInfo();
-        fleetInfo.ships = new List<ExplorationShipSlot>();
+        fleetInfo.ships = new List<TempShipInfo>();
         for (int i = 0; i < m_placedShips.Count; i++)
         {
             FleetSlotEntry entry = m_placedShips[i];
-            fleetInfo.ships.Add(new ExplorationShipSlot
+            fleetInfo.ships.Add(new TempShipInfo
             {
                 shipPresetId = entry.shipPresetId,
                 isFront = entry.isFront,

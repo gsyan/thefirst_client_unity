@@ -19,17 +19,18 @@ public class UIZoneStageButton : MonoBehaviour
     private Camera  m_worldCamera;
     private Vector3 m_worldPos;
     private bool    m_isExpanded;
-    private ZoneStageConfig m_config;
+    private string  m_zoneName;
     private System.Action m_onEnter;
     private EZoneState m_currentState;
 
-    public ZoneStageConfig ZoneStageConfig { get; private set; }
+    public string ZoneName { get; private set; }
     public bool IsExpanded => m_isExpanded;
 
-    public void InitializeUIZoneStageButton(ZoneStageConfig config, Vector3 worldPos, System.Action onToggle, System.Action onEnter, EZoneState state, Camera worldCamera)
+    // 함선 시스템 대격변으로 ZoneStageConfig(구존-스테이지 보상 데이터) 제거됨 — 그리드 기반 보상 설계로 재작성 전까지 zoneName만 표시
+    public void InitializeUIZoneStageButton(string zoneName, Vector3 worldPos, System.Action onToggle, System.Action onEnter, EZoneState state, Camera worldCamera)
     {
-        ZoneStageConfig = config;
-        m_config        = config;
+        ZoneName        = zoneName;
+        m_zoneName      = zoneName;
         m_onEnter       = onEnter;
         m_worldCamera   = worldCamera;
         m_worldPos      = worldPos;
@@ -55,8 +56,7 @@ public class UIZoneStageButton : MonoBehaviour
         }
 
         CacheRewardTexts();
-        RefreshDetailText(config);
-        RefreshRewardRows(config, state);
+        RefreshDetailText(zoneName);
         SetStateUIZoneStageButton(state);
         SetMyFleetMarker(false);
         Collapse();
@@ -68,57 +68,10 @@ public class UIZoneStageButton : MonoBehaviour
         m_rewardTexts = m_rewardContainer.GetComponentsInChildren<RowImageText>(true);
     }
 
-    private void RefreshDetailText(ZoneStageConfig config)
+    private void RefreshDetailText(string zoneName)
     {
         if (m_detailText == null) return;
-        m_detailText.text = $"STAGE {config.zoneName}";
-    }
-
-    private void RefreshRewardRows(ZoneStageConfig config, EZoneState state)
-    {
-        if (m_rewardTexts == null || m_rewardTexts.Length == 0) return;
-        bool isCleared = state == EZoneState.Cleared;
-
-        // [0] 미네랄 (매 클리어)
-        if (m_rewardTexts.Length > 0)
-        {
-            if (config.mineralClearReward > 0)
-            {
-                m_rewardTexts[0].SetTextWithString(CommonUtility.FormatBigNumber(config.mineralClearReward));
-                m_rewardTexts[0].SetImageColor(CommonUtility.PaletteColor("Mineral"));
-                m_rewardTexts[0].SetTextColor(CommonUtility.PaletteColor("Text.Dark1"));
-            }
-            else
-                m_rewardTexts[0].Hide();
-        }
-        // [1] 경험치 (매 클리어)
-        if (m_rewardTexts.Length > 1)
-        {
-            if (config.expClearReward > 0)
-            {
-                m_rewardTexts[1].SetTextWithInt(config.expClearReward);
-                m_rewardTexts[1].SetTextColor(CommonUtility.PaletteColor("Text.Dark1"));
-            }
-            else
-                m_rewardTexts[1].Hide();
-        }
-        // [2] 모듈포인트 (최초 클리어 — 클리어 상태면 숨김)
-        if (m_rewardTexts.Length > 2)
-        {
-            if (config.modulePointClearReward > 0 && isCleared == false)
-            {
-                m_rewardTexts[2].SetTextWithInt(config.modulePointClearReward);
-                m_rewardTexts[2].SetImageColor(CommonUtility.PaletteColor("ModulePoint"));
-                m_rewardTexts[2].SetTextColor(CommonUtility.PaletteColor("Text.Dark1"));
-            }
-            else
-                m_rewardTexts[2].Hide();
-        }
-    }
-
-    public void RefreshRewardRowsForState(EZoneState state)
-    {
-        RefreshRewardRows(m_config, state);
+        m_detailText.text = $"STAGE {zoneName}";
     }
 
     public void Expand()
@@ -137,8 +90,8 @@ public class UIZoneStageButton : MonoBehaviour
         m_isExpanded = false;
         if (m_detailText != null)           m_detailText.gameObject.SetActive(false);
         if (m_rewardContainer != null)      m_rewardContainer.gameObject.SetActive(false);
-        if (m_enterButtonText != null && m_config != null)
-            m_enterButtonText.text = m_config.zoneName;
+        if (m_enterButtonText != null && m_zoneName != null)
+            m_enterButtonText.text = m_zoneName;
         if (m_labelAnchorImage != null)     m_labelAnchorImage.enabled = false;
         RebuildLayout();
     }

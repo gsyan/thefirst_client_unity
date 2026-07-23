@@ -1,5 +1,5 @@
 // DataTableShipPreset 커스텀 에디터 — 함선 프리셋 Inspector UI 및 CSV Import/Export 툴
-// CSV 경로: Assets/Resources/DataTable/Exploration/datatable_ship_preset.csv
+// CSV 경로: Assets/Resources/DataTable/ShipPreset/datatable_ship_preset.csv
 
 #if UNITY_EDITOR
 using UnityEngine;
@@ -11,11 +11,17 @@ public class DataTableShipPresetEditor : Editor
     private DataTableShipPreset dataTable;
     private bool m_foldout = false;
     private ShipStatFormulaSettings m_formula;
+    private DataTableModule m_moduleTable;
+
+    // prefabName → 타입별 슬롯 개수 캐시 (Resources.Load 반복 호출 방지)
+    private readonly System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<EModuleType, int>> m_slotCountCache
+        = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<EModuleType, int>>();
 
     private void OnEnable()
     {
         dataTable = (DataTableShipPreset)target;
         m_formula = LoadFormula();
+        m_moduleTable = LoadModuleTable();
     }
 
     private ShipStatFormulaSettings LoadFormula()
@@ -27,6 +33,104 @@ public class DataTableShipPresetEditor : Editor
         if (config == null || config.gameSettings == null) return null;
 
         return config.gameSettings.shipStatFormula;
+    }
+
+    private DataTableModule LoadModuleTable()
+    {
+        string[] guids = AssetDatabase.FindAssets("t:DataTableModule");
+        if (guids.Length == 0) return null;
+        return AssetDatabase.LoadAssetAtPath<DataTableModule>(AssetDatabase.GUIDToAssetPath(guids[0]));
+    }
+
+    // prefabName에 실제 적용된 바디 프리팹(Prefabs/ShipModule/Body/{prefabName})을 분석해 타입별 슬롯 개수를 반환
+    // DataTableModule.ExtractModuleSlotsFromPrefab과 동일한 방식(ModuleSlot 컴포넌트 수집)
+    private System.Collections.Generic.Dictionary<EModuleType, int> GetSlotCountsForPrefab(string prefabName)
+    {
+        if (string.IsNullOrEmpty(prefabName))
+            return null;
+
+        if (m_slotCountCache.TryGetValue(prefabName, out var cached))
+            return cached;
+
+        var counts = new System.Collections.Generic.Dictionary<EModuleType, int>();
+
+        string prefabPath = $"Prefabs/ShipModule/Body/{prefabName}";
+        GameObject prefab = Resources.Load<GameObject>(prefabPath);
+        if (prefab != null)
+        {
+            ModuleSlot[] slots = prefab.GetComponentsInChildren<ModuleSlot>(true);
+            foreach (ModuleSlot slot in slots)
+            {
+                EModuleType moduleType = slot.m_moduleSlotInfo.moduleType;
+                counts.TryGetValue(moduleType, out int current);
+                counts[moduleType] = current + 1;
+            }
+        }
+
+        m_slotCountCache[prefabName] = counts;
+        return counts;
+    }
+
+    private int GetSlotCount(System.Collections.Generic.Dictionary<EModuleType, int> slotCounts, EModuleType moduleType)
+    {
+        if (slotCounts == null) return int.MaxValue; // 프리팹 분석 실패 시 기존처럼 배열 전체 표시
+        slotCounts.TryGetValue(moduleType, out int count);
+        return count;
+    }
+
+    // EModuleSubType 전체 이름 캐시 — prefix(예: "beam_")로 필터링해 카테고리별 드롭다운 옵션을 만드는 데 사용
+    private static string[] s_allSubTypeNames;
+
+    private string[] GetSubTypeOptions(string prefix)
+    {
+        if (s_allSubTypeNames == null)
+            s_allSubTypeNames = System.Enum.GetNames(typeof(EModuleSubType));
+
+        var options = new System.Collections.Generic.List<string> { "" }; // 인덱스 0 = 미장착(빈 문자열)
+        foreach (string name in s_allSubTypeNames)
+        {
+            if (name.StartsWith(prefix))
+                options.Add(name);
+        }
+        return options.ToArray();
+    }
+
+    // subTypeProp(EModuleSubType 이름 문자열, 빈 문자열=미장착)을 prefix로 필터링한 드롭다운으로 편집
+    private void DrawSubTypePopup(SerializedProperty subTypeProp, string prefix, float width)
+    {
+        string[] values = GetSubTypeOptions(prefix);
+        string[] displayNames = new string[values.Length];
+        for (int i = 0; i < values.Length; i++)
+            displayNames[i] = string.IsNullOrEmpty(values[i]) ? "(none)" : values[i];
+
+        int currentIndex = System.Array.IndexOf(values, subTypeProp.stringValue);
+        if (currentIndex < 0) currentIndex = 0;
+
+        int newIndex = EditorGUILayout.Popup(currentIndex, displayNames, GUILayout.Width(width));
+        subTypeProp.stringValue = values[newIndex];
+    }
+
+    private void EnsureArraySize(SerializedProperty arrayProp, int size)
+    {
+        if (arrayProp.arraySize != size)
+            arrayProp.arraySize = size;
+    }
+
+    // prefabName(예: body_t1_m1)에 대응하는 DataTableModule 원본 데이터 — Health/Repair/TurnRate 기본 수치 출처
+    private ModuleData GetBodyModuleData(string prefabName)
+    {
+        if (m_moduleTable == null || string.IsNullOrEmpty(prefabName)) return null;
+        if (System.Enum.TryParse(prefabName, out EModuleSubType bodySubType) == false) return null;
+        return m_moduleTable.GetModuleDataFromTable(bodySubType);
+    }
+
+    // 슬롯 서브타입(예: beam_t2_m1) → DataTableModule의 해당 subType(level 1) cost_mp — ShipStatAllocation.GetInstallCost와 동일 규칙
+    private int GetInstallCostForSubType(string subTypeName)
+    {
+        if (m_moduleTable == null || string.IsNullOrEmpty(subTypeName)) return 0;
+        if (System.Enum.TryParse(subTypeName, out EModuleSubType subType) == false) return 0;
+        ModuleData data = m_moduleTable.GetModuleDataFromTable(subType);
+        return data != null ? data.statPoint : 0;
     }
 
     public override void OnInspectorGUI()
@@ -82,168 +186,238 @@ public class DataTableShipPresetEditor : Editor
             return;
         }
 
+        EditorGUILayout.PropertyField(elementProp.FindPropertyRelative("unlockCommanderLevel"), new GUIContent("Unlock Commander Level", "이 값 이상의 커맨더 레벨부터 사용 가능 (예: 10 = 10레벨부터)"));
         EditorGUILayout.PropertyField(presetIdProp, new GUIContent("Preset Id"));
         EditorGUILayout.PropertyField(elementProp.FindPropertyRelative("displayNameKey"), new GUIContent("Display Name Key"));
-        EditorGUILayout.PropertyField(elementProp.FindPropertyRelative("prefabName"), new GUIContent("Prefab Name"));
-        EditorGUILayout.PropertyField(elementProp.FindPropertyRelative("commandCost"), new GUIContent("Command Cost"));
 
+        SerializedProperty prefabNameProp = elementProp.FindPropertyRelative("prefabName");
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Prefab Name", GUILayout.Width(EditorGUIUtility.labelWidth));
+        DrawSubTypePopup(prefabNameProp, "body_", 200);
+        EditorGUILayout.LabelField($"장착 {GetInstallCostForSubType(prefabNameProp.stringValue)}", GUILayout.Width(70));
+        EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space(6);
         SerializedProperty allocProp = elementProp.FindPropertyRelative("statAllocation");
-        DrawStatAllocation(allocProp);
+        SerializedProperty commandCostProp = elementProp.FindPropertyRelative("commandCost");
+        string prefabName = elementProp.FindPropertyRelative("prefabName").stringValue;
+        DrawStatAllocation(allocProp, commandCostProp, prefabName);
 
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawStatAllocation(SerializedProperty alloc)
+    // commandCost는 CSV Import 시점뿐 아니라 인스펙터를 그릴 때마다 GetTotalPointsUsed()로 실시간 덮어써서 항상 동기화
+    private void DrawStatAllocation(SerializedProperty alloc, SerializedProperty commandCostProp, string prefabName)
     {
-        if (m_formula != null)
+        int totalPoints = BuildAllocationSnapshot(alloc).GetTotalPointsUsed(m_moduleTable, prefabName);
+        commandCostProp.intValue = totalPoints;
+        EditorGUILayout.LabelField("Command Cost (자동계산)", totalPoints.ToString(), EditorStyles.boldLabel);
+        if (m_moduleTable == null)
+            EditorGUILayout.HelpBox("DataTableModule을 찾을 수 없어 장착 코스트가 0으로 표시됩니다.", MessageType.Warning);
+
+        var slotCounts = GetSlotCountsForPrefab(prefabName);
+        if (string.IsNullOrEmpty(prefabName) == false && slotCounts == null)
+            EditorGUILayout.HelpBox($"프리팹을 찾을 수 없어 슬롯을 분석하지 못했습니다: Prefabs/ShipModule/Body/{prefabName}", MessageType.Warning);
+
+        ShipStatFormulaSettings formula = m_formula;
+        if (formula == null)
         {
-            int totalPoints = BuildAllocationSnapshot(alloc).GetTotalPointsUsed(m_formula);
-            EditorGUILayout.LabelField("Total Points Used", totalPoints.ToString(), EditorStyles.boldLabel);
+            formula = new ShipStatFormulaSettings();
+            EditorGUILayout.HelpBox("DataTableConfig를 찾을 수 없어 기본 수치가 0으로 표시됩니다.", MessageType.Warning);
+        }
+
+        ModuleData bodyModuleData = GetBodyModuleData(prefabName);
+        float baseHealth = 0f;
+        float baseRepair = 0f;
+        float baseTurnRate = 0f;
+        if (bodyModuleData != null)
+        {
+            baseHealth = bodyModuleData.health;
+            baseRepair = bodyModuleData.repair;
+            baseTurnRate = bodyModuleData.turnRate;
+        }
+        else if (string.IsNullOrEmpty(prefabName) == false)
+        {
+            EditorGUILayout.HelpBox($"DataTableModule에서 {prefabName}의 기본 수치를 찾을 수 없습니다.", MessageType.Warning);
         }
 
         EditorGUILayout.LabelField("Flat Stats", EditorStyles.boldLabel);
-        DrawPlainInt(alloc, "healthPoints", "Health Points", "장착 개념 없이 순수 포인트 배분. 기본값/계수 미확정 — 임시 1p=+0.1");
-        DrawPlainInt(alloc, "turnRatePoints", "Turn Rate Points", "장착 개념 없이 순수 포인트 배분. 기본값/계수 미확정 — 임시 1p=+0.1");
-        DrawPlainInt(alloc, "repairPoints", "Repair Points", "장착 개념 없이 순수 포인트 배분. 기본값/계수 미확정 — 임시 1p=+0.1");
+        DrawStatPoint(alloc.FindPropertyRelative("healthPoints"), "Health Points", baseHealth, formula.flatStats.perPoint);
+        DrawStatPoint(alloc.FindPropertyRelative("turnRatePoints"), "Turn Rate Points", baseTurnRate, formula.flatStats.perPoint);
+        DrawStatPoint(alloc.FindPropertyRelative("repairPoints"), "Repair Points", baseRepair, formula.flatStats.perPoint);
 
-        int beamCost = m_formula != null ? m_formula.beam.installCost : 0;
         EditorGUILayout.LabelField("Beam", EditorStyles.boldLabel);
-        DrawSingleStatSlots(alloc, "beamModuleSubType", "beamReinforcePoints", "Beam", beamCost);
+        DrawWeaponSlots(alloc, "beamModuleSubType", "beam_", "Beam", GetSlotCount(slotCounts, EModuleType.beam),
+            "beamAttackPoints", "beamFireRatePoints", "beamProjectileSpeedPoints", null,
+            formula.beam.baseAttack, formula.beam.attackPerPoint, formula.beam.baseAttackCool, formula.beam.attackCoolReductionPerPoint, formula.beam.attackCoolFloor,
+            formula.beam.baseProjectileSpeed, formula.beam.projectileSpeedPerPoint, 0f, 0f);
 
-        int missileCost = m_formula != null ? m_formula.missile.installCost : 0;
         EditorGUILayout.LabelField("Missile", EditorStyles.boldLabel);
-        DrawSingleStatSlots(alloc, "missileModuleSubType", "missileReinforcePoints", "Missile", missileCost);
+        DrawWeaponSlots(alloc, "missileModuleSubType", "missile_", "Missile", GetSlotCount(slotCounts, EModuleType.missile),
+            "missileAttackPoints", "missileFireRatePoints", "missileProjectileSpeedPoints", "missileSilencePoints",
+            formula.missile.baseAttack, formula.missile.attackPerPoint, formula.missile.baseAttackCool, formula.missile.attackCoolReductionPerPoint, formula.missile.attackCoolFloor,
+            formula.missile.baseProjectileSpeed, formula.missile.projectileSpeedPerPoint, formula.missile.baseSilenceTime, formula.missile.silenceTimePerPoint);
 
-        int hangarCost = m_formula != null ? m_formula.hangar.installCost : 0;
         EditorGUILayout.LabelField("Hangar", EditorStyles.boldLabel);
-        DrawHangarSlots(alloc, hangarCost);
+        DrawHangarSlots(alloc, GetSlotCount(slotCounts, EModuleType.hanger), formula.hangar);
 
-        int shieldCost = m_formula != null ? m_formula.shield.installCost : 0;
-        EditorGUILayout.LabelField("Shield", EditorStyles.boldLabel);
-        DrawInstalledBool(alloc, "shieldInstalled", "Shield Installed", shieldCost, "장착 여부(0/1), 코스트는 shipStatFormula.shield.installCost. 강화 서브스탯 3종은 1p=1선택");
-        DrawPlainInt(alloc, "shieldGaugePoints", "Shield Gauge Points", "게이지 강화 포인트");
-        DrawPlainInt(alloc, "shieldDelayPoints", "Shield Delay Points", "무방비 딜레이 단축 포인트");
-        DrawPlainInt(alloc, "shieldRegenRatePoints", "Shield Regen Rate Points", "회복속도(초당 게이지 회복량) 강화 포인트");
+        int shieldSlotCount = GetSlotCount(slotCounts, EModuleType.shield);
+        if (shieldSlotCount > 0)
+        {
+            EditorGUILayout.LabelField("Shield", EditorStyles.boldLabel);
+            DrawShieldSubType(alloc);
+            DrawStatPoint(alloc.FindPropertyRelative("shieldGaugePoints"), "Shield Gauge Points", formula.shield.baseGauge, formula.shield.gaugePerPoint);
+            DrawStatPoint(alloc.FindPropertyRelative("shieldDelayPoints"), "Shield Delay Points", formula.shield.baseDelay, -formula.shield.delayReductionPerPoint, formula.shield.delayFloor);
+            DrawStatPoint(alloc.FindPropertyRelative("shieldRegenRatePoints"), "Shield Regen Rate Points", formula.shield.baseRegenRate, formula.shield.regenRatePerPoint);
+        }
 
-        int interceptorCost = m_formula != null ? m_formula.interceptor.installCost : 0;
-        EditorGUILayout.LabelField("Interceptor", EditorStyles.boldLabel);
-        DrawInterceptorSlots(alloc, interceptorCost);
+        int interceptorSlotCount = GetSlotCount(slotCounts, EModuleType.interceptor);
+        if (interceptorSlotCount > 0)
+        {
+            EditorGUILayout.LabelField("Interceptor", EditorStyles.boldLabel);
+            DrawInterceptorSlots(alloc, interceptorSlotCount, formula.interceptor);
+        }
     }
 
-    // 빔/미사일처럼 슬롯당 강화 스탯이 하나뿐인 카테고리 공용 UI — 슬롯별로 서브타입 텍스트(빈 칸=미장착) + 강화 포인트 한 줄
-    private void DrawSingleStatSlots(SerializedProperty alloc, string subTypeField, string pointsField, string slotLabel, int installCost)
+    // 빔/미사일 공용 UI — 슬롯별로 서브타입 드롭다운(빈 칸=미장착) + 속성별 강화 포인트(공격력/연사력/발사체속도, 미사일은 침묵시간 추가)
+    // 장착 코스트는 선택된 서브타입(티어)마다 DataTableModule에서 즉시 조회해 표시
+    // baseSilenceTime/silenceTimePerPoint는 미사일 전용(빔은 0 전달, silenceField가 null이라 실제로는 그려지지 않음)
+    private void DrawWeaponSlots(SerializedProperty alloc, string subTypeField, string subTypePrefix, string slotLabel, int maxSlots,
+        string attackField, string fireRateField, string projectileSpeedField, string silenceField,
+        float baseAttack, float attackPerPoint, float baseAttackCool, float attackCoolReductionPerPoint, float attackCoolFloor,
+        float baseProjectileSpeed, float projectileSpeedPerPoint, float baseSilenceTime, float silenceTimePerPoint)
     {
         SerializedProperty subTypeArray = alloc.FindPropertyRelative(subTypeField);
-        SerializedProperty pointsArray = alloc.FindPropertyRelative(pointsField);
+        SerializedProperty attackArray = alloc.FindPropertyRelative(attackField);
+        SerializedProperty fireRateArray = alloc.FindPropertyRelative(fireRateField);
+        SerializedProperty projectileSpeedArray = alloc.FindPropertyRelative(projectileSpeedField);
+        SerializedProperty silenceArray = string.IsNullOrEmpty(silenceField) ? null : alloc.FindPropertyRelative(silenceField);
 
-        for (int i = 0; i < subTypeArray.arraySize; i++)
+        // 새로 추가된 포인트 배열은 기존 데이터에서 크기 0으로 직렬화돼 있으므로 서브타입 배열 크기에 맞춰 보정
+        EnsureArraySize(attackArray, subTypeArray.arraySize);
+        EnsureArraySize(fireRateArray, subTypeArray.arraySize);
+        EnsureArraySize(projectileSpeedArray, subTypeArray.arraySize);
+        if (silenceArray != null)
+            EnsureArraySize(silenceArray, subTypeArray.arraySize);
+
+        int slotCountToShow = Mathf.Min(subTypeArray.arraySize, maxSlots);
+
+        for (int i = 0; i < slotCountToShow; i++)
         {
             SerializedProperty subTypeProp = subTypeArray.GetArrayElementAtIndex(i);
-            SerializedProperty pointsProp = pointsArray.GetArrayElementAtIndex(i);
             bool installed = string.IsNullOrEmpty(subTypeProp.stringValue) == false;
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField($"{slotLabel} {i + 1}", GUILayout.Width(60));
-            subTypeProp.stringValue = EditorGUILayout.TextField(subTypeProp.stringValue, GUILayout.Width(120));
+            DrawSubTypePopup(subTypeProp, subTypePrefix, 120);
+            EditorGUILayout.LabelField($"장착 {GetInstallCostForSubType(subTypeProp.stringValue)}", GUILayout.Width(70));
+            EditorGUILayout.EndHorizontal();
 
             using (new EditorGUI.DisabledScope(installed == false))
             {
-                int newValue = DrawNoDragIntField(new GUIContent("Reinforce"), pointsProp.intValue);
-                if (newValue != pointsProp.intValue) pointsProp.intValue = newValue;
-                EditorGUILayout.LabelField($"장착 {installCost}", GUILayout.Width(70));
+                EditorGUI.indentLevel++;
+                DrawStatPoint(attackArray.GetArrayElementAtIndex(i), "공격력", baseAttack, attackPerPoint);
+                DrawStatPoint(fireRateArray.GetArrayElementAtIndex(i), "연사력(쿨다운)", baseAttackCool, -attackCoolReductionPerPoint, attackCoolFloor);
+                DrawStatPoint(projectileSpeedArray.GetArrayElementAtIndex(i), "발사체 속도", baseProjectileSpeed, projectileSpeedPerPoint);
+                if (silenceArray != null)
+                    DrawStatPoint(silenceArray.GetArrayElementAtIndex(i), "침묵 시간", baseSilenceTime, silenceTimePerPoint);
+                EditorGUI.indentLevel--;
             }
-            EditorGUILayout.EndHorizontal();
         }
     }
 
-    private void DrawHangarSlots(SerializedProperty alloc, int installCost)
+    private void DrawHangarSlots(SerializedProperty alloc, int maxSlots, HangarFormula formula)
     {
         SerializedProperty subTypeArray = alloc.FindPropertyRelative("hangarModuleSubType");
         SerializedProperty shipAttackArray = alloc.FindPropertyRelative("hangarShipAttackPoints");
         SerializedProperty fighterAttackArray = alloc.FindPropertyRelative("hangarFighterAttackPoints");
         SerializedProperty ammoArray = alloc.FindPropertyRelative("hangarAmmoPoints");
         SerializedProperty healthArray = alloc.FindPropertyRelative("hangarHealthPoints");
+        int slotCountToShow = Mathf.Min(subTypeArray.arraySize, maxSlots);
 
-        for (int i = 0; i < subTypeArray.arraySize; i++)
+        for (int i = 0; i < slotCountToShow; i++)
         {
             SerializedProperty subTypeProp = subTypeArray.GetArrayElementAtIndex(i);
             bool installed = string.IsNullOrEmpty(subTypeProp.stringValue) == false;
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField($"Hangar {i + 1}", GUILayout.Width(60));
-            subTypeProp.stringValue = EditorGUILayout.TextField(subTypeProp.stringValue, GUILayout.Width(120));
-            EditorGUILayout.LabelField($"장착 {installCost}", GUILayout.Width(70));
+            DrawSubTypePopup(subTypeProp, "hanger_", 120);
+            EditorGUILayout.LabelField($"장착 {GetInstallCostForSubType(subTypeProp.stringValue)}", GUILayout.Width(70));
             EditorGUILayout.EndHorizontal();
 
             using (new EditorGUI.DisabledScope(installed == false))
             {
                 EditorGUI.indentLevel++;
-                DrawSlotInt(shipAttackArray.GetArrayElementAtIndex(i), "Ship Attack");
-                DrawSlotInt(fighterAttackArray.GetArrayElementAtIndex(i), "Fighter Attack");
-                DrawSlotInt(ammoArray.GetArrayElementAtIndex(i), "Ammo");
-                DrawSlotInt(healthArray.GetArrayElementAtIndex(i), "Health");
+                DrawStatPoint(shipAttackArray.GetArrayElementAtIndex(i), "Ship Attack", formula.baseShipAttack, formula.reinforcePerPoint);
+                DrawStatPoint(fighterAttackArray.GetArrayElementAtIndex(i), "Fighter Attack", formula.baseFighterAttack, formula.reinforcePerPoint);
+                DrawStatPoint(ammoArray.GetArrayElementAtIndex(i), "Ammo", formula.baseAmmo, formula.reinforcePerPoint);
+                DrawStatPoint(healthArray.GetArrayElementAtIndex(i), "Health", formula.baseHealth, formula.reinforcePerPoint);
                 EditorGUI.indentLevel--;
             }
         }
     }
 
-    private void DrawInterceptorSlots(SerializedProperty alloc, int installCost)
+    private void DrawShieldSubType(SerializedProperty alloc)
     {
-        SerializedProperty installedArray = alloc.FindPropertyRelative("interceptorSlotInstalled");
-        SerializedProperty delayArray = alloc.FindPropertyRelative("interceptorDelayPoints");
-        SerializedProperty regenArray = alloc.FindPropertyRelative("interceptorRegenRatePoints");
-
-        for (int i = 0; i < installedArray.arraySize; i++)
-        {
-            SerializedProperty installedProp = installedArray.GetArrayElementAtIndex(i);
-
-            EditorGUILayout.BeginHorizontal();
-            installedProp.boolValue = EditorGUILayout.ToggleLeft($"Interceptor {i + 1}", installedProp.boolValue, GUILayout.Width(120));
-            EditorGUILayout.LabelField($"장착 {installCost}", GUILayout.Width(70));
-            EditorGUILayout.EndHorizontal();
-
-            using (new EditorGUI.DisabledScope(installedProp.boolValue == false))
-            {
-                EditorGUI.indentLevel++;
-                DrawSlotInt(delayArray.GetArrayElementAtIndex(i), "Delay");
-                DrawSlotInt(regenArray.GetArrayElementAtIndex(i), "Regen Rate");
-                EditorGUI.indentLevel--;
-            }
-        }
-    }
-
-    private void DrawSlotInt(SerializedProperty prop, string label)
-    {
-        int newValue = DrawNoDragIntField(new GUIContent(label), prop.intValue);
-        if (newValue != prop.intValue) prop.intValue = newValue;
-    }
-
-    private void DrawPlainInt(SerializedProperty parent, string fieldName, string label, string tooltip)
-    {
-        SerializedProperty fieldProp = parent.FindPropertyRelative(fieldName);
-        int newValue = DrawNoDragIntField(new GUIContent(label, tooltip), fieldProp.intValue);
-        if (newValue != fieldProp.intValue) fieldProp.intValue = newValue;
-    }
-
-    // 라벨 드래그로 값이 바뀌는 Unity 기본 IntField 동작을 없애기 위해 TextField로 직접 파싱
-    private int DrawNoDragIntField(GUIContent label, int value)
-    {
-        string text = EditorGUILayout.TextField(label, value.ToString());
-        int result;
-        return int.TryParse(text, out result) ? result : value;
-    }
-
-    // 장착 여부(bool) + 옆에 "장착 시 installCost" 표시
-    private void DrawInstalledBool(SerializedProperty parent, string fieldName, string label, int installCost, string tooltip)
-    {
-        SerializedProperty fieldProp = parent.FindPropertyRelative(fieldName);
+        SerializedProperty subTypeProp = alloc.FindPropertyRelative("shieldModuleSubType");
 
         EditorGUILayout.BeginHorizontal();
-        bool newValue = EditorGUILayout.Toggle(new GUIContent(label, tooltip), fieldProp.boolValue);
-        if (newValue != fieldProp.boolValue) fieldProp.boolValue = newValue;
-        EditorGUILayout.LabelField($"장착 시 {installCost}", GUILayout.Width(100));
+        EditorGUILayout.LabelField(new GUIContent("Shield SubType", "빈 칸 = 미장착"), GUILayout.Width(120));
+        DrawSubTypePopup(subTypeProp, "shield_", 120);
+        EditorGUILayout.LabelField($"장착 {GetInstallCostForSubType(subTypeProp.stringValue)}", GUILayout.Width(70));
         EditorGUILayout.EndHorizontal();
+    }
+
+    private void DrawInterceptorSlots(SerializedProperty alloc, int maxSlots, InterceptorFormula formula)
+    {
+        SerializedProperty subTypeArray = alloc.FindPropertyRelative("interceptorModuleSubType");
+        SerializedProperty delayArray = alloc.FindPropertyRelative("interceptorDelayPoints");
+        SerializedProperty regenArray = alloc.FindPropertyRelative("interceptorRegenRatePoints");
+        int slotCountToShow = Mathf.Min(subTypeArray.arraySize, maxSlots);
+
+        for (int i = 0; i < slotCountToShow; i++)
+        {
+            SerializedProperty subTypeProp = subTypeArray.GetArrayElementAtIndex(i);
+            bool installed = string.IsNullOrEmpty(subTypeProp.stringValue) == false;
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField($"Interceptor {i + 1}", GUILayout.Width(80));
+            DrawSubTypePopup(subTypeProp, "interceptor_", 120);
+            EditorGUILayout.LabelField($"장착 {GetInstallCostForSubType(subTypeProp.stringValue)}", GUILayout.Width(70));
+            EditorGUILayout.EndHorizontal();
+
+            using (new EditorGUI.DisabledScope(installed == false))
+            {
+                EditorGUI.indentLevel++;
+                DrawStatPoint(delayArray.GetArrayElementAtIndex(i), "Delay", formula.baseDelay, -formula.delayReductionPerPoint, formula.delayFloor);
+                DrawStatPoint(regenArray.GetArrayElementAtIndex(i), "Regen Rate", formula.baseRegenRate, formula.regenRatePerPoint);
+                EditorGUI.indentLevel--;
+            }
+        }
+    }
+
+    // 강화 포인트 입력 필드 — 라벨에 강화 전 기본 수치를 함께 표시하고, 우측에 강화 반영된 최종 수치를 보여줌
+    // perPoint가 음수면 감소형(연사력 쿨다운/딜레이 등) — floor로 하한을 둔다. floor를 생략하면(NegativeInfinity) 하한 없음
+    private void DrawStatPoint(SerializedProperty prop, string label, float baseValue, float perPoint, float floor = float.NegativeInfinity)
+    {
+        EditorGUILayout.BeginHorizontal();
+        string text = EditorGUILayout.TextField($"{label} (기본 {FormatStatValue(baseValue)})", prop.intValue.ToString());
+        int parsedValue;
+        if (int.TryParse(text, out parsedValue) && parsedValue != prop.intValue)
+            prop.intValue = parsedValue;
+
+        string sign = perPoint >= 0f ? "+" : "";
+        EditorGUILayout.LabelField($"x{sign}{FormatStatValue(perPoint)}", GUILayout.Width(55));
+
+        float rawFinalValue = baseValue + prop.intValue * perPoint;
+        float finalValue = float.IsNegativeInfinity(floor) ? rawFinalValue : Mathf.Max(floor, rawFinalValue);
+        EditorGUILayout.LabelField($"= {FormatStatValue(finalValue)}", GUILayout.Width(80));
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private string FormatStatValue(float value)
+    {
+        return value.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
     }
 
     private ShipStatAllocation BuildAllocationSnapshot(SerializedProperty alloc)
@@ -253,34 +427,31 @@ public class DataTableShipPresetEditor : Editor
             healthPoints = alloc.FindPropertyRelative("healthPoints").intValue,
             turnRatePoints = alloc.FindPropertyRelative("turnRatePoints").intValue,
             repairPoints = alloc.FindPropertyRelative("repairPoints").intValue,
-            shieldInstalled = alloc.FindPropertyRelative("shieldInstalled").boolValue,
+            shieldModuleSubType = alloc.FindPropertyRelative("shieldModuleSubType").stringValue,
             shieldGaugePoints = alloc.FindPropertyRelative("shieldGaugePoints").intValue,
             shieldDelayPoints = alloc.FindPropertyRelative("shieldDelayPoints").intValue,
             shieldRegenRatePoints = alloc.FindPropertyRelative("shieldRegenRatePoints").intValue,
         };
 
         snapshot.beamModuleSubType = ReadStringArray(alloc.FindPropertyRelative("beamModuleSubType"));
-        snapshot.beamReinforcePoints = ReadIntArray(alloc.FindPropertyRelative("beamReinforcePoints"));
+        snapshot.beamAttackPoints = ReadIntArray(alloc.FindPropertyRelative("beamAttackPoints"));
+        snapshot.beamFireRatePoints = ReadIntArray(alloc.FindPropertyRelative("beamFireRatePoints"));
+        snapshot.beamProjectileSpeedPoints = ReadIntArray(alloc.FindPropertyRelative("beamProjectileSpeedPoints"));
         snapshot.missileModuleSubType = ReadStringArray(alloc.FindPropertyRelative("missileModuleSubType"));
-        snapshot.missileReinforcePoints = ReadIntArray(alloc.FindPropertyRelative("missileReinforcePoints"));
+        snapshot.missileAttackPoints = ReadIntArray(alloc.FindPropertyRelative("missileAttackPoints"));
+        snapshot.missileFireRatePoints = ReadIntArray(alloc.FindPropertyRelative("missileFireRatePoints"));
+        snapshot.missileProjectileSpeedPoints = ReadIntArray(alloc.FindPropertyRelative("missileProjectileSpeedPoints"));
+        snapshot.missileSilencePoints = ReadIntArray(alloc.FindPropertyRelative("missileSilencePoints"));
         snapshot.hangarModuleSubType = ReadStringArray(alloc.FindPropertyRelative("hangarModuleSubType"));
         snapshot.hangarShipAttackPoints = ReadIntArray(alloc.FindPropertyRelative("hangarShipAttackPoints"));
         snapshot.hangarFighterAttackPoints = ReadIntArray(alloc.FindPropertyRelative("hangarFighterAttackPoints"));
         snapshot.hangarAmmoPoints = ReadIntArray(alloc.FindPropertyRelative("hangarAmmoPoints"));
         snapshot.hangarHealthPoints = ReadIntArray(alloc.FindPropertyRelative("hangarHealthPoints"));
-        snapshot.interceptorSlotInstalled = ReadBoolArray(alloc.FindPropertyRelative("interceptorSlotInstalled"));
+        snapshot.interceptorModuleSubType = ReadStringArray(alloc.FindPropertyRelative("interceptorModuleSubType"));
         snapshot.interceptorDelayPoints = ReadIntArray(alloc.FindPropertyRelative("interceptorDelayPoints"));
         snapshot.interceptorRegenRatePoints = ReadIntArray(alloc.FindPropertyRelative("interceptorRegenRatePoints"));
 
         return snapshot;
-    }
-
-    private bool[] ReadBoolArray(SerializedProperty arrayProp)
-    {
-        bool[] result = new bool[arrayProp.arraySize];
-        for (int i = 0; i < arrayProp.arraySize; i++)
-            result[i] = arrayProp.GetArrayElementAtIndex(i).boolValue;
-        return result;
     }
 
     private string[] ReadStringArray(SerializedProperty arrayProp)
@@ -304,7 +475,7 @@ public class DataTableShipPresetEditor : Editor
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.LabelField("CSV Import", EditorStyles.boldLabel);
 
-        string csvPath = Application.dataPath + "/Resources/DataTable/Exploration/datatable_ship_preset.csv";
+        string csvPath = Application.dataPath + "/Resources/DataTable/ShipPreset/datatable_ship_preset.csv";
 
         EditorGUILayout.BeginHorizontal();
 
