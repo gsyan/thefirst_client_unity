@@ -81,7 +81,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (m_networkStatus == NetworkReachability.NotReachable)
         {
             m_bConnected = false;
-            ShowFatalErrorPopup("Network Error", "Please check your internet connection.\nThe app will close.");
+            ShowFatalErrorPopup("Please check your internet connection.\nThe app will close.");
         }
         else
             StartCoroutine(CheckInternetAccess());
@@ -89,7 +89,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     private bool m_bNetworkPopupShown = false;
 
-    private void ShowFatalErrorPopup(string title, string message)
+    private void ShowFatalErrorPopup(string message)
     {
         if (m_bNetworkPopupShown) return;
         m_bNetworkPopupShown = true;
@@ -98,7 +98,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            title        = title,
             message      = message,
             autoCloseSec = 5f,
             onConfirm    = () => {
@@ -126,7 +125,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             if (request.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
             {
                 m_checkingInternetAccess = false;
-                ShowFatalErrorPopup("Internet Error", "Please check your internet connection.\nThe app will close.");
+                ShowFatalErrorPopup("Please check your internet connection.\nThe app will close.");
                 yield break;
             }
         }
@@ -138,7 +137,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             bool serverChosen = false;
             UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
             {
-                title        = "서버 선택",
                 message      = "접속할 서버를 선택하세요.",
                 cancelText1  = "DEV",
                 cancelText2  = "localhost:8080",
@@ -167,7 +165,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (serverCheckTask.Result == false)
         {
             m_checkingInternetAccess = false;
-            ShowFatalErrorPopup("Server Not Found", "The server is currently unavailable.\nPlease try again later.");
+            ShowFatalErrorPopup("The server is currently unavailable.\nPlease try again later.");
             yield break;
         }
         
@@ -182,12 +180,10 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             if (serverStatus.updateRequired == true)
             {
                 m_checkingInternetAccess = false;
-                string title   = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateTitle");
                 string message = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateMessage", (object)serverStatus.minVersionName);
                 string btnText = LocalizationManager.Instance.Get("UIPopupMessage_VersionUpdateButton");
                 UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
                 {
-                    title        = title,
                     message      = message,
                     confirmText1 = btnText,
                     onConfirm    = () => {
@@ -200,13 +196,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             if (serverStatus.working == false)
             {
                 m_checkingInternetAccess = false;
-                string title       = LocalizationManager.Instance.Get("UIPopupMessage_MaintenanceTitle");
                 string reason      = LocalizationManager.Instance.Get("UIPopupMessage_MaintenanceInProgress");
                 string endTimeText = FormatMaintenanceEndTime(serverStatus.endTime);
                 string body        = string.IsNullOrEmpty(endTimeText) == false ? $"{reason}\n{endTimeText}" : reason;
                 UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
                 {
-                    title        = title,
                     message      = body,
                     confirmText1 = LocalizationManager.Instance.Get("ok"),
                     onConfirm    = () => {
@@ -671,6 +665,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.FleetHealthSaveAsync(request), null));
     }
 
+    public void PlaceFleetPresetShip(FleetPresetPlaceShipRequest request)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.PlaceFleetPresetShipAsync(request), null));
+    }
+
+    public void SetFleetPresetShipFront(FleetPresetSetFrontRequest request)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.SetFleetPresetShipFrontAsync(request), null));
+    }
+
     public void FleetInstantRepair(System.Action<ApiResponse<FleetInstantRepairResponse>> onComplete)
     {
         if (m_bConnected == false) return;
@@ -759,10 +765,22 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClearExplorationCellAsync(request), onComplete));
     }
 
+    public void GetActiveZoneRunProgress(GetActiveZoneRunProgressRequest request, System.Action<ApiResponse<GetActiveZoneRunProgressResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.GetActiveZoneRunProgressAsync(request), onComplete));
+    }
+
     public void EscapeExplorationZone(EscapeExplorationZoneRequest request, System.Action<ApiResponse<EscapeExplorationZoneResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.EscapeExplorationZoneAsync(request), onComplete));
+    }
+
+    public void AbandonZoneRun(AbandonZoneRunRequest request, System.Action<ApiResponse<AbandonZoneRunResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.AbandonZoneRunAsync(request), onComplete));
     }
 
     public void IncreaseCommandPowerMax(IncreaseCommandPowerMaxRequest request, System.Action<ApiResponse<IncreaseCommandPowerMaxResponse>> onComplete)

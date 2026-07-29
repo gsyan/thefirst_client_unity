@@ -295,10 +295,6 @@ MonoBehaviour:
     m_Key: offline_cap_after
     m_Metadata:
       m_Items: []
-  - m_Id: 26465664587661312
-    m_Key: error_message_title
-    m_Metadata:
-      m_Items: []
   - m_Id: 26803779604971521
     m_Key: ship_reset
     m_Metadata:
@@ -363,6 +359,26 @@ MonoBehaviour:
     m_Key: UITabTech_ModulePointGetTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 61708245596504064
+    m_Key: UIPanelExplorationGrid_BankedPoint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61771964439461888
+    m_Key: UIPanelExplorationGrid_OwnedPoint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61771964498182144
+    m_Key: UIAvailablePresetRow_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61771964498182145
+    m_Key: UIAvailablePresetRow_Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61771964498182146
+    m_Key: UIAvailablePresetRow_Cost
+    m_Metadata:
+      m_Items: []
   - m_Id: 29120731337850880
     m_Key: UITabFleet_FleetManagement
     m_Metadata:
@@ -375,28 +391,104 @@ MonoBehaviour:
     m_Key: UITabFleet_FleetSynergyMultiply
     m_Metadata:
       m_Items: []
-  - m_Id: 59903847635484672
-    m_Key: UITabFleetComposition_Front
+  - m_Id: 61639704113446912
+    m_Key: UIFleet_Front
     m_Metadata:
       m_Items: []
-  - m_Id: 59903847673233408
-    m_Key: UITabFleetComposition_Rear
+  - m_Id: 61639704184750080
+    m_Key: UIFleet_Rear
     m_Metadata:
       m_Items: []
-  - m_Id: 59903847673233409
-    m_Key: UITabFleetComposition_PlacedShipCount
+  - m_Id: 61639704184750081
+    m_Key: UIFleet_PlacedShipCount
     m_Metadata:
       m_Items: []
-  - m_Id: 59907776112885760
-    m_Key: UITabFleetComposition_PlacedShipsTitle
+  - m_Id: 61639704184750082
+    m_Key: UIFleet_PlaceFailed_Locked
     m_Metadata:
       m_Items: []
-  - m_Id: 59907776146440192
-    m_Key: UITabFleetComposition_StatsTitle
+  - m_Id: 61639704184750083
+    m_Key: UIFleet_PlaceFailed_NotEnoughCommandPower
     m_Metadata:
       m_Items: []
-  - m_Id: 59907776146440193
-    m_Key: UITabFleetComposition_AvailablePresetsTitle
+  - m_Id: 61639704184750084
+    m_Key: UIFleet_PlaceFailed_PresetNotFound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61639704184750085
+    m_Key: UIFleet_PlacedShipsTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61639704184750086
+    m_Key: UIFleet_StatsTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61639704184750087
+    m_Key: UIFleet_AvailablePresetsTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888225939456
+    m_Key: UIFleet_Stats_Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659712
+    m_Key: UIFleet_Stats_TurnRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659713
+    m_Key: UIFleet_Stats_Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659714
+    m_Key: UIFleet_Stats_BeamDps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659715
+    m_Key: UIFleet_Stats_MissileDps
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659716
+    m_Key: UIFleet_Stats_MissileSilenceTime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659717
+    m_Key: UIFleet_Stats_FighterAttackPowerToShip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659718
+    m_Key: UIFleet_Stats_FighterAttackPowerToFighter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659719
+    m_Key: UIFleet_Stats_FighterAmmo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659720
+    m_Key: UIFleet_Stats_FighterHealth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659721
+    m_Key: UIFleet_Stats_FighterDisrupt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659722
+    m_Key: UIFleet_Stats_ShieldGauge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659723
+    m_Key: UIFleet_Stats_ShieldRestartDelay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659724
+    m_Key: UIFleet_Stats_ShieldRegenRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659725
+    m_Key: UIFleet_Stats_InterceptorReloadDelay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659726
+    m_Key: UIFleet_Stats_InterceptorRegenRate
     m_Metadata:
       m_Items: []
   - m_Id: 35928926043635712
@@ -727,8 +819,8 @@ MonoBehaviour:
     m_Key: Simple_AirAmmo
     m_Metadata:
       m_Items: []
-  - m_Id: 57098646914465799
-    m_Key: Simple_AirAdditionalDelay
+  - m_Id: 61660888288854016
+    m_Key: Simple_AirDisrupt
     m_Metadata:
       m_Items: []
   - m_Id: 767916345524225
@@ -915,8 +1007,8 @@ MonoBehaviour:
     m_Key: UIPopupMessage_GoogleUnlink
     m_Metadata:
       m_Items: []
-  - m_Id: 51571244805259264
-    m_Key: UIPopupMessage_CommanderLevelupTitle
+  - m_Id: 61639704193138688
+    m_Key: UIPopupMessage_CommanderLevelupMessage
     m_Metadata:
       m_Items: []
   - m_Id: 59435713895989248
@@ -939,20 +1031,12 @@ MonoBehaviour:
     m_Key: UIPopupMessage_ResetAllInvestedMineralMessage
     m_Metadata:
       m_Items: []
-  - m_Id: 48702146362605568
-    m_Key: UIPopupMessage_VersionUpdateTitle
-    m_Metadata:
-      m_Items: []
   - m_Id: 48702148229070848
     m_Key: UIPopupMessage_VersionUpdateMessage
     m_Metadata:
       m_Items: []
   - m_Id: 48702148229070849
     m_Key: UIPopupMessage_VersionUpdateButton
-    m_Metadata:
-      m_Items: []
-  - m_Id: 56724262198575104
-    m_Key: UIPopupMessage_MaintenanceTitle
     m_Metadata:
       m_Items: []
   - m_Id: 56724262198575105

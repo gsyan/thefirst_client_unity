@@ -38,15 +38,29 @@ public class FleetComposition
             return EFleetPlaceResult.PresetNotFound;
         }
 
+        int clampedIndex = index < 0 ? 0 : index > m_placedShips.Count ? m_placedShips.Count : index;
+        bool isReplacingExisting = clampedIndex < m_placedShips.Count;
+
+        // 이미 함선이 배치된 슬롯에 드롭하면 교체 — 기존 함선의 지휘력을 먼저 반환한 뒤 새 비용을 체크
         int usedCommandPower = GetUsedCommandPower();
+        if (isReplacingExisting == true)
+        {
+            ShipPresetData existingPresetData;
+            bool existingFound = m_presetTable.TryGetValue(m_placedShips[clampedIndex].shipPresetId, out existingPresetData);
+            if (existingFound)
+                usedCommandPower -= existingPresetData.commandCost;
+        }
+
         int remainingCommandPower = m_maxCommandPower - usedCommandPower;
         if (presetData.commandCost > remainingCommandPower)
         {
             return EFleetPlaceResult.NotEnoughCommandPower;
         }
 
-        int clampedIndex = index < 0 ? 0 : index > m_placedShips.Count ? m_placedShips.Count : index;
-        m_placedShips.Insert(clampedIndex, new FleetSlotEntry(shipPresetId, isFront));
+        if (isReplacingExisting == true)
+            m_placedShips[clampedIndex] = new FleetSlotEntry(shipPresetId, isFront);
+        else
+            m_placedShips.Insert(clampedIndex, new FleetSlotEntry(shipPresetId, isFront));
         return EFleetPlaceResult.Success;
     }
 
@@ -90,20 +104,26 @@ public class FleetComposition
         return m_maxCommandPower;
     }
 
+    // IncreaseCommandPowerMax 응답 후 서버 확정값으로 즉시 반영 — 별도 재조회 없이 로컬 갱신
+    public void SetMaxCommandPower(int maxCommandPower)
+    {
+        m_maxCommandPower = maxCommandPower;
+    }
+
     public List<FleetSlotEntry> GetPlacedShips()
     {
         return m_placedShips;
     }
 
     // 전투시작 요청(EnterExplorationCellRequest)에 실어 보낼 페이로드 변환
-    public TempFleetInfo ToNetworkFleetInfo()
+    public FleetInfo ToNetworkFleetInfo()
     {
-        var fleetInfo = new TempFleetInfo();
-        fleetInfo.ships = new List<TempShipInfo>();
+        var fleetInfo = new FleetInfo();
+        fleetInfo.ships = new List<ShipInfo>();
         for (int i = 0; i < m_placedShips.Count; i++)
         {
             FleetSlotEntry entry = m_placedShips[i];
-            fleetInfo.ships.Add(new TempShipInfo
+            fleetInfo.ships.Add(new ShipInfo
             {
                 shipPresetId = entry.shipPresetId,
                 isFront = entry.isFront,

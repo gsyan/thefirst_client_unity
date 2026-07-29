@@ -17,7 +17,7 @@ MonoBehaviour:
     unlockCommanderLevel: 1
     displayNameKey: ShipPreset_M111B1
     prefabName: body_t1_m111
-    commandCost: 220
+    commandCost: 221
     statAllocation:
       healthPoints: 0
       turnRatePoints: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
       - 
       - 
       - 
-      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamAttackPoints: 010000000000000000000000000000000000000000000000
       beamFireRatePoints: 000000000000000000000000000000000000000000000000
       beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
       missileModuleSubType:

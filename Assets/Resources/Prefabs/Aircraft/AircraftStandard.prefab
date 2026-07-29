@@ -261,7 +261,7 @@ MonoBehaviour:
     airAmmo: 0
     airDetectRadius: 0
     airAvoidRadius: 0
-    airAdditionalDelay: 0
+    airDisrupt: 0
     airHealthMax: 0
     airAmmoMax: 0
     lastReturnTime: 0

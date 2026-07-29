@@ -91,11 +91,13 @@ public class UIResourceBar : MonoBehaviour
         CameraController cam = CameraController.Instance;
         if (cam == null) return;
 
-        float viewportRight = cam.GetViewportWidth();
+        // 이 오브젝트는 캔버스 풀스크린 좌표계(0~1) 위에 있으므로 GetViewportWidth() 비율을 그대로 앵커에 대입
+        float viewportRightFullScreen = Mathf.Clamp01(cam.GetViewportWidth());
+
         Vector2 anchorMin = m_rectTransform.anchorMin;
         Vector2 anchorMax = m_rectTransform.anchorMax;
-        anchorMin.x = viewportRight;
-        anchorMax.x = viewportRight;
+        anchorMin.x = viewportRightFullScreen;
+        anchorMax.x = viewportRightFullScreen;
         m_rectTransform.anchorMin = anchorMin;
         m_rectTransform.anchorMax = anchorMax;
     }
@@ -205,30 +207,7 @@ public class UIResourceBar : MonoBehaviour
     {
         if (textUI == null) return;
         if (handle != null) StopCoroutine(handle);
-        handle = StartCoroutine(AnimateCounter(textUI, from, to));
-    }
-
-    // from → to 카운팅 (변화량 * 0.03초, 최대 0.5초)
-    private IEnumerator AnimateCounter(TMP_Text textUI, long from, long to)
-    {
-        if (from < 0 || from == to)
-        {
-            textUI.text = CommonUtility.FormatNumber(to);
-            yield break;
-        }
-
-        float duration = Mathf.Min(Mathf.Abs(to - from) * 0.03f, 0.5f);
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t       = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
-            long  current = from + (long)((to - from) * t);
-            textUI.text = CommonUtility.FormatNumber(current);
-            yield return null;
-        }
-
-        textUI.text = CommonUtility.FormatNumber(to);
+        handle = StartCoroutine(CommonUtility.AnimateCounterText(textUI, from, to));
     }
 
     private IEnumerator RunDdayUpdate()

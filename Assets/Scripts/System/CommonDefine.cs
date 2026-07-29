@@ -119,10 +119,9 @@ public static class EModuleTypeExtensions
 public enum EFormationType
 {
     linear_horizontal,   // 가로 일렬 배치, 균형 (보너스 없음)
-    x_offensive,         // 전진 x 배치, 공격력 증가
-    x_defensive,         // 후진 x 배치, 데미지 차감
+    x,                   // x 배치, 한점 집중 사격
+    cross,               // 십자 배치, 회복력 증가
     circle,              // 원형 배치, 기함방어우선
-    cross_defensive,     // 십자 배치, 회복력 증가
 }
 
 public enum FormationMoveState
@@ -139,4 +138,34 @@ public enum EDailyBonusTier { Normal, VIP }
 
 [System.Serializable]
 public enum EDailyBonusRewardType { Mineral }
+
+// 탐사 그리드 셀 타입 — Normal은 목록에 없는 좌표의 기본값(희소 저장이라 별도 항목을 만들지 않음)
+[System.Serializable]
+public enum EGridCellType
+{
+    Blocked, // 통행 불가
+    Start,   // 시작점
+    Escape,  // 탈출점
+    Event,   // 이벤트 셀 — 세부 종류는 EGridEventType 참고
+}
+
+// Event 셀의 세부 종류 — 지금은 NoEnemy만 실제로 동작, 나머지는 향후 확장용으로 미리 늘려둠(파라미터화는 필요 시 추가)
+[System.Serializable]
+public enum EGridEventType
+{
+    NoEnemy,  // 적 없음, 소액 보상만 (구 Empty와 동일 의도)
+    Treasure, // TODO: 미구현 — 보물/자원 획득
+    Trap,     // TODO: 미구현 — 함선 체력 등 페널티
+    Merchant, // TODO: 미구현 — 상인 조우
+}
+
+// 존 진행(ZoneRun) 상태 — 서버 엔티티 필드용. 클라는 직접 이 값을 받지 않고 EscapeExplorationZoneRequest.isSuccess(bool)로만 결과를 통지하지만,
+// 모든 enum은 이 파일에서 생성해 서버와 동기화하는 프로젝트 관례를 따름
+[System.Serializable]
+public enum EZoneRunStatus
+{
+    IN_PROGRESS,
+    ESCAPED,
+    ABANDONED,
+}
 #endregion

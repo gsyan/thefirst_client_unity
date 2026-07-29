@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
@@ -333,6 +334,29 @@ public static class CommonUtility
             // LocalizeStringEvent가 없으면 그냥 raw 텍스트로라도 표시
             textComp.text = text;
         }
+    }
+
+    // from → to 카운팅 롤링 애니메이션(변화량 * 0.03초, 최대 0.5초) — 재화/포인트 텍스트 갱신 공용
+    public static IEnumerator AnimateCounterText(TMP_Text textUI, long from, long to)
+    {
+        if (from < 0 || from == to)
+        {
+            textUI.text = FormatNumber(to);
+            yield break;
+        }
+
+        float duration = Mathf.Min(Mathf.Abs(to - from) * 0.03f, 0.5f);
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t       = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+            long  current = from + (long)((to - from) * t);
+            textUI.text = FormatNumber(current);
+            yield return null;
+        }
+
+        textUI.text = FormatNumber(to);
     }
 
     #endregion UI end -----------------------------------------------------------------------------------

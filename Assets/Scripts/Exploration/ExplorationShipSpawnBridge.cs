@@ -6,11 +6,12 @@ using UnityEngine;
 
 public static class ExplorationShipSpawnBridge
 {
-    public static SpaceShip SpawnShip(SpaceFleet fleet, ShipPresetData preset, ShipFinalStats finalStats)
+    // positionIndex는 함대편성 UI 슬롯 인덱스와 반드시 일치해야 함 — 중간 슬롯이 비어도(null) 재번호 없이 그 인덱스 그대로 사용
+    public static SpaceShip SpawnShip(SpaceFleet fleet, ShipPresetData preset, ShipFinalStats finalStats, int positionIndex, bool isFront)
     {
         if (fleet == null || preset == null) return null;
 
-        ShipInfo shipInfo = BuildShipInfo(preset, finalStats);
+        ShipInfo shipInfo = BuildShipInfo(preset, finalStats, positionIndex, isFront);
 
         GameObject shipGo = new GameObject(preset.presetId);
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
@@ -19,12 +20,12 @@ public static class ExplorationShipSpawnBridge
         spaceShip.m_missileMultiplier = 1f;
         spaceShip.m_hangerMultiplier = 1f;
         spaceShip.InitializeSpaceShip(fleet, shipInfo, finalStats);
-        // bWarp=false면 AddShip이 대형 위치보다 40유닛 뒤(-Z)에 스폰만 하고 MoveToFormation을 호출하지 않아 그 자리에 멈춰있게 됨
-        fleet.AddShip(spaceShip, bWarp: true);
+        // bWarp=false — 워프 이펙트 없이 최종 대형 위치로 즉시 배치 (UpdateShipFormation이 그 자리를 잡아줌)
+        fleet.AddShip(spaceShip, bWarp: false);
         return spaceShip;
     }
 
-    private static ShipInfo BuildShipInfo(ShipPresetData preset, ShipFinalStats finalStats)
+    private static ShipInfo BuildShipInfo(ShipPresetData preset, ShipFinalStats finalStats, int positionIndex, bool isFront)
     {
         ModuleBodyInfo bodyInfo = new ModuleBodyInfo
         {
@@ -53,8 +54,10 @@ public static class ExplorationShipSpawnBridge
         return new ShipInfo
         {
             shipName      = preset.presetId,
-            positionIndex = 0,
+            positionIndex = positionIndex,
             bodies        = new List<ModuleBodyInfo> { bodyInfo },
+            shipPresetId  = preset.presetId,
+            isFront       = isFront,
         };
     }
 

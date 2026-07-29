@@ -23,7 +23,7 @@ public class UIPopupDailyBonusDayCell : MonoBehaviour
         }
 
         if (m_background != null)
-            m_background.color = CommonUtility.PaletteColor(passed == true ? "DailyBonus.Passed" : "DailyBonus.Future");
+            m_background.color = CommonUtility.PaletteColor(passed == true ? "Olive1000" : "Black2");
 
         RefreshRewards(rewards, claimed, vipClaimed);
     }

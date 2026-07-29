@@ -44,7 +44,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -216,7 +216,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -264,7 +264,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -314,7 +314,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -366,7 +366,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -420,7 +420,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -476,7 +476,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -534,7 +534,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -594,7 +594,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -627,7 +627,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -660,7 +660,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -693,7 +693,7 @@ MonoBehaviour:
       airAmmo: 10
       airDetectRadius: 10
       airAvoidRadius: 2
-      airAdditionalDelay: 0.1
+      airDisrupt: 0.1
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -726,7 +726,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 100
       shieldDelay: 5
       shieldRegenRate: 5
@@ -759,7 +759,7 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airAdditionalDelay: 0
+      airDisrupt: 0
       shieldGauge: 0
       shieldDelay: 0
       shieldRegenRate: 0
@@ -779,7 +779,7 @@ MonoBehaviour:
     0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n       
     \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\":
     0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n       
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
     \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
@@ -797,7 +797,7 @@ MonoBehaviour:
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
     0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n       
-    \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
+    \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
     0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
     \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
     },\r\n      {\r\n        \"moduleName\": \"body_t1_m221\",\r\n        \"moduleSubType\":
@@ -815,7 +815,7 @@ MonoBehaviour:
     0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n       
     \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\":
     0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n       
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
     \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
@@ -835,7 +835,7 @@ MonoBehaviour:
     0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n       
     \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
     0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
-    \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\":
+    \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
     0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
     \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m322\",\r\n       
@@ -856,7 +856,7 @@ MonoBehaviour:
     \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\":
     0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
     \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
-    0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n       
+    0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n       
     \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m332\",\r\n       
@@ -878,7 +878,7 @@ MonoBehaviour:
     0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n       
     \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
     0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
-    \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\":
+    \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
     0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
     \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m333\",\r\n       
@@ -901,7 +901,7 @@ MonoBehaviour:
     \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n       
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
     \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
@@ -926,7 +926,7 @@ MonoBehaviour:
     0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n       
     \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
     0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
-    \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\":
+    \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
     0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
     \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m443\",\r\n       
@@ -952,7 +952,7 @@ MonoBehaviour:
     \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\":
     0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
     \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
-    0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n       
+    0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n       
     \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m444\",\r\n       
@@ -979,7 +979,7 @@ MonoBehaviour:
     0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n       
     \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
     0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
-    \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\":
+    \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
     0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
     \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m544\",\r\n       
@@ -1007,7 +1007,7 @@ MonoBehaviour:
     \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n       
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
     \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
@@ -1037,7 +1037,7 @@ MonoBehaviour:
     0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n       
     \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
     0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
-    \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\":
+    \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
     0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
     \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      }\r\n    ],\r\n    \"2\": [\r\n      {\r\n        \"moduleName\":
@@ -1050,7 +1050,7 @@ MonoBehaviour:
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
     0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n       
-    \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
+    \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
     0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
     \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
     }\r\n    ],\r\n    \"3\": [\r\n      {\r\n        \"moduleName\": \"missile_t1\",\r\n       
@@ -1062,7 +1062,7 @@ MonoBehaviour:
     \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n       
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
     \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"4\": [\r\n      {\r\n       
@@ -1075,7 +1075,7 @@ MonoBehaviour:
     50.0,\r\n        \"airAttack\": 10.0,\r\n        \"airAttackRange\": 4.0,\r\n       
     \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
     10,\r\n        \"airDetectRadius\": 10.0,\r\n        \"airAvoidRadius\": 2.0,\r\n       
-    \"airAdditionalDelay\": 0.1,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
+    \"airDisrupt\": 0.1,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
     0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
     \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
     }\r\n    ],\r\n    \"5\": [\r\n      {\r\n        \"moduleName\": \"shield_t1\",\r\n       
@@ -1087,7 +1087,7 @@ MonoBehaviour:
     \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airAdditionalDelay\": 0.0,\r\n       
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
     \"shieldGauge\": 100.0,\r\n        \"shieldDelay\": 5.0,\r\n        \"shieldRegenRate\":
     5.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"6\": [\r\n      {\r\n       
@@ -1100,7 +1100,7 @@ MonoBehaviour:
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
     0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n       
-    \"airAdditionalDelay\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
+    \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
     0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 1,\r\n       
     \"interceptorDelay\": 5.0,\r\n        \"interceptorRegenRate\": 5.0\r\n     
     }\r\n    ]\r\n  }\r\n}"

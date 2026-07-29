@@ -52,16 +52,9 @@ public class LauncherAircraft : LauncherBase
         // 출격 시 공격 배율 조립 — airAttack은 원본 유지, 배율만 airAttackMultiplier에 저장 (귀환 시 UpdateAircraftInfo로 1f 원복)
         SpaceShip carrierShip = m_moduleHanger.GetSpaceShip();
         SpaceFleet ownerFleet = carrierShip != null ? carrierShip.m_ownerFleet : null;
-        bool aircraftTacticOn = ownerFleet != null
-            && ownerFleet.m_fleetInfo != null
-            && (ownerFleet.m_fleetInfo.tacticOptions & 4) != 0;
-        GameSettings settings = DataManager.Instance.m_dataTableConfig.gameSettings;
-        float tacticMultiplier    = aircraftTacticOn == true ? settings.aircraftTacticDamageMultiplier : 1f;
         float shipCountMultiplier = ownerFleet != null ? ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = ownerFleet != null ? ownerFleet.GetFormationAttackMultiplier() : 1f;
-        aircraftInfo.airAttackMultiplier = tacticMultiplier * shipCountMultiplier * formationMultiplier;
-        if (aircraftTacticOn == true)
-            aircraftInfo.airAmmo = Mathf.RoundToInt(aircraftInfo.airAmmoMax * settings.aircraftTacticAmmoMultiplier);
+        aircraftInfo.airAttackMultiplier = shipCountMultiplier * formationMultiplier;
 
         SoundManager.Instance.PlayFX(EFx.Aircraft_Launch, transform.position);
 

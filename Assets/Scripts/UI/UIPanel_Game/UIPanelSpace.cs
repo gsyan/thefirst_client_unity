@@ -1,115 +1,29 @@
-// 우주 공간 UI 패널 — 탭 시스템 초기화, UITabFleetComposition 탭 시 카메라 viewport 애니메이션, 모듈 선택 자동 전환
-using System.Collections;
+// 우주 공간 UI 패널 — 잔존 TabSystem(tab_ship/tab_pvp/tab_calandar 등 미전환 레거시) 초기화, 3D 모듈 선택 자동 전환.
+// 진입 버튼(COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION)은 UIManager의 오버레이 패널 카운트가 0일 때(기본 상태)만
+// 노출됨(OnOverlayPanelActiveChanged). COMMANDER/SETTINGS/EXPLORATION/FLEET 등은 이제 전부 독립 UIPanelBase 프리팹이라
+// 이 스크립트가 그 참조를 들고 있지 않음 — 각자가 UIManager에 스스로 등록되고, 서로 UIManager를 통해서만 상호작용함
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIPanelSpace : UIPanelBase
 {
     [Header("Tab System")]
     public TabSystem m_tabSystem;
 
-    [Header("Layout Animation (UITabFleetComposition)")]
-    public float m_animDuration = 0.3f;
-
-    // UITabFleetComposition 탭 인덱스 및 RectTransform (카메라 뷰포트용) — 예전 UITabShip 전용이던 걸 재사용
-    private int m_moduleTabIndex = -1;
-    private RectTransform m_shipTabRect;
-    private bool m_isUIOpen = false;
-    private Coroutine m_viewportCoroutine;
-
-    // 각 탭 anchorMin.x 기준 카메라 뷰포트 너비
-    private float m_openCameraWidth;
-
-    // 카메라 rect(viewport)가 축소되는 동안 그 바깥 영역(경계면 3D 잔상)을 가리는 배경
-    // 탭 alpha 페이드(TabSystem.AnimatePanel)와 별도 오브젝트라 페이드 타이밍에 영향받지 않음
-    private RectTransform m_cameraViewportBgRect;
-    private Image m_cameraViewportBgImage;
+    [Header("진입 버튼 그룹 (기본 상태에서만 노출)")]
+    [SerializeField] private GameObject m_tapButtons; // COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION 진입 버튼 컨테이너 — 오버레이 패널이 하나라도 열리면 숨김
 
     public override void InitializeUIPanel()
     {
-        InitializeUIPanelSpace();
-    }
-
-    private void InitializeUIPanelSpace()
-    {
         m_tabSystem.InitializeTabBases();
-
-        for (int i = 0; i < m_tabSystem.tabs.Count; i++)
-        {
-            var tabData = m_tabSystem.tabs[i];
-            if (tabData.tabPanel == null) continue;
-            if (tabData.tabPanel.TryGetComponent<UITabFleetComposition>(out _) == false) continue;
-            m_moduleTabIndex = i;
-            m_shipTabRect = tabData.tabPanel.GetComponent<RectTransform>();
-            tabData.deferReveal = true; // 카메라 viewport 애니메이션이 끝난 뒤에 보이도록 — Co_AnimateViewport에서 RevealDeferredPanel 호출
-        }
-
-        EventManager.Subscribe_TabSelectionChanged(OnTabSelectionChanged);
-
-        m_openCameraWidth = ComputeOpenCameraWidth();
-
-        CreateCameraViewportBackground();
-        SetViewport(open:false);
-    }
-
-    // m_shipTabRect(현재 UITabFleetComposition 패널) 좌측 경계의 실제 스크린 좌표 기준으로 카메라 viewport 비율 계산
-    // Screen Space - Overlay 캔버스는 world 좌표가 곧 스크린 픽셀 좌표와 1:1이라
-    // CanvasScaler 스케일팩터/레퍼런스 해상도와 무관하게 항상 정확한 비율이 나옴
-    private float ComputeOpenCameraWidth()
-    {
-        if (m_shipTabRect == null) return 1f;
-
-        Vector3[] corners = new Vector3[4];
-        m_shipTabRect.GetWorldCorners(corners);
-        float leftEdgeScreenX = corners[0].x;
-
-        return Mathf.Clamp01(leftEdgeScreenX / Screen.width);
-    }
-
-    // 탭 콘텐츠보다 먼저(가장 아래) 그려지도록 UIPanelSpace 최상위의 첫 자식으로 생성
-    private void CreateCameraViewportBackground()
-    {
-        GameObject bgObj = new GameObject("CameraViewportBg");
-        m_cameraViewportBgRect = bgObj.AddComponent<RectTransform>();
-        bgObj.AddComponent<CanvasRenderer>();
-        m_cameraViewportBgImage = bgObj.AddComponent<Image>();
-        m_cameraViewportBgImage.color = Color.black;
-        m_cameraViewportBgImage.raycastTarget = false;
-
-        m_cameraViewportBgRect.SetParent(transform, false);
-        m_cameraViewportBgRect.SetAsFirstSibling();
-        m_cameraViewportBgRect.anchorMin = new Vector2(1f, 0f);
-        m_cameraViewportBgRect.anchorMax = Vector2.one;
-        m_cameraViewportBgRect.offsetMin = Vector2.zero;
-        m_cameraViewportBgRect.offsetMax = Vector2.zero;
-
-        bgObj.SetActive(false);
-    }
-
-    // 카메라 rect width에 맞춰 배경이 덮는 영역(camWidth ~ 1)을 갱신
-    private void UpdateCameraViewportBackground(float camWidth)
-    {
-        if (m_cameraViewportBgRect == null) return;
-
-        if (camWidth >= 1f)
-        {
-            m_cameraViewportBgRect.gameObject.SetActive(false);
-            return;
-        }
-
-        m_cameraViewportBgRect.gameObject.SetActive(true);
-        Vector2 anchorMin = m_cameraViewportBgRect.anchorMin;
-        anchorMin.x = camWidth;
-        m_cameraViewportBgRect.anchorMin = anchorMin;
     }
 
     public override void OnShowUIPanel()
     {
-        CameraController.Instance.SetShipSelectionEnabled(true);
-        EventManager.Subscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
+        EventManager.Subscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
         EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
+        EventManager.Subscribe_OverlayPanelActiveChanged(OnOverlayPanelActiveChanged);
         // CheckAndClaimPendingStageRewards(); // 서버 claimPendingStageRewards 주석처리(구 ZoneStageConfig 제거)로 임시 비활성화
         // CheckAndClaimPvpSeasonReward(); // PvP 주석처리로 임시 비활성화
         m_tabSystem.ForceActivateTab();
@@ -117,22 +31,14 @@ public class UIPanelSpace : UIPanelBase
 
     public override void OnHideUIPanel()
     {
-        CameraController.Instance.SetShipSelectionEnabled(false);
-        EventManager.Unsubscribe_SpaceShipModuleSelected(OnModuleSelectedAutoTabSwitch);
+        EventManager.Unsubscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
         EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Unsubscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Unsubscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
+        EventManager.Unsubscribe_OverlayPanelActiveChanged(OnOverlayPanelActiveChanged);
         m_tabSystem.ForceDeactivateTab();
 
-        //SetTabNavVisible(true);
-        SetViewport(open:false);
-
         CameraController.Instance.SetTargetOfCameraController(ObjectManager.Instance.GetMyFleet().transform);
-    }
-
-    private void OnDestroy()
-    {
-        EventManager.Unsubscribe_TabSelectionChanged(OnTabSelectionChanged);
     }
 
     // ── 미수령 존 보상 복구 ───────────────────────────────────────────────────
@@ -230,92 +136,46 @@ public class UIPanelSpace : UIPanelBase
         DailyBonusManager.Instance.CheckAndShowDailyRewardPopup();
     }
 
-    private void OnTabSelectionChanged(string systemName, int tabIndex)
-    {
-        if (systemName != m_tabSystem.GetSystemName()) return;
-        bool shouldShrinkCamera = tabIndex == m_moduleTabIndex;
-        if (shouldShrinkCamera == m_isUIOpen) return;
-
-        float targetWidth = tabIndex == m_moduleTabIndex ? m_openCameraWidth : 1f;
-
-        m_isUIOpen = shouldShrinkCamera;
-        if (m_viewportCoroutine != null)
-            StopCoroutine(m_viewportCoroutine);
-        m_viewportCoroutine = StartCoroutine(Co_AnimateViewport(shouldShrinkCamera, targetWidth));
-    }
-
+    // 오버레이 패널을 닫는 로직은 UIManager 자신이 전역으로 처리(UIManager.OnEmptySpaceTapped) —
+    // UIPanelSpace는 여기 남아있는 레거시 TabSystem 탭(tab_ship/tab_pvp/tab_calandar)만 정리
     private void OnEmptySpaceTapped()
     {
         if (m_tabSystem.GetCurrentActiveTab() >= 0)
             m_tabSystem.SwitchToTab(-1);
     }
 
-    // 카메라 viewport width 애니메이션
-    private IEnumerator Co_AnimateViewport(bool open, float openCameraWidth)
+    // 오버레이 패널(메인 패널이 아닌 UIPanelBase, VIP 팝오버 제외)이 하나라도 열리면 진입 버튼들을 숨기고, 전부 닫히면 다시 보임 —
+    // "탭 버튼은 기본 상태(아무 화면도 안 열린 상태)에서만 보인다"는 규칙을 UIManager의 오버레이 카운트 하나로 통합 처리
+    private void OnOverlayPanelActiveChanged(bool isActive)
     {
-        float startCamWidth = CameraController.Instance.GetViewportWidth();
-        float targetCamWidth = open ? openCameraWidth : 1f;
-
-        float elapsed = 0f;
-        while (elapsed < m_animDuration)
-        {
-            elapsed += Time.unscaledDeltaTime;
-            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / m_animDuration));
-
-            float camWidth = Mathf.Lerp(startCamWidth, targetCamWidth, t);
-            CameraController.Instance.SetViewportWidth(camWidth);
-            UpdateCameraViewportBackground(camWidth);
-            EventManager.TriggerCameraViewportChanged(Mathf.InverseLerp(1f, openCameraWidth, camWidth));
-
-            yield return null;
-        }
-
-        SetViewport(open, openCameraWidth);
-        if (open == true)
-        {
-            m_tabSystem.RevealDeferredPanel(m_moduleTabIndex);
-
-            // deferReveal로 인해 비활성 상태에서 세팅됐던 3열 데이터/레이아웃을, 패널이 실제로 보이는 이 시점에 재계산
-            UITabFleetComposition tabFleetComposition = m_shipTabRect.GetComponent<UITabFleetComposition>();
-            if (tabFleetComposition != null)
-                tabFleetComposition.RefreshFleetComposition();
-        }
-        m_viewportCoroutine = null;
+        if (m_tapButtons != null)
+            m_tapButtons.SetActive(isActive == false);
     }
 
-    private void SetViewport(bool open, float openCameraWidth = 0f)
-    {
-        if (openCameraWidth <= 0f) openCameraWidth = m_openCameraWidth;
-        float camWidth = open ? openCameraWidth : 1f;
-        CameraController.Instance.SetViewportWidth(camWidth);
-        UpdateCameraViewportBackground(camWidth);
-        EventManager.TriggerCameraViewportChanged(open ? 1f : 0f);
-    }
-
-    // private void SetTabNavVisible(bool visible)
-    // {
-    //     for (int i = 0; i < m_tabSystem.tabs.Count; i++)
-    //     {
-    //         var btn = m_tabSystem.tabs[i].tabButton;
-    //         if (btn != null)
-    //             btn.gameObject.SetActive(visible);
-    //     }
-    // }
-
-    // 모듈이 선택될 때만 UITabFleetComposition 으로 자동 전환 (함선 클릭만으로는 전환 안 함 — 모듈까지 맞아야 전환됨, 함선 터치만으로도 열려야 하면 후속 조정 필요)
-    // 튜토리얼 진행 중에는 자동 전환 안 함 — 튜토리얼 스텝이 preActionTabName 등으로 탭 전환을 직접 제어함
-    private void OnModuleSelectedAutoTabSwitch(SpaceShip ship, ModuleBase module)
+    // 내 함선 클릭(모듈 명중 여부 무관) 시 함대편성 패널로 자동 전환하며 그 함선을 선택 상태로 표시
+    // 튜토리얼 진행 중에는 자동 전환 안 함 — 튜토리얼 스텝이 preActionPanelName 등으로 화면 전환을 직접 제어함
+    private void OnShipSelectedAutoTabSwitch(SpaceShip ship)
     {
         if (TutorialManager.Instance != null && TutorialManager.Instance.IsPlaying) return;
-        if (m_moduleTabIndex < 0) return;
-        if (m_tabSystem.GetCurrentActiveTab() == m_moduleTabIndex) return;
-        m_tabSystem.SwitchToTab(m_moduleTabIndex);
+
+        const string panelName = "UIPanelFleetComposition";
+        if (UIManager.Instance.GetCurrentActivePanelName() != panelName)
+            UIManager.Instance.ShowPanel(panelName);
+
+        UIPanelFleetComposition panel = UIManager.Instance.GetPanel<UIPanelFleetComposition>(panelName);
+        if (panel != null)
+            panel.SelectPlacedShipByPositionIndex(ship.m_shipInfo.positionIndex);
     }
 
-    // 튜토리얼 dim 없는 스텝에서 상단 탭 버튼(Fleet/Ship/Settings/Pvp/Exploration) 클릭 차단 — 3D 카메라 조작은 별개라 영향 없음
+    // 튜토리얼 dim 없는 스텝에서 상단 진입 버튼(Commander/Fleet/Settings/Exploration 등) 클릭 차단 — 3D 카메라 조작은 별개라 영향 없음
     private void OnTutorialGeneralUIBlockedChanged(bool isBlocked)
     {
         m_tabSystem.SetTabButtonsInteractable(!isBlocked);
+
+        if (m_tapButtons == null) return;
+        var entryButtons = m_tapButtons.GetComponentsInChildren<UIPanelEntryButton>(true);
+        for (int i = 0; i < entryButtons.Length; i++)
+            entryButtons[i].SetInteractable(!isBlocked);
     }
 
 }

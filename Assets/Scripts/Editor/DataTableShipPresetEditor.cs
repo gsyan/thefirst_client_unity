@@ -248,14 +248,14 @@ public class DataTableShipPresetEditor : Editor
         EditorGUILayout.LabelField("Beam", EditorStyles.boldLabel);
         DrawWeaponSlots(alloc, "beamModuleSubType", "beam_", "Beam", GetSlotCount(slotCounts, EModuleType.beam),
             "beamAttackPoints", "beamFireRatePoints", "beamProjectileSpeedPoints", null,
-            formula.beam.baseAttack, formula.beam.attackPerPoint, formula.beam.baseAttackCool, formula.beam.attackCoolReductionPerPoint, formula.beam.attackCoolFloor,
-            formula.beam.baseProjectileSpeed, formula.beam.projectileSpeedPerPoint, 0f, 0f);
+            formula.beam.attackPerPoint, formula.beam.attackCoolReductionPerPoint, formula.beam.attackCoolFloor,
+            formula.beam.projectileSpeedPerPoint, 0f);
 
         EditorGUILayout.LabelField("Missile", EditorStyles.boldLabel);
         DrawWeaponSlots(alloc, "missileModuleSubType", "missile_", "Missile", GetSlotCount(slotCounts, EModuleType.missile),
             "missileAttackPoints", "missileFireRatePoints", "missileProjectileSpeedPoints", "missileSilencePoints",
-            formula.missile.baseAttack, formula.missile.attackPerPoint, formula.missile.baseAttackCool, formula.missile.attackCoolReductionPerPoint, formula.missile.attackCoolFloor,
-            formula.missile.baseProjectileSpeed, formula.missile.projectileSpeedPerPoint, formula.missile.baseSilenceTime, formula.missile.silenceTimePerPoint);
+            formula.missile.attackPerPoint, formula.missile.attackCoolReductionPerPoint, formula.missile.attackCoolFloor,
+            formula.missile.projectileSpeedPerPoint, formula.missile.silenceTimePerPoint);
 
         EditorGUILayout.LabelField("Hangar", EditorStyles.boldLabel);
         DrawHangarSlots(alloc, GetSlotCount(slotCounts, EModuleType.hanger), formula.hangar);
@@ -265,9 +265,13 @@ public class DataTableShipPresetEditor : Editor
         {
             EditorGUILayout.LabelField("Shield", EditorStyles.boldLabel);
             DrawShieldSubType(alloc);
-            DrawStatPoint(alloc.FindPropertyRelative("shieldGaugePoints"), "Shield Gauge Points", formula.shield.baseGauge, formula.shield.gaugePerPoint);
-            DrawStatPoint(alloc.FindPropertyRelative("shieldDelayPoints"), "Shield Delay Points", formula.shield.baseDelay, -formula.shield.delayReductionPerPoint, formula.shield.delayFloor);
-            DrawStatPoint(alloc.FindPropertyRelative("shieldRegenRatePoints"), "Shield Regen Rate Points", formula.shield.baseRegenRate, formula.shield.regenRatePerPoint);
+            ModuleData shieldModuleData = GetModuleDataForSubType(alloc.FindPropertyRelative("shieldModuleSubType").stringValue);
+            float baseShieldGauge = shieldModuleData != null ? shieldModuleData.shieldGauge : 0f;
+            float baseShieldDelay = shieldModuleData != null ? shieldModuleData.shieldDelay : 0f;
+            float baseShieldRegenRate = shieldModuleData != null ? shieldModuleData.shieldRegenRate : 0f;
+            DrawStatPoint(alloc.FindPropertyRelative("shieldGaugePoints"), "Shield Gauge Points", baseShieldGauge, formula.shield.gaugePerPoint);
+            DrawStatPoint(alloc.FindPropertyRelative("shieldDelayPoints"), "Shield Delay Points", baseShieldDelay, -formula.shield.delayReductionPerPoint, formula.shield.delayFloor);
+            DrawStatPoint(alloc.FindPropertyRelative("shieldRegenRatePoints"), "Shield Regen Rate Points", baseShieldRegenRate, formula.shield.regenRatePerPoint);
         }
 
         int interceptorSlotCount = GetSlotCount(slotCounts, EModuleType.interceptor);
@@ -279,12 +283,12 @@ public class DataTableShipPresetEditor : Editor
     }
 
     // 빔/미사일 공용 UI — 슬롯별로 서브타입 드롭다운(빈 칸=미장착) + 속성별 강화 포인트(공격력/연사력/발사체속도, 미사일은 침묵시간 추가)
-    // 장착 코스트는 선택된 서브타입(티어)마다 DataTableModule에서 즉시 조회해 표시
-    // baseSilenceTime/silenceTimePerPoint는 미사일 전용(빔은 0 전달, silenceField가 null이라 실제로는 그려지지 않음)
+    // 장착 코스트 및 기본 수치(공격력/쿨다운/발사체속도/침묵시간)는 선택된 서브타입(티어)마다 DataTableModule에서 즉시 조회해 표시 — formula는 포인트당 증감 계수만 제공
+    // silenceTimePerPoint는 미사일 전용(빔은 0 전달, silenceField가 null이라 실제로는 그려지지 않음)
     private void DrawWeaponSlots(SerializedProperty alloc, string subTypeField, string subTypePrefix, string slotLabel, int maxSlots,
         string attackField, string fireRateField, string projectileSpeedField, string silenceField,
-        float baseAttack, float attackPerPoint, float baseAttackCool, float attackCoolReductionPerPoint, float attackCoolFloor,
-        float baseProjectileSpeed, float projectileSpeedPerPoint, float baseSilenceTime, float silenceTimePerPoint)
+        float attackPerPoint, float attackCoolReductionPerPoint, float attackCoolFloor,
+        float projectileSpeedPerPoint, float silenceTimePerPoint)
     {
         SerializedProperty subTypeArray = alloc.FindPropertyRelative(subTypeField);
         SerializedProperty attackArray = alloc.FindPropertyRelative(attackField);
@@ -312,6 +316,12 @@ public class DataTableShipPresetEditor : Editor
             EditorGUILayout.LabelField($"장착 {GetInstallCostForSubType(subTypeProp.stringValue)}", GUILayout.Width(70));
             EditorGUILayout.EndHorizontal();
 
+            ModuleData moduleData = GetModuleDataForSubType(subTypeProp.stringValue);
+            float baseAttack = moduleData != null ? moduleData.attack : 0f;
+            float baseAttackCool = moduleData != null ? moduleData.attackCool : 0f;
+            float baseProjectileSpeed = moduleData != null ? moduleData.speed : 0f;
+            float baseSilenceTime = moduleData != null ? moduleData.silenceTime : 0f;
+
             using (new EditorGUI.DisabledScope(installed == false))
             {
                 EditorGUI.indentLevel++;
@@ -323,6 +333,14 @@ public class DataTableShipPresetEditor : Editor
                 EditorGUI.indentLevel--;
             }
         }
+    }
+
+    // 슬롯 서브타입(예: beam_t1_m1) → DataTableModule 원본 데이터 조회 — 강화 포인트 UI의 기본 수치 표시용
+    private ModuleData GetModuleDataForSubType(string subTypeName)
+    {
+        if (m_moduleTable == null || string.IsNullOrEmpty(subTypeName)) return null;
+        if (System.Enum.TryParse(subTypeName, out EModuleSubType subType) == false) return null;
+        return m_moduleTable.GetModuleDataFromTable(subType);
     }
 
     private void DrawHangarSlots(SerializedProperty alloc, int maxSlots, HangarFormula formula)
@@ -386,11 +404,15 @@ public class DataTableShipPresetEditor : Editor
             EditorGUILayout.LabelField($"장착 {GetInstallCostForSubType(subTypeProp.stringValue)}", GUILayout.Width(70));
             EditorGUILayout.EndHorizontal();
 
+            ModuleData moduleData = GetModuleDataForSubType(subTypeProp.stringValue);
+            float baseDelay = moduleData != null ? moduleData.interceptorDelay : 0f;
+            float baseRegenRate = moduleData != null ? moduleData.interceptorRegenRate : 0f;
+
             using (new EditorGUI.DisabledScope(installed == false))
             {
                 EditorGUI.indentLevel++;
-                DrawStatPoint(delayArray.GetArrayElementAtIndex(i), "Delay", formula.baseDelay, -formula.delayReductionPerPoint, formula.delayFloor);
-                DrawStatPoint(regenArray.GetArrayElementAtIndex(i), "Regen Rate", formula.baseRegenRate, formula.regenRatePerPoint);
+                DrawStatPoint(delayArray.GetArrayElementAtIndex(i), "Delay", baseDelay, -formula.delayReductionPerPoint, formula.delayFloor);
+                DrawStatPoint(regenArray.GetArrayElementAtIndex(i), "Regen Rate", baseRegenRate, formula.regenRatePerPoint);
                 EditorGUI.indentLevel--;
             }
         }

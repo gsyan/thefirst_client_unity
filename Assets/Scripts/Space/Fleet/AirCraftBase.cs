@@ -45,7 +45,7 @@ public abstract class AircraftBase : MonoBehaviour
     private void RegisterHarass(SpaceShip ship)
     {
         m_harassedShip = ship;
-        m_harassDelay  = m_aircraftInfo != null ? m_aircraftInfo.airAdditionalDelay : 0f;
+        m_harassDelay  = m_aircraftInfo != null ? m_aircraftInfo.airDisrupt : 0f;
         ship.RegisterHarassingAircraft(this, m_harassDelay);
     }
 
@@ -83,8 +83,8 @@ public abstract class AircraftBase : MonoBehaviour
         m_aircraftInfo = aircraftInfo;
         m_moduleHanger = moduleHanger;
         m_flightPath = ResolveFlightPath();
-        // 미사일 발사 전용 — speed(발사체 이동속도로 재사용), airAdditionalDelay만 사용
-        m_moduleData = new ModuleData { speed = aircraftInfo.airSpeed * 2f, airAdditionalDelay = aircraftInfo.airAdditionalDelay };
+        // 미사일 발사 전용 — speed(발사체 이동속도로 재사용), airDisrupt만 사용
+        m_moduleData = new ModuleData { speed = aircraftInfo.airSpeed * 2f, airDisrupt = aircraftInfo.airDisrupt };
 
         //m_aircraftInfo.attackPower = 0f; // test
         //m_aircraftInfo.moveSpeed = 100f; // test

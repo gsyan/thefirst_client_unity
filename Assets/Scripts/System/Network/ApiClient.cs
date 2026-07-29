@@ -26,8 +26,7 @@ public static class ApiServerUrl
     public const string Dev     = "http://192.168.0.51:8080/api";
 
     // test server
-    //public const string Test    = "http://192.168.0.61:8080/api";
-    public const string Test    = "https://dev.fidforge.com/api";
+    public const string Test    = "http://192.168.0.61:8080/api";
     
     // release server
     //public const string Release = "https://168.110.100.27/api";
@@ -550,6 +549,38 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<object>>(webRequest.downloadHandler.text);
     }
 
+    public async Task<ApiResponse<object>> PlaceFleetPresetShipAsync(FleetPresetPlaceShipRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<object>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/preset/place-ship", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<object>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<object>> SetFleetPresetShipFrontAsync(FleetPresetSetFrontRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<object>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/preset/set-front", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<object>>(webRequest.downloadHandler.text);
+    }
+
     public async Task<ApiResponse<FleetInstantRepairResponse>> FleetInstantRepairAsync()
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<FleetInstantRepairResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
@@ -685,6 +716,22 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<ClearExplorationCellResponse>>(webRequest.downloadHandler.text);
     }
 
+    public async Task<ApiResponse<GetActiveZoneRunProgressResponse>> GetActiveZoneRunProgressAsync(GetActiveZoneRunProgressRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<GetActiveZoneRunProgressResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/exploration/active-run-progress", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<GetActiveZoneRunProgressResponse>>(webRequest.downloadHandler.text);
+    }
+
     public async Task<ApiResponse<EscapeExplorationZoneResponse>> EscapeExplorationZoneAsync(EscapeExplorationZoneRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<EscapeExplorationZoneResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
@@ -699,6 +746,22 @@ public class ApiClient
 
         await SendRequestAsync(webRequest);
         return JsonConvert.DeserializeObject<ApiResponse<EscapeExplorationZoneResponse>>(webRequest.downloadHandler.text);
+    }
+
+    public async Task<ApiResponse<AbandonZoneRunResponse>> AbandonZoneRunAsync(AbandonZoneRunRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<AbandonZoneRunResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/exploration/abandon-run", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<AbandonZoneRunResponse>>(webRequest.downloadHandler.text);
     }
 
     public async Task<ApiResponse<IncreaseCommandPowerMaxResponse>> IncreaseCommandPowerMaxAsync(IncreaseCommandPowerMaxRequest request)

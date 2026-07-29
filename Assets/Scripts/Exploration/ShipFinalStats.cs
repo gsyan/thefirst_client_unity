@@ -21,6 +21,7 @@ public struct ShipFinalStats
     public float[] hangarFighterAttacks;
     public float[] hangarAmmos;
     public float[] hangarHealths;
+    public float[] hangarAirDisrupts;    // 함재기 명중 시 타겟 함선에 거는 공격 딜레이(교란) — 강화 대상 아닌 모듈 고정값
     public string[] hangarModuleSubType;
 
     public bool shieldInstalled;
@@ -30,4 +31,5 @@ public struct ShipFinalStats
 
     public float[] interceptorDelays;     // 장착된 요격체 슬롯 개수만큼
     public float[] interceptorRegenRates;
+    public string[] interceptorModuleSubType; // interceptorDelays와 인덱스 대응(compact) — 장착 서브타입
 }

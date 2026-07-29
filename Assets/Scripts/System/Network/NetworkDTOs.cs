@@ -48,6 +48,9 @@ public class ShipInfo
     public float beamMultiplier    = 1.0f;
     public float missileMultiplier = 1.0f;
     public float hangerMultiplier  = 1.0f;
+    // 프리셋 기반 함선 배치(탐사 그리드) — shipPresetId로 ShipPresetData 참조, isFront로 전/후위 배치
+    public string shipPresetId;
+    public bool isFront;
 }
 
 [System.Serializable]
@@ -106,18 +109,21 @@ public class CommanderInfo
 {
     public long commanderId;
     public string commanderName;
-    public int mineral;
+    public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
     public int commanderLevel;
-    public int exp;
+    public int exp;    
+    public int commandPowerMax;  // 탐험 함대 편성 지휘력 최대치 — IncreaseCommandPowerMaxRequest로 영구 증가
+    public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
+    public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)    
+    public int explorationZoneNumber;  // 진행 중인 탐험 런의 존 번호, 없으면 0
+    public string explorationCell;  // 진행 중인 탐험 런의 마지막 클리어 셀 "row-col"(0-indexed, ZoneRun.currentCell과 동일 포맷), 없으면 빈 문자열
+    public int mineral;
     public int modulePoint;
     public int modulePointMaxGot;    // 누적 획득량 (리셋 환급 반영)
     public int pvpPoint;
     public int pvpPointMaxGot;
     public string pvpPointExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
-    public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
-    public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
-    public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
-    public int commandPowerMax;  // 탐험 함대 편성 지휘력 최대치 — IncreaseCommandPowerMaxRequest로 영구 증가
+    public int explorationPoint;    // 보유(확정 지급된) 탐험 포인트 — 적립(ZoneRun.explorationPointBanked)과 별개
 }
 
 
@@ -162,7 +168,7 @@ public class AuthResponse
 {
     public string accessToken;
     public string refreshToken;
-    public TempFleetInfo activeFleetInfo;
+    public FleetInfo activeFleetInfo;
     public CommanderInfo commanderInfo;
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
     public VipStatusResponse vipStatus;   // 로그인/캐릭터 선택 시 VIP 상태 포함
@@ -410,34 +416,20 @@ public class PendingStageRewardResponse
 
 #region Exploration Grid Data Classes ##########################################################################
 [System.Serializable]
-public class TempShipInfo
-{
-    public string shipPresetId;
-    public bool isFront;
-}
-
-[System.Serializable]
-public class TempFleetInfo
-{
-    // 기존 FleetInfo/ShipInfo는 대격변으로 폐기 예정 — TempFleetInfo가 최종적으로 그 자리를 대체할 임시 명칭
-    public List<TempShipInfo> ships;
-}
-
-[System.Serializable]
 public class EnterExplorationCellRequest
 {
     public int zoneNumber;
-    public int cellX;
-    public int cellY;
-    public TempFleetInfo fleetInfo; // 전투시작 요청에 함대 배치 동봉 (별도 실시간 동기화 없음)
+    public int cellRow;
+    public int cellCol;
+    public FleetInfo fleetInfo; // 전투시작 요청에 함대 배치 동봉 (별도 실시간 동기화 없음)
 }
 
 [System.Serializable]
 public class EnterExplorationCellResponse
 {
     public int zoneNumber;
-    public int cellX;
-    public int cellY;
+    public int cellRow;
+    public int cellCol;
     public List<StageEnemyFleetSpawnConfig> enemyFleets;
 }
 
@@ -445,14 +437,25 @@ public class EnterExplorationCellResponse
 public class ClearExplorationCellRequest
 {
     public int zoneNumber;
-    public int cellX;
-    public int cellY;
+    public int cellRow;
+    public int cellCol;
 }
 
 [System.Serializable]
 public class ClearExplorationCellResponse
 {
     public int explorationPointGained; // 적 함대 총 성능포인트만큼 적립 (미확정 상태, 탈출 시 확정 정산)
+}
+
+[System.Serializable]
+public class GetActiveZoneRunProgressRequest { } // 진행 중인 탐험 런의 클리어 셀 목록 조회 — 커맨더당 IN_PROGRESS 런은 항상 1개뿐이라 zoneNumber 불필요
+
+[System.Serializable]
+public class GetActiveZoneRunProgressResponse
+{
+    public int zoneNumber;        // 진행 중인 런이 없으면 0
+    public string[] clearedCells; // "row-col"(0-indexed) 목록, 클리어 순서대로
+    public int explorationPointBanked; // 진행 중인 런의 적립(미확정) 탐험 포인트, 없으면 0
 }
 
 [System.Serializable]
@@ -467,6 +470,16 @@ public class EscapeExplorationZoneResponse
 {
     public int explorationPointGained;   // 확정 지급된 탐험 포인트
     public int explorationPointRemain;   // 확정 지급 후 은행 잔액
+}
+
+[System.Serializable]
+public class AbandonZoneRunRequest { } // 다른 존 도전 전 진행 중인 런을 명시적으로 포기 — 커맨더당 IN_PROGRESS 런은 항상 1개뿐이라 zoneNumber 불필요
+
+[System.Serializable]
+public class AbandonZoneRunResponse
+{
+    public int explorationPointGained; // 포기로 확정 지급된 탐험 포인트(50%)
+    public int explorationPointRemain; // 확정 지급 후 은행 잔액
 }
 
 [System.Serializable]
@@ -651,6 +664,23 @@ public class BodyHealthEntry
 {
     public int bodyIndex;
     public float currentHealth;
+}
+
+[System.Serializable]
+public class FleetPresetPlaceShipRequest
+{
+    // 함대편성(FleetComposition) 슬롯에 함선 배치/교체 시 저장 — isFront는 그 슬롯의 현재 전/후방 값을 그대로 실어보냄
+    public int slotIndex;
+    public string shipPresetId;
+    public bool isFront;
+}
+
+[System.Serializable]
+public class FleetPresetSetFrontRequest
+{
+    // 함대편성 슬롯의 전/후방 토글 저장
+    public int slotIndex;
+    public bool isFront;
 }
 
 [System.Serializable]

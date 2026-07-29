@@ -48,4 +48,17 @@ public class RowLabelValue : MonoBehaviour
     {
         if (m_value1 != null) m_value1.color = color;
     }
+
+    // 값이 즉시 바뀌지 않고 from -> to로 카운팅되는 롤링 연출(재화 텍스트와 동일한 느낌) — 라벨은 건드리지 않음
+    // GameObject가 비활성 상태면 코루틴을 시작할 수 없으므로(Unity가 에러 로그를 남김) 아예 시도하지 않음 —
+    // 값 자체는 호출부가 이미 갱신했을 것이고, 화면 반영은 패널이 다시 활성화될 때 호출부가 재호출해서 따라잡음
+    private Coroutine m_valueAnimCoroutine;
+    public void SetValueAnimated(long from, long to)
+    {
+        if (m_value1 == null) return;
+        if (gameObject.activeInHierarchy == false) return;
+
+        if (m_valueAnimCoroutine != null) StopCoroutine(m_valueAnimCoroutine);
+        m_valueAnimCoroutine = StartCoroutine(CommonUtility.AnimateCounterText(m_value1, from, to));
+    }
 }

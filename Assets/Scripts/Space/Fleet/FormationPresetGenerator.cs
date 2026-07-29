@@ -20,8 +20,8 @@ public static class FormationPresetGenerator
 
         // 정의된 타입은 명시 생성, 나머지 enum 값은 Linear와 동일한 기본값으로 생성
         CreateLinear(ref created, ref skipped);
-        CreateXDefensive(ref created, ref skipped);
-        CreateXOffensive(ref created, ref skipped);
+        CreateX(ref created, ref skipped);
+        CreateCross(ref created, ref skipped);
         CreateCircle(ref created, ref skipped);
 
         // EFormationType 중 위에서 처리되지 않은 값 → Linear 슬롯으로 기본 생성
@@ -79,61 +79,63 @@ public static class FormationPresetGenerator
     }
 
     // ────────────────────────────────────────────────────────────
-    // 대각 쌍 배치 (전방 우/좌 → 후방 우/좌 순으로 링 확장)
+    // X: 대각 쌍 배치, 링 확장 (xy만 사용, z는 함선별 전/후방 플래그로 결정)
     //   6       5
     //     2   1
     //       0
     //     4   3
     //   8       7
     // ────────────────────────────────────────────────────────────
-    static void CreateXDefensive(ref int created, ref int skipped)
+    static void CreateX(ref int created, ref int skipped)
     {
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
-        preset.formationType = EFormationType.x_defensive;
+        preset.formationType = EFormationType.x;
         preset.parseType = EFormationParseType.CubeGrid;
         preset.gridGap = new Vector3(0f, 0f, 0f);
-        preset.zPlacement = EZPlacement.Backward;
+        preset.zPlacement = EZPlacement.Center;
         preset.slots = new FormationSlot[]
         {
             new FormationSlot { positionIndex = 0, gridCoord = new Vector3Int( 0,  0, 0) },
-            new FormationSlot { positionIndex = 1, gridCoord = new Vector3Int(+1, +1, 1) },
-            new FormationSlot { positionIndex = 2, gridCoord = new Vector3Int(-1, +1, 1) },
-            new FormationSlot { positionIndex = 3, gridCoord = new Vector3Int(+1, -1, 1) },
-            new FormationSlot { positionIndex = 4, gridCoord = new Vector3Int(-1, -1, 1) },
-            new FormationSlot { positionIndex = 5, gridCoord = new Vector3Int(+2, +2, 2) },
-            new FormationSlot { positionIndex = 6, gridCoord = new Vector3Int(-2, +2, 2) },
-            new FormationSlot { positionIndex = 7, gridCoord = new Vector3Int(+2, -2, 2) },
-            new FormationSlot { positionIndex = 8, gridCoord = new Vector3Int(-2, -2, 2) },
+            new FormationSlot { positionIndex = 1, gridCoord = new Vector3Int(+1, +1, 0) },
+            new FormationSlot { positionIndex = 2, gridCoord = new Vector3Int(-1, +1, 0) },
+            new FormationSlot { positionIndex = 3, gridCoord = new Vector3Int(+1, -1, 0) },
+            new FormationSlot { positionIndex = 4, gridCoord = new Vector3Int(-1, -1, 0) },
+            new FormationSlot { positionIndex = 5, gridCoord = new Vector3Int(+2, +2, 0) },
+            new FormationSlot { positionIndex = 6, gridCoord = new Vector3Int(-2, +2, 0) },
+            new FormationSlot { positionIndex = 7, gridCoord = new Vector3Int(+2, -2, 0) },
+            new FormationSlot { positionIndex = 8, gridCoord = new Vector3Int(-2, -2, 0) },
         };
-        Save(preset, EFormationType.x_defensive, ref created, ref skipped);
+        Save(preset, EFormationType.x, ref created, ref skipped);
     }
 
     // ────────────────────────────────────────────────────────────
-    // X: Cross와 topology 동일, Z 스케일만 달라 보임
-    //    → gridCoord는 Cross와 같되 z 격자 1칸을 더 넓게 쓰고 싶으면
-    //      FormationPreview의 m_gridUnitSize를 진형별로 조절하거나
-    //      추후 per-axis 스케일 필드 추가
+    // Cross: 상하좌우 십자 배치, 링 확장 (xy만 사용, z는 함선별 전/후방 플래그로 결정)
+    //       6
+    //       2
+    //   8 4 0 3 7
+    //       1
+    //       5
     // ────────────────────────────────────────────────────────────
-    static void CreateXOffensive(ref int created, ref int skipped)
+    static void CreateCross(ref int created, ref int skipped)
     {
         var preset = ScriptableObject.CreateInstance<FormationPreset>();
-        preset.formationType = EFormationType.x_offensive;
+        preset.formationType = EFormationType.cross;
         preset.parseType = EFormationParseType.CubeGrid;
         preset.gridGap = new Vector3(0f, 0f, 0f);
-        preset.zPlacement = EZPlacement.Forward;
+        preset.zPlacement = EZPlacement.Center;
         preset.slots = new FormationSlot[]
         {
             new FormationSlot { positionIndex = 0, gridCoord = new Vector3Int( 0,  0, 0) },
-            new FormationSlot { positionIndex = 1, gridCoord = new Vector3Int(+1, +1, 1) },
-            new FormationSlot { positionIndex = 2, gridCoord = new Vector3Int(-1, +1, 1) },
-            new FormationSlot { positionIndex = 3, gridCoord = new Vector3Int(+1, -1, 1) },
-            new FormationSlot { positionIndex = 4, gridCoord = new Vector3Int(-1, -1, 1) },
-            new FormationSlot { positionIndex = 5, gridCoord = new Vector3Int(+2, +2, 2) },
-            new FormationSlot { positionIndex = 6, gridCoord = new Vector3Int(-2, +2, 2) },
-            new FormationSlot { positionIndex = 7, gridCoord = new Vector3Int(+2, -2, 2) },
-            new FormationSlot { positionIndex = 8, gridCoord = new Vector3Int(-2, -2, 2) },
+            new FormationSlot { positionIndex = 1, gridCoord = new Vector3Int( 0, -1, 0) },
+            new FormationSlot { positionIndex = 2, gridCoord = new Vector3Int( 0, +1, 0) },
+            new FormationSlot { positionIndex = 3, gridCoord = new Vector3Int(+1,  0, 0) },
+            new FormationSlot { positionIndex = 4, gridCoord = new Vector3Int(-1,  0, 0) },
+            new FormationSlot { positionIndex = 5, gridCoord = new Vector3Int( 0, -2, 0) },
+            new FormationSlot { positionIndex = 6, gridCoord = new Vector3Int( 0, +2, 0) },
+            new FormationSlot { positionIndex = 7, gridCoord = new Vector3Int(+2,  0, 0) },
+            new FormationSlot { positionIndex = 8, gridCoord = new Vector3Int(-2,  0, 0) },
         };
-        Save(preset, EFormationType.x_offensive, ref created, ref skipped);
+        Save(preset, EFormationType.cross, ref created, ref skipped);
     }
 
     // ────────────────────────────────────────────────────────────

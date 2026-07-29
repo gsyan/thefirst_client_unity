@@ -3,7 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Button + Checkmark + Text 로 구성된 토글 버튼
-// Awake 에서 자식 컴포넌트를 자동으로 찾음
+// Awake 에서 자식 컴포넌트를 자동으로 찾음 — 단, 비활성 계층에서 Instantiate된 직후(Awake가 아직 안 돈 시점) 바로
+// SetSelected() 등이 호출될 수 있어(예: deferReveal로 패널이 아직 안 보이는 동안 채워지는 리스트), 각 public 메서드 진입 시
+// EnsureInitialized()로 지연 초기화를 보장함
 public class ToggleButton : MonoBehaviour
 {
     public Button button;
@@ -19,9 +21,18 @@ public class ToggleButton : MonoBehaviour
     private TMP_Text  m_textDescription;
     private Image     m_checkmark;
     private Graphic[] m_graphics; // 색상 일괄 적용 대상 (checkmark 제외)
+    private bool      m_initialized;
 
     private void Awake()
     {
+        EnsureInitialized();
+    }
+
+    private void EnsureInitialized()
+    {
+        if (m_initialized == true) return;
+        m_initialized = true;
+
         m_colorSelected   = CommonUtility.PaletteColor(m_selectedColorKey);
         m_colorUnselected = CommonUtility.PaletteColor(m_unselectedColorKey);
         m_colorLocked     = CommonUtility.PaletteColor("State.Disabled");
@@ -51,6 +62,7 @@ public class ToggleButton : MonoBehaviour
 
     public void SetTexts(string nameKey, string descKey)
     {
+        EnsureInitialized();
         if (m_text != null)            CommonUtility.SetUILocText(m_text,            nameKey);
         if (m_textDescription != null) CommonUtility.SetUILocText(m_textDescription, descKey);
     }
@@ -58,6 +70,7 @@ public class ToggleButton : MonoBehaviour
     // descKey 에 {0} 포맷 플레이스홀더가 있을 때 값 주입
     public void SetTexts(string nameKey, string descKey, object descArg)
     {
+        EnsureInitialized();
         if (m_text != null) CommonUtility.SetUILocText(m_text, nameKey);
         if (m_textDescription != null)
             m_textDescription.text = string.Format(LocalizationManager.Instance.Get(descKey), descArg);
@@ -65,6 +78,7 @@ public class ToggleButton : MonoBehaviour
 
     public void SetSelected(bool selected)
     {
+        EnsureInitialized();
         Color c = selected ? m_colorSelected : m_colorUnselected;
         foreach (var g in m_graphics) g.color = c;
         if (m_checkmark != null) m_checkmark.gameObject.SetActive(selected);
@@ -73,6 +87,7 @@ public class ToggleButton : MonoBehaviour
     // 잠김 상태 표시 — 색은 Locked 팔레트로 고정, 체크마크는 잠김 상태에서의 기본값 표시용으로 별도 제어
     public void SetLockedVisual(bool checkmarkOn)
     {
+        EnsureInitialized();
         foreach (var g in m_graphics) g.color = m_colorLocked;
         if (m_checkmark != null) m_checkmark.gameObject.SetActive(checkmarkOn);
     }

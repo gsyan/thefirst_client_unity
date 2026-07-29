@@ -9,12 +9,12 @@ using UnityEngine.UI;
 // 확인/취소 팝업 설정 데이터
 public class ConfirmPopupConfig
 {
-    public string title;
     public string message;
     public string detailText;
     public List<(string icon, string value, Color? color)> resultRows;
     public bool resultRowsVertical; // true면 컨테이너당 1개씩 세로 배치
     public string resultSectionTitle = "RESULT"; // resultRows 섹션 헤더 텍스트
+    public List<ShipStatGaugeEntry> statGaugeRows; // 함선 스탯 게이지 목록(함대편성 배치가능 프리셋 클릭 등) — UISection과 별개로 m_sectionsRoot에 먼저 쌓임
     public List<(string icon, string value)> pvpOpponentRows; // STATUS 섹션 (GeneralBright1 색)
     public RequireStruct require;
     public CostStruct cost;
@@ -38,12 +38,15 @@ public class ConfirmPopupConfig
 public class UIPopupConfirm : UIPopupBase
 {
     [Header("Confirm Popup UI")]
-    public TMP_Text titleText;
     [SerializeField] private TMP_Text m_bodyText;
 
     [SerializeField] private RectTransform m_layoutRoot;
-    [SerializeField] private UISection m_sectionPrefab;
+    
+    [SerializeField] private RectTransform m_statsRoot;
+    [SerializeField] private UIStatGaugeRow m_statGaugeRowPrefab; // m_sectionsRoot는 VerticalLayoutGroup이라 UISection과 다른 프리팹을 섞어도 순서대로 쌓임
+
     [SerializeField] private RectTransform m_sectionsRoot;
+    [SerializeField] private UISection m_sectionPrefab;
 
     [SerializeField] private Button cancelButton;
     [SerializeField] private Image m_cancelImage;
@@ -64,6 +67,7 @@ public class UIPopupConfirm : UIPopupBase
     private Sprite m_defaultConfirmImage;
 
     private List<UISection> m_sectionCache = new List<UISection>();
+    private List<UIStatGaugeRow> m_statGaugeRowCache = new List<UIStatGaugeRow>();
 
     protected override void Awake()
     {
@@ -96,9 +100,7 @@ public class UIPopupConfirm : UIPopupBase
     public void ShowPopupConfirm(ConfirmPopupConfig config)
     {
         base.ShowPopup();
-        if (titleText != null)
-            titleText.text = config.title;
-
+        
         bool canConfirm = true;
         if (m_bodyText != null)
         {
@@ -106,6 +108,8 @@ public class UIPopupConfirm : UIPopupBase
             m_bodyText.text = bodyStr;
             m_bodyText.gameObject.SetActive(string.IsNullOrEmpty(bodyStr) == false);
         }
+
+        BuildStatGaugeRows(config.statGaugeRows);
 
         int sectionIdx = 0;
         BuildResultRows(config.resultRows, config.resultRowsVertical, config.resultSectionTitle, ref sectionIdx);
@@ -115,6 +119,7 @@ public class UIPopupConfirm : UIPopupBase
         BuildRefundSection(config.refundAmount, ref sectionIdx);
         BuildRewardSection(config.rewardAmounts, config.mineralVipMultiplier, ref sectionIdx);
         HideUnusedSections(sectionIdx);
+        if (m_sectionsRoot != null) m_sectionsRoot.gameObject.SetActive(sectionIdx > 0);
 
         if (requireMet == false) canConfirm = false;
         if (canAfford == false) canConfirm = false;
@@ -209,6 +214,59 @@ public class UIPopupConfirm : UIPopupBase
         return canAfford;
     }
 
+    // 함선 스탯 게이지 목록 — UISection 풀과 별개 캐시로 관리, m_statsRoot에 별도로 쌓임(섹션들과 부모가 달라 순서 무관)
+    private void BuildStatGaugeRows(List<ShipStatGaugeEntry> entries)
+    {
+        if (entries == null || entries.Count <= 0)
+        {
+            HideUnusedStatGaugeRows(0);
+            if (m_statsRoot != null)
+                m_statsRoot.gameObject.SetActive(false);
+            return;
+        }
+
+        if (m_statsRoot != null)
+            m_statsRoot.gameObject.SetActive(true);
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            UIStatGaugeRow row = GetOrCreateStatGaugeRow(i);
+            ShipStatGaugeEntry entry = entries[i];
+            switch (entry.mode)
+            {
+                case EGaugeMode.Normal:
+                    row.SetGauge(entry.label, entry.value, entry.gaugeMax);
+                    break;
+                case EGaugeMode.Reverse:
+                    row.SetReverseGauge(entry.label, entry.rawValueText, entry.reverseFillAmount);
+                    break;
+                default:
+                    row.SetValueOnly(entry.label, entry.rawValueText);
+                    break;
+            }
+        }
+
+        HideUnusedStatGaugeRows(entries.Count);
+    }
+
+    private UIStatGaugeRow GetOrCreateStatGaugeRow(int idx)
+    {
+        if (idx < m_statGaugeRowCache.Count)
+        {
+            m_statGaugeRowCache[idx].gameObject.SetActive(true);
+            return m_statGaugeRowCache[idx];
+        }
+        UIStatGaugeRow row = Instantiate(m_statGaugeRowPrefab, m_statsRoot);
+        m_statGaugeRowCache.Add(row);
+        return row;
+    }
+
+    private void HideUnusedStatGaugeRows(int usedCount)
+    {
+        for (int i = usedCount; i < m_statGaugeRowCache.Count; i++)
+            m_statGaugeRowCache[i].Hide();
+    }
+
     private void BuildResultRows(List<(string icon, string value, Color? color)> rows, bool vertical, string title, ref int sectionIdx)
     {
         if (rows == null || rows.Count <= 0)
@@ -275,11 +333,12 @@ public class UIPopupConfirm : UIPopupBase
         }
     }
 
+    // rewardAmounts 규약: index0=exp, index1=explorationPoint, index2=pvpPoint(미네랄/모듈포인트는 이 팝업에서 제거됨)
     private static Color GetRewardColor(int rewardIndex)
     {
-        if (rewardIndex == 0) return CommonUtility.PaletteColor("Mineral");
-        if (rewardIndex == 1) return CommonUtility.PaletteColor("Commander");
-        if (rewardIndex == 2) return CommonUtility.PaletteColor("ModulePoint");
+        if (rewardIndex == 0) return CommonUtility.PaletteColor("Commander");
+        if (rewardIndex == 1) return CommonUtility.PaletteColor("GeneralBright1"); // 탐험 포인트 전용 팔레트 키가 아직 없어 기본색 사용
+        if (rewardIndex == 2) return CommonUtility.PaletteColor("PvpPoint");
         return CommonUtility.PaletteColor("GeneralBright1");
     }
 
@@ -318,7 +377,13 @@ public class UIPopupConfirm : UIPopupBase
             if (m_sectionCache[i].gameObject.activeSelf == true)
                 m_sectionCache[i].RebuildLayout();
         }
+        for (int i = 0; i < m_statGaugeRowCache.Count; i++)
+        {
+            if (m_statGaugeRowCache[i].gameObject.activeSelf == true)
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_statGaugeRowCache[i].transform as RectTransform);
+        }
         if (m_sectionsRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_sectionsRoot);
+        if (m_statsRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsRoot);
         if (cancelButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(cancelButton.GetComponent<RectTransform>());
         if (confirmButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(confirmButton.GetComponent<RectTransform>());
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);

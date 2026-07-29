@@ -310,10 +310,6 @@ MonoBehaviour:
     m_Localized: Commander
     m_Metadata:
       m_Items: []
-  - m_Id: 26465664587661312
-    m_Localized: Error
-    m_Metadata:
-      m_Items: []
   - m_Id: 26480402604359680
     m_Localized: Lv.{0} (Current Lv.{1})
     m_Metadata:
@@ -784,10 +780,6 @@ MonoBehaviour:
     m_Localized: Mineral enhancements have been reset after stage clear.
     m_Metadata:
       m_Items: []
-  - m_Id: 48702146362605568
-    m_Localized: Update Required
-    m_Metadata:
-      m_Items: []
   - m_Id: 48702148229070848
     m_Localized: An update to version {0} is required.
     m_Metadata:
@@ -852,10 +844,6 @@ MonoBehaviour:
     m_Localized: Module Point
     m_Metadata:
       m_Items: []
-  - m_Id: 51571244805259264
-    m_Localized: COMMANDER LEVEL UP
-    m_Metadata:
-      m_Items: []
   - m_Id: 51571244805259265
     m_Localized: PVP Locked
     m_Metadata:
@@ -899,10 +887,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 56724262160826368
     m_Localized: TACTICS
-    m_Metadata:
-      m_Items: []
-  - m_Id: 56724262198575104
-    m_Localized: Under Maintenance
     m_Metadata:
       m_Items: []
   - m_Id: 56724262198575105
@@ -993,10 +977,6 @@ MonoBehaviour:
     m_Localized: Aircraft Ammo
     m_Metadata:
       m_Items: []
-  - m_Id: 57098646914465799
-    m_Localized: Additional Delay
-    m_Metadata:
-      m_Items: []
   - m_Id: 57108516506042368
     m_Localized: EXPLORATION
     m_Metadata:
@@ -1033,28 +1013,132 @@ MonoBehaviour:
     m_Localized: Command Power
     m_Metadata:
       m_Items: []
-  - m_Id: 59903847635484672
+  - m_Id: 61639704113446912
     m_Localized: Front
     m_Metadata:
       m_Items: []
-  - m_Id: 59903847673233408
+  - m_Id: 61639704184750080
     m_Localized: Rear
     m_Metadata:
       m_Items: []
-  - m_Id: 59903847673233409
+  - m_Id: 61639704184750081
     m_Localized: Placed Ships
     m_Metadata:
       m_Items: []
-  - m_Id: 59907776112885760
+  - m_Id: 61639704184750082
+    m_Localized: This slot is locked. Raise your commander level to unlock it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61639704184750083
+    m_Localized: Not enough command power.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61639704184750084
+    m_Localized: This ship preset is unavailable.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61639704184750085
     m_Localized: Fleet
     m_Metadata:
       m_Items: []
-  - m_Id: 59907776146440192
+  - m_Id: 61639704184750086
     m_Localized: Stats
     m_Metadata:
       m_Items: []
-  - m_Id: 59907776146440193
+  - m_Id: 61639704184750087
     m_Localized: Available Ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61639704193138688
+    m_Localized: COMMANDER LEVEL UP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888225939456
+    m_Localized: Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659712
+    m_Localized: Turn Rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659713
+    m_Localized: Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659714
+    m_Localized: Beam DPS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659715
+    m_Localized: Missile DPS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659716
+    m_Localized: Missile Silence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659717
+    m_Localized: "Fighter\u2192Ship DPS"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659718
+    m_Localized: "Fighter\u2192Air DPS"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659719
+    m_Localized: Fighter Ammo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659720
+    m_Localized: Fighter Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659721
+    m_Localized: Fighter Disrupt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659722
+    m_Localized: Shield Gauge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659723
+    m_Localized: Shield Restart Delay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659724
+    m_Localized: Shield Regen Rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659725
+    m_Localized: Interceptor Reload Delay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888284659726
+    m_Localized: Interceptor Regen Rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61660888288854016
+    m_Localized: Disrupt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61708245596504064
+    m_Localized: Banked Exploration Point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61771964439461888
+    m_Localized: Exploration Point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61771964498182144
+    m_Localized: Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61771964498182145
+    m_Localized: Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61771964498182146
+    m_Localized: Cost (Command Power)
     m_Metadata:
       m_Items: []
   references:

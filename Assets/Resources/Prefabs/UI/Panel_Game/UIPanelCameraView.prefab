@@ -711,8 +711,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
-  m_activeColorKey: GeneralBright1
-  m_inactiveColorKey: GeneralDark2
 --- !u!1 &1987626385150569402
 GameObject:
   m_ObjectHideFlags: 0
@@ -1005,9 +1003,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1900696506111165170}
+  - component: {fileID: 5913999584975766683}
   - component: {fileID: 1865977924422556244}
   - component: {fileID: 3502012010287837997}
-  - component: {fileID: 5913999584975766683}
   - component: {fileID: 3861254330700913340}
   - component: {fileID: 3023075592107134432}
   - component: {fileID: 5185698081354431222}
@@ -1039,6 +1037,31 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5913999584975766683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3510599058195240527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b86e28455c5792409eaf8e100072e59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelName: 
+  bMainPanel: 0
+  bHideCurWhenActive: 0
+  bCameraMove: 0
+  bAffectsOverlayCount: 1
+  m_retreatButton: {fileID: 3627323216545313648}
+  buttonGroup: {fileID: 3861254330700913340}
+  m_speedButton: {fileID: 1910699175455065185}
+  m_speedLabel: {fileID: 7565305902548190469}
+  m_zoneNameText: {fileID: 251050619479448333}
+  m_tacticsButtonContainer: {fileID: 4137567435401370870}
+  m_tacticsFormationButton: {fileID: 8204658802466179102}
+  m_tacticsFormationImage: {fileID: 4602633928132632690}
 --- !u!222 &1865977924422556244
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1077,30 +1100,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5913999584975766683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3510599058195240527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b86e28455c5792409eaf8e100072e59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelName: 
-  bMainPanel: 0
-  bHideCurWhenActive: 0
-  bCameraMove: 0
-  m_retreatButton: {fileID: 3627323216545313648}
-  buttonGroup: {fileID: 3861254330700913340}
-  m_speedButton: {fileID: 1910699175455065185}
-  m_speedLabel: {fileID: 7565305902548190469}
-  m_zoneNameText: {fileID: 251050619479448333}
-  m_tacticsButtonContainer: {fileID: 4137567435401370870}
-  m_tacticsFormationButton: {fileID: 8204658802466179102}
-  m_tacticsFormationImage: {fileID: 4602633928132632690}
 --- !u!114 &3861254330700913340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1296,8 +1295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
-  m_activeColorKey: GeneralBright1
-  m_inactiveColorKey: GeneralDark2
 --- !u!1 &3992603764765079982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1719,8 +1716,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
-  m_activeColorKey: GeneralBright1
-  m_inactiveColorKey: GeneralDark2
 --- !u!1 &5884739546049815496
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,8 +1987,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
-  m_activeColorKey: GeneralBright1
-  m_inactiveColorKey: GeneralDark2
 --- !u!1 &6795338935288598769
 GameObject:
   m_ObjectHideFlags: 0
@@ -2832,8 +2825,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8fc47fbb1485942a34b439bca78416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonHasChildren
-  m_activeColorKey: GeneralDark1
-  m_inactiveColorKey: GeneralDark2
 --- !u!1 &9003157578038298219
 GameObject:
   m_ObjectHideFlags: 0

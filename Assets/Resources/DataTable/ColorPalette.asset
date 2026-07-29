@@ -13,81 +13,12 @@ MonoBehaviour:
   m_Name: ColorPalette
   m_EditorClassIdentifier: Assembly-CSharp::ColorPalette
   entries:
-  - key: Amber300
-    primitiveKey: 
-    color: {r: 0.8862745, g: 0.78431374, b: 0.11372549, a: 1}
-  - key: Amber500
-    primitiveKey: 
-    color: {r: 0.91764706, g: 0.69411767, b: 0.12156863, a: 1}
-  - key: Amber600
-    primitiveKey: 
-    color: {r: 0.9098039, g: 0.49019608, b: 0.1764706, a: 1}
-  - key: Amber700
-    primitiveKey: 
-    color: {r: 0.7921569, g: 0.5411765, b: 0.015686275, a: 1}
   - key: Black
     primitiveKey: 
     color: {r: 0, g: 0, b: 0, a: 1}
-  - key: Blue500
-    primitiveKey: 
-    color: {r: 0.1254902, g: 0.43529412, b: 0.7647059, a: 1}
-  - key: Blue700
-    primitiveKey: 
-    color: {r: 0.2, g: 0.2, b: 1, a: 1}
-  - key: Blue900
-    primitiveKey: 
-    color: {r: 0.14117648, g: 0.21960784, b: 0.3019608, a: 1}
-  - key: Bronze600
-    primitiveKey: 
-    color: {r: 1, g: 0.5764706, b: 0.43529412, a: 1}
-  - key: Bronze800
-    primitiveKey: 
-    color: {r: 0.36862746, g: 0.19215687, b: 0.0627451, a: 1}
-  - key: Cyan500
-    primitiveKey: 
-    color: {r: 0.023529412, g: 0.7137255, b: 0.83137256, a: 1}
-  - key: GeneralBright2Glow
-    primitiveKey: 
-    color: {r: 0.1764706, g: 0.9098039, b: 0.627451, a: 0.1254902}
-  - key: Indigo500
-    primitiveKey: 
-    color: {r: 0.5058824, g: 0.54901963, b: 0.972549, a: 1}
   - key: Mist100
     primitiveKey: 
     color: {r: 0.9490196, g: 0.9843137, b: 0.972549, a: 1}
-  - key: Olive500
-    primitiveKey: 
-    color: {r: 0.3764706, g: 0.47058824, b: 0.21568628, a: 1}
-  - key: Olive900
-    primitiveKey: 
-    color: {r: 0.14117648, g: 0.2, b: 0.11764706, a: 1}
-  - key: Purple500
-    primitiveKey: 
-    color: {r: 0.49019608, g: 0.2509804, b: 0.59607846, a: 1}
-  - key: Purple800
-    primitiveKey: 
-    color: {r: 0.2509804, g: 0.1254902, b: 0.3137255, a: 1}
-  - key: PvpRank1
-    primitiveKey: 
-    color: {r: 1, g: 0.898, b: 0.298, a: 1}
-  - key: PvpRank2
-    primitiveKey: 
-    color: {r: 0.831, g: 0.831, b: 0.847, a: 1}
-  - key: PvpRank3
-    primitiveKey: 
-    color: {r: 0.988, g: 0.651, b: 0.4, a: 1}
-  - key: Red600
-    primitiveKey: 
-    color: {r: 0.6431373, g: 0.09411765, b: 0.15686275, a: 1}
-  - key: Red800
-    primitiveKey: 
-    color: {r: 0.40392157, g: 0.05490196, b: 0.09803922, a: 1}
-  - key: Rose500
-    primitiveKey: 
-    color: {r: 1, g: 0.43529412, b: 0.5686275, a: 1}
-  - key: RoseDark
-    primitiveKey: 
-    color: {r: 0.45, g: 0.19588237, b: 0.25588235, a: 1}
   - key: Slate300
     primitiveKey: 
     color: {r: 0.5803922, g: 0.6392157, b: 0.72156864, a: 1}
@@ -97,26 +28,311 @@ MonoBehaviour:
   - key: Slate900
     primitiveKey: 
     color: {r: 0.14509805, g: 0.20784314, b: 0.28627452, a: 1}
+  - key: Red100
+    primitiveKey: 
+    color: {r: 0.9860000, g: 0.9140000, b: 0.9140000, a: 1}
+  - key: Red200
+    primitiveKey: 
+    color: {r: 0.9664000, g: 0.7936000, b: 0.7936000, a: 1}
+  - key: Red300
+    primitiveKey: 
+    color: {r: 0.9384000, g: 0.6216000, b: 0.6216000, a: 1}
+  - key: Red400
+    primitiveKey: 
+    color: {r: 0.9104000, g: 0.4496000, b: 0.4496000, a: 1}
+  - key: Red500
+    primitiveKey: 
+    color: {r: 0.8768000, g: 0.2432000, b: 0.2432000, a: 1}
+  - key: Red600
+    primitiveKey: 
+    color: {r: 0.7912000, g: 0.1288000, b: 0.1288000, a: 1}
+  - key: Red700
+    primitiveKey: 
+    color: {r: 0.6364000, g: 0.1036000, b: 0.1036000, a: 1}
+  - key: Red800
+    primitiveKey: 
+    color: {r: 0.4816000, g: 0.0784000, b: 0.0784000, a: 1}
+  - key: Red900
+    primitiveKey: 
+    color: {r: 0.3440000, g: 0.0560000, b: 0.0560000, a: 1}
+  - key: Red1000
+    primitiveKey: 
+    color: {r: 0.2064000, g: 0.0336000, b: 0.0336000, a: 1}
+  - key: Orange100
+    primitiveKey: 
+    color: {r: 0.9850000, g: 0.9441667, b: 0.9150000, a: 1}
+  - key: Orange200
+    primitiveKey: 
+    color: {r: 0.9640000, g: 0.8660000, b: 0.7960000, a: 1}
+  - key: Orange300
+    primitiveKey: 
+    color: {r: 0.9340000, g: 0.7543333, b: 0.6260000, a: 1}
+  - key: Orange400
+    primitiveKey: 
+    color: {r: 0.9040000, g: 0.6426667, b: 0.4560000, a: 1}
+  - key: Orange500
+    primitiveKey: 
+    color: {r: 0.8680000, g: 0.5086667, b: 0.2520000, a: 1}
+  - key: Orange600
+    primitiveKey: 
+    color: {r: 0.7820000, g: 0.4063333, b: 0.1380000, a: 1}
+  - key: Orange700
+    primitiveKey: 
+    color: {r: 0.6290000, g: 0.3268333, b: 0.1110000, a: 1}
+  - key: Orange800
+    primitiveKey: 
+    color: {r: 0.4760000, g: 0.2473333, b: 0.0840000, a: 1}
+  - key: Orange900
+    primitiveKey: 
+    color: {r: 0.3400000, g: 0.1766667, b: 0.0600000, a: 1}
+  - key: Orange1000
+    primitiveKey: 
+    color: {r: 0.2040000, g: 0.1060000, b: 0.0360000, a: 1}
+  - key: Amber100
+    primitiveKey: 
+    color: {r: 0.9840000, g: 0.9670000, b: 0.9160000, a: 1}
+  - key: Amber200
+    primitiveKey: 
+    color: {r: 0.9616000, g: 0.9208000, b: 0.7984000, a: 1}
+  - key: Amber300
+    primitiveKey: 
+    color: {r: 0.9296000, g: 0.8548000, b: 0.6304000, a: 1}
+  - key: Amber400
+    primitiveKey: 
+    color: {r: 0.8976000, g: 0.7888000, b: 0.4624000, a: 1}
+  - key: Amber500
+    primitiveKey: 
+    color: {r: 0.8592000, g: 0.7096000, b: 0.2608000, a: 1}
+  - key: Amber600
+    primitiveKey: 
+    color: {r: 0.7728000, g: 0.6164000, b: 0.1472000, a: 1}
+  - key: Amber700
+    primitiveKey: 
+    color: {r: 0.6216000, g: 0.4958000, b: 0.1184000, a: 1}
+  - key: Amber800
+    primitiveKey: 
+    color: {r: 0.4704000, g: 0.3752000, b: 0.0896000, a: 1}
+  - key: Amber900
+    primitiveKey: 
+    color: {r: 0.3360000, g: 0.2680000, b: 0.0640000, a: 1}
+  - key: Amber1000
+    primitiveKey: 
+    color: {r: 0.2016000, g: 0.1608000, b: 0.0384000, a: 1}
+  - key: Green100
+    primitiveKey: 
+    color: {r: 0.9225000, g: 0.9775000, b: 0.9408333, a: 1}
+  - key: Green200
+    primitiveKey: 
+    color: {r: 0.8140000, g: 0.9460000, b: 0.8580000, a: 1}
+  - key: Green300
+    primitiveKey: 
+    color: {r: 0.6590000, g: 0.9010000, b: 0.7396667, a: 1}
+  - key: Green400
+    primitiveKey: 
+    color: {r: 0.5040000, g: 0.8560000, b: 0.6213333, a: 1}
+  - key: Green500
+    primitiveKey: 
+    color: {r: 0.3180000, g: 0.8020000, b: 0.4793333, a: 1}
+  - key: Green600
+    primitiveKey: 
+    color: {r: 0.2070000, g: 0.7130000, b: 0.3756667, a: 1}
+  - key: Green700
+    primitiveKey: 
+    color: {r: 0.1665000, g: 0.5735000, b: 0.3021667, a: 1}
+  - key: Green800
+    primitiveKey: 
+    color: {r: 0.1260000, g: 0.4340000, b: 0.2286667, a: 1}
+  - key: Green900
+    primitiveKey: 
+    color: {r: 0.0900000, g: 0.3100000, b: 0.1633333, a: 1}
+  - key: Green1000
+    primitiveKey: 
+    color: {r: 0.0540000, g: 0.1860000, b: 0.0980000, a: 1}
+  - key: Teal100
+    primitiveKey: 
+    color: {r: 0.9175000, g: 0.9825000, b: 0.9662500, a: 1}
+  - key: Teal200
+    primitiveKey: 
+    color: {r: 0.8020000, g: 0.9580000, b: 0.9190000, a: 1}
   - key: Teal300
     primitiveKey: 
-    color: {r: 0, g: 1, b: 0.50980395, a: 1}
+    color: {r: 0.6370000, g: 0.9230000, b: 0.8515000, a: 1}
   - key: Teal400
     primitiveKey: 
-    color: {r: 0.1764706, g: 0.9098039, b: 0.627451, a: 1}
+    color: {r: 0.4720000, g: 0.8880000, b: 0.7840000, a: 1}
   - key: Teal500
     primitiveKey: 
-    color: {r: 0, g: 0.7647059, b: 0.3882353, a: 1}
+    color: {r: 0.2740000, g: 0.8460000, b: 0.7030000, a: 1}
+  - key: Teal600
+    primitiveKey: 
+    color: {r: 0.1610000, g: 0.7590000, b: 0.6095000, a: 1}
   - key: Teal700
     primitiveKey: 
-    color: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+    color: {r: 0.1295000, g: 0.6105000, b: 0.4902500, a: 1}
   - key: Teal800
     primitiveKey: 
-    color: {r: 0.105882354, g: 0.39607844, b: 0.28627452, a: 1}
+    color: {r: 0.0980000, g: 0.4620000, b: 0.3710000, a: 1}
+  - key: Teal900
+    primitiveKey: 
+    color: {r: 0.0700000, g: 0.3300000, b: 0.2650000, a: 1}
+  - key: Teal1000
+    primitiveKey: 
+    color: {r: 0.0420000, g: 0.1980000, b: 0.1590000, a: 1}
+  - key: Cyan100
+    primitiveKey: 
+    color: {r: 0.9175000, g: 0.9716667, b: 0.9825000, a: 1}
+  - key: Cyan200
+    primitiveKey: 
+    color: {r: 0.8020000, g: 0.9320000, b: 0.9580000, a: 1}
+  - key: Cyan300
+    primitiveKey: 
+    color: {r: 0.6370000, g: 0.8753333, b: 0.9230000, a: 1}
+  - key: Cyan400
+    primitiveKey: 
+    color: {r: 0.4720000, g: 0.8186667, b: 0.8880000, a: 1}
+  - key: Cyan500
+    primitiveKey: 
+    color: {r: 0.2740000, g: 0.7506667, b: 0.8460000, a: 1}
+  - key: Cyan600
+    primitiveKey: 
+    color: {r: 0.1610000, g: 0.6593333, b: 0.7590000, a: 1}
+  - key: Cyan700
+    primitiveKey: 
+    color: {r: 0.1295000, g: 0.5303333, b: 0.6105000, a: 1}
+  - key: Cyan800
+    primitiveKey: 
+    color: {r: 0.0980000, g: 0.4013333, b: 0.4620000, a: 1}
+  - key: Cyan900
+    primitiveKey: 
+    color: {r: 0.0700000, g: 0.2866667, b: 0.3300000, a: 1}
+  - key: Cyan1000
+    primitiveKey: 
+    color: {r: 0.0420000, g: 0.1720000, b: 0.1980000, a: 1}
+  - key: Blue100
+    primitiveKey: 
+    color: {r: 0.9200000, g: 0.9450000, b: 0.9800000, a: 1}
+  - key: Blue200
+    primitiveKey: 
+    color: {r: 0.8080000, g: 0.8680000, b: 0.9520000, a: 1}
+  - key: Blue300
+    primitiveKey: 
+    color: {r: 0.6480000, g: 0.7580000, b: 0.9120000, a: 1}
+  - key: Blue400
+    primitiveKey: 
+    color: {r: 0.4880000, g: 0.6480000, b: 0.8720000, a: 1}
+  - key: Blue500
+    primitiveKey: 
+    color: {r: 0.2960000, g: 0.5160000, b: 0.8240000, a: 1}
+  - key: Blue600
+    primitiveKey: 
+    color: {r: 0.1840000, g: 0.4140000, b: 0.7360000, a: 1}
+  - key: Blue700
+    primitiveKey: 
+    color: {r: 0.1480000, g: 0.3330000, b: 0.5920000, a: 1}
+  - key: Blue800
+    primitiveKey: 
+    color: {r: 0.1120000, g: 0.2520000, b: 0.4480000, a: 1}
+  - key: Blue900
+    primitiveKey: 
+    color: {r: 0.0800000, g: 0.1800000, b: 0.3200000, a: 1}
+  - key: Blue1000
+    primitiveKey: 
+    color: {r: 0.0480000, g: 0.1080000, b: 0.1920000, a: 1}
+  - key: Indigo100
+    primitiveKey: 
+    color: {r: 0.9241667, g: 0.9190000, b: 0.9810000, a: 1}
+  - key: Indigo200
+    primitiveKey: 
+    color: {r: 0.8180000, g: 0.8056000, b: 0.9544000, a: 1}
+  - key: Indigo300
+    primitiveKey: 
+    color: {r: 0.6663333, g: 0.6436000, b: 0.9164000, a: 1}
+  - key: Indigo400
+    primitiveKey: 
+    color: {r: 0.5146667, g: 0.4816000, b: 0.8784000, a: 1}
+  - key: Indigo500
+    primitiveKey: 
+    color: {r: 0.3326667, g: 0.2872000, b: 0.8328000, a: 1}
+  - key: Indigo600
+    primitiveKey: 
+    color: {r: 0.2223333, g: 0.1748000, b: 0.7452000, a: 1}
+  - key: Indigo700
+    primitiveKey: 
+    color: {r: 0.1788333, g: 0.1406000, b: 0.5994000, a: 1}
+  - key: Indigo800
+    primitiveKey: 
+    color: {r: 0.1353333, g: 0.1064000, b: 0.4536000, a: 1}
+  - key: Indigo900
+    primitiveKey: 
+    color: {r: 0.0966667, g: 0.0760000, b: 0.3240000, a: 1}
+  - key: Indigo1000
+    primitiveKey: 
+    color: {r: 0.0580000, g: 0.0456000, b: 0.1944000, a: 1}
+  - key: Purple100
+    primitiveKey: 
+    color: {r: 0.9545833, g: 0.9225000, b: 0.9775000, a: 1}
+  - key: Purple200
+    primitiveKey: 
+    color: {r: 0.8910000, g: 0.8140000, b: 0.9460000, a: 1}
+  - key: Purple300
+    primitiveKey: 
+    color: {r: 0.8001667, g: 0.6590000, b: 0.9010000, a: 1}
+  - key: Purple400
+    primitiveKey: 
+    color: {r: 0.7093333, g: 0.5040000, b: 0.8560000, a: 1}
+  - key: Purple500
+    primitiveKey: 
+    color: {r: 0.6003333, g: 0.3180000, b: 0.8020000, a: 1}
+  - key: Purple600
+    primitiveKey: 
+    color: {r: 0.5021667, g: 0.2070000, b: 0.7130000, a: 1}
+  - key: Purple700
+    primitiveKey: 
+    color: {r: 0.4039167, g: 0.1665000, b: 0.5735000, a: 1}
+  - key: Purple800
+    primitiveKey: 
+    color: {r: 0.3056667, g: 0.1260000, b: 0.4340000, a: 1}
+  - key: Purple900
+    primitiveKey: 
+    color: {r: 0.2183333, g: 0.0900000, b: 0.3100000, a: 1}
+  - key: Purple1000
+    primitiveKey: 
+    color: {r: 0.1310000, g: 0.0540000, b: 0.1860000, a: 1}
+  - key: Pink100
+    primitiveKey: 
+    color: {r: 0.9825000, g: 0.9175000, b: 0.9500000, a: 1}
+  - key: Pink200
+    primitiveKey: 
+    color: {r: 0.9580000, g: 0.8020000, b: 0.8800000, a: 1}
+  - key: Pink300
+    primitiveKey: 
+    color: {r: 0.9230000, g: 0.6370000, b: 0.7800000, a: 1}
+  - key: Pink400
+    primitiveKey: 
+    color: {r: 0.8880000, g: 0.4720000, b: 0.6800000, a: 1}
+  - key: Pink500
+    primitiveKey: 
+    color: {r: 0.8460000, g: 0.2740000, b: 0.5600000, a: 1}
+  - key: Pink600
+    primitiveKey: 
+    color: {r: 0.7590000, g: 0.1610000, b: 0.4600000, a: 1}
+  - key: Pink700
+    primitiveKey: 
+    color: {r: 0.6105000, g: 0.1295000, b: 0.3700000, a: 1}
+  - key: Pink800
+    primitiveKey: 
+    color: {r: 0.4620000, g: 0.0980000, b: 0.2800000, a: 1}
+  - key: Pink900
+    primitiveKey: 
+    color: {r: 0.3300000, g: 0.0700000, b: 0.2000000, a: 1}
+  - key: Pink1000
+    primitiveKey: 
+    color: {r: 0.1980000, g: 0.0420000, b: 0.1200000, a: 1}
   - key: Action.Gain
-    primitiveKey: Teal500
+    primitiveKey: Teal600
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Action.Primary
-    primitiveKey: Teal300
+    primitiveKey: Teal400
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Action.Secondary
     primitiveKey: Teal700
@@ -125,101 +341,101 @@ MonoBehaviour:
     primitiveKey: Amber600
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Action.Toggle
-    primitiveKey: Teal400
+    primitiveKey: Teal500
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: BackButton
-    primitiveKey: Olive500
-    color: {r: 0.37484184, g: 0.4716981, b: 0.21582414, a: 1}
+    primitiveKey: Green600
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Commander
     primitiveKey: Blue500
-    color: {r: 0.12615699, g: 0.43595225, b: 0.764151, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Currency.Mineral
-    primitiveKey: Rose500
+    primitiveKey: Pink500
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Currency.ModulePoint
-    primitiveKey: Bronze600
+    primitiveKey: Orange500
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Current
-    primitiveKey: Teal300
-    color: {r: 0, g: 1, b: 0.51, a: 1}
-  - key: DailyBonus.Future
-    primitiveKey: 
-    color: {r: 0.05, g: 0.04, b: 0.07, a: 1}
-  - key: DailyBonus.Passed
-    primitiveKey: 
-    color: {r: 0.04, g: 0.09, b: 0.07, a: 1}
-  - key: General
-    primitiveKey: Teal500
-    color: {r: 0, g: 0.764151, b: 0.38956723, a: 1}
-  - key: GeneralBright1
-    primitiveKey: Teal300
-    color: {r: 0, g: 1, b: 0.50980395, a: 1}
-  - key: GeneralBright2
     primitiveKey: Teal400
-    color: {r: 0.1764706, g: 0.9098039, b: 0.627451, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: DailyBonus.Future
+    primitiveKey: Indigo1000
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: DailyBonus.Passed
+    primitiveKey: Green1000
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: General
+    primitiveKey: Teal600
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: GeneralBright1
+    primitiveKey: Teal400
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: GeneralBright2
+    primitiveKey: Teal500
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: GeneralDark1
     primitiveKey: Teal700
-    color: {r: 0, g: 0.588, b: 0.51, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: GeneralDark2
     primitiveKey: Slate900
-    color: {r: 0.145, g: 0.208, b: 0.286, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Icon.Accent
-    primitiveKey: Teal300
+    primitiveKey: Teal400
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: LevelupButton
     primitiveKey: Amber600
-    color: {r: 0.909804, g: 0.4901961, b: 0.1764706, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Locked
     primitiveKey: Red800
-    color: {r: 0.4056604, g: 0.05549129, b: 0.09772728, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: LockedSelected
     primitiveKey: Red600
-    color: {r: 0.6415094, g: 0.09380562, b: 0.15534535, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: ManageButton
     primitiveKey: Amber500
-    color: {r: 0.8962264, g: 0.68387294, b: 0.080322154, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Mineral
-    primitiveKey: Rose500
-    color: {r: 0.5647059, g: 0.38823533, b: 0.38823533, a: 1}
+    primitiveKey: Pink500
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: MineralDark
-    primitiveKey: RoseDark
-    color: {r: 0.45, g: 0.19588237, b: 0.25588235, a: 1}
+    primitiveKey: Pink800
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: ModulePoint
-    primitiveKey: Bronze600
-    color: {r: 0.5450981, g: 0.2705882, b: 0.07450981, a: 1}
+    primitiveKey: Orange600
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: ModulePointDark
-    primitiveKey: Bronze800
-    color: {r: 0.3679245, g: 0.19075958, b: 0.06421324, a: 1}
+    primitiveKey: Orange800
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: PvpBronze
-    primitiveKey: Bronze600
-    color: {r: 0.573, g: 0.247, b: 0.059, a: 1}
+    primitiveKey: Orange600
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: PvpDiamond
     primitiveKey: Indigo500
-    color: {r: 0.506, g: 0.549, b: 0.973, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: PvpGold
     primitiveKey: Amber700
-    color: {r: 0.792, g: 0.541, b: 0.016, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: PvpPlatinum
     primitiveKey: Cyan500
-    color: {r: 0.024, g: 0.714, b: 0.831, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: PvpPoint
     primitiveKey: Purple500
-    color: {r: 0.4901961, g: 0.2509804, b: 0.59607846, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: PvpPointDark
     primitiveKey: Purple800
-    color: {r: 0.2509804, g: 0.1254902, b: 0.3137255, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: PvpProfileBg
-    primitiveKey: Olive900
-    color: {r: 0.14004092, g: 0.1981132, b: 0.11681203, a: 1}
+    primitiveKey: Green900
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: PvpSilver
     primitiveKey: Slate300
-    color: {r: 0.58, g: 0.639, b: 0.722, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Selected
     primitiveKey: Amber500
-    color: {r: 0.941, g: 0.706, b: 0.161, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Silence
     primitiveKey: Blue700
-    color: {r: 0.2, g: 0.2, b: 1, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: State.Disabled
     primitiveKey: Slate900
     color: {r: 1, g: 1, b: 1, a: 1}
@@ -230,7 +446,7 @@ MonoBehaviour:
     primitiveKey: Teal700
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Text.Accent
-    primitiveKey: Teal300
+    primitiveKey: Teal400
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Text.Dark1
     primitiveKey: Slate300
@@ -239,7 +455,7 @@ MonoBehaviour:
     primitiveKey: Slate500
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Text.Heading
-    primitiveKey: Teal300
+    primitiveKey: Teal400
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Text.Muted
     primitiveKey: Teal700
@@ -252,16 +468,16 @@ MonoBehaviour:
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Tutorial
     primitiveKey: Blue500
-    color: {r: 0.8867924, g: 0.7862094, b: 0.11294055, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Tutorial.Dark
     primitiveKey: Blue900
-    color: {r: 0.1254902, g: 0.29411766, b: 0.4745098, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Unlocked
     primitiveKey: Teal800
-    color: {r: 0.106532566, g: 0.3962264, b: 0.28468654, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: UnlockedSelected
-    primitiveKey: Teal400
-    color: {r: 0.1764706, g: 0.9098039, b: 0.627451, a: 1}
+    primitiveKey: Teal500
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Vip
     primitiveKey: Amber500
     color: {r: 1, g: 1, b: 1, a: 1}
@@ -269,8 +485,8 @@ MonoBehaviour:
     primitiveKey: Amber700
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: VipDark2
-    primitiveKey: 
-    color: {r: 0.32, g: 0.22, b: 0.03, a: 1}
+    primitiveKey: Orange900
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Zone.Locked
     primitiveKey: Slate500
-    color: {r: 0.4513617, g: 0.51093584, b: 0.5943396, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}

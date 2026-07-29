@@ -244,7 +244,7 @@ public class DataTableModuleEditor : Editor
         module.airAmmo = EditorGUILayout.IntField("Aircraft Ammo", module.airAmmo);
         module.airDetectRadius     = EditorGUILayout.FloatField("Aircraft Detect Radius",   module.airDetectRadius);
         module.airAvoidRadius      = EditorGUILayout.FloatField("Aircraft Avoid Radius",    module.airAvoidRadius);
-        module.airAdditionalDelay  = EditorGUILayout.FloatField("Air Additional Delay",     module.airAdditionalDelay);
+        module.airDisrupt          = EditorGUILayout.FloatField("Air Disrupt",              module.airDisrupt);
 
         DrawCostFields(module);
     }
@@ -416,7 +416,7 @@ public class DataTableModuleEditor : Editor
                     d.airCount, d.airMaintenanceTime,
                     d.airHealth, d.airAttack, d.airAttackRange,
                     d.airAttackCool, d.airSpeed, d.airAmmo,
-                    d.airDetectRadius, d.airAvoidRadius, d.airAdditionalDelay,
+                    d.airDetectRadius, d.airAvoidRadius, d.airDisrupt,
                     d.shieldGauge, d.shieldDelay, d.shieldRegenRate,
                     d.interceptorCount, d.interceptorDelay, d.interceptorRegenRate,
                     d.description));

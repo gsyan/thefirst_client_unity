@@ -36,6 +36,7 @@ public class DataManager : Singleton<DataManager>
 
         // 탐험 함대 편성 — 지휘력 최대치는 서버 값, 프리셋 카탈로그는 로그인 이전(OnInitialize)에 이미 로드되어 있음
         m_currentFleetComposition = new FleetComposition(commanderInfo.commandPowerMax, m_dataTableShipPreset.BuildLookupTable());
+        SeedFleetCompositionFromFleetInfoIfNeeded();
     }
 
     public void ClearCommanderData()
@@ -47,15 +48,32 @@ public class DataManager : Singleton<DataManager>
 
     #region Fleet Composition Management #########################################################
     public FleetComposition m_currentFleetComposition;
+
+    // SetCommanderInfo(FleetComposition 생성)와 SetFleetData(함대 정보 세팅) 호출 순서가 호출부마다 달라
+    // (UIMain은 Fleet→Commander, SpaceSceneDebugBootstrap은 Commander→Fleet 순) 어느 쪽이 먼저 와도 안전하게 시딩되도록
+    // 양쪽 호출부에서 이 메서드를 부름. 이미 배치된 함선이 있으면(한 번 시딩됐거나 사용자가 직접 편집한 상태) 건드리지 않음
+    private void SeedFleetCompositionFromFleetInfoIfNeeded()
+    {
+        if (m_currentFleetComposition == null) return;
+        if (m_currentFleetInfo == null || m_currentFleetInfo.ships == null) return;
+        if (m_currentFleetComposition.GetPlacedShips().Count > 0) return;
+
+        for (int i = 0; i < m_currentFleetInfo.ships.Count; i++)
+        {
+            ShipInfo shipInfo = m_currentFleetInfo.ships[i];
+            m_currentFleetComposition.TryPlaceShip(shipInfo.shipPresetId, shipInfo.isFront);
+        }
+    }
     #endregion
 
     #region Fleet Info Management ###############################################################
-    public TempFleetInfo m_currentFleetInfo;
+    public FleetInfo m_currentFleetInfo;
 
     // 초기화 전용 — 로그인/씬 진입 시 최초 1회만 사용
-    public void SetFleetData(TempFleetInfo fleetInfo)
+    public void SetFleetData(FleetInfo fleetInfo)
     {
         m_currentFleetInfo = fleetInfo;
+        SeedFleetCompositionFromFleetInfoIfNeeded();
     }
 
     public void ClearFleetData()

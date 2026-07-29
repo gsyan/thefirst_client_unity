@@ -70,7 +70,6 @@ ui_rename_char_format_err,,English/Korean/Numbers 2-16 chars,한글/영문/숫�
 UIPopupRedeemCode_Success,,Code redeemed successfully,코드가 정상적으로 적용되었습니다
 char_default_name,,Commander,지휘관
 offline_cap_after,,Offline Cap (After),오프라인 캡 (이후)
-error_message_title,,Error,오류
 ship_reset,,Reset Ship,함선 초기화
 ship_reset_confirm,,Reset this ship and recover all invested resources?,이 함선의 모든 투자 자원을 회수하고 초기화하시겠습니까?
 ship_reset_flagship_forbidden,,The flagship cannot be reset.,기함은 초기화할 수 없습니다.
@@ -87,15 +86,39 @@ UITabTech_NextUnlockShipCount,,{0} Next Level Ship Slots,다음 레벨 함선 �
 UITabTech_NextModuleGrade,,Next Level Module Grade - T.{0},다음 레벨 모듈 그래이드 - T.{0}
 UITabCommander_PointsToNextLevel,,EXP to next level : {0},다음 레벨업까지 남은 경험치 : {0}
 UITabTech_ModulePointGetTitle,,Module Point,모듈 포인트
+UIPanelExplorationGrid_BankedPoint,,Banked Exploration Point,적립 탐험 포인트
+UIPanelExplorationGrid_OwnedPoint,,Exploration Point,탐험 포인트
+UIAvailablePresetRow_Name,,Name,이름
+UIAvailablePresetRow_Type,,Type,타입
+UIAvailablePresetRow_Cost,,Cost (Command Power),비용(지휘력)
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
-UITabFleetComposition_Front,,Front,전방
-UITabFleetComposition_Rear,,Rear,후방
-UITabFleetComposition_PlacedShipCount,,Placed Ships,배치 함선 수
-UITabFleetComposition_PlacedShipsTitle,,Fleet,함대구성
-UITabFleetComposition_StatsTitle,,Stats,성능
-UITabFleetComposition_AvailablePresetsTitle,,Available Ships,배치가능 함선
+UIFleet_Front,,Front,전방
+UIFleet_Rear,,Rear,후방
+UIFleet_PlacedShipCount,,Placed Ships,배치 함선 수
+UIFleet_PlaceFailed_Locked,,This slot is locked. Raise your commander level to unlock it.,잠긴 슬롯입니다. 커맨더 레벨을 올려 슬롯을 해제하세요.
+UIFleet_PlaceFailed_NotEnoughCommandPower,,Not enough command power.,지휘력이 부족합니다.
+UIFleet_PlaceFailed_PresetNotFound,,This ship preset is unavailable.,사용할 수 없는 함선 프리셋입니다.
+UIFleet_PlacedShipsTitle,,Fleet,함대구성
+UIFleet_StatsTitle,,Stats,성능
+UIFleet_AvailablePresetsTitle,,Available Ships,배치가능 함선
+UIFleet_Stats_Health,,Health,체력
+UIFleet_Stats_TurnRate,,Turn Rate,선회력
+UIFleet_Stats_Repair,,Repair,수리력
+UIFleet_Stats_BeamDps,,Beam DPS,빔 DPS
+UIFleet_Stats_MissileDps,,Missile DPS,미사일 DPS
+UIFleet_Stats_MissileSilenceTime,,Missile Silence,미사일 침묵
+UIFleet_Stats_FighterAttackPowerToShip,,Fighter→Ship DPS,공대함 DPS
+UIFleet_Stats_FighterAttackPowerToFighter,,Fighter→Air DPS,공대공 DPS
+UIFleet_Stats_FighterAmmo,,Fighter Ammo,함재기 탄약
+UIFleet_Stats_FighterHealth,,Fighter Health,함재기 체력
+UIFleet_Stats_FighterDisrupt,,Fighter Disrupt,함재기 교란
+UIFleet_Stats_ShieldGauge,,Shield Gauge,실드 게이지
+UIFleet_Stats_ShieldRestartDelay,,Shield Restart Delay,실드 재가동 딜레이
+UIFleet_Stats_ShieldRegenRate,,Shield Regen Rate,실드 회복속도
+UIFleet_Stats_InterceptorReloadDelay,,Interceptor Reload Delay,요격체 보충 딜레이
+UIFleet_Stats_InterceptorRegenRate,,Interceptor Regen Rate,요격체 회복속도
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
 UITabFleetTactics_NameShort,,TACTICS,전술
 UITabFleetTactics_FormationType_LinearHorizontal,,Balanced,균형
@@ -178,7 +201,7 @@ Simple_AirMaintenanceTime,,Aircraft Maintenance Time,함재기 정비 시간
 Simple_AirAttackRange,,Aircraft Attack Range,함재기 공격 범위
 Simple_AirAttackCool,,Aircraft Attack Cooldown,함재기 공격 쿨타임
 Simple_AirAmmo,,Aircraft Ammo,함재기 탄약
-Simple_AirAdditionalDelay,,Additional Delay,추가 지연
+Simple_AirDisrupt,,Disrupt,교란
 module_type_beam_placeholder,,Beam(Locked),빔(잠김)
 module_type_missile_placeholder,,Missile(Locked),미사일(잠김)
 module_type_hanger_placeholder,,Hanger(Locked),격납고(잠김)
@@ -225,16 +248,14 @@ UIPopupMessage_Logout,,Are you sure you want to logout?,로그아웃 하시겠�
 UIPopupMessage_LogoutGuest,,Logging out as a guest will permanently delete your account and all data. Continue?,게스트 로그아웃 시 계정과 모든 데이터가 영구 삭제됩니다. 계속하시겠습니까?
 UIPopupMessage_GoogleLink,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
 UIPopupMessage_GoogleUnlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
-UIPopupMessage_CommanderLevelupTitle,,COMMANDER LEVEL UP,지휘 레벨업
+UIPopupMessage_CommanderLevelupMessage,,COMMANDER LEVEL UP,지휘 레벨업
 UIPopupMessage_ConfirmTryCell,,Are you sure you want to move to this cell?,선택한 셀로 이동 하시겠습니까?
 UIPopupMessage_MineralResetTitle,,MINERAL ENHANCEMENT RESET,미네랄 강화 초기화
 UIPopupMessage_MineralResetMessage,,Mineral enhancements have been reset after stage clear.,스테이지 클리어로 미네랄 강화가 초기화되었습니다.
 UIPopupMessage_ResetAllInvestedMineralTitle,,RESET ALL INVESTED MINERAL,전체 투자 미네랄 환급
 UIPopupMessage_ResetAllInvestedMineralMessage,,All modules across your fleet will be reset and the invested mineral will be fully refunded. Continue?,함대 전체 모듈이 초기화되고 투자된 미네랄이 전액 환급됩니다. 계속하시겠습니까?
-UIPopupMessage_VersionUpdateTitle,,Update Required,업데이트 필요
 UIPopupMessage_VersionUpdateMessage,,An update to version {0} is required.,버전 {0} 이상으로 업데이트가 필요합니다.
 UIPopupMessage_VersionUpdateButton,,Update,업데이트
-UIPopupMessage_MaintenanceTitle,,Under Maintenance,점검 안내
 UIPopupMessage_MaintenanceInProgress,,The server is currently under maintenance.,서버 점검 중입니다.
 UIPopupMessage_PvpSeasonRewardTitle,,PVP Season Reward,PVP 시즌 보상
 UIPopupMessage_PvpSeasonRewardMessage,,Season reward has been granted.,시즌 보상이 지급되었습니다.

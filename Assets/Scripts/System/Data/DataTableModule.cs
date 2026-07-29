@@ -58,7 +58,7 @@ public class ModuleData
     public int airAmmo = 10;                  // 함재기 탄약
     public float airDetectRadius = 200f;      // 함재기 적 함재기 감지거리
     public float airAvoidRadius = 200f;       // 함재기 적 회피 거리
-    public float airAdditionalDelay = 0f;    // 함재기 피격 시 공격 딜레이 추가 (초)
+    public float airDisrupt = 0f;    // 함재기가 명중 시 타겟 함선에 거는 공격 딜레이(교란) (초)
 
     // Shield ---------------------------------------------------------------------------
     [Header("Shield Stats")]
@@ -435,7 +435,7 @@ public class DataTableModule : ScriptableObject
         // 6:attack, 7:splash_radius, 8:attack_cool, 9:silence_time,
         // 10:air_count, 11:air_maintenance_time, 12:air_health, 13:air_attack,
         // 14:air_attack_range, 15:air_attack_cool, 16:air_speed, 17:air_ammo,
-        // 18:air_detect_radius, 19:air_avoid_radius, 20:air_additional_delay,
+        // 18:air_detect_radius, 19:air_avoid_radius, 20:air_disrupt,
         // 21:shield_gauge, 22:shield_delay, 23:shield_regen_rate,
         // 24:interceptor_count, 25:interceptor_delay, 26:interceptor_regen_rate, 27:description
         // 발사체 이동속도(빔/미사일)는 별도 컬럼 없이 speed 컬럼을 재사용
@@ -477,7 +477,7 @@ public class DataTableModule : ScriptableObject
                 airAmmo             = ParseCsvInt  (cols, 17),
                 airDetectRadius     = ParseCsvFloat(cols, 18),
                 airAvoidRadius      = ParseCsvFloat(cols, 19),
-                airAdditionalDelay  = ParseCsvFloat(cols, 20),
+                airDisrupt          = ParseCsvFloat(cols, 20),
                 shieldGauge         = ParseCsvFloat(cols, 21),
                 shieldDelay         = ParseCsvFloat(cols, 22),
                 shieldRegenRate     = ParseCsvFloat(cols, 23),

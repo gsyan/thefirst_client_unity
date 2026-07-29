@@ -20,8 +20,7 @@ public class UITabFleetTactics : UITabBase
     private static readonly EFormationType[] k_formationByIndex =
     {
         EFormationType.linear_horizontal,
-        EFormationType.x_offensive,
-        EFormationType.x_defensive,
+        EFormationType.x,
     };
 
     private static readonly string[] k_formationNameKeys =

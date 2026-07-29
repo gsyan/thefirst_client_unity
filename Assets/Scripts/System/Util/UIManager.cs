@@ -32,6 +32,9 @@ public class UIManager : MonoSingleton<UIManager>
     private Dictionary<string, UIPanelBase> panelDictionary = new Dictionary<string, UIPanelBase>();
     private Stack<UIPanelBase> panelStack = new Stack<UIPanelBase>();
 
+    // 메인 패널이 아닌 UIPanelBase가 열려있는 개수 — 0↔1 전이 시 EventManager로 알려 진입 버튼 등의 "기본 상태" 판단에 사용
+    private int m_activeOverlayPanelCount = 0;
+
     // Popup Layer System
     private const string POPUP_PREFAB_PATH = "Prefabs/UI/Popup";
     private RectTransform[] m_popupContainers;                               // [EPopupLayer] → container
@@ -45,7 +48,6 @@ public class UIManager : MonoSingleton<UIManager>
     protected RectTransform m_gaugeBarContainer;
     protected RectTransform m_generalContainer;
     protected RectTransform m_tutorialContainer;
-    private RectTransform m_safeAreaRoot;                                    // 동적 컨테이너들의 공통 부모, SafeAreaAdapter 부착
 
     protected override void Awake()
     {
@@ -53,6 +55,22 @@ public class UIManager : MonoSingleton<UIManager>
         mainCanvas = GetComponentInParent<Canvas>();
         if (mainCanvas == null)
             mainCanvas = FindFirstObjectByType<Canvas>();
+
+        // 빈 공간 터치 시 현재 열린 오버레이 패널을 닫는 로직 — 특정 패널(UIPanelSpace 등)이 아니라 항상 살아있는
+        // UIManager 자신이 구독해야 함. 그 패널 자체가 하이드될 수 있는 상태라 리스너가 같이 끊기면 안 되기 때문
+        EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
+    }
+
+    private void OnEmptySpaceTapped()
+    {
+        if (string.IsNullOrEmpty(GetCurrentActivePanelName()) == false)
+            HideCurrentPanel();
     }
 
     public virtual void InitializeUIManager()
@@ -63,85 +81,45 @@ public class UIManager : MonoSingleton<UIManager>
     // 곡면(엣지) 디스플레이 대비 좌우 마진 비율 — SafeAreaRoot·레터박스 커버 바·GaugeBar 컬링이 공유
     public const float CURVED_EDGE_MARGIN = 0.02f;
 
-    // 컨테이너 초기화 (하이라키 순서 = 렌더 순서)
+    // 컨테이너 초기화 (하이라키 순서 = 렌더 순서) — 컨테이너들은 씬/캔버스에 미리 만들어둔 것을 찾아서 씀(동적 생성 아님)
     protected void InitializeContainers()
     {
-        m_safeAreaRoot = CreateSafeAreaRoot();
-
-        m_gaugeBarContainer = CreateContainer("UIGaugeBarContainer");
-        m_generalContainer  = CreateContainer("UIGeneralContainer");
+        m_gaugeBarContainer = FindContainer("UIGaugeBarContainer");
+        m_generalContainer  = FindContainer("UIGeneralContainer");
 
         int layerCount = (int)EPopupLayer.Count;
         m_popupContainers = new RectTransform[layerCount];
         m_popupStacks     = new Stack<UIPopupBase>[layerCount];
 
-        m_popupContainers[(int)EPopupLayer.Normal]  = CreateContainer("UIPopupNormalContainer");
-        m_popupContainers[(int)EPopupLayer.Overlay] = CreateContainer("UIPopupOverlayContainer");
+        m_popupContainers[(int)EPopupLayer.Normal]  = FindContainer("UIPopupNormalContainer");
+        m_popupContainers[(int)EPopupLayer.Overlay] = FindContainer("UIPopupOverlayContainer");
 
         for (int i = 0; i < layerCount; i++)
             m_popupStacks[i] = new Stack<UIPopupBase>();
 
-        m_tutorialContainer = CreateContainer("UITutorialContainer");
+        m_tutorialContainer = FindContainer("UITutorialContainer");
 
-        // 커브드 엣지 마진으로 새는 UI(게이지바, 튜토리얼 화살표 등)를 가리기 위해 항상 최상단에 위치해야 함
-        CreateLetterboxCover();
+        
     }
 
-    // 곡면(엣지) 화면 대비 안전영역 부모 — SafeAreaAdapter가 여기서 anchor를 깎음
-    private RectTransform CreateSafeAreaRoot()
+    // 씬에 미리 만들어둔 컨테이너를 이름으로 찾음 — Canvas/SafeAreaRoot/{name} 경로 고정 (SafeAreaRoot는 컴포넌트만 비활성화된 채 오브젝트는 유지됨)
+    // 없으면 에러 로그(씬 세팅 누락)
+    private RectTransform FindContainer(string name)
     {
-        GameObject rootObj = new("SafeAreaRoot");
-        rootObj.transform.SetParent(transform, false);
+        Transform safeAreaRoot = mainCanvas != null ? mainCanvas.transform.Find("SafeAreaRoot") : null;
+        if (safeAreaRoot == null)
+        {
+            Debug.LogError("SafeAreaRoot not found under canvas");
+            return null;
+        }
 
-        RectTransform rect = rootObj.AddComponent<RectTransform>();
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-
-        // 곡면(엣지) 디스플레이는 Screen.safeArea로 안 잡히는 기종이 있어 좌우 고정 마진 추가
-        rootObj.AddComponent<SafeAreaAdapter>().SetExtraMargins(CURVED_EDGE_MARGIN, CURVED_EDGE_MARGIN, 0f, 0f);
-
-        return rect;
-    }
-
-    // 곡면(엣지) 영역을 카메라 rect를 좁혀서 가리면, 카메라가 그리지 않는 그 스트립을 아무도 매 프레임 지우지 않아
-    // 그 위를 지나간 UI(체력바 등)가 잔상으로 남는 문제가 있었음 — 카메라는 항상 풀스크린으로 그리게 두고,
-    // 대신 화면 절대 좌표 기준 불투명 바로 가려서 커브드 엣지를 숨김 (매 프레임 Canvas가 정상적으로 다시 그려주므로 잔상 없음)
-    private void CreateLetterboxCover()
-    {
-        CreateLetterboxBar("LetterboxBarLeft",  Vector2.zero,                              new Vector2(CURVED_EDGE_MARGIN, 1f));
-        CreateLetterboxBar("LetterboxBarRight", new Vector2(1f - CURVED_EDGE_MARGIN, 0f),   Vector2.one);
-    }
-
-    private void CreateLetterboxBar(string name, Vector2 anchorMin, Vector2 anchorMax)
-    {
-        GameObject barObj = new(name);
-        barObj.transform.SetParent(transform, false);
-
-        RectTransform rect = barObj.AddComponent<RectTransform>();
-        rect.anchorMin = anchorMin;
-        rect.anchorMax = anchorMax;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-
-        Image image = barObj.AddComponent<Image>();
-        image.color = Color.black;
-        image.raycastTarget = false;
-    }
-
-    private RectTransform CreateContainer(string name)
-    {
-        GameObject containerObj = new(name);
-        containerObj.transform.SetParent(m_safeAreaRoot, false);
-
-        RectTransform rect = containerObj.AddComponent<RectTransform>();
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-
-        return rect;
+        Transform found = safeAreaRoot.Find(name);
+        if (found == null)
+        {
+            Debug.LogError($"Container not found under SafeAreaRoot: {name}");
+            return null;
+        }
+        return found as RectTransform;
     }
 
     public RectTransform GetGaugeBarContainer() => m_gaugeBarContainer;
@@ -181,6 +159,7 @@ public class UIManager : MonoSingleton<UIManager>
             }
 
             currentActivePanel = targetPanel;
+            EventManager.TriggerCurrentPanelChanged(currentActivePanel.panelName);
         }
 
         ShowPanel(targetPanel);
@@ -192,7 +171,10 @@ public class UIManager : MonoSingleton<UIManager>
             ShowPanel(mainPanel.panelName);
     }
 
-    public void HideCurrentPanel()
+    // showMainPanelIfEmpty=false로 호출하면, 스택이 비어있어도 메인 패널로 안 돌아가고 화면을 빈 상태로 둠 —
+    // 다음에 보여줄 패널이 아직 준비 안 됐지만(비동기 대기 등) 곧 ShowPanel로 이어붙일 걸 아는 경우,
+    // 그 사이에 메인 패널이 잠깐 비쳤다 사라지는 깜빡임을 막기 위해 사용
+    public void HideCurrentPanel(bool showMainPanelIfEmpty = true)
     {
         if (currentActivePanel != null && !currentActivePanel.bMainPanel)
         {
@@ -202,12 +184,15 @@ public class UIManager : MonoSingleton<UIManager>
             {
                 UIPanelBase previousPanel = panelStack.Pop();
                 currentActivePanel = previousPanel;
+                EventManager.TriggerCurrentPanelChanged(currentActivePanel.panelName);
                 ShowPanel(previousPanel);
             }
             else
             {
                 currentActivePanel = null;
-                ShowMainPanel();
+                EventManager.TriggerCurrentPanelChanged(string.Empty);
+                if (showMainPanelIfEmpty == true)
+                    ShowMainPanel();
             }
         }
     }
@@ -241,6 +226,13 @@ public class UIManager : MonoSingleton<UIManager>
             panel.gameObject.SetActive(true);
 
         panel.OnShowUIPanel();
+
+        if (panel.bMainPanel == false && panel.bAffectsOverlayCount == true)
+        {
+            m_activeOverlayPanelCount++;
+            if (m_activeOverlayPanelCount == 1)
+                EventManager.TriggerOverlayPanelActiveChanged(true);
+        }
     }
 
     private void HidePanel(UIPanelBase panel)
@@ -253,6 +245,13 @@ public class UIManager : MonoSingleton<UIManager>
             panel.gameObject.SetActive(false);
 
         panel.OnHideUIPanel();
+
+        if (panel.bMainPanel == false && panel.bAffectsOverlayCount == true)
+        {
+            m_activeOverlayPanelCount--;
+            if (m_activeOverlayPanelCount == 0)
+                EventManager.TriggerOverlayPanelActiveChanged(false);
+        }
     }
 
     private System.Collections.IEnumerator AnimatePanel(GameObject panel, bool show)
@@ -477,7 +476,7 @@ public class UIManager : MonoSingleton<UIManager>
             rows.Add(("icon_ship", $"{shipLabel}  {shipCount}", defaultColor));
         ShowConfirmPopup(new ConfirmPopupConfig
         {
-            title              = LocalizationManager.Instance.Get("UIPopupMessage_CommanderLevelupTitle"),
+            message            = LocalizationManager.Instance.Get("UIPopupMessage_CommanderLevelupMessage"),
             resultRows         = rows,
             resultRowsVertical = true,
             onConfirm          = () => { },
@@ -550,14 +549,16 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupLicense(() => CloseTopPopup(EPopupLayer.Normal));
     }
 
-    // 함선 프리셋 상세 스탯 팝업 (함대편성 UI — 배치가능 프리셋 클릭 시)
+    // 함선 프리셋 상세 스탯 팝업 (함대편성 UI — 배치가능 프리셋 클릭 시) — 전용 팝업 대신 UIPopupConfirm의 stat gauge 섹션 재사용
     public void ShowShipStatsPopup(ShipPresetData preset)
     {
-        UIPopupShipStats popup = GetOrCreatePopup<UIPopupShipStats>("UIPopupShipStats", EPopupLayer.Normal);
-        if (popup == null) return;
-
-        ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopupShipStats(preset, onClose: () => CloseTopPopup(EPopupLayer.Normal));
+        // 함선 이름 로컬라이즈는 아직 미정 — 프리셋 코드(presetId)를 그대로 표시
+        ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message = preset.presetId,
+            statGaugeRows = ShipStatGaugeBuilder.Build(preset),
+            onConfirm = null,
+        });
     }
 
 }

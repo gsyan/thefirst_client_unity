@@ -1,4 +1,4 @@
-sub_type,stat_point,health,repair,speed,turn_rate,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_additional_delay,shield_gauge,shield_delay,shield_regen_rate,interceptor_count,interceptor_delay,interceptor_regen_rate,description
+sub_type,stat_point,health,repair,speed,turn_rate,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_disrupt,shield_gauge,shield_delay,shield_regen_rate,interceptor_count,interceptor_delay,interceptor_regen_rate,description
 101111,200,100,,1.0,1,,,,,,,,,,,,,,,,,,,,,,
 101211,500,200,,1.0,1,,,,,,,,,,,,,,,,,,,,,,
 101221,800,400,,1.0,1,,,,,,,,,,,,,,,,,,,,,,

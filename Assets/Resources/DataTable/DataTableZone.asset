@@ -13,19 +13,6 @@ MonoBehaviour:
   m_Name: DataTableZone
   m_EditorClassIdentifier: 
   zoneList:
-  - zoneIndex: 0
-    galaxyCameraTarget: {x: 0, y: 0, z: 0}
-    galaxyCameraZoom: 12000
-    galaxyCameraRotX: 80
-    galaxyCameraRotY: 0
-    celestialBodies: []
-    gridWidth: 3
-    gridHeight: 3
-    enemyFleetsPerCell: 1
-    enemyBudget: 100
-    enemyMaxCost: 100
-    enemyDeviation: 0
-    enemyMaxShipsPerFleet: 5
   - zoneIndex: 1
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 12000
@@ -65,6 +52,19 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 3
     gridHeight: 3
+    cellOverrides:
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 2
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 220
     enemyMaxCost: 220
@@ -109,6 +109,19 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 3
     gridHeight: 3
+    cellOverrides:
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 2
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 100
     enemyMaxCost: 100
@@ -153,6 +166,19 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 3
     gridHeight: 3
+    cellOverrides:
+    - row: 0
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 2
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 100
     enemyMaxCost: 100
@@ -197,6 +223,19 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 3
     gridHeight: 3
+    cellOverrides:
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 2
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 100
     enemyMaxCost: 100
@@ -241,6 +280,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -285,6 +345,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -329,6 +410,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -373,6 +475,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -417,6 +540,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -461,6 +605,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 0
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -505,6 +670,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -549,6 +735,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -593,6 +800,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -637,6 +865,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 3
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -681,6 +930,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -725,6 +995,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -769,6 +1060,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -813,6 +1125,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -857,6 +1190,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -901,6 +1255,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 200
     enemyMaxCost: 200
@@ -945,6 +1320,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -989,6 +1385,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -1033,6 +1450,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -1077,6 +1515,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -1121,6 +1580,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -1165,6 +1645,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -1209,6 +1710,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -1253,6 +1775,27 @@ MonoBehaviour:
       poleIceWidth: 0.3
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 4
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -1297,6 +1840,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -1341,6 +1905,27 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 5
     gridHeight: 5
+    cellOverrides:
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 300
     enemyMaxCost: 200
@@ -1385,6 +1970,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 3
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 3
+      eventType: 0
+    - row: 5
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1429,6 +2051,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 3
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1473,6 +2132,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 3
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1517,6 +2213,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1561,6 +2294,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1605,6 +2375,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 5
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1649,6 +2456,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1693,6 +2537,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1737,6 +2618,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 3
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1781,6 +2699,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1825,6 +2780,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 3
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1869,6 +2861,43 @@ MonoBehaviour:
       poleIceWidth: 0.3
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1913,6 +2942,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -1957,6 +3023,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 5
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 6
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2001,6 +3104,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2045,6 +3185,43 @@ MonoBehaviour:
       poleIceWidth: 0.3
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 6
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2089,6 +3266,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2133,6 +3347,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2177,6 +3428,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2221,6 +3509,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 3
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2265,6 +3590,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 3
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2309,6 +3671,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 6
+      type: 3
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2353,6 +3752,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2397,6 +3833,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2441,6 +3914,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2485,6 +3995,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2529,6 +4076,43 @@ MonoBehaviour:
       poleIceWidth: 0.3
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2573,6 +4157,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 5
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2617,6 +4238,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 3
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 500
     enemyMaxCost: 400
@@ -2661,6 +4319,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 5
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -2705,6 +4400,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 3
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -2749,6 +4481,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -2793,6 +4562,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 5
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -2837,6 +4643,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 3
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -2881,6 +4724,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 3
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -2925,6 +4805,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -2969,6 +4886,43 @@ MonoBehaviour:
       poleIceWidth: 0.3
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3013,6 +4967,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3057,6 +5048,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3101,6 +5129,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 3
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3145,6 +5210,43 @@ MonoBehaviour:
       poleIceWidth: 0.3
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 3
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3189,6 +5291,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3233,6 +5372,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3277,6 +5453,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 1
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 3
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3321,6 +5534,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 5
+      col: 3
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 4
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3365,6 +5615,43 @@ MonoBehaviour:
       poleIceWidth: 0.3
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 1
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3409,6 +5696,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3453,6 +5777,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3497,6 +5858,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 3
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 3
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3541,6 +5939,43 @@ MonoBehaviour:
       poleIceWidth: 0.3
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 3
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 800
     enemyMaxCost: 600
@@ -3585,6 +6020,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 3
+      eventType: 0
+    - row: 4
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -3629,6 +6101,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -3673,6 +6182,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -3717,6 +6263,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -3761,6 +6344,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 5
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 3
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -3805,6 +6425,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 5
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -3849,6 +6506,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 3
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -3893,6 +6587,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -3937,6 +6668,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 2
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -3981,6 +6749,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 3
+      eventType: 0
+    - row: 4
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4025,6 +6830,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4069,6 +6911,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 4
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4113,6 +6992,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4157,6 +7073,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 0
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 3
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4201,6 +7154,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 0
+      col: 0
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4245,6 +7235,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 4
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 6
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 3
+      col: 5
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 3
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4289,6 +7316,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 3
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 2
+      eventType: 0
+    - row: 1
+      col: 5
+      type: 3
+      eventType: 0
+    - row: 2
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4333,6 +7397,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 2
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 1
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 5
+      col: 6
+      type: 1
+      eventType: 0
+    - row: 1
+      col: 1
+      type: 2
+      eventType: 0
+    - row: 3
+      col: 3
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 1
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4377,6 +7478,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 5
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 5
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 1
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 1
+      eventType: 0
+    - row: 5
+      col: 0
+      type: 2
+      eventType: 0
+    - row: 4
+      col: 4
+      type: 3
+      eventType: 0
+    - row: 4
+      col: 0
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1000
     enemyMaxCost: 700
@@ -4421,6 +7559,43 @@ MonoBehaviour:
       poleIceWidth: 0.12
     gridWidth: 7
     gridHeight: 7
+    cellOverrides:
+    - row: 6
+      col: 4
+      type: 0
+      eventType: 0
+    - row: 0
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 6
+      col: 0
+      type: 0
+      eventType: 0
+    - row: 2
+      col: 2
+      type: 0
+      eventType: 0
+    - row: 4
+      col: 3
+      type: 0
+      eventType: 0
+    - row: 3
+      col: 1
+      type: 1
+      eventType: 0
+    - row: 0
+      col: 6
+      type: 2
+      eventType: 0
+    - row: 6
+      col: 1
+      type: 3
+      eventType: 0
+    - row: 0
+      col: 4
+      type: 3
+      eventType: 0
     enemyFleetsPerCell: 1
     enemyBudget: 1200
     enemyMaxCost: 800

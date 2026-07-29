@@ -74,11 +74,6 @@ public class SpaceShip : MonoBehaviour
     virtual protected void Start()
     {
         InitializeGaugeDisplay();
-        if (m_ownerFleet != null &&
-            (m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player ||
-             m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player_remote))
-            StartRepairLoop(m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player);
-
         EventManager.Subscribe_ModuleBodyDestroyed(OnModuleBodyDestroyed);
     }
 
@@ -683,111 +678,18 @@ public class SpaceShip : MonoBehaviour
         return max > 0f ? total / max : 1f;
     }
 
-    #region Repair -------------------------------------------------------------------
-
-    private static readonly WaitForSeconds k_repairInterval = new WaitForSeconds(1f);
-    private SpaceShip m_repairTarget;
-    private Coroutine m_repairCoroutine;
-
-    public void StartRepairLoop(bool isPlayerFleet)
+    // 존 런 중 함선 종류 교체 시 이전 함선의 체력 비율을 새 함선에 그대로 적용 — ObjectManager.ReplaceMyFleetShipAt 전용
+    public void ApplyHealthRatio(float ratio)
     {
-        if (m_repairCoroutine != null) StopCoroutine(m_repairCoroutine);
-        m_repairCoroutine = StartCoroutine(RepairLoop(isPlayerFleet));
-    }
-
-    public void StopRepairLoop()
-    {
-        if (m_repairCoroutine != null)
+        ratio = Mathf.Clamp01(ratio);
+        foreach (ModuleBody body in m_moduleBodys)
         {
-            StopCoroutine(m_repairCoroutine);
-            m_repairCoroutine = null;
+            if (body == null) continue;
+            body.m_health = body.m_healthMax * ratio;
         }
-        m_repairTarget = null;
+        UpdateShipStatCur();
+        CheckFireEffects();
     }
-
-    private IEnumerator RepairLoop(bool isPlayerFleet)
-    {
-        while (IsAlive() == true)
-        {
-            yield return k_repairInterval;
-
-            if (IsAlive() == false) yield break;
-
-            float ownRepair = m_spaceShipStatsCur.repair;
-            if (ownRepair <= 0f) continue;
-
-            // 진형 회복력 보너스 적용 (cross_defensive 전용)
-            float formationRepairMult = m_ownerFleet != null ? m_ownerFleet.GetFormationRepairMultiplier() : 1f;
-
-            bool isRepairBoost = m_ownerFleet != null && m_ownerFleet.m_fleetState.IsBattleState() == true && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 1) != 0;
-            float boostMult = isRepairBoost ? DataManager.Instance.m_dataTableConfig.gameSettings.repairBoostMultiplier : 1f;
-            float effectiveRepair = ownRepair * formationRepairMult * boostMult;
-
-            // 자기 HP 미달 → 자신만 수리
-            if (GetHealthRatio() < 1f)
-            {
-                m_repairTarget = null;
-                ApplyRepair(this, effectiveRepair);
-                continue;
-            }
-
-            // 자기는 만땅 → 함대 내 타겟 유지 또는 재검색
-            if (m_repairTarget == null || m_repairTarget.IsAlive() == false || m_repairTarget.GetHealthRatio() >= 1f)
-                m_repairTarget = FindRepairTarget();
-
-            if (m_repairTarget == null) continue;
-
-            ApplyRepair(m_repairTarget, effectiveRepair);
-        }
-        m_repairCoroutine = null;
-    }
-
-    // 함대에서 HP 비율이 가장 낮은 생존 함선 탐색 (자기 제외)
-    private SpaceShip FindRepairTarget()
-    {
-        if (m_ownerFleet == null) return null;
-        SpaceShip target = null;
-        float lowestRatio = 1f;
-        foreach (SpaceShip ship in m_ownerFleet.m_ships)
-        {
-            if (ship == null || ship == this || ship.IsAlive() == false) continue;
-            float ratio = ship.GetHealthRatio();
-            if (ratio < lowestRatio)
-            {
-                lowestRatio = ratio;
-                target = ship;
-            }
-        }
-        return target;
-    }
-
-    // repairAmount를 손상된 바디에 균등 분배, 실제 회복량 반환
-    private float ApplyRepair(SpaceShip target, float repairAmount)
-    {
-        int damagedCount = 0;
-        foreach (ModuleBody body in target.m_moduleBodys)
-        {
-            if (body != null && body.m_health < body.m_healthMax) damagedCount++;
-        }
-        if (damagedCount == 0) return 0f;
-
-        float perBody = repairAmount / damagedCount;
-        float totalRepaired = 0f;
-        foreach (ModuleBody body in target.m_moduleBodys)
-        {
-            if (body == null || body.m_health >= body.m_healthMax) continue;
-            float before = body.m_health;
-            body.m_health = Mathf.Min(body.m_health + perBody, body.m_healthMax);
-            totalRepaired += body.m_health - before;
-        }
-        target.UpdateShipStatCur();
-        target.CheckFireEffects();
-        EventManager.Trigger_ShipUpdateHP();
-        EventManager.Trigger_FleetUpdateHP();
-        return totalRepaired;
-    }
-
-    #endregion Repair ----------------------------------------------------------------
 
     // 살아있는 바디가 있는지 확인
     private bool HasAliveBodies()

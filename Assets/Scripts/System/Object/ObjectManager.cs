@@ -249,33 +249,32 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         */
 
         StartNormalPlay();
-
-        // 튜토리얼(SetMyFleetPosition 호출부)이 비활성화된 상태라 함대 초기 위치가 원점(0,0,0)으로 남는 문제 방지 —
-        // 함대 스폰(StartNormalPlay) 직후 초기 존의 탐사 그리드 시작 셀 위치로 명시적으로 배치.
-        // 구식 스테이지 좌표(GetZoneFirstStage/ResolveFleetWorldPosition, 수천~만 단위 오프셋)는 신규 탐사 그리드가 쓰는
-        // 좌표 공간(ZoneConfig.galaxyCameraTarget 기준)과 전혀 달라 그리드로 진입 시 함대가 엉뚱한 곳에서 튀어옴 —
-        // 그리드 UI를 연 적이 없어도 동일한 계산식으로 시작 셀 좌표를 미리 구해서 배치
-        PlaceMyFleetAtInitialGridStartCell();
     }
 
-    // 탐사 그리드를 연 적이 없어도, UITabExplorationGrid가 실제로 계산할 것과 동일한 시작 셀 월드좌표를 미리 구해서 배치
-    private void PlaceMyFleetAtInitialGridStartCell()
+    // 탐사 그리드를 연 적이 없어도, UITabExplorationGrid가 실제로 계산할 것과 동일한 시작 셀 월드좌표를 미리 구함 —
+    // 구식 스테이지 좌표(GetZoneFirstStage/ResolveFleetWorldPosition, 수천~만 단위 오프셋)는 신규 탐사 그리드가 쓰는
+    // 좌표 공간(ZoneConfig.galaxyCameraTarget 기준)과 전혀 달라 그리드로 진입 시 함대가 엉뚱한 곳에서 튀어나오므로 주의
+    private Vector3 GetInitialGridStartCellPosition()
     {
         int zoneNumber = GetInitialZoneIndex();
         ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
-        if (zoneConfig == null) return;
+        if (zoneConfig == null) return Vector3.zero;
 
-        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        int seedBase = commanderInfo != null ? commanderInfo.explorationSeedBase : 0;
-        int seed = CommonUtility.ComputeExplorationZoneSeed(zoneNumber, seedBase);
+        ExplorationGridData gridData = ExplorationGridGenerator.Generate(zoneConfig);
 
-        ExplorationGridData gridData = ExplorationGridGenerator.Generate(seed, zoneConfig.gridWidth, zoneConfig.gridHeight);
+        UIPanelExplorationGrid gridTab = FindFirstObjectByType<UIPanelExplorationGrid>(FindObjectsInactive.Include);
+        if (gridTab == null) return Vector3.zero;
 
-        UITabExplorationGrid gridTab = FindFirstObjectByType<UITabExplorationGrid>(FindObjectsInactive.Include);
-        if (gridTab == null) return;
+        int startRow = gridData.startRow;
+        int startCol = gridData.startCol;
+        bool hasActiveCell = TryGetActiveExplorationCell(out int activeRow, out int activeCol);
+        if (hasActiveCell == true && gridData.IsInBounds(activeRow, activeCol) == true)
+        {
+            startRow = activeRow;
+            startCol = activeCol;
+        }
 
-        Vector3 startPos = gridTab.ComputeCellWorldPositionWithoutOpening(zoneNumber, gridData.startX, gridData.startY, gridData.width, gridData.height);
-        SetMyFleetPosition(startPos, 0f);
+        return gridTab.ComputeCellWorldPositionWithoutOpening(zoneNumber, startRow, startCol, gridData.width, gridData.height);
     }
 
     protected override void OnDestroy()
@@ -393,6 +392,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         var commander = DataManager.Instance.m_currentCommander;
         if (commander == null || commander.m_commanderInfo == null) return 1;
 
+        // 진행 중인 탐험 런이 있으면 그 존을 우선 사용 — 존을 아직 클리어하지 못한 상태(clearedZones에는 안 잡힘)라도
+        // 재접속 시 원래 있던 존으로 복귀해야 함
+        int activeZoneNumber = commander.m_commanderInfo.explorationZoneNumber;
+        if (activeZoneNumber > 0) return activeZoneNumber;
+
         var clearedZones = commander.m_commanderInfo.clearedZones;
         if (clearedZones == null || clearedZones.Count == 0) return 1;
 
@@ -400,6 +404,26 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         int dashIdx = lastCleared.IndexOf('-');
         if (dashIdx <= 0) return 1;
         return int.TryParse(lastCleared.Substring(0, dashIdx), out int zoneIndex) ? zoneIndex : 1;
+    }
+
+    // 진행 중인 탐험 런의 마지막 클리어 셀 좌표(0-indexed) — CommanderInfo.explorationCell("row-col") 파싱
+    public bool TryGetActiveExplorationCell(out int row, out int col)
+    {
+        row = 0;
+        col = 0;
+
+        var commander = DataManager.Instance.m_currentCommander;
+        if (commander == null || commander.m_commanderInfo == null) return false;
+
+        string explorationCell = commander.m_commanderInfo.explorationCell;
+        if (string.IsNullOrEmpty(explorationCell) == true) return false;
+
+        int dashIdx = explorationCell.IndexOf('-');
+        if (dashIdx <= 0) return false;
+
+        bool rowParsed = int.TryParse(explorationCell.Substring(0, dashIdx), out row);
+        bool colParsed = int.TryParse(explorationCell.Substring(dashIdx + 1), out col);
+        return rowParsed == true && colParsed == true;
     }
 
     public void ChangeZone(int zoneIndex)
@@ -677,21 +701,25 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     // 프리셋 함대 정보로 팀 소속 함대를 생성 — 플레이어/적 스폰 공통 로직
     // 카메라 타겟팅, Trigger_MyFleetSet 등 플레이어 전용 후처리는 호출부 책임
-    public SpaceFleet SpawnFleetFromPreset(TempFleetInfo fleetInfo, ETeam team, EFleetSource source, Vector3 position, Quaternion rotation, string fleetName)
+    public SpaceFleet SpawnFleetFromPreset(FleetInfo fleetInfo, ETeam team, EFleetSource source, Vector3 position, Quaternion rotation, string fleetName)
     {
         GameObject fleetObj = new GameObject(fleetName);
         fleetObj.transform.SetPositionAndRotation(position, rotation);
         SpaceFleet fleet = fleetObj.AddComponent<SpaceFleet>();
+        fleet.m_fleetInfo = fleetInfo;
         fleet.m_team = team;
         fleet.m_fleetSource = source;
         fleet.m_fleetState = EUnitState.Idle;
+        if (fleetInfo != null)
+            fleet.m_currentFormationType = fleetInfo.formation;
 
         DataTableShipPreset presetTable = DataManager.Instance.m_dataTableShipPreset;
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
         if (fleetInfo != null && fleetInfo.ships != null)
         {
-            foreach (TempShipInfo shipSlot in fleetInfo.ships)
+            for (int shipIndex = 0; shipIndex < fleetInfo.ships.Count; shipIndex++)
             {
+                ShipInfo shipSlot = fleetInfo.ships[shipIndex];
                 ShipPresetData preset = presetTable.GetShipPreset(shipSlot.shipPresetId);
                 if (preset == null)
                 {
@@ -702,39 +730,81 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 if (System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType))
                     bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodySubType);
 
-                ShipFinalStats finalStats = ShipStatCalculator.Calculate(preset.statAllocation, formula, bodyModuleData);
-                ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats);
+                ShipFinalStats finalStats = ShipStatCalculator.Calculate(preset.statAllocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
+                ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats, shipIndex, shipSlot.isFront);
             }
         }
+        // bWarp: false로 스폰된 함선들은 최종 대형 위치보다 뒤(-Z)에 멈춰있으므로, 연출 없이 즉시 최종 위치로 확정
+        fleet.UpdateShipFormation(fleet.m_currentFormationType, bSmooth: false);
         fleet.SetFleetState(EUnitState.Idle);
         GetTeamFleets(team).Add(fleet);
         return fleet;
     }
 
     // warpIn=true면 Trigger_MyFleetSet으로 위치가 확정된 직후 그 자리로 워프인 연출(튜토리얼 종료 후 첫 함대 등장 등)
-    private void SpawnMyFleetFromPreset(TempFleetInfo fleetInfo, bool warpIn = false)
+    // 함대 초기 위치는 탐사 그리드 시작 셀 좌표로 처음부터 확정 — 스폰 후 재배치하던 방식은 카메라가 원점을 스냅했다가
+    // 실제 위치로 보간되는 부작용이 있어 제거함
+    private void SpawnMyFleetFromPreset(FleetInfo fleetInfo, bool warpIn = false)
     {
-        SpaceFleet myFleet = SpawnFleetFromPreset(fleetInfo, m_myTeam, EFleetSource.fleet_source_player, Vector3.zero, Quaternion.identity, "MyFleet");
+        Vector3 startPos = GetInitialGridStartCellPosition();
+        SpaceFleet myFleet = SpawnFleetFromPreset(fleetInfo, m_myTeam, EFleetSource.fleet_source_player, startPos, Quaternion.identity, "MyFleet");
         FinalizeMyFleetSpawn(myFleet, warpIn);
     }
 
-    // 함대편성 UI(FleetComposition)에서 배치를 바꿀 때마다 호출 — 연출 없이 기존 함선 전체를 파괴하고 같은 위치에 재생성
-    public void RebuildMyFleetFromComposition(FleetComposition composition)
+    // 함대편성 UI(FleetComposition)에서 전방/후방만 토글할 때 호출 — 파괴/재생성 없이 기존 함선을 그 자리에서 스무스 이동
+    public void SetMyFleetShipFront(int positionIndex, bool isFront)
     {
-        if (composition == null) return;
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null) return;
 
-        SpaceFleet oldFleet = GetMyFleet();
-        Vector3 position = oldFleet != null ? oldFleet.transform.position : Vector3.zero;
-        Quaternion rotation = oldFleet != null ? oldFleet.transform.rotation : Quaternion.identity;
+        SpaceShip ship = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == positionIndex);
+        if (ship == null) return;
 
-        if (oldFleet != null)
+        ship.m_shipInfo.isFront = isFront;
+        myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: true);
+    }
+
+    // 함대편성 UI(FleetComposition)에서 슬롯 하나에 배치/교체할 때 호출 — 그 슬롯의 함선만 파괴/재생성, 나머지 함선은 그대로 유지
+    public void ReplaceMyFleetShipAt(int positionIndex, string shipPresetId, bool isFront)
+    {
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null) return;
+
+        // 존 런 진행 중 함선 종류를 바꿔도 체력이 회복되면 안 되므로, 교체 전 이전 함선의 체력 비율을 미리 계산해둠(빈 슬롯이면 1f=만피)
+        SpaceShip oldShip = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == positionIndex);
+        float previousHealthRatio = oldShip != null ? oldShip.GetHealthRatio() : 1f;
+        if (oldShip != null)
+            myFleet.RemoveShip(oldShip, refreshFormation: false, triggerDefeatEvents: false);
+
+        DataTableShipPreset presetTable = DataManager.Instance.m_dataTableShipPreset;
+        ShipPresetData preset = presetTable.GetShipPreset(shipPresetId);
+        if (preset == null)
         {
-            GetTeamFleets(m_myTeam).Remove(oldFleet);
-            Destroy(oldFleet.gameObject);
+            Debug.LogError($"ShipPresetData not found: {shipPresetId}");
+            return;
         }
 
-        SpaceFleet newFleet = SpawnFleetFromPreset(composition.ToNetworkFleetInfo(), m_myTeam, EFleetSource.fleet_source_player, position, rotation, "MyFleet");
-        FinalizeMyFleetSpawn(newFleet, warpIn: false);
+        ModuleData bodyModuleData = null;
+        if (System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType))
+            bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodySubType);
+
+        ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
+        ShipFinalStats finalStats = ShipStatCalculator.Calculate(preset.statAllocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
+
+        SpaceShip newShip = ExplorationShipSpawnBridge.SpawnShip(myFleet, preset, finalStats, positionIndex, isFront);
+        // 존 런 진행 중이면 이전 함선의 손상 비율을 새 함선에 그대로 이전(회복 금지) — 평시 편성(런 없음)은 만피 유지
+        if (newShip != null && IsExplorationRunActive() == true)
+            newShip.ApplyHealthRatio(previousHealthRatio);
+
+        // 스무스 이동(RefreshFormation) 대신 bSmooth: false로 즉시 최종 위치에 배치 — 연출 없이 바로 나옴
+        myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: false);
+    }
+
+    // 현재 진행 중인 존 런이 있는지 — 존 런 중에는 함선 교체 시 체력 유지/자동회복 금지 등의 판정에 사용
+    public bool IsExplorationRunActive()
+    {
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        return commanderInfo != null && commanderInfo.explorationZoneNumber != 0;
     }
 
     // 함대 스폰/재구성 공통 후처리 — UI에 함대 교체를 알리고, 카메라 타겟과 초기 선택 함선을 설정
@@ -743,8 +813,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 함대 스폰/교체를 UI 등 늦게 초기화되는 쪽에서도 알 수 있도록 알림 (존 초기 위치도 이 안에서 확정됨)
         EventManager.Trigger_MyFleetSet();
 
-        // 카메라가 함대를 타겟으로 설정
-        CameraController.Instance.SetTargetOfCameraController(myFleet.transform);
+        // 카메라가 함대를 타겟으로 설정 — 최초 스폰 직후라 씬 배치 카메라 위치에서 Lerp로 튀는 걸 막기 위해 즉시 스냅
+        CameraController.Instance.SetTargetOfCameraController(myFleet.transform, snapImmediately: true);
 
         // 기함을 초기 선택 상태로 설정 (줌 범위 적용 및 UI 초기화)
         SpaceShip flagship = myFleet.GetFlagship();
@@ -791,14 +861,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         */
 
         // 모든 웨이브 스폰 완료 + 적 전멸 → 클리어
+        // ForceEndBattle(true)가 m_isBattleEnding 가드(내 함대도 거의 동시에 전멸해 ForceEndBattle(false)가
+        // 먼저 확정된 경우 승리로 뒤집지 않음) 및 함대 상태 리셋/배속 복원/정리를 전부 처리
         if (GetOpposingTeamFleets(m_myTeam).Count == 0)
         {
-            // 내 함대도 거의 동시에 전멸해 ForceEndBattle(false)가 먼저 확정됐을 수 있음 — 그 경우 승리로 뒤집지 않음
-            if (m_isBattleEnding == true) return;
-            m_isBattleEnding = true;
-
             EventManager.Trigger_AllEnemyFleetKilled();
-            EventManager.TriggerZoneStageBattleEnd(true);
+            ForceEndBattle(true);
         }
     }
 

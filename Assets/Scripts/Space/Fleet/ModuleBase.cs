@@ -224,8 +224,8 @@ public class ModuleBase : MonoBehaviour
         return m_silenceEndTime;
     }
 
-    // 공격 딜레이 추가 — 현재 또는 예정된 쿨타임 만료 시점에서 delay만큼 연장
-    public void ApplyAdditionalDelay(float delay)
+    // 공격 딜레이 추가(교란) — 현재 또는 예정된 쿨타임 만료 시점에서 delay만큼 연장
+    public void ApplyDisrupt(float delay)
     {
         float lastAttack = GetLastAttackTime();
         float effectiveBase = Mathf.Max(lastAttack, Time.time);

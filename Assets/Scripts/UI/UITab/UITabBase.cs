@@ -37,6 +37,6 @@ public class UITabBase : MonoBehaviour
 
     protected void ShowErrorMessage(string message)
     {
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig { title = LocalizationManager.Instance.Get("error_message_title"), message = message, autoCloseSec = 5f });
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig { message = message, autoCloseSec = 5f });
     }
 }

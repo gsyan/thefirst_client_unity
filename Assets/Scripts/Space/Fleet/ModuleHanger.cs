@@ -15,7 +15,7 @@ public class AircraftInfo
     public int airAmmo;
     public float airDetectRadius;
     public float airAvoidRadius;
-    public float airAdditionalDelay;
+    public float airDisrupt;
 
     public float airHealthMax;
     public int airAmmoMax;
@@ -46,7 +46,7 @@ public class AircraftInfo
         this.airAmmo             = moduleData.airAmmo;
         this.airDetectRadius     = moduleData.airDetectRadius;
         this.airAvoidRadius      = moduleData.airAvoidRadius;
-        this.airAdditionalDelay  = moduleData.airAdditionalDelay;
+        this.airDisrupt          = moduleData.airDisrupt;
 
         this.airHealthMax        = moduleData.airHealth;
         this.airAmmoMax          = moduleData.airAmmo;

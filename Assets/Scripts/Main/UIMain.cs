@@ -142,6 +142,10 @@ public class UIMain : UIManager
             {
                 message = ErrorCodeMapping.GetMessage(response.errorCode);
                 Debug.LogError($"Commander selection failed - ErrorCode: {errorCode}, Message: {message}");
+
+                // 유효하지 않은 커맨더 정보로는 재시도해도 계속 같은 에러가 나므로 토큰을 날리고 재로그인 유도
+                NetworkManager.Instance.Logout();
+                UIManager.Instance.ShowPanel("UIPanelLoginType");
             }
         });
     }

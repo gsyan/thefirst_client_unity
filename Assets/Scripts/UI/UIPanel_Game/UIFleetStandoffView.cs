@@ -1,8 +1,9 @@
 // 함대설정(정찰) UI — 대치 중인 내 함대/적 함대를 좌우 분할뷰로 표시
 // "내 함대"는 항상 실제 메인카메라(CameraController.m_targetCamera)로 보여줌 — 로비 풀스크린이든 이 대치 화면이든 동일 카메라가
 // viewport rect만 바뀌며 계속 담당(로비↔함대편집 진입 애니메이션과 일관된 로직 공유 목적). "적 함대"만 이 화면 전용의 별도 카메라로 비춤
-// Camera.rect로 화면을 반씩 나눔 — 터치 좌표를 바로 해당 카메라로 레이캐스트할 수 있어 3D 피킹(후속 단계)이 단순해짐
+// Camera.rect로 화면을 반씩 나눔 — 터치 좌표를 바로 해당 카메라로 레이캐스트할 수 있어 3D 피킹이 단순해짐
 // 두 함대는 이미 대치 거리(k_enemyEncounterDistance)만큼 떨어져 있어 culling mask 분리 없이 카메라 위치+LookAt만으로 서로의 함대가 화면에 안 걸리게 함
+// 내 함선 클릭 → UIPanelSpace.OnShipSelectedAutoTabSwitch가 UIPanelFleetComposition을 열고, 그 열림/닫힘에 맞춰 이 화면은 좌측 EnemyFleetCamera를 숨김/복원함(OnFleetCompositionPanelChanged)
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,8 @@ public class UIFleetStandoffView : MonoBehaviour
 
     [SerializeField] private Camera m_enemyFleetCamera; // Rect: 좌측 절반 (0, 0, 0.5, 1) — 이 화면 전용 카메라
     [SerializeField] private Button m_backButton;        // 함대설정 버튼이 ButtonContainer 안에 있어 뷰가 열리면 같이 숨겨지므로, 복귀 전용 버튼을 이 뷰 안에 별도로 둠
+    [SerializeField] private RectTransform m_dividerLine; // 좌우 분할 경계선 — 정적 50% 고정이 아니라 매 프레임 카메라 rect의 왼쪽 경계(GetViewportX)를 따라감
+    [SerializeField] private UIFleetInfoView m_enemyFleetInfoView; // 좌측 적 함선 클릭 시 배치 목록+상세 스탯 표시(읽기전용)
 
     [SerializeField] private float m_viewDistance = 20f;  // 적함대 카메라 — 함대 중심에서 카메라까지 거리
     [SerializeField] private float m_viewHeight = 6f;     // 적함대 카메라 — 살짝 위에서 내려다보는 각도용 높이
@@ -32,15 +35,55 @@ public class UIFleetStandoffView : MonoBehaviour
     private const float k_pitchClampDeg = 80f; // 카메라가 함대를 정수리/바닥에서 내려다보며 뒤집히지 않게 제한
 
     private Transform m_enemyFleetTransform;
+    private SpaceFleet m_enemyFleet;
     private float m_enemyYaw;
     private float m_enemyPitch;
     private bool m_isDraggingEnemy;
     private Vector2 m_lastPointerScreenPos;
 
+    private const float k_tapMoveThreshold = 12f; // 이 이하 이동이면 드래그가 아니라 탭/클릭으로 판정(픽셀)
+    private Vector2 m_leftPressStartPos;
+    private bool m_isLeftPressActive;
+
     private void Awake()
     {
         if (m_backButton != null)
             m_backButton.onClick.AddListener(OnClickBack);
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Subscribe_CurrentPanelChanged(OnFleetCompositionPanelChanged);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Unsubscribe_CurrentPanelChanged(OnFleetCompositionPanelChanged);
+    }
+
+    // 내 함선 클릭 시 UIPanelSpace가 함대편성 패널을 여는데(OnShipSelectedAutoTabSwitch), 그 패널이 열리면 좌측 적함대 카메라를 숨겨
+    // 우측 뷰가 화면 전체로 확장되고 비워진 우측엔 함대편성 UI가 채워지도록 함. 패널이 닫히면 다시 좌우 절반으로 복귀
+    private void OnFleetCompositionPanelChanged(string panelName)
+    {
+        if (gameObject.activeSelf == false) return;
+
+        bool isFleetCompositionOpen = panelName == "UIPanelFleetComposition";
+        if (m_enemyFleetCamera != null)
+            m_enemyFleetCamera.gameObject.SetActive(isFleetCompositionOpen == false);
+        if (m_dividerLine != null)
+            m_dividerLine.gameObject.SetActive(isFleetCompositionOpen == false);
+        if (isFleetCompositionOpen == true && m_enemyFleetInfoView != null)
+            m_enemyFleetInfoView.Close();
+
+        // 탭이 열리면 내 함대 카메라가 화면 전체(좌측 포함)로 확장되므로 입력 허용 구간도 전체로 넓혀야
+        // 빈 공간(좌측 포함) 탭으로 EmptySpaceTapped가 발생해 탭을 닫을 수 있음. 닫히면 다시 우측 절반으로 복귀
+        if (CameraController.Instance != null)
+        {
+            if (isFleetCompositionOpen == true)
+                CameraController.Instance.SetInputScreenXRange(0f, 1f);
+            else
+                CameraController.Instance.SetInputScreenXRange(k_myFleetViewportX, 1f);
+        }
     }
 
     // onClose: 이 뷰를 닫을 때 호출부(UIPanelPrepareBattle)가 3버튼 UI를 다시 보여주기 위한 콜백
@@ -50,9 +93,13 @@ public class UIFleetStandoffView : MonoBehaviour
 
         m_onClose = onClose;
         m_enemyFleetTransform = enemyFleet.transform;
+        m_enemyFleet = enemyFleet;
         m_enemyYaw = m_initialYaw;
         m_enemyPitch = m_initialPitch;
         m_isDraggingEnemy = false;
+        m_isLeftPressActive = false;
+        if (m_enemyFleetInfoView != null)
+            m_enemyFleetInfoView.Close();
 
         UpdateEnemyCameraOrbit();
 
@@ -64,11 +111,31 @@ public class UIFleetStandoffView : MonoBehaviour
             CameraController.Instance.SetInputScreenXRange(k_myFleetViewportX, 1f);
         }
 
+        if (m_enemyFleetCamera != null)
+            m_enemyFleetCamera.gameObject.SetActive(true);
+        if (m_dividerLine != null)
+            m_dividerLine.gameObject.SetActive(true);
+
+        // 함대편성 패널이 닫힐 때 풀스크린이 아니라 이 화면의 우측 절반으로 복귀하도록 재정의
+        UIPanelFleetComposition panelFleetComposition = UIManager.Instance.GetPanel<UIPanelFleetComposition>("UIPanelFleetComposition");
+        if (panelFleetComposition != null)
+            panelFleetComposition.SetClosedCameraRectProvider(() => new Rect(k_myFleetViewportX, 0f, 1f - k_myFleetViewportX, 1f));
+
         gameObject.SetActive(true);
     }
 
     public void Close()
     {
+        UIPanelFleetComposition panelFleetComposition = UIManager.Instance.GetPanel<UIPanelFleetComposition>("UIPanelFleetComposition");
+        if (panelFleetComposition != null)
+        {
+            panelFleetComposition.CloseImmediateIfOpen();
+            panelFleetComposition.SetClosedCameraRectProvider(null);
+        }
+
+        if (m_enemyFleetInfoView != null)
+            m_enemyFleetInfoView.Close();
+
         gameObject.SetActive(false);
 
         if (CameraController.Instance != null)
@@ -81,6 +148,103 @@ public class UIFleetStandoffView : MonoBehaviour
     private void Update()
     {
         HandleEnemyCameraDrag();
+        HandleEnemyCameraClick();
+        UpdateDividerLinePosition();
+    }
+
+    // 좌측(적함대) 영역 좌클릭/탭 — 우클릭 드래그(회전)와 별개 입력. 함선 명중 시 정보 패널을 열고 그 함선을 선택,
+    // 빈 공간 명중이면 패널을 닫음. 이동량이 k_tapMoveThreshold를 넘으면 드래그로 보고 탭 처리하지 않음
+    private void HandleEnemyCameraClick()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        Mouse mouse = Mouse.current;
+        if (mouse == null) return;
+
+        if (mouse.leftButton.wasPressedThisFrame)
+        {
+            m_leftPressStartPos = mouse.position.ReadValue();
+            m_isLeftPressActive = IsPointerOverUIObject(m_leftPressStartPos) == false;
+            return;
+        }
+
+        if (mouse.leftButton.wasReleasedThisFrame)
+        {
+            if (m_isLeftPressActive == false) return;
+            m_isLeftPressActive = false;
+
+            Vector2 releasePos = mouse.position.ReadValue();
+            if (Vector2.Distance(releasePos, m_leftPressStartPos) > k_tapMoveThreshold) return;
+
+            ProcessEnemyAreaTap(releasePos);
+        }
+#elif UNITY_ANDROID || UNITY_IOS
+        var touches = Touch.activeTouches;
+        if (touches.Count != 1) return;
+
+        Touch touch = touches[0];
+
+        if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+        {
+            m_leftPressStartPos = touch.screenPosition;
+            m_isLeftPressActive = IsPointerOverUIObject(m_leftPressStartPos) == false;
+            return;
+        }
+
+        if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
+        {
+            if (m_isLeftPressActive == false) return;
+            m_isLeftPressActive = false;
+
+            Vector2 releasePos = touch.screenPosition;
+            if (Vector2.Distance(releasePos, m_leftPressStartPos) > k_tapMoveThreshold) return;
+
+            ProcessEnemyAreaTap(releasePos);
+        }
+        else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Canceled)
+        {
+            m_isLeftPressActive = false;
+        }
+#endif
+    }
+
+    private void ProcessEnemyAreaTap(Vector2 screenPos)
+    {
+        if (screenPos.x >= Screen.width * k_myFleetViewportX) return; // 우측(내 함대) 영역은 CameraController가 자체 처리
+        if (m_enemyFleetCamera == null || m_enemyFleet == null) return;
+
+        Ray ray = m_enemyFleetCamera.ScreenPointToRay(screenPos);
+        if (Physics.Raycast(ray, out RaycastHit hit, 3000f) == true)
+        {
+            SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
+            if (ship != null && ship.m_ownerFleet == m_enemyFleet)
+            {
+                if (m_enemyFleetInfoView != null)
+                {
+                    m_enemyFleetInfoView.Open(m_enemyFleet);
+                    m_enemyFleetInfoView.SelectShipByPositionIndex(m_enemyFleet, ship.m_shipInfo.positionIndex);
+                }
+                return;
+            }
+        }
+
+        if (m_enemyFleetInfoView != null)
+            m_enemyFleetInfoView.Close();
+    }
+
+    // DividerLine을 카메라 rect의 왼쪽 경계(GetViewportX)에 매 프레임 맞춤 — UIPanelSpace의 뷰포트 애니메이션 중에도
+    // 그 값을 직접 폴링하므로 누가 rect를 바꾸고 있는지와 무관하게 항상 실제 경계를 따라감
+    private void UpdateDividerLinePosition()
+    {
+        if (m_dividerLine == null || m_dividerLine.gameObject.activeSelf == false) return;
+        if (CameraController.Instance == null) return;
+
+        float viewportX = CameraController.Instance.GetViewportX();
+        Vector2 anchorMin = m_dividerLine.anchorMin;
+        Vector2 anchorMax = m_dividerLine.anchorMax;
+        anchorMin.x = viewportX;
+        anchorMax.x = viewportX;
+        m_dividerLine.anchorMin = anchorMin;
+        m_dividerLine.anchorMax = anchorMax;
     }
 
     // 적 함대 카메라 전용 — 좌측 절반에서 시작한 드래그만 반응, 함대를 중심으로 좌우(yaw)/상하(pitch) 회전

@@ -1069,7 +1069,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6251955296026665132
 MonoBehaviour:
@@ -1119,7 +1119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1481431380833010641}
   m_text: {fileID: 8804571770802396635}
-  m_image2: {fileID: 0}
 --- !u!114 &5746168258921293895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1353,7 +1352,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &9047068273838187030
 MonoBehaviour:
@@ -1403,7 +1402,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7074791306810050394}
   m_text: {fileID: 6746695188313941311}
-  m_image2: {fileID: 0}
 --- !u!114 &1581838297367328836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2639,7 +2637,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1666886427191468797
 MonoBehaviour:
@@ -2689,7 +2687,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 886989647209229751}
   m_text: {fileID: 7471099830471489514}
-  m_image2: {fileID: 0}
 --- !u!114 &11055217836619184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2743,7 +2740,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6044832081146961223
 MonoBehaviour:
@@ -2793,7 +2790,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 8253403457007914825}
   m_text: {fileID: 6735995313534959795}
-  m_image2: {fileID: 0}
 --- !u!114 &7222353948264203138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3511,7 +3507,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8749221758465482294
 MonoBehaviour:
@@ -3561,7 +3557,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4321930161145659425}
   m_text: {fileID: 1905305925535445828}
-  m_image2: {fileID: 0}
 --- !u!114 &6813620638890284472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3615,7 +3610,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6384215521145065326
 MonoBehaviour:
@@ -3665,7 +3660,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 5796611610735975756}
   m_text: {fileID: 7558805173073898420}
-  m_image2: {fileID: 0}
 --- !u!114 &348927953324477000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3719,7 +3713,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2175559493193103419
 MonoBehaviour:
@@ -3769,7 +3763,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7924297637571490464}
   m_text: {fileID: 2171172797908641272}
-  m_image2: {fileID: 0}
 --- !u!114 &7506834533925985530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4093,7 +4086,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &9092799277026100672
 MonoBehaviour:
@@ -4143,7 +4136,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 719673042240988994}
   m_text: {fileID: 740672182003530574}
-  m_image2: {fileID: 0}
 --- !u!114 &6730573733866023267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4445,7 +4437,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &646060610677105701
 MonoBehaviour:
@@ -4495,7 +4487,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7211696096804920865}
   m_text: {fileID: 5414688281494848294}
-  m_image2: {fileID: 0}
 --- !u!114 &8258824707323842971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4853,7 +4844,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4437553541588266727
 MonoBehaviour:
@@ -4903,7 +4894,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 39806963553582133}
   m_text: {fileID: 5714815185414205428}
-  m_image2: {fileID: 0}
 --- !u!114 &6374935658215914440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4959,7 +4949,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -330}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &4880086459411846846
 MonoBehaviour:
@@ -5054,7 +5044,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -295}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2518975590168368398
 MonoBehaviour:
@@ -5389,7 +5379,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3418748868469420074
 MonoBehaviour:
@@ -5439,7 +5429,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 971191251053625899}
   m_text: {fileID: 774856565317523959}
-  m_image2: {fileID: 0}
 --- !u!114 &6132040710636302750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5737,7 +5726,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -505}
-  m_SizeDelta: {x: 40, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &4191315800856365411
 MonoBehaviour:
@@ -5830,7 +5819,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &735383429347556684
 MonoBehaviour:
@@ -5880,7 +5869,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1414700638116949141}
   m_text: {fileID: 4555196229183387806}
-  m_image2: {fileID: 0}
 --- !u!114 &32480683369021964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6390,7 +6378,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7700129975202573565
 MonoBehaviour:
@@ -6440,7 +6428,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6914470062054580200}
   m_text: {fileID: 4047973751002724988}
-  m_image2: {fileID: 0}
 --- !u!114 &8267764355536777141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6496,7 +6483,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -50}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &5993141295688686290
 MonoBehaviour:
@@ -6741,7 +6728,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &120629289486721395
 MonoBehaviour:
@@ -6791,7 +6778,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 505468049269025942}
   m_text: {fileID: 123524498092449105}
-  m_image2: {fileID: 0}
 --- !u!114 &6332944109326477776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7149,7 +7135,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4855926524426957507
 MonoBehaviour:
@@ -7199,7 +7185,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4719675128759367587}
   m_text: {fileID: 3040546438456457847}
-  m_image2: {fileID: 0}
 --- !u!114 &342028531856937955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7494,7 +7479,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -0}
+  m_AnchoredPosition: {x: 107.5, y: -0}
   m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6319993564898479570
@@ -7545,7 +7530,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7767517165738279735}
   m_text: {fileID: 912099163238084654}
-  m_image2: {fileID: 0}
 --- !u!114 &708730165907908389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7841,7 +7825,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2087797381130514992
 MonoBehaviour:
@@ -7891,7 +7875,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6725002042825159809}
   m_text: {fileID: 3297102699259163933}
-  m_image2: {fileID: 0}
 --- !u!114 &610050599736816932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8643,7 +8626,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3765993554133993968
 MonoBehaviour:
@@ -8693,7 +8676,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2436802094177271886}
   m_text: {fileID: 8949191450209289557}
-  m_image2: {fileID: 0}
 --- !u!114 &3802536029210124075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8837,7 +8819,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1326425443085648341
 MonoBehaviour:
@@ -8887,7 +8869,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 8631617712834930572}
   m_text: {fileID: 1831070893904567207}
-  m_image2: {fileID: 0}
 --- !u!114 &5857568731090745490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8943,7 +8924,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -15}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &471920767110491700
 MonoBehaviour:
@@ -9036,7 +9017,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7469158197485487287
 MonoBehaviour:
@@ -9086,7 +9067,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4155343841451991894}
   m_text: {fileID: 1639228571971077486}
-  m_image2: {fileID: 0}
 --- !u!114 &8981285177954934756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9472,7 +9452,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8172599093995822729
 MonoBehaviour:
@@ -9522,7 +9502,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 3365601804588106386}
   m_text: {fileID: 3460656481823387833}
-  m_image2: {fileID: 0}
 --- !u!114 &3277618522979359513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10060,7 +10039,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3117830971373010872
 MonoBehaviour:
@@ -10110,7 +10089,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2809489528217962439}
   m_text: {fileID: 5226631187011518413}
-  m_image2: {fileID: 0}
 --- !u!114 &5063106808390185872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10406,7 +10384,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3943426930531973885
 MonoBehaviour:
@@ -10456,7 +10434,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 5179845127744719407}
   m_text: {fileID: 403850996224883689}
-  m_image2: {fileID: 0}
 --- !u!114 &8808992443115482490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10662,7 +10639,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &23910500563765677
 MonoBehaviour:
@@ -10712,7 +10689,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4281033258610986408}
   m_text: {fileID: 7779057316886213698}
-  m_image2: {fileID: 0}
 --- !u!114 &2963394052152877643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10766,7 +10742,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2105994539415860391
 MonoBehaviour:
@@ -10816,7 +10792,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4641736379363055535}
   m_text: {fileID: 2948636846127030341}
-  m_image2: {fileID: 0}
 --- !u!114 &3685402375570535049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10870,7 +10845,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &5027535446936960142
 MonoBehaviour:
@@ -10920,7 +10895,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2836723146729906034}
   m_text: {fileID: 778325531380147058}
-  m_image2: {fileID: 0}
 --- !u!114 &1045948028825876116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11218,7 +11192,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -400}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &9106560492161264787
 MonoBehaviour:
@@ -11401,7 +11375,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7233559500922197602
 MonoBehaviour:
@@ -11451,7 +11425,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4438104527081006671}
   m_text: {fileID: 8822055933723759550}
-  m_image2: {fileID: 0}
 --- !u!114 &1990626512313764857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12239,7 +12212,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -260}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2388461649512177935
 MonoBehaviour:
@@ -12422,7 +12395,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3274659970943563055
 MonoBehaviour:
@@ -12472,7 +12445,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 38443934483355560}
   m_text: {fileID: 3933896513610382012}
-  m_image2: {fileID: 0}
 --- !u!114 &8994336497270551359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12706,7 +12678,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2794070849618228458
 MonoBehaviour:
@@ -12756,7 +12728,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4912150456730198374}
   m_text: {fileID: 8295027997898410202}
-  m_image2: {fileID: 0}
 --- !u!114 &3312767839685916302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12962,7 +12933,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8594946873455476286
 MonoBehaviour:
@@ -13012,7 +12983,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2492799721841953407}
   m_text: {fileID: 2344887467538580206}
-  m_image2: {fileID: 0}
 --- !u!114 &5662740624340011744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14068,7 +14038,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &237939316019851673
 MonoBehaviour:
@@ -14118,7 +14088,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2045824616979454364}
   m_text: {fileID: 1041281773338580824}
-  m_image2: {fileID: 0}
 --- !u!114 &2561961635539943889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14222,7 +14191,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2507874455093035819}
   m_text: {fileID: 423135412942760699}
-  m_image2: {fileID: 0}
 --- !u!114 &6788576396091226598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14428,7 +14396,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2185702692808224010
 MonoBehaviour:
@@ -14478,7 +14446,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 5446141771021212013}
   m_text: {fileID: 8105704466472087798}
-  m_image2: {fileID: 0}
 --- !u!114 &2819002907102488103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14532,7 +14499,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3101670832883815052
 MonoBehaviour:
@@ -14582,7 +14549,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 799200377033961466}
   m_text: {fileID: 5860900131299584952}
-  m_image2: {fileID: 0}
 --- !u!114 &4536523496387006966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15120,7 +15086,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &5636632328804121601
 MonoBehaviour:
@@ -15170,7 +15136,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 3889583780339519777}
   m_text: {fileID: 7179252373640914033}
-  m_image2: {fileID: 0}
 --- !u!114 &489946616756637688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15224,7 +15189,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8026914307978912359
 MonoBehaviour:
@@ -15274,7 +15239,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6745607898932411242}
   m_text: {fileID: 2231622366404069540}
-  m_image2: {fileID: 0}
 --- !u!114 &2736880696818027184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15330,7 +15294,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -470}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &873632135460222627
 MonoBehaviour:
@@ -15423,7 +15387,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4793669901462965202
 MonoBehaviour:
@@ -15473,7 +15437,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 8860153624350457536}
   m_text: {fileID: 6709382240723994714}
-  m_image2: {fileID: 0}
 --- !u!114 &4434015914239379453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15831,7 +15794,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4912042445236852194
 MonoBehaviour:
@@ -15881,7 +15844,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2101718704210876433}
   m_text: {fileID: 7369608386601397405}
-  m_image2: {fileID: 0}
 --- !u!114 &7014926390117630589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16295,7 +16257,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1262655348226058957
 MonoBehaviour:
@@ -16345,7 +16307,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 5833085100107325280}
   m_text: {fileID: 434392636251365494}
-  m_image2: {fileID: 0}
 --- !u!114 &5255396940357832618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16551,7 +16512,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8656963505751023713
 MonoBehaviour:
@@ -16601,7 +16562,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7237435460428273619}
   m_text: {fileID: 2337600330958835025}
-  m_image2: {fileID: 0}
 --- !u!114 &1960780550875156593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16897,7 +16857,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4865448194505702315
 MonoBehaviour:
@@ -16947,7 +16907,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7161679277684980524}
   m_text: {fileID: 6279168741726925697}
-  m_image2: {fileID: 0}
 --- !u!114 &3473913092525988082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17001,7 +16960,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7592701672706514529
 MonoBehaviour:
@@ -17051,7 +17010,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6141769845755882101}
   m_text: {fileID: 4892039288874315849}
-  m_image2: {fileID: 0}
 --- !u!114 &7765925849141053254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17285,7 +17243,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3538472234250956708
 MonoBehaviour:
@@ -17335,7 +17293,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7456255065622808282}
   m_text: {fileID: 2005366337980176334}
-  m_image2: {fileID: 0}
 --- !u!114 &7634290184971386152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17541,7 +17498,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1380587779712402953
 MonoBehaviour:
@@ -17591,7 +17548,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1972445569265498655}
   m_text: {fileID: 5122381718472260379}
-  m_image2: {fileID: 0}
 --- !u!114 &2917432806226616565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17645,7 +17601,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &5381240091394892849
 MonoBehaviour:
@@ -17695,7 +17651,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 581863029982621133}
   m_text: {fileID: 1559562832856197407}
-  m_image2: {fileID: 0}
 --- !u!114 &6888151591055174689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17749,7 +17704,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1202684132382146533
 MonoBehaviour:
@@ -17799,7 +17754,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1565808888681081277}
   m_text: {fileID: 7183814393832649853}
-  m_image2: {fileID: 0}
 --- !u!114 &8488514429749236758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17853,7 +17807,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1875841460432050114
 MonoBehaviour:
@@ -17903,7 +17857,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7249525309519669060}
   m_text: {fileID: 8301212218160116761}
-  m_image2: {fileID: 0}
 --- !u!114 &1063613852154367359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17957,7 +17910,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2886606906605267868
 MonoBehaviour:
@@ -18007,7 +17960,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1508311446057578963}
   m_text: {fileID: 1990187325936504584}
-  m_image2: {fileID: 0}
 --- !u!114 &351130458541147472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18061,7 +18013,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6176732906768582112
 MonoBehaviour:
@@ -18111,7 +18063,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1186004182445732535}
   m_text: {fileID: 4243009335257823513}
-  m_image2: {fileID: 0}
 --- !u!114 &3169612508518132870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18165,7 +18116,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6209618851103927151
 MonoBehaviour:
@@ -18215,7 +18166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 5749867676522545647}
   m_text: {fileID: 8246197453329163006}
-  m_image2: {fileID: 0}
 --- !u!114 &3648404082651448316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18421,7 +18371,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &495228759251693623
 MonoBehaviour:
@@ -18471,7 +18421,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4574610766678507650}
   m_text: {fileID: 91529284485640488}
-  m_image2: {fileID: 0}
 --- !u!114 &2958582973652439008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18707,7 +18656,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -225}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &10394715503216621
 MonoBehaviour:
@@ -18800,7 +18749,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2050793024857428683
 MonoBehaviour:
@@ -18850,7 +18799,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4078508331935958989}
   m_text: {fileID: 3583929124318907413}
-  m_image2: {fileID: 0}
 --- !u!114 &8504977292360492487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18903,7 +18851,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 20, y: -0}
+  m_AnchoredPosition: {x: 215, y: -0}
   m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2034818835154675974
@@ -18954,7 +18902,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4170488703828774055}
   m_text: {fileID: 4809629868613330791}
-  m_image2: {fileID: 0}
 --- !u!114 &8638491838116324258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19010,7 +18957,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -435}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &4834267523011116577
 MonoBehaviour:
@@ -19587,7 +19534,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &5693892798710217555
 MonoBehaviour:
@@ -19637,7 +19584,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6334631360098051585}
   m_text: {fileID: 5451574004509231430}
-  m_image2: {fileID: 0}
 --- !u!114 &6089199658890471662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19933,7 +19879,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8469519601243388345
 MonoBehaviour:
@@ -19983,7 +19929,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 7128506565952447675}
   m_text: {fileID: 9142655967755703885}
-  m_image2: {fileID: 0}
 --- !u!114 &6182863341914419874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20189,7 +20134,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6576672185352315660
 MonoBehaviour:
@@ -20239,7 +20184,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1832817814330905641}
   m_text: {fileID: 6703106194258086036}
-  m_image2: {fileID: 0}
 --- !u!114 &8323659241741242099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20293,7 +20237,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7812917913643227614
 MonoBehaviour:
@@ -20343,7 +20287,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1085169789769041025}
   m_text: {fileID: 8904731216596199583}
-  m_image2: {fileID: 0}
 --- !u!114 &7166866959473496899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20549,7 +20492,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4201664168813852139
 MonoBehaviour:
@@ -20599,7 +20542,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6612945168286769131}
   m_text: {fileID: 9047898939656137662}
-  m_image2: {fileID: 0}
 --- !u!114 &2733478785634797970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20805,7 +20747,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6143739503810661899
 MonoBehaviour:
@@ -20855,7 +20797,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 2028751202562218490}
   m_text: {fileID: 2901496888939697317}
-  m_image2: {fileID: 0}
 --- !u!114 &4886518082721576337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21879,7 +21820,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -365}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &7751849696324213372
 MonoBehaviour:
@@ -22124,7 +22065,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2158001963537215530
 MonoBehaviour:
@@ -22174,7 +22115,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4510390907198619062}
   m_text: {fileID: 5403236953524575567}
-  m_image2: {fileID: 0}
 --- !u!114 &3614545032411734970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22320,7 +22260,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -190}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &5401215963417431336
 MonoBehaviour:
@@ -22503,7 +22443,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6663514930233135729
 MonoBehaviour:
@@ -22553,7 +22493,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 8046423401264637351}
   m_text: {fileID: 847738677640907318}
-  m_image2: {fileID: 0}
 --- !u!114 &7693668977063619166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22607,7 +22546,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4007614107766757689
 MonoBehaviour:
@@ -22657,7 +22596,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4563862640209956599}
   m_text: {fileID: 6619072981975301429}
-  m_image2: {fileID: 0}
 --- !u!114 &4289783901576846980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22710,7 +22648,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 30, y: -0}
+  m_AnchoredPosition: {x: 322.5, y: -0}
   m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2334475805873070256
@@ -22761,7 +22699,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 8673185171091309706}
   m_text: {fileID: 7019474005726050668}
-  m_image2: {fileID: 0}
 --- !u!114 &2506115080127165266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23119,7 +23056,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3951639963134603393
 MonoBehaviour:
@@ -23169,7 +23106,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4193668383944181264}
   m_text: {fileID: 7324179400928779627}
-  m_image2: {fileID: 0}
 --- !u!114 &4717065635888995985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23375,7 +23311,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &9135005205209804986
 MonoBehaviour:
@@ -23425,7 +23361,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 8171101109979446004}
   m_text: {fileID: 9046263932281722656}
-  m_image2: {fileID: 0}
 --- !u!114 &6625814051856547106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23479,7 +23414,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6841870893569344839
 MonoBehaviour:
@@ -23529,7 +23464,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 3492650322334946281}
   m_text: {fileID: 698987979871803400}
-  m_image2: {fileID: 0}
 --- !u!114 &6661946299293079791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23583,7 +23517,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1422635193340033387
 MonoBehaviour:
@@ -23633,7 +23567,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 8005714805599865219}
   m_text: {fileID: 4875951477652701685}
-  m_image2: {fileID: 0}
 --- !u!114 &8714533812227956676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23777,7 +23710,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3043726303736821777
 MonoBehaviour:
@@ -23827,7 +23760,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6614672793931651482}
   m_text: {fileID: 7306049635146755855}
-  m_image2: {fileID: 0}
 --- !u!114 &7689185178834935072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24123,7 +24055,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7094385159906302002
 MonoBehaviour:
@@ -24173,7 +24105,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 794891115144679691}
   m_text: {fileID: 5574302403418391305}
-  m_image2: {fileID: 0}
 --- !u!114 &3259531003826998976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24229,7 +24160,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -155}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &7982955247173194980
 MonoBehaviour:
@@ -24594,7 +24525,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -120}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &5048561210354303849
 MonoBehaviour:
@@ -24929,7 +24860,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 215, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7605564520708941124
 MonoBehaviour:
@@ -24979,7 +24910,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 25023618526085076}
   m_text: {fileID: 7669041978147674975}
-  m_image2: {fileID: 0}
 --- !u!114 &4175833707827739314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25454,7 +25384,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 40, y: -0}
+  m_AnchoredPosition: {x: 430, y: -0}
   m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1845380223608395420
@@ -25505,7 +25435,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 6241438358357596930}
   m_text: {fileID: 1277418936686859172}
-  m_image2: {fileID: 0}
 --- !u!114 &8865176485187806872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25649,7 +25578,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 107.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4287665332202724844
 MonoBehaviour:
@@ -25699,7 +25628,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4094271802675896991}
   m_text: {fileID: 8523508650680129584}
-  m_image2: {fileID: 0}
 --- !u!114 &7905486112826924657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25845,7 +25773,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -85}
-  m_SizeDelta: {x: 527.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &5520218500273103159
 MonoBehaviour:
@@ -26422,7 +26350,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &441890138021713267
 MonoBehaviour:
@@ -26472,7 +26400,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 8514636027678696457}
   m_text: {fileID: 6502219075950874503}
-  m_image2: {fileID: 0}
 --- !u!114 &1249306360876650565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26778,8 +26705,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -272.5}
-  m_SizeDelta: {x: 567.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: -290}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2063875204507406080
 MonoBehaviour:
@@ -27102,7 +27029,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 322.5, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7001092359525493227
 MonoBehaviour:
@@ -27152,7 +27079,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4138565140169713587}
   m_text: {fileID: 7967421299043999550}
-  m_image2: {fileID: 0}
 --- !u!114 &4572599409714760661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27358,7 +27284,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 430, y: -0}
-  m_SizeDelta: {x: 97.5, y: 30}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &700001277865387143
 MonoBehaviour:
@@ -27408,7 +27334,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 1543335756093432487}
   m_text: {fileID: 6519504800748997219}
-  m_image2: {fileID: 0}
 --- !u!114 &5966119531797800559
 MonoBehaviour:
   m_ObjectHideFlags: 0

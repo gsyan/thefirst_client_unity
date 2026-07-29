@@ -175,13 +175,14 @@ public class SpaceFleet : MonoBehaviour
         m_team = team;
         m_fleetSource = source;
         m_fleetState = fleetState;
+        m_currentFormationType = fleetInfo.formation;
 
         if (m_fleetInfo.ships != null && m_fleetInfo.ships.Count > 0)
         {
             for (int i = 0; i < m_fleetInfo.ships.Count; i++)
                 CreateSpaceShipByInfo(fleetInfo.ships[i]);
 
-            UpdateShipFormation(m_fleetInfo.formation, bSmooth: false);
+            UpdateShipFormation(m_currentFormationType, bSmooth: false);
         }
 
         SetFleetState(fleetState);
@@ -435,9 +436,8 @@ public class SpaceFleet : MonoBehaviour
     private static readonly EFormationType[] k_cycleFormations =
     {
         EFormationType.linear_horizontal,
-        EFormationType.x_offensive,
-        EFormationType.x_defensive,
-        //EFormationType.cross_defensive,
+        EFormationType.x,
+        //EFormationType.cross,
     };
 
     public void CycleFormation()
@@ -472,6 +472,17 @@ public class SpaceFleet : MonoBehaviour
             ParseCubeGrid(preset, validShips, flagship, boundsCache, result);
         else
             ParseCircle(preset, validShips, flagship, boundsCache, result);
+
+        // 후방(isFront == false) 함선은 슬롯 기준 위치보다 자기 함선 Z크기의 절반만큼 뒤(-Z)로 이동
+        foreach (var ship in validShips)
+        {
+            if (ship.m_shipInfo.isFront == true) continue;
+            if (result.TryGetValue(ship, out Vector3 slotPos) == false) continue;
+
+            float shipHalfZ = boundsCache[ship].size.z * 0.5f;
+            slotPos.z -= shipHalfZ;
+            result[ship] = slotPos;
+        }
 
         return result;
     }
@@ -643,18 +654,18 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
-    public void RemoveShip(SpaceShip ship, bool refreshFormation = false)
+    // triggerDefeatEvents: 함대가 전멸 상태가 됐을 때 전투 전멸 이벤트(ForceEndBattle 등)를 발생시킬지 —
+    // 함대편성 UI에서 슬롯 교체용으로 호출할 때는 false로 넘겨서 전투 로직을 건드리지 않게 함
+    public void RemoveShip(SpaceShip ship, bool refreshFormation = false, bool triggerDefeatEvents = true)
     {
         if (ship == null) return;
         m_ships.Remove(ship);
 
-        if (IsFleetAlive() == true)
-        {
-            Destroy(ship.gameObject);
-            if (refreshFormation)
-                RefreshFormation();
-        }
-        else
+        Destroy(ship.gameObject);
+        if (refreshFormation)
+            RefreshFormation();
+
+        if (triggerDefeatEvents == true && IsFleetAlive() == false)
         {
             if (IsCinematic)
             {
@@ -686,7 +697,7 @@ public class SpaceFleet : MonoBehaviour
             for (int i = 0; i < m_fleetInfo.ships.Count; i++)
                 CreateSpaceShipByInfo(m_fleetInfo.ships[i]);
 
-            UpdateShipFormation(m_fleetInfo.formation, bSmooth: false);
+            UpdateShipFormation(bSmooth: false);
         }
 
         // ShipSelector가 새 함선 객체를 참조하도록 먼저 갱신, 이후 HP 이벤트
@@ -877,20 +888,8 @@ public class SpaceFleet : MonoBehaviour
         }
         if (m_fleetSource == EFleetSource.fleet_source_player)
         {
-            if (fleetState.IsBattleState() == true)
-            {
-                if (prevWasNotBattle == true)
-                    ReadyAllHangerAircrafts();
-                StartRepairBoostCostLoop();
-                StartMissileTacticCostLoop();
-                StartAircraftTacticCostLoop();
-            }
-            else
-            {
-                StopRepairBoostCostLoop();
-                StopMissileTacticCostLoop();
-                StopAircraftTacticCostLoop();
-            }
+            if (fleetState.IsBattleState() == true && prevWasNotBattle == true)
+                ReadyAllHangerAircrafts();
             EventManager.TriggerMyFleetStateChanged(fleetState);
         }
     }
@@ -907,169 +906,6 @@ public class SpaceFleet : MonoBehaviour
                 for (int h = 0; h < hangers.Count; h++)
                     hangers[h].ReadyAllAircraft();
             }
-        }
-    }
-
-    private static readonly WaitForSeconds k_repairBoostCostInterval = new WaitForSeconds(1f);
-    private Coroutine m_repairBoostCostCoroutine;
-
-    private void StartRepairBoostCostLoop()
-    {
-        if (m_repairBoostCostCoroutine != null) StopCoroutine(m_repairBoostCostCoroutine);
-        m_repairBoostCostCoroutine = StartCoroutine(RepairBoostCostLoop());
-    }
-
-    private void StopRepairBoostCostLoop()
-    {
-        if (m_repairBoostCostCoroutine == null) return;
-        StopCoroutine(m_repairBoostCostCoroutine);
-        m_repairBoostCostCoroutine = null;
-    }
-
-    private IEnumerator RepairBoostCostLoop()
-    {
-        while (true)
-        {
-            yield return k_repairBoostCostInterval;
-            if (m_fleetState.IsBattleState() == false) continue;
-            if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 1) == 0) continue;
-            if (HasAnyDamagedShip() == false) continue;
-
-            int shipCount = CountAliveShips();
-            if (shipCount == 0) continue;
-
-            Commander commander = DataManager.Instance.m_currentCommander;
-            if (commander == null) continue;
-
-            int perShip = DataManager.Instance.m_dataTableConfig.gameSettings.repairBoostMineralPerSec;
-            int cost    = perShip * shipCount;
-            bool consumed = commander.TryConsumeMineral(cost);
-            if (consumed == true)
-                EventManager.Trigger_TacticMineralConsumed(0, cost);
-        }
-    }
-
-    private bool HasAnyDamagedShip()
-    {
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship != null && ship.IsAlive() == true && ship.GetHealthRatio() < 1f)
-                return true;
-        }
-        return false;
-    }
-
-    private int CountAliveShips()
-    {
-        int count = 0;
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship != null && ship.IsAlive() == true)
-                count++;
-        }
-        return count;
-    }
-
-    // 생존 함선의 개방된 미사일 슬롯(= 장착된 ModuleMissile) 합계
-    private int CountUnlockedMissileSlots()
-    {
-        int count = 0;
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship == null || ship.IsAlive() == false) continue;
-            foreach (ModuleBody body in ship.m_moduleBodys)
-            {
-                if (body != null) count += body.m_missiles.Count;
-            }
-        }
-        return count;
-    }
-
-    // 생존 함선의 개방된 함재기 슬롯(= 장착된 ModuleHanger) 합계
-    private int CountUnlockedHangerSlots()
-    {
-        int count = 0;
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship == null || ship.IsAlive() == false) continue;
-            foreach (ModuleBody body in ship.m_moduleBodys)
-            {
-                if (body != null) count += body.m_hangers.Count;
-            }
-        }
-        return count;
-    }
-
-    private Coroutine m_missileTacticCostCoroutine;
-    private Coroutine m_aircraftTacticCostCoroutine;
-
-    private void StartMissileTacticCostLoop()
-    {
-        if (m_missileTacticCostCoroutine != null) StopCoroutine(m_missileTacticCostCoroutine);
-        m_missileTacticCostCoroutine = StartCoroutine(MissileTacticCostLoop());
-    }
-
-    private void StopMissileTacticCostLoop()
-    {
-        if (m_missileTacticCostCoroutine == null) return;
-        StopCoroutine(m_missileTacticCostCoroutine);
-        m_missileTacticCostCoroutine = null;
-    }
-
-    private IEnumerator MissileTacticCostLoop()
-    {
-        while (true)
-        {
-            yield return k_repairBoostCostInterval;
-            if (m_fleetState.IsBattleState() == false) continue;
-            if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 2) == 0) continue;
-
-            int slotCount = CountUnlockedMissileSlots();
-            if (slotCount == 0) continue;
-
-            Commander commander = DataManager.Instance.m_currentCommander;
-            if (commander == null) continue;
-
-            int perSlot = DataManager.Instance.m_dataTableConfig.gameSettings.missileTacticMineralPerSec;
-            int cost    = perSlot * slotCount;
-            bool consumed = commander.TryConsumeMineral(cost);
-            if (consumed == true)
-                EventManager.Trigger_TacticMineralConsumed(1, cost);
-        }
-    }
-
-    private void StartAircraftTacticCostLoop()
-    {
-        if (m_aircraftTacticCostCoroutine != null) StopCoroutine(m_aircraftTacticCostCoroutine);
-        m_aircraftTacticCostCoroutine = StartCoroutine(AircraftTacticCostLoop());
-    }
-
-    private void StopAircraftTacticCostLoop()
-    {
-        if (m_aircraftTacticCostCoroutine == null) return;
-        StopCoroutine(m_aircraftTacticCostCoroutine);
-        m_aircraftTacticCostCoroutine = null;
-    }
-
-    private IEnumerator AircraftTacticCostLoop()
-    {
-        while (true)
-        {
-            yield return k_repairBoostCostInterval;
-            if (m_fleetState.IsBattleState() == false) continue;
-            if (m_fleetInfo == null || (m_fleetInfo.tacticOptions & 4) == 0) continue;
-
-            int slotCount = CountUnlockedHangerSlots();
-            if (slotCount == 0) continue;
-
-            Commander commander = DataManager.Instance.m_currentCommander;
-            if (commander == null) continue;
-
-            int perSlot = DataManager.Instance.m_dataTableConfig.gameSettings.aircraftTacticMineralPerSec;
-            int cost    = perSlot * slotCount;
-            bool consumed = commander.TryConsumeMineral(cost);
-            if (consumed == true)
-                EventManager.Trigger_TacticMineralConsumed(2, cost);
         }
     }
 

@@ -37,6 +37,7 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
             pvpPoint      = 0,
             clearedZones  = new List<string>(),
             nameChangeCount = 2,
+            commandPowerMax = 300, // 서버 Commander.java 기본값(INT DEFAULT 300)과 동일하게 맞춤
         };
         DataManager.Instance.SetCommanderInfo(commanderInfo);
     }
@@ -46,11 +47,11 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
         if (DataManager.Instance.m_currentFleetInfo != null)
             return;
 
-        var fleet = new TempFleetInfo
+        var fleet = new FleetInfo
         {
-            ships = new List<TempShipInfo>
+            ships = new List<ShipInfo>
             {
-                new TempShipInfo { shipPresetId = "beam_light_01", isFront = true },
+                new ShipInfo { shipPresetId = "beam_light_01", isFront = true },
             },
         };
 

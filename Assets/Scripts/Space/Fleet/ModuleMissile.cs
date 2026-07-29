@@ -193,24 +193,19 @@ public class ModuleMissile : ModuleBase
 
     private void ExecuteAttackOnTarget(ModuleBody target)
     {
-        bool missileTacticOn = m_ownerFleet != null && m_ownerFleet.m_fleetInfo != null && (m_ownerFleet.m_fleetInfo.tacticOptions & 2) != 0;
-        GameSettings settings = DataManager.Instance.m_dataTableConfig.gameSettings;
-        float tacticMultiplier    = missileTacticOn == true ? settings.missileTacticDamageMultiplier : 1f;
         float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
         DamageInfo damageInfo = new DamageInfo
         {
             baseDamage       = m_attack,
-            attackMultiplier = tacticMultiplier * shipCountMultiplier * formationMultiplier,
+            attackMultiplier = shipCountMultiplier * formationMultiplier,
             damageType       = EDamageType.Missile,
         };
-
-        float explosionMultiplier = missileTacticOn == true ? settings.missileTacticExplosionMultiplier : 1f;
 
         foreach (var launcher in m_launchers)
         {
             if (launcher != null)
-                launcher.FireAtTarget(target.transform, damageInfo, this, explosionMultiplier: explosionMultiplier);
+                launcher.FireAtTarget(target.transform, damageInfo, this);
         }
     }
 

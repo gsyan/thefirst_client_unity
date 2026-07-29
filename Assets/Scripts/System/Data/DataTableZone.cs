@@ -48,6 +48,17 @@ public class CelestialBodyConfig
     [Range(0f, 0.4f)] public float poleIceWidth = 0.12f;
 }
 
+// 그리드 셀 하나의 타입 오버라이드 — Normal(기본)이 아닌 셀만 담음(희소 리스트)
+// EGridCellType/EGridEventType은 CommonDefine.cs에 정의(서버 enum 생성기(generate_common_define.py)가 그 파일만 스캔하기 때문)
+[System.Serializable]
+public class GridCellOverride
+{
+    public int row;
+    public int col;
+    public EGridCellType type;
+    public EGridEventType eventType; // type == Event 일 때만 유효
+}
+
 // Zone 그룹 공유 설정 — 같은 Zone(1-1, 1-2, 1-3...)이 천체·카메라 설정을 공유
 [System.Serializable]
 public class ZoneConfig
@@ -66,6 +77,7 @@ public class ZoneConfig
     [Header("탐사 그리드")]
     public int gridWidth = 3;  // [server] 서버가 클라와 동일하게 셀 적함대를 재계산하려면 그리드 크기가 필요
     public int gridHeight = 3; // [server]
+    public List<GridCellOverride> cellOverrides = new List<GridCellOverride>(); // [server] Normal이 아닌 셀만 저장(희소 리스트) — DataTableZoneEditor 그리드 버튼으로 편집
 
     [Header("셀 적함대 절차적 생성")]
     public int enemyFleetsPerCell = 1;    // [server] 셀당 순차 웨이브 개수
@@ -125,6 +137,7 @@ public class DataTableZone : ScriptableObject
                 enemyMaxCost          = z.enemyMaxCost,
                 enemyDeviation        = z.enemyDeviation,
                 enemyMaxShipsPerFleet = z.enemyMaxShipsPerFleet,
+                cellOverrides         = z.cellOverrides.ConvertAll(o => (object)new { row = o.row, col = o.col, type = o.type.ToString(), eventType = o.eventType.ToString() }),
             });
         }
         return JsonConvert.SerializeObject(new { zoneConfigs = zoneConfigs }, Formatting.Indented);

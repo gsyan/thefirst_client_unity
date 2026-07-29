@@ -130,8 +130,8 @@ MonoBehaviour:
     textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: -500}
     autoNextDelay: 0
-    preActionPanelName: UIPanelSpace
-    preActionTabName: tab_fleet
+    preActionPanelName: UIPanelFleetComposition
+    preActionTabName:
     conditionType: 0
     conditionThreshold: 90
     conditionCount: 3

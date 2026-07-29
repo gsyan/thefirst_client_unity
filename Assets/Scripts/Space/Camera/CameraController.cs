@@ -50,10 +50,6 @@ public class CameraController : MonoSingleton<CameraController>
     private const float k_zoomArriveThreshold = 0.01f;
     private const float k_positionLerpSpeed = 10f; // 줌(8f)보다 빠르게 — 위치가 먼저 도착해야 커브 방지
 
-    // UIPanelSpace 활성화 시 true, 비활성화 시 false
-    private bool m_shipSelectionEnabled = false;
-    public void SetShipSelectionEnabled(bool enabled) { m_shipSelectionEnabled = enabled; }
-
     // 갤럭시 뷰 (탐사 탭)
     private bool m_isGalaxyView = false;
     public bool IsGalaxyView => m_isGalaxyView;
@@ -381,10 +377,10 @@ public class CameraController : MonoSingleton<CameraController>
     
 
     // 3D 클릭으로 내 함선/모듈 선택. 빈공간이면 EmptySpaceTapped 발행
+    // 여기서는 "지금 어떤 UI 패널이 열려있는지" 등을 따지지 않고 항상 이벤트를 발행하기만 함 — 그 이벤트를 실제로
+    // 처리할지 말지는 각 리스너(UIPanelSpace/UIPanelFleetComposition 등)가 자기 활성 상태에 맞춰 스스로 판단(구독/해제)
     public void HandleModuleSelection(Vector3? screenPosition = null)
     {
-        if (!m_shipSelectionEnabled) return;
-
         LayerMask pickMask = ~m_layerMaskShield;
         if (!GetCameraRaycast(out RaycastHit hit, pickMask, 3000f, screenPosition))
         {
@@ -462,6 +458,51 @@ public class CameraController : MonoSingleton<CameraController>
     public float GetViewportX()
     {
         return m_targetCamera != null ? m_targetCamera.rect.x : 0f;
+    }
+
+    // 카메라 viewport rect(x, width) 애니메이션 — UIPanelFleetComposition처럼 화면 일부만 카메라에 내주는 패널이 열고 닫힐 때 사용.
+    // CameraController는 항상 살아있는 싱글톤이라, 호출한 패널의 GameObject가 애니메이션 도중 비활성화돼도 코루틴이 끊기지 않음
+    private Coroutine m_viewportAnimCoroutine;
+
+    public void AnimateViewportRect(float targetX, float targetWidth, float duration, System.Action<float, float> onProgress = null, System.Action onComplete = null)
+    {
+        StopViewportAnimation();
+        m_viewportAnimCoroutine = StartCoroutine(Co_AnimateViewportRect(targetX, targetWidth, duration, onProgress, onComplete));
+    }
+
+    public void StopViewportAnimation()
+    {
+        if (m_viewportAnimCoroutine != null)
+        {
+            StopCoroutine(m_viewportAnimCoroutine);
+            m_viewportAnimCoroutine = null;
+        }
+    }
+
+    private System.Collections.IEnumerator Co_AnimateViewportRect(float targetX, float targetWidth, float duration, System.Action<float, float> onProgress, System.Action onComplete)
+    {
+        float startX = GetViewportX();
+        float startWidth = GetViewportWidth();
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+
+            float x = Mathf.Lerp(startX, targetX, t);
+            float width = Mathf.Lerp(startWidth, targetWidth, t);
+            SetViewportRect(x, width);
+            EventManager.TriggerCameraViewportChanged(Mathf.InverseLerp(startWidth, targetWidth, width));
+            onProgress?.Invoke(x, width);
+
+            yield return null;
+        }
+
+        SetViewportRect(targetX, targetWidth);
+        onProgress?.Invoke(targetX, targetWidth);
+        m_viewportAnimCoroutine = null;
+        onComplete?.Invoke();
     }
 
     public void ZoomCamera(float deltaZoom)
@@ -589,16 +630,15 @@ public class CameraController : MonoSingleton<CameraController>
     }
 
     // Transform을 타겟으로 설정 (움직이는 오브젝트 추적용)
-    public void SetTargetOfCameraController(Transform target)
+    // snapImmediately: true면 m_interpolatedTargetPosition도 즉시 스냅 — 최초 함대 스폰 등 Lerp로 이동하는 모습이 보이면 안 되는 경우 호출부에서 지정
+    public void SetTargetOfCameraController(Transform target, bool snapImmediately = false)
     {
         if (target == null) return;
 
-        // 처음 설정할 때는 즉시 위치 동기화
-        if (m_currentTarget == null && m_targetPosition == Vector3.zero)
-            m_targetPosition = target.position;
-
         m_currentTarget = target;
         m_targetPosition = target.position;
+        if (snapImmediately == true)
+            m_interpolatedTargetPosition = target.position;
 
         EventManager.TriggerCameraFocusTargetChanged(ECameraFocusTarget.camera_focus_my_fleet);
     }
