@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class UIPanelExplorationGrid : UIPanelBase
 {
-    [SerializeField] private GridCellButton m_cellButtonPrefab;
-    [SerializeField] private RectTransform m_cellRoot;
+    [SerializeField] private GridCell3D m_cellPrefab;
     [SerializeField] private DataTableShipPreset m_shipPresetTable;
-    [SerializeField] private float m_cellSize = 200f; // 화면상 셀 간격(px) — 고정, 3D 좌표는 이 화면 위치에서 카메라 광선을 Y=0 평면에 쏴서 역산
-    [SerializeField] private UnityEngine.UI.Button m_backgroundCloseButton; // 빈 곳 클릭 시 패널 닫기용 투명 풀스크린 버튼
+
+    // 3D 그리드 루트 — 프리팹 에셋은 특정 씬의 오브젝트를 참조할 수 없어 런타임에 생성. 셀 좌표가 이미 절대 월드 좌표라 루트 자체의 위치/회전은 항상 원점 고정
+    private Transform m_cellRoot;
 
     [Header("탐험 포인트 / 런 포기")]
     [SerializeField] private RowLabelValue m_bankedExplorationPointRow; // 진행 중인 런의 적립(미확정) 탐험 포인트 상시 표시
@@ -24,7 +24,6 @@ public class UIPanelExplorationGrid : UIPanelBase
     [SerializeField] private UnityEngine.UI.Button m_zoneNavNext;
     // 락/클리어 표시 등 실제 진행도 연동은 후속 작업(clearedZones가 아직 구식 스테이지 포맷)
 
-    private const float k_fleetWorldY = 0f;             // 함대 레이어 — 천체는 pos_y=-550으로 분리(별도 작업)
     private const float k_enemyEncounterDistance = 50f; // 셀 안 전투 조우 거리 — datatable_zone_enemy_fleet_position.csv grade1과 동일 스케일(국소 전술 거리, 갤럭시뷰 좌표와는 별개)
 
     private int m_zoneGroupCount;
@@ -52,12 +51,9 @@ public class UIPanelExplorationGrid : UIPanelBase
     private long m_displayedBankedPoint = -1; // 롤링 애니메이션의 시작값 추적 — 최초 1회는 -1이라 즉시 표시됨(UIResourceBar와 동일 패턴)
     private long m_displayedOwnedPoint = -1;
 
-    private readonly List<GridCellButton> m_buttonPool = new();
-    private readonly Dictionary<(int row, int col), GridCellButton> m_activeButtons = new();
+    private readonly List<GridCell3D> m_buttonPool = new();
+    private readonly Dictionary<(int row, int col), GridCell3D> m_activeButtons = new();
     private readonly Dictionary<(int row, int col), List<FleetInfo>> m_cellEnemyWaves = new(); // 셀별 순차 웨이브 — 저장하지 않고 메모리 캐싱만
-
-    // ObjectManager가 그리드 UI를 연 적 없이 로그인 시 초기 함대 위치를 계산할 때, 여기 설정된 값과 동일한 스케일을 쓰기 위해 참조
-    public float GetCellSizePixels() { return m_cellSize; }
 
     public override void InitializeUIPanel()
     {
@@ -65,10 +61,16 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         if (m_abandonRunButton != null)
             m_abandonRunButton.onClick.AddListener(OnAbandonRunButtonClicked);
+
+        // 캔버스 계층 밖의 독립 루트 — 3D 셀이 UI Canvas의 스케일/회전에 영향받지 않도록 별도로 생성
+        m_cellRoot = new GameObject("ExplorationGridCellRoot").transform;
     }
 
     public override void OnShowUIPanel()
     {
+        // CameraController.HandleGalaxyGridSelection이 셀 히트 시 발행 — 셀 아닌 빈 곳은 EmptySpaceTapped로 흘러 UIManager가 패널을 닫음
+        EventManager.Subscribe_ExplorationGridCellClicked(OnGridCellClicked);
+
         int zoneNumber = ObjectManager.Instance.GetInitialZoneIndex();
 
         // 존/그리드가 실제로 정착하기 전(카메라 갤럭시뷰 전환 중)에는 m_currentZoneNumber를 건드리지 않음 —
@@ -85,12 +87,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         m_pendingCellEntry = false;
 
-        if (m_backgroundCloseButton != null)
-        {
-            m_backgroundCloseButton.onClick.RemoveAllListeners();
-            m_backgroundCloseButton.onClick.AddListener(() => UIManager.Instance.HideCurrentPanel());
-        }
-
         ObjectManager.Instance.ChangeZone(zoneNumber);
 
         ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
@@ -105,9 +101,20 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
     }
 
+    // CameraController.HandleGalaxyGridSelection이 3D 셀 레이캐스트로 히트했을 때 발행 — (row,col)로 변환해 기존 클릭 흐름 재사용
+    private void OnGridCellClicked(GridCell3D cell)
+    {
+        OnCellClicked(cell.GetRow(), cell.GetCol());
+    }
+
     public override void OnHideUIPanel()
     {
+        EventManager.Unsubscribe_ExplorationGridCellClicked(OnGridCellClicked);
         EventManager.Unsubscribe_GalaxyViewSettled(OnGalaxyViewSettled);
+
+        // 셀이 이제 독립된 3D 루트(m_cellRoot)에 있어 패널 자신을 꺼도 같이 안 꺼짐 — 로컬뷰로 나갈 때 명시적으로 회수
+        ReturnAllButtonsToPool();
+
         if (CameraController.Instance == null) return;
 
         if (m_pendingCellEntry == true)
@@ -123,7 +130,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
     }
 
-    // 카메라가 목표 자세(줌/각도)에 완전히 도달한 시점 — 이제부터 버튼 화면 위치→3D 좌표 역산이 정확함
+    // 카메라가 목표 자세(줌/각도)에 완전히 도달한 시점 — 셀 오브젝트를 스폰해도 카메라 프레이밍이 완성된 채로 자연스럽게 보임
     private void OnGalaxyViewSettled()
     {
         EventManager.Unsubscribe_GalaxyViewSettled(OnGalaxyViewSettled);
@@ -163,8 +170,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_zoneTabScroll.ScrollToCenter(initialZoneNumber - 1);
         m_zoneTabScroll.onCenterIndexChanged = OnZoneScrollCenterChanged;
 
-        if (m_zoneNavPrev != null) m_zoneNavPrev.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToZone(m_currentZoneNumber - 1); });
-        if (m_zoneNavNext != null) m_zoneNavNext.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToZone(m_currentZoneNumber + 1); });
+        if (m_zoneNavPrev != null) m_zoneNavPrev.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToZone(m_currentZoneNumber - 1, recenterScroll: true); });
+        if (m_zoneNavNext != null) m_zoneNavNext.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToZone(m_currentZoneNumber + 1, recenterScroll: true); });
     }
 
     private void OnZoneTabNodeBind(int dataIndex, GameObject obj)
@@ -180,33 +187,38 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         int targetZoneNumber = groupIndex + 1;
         if (targetZoneNumber == m_currentZoneNumber) return;
-        NavigateToZone(targetZoneNumber);
+        NavigateToZone(targetZoneNumber, recenterScroll: true);
     }
 
-    // 스크롤 드래그로 중앙 인덱스 변경
+    // 스크롤 드래그로 중앙 인덱스 변경 — 이미 사용자의 손가락 위치가 중앙에 와 있는 상태이므로 재센터링 애니메이션을 얹으면
+    // 코루틴이 매 프레임 덮어쓰는 content 위치와 드래그가 충돌해 스크롤이 뻑뻑해짐(recenterScroll: false)
     private void OnZoneScrollCenterChanged(int dataIndex)
     {
         int newZoneNumber = dataIndex + 1;
         if (newZoneNumber == m_currentZoneNumber) return;
-        NavigateToZone(newZoneNumber);
+        NavigateToZone(newZoneNumber, recenterScroll: false);
     }
 
-    // 존 전환 — 구식 시스템도 존마다 갤럭시뷰 카메라를 재이동시키지 않았음(galaxyCameraTarget이 대부분 공유 지점이라 카메라는 고정,
-    // 그 아래 배치되는 셀레스티얼/버튼만 교체)
-    private void NavigateToZone(int zoneNumber)
+    // 존 전환 — 3D 그리드로 바뀐 뒤로는 존마다 galaxyCameraZoom/Target이 실제 셀 배치 스케일과 직결되므로
+    // (그리드 크기가 커지면 줌도 더 빠지도록 존별로 데이터 튜닝됨) 카메라도 그 존의 값으로 같이 옮겨줘야 함
+    private void NavigateToZone(int zoneNumber, bool recenterScroll)
     {
         zoneNumber = Mathf.Clamp(zoneNumber, 1, m_zoneGroupCount > 0 ? m_zoneGroupCount : zoneNumber);
         if (zoneNumber == m_currentZoneNumber && m_gridData != null) return;
 
-        RefreshZoneNavButtons(zoneNumber);
-        if (m_zoneTabScroll != null)
-        {
-            m_zoneTabScroll.ScrollToCenter(zoneNumber - 1);
-            m_zoneTabScroll.RefreshVisible();
-        }
-
         ObjectManager.Instance.ChangeZone(zoneNumber);
+
+        ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
+        if (zoneConfig != null && CameraController.Instance != null)
+            CameraController.Instance.FocusOnZoneAnchor(zoneConfig.galaxyCameraTarget, zoneConfig.galaxyCameraZoom, zoneConfig.galaxyCameraRotX, zoneConfig.galaxyCameraRotY);
+
+        // m_currentZoneNumber를 여기서 먼저 확정해야, 이어지는 탭 스크롤 이동 중에 발생하는 rebind/onCenterIndexChanged가
+        // 이미 최신 존 번호를 기준으로 판정됨 — 순서가 바뀌면 하이라이트가 한 스텝 밀리거나 재귀 호출이 발생함
         SelectZoneTab(zoneNumber, ComputeZoneSeed(zoneNumber));
+
+        RefreshZoneNavButtons(zoneNumber);
+        if (recenterScroll == true && m_zoneTabScroll != null)
+            m_zoneTabScroll.ScrollToCenterSmooth(zoneNumber - 1);
     }
 
     private void RefreshZoneNavButtons(int zoneNumber)
@@ -345,56 +357,23 @@ public class UIPanelExplorationGrid : UIPanelBase
         return waves;
     }
 
-    // 그리드 전체를 CellRoot(화면 중앙 앵커) 기준으로 가운데 정렬하기 위한 보정값
-    private Vector2 ComputeGridOriginOffset()
-    {
-        return new Vector2(-(m_gridData.width - 1) * m_cellSize * 0.5f, -(m_gridData.height - 1) * m_cellSize * 0.5f);
-    }
-
-    // 셀(row,col)의 3D 월드 좌표 — 실제 버튼의 화면 위치에서 카메라 광선을 Y=k_fleetWorldY 평면에 쏴서 역산(항상 화면에 보이는 그대로의 정확한 위치)
-    private Vector3 ResolveCellWorldPosition(int row, int col)
-    {
-        if (m_activeButtons.TryGetValue((row, col), out GridCellButton button) == false) return Vector3.zero;
-        Camera cam = CameraController.Instance != null ? CameraController.Instance.m_targetCamera : Camera.main;
-        return CommonUtility.RaycastScreenPointToGroundPlane(cam, button.GetScreenPosition(), k_fleetWorldY);
-    }
-
-    // 그리드 UI를 연 적이 없어도(예: 로그인 시 초기 함대 배치) 특정 셀의 3D 월드 좌표를 정확히 계산 —
-    // 실제 버튼을 만들지 않고 m_cellRoot(비활성 상태여도 좌표 변환은 유효)로 화면 위치를 구한 뒤, 갤럭시뷰 카메라 자세를 순간 시뮬레이션해서 레이캐스트
-    public Vector3 ComputeCellWorldPositionWithoutOpening(int zoneNumber, int row, int col, int gridWidth, int gridHeight)
-    {
-        if (m_cellRoot == null || CameraController.Instance == null) return Vector3.zero;
-
-        ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
-        if (zoneConfig == null) return Vector3.zero;
-
-        Vector2 originOffset = new Vector2(-(gridWidth - 1) * m_cellSize * 0.5f, -(gridHeight - 1) * m_cellSize * 0.5f);
-        Vector2 anchoredPos = new Vector2(col * m_cellSize + originOffset.x, row * m_cellSize + originOffset.y);
-        Vector3 screenPoint = m_cellRoot.TransformPoint(new Vector3(anchoredPos.x, anchoredPos.y, 0f));
-
-        Vector3 result = Vector3.zero;
-        CameraController.Instance.SimulateGalaxyViewPose(zoneConfig.galaxyCameraTarget, zoneConfig.galaxyCameraZoom, zoneConfig.galaxyCameraRotX, zoneConfig.galaxyCameraRotY, () =>
-        {
-            result = CommonUtility.RaycastScreenPointToGroundPlane(CameraController.Instance.m_targetCamera, screenPoint, k_fleetWorldY);
-        });
-        return result;
-    }
-
+    // 셀마다 ExplorationGridGenerator.Generate()에서 이미 계산해 캐싱해둔 worldPos를 그대로 씀 — 카메라/UI 상태와 무관
     private void BuildCellButtons()
     {
         ReturnAllButtonsToPool();
 
-        Vector2 originOffset = ComputeGridOriginOffset();
+        Camera cam = CameraController.Instance != null ? CameraController.Instance.m_targetCamera : Camera.main;
 
         for (int row = 0; row < m_gridData.height; row++)
         {
             for (int col = 0; col < m_gridData.width; col++)
             {
                 GridCellData cellData = m_gridData.GetCell(row, col);
-                GridCellButton button = GetButtonFromPool();
+                GridCell3D button = GetButtonFromPool();
                 button.gameObject.SetActive(true);
-                button.Initialize(cellData, OnCellClicked);
-                button.SetAnchoredPosition(m_cellSize, originOffset);
+                button.transform.position = cellData.worldPos;
+                button.Initialize(cellData);
+                button.FaceCameraOnce(cam);
                 m_activeButtons[(row, col)] = button;
             }
         }
@@ -507,7 +486,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_pendingCellEntry = true;
         m_pendingCellRow = row;
         m_pendingCellCol = col;
-        m_pendingCellWorldPos = ResolveCellWorldPosition(row, col);
+        m_pendingCellWorldPos = m_gridData.GetCell(row, col).worldPos;
 
         // false: 카메라가 로컬뷰로 복귀하고 적 함대가 스폰될 때까지는 UIPanelPrepareBattle을 곧 띄울 예정이므로,
         // 그 사이에 메인 패널(UIPanelSpace)이 잠깐 비쳤다 사라지는 걸 막음
@@ -832,7 +811,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         {
             int row = kv.Key.row;
             int col = kv.Key.col;
-            GridCellButton button = kv.Value;
+            GridCell3D button = kv.Value;
             GridCellData cellData = m_gridData.GetCell(row, col);
 
             bool isCurrentCell = row == m_currentRow && col == m_currentCol;
@@ -849,15 +828,15 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
     }
 
-    private GridCellButton GetButtonFromPool()
+    private GridCell3D GetButtonFromPool()
     {
         if (m_buttonPool.Count > 0)
         {
-            GridCellButton button = m_buttonPool[^1];
+            GridCell3D button = m_buttonPool[^1];
             m_buttonPool.RemoveAt(m_buttonPool.Count - 1);
             return button;
         }
-        return Instantiate(m_cellButtonPrefab, m_cellRoot);
+        return Instantiate(m_cellPrefab, m_cellRoot);
     }
 
     private void ReturnAllButtonsToPool()

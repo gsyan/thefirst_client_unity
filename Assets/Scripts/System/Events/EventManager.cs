@@ -425,6 +425,12 @@ public static class EventManager
     public static void Subscribe_EmptySpaceTapped(Action callback) { OnEmptySpaceTapped += callback; }
     public static void Unsubscribe_EmptySpaceTapped(Action callback) { OnEmptySpaceTapped -= callback; }
 
+    // 탐사 그리드 셀 3D 클릭 (갤럭시뷰 전용) — CameraController.HandleGalaxyGridSelection에서 발행
+    public static event Action<GridCell3D> OnExplorationGridCellClicked;
+    public static void Trigger_ExplorationGridCellClicked(GridCell3D cell) { OnExplorationGridCellClicked?.Invoke(cell); }
+    public static void Subscribe_ExplorationGridCellClicked(Action<GridCell3D> callback) { OnExplorationGridCellClicked += callback; }
+    public static void Unsubscribe_ExplorationGridCellClicked(Action<GridCell3D> callback) { OnExplorationGridCellClicked -= callback; }
+
     // 튜토리얼 AnyClick(화면 아무 곳이나 클릭) 대기 상태 변경 — HandleInputMouse/HandleInputTouch가 로컬 캐시 갱신용으로 구독
     public static event Action<bool> OnTutorialWaitingForAnyClickChanged;
     public static void Trigger_TutorialWaitingForAnyClickChanged(bool isWaiting) { OnTutorialWaitingForAnyClickChanged?.Invoke(isWaiting); }

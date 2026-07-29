@@ -1,16 +1,20 @@
 // 수평 가상 스크롤뷰 — 뷰포트 중앙 아이템이 선택된 상태로 표시 (존 탭 전용)
 // Content 전체 너비를 유지하면서 실제 아이템은 viewport 채울 만큼만 생성/재활용
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InfiniteScrollViewH : MonoBehaviour
+// 뷰포트 중앙 지점에 올라탄 버튼이 곧 선택된 존 버튼 — 드래그/관성 여부와 무관하게 항상 실시간으로 onCenterIndexChanged 발동
+public class InfiniteScrollViewH : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private ScrollRect m_scrollRect;
     [SerializeField] private float m_itemWidth = 80f;
     [SerializeField] private int m_bufferCount = 2;
     [SerializeField] private float m_spacing = 0f;
+    [SerializeField] private float m_smoothScrollDuration = 0.25f;
 
     // (데이터 인덱스, 아이템 GameObject) → 데이터 적용
     public Action<int, GameObject> onItemBind;
@@ -25,6 +29,7 @@ public class InfiniteScrollViewH : MonoBehaviour
     // 첫/마지막 아이템을 뷰포트 중앙에 놓을 수 있도록 좌우에 추가하는 패딩
     private float m_sidePadding;
     private int m_lastCenterIndex = -1;
+    private Coroutine m_smoothScrollCoroutine;
 
     private void Awake()
     {
@@ -83,6 +88,59 @@ public class InfiniteScrollViewH : MonoBehaviour
     public void ScrollToCenter(int dataIndex)
     {
         if (m_initialized == false || m_totalCount <= 0) return;
+
+        if (m_smoothScrollCoroutine != null)
+        {
+            StopCoroutine(m_smoothScrollCoroutine);
+            m_smoothScrollCoroutine = null;
+        }
+
+        float targetScrollX = ComputeTargetScrollX(dataIndex);
+        m_scrollRect.content.anchoredPosition = new Vector2(-targetScrollX, 0f);
+        m_leftDataIndex = int.MinValue;
+        RefreshView();
+    }
+
+    // dataIndex 아이템이 뷰포트 중앙에 오도록 부드럽게 이동 — 존 탭 클릭/네비게이션 등 사용자가 인지해야 하는 선택 전환에 사용
+    public void ScrollToCenterSmooth(int dataIndex)
+    {
+        if (m_initialized == false || m_totalCount <= 0) return;
+
+        if (m_smoothScrollCoroutine != null)
+            StopCoroutine(m_smoothScrollCoroutine);
+        m_smoothScrollCoroutine = StartCoroutine(Co_ScrollToCenterSmooth(dataIndex));
+    }
+
+    private IEnumerator Co_ScrollToCenterSmooth(int dataIndex)
+    {
+        m_scrollRect.velocity = Vector2.zero;
+
+        float startScrollX  = -m_scrollRect.content.anchoredPosition.x;
+        float targetScrollX = ComputeTargetScrollX(dataIndex);
+        float elapsed = 0f;
+
+        while (elapsed < m_smoothScrollDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / m_smoothScrollDuration));
+
+            float scrollX = Mathf.Lerp(startScrollX, targetScrollX, t);
+            m_scrollRect.content.anchoredPosition = new Vector2(-scrollX, 0f);
+            m_leftDataIndex = int.MinValue;
+            RefreshView();
+
+            yield return null;
+        }
+
+        m_scrollRect.content.anchoredPosition = new Vector2(-targetScrollX, 0f);
+        m_leftDataIndex = int.MinValue;
+        RefreshView();
+
+        m_smoothScrollCoroutine = null;
+    }
+
+    private float ComputeTargetScrollX(int dataIndex)
+    {
         dataIndex = Mathf.Clamp(dataIndex, 0, m_totalCount - 1);
 
         float itemStep      = m_itemWidth + m_spacing;
@@ -90,11 +148,7 @@ public class InfiniteScrollViewH : MonoBehaviour
         float contentWidth  = m_scrollRect.content.sizeDelta.x;
         float maxScrollX    = Mathf.Max(0f, contentWidth - viewportWidth);
         float itemCenterX   = m_sidePadding + dataIndex * itemStep + m_itemWidth * 0.5f;
-        float targetScrollX = Mathf.Clamp(itemCenterX - viewportWidth * 0.5f, 0f, maxScrollX);
-
-        m_scrollRect.content.anchoredPosition = new Vector2(-targetScrollX, 0f);
-        m_leftDataIndex = int.MinValue;
-        RefreshView();
+        return Mathf.Clamp(itemCenterX - viewportWidth * 0.5f, 0f, maxScrollX);
     }
 
     // 현재 뷰포트 중앙에 가장 가까운 데이터 인덱스 반환
@@ -123,6 +177,17 @@ public class InfiniteScrollViewH : MonoBehaviour
         RefreshView();
     }
 
+    // 손가락이 닿는 즉시(드래그 인식 여부와 무관하게) 진행 중이던 스냅 애니메이션을 멈춤 — 안 그러면 코루틴이 매 프레임 덮어쓰는
+    // content 위치와 손가락 드래그가 같은 프레임에 충돌해 드래그가 먹통처럼 느껴짐
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (m_smoothScrollCoroutine != null)
+        {
+            StopCoroutine(m_smoothScrollCoroutine);
+            m_smoothScrollCoroutine = null;
+        }
+    }
+
     private void RefreshView()
     {
         if (m_initialized == false || m_totalCount == 0) return;
@@ -149,11 +214,21 @@ public class InfiniteScrollViewH : MonoBehaviour
             }
         }
 
+        // 뷰포트 중앙 지점에 올라탄 버튼이 곧 선택된 존 버튼 — 드래그/관성 여부와 무관하게 항상 실시간으로 반영
         int centerIndex = GetCenterDataIndex();
         if (centerIndex != m_lastCenterIndex)
         {
             m_lastCenterIndex = centerIndex;
             onCenterIndexChanged?.Invoke(centerIndex);
+
+            // onCenterIndexChanged 콜백이 선택 상태(m_currentZoneNumber 등)를 갱신했을 수 있음 — 풀이 한 칸도 안 밀린
+            // 경우(관성으로 아이템 폭 미만만 더 움직인 경우)에도 화면에 보이는 아이템들의 하이라이트를 다시 반영해야 함
+            for (int i = 0; i < m_itemPool.Count; i++)
+            {
+                int dataIndex = m_leftDataIndex + i;
+                if (dataIndex < 0 || dataIndex >= m_totalCount) continue;
+                onItemBind?.Invoke(dataIndex, m_itemPool[i].gameObject);
+            }
         }
     }
 
@@ -161,5 +236,7 @@ public class InfiniteScrollViewH : MonoBehaviour
     {
         if (m_scrollRect != null)
             m_scrollRect.onValueChanged.RemoveListener(OnScrollChanged);
+        if (m_smoothScrollCoroutine != null)
+            StopCoroutine(m_smoothScrollCoroutine);
     }
 }

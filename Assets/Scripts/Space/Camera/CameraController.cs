@@ -55,6 +55,7 @@ public class CameraController : MonoSingleton<CameraController>
     public bool IsGalaxyView => m_isGalaxyView;
     private bool  m_isGalaxyViewAnimating = false;
     private bool  m_isEnteringGalaxy = false; // true=함대→갤럭시, false=갤럭시→함대
+    private bool  m_isZoneRefocus = false; // true=갤럭시뷰 안에서 존만 전환(FocusOnZoneAnchor) — 진입/복귀 전용 프리페이즈 없이 단순 보간
     private float m_galaxyViewAnimTimer   = 0f;
     [Header("Galaxy View Animation")]
     private float m_galaxyPreRotDuration  = 0.2f;  // 진입 시 회전 전용 구간 (위치 고정, m_galaxyViewAnimDuration 외)
@@ -106,6 +107,7 @@ public class CameraController : MonoSingleton<CameraController>
 
         m_handleInputMouse = new HandleInputMouse(this);
         m_handleInputTouch = new HandleInputTouch(this);
+        m_explorationGridCellLayerMask = LayerMask.GetMask("ExplorationGridCell");
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelectedForZoom);
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChangedForZoom);
@@ -174,7 +176,23 @@ public class CameraController : MonoSingleton<CameraController>
         {
             m_galaxyViewAnimTimer += Time.unscaledDeltaTime;
 
-            if (m_isEnteringGalaxy == true)
+            if (m_isZoneRefocus == true)
+            {
+                // 갤럭시뷰 안에서 존만 전환 — 진입/복귀 전용 프리페이즈(줌 확장) 없이 현재 값→목표 값으로 단순 보간
+                float t  = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyViewAnimDuration);
+                float ct = GalaxyEasedT(t);
+                m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, ct);
+                m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, ct);
+                m_currentZoom      = Mathf.Lerp(m_animStartZoom, m_targetZoom, ct);
+                m_interpolatedTargetPosition = Vector3.Lerp(m_animStartPos, m_galaxyTargetPos, ct);
+
+                if (m_galaxyViewAnimTimer >= m_galaxyViewAnimDuration)
+                {
+                    m_isGalaxyViewAnimating = false;
+                    m_isZoneRefocus = false;
+                }
+            }
+            else if (m_isEnteringGalaxy == true)
             {
                 if (m_galaxyViewAnimTimer < m_galaxyPreRotDuration)
                 {
@@ -198,6 +216,13 @@ public class CameraController : MonoSingleton<CameraController>
                     float newY  = Mathf.Lerp(m_animStartPos.y, m_galaxyTargetPos.y, ct);
                     float newZ  = Mathf.Lerp(m_animStartPos.z, m_galaxyTargetPos.z, ct);
                     m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
+                }
+
+                // 진입 전용: preRotDuration + mainDuration
+                if (m_galaxyViewAnimTimer >= m_galaxyPreRotDuration + m_galaxyViewAnimDuration)
+                {
+                    m_isGalaxyViewAnimating = false;
+                    galaxyViewJustSettled = true;
                 }
             }
             else
@@ -228,17 +253,13 @@ public class CameraController : MonoSingleton<CameraController>
                     m_currentZoom      = Mathf.Lerp(m_maxZoom * m_galaxyPreRotZoomMultiplyer, m_targetZoom, postT);
                     // m_interpolatedTargetPosition 변경 없음 (함대 위치 고정)
                 }
-            }
 
-            // 진입/복귀 모두 preRotDuration + mainDuration
-            float totalDuration = m_galaxyPreRotDuration + m_galaxyViewAnimDuration;
-            if (m_galaxyViewAnimTimer >= totalDuration)
-            {
-                m_isGalaxyViewAnimating = false;
-                if (m_isEnteringGalaxy == true)
-                    galaxyViewJustSettled = true;
-                else
+                // 복귀 전용: preRotDuration + mainDuration
+                if (m_galaxyViewAnimTimer >= m_galaxyPreRotDuration + m_galaxyViewAnimDuration)
+                {
+                    m_isGalaxyViewAnimating = false;
                     m_inputEnabled = true;
+                }
             }
         }
         else
@@ -405,6 +426,27 @@ public class CameraController : MonoSingleton<CameraController>
         ModuleBase module = hit.collider.GetComponentInParent<ModuleBase>();
         if (module != null)
             EventManager.TriggerSpaceShipModuleSelected(ship, module);
+    }
+
+    // 갤럭시뷰(탐사 그리드) 중 3D 클릭 — 갤럭시뷰에서는 m_inputEnabled가 계속 false로 유지되어 HandleModuleSelection 경로를 타지 않으므로
+    // HandleInputMouse가 별도로 이 메서드를 호출함. 셀이 아니면 로컬뷰와 동일하게 EmptySpaceTapped를 재사용(UIManager가 오버레이 패널을 닫음)
+    // s_pickMask(HandleInputMouse.cs)와 동일하게 이름 기반 하드코딩 — 인스펙터 배선을 깜빡할 위험 없음, 레이어 순서 바뀌어도 안전
+    // LayerMask.GetMask는 정적 필드 초기화 시점(MonoBehaviour 생성자/cctor)에 호출 불가 — OnInitialize()에서 계산
+    private const float k_galaxyGridPickMaxDistance = 20000f; // 존별 galaxyCameraZoom이 최대 12000까지 쓰여서 여유 있게 설정
+    private int m_explorationGridCellLayerMask;
+    public void HandleGalaxyGridSelection(Vector3? screenPosition = null)
+    {
+        if (GetCameraRaycast(out RaycastHit hit, m_explorationGridCellLayerMask, k_galaxyGridPickMaxDistance, screenPosition) == false)
+        {
+            EventManager.Trigger_EmptySpaceTapped();
+            return;
+        }
+
+        GridCell3D cell = hit.collider.GetComponentInParent<GridCell3D>();
+        if (cell != null)
+            EventManager.Trigger_ExplorationGridCellClicked(cell);
+        else
+            EventManager.Trigger_EmptySpaceTapped();
     }
 
     public void RotateCamera(float deltaRotationY, float deltaRotationX)
@@ -710,32 +752,6 @@ public class CameraController : MonoSingleton<CameraController>
         return m_targetPosition;
     }
 
-    // 갤럭시뷰 자세(zoom/rotX/rotY)로 카메라를 순간 이동시킨 뒤 action을 실행하고 같은 프레임 안에서 즉시 원래 자세로 복구 —
-    // 실제로 갤럭시뷰에 진입하지 않고도 "그 자세라면 어떻게 보일지" 기준으로 계산이 필요할 때 사용
-    // (예: 그리드 UI를 연 적 없는 로그인 시점에 시작 셀의 화면 위치 → 3D 좌표 역산)
-    public void SimulateGalaxyViewPose(Vector3 target, float zoom, float rotX, float rotY, System.Action action)
-    {
-        if (m_targetCamera == null) return;
-
-        Vector3 originalPos = m_targetCamera.transform.position;
-        Quaternion originalRot = m_targetCamera.transform.rotation;
-
-        float radiansY = (rotY + 180f) * Mathf.Deg2Rad;
-        float radiansX = rotX * Mathf.Deg2Rad;
-        float horizontalDistance = zoom * Mathf.Cos(radiansX);
-        Vector3 rotatedOffset = new Vector3(
-            Mathf.Sin(radiansY) * horizontalDistance,
-            zoom * Mathf.Sin(radiansX),
-            Mathf.Cos(radiansY) * horizontalDistance);
-
-        m_targetCamera.transform.position = target + rotatedOffset;
-        m_targetCamera.transform.LookAt(target);
-
-        action?.Invoke();
-
-        m_targetCamera.transform.position = originalPos;
-        m_targetCamera.transform.rotation = originalRot;
-    }
 
     // 갤럭시 뷰 진입 — 현재 상태에서 목표까지 고정 시간 선형 이동
     public void EnterGalaxyView(Vector3 targetPos, float zoom, float rotX, float rotY)
@@ -760,12 +776,14 @@ public class CameraController : MonoSingleton<CameraController>
         StartGalaxyViewAnimation();
     }
 
-    // Zone 그룹 탭 선택 시 해당 앵커로 포커스 (갤럭시 뷰 중에만 동작) — 고정 시간 선형 이동
+    // Zone 그룹 탭 선택 시 해당 앵커로 포커스 (갤럭시 뷰 중에만 동작) — 진입 전용 프리페이즈 없이 단순 보간(m_isZoneRefocus)
     public void FocusOnZoneAnchor(Vector3 zoneWorldPos, float zoom, float rotX, float rotY)
     {
         if (m_isGalaxyView == false) return;
 
+        m_isZoneRefocus     = true;
         m_targetPosition    = zoneWorldPos;
+        m_galaxyTargetPos   = zoneWorldPos;
         m_targetZoom        = zoom;
         m_targetRotationX   = Mathf.Clamp(rotX, -80f, 80f);
         m_targetRotationY   = rotY;

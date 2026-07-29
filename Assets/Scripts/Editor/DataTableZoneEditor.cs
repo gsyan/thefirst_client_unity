@@ -98,12 +98,13 @@ public class DataTableZoneEditor : Editor
     {
         if (!File.Exists(k_cameraCSV)) { EditorUtility.DisplayDialog("Error", $"파일 없음:\n{k_cameraCSV}", "OK"); return; }
 
-        // celestialBodies 유지를 위해 기존 맵 보존
-        var oldCelestialMap = new Dictionary<int, List<CelestialBodyConfig>>();
+        // celestialBodies/gridWidth/gridHeight/cellOverrides/enemy* 유지를 위해 기존 ZoneConfig 보존
+        // (cellOverrides는 어떤 CSV로도 export/import되지 않으므로, 여기서 안 지키면 Import할 때마다 영구 소실됨)
+        var oldZoneMap = new Dictionary<int, ZoneConfig>();
         for (int j = 0; j < m_dataTableZone.zoneList.Count; j++)
         {
             ZoneConfig zc = m_dataTableZone.zoneList[j];
-            oldCelestialMap[zc.zoneIndex] = zc.celestialBodies;
+            oldZoneMap[zc.zoneIndex] = zc;
         }
 
         m_dataTableZone.zoneList.Clear();
@@ -116,7 +117,7 @@ public class DataTableZoneEditor : Editor
             if (!int.TryParse(col[0], out int zoneIndex)) continue;
             float.TryParse(col[1], out float cx); float.TryParse(col[2], out float cy); float.TryParse(col[3], out float cz);
             float.TryParse(col[4], out float zoom); float.TryParse(col[5], out float rotX); float.TryParse(col[6], out float rotY);
-            oldCelestialMap.TryGetValue(zoneIndex, out var celestials);
+            oldZoneMap.TryGetValue(zoneIndex, out ZoneConfig oldZone);
             m_dataTableZone.zoneList.Add(new ZoneConfig
             {
                 zoneIndex          = zoneIndex,
@@ -124,7 +125,15 @@ public class DataTableZoneEditor : Editor
                 galaxyCameraZoom   = zoom,
                 galaxyCameraRotX   = rotX,
                 galaxyCameraRotY   = rotY,
-                celestialBodies    = celestials != null ? celestials : new List<CelestialBodyConfig>(),
+                celestialBodies    = oldZone != null ? oldZone.celestialBodies : new List<CelestialBodyConfig>(),
+                gridWidth             = oldZone != null ? oldZone.gridWidth             : 3,
+                gridHeight            = oldZone != null ? oldZone.gridHeight            : 3,
+                cellOverrides         = oldZone != null ? oldZone.cellOverrides         : new List<GridCellOverride>(),
+                enemyFleetsPerCell    = oldZone != null ? oldZone.enemyFleetsPerCell    : 1,
+                enemyBudget           = oldZone != null ? oldZone.enemyBudget           : 100,
+                enemyMaxCost          = oldZone != null ? oldZone.enemyMaxCost          : 100,
+                enemyDeviation        = oldZone != null ? oldZone.enemyDeviation        : 0,
+                enemyMaxShipsPerFleet = oldZone != null ? oldZone.enemyMaxShipsPerFleet : 5,
             });
         }
         EditorUtility.SetDirty(m_dataTableZone);

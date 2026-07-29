@@ -27,16 +27,6 @@ public static class CommonUtility
     {
         return explorationSeedBase ^ (zoneNumber * 486187739);
     }
-
-    // 화면 좌표(Screen Space Overlay 캔버스 rectTransform.position과 동일)에서 카메라로 광선을 쏴 Y=groundY 평면과의 교차점(3D 월드 좌표)을 구함 —
-    // 그리드 셀 버튼의 실제 화면 위치를 그대로 3D 좌표로 역산할 때 사용(카메라 줌/각도와 무관하게 항상 화면에 보이는 그대로의 위치)
-    public static Vector3 RaycastScreenPointToGroundPlane(Camera cam, Vector3 screenPoint, float groundY)
-    {
-        if (cam == null) return Vector3.zero;
-        Ray ray = cam.ScreenPointToRay(screenPoint);
-        Plane groundPlane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
-        return groundPlane.Raycast(ray, out float dist) ? ray.GetPoint(dist) : Vector3.zero;
-    }
     #endregion Exploration Grid World Mapping end -------------------------------------------------------------------
 
     #region Fleet Utility begin -----------------------------------------------------------------------------------

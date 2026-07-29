@@ -262,9 +262,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         ExplorationGridData gridData = ExplorationGridGenerator.Generate(zoneConfig);
 
-        UIPanelExplorationGrid gridTab = FindFirstObjectByType<UIPanelExplorationGrid>(FindObjectsInactive.Include);
-        if (gridTab == null) return Vector3.zero;
-
         int startRow = gridData.startRow;
         int startCol = gridData.startCol;
         bool hasActiveCell = TryGetActiveExplorationCell(out int activeRow, out int activeCol);
@@ -274,7 +271,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             startCol = activeCol;
         }
 
-        return gridTab.ComputeCellWorldPositionWithoutOpening(zoneNumber, startRow, startCol, gridData.width, gridData.height);
+        return gridData.GetCell(startRow, startCol).worldPos;
     }
 
     protected override void OnDestroy()
