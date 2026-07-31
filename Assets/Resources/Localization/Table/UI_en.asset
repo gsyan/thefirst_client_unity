@@ -1138,7 +1138,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 61771964498182146
-    m_Localized: Cost (Command Power)
+    m_Localized: Cost
     m_Metadata:
       m_Items: []
   references:

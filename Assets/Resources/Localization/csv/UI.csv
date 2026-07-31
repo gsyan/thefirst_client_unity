@@ -90,7 +90,7 @@ UIPanelExplorationGrid_BankedPoint,,Banked Exploration Point,적립 탐험 포�
 UIPanelExplorationGrid_OwnedPoint,,Exploration Point,탐험 포인트
 UIAvailablePresetRow_Name,,Name,이름
 UIAvailablePresetRow_Type,,Type,타입
-UIAvailablePresetRow_Cost,,Cost (Command Power),비용(지휘력)
+UIAvailablePresetRow_Cost,,Cost,비용
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )

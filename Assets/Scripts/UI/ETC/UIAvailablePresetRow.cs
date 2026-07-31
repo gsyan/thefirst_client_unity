@@ -7,7 +7,7 @@ public class UIAvailablePresetRow : MonoBehaviour, IBeginDragHandler, IDragHandl
 {
     [SerializeField] private RowLabelValue m_nameRow;
     [SerializeField] private RowLabelValue m_typeRow; // "타입"은 별도 필드가 없어 prefabName(선체 종류)을 그대로 표시
-    [SerializeField] private RowLabelValue m_costRow; // 단위(지휘력)는 라벨 문구에 포함, 값은 숫자만
+    [SerializeField] private RowLabelValue m_costRow; // 라벨은 "비용"만, 단위(지휘력)는 값 쪽에 숫자와 함께 표시(레이아웃 균형용)
     [SerializeField] private Button m_button; // 클릭(스탯 팝업) — 눌림 시각 피드백까지 기본 제공
 
     private ShipPresetData m_preset;
@@ -38,7 +38,10 @@ public class UIAvailablePresetRow : MonoBehaviour, IBeginDragHandler, IDragHandl
         if (m_typeRow != null)
             m_typeRow.SetRow("UIAvailablePresetRow_Type", preset.prefabName, rawValue: true);
         if (m_costRow != null)
-            m_costRow.SetRow("UIAvailablePresetRow_Cost", preset.commandCost.ToString(), rawValue: true);
+        {
+            string commandPowerLabel = LocalizationManager.Instance.Get("UITabCommander_CommandPower");
+            m_costRow.SetRow("UIAvailablePresetRow_Cost", $"{preset.commandCost}({commandPowerLabel})", rawValue: true);
+        }
     }
 
     public void Hide()
