@@ -389,18 +389,18 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         var commander = DataManager.Instance.m_currentCommander;
         if (commander == null || commander.m_commanderInfo == null) return 1;
 
-        // 진행 중인 탐험 런이 있으면 그 존을 우선 사용 — 존을 아직 클리어하지 못한 상태(clearedZones에는 안 잡힘)라도
+        // 진행 중인 탐험 런이 있으면 그 존을 우선 사용 — 아직 탈출(완전 클리어)하지 못한 상태(highestClearedZoneNumber에는 안 잡힘)라도
         // 재접속 시 원래 있던 존으로 복귀해야 함
         int activeZoneNumber = commander.m_commanderInfo.explorationZoneNumber;
         if (activeZoneNumber > 0) return activeZoneNumber;
 
-        var clearedZones = commander.m_commanderInfo.clearedZones;
-        if (clearedZones == null || clearedZones.Count == 0) return 1;
+        // 진행 중인 런이 없으면 탈출로 확정 클리어한 최고 존의 다음 존으로 이동 — 없으면(0) 자연스럽게 zone 1
+        int nextZoneNumber = commander.m_commanderInfo.highestClearedZoneNumber + 1;
 
-        string lastCleared = clearedZones[^1];
-        int dashIdx = lastCleared.IndexOf('-');
-        if (dashIdx <= 0) return 1;
-        return int.TryParse(lastCleared.Substring(0, dashIdx), out int zoneIndex) ? zoneIndex : 1;
+        int zoneCount = DataManager.Instance.m_dataTableZone != null ? DataManager.Instance.m_dataTableZone.zoneList.Count : 0;
+        if (zoneCount > 0 && nextZoneNumber > zoneCount) return zoneCount;
+
+        return nextZoneNumber;
     }
 
     // 진행 중인 탐험 런의 마지막 클리어 셀 좌표(0-indexed) — CommanderInfo.explorationCell("row-col") 파싱

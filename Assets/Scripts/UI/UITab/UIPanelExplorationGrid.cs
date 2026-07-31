@@ -124,6 +124,12 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
         else
         {
+            // 존 탭 스크롤/네비게이션으로 다른 존을 브라우징만 하다가 그냥 닫는 경우 —
+            // ChangeZone(NavigateToZone)이 바꿔둔 천체(m_activeZoneIndex)가 그대로 남아있으므로,
+            // 함대뷰로 복귀하기 전에 원래 있어야 할 존(진행중인 런 → 없으면 최고 클리어 존의 다음 존)으로 되돌림
+            int correctZoneNumber = ObjectManager.Instance.GetInitialZoneIndex();
+            ObjectManager.Instance.ChangeZone(correctZoneNumber);
+
             SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
             Vector3 returnPos = myFleet != null ? myFleet.transform.position : Vector3.zero;
             CameraController.Instance.ExitGalaxyView(returnPos);
@@ -147,6 +153,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_bankedExplorationPoint += m_pendingBankedPointGain;
             m_pendingBankedPointGain = 0;
         }
+        RefreshBankedPointText();
         RefreshOwnedPointText();
 
         // SelectZoneTab이 m_currentZoneNumber를 확정한 뒤에 탭 스크롤을 초기화해야 OnZoneTabNodeBind의 하이라이트 판정이 정확함

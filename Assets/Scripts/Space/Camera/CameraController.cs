@@ -178,15 +178,17 @@ public class CameraController : MonoSingleton<CameraController>
 
             if (m_isZoneRefocus == true)
             {
-                // 갤럭시뷰 안에서 존만 전환 — 진입/복귀 전용 프리페이즈(줌 확장) 없이 현재 값→목표 값으로 단순 보간
-                float t  = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyViewAnimDuration);
-                float ct = GalaxyEasedT(t);
-                m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, ct);
-                m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, ct);
-                m_currentZoom      = Mathf.Lerp(m_animStartZoom, m_targetZoom, ct);
-                m_interpolatedTargetPosition = Vector3.Lerp(m_animStartPos, m_galaxyTargetPos, ct);
+                // 갤럭시뷰 안에서 존만 전환 — 목표값을 향한 지수 보간(연속 추적). 존 탭 스크롤 드래그 중 목표가 계속 바뀌어도
+                // 리셋 없이 항상 현재 값에서부터 이어서 따라가므로 줌/회전이 멈춰 보이지 않음
+                m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_targetRotationX, k_rotateLerpSpeed * Time.unscaledDeltaTime);
+                m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_targetRotationY, k_rotateLerpSpeed * Time.unscaledDeltaTime);
+                m_currentZoom      = Mathf.Lerp(m_currentZoom, m_targetZoom, k_zoomLerpSpeed * Time.unscaledDeltaTime);
+                m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_galaxyTargetPos, k_positionLerpSpeed * Time.unscaledDeltaTime);
 
-                if (m_galaxyViewAnimTimer >= m_galaxyViewAnimDuration)
+                bool rotXArrived = Mathf.Abs(Mathf.DeltaAngle(m_currentRotationX, m_targetRotationX)) < k_rotateArriveThreshold;
+                bool rotYArrived = Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, m_targetRotationY)) < k_rotateArriveThreshold;
+                bool zoomArrived = Mathf.Abs(m_currentZoom - m_targetZoom) < k_zoomArriveThreshold;
+                if (rotXArrived == true && rotYArrived == true && zoomArrived == true)
                 {
                     m_isGalaxyViewAnimating = false;
                     m_isZoneRefocus = false;
@@ -776,19 +778,20 @@ public class CameraController : MonoSingleton<CameraController>
         StartGalaxyViewAnimation();
     }
 
-    // Zone 그룹 탭 선택 시 해당 앵커로 포커스 (갤럭시 뷰 중에만 동작) — 진입 전용 프리페이즈 없이 단순 보간(m_isZoneRefocus)
+    // Zone 그룹 탭 선택 시 해당 앵커로 포커스 (갤럭시 뷰 중에만 동작) — 목표값만 갱신, 타이머/시작스냅샷은 리셋하지 않음(m_isZoneRefocus).
+    // 존 탭 스크롤 드래그 중엔 이 함수가 존이 바뀔 때마다 연속으로 호출되는데, 타이머 기반 이징 애니메이션을 쓰면 매번 리셋되어
+    // 줌이 거의 진행되지 못하고 멈춰 보이는 문제가 있었음(느린 시작 구간에서 계속 재시작) — 지수 보간(연속 추적)으로 전환해 해결
     public void FocusOnZoneAnchor(Vector3 zoneWorldPos, float zoom, float rotX, float rotY)
     {
         if (m_isGalaxyView == false) return;
 
         m_isZoneRefocus     = true;
+        m_isGalaxyViewAnimating = true;
         m_targetPosition    = zoneWorldPos;
         m_galaxyTargetPos   = zoneWorldPos;
         m_targetZoom        = zoom;
         m_targetRotationX   = Mathf.Clamp(rotX, -80f, 80f);
         m_targetRotationY   = rotY;
-
-        StartGalaxyViewAnimation();
     }
 
     private void StartGalaxyViewAnimation()

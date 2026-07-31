@@ -221,7 +221,7 @@ public class UIManager : MonoSingleton<UIManager>
         if (panel.gameObject == null) return;
 
         if (useAnimation == true)
-            StartCoroutine(AnimatePanel(panel.gameObject, true));
+            StartPanelAnimation(panel.gameObject, true);
         else
             panel.gameObject.SetActive(true);
 
@@ -240,7 +240,7 @@ public class UIManager : MonoSingleton<UIManager>
         if (panel == null || panel.gameObject == null) return;
 
         if (useAnimation == true)
-            StartCoroutine(AnimatePanel(panel.gameObject, false));
+            StartPanelAnimation(panel.gameObject, false);
         else
             panel.gameObject.SetActive(false);
 
@@ -254,33 +254,47 @@ public class UIManager : MonoSingleton<UIManager>
         }
     }
 
+    // 패널(GameObject)별로 현재 실행 중인 전환 코루틴 추적 — 더블클릭 등으로 같은 패널에 Show/Hide가 연속 호출되면
+    // 이전 코루틴을 먼저 취소해야 함. 안 그러면 두 코루틴이 같은 CanvasGroup.alpha를 서로 다른 방향으로 덮어쓰다가
+    // 나중에 끝난 쪽이 최종 상태(SetActive(false) 포함)를 그대로 확정시켜버려 패널이 뜨지도 닫히지도 않는 상태로 멈춤
+    private readonly Dictionary<GameObject, Coroutine> m_panelAnimCoroutines = new();
+
+    private void StartPanelAnimation(GameObject panel, bool show)
+    {
+        if (m_panelAnimCoroutines.TryGetValue(panel, out Coroutine running) == true && running != null)
+            StopCoroutine(running);
+
+        m_panelAnimCoroutines[panel] = StartCoroutine(AnimatePanel(panel, show));
+    }
+
     private System.Collections.IEnumerator AnimatePanel(GameObject panel, bool show)
     {
         CanvasGroup canvasGroup = GetOrAddCanvasGroup(panel);
 
+        // 하드코딩된 0f/1f가 아니라 현재 알파에서 이어감 — 취소된 이전 전환 도중의 알파값에서 자연스럽게 이어받아
+        // 재시작 시 화면이 뚝 끊기며 튀는 현상을 방지
+        float startAlpha = canvasGroup.alpha;
+
         if (show == true)
         {
             panel.SetActive(true);
-            canvasGroup.alpha = 0f;
 
             float elapsed = 0f;
             while (elapsed < animationDuration)
             {
                 elapsed += Time.deltaTime;
-                canvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsed / animationDuration);
+                canvasGroup.alpha = Mathf.Lerp(startAlpha, 1f, elapsed / animationDuration);
                 yield return null;
             }
             canvasGroup.alpha = 1f;
         }
         else
         {
-            canvasGroup.alpha = 1f;
-
             float elapsed = 0f;
             while (elapsed < animationDuration)
             {
                 elapsed += Time.deltaTime;
-                canvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / animationDuration);
+                canvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, elapsed / animationDuration);
                 yield return null;
             }
             canvasGroup.alpha = 0f;

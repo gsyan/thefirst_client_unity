@@ -114,16 +114,18 @@ public class CommanderInfo
     public int exp;    
     public int commandPowerMax;  // 탐험 함대 편성 지휘력 최대치 — IncreaseCommandPowerMaxRequest로 영구 증가
     public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
-    public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)    
+    public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
+    public int explorationPoint;    // 보유(확정 지급된) 탐험 포인트 — 적립(ZoneRun.explorationPointBanked)과 별개
     public int explorationZoneNumber;  // 진행 중인 탐험 런의 존 번호, 없으면 0
     public string explorationCell;  // 진행 중인 탐험 런의 마지막 클리어 셀 "row-col"(0-indexed, ZoneRun.currentCell과 동일 포맷), 없으면 빈 문자열
+    public int highestClearedZoneNumber;  // 존 탈출(ESCAPED)로 확정된 존 번호 중 최댓값, 없으면 0
     public int mineral;
     public int modulePoint;
     public int modulePointMaxGot;    // 누적 획득량 (리셋 환급 반영)
     public int pvpPoint;
     public int pvpPointMaxGot;
     public string pvpPointExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
-    public int explorationPoint;    // 보유(확정 지급된) 탐험 포인트 — 적립(ZoneRun.explorationPointBanked)과 별개
+    
 }
 
 

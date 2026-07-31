@@ -241,8 +241,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 15, y: -20}
-  m_SizeDelta: {x: 20, y: 40}
+  m_AnchoredPosition: {x: 105, y: -20}
+  m_SizeDelta: {x: 200, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &711608820412741129
 CanvasRenderer:
@@ -437,8 +437,7 @@ MonoBehaviour:
   m_frontToggleSlide: {fileID: 7756984184530563861}
   m_rowButton: {fileID: 1961013072875107425}
   m_backgroundImage: {fileID: 2146555515562352447}
-  m_highlightColor: {r: 0.4, g: 0.9, b: 0.6, a: 0.6}
-  m_lockedColor: {r: 0.15, g: 0.15, b: 0.15, a: 0.6}
+  m_borderImage: {fileID: 0}
 --- !u!222 &8212092684672497406
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -572,7 +571,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 31.98, y: -20}
+  m_AnchoredPosition: {x: 211.98, y: -20}
   m_SizeDelta: {x: 13.96, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2938607245260101127

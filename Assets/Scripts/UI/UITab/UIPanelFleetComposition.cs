@@ -445,6 +445,9 @@ public class UIPanelFleetComposition : UIPanelBase
         if (row == null) return;
 
         row.Setup(m_unlockedPresetsCache[dataIndex], OnAvailablePresetClicked, OnAvailablePresetDropped, OnAvailablePresetDragging);
+
+        // 풀링 재사용 row라 SetActive(true) 직후 텍스트가 바뀌어도 내부 VerticalLayoutGroup이 자동으로 리빌드되지 않을 수 있음 — 강제 리빌드
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rowObject.transform as RectTransform);
     }
 
     // ── 배치된 함선 — 전방/후방 토글 ──────────────────────────────────

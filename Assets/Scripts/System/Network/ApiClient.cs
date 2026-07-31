@@ -22,8 +22,8 @@ public class CustomException : Exception
 public static class ApiServerUrl
 {
     // Dev server
-    //public const string Dev     = "http://localhost:8080/api";
-    public const string Dev     = "http://192.168.0.51:8080/api";
+    public const string Dev     = "http://localhost:8080/api";
+    //public const string Dev     = "http://192.168.0.51:8080/api";
 
     // test server
     public const string Test    = "http://192.168.0.61:8080/api";
