@@ -85,6 +85,10 @@ public class ZoneConfig
     public int enemyMaxCost = 100;        // [server] 웨이브에 편성 가능한 함선 1척의 commandCost 상한
     public int enemyDeviation = 0;        // [server] enemyMaxCost 랜덤 편차
     public int enemyMaxShipsPerFleet = 5; // [server] 웨이브 1개의 함선 수 상한
+
+    [Header("셀 클리어 보상 (웨이브가 있던 셀만 적립, 존 단위 고정값)")]
+    public int explorationPointReward = 0; // [server] 적 함대 성능(commandCost)과 무관한 고정 탐험 포인트 적립량
+    public int commanderExpReward = 0;     // [server] 고정 지휘관 경험치 적립량
 }
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
 public class DataTableZone : ScriptableObject
@@ -137,6 +141,8 @@ public class DataTableZone : ScriptableObject
                 enemyMaxCost          = z.enemyMaxCost,
                 enemyDeviation        = z.enemyDeviation,
                 enemyMaxShipsPerFleet = z.enemyMaxShipsPerFleet,
+                explorationPointReward = z.explorationPointReward,
+                commanderExpReward     = z.commanderExpReward,
                 cellOverrides         = z.cellOverrides.ConvertAll(o => (object)new { row = o.row, col = o.col, type = o.type.ToString(), eventType = o.eventType.ToString() }),
             });
         }

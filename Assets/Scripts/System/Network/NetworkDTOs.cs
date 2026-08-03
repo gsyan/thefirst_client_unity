@@ -446,7 +446,8 @@ public class ClearExplorationCellRequest
 [System.Serializable]
 public class ClearExplorationCellResponse
 {
-    public int explorationPointGained; // 적 함대 총 성능포인트만큼 적립 (미확정 상태, 탈출 시 확정 정산)
+    public int explorationPointGained; // 존 고정값만큼 적립 (미확정 상태, 탈출 시 확정 정산) — 적 함대 성능과 무관
+    public int expGained;              // 존 고정값만큼 적립된 지휘관 경험치 (미확정 상태, 탈출 시 확정 정산) — 빈 셀은 0
 }
 
 [System.Serializable]
@@ -458,6 +459,7 @@ public class GetActiveZoneRunProgressResponse
     public int zoneNumber;        // 진행 중인 런이 없으면 0
     public string[] clearedCells; // "row-col"(0-indexed) 목록, 클리어 순서대로
     public int explorationPointBanked; // 진행 중인 런의 적립(미확정) 탐험 포인트, 없으면 0
+    public int commanderExpBanked;     // 진행 중인 런의 적립(미확정) 지휘관 경험치, 없으면 0
 }
 
 [System.Serializable]
@@ -472,6 +474,9 @@ public class EscapeExplorationZoneResponse
 {
     public int explorationPointGained;   // 확정 지급된 탐험 포인트
     public int explorationPointRemain;   // 확정 지급 후 은행 잔액
+    public int expGained;                // 확정 지급된 지휘관 경험치
+    public int totalExp;                 // 반영 후 누적 경험치(권위값)
+    public int commanderLevel;           // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
 }
 
 [System.Serializable]
@@ -482,6 +487,9 @@ public class AbandonZoneRunResponse
 {
     public int explorationPointGained; // 포기로 확정 지급된 탐험 포인트(50%)
     public int explorationPointRemain; // 확정 지급 후 은행 잔액
+    public int expGained;              // 포기로 확정 지급된 지휘관 경험치(50%)
+    public int totalExp;               // 반영 후 누적 경험치(권위값)
+    public int commanderLevel;         // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
 }
 
 [System.Serializable]

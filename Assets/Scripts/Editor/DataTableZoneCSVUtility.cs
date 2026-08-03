@@ -29,12 +29,13 @@ public static class DataTableZoneCSVUtility
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_grid.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("zone_index,grid_width,grid_height,enemy_fleets,enemy_budget,enemy_max_cost,enemy_deviation,enemy_max_ships_per_fleet");
+        sb.AppendLine("zone_index,grid_width,grid_height,enemy_fleets,enemy_budget,enemy_max_cost,enemy_deviation,enemy_max_ships_per_fleet,exploration_point_reward,commander_exp_reward");
         foreach (ZoneConfig z in table.zoneList)
         {
             sb.AppendLine(
                 $"{z.zoneIndex},{z.gridWidth},{z.gridHeight}," +
-                $"{z.enemyFleetsPerCell},{z.enemyBudget},{z.enemyMaxCost},{z.enemyDeviation},{z.enemyMaxShipsPerFleet}");
+                $"{z.enemyFleetsPerCell},{z.enemyBudget},{z.enemyMaxCost},{z.enemyDeviation},{z.enemyMaxShipsPerFleet}," +
+                $"{z.explorationPointReward},{z.commanderExpReward}");
         }
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }

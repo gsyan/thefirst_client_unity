@@ -52,7 +52,7 @@ public class DataTableCommanderEditor : Editor
                 EditorGUILayout.LabelField($"Level {data.commanderLevel}", EditorStyles.boldLabel);
                 EditorGUI.indentLevel++;
                 data.commanderLevel = EditorGUILayout.IntField("Commander Level", data.commanderLevel);
-                data.requireExp     = EditorGUILayout.IntField("Point",           data.requireExp);
+                data.requireExp     = EditorGUILayout.IntField("Exp",             data.requireExp);
                 data.shipCount      = EditorGUILayout.IntField("Ship Count",      data.shipCount);
                 EditorGUI.indentLevel--;
                 EditorGUILayout.EndVertical();

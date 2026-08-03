@@ -1,4 +1,4 @@
-// 커맨더 레벨 ScriptableObject — 레벨별 필요 포인트(point), 최대 함선 수(ship_count) 관리
+// 커맨더 레벨 ScriptableObject — 레벨별 필요 경험치(exp), 최대 함선 수(ship_count) 관리
 // CSV: Assets/Resources/DataTable/Commander/datatable_commander.csv
 using UnityEngine;
 using System.Collections.Generic;
@@ -96,7 +96,7 @@ public class DataTableCommander : ScriptableObject
     #region CSV Import (Editor only)
 
 #if UNITY_EDITOR
-    // datatable_commander.csv 컬럼 순서(인덱스 고정) — commander_level, point, ship_count
+    // datatable_commander.csv 컬럼 순서(인덱스 고정) — commander_level, exp, ship_count
     public void LoadFromCsv(string csvText)
     {
         commanderDataList.Clear();
@@ -167,6 +167,6 @@ public class DataTableCommander : ScriptableObject
 public class CommanderData
 {
     public int commanderLevel;
-    public int requireExp; // CSV 원본 컬럼명: point — 이 레벨에 도달하기 위해 필요한 누적 포인트
+    public int requireExp; // CSV 원본 컬럼명: exp — 이 레벨에 도달하기 위해 필요한 누적 경험치
     public int shipCount;
 }

@@ -480,6 +480,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             }
 
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
+            ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             ClearActiveRunZoneCache();
 
             ConfirmEnterCell(row, col);
@@ -615,6 +616,8 @@ public class UIPanelExplorationGrid : UIPanelBase
                 Debug.LogError($"[UIPanelExplorationGrid] AbandonZoneRun 실패: {response.errorCode}");
                 return;
             }
+            ApplyOwnedPointRemain(response.data.explorationPointRemain);
+            ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             OnConfirmStartBattle(); // 기존 런 정리 완료 — 원래 도전을 재시도
         });
     }
@@ -639,11 +642,13 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void OnClearExplorationCellResponse(ApiResponse<ClearExplorationCellResponse> response)
     {
         int pointGained = 0;
+        int expGained = 0;
         if (response.errorCode != 0)
             Debug.LogError($"[UIPanelExplorationGrid] ClearExplorationCell 실패: {response.errorCode}");
         else if (response.data != null)
         {
             pointGained = response.data.explorationPointGained;
+            expGained = response.data.expGained;
             // 이 시점엔 패널이 비활성 상태(전투 화면에 가려짐) — 값은 버퍼에만 쌓아두고, 화면 반영은 OnShowUIPanel에서 처리
             m_pendingBankedPointGain += pointGained;
         }
@@ -661,7 +666,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = "탐험 포인트를 획득했습니다!",
-            rewardAmounts = new List<int> { 0, pointGained, 0 },
+            rewardAmounts = new List<int> { expGained, pointGained, 0 },
             onConfirm = ContinueAfterCellClear,
         });
     }
@@ -707,6 +712,7 @@ public class UIPanelExplorationGrid : UIPanelBase
                 RefreshBankedPointText();
                 RefreshAbandonRunButtonState();
                 ApplyOwnedPointRemain(response.data.explorationPointRemain);
+                ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
                 ClearActiveRunZoneCache();
             }
 
@@ -739,6 +745,19 @@ public class UIPanelExplorationGrid : UIPanelBase
             commanderInfo.explorationPoint = explorationPointRemain;
 
         RefreshOwnedPointText();
+    }
+
+    // 탈출/포기 정산 응답(totalExp/commanderLevel, 권위값)을 커맨더 정보에 반영 — 레벨업 시 알림 표시
+    private void ApplyExpAndLevel(int totalExp, int commanderLevel)
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+
+        int prevLevel = commander.GetCommanderLevel();
+        commander.UpdateExp(totalExp);
+        commander.UpdateCommanderLevel(commanderLevel);
+        if (commanderLevel > prevLevel)
+            UIManager.Instance.ShowCommanderLevelupNotify(commanderLevel);
     }
 
     // 탈출/포기로 런이 종료된 직후 로컬 캐시도 즉시 비워야 "다른 존 진행중" 판정이 이번 세션 내내 정확함
@@ -789,6 +808,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             RefreshBankedPointText();
             RefreshAbandonRunButtonState();
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
+            ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             ClearActiveRunZoneCache();
 
             // 진행 중이던 런이 종료되었으므로 현재 존을 시작 셀 상태로 다시 진입 — m_gridData를 비워 SelectZoneTab의 좌표 보존 경로를 건너뜀
