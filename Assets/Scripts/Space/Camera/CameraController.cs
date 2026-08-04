@@ -828,6 +828,10 @@ public class CameraController : MonoSingleton<CameraController>
         m_isEnteringGalaxy = false;
         m_inputEnabled = false;
 
+        // 존 탭 스크롤 중 FocusOnZoneAnchor가 켜둔 m_isZoneRefocus가 도착 임계값에 못 미친 채 남아있으면,
+        // 아래에서 시작하는 복귀 애니메이션을 UpdateCameraTransform의 존 추적 분기가 가로채 엉뚱한 존 앵커를 계속 쫓아감 — 여기서 명시적으로 끔
+        m_isZoneRefocus = false;
+
         // Phase3 회전/줌 복귀 시작점으로 현재 갤럭시 상태 저장
         m_animExitRotX = m_currentRotationX;
         m_animExitRotY = m_currentRotationY;

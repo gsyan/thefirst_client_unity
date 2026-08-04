@@ -188,6 +188,19 @@ public class InfiniteScrollViewH : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    // 이 뷰를 감싼 패널이 닫히는 시점에 호출 — 관성 스크롤이 진행 중이면 패널이 닫힌 뒤에도 onValueChanged가 이어져
+    // onCenterIndexChanged가 뒤늦게 발동할 수 있음. 관성 자체를 멈춰 그 이후로는 콜백이 아예 나가지 않게 함
+    public void StopScrolling()
+    {
+        if (m_smoothScrollCoroutine != null)
+        {
+            StopCoroutine(m_smoothScrollCoroutine);
+            m_smoothScrollCoroutine = null;
+        }
+        if (m_scrollRect != null)
+            m_scrollRect.velocity = Vector2.zero;
+    }
+
     private void RefreshView()
     {
         if (m_initialized == false || m_totalCount == 0) return;

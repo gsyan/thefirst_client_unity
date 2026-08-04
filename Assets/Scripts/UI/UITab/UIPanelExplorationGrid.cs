@@ -112,6 +112,11 @@ public class UIPanelExplorationGrid : UIPanelBase
         EventManager.Unsubscribe_ExplorationGridCellClicked(OnGridCellClicked);
         EventManager.Unsubscribe_GalaxyViewSettled(OnGalaxyViewSettled);
 
+        // 존 탭 스크롤 관성이 남아있으면 패널이 닫힌 뒤에도 onCenterIndexChanged -> NavigateToZone -> BuildCellButtons()가
+        // 뒤늦게 실행되어 m_cellRoot(패널과 무관한 독립 루트)에 그리드 셀이 다시 살아날 수 있음 — 먼저 관성부터 멈춤
+        if (m_zoneTabScroll != null)
+            m_zoneTabScroll.StopScrolling();
+
         // 셀이 이제 독립된 3D 루트(m_cellRoot)에 있어 패널 자신을 꺼도 같이 안 꺼짐 — 로컬뷰로 나갈 때 명시적으로 회수
         ReturnAllButtonsToPool();
 

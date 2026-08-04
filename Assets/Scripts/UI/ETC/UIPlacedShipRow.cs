@@ -46,7 +46,10 @@ public class UIPlacedShipRow : MonoBehaviour
         m_isLocked = false;
 
         if (m_rowLabelValue != null)
+        {
             m_rowLabelValue.SetRow("-", "", rawLabel: true, rawValue: true);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_rowLabelValue.transform as RectTransform);
+        }
         if (m_frontToggleSlide != null)
             m_frontToggleSlide.gameObject.SetActive(false);
 
@@ -64,7 +67,10 @@ public class UIPlacedShipRow : MonoBehaviour
         m_isLocked = true;
 
         if (m_rowLabelValue != null)
+        {
             m_rowLabelValue.SetRow("-", "", rawLabel: true, rawValue: true);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_rowLabelValue.transform as RectTransform);
+        }
         if (m_frontToggleSlide != null)
             m_frontToggleSlide.gameObject.SetActive(false);
 
@@ -97,7 +103,10 @@ public class UIPlacedShipRow : MonoBehaviour
             // 라벨 칸엔 슬롯 인덱스 기반 "Ship1"(1-based) — 함선 이름 로컬라이즈는 아직 미정이라 프리셋 코드(presetId)를 값 칸에 그대로 표시
             // 위치(전방/후방)는 토글 라벨로 표시하므로 값 칸은 preset id 전용으로 씀
             if (m_rowLabelValue != null)
+            {
                 m_rowLabelValue.SetRow($"Ship{index + 1}", shipPresetId, rawLabel: true, rawValue: true);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_rowLabelValue.transform as RectTransform);
+            }
 
             if (m_frontToggleSlide != null)
             {
@@ -111,7 +120,10 @@ public class UIPlacedShipRow : MonoBehaviour
         {
             // 읽기전용 — 토글 대신 라벨 Value 칸에 전/후방 텍스트를 그대로 표기
             if (m_rowLabelValue != null)
+            {
                 m_rowLabelValue.SetRow(shipPresetId, LocalizationManager.Instance.Get(positionKey), rawLabel: true, rawValue: true);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_rowLabelValue.transform as RectTransform);
+            }
 
             if (m_frontToggleSlide != null)
                 m_frontToggleSlide.gameObject.SetActive(false);

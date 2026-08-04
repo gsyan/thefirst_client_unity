@@ -51,6 +51,8 @@ public class UIAvailablePresetRow : MonoBehaviour, IBeginDragHandler, IDragHandl
 
     private void OnButtonClicked()
     {
+        if (m_dragGhost != null) return; // 드래그가 시작된 제스처면 클릭으로 처리하지 않음(드래그+클릭 중복 방지)
+
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_onClick != null) m_onClick(m_preset);
     }
