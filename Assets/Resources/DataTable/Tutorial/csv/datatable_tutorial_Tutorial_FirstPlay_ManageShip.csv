@@ -5,7 +5,7 @@ step3,Tutorial_FirstPlay_CheckCommanderLevel,AnyClick,UIPopupConfirm,UISection_R
 step4,Tutorial_FirstPlay_CheckModulePoint,AnyClick,UIPopupConfirm,UISection_Cost,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
 step5,Tutorial_FirstPlay_AddShipConfirm,TargetClick,UIPopupConfirm,ConfirmButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
 step6,,Custom,,,False,Auto,0,0,800,0,0,-500,0,,,ShipArrivedAtFormation,90,3,none
-step7,Tutorial_FirstPlay_TouchShipSelector,TargetClick,ShipSelectorContainer,[4]/ShipSelectButton,True,Auto,0,100,0,0,0,-500,0,UIPanelFleetComposition,,None,90,3,none
+step7,Tutorial_FirstPlay_TouchShipSelector,TargetClick,ShipSelectorContainer,[4]/ShipSelectButton,True,Auto,0,100,0,0,0,-500,0,UIPanelFleet,,None,90,3,none
 step8,Tutorial_FirstPlay_TouchShipManage,TargetClick,ShipSelectorContainer,[4]/ShipManageButton,True,Auto,0,100,0,0,0,-500,0,,,None,90,3,none
 step9,Tutorial_FirstPlay_TouchModuleBeam,TargetClick,ModuleContainer,ModuleBeamSelector1,True,Auto,0,100,0,0,0,-500,0,,,None,90,3,none
 step10,Tutorial_FirstPlay_LevelUpModuleBeam,TargetClick,ModuleLevelContainer,UpButton,True,Auto,0,100,0,0,0,-500,0,,,None,90,3,none

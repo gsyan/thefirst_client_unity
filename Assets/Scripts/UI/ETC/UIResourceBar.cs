@@ -207,6 +207,7 @@ public class UIResourceBar : MonoBehaviour
     {
         if (textUI == null) return;
         if (handle != null) StopCoroutine(handle);
+        if (gameObject.activeInHierarchy == false) return;
         handle = StartCoroutine(CommonUtility.AnimateCounterText(textUI, from, to));
     }
 

@@ -34,8 +34,8 @@ public class ButtonGroupSystem : MonoBehaviour
     {
         if (initialized) return;
 
-        Color colorActive   = CommonUtility.PaletteColor("GeneralBright1");
-        Color colorInactive = CommonUtility.PaletteColor("GeneralDark1");
+        Color colorActive   = CommonUtility.PaletteColor("General.Bright1");
+        Color colorInactive = CommonUtility.PaletteColor("General.Dark1");
 
         for (int i = 0; i < items.Count; i++)
         {

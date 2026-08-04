@@ -23,8 +23,8 @@ public class UIPanelCommander : UIPanelBase
 
     public override void InitializeUIPanel()
     {
-        m_colorActive   = CommonUtility.PaletteColor("GeneralBright1");
-        m_colorInactive = CommonUtility.PaletteColor("GeneralDark1");
+        m_colorActive   = CommonUtility.PaletteColor("GeneralNeon");
+        m_colorInactive = CommonUtility.PaletteColor("GeneralNeon.Dark1");
 
         if (m_shipImages != null)
         {

@@ -58,7 +58,7 @@ public class UIPopupDailyBonusDayCell : MonoBehaviour
 
             // VIP 줄은 앰버 계열로 포인트 — 일반 줄과 색으로 구분되도록
             string accentBright = isVipTier ? "Vip"     : "General";
-            string accentDark   = isVipTier ? "VipDark" : "GeneralDark2";
+            string accentDark   = isVipTier ? "VipDark" : "General.Dark2";
 
             row.SetImageColor(CommonUtility.PaletteColor(rowClaimed ? "Mineral" : "MineralDark"));
 

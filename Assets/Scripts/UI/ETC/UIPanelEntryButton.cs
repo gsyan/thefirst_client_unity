@@ -18,8 +18,8 @@ public class UIPanelEntryButton : MonoBehaviour
         if (m_button != null)
             m_button.onClick.AddListener(OnClick);
 
-        m_colorActive   = CommonUtility.PaletteColor("GeneralBright1");
-        m_colorInactive = CommonUtility.PaletteColor("GeneralDark1");
+        m_colorActive   = CommonUtility.PaletteColor("General.Bright1");
+        m_colorInactive = CommonUtility.PaletteColor("General.Dark1");
 
         EventManager.Subscribe_CurrentPanelChanged(OnCurrentPanelChanged);
         RefreshHighlight(UIManager.Instance.GetCurrentActivePanelName());

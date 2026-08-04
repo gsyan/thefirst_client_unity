@@ -484,7 +484,7 @@ public class UIManager : MonoSingleton<UIManager>
         int prevShipCount    = DataManager.Instance.m_dataTableCommander.GetShipCount(prevLevel);
         var loc = LocalizationManager.Instance;
         string shipLabel   = loc.Get("UITabCommander_ShipCountMaxTitle");
-        Color defaultColor = CommonUtility.PaletteColor("GeneralBright1");
+        Color defaultColor = CommonUtility.PaletteColor("General.Bright1");
         var rows = new List<(string icon, string value, Color? color)>();
         if (shipCount != prevShipCount)
             rows.Add(("icon_ship", $"{shipLabel}  {shipCount}", defaultColor));

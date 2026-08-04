@@ -39,7 +39,7 @@ public class ScrollViewRankingItem : MonoBehaviour
         }
         if (m_nameText != null) m_nameText.text = Commander.GetDisplayName(entry.commanderName, entry.commanderId);
         if (m_scoreText != null) m_scoreText.text = entry.score ?? "";
-        if (m_highlightImage != null) m_highlightImage.color = isMyRank ? CommonUtility.PaletteColor("GeneralBright1") : CommonUtility.PaletteColor("GeneralDark1");
+        if (m_highlightImage != null) m_highlightImage.color = isMyRank ? CommonUtility.PaletteColor("General.Bright1") : CommonUtility.PaletteColor("General.Dark1");
         PopulateStats(entry);
     }
 
@@ -69,7 +69,7 @@ public class ScrollViewRankingItem : MonoBehaviour
         if (m_rankText != null) m_rankText.text = "...";
         if (m_nameText != null) m_nameText.text = "...";
         if (m_scoreText != null) m_scoreText.text = "...";
-        if (m_highlightImage != null) m_highlightImage.color = CommonUtility.PaletteColor("GeneralDark1");
+        if (m_highlightImage != null) m_highlightImage.color = CommonUtility.PaletteColor("General.Dark1");
         HideAllStats();
     }
 

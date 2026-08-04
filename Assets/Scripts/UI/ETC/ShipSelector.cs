@@ -119,11 +119,11 @@ public class ShipSelector : MonoBehaviour
         if (m_manageButton != null) m_manageButton.gameObject.SetActive(selected);
     }
 
-    // 파괴된 함선 상태: GeneralDark2 색상, HP=0, 선택 불가
+    // 파괴된 함선 상태: General.Dark2 색상, HP=0, 선택 불가
     public void SetDestroyedState()
     {
         if (m_selectButtonImage != null)
-            m_selectButtonImage.color = CommonUtility.PaletteColor("GeneralDark2");
+            m_selectButtonImage.color = CommonUtility.PaletteColor("General.Dark2");
         m_selectButton.interactable = false;
         if (m_manageButton != null) m_manageButton.gameObject.SetActive(false);
         if (m_hpBarFill != null) ApplyHealthRatio(0f);

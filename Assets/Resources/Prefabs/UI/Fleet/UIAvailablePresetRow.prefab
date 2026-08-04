@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.07, g: 0.33, b: 0.265, a: 1}
+  m_Color: {r: 0.1295, g: 0.6105, b: 0.49025, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -155,9 +155,9 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 1019968324419510835}
-    colorRole: Teal900
+    colorRole: General.Dark1
   - graphic: {fileID: 1694425154740209435}
-    colorRole: Teal500
+    colorRole: General.Dark2
 --- !u!1 &6202773804010363438
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.274, g: 0.846, b: 0.703, a: 1}
+  m_Color: {r: 0.14509805, g: 0.20784314, b: 0.28627452, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

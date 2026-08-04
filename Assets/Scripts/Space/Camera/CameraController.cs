@@ -111,6 +111,7 @@ public class CameraController : MonoSingleton<CameraController>
 
         EventManager.Subscribe_SpaceShipSelected(OnSpaceShipSelectedForZoom);
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChangedForZoom);
+        EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTappedForTarget);
     }
 
     protected override void OnDestroy()
@@ -119,15 +120,25 @@ public class CameraController : MonoSingleton<CameraController>
 
         EventManager.Unsubscribe_SpaceShipSelected(OnSpaceShipSelectedForZoom);
         EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChangedForZoom);
+        EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTappedForTarget);
         m_handleInputMouse?.Unsubscribe();
         m_handleInputTouch?.Unsubscribe();
     }
 
-    // 함선 선택 시 해당 함선 기준 줌 범위 적용 (내 함대만)
+    // 함선 선택 시 해당 함선 기준 줌 범위 적용 + 카메라 타겟을 해당 함선으로 전환 (내 함대만)
     private void OnSpaceShipSelectedForZoom(SpaceShip ship)
     {
         if (ship == null || ship.m_ownerFleet == null || ObjectManager.Instance.IsEnemyOfMyTeam(ship.m_ownerFleet) == true) return;
         ApplyZoomRangeFromShip(ship);
+        SetTargetOfCameraController(ship.transform);
+    }
+
+    // 빈 공간 클릭으로 선택 해제 시 카메라 타겟을 다시 내 함대 전체로 복귀
+    private void OnEmptySpaceTappedForTarget()
+    {
+        SpaceFleet myFleet = ObjectManager.Instance != null ? ObjectManager.Instance.GetMyFleet() : null;
+        if (myFleet != null)
+            SetTargetOfCameraController(myFleet.transform);
     }
 
     // Body 교체 시 현재 줌 범위 기준 함선이면 갱신
@@ -401,7 +412,7 @@ public class CameraController : MonoSingleton<CameraController>
 
     // 3D 클릭으로 내 함선/모듈 선택. 빈공간이면 EmptySpaceTapped 발행
     // 여기서는 "지금 어떤 UI 패널이 열려있는지" 등을 따지지 않고 항상 이벤트를 발행하기만 함 — 그 이벤트를 실제로
-    // 처리할지 말지는 각 리스너(UIPanelSpace/UIPanelFleetComposition 등)가 자기 활성 상태에 맞춰 스스로 판단(구독/해제)
+    // 처리할지 말지는 각 리스너(UIPanelSpace/UIPanelFleet 등)가 자기 활성 상태에 맞춰 스스로 판단(구독/해제)
     public void HandleModuleSelection(Vector3? screenPosition = null)
     {
         LayerMask pickMask = ~m_layerMaskShield;
@@ -504,7 +515,7 @@ public class CameraController : MonoSingleton<CameraController>
         return m_targetCamera != null ? m_targetCamera.rect.x : 0f;
     }
 
-    // 카메라 viewport rect(x, width) 애니메이션 — UIPanelFleetComposition처럼 화면 일부만 카메라에 내주는 패널이 열고 닫힐 때 사용.
+    // 카메라 viewport rect(x, width) 애니메이션 — UIPanelFleet처럼 화면 일부만 카메라에 내주는 패널이 열고 닫힐 때 사용.
     // CameraController는 항상 살아있는 싱글톤이라, 호출한 패널의 GameObject가 애니메이션 도중 비활성화돼도 코루틴이 끊기지 않음
     private Coroutine m_viewportAnimCoroutine;
 

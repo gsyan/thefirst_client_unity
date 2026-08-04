@@ -20,8 +20,6 @@ public class UIPanelExplorationGrid : UIPanelBase
     [Header("존 선택 스크롤")]
     [SerializeField] private InfiniteScrollViewH m_zoneTabScroll;
     [SerializeField] private GameObject m_zoneTabNodePrefab;
-    [SerializeField] private UnityEngine.UI.Button m_zoneNavPrev;
-    [SerializeField] private UnityEngine.UI.Button m_zoneNavNext;
     // 락/클리어 표시 등 실제 진행도 연동은 후속 작업(clearedZones가 아직 구식 스테이지 포맷)
 
     private const float k_enemyEncounterDistance = 50f; // 셀 안 전투 조우 거리 — datatable_zone_enemy_fleet_position.csv grade1과 동일 스케일(국소 전술 거리, 갤럭시뷰 좌표와는 별개)
@@ -182,8 +180,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_zoneTabScroll.ScrollToCenter(initialZoneNumber - 1);
         m_zoneTabScroll.onCenterIndexChanged = OnZoneScrollCenterChanged;
 
-        if (m_zoneNavPrev != null) m_zoneNavPrev.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToZone(m_currentZoneNumber - 1, recenterScroll: true); });
-        if (m_zoneNavNext != null) m_zoneNavNext.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); NavigateToZone(m_currentZoneNumber + 1, recenterScroll: true); });
     }
 
     private void OnZoneTabNodeBind(int dataIndex, GameObject obj)
@@ -228,15 +224,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 이미 최신 존 번호를 기준으로 판정됨 — 순서가 바뀌면 하이라이트가 한 스텝 밀리거나 재귀 호출이 발생함
         SelectZoneTab(zoneNumber, ComputeZoneSeed(zoneNumber));
 
-        RefreshZoneNavButtons(zoneNumber);
         if (recenterScroll == true && m_zoneTabScroll != null)
             m_zoneTabScroll.ScrollToCenterSmooth(zoneNumber - 1);
-    }
-
-    private void RefreshZoneNavButtons(int zoneNumber)
-    {
-        if (m_zoneNavPrev != null) m_zoneNavPrev.interactable = zoneNumber > 1;
-        if (m_zoneNavNext != null) m_zoneNavNext.interactable = m_zoneGroupCount <= 0 || zoneNumber < m_zoneGroupCount;
     }
 
     // 로그인 시 받은 유저 무관 공통 시드(explorationSeedBase — 모든 유저 동일)와 zoneNumber를 조합 — 서버 재요청 없이 클라에서 결정론적으로 계산

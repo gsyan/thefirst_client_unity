@@ -9,7 +9,7 @@ public class RowImageText : MonoBehaviour
     [SerializeField] private TMP_Text m_text;
 
     // 아이콘/텍스트 색상은 항상 이 Semantic 키로 통일 (개별 커스터마이징 사례 없어 필드 제거)
-    private const string IMAGE_COLOR_KEY = "GeneralDark1";
+    private const string IMAGE_COLOR_KEY = "General.Dark1";
     private const string TEXT_COLOR_KEY  = "Text.Dark1";
 
     private void Awake()

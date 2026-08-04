@@ -428,48 +428,22 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
-        RegisterCommand("setmineral", "Set mineral amount (usage: setmineral [amount])", (args) =>
+        // usage: adddevresources [levelUp] [exploPoint] [pvpPoint] — 0이면 해당 타입 스킵, levelUp>0이면 정확히 1레벨만 증가
+        RegisterCommand("adddevresources", "Add resources (usage: adddevresources [levelUp] [exploPoint] [pvpPoint])", (args) =>
         {
-            if (args.Length == 0) return;
+            if (args.Length < 3) return;
             if (NetworkManager.Instance == null) return;
-            NetworkManager.Instance.ExecuteDevCommand("setmineral", args, (response) =>
-            {
-                if (response.errorCode == 0)
-                {
-                    string[] parts = response.data.Split('|');
-                    if (parts.Length > 1)
-                        UpdateResourceFromResponse(parts[1]);
-                }
-            });
-        });
-
-        RegisterCommand("addmineral", "Add mineral amount (usage: addmineral [amount])", (args) =>
-        {
-            if (args.Length == 0) return;
-            if (NetworkManager.Instance == null) return;
-            NetworkManager.Instance.ExecuteDevCommand("addmineral", args, (response) =>
-            {
-                if (response.errorCode == 0)
-                {
-                    string[] parts = response.data.Split('|');
-                    if (parts.Length > 1)
-                        UpdateResourceFromResponse(parts[1]);
-                }
-            });
-        });
-
-        // usage: addminerals [mineral] [levelUp] [modulePoint] [pvpPoint] — 0이면 해당 타입 스킵, levelUp>0이면 정확히 1레벨만 증가
-        RegisterCommand("addminerals", "Add resources (usage: addminerals [mineral] [levelUp] [modulePoint] [pvpPoint])", (args) =>
-        {
-            if (args.Length < 4) return;
-            if (NetworkManager.Instance == null) return;
-            NetworkManager.Instance.ExecuteDevCommand("addminerals", args, (response) =>
+            NetworkManager.Instance.ExecuteDevCommand("adddevresources", args, (response) =>
             {
                 if (response.errorCode == 0)
                 {
                     string[] parts = response.data.Split('|');
                     for (int i = 1; i < parts.Length; i++)
                         UpdateResourceFromResponse(parts[i]);
+                }
+                else
+                {
+                    Debug.LogWarning($"adddevresources failed: errorCode={response.errorCode}");
                 }
             });
         });
@@ -588,17 +562,9 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
                 if (int.TryParse(value, out int exp))
                     DataManager.Instance.m_currentCommander.UpdateExp(exp);
                 break;
-            case "mineral":
-                if (int.TryParse(value, out int mineral))
-                    DataManager.Instance.m_currentCommander.UpdateMineral(mineral);
-                break;
-            case "modulepointmaxgot":
-                if (int.TryParse(value, out int mpMaxGot))
-                    DataManager.Instance.m_currentCommander.UpdateModulePointMaxGot(mpMaxGot);
-                break;
-            case "modulepoint":
-                if (int.TryParse(value, out int modulePoint))
-                    DataManager.Instance.m_currentCommander.UpdateModulePoint(modulePoint);
+            case "explorationpoint":
+                if (int.TryParse(value, out int exploPoint))
+                    DataManager.Instance.m_currentCommander.UpdateExplorationPoint(exploPoint);
                 break;
             case "pvppointmaxgot":
                 if (int.TryParse(value, out int pvpMaxGot))

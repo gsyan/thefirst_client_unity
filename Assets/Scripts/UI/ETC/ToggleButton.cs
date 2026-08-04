@@ -11,8 +11,8 @@ public class ToggleButton : MonoBehaviour
     public Button button;
 
     // 사용처마다 톤이 달라 팔레트 키를 Inspector에서 지정 (기본값은 General 톤, Fleet Tactics 등 특이 케이스만 오버라이드)
-    [SerializeField] private string m_selectedColorKey   = "GeneralBright1";
-    [SerializeField] private string m_unselectedColorKey = "GeneralDark1";
+    [SerializeField] private string m_selectedColorKey   = "General.Bright1";
+    [SerializeField] private string m_unselectedColorKey = "General.Dark1";
 
     private Color     m_colorSelected;
     private Color     m_colorUnselected;

@@ -109,7 +109,7 @@ public class GridCell3D : MonoBehaviour
                 fillColor = CommonUtility.PaletteColor("Unlocked");
                 break;
             case EGridCellVisualState.Cleared:
-                fillColor = CommonUtility.PaletteColor("GeneralDark1");
+                fillColor = CommonUtility.PaletteColor("General.Dark1");
                 break;
             default: // Unvisited
                 fillColor = CommonUtility.PaletteColor("Zone.Locked");

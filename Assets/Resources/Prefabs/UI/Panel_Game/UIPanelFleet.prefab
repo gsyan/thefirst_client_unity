@@ -878,7 +878,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_Color: {r: 0.1295, g: 0.6105, b: 0.49025, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -932,10 +932,10 @@ RectTransform:
   - {fileID: 3080544121433550478}
   m_Father: {fileID: 8340308220921847383}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 900}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 135, y: -450}
+  m_SizeDelta: {x: 270, y: 900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7802578576145662004
 CanvasRenderer:
@@ -1192,9 +1192,9 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 8032741132759958557}
-    colorRole: GeneralDark2
+    colorRole: General.Dark2
   - graphic: {fileID: 293920940581779668}
-    colorRole: GeneralDark1
+    colorRole: General.Dark1
 --- !u!1 &1663654512725632619
 GameObject:
   m_ObjectHideFlags: 0
@@ -1255,7 +1255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_Color: {r: 0.1295, g: 0.6105, b: 0.49025, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1287,7 +1287,7 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 1628455552247488083}
-    colorRole: GeneralDark1
+    colorRole: General.Dark1
 --- !u!1 &1686629771958688608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1794,7 +1794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_Color: {r: 0.1295, g: 0.6105, b: 0.49025, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1935,7 +1935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_Color: {r: 0.1295, g: 0.6105, b: 0.49025, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1967,7 +1967,7 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 9221537914818235206}
-    colorRole: GeneralDark1
+    colorRole: General.Dark1
 --- !u!1 &3020412689935032845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2237,9 +2237,9 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 7464086809160230017}
-    colorRole: GeneralDark2
+    colorRole: General.Dark2
   - graphic: {fileID: 8924899937901425825}
-    colorRole: GeneralDark1
+    colorRole: General.Dark1
 --- !u!1 &3240793709520405235
 GameObject:
   m_ObjectHideFlags: 0
@@ -2253,7 +2253,7 @@ GameObject:
   - component: {fileID: 8204871389724013797}
   - component: {fileID: 8108934344053452973}
   m_Layer: 5
-  m_Name: Button
+  m_Name: IncreaseCommandPowerButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2541,7 +2541,7 @@ GameObject:
   - component: {fileID: 8165082054327183844}
   - component: {fileID: 3562507843621050684}
   m_Layer: 5
-  m_Name: UIPanelFleetComposition
+  m_Name: UIPanelFleet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2564,7 +2564,7 @@ RectTransform:
   - {fileID: 3819210033315330330}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.4, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -2581,7 +2581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0755ce67cff8d2d4c9ff82a56275ce77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIPanelFleetComposition
-  panelName: UIPanelFleetComposition
+  panelName: UIPanelFleet
   bMainPanel: 0
   bHideCurWhenActive: 1
   bCameraMove: 0
@@ -2914,10 +2914,10 @@ RectTransform:
   - {fileID: 7857221298271027817}
   m_Father: {fileID: 6886798181897250879}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 35}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 135, y: -17.5}
+  m_SizeDelta: {x: 270, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4710128311793019950
 CanvasRenderer:
@@ -2940,7 +2940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_Color: {r: 0.1295, g: 0.6105, b: 0.49025, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2972,7 +2972,7 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 9081658750320312627}
-    colorRole: GeneralDark1
+    colorRole: General.Dark1
 --- !u!1 &4950227286462594173
 GameObject:
   m_ObjectHideFlags: 0
@@ -3027,7 +3027,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 400
+  m_PreferredWidth: 600
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
@@ -3132,9 +3132,9 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 9124546244045850248}
-    colorRole: GeneralDark2
+    colorRole: General.Dark2
   - graphic: {fileID: 3524480800722484225}
-    colorRole: GeneralDark1
+    colorRole: General.Dark1
 --- !u!1 &5084574457308920938
 GameObject:
   m_ObjectHideFlags: 0
@@ -3739,7 +3739,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6774283165050420244
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3756,10 +3756,10 @@ RectTransform:
   - {fileID: 6886798181897250879}
   m_Father: {fileID: 3819210033315330330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1030, y: -486}
+  m_SizeDelta: {x: 270, y: 962}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5579237270417750875
 MonoBehaviour:
@@ -3776,7 +3776,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 340
+  m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
@@ -3905,8 +3905,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -50}
-  m_SizeDelta: {x: 400, y: 0}
+  m_AnchoredPosition: {x: 300, y: -50}
+  m_SizeDelta: {x: 600, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7565550068709457600
 MonoBehaviour:
@@ -4040,9 +4040,9 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 4339963269959611182}
-    colorRole: GeneralDark2
+    colorRole: General.Dark2
   - graphic: {fileID: 7182946801891673001}
-    colorRole: GeneralDark1
+    colorRole: General.Dark1
 --- !u!1 &6597700056404143542
 GameObject:
   m_ObjectHideFlags: 0
@@ -4115,8 +4115,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: -45}
-  m_SizeDelta: {x: 600, y: 0}
+  m_AnchoredPosition: {x: 275, y: -45}
+  m_SizeDelta: {x: 550, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4718408337566746391
 MonoBehaviour:
@@ -4229,8 +4229,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 187, y: -485}
-  m_SizeDelta: {x: 374, y: 0}
+  m_AnchoredPosition: {x: 135, y: -485}
+  m_SizeDelta: {x: 270, y: 900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7981386837527720714
 MonoBehaviour:
@@ -4717,9 +4717,9 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 600
+  m_PreferredWidth: -1
   m_PreferredHeight: -1
-  m_FlexibleWidth: -1
+  m_FlexibleWidth: 1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
 --- !u!1 &8791428076146302959

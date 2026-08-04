@@ -7,6 +7,9 @@ using UnityEngine;
 [CustomEditor(typeof(ColorPalette))]
 public class ColorPaletteEditor : Editor
 {
+    private static bool s_primitiveFoldout = true;
+    private static bool s_aliasFoldout = true;
+
     public override void OnInspectorGUI()
     {
         var palette = (ColorPalette)target;
@@ -33,14 +36,16 @@ public class ColorPaletteEditor : Editor
 
         var toDelete = new List<ColorEntry>();
 
-        EditorGUILayout.LabelField("Primitive  (원색 — 실제 값의 근원)", EditorStyles.boldLabel);
-        foreach (ColorEntry entry in primitives)
-            DrawPrimitiveRow(palette, entry, toDelete);
+        s_primitiveFoldout = EditorGUILayout.Foldout(s_primitiveFoldout, $"Primitive  (원색 — 실제 값의 근원)  [{primitives.Count}]", true, EditorStyles.foldoutHeader);
+        if (s_primitiveFoldout == true)
+            foreach (ColorEntry entry in primitives)
+                DrawPrimitiveRow(palette, entry, toDelete);
 
         EditorGUILayout.Space(14);
-        EditorGUILayout.LabelField("Semantic  (별칭 — Primitive를 참조)", EditorStyles.boldLabel);
-        foreach (ColorEntry entry in aliases)
-            DrawAliasRow(palette, entry, primitiveKeys, toDelete);
+        s_aliasFoldout = EditorGUILayout.Foldout(s_aliasFoldout, $"Semantic  (별칭 — Primitive를 참조)  [{aliases.Count}]", true, EditorStyles.foldoutHeader);
+        if (s_aliasFoldout == true)
+            foreach (ColorEntry entry in aliases)
+                DrawAliasRow(palette, entry, primitiveKeys, toDelete);
 
         if (toDelete.Count > 0)
         {

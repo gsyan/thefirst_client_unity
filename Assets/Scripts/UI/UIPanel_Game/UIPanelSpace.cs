@@ -158,11 +158,11 @@ public class UIPanelSpace : UIPanelBase
     {
         if (TutorialManager.Instance != null && TutorialManager.Instance.IsPlaying) return;
 
-        const string panelName = "UIPanelFleetComposition";
+        const string panelName = "UIPanelFleet";
         if (UIManager.Instance.GetCurrentActivePanelName() != panelName)
             UIManager.Instance.ShowPanel(panelName);
 
-        UIPanelFleetComposition panel = UIManager.Instance.GetPanel<UIPanelFleetComposition>(panelName);
+        UIPanelFleet panel = UIManager.Instance.GetPanel<UIPanelFleet>(panelName);
         if (panel != null)
             panel.SelectPlacedShipByPositionIndex(ship.m_shipInfo.positionIndex);
     }

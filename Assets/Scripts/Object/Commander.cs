@@ -90,6 +90,18 @@ public class Commander
         m_commanderInfo.pvpPointMaxGot = pvpPointMaxGot;
     }
 
+    public int GetExplorationPoint()
+    {
+        if (m_commanderInfo == null) return 0;
+        return m_commanderInfo.explorationPoint;
+    }
+
+    public void UpdateExplorationPoint(int explorationPoint)
+    {
+        if (m_commanderInfo == null) return;
+        m_commanderInfo.explorationPoint = explorationPoint;
+    }
+
     public int GetCommanderLevel()
     {
         if (m_commanderInfo == null) return 1;

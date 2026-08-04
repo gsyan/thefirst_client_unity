@@ -38,7 +38,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -7.7, y: 0}
+  m_AnchoredPosition: {x: -7.699951, y: 0}
   m_SizeDelta: {x: 140, y: 60}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &4237834042710171944
@@ -157,9 +157,9 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
   targets:
   - graphic: {fileID: 7766403516871526460}
-    colorRole: GeneralDark1
+    colorRole: General.Dark1
   - graphic: {fileID: 9096460413936151185}
-    colorRole: GeneralDark1
+    colorRole: General.Dark1
   - graphic: {fileID: 6792852706206575926}
     colorRole: Text.Dark1
 --- !u!1 &3969545183104366421
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_Color: {r: 0.1295, g: 0.6105, b: 0.49025, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -434,7 +434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_Color: {r: 0.1295, g: 0.6105, b: 0.49025, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

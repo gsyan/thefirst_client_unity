@@ -15,7 +15,7 @@ public class ConfirmPopupConfig
     public bool resultRowsVertical; // true면 컨테이너당 1개씩 세로 배치
     public string resultSectionTitle = "RESULT"; // resultRows 섹션 헤더 텍스트
     public List<ShipStatGaugeEntry> statGaugeRows; // 함선 스탯 게이지 목록(함대편성 배치가능 프리셋 클릭 등) — UISection과 별개로 m_sectionsRoot에 먼저 쌓임
-    public List<(string icon, string value)> pvpOpponentRows; // STATUS 섹션 (GeneralBright1 색)
+    public List<(string icon, string value)> pvpOpponentRows; // STATUS 섹션 (General.Bright1 색)
     public RequireStruct require;
     public CostStruct cost;
     public int refundAmount;
@@ -76,7 +76,7 @@ public class UIPopupConfirm : UIPopupBase
         if (confirmButton != null)
         {
             confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
-            confirmButton.SetActiveColorKey("Action.Primary");
+            confirmButton.SetActiveColorKey("GeneralNeon");
         }
 
         if (m_cancelImage != null) m_defaultCancelImage = m_cancelImage.sprite;
@@ -182,7 +182,7 @@ public class UIPopupConfirm : UIPopupBase
 
         string icon = require.commanderLevel > 0 ? "icon_tech" : string.Empty;
         string text = LocalizationManager.Instance.Get("require_level_compare", require.commanderLevel, currentCommanderLevel);
-        sec.SetRow(0, icon, CommonUtility.PaletteColor("GeneralBright1"), requireMet ? text : $"<color=red>{text}</color>");
+        sec.SetRow(0, icon, CommonUtility.PaletteColor("General.Bright1"), requireMet ? text : $"<color=red>{text}</color>");
 
         return requireMet;
     }
@@ -289,7 +289,7 @@ public class UIPopupConfirm : UIPopupBase
         UISection sec = GetOrCreateSection(ref sectionIdx);
         sec.gameObject.name = "UISection_Status";
         sec.SetTitle("STATUS");
-        sec.SetRows(rows, CommonUtility.PaletteColor("GeneralBright1"));
+        sec.SetRows(rows, CommonUtility.PaletteColor("General.Bright1"));
     }
 
     private void BuildRefundSection(int refundAmount, ref int sectionIdx)
@@ -337,9 +337,9 @@ public class UIPopupConfirm : UIPopupBase
     private static Color GetRewardColor(int rewardIndex)
     {
         if (rewardIndex == 0) return CommonUtility.PaletteColor("Commander");
-        if (rewardIndex == 1) return CommonUtility.PaletteColor("GeneralBright1"); // 탐험 포인트 전용 팔레트 키가 아직 없어 기본색 사용
+        if (rewardIndex == 1) return CommonUtility.PaletteColor("General.Bright1"); // 탐험 포인트 전용 팔레트 키가 아직 없어 기본색 사용
         if (rewardIndex == 2) return CommonUtility.PaletteColor("PvpPoint");
-        return CommonUtility.PaletteColor("GeneralBright1");
+        return CommonUtility.PaletteColor("General.Bright1");
     }
 
     private void BuildButtonSection(ConfirmPopupConfig config)

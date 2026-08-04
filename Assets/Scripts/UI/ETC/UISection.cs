@@ -128,7 +128,7 @@ public class UISection : MonoBehaviour
             for (int r = 0; r < count && globalIdx < rows.Count; r++, globalIdx++)
             {
                 m_containers[c].SetRow(r, rows[globalIdx].icon, rows[globalIdx].value);
-                // color가 null이면 RowImageText 자체 기본색(GeneralDark1/Text.Dark1)을 그대로 둠
+                // color가 null이면 RowImageText 자체 기본색(General.Dark1/Text.Dark1)을 그대로 둠
                 if (rows[globalIdx].color.HasValue)
                 {
                     m_containers[c].SetRowImageColor(r, rows[globalIdx].color.Value);
@@ -148,7 +148,7 @@ public class UISection : MonoBehaviour
             m_containers[i].gameObject.SetActive(hasContent);
             if (hasContent == false) continue;
             m_containers[i].SetRow(0, rows[i].icon, rows[i].value);
-            // color가 null이면 RowImageText 자체 기본색(GeneralDark1/Text.Dark1)을 그대로 둠
+            // color가 null이면 RowImageText 자체 기본색(General.Dark1/Text.Dark1)을 그대로 둠
             if (rows[i].color.HasValue)
             {
                 m_containers[i].SetRowImageColor(0, rows[i].color.Value);

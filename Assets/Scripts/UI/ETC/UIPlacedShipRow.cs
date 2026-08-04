@@ -15,6 +15,8 @@ public class UIPlacedShipRow : MonoBehaviour
     private Color m_defaultBackgroundColor;
     private Color m_highlightColor;
     private Color m_lockedColor;
+    private Color m_borderDefaultColor;
+    private Color m_borderSelectedColor;
     private bool m_hasShip;
     private bool m_isLocked;
 
@@ -27,13 +29,18 @@ public class UIPlacedShipRow : MonoBehaviour
     {
         m_highlightColor = CommonUtility.PaletteColor("Unlocked");
         m_lockedColor = CommonUtility.PaletteColor("Locked");
+        m_borderDefaultColor = CommonUtility.PaletteColor("General.Dark1");
+        m_borderSelectedColor = CommonUtility.PaletteColor("Selected");
 
         if (m_backgroundImage != null)
             m_defaultBackgroundColor = m_backgroundImage.color;
         if (m_rowButton != null)
             m_rowButton.onClick.AddListener(OnRowClicked);
         if (m_borderImage != null)
-            m_borderImage.gameObject.SetActive(false);
+        {
+            m_borderImage.gameObject.SetActive(true);
+            m_borderImage.color = m_borderDefaultColor;
+        }
     }
 
     // 빈 슬롯 — 배치된 함선 없음. 드래그 드롭 타겟으로만 존재
@@ -142,9 +149,7 @@ public class UIPlacedShipRow : MonoBehaviour
     public void SetSelected(bool selected)
     {
         if (m_borderImage == null) return;
-        m_borderImage.gameObject.SetActive(selected);
-        if (selected == true)
-            m_borderImage.color = CommonUtility.PaletteColor("Selected");
+        m_borderImage.color = selected == true ? m_borderSelectedColor : m_borderDefaultColor;
     }
 
     public void Hide()

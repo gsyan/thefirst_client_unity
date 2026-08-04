@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8792113952900812375}
   - component: {fileID: 6397118521880481326}
   - component: {fileID: 8172490814989889724}
+  - component: {fileID: 4286876670107552372}
   m_Layer: 5
   m_Name: ShipCount
   m_TagString: Untagged
@@ -62,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.764151, b: 0.38956723, a: 1}
+  m_Color: {r: 0.318, g: 0.802, b: 0.4793333, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -79,6 +80,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4286876670107552372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203471548391114069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
+  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
+  targets:
+  - graphic: {fileID: 8172490814989889724}
+    colorRole: General
+  - graphic: {fileID: 3824485864013913645}
+    colorRole: Text.Dark1
+  - graphic: {fileID: 5234702404238147085}
+    colorRole: GeneralNeon
+  - graphic: {fileID: 8562564655711133633}
+    colorRole: General
 --- !u!1 &1527697552465786751
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,6 +188,7 @@ GameObject:
   - component: {fileID: 3625975207698954708}
   - component: {fileID: 5248515914458061761}
   - component: {fileID: 6557176447138257414}
+  - component: {fileID: 7028969387049718792}
   m_Layer: 5
   m_Name: CommandPower
   m_TagString: Untagged
@@ -214,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.764151, b: 0.38956723, a: 1}
+  m_Color: {r: 0.318, g: 0.802, b: 0.4793333, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -231,6 +255,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7028969387049718792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2164063388878716228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
+  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
+  targets:
+  - graphic: {fileID: 6557176447138257414}
+    colorRole: General
+  - graphic: {fileID: 4168872777364914028}
+    colorRole: Text.Dark1
+  - graphic: {fileID: 8722212825607966452}
+    colorRole: GeneralNeon
 --- !u!1 &2178363482664629018
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,7 +441,6 @@ GameObject:
   - component: {fileID: 6358987348160872896}
   - component: {fileID: 8562564655711133633}
   - component: {fileID: 5117799146406245442}
-  - component: {fileID: 5463126531999312223}
   m_Layer: 5
   m_Name: ShipCount2
   m_TagString: Untagged
@@ -461,8 +504,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286775040
-  m_fontColor: {r: 0, g: 1, b: 0.50980395, a: 1}
+    rgba: 4286238033
+  m_fontColor: {r: 0.318, g: 0.802, b: 0.4793333, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -564,22 +607,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!114 &5463126531999312223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2290646752353801551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 8562564655711133633}
-    colorRole: Text.Heading
 --- !u!1 &2644220363039943944
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,7 +665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+  m_Color: {r: 0, g: 0.5412, b: 0.2759, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -896,7 +923,6 @@ GameObject:
   - component: {fileID: 1107176208626391289}
   - component: {fileID: 4168872777364914028}
   - component: {fileID: 2011058456831919166}
-  - component: {fileID: 5282896325644061351}
   m_Layer: 5
   m_Name: CommandPowerTitle
   m_TagString: Untagged
@@ -1063,22 +1089,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!114 &5282896325644061351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3024777580796356074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 4168872777364914028}
-    colorRole: Text.Dark1
 --- !u!1 &3396273454362790445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,7 +1101,6 @@ GameObject:
   - component: {fileID: 3942338809338822707}
   - component: {fileID: 3824485864013913645}
   - component: {fileID: 5021557416433597156}
-  - component: {fileID: 1471156983421974216}
   m_Layer: 5
   m_Name: ShipCountTitle
   m_TagString: Untagged
@@ -1258,22 +1267,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!114 &1471156983421974216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3396273454362790445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 3824485864013913645}
-    colorRole: Text.Dark1
 --- !u!1 &3543611583780133281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1285,7 +1278,6 @@ GameObject:
   - component: {fileID: 594148236450198046}
   - component: {fileID: 7252695151390753948}
   - component: {fileID: 4866949807884674453}
-  - component: {fileID: 105498058827370101}
   m_Layer: 5
   m_Name: BGImage
   m_TagString: Untagged
@@ -1333,7 +1325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.105882354, g: 0.39607844, b: 0.28627452, a: 1}
+  m_Color: {r: 0.1295, g: 0.6105, b: 0.49025, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1350,22 +1342,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &105498058827370101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3543611583780133281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 4866949807884674453}
-    colorRole: Unlocked
 --- !u!1 &3699679765785233401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,7 +1550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1764706, g: 0.9098039, b: 0.627451, a: 0.1254902}
+  m_Color: {r: 0, g: 1, b: 0.5098, a: 0.07058824}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1742,8 +1718,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286775040
-  m_fontColor: {r: 0, g: 1, b: 0.50980395, a: 1}
+    rgba: 4286238033
+  m_fontColor: {r: 0.318, g: 0.802, b: 0.4793333, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1868,6 +1844,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5718578490456397366}
+  - component: {fileID: 7755759950837216953}
   m_Layer: 5
   m_Name: TechPointGuageContainer
   m_TagString: Untagged
@@ -1897,6 +1874,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 679, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7755759950837216953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5479721366040535350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
+  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
+  targets:
+  - graphic: {fileID: 4866949807884674453}
+    colorRole: General.Dark1
+  - graphic: {fileID: 8558329576918868435}
+    colorRole: General
+  - graphic: {fileID: 5263275308803128058}
+    colorRole: Text.Normal
 --- !u!1 &5542338324242521263
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,7 +1905,6 @@ GameObject:
   - component: {fileID: 3325941021916604326}
   - component: {fileID: 1356804722510712973}
   - component: {fileID: 6619765180945857145}
-  - component: {fileID: 2197635599846220292}
   m_Layer: 5
   m_Name: TextCommanderLevel
   m_TagString: Untagged
@@ -2036,22 +2032,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &2197635599846220292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5542338324242521263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 6619765180945857145}
-    colorRole: Text.Heading
 --- !u!1 &5687943117352108706
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,6 +2185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3113594718289818774}
+  - component: {fileID: 4352947060315754384}
   m_Layer: 5
   m_Name: MainContainer
   m_TagString: Untagged
@@ -2234,6 +2215,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 689, y: 203.7097}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4352947060315754384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6022716881280140332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
+  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
+  targets:
+  - graphic: {fileID: 2701761098969592157}
+    colorRole: General
+  - graphic: {fileID: 6619765180945857145}
+    colorRole: GeneralNeon
+  - graphic: {fileID: 1972253489738925822}
+    colorRole: Text.Dark1
 --- !u!1 &6337108056723637508
 GameObject:
   m_ObjectHideFlags: 0
@@ -2396,7 +2397,6 @@ GameObject:
   - component: {fileID: 676040526381479437}
   - component: {fileID: 1972253489738925822}
   - component: {fileID: 7312664553455940053}
-  - component: {fileID: 7298110095829272800}
   m_Layer: 5
   m_Name: TextCommanderLevel2
   m_TagString: Untagged
@@ -2563,22 +2563,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!114 &7298110095829272800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7004201663660488433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 1972253489738925822}
-    colorRole: Text.Dark1
 --- !u!1 &7288322895013231546
 GameObject:
   m_ObjectHideFlags: 0
@@ -2592,6 +2576,7 @@ GameObject:
   - component: {fileID: 8219914129702231482}
   - component: {fileID: 3147491601111060147}
   - component: {fileID: 3272936080413305280}
+  - component: {fileID: 3003602871243269985}
   m_Layer: 5
   m_Name: NextLevelDetail
   m_TagString: Untagged
@@ -2641,7 +2626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.764151, b: 0.38956723, a: 1}
+  m_Color: {r: 0.318, g: 0.802, b: 0.4793333, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2698,6 +2683,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &3003602871243269985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7288322895013231546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
+  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
+  targets:
+  - graphic: {fileID: 8219914129702231482}
+    colorRole: General
+  - graphic: {fileID: 6904898932403436331}
+    colorRole: Text.Dark1
+  - graphic: {fileID: 6955277625364879901}
+    colorRole: Text.Dark1
 --- !u!1 &7444060596799740298
 GameObject:
   m_ObjectHideFlags: 0
@@ -2709,7 +2714,6 @@ GameObject:
   - component: {fileID: 776836857665474804}
   - component: {fileID: 7566978500018088657}
   - component: {fileID: 8558329576918868435}
-  - component: {fileID: 4396885591880329377}
   m_Layer: 5
   m_Name: Guagemage
   m_TagString: Untagged
@@ -2757,7 +2761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.7647059, b: 0.3882353, a: 1}
+  m_Color: {r: 0.318, g: 0.802, b: 0.4793333, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2774,22 +2778,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4396885591880329377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7444060596799740298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 8558329576918868435}
-    colorRole: General
 --- !u!1 &7521878662450680954
 GameObject:
   m_ObjectHideFlags: 0
@@ -2957,7 +2945,6 @@ GameObject:
   - component: {fileID: 8759624494430449153}
   - component: {fileID: 6164314004803465718}
   - component: {fileID: 8722212825607966452}
-  - component: {fileID: 4833054441555725869}
   - component: {fileID: 8958964817513071636}
   m_Layer: 5
   m_Name: CommandPowerText
@@ -3023,7 +3010,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4286775040
-  m_fontColor: {r: 0, g: 1, b: 0.50980395, a: 1}
+  m_fontColor: {r: 0, g: 1, b: 0.5098, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3085,22 +3072,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &4833054441555725869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7992767734863191150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 8722212825607966452}
-    colorRole: Text.Heading
 --- !u!114 &8958964817513071636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3127,7 +3098,6 @@ GameObject:
   - component: {fileID: 8931413791777099857}
   - component: {fileID: 5263275308803128058}
   - component: {fileID: 1550215252204134182}
-  - component: {fileID: 1791224098276874896}
   m_Layer: 5
   m_Name: ExpText
   m_TagString: Untagged
@@ -3268,22 +3238,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6366ee97f6b541449155028b9487355a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_SpriteAnimator
---- !u!114 &1791224098276874896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8241294641008072573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 5263275308803128058}
-    colorRole: Text.Normal
 --- !u!1 &8310100232297827228
 GameObject:
   m_ObjectHideFlags: 0
@@ -3366,7 +3320,6 @@ GameObject:
   - component: {fileID: 7753404451161253915}
   - component: {fileID: 8736821255929315108}
   - component: {fileID: 5234702404238147085}
-  - component: {fileID: 3951089641841441368}
   m_Layer: 5
   m_Name: ShipCount
   m_TagString: Untagged
@@ -3493,19 +3446,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &3951089641841441368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9072107982229205525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9ab3c769f315e449a9fac9e4b53777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorSetter
-  palette: {fileID: 11400000, guid: c65712ac43cdd75439a1ca8ea833cdb5, type: 2}
-  targets:
-  - graphic: {fileID: 5234702404238147085}
-    colorRole: Text.Heading

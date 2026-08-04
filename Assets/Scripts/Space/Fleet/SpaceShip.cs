@@ -75,11 +75,33 @@ public class SpaceShip : MonoBehaviour
     {
         InitializeGaugeDisplay();
         EventManager.Subscribe_ModuleBodyDestroyed(OnModuleBodyDestroyed);
+        EventManager.Subscribe_SpaceShipSelected(OnGlobalShipSelected);
+        EventManager.Subscribe_EmptySpaceTapped(OnGlobalEmptySpaceTapped);
     }
 
     private void OnDestroy()
     {
         EventManager.Unsubscribe_ModuleBodyDestroyed(OnModuleBodyDestroyed);
+        EventManager.Unsubscribe_SpaceShipSelected(OnGlobalShipSelected);
+        EventManager.Unsubscribe_EmptySpaceTapped(OnGlobalEmptySpaceTapped);
+    }
+
+    // 함선 단위 선택 하이라이트 — 모듈 단위 선택(SetSelectedModule)과 별개로, 함선 전체 윤곽선(Outline)을 켜고 끔
+    public void SetShipSelected(bool selected)
+    {
+        if (m_shipOutline != null)
+            m_shipOutline.enabled = selected;
+    }
+
+    private void OnGlobalShipSelected(SpaceShip ship)
+    {
+        Debug.Log($"[DEBUG-Outline] {name} OnGlobalShipSelected this=={(this == ship)} outlineComp={(m_shipOutline != null)}");
+        SetShipSelected(this == ship);
+    }
+
+    private void OnGlobalEmptySpaceTapped()
+    {
+        SetShipSelected(false);
     }
 
     private void OnModuleBodyDestroyed(ModuleBody destroyedBody)

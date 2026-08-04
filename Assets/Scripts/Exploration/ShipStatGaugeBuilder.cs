@@ -1,4 +1,4 @@
-// ShipPresetData → 게이지 표시용 스탯 항목 리스트 변환 — 배치가능 프리셋 클릭 시 뜨는 UIPopupConfirm(stat gauge 섹션)과 함대편성 성능 컬럼(UIPanelFleetComposition)이 공유
+// ShipPresetData → 게이지 표시용 스탯 항목 리스트 변환 — 배치가능 프리셋 클릭 시 뜨는 UIPopupConfirm(stat gauge 섹션)과 함대편성 성능 컬럼(UIPanelFleet)이 공유
 // 증가형 스탯(공격력/체력/실드게이지 등)은 게이지로, 감소형(쿨다운/딜레이 등)은 강화율 기준 반전 게이지로 표시
 // 빔/미사일/격납고처럼 슬롯이 여러 개인 카테고리는 슬롯 수와 무관하게 항목 수를 고정하기 위해 종합 표시한다
 // - DPS로 흡수 가능한 스탯(공격력+쿨다운)은 슬롯 전체 합산 DPS 1줄로 압축

@@ -40,14 +40,14 @@ public class UIPanelSettings : UIPanelBase
 
     [Header("개발자 도구")]
     [SerializeField] private GameObject m_devToolPanel;
-    [SerializeField] private Button   m_devConsoleButton;
-    [SerializeField] private Button   m_testMineralButton;
-    [SerializeField] private Toggle   m_toggleMineral;
+    
     [SerializeField] private Toggle   m_toggleCommander;
-    [SerializeField] private Toggle   m_toggleModulePoint;
+    [SerializeField] private Toggle   m_toggleExploPoint;
     [SerializeField] private Toggle   m_togglePvpPoint;
+    [SerializeField] private Button   m_expPointButton;
 
     [SerializeField] private Toggle   m_toggleRemoveAd;
+    [SerializeField] private Button   m_devConsoleButton;
 
     private List<Locale> m_locales;
 
@@ -77,8 +77,8 @@ public class UIPanelSettings : UIPanelBase
         if (m_devConsoleButton != null)
             m_devConsoleButton.onClick.AddListener(() => DeveloperConsole.Instance?.ToggleConsole());
 
-        if (m_testMineralButton != null)
-            m_testMineralButton.onClick.AddListener(OnTestMineralButtonClicked);
+        if (m_expPointButton != null)
+            m_expPointButton.onClick.AddListener(OnExpPointButtonClicked);
 
         if (m_toggleRemoveAd != null)
         {
@@ -210,29 +210,16 @@ public class UIPanelSettings : UIPanelBase
         if (label != null) CommonUtility.SetUILocText(label, key);
     }
 
-    private void OnTestMineralButtonClicked()
+    private void OnExpPointButtonClicked()
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
-        DataTableZone table = DataManager.Instance.m_dataTableZone;
-        if (table == null) return;
 
-        int clickCount    = PlayerPrefs.GetInt("DevMineralClickCount", 0);
-        int zoneListCount = table.zoneList.Count;
-        int targetZoneIndex = (zoneListCount > 0) ? table.zoneList[clickCount % zoneListCount].zoneIndex : 1;
+        // 서버 adddevresources 1번째 파라미터는 raw exp가 아닌 "1레벨 증가" 트리거 플래그
+        string levelUp     = (m_toggleCommander  != null && m_toggleCommander.isOn  == true) ? "1"   : "0";
+        string exploPoint  = (m_toggleExploPoint != null && m_toggleExploPoint.isOn == true) ? "100" : "0";
+        string pvpPoint    = (m_togglePvpPoint   != null && m_togglePvpPoint.isOn   == true) ? "100" : "0";
 
-        // 함선 시스템 대격변으로 ZoneStageConfig.mineralClearReward/modulePointClearReward 제거됨 — 그리드 기반 보상 설계로 재작성 전까지 0 고정
-        int totalMineral = 0, totalModulePoint = 0;
-
-        PlayerPrefs.SetInt("DevMineralClickCount", clickCount + 1);
-        PlayerPrefs.Save();
-
-        string mineral     = (m_toggleMineral     != null && m_toggleMineral.isOn     == true) ? totalMineral.ToString()     : "0";
-        // 서버 addminerals 2번째 파라미터는 raw exp가 아닌 "1레벨 증가" 트리거 플래그
-        string levelUp     = (m_toggleCommander   != null && m_toggleCommander.isOn   == true) ? "1" : "0";
-        string modulePoint = (m_toggleModulePoint != null && m_toggleModulePoint.isOn == true) ? totalModulePoint.ToString() : "0";
-        string pvpPoint    = (m_togglePvpPoint    != null && m_togglePvpPoint.isOn    == true) ? "100" : "0";
-
-        DeveloperConsole.ExecuteCommandStatic($"addminerals {mineral} {levelUp} {modulePoint} {pvpPoint}");
+        DeveloperConsole.ExecuteCommandStatic($"adddevresources {levelUp} {exploPoint} {pvpPoint}");
     }
 
     private void InitializeLanguageDropdown()

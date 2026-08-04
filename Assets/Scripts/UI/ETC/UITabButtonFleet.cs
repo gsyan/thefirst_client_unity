@@ -66,8 +66,8 @@ public class UITabButtonFleet : MonoBehaviour
     private void RefreshTactics(int tacticOptions)
     {
         if (m_tacticIcons == null) return;
-        Color bright = CommonUtility.PaletteColor("GeneralBright1");
-        Color dark   = CommonUtility.PaletteColor("GeneralDark1");
+        Color bright = CommonUtility.PaletteColor("General.Bright1");
+        Color dark   = CommonUtility.PaletteColor("General.Dark1");
         for (int i = 0; i < m_tacticIcons.Length; i++)
             m_tacticIcons[i].color = (tacticOptions & (1 << i)) != 0 ? bright : dark;
     }
