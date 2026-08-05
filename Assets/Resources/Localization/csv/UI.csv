@@ -88,15 +88,15 @@ UITabCommander_PointsToNextLevel,,EXP to next level : {0},다음 레벨업까지
 UITabTech_ModulePointGetTitle,,Module Point,모듈 포인트
 UIPanelExplorationGrid_BankedPoint,,Banked Exploration Point,적립 탐험 포인트
 UIPanelExplorationGrid_OwnedPoint,,Exploration Point,탐험 포인트
-UIAvailablePresetRow_Name,,Name,이름
-UIAvailablePresetRow_Type,,Type,타입
-UIAvailablePresetRow_Cost,,Cost,비용
+UIAvailablePresetRow_Name,,Name:,이름:
+UIAvailablePresetRow_Cost,,Cost:,비용:
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
 UIFleet_Front,,Front,전방
 UIFleet_Rear,,Rear,후방
 UIFleet_PlacedShipCount,,Placed Ships,배치 함선 수
+UIFleet_PlaceShip,,Deploy Ship,함선 배치
 UIFleet_PlaceFailed_Locked,,This slot is locked. Raise your commander level to unlock it.,잠긴 슬롯입니다. 커맨더 레벨을 올려 슬롯을 해제하세요.
 UIFleet_PlaceFailed_NotEnoughCommandPower,,Not enough command power.,지휘력이 부족합니다.
 UIFleet_PlaceFailed_PresetNotFound,,This ship preset is unavailable.,사용할 수 없는 함선 프리셋입니다.

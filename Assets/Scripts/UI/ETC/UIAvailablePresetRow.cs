@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class UIAvailablePresetRow : MonoBehaviour
 {
     [SerializeField] private RowLabelValue m_nameRow;
-    [SerializeField] private RowLabelValue m_typeRow; // "타입"은 별도 필드가 없어 prefabName(선체 종류)을 그대로 표시
     [SerializeField] private RowLabelValue m_costRow; // 라벨은 "비용"만, 단위(지휘력)는 값 쪽에 숫자와 함께 표시(레이아웃 균형용)
     [SerializeField] private Button m_button; // 클릭(선택) — 눌림 시각 피드백까지 기본 제공
 
@@ -14,6 +13,8 @@ public class UIAvailablePresetRow : MonoBehaviour
 
     private Color m_buttonDefaultColor;
     private Color m_buttonSelectedColor;
+    private Color m_textDefaultColor;
+    private Color m_textSelectedColor;
 
     private void Awake()
     {
@@ -24,13 +25,20 @@ public class UIAvailablePresetRow : MonoBehaviour
         m_buttonSelectedColor = CommonUtility.PaletteColor("Selected");
         if (m_button != null && m_button.targetGraphic != null)
             m_button.targetGraphic.color = m_buttonDefaultColor;
+
+        m_textDefaultColor = CommonUtility.PaletteColor("Text.Dark1");
+        m_textSelectedColor = Color.black;
     }
 
-    // 이 프리셋이 현재 선택 상태임을 표시 — 버튼 이미지 색을 토글
+    // 이 프리셋이 현재 선택 상태임을 표시 — 버튼 이미지 색 + 라벨/값 텍스트 색을 함께 토글
     public void SetSelected(bool selected)
     {
-        if (m_button == null || m_button.targetGraphic == null) return;
-        m_button.targetGraphic.color = selected == true ? m_buttonSelectedColor : m_buttonDefaultColor;
+        if (m_button != null && m_button.targetGraphic != null)
+            m_button.targetGraphic.color = selected == true ? m_buttonSelectedColor : m_buttonDefaultColor;
+
+        Color textColor = selected == true ? m_textSelectedColor : m_textDefaultColor;
+        if (m_nameRow != null) m_nameRow.SetTextColor(textColor);
+        if (m_costRow != null) m_costRow.SetTextColor(textColor);
     }
 
     public void Setup(ShipPresetData preset, System.Action<ShipPresetData> onClick)
@@ -42,8 +50,6 @@ public class UIAvailablePresetRow : MonoBehaviour
         // 함선 이름 로컬라이즈(displayNameKey)는 아직 미정 — 프리셋 코드(presetId)를 값으로 그대로 표시(더미 프리셋이라 확정 이름 없음)
         if (m_nameRow != null)
             m_nameRow.SetRow("UIAvailablePresetRow_Name", preset.presetId, rawValue: true);
-        if (m_typeRow != null)
-            m_typeRow.SetRow("UIAvailablePresetRow_Type", preset.prefabName, rawValue: true);
         if (m_costRow != null)
         {
             string commandPowerLabel = LocalizationManager.Instance.Get("UITabCommander_CommandPower");

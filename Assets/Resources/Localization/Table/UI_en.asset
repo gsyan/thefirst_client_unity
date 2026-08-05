@@ -1130,19 +1130,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 61771964498182144
-    m_Localized: Name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61771964498182145
-    m_Localized: Type
+    m_Localized: 'Name:'
     m_Metadata:
       m_Items: []
   - m_Id: 61771964498182146
-    m_Localized: Cost
+    m_Localized: 'Cost:'
     m_Metadata:
       m_Items: []
   - m_Id: 64564272184557568
     m_Localized: Ship Preset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64661855909314560
+    m_Localized: Deploy Ship
     m_Metadata:
       m_Items: []
   references:

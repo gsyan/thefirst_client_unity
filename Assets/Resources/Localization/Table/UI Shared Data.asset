@@ -371,10 +371,6 @@ MonoBehaviour:
     m_Key: UIAvailablePresetRow_Name
     m_Metadata:
       m_Items: []
-  - m_Id: 61771964498182145
-    m_Key: UIAvailablePresetRow_Type
-    m_Metadata:
-      m_Items: []
   - m_Id: 61771964498182146
     m_Key: UIAvailablePresetRow_Cost
     m_Metadata:
@@ -401,6 +397,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 61639704184750081
     m_Key: UIFleet_PlacedShipCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64661855909314560
+    m_Key: UIFleet_PlaceShip
     m_Metadata:
       m_Items: []
   - m_Id: 61639704184750082

@@ -72,6 +72,7 @@ public class UIPlacedShipRow : MonoBehaviour
         if (m_frontToggleSlide != null)
             m_frontToggleSlide.gameObject.SetActive(false);
 
+        RebuildTypeSelectButtonLayout();
         SetHighlighted(false);
         SetSelected(false);
     }
@@ -138,6 +139,8 @@ public class UIPlacedShipRow : MonoBehaviour
                 m_frontToggleSlide.SetOn(isFront == false, OnToggleSlideChanged);
                 m_frontToggleSlide.SetLabelText(positionKey);
             }
+
+            RebuildTypeSelectButtonLayout();
         }
         else
         {
@@ -152,6 +155,14 @@ public class UIPlacedShipRow : MonoBehaviour
         }
 
         SetHighlighted(false);
+    }
+
+    // 재사용된(이미 active였던) 풀 오브젝트는 SetActive(true) 호출이 no-op이라 ContentSizeFitter의 OnEnable 재계산이
+    // 자동으로 걸리지 않을 수 있음 — 텍스트를 바꾼 직후 버튼 자신의 RectTransform을 직접 강제 리빌드해서 폭을 확정시킴
+    private void RebuildTypeSelectButtonLayout()
+    {
+        if (m_shipTypeSelectButton == null) return;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_shipTypeSelectButton.transform as RectTransform);
     }
 
     public void SetHighlighted(bool highlighted)
@@ -177,6 +188,12 @@ public class UIPlacedShipRow : MonoBehaviour
     {
         if (m_hasShip == false) return;
         bool isFront = isOn == false;
+
+        // OnShipFrontToggled 콜백 쪽에서 더 이상 이 행을 재바인딩하지 않으므로(슬라이드 애니메이션이 끊기는 걸 막기 위함),
+        // 라벨 텍스트("전방"/"후방")는 여기서 직접 갱신해야 함
+        if (m_frontToggleSlide != null)
+            m_frontToggleSlide.SetLabelText(isFront ? "UIFleet_Front" : "UIFleet_Rear");
+
         if (m_onFrontToggled != null) m_onFrontToggled(m_index, isFront);
     }
 

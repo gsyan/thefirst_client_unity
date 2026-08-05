@@ -118,10 +118,12 @@ public class ColorPaletteEditor : Editor
 
         entry.key = EditorGUILayout.TextField(entry.key, GUILayout.Width(140));
 
-        int idx = System.Array.IndexOf(primitiveKeys, entry.primitiveKey);
-        if (idx < 0) idx = 0;
-        int newIdx = EditorGUILayout.Popup(idx, primitiveKeys, GUILayout.Width(120));
-        entry.primitiveKey = primitiveKeys.Length > 0 ? primitiveKeys[newIdx] : entry.primitiveKey;
+        bool primitiveKeyValid = System.Array.IndexOf(primitiveKeys, entry.primitiveKey) >= 0;
+        Color prevColor = GUI.color;
+        if (primitiveKeyValid == false)
+            GUI.color = Color.red;
+        entry.primitiveKey = EditorGUILayout.TextField(entry.primitiveKey, GUILayout.Width(120));
+        GUI.color = prevColor;
 
         GUI.enabled = false;
         EditorGUILayout.ColorField(palette.GetColor(entry.key));

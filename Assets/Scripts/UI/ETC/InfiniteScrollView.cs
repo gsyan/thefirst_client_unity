@@ -26,6 +26,7 @@ public class InfiniteScrollView : MonoBehaviour
     private int m_topDataIndex = int.MinValue;
     private int m_poolSize;
     private bool m_initialized;
+    private GameObject m_itemPrefab; // 풀 재사용 가능 여부 판단용 — 프리팹이 바뀌면 재생성 필요
 
     private void Awake()
     {
@@ -34,6 +35,8 @@ public class InfiniteScrollView : MonoBehaviour
     }
 
     // totalCount: 전체 데이터 개수, itemPrefab: 재활용할 아이템 프리팹
+    // 같은 프리팹 + 같은 풀 크기로 다시 호출되면(패널 재오픈 등) 기존 풀을 그대로 재사용 — 매번 Destroy/Instantiate하면
+    // 새로 생성된 아이템의 TMP/ContentSizeFitter가 자리잡는 과정이 화면에 잠깐 잘못된 크기로 보이는 문제가 있었음
     public void Initialize(int totalCount, GameObject itemPrefab)
     {
         m_totalCount = totalCount;
@@ -51,9 +54,27 @@ public class InfiniteScrollView : MonoBehaviour
         }
 
         int visibleCount = Mathf.CeilToInt(viewportHeight / itemStep) + 1;
-        m_poolSize = visibleCount + m_bufferCount * 2;
+        int neededPoolSize = visibleCount + m_bufferCount * 2;
 
-        // 기존 풀 정리 후 재생성
+        bool canReusePool = m_initialized == true && neededPoolSize == m_poolSize && itemPrefab == m_itemPrefab;
+        if (canReusePool == false)
+        {
+            RebuildPool(itemPrefab, neededPoolSize, content);
+        }
+
+        m_scrollRect.onValueChanged.RemoveListener(OnScrollChanged);
+        m_scrollRect.onValueChanged.AddListener(OnScrollChanged);
+
+        m_initialized = true;
+        m_topDataIndex = int.MinValue;
+        RefreshView();
+    }
+
+    private void RebuildPool(GameObject itemPrefab, int poolSize, RectTransform content)
+    {
+        m_itemPrefab = itemPrefab;
+        m_poolSize = poolSize;
+
         for (int i = 0; i < m_itemPool.Count; i++)
         {
             if (m_itemPool[i] != null)
@@ -73,13 +94,6 @@ public class InfiniteScrollView : MonoBehaviour
             obj.SetActive(false);
             m_itemPool.Add(rt);
         }
-
-        m_scrollRect.onValueChanged.RemoveListener(OnScrollChanged);
-        m_scrollRect.onValueChanged.AddListener(OnScrollChanged);
-
-        m_initialized = true;
-        m_topDataIndex = int.MinValue;
-        RefreshView();
     }
 
     // 전체 개수 변경 시 (서버에서 totalCount 갱신됐을 때)
@@ -125,6 +139,23 @@ public class InfiniteScrollView : MonoBehaviour
         RefreshView();
     }
 
+    // onItemBind를 거치지 않고 현재 활성화된 풀 아이템만 순회 — 데이터는 그대로인데 부가 상태(선택 하이라이트 등)만 갱신할 때 사용
+    public void ForEachVisibleItem(Action<int, GameObject> action)
+    {
+        if (m_initialized == false) return;
+
+        for (int i = 0; i < m_itemPool.Count; i++)
+        {
+            RectTransform rt = m_itemPool[i];
+            if (rt.gameObject.activeSelf == false) continue;
+
+            int dataIndex = m_topDataIndex + i;
+            if (dataIndex < 0 || dataIndex >= m_totalCount) continue;
+
+            action(dataIndex, rt.gameObject);
+        }
+    }
+
     private void RefreshView()
     {
         if (m_initialized == false || m_totalCount == 0) return;
@@ -149,13 +180,13 @@ public class InfiniteScrollView : MonoBehaviour
 
             rt.gameObject.SetActive(true);
             rt.anchoredPosition = new Vector2((m_paddingLeft - m_paddingRight) * 0.5f, -(m_paddingTop + dataIndex * itemStep));
-            onItemBind?.Invoke(dataIndex, rt.gameObject);
+            if (onItemBind != null) onItemBind(dataIndex, rt.gameObject);
         }
 
         // 현재 보이는 범위 중 데이터가 없는 페이지 요청 유도
         int visibleEnd = Mathf.Min(m_totalCount - 1, m_topDataIndex + m_poolSize - 1);
-        if (visibleEnd >= m_topDataIndex)
-            onNeedData?.Invoke(m_topDataIndex, visibleEnd - m_topDataIndex + 1);
+        if (visibleEnd >= m_topDataIndex && onNeedData != null)
+            onNeedData(m_topDataIndex, visibleEnd - m_topDataIndex + 1);
     }
 
     private void OnDestroy()

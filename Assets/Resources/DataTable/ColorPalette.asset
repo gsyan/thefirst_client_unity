@@ -361,6 +361,15 @@ MonoBehaviour:
   - key: BackButton
     primitiveKey: Green600
     color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Button
+    primitiveKey: Blue700
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Button.Border
+    primitiveKey: Blue500
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Button.Disabled
+    primitiveKey: Slate900
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Commander
     primitiveKey: Blue500
     color: {r: 1, g: 1, b: 1, a: 1}
@@ -374,16 +383,16 @@ MonoBehaviour:
     primitiveKey: Green500
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: General.Bright1
-    primitiveKey: Teal400
+    primitiveKey: Green100
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: General.Bright2
-    primitiveKey: Teal500
+    primitiveKey: Green300
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: General.Dark1
-    primitiveKey: Teal700
+    primitiveKey: Green800
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: General.Dark2
-    primitiveKey: Slate900
+    primitiveKey: Green1000
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: GeneralNeon
     primitiveKey: GreenNeon500
@@ -417,6 +426,9 @@ MonoBehaviour:
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Selected
     primitiveKey: Amber500
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Ship.Locked
+    primitiveKey: Pink1000
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: Silence
     primitiveKey: Blue700

@@ -141,6 +141,8 @@ public class UIPanelFleet : UIPanelBase
     {
         EventManager.Unsubscribe_SpaceShipSelected(OnShipSelectedWhileOpen);
         ClearSelectedShipOutline();
+        if (m_shipPresetPicker != null)
+            m_shipPresetPicker.Close();
         StartViewportAnimation(open: false);
     }
 
@@ -209,7 +211,9 @@ public class UIPanelFleet : UIPanelBase
     {
         m_canvasGroup.alpha = 1f;
         m_canvasGroup.blocksRaycasts = true;
-        RefreshFleetComposition();
+
+        // OnShowUIPanel()에서 alpha==0(안 보이는 상태)일 때 이미 RefreshFleetComposition()으로 스크롤뷰까지
+        // 전부 빌드해둠 — 여기서 또 호출하면 화면에 보이는 상태로 재-Initialize/재바인딩이 일어나 타입선택 버튼 등이 움찔거림
         SyncShipSelectionOnOpen();
     }
 
@@ -622,22 +626,34 @@ public class UIPanelFleet : UIPanelBase
             isFront = isFront,
         });
 
-        // 전방/후방 값만 바뀌고 슬롯 구성(개수/배치)은 그대로라, 가상 스크롤 전체를 다시 Initialize하는
-        // RefreshFleetComposition() 대신 캐시만 갱신하고 화면에 보이는 행만 다시 바인딩(타입선택 버튼 등이 움찔거리지 않게)
+        // 전방/후방 값만 바뀌고 슬롯 구성(개수/배치)은 그대로라 캐시만 갱신하면 됨 — 이 행의 토글 자체는
+        // 이미 자기 시각 상태를 스스로 애니메이션 처리 중이라, 여기서 RefreshVisible()로 다시 바인딩하면
+        // row.Setup() -> SetOn()이 애니메이션 없이 즉시 최종 위치로 스냅해버려 방금 시작된 슬라이드가 끊겨버림
         m_placedShipsCache = GetCurrentPlacedShips();
-        if (m_placedShipsScrollView != null)
-            m_placedShipsScrollView.RefreshVisible();
     }
 
     // ── 배치된 함선 — 행 클릭(성능 컬럼에 상세 스탯 표시) ───────────────
     private void OnPlacedShipRowClicked(int index, string shipPresetId)
     {
         m_selectedSlotIndex = index;
-        // 가상 스크롤이라 화면 밖 행은 살아있지 않음 — 현재 보이는 행들만 다시 바인딩해 선택 표시를 갱신
+
+        // 바뀌는 건 선택 테두리뿐(프리셋/전후방 등 실제 데이터는 그대로) — RefreshVisible()로 onItemBind를 다시 태우면
+        // row.Setup()이 텍스트를 재설정하면서 타입선택 버튼의 ContentSizeFitter가 재계산되어 움찔거림.
+        // 그래서 재바인딩 없이 보이는 행들의 SetSelected()만 직접 갱신
         if (m_placedShipsScrollView != null)
-            m_placedShipsScrollView.RefreshVisible();
+        {
+            m_placedShipsScrollView.ForEachVisibleItem((dataIndex, rowObject) =>
+            {
+                UIPlacedShipRow row = rowObject.GetComponent<UIPlacedShipRow>();
+                if (row != null)
+                    row.SetSelected(dataIndex == m_selectedSlotIndex);
+            });
+        }
         RefreshStats();
-        RebuildAllLayouts();
+
+        // 바뀐 건 Stats 컬럼뿐 — RebuildAllLayouts()로 m_placedShipsContainer까지 통째로 다시 리빌드하면
+        // 화면에 보이는 배치 목록 행(타입선택 버튼 등)이 불필요하게 움찔거림. 여기선 Stats 컨테이너만 리빌드
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer);
     }
 
     // UI 행 클릭 전용 진입점 — 3D 함선에도 선택 이벤트를 재발행해 아웃라인이 동기화되게 함.
@@ -673,7 +689,14 @@ public class UIPanelFleet : UIPanelBase
         string currentPresetId = index < placedShips.Count ? placedShips[index].shipPresetId : null;
         ShipPresetData currentPreset = string.IsNullOrEmpty(currentPresetId) == false ? DataManager.Instance.m_dataTableShipPreset.GetShipPreset(currentPresetId) : null;
 
-        m_shipPresetPicker.Open(ComputeUnlockedPresets(), currentPreset, selectedPresetId => ApplyPresetToSlot(index, selectedPresetId));
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (composition == null) return;
+
+        // 이 슬롯이 현재 점유 중인 지휘력은 미리 빼둠 — 팝업에서 후보를 고를 때마다 그 비용만 더해 미리보기 산출
+        int usedCommandPowerExcludingThisSlot = composition.GetUsedCommandPower() - (currentPreset != null ? currentPreset.commandCost : 0);
+        int maxCommandPower = composition.GetMaxCommandPower();
+
+        m_shipPresetPicker.Open(ComputeUnlockedPresets(), currentPreset, usedCommandPowerExcludingThisSlot, maxCommandPower, selectedPresetId => ApplyPresetToSlot(index, selectedPresetId));
     }
 
     // 확인 버튼으로 선택된 프리셋을 해당 슬롯에 배치 — 기존 드래그앤드롭 배치 핵심 로직과 동일, dropIndex 대신 slotIndex 사용

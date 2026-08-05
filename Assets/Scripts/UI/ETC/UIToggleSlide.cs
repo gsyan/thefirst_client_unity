@@ -12,9 +12,9 @@ public class UIToggleSlide : MonoBehaviour
     [SerializeField] private RectTransform m_handleRect;
     [SerializeField] private TMP_Text m_labelText; // 배경 위에 겹쳐 표시되는 상태 텍스트(예: 전방/후방)
 
-    [SerializeField] private Color m_onBackgroundColor = new Color(0.3f, 0.85f, 0.5f, 1f);
-    [SerializeField] private Color m_offBackgroundColor = new Color(0.5f, 0.5f, 0.5f, 1f);
-    [SerializeField] private float m_slideDuration = 0.15f;
+    // [SerializeField] private Color m_onBackgroundColor = new Color(0.3f, 0.85f, 0.5f, 1f);
+    // [SerializeField] private Color m_offBackgroundColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+    private float m_slideDuration = 0.3f;
 
     private bool m_isOn;
     private float m_handleOnX;
@@ -52,6 +52,15 @@ public class UIToggleSlide : MonoBehaviour
     public void SetOn(bool isOn, System.Action<bool> onValueChanged)
     {
         EnsureInitialized();
+
+        // 풀링으로 이 오브젝트가 재사용되는 경우, 이전 상태에서 슬라이드 애니메이션이 진행 중이었다면
+        // 여기서 멈추지 않으면 즉시 반영한 위치를 그 코루틴이 다음 프레임부터 다시 덮어써서 잠깐 튀어 보임
+        if (m_slideCoroutine != null)
+        {
+            StopCoroutine(m_slideCoroutine);
+            m_slideCoroutine = null;
+        }
+
         m_isOn = isOn;
         m_onValueChanged = onValueChanged;
         ApplyVisualImmediate(isOn);
@@ -123,5 +132,7 @@ public class UIToggleSlide : MonoBehaviour
         Vector2 finalPos = m_handleRect.anchoredPosition;
         finalPos.x = targetX;
         m_handleRect.anchoredPosition = finalPos;
+
+        m_slideCoroutine = null; // 완료 표시 — OnClicked의 진행 중 가드 해제
     }
 }
