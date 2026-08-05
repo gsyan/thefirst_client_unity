@@ -1141,6 +1141,10 @@ MonoBehaviour:
     m_Localized: Cost
     m_Metadata:
       m_Items: []
+  - m_Id: 64564272184557568
+    m_Localized: Ship Preset
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

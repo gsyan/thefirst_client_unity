@@ -13,6 +13,8 @@ public struct ShipStatGaugeEntry
     public string rawValueText;
     public EGaugeMode mode;
     public float reverseFillAmount;     // Reverse 모드 전용 — 강화율(0~1) 사전 계산값
+    public float compareValue;          // 표시 모드와 무관하게 항상 채워지는 순수 수치 — 프리셋 비교(diff) 계산 전용
+    public bool hasCompareValue;        // 슬롯 여러 개를 min~max 범위로 압축한 항목(None 모드)은 단일 수치가 아니라 비교 불가 — false
 }
 
 // None: 게이지 없이 숫자만, Normal: value/gaugeMax 채움, Reverse: 강화율(0=미강화, 1=floor 도달) 채움
@@ -146,7 +148,7 @@ public static class ShipStatGaugeBuilder
 
     private static ShipStatGaugeEntry MakeGauge(string label, float value, float baseValue)
     {
-        return new ShipStatGaugeEntry { label = label, value = value, gaugeMax = baseValue * k_gaugeMaxMultiplier, rawValueText = $"{value:F1}", mode = EGaugeMode.Normal };
+        return new ShipStatGaugeEntry { label = label, value = value, gaugeMax = baseValue * k_gaugeMaxMultiplier, rawValueText = $"{value:F1}", mode = EGaugeMode.Normal, compareValue = value, hasCompareValue = true };
     }
 
     // 감소형 스탯(쿨다운/딜레이 등) 반전 게이지 — 강화율 0~1을 채운다. baseValue는 미강화 원본값, floor는 formula의 하한값(도달 시 100%)
@@ -164,7 +166,7 @@ public static class ShipStatGaugeBuilder
             fillAmount = UnityEngine.Mathf.Clamp01(reducedAmount / reduceRange);
         }
 
-        return new ShipStatGaugeEntry { label = label, rawValueText = valueText, mode = EGaugeMode.Reverse, reverseFillAmount = fillAmount };
+        return new ShipStatGaugeEntry { label = label, rawValueText = valueText, mode = EGaugeMode.Reverse, reverseFillAmount = fillAmount, compareValue = value, hasCompareValue = true };
     }
 
     private static ShipStatGaugeEntry MakeValueOnly(string label, string valueText)

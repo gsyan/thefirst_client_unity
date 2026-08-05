@@ -491,6 +491,10 @@ MonoBehaviour:
     m_Key: UIFleet_Stats_InterceptorRegenRate
     m_Metadata:
       m_Items: []
+  - m_Id: 64564272184557568
+    m_Key: UIFleet_ShipPreset_Title
+    m_Metadata:
+      m_Items: []
   - m_Id: 35928926043635712
     m_Key: UITabFleetTactics_Name
     m_Metadata:

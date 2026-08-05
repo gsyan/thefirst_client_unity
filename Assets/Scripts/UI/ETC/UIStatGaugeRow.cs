@@ -10,11 +10,12 @@ public class UIStatGaugeRow : MonoBehaviour
     [SerializeField] private TMP_Text m_valueText;
 
     // gaugeMax 기준 채움 비율 표시 — 라벨은 로컬라이즈 미정이라 raw 텍스트 그대로 사용
-    public void SetGauge(string label, float value, float gaugeMax)
+    // diffText: 다른 프리셋과 비교한 증감(리치텍스트 색상 포함, 예: "<color=red>(+1.0)</color>") — 비교 대상 없으면 null
+    public void SetGauge(string label, float value, float gaugeMax, string diffText = null)
     {
         gameObject.SetActive(true);
         if (m_labelText != null) m_labelText.text = label;
-        if (m_valueText != null) m_valueText.text = $"{value:F1}";
+        if (m_valueText != null) m_valueText.text = diffText == null ? $"{value:F1}" : $"{value:F1} {diffText}";
         if (m_gaugeFillImage != null)
         {
             m_gaugeFillImage.gameObject.SetActive(true);
@@ -25,11 +26,11 @@ public class UIStatGaugeRow : MonoBehaviour
     }
 
     // 감소형 스탯(쿨다운/딜레이 등) 반전 게이지 — fillAmount는 강화율(0=미강화, 1=하한 도달)로 이미 계산되어 전달됨
-    public void SetReverseGauge(string label, string valueText, float fillAmount)
+    public void SetReverseGauge(string label, string valueText, float fillAmount, string diffText = null)
     {
         gameObject.SetActive(true);
         if (m_labelText != null) m_labelText.text = label;
-        if (m_valueText != null) m_valueText.text = valueText;
+        if (m_valueText != null) m_valueText.text = diffText == null ? valueText : $"{valueText} {diffText}";
         if (m_gaugeFillImage != null)
         {
             m_gaugeFillImage.gameObject.SetActive(true);
@@ -40,11 +41,11 @@ public class UIStatGaugeRow : MonoBehaviour
     }
 
     // 게이지 자체가 의미 없는 스탯(침묵 시간 등) — 값만 텍스트로 표시
-    public void SetValueOnly(string label, string valueText)
+    public void SetValueOnly(string label, string valueText, string diffText = null)
     {
         gameObject.SetActive(true);
         if (m_labelText != null) m_labelText.text = label;
-        if (m_valueText != null) m_valueText.text = valueText;
+        if (m_valueText != null) m_valueText.text = diffText == null ? valueText : $"{valueText} {diffText}";
         if (m_gaugeFillImage != null) m_gaugeFillImage.gameObject.SetActive(false);
 
         RebuildSelf();

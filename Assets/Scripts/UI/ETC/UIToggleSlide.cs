@@ -81,8 +81,8 @@ public class UIToggleSlide : MonoBehaviour
 
     private void ApplyVisualImmediate(bool isOn)
     {
-        if (m_backgroundImage != null)
-            m_backgroundImage.color = isOn ? m_onBackgroundColor : m_offBackgroundColor;
+        // if (m_backgroundImage != null)
+        //     m_backgroundImage.color = isOn ? m_onBackgroundColor : m_offBackgroundColor;
 
         if (m_handleRect != null)
         {
@@ -94,8 +94,8 @@ public class UIToggleSlide : MonoBehaviour
 
     private void AnimateToState(bool isOn)
     {
-        if (m_backgroundImage != null)
-            m_backgroundImage.color = isOn ? m_onBackgroundColor : m_offBackgroundColor;
+        // if (m_backgroundImage != null)
+        //     m_backgroundImage.color = isOn ? m_onBackgroundColor : m_offBackgroundColor;
 
         if (m_handleRect == null) return;
 

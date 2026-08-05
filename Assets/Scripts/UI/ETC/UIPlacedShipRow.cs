@@ -1,14 +1,15 @@
 // 함대편성 UI — 배치된 함선 슬롯 1개. 빈 슬롯 상태(SetEmpty)와 채워진 상태(Setup)를 모두 표현 —
 // 항상 일정 개수의 슬롯이 보여야 드래그로 놓을 자리가 눈에 보이고, 컨테이너 크기가 0으로 줄어드는 것도 방지됨
-// 이름 표시 + 전방/후방 슬라이드 토글(UIToggleSlide) + 행 클릭(성능 컬럼에 이 함선 스탯 표시) + 드래그 드롭 시 하이라이트
+// 함선 이름 텍스트 + 함선 타입 선택 버튼(누르면 UIShipPresetPickerView가 뜸) + 전방/후방 슬라이드 토글(UIToggleSlide) + 행 클릭(성능 컬럼에 이 함선 스탯 표시)
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIPlacedShipRow : MonoBehaviour
 {
-    [SerializeField] private RowLabelValue m_rowLabelValue;
-    
-
+    [SerializeField] private TMP_Text m_shipNameText;
+    [SerializeField] private Button m_shipTypeSelectButton;
+    [SerializeField] private TMP_Text m_shipTypeButtonText;
 
     [SerializeField] private UIToggleSlide m_frontToggleSlide; // on = 전방, off = 후방
     [SerializeField] private Button m_rowButton; // 행 클릭 — 토글과는 별개 영역
@@ -27,11 +28,12 @@ public class UIPlacedShipRow : MonoBehaviour
     private string m_shipPresetId;
     private System.Action<int, bool> m_onFrontToggled;
     private System.Action<int, string> m_onRowClicked;
+    private System.Action<int> m_onTypeSelectClicked;
 
     private void Awake()
     {
         m_highlightColor = CommonUtility.PaletteColor("Unlocked");
-        m_lockedColor = CommonUtility.PaletteColor("Locked");
+        m_lockedColor = CommonUtility.PaletteColor("Ship.Locked");
         m_borderDefaultColor = CommonUtility.PaletteColor("General.Dark1");
         m_borderSelectedColor = CommonUtility.PaletteColor("Selected");
 
@@ -39,6 +41,8 @@ public class UIPlacedShipRow : MonoBehaviour
             m_defaultBackgroundColor = m_backgroundImage.color;
         if (m_rowButton != null)
             m_rowButton.onClick.AddListener(OnRowClicked);
+        if (m_shipTypeSelectButton != null)
+            m_shipTypeSelectButton.onClick.AddListener(OnTypeSelectButtonClicked);
         if (m_borderImage != null)
         {
             m_borderImage.gameObject.SetActive(true);
@@ -46,20 +50,25 @@ public class UIPlacedShipRow : MonoBehaviour
         }
     }
 
-    // 빈 슬롯 — 배치된 함선 없음. 드래그 드롭 타겟으로만 존재
-    public void SetEmpty(int index)
+    // 빈 슬롯 — 배치된 함선 없음. 타입선택 버튼을 눌러 바로 배치 가능
+    public void SetEmpty(int index, System.Action<int> onTypeSelectClicked)
     {
         gameObject.SetActive(true);
         m_index = index;
         m_shipPresetId = null;
         m_hasShip = false;
         m_isLocked = false;
+        m_onTypeSelectClicked = onTypeSelectClicked;
 
-        if (m_rowLabelValue != null)
+        if (m_shipNameText != null)
+            m_shipNameText.text = "-";
+        if (m_shipTypeSelectButton != null)
         {
-            m_rowLabelValue.SetRow("-", "", rawLabel: true, rawValue: true);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_rowLabelValue.transform as RectTransform);
+            m_shipTypeSelectButton.gameObject.SetActive(true);
+            m_shipTypeSelectButton.interactable = true;
         }
+        if (m_shipTypeButtonText != null)
+            CommonUtility.SetUILocText(m_shipTypeButtonText, "UIFleet_PlaceShip");
         if (m_frontToggleSlide != null)
             m_frontToggleSlide.gameObject.SetActive(false);
 
@@ -67,7 +76,7 @@ public class UIPlacedShipRow : MonoBehaviour
         SetSelected(false);
     }
 
-    // 잠긴 슬롯 — 커맨더 레벨이 아직 이 슬롯을 열지 않음. 드롭 타겟 아님, 흐림 배경으로만 존재 표시
+    // 잠긴 슬롯 — 커맨더 레벨이 아직 이 슬롯을 열지 않음. 타입선택 버튼도 숨김
     public void SetLocked(int index)
     {
         gameObject.SetActive(true);
@@ -75,12 +84,12 @@ public class UIPlacedShipRow : MonoBehaviour
         m_shipPresetId = null;
         m_hasShip = false;
         m_isLocked = true;
+        m_onTypeSelectClicked = null;
 
-        if (m_rowLabelValue != null)
-        {
-            m_rowLabelValue.SetRow("-", "", rawLabel: true, rawValue: true);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_rowLabelValue.transform as RectTransform);
-        }
+        if (m_shipNameText != null)
+            m_shipNameText.text = "-";
+        if (m_shipTypeSelectButton != null)
+            m_shipTypeSelectButton.gameObject.SetActive(false);
         if (m_frontToggleSlide != null)
             m_frontToggleSlide.gameObject.SetActive(false);
 
@@ -95,8 +104,8 @@ public class UIPlacedShipRow : MonoBehaviour
         return m_isLocked;
     }
 
-    // showFrontToggle=false면 전방/후방을 편집 불가능한 라벨 텍스트로만 표시(적 함대 정보 열람 등 읽기전용 목적)
-    public void Setup(int index, string shipPresetId, bool isFront, System.Action<int, bool> onFrontToggled, System.Action<int, string> onRowClicked, bool showFrontToggle = true)
+    // showFrontToggle=false면 전방/후방을 편집 불가능한 라벨 텍스트로만 표시하고 타입선택 버튼도 숨김(적 함대 정보 열람 등 읽기전용 목적)
+    public void Setup(int index, string shipPresetId, bool isFront, System.Action<int, bool> onFrontToggled, System.Action<int, string> onRowClicked, System.Action<int> onTypeSelectClicked, bool showFrontToggle = true)
     {
         gameObject.SetActive(true);
         m_index = index;
@@ -105,17 +114,21 @@ public class UIPlacedShipRow : MonoBehaviour
         m_isLocked = false;
         m_onFrontToggled = onFrontToggled;
         m_onRowClicked = onRowClicked;
+        m_onTypeSelectClicked = onTypeSelectClicked;
 
         string positionKey = isFront ? "UIFleet_Front" : "UIFleet_Rear";
 
         if (showFrontToggle == true)
         {
-            // 라벨 칸엔 슬롯 인덱스 기반 "Ship1"(1-based) — 함선 이름 로컬라이즈는 아직 미정이라 프리셋 코드(presetId)를 값 칸에 그대로 표시
-            // 위치(전방/후방)는 토글 라벨로 표시하므로 값 칸은 preset id 전용으로 씀
-            if (m_rowLabelValue != null)
+            // 이름 칸엔 슬롯 인덱스 기반 "Ship1"(1-based) — 함선 이름 로컬라이즈는 아직 미정. 타입선택 버튼엔 현재 프리셋 코드(presetId)를 그대로 표시
+            if (m_shipNameText != null)
+                m_shipNameText.text = $"Ship{index + 1}";
+            if (m_shipTypeButtonText != null)
+                m_shipTypeButtonText.text = shipPresetId;
+            if (m_shipTypeSelectButton != null)
             {
-                m_rowLabelValue.SetRow($"Ship{index + 1}", shipPresetId, rawLabel: true, rawValue: true);
-                LayoutRebuilder.ForceRebuildLayoutImmediate(m_rowLabelValue.transform as RectTransform);
+                m_shipTypeSelectButton.gameObject.SetActive(true);
+                m_shipTypeSelectButton.interactable = true;
             }
 
             if (m_frontToggleSlide != null)
@@ -128,12 +141,11 @@ public class UIPlacedShipRow : MonoBehaviour
         }
         else
         {
-            // 읽기전용 — 토글 대신 라벨 Value 칸에 전/후방 텍스트를 그대로 표기
-            if (m_rowLabelValue != null)
-            {
-                m_rowLabelValue.SetRow(shipPresetId, LocalizationManager.Instance.Get(positionKey), rawLabel: true, rawValue: true);
-                LayoutRebuilder.ForceRebuildLayoutImmediate(m_rowLabelValue.transform as RectTransform);
-            }
+            // 읽기전용 — 이름 칸에 프리셋 코드, 전/후방은 그대로 텍스트로만 표기, 타입선택 버튼은 숨김
+            if (m_shipNameText != null)
+                m_shipNameText.text = shipPresetId;
+            if (m_shipTypeSelectButton != null)
+                m_shipTypeSelectButton.gameObject.SetActive(false);
 
             if (m_frontToggleSlide != null)
                 m_frontToggleSlide.gameObject.SetActive(false);
@@ -174,5 +186,11 @@ public class UIPlacedShipRow : MonoBehaviour
 
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_onRowClicked != null) m_onRowClicked(m_index, m_shipPresetId);
+    }
+
+    private void OnTypeSelectButtonClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        if (m_onTypeSelectClicked != null) m_onTypeSelectClicked(m_index);
     }
 }

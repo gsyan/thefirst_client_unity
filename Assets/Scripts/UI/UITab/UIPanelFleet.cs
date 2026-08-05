@@ -1,13 +1,12 @@
 // 함대편성 UI — FleetComposition 기반, UIManager가 관리하는 독립 패널(다른 진입 화면과 배타적)
-// 3단계: 배치가능 프리셋 클릭(스탯 팝업)/드래그(배치), 배치된 함선 전방/후방 토글 + 클릭 시 성능 컬럼에 상세 스탯 표시
-// 상단 FleetStats(항상 보이는 지휘력/배치 수 요약)와 3열(함대구성/성능/배치가능 함선)은 역할이 분리됨 —
+// 배치된 함선 전방/후방 토글, 클릭 시 성능 컬럼에 상세 스탯 표시, 타입선택 버튼으로 함선 프리셋 교체(UIShipPresetPickerView)
+// 상단 FleetStats(항상 보이는 지휘력/배치 수 요약)와 2열(함대구성/성능)은 역할이 분리됨 —
 // 성능 컬럼은 순수하게 "선택한 함선의 상세 스탯"만 담당(선택 없으면 비어있음)
 // 행은 프리팹에 미리 배치하지 않고, 필요한 개수만큼 풀에서 동적으로 늘려가며 사용(부족하면 Instantiate, 남으면 비활성화)
 // 이 패널이 열리면 화면 좌측 3D 카메라 viewport를 축소해 우측에 자리를 만듦(카메라 애니메이션은 CameraController가 담당,
 // 여기서는 열고 닫을 시점과 목표 폭만 결정) — 애니메이션이 끝나기 전엔 내용을 CanvasGroup으로 가려둠(구 TabSystem deferReveal 대체)
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIPanelFleet : UIPanelBase
@@ -15,14 +14,13 @@ public class UIPanelFleet : UIPanelBase
     [SerializeField] private RowLabelValue m_fleetStatsRowPrefab; // 상단 FleetStats 전용(지휘력/배치 함선 수) — 항상 텍스트로 표시
     [SerializeField] private UIStatGaugeRow m_statsRowPrefab;     // 성능 컬럼 전용 — 선택한 함선의 상세 스탯
     [SerializeField] private UIPlacedShipRow m_placedShipRowPrefab;
-    [SerializeField] private UIAvailablePresetRow m_availablePresetRowPrefab;
+    [SerializeField] private InfiniteScrollView m_placedShipsScrollView; // 배치된 함선 목록 — 세로 가상 스크롤(PlacedShipsContainer 아래 배치된 스크롤뷰)
+    [SerializeField] private UIShipPresetPickerView m_shipPresetPicker; // 함선 타입선택 버튼을 누르면 뜨는 프리셋 선택 팝업(UIPanelFleet 루트 아래 내장, PlacedShipsContainer와는 별개)
 
-    [SerializeField] private RectTransform m_columnContainer; // 3열을 감싸는 최상위 컨테이너 — Horizontal Layout Group. 각 열 안에도 Title+행 컨테이너를 감싸는 Vertical Layout Group이 있어, 리빌드는 이 최상위에서 한 번만 해도 하위가 전부 재계산됨
+    [SerializeField] private RectTransform m_columnContainer; // 2열(함대구성/성능)을 감싸는 최상위 컨테이너 — Horizontal Layout Group. 각 열 안에도 Title+행 컨테이너를 감싸는 Vertical Layout Group이 있어, 리빌드는 이 최상위에서 한 번만 해도 하위가 전부 재계산됨
     [SerializeField] private RectTransform m_fleetStatsContainer; // 상단 요약 영역(FleetStats/Container)
     [SerializeField] private RectTransform m_placedShipsContainer;
     [SerializeField] private RectTransform m_statsContainer;
-    [SerializeField] private RectTransform m_availablePresetsContainer;
-    [SerializeField] private InfiniteScrollView m_availablePresetsScrollView; // 배치가능 프리셋 — 세로 가상 스크롤(항목 수가 많아 풀링 대신 InfiniteScrollView 사용)
     [SerializeField] private Button m_increaseCommandPowerButton; // 탐험 포인트 100 소모 -> 지휘력 최대치 10 증가(교환비는 ExplorationService 서버값과 항상 함께 수정)
     [SerializeField] private RowLabelValue m_ownedExplorationPointRow; // 보유 탐험 포인트 — 지휘력 증가 버튼이 바로 이 값을 소모하므로 버튼 옆에 전용으로 배치
 
@@ -30,14 +28,17 @@ public class UIPanelFleet : UIPanelBase
     [SerializeField] private float m_animDuration = 0.3f;
 
     private readonly List<RowLabelValue> m_fleetStatsRows = new();
-    private readonly List<UIPlacedShipRow> m_placedShipRows = new();
     private readonly List<UIStatGaugeRow> m_statsRows = new();
-    private readonly List<ShipPresetData> m_unlockedPresetsCache = new(); // InfiniteScrollView.onItemBind에서 index로 조회할 용도
+
+    // 배치된 함선 목록 — InfiniteScrollView가 화면에 보이는 행만 OnPlacedShipItemBind로 바인딩하므로,
+    // 전체 슬롯 데이터/개수는 여기 캐싱해두고 바인드 시점에 조회
+    private List<PlacedShipView> m_placedShipsCache = new();
+    private int m_placedTotalSlotCount; // 잠긴 칸 포함 전체 슬롯 수(=InfiniteScrollView totalCount)
+    private int m_placedOpenSlotCount;  // 잠기지 않은(배치 가능한) 슬롯 수
 
     private long m_displayedOwnedExplorationPoint = -1; // 롤링 애니메이션의 시작값 추적 — 최초 1회는 -1이라 즉시 표시됨(UIResourceBar와 동일 패턴)
 
-    private int m_selectedSlotIndex = -1; // 선택된 배치 슬롯 — -1이면 성능 컬럼은 비어있음. 프리셋 ID는 저장하지 않고 매번 슬롯에서 다시 조회(드래그로 함선이 교체돼도 항상 최신 반영)
-    private int m_highlightedSlotIndex = -1; // 드래그 중 호버된 배치 슬롯 — 없으면 -1
+    private int m_selectedSlotIndex = -1; // 선택된 배치 슬롯 — -1이면 성능 컬럼은 비어있음. 프리셋 ID는 저장하지 않고 매번 슬롯에서 다시 조회(교체돼도 항상 최신 반영)
 
     // 읽기전용 모드(적 함대 열람) — true면 편집 전용 UI(3열/지휘력 요약/전후방 토글)를 숨기고 데이터도 FleetComposition 대신 m_targetFleet에서 읽음
     private bool m_isReadOnlyMode = false;
@@ -78,12 +79,10 @@ public class UIPanelFleet : UIPanelBase
         // 프리팹에 미리 배치해둔 행이 있으면 초기 풀로 흡수 — 없어도 무방(전부 동적 생성으로 채워짐)
         if (m_fleetStatsContainer != null)
             m_fleetStatsRows.AddRange(m_fleetStatsContainer.GetComponentsInChildren<RowLabelValue>(true));
-        if (m_placedShipsContainer != null)
-            m_placedShipRows.AddRange(m_placedShipsContainer.GetComponentsInChildren<UIPlacedShipRow>(true));
         if (m_statsContainer != null)
             m_statsRows.AddRange(m_statsContainer.GetComponentsInChildren<UIStatGaugeRow>(true));
-        // if (m_availablePresetsScrollView != null)
-        //     m_availablePresetsScrollView.onItemBind = OnAvailablePresetItemBind;
+        if (m_placedShipsScrollView != null)
+            m_placedShipsScrollView.onItemBind = OnPlacedShipItemBind;
 
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
 
@@ -343,7 +342,6 @@ public class UIPanelFleet : UIPanelBase
             FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
             if (composition == null) return;
             RefreshFleetStatsSummary(composition);
-            RefreshAvailablePresets();
         }
 
         SetEditOnlyUIVisible(m_isReadOnlyMode == false);
@@ -353,13 +351,11 @@ public class UIPanelFleet : UIPanelBase
         RebuildAllLayouts();
     }
 
-    // 편집 전용 UI(지휘력 요약/증가 버튼/3열 배치가능 프리셋) — 읽기전용 모드(적 함대 열람)에서는 숨김
+    // 편집 전용 UI(지휘력 요약/증가 버튼) — 읽기전용 모드(적 함대 열람)에서는 숨김
     private void SetEditOnlyUIVisible(bool visible)
     {
         if (m_fleetStatsContainer != null)
             m_fleetStatsContainer.gameObject.SetActive(visible);
-        if (m_availablePresetsContainer != null)
-            m_availablePresetsContainer.gameObject.SetActive(visible);
         if (m_increaseCommandPowerButton != null)
             m_increaseCommandPowerButton.gameObject.SetActive(visible);
         if (m_ownedExplorationPointRow != null)
@@ -408,8 +404,6 @@ public class UIPanelFleet : UIPanelBase
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer);
         if (m_fleetStatsContainer != null && m_fleetStatsContainer.gameObject.activeInHierarchy == true)
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_fleetStatsContainer);
-        if (m_availablePresetsContainer != null && m_availablePresetsContainer.gameObject.activeInHierarchy == true)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_availablePresetsContainer);
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_columnContainer);
     }
 
@@ -494,54 +488,57 @@ public class UIPanelFleet : UIPanelBase
 
     private void RefreshPlacedShips()
     {
-        List<PlacedShipView> placedShips = GetCurrentPlacedShips();
+        m_placedShipsCache = GetCurrentPlacedShips();
 
-        int slotCount;
-        int openSlotCount;
         if (m_isReadOnlyMode == true)
         {
             // 읽기전용(적 함대)에는 커맨더 레벨/잠긴 슬롯 개념이 없음 — 실제 배치된 함선 수만큼만 표시
-            slotCount = placedShips.Count;
-            openSlotCount = placedShips.Count;
+            m_placedTotalSlotCount = m_placedShipsCache.Count;
+            m_placedOpenSlotCount = m_placedShipsCache.Count;
         }
         else
         {
             // 지휘관 레벨에 따라 배치 가능한 함선 수(=열려있는 슬롯 수)가 달라짐 — 커맨더 탭의 "최대 함선 수"와 동일한 값 재사용
             Commander commander = DataManager.Instance.m_currentCommander;
             int commanderLevel = commander != null ? commander.GetCommanderLevel() : 0;
-            openSlotCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commanderLevel);
+            m_placedOpenSlotCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commanderLevel);
 
             // 디자인상 최대 슬롯 수(잠긴 칸 포함)까지는 항상 노출 — 레벨업 동기부여를 위해 잠긴 칸도 미리 보여줌
             int maxSlotCount = DataManager.Instance.m_dataTableCommander.GetMaxShipCount();
-            slotCount = Mathf.Max(maxSlotCount, placedShips.Count); // 배치 수가 어떤 이유로 슬롯 수를 넘어도(레벨 하락 등) 표시는 유지
+            m_placedTotalSlotCount = Mathf.Max(maxSlotCount, m_placedShipsCache.Count); // 배치 수가 어떤 이유로 슬롯 수를 넘어도(레벨 하락 등) 표시는 유지
         }
 
-        EnsureRowCount(m_placedShipRows, m_placedShipsContainer, m_placedShipRowPrefab, slotCount);
+        if (m_placedShipsScrollView != null && m_placedShipRowPrefab != null)
+            m_placedShipsScrollView.Initialize(m_placedTotalSlotCount, m_placedShipRowPrefab.gameObject);
+    }
 
-        for (int i = 0; i < m_placedShipRows.Count; i++)
+    // InfiniteScrollView가 dataIndex번 슬롯을 화면에 배치할 때마다 호출 — 캐시된 데이터로 실제 바인딩
+    private void OnPlacedShipItemBind(int dataIndex, GameObject rowObject)
+    {
+        if (dataIndex < 0 || dataIndex >= m_placedTotalSlotCount) return;
+
+        UIPlacedShipRow row = rowObject.GetComponent<UIPlacedShipRow>();
+        if (row == null) return;
+
+        if (dataIndex < m_placedShipsCache.Count)
         {
-            if (i >= slotCount)
-            {
-                m_placedShipRows[i].Hide();
-                continue;
-            }
-
-            if (i < placedShips.Count)
-            {
-                PlacedShipView entry = placedShips[i];
-                System.Action<int, bool> onFrontToggled = m_isReadOnlyMode == true ? null : OnShipFrontToggled;
-                m_placedShipRows[i].Setup(i, entry.shipPresetId, entry.isFront, onFrontToggled, OnPlacedShipRowClickedFromUI, showFrontToggle: m_isReadOnlyMode == false);
-                m_placedShipRows[i].SetSelected(i == m_selectedSlotIndex);
-            }
-            else if (i < openSlotCount)
-            {
-                m_placedShipRows[i].SetEmpty(i);
-            }
-            else
-            {
-                m_placedShipRows[i].SetLocked(i);
-            }
+            PlacedShipView entry = m_placedShipsCache[dataIndex];
+            System.Action<int, bool> onFrontToggled = m_isReadOnlyMode == true ? null : OnShipFrontToggled;
+            System.Action<int> onTypeSelectClicked = m_isReadOnlyMode == true ? null : OnShipTypeSelectClicked;
+            row.Setup(dataIndex, entry.shipPresetId, entry.isFront, onFrontToggled, OnPlacedShipRowClickedFromUI, onTypeSelectClicked, showFrontToggle: m_isReadOnlyMode == false);
+            row.SetSelected(dataIndex == m_selectedSlotIndex);
         }
+        else if (dataIndex < m_placedOpenSlotCount)
+        {
+            // 빈 슬롯도 읽기전용 모드에선 애초에 m_placedOpenSlotCount==m_placedShipsCache.Count라 이 분기에 오지 않음 — 편집 모드 전용
+            row.SetEmpty(dataIndex, OnShipTypeSelectClicked);
+        }
+        else
+        {
+            row.SetLocked(dataIndex);
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rowObject.transform as RectTransform);
     }
 
     // 성능 컬럼 — 선택된 함선이 없으면 비어있음, 있으면 그 함선의 상세 스탯(팝업과 동일한 항목 구성)
@@ -595,35 +592,20 @@ public class UIPanelFleet : UIPanelBase
         }
     }
 
-    private void RefreshAvailablePresets()
+    // 커맨더 레벨 기준으로 배치 가능한 프리셋만 필터링 — 함선 프리셋 선택 팝업(UIShipPresetPickerView)을 열 때마다 새로 계산
+    private List<ShipPresetData> ComputeUnlockedPresets()
     {
         Commander commander = DataManager.Instance.m_currentCommander;
         int commanderLevel = commander != null ? commander.GetCommanderLevel() : 0;
         List<ShipPresetData> allPresets = DataManager.Instance.m_dataTableShipPreset.GetShipPresetDataList();
 
-        m_unlockedPresetsCache.Clear();
+        List<ShipPresetData> unlockedPresets = new();
         for (int i = 0; i < allPresets.Count; i++)
         {
             if (allPresets[i].unlockCommanderLevel <= commanderLevel)
-                m_unlockedPresetsCache.Add(allPresets[i]);
+                unlockedPresets.Add(allPresets[i]);
         }
-
-        // if (m_availablePresetsScrollView != null && m_availablePresetRowPrefab != null)
-        //     m_availablePresetsScrollView.Initialize(m_unlockedPresetsCache.Count, m_availablePresetRowPrefab.gameObject);
-    }
-
-    // InfiniteScrollView가 dataIndex번 행을 화면에 배치할 때마다 호출 — m_unlockedPresetsCache[dataIndex]로 실제 데이터 바인딩
-    private void OnAvailablePresetItemBind(int dataIndex, GameObject rowObject)
-    {
-        if (dataIndex < 0 || dataIndex >= m_unlockedPresetsCache.Count) return;
-
-        UIAvailablePresetRow row = rowObject.GetComponent<UIAvailablePresetRow>();
-        if (row == null) return;
-
-        row.Setup(m_unlockedPresetsCache[dataIndex], OnAvailablePresetClicked, OnAvailablePresetDropped, OnAvailablePresetDragging);
-
-        // 풀링 재사용 row라 SetActive(true) 직후 텍스트가 바뀌어도 내부 VerticalLayoutGroup이 자동으로 리빌드되지 않을 수 있음 — 강제 리빌드
-        LayoutRebuilder.ForceRebuildLayoutImmediate(rowObject.transform as RectTransform);
+        return unlockedPresets;
     }
 
     // ── 배치된 함선 — 전방/후방 토글 ──────────────────────────────────
@@ -639,15 +621,21 @@ public class UIPanelFleet : UIPanelBase
             slotIndex = index,
             isFront = isFront,
         });
-        RefreshFleetComposition();
+
+        // 전방/후방 값만 바뀌고 슬롯 구성(개수/배치)은 그대로라, 가상 스크롤 전체를 다시 Initialize하는
+        // RefreshFleetComposition() 대신 캐시만 갱신하고 화면에 보이는 행만 다시 바인딩(타입선택 버튼 등이 움찔거리지 않게)
+        m_placedShipsCache = GetCurrentPlacedShips();
+        if (m_placedShipsScrollView != null)
+            m_placedShipsScrollView.RefreshVisible();
     }
 
     // ── 배치된 함선 — 행 클릭(성능 컬럼에 상세 스탯 표시) ───────────────
     private void OnPlacedShipRowClicked(int index, string shipPresetId)
     {
         m_selectedSlotIndex = index;
-        for (int i = 0; i < m_placedShipRows.Count; i++)
-            m_placedShipRows[i].SetSelected(i == m_selectedSlotIndex);
+        // 가상 스크롤이라 화면 밖 행은 살아있지 않음 — 현재 보이는 행들만 다시 바인딩해 선택 표시를 갱신
+        if (m_placedShipsScrollView != null)
+            m_placedShipsScrollView.RefreshVisible();
         RefreshStats();
         RebuildAllLayouts();
     }
@@ -676,57 +664,32 @@ public class UIPanelFleet : UIPanelBase
         OnPlacedShipRowClicked(positionIndex, placedShips[positionIndex].shipPresetId);
     }
 
-    // ── 배치가능 프리셋 — 클릭(스탯 팝업) ─────────────────────────────
-    private void OnAvailablePresetClicked(ShipPresetData preset)
+    // ── 함선 타입선택 버튼 — 프리셋 선택 팝업 오픈/적용 ─────────────────
+    private void OnShipTypeSelectClicked(int index)
     {
-        UIManager.Instance.ShowShipStatsPopup(preset);
+        if (m_isReadOnlyMode == true || m_shipPresetPicker == null) return;
+
+        List<PlacedShipView> placedShips = GetCurrentPlacedShips();
+        string currentPresetId = index < placedShips.Count ? placedShips[index].shipPresetId : null;
+        ShipPresetData currentPreset = string.IsNullOrEmpty(currentPresetId) == false ? DataManager.Instance.m_dataTableShipPreset.GetShipPreset(currentPresetId) : null;
+
+        m_shipPresetPicker.Open(ComputeUnlockedPresets(), currentPreset, selectedPresetId => ApplyPresetToSlot(index, selectedPresetId));
     }
 
-    // ── 배치가능 프리셋 — 드래그 중 호버된 슬롯 하이라이트 ───────────────
-    private void OnAvailablePresetDragging(PointerEventData eventData)
+    // 확인 버튼으로 선택된 프리셋을 해당 슬롯에 배치 — 기존 드래그앤드롭 배치 핵심 로직과 동일, dropIndex 대신 slotIndex 사용
+    private void ApplyPresetToSlot(int slotIndex, string presetId)
     {
-        int hoverIndex = ComputeDropIndexInPlacedShips(eventData.position);
-        if (hoverIndex == m_highlightedSlotIndex) return;
-
-        ClearSlotHighlight();
-
-        if (hoverIndex >= 0 && hoverIndex < m_placedShipRows.Count && m_placedShipRows[hoverIndex].IsLocked() == false)
-        {
-            m_placedShipRows[hoverIndex].SetHighlighted(true);
-            m_highlightedSlotIndex = hoverIndex;
-        }
-    }
-
-    private void ClearSlotHighlight()
-    {
-        if (m_highlightedSlotIndex >= 0 && m_highlightedSlotIndex < m_placedShipRows.Count)
-            m_placedShipRows[m_highlightedSlotIndex].SetHighlighted(false);
-        m_highlightedSlotIndex = -1;
-    }
-
-    // ── 배치가능 프리셋 — 드래그로 배치 ───────────────────────────────
-    private void OnAvailablePresetDropped(ShipPresetData preset, PointerEventData eventData)
-    {
-        ClearSlotHighlight();
-
-        int dropIndex = ComputeDropIndexInPlacedShips(eventData.position);
-        if (dropIndex < 0) return; // 함대구성 컬럼 밖에 놓음 — 단순 취소, 팝업 없음
-
-        if (dropIndex < m_placedShipRows.Count && m_placedShipRows[dropIndex].IsLocked() == true)
-        {
-            ShowPlaceFailedPopup("UIFleet_PlaceFailed_Locked");
-            return;
-        }
+        if (string.IsNullOrEmpty(presetId) == true) return;
 
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
         if (composition == null) return;
 
         // 전/후방은 함선이 아니라 슬롯(인덱스)에 종속된 값 — 기존에 함선이 있던 슬롯을 교체할 때는 그 슬롯의 기존 전/후방을 유지,
-        // 비어있던 슬롯에 처음 놓을 때만 기본값(전방)을 사용
+        // 비어있던 슬롯에 처음 배치할 때만 기본값(전방)을 사용
         List<FleetSlotEntry> placedShipsBeforePlace = composition.GetPlacedShips();
-        bool slotIsFront = dropIndex < placedShipsBeforePlace.Count ? placedShipsBeforePlace[dropIndex].isFront : true;
+        bool slotIsFront = slotIndex < placedShipsBeforePlace.Count ? placedShipsBeforePlace[slotIndex].isFront : true;
 
-        EFleetPlaceResult result = composition.TryPlaceShipAt(dropIndex, preset.presetId, slotIsFront);
+        EFleetPlaceResult result = composition.TryPlaceShipAt(slotIndex, presetId, slotIsFront);
         if (result != EFleetPlaceResult.Success)
         {
             string messageKey = result == EFleetPlaceResult.NotEnoughCommandPower
@@ -738,12 +701,12 @@ public class UIPanelFleet : UIPanelBase
 
         NetworkManager.Instance.PlaceFleetPresetShip(new FleetPresetPlaceShipRequest
         {
-            slotIndex = dropIndex,
-            shipPresetId = preset.presetId,
+            slotIndex = slotIndex,
+            shipPresetId = presetId,
             isFront = slotIsFront,
         });
 
-        ObjectManager.Instance.ReplaceMyFleetShipAt(dropIndex, preset.presetId, slotIsFront);
+        ObjectManager.Instance.ReplaceMyFleetShipAt(slotIndex, presetId, slotIsFront);
         RefreshFleetComposition();
     }
 
@@ -755,33 +718,5 @@ public class UIPanelFleet : UIPanelBase
             onConfirm = () => { },
             autoCloseSec = 2.5f,
         });
-    }
-
-    // 드롭 지점 아래 UIPlacedShipRow가 있으면 그 행의 위치에 삽입, 그 외엔 컬럼 영역 안인지 사각형으로 판정해 끝에 추가, 컬럼 밖이면 -1
-    private int ComputeDropIndexInPlacedShips(Vector2 screenPosition)
-    {
-        if (m_placedShipsContainer == null) return -1;
-
-        if (EventSystem.current != null)
-        {
-            PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = screenPosition };
-            List<RaycastResult> results = new();
-            EventSystem.current.RaycastAll(pointerData, results);
-
-            for (int i = 0; i < results.Count; i++)
-            {
-                UIPlacedShipRow row = results[i].gameObject.GetComponentInParent<UIPlacedShipRow>();
-                if (row != null)
-                    return row.transform.GetSiblingIndex();
-            }
-        }
-
-        // 배치된 함선이 아직 없어 컨테이너에 레이캐스트 가능한 Graphic이 전혀 없는 경우(빈 컬럼) 대비 —
-        // 화면 사각형 판정으로 폴백. Screen Space - Overlay 캔버스 기준(카메라 null)
-        bool insideColumn = RectTransformUtility.RectangleContainsScreenPoint(m_placedShipsContainer, screenPosition, null);
-        if (insideColumn == false) return -1;
-
-        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
-        return composition != null ? composition.GetPlacedShips().Count : 0;
     }
 }

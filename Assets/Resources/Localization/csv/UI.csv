@@ -119,6 +119,7 @@ UIFleet_Stats_ShieldRestartDelay,,Shield Restart Delay,실드 재가동 딜레�
 UIFleet_Stats_ShieldRegenRate,,Shield Regen Rate,실드 회복속도
 UIFleet_Stats_InterceptorReloadDelay,,Interceptor Reload Delay,요격체 보충 딜레이
 UIFleet_Stats_InterceptorRegenRate,,Interceptor Regen Rate,요격체 회복속도
+UIFleet_ShipPreset_Title,,Ship Preset,함선 프리셋
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
 UITabFleetTactics_NameShort,,TACTICS,전술
 UITabFleetTactics_FormationType_LinearHorizontal,,Balanced,균형
