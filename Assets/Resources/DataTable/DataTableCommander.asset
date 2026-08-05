@@ -21,295 +21,295 @@ MonoBehaviour:
     shipCount: 1
   - commanderLevel: 3
     requireExp: 3000
-    shipCount: 1
+    shipCount: 2
   - commanderLevel: 4
     requireExp: 4000
-    shipCount: 1
+    shipCount: 2
   - commanderLevel: 5
     requireExp: 5000
-    shipCount: 1
+    shipCount: 2
   - commanderLevel: 6
     requireExp: 6000
-    shipCount: 1
+    shipCount: 3
   - commanderLevel: 7
     requireExp: 7000
-    shipCount: 1
+    shipCount: 3
   - commanderLevel: 8
     requireExp: 8000
-    shipCount: 1
+    shipCount: 3
   - commanderLevel: 9
     requireExp: 9000
-    shipCount: 1
+    shipCount: 3
   - commanderLevel: 10
     requireExp: 10000
-    shipCount: 1
+    shipCount: 4
   - commanderLevel: 11
     requireExp: 11000
-    shipCount: 2
+    shipCount: 4
   - commanderLevel: 12
     requireExp: 12000
-    shipCount: 2
+    shipCount: 4
   - commanderLevel: 13
     requireExp: 13000
-    shipCount: 2
+    shipCount: 4
   - commanderLevel: 14
     requireExp: 14000
-    shipCount: 2
+    shipCount: 4
   - commanderLevel: 15
     requireExp: 15000
-    shipCount: 2
+    shipCount: 4
   - commanderLevel: 16
     requireExp: 16000
-    shipCount: 2
+    shipCount: 4
   - commanderLevel: 17
     requireExp: 17000
-    shipCount: 2
+    shipCount: 4
   - commanderLevel: 18
     requireExp: 18000
-    shipCount: 2
+    shipCount: 4
   - commanderLevel: 19
     requireExp: 19000
-    shipCount: 2
+    shipCount: 4
   - commanderLevel: 20
     requireExp: 20000
-    shipCount: 2
+    shipCount: 5
   - commanderLevel: 21
     requireExp: 21000
-    shipCount: 3
+    shipCount: 5
   - commanderLevel: 22
     requireExp: 22000
-    shipCount: 3
+    shipCount: 5
   - commanderLevel: 23
     requireExp: 23000
-    shipCount: 3
+    shipCount: 5
   - commanderLevel: 24
     requireExp: 24000
-    shipCount: 3
+    shipCount: 5
   - commanderLevel: 25
     requireExp: 25000
-    shipCount: 3
+    shipCount: 5
   - commanderLevel: 26
     requireExp: 26000
-    shipCount: 3
+    shipCount: 5
   - commanderLevel: 27
     requireExp: 27000
-    shipCount: 3
+    shipCount: 5
   - commanderLevel: 28
     requireExp: 28000
-    shipCount: 3
+    shipCount: 5
   - commanderLevel: 29
     requireExp: 29000
-    shipCount: 3
+    shipCount: 5
   - commanderLevel: 30
     requireExp: 30000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 31
     requireExp: 31000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 32
     requireExp: 32000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 33
     requireExp: 33000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 34
     requireExp: 34000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 35
     requireExp: 35000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 36
     requireExp: 36000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 37
     requireExp: 37000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 38
     requireExp: 38000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 39
     requireExp: 39000
-    shipCount: 3
+    shipCount: 6
   - commanderLevel: 40
     requireExp: 40000
-    shipCount: 3
+    shipCount: 7
   - commanderLevel: 41
     requireExp: 41000
-    shipCount: 4
+    shipCount: 7
   - commanderLevel: 42
     requireExp: 42000
-    shipCount: 4
+    shipCount: 7
   - commanderLevel: 43
     requireExp: 43000
-    shipCount: 4
+    shipCount: 7
   - commanderLevel: 44
     requireExp: 44000
-    shipCount: 4
+    shipCount: 7
   - commanderLevel: 45
     requireExp: 45000
-    shipCount: 4
+    shipCount: 7
   - commanderLevel: 46
     requireExp: 46000
-    shipCount: 4
+    shipCount: 7
   - commanderLevel: 47
     requireExp: 47000
-    shipCount: 4
+    shipCount: 7
   - commanderLevel: 48
     requireExp: 48000
-    shipCount: 4
+    shipCount: 7
   - commanderLevel: 49
     requireExp: 49000
-    shipCount: 4
+    shipCount: 7
   - commanderLevel: 50
     requireExp: 50000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 51
     requireExp: 51000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 52
     requireExp: 52000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 53
     requireExp: 53000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 54
     requireExp: 54000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 55
     requireExp: 55000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 56
     requireExp: 56000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 57
     requireExp: 57000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 58
     requireExp: 58000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 59
     requireExp: 59000
-    shipCount: 4
+    shipCount: 8
   - commanderLevel: 60
     requireExp: 60000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 61
     requireExp: 61000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 62
     requireExp: 62000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 63
     requireExp: 63000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 64
     requireExp: 64000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 65
     requireExp: 65000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 66
     requireExp: 66000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 67
     requireExp: 67000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 68
     requireExp: 68000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 69
     requireExp: 69000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 70
     requireExp: 70000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 71
     requireExp: 71000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 72
     requireExp: 72000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 73
     requireExp: 73000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 74
     requireExp: 74000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 75
     requireExp: 75000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 76
     requireExp: 76000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 77
     requireExp: 77000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 78
     requireExp: 78000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 79
     requireExp: 79000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 80
     requireExp: 80000
-    shipCount: 4
+    shipCount: 9
   - commanderLevel: 81
     requireExp: 81000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 82
     requireExp: 82000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 83
     requireExp: 83000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 84
     requireExp: 84000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 85
     requireExp: 85000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 86
     requireExp: 86000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 87
     requireExp: 87000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 88
     requireExp: 88000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 89
     requireExp: 89000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 90
     requireExp: 90000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 91
     requireExp: 91000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 92
     requireExp: 92000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 93
     requireExp: 93000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 94
     requireExp: 94000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 95
     requireExp: 95000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 96
     requireExp: 96000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 97
     requireExp: 97000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 98
     requireExp: 98000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 99
     requireExp: 99000
-    shipCount: 5
+    shipCount: 9
   - commanderLevel: 100
     requireExp: 100000
-    shipCount: 5
+    shipCount: 9

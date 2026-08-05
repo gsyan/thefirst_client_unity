@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class UIPlacedShipRow : MonoBehaviour
 {
     [SerializeField] private RowLabelValue m_rowLabelValue;
+    
+
+
     [SerializeField] private UIToggleSlide m_frontToggleSlide; // on = 전방, off = 후방
     [SerializeField] private Button m_rowButton; // 행 클릭 — 토글과는 별개 영역
     [SerializeField] private Image m_backgroundImage; // 빈 슬롯 표시 + 드래그 호버 하이라이트용 배경

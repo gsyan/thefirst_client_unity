@@ -95,7 +95,6 @@ public class SpaceShip : MonoBehaviour
 
     private void OnGlobalShipSelected(SpaceShip ship)
     {
-        Debug.Log($"[DEBUG-Outline] {name} OnGlobalShipSelected this=={(this == ship)} outlineComp={(m_shipOutline != null)}");
         SetShipSelected(this == ship);
     }
 
