@@ -40,33 +40,6 @@ public static class EventManager
         OnCommanderLevelChanged -= callback;
     }
 
-    // mineral
-    public static event Action<long> OnMineralChanged;
-    public static void TriggerMineralChange(long money)
-    {
-        OnMineralChanged?.Invoke(money);
-    }
-    public static void Subscribe_MineralChanged(Action<long> callback)
-    {
-        OnMineralChanged += callback;
-    }
-    public static void Unsubscribe_MineralChanged(Action<long> callback)
-    {
-        OnMineralChanged -= callback;
-    }
-
-    // 플리트 전체 미네랄 투입량 합계 변경
-    public static event Action<int> OnInvestedMineralChanged;
-    public static void TriggerInvestedMineralChanged(int total) { OnInvestedMineralChanged?.Invoke(total); }
-    public static void Subscribe_InvestedMineralChanged(Action<int> callback)   { OnInvestedMineralChanged += callback; }
-    public static void Unsubscribe_InvestedMineralChanged(Action<int> callback) { OnInvestedMineralChanged -= callback; }
-
-    // modulePoint
-    public static event Action<int> OnModulePointChanged;
-    public static void TriggerModulePointChanged(int modulePoint) { OnModulePointChanged?.Invoke(modulePoint); }
-    public static void Subscribe_ModulePointChanged(Action<int> callback)   { OnModulePointChanged += callback; }
-    public static void Unsubscribe_ModulePointChanged(Action<int> callback) { OnModulePointChanged -= callback; }
-
     // pvpPoint
     public static event Action<int> OnPvpPointChanged;
     public static void TriggerPvpPointChanged(int pvpPoint) { OnPvpPointChanged?.Invoke(pvpPoint); }

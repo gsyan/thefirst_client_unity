@@ -546,10 +546,6 @@ MonoBehaviour:
     m_Localized: Requires 3 or more ships in fleet
     m_Metadata:
       m_Items: []
-  - m_Id: 37053841358585856
-    m_Localized: Retreat
-    m_Metadata:
-      m_Items: []
   - m_Id: 37053841400528896
     m_Localized: Retreat to the previous zone?
     m_Metadata:
@@ -1143,6 +1139,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 64661855909314560
     m_Localized: Deploy Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64946077601497088
+    m_Localized: Required Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64946077664411648
+    m_Localized: PVP Point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64946077664411649
+    m_Localized: EXP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64946077664411650
+    m_Localized: Aircraft
     m_Metadata:
       m_Items: []
   references:

@@ -65,7 +65,7 @@ public class UIPlacedShipRow : MonoBehaviour
         if (m_shipTypeSelectButton != null)
         {
             m_shipTypeSelectButton.gameObject.SetActive(true);
-            m_shipTypeSelectButton.interactable = true;
+            m_shipTypeSelectButton.interactable = onTypeSelectClicked != null; // 전투 중 등 콜백이 없으면 시각적으로도 비활성화
         }
         if (m_shipTypeButtonText != null)
             CommonUtility.SetUILocText(m_shipTypeButtonText, "UIFleet_PlaceShip");
@@ -129,7 +129,7 @@ public class UIPlacedShipRow : MonoBehaviour
             if (m_shipTypeSelectButton != null)
             {
                 m_shipTypeSelectButton.gameObject.SetActive(true);
-                m_shipTypeSelectButton.interactable = true;
+                m_shipTypeSelectButton.interactable = onTypeSelectClicked != null; // 전투 중 등 콜백이 없으면 시각적으로도 비활성화
             }
 
             if (m_frontToggleSlide != null)

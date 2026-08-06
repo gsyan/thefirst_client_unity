@@ -33,10 +33,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4074434535807998117}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 132.5, y: -20}
-  m_SizeDelta: {x: 0, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6520480082850240379
 CanvasRenderer:
@@ -275,10 +275,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4074434535807998117}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 20, y: -20}
-  m_SizeDelta: {x: 0, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4080150343959154845
 CanvasRenderer:
@@ -422,7 +422,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RowImageText
   m_image: {fileID: 4776540556314364509}
   m_text: {fileID: 4971057232385670042}
-  m_image2: {fileID: 6423053203319295739}
 --- !u!114 &1344682699132931867
 MonoBehaviour:
   m_ObjectHideFlags: 0

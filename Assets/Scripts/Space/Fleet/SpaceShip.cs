@@ -894,9 +894,6 @@ public class SpaceShip : MonoBehaviour
         if (module == null) return;
         module.SetInvestedMineral(mineralInvested);
 
-        if (m_ownerFleet != null)
-            m_ownerFleet.NotifyInvestedMineralChanged();
-
         if (m_shipInfo == null || m_shipInfo.bodies == null) return;
         ModuleBodyInfo bodyInfo = null;
         for (int i = 0; i < m_shipInfo.bodies.Count; i++)

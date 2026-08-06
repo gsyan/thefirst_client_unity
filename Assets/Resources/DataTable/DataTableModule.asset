@@ -17,7 +17,7 @@ MonoBehaviour:
     modules:
     - moduleName: body_t1_m111
       moduleSubType: 101111
-      statPoint: 200
+      statPoint: 100
       description: 
       moduleSlots:
       - moduleType: 2
@@ -55,7 +55,7 @@ MonoBehaviour:
     modules:
     - moduleName: body_t1_m211
       moduleSubType: 101211
-      statPoint: 500
+      statPoint: 200
       description: 
       moduleSlots:
       - moduleType: 2
@@ -95,7 +95,7 @@ MonoBehaviour:
     modules:
     - moduleName: body_t1_m221
       moduleSubType: 101221
-      statPoint: 800
+      statPoint: 300
       description: 
       moduleSlots:
       - moduleType: 2
@@ -108,7 +108,7 @@ MonoBehaviour:
         slotIndex: 1
       - moduleType: 4
         slotIndex: 0
-      health: 400
+      health: 300
       repair: 0
       speed: 1
       turnRate: 1
@@ -137,13 +137,59 @@ MonoBehaviour:
     modules:
     - moduleName: body_t1_m222
       moduleSubType: 101222
-      statPoint: 1000
+      statPoint: 400
       description: 
       moduleSlots:
       - moduleType: 2
         slotIndex: 0
       - moduleType: 2
         slotIndex: 1
+      - moduleType: 3
+        slotIndex: 0
+      - moduleType: 3
+        slotIndex: 1
+      - moduleType: 4
+        slotIndex: 0
+      - moduleType: 4
+        slotIndex: 1
+      health: 400
+      repair: 0
+      speed: 1
+      turnRate: 1
+      attack: 0
+      splashRadius: 0
+      attackCool: 0
+      silenceTime: 0
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldDelay: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorDelay: 0
+      interceptorRegenRate: 0
+  - subType: 101322
+    modules:
+    - moduleName: body_t1_m322
+      moduleSubType: 101322
+      statPoint: 500
+      description: 
+      moduleSlots:
+      - moduleType: 2
+        slotIndex: 0
+      - moduleType: 2
+        slotIndex: 1
+      - moduleType: 2
+        slotIndex: 2
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -177,11 +223,11 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101322
+  - subType: 101332
     modules:
-    - moduleName: body_t1_m322
-      moduleSubType: 101322
-      statPoint: 1200
+    - moduleName: body_t1_m332
+      moduleSubType: 101332
+      statPoint: 600
       description: 
       moduleSlots:
       - moduleType: 2
@@ -194,6 +240,8 @@ MonoBehaviour:
         slotIndex: 0
       - moduleType: 3
         slotIndex: 1
+      - moduleType: 3
+        slotIndex: 2
       - moduleType: 4
         slotIndex: 0
       - moduleType: 4
@@ -223,11 +271,11 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101332
+  - subType: 101333
     modules:
-    - moduleName: body_t1_m332
-      moduleSubType: 101332
-      statPoint: 1400
+    - moduleName: body_t1_m333
+      moduleSubType: 101333
+      statPoint: 700
       description: 
       moduleSlots:
       - moduleType: 2
@@ -246,6 +294,8 @@ MonoBehaviour:
         slotIndex: 0
       - moduleType: 4
         slotIndex: 1
+      - moduleType: 4
+        slotIndex: 2
       health: 700
       repair: 0
       speed: 1
@@ -271,11 +321,11 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101333
+  - subType: 101433
     modules:
-    - moduleName: body_t1_m333
-      moduleSubType: 101333
-      statPoint: 1600
+    - moduleName: body_t1_m433
+      moduleSubType: 101433
+      statPoint: 800
       description: 
       moduleSlots:
       - moduleType: 2
@@ -284,6 +334,8 @@ MonoBehaviour:
         slotIndex: 1
       - moduleType: 2
         slotIndex: 2
+      - moduleType: 2
+        slotIndex: 3
       - moduleType: 3
         slotIndex: 0
       - moduleType: 3
@@ -321,11 +373,11 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101433
+  - subType: 101443
     modules:
-    - moduleName: body_t1_m433
-      moduleSubType: 101433
-      statPoint: 1800
+    - moduleName: body_t1_m443
+      moduleSubType: 101443
+      statPoint: 900
       description: 
       moduleSlots:
       - moduleType: 2
@@ -342,6 +394,8 @@ MonoBehaviour:
         slotIndex: 1
       - moduleType: 3
         slotIndex: 2
+      - moduleType: 3
+        slotIndex: 3
       - moduleType: 4
         slotIndex: 0
       - moduleType: 4
@@ -373,65 +427,11 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101443
-    modules:
-    - moduleName: body_t1_m443
-      moduleSubType: 101443
-      statPoint: 2000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 1000
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttack: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldDelay: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorDelay: 0
-      interceptorRegenRate: 0
   - subType: 101444
     modules:
     - moduleName: body_t1_m444
       moduleSubType: 101444
-      statPoint: 2400
+      statPoint: 1000
       description: 
       moduleSlots:
       - moduleType: 2
@@ -458,7 +458,7 @@ MonoBehaviour:
         slotIndex: 2
       - moduleType: 4
         slotIndex: 3
-      health: 1200
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -487,7 +487,7 @@ MonoBehaviour:
     modules:
     - moduleName: body_t1_m544
       moduleSubType: 101544
-      statPoint: 2800
+      statPoint: 1100
       description: 
       moduleSlots:
       - moduleType: 2
@@ -516,7 +516,7 @@ MonoBehaviour:
         slotIndex: 2
       - moduleType: 4
         slotIndex: 3
-      health: 1400
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -545,7 +545,7 @@ MonoBehaviour:
     modules:
     - moduleName: body_t1_m554
       moduleSubType: 101554
-      statPoint: 3000
+      statPoint: 1200
       description: 
       moduleSlots:
       - moduleType: 2
@@ -576,7 +576,7 @@ MonoBehaviour:
         slotIndex: 2
       - moduleType: 4
         slotIndex: 3
-      health: 1500
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -768,7 +768,7 @@ MonoBehaviour:
       interceptorRegenRate: 5
   exportedJson: "{\r\n  \"modules\": {\r\n    \"1\": [\r\n      {\r\n        \"moduleName\":
     \"body_t1_m111\",\r\n        \"moduleSubType\": \"body_t1_m111\",\r\n       
-    \"statPoint\": 200,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
+    \"statPoint\": 100,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
     [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
@@ -784,7 +784,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"body_t1_m211\",\r\n        \"moduleSubType\": \"body_t1_m211\",\r\n       
-    \"statPoint\": 500,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
+    \"statPoint\": 200,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
     [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
@@ -801,7 +801,7 @@ MonoBehaviour:
     0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
     \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
     },\r\n      {\r\n        \"moduleName\": \"body_t1_m221\",\r\n        \"moduleSubType\":
-    \"body_t1_m221\",\r\n        \"statPoint\": 800,\r\n        \"description\":
+    \"body_t1_m221\",\r\n        \"statPoint\": 300,\r\n        \"description\":
     \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n            \"moduleType\":
     \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
     \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
@@ -809,7 +809,7 @@ MonoBehaviour:
     },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
     \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n       
-    \"health\": 400.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n       
+    \"health\": 300.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n       
     \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
     0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n       
@@ -820,7 +820,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"body_t1_m222\",\r\n        \"moduleSubType\": \"body_t1_m222\",\r\n       
-    \"statPoint\": 1000,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
+    \"statPoint\": 400,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
     [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
@@ -828,7 +828,7 @@ MonoBehaviour:
     \"moduleType\": \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
     {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
-    1\r\n          }\r\n        ],\r\n        \"health\": 500.0,\r\n        \"repair\":
+    1\r\n          }\r\n        ],\r\n        \"health\": 400.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
     \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\":
@@ -839,7 +839,7 @@ MonoBehaviour:
     0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
     \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m322\",\r\n       
-    \"moduleSubType\": \"body_t1_m322\",\r\n        \"statPoint\": 1200,\r\n       
+    \"moduleSubType\": \"body_t1_m322\",\r\n        \"statPoint\": 500,\r\n       
     \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
     \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
@@ -849,7 +849,7 @@ MonoBehaviour:
     \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
     \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n         
-    }\r\n        ],\r\n        \"health\": 600.0,\r\n        \"repair\": 0.0,\r\n       
+    }\r\n        ],\r\n        \"health\": 500.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -860,7 +860,7 @@ MonoBehaviour:
     \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m332\",\r\n       
-    \"moduleSubType\": \"body_t1_m332\",\r\n        \"statPoint\": 1400,\r\n       
+    \"moduleSubType\": \"body_t1_m332\",\r\n        \"statPoint\": 600,\r\n       
     \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
     \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
@@ -871,7 +871,7 @@ MonoBehaviour:
     \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n         
     {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
-    1\r\n          }\r\n        ],\r\n        \"health\": 700.0,\r\n        \"repair\":
+    1\r\n          }\r\n        ],\r\n        \"health\": 600.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
     \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\":
@@ -882,7 +882,7 @@ MonoBehaviour:
     0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
     \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m333\",\r\n       
-    \"moduleSubType\": \"body_t1_m333\",\r\n        \"statPoint\": 1600,\r\n       
+    \"moduleSubType\": \"body_t1_m333\",\r\n        \"statPoint\": 700,\r\n       
     \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
     \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
@@ -894,7 +894,7 @@ MonoBehaviour:
     {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
     1\r\n          },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n           
-    \"slotIndex\": 2\r\n          }\r\n        ],\r\n        \"health\": 800.0,\r\n       
+    \"slotIndex\": 2\r\n          }\r\n        ],\r\n        \"health\": 700.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -906,7 +906,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"body_t1_m433\",\r\n        \"moduleSubType\": \"body_t1_m433\",\r\n       
-    \"statPoint\": 1800,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
+    \"statPoint\": 800,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
     [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
@@ -919,7 +919,7 @@ MonoBehaviour:
     \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
-    2\r\n          }\r\n        ],\r\n        \"health\": 900.0,\r\n        \"repair\":
+    2\r\n          }\r\n        ],\r\n        \"health\": 800.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
     \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\":
@@ -930,7 +930,7 @@ MonoBehaviour:
     0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
     \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m443\",\r\n       
-    \"moduleSubType\": \"body_t1_m443\",\r\n        \"statPoint\": 2000,\r\n       
+    \"moduleSubType\": \"body_t1_m443\",\r\n        \"statPoint\": 900,\r\n       
     \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
     \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
@@ -945,7 +945,7 @@ MonoBehaviour:
     \"hanger\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
     \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
     {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 2\r\n         
-    }\r\n        ],\r\n        \"health\": 1000.0,\r\n        \"repair\": 0.0,\r\n       
+    }\r\n        ],\r\n        \"health\": 900.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -956,7 +956,7 @@ MonoBehaviour:
     \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m444\",\r\n       
-    \"moduleSubType\": \"body_t1_m444\",\r\n        \"statPoint\": 2400,\r\n       
+    \"moduleSubType\": \"body_t1_m444\",\r\n        \"statPoint\": 1000,\r\n       
     \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
     \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
@@ -972,7 +972,7 @@ MonoBehaviour:
     \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
     {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 2\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
-    3\r\n          }\r\n        ],\r\n        \"health\": 1200.0,\r\n        \"repair\":
+    3\r\n          }\r\n        ],\r\n        \"health\": 1000.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
     \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\":
@@ -983,7 +983,7 @@ MonoBehaviour:
     0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
     \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m544\",\r\n       
-    \"moduleSubType\": \"body_t1_m544\",\r\n        \"statPoint\": 2800,\r\n       
+    \"moduleSubType\": \"body_t1_m544\",\r\n        \"statPoint\": 1100,\r\n       
     \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
     \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
@@ -1000,7 +1000,7 @@ MonoBehaviour:
     {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
     2\r\n          },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n           
-    \"slotIndex\": 3\r\n          }\r\n        ],\r\n        \"health\": 1400.0,\r\n       
+    \"slotIndex\": 3\r\n          }\r\n        ],\r\n        \"health\": 1100.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -1012,7 +1012,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"body_t1_m554\",\r\n        \"moduleSubType\": \"body_t1_m554\",\r\n       
-    \"statPoint\": 3000,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
+    \"statPoint\": 1200,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
     [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
@@ -1030,7 +1030,7 @@ MonoBehaviour:
     \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
     {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 2\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
-    3\r\n          }\r\n        ],\r\n        \"health\": 1500.0,\r\n        \"repair\":
+    3\r\n          }\r\n        ],\r\n        \"health\": 1200.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
     \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\":

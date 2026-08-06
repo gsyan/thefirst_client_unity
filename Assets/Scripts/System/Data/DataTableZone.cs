@@ -85,6 +85,7 @@ public class ZoneConfig
     public int enemyMaxCost = 100;        // [server] 웨이브에 편성 가능한 함선 1척의 commandCost 상한
     public int enemyDeviation = 0;        // [server] enemyMaxCost 랜덤 편차
     public int enemyMaxShipsPerFleet = 5; // [server] 웨이브 1개의 함선 수 상한
+    public float enemyStatMultiplier = 1.0f; // [server] 이 존의 적함대 body/beam/missile/hanger 체력·공격력 공통 배율 (0.1=10%, 1.0=원본)
 
     [Header("셀 클리어 보상 (웨이브가 있던 셀만 적립, 존 단위 고정값)")]
     public int explorationPointReward = 0; // [server] 적 함대 성능(commandCost)과 무관한 고정 탐험 포인트 적립량

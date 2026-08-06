@@ -134,6 +134,7 @@ public class DataTableZoneEditor : Editor
                 enemyMaxCost          = oldZone != null ? oldZone.enemyMaxCost          : 100,
                 enemyDeviation        = oldZone != null ? oldZone.enemyDeviation        : 0,
                 enemyMaxShipsPerFleet = oldZone != null ? oldZone.enemyMaxShipsPerFleet : 5,
+                enemyStatMultiplier   = oldZone != null ? oldZone.enemyStatMultiplier   : 1f,
                 explorationPointReward = oldZone != null ? oldZone.explorationPointReward : 0,
                 commanderExpReward     = oldZone != null ? oldZone.commanderExpReward     : 0,
             });
@@ -210,8 +211,9 @@ public class DataTableZoneEditor : Editor
             int.TryParse(col[5], out zc.enemyMaxCost);
             int.TryParse(col[6], out zc.enemyDeviation);
             int.TryParse(col[7], out zc.enemyMaxShipsPerFleet);
-            int.TryParse(col[8], out zc.explorationPointReward);
-            int.TryParse(col[9], out zc.commanderExpReward);
+            float.TryParse(col[8], out zc.enemyStatMultiplier);
+            int.TryParse(col[9], out zc.explorationPointReward);
+            int.TryParse(col[10], out zc.commanderExpReward);
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
@@ -777,6 +779,7 @@ public class DataTableZoneEditor : Editor
         zoneConfig.enemyMaxCost          = EditorGUILayout.IntField(new GUIContent("Enemy Max Cost",      "웨이브에 편성 가능한 함선 1척의 commandCost 상한"), zoneConfig.enemyMaxCost);
         zoneConfig.enemyDeviation        = EditorGUILayout.IntField(new GUIContent("Enemy Deviation",     "Enemy Max Cost 랜덤 편차"),           zoneConfig.enemyDeviation);
         zoneConfig.enemyMaxShipsPerFleet = EditorGUILayout.IntField(new GUIContent("Max Ships Per Fleet",  "웨이브 1개의 함선 수 상한"),            zoneConfig.enemyMaxShipsPerFleet);
+        zoneConfig.enemyStatMultiplier   = EditorGUILayout.FloatField(new GUIContent("Enemy Stat Multiplier", "이 존 적함대 body/beam/missile/hanger 체력·공격력 공통 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyStatMultiplier);
 
         EditorGUILayout.Space(4);
         EditorGUILayout.LabelField("셀 클리어 보상 (웨이브 있던 셀만 적립)", EditorStyles.miniBoldLabel);

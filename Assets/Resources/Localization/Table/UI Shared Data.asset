@@ -679,10 +679,6 @@ MonoBehaviour:
     m_Key: UITabExploration_PreviousStageRequired
     m_Metadata:
       m_Items: []
-  - m_Id: 37053841358585856
-    m_Key: UITabExploration_RetreatTitle
-    m_Metadata:
-      m_Items: []
   - m_Id: 37053841400528896
     m_Key: UITabExploration_RetreatConfirm
     m_Metadata:
@@ -709,6 +705,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 26480402604359680
     m_Key: require_level_compare
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64946077601497088
+    m_Key: UIPopupConfirm_RequireLevel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64946077664411648
+    m_Key: UIPopupConfirm_PvpPointLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64946077664411649
+    m_Key: UIPopupConfirm_ExpLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64946077664411650
+    m_Key: UIPopupConfirm_AircraftCount
     m_Metadata:
       m_Items: []
   - m_Id: 57012466176884736

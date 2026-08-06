@@ -380,12 +380,6 @@ public class SpaceFleet : MonoBehaviour
         return total;
     }
 
-    public void NotifyInvestedMineralChanged()
-    {
-        int total = GetTotalInvestedMineral();
-        EventManager.TriggerInvestedMineralChanged(total);
-    }
-
     // 기함 반환 (positionIndex == 0, 없으면 첫 번째 non-null 함선)
     public SpaceShip GetFlagship()
     {

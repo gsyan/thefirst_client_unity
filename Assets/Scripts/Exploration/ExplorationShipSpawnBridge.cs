@@ -7,7 +7,7 @@ using UnityEngine;
 public static class ExplorationShipSpawnBridge
 {
     // positionIndex는 함대편성 UI 슬롯 인덱스와 반드시 일치해야 함 — 중간 슬롯이 비어도(null) 재번호 없이 그 인덱스 그대로 사용
-    public static SpaceShip SpawnShip(SpaceFleet fleet, ShipPresetData preset, ShipFinalStats finalStats, int positionIndex, bool isFront)
+    public static SpaceShip SpawnShip(SpaceFleet fleet, ShipPresetData preset, ShipFinalStats finalStats, int positionIndex, bool isFront, float statMultiplier = 1f)
     {
         if (fleet == null || preset == null) return null;
 
@@ -15,10 +15,10 @@ public static class ExplorationShipSpawnBridge
 
         GameObject shipGo = new GameObject(preset.presetId);
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
-        spaceShip.m_bodyMultiplier = 1f;
-        spaceShip.m_beamMultiplier = 1f;
-        spaceShip.m_missileMultiplier = 1f;
-        spaceShip.m_hangerMultiplier = 1f;
+        spaceShip.m_bodyMultiplier = statMultiplier;
+        spaceShip.m_beamMultiplier = statMultiplier;
+        spaceShip.m_missileMultiplier = statMultiplier;
+        spaceShip.m_hangerMultiplier = statMultiplier;
         spaceShip.InitializeSpaceShip(fleet, shipInfo, finalStats);
         // bWarp=false — 워프 이펙트 없이 최종 대형 위치로 즉시 배치 (UpdateShipFormation이 그 자리를 잡아줌)
         fleet.AddShip(spaceShip, bWarp: false);

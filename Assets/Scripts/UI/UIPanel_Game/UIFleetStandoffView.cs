@@ -6,7 +6,6 @@
 // 내 함선 클릭 → UIPanelSpace.OnShipSelectedAutoTabSwitch가 UIPanelFleet을 열고, 그 열림/닫힘에 맞춰 이 화면은 좌측 EnemyFleetCamera를 숨김/복원함(OnFleetCompositionPanelChanged)
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -17,7 +16,6 @@ public class UIFleetStandoffView : MonoBehaviour
     private const float k_myFleetViewportX = 0.5f; // 내 함대(메인카메라) 쪽 — 우측 절반, 고정 50/50(이 대치 화면 한정. 유동 폭이 필요한 로비 함대편성 UI와는 별개)
 
     [SerializeField] private Camera m_enemyFleetCamera; // Rect: 좌측 절반 (0, 0, 0.5, 1) — 이 화면 전용 카메라
-    [SerializeField] private Button m_backButton;        // 함대설정 버튼이 ButtonContainer 안에 있어 뷰가 열리면 같이 숨겨지므로, 복귀 전용 버튼을 이 뷰 안에 별도로 둠
     [SerializeField] private RectTransform m_dividerLine; // 좌우 분할 경계선 — 정적 50% 고정이 아니라 매 프레임 카메라 rect의 왼쪽 경계(GetViewportX)를 따라감
 
     [SerializeField] private float m_viewDistance = 20f;  // 적함대 카메라 — 함대 중심에서 카메라까지 거리
@@ -29,12 +27,12 @@ public class UIFleetStandoffView : MonoBehaviour
     [SerializeField] private float m_initialYaw = 21.9377365f;
     [SerializeField] private float m_initialPitch = 15.1318998f;
 
-    private System.Action m_onClose;
-
     private const float k_pitchClampDeg = 80f; // 카메라가 함대를 정수리/바닥에서 내려다보며 뒤집히지 않게 제한
+    private const float k_positionLerpSpeed = 10f; // CameraController.k_positionLerpSpeed와 동일 값 — 워프인 등 타겟 이동을 부드럽게 추종
 
     private Transform m_enemyFleetTransform;
     private SpaceFleet m_enemyFleet;
+    private Vector3 m_interpolatedEnemyPosition; // 카메라가 실제로 바라보는(보간된) 함대 위치 — 타겟 원본 위치를 그대로 스냅하지 않음
     private float m_enemyYaw;
     private float m_enemyPitch;
     private bool m_isDraggingEnemy;
@@ -47,12 +45,6 @@ public class UIFleetStandoffView : MonoBehaviour
     // ProcessEnemyAreaTap이 세팅하고 OnFleetPanelChanged가 소비 — CurrentPanelChanged 이벤트가 UIPanelFleet.OnShowUIPanel보다
     // 먼저 발행되어 그 시점엔 UIPanelFleet.m_isReadOnlyMode를 아직 믿을 수 없으므로, 호출부가 직접 기억해뒀다가 알려줌
     private bool m_pendingEnemyReadOnlyOpen;
-
-    private void Awake()
-    {
-        if (m_backButton != null)
-            m_backButton.onClick.AddListener(OnClickBack);
-    }
 
     private void OnEnable()
     {
@@ -97,14 +89,13 @@ public class UIFleetStandoffView : MonoBehaviour
         }
     }
 
-    // onClose: 이 뷰를 닫을 때 호출부(UIPanelPrepareBattle)가 3버튼 UI를 다시 보여주기 위한 콜백
-    public void Open(SpaceFleet myFleet, SpaceFleet enemyFleet, System.Action onClose)
+    public void Open(SpaceFleet myFleet, SpaceFleet enemyFleet)
     {
         if (myFleet == null || enemyFleet == null) return;
 
-        m_onClose = onClose;
         m_enemyFleetTransform = enemyFleet.transform;
         m_enemyFleet = enemyFleet;
+        m_interpolatedEnemyPosition = enemyFleet.transform.position; // 보간 시작점을 실제 위치로 스냅 — 원점(0,0,0)에서부터 날아오는 것처럼 보이는 것 방지
         m_enemyYaw = m_initialYaw;
         m_enemyPitch = m_initialPitch;
         m_isDraggingEnemy = false;
@@ -156,6 +147,14 @@ public class UIFleetStandoffView : MonoBehaviour
         HandleEnemyCameraDrag();
         HandleEnemyCameraClick();
         UpdateDividerLinePosition();
+    }
+
+    // 타겟(적 함대)의 이동은 각자의 Update()에서 일어나므로, 그 이후인 LateUpdate에서 위치를 읽어야
+    // 이번 프레임 이동이 반영된 최신 위치를 보간할 수 있음(CameraController.LateUpdate와 동일 이유) — Update에서 읽으면 떨림 발생
+    private void LateUpdate()
+    {
+        if (m_enemyFleetCamera != null && m_enemyFleetCamera.gameObject.activeInHierarchy == true)
+            UpdateEnemyCameraOrbit();
     }
 
     // 좌측(적함대) 영역 좌클릭/탭 — 우클릭 드래그(회전)와 별개 입력. 함선 명중 시 UIPanelFleet을 읽기전용 모드로 열어 그 함선을 선택,
@@ -329,25 +328,22 @@ public class UIFleetStandoffView : MonoBehaviour
 
         m_enemyYaw += dragDelta.x * m_rotationSpeed;
         m_enemyPitch = Mathf.Clamp(m_enemyPitch - dragDelta.y * m_rotationSpeed, -k_pitchClampDeg, k_pitchClampDeg);
-        UpdateEnemyCameraOrbit();
+        // 위치/회전 반영은 LateUpdate에서 일괄 처리(CameraController와 동일 패턴) — 여기선 각도값만 갱신
     }
 
-    private void OnClickBack()
-    {
-        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
-        Close();
-
-        if (m_onClose != null) m_onClose();
-    }
-
+    // CameraController.LateUpdate와 동일한 이유로 LateUpdate에서 위치를 읽음(타겟 이동은 각자의 Update에서 일어나므로,
+    // 그 이후에 읽어야 이번 프레임 이동분까지 반영된 최신 위치를 따라감 — Update에서 읽으면 스크립트 실행 순서에 따라 한 프레임씩 어긋나며 떨림)
     private void UpdateEnemyCameraOrbit()
     {
         if (m_enemyFleetTransform == null) return;
 
+        // 워프인 등으로 함대가 계속 움직여도 카메라가 순간이동하듯 튀지 않도록, 목표 위치를 그대로 스냅하지 않고 부드럽게 보간
+        m_interpolatedEnemyPosition = Vector3.Lerp(m_interpolatedEnemyPosition, m_enemyFleetTransform.position, k_positionLerpSpeed * Time.unscaledDeltaTime);
+
         Vector3 baseOffset = Vector3.back * m_viewDistance + Vector3.up * m_viewHeight;
         Vector3 rotatedOffset = Quaternion.Euler(m_enemyPitch, m_enemyYaw, 0f) * baseOffset;
-        m_enemyFleetCamera.transform.position = m_enemyFleetTransform.position + rotatedOffset;
-        m_enemyFleetCamera.transform.LookAt(m_enemyFleetTransform.position);
+        m_enemyFleetCamera.transform.position = m_interpolatedEnemyPosition + rotatedOffset;
+        m_enemyFleetCamera.transform.LookAt(m_interpolatedEnemyPosition);
     }
 
     // 특정 스크린 좌표가 UI 위인지 직접 레이캐스트로 판정 — EventSystem.IsPointerOverGameObject()의 파라미터 없는 버전은

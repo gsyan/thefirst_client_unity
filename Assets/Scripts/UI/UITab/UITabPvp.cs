@@ -87,14 +87,14 @@ public class UITabPvp : UITabBase
         string title = Commander.GetDisplayName(opponent.commanderName, opponent.commanderId);
         string message = LocalizationManager.Instance.Get("pvp_opponent_info", new object[] { opponent.pvpScore, opponent.rank });
 
-        var rows = new System.Collections.Generic.List<(string icon, string value)>
+        var rows = new System.Collections.Generic.List<(string label, string value)>
         {
-            ("icon_ship",      shipCount.ToString()),
-            ("techno-heart",   CommonUtility.FormatBigNumber(stats.health)),
-            ("bubbling-beam",  CommonUtility.FormatBigNumber(stats.attack)),
+            ("UIFleet_PlacedShipCount", shipCount.ToString()),
+            ("UIFleet_Stats_Health",    CommonUtility.FormatBigNumber(stats.health)),
+            ("UIFleet_Stats_BeamDps",   CommonUtility.FormatBigNumber(stats.attack)),
         };
         if (stats.airCount > 0)
-            rows.Add(("jet-fighter", stats.airCount.ToString()));
+            rows.Add(("UIPopupConfirm_AircraftCount", stats.airCount.ToString()));
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {

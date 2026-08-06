@@ -11,11 +11,11 @@ public class ConfirmPopupConfig
 {
     public string message;
     public string detailText;
-    public List<(string icon, string value, Color? color)> resultRows;
-    public bool resultRowsVertical; // true면 컨테이너당 1개씩 세로 배치
+    public List<(string label, string value, Color? color)> resultRows;
+    public bool resultRowsVertical; // 라벨+값 행은 항상 한 줄에 한 항목이라 현재는 무의미(시그니처 호환용으로만 유지)
     public string resultSectionTitle = "RESULT"; // resultRows 섹션 헤더 텍스트
     public List<ShipStatGaugeEntry> statGaugeRows; // 함선 스탯 게이지 목록(함대편성 배치가능 프리셋 클릭 등) — UISection과 별개로 m_sectionsRoot에 먼저 쌓임
-    public List<(string icon, string value)> pvpOpponentRows; // STATUS 섹션 (General.Bright1 색)
+    public List<(string label, string value)> pvpOpponentRows; // STATUS 섹션 (General.Bright1 색)
     public RequireStruct require;
     public CostStruct cost;
     public int refundAmount;
@@ -180,9 +180,8 @@ public class UIPopupConfirm : UIPopupBase
         int currentCommanderLevel = ch != null ? ch.GetCommanderLevel() : 0;
         bool requireMet = currentCommanderLevel >= require.commanderLevel;
 
-        string icon = require.commanderLevel > 0 ? "icon_tech" : string.Empty;
         string text = LocalizationManager.Instance.Get("require_level_compare", require.commanderLevel, currentCommanderLevel);
-        sec.SetRow(0, icon, CommonUtility.PaletteColor("General.Bright1"), requireMet ? text : $"<color=red>{text}</color>");
+        sec.SetRow(0, "UIPopupConfirm_RequireLevel", CommonUtility.PaletteColor("General.Bright1"), requireMet ? text : $"<color=red>{text}</color>");
 
         return requireMet;
     }
@@ -209,9 +208,17 @@ public class UIPopupConfirm : UIPopupBase
         bool canAfford = current >= cost.amount;
         string val = CommonUtility.FormatBigNumber(cost.amount);
         Color iconColor = GetCostColor(cost.costType);
-        sec.SetRow(0, "mineral_basic", iconColor, canAfford ? val : $"<color=red>{val}</color>");
+        sec.SetRow(0, GetCostLabelKey(cost.costType), iconColor, canAfford ? val : $"<color=red>{val}</color>");
 
         return canAfford;
+    }
+
+    private static string GetCostLabelKey(ECostType costType)
+    {
+        if (costType == ECostType.Mineral) return "mineral_amount";
+        if (costType == ECostType.ModulePoint) return "UITabTech_ModulePointGetTitle";
+        if (costType == ECostType.PvpPoint) return "UIPopupConfirm_PvpPointLabel";
+        return "mineral_amount";
     }
 
     // 함선 스탯 게이지 목록 — UISection 풀과 별개 캐시로 관리, m_statsRoot에 별도로 쌓임(섹션들과 부모가 달라 순서 무관)
@@ -267,7 +274,7 @@ public class UIPopupConfirm : UIPopupBase
             m_statGaugeRowCache[i].Hide();
     }
 
-    private void BuildResultRows(List<(string icon, string value, Color? color)> rows, bool vertical, string title, ref int sectionIdx)
+    private void BuildResultRows(List<(string label, string value, Color? color)> rows, bool vertical, string title, ref int sectionIdx)
     {
         if (rows == null || rows.Count <= 0)
             return;
@@ -281,7 +288,7 @@ public class UIPopupConfirm : UIPopupBase
             sec.SetRows(rows);
     }
 
-    private void BuildPvpOpponentSection(List<(string icon, string value)> rows, ref int sectionIdx)
+    private void BuildPvpOpponentSection(List<(string label, string value)> rows, ref int sectionIdx)
     {
         if (rows == null || rows.Count <= 0)
             return;
@@ -301,7 +308,7 @@ public class UIPopupConfirm : UIPopupBase
         sec.gameObject.name = "UISection_Refund";
         sec.SetTitle("REFUND");
         sec.HideAllRows();
-        sec.SetRow(0, "mineral_basic", CommonUtility.PaletteColor("Mineral"), CommonUtility.FormatBigNumber(refundAmount));
+        sec.SetRow(0, "mineral_amount", CommonUtility.PaletteColor("Mineral"), CommonUtility.FormatBigNumber(refundAmount));
     }
 
     private void BuildRewardSection(List<int> amounts, int mineralVipMultiplier, ref int sectionIdx)
@@ -321,6 +328,7 @@ public class UIPopupConfirm : UIPopupBase
         sec.gameObject.name = "UISection_Reward";
         sec.SetTitle("REWARD");
         sec.HideAllRows();
+        int rowIdx = 0;
         for (int i = 0; i < amounts.Count; i++)
         {
             if (amounts[i] > 0)
@@ -328,12 +336,21 @@ public class UIPopupConfirm : UIPopupBase
                 string text = CommonUtility.FormatBigNumber(amounts[i]);
                 if (i == 0 && mineralVipMultiplier > 0)
                     text = $"{text} × {mineralVipMultiplier}(VIP)";
-                sec.SetRow(i, "mineral_basic", GetRewardColor(i), text);
+                sec.SetRow(rowIdx, GetRewardLabelKey(i), GetRewardColor(i), text);
+                rowIdx++;
             }
         }
     }
 
     // rewardAmounts 규약: index0=exp, index1=explorationPoint, index2=pvpPoint(미네랄/모듈포인트는 이 팝업에서 제거됨)
+    private static string GetRewardLabelKey(int rewardIndex)
+    {
+        if (rewardIndex == 0) return "UIPopupConfirm_ExpLabel";
+        if (rewardIndex == 1) return "UIPanelExplorationGrid_OwnedPoint";
+        if (rewardIndex == 2) return "UIPopupConfirm_PvpPointLabel";
+        return "mineral_amount";
+    }
+
     private static Color GetRewardColor(int rewardIndex)
     {
         if (rewardIndex == 0) return CommonUtility.PaletteColor("Commander");

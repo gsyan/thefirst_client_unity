@@ -1,21 +1,22 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-// 섹션 헤더 구분선 + RowImageTextContainer(들)을 묶는 섹션 단위 컴포넌트.
-// RowImageTextContainer가 여러 개인 경우(2열 등) 리스트를 순서대로 컨테이너에 분배.
+// 섹션 헤더 구분선 + RowLabelValue(라벨+값) 행들을 묶는 섹션 단위 컴포넌트.
+// 행은 개수 제한 없이 필요한 만큼 풀링(Instantiate)해서 씀 — 아이콘 그리드 시절의 컨테이너 개념은 없음(라벨+값은 항상 한 줄에 한 항목).
 public class UISection : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_titleText;
+    [SerializeField] private RowLabelValue m_rowPrefab;
+    [SerializeField] private Transform m_rowsRoot;
 
-    private RowImageTextContainer[] m_containers;
-    private RowImageText[] m_allRows;
+    private List<RowLabelValue> m_rowCache = new List<RowLabelValue>();
 
     private void Awake()
     {
-        m_containers = GetComponentsInChildren<RowImageTextContainer>(true);
-        m_allRows    = GetComponentsInChildren<RowImageText>(true);
+        // 에디터에서 m_rowsRoot 밑에 미리 배치해둔 행이 있으면 그것부터 풀로 사용 — 부족한 만큼만 런타임에 Instantiate
+        if (m_rowsRoot != null)
+            m_rowCache.AddRange(m_rowsRoot.GetComponentsInChildren<RowLabelValue>(true));
     }
 
     public void SetTitle(string title)
@@ -29,170 +30,91 @@ public class UISection : MonoBehaviour
         gameObject.SetActive(visible);
     }
 
-    public int GetRowCount()
+    // 풀에서 index번째 행을 꺼냄 — 미리 배치된 행/이전에 만든 행이 있으면 그걸 재사용, 없으면 새로 Instantiate
+    private RowLabelValue GetOrCreateRow(int index)
     {
-        return m_allRows != null ? m_allRows.Length : 0;
+        RowLabelValue row;
+        if (index < m_rowCache.Count)
+        {
+            row = m_rowCache[index];
+        }
+        else
+        {
+            row = Instantiate(m_rowPrefab, m_rowsRoot);
+            m_rowCache.Add(row);
+        }
+        return row;
     }
 
-    // 모든 Row와 Container를 숨김
+    // 풀 전체를 숨김
     public void HideAllRows()
     {
-        if (m_containers == null) return;
-        for (int i = 0; i < m_containers.Length; i++)
-        {
-            m_containers[i].HideAll();
-            m_containers[i].gameObject.SetActive(false);
-        }
+        for (int i = 0; i < m_rowCache.Count; i++)
+            m_rowCache[i].Hide();
     }
 
-    // 전체 통합 인덱스로 특정 행 설정 (해당 Container 자동 활성화)
-    public void SetRow(int index, string icon, string text)
+    // 사용 개수 이후의 풀만 숨김 — SetRows류가 이미 사용한 행은 그대로 두고 남는 행만 정리할 때 사용
+    private void HideRowsFrom(int usedCount)
     {
-        if (m_allRows == null || index < 0 || index >= m_allRows.Length) return;
-        ActivateContainerForRow(index);
-        m_allRows[index].SetRow(icon, text);
+        for (int i = usedCount; i < m_rowCache.Count; i++)
+            m_rowCache[i].Hide();
     }
 
-    public void SetRow(int index, string icon, Color iconColor, string text)
+    public void SetRow(int index, string label, string value, bool rawLabel = false, bool rawValue = true)
     {
-        if (m_allRows == null || index < 0 || index >= m_allRows.Length) return;
-        ActivateContainerForRow(index);
-        m_allRows[index].SetRow(icon, text);
-        m_allRows[index].SetImageColor(iconColor);
+        RowLabelValue row = GetOrCreateRow(index);
+        row.SetRow(label, value, rawValue, rawLabel);
     }
 
-    public void SetRowText(int index, string text)
+    public void SetRow(int index, string label, Color valueColor, string value, bool rawLabel = false, bool rawValue = true)
     {
-        if (m_allRows == null || index < 0 || index >= m_allRows.Length) return;
-        ActivateContainerForRow(index);
-        m_allRows[index].SetTextWithString(text);
+        RowLabelValue row = GetOrCreateRow(index);
+        row.SetRow(label, value, rawValue, rawLabel);
+        row.SetValueColor(valueColor);
     }
 
-    public void HideRow(int index)
+    public void SetRows(List<(string label, string value)> rows)
     {
-        if (m_allRows == null || index < 0 || index >= m_allRows.Length) return;
-        m_allRows[index].Hide();
-    }
-
-    // 리스트를 컨테이너 단위로 순서대로 분배. 내용이 없는 컨테이너는 비활성화.
-    public void SetRows(List<(string icon, string value)> rows)
-    {
-        if (m_containers == null) return;
-        int globalIdx = 0;
-        for (int c = 0; c < m_containers.Length; c++)
-        {
-            m_containers[c].HideAll();
-            bool hasContent = rows != null && globalIdx < rows.Count;
-            m_containers[c].gameObject.SetActive(hasContent);
-            if (hasContent == false) continue;
-            int count = m_containers[c].GetRowCount();
-            for (int r = 0; r < count && globalIdx < rows.Count; r++, globalIdx++)
-                m_containers[c].SetRow(r, rows[globalIdx].icon, rows[globalIdx].value);
-        }
-    }
-
-    public void SetRows(List<(string icon, string value)> rows, Color iconColor)
-    {
-        SetRows(rows);
-        if (m_allRows == null) return;
         int count = rows != null ? rows.Count : 0;
-        for (int i = 0; i < count && i < m_allRows.Length; i++)
-            m_allRows[i].SetImageColor(iconColor);
+        for (int i = 0; i < count; i++)
+            SetRow(i, rows[i].label, rows[i].value);
+        HideRowsFrom(count);
     }
 
-    // 각 컨테이너에 항목 1개씩 배치 — 컨테이너가 수직 쌓임 시 세로 두 줄
-    public void SetRowsVertical(List<(string icon, string value)> rows)
+    public void SetRows(List<(string label, string value)> rows, Color valueColor)
     {
-        if (m_containers == null) return;
-        for (int i = 0; i < m_containers.Length; i++)
-        {
-            m_containers[i].HideAll();
-            bool hasContent = rows != null && i < rows.Count;
-            m_containers[i].gameObject.SetActive(hasContent);
-            if (hasContent == false) continue;
-            m_containers[i].SetRow(0, rows[i].icon, rows[i].value);
-        }
+        int count = rows != null ? rows.Count : 0;
+        for (int i = 0; i < count; i++)
+            SetRow(i, rows[i].label, valueColor, rows[i].value);
+        HideRowsFrom(count);
     }
 
-    public void SetRows(List<(string icon, string value, Color? color)> rows)
+    public void SetRows(List<(string label, string value, Color? color)> rows)
     {
-        if (m_containers == null) return;
-        int globalIdx = 0;
-        for (int c = 0; c < m_containers.Length; c++)
+        int count = rows != null ? rows.Count : 0;
+        for (int i = 0; i < count; i++)
         {
-            m_containers[c].HideAll();
-            bool hasContent = rows != null && globalIdx < rows.Count;
-            m_containers[c].gameObject.SetActive(hasContent);
-            if (hasContent == false) continue;
-            int count = m_containers[c].GetRowCount();
-            for (int r = 0; r < count && globalIdx < rows.Count; r++, globalIdx++)
-            {
-                m_containers[c].SetRow(r, rows[globalIdx].icon, rows[globalIdx].value);
-                // color가 null이면 RowImageText 자체 기본색(General.Dark1/Text.Dark1)을 그대로 둠
-                if (rows[globalIdx].color.HasValue)
-                {
-                    m_containers[c].SetRowImageColor(r, rows[globalIdx].color.Value);
-                    m_containers[c].SetRowTextColor(r, rows[globalIdx].color.Value);
-                }
-            }
-        }
-    }
-
-    public void SetRowsVertical(List<(string icon, string value, Color? color)> rows)
-    {
-        if (m_containers == null) return;
-        for (int i = 0; i < m_containers.Length; i++)
-        {
-            m_containers[i].HideAll();
-            bool hasContent = rows != null && i < rows.Count;
-            m_containers[i].gameObject.SetActive(hasContent);
-            if (hasContent == false) continue;
-            m_containers[i].SetRow(0, rows[i].icon, rows[i].value);
-            // color가 null이면 RowImageText 자체 기본색(General.Dark1/Text.Dark1)을 그대로 둠
+            // color가 null이면 RowLabelValue 프리팹 기본색을 그대로 둠
             if (rows[i].color.HasValue)
-            {
-                m_containers[i].SetRowImageColor(0, rows[i].color.Value);
-                m_containers[i].SetRowTextColor(0, rows[i].color.Value);
-            }
+                SetRow(i, rows[i].label, rows[i].color.Value, rows[i].value);
+            else
+                SetRow(i, rows[i].label, rows[i].value);
         }
+        HideRowsFrom(count);
     }
 
-    // Row → Container → Section 순서로 레이아웃 재빌드 (ContentSizeFitter가 있는 경우 bottom-up 필수)
+    // 라벨+값 행은 원래부터 한 줄에 한 항목이라 vertical 여부와 무관하게 동일하게 동작 — 호출부 시그니처 호환용으로만 남김
+    public void SetRowsVertical(List<(string label, string value)> rows) => SetRows(rows);
+    public void SetRowsVertical(List<(string label, string value, Color? color)> rows) => SetRows(rows);
+
+    // Row → Section 순서로 레이아웃 재빌드 (ContentSizeFitter가 있는 경우 bottom-up 필수)
     public void RebuildLayout()
     {
-        if (m_allRows != null)
+        for (int i = 0; i < m_rowCache.Count; i++)
         {
-            for (int i = 0; i < m_allRows.Length; i++)
-            {
-                if (m_allRows[i].gameObject.activeInHierarchy == true)
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(m_allRows[i].GetComponent<RectTransform>());
-            }
+            if (m_rowCache[i].gameObject.activeInHierarchy == true)
+                UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(m_rowCache[i].transform as RectTransform);
         }
-        if (m_containers != null)
-        {
-            for (int i = 0; i < m_containers.Length; i++)
-            {
-                if (m_containers[i].gameObject.activeSelf == true)
-                    m_containers[i].RebuildLayout();
-            }
-        }
-        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
-    }
-
-    // rowIndex가 속한 Container를 활성화
-    private void ActivateContainerForRow(int rowIndex)
-    {
-        if (m_containers == null) return;
-        int offset = 0;
-        for (int c = 0; c < m_containers.Length; c++)
-        {
-            int count = m_containers[c].GetRowCount();
-            if (rowIndex >= offset && rowIndex < offset + count)
-            {
-                m_containers[c].gameObject.SetActive(true);
-                return;
-            }
-            offset += count;
-        }
+        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 }

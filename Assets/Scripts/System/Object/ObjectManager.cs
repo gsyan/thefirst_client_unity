@@ -254,7 +254,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 탐사 그리드를 연 적이 없어도, UITabExplorationGrid가 실제로 계산할 것과 동일한 시작 셀 월드좌표를 미리 구함 —
     // 구식 스테이지 좌표(GetZoneFirstStage/ResolveFleetWorldPosition, 수천~만 단위 오프셋)는 신규 탐사 그리드가 쓰는
     // 좌표 공간(ZoneConfig.galaxyCameraTarget 기준)과 전혀 달라 그리드로 진입 시 함대가 엉뚱한 곳에서 튀어나오므로 주의
-    private Vector3 GetInitialGridStartCellPosition()
+    public Vector3 GetInitialGridStartCellPosition()
     {
         int zoneNumber = GetInitialZoneIndex();
         ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
@@ -698,7 +698,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     // 프리셋 함대 정보로 팀 소속 함대를 생성 — 플레이어/적 스폰 공통 로직
     // 카메라 타겟팅, Trigger_MyFleetSet 등 플레이어 전용 후처리는 호출부 책임
-    public SpaceFleet SpawnFleetFromPreset(FleetInfo fleetInfo, ETeam team, EFleetSource source, Vector3 position, Quaternion rotation, string fleetName)
+    public SpaceFleet SpawnFleetFromPreset(FleetInfo fleetInfo, ETeam team, EFleetSource source, Vector3 position, Quaternion rotation, string fleetName, float enemyStatMultiplier = 1f)
     {
         GameObject fleetObj = new GameObject(fleetName);
         fleetObj.transform.SetPositionAndRotation(position, rotation);
@@ -728,7 +728,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                     bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodySubType);
 
                 ShipFinalStats finalStats = ShipStatCalculator.Calculate(preset.statAllocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
-                ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats, shipIndex, shipSlot.isFront);
+                ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats, shipIndex, shipSlot.isFront, enemyStatMultiplier);
             }
         }
         // bWarp: false로 스폰된 함선들은 최종 대형 위치보다 뒤(-Z)에 멈춰있으므로, 연출 없이 즉시 최종 위치로 확정

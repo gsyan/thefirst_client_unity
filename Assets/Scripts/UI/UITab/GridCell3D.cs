@@ -18,11 +18,16 @@ public class GridCell3D : MonoBehaviour
 {
     [SerializeField] private Renderer m_renderer;       // 큐브 전체 — 모서리만 불투명, 중심은 투명해지는 페이드 텍스처 + 상태색 틴트
     [SerializeField] private TextMeshPro m_stateLabel;  // World Space 텍스트(Start/Escape/Cleared)
+    [SerializeField] private GridCellOrbitGlow m_orbitGlow; // 셀 외곽을 도는 발광 오브젝트 — Current/Reachable에서만 활성화
     [SerializeField] private string m_colorPropertyName = "_BaseColor"; // URP Lit/Unlit 기준. Built-in 셰이더면 "_Color"로 교체
+    [SerializeField] private string m_faceAlphaPropertyName = "_FaceAlpha"; // 면 채움 불투명도 — HoloGridCell 셰이더 전용 프로퍼티
     private Vector3 m_labelLocalOffset = new Vector3(0f, 60f, 0f); // 큐브 중심 기준 라벨 오프셋(월드 단위) — 큐브 윗면(m_cellHeight 절반)보다 살짝 위
     private float m_labelLocalScale = 30f; // k_cellWorldSize(800)에 맞춘 값 — 실제 화면 비율 보고 인스펙터에서 추가 조정
     [SerializeField] private float m_cellFillRatio = 0.85f; // 셀 간격(ExplorationGridGenerator.k_cellWorldSize) 대비 큐브가 채우는 비율 — 나머지는 셀 사이 틈
     [SerializeField] private float m_cellHeight = 80f; // 큐브 높이(월드 유닛) — 위아래로 납작한 정도
+    [SerializeField] private float m_unclearedFaceAlpha = 0.05f; // 시작점이 아니고 클리어 전인 셀의 면 채움 불투명도
+    [SerializeField] private float m_currentOrbitDuration = 2.2f; // Current 상태 외곽 발광이 한 바퀴 도는 데 걸리는 시간(초)
+    [SerializeField] private float m_reachableOrbitDuration = 3f; // Reachable 상태 외곽 발광이 한 바퀴 도는 데 걸리는 시간(초)
 
     private int m_row;
     private int m_col;
@@ -41,6 +46,13 @@ public class GridCell3D : MonoBehaviour
         if (m_propertyBlock == null) m_propertyBlock = new MaterialPropertyBlock();
 
         ApplyScale();
+
+        if (m_orbitGlow != null)
+        {
+            float orbitHalfExtent = ExplorationGridGenerator.k_cellWorldSize * m_cellFillRatio * 0.5f;
+            float orbitHeight = m_cellHeight * 0.5f + 5f; // 큐브 윗면보다 살짝 위에서 돌게
+            m_orbitGlow.SetPerimeter(orbitHalfExtent, orbitHeight);
+        }
 
         if (m_stateLabel != null)
         {
@@ -99,6 +111,8 @@ public class GridCell3D : MonoBehaviour
         }
         if (gameObject.activeSelf == false) gameObject.SetActive(true);
 
+        bool isCleared = state == EGridCellVisualState.Cleared;
+
         Color fillColor;
         switch (state)
         {
@@ -109,35 +123,52 @@ public class GridCell3D : MonoBehaviour
                 fillColor = CommonUtility.PaletteColor("Unlocked");
                 break;
             case EGridCellVisualState.Cleared:
-                fillColor = CommonUtility.PaletteColor("General.Dark1");
+                // 시작점은 Cleared 색(General.Dark1)이 배경과 거의 구분 안 돼 모서리까지 안 보이는 문제 방지 — Unvisited와 같은 톤 유지
+                fillColor = m_isStart == true ? CommonUtility.PaletteColor("Zone.Locked") : CommonUtility.PaletteColor("General.Dark1");
                 break;
             default: // Unvisited
                 fillColor = CommonUtility.PaletteColor("Zone.Locked");
                 break;
         }
 
-        ApplyColor(fillColor);
-        UpdateStateLabel(state == EGridCellVisualState.Cleared);
+        // 시작점은 처음부터 투명, 클리어 전이면 반투명 채움, 클리어되면 다시 투명
+        float faceAlpha = (m_isStart == true || isCleared == true) ? 0f : m_unclearedFaceAlpha;
 
+        ApplyColor(fillColor, faceAlpha);
+        UpdateStateLabel(isCleared);
+
+        // 외곽 발광은 항상 그 셀의 모서리 색과 동일하게 — 별도 색으로 튀지 않게
         if (state == EGridCellVisualState.Reachable)
-            m_blinkCoroutine = StartCoroutine(BlinkRoutine());
+        {
+            m_blinkCoroutine = StartCoroutine(BlinkRoutine(faceAlpha));
+            if (m_orbitGlow != null) m_orbitGlow.StartOrbit(fillColor, m_reachableOrbitDuration);
+        }
+        else if (state == EGridCellVisualState.Current)
+        {
+            if (m_orbitGlow != null) m_orbitGlow.StartOrbit(fillColor, m_currentOrbitDuration);
+        }
+        else
+        {
+            if (m_orbitGlow != null) m_orbitGlow.StopOrbit();
+        }
     }
 
-    private void ApplyColor(Color color)
+    private void ApplyColor(Color color, float faceAlpha)
     {
         if (m_renderer == null) return;
         m_renderer.GetPropertyBlock(m_propertyBlock);
         m_propertyBlock.SetColor(m_colorPropertyName, color);
+        m_propertyBlock.SetFloat(m_faceAlphaPropertyName, faceAlpha);
         m_renderer.SetPropertyBlock(m_propertyBlock);
     }
 
-    private IEnumerator BlinkRoutine()
+    private IEnumerator BlinkRoutine(float faceAlpha)
     {
         Color baseColor = CommonUtility.PaletteColor("Unlocked");
         while (true)
         {
             float blinkPhase = (Mathf.Sin(Time.time * 4f) + 1f) * 0.5f;
-            ApplyColor(Color.Lerp(baseColor, Color.white, blinkPhase));
+            ApplyColor(Color.Lerp(baseColor, Color.white, blinkPhase), faceAlpha);
             yield return null;
         }
     }
@@ -154,5 +185,6 @@ public class GridCell3D : MonoBehaviour
     private void OnDisable()
     {
         StopBlink();
+        if (m_orbitGlow != null) m_orbitGlow.StopOrbit();
     }
 }

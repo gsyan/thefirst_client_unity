@@ -220,6 +220,8 @@ public class UIManager : MonoSingleton<UIManager>
     {
         if (panel.gameObject == null) return;
 
+        panel.transform.SetAsLastSibling(); // 최근에 연 패널이 하이라키 최상단(=렌더 최상위)에 오도록 — 이전에 열려있던 패널을 가리며 나타남
+
         if (useAnimation == true)
             StartPanelAnimation(panel.gameObject, true);
         else
@@ -482,12 +484,10 @@ public class UIManager : MonoSingleton<UIManager>
         int prevLevel        = newLevel - 1;
         int shipCount        = DataManager.Instance.m_dataTableCommander.GetShipCount(newLevel);
         int prevShipCount    = DataManager.Instance.m_dataTableCommander.GetShipCount(prevLevel);
-        var loc = LocalizationManager.Instance;
-        string shipLabel   = loc.Get("UITabCommander_ShipCountMaxTitle");
         Color defaultColor = CommonUtility.PaletteColor("General.Bright1");
-        var rows = new List<(string icon, string value, Color? color)>();
+        var rows = new List<(string label, string value, Color? color)>();
         if (shipCount != prevShipCount)
-            rows.Add(("icon_ship", $"{shipLabel}  {shipCount}", defaultColor));
+            rows.Add(("UITabCommander_ShipCountMaxTitle", shipCount.ToString(), defaultColor));
         ShowConfirmPopup(new ConfirmPopupConfig
         {
             message            = LocalizationManager.Instance.Get("UIPopupMessage_CommanderLevelupMessage"),

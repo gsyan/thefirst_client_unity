@@ -477,6 +477,7 @@ public class EscapeExplorationZoneResponse
     public int expGained;                // 확정 지급된 지휘관 경험치
     public int totalExp;                 // 반영 후 누적 경험치(권위값)
     public int commanderLevel;           // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
+    public int highestClearedZoneNumber; // 탈출 성공 시 갱신된 값(권위값) — 클라 GetInitialZoneIndex()가 이 값 기준으로 다음 존을 계산
 }
 
 [System.Serializable]

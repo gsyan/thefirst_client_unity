@@ -16,6 +16,9 @@ public class GameSettings
     [Tooltip("함선 추가 시 필요한 ModulePoint 비용")]
     public int addShipCost = 10;
 
+    [Tooltip("신규 지휘관 생성 시 초기 지휘력 최대치")]
+    public int commandPowerMaxInit = 120;
+
 [Header("Pvp Settings")]
     public int pvpMinCommanderLevel = 2;
     public int pvpListCount = 3;
@@ -73,16 +76,11 @@ public class ShipStatFormulaSettings
 [System.Serializable]
 public class BeamFormula
 {
-    public int installCost = 200;
-    public float baseAttack = 20f;
     [Tooltip("공격력 강화 1포인트당 가산")]
     public float attackPerPoint = 0.1f;
-    [Tooltip("연사력(쿨다운) 기본값 — 낮을수록 빠른 연사")]
-    public float baseAttackCool = 3f;
     [Tooltip("연사력 강화 1포인트당 쿨다운 감소량")]
     public float attackCoolReductionPerPoint = 0.02f;
     public float attackCoolFloor = 0.5f;
-    public float baseProjectileSpeed = 50f;
     [Tooltip("발사체 속도 강화 1포인트당 가산")]
     public float projectileSpeedPerPoint = 1f;
 }
@@ -90,20 +88,13 @@ public class BeamFormula
 [System.Serializable]
 public class MissileFormula
 {
-    public int installCost = 200;
-    public float baseAttack = 20f;
     [Tooltip("공격력 강화 1포인트당 가산")]
     public float attackPerPoint = 0.1f;
-    [Tooltip("연사력(쿨다운) 기본값 — 낮을수록 빠른 연사")]
-    public float baseAttackCool = 3f;
     [Tooltip("연사력 강화 1포인트당 쿨다운 감소량")]
     public float attackCoolReductionPerPoint = 0.02f;
     public float attackCoolFloor = 0.5f;
-    public float baseProjectileSpeed = 50f;
     [Tooltip("발사체 속도 강화 1포인트당 가산")]
     public float projectileSpeedPerPoint = 1f;
-    [Tooltip("적중 시 대상 무장 침묵 시간 기본값(초)")]
-    public float baseSilenceTime = 0f;
     [Tooltip("침묵 강화 1포인트당 침묵 시간 가산(초)")]
     public float silenceTimePerPoint = 0.1f;
 }
@@ -111,7 +102,6 @@ public class MissileFormula
 [System.Serializable]
 public class HangarFormula
 {
-    public int installCost = 200;
     public float baseShipAttack = 10f;
     public float baseFighterAttack = 10f;
     public float baseAmmo = 10f;
@@ -123,10 +113,6 @@ public class HangarFormula
 [System.Serializable]
 public class ShieldFormula
 {
-    public int installCost = 200;
-    public float baseGauge = 100f;
-    public float baseDelay = 5f;
-    public float baseRegenRate = 5f;
     public float gaugePerPoint = 0.5f;
     public float delayReductionPerPoint = 0.02f;
     public float regenRatePerPoint = 0.1f;
@@ -136,10 +122,7 @@ public class ShieldFormula
 [System.Serializable]
 public class InterceptorFormula
 {
-    [Tooltip("딜레이/회복속도 기본값·계수는 실드와 동일하게 임시 적용 — 실측 후 별도 조정 필요 (미확정)")]
-    public int installCost = 100;
-    public float baseDelay = 5f;
-    public float baseRegenRate = 5f;
+    [Tooltip("딜레이/회복속도 계수는 실드와 동일하게 임시 적용 — 실측 후 별도 조정 필요 (미확정)")]
     public float delayReductionPerPoint = 0.02f;
     public float regenRatePerPoint = 0.1f;
     public float delayFloor = 1f;

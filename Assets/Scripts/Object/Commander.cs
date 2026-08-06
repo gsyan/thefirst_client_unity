@@ -56,7 +56,6 @@ public class Commander
     {
         if (m_commanderInfo == null) return;
         m_commanderInfo.modulePoint = modulePoint;
-        EventManager.TriggerModulePointChanged(modulePoint);
     }
 
     public void UpdateModulePointMaxGot(int modulePointMaxGot)
@@ -138,7 +137,6 @@ public class Commander
     {
         if (m_commanderInfo == null) return;
         m_commanderInfo.mineral = mineral;
-        EventManager.TriggerMineralChange(mineral);
     }
 
 
@@ -154,7 +152,6 @@ public class Commander
         if (m_commanderInfo == null) return false;
         if (m_commanderInfo.mineral < amount) return false;
         m_commanderInfo.mineral -= amount;
-        EventManager.TriggerMineralChange(m_commanderInfo.mineral);
         return true;
     }
 

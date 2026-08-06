@@ -166,7 +166,6 @@ UITabRank_Exploration,,EXPLORATION,탐사
 UITabExploration_exploration,,EXPLORATION,탐사
 UITabExploration_TryZone,,Enter,입장
 UITabExploration_PreviousStageRequired,,Clear the previous stage first.,이전 스테이지를 먼저 클리어해야 합니다.
-UITabExploration_RetreatTitle,,Retreat,퇴각
 UITabExploration_RetreatConfirm,,Retreat to the previous zone?,이전 구역으로 퇴각하시겠습니까?
 UIPrepareBattle_Retreat,,Retreat,퇴각
 UIPrepareBattle_FleetSettings,,Fleet Settings,함대 설정
@@ -174,6 +173,10 @@ UIPrepareBattle_StartBattle,,Start Battle,전투 시작
 UITabPvp_RetreatTitle,,Retreat,퇴각
 UITabPvp_RetreatConfirm,,Retreat from the PvP battle?,PvP 전투에서 퇴각하시겠습니까?
 require_level_compare,,Lv.{0} (Current Lv.{1}),Lv.{0} (현재 Lv.{1})
+UIPopupConfirm_RequireLevel,,Required Level,필요 레벨
+UIPopupConfirm_PvpPointLabel,,PVP Point,PVP 포인트
+UIPopupConfirm_ExpLabel,,EXP,경험치
+UIPopupConfirm_AircraftCount,,Aircraft,함재기 수
 UITabShip_ShipNameHeader,,SHIP {0},함선 {0}
 UITabShip_ModuleSelectSectionText,,Module Select,모듈 선택
 UITabShip_ModuleStatusSectionText,,Module Status,모듈 상태

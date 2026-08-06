@@ -26,6 +26,7 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private int m_zoneGroupCount;
     private int m_pendingZoneNumber;
+    private bool m_pendingFleetRepositionForZoneAdvance; // 탈출 성공으로 다음 존이 확정된 뒤, 로컬 함대뷰로 나갈 때 함대를 새 존 시작 셀로 재배치해야 함을 표시
 
     private ExplorationGridData m_gridData;
     private int m_currentZoneNumber;
@@ -56,12 +57,30 @@ public class UIPanelExplorationGrid : UIPanelBase
     public override void InitializeUIPanel()
     {
         EventManager.Subscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
+        EventManager.Subscribe_RetreatExploration(OnRetreatDuringBattle);
 
         if (m_abandonRunButton != null)
             m_abandonRunButton.onClick.AddListener(OnAbandonRunButtonClicked);
 
         // 캔버스 계층 밖의 독립 루트 — 3D 셀이 UI Canvas의 스케일/회전에 영향받지 않도록 별도로 생성
         m_cellRoot = new GameObject("ExplorationGridCellRoot").transform;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
+        EventManager.Unsubscribe_RetreatExploration(OnRetreatDuringBattle);
+    }
+
+    // 전투 중 후퇴 버튼(UIPanelCameraView) — 확인 후 전투 강제 종료. 레거시 UITabExploration.OnRetreatZoneStage와 동일 패턴/로컬라이즈 키 재사용
+    private void OnRetreatDuringBattle()
+    {
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message   = LocalizationManager.Instance.Get("UITabExploration_RetreatConfirm"),
+            onConfirm = () => ObjectManager.Instance.ForceEndBattle(false),
+            onCancel  = () => { }
+        });
     }
 
     public override void OnShowUIPanel()
@@ -133,8 +152,19 @@ public class UIPanelExplorationGrid : UIPanelBase
             int correctZoneNumber = ObjectManager.Instance.GetInitialZoneIndex();
             ObjectManager.Instance.ChangeZone(correctZoneNumber);
 
-            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-            Vector3 returnPos = myFleet != null ? myFleet.transform.position : Vector3.zero;
+            Vector3 returnPos;
+            if (m_pendingFleetRepositionForZoneAdvance == true)
+            {
+                // 탈출 성공으로 새 존이 확정된 직후 — 함대를 새 존의 시작 셀로 옮겨야 함(기존 위치는 이전 존의 탈출 셀)
+                m_pendingFleetRepositionForZoneAdvance = false;
+                returnPos = ObjectManager.Instance.GetInitialGridStartCellPosition();
+                ObjectManager.Instance.SetMyFleetPosition(returnPos, 0f);
+            }
+            else
+            {
+                SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+                returnPos = myFleet != null ? myFleet.transform.position : Vector3.zero;
+            }
             CameraController.Instance.ExitGalaxyView(returnPos);
         }
     }
@@ -531,7 +561,9 @@ public class UIPanelExplorationGrid : UIPanelBase
         Quaternion enemyRot = Quaternion.LookRotation(myFleetPos - enemyPos);
 
         ETeam enemyTeam = ObjectManager.Instance.GetOpposingTeam(ObjectManager.Instance.m_myTeam);
-        SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet");
+        ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
+        float enemyStatMultiplier = zoneConfig != null ? zoneConfig.enemyStatMultiplier : 1f;
+        SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet", enemyStatMultiplier);
         m_standoffEnemyFleet = enemyFleet;
 
         myFleet.StartFleetWarpIn();
@@ -616,12 +648,16 @@ public class UIPanelExplorationGrid : UIPanelBase
         });
     }
 
-    // 전투 종료(승리/패배) 공통 이벤트 — 승리 시 서버에 클리어 통지 후 그리드(갤럭시뷰)로 복귀. 패배 처리는 범위 밖(추후 별도 작업)
+    // 전투 종료(승리/패배) 공통 이벤트 — 승리 시 서버에 클리어 통지 후 그리드(갤럭시뷰)로 복귀, 패배(퇴각 포함)는 이전 셀 위치로 되돌아감
     private void OnZoneStageBattleEnd(bool isVictory)
     {
-        if (isVictory == false) return;
-
         m_standoffEnemyFleet = null;
+
+        if (isVictory == false)
+        {
+            RestorePreviousCellAfterRetreat();
+            return;
+        }
 
         Debug.Log($"[DEBUG-CELL] ClearExplorationCellRequest zone={m_currentZoneNumber} row={m_currentRow} col={m_currentCol}");
         ClearExplorationCellRequest request = new ClearExplorationCellRequest
@@ -708,6 +744,8 @@ public class UIPanelExplorationGrid : UIPanelBase
                 ApplyOwnedPointRemain(response.data.explorationPointRemain);
                 ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
                 ClearActiveRunZoneCache();
+                ApplyHighestClearedZoneNumber(response.data.highestClearedZoneNumber);
+                m_pendingFleetRepositionForZoneAdvance = true;
             }
 
             UIManager.Instance.ShowPanel(panelName);
@@ -762,6 +800,15 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         commanderInfo.explorationZoneNumber = 0;
         commanderInfo.explorationCell = "";
+    }
+
+    // 탈출 성공 응답(권위값)을 즉시 반영해야, 이어지는 ShowPanel -> OnShowUIPanel의 GetInitialZoneIndex()가 다음 존을 정확히 계산함
+    private void ApplyHighestClearedZoneNumber(int highestClearedZoneNumber)
+    {
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo == null) return;
+
+        commanderInfo.highestClearedZoneNumber = highestClearedZoneNumber;
     }
 
     private void RefreshOwnedPointText()
@@ -824,6 +871,25 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_currentCol = m_previousCol;
         ObjectManager.Instance.SetMyFleetPosition(m_previousFleetWorldPos, 0f);
         CameraController.Instance.SnapToTarget(); // 함대가 순간이동했으므로 카메라도 즉시 스냅 — 워프인 때는 ExitGalaxyView가 미리 그 위치로 이동해둬서 필요 없었지만, 퇴각은 카메라 이동 없이 함대만 텔레포트되므로 별도 스냅 필요
+
+        UIManager.Instance.ShowPanel(panelName); // 승리/전투 중 퇴각과 동일하게 그리드(갤럭시뷰)로 복귀
+    }
+
+    // 전투 중 퇴각(패배 포함) — OnConfirmRetreat(대치 화면 퇴각)와 동일한 위치 복원. 적 함대 제거는 ForceEndBattle이 이미 처리했으므로 생략.
+    // 서버에 셀 클리어 통지를 하지 않으므로 이 셀은 클리어되지 않은 채로 남아 나중에 다시 도전 가능
+    private void RestorePreviousCellAfterRetreat()
+    {
+        m_currentRow = m_previousRow;
+        m_currentCol = m_previousCol;
+        ObjectManager.Instance.SetMyFleetPosition(m_previousFleetWorldPos, 0f);
+        CameraController.Instance.SnapToTarget();
+
+        // 퇴각 시 함대 체력 전액 회복 — 다음 셀 재도전을 손상된 상태로 시작하지 않게 함
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null)
+            myFleet.FullRepair();
+
+        UIManager.Instance.ShowPanel(panelName);
     }
 
     private void RefreshCellStates()

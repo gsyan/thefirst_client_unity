@@ -269,8 +269,10 @@ public class UIPanelCameraView : UIPanelBase
 
     public override void OnShowUIPanel()
     {
-        // 패널이 뜰 때 현재 viewport 비율로 즉시 위치 동기화 (비활성 중 놓친 이벤트 보정) - 없어도 작동 하나 혹시 나중을 위해 남겨둠
-        //OnViewportChanged(m_lastViewportRatio);
+        // 패널이 뜨는 시점에 실제 카메라 viewport로 강제 재동기화 — SetViewportRect()처럼 이벤트를 발행하지 않는 경로로
+        // 뷰포트가 바뀐 경우(UIFleetStandoffView.Close() 등) 이 패널이 그 변경을 이벤트로 못 받아 이전 값에 남아있던 문제 방지.
+        // OnViewportChanged는 인자(ratio)를 쓰지 않고 항상 CameraController의 "현재" 실제값을 다시 읽으므로 어떤 값을 넘기든 안전.
+        OnViewportChanged(0f);
 
         RefreshFormationButton();
     }

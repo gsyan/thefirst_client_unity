@@ -85,6 +85,7 @@ public class UIPanelFleet : UIPanelBase
             m_placedShipsScrollView.onItemBind = OnPlacedShipItemBind;
 
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
+        EventManager.Subscribe_MyFleetStateChanged(OnMyFleetStateChanged);
 
         if (m_increaseCommandPowerButton != null)
             m_increaseCommandPowerButton.onClick.AddListener(OnIncreaseCommandPowerButtonClicked);
@@ -97,6 +98,14 @@ public class UIPanelFleet : UIPanelBase
     private void OnDestroy()
     {
         EventManager.Unsubscribe_CommanderLevelChanged(OnCommanderLevelChanged);
+        EventManager.Unsubscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+    }
+
+    // 함대편성 UI가 열려있는 도중 전투가 시작/종료되면 프리셋 교체 버튼 활성 상태를 즉시 갱신
+    private void OnMyFleetStateChanged(EUnitState state)
+    {
+        if (gameObject.activeInHierarchy == false) return;
+        RefreshFleetComposition();
     }
 
     public override void OnShowUIPanel()
@@ -524,18 +533,21 @@ public class UIPanelFleet : UIPanelBase
         UIPlacedShipRow row = rowObject.GetComponent<UIPlacedShipRow>();
         if (row == null) return;
 
+        // 전투 중엔 편성 자체를 못 바꾸게 함 — 프리셋 교체/빈 슬롯 배치 모두 막고, 전방/후방 토글만 허용
+        bool isInBattle = m_targetFleet != null && m_targetFleet.m_fleetState.IsBattleState();
+        System.Action<int> onTypeSelectClicked = (m_isReadOnlyMode == true || isInBattle == true) ? null : OnShipTypeSelectClicked;
+
         if (dataIndex < m_placedShipsCache.Count)
         {
             PlacedShipView entry = m_placedShipsCache[dataIndex];
             System.Action<int, bool> onFrontToggled = m_isReadOnlyMode == true ? null : OnShipFrontToggled;
-            System.Action<int> onTypeSelectClicked = m_isReadOnlyMode == true ? null : OnShipTypeSelectClicked;
             row.Setup(dataIndex, entry.shipPresetId, entry.isFront, onFrontToggled, OnPlacedShipRowClickedFromUI, onTypeSelectClicked, showFrontToggle: m_isReadOnlyMode == false);
             row.SetSelected(dataIndex == m_selectedSlotIndex);
         }
         else if (dataIndex < m_placedOpenSlotCount)
         {
             // 빈 슬롯도 읽기전용 모드에선 애초에 m_placedOpenSlotCount==m_placedShipsCache.Count라 이 분기에 오지 않음 — 편집 모드 전용
-            row.SetEmpty(dataIndex, OnShipTypeSelectClicked);
+            row.SetEmpty(dataIndex, onTypeSelectClicked);
         }
         else
         {

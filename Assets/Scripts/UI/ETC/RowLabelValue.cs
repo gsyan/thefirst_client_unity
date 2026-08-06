@@ -1,11 +1,13 @@
 // 레이블(로컬라이제이션 키) + 값(로컬라이제이션 키 또는 raw 텍스트) 1행 UI 컴포넌트
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RowLabelValue : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_label;
     [SerializeField] private TMP_Text m_value1;
+    [SerializeField] private LayoutElement m_layoutElement;
 
     private void Awake()
     {
@@ -13,6 +15,15 @@ public class RowLabelValue : MonoBehaviour
             m_label = GetComponent<RectTransform>().GetChild(0).GetComponent<TMP_Text>();
         if (m_value1 == null)
             m_value1 = GetComponent<RectTransform>().GetChild(1).GetComponent<TMP_Text>();
+        if (m_layoutElement == null)
+            m_layoutElement = GetComponent<LayoutElement>();
+    }
+
+    // 호출부가 필요할 때만 명시적으로 부르는 폭 조절 — width<0이거나 LayoutElement가 없으면 무시
+    public void SetPreferredWidth(float width)
+    {
+        if (m_layoutElement == null || width < 0f) return;
+        m_layoutElement.preferredWidth = width;
     }
 
     // rawValue=true 이면 value를, rawLabel=true 이면 label을 로컬라이제이션 없이 직접 표시 (숫자, 아직 로컬라이즈 안 된 코드성 문자열 등)

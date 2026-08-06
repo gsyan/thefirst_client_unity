@@ -11,7 +11,7 @@ public class ShipStatAllocation
     public int turnRatePoints;
     public int repairPoints;
 
-    // Beam — 슬롯당 장착 서브타입(EModuleSubType 이름, 예: beam_t1_m1) + 속성별 강화 포인트(공격력/연사력/발사체속도). 빈 문자열 = 미장착. 장착 코스트는 shipStatFormula.beam.installCost
+    // Beam — 슬롯당 장착 서브타입(EModuleSubType 이름, 예: beam_t1_m1) + 속성별 강화 포인트(공격력/연사력/발사체속도). 빈 문자열 = 미장착
     public string[] beamModuleSubType = new string[0];
     public int[] beamAttackPoints = new int[0];
     public int[] beamFireRatePoints = new int[0];
