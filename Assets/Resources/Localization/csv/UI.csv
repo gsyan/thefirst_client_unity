@@ -3,7 +3,6 @@ empty_text,,,
 ok,,OK,확인
 tab_fleet,,Fleet,함대
 tab_ship,,Ship,함선
-
 tab_research,,Research,연구
 fleet_status,,Fleet Status,함대 정보
 fleet_ship_count,,Ships,함선 수
@@ -95,6 +94,7 @@ UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
 UIFleet_Front,,Front,전방
 UIFleet_Rear,,Rear,후방
+UIFleet_ConvertPoint,,Convert (Exploration Point <voffset=6>→</voffset> Command Power),포인트 전환(탐험 포인트 <voffset=6>→</voffset> 지휘력)
 UIFleet_PlacedShipCount,,Placed Ships,배치 함선 수
 UIFleet_PlaceShip,,Deploy Ship,함선 배치
 UIFleet_PlaceFailed_Locked,,This slot is locked. Raise your commander level to unlock it.,잠긴 슬롯입니다. 커맨더 레벨을 올려 슬롯을 해제하세요.
@@ -120,6 +120,8 @@ UIFleet_Stats_ShieldRegenRate,,Shield Regen Rate,실드 회복속도
 UIFleet_Stats_InterceptorReloadDelay,,Interceptor Reload Delay,요격체 보충 딜레이
 UIFleet_Stats_InterceptorRegenRate,,Interceptor Regen Rate,요격체 회복속도
 UIFleet_ShipPreset_Title,,Ship Preset,함선 프리셋
+UIFleet_ShipLoadOut_Title,,Ship Loadout,함선 모듈 관리
+UIFleet_EditLoadoutButton,,Edit,함선 수정
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
 UITabFleetTactics_NameShort,,TACTICS,전술
 UITabFleetTactics_FormationType_LinearHorizontal,,Balanced,균형
@@ -214,6 +216,8 @@ module_type_engine,,Engine,엔진
 module_type_beam,,Beam,빔
 module_type_missile,,Missile,미사일
 module_type_hanger,,Hanger,격납고
+UIFleet_ModuleSlot_Installed,,Installed,장착
+UIFleet_ModuleSlot_NotInstalled,,Not Installed,해제
 UIButton_Reset,,RESET,초기화
 Simple_WatchAD,,WATCH AD,광고 보기
 Simple_NoThanks,,NO THANKS,건너뛰기

@@ -3,6 +3,8 @@
 // 카테고리별 슬롯 상한(maxModuleSlots)은 DataTableConfig에서 관리 — 이 클래스는 배열 길이 그대로 사용
 // 슬롯 장착 여부는 별도 bool 배열로 관리(CSV 빈 칸 = 미장착)
 // Docs/Exploration_Revamp.md §1-1(장착+강화), §1-4(실드/요격체) 참고
+using System.Collections.Generic;
+
 [System.Serializable]
 public class ShipStatAllocation
 {
@@ -92,5 +94,60 @@ public class ShipStatAllocation
         if (System.Enum.TryParse(subTypeName, out EModuleSubType subType) == false) return 0;
         ModuleData data = moduleTable.GetModuleDataFromTable(subType);
         return data != null ? data.statPoint : 0;
+    }
+
+    // 커스터마이징된 함선 로드아웃(ShipInfo.bodies, on/off만 지원) → 전투 계산용 ShipStatAllocation 조립
+    // baseAllocation은 카테고리별 슬롯 배열 크기(=maxModuleSlots)의 출처로만 쓰고, 실제 장착 여부/서브타입은 bodies로 전부 덮어씀
+    // (on/off만 지원하므로 강화 포인트는 항상 0 — baseAllocation의 강화 포인트도 어차피 전부 0이라 별도 복사 불필요)
+    public static ShipStatAllocation BuildFromModuleBodyInfo(ShipStatAllocation baseAllocation, ModuleBodyInfo bodies)
+    {
+        if (bodies == null) return baseAllocation;
+
+        var result = new ShipStatAllocation
+        {
+            healthPoints = baseAllocation.healthPoints,
+            turnRatePoints = baseAllocation.turnRatePoints,
+            repairPoints = baseAllocation.repairPoints,
+            shieldModuleSubType = baseAllocation.shieldModuleSubType,
+            shieldGaugePoints = baseAllocation.shieldGaugePoints,
+            shieldDelayPoints = baseAllocation.shieldDelayPoints,
+            shieldRegenRatePoints = baseAllocation.shieldRegenRatePoints,
+            interceptorModuleSubType = baseAllocation.interceptorModuleSubType,
+            interceptorDelayPoints = baseAllocation.interceptorDelayPoints,
+            interceptorRegenRatePoints = baseAllocation.interceptorRegenRatePoints,
+        };
+
+        result.beamModuleSubType = new string[baseAllocation.beamModuleSubType.Length];
+        result.beamAttackPoints = new int[baseAllocation.beamModuleSubType.Length];
+        result.beamFireRatePoints = new int[baseAllocation.beamModuleSubType.Length];
+        result.beamProjectileSpeedPoints = new int[baseAllocation.beamModuleSubType.Length];
+        ApplyModulesToSlots(result.beamModuleSubType, bodies.beams);
+
+        result.missileModuleSubType = new string[baseAllocation.missileModuleSubType.Length];
+        result.missileAttackPoints = new int[baseAllocation.missileModuleSubType.Length];
+        result.missileFireRatePoints = new int[baseAllocation.missileModuleSubType.Length];
+        result.missileProjectileSpeedPoints = new int[baseAllocation.missileModuleSubType.Length];
+        result.missileSilencePoints = new int[baseAllocation.missileModuleSubType.Length];
+        ApplyModulesToSlots(result.missileModuleSubType, bodies.missiles);
+
+        result.hangarModuleSubType = new string[baseAllocation.hangarModuleSubType.Length];
+        result.hangarShipAttackPoints = new int[baseAllocation.hangarModuleSubType.Length];
+        result.hangarFighterAttackPoints = new int[baseAllocation.hangarModuleSubType.Length];
+        result.hangarAmmoPoints = new int[baseAllocation.hangarModuleSubType.Length];
+        result.hangarHealthPoints = new int[baseAllocation.hangarModuleSubType.Length];
+        ApplyModulesToSlots(result.hangarModuleSubType, bodies.hangers);
+
+        return result;
+    }
+
+    private static void ApplyModulesToSlots(string[] subTypeArray, List<ModuleInfo> modules)
+    {
+        if (modules == null) return;
+        for (int i = 0; i < modules.Count; i++)
+        {
+            int slotIndex = modules[i].slotIndex;
+            if (slotIndex < 0 || slotIndex >= subTypeArray.Length) continue;
+            subTypeArray[slotIndex] = modules[i].moduleSubType.ToString();
+        }
     }
 }

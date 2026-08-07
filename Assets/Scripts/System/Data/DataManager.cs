@@ -34,8 +34,8 @@ public class DataManager : Singleton<DataManager>
 
         m_currentCommander.UpdateCommanderInfo(commanderInfo);
 
-        // 탐험 함대 편성 — 지휘력 최대치는 서버 값, 프리셋 카탈로그는 로그인 이전(OnInitialize)에 이미 로드되어 있음
-        m_currentFleetComposition = new FleetComposition(commanderInfo.commandPowerMax, m_dataTableShipPreset.BuildLookupTable());
+        // 탐험 함대 편성 — 지휘력 최대치는 서버 값, 프리셋 카탈로그/모듈 테이블은 로그인 이전(OnInitialize)에 이미 로드되어 있음
+        m_currentFleetComposition = new FleetComposition(commanderInfo.commandPowerMax, m_dataTableShipPreset.BuildLookupTable(), m_dataTableModule);
         SeedFleetCompositionFromFleetInfoIfNeeded();
     }
 
@@ -61,7 +61,8 @@ public class DataManager : Singleton<DataManager>
         for (int i = 0; i < m_currentFleetInfo.ships.Count; i++)
         {
             ShipInfo shipInfo = m_currentFleetInfo.ships[i];
-            m_currentFleetComposition.TryPlaceShip(shipInfo.shipPresetId, shipInfo.isFront);
+            ModuleBodyInfo modules = shipInfo.bodies != null && shipInfo.bodies.Count > 0 ? shipInfo.bodies[0] : null;
+            m_currentFleetComposition.TryPlaceShip(shipInfo.shipPresetId, shipInfo.isFront, modules);
         }
     }
     #endregion

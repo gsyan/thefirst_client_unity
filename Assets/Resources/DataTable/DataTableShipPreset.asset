@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: DataTableShipPreset
   m_EditorClassIdentifier: Assembly-CSharp::DataTableShipPreset
   shipPresetDataList:
-  - presetId: m111b1
+  - presetId: m11100
     unlockCommanderLevel: 1
-    displayNameKey: ShipPreset_M111B1
     prefabName: body_t1_m111
     commandCost: 120
     statAllocation:
@@ -67,126 +66,547 @@ MonoBehaviour:
       shieldGaugePoints: 0
       shieldDelayPoints: 0
       shieldRegenRatePoints: 0
-  - presetId: m111b1m1
+  - presetId: m21100
     unlockCommanderLevel: 1
-    displayNameKey: ShipPreset_M111B1M1
-    prefabName: body_t1_m111
-    commandCost: 140
-    statAllocation:
-      healthPoints: 0
-      turnRatePoints: 0
-      repairPoints: 0
-      beamModuleSubType:
-      - beam_t1
-      - 
-      - 
-      - 
-      - 
-      - 
-      beamAttackPoints: 000000000000000000000000000000000000000000000000
-      beamFireRatePoints: 000000000000000000000000000000000000000000000000
-      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
-      missileModuleSubType:
-      - missile_t1
-      - 
-      - 
-      - 
-      - 
-      - 
-      missileAttackPoints: 000000000000000000000000000000000000000000000000
-      missileFireRatePoints: 000000000000000000000000000000000000000000000000
-      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
-      missileSilencePoints: 000000000000000000000000000000000000000000000000
-      hangarModuleSubType:
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
-      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
-      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
-      hangarHealthPoints: 000000000000000000000000000000000000000000000000
-      interceptorModuleSubType:
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
-      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
-      shieldModuleSubType: 
-      shieldGaugePoints: 0
-      shieldDelayPoints: 0
-      shieldRegenRatePoints: 0
-  - presetId: m111b1m1h1
-    unlockCommanderLevel: 1
-    displayNameKey: ShipPreset_M111B1M1H1
-    prefabName: body_t1_m111
-    commandCost: 160
-    statAllocation:
-      healthPoints: 0
-      turnRatePoints: 0
-      repairPoints: 0
-      beamModuleSubType:
-      - beam_t1
-      - 
-      - 
-      - 
-      - 
-      - 
-      beamAttackPoints: 000000000000000000000000000000000000000000000000
-      beamFireRatePoints: 000000000000000000000000000000000000000000000000
-      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
-      missileModuleSubType:
-      - missile_t1
-      - 
-      - 
-      - 
-      - 
-      - 
-      missileAttackPoints: 000000000000000000000000000000000000000000000000
-      missileFireRatePoints: 000000000000000000000000000000000000000000000000
-      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
-      missileSilencePoints: 000000000000000000000000000000000000000000000000
-      hangarModuleSubType:
-      - hanger_t1
-      - 
-      - 
-      - 
-      - 
-      - 
-      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
-      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
-      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
-      hangarHealthPoints: 000000000000000000000000000000000000000000000000
-      interceptorModuleSubType:
-      - 
-      - 
-      - 
-      - 
-      - 
-      - 
-      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
-      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
-      shieldModuleSubType: 
-      shieldGaugePoints: 0
-      shieldDelayPoints: 0
-      shieldRegenRatePoints: 0
-  - presetId: m211b2
-    unlockCommanderLevel: 1
-    displayNameKey: ShipPreset_M211B2
     prefabName: body_t1_m211
-    commandCost: 540
+    commandCost: 220
     statAllocation:
       healthPoints: 0
       turnRatePoints: 0
       repairPoints: 0
       beamModuleSubType:
       - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m22100
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m221
+    commandCost: 320
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
       - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m22200
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m222
+    commandCost: 420
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m32200
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m322
+    commandCost: 520
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m33200
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m332
+    commandCost: 620
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m33300
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m333
+    commandCost: 720
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m43300
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m433
+    commandCost: 820
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m44300
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m443
+    commandCost: 920
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m44400
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m444
+    commandCost: 1020
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m54400
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m544
+    commandCost: 1120
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - 
+      - 
+      - 
+      - 
+      - 
+      beamAttackPoints: 000000000000000000000000000000000000000000000000
+      beamFireRatePoints: 000000000000000000000000000000000000000000000000
+      beamProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      missileAttackPoints: 000000000000000000000000000000000000000000000000
+      missileFireRatePoints: 000000000000000000000000000000000000000000000000
+      missileProjectileSpeedPoints: 000000000000000000000000000000000000000000000000
+      missileSilencePoints: 000000000000000000000000000000000000000000000000
+      hangarModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      hangarShipAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarFighterAttackPoints: 000000000000000000000000000000000000000000000000
+      hangarAmmoPoints: 000000000000000000000000000000000000000000000000
+      hangarHealthPoints: 000000000000000000000000000000000000000000000000
+      interceptorModuleSubType:
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      interceptorDelayPoints: 000000000000000000000000000000000000000000000000
+      interceptorRegenRatePoints: 000000000000000000000000000000000000000000000000
+      shieldModuleSubType: 
+      shieldGaugePoints: 0
+      shieldDelayPoints: 0
+      shieldRegenRatePoints: 0
+  - presetId: m55400
+    unlockCommanderLevel: 1
+    prefabName: body_t1_m554
+    commandCost: 1220
+    statAllocation:
+      healthPoints: 0
+      turnRatePoints: 0
+      repairPoints: 0
+      beamModuleSubType:
+      - beam_t1
+      - 
       - 
       - 
       - 

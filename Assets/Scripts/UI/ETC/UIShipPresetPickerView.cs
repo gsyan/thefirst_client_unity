@@ -44,8 +44,9 @@ public class UIShipPresetPickerView : MonoBehaviour
     }
 
     // availablePresets: 고를 수 있는 프리셋 목록, currentPreset: 비교 기준이 되는 현재 장착 프리셋(빈 슬롯이면 null → 비교 없이 수치만 표시)
+    // currentModules: 그 슬롯에 실제로 장착된 모듈 구성(로드아웃) — null이면 currentPreset의 기본 장착 구성으로 비교
     // baseUsedCommandPower: 이 슬롯이 점유 중이던 몫을 이미 뺀 사용 지휘력(호출부가 계산해서 넘김)
-    public void Open(List<ShipPresetData> availablePresets, ShipPresetData currentPreset, int baseUsedCommandPower, int maxCommandPower, System.Action<string> onConfirm, System.Action onCancel = null)
+    public void Open(List<ShipPresetData> availablePresets, ShipPresetData currentPreset, ModuleBodyInfo currentModules, int baseUsedCommandPower, int maxCommandPower, System.Action<string> onConfirm, System.Action onCancel = null)
     {
         m_presetsCache.Clear();
         m_presetsCache.AddRange(availablePresets);
@@ -59,7 +60,7 @@ public class UIShipPresetPickerView : MonoBehaviour
         if (currentPreset != null)
         {
             m_currentEntriesByLabel = new Dictionary<string, ShipStatGaugeEntry>();
-            List<ShipStatGaugeEntry> currentEntries = ShipStatGaugeBuilder.Build(currentPreset);
+            List<ShipStatGaugeEntry> currentEntries = ShipStatGaugeBuilder.Build(currentPreset, currentModules);
             for (int i = 0; i < currentEntries.Count; i++)
                 m_currentEntriesByLabel[currentEntries[i].label] = currentEntries[i];
         }

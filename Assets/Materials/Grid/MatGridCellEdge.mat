@@ -28,9 +28,15 @@ Material:
     - _CornerBoost: 1.2
     - _EdgeWidth: 0.006
     - _FaceAlpha: 0
+    - _GlowEnabled: 0
     - _GlowIntensity: 1.2
     - _GlowSpread: 6
+    - _OrbitArcWidth: 0.12
+    - _OrbitBoost: 1.5
+    - _OrbitEnabled: 0
+    - _OrbitPhase: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 0.85, b: 0.29999998, a: 1}
+    - _FillColor: {r: 0.45, g: 0.51, b: 0.59, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

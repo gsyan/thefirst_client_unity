@@ -1,7 +1,8 @@
 // 함선 프리셋 ScriptableObject — 성능포인트 배분 결과값(고정)을 담는 그릇
-// CSV Import(에디터 전용) → ScriptableObject 갱신 → JSON Export → 서버 배포 순서로 사용
-// CSV: Assets/Resources/DataTable/ShipPreset/datatable_ship_preset.csv
-// 카테고리별 슬롯 개수는 DataTableConfig.gameSettings.shipStatFormula.maxModuleSlots 기준 고정 컬럼 — 빈 칸이면 미장착
+// CSV Import(에디터 전용, Preset→Modules 순서로 반드시 함께) → ScriptableObject 갱신 → JSON Export → 서버 배포 순서로 사용
+// CSV 1: Assets/Resources/DataTable/ShipPreset/datatable_ship_preset.csv — 식별 정보 + 스칼라 스탯(preset_id 1행)
+// CSV 2: Assets/Resources/DataTable/ShipPreset/modules_in_preset.csv — 장착 모듈(preset_id당 장착 개수만큼 행, module_type으로 구분)
+// 슬롯 인덱스는 CSV 2에서 같은 preset_id+module_type이 등장하는 순서 — 상한은 DataTableConfig.gameSettings.shipStatFormula.maxModuleSlots
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -82,18 +83,13 @@ public class DataTableShipPreset : ScriptableObject
         return AssetDatabase.LoadAssetAtPath<DataTableModule>(AssetDatabase.GUIDToAssetPath(guids[0]));
     }
 
-    public string ExportToCsv()
+    // ---- Ship Preset CSV(식별 정보 + 스칼라 스탯) — datatable_ship_preset.csv ----
+    public string ExportShipPresetCsv()
     {
-        int slotCount = GetSlotCount();
         DataTableModule moduleTable = LoadModuleTable();
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.Append("preset_id,unlock_commander_level,display_name_key,prefab_name,command_cost,health_points,turn_rate_points,repair_points");
-        for (int i = 1; i <= slotCount; i++) sb.Append($",beam_slot{i}_subtype,beam_slot{i}_attack,beam_slot{i}_firerate,beam_slot{i}_projectilespeed");
-        for (int i = 1; i <= slotCount; i++) sb.Append($",missile_slot{i}_subtype,missile_slot{i}_attack,missile_slot{i}_firerate,missile_slot{i}_projectilespeed,missile_slot{i}_silence");
-        for (int i = 1; i <= slotCount; i++) sb.Append($",hangar_slot{i}_subtype,hangar_slot{i}_ship,hangar_slot{i}_fighter,hangar_slot{i}_ammo,hangar_slot{i}_health");
-        for (int i = 1; i <= slotCount; i++) sb.Append($",interceptor_slot{i}_subtype,interceptor_slot{i}_delay,interceptor_slot{i}_regen");
-        sb.AppendLine(",shield_subtype,shield_gauge_points,shield_delay_points,shield_regen_rate_points");
+        sb.AppendLine("preset_id,unlock_commander_level,prefab_name,command_cost,health_points,turn_rate_points,repair_points");
 
         for (int i = 0; i < shipPresetDataList.Count; i++)
         {
@@ -102,82 +98,19 @@ public class DataTableShipPreset : ScriptableObject
             // command_cost는 저장된 캐시값이 아니라 Export 시점에 항상 새로 계산 — Inspector를 열어보지 않아도 최신 값 보장
             int commandCost = alloc.GetTotalPointsUsed(moduleTable, data.prefabName);
 
-            sb.Append(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6},{7}",
-                data.presetId, data.unlockCommanderLevel, data.displayNameKey, data.prefabName, commandCost,
+            sb.AppendLine(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6}",
+                data.presetId, data.unlockCommanderLevel, data.prefabName, commandCost,
                 alloc.healthPoints, alloc.turnRatePoints, alloc.repairPoints));
-
-            AppendWeaponSlots(sb, slotCount, alloc.beamModuleSubType, alloc.beamAttackPoints, alloc.beamFireRatePoints, alloc.beamProjectileSpeedPoints, null);
-            AppendWeaponSlots(sb, slotCount, alloc.missileModuleSubType, alloc.missileAttackPoints, alloc.missileFireRatePoints, alloc.missileProjectileSpeedPoints, alloc.missileSilencePoints);
-            AppendHangarSlots(sb, slotCount, alloc);
-            AppendInterceptorSlots(sb, slotCount, alloc);
-
-            sb.AppendLine(string.Format(ic, ",{0},{1},{2},{3}",
-                alloc.shieldModuleSubType, alloc.shieldGaugePoints, alloc.shieldDelayPoints, alloc.shieldRegenRatePoints));
         }
 
         return sb.ToString();
     }
 
-    // 빔/미사일 공용 — silencePoints는 미사일 전용(빔은 null 전달)
-    private void AppendWeaponSlots(System.Text.StringBuilder sb, int slotCount, string[] moduleSubType, int[] attackPoints, int[] fireRatePoints, int[] projectileSpeedPoints, int[] silencePoints)
-    {
-        for (int i = 0; i < slotCount; i++)
-        {
-            bool installed = i < moduleSubType.Length && string.IsNullOrEmpty(moduleSubType[i]) == false;
-            sb.Append(',');
-            if (installed) sb.Append(moduleSubType[i]);
-            sb.Append(',');
-            if (installed) sb.Append(attackPoints[i]);
-            sb.Append(',');
-            if (installed) sb.Append(fireRatePoints[i]);
-            sb.Append(',');
-            if (installed) sb.Append(projectileSpeedPoints[i]);
-            if (silencePoints != null)
-            {
-                sb.Append(',');
-                if (installed) sb.Append(silencePoints[i]);
-            }
-        }
-    }
-
-    private void AppendHangarSlots(System.Text.StringBuilder sb, int slotCount, ShipStatAllocation alloc)
-    {
-        for (int i = 0; i < slotCount; i++)
-        {
-            bool installed = i < alloc.hangarModuleSubType.Length && string.IsNullOrEmpty(alloc.hangarModuleSubType[i]) == false;
-            sb.Append(',');
-            if (installed) sb.Append(alloc.hangarModuleSubType[i]);
-            sb.Append(',');
-            if (installed) sb.Append(alloc.hangarShipAttackPoints[i]);
-            sb.Append(',');
-            if (installed) sb.Append(alloc.hangarFighterAttackPoints[i]);
-            sb.Append(',');
-            if (installed) sb.Append(alloc.hangarAmmoPoints[i]);
-            sb.Append(',');
-            if (installed) sb.Append(alloc.hangarHealthPoints[i]);
-        }
-    }
-
-    private void AppendInterceptorSlots(System.Text.StringBuilder sb, int slotCount, ShipStatAllocation alloc)
-    {
-        for (int i = 0; i < slotCount; i++)
-        {
-            bool installed = i < alloc.interceptorModuleSubType.Length && string.IsNullOrEmpty(alloc.interceptorModuleSubType[i]) == false;
-            sb.Append(',');
-            if (installed) sb.Append(alloc.interceptorModuleSubType[i]);
-            sb.Append(',');
-            if (installed) sb.Append(alloc.interceptorDelayPoints[i]);
-            sb.Append(',');
-            if (installed) sb.Append(alloc.interceptorRegenRatePoints[i]);
-        }
-    }
-
-    // datatable_ship_preset.csv 컬럼 순서(인덱스 고정) — ExportToCsv 헤더 참고. display_name_key는 UI.csv 참조 키
-    // 슬롯 컬럼이 빈 칸이면 미장착으로 처리
-    public void LoadFromCsv(string csvText)
+    // datatable_ship_preset.csv 컬럼 순서(인덱스 고정) — ExportShipPresetCsv 헤더 참고. preset_id를 UI.csv 로컬라이즈 키로 그대로 사용
+    // 모듈 장착 정보는 여기서 채우지 않음 — LoadModulesInPresetCsv를 이 뒤에 반드시 호출해야 함(슬롯 배열만 슬롯 수만큼 빈 상태로 준비)
+    public void LoadShipPresetCsv(string csvText)
     {
         int slotCount = GetSlotCount();
-        DataTableModule moduleTable = LoadModuleTable();
         shipPresetDataList.Clear();
 
         string[] lines = csvText.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.None);
@@ -192,109 +125,227 @@ public class DataTableShipPreset : ScriptableObject
             string presetId = GetCol(cols, 0);
             if (string.IsNullOrEmpty(presetId)) continue;
 
-            int col = 5; // 0~4는 preset_id/unlock_commander_level/display_name_key/prefab_name/command_cost
-
             ShipStatAllocation alloc = new ShipStatAllocation();
-            alloc.healthPoints = ParseInt(GetCol(cols, col++));
-            alloc.turnRatePoints = ParseInt(GetCol(cols, col++));
-            alloc.repairPoints = ParseInt(GetCol(cols, col++));
+            InitializeAllocationArrays(alloc, slotCount);
+            alloc.healthPoints = ParseInt(GetCol(cols, 4));
+            alloc.turnRatePoints = ParseInt(GetCol(cols, 5));
+            alloc.repairPoints = ParseInt(GetCol(cols, 6));
 
-            ReadWeaponSlots(cols, slotCount, ref col, out alloc.beamModuleSubType, out alloc.beamAttackPoints, out alloc.beamFireRatePoints, out alloc.beamProjectileSpeedPoints, out _, hasSilence: false);
-            ReadWeaponSlots(cols, slotCount, ref col, out alloc.missileModuleSubType, out alloc.missileAttackPoints, out alloc.missileFireRatePoints, out alloc.missileProjectileSpeedPoints, out alloc.missileSilencePoints, hasSilence: true);
-            ReadHangarSlots(cols, slotCount, ref col, alloc);
-            ReadInterceptorSlots(cols, slotCount, ref col, alloc);
-
-            alloc.shieldModuleSubType = GetCol(cols, col++);
-            alloc.shieldGaugePoints = ParseInt(GetCol(cols, col++));
-            alloc.shieldDelayPoints = ParseInt(GetCol(cols, col++));
-            alloc.shieldRegenRatePoints = ParseInt(GetCol(cols, col++));
-
-            // command_cost는 더 이상 CSV 값을 신뢰하지 않음 — 성능포인트 총합(GetTotalPointsUsed, 몸체 설치 비용 포함)이 그대로 지휘력이 됨
-            string prefabName = GetCol(cols, 3);
             shipPresetDataList.Add(new ShipPresetData
             {
                 presetId             = presetId,
                 unlockCommanderLevel = ParseInt(GetCol(cols, 1)),
-                displayNameKey       = GetCol(cols, 2),
-                prefabName           = prefabName,
-                commandCost          = alloc.GetTotalPointsUsed(moduleTable, prefabName),
-                statAllocation = alloc,
+                prefabName           = GetCol(cols, 2),
+                // command_cost(cols[3])는 읽지 않음 — LoadModulesInPresetCsv 마지막에 성능포인트 총합으로 항상 재계산됨
+                statAllocation       = alloc,
             });
         }
 
-        Debug.Log($"[DataTableShipPreset] CSV Import 완료: {shipPresetDataList.Count}개");
+        Debug.Log($"[DataTableShipPreset] Preset CSV Import 완료: {shipPresetDataList.Count}개");
         EditorUtility.SetDirty(this);
     }
 
-    // 빔/미사일 공용 — hasSilence가 true면 미사일 전용 침묵 컬럼까지 읽음(빔은 false, silencePoints는 slotCount 크기의 빈 배열)
-    private void ReadWeaponSlots(string[] cols, int slotCount, ref int col, out string[] moduleSubType, out int[] attackPoints, out int[] fireRatePoints, out int[] projectileSpeedPoints, out int[] silencePoints, bool hasSilence)
+    private void InitializeAllocationArrays(ShipStatAllocation alloc, int slotCount)
     {
-        moduleSubType = new string[slotCount];
-        attackPoints = new int[slotCount];
-        fireRatePoints = new int[slotCount];
-        projectileSpeedPoints = new int[slotCount];
-        silencePoints = new int[slotCount];
-
-        for (int i = 0; i < slotCount; i++)
-        {
-            string subTypeCell = GetCol(cols, col++);
-            string attackCell = GetCol(cols, col++);
-            string fireRateCell = GetCol(cols, col++);
-            string projectileSpeedCell = GetCol(cols, col++);
-            string silenceCell = hasSilence ? GetCol(cols, col++) : null;
-
-            bool installed = string.IsNullOrEmpty(subTypeCell) == false;
-            moduleSubType[i] = subTypeCell;
-            attackPoints[i] = installed ? ParseInt(attackCell) : 0;
-            fireRatePoints[i] = installed ? ParseInt(fireRateCell) : 0;
-            projectileSpeedPoints[i] = installed ? ParseInt(projectileSpeedCell) : 0;
-            if (hasSilence)
-                silencePoints[i] = installed ? ParseInt(silenceCell) : 0;
-        }
-    }
-
-    private void ReadHangarSlots(string[] cols, int slotCount, ref int col, ShipStatAllocation alloc)
-    {
+        alloc.beamModuleSubType = new string[slotCount];
+        alloc.beamAttackPoints = new int[slotCount];
+        alloc.beamFireRatePoints = new int[slotCount];
+        alloc.beamProjectileSpeedPoints = new int[slotCount];
+        alloc.missileModuleSubType = new string[slotCount];
+        alloc.missileAttackPoints = new int[slotCount];
+        alloc.missileFireRatePoints = new int[slotCount];
+        alloc.missileProjectileSpeedPoints = new int[slotCount];
+        alloc.missileSilencePoints = new int[slotCount];
         alloc.hangarModuleSubType = new string[slotCount];
         alloc.hangarShipAttackPoints = new int[slotCount];
         alloc.hangarFighterAttackPoints = new int[slotCount];
         alloc.hangarAmmoPoints = new int[slotCount];
         alloc.hangarHealthPoints = new int[slotCount];
-
-        for (int i = 0; i < slotCount; i++)
-        {
-            string subTypeCell = GetCol(cols, col++);
-            string shipCell = GetCol(cols, col++);
-            string fighterCell = GetCol(cols, col++);
-            string ammoCell = GetCol(cols, col++);
-            string healthCell = GetCol(cols, col++);
-
-            bool installed = string.IsNullOrEmpty(subTypeCell) == false;
-            alloc.hangarModuleSubType[i] = subTypeCell;
-            alloc.hangarShipAttackPoints[i] = installed ? ParseInt(shipCell) : 0;
-            alloc.hangarFighterAttackPoints[i] = installed ? ParseInt(fighterCell) : 0;
-            alloc.hangarAmmoPoints[i] = installed ? ParseInt(ammoCell) : 0;
-            alloc.hangarHealthPoints[i] = installed ? ParseInt(healthCell) : 0;
-        }
-    }
-
-    private void ReadInterceptorSlots(string[] cols, int slotCount, ref int col, ShipStatAllocation alloc)
-    {
         alloc.interceptorModuleSubType = new string[slotCount];
         alloc.interceptorDelayPoints = new int[slotCount];
         alloc.interceptorRegenRatePoints = new int[slotCount];
+    }
 
-        for (int i = 0; i < slotCount; i++)
+    // ---- Modules In Preset CSV(프리셋당 장착 모듈 1행) — modules_in_preset.csv ----
+    private const string k_moduleTypeBeam = "beam";
+    private const string k_moduleTypeMissile = "missile";
+    private const string k_moduleTypeHangar = "hangar";
+    private const string k_moduleTypeInterceptor = "interceptor";
+    private const string k_moduleTypeShield = "shield";
+
+    public string ExportModulesInPresetCsv()
+    {
+        var ic = System.Globalization.CultureInfo.InvariantCulture;
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("preset_id,module_type,subtype,attack,firerate,projectilespeed,silence,ship,fighter,ammo,health,delay,regen,gauge");
+
+        for (int i = 0; i < shipPresetDataList.Count; i++)
         {
-            string subTypeCell = GetCol(cols, col++);
-            string delayCell = GetCol(cols, col++);
-            string regenCell = GetCol(cols, col++);
+            ShipPresetData data = shipPresetDataList[i];
+            ShipStatAllocation alloc = data.statAllocation;
 
-            bool installed = string.IsNullOrEmpty(subTypeCell) == false;
-            alloc.interceptorModuleSubType[i] = subTypeCell;
-            alloc.interceptorDelayPoints[i] = installed ? ParseInt(delayCell) : 0;
-            alloc.interceptorRegenRatePoints[i] = installed ? ParseInt(regenCell) : 0;
+            AppendWeaponRows(sb, ic, data.presetId, k_moduleTypeBeam, alloc.beamModuleSubType, alloc.beamAttackPoints, alloc.beamFireRatePoints, alloc.beamProjectileSpeedPoints, null);
+            AppendWeaponRows(sb, ic, data.presetId, k_moduleTypeMissile, alloc.missileModuleSubType, alloc.missileAttackPoints, alloc.missileFireRatePoints, alloc.missileProjectileSpeedPoints, alloc.missileSilencePoints);
+            AppendHangarRows(sb, ic, data.presetId, alloc);
+            AppendInterceptorRows(sb, ic, data.presetId, alloc);
+            AppendShieldRow(sb, ic, data.presetId, alloc);
         }
+
+        return sb.ToString();
+    }
+
+    // 빔/미사일 공용 — silencePoints는 미사일 전용(빔은 null 전달). 열 순서: preset_id,module_type,subtype,attack,firerate,projectilespeed,silence,ship,fighter,ammo,health,delay,regen,gauge
+    private void AppendWeaponRows(System.Text.StringBuilder sb, System.Globalization.CultureInfo ic, string presetId, string moduleType,
+        string[] subType, int[] attack, int[] fireRate, int[] projectileSpeed, int[] silence)
+    {
+        for (int i = 0; i < subType.Length; i++)
+        {
+            if (string.IsNullOrEmpty(subType[i])) continue;
+            string silenceValue = silence != null ? silence[i].ToString(ic) : "";
+            sb.AppendLine(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6},,,,,,,",
+                presetId, moduleType, subType[i], attack[i], fireRate[i], projectileSpeed[i], silenceValue));
+        }
+    }
+
+    private void AppendHangarRows(System.Text.StringBuilder sb, System.Globalization.CultureInfo ic, string presetId, ShipStatAllocation alloc)
+    {
+        for (int i = 0; i < alloc.hangarModuleSubType.Length; i++)
+        {
+            if (string.IsNullOrEmpty(alloc.hangarModuleSubType[i])) continue;
+            sb.AppendLine(string.Format(ic, "{0},{1},{2},,,,,{3},{4},{5},{6},,,",
+                presetId, k_moduleTypeHangar, alloc.hangarModuleSubType[i],
+                alloc.hangarShipAttackPoints[i], alloc.hangarFighterAttackPoints[i], alloc.hangarAmmoPoints[i], alloc.hangarHealthPoints[i]));
+        }
+    }
+
+    private void AppendInterceptorRows(System.Text.StringBuilder sb, System.Globalization.CultureInfo ic, string presetId, ShipStatAllocation alloc)
+    {
+        for (int i = 0; i < alloc.interceptorModuleSubType.Length; i++)
+        {
+            if (string.IsNullOrEmpty(alloc.interceptorModuleSubType[i])) continue;
+            sb.AppendLine(string.Format(ic, "{0},{1},{2},,,,,,,,,{3},{4},",
+                presetId, k_moduleTypeInterceptor, alloc.interceptorModuleSubType[i],
+                alloc.interceptorDelayPoints[i], alloc.interceptorRegenRatePoints[i]));
+        }
+    }
+
+    private void AppendShieldRow(System.Text.StringBuilder sb, System.Globalization.CultureInfo ic, string presetId, ShipStatAllocation alloc)
+    {
+        if (string.IsNullOrEmpty(alloc.shieldModuleSubType)) return;
+        sb.AppendLine(string.Format(ic, "{0},{1},{2},,,,,,,,,{3},{4},{5}",
+            presetId, k_moduleTypeShield, alloc.shieldModuleSubType,
+            alloc.shieldDelayPoints, alloc.shieldRegenRatePoints, alloc.shieldGaugePoints));
+    }
+
+    // LoadShipPresetCsv 이후에 호출 — preset_id로 기존 프리셋을 찾아 장착 슬롯을 채움. 슬롯 인덱스는 같은 preset_id+module_type 내 CSV 등장 순서
+    public void LoadModulesInPresetCsv(string csvText)
+    {
+        DataTableModule moduleTable = LoadModuleTable();
+        Dictionary<string, ShipPresetData> lookup = BuildLookupTable();
+        var nextSlotIndex = new Dictionary<string, int>(); // key: presetId + "_" + moduleType
+
+        string[] lines = csvText.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.None);
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+
+            string[] cols = ParseCsvLine(line);
+            string presetId = GetCol(cols, 0);
+            string moduleType = GetCol(cols, 1);
+            string subType = GetCol(cols, 2);
+            if (string.IsNullOrEmpty(presetId) || string.IsNullOrEmpty(moduleType) || string.IsNullOrEmpty(subType)) continue;
+
+            if (lookup.TryGetValue(presetId, out ShipPresetData data) == false)
+            {
+                Debug.LogWarning($"[DataTableShipPreset] modules_in_preset.csv: 알 수 없는 preset_id '{presetId}' (줄 {i + 1})");
+                continue;
+            }
+
+            int attack = ParseInt(GetCol(cols, 3));
+            int fireRate = ParseInt(GetCol(cols, 4));
+            int projectileSpeed = ParseInt(GetCol(cols, 5));
+            int silence = ParseInt(GetCol(cols, 6));
+            int ship = ParseInt(GetCol(cols, 7));
+            int fighter = ParseInt(GetCol(cols, 8));
+            int ammo = ParseInt(GetCol(cols, 9));
+            int health = ParseInt(GetCol(cols, 10));
+            int delay = ParseInt(GetCol(cols, 11));
+            int regen = ParseInt(GetCol(cols, 12));
+            int gauge = ParseInt(GetCol(cols, 13));
+
+            ShipStatAllocation alloc = data.statAllocation;
+
+            if (moduleType == k_moduleTypeShield)
+            {
+                alloc.shieldModuleSubType = subType;
+                alloc.shieldGaugePoints = gauge;
+                alloc.shieldDelayPoints = delay;
+                alloc.shieldRegenRatePoints = regen;
+                continue;
+            }
+
+            string slotKey = presetId + "_" + moduleType;
+            nextSlotIndex.TryGetValue(slotKey, out int slotIndex);
+            nextSlotIndex[slotKey] = slotIndex + 1;
+
+            switch (moduleType)
+            {
+                case k_moduleTypeBeam:
+                    if (AssignSlot(alloc.beamModuleSubType.Length, slotIndex, presetId, moduleType, i) == false) break;
+                    alloc.beamModuleSubType[slotIndex] = subType;
+                    alloc.beamAttackPoints[slotIndex] = attack;
+                    alloc.beamFireRatePoints[slotIndex] = fireRate;
+                    alloc.beamProjectileSpeedPoints[slotIndex] = projectileSpeed;
+                    break;
+                case k_moduleTypeMissile:
+                    if (AssignSlot(alloc.missileModuleSubType.Length, slotIndex, presetId, moduleType, i) == false) break;
+                    alloc.missileModuleSubType[slotIndex] = subType;
+                    alloc.missileAttackPoints[slotIndex] = attack;
+                    alloc.missileFireRatePoints[slotIndex] = fireRate;
+                    alloc.missileProjectileSpeedPoints[slotIndex] = projectileSpeed;
+                    alloc.missileSilencePoints[slotIndex] = silence;
+                    break;
+                case k_moduleTypeHangar:
+                    if (AssignSlot(alloc.hangarModuleSubType.Length, slotIndex, presetId, moduleType, i) == false) break;
+                    alloc.hangarModuleSubType[slotIndex] = subType;
+                    alloc.hangarShipAttackPoints[slotIndex] = ship;
+                    alloc.hangarFighterAttackPoints[slotIndex] = fighter;
+                    alloc.hangarAmmoPoints[slotIndex] = ammo;
+                    alloc.hangarHealthPoints[slotIndex] = health;
+                    break;
+                case k_moduleTypeInterceptor:
+                    if (AssignSlot(alloc.interceptorModuleSubType.Length, slotIndex, presetId, moduleType, i) == false) break;
+                    alloc.interceptorModuleSubType[slotIndex] = subType;
+                    alloc.interceptorDelayPoints[slotIndex] = delay;
+                    alloc.interceptorRegenRatePoints[slotIndex] = regen;
+                    break;
+                default:
+                    Debug.LogWarning($"[DataTableShipPreset] modules_in_preset.csv: 알 수 없는 module_type '{moduleType}' (줄 {i + 1})");
+                    break;
+            }
+        }
+
+        // command_cost는 두 CSV 조합이 끝난 뒤 성능포인트 총합으로 최종 재계산
+        for (int i = 0; i < shipPresetDataList.Count; i++)
+        {
+            ShipPresetData data = shipPresetDataList[i];
+            data.commandCost = data.statAllocation.GetTotalPointsUsed(moduleTable, data.prefabName);
+        }
+
+        Debug.Log($"[DataTableShipPreset] Modules CSV Import 완료");
+        EditorUtility.SetDirty(this);
+    }
+
+    // 슬롯 배열 범위를 벗어나면(프리팹 슬롯 수보다 CSV 행이 많음) 경고만 남기고 무시
+    private bool AssignSlot(int arrayLength, int slotIndex, string presetId, string moduleType, int lineNumber)
+    {
+        if (slotIndex >= arrayLength)
+        {
+            Debug.LogWarning($"[DataTableShipPreset] modules_in_preset.csv: '{presetId}'의 {moduleType} 슬롯이 최대 개수({arrayLength})를 초과했습니다 (줄 {lineNumber + 1})");
+            return false;
+        }
+        return true;
     }
 
     private string GetCol(string[] cols, int idx)

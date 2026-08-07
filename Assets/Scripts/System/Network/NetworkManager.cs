@@ -677,6 +677,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.SetFleetPresetShipFrontAsync(request), null));
     }
 
+    public void SetFleetPresetSlotModules(SetFleetPresetSlotModulesRequest request, System.Action<ApiResponse<SetFleetPresetSlotModulesResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.SetFleetPresetSlotModulesAsync(request), onComplete));
+    }
+
     public void FleetInstantRepair(System.Action<ApiResponse<FleetInstantRepairResponse>> onComplete)
     {
         if (m_bConnected == false) return;

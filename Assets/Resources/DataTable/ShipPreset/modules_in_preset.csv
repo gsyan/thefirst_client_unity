@@ -1,0 +1,13 @@
+preset_id,module_type,subtype,attack,firerate,projectilespeed,silence,ship,fighter,ammo,health,delay,regen,gauge
+m11100,beam,beam_t1,0,0,0,,,,,,,,
+m21100,beam,beam_t1,0,0,0,,,,,,,,
+m22100,beam,beam_t1,0,0,0,,,,,,,,
+m22200,beam,beam_t1,0,0,0,,,,,,,,
+m32200,beam,beam_t1,0,0,0,,,,,,,,
+m33200,beam,beam_t1,0,0,0,,,,,,,,
+m33300,beam,beam_t1,0,0,0,,,,,,,,
+m43300,beam,beam_t1,0,0,0,,,,,,,,
+m44300,beam,beam_t1,0,0,0,,,,,,,,
+m44400,beam,beam_t1,0,0,0,,,,,,,,
+m54400,beam,beam_t1,0,0,0,,,,,,,,
+m55400,beam,beam_t1,0,0,0,,,,,,,,

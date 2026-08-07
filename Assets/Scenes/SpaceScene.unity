@@ -1530,6 +1530,7 @@ GameObject:
   - component: {fileID: 2008579211}
   - component: {fileID: 2008579214}
   - component: {fileID: 2008579215}
+  - component: {fileID: 2008579216}
   m_Layer: 0
   m_Name: ObjectManager
   m_TagString: Untagged
@@ -1598,6 +1599,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9b964aec719784dba0a25bab1488b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CelestialBodySpawner
+--- !u!114 &2008579216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008579210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a53030ccb7bf9d43b5f2fb0a9530f1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebrisFieldSpawner
+  m_debrisRockPrefab: {fileID: 435690, guid: 6abbc4ed7fcb5c54e94b08345eba46e9, type: 3}
+  m_debrisJunkPrefab: {fileID: 428974, guid: 9d54a28af8f583144ada3e476703d431, type: 3}
+  m_minDebrisPerCell: 5
+  m_maxDebrisPerCell: 15
+  m_scatterRadius: 300
 --- !u!1 &2134186454
 GameObject:
   m_ObjectHideFlags: 0

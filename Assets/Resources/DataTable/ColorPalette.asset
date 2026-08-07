@@ -370,6 +370,21 @@ MonoBehaviour:
   - key: Button.Disabled
     primitiveKey: Slate900
     color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Cell.Current
+    primitiveKey: Amber500
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Cell.Escape
+    primitiveKey: Cyan500
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Cell.Normal
+    primitiveKey: Slate500
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Cell.Reachable
+    primitiveKey: Red100
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Cell.Start
+    primitiveKey: Green700
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Commander
     primitiveKey: Blue500
     color: {r: 1, g: 1, b: 1, a: 1}

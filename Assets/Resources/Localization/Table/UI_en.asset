@@ -1157,6 +1157,27 @@ MonoBehaviour:
     m_Localized: Aircraft
     m_Metadata:
       m_Items: []
+  - m_Id: 65329291885150208
+    m_Localized: "Convert (Exploration Point <voffset=6>\u2192</voffset> Command
+      Power)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65433715576012800
+    m_Localized: Ship Loadout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65433715638927360
+    m_Localized: Edit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65472345728221184
+    m_Localized: Installed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65472345807912960
+    m_Localized: Not Installed
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

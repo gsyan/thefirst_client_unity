@@ -334,7 +334,7 @@ public class DataTableZoneEditor : Editor
             landCoverage = 0.5f, biomeBlend = 0.15f, gBlend = 2.0f, hasPolarIce = false, hasClouds = true, cloudCoverage = 0.6f },
     };
 
-    private int  m_genPlanetZoneStart = 10;
+    private int  m_genPlanetZoneStart = 1;
     private int  m_genPlanetZoneEnd   = 100;
     private int  m_genPlanetSeed      = 20260709;
     private bool m_genPlanetFoldout   = false;
@@ -346,7 +346,9 @@ public class DataTableZoneEditor : Editor
         if (m_genPlanetFoldout)
         {
             EditorGUILayout.HelpBox($"zoneStart~zoneEnd 구간의 zoneList[].celestialBodies[0]을 타입 템플릿({k_planetTypes.Length}종) 중 하나로 재생성합니다.\n" +
-                "타입은 존마다 시드 기반으로 하나 골라 그 팔레트 안에서만 hue/채도/명도를 살짝 흔듭니다(완전 랜덤 RGB 아님).", MessageType.Info);
+                "타입은 존마다 시드 기반으로 하나 골라 그 팔레트 안에서만 hue/채도/명도를 살짝 흔듭니다(완전 랜덤 RGB 아님).\n" +
+                "위치는 그 존의 Blocked 셀 중 하나를 시드 기반으로 랜덤 선택 — 그리드 레이아웃(Blocked 셀)이 먼저 생성돼 있어야 합니다. " +
+                "Blocked 셀이 없는 존은 행성을 만들지 않습니다.", MessageType.Info);
 
             EditorGUI.indentLevel++;
             m_genPlanetZoneStart = EditorGUILayout.IntField("Zone Start", m_genPlanetZoneStart);
@@ -392,6 +394,7 @@ public class DataTableZoneEditor : Editor
             zoneMap[m_dataTableZone.zoneList[i].zoneIndex] = m_dataTableZone.zoneList[i];
 
         int touched = 0;
+        int skippedNoBlocked = 0;
         for (int zone = m_genPlanetZoneStart; zone <= m_genPlanetZoneEnd; zone++)
         {
             if (!zoneMap.TryGetValue(zone, out ZoneConfig zoneConfig))
@@ -402,11 +405,32 @@ public class DataTableZoneEditor : Editor
             }
 
             var rng = new System.Random(m_genPlanetSeed ^ (zone * 73856093));
+
+            // Blocked 셀이 없으면 행성 자체를 만들지 않음(잔해도 마찬가지) — 그리드 레이아웃이 먼저 생성돼 있어야 함
+            var blockedCells = new List<GridCellOverride>();
+            if (zoneConfig.cellOverrides != null)
+            {
+                foreach (GridCellOverride cellOverride in zoneConfig.cellOverrides)
+                    if (cellOverride.type == EGridCellType.Blocked)
+                        blockedCells.Add(cellOverride);
+            }
+
+            if (blockedCells.Count == 0)
+            {
+                zoneConfig.celestialBodies = new List<CelestialBodyConfig>();
+                skippedNoBlocked++;
+                continue;
+            }
+
+            // 매번 첫 번째가 아니라 Blocked 셀 중 시드 기반으로 랜덤 하나를 선택
+            GridCellOverride chosenCell = blockedCells[rng.Next(0, blockedCells.Count)];
+            Vector3 planetPosition = ExplorationGridGenerator.ComputeCellWorldPos(zoneConfig, chosenCell.row, chosenCell.col);
+
             PlanetTypeTemplate type = k_planetTypes[rng.Next(0, k_planetTypes.Length)];
 
             var body = new CelestialBodyConfig
             {
-                position = Vector3.zero,
+                position = planetPosition,
                 rotation = new Vector3(JitterFloat(0f, 20f, rng, -40f, 40f), rng.Next(0, 360), JitterFloat(0f, 20f, rng, -40f, 40f)),
                 scale    = new Vector3(500f, 500f, 500f),
 
@@ -449,7 +473,7 @@ public class DataTableZoneEditor : Editor
 
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("완료", $"행성 생성 완료! ({touched}개 존)", "OK");
+        EditorUtility.DisplayDialog("완료", $"행성 생성 완료! ({touched}개 존, Blocked 셀 없어서 스킵 {skippedNoBlocked}개 존)", "OK");
     }
 
     #endregion

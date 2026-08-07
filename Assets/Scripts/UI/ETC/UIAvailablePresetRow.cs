@@ -47,9 +47,9 @@ public class UIAvailablePresetRow : MonoBehaviour
         m_preset = preset;
         m_onClick = onClick;
 
-        // 함선 이름 로컬라이즈(displayNameKey)는 아직 미정 — 프리셋 코드(presetId)를 값으로 그대로 표시(더미 프리셋이라 확정 이름 없음)
+        // 함선 이름은 preset.presetId를 UI.csv 로컬라이즈 키로 그대로 사용(별도 displayNameKey 없음)
         if (m_nameRow != null)
-            m_nameRow.SetRow("UIAvailablePresetRow_Name", preset.presetId, rawValue: true);
+            m_nameRow.SetRow("UIAvailablePresetRow_Name", preset.presetId, rawValue: false);
         if (m_costRow != null)
         {
             string commandPowerLabel = LocalizationManager.Instance.Get("UITabCommander_CommandPower");

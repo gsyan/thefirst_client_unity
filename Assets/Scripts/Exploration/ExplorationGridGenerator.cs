@@ -10,27 +10,48 @@ public static class ExplorationGridGenerator
     // 실제 존들의 galaxyCameraZoom이 수천~만 단위라 60은 너무 작아 그리드 전체가 한 점으로 뭉쳐 보였음 — 실측 후 재조정
     public const float k_cellWorldSize = 800f;
 
-    public static ExplorationGridData Generate(ZoneConfig zoneConfig)
+    // 셀 (row,col) → 월드 좌표. Generate()와 에디터 툴(행성 배치 등)이 동일 공식을 공유하기 위해 static으로 노출.
+    // 로컬 좌표계 원점(0,0)은 그리드 중앙 셀, 행/열 방향은 월드 고정 축(X=col, Z=row). 카메라 각도/줌과는 무관.
+    public static Vector3 ComputeCellWorldPos(ZoneConfig zoneConfig, int row, int col)
     {
         int gridWidth  = zoneConfig != null ? zoneConfig.gridWidth  : 3;
         int gridHeight = zoneConfig != null ? zoneConfig.gridHeight : 3;
         Vector3 gridOrigin = zoneConfig != null ? zoneConfig.galaxyCameraTarget : Vector3.zero;
 
+        float colOffset = (col - (gridWidth  - 1) * 0.5f) * k_cellWorldSize;
+        float rowOffset = (row - (gridHeight - 1) * 0.5f) * k_cellWorldSize;
+        Vector3 worldPos = gridOrigin + Vector3.right * colOffset + Vector3.forward * rowOffset;
+        worldPos.y = 0f; // 함대 레이어 고정 Y(UIPanelExplorationGrid.k_fleetWorldY)와 동일한 스케일
+        return worldPos;
+    }
+
+    // 월드 좌표 → 가장 가까운 셀 (row,col). ComputeCellWorldPos의 역변환 — 잔해 스포너가 "이 Blocked 셀이 행성 셀인지" 판정할 때 사용
+    public static void WorldPosToNearestCell(ZoneConfig zoneConfig, Vector3 worldPos, out int row, out int col)
+    {
+        int gridWidth  = zoneConfig != null ? zoneConfig.gridWidth  : 3;
+        int gridHeight = zoneConfig != null ? zoneConfig.gridHeight : 3;
+        Vector3 gridOrigin = zoneConfig != null ? zoneConfig.galaxyCameraTarget : Vector3.zero;
+
+        float colOffset = worldPos.x - gridOrigin.x;
+        float rowOffset = worldPos.z - gridOrigin.z;
+        col = Mathf.RoundToInt(colOffset / k_cellWorldSize + (gridWidth  - 1) * 0.5f);
+        row = Mathf.RoundToInt(rowOffset / k_cellWorldSize + (gridHeight - 1) * 0.5f);
+    }
+
+    public static ExplorationGridData Generate(ZoneConfig zoneConfig)
+    {
+        int gridWidth  = zoneConfig != null ? zoneConfig.gridWidth  : 3;
+        int gridHeight = zoneConfig != null ? zoneConfig.gridHeight : 3;
+
         ExplorationGridData gridData = new ExplorationGridData(gridWidth, gridHeight);
 
-        // 셀별 3D 월드 좌표를 여기서 한 번만 계산해 캐싱 — 로컬 좌표계 원점(0,0)은 그리드 중앙 셀,
-        // 행/열 방향은 월드 고정 축(X=col, Z=row). 카메라 각도/줌과는 무관.
+        // 셀별 3D 월드 좌표를 여기서 한 번만 계산해 캐싱
         for (int row = 0; row < gridHeight; row++)
         {
             for (int col = 0; col < gridWidth; col++)
             {
-                float colOffset = (col - (gridWidth  - 1) * 0.5f) * k_cellWorldSize;
-                float rowOffset = (row - (gridHeight - 1) * 0.5f) * k_cellWorldSize;
-                Vector3 worldPos = gridOrigin + Vector3.right * colOffset + Vector3.forward * rowOffset;
-                worldPos.y = 0f; // 함대 레이어 고정 Y(UIPanelExplorationGrid.k_fleetWorldY)와 동일한 스케일
-
                 GridCellData cellData = gridData.GetCell(row, col);
-                cellData.worldPos = worldPos;
+                cellData.worldPos = ComputeCellWorldPos(zoneConfig, row, col);
                 gridData.SetCell(cellData);
             }
         }

@@ -30,7 +30,9 @@ public static class ShipStatGaugeBuilder
     // 증가형 스탯 게이지의 만렙 기준 — "기본 능력치의 20배" (정확한 밸런스 수치 아님, 임시)
     private const float k_gaugeMaxMultiplier = 20f;
 
-    public static List<ShipStatGaugeEntry> Build(ShipPresetData preset)
+    // actualModules를 생략하면(null) preset.statAllocation(프리셋 기본 장착 구성)을 그대로 씀 — 프리셋 후보 목록/비교 미리보기용
+    // actualModules를 넘기면 그 함선이 실제로 장착한 모듈 구성(로드아웃)을 반영 — 배치된 함선의 현재 성능 표시용
+    public static List<ShipStatGaugeEntry> Build(ShipPresetData preset, ModuleBodyInfo actualModules = null)
     {
         DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
 
@@ -39,7 +41,8 @@ public static class ShipStatGaugeBuilder
             bodyModuleData = moduleTable.GetModuleDataFromTable(bodySubType);
 
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
-        ShipFinalStats stats = ShipStatCalculator.Calculate(preset.statAllocation, formula, bodyModuleData, moduleTable);
+        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(preset.statAllocation, actualModules);
+        ShipFinalStats stats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable);
 
         List<ShipStatGaugeEntry> entries = new();
 

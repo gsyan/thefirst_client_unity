@@ -38,6 +38,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     private int m_pendingCellRow;
     private int m_pendingCellCol;
     private Vector3 m_pendingCellWorldPos;
+    private Vector3 m_pendingEnemyRequestMyFleetPos; // EnterExplorationCellRequest 전송 시점의 내 함대 위치 — 응답 도착 후 적 함대 조우 위치 계산에 씀(재시도 시에도 재사용)
 
     // 대치 상태(UIPanelPrepareBattle) 중 퇴각 시 되돌아갈 이전 위치 — 로컬뷰 카메라 전환 이후엔 그리드 좌표→월드좌표 역산이 불가능(카메라 자세가 이미 바뀜)하므로 이동 직전 좌표를 스냅샷
     private int m_previousRow;
@@ -91,7 +92,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         int zoneNumber = ObjectManager.Instance.GetInitialZoneIndex();
 
         // 존/그리드가 실제로 정착하기 전(카메라 갤럭시뷰 전환 중)에는 m_currentZoneNumber를 건드리지 않음 —
-        // SelectZoneTab의 preservePosition 판정이 "직전에 로드돼있던 존이 무엇인지"를 정확히 알아야 하므로(조기 대입 시 오판 버그 발생)
+        // SelectZoneTab의 isSameZoneReentry 판정이 "직전에 로드돼있던 존이 무엇인지"를 정확히 알아야 하므로(조기 대입 시 오판 버그 발생)
         m_pendingZoneNumber = zoneNumber;
 
         // 존 탭/포인트 표시/버튼/그리드 버튼 전부 SettleZoneEntry(카메라 정착 후)에서 한 번에 세팅됨 —
@@ -274,15 +275,19 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 전투 승리 후 그리드 복귀(ShowPanel 재호출)처럼 같은 존 재진입 시에는 시작 좌표로 리셋하지 않고
         // 직전에 있던 셀 좌표를 유지 — 존 자체가 바뀌면(최초 진입/존 이동) 시작 좌표로 초기화
         // 그리드 레이아웃은 이제 고정 데이터라 seed와 무관 — zoneNumber만 같으면 동일 그리드
-        bool preservePosition = m_gridData != null && m_currentZoneNumber == zoneNumber;
+        bool isSameZoneReentry = m_gridData != null && m_currentZoneNumber == zoneNumber;
         int preservedRow = m_currentRow;
         int preservedCol = m_currentCol;
 
         m_currentZoneNumber = zoneNumber;
         m_currentSeed = seed;
-        m_gridData = ExplorationGridGenerator.Generate(zoneConfig);
 
-        if (preservePosition == true && m_gridData.IsInBounds(preservedRow, preservedCol) == true)
+        // 같은 존 재진입(isSameZoneReentry)이면 그리드를 다시 만들지 않고 기존 객체를 재사용 —
+        // 새로 만들면 로컬에서 SetCellCleared로 켜둔 클리어 상태가 전부 초기화돼버림(레이아웃 자체는 zoneNumber만 같으면 항상 동일해서 다시 만들 이유도 없음)
+        if (isSameZoneReentry == false)
+            m_gridData = ExplorationGridGenerator.Generate(zoneConfig);
+
+        if (isSameZoneReentry == true && m_gridData.IsInBounds(preservedRow, preservedCol) == true)
         {
             m_currentRow = preservedRow;
             m_currentCol = preservedCol;
@@ -303,7 +308,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         // 존 자체가 바뀌는 진입(재진입 제외)에서는 로컬 적립 표시를 일단 비움 — 진행 중인 런이면 아래 서버 응답으로 곧 채워짐
-        if (preservePosition == false)
+        if (isSameZoneReentry == false)
         {
             m_bankedExplorationPoint = 0;
             RefreshBankedPointText();
@@ -315,7 +320,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         RefreshAbandonRunButtonState();
 
         // 세션 내 메모리 좌표가 없는 첫 진입이면서 서버에 진행 중인 런이 있는 존이면, 지나온 셀들의 방문 표시도 복구
-        if (preservePosition == false && IsActiveExplorationZone(zoneNumber) == true)
+        if (isSameZoneReentry == false && IsActiveExplorationZone(zoneNumber) == true)
             RequestActiveZoneRunProgress();
     }
 
@@ -403,8 +408,7 @@ public class UIPanelExplorationGrid : UIPanelBase
                 GridCell3D button = GetButtonFromPool();
                 button.gameObject.SetActive(true);
                 button.transform.position = cellData.worldPos;
-                button.Initialize(cellData);
-                button.FaceCameraOnce(cam);
+                button.Initialize(cellData);                
                 m_activeButtons[(row, col)] = button;
             }
         }
@@ -541,51 +545,32 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_currentCol = m_pendingCellCol;
 
         ObjectManager.Instance.SetMyFleetPosition(m_pendingCellWorldPos, 0f);
-        SpawnEnemyFleetAndShowPrepareBattle(m_currentRow, m_currentCol, m_pendingCellWorldPos, myFleet);
+        EnterCellAndRequestEnemyFleet(m_currentRow, m_currentCol, m_pendingCellWorldPos, myFleet);
     }
 
-    // 적 함대를 즉시 스폰하고 대치 패널(UIPanelPrepareBattle)을 바로 띄움 — 워프인 연출(StartFleetWarpIn)은
-    // 패널 표시를 기다리지 않고 별도로 재생(연출이 끝나야 버튼이 눌리는 게 아니라, 대치 상태 자체는 이미 확정된 것이므로)
+    // 내 함대는 즉시 워프인, 적 함대는 서버 응답(실제 장착 모듈까지 포함된 값)이 온 뒤에 스폰 — 대치 패널도 그때 함께 뜸.
+    // 빈 셀 여부(적 있음/없음)는 로컬 프리뷰(GetCellEnemyWaves)로 미리 판단해서 빈 셀이면 서버 왕복 자체를 생략함
     // TODO: 2번째 이후 웨이브는 이전 웨이브 전멸 시 이어서 스폰해야 함 — 전투 시스템(§1-3 6번) 미구현이라 아직 트리거 불가
-    private void SpawnEnemyFleetAndShowPrepareBattle(int row, int col, Vector3 myFleetPos, SpaceFleet myFleet)
+    private void EnterCellAndRequestEnemyFleet(int row, int col, Vector3 myFleetPos, SpaceFleet myFleet)
     {
-        List<FleetInfo> waves = GetCellEnemyWaves(row, col);
-        FleetInfo enemyFleetInfo = waves != null && waves.Count > 0 ? waves[0] : null;
-        if (enemyFleetInfo == null || enemyFleetInfo.ships == null || enemyFleetInfo.ships.Count == 0)
-        {
-            myFleet.StartFleetWarpIn();
-            return; // 빈 셀(적 없음) — 탐험 포인트 지급 등은 후속 작업
-        }
-
-        Vector3 enemyPos = myFleetPos + Vector3.forward * k_enemyEncounterDistance;
-        Quaternion enemyRot = Quaternion.LookRotation(myFleetPos - enemyPos);
-
-        ETeam enemyTeam = ObjectManager.Instance.GetOpposingTeam(ObjectManager.Instance.m_myTeam);
-        ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
-        float enemyStatMultiplier = zoneConfig != null ? zoneConfig.enemyStatMultiplier : 1f;
-        SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet", enemyStatMultiplier);
-        m_standoffEnemyFleet = enemyFleet;
-
         myFleet.StartFleetWarpIn();
-        enemyFleet.StartFleetWarpIn();
 
-        ShowPrepareBattlePanel(myFleet, enemyFleet);
+        if (m_gridData.GetCell(row, col).isCleared == true)
+            return; // 이번 런에서 이미 클리어한 셀 — 전투 없이 바로 이동
+
+        List<FleetInfo> previewWaves = GetCellEnemyWaves(row, col);
+        FleetInfo previewFleetInfo = previewWaves != null && previewWaves.Count > 0 ? previewWaves[0] : null;
+        if (previewFleetInfo == null || previewFleetInfo.ships == null || previewFleetInfo.ships.Count == 0)
+            return; // 빈 셀(적 없음) — 탐험 포인트 지급 등은 후속 작업
+
+        m_pendingEnemyRequestMyFleetPos = myFleetPos;
+        RequestEnemyFleetForCurrentCell();
     }
 
-    // 대치 상태로 전환, 전투시작/퇴각/함대설정 3버튼 노출 — 워프인 연출 완료를 기다리지 않고 셀 확정 즉시 표시
-    private void ShowPrepareBattlePanel(SpaceFleet myFleet, SpaceFleet enemyFleet)
+    // OnConfirmAbandonAnotherRunAndRetry(다른 존 런 포기 후 재시도)에서도 재사용 — m_currentRow/Col과 m_pendingEnemyRequestMyFleetPos는
+    // EnterCellAndRequestEnemyFleet가 이미 세팅해둔 값을 그대로 씀
+    private void RequestEnemyFleetForCurrentCell()
     {
-        UIPanelPrepareBattle panel = UIManager.Instance.GetPanel<UIPanelPrepareBattle>("UIPanelPrepareBattle");
-        if (panel == null) return;
-
-        panel.Open(myFleet, enemyFleet, OnConfirmStartBattle, OnConfirmRetreat);
-    }
-
-    // 전투시작 확정 — 서버에 셀 도전을 먼저 통지(EnterExplorationCell)하고 승인된 경우에만 실제 교전 상태로 전환
-    private void OnConfirmStartBattle()
-    {
-        if (m_standoffEnemyFleet == null) return;
-
         EnterExplorationCellRequest request = new EnterExplorationCellRequest
         {
             zoneNumber = m_currentZoneNumber,
@@ -596,6 +581,26 @@ public class UIPanelExplorationGrid : UIPanelBase
                 : null,
         };
         NetworkManager.Instance.EnterExplorationCell(request, OnEnterExplorationCellResponse);
+    }
+
+    // 대치 상태로 전환, 전투시작/퇴각/함대설정 3버튼 노출 — 워프인 연출 완료를 기다리지 않고 스폰 즉시 표시
+    private void ShowPrepareBattlePanel(SpaceFleet myFleet, SpaceFleet enemyFleet)
+    {
+        UIPanelPrepareBattle panel = UIManager.Instance.GetPanel<UIPanelPrepareBattle>("UIPanelPrepareBattle");
+        if (panel == null) return;
+
+        panel.Open(myFleet, enemyFleet, OnConfirmStartBattle, OnConfirmRetreat);
+    }
+
+    // 전투시작 확정 — 적 함대는 서버 응답으로 이미 스폰돼 있으므로 별도 통신 없이 바로 교전 전환
+    private void OnConfirmStartBattle()
+    {
+        if (m_standoffEnemyFleet == null) return;
+
+        // 교전 상태 진입 즉시 발사되면 한방짜리 전투가 너무 순식간에 끝나 보이므로, 양측 사격 개시 전 0.5초 텀을 둠
+        const float BATTLE_START_DELAY_SEC = 0.5f;
+        ObjectManager.Instance.TryStartCombat(m_standoffEnemyFleet, EUnitState.BattleExploration, BATTLE_START_DELAY_SEC, BATTLE_START_DELAY_SEC);
+        m_standoffEnemyFleet = null;
     }
 
     private void OnEnterExplorationCellResponse(ApiResponse<EnterExplorationCellResponse> response)
@@ -617,9 +622,24 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (commanderInfo != null)
             commanderInfo.explorationZoneNumber = m_currentZoneNumber;
 
-        if (m_standoffEnemyFleet == null) return;
-        ObjectManager.Instance.TryStartCombat(m_standoffEnemyFleet, EUnitState.BattleExploration);
-        m_standoffEnemyFleet = null;
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet == null) return;
+
+        List<StageEnemyFleetSpawnConfig> enemyFleets = response.data.enemyFleets;
+        FleetInfo enemyFleetInfo = enemyFleets != null && enemyFleets.Count > 0 ? enemyFleets[0].fleetInfo : null;
+        if (enemyFleetInfo == null || enemyFleetInfo.ships == null || enemyFleetInfo.ships.Count == 0) return; // 로컬 프리뷰와 서버가 다르게 판단할 경우의 방어
+
+        Vector3 enemyPos = m_pendingEnemyRequestMyFleetPos + Vector3.forward * k_enemyEncounterDistance;
+        Quaternion enemyRot = Quaternion.LookRotation(m_pendingEnemyRequestMyFleetPos - enemyPos);
+
+        ETeam enemyTeam = ObjectManager.Instance.GetOpposingTeam(ObjectManager.Instance.m_myTeam);
+        ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
+        float enemyStatMultiplier = zoneConfig != null ? zoneConfig.enemyStatMultiplier : 1f;
+        SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet", enemyStatMultiplier);
+        m_standoffEnemyFleet = enemyFleet;
+        enemyFleet.StartFleetWarpIn();
+
+        ShowPrepareBattlePanel(myFleet, enemyFleet);
     }
 
     // 이미 다른 존에 IN_PROGRESS 런이 있을 때 — 포기 후 재시도 확인
@@ -644,7 +664,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             }
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
-            OnConfirmStartBattle(); // 기존 런 정리 완료 — 원래 도전을 재시도
+            RequestEnemyFleetForCurrentCell(); // 기존 런 정리 완료 — 원래 셀 도전 요청을 재시도
         });
     }
 
@@ -894,6 +914,10 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void RefreshCellStates()
     {
+        // 존이 순차 진행이라는 전제하에, 현재 존 번호가 서버 권위값(최고 탈출 존) 이하면 이 존은 예전에 반드시 한 번 탈출한 적이 있음
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        bool escapedZoneBefore = commanderInfo != null && m_currentZoneNumber <= commanderInfo.highestClearedZoneNumber;
+
         foreach (var kv in m_activeButtons)
         {
             int row = kv.Key.row;
@@ -911,7 +935,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             else if (cellData.isCleared) state = EGridCellVisualState.Cleared;
             else state = EGridCellVisualState.Unvisited;
 
-            button.SetVisualState(state);
+            button.SetVisualState(state, cellData.isCleared, escapedZoneBefore);
         }
     }
 

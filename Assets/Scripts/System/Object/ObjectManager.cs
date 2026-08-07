@@ -119,6 +119,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     #endregion
 
     private CelestialBodySpawner m_celestialBodySpawner;
+    private DebrisFieldSpawner m_debrisFieldSpawner;
 
     [HideInInspector] public List<SpaceFleet> m_teamAFleets = new List<SpaceFleet>();
     [HideInInspector] public List<SpaceFleet> m_teamBFleets = new List<SpaceFleet>();
@@ -235,6 +236,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         m_celestialBodySpawner = GetComponent<CelestialBodySpawner>();
         if (m_celestialBodySpawner != null)
             m_celestialBodySpawner.SpawnZone(GetInitialZoneIndex());
+        m_debrisFieldSpawner = GetComponent<DebrisFieldSpawner>();
+        if (m_debrisFieldSpawner != null)
+            m_debrisFieldSpawner.SpawnZone(GetInitialZoneIndex());
         AdManager.Instance.ToString();// 광고 초기화 (존 입장 전 미리 로드)
 
         // 튜토리얼 진행도는 SelectCommander 응답 시점(UIMain.cs)에 이미 확보되어 있음 — 씬 로드 중 깜빡임 없이 바로 결정
@@ -287,6 +291,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         ForceEndBattle(false);
     }
 
+    // 전투 종료 판정 후 실제 정리(함선 제거 등)까지의 텀 — 마지막 격추 연출이 끝날 시간을 확보
+    private const float BATTLE_END_DELAY_SEC = 1.5f;
+
     // 전투 강제 종료 (전멸/퇴각 공통)
     public void ForceEndBattle(bool isVictory)
     {
@@ -294,6 +301,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 먼저 확정된 결과만 인정하고 뒤이어 들어오는 결과는 무시
         if (m_isBattleEnding == true) return;
         m_isBattleEnding = true;
+        StartCoroutine(DelayedEndBattle(isVictory));
+    }
+
+    private IEnumerator DelayedEndBattle(bool isVictory)
+    {
+        yield return new WaitForSeconds(BATTLE_END_DELAY_SEC);
+
         SpaceFleet myFleet = GetMyFleet();
         bool isPvp = myFleet != null && myFleet.m_fleetState == EUnitState.BattlePvp;
 
@@ -427,6 +441,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         if (m_celestialBodySpawner != null)
             m_celestialBodySpawner.SpawnZone(zoneIndex);
+        if (m_debrisFieldSpawner != null)
+            m_debrisFieldSpawner.SpawnZone(zoneIndex);
     }
 
 
@@ -727,7 +743,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 if (System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType))
                     bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodySubType);
 
-                ShipFinalStats finalStats = ShipStatCalculator.Calculate(preset.statAllocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
+                // shipSlot.bodies는 서버에 저장된 "이 함선에 실제로 장착된 모듈 구성"(로드아웃) — 있으면(내 함대) 그걸 우선 쓰고,
+                // 없으면(적 함대 등) preset.statAllocation(프리셋의 기본 장착 구성)을 그대로 씀
+                ModuleBodyInfo actualModules = shipSlot.bodies != null && shipSlot.bodies.Count > 0 ? shipSlot.bodies[0] : null;
+                ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(preset.statAllocation, actualModules);
+
+                ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
                 ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats, shipIndex, shipSlot.isFront, enemyStatMultiplier);
             }
         }
@@ -761,8 +782,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: true);
     }
 
-    // 함대편성 UI(FleetComposition)에서 슬롯 하나에 배치/교체할 때 호출 — 그 슬롯의 함선만 파괴/재생성, 나머지 함선은 그대로 유지
-    public void ReplaceMyFleetShipAt(int positionIndex, string shipPresetId, bool isFront)
+    // 함대편성 UI(FleetComposition)에서 슬롯 하나에 배치/교체하거나 장착 모듈만 바뀌었을 때 호출 — 그 슬롯의 함선만 파괴/재생성, 나머지 함선은 그대로 유지
+    // modules를 생략하면(null) 프리셋 기본 장착 구성(바디 교체 시 리셋된 값)을 쓰고, 넘기면(모듈 편집 후) 그 실제 장착 구성으로 스탯을 계산함
+    public void ReplaceMyFleetShipAt(int positionIndex, string shipPresetId, bool isFront, ModuleBodyInfo modules = null)
     {
         SpaceFleet myFleet = GetMyFleet();
         if (myFleet == null) return;
@@ -786,7 +808,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodySubType);
 
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
-        ShipFinalStats finalStats = ShipStatCalculator.Calculate(preset.statAllocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
+        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(preset.statAllocation, modules);
+        ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
 
         SpaceShip newShip = ExplorationShipSpawnBridge.SpawnShip(myFleet, preset, finalStats, positionIndex, isFront);
         // 존 런 진행 중이면 이전 함선의 손상 비율을 새 함선에 그대로 이전(회복 금지) — 평시 편성(런 없음)은 만피 유지

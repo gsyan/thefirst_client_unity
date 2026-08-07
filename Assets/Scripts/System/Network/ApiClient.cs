@@ -581,6 +581,22 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<object>>(webRequest.downloadHandler.text);
     }
 
+    public async Task<ApiResponse<SetFleetPresetSlotModulesResponse>> SetFleetPresetSlotModulesAsync(SetFleetPresetSlotModulesRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<SetFleetPresetSlotModulesResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/fleet/preset/set-modules", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<SetFleetPresetSlotModulesResponse>>(webRequest.downloadHandler.text);
+    }
+
     public async Task<ApiResponse<FleetInstantRepairResponse>> FleetInstantRepairAsync()
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<FleetInstantRepairResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);

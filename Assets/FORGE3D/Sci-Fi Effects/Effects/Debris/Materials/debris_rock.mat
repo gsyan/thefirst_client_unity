@@ -78,10 +78,10 @@ Material:
     - _DecalMeshViewBias: 0
     - _DiffusePower: 2.4
     - _DrawOrder: 0
-    - _FadeInMax: 5
-    - _FadeInMin: 1
-    - _FadeOutMax: 33
-    - _FadeOutMin: 15
+    - _FadeInMax: 10
+    - _FadeInMin: 0
+    - _FadeOutMax: 12000
+    - _FadeOutMin: 8000
     - _FresnelMult: 0
     - _FresnelPower: 1
     - _GlowMult: 0
@@ -101,7 +101,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 0, g: 0, b: 0, a: 0.016}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FadeInAInBOutAOutB: {r: 1, g: 5, b: 15, a: 33}
+    - _FadeInAInBOutAOutB: {r: 0, g: 10, b: 8000, a: 12000}
     - _InMinMaxOutMinMax: {r: 0, g: 5, b: 10, a: 20}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
     - _TintRGBAmbientAMult: {r: 0, g: 0, b: 0, a: 0.016}

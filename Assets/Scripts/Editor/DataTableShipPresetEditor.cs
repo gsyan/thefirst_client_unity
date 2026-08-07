@@ -1,5 +1,7 @@
 // DataTableShipPreset 커스텀 에디터 — 함선 프리셋 Inspector UI 및 CSV Import/Export 툴
-// CSV 경로: Assets/Resources/DataTable/ShipPreset/datatable_ship_preset.csv
+// CSV 경로: Assets/Resources/DataTable/ShipPreset/datatable_ship_preset.csv (식별+스칼라 스탯)
+//          Assets/Resources/DataTable/ShipPreset/modules_in_preset.csv (장착 모듈, preset_id당 여러 행)
+// Import는 반드시 Preset CSV → Modules CSV 순서로 처리(모듈 슬롯 배열이 Preset Import 시점에 먼저 준비되어야 함)
 
 #if UNITY_EDITOR
 using UnityEngine;
@@ -188,7 +190,6 @@ public class DataTableShipPresetEditor : Editor
 
         EditorGUILayout.PropertyField(elementProp.FindPropertyRelative("unlockCommanderLevel"), new GUIContent("Unlock Commander Level", "이 값 이상의 커맨더 레벨부터 사용 가능 (예: 10 = 10레벨부터)"));
         EditorGUILayout.PropertyField(presetIdProp, new GUIContent("Preset Id"));
-        EditorGUILayout.PropertyField(elementProp.FindPropertyRelative("displayNameKey"), new GUIContent("Display Name Key"));
 
         SerializedProperty prefabNameProp = elementProp.FindPropertyRelative("prefabName");
         EditorGUILayout.BeginHorizontal();
@@ -495,23 +496,32 @@ public class DataTableShipPresetEditor : Editor
     private void DrawCsvTools()
     {
         EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField("CSV Import", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("CSV Import / Export", EditorStyles.boldLabel);
 
-        string csvPath = Application.dataPath + "/Resources/DataTable/ShipPreset/datatable_ship_preset.csv";
+        string presetCsvPath = Application.dataPath + "/Resources/DataTable/ShipPreset/datatable_ship_preset.csv";
+        string modulesCsvPath = Application.dataPath + "/Resources/DataTable/ShipPreset/modules_in_preset.csv";
 
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Import CSV"))
+        if (GUILayout.Button("Import CSV (Preset + Modules)"))
         {
-            if (System.IO.File.Exists(csvPath) == false)
+            if (System.IO.File.Exists(presetCsvPath) == false)
             {
-                EditorUtility.DisplayDialog("Error", $"파일 없음:\n{csvPath}", "OK");
+                EditorUtility.DisplayDialog("Error", $"파일 없음:\n{presetCsvPath}", "OK");
+            }
+            else if (System.IO.File.Exists(modulesCsvPath) == false)
+            {
+                EditorUtility.DisplayDialog("Error", $"파일 없음:\n{modulesCsvPath}", "OK");
             }
             else if (EditorUtility.DisplayDialog("Import Ship Preset CSV",
-                "datatable_ship_preset.csv 를 읽어 함선 프리셋 데이터를 갱신합니다.\n기존 데이터는 삭제됩니다.", "Import", "Cancel"))
+                "datatable_ship_preset.csv + modules_in_preset.csv 를 읽어 함선 프리셋 데이터를 갱신합니다.\n기존 데이터는 삭제됩니다.", "Import", "Cancel"))
             {
-                string csvText = System.IO.File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
-                dataTable.LoadFromCsv(csvText);
+                string presetCsvText = System.IO.File.ReadAllText(presetCsvPath, System.Text.Encoding.UTF8);
+                dataTable.LoadShipPresetCsv(presetCsvText);
+
+                string modulesCsvText = System.IO.File.ReadAllText(modulesCsvPath, System.Text.Encoding.UTF8);
+                dataTable.LoadModulesInPresetCsv(modulesCsvText);
+
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
                 EditorUtility.DisplayDialog("Complete",
@@ -519,13 +529,17 @@ public class DataTableShipPresetEditor : Editor
             }
         }
 
-        if (GUILayout.Button("Export to CSV"))
+        if (GUILayout.Button("Export to CSV (Preset + Modules)"))
         {
             if (EditorUtility.DisplayDialog("Export to CSV",
-                $"현재 데이터를 CSV 파일로 덮어씁니다.\n\n{csvPath}\n\n계속하시겠습니까?", "Export", "Cancel"))
+                $"현재 데이터를 CSV 파일로 덮어씁니다.\n\n{presetCsvPath}\n{modulesCsvPath}\n\n계속하시겠습니까?", "Export", "Cancel"))
             {
-                string csv = dataTable.ExportToCsv();
-                System.IO.File.WriteAllText(csvPath, csv, System.Text.Encoding.UTF8);
+                string presetCsv = dataTable.ExportShipPresetCsv();
+                System.IO.File.WriteAllText(presetCsvPath, presetCsv, System.Text.Encoding.UTF8);
+
+                string modulesCsv = dataTable.ExportModulesInPresetCsv();
+                System.IO.File.WriteAllText(modulesCsvPath, modulesCsv, System.Text.Encoding.UTF8);
+
                 AssetDatabase.Refresh();
                 EditorUtility.DisplayDialog("Complete", "CSV Export가 완료되었습니다.", "OK");
             }

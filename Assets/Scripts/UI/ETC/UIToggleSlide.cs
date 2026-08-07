@@ -71,6 +71,14 @@ public class UIToggleSlide : MonoBehaviour
         return m_isOn;
     }
 
+    // 잠금(예: 항상 켜져 있어야 하는 슬롯) 등으로 클릭 자체를 막고 싶을 때 — 상태(m_isOn)는 그대로 유지, 클릭만 막음
+    public void SetInteractable(bool interactable)
+    {
+        EnsureInitialized();
+        if (m_button != null)
+            m_button.interactable = interactable;
+    }
+
     public void SetLabelText(string text, bool rawText = false)
     {
         if (m_labelText == null) return;

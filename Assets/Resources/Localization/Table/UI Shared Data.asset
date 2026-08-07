@@ -395,6 +395,10 @@ MonoBehaviour:
     m_Key: UIFleet_Rear
     m_Metadata:
       m_Items: []
+  - m_Id: 65329291885150208
+    m_Key: UIFleet_ConvertPoint
+    m_Metadata:
+      m_Items: []
   - m_Id: 61639704184750081
     m_Key: UIFleet_PlacedShipCount
     m_Metadata:
@@ -493,6 +497,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 64564272184557568
     m_Key: UIFleet_ShipPreset_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65433715576012800
+    m_Key: UIFleet_ShipLoadOut_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65433715638927360
+    m_Key: UIFleet_EditLoadoutButton
     m_Metadata:
       m_Items: []
   - m_Id: 35928926043635712
@@ -869,6 +881,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 767916349718534
     m_Key: module_type_hanger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65472345728221184
+    m_Key: UIFleet_ModuleSlot_Installed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65472345807912960
+    m_Key: UIFleet_ModuleSlot_NotInstalled
     m_Metadata:
       m_Items: []
   - m_Id: 34285289056632833

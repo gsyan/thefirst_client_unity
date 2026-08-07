@@ -494,7 +494,10 @@ public class AbandonZoneRunResponse
 }
 
 [System.Serializable]
-public class IncreaseCommandPowerMaxRequest { } // 은행 탐험 포인트 소모, 고정 증가폭은 서버 정의
+public class IncreaseCommandPowerMaxRequest
+{
+    public int amount; // 소모할 탐험 포인트 — 지휘력 최대치도 동일 수치만큼 증가(교환비 1:1)
+}
 
 [System.Serializable]
 public class IncreaseCommandPowerMaxResponse
@@ -692,6 +695,24 @@ public class FleetPresetSetFrontRequest
     // 함대편성 슬롯의 전/후방 토글 저장
     public int slotIndex;
     public bool isFront;
+}
+
+[System.Serializable]
+public class SetFleetPresetSlotModulesRequest
+{
+    // 함대편성 슬롯(함선) 하나의 최종 장착 모듈 "전체"를 한 번에 교체 — on/off만 지원(서브타입 선택 없음)
+    // 낱개 토글을 순서대로 여러 번 보내면 중간 상태에서 "공격모듈 0개"/"예산 초과" 검증에 걸릴 수 있어(예: 빔→미사일 교체 시 순서에 따라 항상 실패),
+    // 반드시 최종 상태 하나로 모아 보내고 서버는 그 결과 상태만 검증한다
+    public int slotIndex; // CommanderFleetPresetSlot의 slotIndex(함대편성 슬롯)
+    public ModuleBodyInfo modules; // 이 슬롯에 최종적으로 장착되어 있어야 할 모듈 전체(beams/missiles/hangers, 각 slotIndex만 유효)
+}
+
+[System.Serializable]
+public class SetFleetPresetSlotModulesResponse
+{
+    public ModuleBodyInfo body;       // 갱신된 함선의 현재 로드아웃 전체(beams/missiles/hangers)
+    public int commandCost;           // 갱신된 함선의 지휘력 코스트
+    public int remainingCommandPower; // 커맨더의 남은 지휘력
 }
 
 [System.Serializable]
