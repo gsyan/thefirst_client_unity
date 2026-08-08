@@ -99,6 +99,7 @@ public class Commander
     {
         if (m_commanderInfo == null) return;
         m_commanderInfo.explorationPoint = explorationPoint;
+        EventManager.TriggerExplorationPointChanged(explorationPoint);
     }
 
     public int GetCommanderLevel()

@@ -46,6 +46,12 @@ public static class EventManager
     public static void Subscribe_PvpPointChanged(Action<int> callback)   { OnPvpPointChanged += callback; }
     public static void Unsubscribe_PvpPointChanged(Action<int> callback) { OnPvpPointChanged -= callback; }
 
+    // explorationPoint — 값을 직접 대입하지 말고 반드시 Commander.UpdateExplorationPoint()를 거칠 것(이 이벤트가 자동 발행됨)
+    public static event Action<int> OnExplorationPointChanged;
+    public static void TriggerExplorationPointChanged(int explorationPoint) { OnExplorationPointChanged?.Invoke(explorationPoint); }
+    public static void Subscribe_ExplorationPointChanged(Action<int> callback)   { OnExplorationPointChanged += callback; }
+    public static void Unsubscribe_ExplorationPointChanged(Action<int> callback) { OnExplorationPointChanged -= callback; }
+
     #endregion Commander Tech, Mineral ----------------------------------------------------------------------
     
     # region Fleet ShipCount / HP----------------------------------------------------------------------

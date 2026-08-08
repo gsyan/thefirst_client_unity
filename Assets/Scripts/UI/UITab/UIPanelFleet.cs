@@ -40,8 +40,6 @@ public class UIPanelFleet : UIPanelBase
     private int m_placedTotalSlotCount; // 잠긴 칸 포함 전체 슬롯 수(=InfiniteScrollView totalCount)
     private int m_placedOpenSlotCount;  // 잠기지 않은(배치 가능한) 슬롯 수
 
-    private long m_displayedOwnedExplorationPoint = -1; // 롤링 애니메이션의 시작값 추적 — 최초 1회는 -1이라 즉시 표시됨(UIResourceBar와 동일 패턴)
-
     private int m_selectedSlotIndex = -1; // 선택된 배치 슬롯 — -1이면 성능 컬럼은 비어있음. 프리셋 ID는 저장하지 않고 매번 슬롯에서 다시 조회(교체돼도 항상 최신 반영)
 
     // 읽기전용 모드(적 함대 열람) — true면 편집 전용 UI(3열/지휘력 요약/전후방 토글)를 숨기고 데이터도 FleetComposition 대신 m_targetFleet에서 읽음
@@ -90,6 +88,7 @@ public class UIPanelFleet : UIPanelBase
 
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Subscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+        EventManager.Subscribe_ExplorationPointChanged(OnExplorationPointChanged);
 
         if (m_increaseCommandPowerButton != null)
             m_increaseCommandPowerButton.onClick.AddListener(OnIncreaseCommandPowerButtonClicked);
@@ -109,6 +108,13 @@ public class UIPanelFleet : UIPanelBase
     {
         EventManager.Unsubscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Unsubscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+        EventManager.Unsubscribe_ExplorationPointChanged(OnExplorationPointChanged);
+    }
+
+    // 다른 화면(탐험 그리드 등)에서 탐험 포인트가 바뀌면 이 패널이 열려있지 않아도 안전하게 호출됨 — 행 갱신 자체가 null 체크 포함
+    private void OnExplorationPointChanged(int explorationPoint)
+    {
+        RefreshOwnedExplorationPointRow();
     }
 
     // 함대편성 UI가 열려있는 도중 전투가 시작/종료되면 프리셋 교체 버튼 활성 상태를 즉시 갱신
@@ -483,8 +489,7 @@ public class UIPanelFleet : UIPanelBase
         int ownedExplorationPoint = commanderInfo != null ? commanderInfo.explorationPoint : 0;
 
         m_ownedExplorationPointRow.SetLabel("UIPanelExplorationGrid_OwnedPoint");
-        m_ownedExplorationPointRow.SetValueAnimated(m_displayedOwnedExplorationPoint, ownedExplorationPoint);
-        m_displayedOwnedExplorationPoint = ownedExplorationPoint;
+        m_ownedExplorationPointRow.SetValues(ownedExplorationPoint.ToString(), rawValue: true);
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_ownedExplorationPointRow.transform as RectTransform);
 
     }
@@ -515,10 +520,10 @@ public class UIPanelFleet : UIPanelBase
 
             CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
             if (commanderInfo != null)
-            {
                 commanderInfo.commandPowerMax = response.data.commandPowerMax;
-                commanderInfo.explorationPoint = response.data.explorationPointRemain;
-            }
+            // Commander.UpdateExplorationPoint()를 거쳐야 EventManager.OnExplorationPointChanged가 발행되어 다른 열린 패널도 즉시 갱신됨
+            if (DataManager.Instance.m_currentCommander != null)
+                DataManager.Instance.m_currentCommander.UpdateExplorationPoint(response.data.explorationPointRemain);
 
             RefreshFleetComposition();
         });

@@ -790,11 +790,11 @@ public class UIPanelExplorationGrid : UIPanelBase
     }
 
     // 탈출/포기 응답의 explorationPointRemain(확정 지급 후 보유 잔액)을 커맨더 정보에도 반영해 다른 화면(지휘력 증가 등)과 일치시킴
+    // Commander.UpdateExplorationPoint()를 거쳐야 EventManager.OnExplorationPointChanged가 발행되어 다른 열린 패널도 즉시 갱신됨
     private void ApplyOwnedPointRemain(int explorationPointRemain)
     {
-        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        if (commanderInfo != null)
-            commanderInfo.explorationPoint = explorationPointRemain;
+        if (DataManager.Instance.m_currentCommander != null)
+            DataManager.Instance.m_currentCommander.UpdateExplorationPoint(explorationPointRemain);
 
         RefreshOwnedPointText();
     }
