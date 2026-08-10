@@ -206,10 +206,8 @@ public class SpaceFleet : MonoBehaviour
     {
         GameObject shipGo = new GameObject($"{shipInfo.shipName}");
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
-        spaceShip.m_bodyMultiplier    = shipInfo.bodyMultiplier;
-        spaceShip.m_beamMultiplier    = shipInfo.beamMultiplier;
-        spaceShip.m_missileMultiplier = shipInfo.missileMultiplier;
-        spaceShip.m_hangerMultiplier  = shipInfo.hangerMultiplier;
+        spaceShip.m_healthMultiplier = shipInfo.healthMultiplier;
+        spaceShip.m_attackMultiplier = shipInfo.attackMultiplier;
         spaceShip.InitializeSpaceShip(this, shipInfo);
         AddShip(spaceShip, bWarp: bWarp, bFillNullSlot: bFillNullSlot);
         return spaceShip;
@@ -329,6 +327,22 @@ public class SpaceFleet : MonoBehaviour
         NetworkManager.Instance.FleetHealthSave(request);
     }
 
+    // 셀 클리어 보고에 실어 보낼 슬롯 포지션 인덱스별 체력 비율 스냅샷 — ZoneRun에 저장돼 재접속 시 복구용(SaveHealthToServer의 shipId 기반 시스템과 별개)
+    public List<ShipHealthRatioInfo> BuildHealthRatioSnapshot()
+    {
+        var result = new List<ShipHealthRatioInfo>();
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            result.Add(new ShipHealthRatioInfo
+            {
+                positionIndex = ship.m_shipInfo.positionIndex,
+                healthRatio = ship.GetHealthRatio()
+            });
+        }
+        return result;
+    }
+
     // 소속 함선의 Body 교체로 크기가 바뀌면 간격 재조정
     private void OnShipBodyChanged(SpaceShip ship)
     {
@@ -367,17 +381,6 @@ public class SpaceFleet : MonoBehaviour
         if (ship == null) return null;
 
         return ship.FindModule(bodyIndex, moduleType, slotIndex);
-    }
-
-    public int GetTotalInvestedMineral()
-    {
-        int total = 0;
-        for (int i = 0; i < m_ships.Count; i++)
-        {
-            if (m_ships[i] != null)
-                total += m_ships[i].GetTotalInvestedMineral();
-        }
-        return total;
     }
 
     // 기함 반환 (positionIndex == 0, 없으면 첫 번째 non-null 함선)

@@ -499,7 +499,7 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 일일 출석 보너스 달력 팝업 (수령 직후 호출)
-    public void ShowDailyBonusPopup(int grantedMineral, System.Action onConfirm = null)
+    public void ShowDailyBonusPopup(int grantedExplorationPoint, System.Action onConfirm = null)
     {
         UIPopupDailyBonus popup = GetOrCreatePopup<UIPopupDailyBonus>("UIPopupDailyBonus", EPopupLayer.Overlay);
         if (popup == null) return;
@@ -507,7 +507,7 @@ public class UIManager : MonoSingleton<UIManager>
         PushPopup(popup, EPopupLayer.Overlay);
 
         System.Action userConfirm = onConfirm;
-        popup.ShowPopupDailyBonus(grantedMineral, () =>
+        popup.ShowPopupDailyBonus(grantedExplorationPoint, () =>
         {
             userConfirm?.Invoke();
             CloseTopPopup(EPopupLayer.Overlay);

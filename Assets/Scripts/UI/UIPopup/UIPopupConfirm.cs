@@ -198,11 +198,7 @@ public class UIPopupConfirm : UIPopupBase
 
         var ch = DataManager.Instance.m_currentCommander;
         long current = 0;
-        if (cost.costType == ECostType.Mineral)
-            current = ch != null ? ch.GetMineral() : 0;
-        else if (cost.costType == ECostType.ModulePoint)
-            current = ch != null ? ch.GetModulePoint() : 0;
-        else if (cost.costType == ECostType.PvpPoint)
+        if (cost.costType == ECostType.PvpPoint)
             current = ch != null ? ch.GetPvpPoint() : 0;
 
         bool canAfford = current >= cost.amount;
@@ -215,10 +211,8 @@ public class UIPopupConfirm : UIPopupBase
 
     private static string GetCostLabelKey(ECostType costType)
     {
-        if (costType == ECostType.Mineral) return "mineral_amount";
-        if (costType == ECostType.ModulePoint) return "UITabTech_ModulePointGetTitle";
         if (costType == ECostType.PvpPoint) return "UIPopupConfirm_PvpPointLabel";
-        return "mineral_amount";
+        return "UIPopupConfirm_PvpPointLabel";
     }
 
     // 함선 스탯 게이지 목록 — UISection 풀과 별개 캐시로 관리, m_statsRoot에 별도로 쌓임(섹션들과 부모가 달라 순서 무관)
@@ -432,9 +426,7 @@ public class UIPopupConfirm : UIPopupBase
 
     private static Color GetCostColor(ECostType costType)
     {
-        if (costType == ECostType.Mineral)     return CommonUtility.PaletteColor("Mineral");
-        if (costType == ECostType.ModulePoint) return CommonUtility.PaletteColor("ModulePoint");
-        if (costType == ECostType.PvpPoint)    return CommonUtility.PaletteColor("PvpPoint");
+        if (costType == ECostType.PvpPoint) return CommonUtility.PaletteColor("PvpPoint");
         return Color.white;
     }
 }

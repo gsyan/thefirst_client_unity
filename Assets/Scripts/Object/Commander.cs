@@ -22,12 +22,6 @@ public class Commander
         return GetDisplayName(m_commanderInfo.commanderName, m_commanderInfo.commanderId);
     }
 
-    public int GetMineral()
-    {
-        if (m_commanderInfo == null) return 0;
-        return m_commanderInfo.mineral;
-    }
-
     public int GetExp()
     {
         if (m_commanderInfo == null) return 0;
@@ -38,30 +32,6 @@ public class Commander
     {
         if (m_commanderInfo == null) return;
         m_commanderInfo.exp = exp;
-    }
-
-    public int GetModulePoint()
-    {
-        if (m_commanderInfo == null) return 0;
-        return m_commanderInfo.modulePoint;
-    }
-
-    public int GetModulePointMaxGot()
-    {
-        if (m_commanderInfo == null) return 0;
-        return m_commanderInfo.modulePointMaxGot;
-    }
-
-    public void UpdateModulePoint(int modulePoint)
-    {
-        if (m_commanderInfo == null) return;
-        m_commanderInfo.modulePoint = modulePoint;
-    }
-
-    public void UpdateModulePointMaxGot(int modulePointMaxGot)
-    {
-        if (m_commanderInfo == null) return;
-        m_commanderInfo.modulePointMaxGot = modulePointMaxGot;
     }
 
     public int GetPvpPoint()
@@ -134,39 +104,10 @@ public class Commander
         m_commanderInfo.nameChangeCount = nameChangeCount;
     }
 
-    public void UpdateMineral(int mineral)
-    {
-        if (m_commanderInfo == null) return;
-        m_commanderInfo.mineral = mineral;
-    }
-
-
-
-    public bool CheckEnoughMineral(long cost)
-    {
-        if (m_commanderInfo == null) return false;
-        return m_commanderInfo.mineral >= cost;
-    }
-
-    public bool TryConsumeMineral(int amount)
-    {
-        if (m_commanderInfo == null) return false;
-        if (m_commanderInfo.mineral < amount) return false;
-        m_commanderInfo.mineral -= amount;
-        return true;
-    }
-
     public bool CheckEnoughExp(long cost)
     {
         if (m_commanderInfo == null) return false;
         return m_commanderInfo.exp >= cost;
     }
-
-    public bool CheckEnoughModulePoint(int cost)
-    {
-        if (m_commanderInfo == null) return false;
-        return m_commanderInfo.modulePoint >= cost;
-    }
-
 
 }

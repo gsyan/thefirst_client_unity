@@ -49,8 +49,8 @@ public class UIPopupDailyBonus : UIPopupBase
             m_dayCells[i] = Instantiate(cellPrefab, m_gridLayoutGroup);
     }
 
-    // 수령 직후 호출 — grantedMineral > 0이면 지급 메시지 표시
-    public void ShowPopupDailyBonus(int grantedMineral, Action onConfirm)
+    // 수령 직후 호출 — grantedExplorationPoint > 0이면 지급 메시지 표시
+    public void ShowPopupDailyBonus(int grantedExplorationPoint, Action onConfirm)
     {
         base.ShowPopup();
         m_onConfirm = onConfirm;
@@ -62,10 +62,10 @@ public class UIPopupDailyBonus : UIPopupBase
 
         if (m_rewardDescText != null)
         {
-            bool hasReward = grantedMineral > 0;
+            bool hasReward = grantedExplorationPoint > 0;
             m_rewardDescText.gameObject.SetActive(hasReward);
             if (hasReward == true)
-                m_rewardDescText.text = loc.Get("DailyBonus_Desc", grantedMineral);
+                m_rewardDescText.text = loc.Get("DailyBonus_Desc", grantedExplorationPoint);
         }
 
         if (m_confirmButtonText != null)

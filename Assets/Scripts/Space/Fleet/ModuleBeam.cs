@@ -60,9 +60,6 @@ public class ModuleBeam : ModuleBase
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
-        SetInvestedModulePoint(moduleInfo.investedModulePoint);
-        SetAddShipModulePoint(moduleInfo.addShipModulePoint);
-        SetInvestedMineral(moduleInfo.investedMineral);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
@@ -86,9 +83,9 @@ public class ModuleBeam : ModuleBase
         // Zone 적 함선일 때 체력·공격력에 배율 적용
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_ownerShip.m_beamMultiplier;
-            m_healthMax *= m_ownerShip.m_beamMultiplier;
-            m_attack    *= m_ownerShip.m_beamMultiplier;
+            m_health    *= m_ownerShip.m_healthMultiplier;
+            m_healthMax *= m_ownerShip.m_healthMultiplier;
+            m_attack    *= m_ownerShip.m_attackMultiplier;
         }
 
         // 무기 서브 타입 초기화

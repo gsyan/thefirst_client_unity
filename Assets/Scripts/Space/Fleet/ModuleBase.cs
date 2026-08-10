@@ -12,38 +12,6 @@ public class ModuleBase : MonoBehaviour
     [HideInInspector] public float m_healthMax;
     [HideInInspector] public float m_attack;
 
-    // 리셋 시 환급할 투자 이력
-    [HideInInspector] public int m_investedModulePoint;
-
-    public void SetInvestedModulePoint(int modulePoint)
-    {
-        m_investedModulePoint = modulePoint;
-    }
-
-    public bool HasInvestedModulePoint()
-    {
-        return m_investedModulePoint > 0;
-    }
-
-    // addShip 시 배분된 modulePoint (baseline 계산에서 제외용) — 생성 시 한 번만 세팅, 이후 불변
-    [HideInInspector] public int m_addShipModulePoint;
-
-    public void SetAddShipModulePoint(int point)
-    {
-        m_addShipModulePoint = point;
-    }
-
-    // 미네랄 투자 이력 (전투 승리 시 소멸)
-    [HideInInspector] public int m_investedMineral;
-
-    public void SetInvestedMineral(int mineral)
-    {
-        m_investedMineral = mineral;
-    }
-
-    // 이 모듈의 UI 모드 상태 (미네랄 모드 여부)
-    [HideInInspector] public bool m_isMineralMode = false;
-
     // 함대 정보
     protected SpaceFleet m_ownerFleet;
     protected SpaceShip m_ownerShip;

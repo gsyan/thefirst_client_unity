@@ -70,8 +70,6 @@ public class UIPopupRedeemCode : UIPopupBase
         {
             currentCommander.UpdateCommanderLevel(response.data.commanderLevel);
             currentCommander.UpdateExp(response.data.exp);
-            currentCommander.UpdateModulePoint(response.data.modulePoint);
-            currentCommander.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
         }
 
         SetResultText(LocalizationManager.Instance.Get("UIPopupRedeemCode_Success"), m_colorSuccess);

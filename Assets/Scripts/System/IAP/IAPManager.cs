@@ -14,7 +14,6 @@ public class IAPManager : MonoSingleton<IAPManager>
     private Action<bool, string> m_onVipPurchaseComplete;
     private PendingOrder m_pendingOrder;
     private DateTime? m_vipExpiry;          // UTC, null이면 VIP 아님
-    private int m_mineralRewardMultiplier;  // 서버 설정 보상 배율
 
     protected override void OnInitialize()
     {
@@ -132,12 +131,9 @@ public class IAPManager : MonoSingleton<IAPManager>
         EventManager.TriggerVipStatusChanged();
     }
 
-    public int GetMineralRewardMultiplier() { return m_mineralRewardMultiplier; }
-
     public void ApplyVipStatus(VipStatusResponse data)
     {
         if (data == null) return;
-        m_mineralRewardMultiplier = data.mineralRewardMultiplier;
         SetVipExpiry(data.isVip ? data.vipExpiry : null);
     }
 

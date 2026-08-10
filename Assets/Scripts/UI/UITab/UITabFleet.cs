@@ -281,7 +281,7 @@ public class UITabFleet : UITabBase
 
         var loc          = LocalizationManager.Instance;
         var gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
-        int cost         = gameSettings.repairBoostMineralPerSec * gameSettings.instantRepairBaseSecs;
+        int cost         = gameSettings.repairBoostExplorationPointPerSec * gameSettings.instantRepairBaseSecs;
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
@@ -300,7 +300,6 @@ public class UITabFleet : UITabBase
         {
             if (response.errorCode == 0)
             {
-                DataManager.Instance.m_currentCommander.UpdateMineral(response.data.mineralRemain);
                 m_playerFleet.FullRepair();
             }
             else
@@ -455,7 +454,6 @@ public class UITabFleet : UITabBase
             if (response.errorCode == 0)
             {
                 SoundManager.Instance.PlayFX(EFx.Add_Ship, retrigger: true);
-                commander.UpdateModulePoint(response.data.modulePointRemain);
 
                 if (response.data.newShipInfo != null)
                 {

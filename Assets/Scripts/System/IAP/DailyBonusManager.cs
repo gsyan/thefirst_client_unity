@@ -46,9 +46,9 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
 
             var commander = DataManager.Instance.m_currentCommander;
             if (commander != null)
-                commander.UpdateMineral(result.mineralRemain);
+                commander.UpdateExplorationPoint(result.explorationPointRemain);
 
-            UIManager.Instance.ShowDailyBonusPopup(result.grantedMineral, onClosed);
+            UIManager.Instance.ShowDailyBonusPopup(result.grantedExplorationPoint, onClosed);
         });
     }
 

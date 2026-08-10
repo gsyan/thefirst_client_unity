@@ -1,14 +1,5 @@
 // 게임 공통 열거형 정의 — EModuleType, EModuleSubType(7자리 인코딩), EFormationType 등
 [System.Serializable]
-public enum ESpaceMineralState
-{
-    None = 0,
-    Occupied = 1,
-    End = 2,
-    Max,
-}
-
-[System.Serializable]
 public enum EModuleType
 {
     none            = 0,
@@ -137,7 +128,7 @@ public enum FormationMoveState
 public enum EDailyBonusTier { Normal, VIP }
 
 [System.Serializable]
-public enum EDailyBonusRewardType { Mineral }
+public enum EDailyBonusRewardType { ExplorationPoint }
 
 // 탐사 그리드 셀 타입 — Normal은 목록에 없는 좌표의 기본값(희소 저장이라 별도 항목을 만들지 않음)
 [System.Serializable]

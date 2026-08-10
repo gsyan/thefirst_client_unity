@@ -20,6 +20,10 @@ public class UIPanelExplorationGrid : UIPanelBase
     [Header("존 선택 스크롤")]
     [SerializeField] private InfiniteScrollViewH m_zoneTabScroll;
     [SerializeField] private GameObject m_zoneTabNodePrefab;
+
+    // 셀 클리어 직후부터 탈출 확정 팝업이 실제로 뜨기 전까지, 그리드/빈 공간 조작(3D 레이캐스트)을 막기 위한 화면 전체 raycastable 오버레이
+    [Header("입력 차단")]
+    [SerializeField] private GameObject m_inputBlockOverlay;
     // 락/클리어 표시 등 실제 진행도 연동은 후속 작업(clearedZones가 아직 구식 스테이지 포맷)
 
     private const float k_enemyEncounterDistance = 50f; // 셀 안 전투 조우 거리 — datatable_zone_enemy_fleet_position.csv grade1과 동일 스케일(국소 전술 거리, 갤럭시뷰 좌표와는 별개)
@@ -48,6 +52,7 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private int m_bankedExplorationPoint; // 진행 중인 런의 적립(미확정) 탐험 포인트 — 클리어마다 누적, 탈출/포기 확정 시 0으로 리셋
     private int m_pendingBankedPointGain; // 전투 중(패널 비활성 상태)에 획득해서 아직 화면에 반영 안 한 적립량 — 패널이 열릴 때 한 번에 반영+애니메이션
+    private bool m_pendingShowEscapeConfirmOnSettle; // 탈출 셀 클리어 직후 세팅 — SettleZoneEntry가 현재 존 그리드에 최종 적립 포인트를 반영한 뒤에만 탈출 확정 팝업을 띄우기 위함
     private long m_displayedBankedPoint = -1; // 롤링 애니메이션의 시작값 추적 — 최초 1회는 -1이라 즉시 표시됨(UIResourceBar와 동일 패턴)
     private long m_displayedOwnedPoint = -1;
 
@@ -79,7 +84,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message   = LocalizationManager.Instance.Get("UITabExploration_RetreatConfirm"),
-            onConfirm = () => ObjectManager.Instance.ForceEndBattle(false),
+            onConfirm = () => ObjectManager.Instance.ForceEndBattle(false, 0f), // 유저가 직접 누른 퇴각은 격추 연출 대기 없이 즉시 처리
             onCancel  = () => { }
         });
     }
@@ -89,8 +94,14 @@ public class UIPanelExplorationGrid : UIPanelBase
         // CameraController.HandleGalaxyGridSelection이 셀 히트 시 발행 — 셀 아닌 빈 곳은 EmptySpaceTapped로 흘러 UIManager가 패널을 닫음
         EventManager.Subscribe_ExplorationGridCellClicked(OnGridCellClicked);
 
-        int zoneNumber = ObjectManager.Instance.GetInitialZoneIndex();
+        EnterZone(ObjectManager.Instance.GetInitialZoneIndex());
+    }
 
+    // 존 진입(카메라 갤럭시뷰 전환 → 정착 시 SettleZoneEntry) — OnShowUIPanel(패널이 새로 열릴 때) 전용이 아니라,
+    // 패널이 이미 열려있는 채로 존을 다시 진입해야 할 때(탈출 성공 등)도 재사용. UIManager.ShowPanel은 "이미 활성 상태인
+    // 패널"이면 그냥 리턴해버려(OnShowUIPanel 재호출 안 됨) 그런 경우엔 이 메서드를 직접 불러야 실제로 다시 그려짐
+    private void EnterZone(int zoneNumber)
+    {
         // 존/그리드가 실제로 정착하기 전(카메라 갤럭시뷰 전환 중)에는 m_currentZoneNumber를 건드리지 않음 —
         // SelectZoneTab의 isSameZoneReentry 판정이 "직전에 로드돼있던 존이 무엇인지"를 정확히 알아야 하므로(조기 대입 시 오판 버그 발생)
         m_pendingZoneNumber = zoneNumber;
@@ -187,7 +198,15 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_bankedExplorationPoint += m_pendingBankedPointGain;
             m_pendingBankedPointGain = 0;
         }
-        RefreshBankedPointText();
+
+        // 탈출 셀 클리어로 여기까지 왔으면, 롤링 애니메이션이 실제로 끝나는 콜백 시점에 탈출 확정 팝업을 띄움(별도 타이머 추정 없이 정확한 동기화)
+        System.Action onBankedPointAnimComplete = null;
+        if (m_pendingShowEscapeConfirmOnSettle == true)
+        {
+            m_pendingShowEscapeConfirmOnSettle = false;
+            onBankedPointAnimComplete = ShowEscapeConfirmPopup;
+        }
+        RefreshBankedPointText(onBankedPointAnimComplete);
         RefreshOwnedPointText();
 
         // SelectZoneTab이 m_currentZoneNumber를 확정한 뒤에 탭 스크롤을 초기화해야 OnZoneTabNodeBind의 하이라이트 판정이 정확함
@@ -347,6 +366,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_bankedExplorationPoint = response.data.explorationPointBanked;
         RefreshBankedPointText();
         RefreshAbandonRunButtonState();
+        ApplyFleetHealthSnapshot(response.data.shipHealthRatios);
 
         string[] clearedCells = response.data.clearedCells;
         if (clearedCells == null) return;
@@ -365,6 +385,22 @@ public class UIPanelExplorationGrid : UIPanelBase
         RefreshCellStates();
     }
 
+    // 재접속으로 서버에 저장된 함대 체력 스냅샷을 받았을 때, 이미 만피로 스폰된 내 함선들에 슬롯 포지션 인덱스 기준으로 적용
+    private void ApplyFleetHealthSnapshot(List<ShipHealthRatioInfo> shipHealthRatios)
+    {
+        if (shipHealthRatios == null || shipHealthRatios.Count == 0) return;
+
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet == null) return;
+
+        foreach (ShipHealthRatioInfo entry in shipHealthRatios)
+        {
+            SpaceShip ship = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == entry.positionIndex);
+            if (ship != null)
+                ship.ApplyHealthRatio(entry.healthRatio);
+        }
+    }
+
     // 통행 가능한 셀마다 적함대 웨이브 구성을 즉석 계산해 캐싱 — (zoneConfig, seed, x, y) 결정론적이라 재계산해도 항상 동일
     private void BuildCellEnemyFleets(ZoneConfig zoneConfig)
     {
@@ -380,7 +416,7 @@ public class UIPanelExplorationGrid : UIPanelBase
                 if (cellData.isBlocked || cellData.isStart || cellData.isEvent) continue;
 
                 List<FleetInfo> waves = ExplorationEnemyFleetGenerator.GenerateWaves(
-                    zoneConfig, m_currentSeed, row, col, m_shipPresetTable);
+                    zoneConfig, m_currentSeed, row, col, m_shipPresetTable, DataManager.Instance.m_dataTableModule);
                 m_cellEnemyWaves[(row, col)] = waves;
             }
         }
@@ -423,13 +459,9 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (isCurrentCell == false && isAdjacent == false) return;
         if (isCurrentCell == false && m_gridData.GetCell(row, col).isBlocked) return;
 
-        if (isCurrentCell)
-        {
-            // 탈출 셀에 서 있는 상태에서 재클릭 — 탈출 확정 팝업 재호출(취소 후 다시 결정하고 싶을 때)
-            if (m_gridData.GetCell(row, col).isEscape == true)
-                ShowEscapeConfirmPopup();
-            return;
-        }
+        // 현재 서 있는 셀(이미 클리어됨)을 다시 클릭하는 건 아무 동작도 하지 않음 —
+        // 탈출 셀도 클리어 즉시 SettleZoneEntry가 자동으로 탈출 확정 팝업을 띄우므로 여기 도달할 일 자체가 없음
+        if (isCurrentCell) return;
 
         // 지금 보고 있는 존이 아닌 다른 존에 진행 중인 런이 있으면, 일반 입장 확인 대신
         // 그 런을 포기할지부터 먼저 물어봄(전투 준비 화면까지 갔다가 서버가 거부하는 것보다 먼저 걸러냄)
@@ -633,9 +665,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         Quaternion enemyRot = Quaternion.LookRotation(m_pendingEnemyRequestMyFleetPos - enemyPos);
 
         ETeam enemyTeam = ObjectManager.Instance.GetOpposingTeam(ObjectManager.Instance.m_myTeam);
-        ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
-        float enemyStatMultiplier = zoneConfig != null ? zoneConfig.enemyStatMultiplier : 1f;
-        SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet", enemyStatMultiplier);
+        // 체력/공격력 배율은 서버가 enemyFleetInfo.ships[i].healthMultiplier/attackMultiplier로 실어 보낸 값을 그대로 씀(SpawnFleetFromPreset 내부에서 처리)
+        SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet");
         m_standoffEnemyFleet = enemyFleet;
         enemyFleet.StartFleetWarpIn();
 
@@ -680,11 +711,13 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         Debug.Log($"[DEBUG-CELL] ClearExplorationCellRequest zone={m_currentZoneNumber} row={m_currentRow} col={m_currentCol}");
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         ClearExplorationCellRequest request = new ClearExplorationCellRequest
         {
             zoneNumber = m_currentZoneNumber,
             cellRow = m_currentRow,
             cellCol = m_currentCol,
+            shipHealthRatios = myFleet != null ? myFleet.BuildHealthRatioSnapshot() : null,
         };
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
     }
@@ -721,27 +754,30 @@ public class UIPanelExplorationGrid : UIPanelBase
         });
     }
 
-    // 셀 클리어 후 그리드 흐름 계속 — 탈출 셀이면 탈출 확정 팝업, 아니면 그리드 화면으로 복귀
+    // 셀 클리어 후 그리드 흐름 계속 — 탈출 셀이든 아니든 먼저 그리드로 복귀시켜 최종 적립 포인트를 화면에 반영하고,
+    // 탈출 셀이면 그 반영이 끝난 시점(SettleZoneEntry)에 탈출 확정 팝업을 띄움
     private void ContinueAfterCellClear()
     {
         bool reachedEscape = m_gridData != null && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
-        if (reachedEscape == true)
-        {
-            ShowEscapeConfirmPopup();
-            return;
-        }
+        m_pendingShowEscapeConfirmOnSettle = reachedEscape;
+
+        // 탈출 확정 팝업이 실제로 뜨기 전까지(카메라 정착+롤링 애니메이션 대기 구간) 그리드/빈 공간 조작이 끼어들지 못하게 미리 차단
+        if (reachedEscape == true && m_inputBlockOverlay != null)
+            m_inputBlockOverlay.SetActive(true);
 
         UIManager.Instance.ShowPanel(panelName);
     }
 
-    // 탈출 셀 클리어 직후, 또는 탈출 셀에 서 있는 상태에서 재클릭 시 호출 — 탈출 확정 여부 확인
+    // 탈출 셀 클리어 직후(SettleZoneEntry 콜백)에만 호출됨 — 탈출 확정 여부 확인
     private void ShowEscapeConfirmPopup()
     {
+        if (m_inputBlockOverlay != null)
+            m_inputBlockOverlay.SetActive(false);
+
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = "탈출하시겠습니까? 지금까지 쌓인 탐험 포인트를 100% 획득합니다.",
             onConfirm = OnConfirmEscape,
-            onCancel = () => UIManager.Instance.ShowPanel(panelName)
         });
     }
 
@@ -755,20 +791,41 @@ public class UIPanelExplorationGrid : UIPanelBase
         NetworkManager.Instance.EscapeExplorationZone(request, response =>
         {
             if (response.errorCode != 0)
-                Debug.LogError($"[UIPanelExplorationGrid] EscapeExplorationZone 실패: {response.errorCode}");
-            else
             {
-                m_bankedExplorationPoint = 0;
-                RefreshBankedPointText();
-                RefreshAbandonRunButtonState();
-                ApplyOwnedPointRemain(response.data.explorationPointRemain);
-                ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
-                ClearActiveRunZoneCache();
-                ApplyHighestClearedZoneNumber(response.data.highestClearedZoneNumber);
-                m_pendingFleetRepositionForZoneAdvance = true;
+                Debug.LogError($"[UIPanelExplorationGrid] EscapeExplorationZone 실패: {response.errorCode}");
+                UIManager.Instance.ShowPanel(panelName); // 그리드 패널이 이미 열려 있으면 no-op, 어떤 이유로 닫혀 있었다면 복구
+                return;
             }
 
-            UIManager.Instance.ShowPanel(panelName);
+            m_bankedExplorationPoint = 0;
+            m_pendingBankedPointGain = 0; // 탈출로 이미 100% 정산됨 — 다음 존으로 누수되지 않도록 함께 리셋
+            RefreshBankedPointText();
+            RefreshAbandonRunButtonState();
+            ApplyOwnedPointRemain(response.data.explorationPointRemain);
+            ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
+            ClearActiveRunZoneCache();
+            ApplyHighestClearedZoneNumber(response.data.highestClearedZoneNumber);
+            m_pendingFleetRepositionForZoneAdvance = true;
+
+            // 이번 런이 종료됐으므로 다음 진입 존 번호가 이전과 같더라도(예: 같은 존 재도전) 낡은 그리드 상태(클리어 표시 등)가
+            // 새는 걸 막기 위해 강제로 비움 — ConfirmAbandonRun(포기)과 동일한 이유/처리
+            m_gridData = null;
+
+            // 존 클리어(탈출 확정) 시 함대 전액 회복 — 셀 단위로는 손상이 유지되지만(로그라이트성), 존을 넘어갈 때는 초기화
+            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+            if (myFleet != null)
+                myFleet.FullRepair();
+
+            // 이미 갤럭시뷰(그리드) 중이라 EnterZone(EnterGalaxyView 기반)은 못 씀 — EnterGalaxyView는 "m_isGalaxyView==true면 no-op"라
+            // 정착 이벤트가 영원히 안 옴. NavigateToZone(존 탭 브라우징)과 동일하게 FocusOnZoneAnchor로 즉시 리타겟 후 바로 재구성
+            int nextZoneNumber = ObjectManager.Instance.GetInitialZoneIndex();
+            ObjectManager.Instance.ChangeZone(nextZoneNumber);
+
+            ZoneConfig nextZoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(nextZoneNumber);
+            if (nextZoneConfig != null && CameraController.Instance != null)
+                CameraController.Instance.FocusOnZoneAnchor(nextZoneConfig.galaxyCameraTarget, nextZoneConfig.galaxyCameraZoom, nextZoneConfig.galaxyCameraRotX, nextZoneConfig.galaxyCameraRotY);
+
+            SettleZoneEntry(nextZoneNumber);
         });
     }
 
@@ -779,12 +836,17 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_abandonRunButton.gameObject.SetActive(m_bankedExplorationPoint > 0);
     }
 
-    private void RefreshBankedPointText()
+    // onAnimComplete: 롤링 애니메이션이 실제로 끝난 프레임에 호출됨(코루틴을 아예 못 도는 경로에서도 즉시 호출됨) — 애니메이션과 정확히 동기화해야 하는 후속 로직(예: 탈출 확정 팝업)에 사용
+    private void RefreshBankedPointText(System.Action onAnimComplete = null)
     {
-        if (m_bankedExplorationPointRow == null) return;
+        if (m_bankedExplorationPointRow == null)
+        {
+            onAnimComplete?.Invoke();
+            return;
+        }
 
         m_bankedExplorationPointRow.SetLabel("UIPanelExplorationGrid_BankedPoint");
-        m_bankedExplorationPointRow.SetValueAnimated(m_displayedBankedPoint, m_bankedExplorationPoint);
+        m_bankedExplorationPointRow.SetValueAnimated(m_displayedBankedPoint, m_bankedExplorationPoint, onAnimComplete);
         m_displayedBankedPoint = m_bankedExplorationPoint;
         UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(m_bankedExplorationPointRow.transform as RectTransform);
     }
@@ -866,6 +928,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             }
 
             m_bankedExplorationPoint = 0;
+            m_pendingBankedPointGain = 0; // 포기로 이미 정산됨 — 다음 진입 시 누수되지 않도록 함께 리셋
             RefreshBankedPointText();
             RefreshAbandonRunButtonState();
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
@@ -904,11 +967,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         ObjectManager.Instance.SetMyFleetPosition(m_previousFleetWorldPos, 0f);
         CameraController.Instance.SnapToTarget();
 
-        // 퇴각 시 함대 체력 전액 회복 — 다음 셀 재도전을 손상된 상태로 시작하지 않게 함
-        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        if (myFleet != null)
-            myFleet.FullRepair();
-
+        // 셀 단위 퇴각은 손상 유지(로그라이트성, 의도적) — 회복은 존 런 자체를 종료(탈출 확정, OnConfirmEscape)했을 때만
         UIManager.Instance.ShowPanel(panelName);
     }
 

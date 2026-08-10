@@ -71,12 +71,16 @@ public class RowLabelValue : MonoBehaviour
     // GameObject가 비활성 상태면 코루틴을 시작할 수 없으므로(Unity가 에러 로그를 남김) 아예 시도하지 않음 —
     // 값 자체는 호출부가 이미 갱신했을 것이고, 화면 반영은 패널이 다시 활성화될 때 호출부가 재호출해서 따라잡음
     private Coroutine m_valueAnimCoroutine;
-    public void SetValueAnimated(long from, long to)
+    public void SetValueAnimated(long from, long to, System.Action onComplete = null)
     {
-        if (m_value1 == null) return;
-        if (gameObject.activeInHierarchy == false) return;
+        if (m_value1 == null || gameObject.activeInHierarchy == false)
+        {
+            // 코루틴을 아예 못 도는 상황이라도 후속 로직(onComplete)은 진행돼야 함
+            onComplete?.Invoke();
+            return;
+        }
 
         if (m_valueAnimCoroutine != null) StopCoroutine(m_valueAnimCoroutine);
-        m_valueAnimCoroutine = StartCoroutine(CommonUtility.AnimateCounterText(m_value1, from, to));
+        m_valueAnimCoroutine = StartCoroutine(CommonUtility.AnimateCounterText(m_value1, from, to, onComplete));
     }
 }

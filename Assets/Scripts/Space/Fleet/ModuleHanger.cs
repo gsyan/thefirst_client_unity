@@ -84,9 +84,6 @@ public class ModuleHanger : ModuleBase
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
         m_moduleSlot = moduleSlot;
-        SetInvestedModulePoint(moduleInfo.investedModulePoint);
-        SetAddShipModulePoint(moduleInfo.addShipModulePoint);
-        SetInvestedMineral(moduleInfo.investedMineral);
 
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
         if (moduleData == null)
@@ -123,20 +120,16 @@ public class ModuleHanger : ModuleBase
 
         AutoDetectFleetInfo();
 
-        // Zone 적 함선일 때 격납고 체력·함재기 스탯에 배율 적용
+        // Zone 적 함선일 때 격납고 체력·함재기 공격력에 배율 적용 — 속도/사거리/탄약은 과도한 영향이라 배율 미적용
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_ownerShip.m_hangerMultiplier;
-            m_healthMax *= m_ownerShip.m_hangerMultiplier;
+            m_health    *= m_ownerShip.m_healthMultiplier;
+            m_healthMax *= m_ownerShip.m_healthMultiplier;
             foreach (var info in m_aircraftPool)
             {
-                info.airHealth      *= m_ownerShip.m_hangerMultiplier;
-                info.airHealthMax   *= m_ownerShip.m_hangerMultiplier;
-                info.airAttack      *= m_ownerShip.m_hangerMultiplier;
-                info.airSpeed       *= m_ownerShip.m_hangerMultiplier;
-                info.airAttackRange *= m_ownerShip.m_hangerMultiplier;
-                info.airAmmo        = Mathf.Max(1, Mathf.RoundToInt(info.airAmmo    * m_ownerShip.m_hangerMultiplier));
-                info.airAmmoMax     = Mathf.Max(1, Mathf.RoundToInt(info.airAmmoMax * m_ownerShip.m_hangerMultiplier));
+                info.airHealth      *= m_ownerShip.m_healthMultiplier;
+                info.airHealthMax   *= m_ownerShip.m_healthMultiplier;
+                info.airAttack      *= m_ownerShip.m_attackMultiplier;
             }
         }
 

@@ -32,7 +32,9 @@ public static class ShipStatGaugeBuilder
 
     // actualModules를 생략하면(null) preset.statAllocation(프리셋 기본 장착 구성)을 그대로 씀 — 프리셋 후보 목록/비교 미리보기용
     // actualModules를 넘기면 그 함선이 실제로 장착한 모듈 구성(로드아웃)을 반영 — 배치된 함선의 현재 성능 표시용
-    public static List<ShipStatGaugeEntry> Build(ShipPresetData preset, ModuleBodyInfo actualModules = null)
+    // healthMultiplier/attackMultiplier는 Zone 적 함대 열람 시에만 1이 아님 — ModuleBeam/Body/Hanger.cs의 Zone 배율 적용 규칙과 반드시 동일하게 유지할 것
+    // (체력/수리력=healthMultiplier, 공격력 계열=attackMultiplier, 선회력은 배율 미적용)
+    public static List<ShipStatGaugeEntry> Build(ShipPresetData preset, ModuleBodyInfo actualModules = null, float healthMultiplier = 1f, float attackMultiplier = 1f)
     {
         DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
 
@@ -52,20 +54,20 @@ public static class ShipStatGaugeBuilder
 
         LocalizationManager loc = LocalizationManager.Instance;
 
-        entries.Add(MakeGauge(loc.Get("UIFleet_Stats_Health"), stats.health, baseHealth));
+        entries.Add(MakeGauge(loc.Get("UIFleet_Stats_Health"), stats.health * healthMultiplier, baseHealth));
         entries.Add(MakeGauge(loc.Get("UIFleet_Stats_TurnRate"), stats.turnRate, baseTurnRate));
-        entries.Add(MakeGauge(loc.Get("UIFleet_Stats_Repair"), stats.repair, baseRepair));
+        entries.Add(MakeGauge(loc.Get("UIFleet_Stats_Repair"), stats.repair * healthMultiplier, baseRepair));
 
         if (stats.beamModuleSubType.Length > 0)
         {
-            float beamDps = SumDps(stats.beamAttacks, stats.beamAttackCools);
+            float beamDps = SumDps(stats.beamAttacks, stats.beamAttackCools) * attackMultiplier;
             float baseBeamDps = SumBaseDps(moduleTable, stats.beamModuleSubType);
             entries.Add(MakeGauge(loc.Get("UIFleet_Stats_BeamDps"), beamDps, baseBeamDps));
         }
 
         if (stats.missileModuleSubType.Length > 0)
         {
-            float missileDps = SumDps(stats.missileAttacks, stats.missileAttackCools);
+            float missileDps = SumDps(stats.missileAttacks, stats.missileAttackCools) * attackMultiplier;
             float baseMissileDps = SumBaseDps(moduleTable, stats.missileModuleSubType);
             entries.Add(MakeGauge(loc.Get("UIFleet_Stats_MissileDps"), missileDps, baseMissileDps));
         }
@@ -77,10 +79,10 @@ public static class ShipStatGaugeBuilder
         {
             float baseHangarShipDps = formula.hangar.baseShipAttack * stats.hangarModuleSubType.Length;
             float baseHangarFighterDps = formula.hangar.baseFighterAttack * stats.hangarModuleSubType.Length;
-            entries.Add(MakeGauge(loc.Get("UIFleet_Stats_FighterAttackPowerToShip"), Sum(stats.hangarShipAttacks), baseHangarShipDps));
-            entries.Add(MakeGauge(loc.Get("UIFleet_Stats_FighterAttackPowerToFighter"), Sum(stats.hangarFighterAttacks), baseHangarFighterDps));
+            entries.Add(MakeGauge(loc.Get("UIFleet_Stats_FighterAttackPowerToShip"), Sum(stats.hangarShipAttacks) * attackMultiplier, baseHangarShipDps));
+            entries.Add(MakeGauge(loc.Get("UIFleet_Stats_FighterAttackPowerToFighter"), Sum(stats.hangarFighterAttacks) * attackMultiplier, baseHangarFighterDps));
             entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterAmmo"), stats.hangarAmmos, "F0", ""));
-            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterHealth"), stats.hangarHealths, "F0", ""));
+            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterHealth"), ScaleArray(stats.hangarHealths, healthMultiplier), "F0", ""));
             entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterDisrupt"), stats.hangarAirDisrupts, "F2", "s"));
         }
 
@@ -106,6 +108,16 @@ public static class ShipStatGaugeBuilder
         }
 
         return entries;
+    }
+
+    // multiplier가 1이면 원본 배열을 그대로 재사용해 불필요한 GC Alloc 방지
+    private static float[] ScaleArray(float[] values, float multiplier)
+    {
+        if (multiplier == 1f) return values;
+        float[] result = new float[values.Length];
+        for (int i = 0; i < values.Length; i++)
+            result[i] = values[i] * multiplier;
+        return result;
     }
 
     private static float Sum(float[] values)

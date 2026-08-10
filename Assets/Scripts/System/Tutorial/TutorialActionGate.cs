@@ -15,14 +15,4 @@ public static class TutorialActionGate
         return TutorialManager.Instance.GetCurrentTutorialId() == tutorialId;
     }
 
-    // 로컬 모듈포인트 차감 (서버 호출 없음) — 튜토리얼 중 지급된 임시 값에서만 차감됨
-    public static bool TryConsumeModulePoint(int cost)
-    {
-        Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null) return false;
-        if (commander.GetModulePoint() < cost) return false;
-
-        commander.UpdateModulePoint(commander.GetModulePoint() - cost);
-        return true;
-    }
 }

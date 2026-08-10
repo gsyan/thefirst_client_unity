@@ -44,10 +44,8 @@ public class ShipInfo
     public string description;
     public List<ModuleBodyInfo> bodies;
     // Zone 적 전용 배율 — PvP는 기본값(1.0) 유지, 서버 저장 불필요
-    public float bodyMultiplier    = 1.0f;
-    public float beamMultiplier    = 1.0f;
-    public float missileMultiplier = 1.0f;
-    public float hangerMultiplier  = 1.0f;
+    public float healthMultiplier = 1.0f;
+    public float attackMultiplier = 1.0f;
     // 프리셋 기반 함선 배치(탐사 그리드) — shipPresetId로 ShipPresetData 참조, isFront로 전/후위 배치
     public string shipPresetId;
     public bool isFront;
@@ -63,14 +61,11 @@ public class ModuleBodyInfo
     public List<ModuleInfo> beams;
     public List<ModuleInfo> missiles;
     public List<ModuleInfo> hangers;
-    // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
-    public int investedModulePoint;
-    // addShip 시 배분된 modulePoint (baseline 계산에서 제외용)
-    public int addShipModulePoint;
+    // 실드/요격체 장착 서브타입 — 빈 문자열이면 미장착. 적함대 존 데이터 배관용으로 서버가 채워 보냄(클라 소비 로직은 후속 작업)
+    public string shieldModuleSubType = "";
+    public string interceptorModuleSubType = "";
     // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
     public float currentHealth;
-    // 투자한 미네랄 이력 (전투 승리 시 소모 + 초기화, 그 전까지 환급 가능)
-    public int investedMineral;
 }
 
 [System.Serializable]
@@ -81,12 +76,6 @@ public class ModuleInfo
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
-    // 이 슬롯에 투자한 modulePoint 이력 (리셋 시 100% 환급)
-    public int investedModulePoint;
-    // addShip 시 배분된 modulePoint (baseline 계산에서 제외용)
-    public int addShipModulePoint;
-    // 투자한 미네랄 이력 (전투 승리 시 소모 + 초기화, 그 전까지 환급 가능)
-    public int investedMineral;
 }
 
 [System.Serializable]
@@ -119,13 +108,10 @@ public class CommanderInfo
     public int explorationZoneNumber;  // 진행 중인 탐험 런의 존 번호, 없으면 0
     public string explorationCell;  // 진행 중인 탐험 런의 마지막 클리어 셀 "row-col"(0-indexed, ZoneRun.currentCell과 동일 포맷), 없으면 빈 문자열
     public int highestClearedZoneNumber;  // 존 탈출(ESCAPED)로 확정된 존 번호 중 최댓값, 없으면 0
-    public int mineral;
-    public int modulePoint;
-    public int modulePointMaxGot;    // 누적 획득량 (리셋 환급 반영)
     public int pvpPoint;
     public int pvpPointMaxGot;
     public string pvpPointExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
-    
+
 }
 
 
@@ -233,8 +219,6 @@ public class RedeemCodeResponse
     // 보상타입별 필드를 옵셔널로 추가해나가는 방식 (ClaimZoneRewardResponse 패턴 참고)
     public int commanderLevel;
     public int exp;
-    public int modulePoint;
-    public int modulePointMaxGot;
 }
 #endregion
 
@@ -258,7 +242,6 @@ public class AddShipRequest
 public class AddShipResponse
 {
     public ShipInfo newShipInfo;
-    public int modulePointRemain;
 }
 
 [System.Serializable]
@@ -297,7 +280,6 @@ public class ShipResetRemoveRequest
 public class ShipResetRemoveResponse
 {
     public long removedShipId;
-    public int modulePointRemain;
 }
 
 
@@ -333,7 +315,6 @@ public class ProgressListResponse
 public class ClearZoneStageRequest
 {
     public string zoneName;   // 존 이름 (예: "2-5")
-    public int mineralRemain; // 전투 종료 시점 클라 Mineral 잔액
 }
 
 [System.Serializable]
@@ -341,7 +322,6 @@ public class ClearZoneStageResponse
 {
     public bool isFirstClear;      // true = 최초 클리어
     public string clearedZoneName; // isFirstClear == true 일 때만 유효
-    public int mineralRemain;
 }
 
 [System.Serializable]
@@ -356,13 +336,8 @@ public class ClaimZoneRewardResponse
 {
     public string zoneName;
     public bool watchedAd;
-    public int mineralRemain;
     public int commanderLevel;
     public int totalExp;
-    public int modulePointRemain;
-    public int modulePointMaxGot;
-    public bool mineralSettingReset;    // 미네랄 부족으로 강화 세팅이 초기화된 경우 true
-    public FleetInfo updatedFleetInfo;  // mineralSettingReset == true 일 때만 유효
 }
 
 
@@ -402,16 +377,9 @@ public class PendingStageRewardRequest { }
 [System.Serializable]
 public class PendingStageRewardResponse
 {
-    public int mineralGained;           // 합산 획득량 (*1 고정), 0이면 미수령 없음
     public int expGained;
-    public int modulePointGained;
-    public int mineralRemain;           // 처리 후 잔액
     public int commanderLevel;
     public int totalExp;
-    public int modulePointRemain;
-    public int modulePointMaxGot;
-    public bool mineralSettingReset;    // 미네랄 부족으로 강화 세팅이 초기화된 경우 true
-    public FleetInfo updatedFleetInfo;  // mineralSettingReset == true 일 때만 유효
 }
 
 #endregion
@@ -436,11 +404,20 @@ public class EnterExplorationCellResponse
 }
 
 [System.Serializable]
+public class ShipHealthRatioInfo
+{
+    // 슬롯 포지션 인덱스별 함선 체력 비율(0~1) — 존 런 진행 상황(ZoneRun) 스냅샷으로 서버에 저장, 앱 재시작 후 복구용
+    public int positionIndex;
+    public float healthRatio;
+}
+
+[System.Serializable]
 public class ClearExplorationCellRequest
 {
     public int zoneNumber;
     public int cellRow;
     public int cellCol;
+    public List<ShipHealthRatioInfo> shipHealthRatios; // 셀 클리어 시점의 내 함대 체력 스냅샷 — ZoneRun에 저장돼 재접속 시 복구됨
 }
 
 [System.Serializable]
@@ -460,6 +437,7 @@ public class GetActiveZoneRunProgressResponse
     public string[] clearedCells; // "row-col"(0-indexed) 목록, 클리어 순서대로
     public int explorationPointBanked; // 진행 중인 런의 적립(미확정) 탐험 포인트, 없으면 0
     public int commanderExpBanked;     // 진행 중인 런의 적립(미확정) 지휘관 경험치, 없으면 0
+    public List<ShipHealthRatioInfo> shipHealthRatios; // 마지막 셀 클리어 시점에 저장된 내 함대 체력 스냅샷 — 없으면 null(만피로 스폰된 상태 그대로)
 }
 
 [System.Serializable]
@@ -721,7 +699,6 @@ public class FleetInstantRepairRequest { }
 [System.Serializable]
 public class FleetInstantRepairResponse
 {
-    public int mineralRemain;
 }
 
 #endregion
@@ -739,15 +716,14 @@ public class VipStatusResponse
 {
     public bool isVip;
     public string vipExpiry;            // ISO 8601 UTC, null이면 VIP 아님
-    public int mineralRewardMultiplier; // 스테이지 미네랄 보상 배율 (서버 설정값)
 }
 
 [System.Serializable]
 public class DailyClaimResponse
 {
     public bool available;          // true=지급됨, false=24h 미경과 or 테이블 없음
-    public int grantedMineral;      // 이번에 지급된 미네랄 양
-    public int mineralRemain;       // 지급 후 현재 미네랄
+    public int grantedExplorationPoint; // 이번에 지급된 탐험 포인트 양
+    public int explorationPointRemain;  // 지급 후 현재 탐험 포인트
     public string nextAvailableAt;  // 다음 지급 가능 시각 (ISO 8601 UTC)
     public int todayDay;            // 오늘 날짜 (1~28)
     public int claimedDaysMask;     // 이번 달 수령 현황 비트마스크 (bit0=1일, bit27=28일)

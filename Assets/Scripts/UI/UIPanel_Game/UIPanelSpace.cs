@@ -79,10 +79,7 @@ public class UIPanelSpace : UIPanelBase
             if (commander != null)
             {
                 prevLevel = commander.GetCommanderLevel();
-                commander.UpdateMineral(response.data.mineralRemain);
                 commander.UpdateExp(response.data.totalExp);
-                commander.UpdateModulePointMaxGot(response.data.modulePointMaxGot);
-                commander.UpdateModulePoint(response.data.modulePointRemain);
                 newLevel = response.data.commanderLevel;
                 commander.UpdateCommanderLevel(newLevel);
             }

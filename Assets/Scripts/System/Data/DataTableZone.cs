@@ -82,10 +82,16 @@ public class ZoneConfig
     [Header("셀 적함대 절차적 생성")]
     public int enemyFleetsPerCell = 1;    // [server] 셀당 순차 웨이브 개수
     public int enemyBudget = 100;         // [server] 웨이브 1개의 지휘력 예산
-    public int enemyMaxCost = 100;        // [server] 웨이브에 편성 가능한 함선 1척의 commandCost 상한
-    public int enemyDeviation = 0;        // [server] enemyMaxCost 랜덤 편차
+    public int enemyMaxCostOfOneShip = 100; // [server] 웨이브에 편성 가능한 함선 1척의 fullEquipCost 상한
+    public int enemyDeviation = 0;        // [server] enemyMaxCostOfOneShip 랜덤 편차
     public int enemyMaxShipsPerFleet = 5; // [server] 웨이브 1개의 함선 수 상한
-    public float enemyStatMultiplier = 1.0f; // [server] 이 존의 적함대 body/beam/missile/hanger 체력·공격력 공통 배율 (0.1=10%, 1.0=원본)
+    public float enemyHealthMultiplier = 1.0f; // [server] 이 존의 적함대 체력 배율 (0.1=10%, 1.0=원본)
+    public float enemyAttackMultiplier = 1.0f; // [server] 이 존의 적함대 공격력 배율 (0.1=10%, 1.0=원본)
+    public int enemyBeamEquipSlots = 9;        // [server] 빔 슬롯 총 장착 목표 개수(기본 로드아웃 포함, 프리셋 최대 슬롯 수를 넘으면 전부 장착)
+    public int enemyMissileEquipSlots = 9;     // [server] 미사일 슬롯 총 장착 목표 개수
+    public int enemyHangerEquipSlots = 9;      // [server] 함재기 슬롯 총 장착 목표 개수
+    public int enemyShieldEquipSlots = 9;      // [server] 실드 장착 여부 — 실드는 슬롯 1개뿐이라 사실상 0/1 스위치 (0=미장착, 1 이상=장착)
+    public int enemyInterceptorEquipSlots = 9; // [server] 요격체 장착 여부 — 요격체도 슬롯 1개뿐이라 사실상 0/1 스위치
 
     [Header("셀 클리어 보상 (웨이브가 있던 셀만 적립, 존 단위 고정값)")]
     public int explorationPointReward = 0; // [server] 적 함대 성능(commandCost)과 무관한 고정 탐험 포인트 적립량
@@ -139,9 +145,16 @@ public class DataTableZone : ScriptableObject
                 gridHeight            = z.gridHeight,
                 enemyFleetsPerCell    = z.enemyFleetsPerCell,
                 enemyBudget           = z.enemyBudget,
-                enemyMaxCost          = z.enemyMaxCost,
+                enemyMaxCostOfOneShip = z.enemyMaxCostOfOneShip,
                 enemyDeviation        = z.enemyDeviation,
                 enemyMaxShipsPerFleet = z.enemyMaxShipsPerFleet,
+                enemyHealthMultiplier = z.enemyHealthMultiplier,
+                enemyAttackMultiplier = z.enemyAttackMultiplier,
+                enemyBeamEquipSlots        = z.enemyBeamEquipSlots,
+                enemyMissileEquipSlots     = z.enemyMissileEquipSlots,
+                enemyHangerEquipSlots      = z.enemyHangerEquipSlots,
+                enemyShieldEquipSlots      = z.enemyShieldEquipSlots,
+                enemyInterceptorEquipSlots = z.enemyInterceptorEquipSlots,
                 explorationPointReward = z.explorationPointReward,
                 commanderExpReward     = z.commanderExpReward,
                 cellOverrides         = z.cellOverrides.ConvertAll(o => (object)new { row = o.row, col = o.col, type = o.type.ToString(), eventType = o.eventType.ToString() }),

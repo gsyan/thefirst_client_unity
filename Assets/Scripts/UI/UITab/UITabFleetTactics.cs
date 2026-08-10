@@ -119,9 +119,9 @@ public class UITabFleetTactics : UITabBase
         var gs = DataManager.Instance.m_dataTableConfig.gameSettings;
         int[] k_toggleDescArgs =
         {
-            gs.repairBoostMineralPerSec,
-            gs.missileTacticMineralPerSec,
-            gs.aircraftTacticMineralPerSec,
+            gs.repairBoostExplorationPointPerSec,
+            gs.missileTacticExplorationPointPerSec,
+            gs.aircraftTacticExplorationPointPerSec,
         };
 
         int savedOptions = m_playerFleet.m_fleetInfo.tacticOptions;

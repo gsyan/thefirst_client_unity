@@ -129,9 +129,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 지금 이 클라이언트를 플레이 중인 유저가 속한 팀 — 현재는 항상 TeamA지만, 향후 멀티플레이(같은 전투에 여러 유저)에서 B가 될 수도 있어 값으로 분리해둠
     [HideInInspector] public ETeam m_myTeam = ETeam.TeamA;
 
-    // 지크프리트(튜토리얼 연출용) 함대 사용 중 여부 — 튜토리얼 종료 시 실제 함대/모듈포인트로 전환하는 데 사용
+    // 지크프리트(튜토리얼 연출용) 함대 사용 중 여부 — 튜토리얼 종료 시 실제 함대로 전환하는 데 사용
     private bool m_isSiegfriedFleetActive = false;
-    private int m_realModulePointBackup;
     private int m_realCommanderLevelBackup;
 
     // 온보딩 튜토리얼(TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE) 진행 중 스킵 버튼을 눌렀는지 여부
@@ -294,19 +293,20 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 전투 종료 판정 후 실제 정리(함선 제거 등)까지의 텀 — 마지막 격추 연출이 끝날 시간을 확보
     private const float BATTLE_END_DELAY_SEC = 1.5f;
 
-    // 전투 강제 종료 (전멸/퇴각 공통)
-    public void ForceEndBattle(bool isVictory)
+    // 전투 강제 종료 (전멸/퇴각 공통) — delaySec 기본값은 격추 연출 대기용, 유저가 직접 누른 퇴각은 연출 기다릴 이유가 없어 0으로 즉시 처리 가능
+    public void ForceEndBattle(bool isVictory, float delaySec = BATTLE_END_DELAY_SEC)
     {
         // 양 함대가 거의 동시에 전멸하는 등 승패 판정이 근접 타이밍에 중복 발생할 수 있음 —
         // 먼저 확정된 결과만 인정하고 뒤이어 들어오는 결과는 무시
         if (m_isBattleEnding == true) return;
         m_isBattleEnding = true;
-        StartCoroutine(DelayedEndBattle(isVictory));
+        StartCoroutine(DelayedEndBattle(isVictory, delaySec));
     }
 
-    private IEnumerator DelayedEndBattle(bool isVictory)
+    private IEnumerator DelayedEndBattle(bool isVictory, float delaySec)
     {
-        yield return new WaitForSeconds(BATTLE_END_DELAY_SEC);
+        if (delaySec > 0f)
+            yield return new WaitForSeconds(delaySec);
 
         SpaceFleet myFleet = GetMyFleet();
         bool isPvp = myFleet != null && myFleet.m_fleetState == EUnitState.BattlePvp;
@@ -336,7 +336,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // TutorialCinematicController 주석처리로 임시 비활성화 — 프리셋 기반으로 재작성 전까지 시네마틱 함대 스폰 안 함
         m_isSiegfriedFleetActive = true;
 
-        GrantTutorialModulePoint();
         GrantTutorialCommanderLevel();
 
         // Tutorial 안에 함선추가 등 실제 UI 조작 스텝이 있어 메인 패널(TapButtons 등)이 미리 열려있어야 함
@@ -650,18 +649,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             aircraft.ForceReturnToPoolImmediate();
     }
 
-    // 튜토리얼 중에는 서버에 반영되지 않는 임시 모듈포인트 지급 — 실제 값은 백업해뒀다가 튜토리얼 종료 시 복원
-    private void GrantTutorialModulePoint()
-    {
-        const int TUTORIAL_MODULE_POINT = 100;
-
-        Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null) return;
-
-        m_realModulePointBackup = commander.GetModulePoint();
-        commander.UpdateModulePoint(TUTORIAL_MODULE_POINT);
-    }
-
     // 튜토리얼 중 함선 추가(4→5번째) 및 지크프리트 함대(T14 기함 포함)의 모듈 레벨업이 지휘 레벨 요구사항에
     // 막히지 않도록 임시로 레벨 지급 — 함선 수 요구 레벨과 T14 서브타입 상한 요구 레벨 중 더 높은 쪽을 지급
     private void GrantTutorialCommanderLevel()
@@ -687,7 +674,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         Destroy(fleet.gameObject);
     }
 
-    // 지크프리트(연출용) 함대를 제거하고 실제 함대 + 실제 모듈포인트로 전환
+    // 지크프리트(연출용) 함대를 제거하고 실제 함대로 전환
     private void SwitchFromSiegfriedFleetToRealFleet()
     {
         m_isSiegfriedFleetActive = false;
@@ -697,7 +684,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander != null)
         {
-            commander.UpdateModulePoint(m_realModulePointBackup);
             commander.UpdateCommanderLevel(m_realCommanderLevelBackup);
         }
 
@@ -714,7 +700,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     // 프리셋 함대 정보로 팀 소속 함대를 생성 — 플레이어/적 스폰 공통 로직
     // 카메라 타겟팅, Trigger_MyFleetSet 등 플레이어 전용 후처리는 호출부 책임
-    public SpaceFleet SpawnFleetFromPreset(FleetInfo fleetInfo, ETeam team, EFleetSource source, Vector3 position, Quaternion rotation, string fleetName, float enemyStatMultiplier = 1f)
+    // 체력/공격력 배율은 함선마다 shipSlot.healthMultiplier/attackMultiplier(서버가 ShipInfo에 실어 보낸 값)를 그대로 씀 —
+    // 클라 로컬 ZoneConfig를 별도로 조회하지 않음(서버 응답을 신뢰 소스로 통일, 내 함대는 항상 기본값 1이라 영향 없음)
+    public SpaceFleet SpawnFleetFromPreset(FleetInfo fleetInfo, ETeam team, EFleetSource source, Vector3 position, Quaternion rotation, string fleetName)
     {
         GameObject fleetObj = new GameObject(fleetName);
         fleetObj.transform.SetPositionAndRotation(position, rotation);
@@ -749,7 +737,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(preset.statAllocation, actualModules);
 
                 ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
-                ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats, shipIndex, shipSlot.isFront, enemyStatMultiplier);
+                ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats, shipIndex, shipSlot.isFront, shipSlot.healthMultiplier, shipSlot.attackMultiplier);
             }
         }
         // bWarp: false로 스폰된 함선들은 최종 대형 위치보다 뒤(-Z)에 멈춰있으므로, 연출 없이 즉시 최종 위치로 확정
@@ -896,9 +884,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         [Header("Module Prefabs")]
         public string shipModulePrefabPath = "Prefabs/ShipModule/";
-        
+
         [Header("Space Resource Prefabs")]
-        public string mineralPrefabPath = "Prefabs/SpaceResource/Mineral";
         public string asteroidPrefabPath = "Prefabs/SpaceResource/Asteroid";
         public string crystalPrefabPath = "Prefabs/SpaceResource/Crystal";
         
@@ -949,11 +936,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                         return prefabPaths.shipModulePrefabPath;
                 }
                 
-            // Space Resource Prefabs  
+            // Space Resource Prefabs
             case "spaceresource":
                 switch (prefabName.ToLower())
                 {
-                    case "mineral": return prefabPaths.mineralPrefabPath;
                     case "asteroid": return prefabPaths.asteroidPrefabPath;
                     case "crystal": return prefabPaths.crystalPrefabPath;
                 }

@@ -884,7 +884,6 @@ public class UITabExploration : UITabBase
         var request = new ClearZoneStageRequest
         {
             zoneName = m_battleZoneStage.zoneName,
-            mineralRemain = m_myCommander != null ? m_myCommander.GetMineral() : 0,
         };
         NetworkManager.Instance.ClearZoneStage(request, OnClearZoneStageResponse);
     }
@@ -933,11 +932,6 @@ public class UITabExploration : UITabBase
         }
 
         m_pendingRewardIsFirstClear = response.data.isFirstClear;
-
-        // 전투 소모 미네랄 반영
-        var commanderForMineral = DataManager.Instance.m_currentCommander;
-        if (commanderForMineral != null)
-            commanderForMineral.UpdateMineral(response.data.mineralRemain);
 
         StayInCurrentStage();
         string title = LocalizationManager.Instance.Get("exploration_battle_victory");
@@ -1064,10 +1058,7 @@ public class UITabExploration : UITabBase
         if (commander != null && commander.m_commanderInfo != null)
         {
             int prevLevel = commander.GetCommanderLevel();
-            commander.UpdateMineral(response.data.mineralRemain);
             commander.UpdateExp(response.data.totalExp);
-            commander.UpdateModulePointMaxGot(response.data.modulePointMaxGot); // 이벤트 발생 전에 먼저 갱신
-            commander.UpdateModulePoint(response.data.modulePointRemain);
             int newLevel = response.data.commanderLevel;
             commander.UpdateCommanderLevel(newLevel);
             if (newLevel > prevLevel)
@@ -1075,27 +1066,6 @@ public class UITabExploration : UITabBase
         }
         m_battleZoneStage = null;
         m_pendingClaimZoneName = null;
-
-        if (response.data.mineralSettingReset == true && response.data.updatedFleetInfo != null)
-        {
-            m_pendingUpdatedFleetInfo = response.data.updatedFleetInfo;
-            var loc = LocalizationManager.Instance;
-            var notifyConfig = new ConfirmPopupConfig
-            {
-                title        = loc.Get("UIPopupMessage_MineralResetTitle"),
-                message      = loc.Get("UIPopupMessage_MineralResetMessage"),
-                confirmText1 = loc.Get("Simple_Confirm"),
-                autoCloseSec = 5f,
-                onConfirm    = () =>
-                {
-                    SpaceFleet fleet = ObjectManager.Instance.GetMyFleet();
-                    if (fleet != null)
-                        fleet.ApplyMineralReset(m_pendingUpdatedFleetInfo);
-                    m_pendingUpdatedFleetInfo = null;
-                },
-            };
-            UIManager.Instance.ShowConfirmPopup(notifyConfig);
-        }
     }
 
     private void SelectNextZoneStage(string clearedZoneName)

@@ -11,8 +11,8 @@ using UnityEditor;
 public class DailyBonusRewardEntry
 {
     public EDailyBonusTier tier = EDailyBonusTier.Normal;
-    public EDailyBonusRewardType rewardType = EDailyBonusRewardType.Mineral;
-    public int amount = 1000;
+    public EDailyBonusRewardType rewardType = EDailyBonusRewardType.ExplorationPoint;
+    public int amount = 10;
 }
 
 [System.Serializable]

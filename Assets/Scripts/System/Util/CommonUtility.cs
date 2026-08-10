@@ -199,7 +199,7 @@ public static class CommonUtility
         {
             // Body 고유 능력치 (Zone 적 배율 반영)
             CapabilityProfile bodyStats = GetBodyCapabilityProfile(bodyInfo);
-            stats.health += bodyStats.health * shipInfo.bodyMultiplier;
+            stats.health += bodyStats.health * shipInfo.healthMultiplier;
             stats.repair += bodyStats.repair;
             stats.speed  += bodyStats.speed;
 
@@ -327,11 +327,13 @@ public static class CommonUtility
     }
 
     // from → to 카운팅 롤링 애니메이션(변화량 * 0.03초, 최대 0.5초) — 재화/포인트 텍스트 갱신 공용
-    public static IEnumerator AnimateCounterText(TMP_Text textUI, long from, long to)
+    // onComplete는 애니메이션이 실제로 끝난 프레임(조기 리턴 경로 포함)에 호출됨 — 호출부가 "롤링이 진짜 끝난 시점"을 정확히 알아야 할 때 사용
+    public static IEnumerator AnimateCounterText(TMP_Text textUI, long from, long to, System.Action onComplete = null)
     {
         if (from < 0 || from == to)
         {
             textUI.text = FormatNumber(to);
+            onComplete?.Invoke();
             yield break;
         }
 
@@ -347,6 +349,7 @@ public static class CommonUtility
         }
 
         textUI.text = FormatNumber(to);
+        onComplete?.Invoke();
     }
 
     #endregion UI end -----------------------------------------------------------------------------------

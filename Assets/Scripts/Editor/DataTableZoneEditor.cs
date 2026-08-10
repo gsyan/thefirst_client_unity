@@ -131,10 +131,16 @@ public class DataTableZoneEditor : Editor
                 cellOverrides         = oldZone != null ? oldZone.cellOverrides         : new List<GridCellOverride>(),
                 enemyFleetsPerCell    = oldZone != null ? oldZone.enemyFleetsPerCell    : 1,
                 enemyBudget           = oldZone != null ? oldZone.enemyBudget           : 100,
-                enemyMaxCost          = oldZone != null ? oldZone.enemyMaxCost          : 100,
+                enemyMaxCostOfOneShip = oldZone != null ? oldZone.enemyMaxCostOfOneShip : 100,
                 enemyDeviation        = oldZone != null ? oldZone.enemyDeviation        : 0,
                 enemyMaxShipsPerFleet = oldZone != null ? oldZone.enemyMaxShipsPerFleet : 5,
-                enemyStatMultiplier   = oldZone != null ? oldZone.enemyStatMultiplier   : 1f,
+                enemyHealthMultiplier = oldZone != null ? oldZone.enemyHealthMultiplier : 1f,
+                enemyAttackMultiplier = oldZone != null ? oldZone.enemyAttackMultiplier : 1f,
+                enemyBeamEquipSlots        = oldZone != null ? oldZone.enemyBeamEquipSlots        : 9,
+                enemyMissileEquipSlots     = oldZone != null ? oldZone.enemyMissileEquipSlots     : 9,
+                enemyHangerEquipSlots      = oldZone != null ? oldZone.enemyHangerEquipSlots      : 9,
+                enemyShieldEquipSlots      = oldZone != null ? oldZone.enemyShieldEquipSlots      : 9,
+                enemyInterceptorEquipSlots = oldZone != null ? oldZone.enemyInterceptorEquipSlots : 9,
                 explorationPointReward = oldZone != null ? oldZone.explorationPointReward : 0,
                 commanderExpReward     = oldZone != null ? oldZone.commanderExpReward     : 0,
             });
@@ -208,12 +214,18 @@ public class DataTableZoneEditor : Editor
             int.TryParse(col[2], out zc.gridHeight);
             int.TryParse(col[3], out zc.enemyFleetsPerCell);
             int.TryParse(col[4], out zc.enemyBudget);
-            int.TryParse(col[5], out zc.enemyMaxCost);
+            int.TryParse(col[5], out zc.enemyMaxCostOfOneShip);
             int.TryParse(col[6], out zc.enemyDeviation);
             int.TryParse(col[7], out zc.enemyMaxShipsPerFleet);
-            float.TryParse(col[8], out zc.enemyStatMultiplier);
-            int.TryParse(col[9], out zc.explorationPointReward);
-            int.TryParse(col[10], out zc.commanderExpReward);
+            float.TryParse(col[8], out zc.enemyHealthMultiplier);
+            float.TryParse(col[9], out zc.enemyAttackMultiplier);
+            int.TryParse(col[10], out zc.enemyBeamEquipSlots);
+            int.TryParse(col[11], out zc.enemyMissileEquipSlots);
+            int.TryParse(col[12], out zc.enemyHangerEquipSlots);
+            int.TryParse(col[13], out zc.enemyShieldEquipSlots);
+            int.TryParse(col[14], out zc.enemyInterceptorEquipSlots);
+            int.TryParse(col[15], out zc.explorationPointReward);
+            int.TryParse(col[16], out zc.commanderExpReward);
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
@@ -800,10 +812,16 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.LabelField("셀 적함대 절차적 생성", EditorStyles.miniBoldLabel);
         zoneConfig.enemyFleetsPerCell    = EditorGUILayout.IntField(new GUIContent("Fleets Per Cell",     "셀당 순차 웨이브 개수"),               zoneConfig.enemyFleetsPerCell);
         zoneConfig.enemyBudget           = EditorGUILayout.IntField(new GUIContent("Enemy Budget",        "웨이브 1개의 지휘력 예산"),             zoneConfig.enemyBudget);
-        zoneConfig.enemyMaxCost          = EditorGUILayout.IntField(new GUIContent("Enemy Max Cost",      "웨이브에 편성 가능한 함선 1척의 commandCost 상한"), zoneConfig.enemyMaxCost);
+        zoneConfig.enemyMaxCostOfOneShip = EditorGUILayout.IntField(new GUIContent("Enemy Max Cost Of One Ship", "웨이브에 편성 가능한 함선 1척의 fullEquipCost 상한"), zoneConfig.enemyMaxCostOfOneShip);
         zoneConfig.enemyDeviation        = EditorGUILayout.IntField(new GUIContent("Enemy Deviation",     "Enemy Max Cost 랜덤 편차"),           zoneConfig.enemyDeviation);
         zoneConfig.enemyMaxShipsPerFleet = EditorGUILayout.IntField(new GUIContent("Max Ships Per Fleet",  "웨이브 1개의 함선 수 상한"),            zoneConfig.enemyMaxShipsPerFleet);
-        zoneConfig.enemyStatMultiplier   = EditorGUILayout.FloatField(new GUIContent("Enemy Stat Multiplier", "이 존 적함대 body/beam/missile/hanger 체력·공격력 공통 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyStatMultiplier);
+        zoneConfig.enemyHealthMultiplier = EditorGUILayout.FloatField(new GUIContent("Enemy Health Multiplier", "이 존 적함대 체력 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyHealthMultiplier);
+        zoneConfig.enemyAttackMultiplier = EditorGUILayout.FloatField(new GUIContent("Enemy Attack Multiplier", "이 존 적함대 공격력 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyAttackMultiplier);
+        zoneConfig.enemyBeamEquipSlots        = EditorGUILayout.IntField(new GUIContent("Enemy Beam Equip Slots", "빔 슬롯 총 장착 목표 개수(기본 로드아웃 포함)"), zoneConfig.enemyBeamEquipSlots);
+        zoneConfig.enemyMissileEquipSlots     = EditorGUILayout.IntField(new GUIContent("Enemy Missile Equip Slots", "미사일 슬롯 총 장착 목표 개수"), zoneConfig.enemyMissileEquipSlots);
+        zoneConfig.enemyHangerEquipSlots      = EditorGUILayout.IntField(new GUIContent("Enemy Hanger Equip Slots", "함재기 슬롯 총 장착 목표 개수"), zoneConfig.enemyHangerEquipSlots);
+        zoneConfig.enemyShieldEquipSlots      = EditorGUILayout.IntField(new GUIContent("Enemy Shield Equip Slots", "실드 장착 여부 (0=미장착, 1 이상=장착)"), zoneConfig.enemyShieldEquipSlots);
+        zoneConfig.enemyInterceptorEquipSlots = EditorGUILayout.IntField(new GUIContent("Enemy Interceptor Equip Slots", "요격체 장착 여부 (0=미장착, 1 이상=장착)"), zoneConfig.enemyInterceptorEquipSlots);
 
         EditorGUILayout.Space(4);
         EditorGUILayout.LabelField("셀 클리어 보상 (웨이브 있던 셀만 적립)", EditorStyles.miniBoldLabel);
@@ -928,6 +946,103 @@ public class DataTableZoneEditor : Editor
                 EditorUtility.SetDirty(m_dataTableZone);
             }
         }
+
+        EditorGUILayout.Space(6);
+        DrawEnemyFleetPreview(zoneConfig, cellOverride);
+    }
+
+    // 선택된 셀에서 실제로 계산될 적함대 구성 미리보기 — ExplorationEnemyFleetGenerator를 그대로 호출(서버 ZoneEnemyFleetGenerator.java와 동일 알고리즘)
+    // Blocked/Start/Event 셀은 실제 플레이에서도 적함대가 생성되지 않으므로 안내만 표시
+    private int m_previewSeed = 20260722;
+
+    private DataTableShipPreset GetShipPresetTable()
+    {
+        string[] guids = AssetDatabase.FindAssets("t:DataTableShipPreset");
+        if (guids.Length == 0) return null;
+        return AssetDatabase.LoadAssetAtPath<DataTableShipPreset>(AssetDatabase.GUIDToAssetPath(guids[0]));
+    }
+
+    private DataTableModule GetModuleTableForPreview()
+    {
+        string[] guids = AssetDatabase.FindAssets("t:DataTableModule");
+        if (guids.Length == 0) return null;
+        return AssetDatabase.LoadAssetAtPath<DataTableModule>(AssetDatabase.GUIDToAssetPath(guids[0]));
+    }
+
+    private void DrawEnemyFleetPreview(ZoneConfig zoneConfig, GridCellOverride cellOverride)
+    {
+        EditorGUILayout.LabelField("선택된 셀 적함대 미리보기", EditorStyles.boldLabel);
+
+        if (cellOverride != null && (cellOverride.type == EGridCellType.Blocked || cellOverride.type == EGridCellType.Start || cellOverride.type == EGridCellType.Event))
+        {
+            EditorGUILayout.HelpBox($"{cellOverride.type} 셀은 실제 플레이에서 적함대가 생성되지 않습니다.", MessageType.Info);
+            return;
+        }
+
+        DataTableShipPreset presetTable = GetShipPresetTable();
+        DataTableModule moduleTable = GetModuleTableForPreview();
+        if (presetTable == null || moduleTable == null)
+        {
+            EditorGUILayout.HelpBox("DataTableShipPreset 또는 DataTableModule 에셋을 찾을 수 없습니다.", MessageType.Warning);
+            return;
+        }
+
+        m_previewSeed = EditorGUILayout.IntField(new GUIContent("Preview Seed", "실제 플레이 시드는 서버 world-seed+커맨더 조합값이라 에디터에서는 알 수 없음 — 값을 바꿔가며 편차/구성 다양성만 확인하는 용도"), m_previewSeed);
+
+        int seed = CommonUtility.ComputeExplorationZoneSeed(zoneConfig.zoneIndex, m_previewSeed);
+        List<FleetInfo> waves = ExplorationEnemyFleetGenerator.GenerateWaves(zoneConfig, seed, m_selectedGridRow, m_selectedGridCol, presetTable, moduleTable);
+
+        if (waves.Count == 0)
+        {
+            EditorGUILayout.HelpBox("웨이브가 없습니다 (enemyFleetsPerCell=0이거나 프리셋 데이터가 비어있음).", MessageType.Info);
+            return;
+        }
+
+        for (int w = 0; w < waves.Count; w++)
+        {
+            FleetInfo wave = waves[w];
+            EditorGUILayout.LabelField($"웨이브 {w} — 함선 {wave.ships.Count}척", EditorStyles.miniBoldLabel);
+
+            int totalSpent = 0;
+            for (int i = 0; i < wave.ships.Count; i++)
+            {
+                ShipInfo ship = wave.ships[i];
+                ModuleBodyInfo modules = ship.bodies != null && ship.bodies.Count > 0 ? ship.bodies[0] : null;
+                int beamCount = modules != null && modules.beams != null ? modules.beams.Count : 0;
+                int missileCount = modules != null && modules.missiles != null ? modules.missiles.Count : 0;
+                int hangerCount = modules != null && modules.hangers != null ? modules.hangers.Count : 0;
+
+                ShipPresetData preset = presetTable.GetShipPreset(ship.shipPresetId);
+                int bodyCost = 0;
+                if (preset != null && System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType))
+                {
+                    ModuleData bodyData = moduleTable.GetModuleDataFromTable(bodySubType);
+                    bodyCost = bodyData != null ? bodyData.statPoint : 0;
+                }
+
+                int modulesCost = SumModuleCost(moduleTable, modules != null ? modules.beams : null)
+                    + SumModuleCost(moduleTable, modules != null ? modules.missiles : null)
+                    + SumModuleCost(moduleTable, modules != null ? modules.hangers : null);
+                int shipCost = bodyCost + modulesCost;
+                totalSpent += shipCost;
+
+                EditorGUILayout.LabelField($"  {ship.shipPresetId} (body={bodyCost}, {(ship.isFront ? "전방" : "후방")}, 빔={beamCount}, 미사일={missileCount}, 격납고={hangerCount}, 지출={shipCost})");
+            }
+
+            EditorGUILayout.LabelField($"  웨이브 총 지출: {totalSpent} / enemyBudget: {zoneConfig.enemyBudget}", EditorStyles.miniLabel);
+        }
+    }
+
+    private static int SumModuleCost(DataTableModule moduleTable, List<ModuleInfo> modules)
+    {
+        if (modules == null) return 0;
+        int sum = 0;
+        for (int i = 0; i < modules.Count; i++)
+        {
+            ModuleData data = moduleTable.GetModuleDataFromTable(modules[i].moduleSubType);
+            sum += data != null ? data.statPoint : 0;
+        }
+        return sum;
     }
 
     // 버튼 자체를 해당 타입의 팔레트 색으로 칠함 — 별도 범례 없이 버튼 색이 곧 범례 역할. 활성 상태는 밝기 대신 외곽선으로 표시

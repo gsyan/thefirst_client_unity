@@ -49,17 +49,15 @@ public class UIVipDetail : MonoBehaviour
 
     private void InitBenefitTexts()
     {
-        if (m_benefits == null || m_benefits.Length < 4) return;
+        if (m_benefits == null || m_benefits.Length < 3) return;
         if (IAPManager.Instance == null) return;
 
         var loc = LocalizationManager.Instance;
-        int multiplier = IAPManager.Instance.GetMineralRewardMultiplier();
 
         string[] texts =
         {
             loc.Get("UIVipStatus_Benefit_NoAds"),
             loc.Get("UIVipStatus_Benefit_Daily"),
-            loc.Get("UIVipStatus_Benefit_Mineral", multiplier),
             loc.Get("UIVipStatus_Benefit_InstantFleetRestore"),
         };
         for (int i = 0; i < 4; i++)
@@ -175,7 +173,7 @@ public class UIVipDetail : MonoBehaviour
             {
                 if (m_purchaseButton != null) m_purchaseButton.interactable = true;
 
-                int granted = claimResult != null ? claimResult.grantedMineral : 0;
+                int granted = claimResult != null ? claimResult.grantedExplorationPoint : 0;
                 Debug.Log($"[UIPanelVip][에디터] 일일보상 재청구 결과 granted={granted}");
 
                 Refresh();

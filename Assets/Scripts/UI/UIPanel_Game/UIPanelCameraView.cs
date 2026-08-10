@@ -23,11 +23,6 @@ public class UIPanelCameraView : UIPanelBase
     [SerializeField] private UIButtonHasChildren m_tacticsFormationButton;
     [SerializeField] private Image m_tacticsFormationImage;
 
-    // 플로팅 미네랄 소비 텍스트 풀
-    private readonly List<UIFloatingCostText> m_floatingPool = new List<UIFloatingCostText>();
-    private RectTransform m_floatingContainer;
-    private const int k_floatingPoolSize = 6;
-
     private RectTransform m_rectTransform;
     private float m_lastViewportRatio = 0f; // 패널 비활성 중 놓친 이벤트 대비
 
@@ -47,11 +42,9 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Subscribe_TacticOptionsChanged(OnTacticOptionsChanged);
         EventManager.Subscribe_FleetShipCountChanged(OnFleetShipCountChanged);
         EventManager.Subscribe_FormationChanged(OnFormationChanged);
-        EventManager.Subscribe_TacticMineralConsumed(OnTacticMineralConsumed);
 
         SetupTacticsButtons();
         SetupFormationButton();
-        InitFloatingPool();
     }
 
     void Start()
@@ -98,71 +91,6 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Unsubscribe_TacticOptionsChanged(OnTacticOptionsChanged);
         EventManager.Unsubscribe_FleetShipCountChanged(OnFleetShipCountChanged);
         EventManager.Unsubscribe_FormationChanged(OnFormationChanged);
-        EventManager.Unsubscribe_TacticMineralConsumed(OnTacticMineralConsumed);
-    }
-
-    private void InitFloatingPool()
-    {
-        GameObject containerGo = new GameObject("FloatingCostTextPool");
-        m_floatingContainer = containerGo.AddComponent<RectTransform>();
-        m_floatingContainer.SetParent(transform.parent, false);
-        m_floatingContainer.anchorMin = Vector2.zero;
-        m_floatingContainer.anchorMax = Vector2.one;
-        m_floatingContainer.offsetMin = Vector2.zero;
-        m_floatingContainer.offsetMax = Vector2.zero;
-
-        for (int i = 0; i < k_floatingPoolSize; i++)
-        {
-            UIFloatingCostText item = CreateFloatingText();
-            item.gameObject.SetActive(false);
-            m_floatingPool.Add(item);
-        }
-    }
-
-    private UIFloatingCostText CreateFloatingText()
-    {
-        GameObject go = new GameObject("FloatingCostText");
-        RectTransform rt = go.AddComponent<RectTransform>();
-        UIFloatingCostText floatText = go.AddComponent<UIFloatingCostText>();
-        go.transform.SetParent(m_floatingContainer, false);
-        rt.sizeDelta = new Vector2(80f, 30f);
-        rt.anchorMin = new Vector2(0.5f, 0.5f);
-        rt.anchorMax = new Vector2(0.5f, 0.5f);
-        rt.pivot     = new Vector2(0.5f, 0.5f);
-        return floatText;
-    }
-
-    private UIFloatingCostText GetFromPool()
-    {
-        for (int i = 0; i < m_floatingPool.Count; i++)
-        {
-            if (m_floatingPool[i].gameObject.activeInHierarchy == false)
-                return m_floatingPool[i];
-        }
-        UIFloatingCostText newItem = CreateFloatingText();
-        m_floatingPool.Add(newItem);
-        return newItem;
-    }
-
-    private void OnTacticMineralConsumed(int tacticIdx, int cost)
-    {
-        if (m_tacticsButtons == null || tacticIdx >= m_tacticsButtons.Length) return;
-
-        RectTransform btnRect = m_tacticsButtons[tacticIdx].GetComponent<RectTransform>();
-        if (btnRect == null) return;
-
-        // 버튼 월드 중심 → FloatingCostTextPool 로컬 좌표 변환
-        Vector3 worldCenter = btnRect.TransformPoint(btnRect.rect.center);
-        Vector2 localPos    = m_floatingContainer.InverseTransformPoint(worldCenter);
-        Vector2 startPos    = localPos + new Vector2(0f, btnRect.rect.height * 0.5f + 5f);
-
-        UIFloatingCostText floatText = GetFromPool();
-        floatText.Play($"-{cost}", startPos, ReturnToPool);
-    }
-
-    private void ReturnToPool(UIFloatingCostText item)
-    {
-        item.gameObject.SetActive(false);
     }
 
     private void SetupTacticsButtons()

@@ -77,9 +77,6 @@ public class ModuleBody : ModuleBase
     {
         m_moduleBodyInfo = moduleBodyInfo;
         m_moduleSlot = null;
-        SetInvestedModulePoint(moduleBodyInfo.investedModulePoint);
-        SetAddShipModulePoint(moduleBodyInfo.addShipModulePoint);
-        SetInvestedMineral(moduleBodyInfo.investedMineral);
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType);
@@ -101,9 +98,9 @@ public class ModuleBody : ModuleBase
         // Zone 적 함선일 때 체력에 배율 적용 (프리셋 스폰은 배율 1.0 고정이라 실질적으로 no-op)
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
         {
-            m_health    *= m_ownerShip.m_bodyMultiplier;
-            m_healthMax *= m_ownerShip.m_bodyMultiplier;
-            m_repair    *= m_ownerShip.m_bodyMultiplier;
+            m_health    *= m_ownerShip.m_healthMultiplier;
+            m_healthMax *= m_ownerShip.m_healthMultiplier;
+            m_repair    *= m_ownerShip.m_healthMultiplier;
         }
 
         CollectAndSortModuleSlots();
@@ -503,13 +500,11 @@ public class ModuleBody : ModuleBase
             var s = source[i];
             copy.Add(new ModuleInfo
             {
-                moduleType          = s.moduleType,
-                moduleSubType       = s.moduleSubType,
-                moduleLevel         = s.moduleLevel,
-                bodyIndex           = s.bodyIndex,
-                slotIndex           = s.slotIndex,
-                investedModulePoint = s.investedModulePoint,
-                investedMineral     = s.investedMineral
+                moduleType    = s.moduleType,
+                moduleSubType = s.moduleSubType,
+                moduleLevel   = s.moduleLevel,
+                bodyIndex     = s.bodyIndex,
+                slotIndex     = s.slotIndex,
             });
         }
         return copy;

@@ -406,11 +406,15 @@ public class UIPanelFleet : UIPanelBase
         public readonly string shipPresetId;
         public readonly bool isFront;
         public readonly ModuleBodyInfo modules; // 이 함선이 실제로 장착한 모듈 구성(로드아웃) — null이면 프리셋 기본 장착 구성으로 대체됨
-        public PlacedShipView(string shipPresetId, bool isFront, ModuleBodyInfo modules)
+        public readonly float healthMultiplier; // Zone 적 함대 열람 시에만 1이 아님 — 내 함대 편집(FleetComposition)은 항상 1
+        public readonly float attackMultiplier;
+        public PlacedShipView(string shipPresetId, bool isFront, ModuleBodyInfo modules, float healthMultiplier = 1f, float attackMultiplier = 1f)
         {
             this.shipPresetId = shipPresetId;
             this.isFront = isFront;
             this.modules = modules;
+            this.healthMultiplier = healthMultiplier;
+            this.attackMultiplier = attackMultiplier;
         }
     }
 
@@ -426,7 +430,7 @@ public class UIPanelFleet : UIPanelBase
             for (int i = 0; i < ships.Count; i++)
             {
                 ModuleBodyInfo modules = ships[i].bodies != null && ships[i].bodies.Count > 0 ? ships[i].bodies[0] : null;
-                result.Add(new PlacedShipView(ships[i].shipPresetId, ships[i].isFront, modules));
+                result.Add(new PlacedShipView(ships[i].shipPresetId, ships[i].isFront, modules, ships[i].healthMultiplier, ships[i].attackMultiplier));
             }
             return result;
         }
@@ -611,7 +615,8 @@ public class UIPanelFleet : UIPanelBase
         }
         RefreshEditLoadoutButtonInteractable();
 
-        m_statEntries = ShipStatGaugeBuilder.Build(selectedPreset, placedShips[m_selectedSlotIndex].modules);
+        PlacedShipView selectedShip = placedShips[m_selectedSlotIndex];
+        m_statEntries = ShipStatGaugeBuilder.Build(selectedPreset, selectedShip.modules, selectedShip.healthMultiplier, selectedShip.attackMultiplier);
         if (m_statsScrollView != null && m_statsRowPrefab != null)
             m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
     }

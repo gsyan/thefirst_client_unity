@@ -76,7 +76,6 @@ public class UIPopupDailyBonusDayCell : MonoBehaviour
 
     private static string GetSpriteName(EDailyBonusRewardType type)
     {
-        if (type == EDailyBonusRewardType.Mineral) return "mineral_basic";
-        return "mineral_basic";
+        return "exploration_point";
     }
 }
