@@ -13,6 +13,7 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableConfig();
         LoadDataTableZone();
         LoadDataTableShipPreset();
+        LoadDataTableRewardCard();
         LoadDataTablePvpSeason();
         LoadDataTableDailyBonus();
         LoadColorPalette();
@@ -161,6 +162,17 @@ public class DataManager : Singleton<DataManager>
         m_dataTableShipPreset = ResourceManager.Instance.Load<DataTableShipPreset>("DataTable/DataTableShipPreset");
         if (m_dataTableShipPreset == null)
             Debug.LogError("DataTableShipPreset is not exist");
+    }
+    #endregion
+
+    #region Data Table Reward Card ###############################################################
+    public DataTableRewardCard m_dataTableRewardCard;
+
+    private void LoadDataTableRewardCard()
+    {
+        m_dataTableRewardCard = ResourceManager.Instance.Load<DataTableRewardCard>("DataTable/DataTableRewardCard");
+        if (m_dataTableRewardCard == null)
+            Debug.LogError("DataTableRewardCard is not exist");
     }
     #endregion
 

@@ -732,6 +732,22 @@ public class ApiClient
         return JsonConvert.DeserializeObject<ApiResponse<ClearExplorationCellResponse>>(webRequest.downloadHandler.text);
     }
 
+    public async Task<ApiResponse<ConfirmRewardCardResponse>> ConfirmRewardCardAsync(ConfirmRewardCardRequest request)
+    {
+        if (string.IsNullOrEmpty(accessToken)) return ApiResponse<ConfirmRewardCardResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
+
+        string json = JsonConvert.SerializeObject(request);
+
+        using var webRequest = new UnityWebRequest($"{m_baseUrl}/exploration/confirm-reward-card", "POST");
+        webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
+        await SendRequestAsync(webRequest);
+        return JsonConvert.DeserializeObject<ApiResponse<ConfirmRewardCardResponse>>(webRequest.downloadHandler.text);
+    }
+
     public async Task<ApiResponse<GetActiveZoneRunProgressResponse>> GetActiveZoneRunProgressAsync(GetActiveZoneRunProgressRequest request)
     {
         if (string.IsNullOrEmpty(accessToken)) return ApiResponse<GetActiveZoneRunProgressResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);

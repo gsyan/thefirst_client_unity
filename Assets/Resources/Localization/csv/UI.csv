@@ -87,6 +87,34 @@ UITabCommander_PointsToNextLevel,,EXP to next level : {0},다음 레벨업까지
 UITabTech_ModulePointGetTitle,,Module Point,모듈 포인트
 UIPanelExplorationGrid_BankedPoint,,Banked Exploration Point,적립 탐험 포인트
 UIPanelExplorationGrid_OwnedPoint,,Exploration Point,탐험 포인트
+UIPopupRewardCardSelect_Title,,Choose a Reward Card,보상 카드를 선택하세요
+UIPopupRewardCardSelect_RewardSummary,,Exploration Point +{0}  Exp +{1},탐험 포인트 +{0}  경험치 +{1}
+RewardCard_BeamAttack_Name,,Beam Power Up,빔 공격력 강화
+RewardCard_BeamAttack_Desc,,Beam attack +{0:P0},빔 공격력 {0:P0} 증가
+RewardCard_BeamFireRate_Name,,Beam Rate of Fire Up,빔 연사속도 강화
+RewardCard_BeamFireRate_Desc,,Beam rate of fire +{0:P0},빔 연사속도 {0:P0} 증가
+RewardCard_MissileAttack_Name,,Missile Power Up,미사일 공격력 강화
+RewardCard_MissileAttack_Desc,,Missile attack +{0:P0},미사일 공격력 {0:P0} 증가
+RewardCard_MissileFireRate_Name,,Missile Rate of Fire Up,미사일 연사속도 강화
+RewardCard_MissileFireRate_Desc,,Missile rate of fire +{0:P0},미사일 연사속도 {0:P0} 증가
+RewardCard_MissileSilence_Name,,Missile Silence Up,미사일 침묵효과 강화
+RewardCard_MissileSilence_Desc,,Missile silence effect +{0:P0},미사일 침묵효과 {0:P0} 증가
+RewardCard_HangarShipAttack_Name,,Fighter Anti-Ship Power Up,함재기 대함 공격력 강화
+RewardCard_HangarShipAttack_Desc,,Fighter anti-ship attack +{0:P0},함재기 대함 공격력 {0:P0} 증가
+RewardCard_HangarFighterAttack_Name,,Fighter Dogfight Power Up,함재기 대함재기 공격력 강화
+RewardCard_HangarFighterAttack_Desc,,Fighter dogfight attack +{0:P0},함재기 대함재기 공격력 {0:P0} 증가
+RewardCard_ShipHealth_Name,,Hull Health Up,함선 체력 강화
+RewardCard_ShipHealth_Desc,,Ship health +{0:P0},함선 체력 {0:P0} 증가
+RewardCard_PointRate_Name,,Exploration Point Rate Up,탐험 포인트 획득량 증가
+RewardCard_PointRate_Desc,,Exploration point gain +{0:P0},탐험 포인트 획득량 {0:P0} 증가
+RewardCard_HealthHeal_Name,,Hull Repair,체력 회복
+RewardCard_HealthHeal_Desc,,Restore {0:P0} of hull health,체력 {0:P0} 회복
+RewardCard_ShieldHeal_Name,,Shield Recharge,실드 회복
+RewardCard_ShieldHeal_Desc,,Restore {0:P0} of shield,실드 {0:P0} 회복
+RewardCard_InterceptorHeal_Name,,Interceptor Resupply,요격체 회복
+RewardCard_InterceptorHeal_Desc,,Restore {0:P0} of interceptors,요격체 {0:P0} 회복
+RewardCard_PointFlat_Name,,Exploration Point Bonus,탐험 포인트 획득
+RewardCard_PointFlat_Desc,,Exploration Point +{0:F0},탐험 포인트 +{0:F0}
 UIAvailablePresetRow_Name,,Name:,이름:
 UIAvailablePresetRow_Cost,,Cost:,비용:
 UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리

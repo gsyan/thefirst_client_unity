@@ -129,6 +129,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 지금 이 클라이언트를 플레이 중인 유저가 속한 팀 — 현재는 항상 TeamA지만, 향후 멀티플레이(같은 전투에 여러 유저)에서 B가 될 수도 있어 값으로 분리해둠
     [HideInInspector] public ETeam m_myTeam = ETeam.TeamA;
 
+    // 진행 중인 탐험 존 런에서 선택 확정한 보상카드 지속버프 상태 — UIPanelExplorationGrid가 카드 선택/재접속 복구 시 채우고,
+    // ObjectManager는 내 함대 스폰 시(SpawnFleetFromPreset) 이 값을 읽어 최종 스탯에 적용만 함(소유권은 그리드 패널에 있음)
+    public RewardCardSessionState m_rewardCardSessionState = new RewardCardSessionState();
+
     // 지크프리트(튜토리얼 연출용) 함대 사용 중 여부 — 튜토리얼 종료 시 실제 함대로 전환하는 데 사용
     private bool m_isSiegfriedFleetActive = false;
     private int m_realCommanderLevelBackup;
@@ -737,6 +741,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(preset.statAllocation, actualModules);
 
                 ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
+                if (team == m_myTeam && source == EFleetSource.fleet_source_player)
+                    finalStats = m_rewardCardSessionState.ApplyToShipStats(finalStats);
                 ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats, shipIndex, shipSlot.isFront, shipSlot.healthMultiplier, shipSlot.attackMultiplier);
             }
         }

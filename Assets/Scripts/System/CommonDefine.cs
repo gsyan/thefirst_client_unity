@@ -159,4 +159,24 @@ public enum EZoneRunStatus
     ESCAPED,
     ABANDONED,
 }
+
+// 셀 클리어 보상카드 효과 종류 — 수치(1~5% 등)는 enum이 아니라 RewardCardData.value1/value2에 카드마다 다르게 저장됨(효과 종류와 수치 분리)
+// 접두사로 지속버프(Buff_)/즉시효과(Instant_)를 구분 — 신규 효과는 이 접두사 규칙을 따라 값만 추가하면 됨(범용 확장 설계)
+[System.Serializable]
+public enum ECardEffectType
+{
+    Buff_BeamAttack,              // 지속버프: 빔 공격력 x(1+value1)
+    Buff_BeamFireRate,            // 지속버프: 빔 연사속도(쿨다운 감소) x(1+value1)
+    Buff_MissileAttack,           // 지속버프: 미사일 공격력 x(1+value1)
+    Buff_MissileFireRate,         // 지속버프: 미사일 연사속도(쿨다운 감소) x(1+value1)
+    Buff_MissileSilence,          // 지속버프: 미사일 침묵효과(silenceTime) x(1+value1)
+    Buff_HangarShipAttack,        // 지속버프: 함재기 대함 공격력 x(1+value1)
+    Buff_HangarFighterAttack,     // 지속버프: 함재기 대함재기 공격력 x(1+value1)
+    Buff_ShipHealth,              // 지속버프: 체력 x(1+value1)
+    Buff_ExplorationPointRate,    // 지속버프: 탐험 포인트 획득률 x(1+value1)
+    Instant_HealthHeal,           // 즉시효과: 체력 value1(0~1) 비율만큼 회복
+    Instant_ShieldHeal,           // 즉시효과: 실드 value1 비율만큼 회복
+    Instant_InterceptorHeal,      // 즉시효과: 요격체 value1 비율만큼 회복
+    Instant_ExplorationPointFlat, // 즉시효과: 탐험 포인트 +value1 가산(비율 버프보다 먼저 적용)
+}
 #endregion

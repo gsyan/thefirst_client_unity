@@ -1,0 +1,394 @@
+﻿[
+  {
+    "cardId": "card_beam_attack_1per",
+    "effectType": "Buff_BeamAttack",
+    "isPersistent": true,
+    "value1": 0.01,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_beam_attack_2per",
+    "effectType": "Buff_BeamAttack",
+    "isPersistent": true,
+    "value1": 0.02,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_beam_attack_3per",
+    "effectType": "Buff_BeamAttack",
+    "isPersistent": true,
+    "value1": 0.03,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_beam_attack_4per",
+    "effectType": "Buff_BeamAttack",
+    "isPersistent": true,
+    "value1": 0.04,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_beam_attack_5per",
+    "effectType": "Buff_BeamAttack",
+    "isPersistent": true,
+    "value1": 0.05,
+    "value2": 0.0,
+    "weight": 2
+  },
+  {
+    "cardId": "card_beam_firerate_1per",
+    "effectType": "Buff_BeamFireRate",
+    "isPersistent": true,
+    "value1": 0.01,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_beam_firerate_2per",
+    "effectType": "Buff_BeamFireRate",
+    "isPersistent": true,
+    "value1": 0.02,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_beam_firerate_3per",
+    "effectType": "Buff_BeamFireRate",
+    "isPersistent": true,
+    "value1": 0.03,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_beam_firerate_4per",
+    "effectType": "Buff_BeamFireRate",
+    "isPersistent": true,
+    "value1": 0.04,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_beam_firerate_5per",
+    "effectType": "Buff_BeamFireRate",
+    "isPersistent": true,
+    "value1": 0.05,
+    "value2": 0.0,
+    "weight": 2
+  },
+  {
+    "cardId": "card_missile_attack_1per",
+    "effectType": "Buff_MissileAttack",
+    "isPersistent": true,
+    "value1": 0.01,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_missile_attack_2per",
+    "effectType": "Buff_MissileAttack",
+    "isPersistent": true,
+    "value1": 0.02,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_missile_attack_3per",
+    "effectType": "Buff_MissileAttack",
+    "isPersistent": true,
+    "value1": 0.03,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_missile_attack_4per",
+    "effectType": "Buff_MissileAttack",
+    "isPersistent": true,
+    "value1": 0.04,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_missile_attack_5per",
+    "effectType": "Buff_MissileAttack",
+    "isPersistent": true,
+    "value1": 0.05,
+    "value2": 0.0,
+    "weight": 2
+  },
+  {
+    "cardId": "card_missile_firerate_1per",
+    "effectType": "Buff_MissileFireRate",
+    "isPersistent": true,
+    "value1": 0.01,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_missile_firerate_2per",
+    "effectType": "Buff_MissileFireRate",
+    "isPersistent": true,
+    "value1": 0.02,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_missile_firerate_3per",
+    "effectType": "Buff_MissileFireRate",
+    "isPersistent": true,
+    "value1": 0.03,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_missile_firerate_4per",
+    "effectType": "Buff_MissileFireRate",
+    "isPersistent": true,
+    "value1": 0.04,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_missile_firerate_5per",
+    "effectType": "Buff_MissileFireRate",
+    "isPersistent": true,
+    "value1": 0.05,
+    "value2": 0.0,
+    "weight": 2
+  },
+  {
+    "cardId": "card_missile_silence_1per",
+    "effectType": "Buff_MissileSilence",
+    "isPersistent": true,
+    "value1": 0.01,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_missile_silence_2per",
+    "effectType": "Buff_MissileSilence",
+    "isPersistent": true,
+    "value1": 0.02,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_missile_silence_3per",
+    "effectType": "Buff_MissileSilence",
+    "isPersistent": true,
+    "value1": 0.03,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_missile_silence_4per",
+    "effectType": "Buff_MissileSilence",
+    "isPersistent": true,
+    "value1": 0.04,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_missile_silence_5per",
+    "effectType": "Buff_MissileSilence",
+    "isPersistent": true,
+    "value1": 0.05,
+    "value2": 0.0,
+    "weight": 2
+  },
+  {
+    "cardId": "card_hangar_ship_attack_1per",
+    "effectType": "Buff_HangarShipAttack",
+    "isPersistent": true,
+    "value1": 0.01,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_hangar_ship_attack_2per",
+    "effectType": "Buff_HangarShipAttack",
+    "isPersistent": true,
+    "value1": 0.02,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_hangar_ship_attack_3per",
+    "effectType": "Buff_HangarShipAttack",
+    "isPersistent": true,
+    "value1": 0.03,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_hangar_ship_attack_4per",
+    "effectType": "Buff_HangarShipAttack",
+    "isPersistent": true,
+    "value1": 0.04,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_hangar_ship_attack_5per",
+    "effectType": "Buff_HangarShipAttack",
+    "isPersistent": true,
+    "value1": 0.05,
+    "value2": 0.0,
+    "weight": 2
+  },
+  {
+    "cardId": "card_hangar_fighter_attack_1per",
+    "effectType": "Buff_HangarFighterAttack",
+    "isPersistent": true,
+    "value1": 0.01,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_hangar_fighter_attack_2per",
+    "effectType": "Buff_HangarFighterAttack",
+    "isPersistent": true,
+    "value1": 0.02,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_hangar_fighter_attack_3per",
+    "effectType": "Buff_HangarFighterAttack",
+    "isPersistent": true,
+    "value1": 0.03,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_hangar_fighter_attack_4per",
+    "effectType": "Buff_HangarFighterAttack",
+    "isPersistent": true,
+    "value1": 0.04,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_hangar_fighter_attack_5per",
+    "effectType": "Buff_HangarFighterAttack",
+    "isPersistent": true,
+    "value1": 0.05,
+    "value2": 0.0,
+    "weight": 2
+  },
+  {
+    "cardId": "card_ship_health_1per",
+    "effectType": "Buff_ShipHealth",
+    "isPersistent": true,
+    "value1": 0.01,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_ship_health_2per",
+    "effectType": "Buff_ShipHealth",
+    "isPersistent": true,
+    "value1": 0.02,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_ship_health_3per",
+    "effectType": "Buff_ShipHealth",
+    "isPersistent": true,
+    "value1": 0.03,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_ship_health_4per",
+    "effectType": "Buff_ShipHealth",
+    "isPersistent": true,
+    "value1": 0.04,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_ship_health_5per",
+    "effectType": "Buff_ShipHealth",
+    "isPersistent": true,
+    "value1": 0.05,
+    "value2": 0.0,
+    "weight": 2
+  },
+  {
+    "cardId": "card_point_rate_1per",
+    "effectType": "Buff_ExplorationPointRate",
+    "isPersistent": true,
+    "value1": 0.01,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_point_rate_2per",
+    "effectType": "Buff_ExplorationPointRate",
+    "isPersistent": true,
+    "value1": 0.02,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_point_rate_3per",
+    "effectType": "Buff_ExplorationPointRate",
+    "isPersistent": true,
+    "value1": 0.03,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_point_rate_4per",
+    "effectType": "Buff_ExplorationPointRate",
+    "isPersistent": true,
+    "value1": 0.04,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_point_rate_5per",
+    "effectType": "Buff_ExplorationPointRate",
+    "isPersistent": true,
+    "value1": 0.05,
+    "value2": 0.0,
+    "weight": 2
+  },
+  {
+    "cardId": "card_health_heal",
+    "effectType": "Instant_HealthHeal",
+    "isPersistent": false,
+    "value1": 0.2,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_shield_heal",
+    "effectType": "Instant_ShieldHeal",
+    "isPersistent": false,
+    "value1": 1.0,
+    "value2": 0.0,
+    "weight": 8
+  },
+  {
+    "cardId": "card_interceptor_heal",
+    "effectType": "Instant_InterceptorHeal",
+    "isPersistent": false,
+    "value1": 1.0,
+    "value2": 0.0,
+    "weight": 8
+  },
+  {
+    "cardId": "card_point_flat",
+    "effectType": "Instant_ExplorationPointFlat",
+    "isPersistent": false,
+    "value1": 50.0,
+    "value2": 0.0,
+    "weight": 10
+  }
+]

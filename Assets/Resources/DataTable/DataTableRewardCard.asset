@@ -1,0 +1,505 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f95e41d22a0c3824c91b2a624530c486, type: 3}
+  m_Name: DataTableRewardCard
+  m_EditorClassIdentifier: Assembly-CSharp::DataTableRewardCard
+  rewardCardDataList:
+  - cardId: card_beam_attack_1per
+    nameKey: RewardCard_BeamAttack_Name
+    descKey: RewardCard_BeamAttack_Desc
+    iconName: bubbling-beam
+    rarity: 1
+    effectType: 0
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+  - cardId: card_beam_attack_2per
+    nameKey: RewardCard_BeamAttack_Name
+    descKey: RewardCard_BeamAttack_Desc
+    iconName: bubbling-beam
+    rarity: 1
+    effectType: 0
+    isPersistent: 1
+    value1: 0.02
+    value2: 0
+    weight: 15
+  - cardId: card_beam_attack_3per
+    nameKey: RewardCard_BeamAttack_Name
+    descKey: RewardCard_BeamAttack_Desc
+    iconName: bubbling-beam
+    rarity: 2
+    effectType: 0
+    isPersistent: 1
+    value1: 0.03
+    value2: 0
+    weight: 10
+  - cardId: card_beam_attack_4per
+    nameKey: RewardCard_BeamAttack_Name
+    descKey: RewardCard_BeamAttack_Desc
+    iconName: bubbling-beam
+    rarity: 2
+    effectType: 0
+    isPersistent: 1
+    value1: 0.04
+    value2: 0
+    weight: 5
+  - cardId: card_beam_attack_5per
+    nameKey: RewardCard_BeamAttack_Name
+    descKey: RewardCard_BeamAttack_Desc
+    iconName: bubbling-beam
+    rarity: 3
+    effectType: 0
+    isPersistent: 1
+    value1: 0.05
+    value2: 0
+    weight: 2
+  - cardId: card_beam_firerate_1per
+    nameKey: RewardCard_BeamFireRate_Name
+    descKey: RewardCard_BeamFireRate_Desc
+    iconName: sinusoidal-beam
+    rarity: 1
+    effectType: 1
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+  - cardId: card_beam_firerate_2per
+    nameKey: RewardCard_BeamFireRate_Name
+    descKey: RewardCard_BeamFireRate_Desc
+    iconName: sinusoidal-beam
+    rarity: 1
+    effectType: 1
+    isPersistent: 1
+    value1: 0.02
+    value2: 0
+    weight: 15
+  - cardId: card_beam_firerate_3per
+    nameKey: RewardCard_BeamFireRate_Name
+    descKey: RewardCard_BeamFireRate_Desc
+    iconName: sinusoidal-beam
+    rarity: 2
+    effectType: 1
+    isPersistent: 1
+    value1: 0.03
+    value2: 0
+    weight: 10
+  - cardId: card_beam_firerate_4per
+    nameKey: RewardCard_BeamFireRate_Name
+    descKey: RewardCard_BeamFireRate_Desc
+    iconName: sinusoidal-beam
+    rarity: 2
+    effectType: 1
+    isPersistent: 1
+    value1: 0.04
+    value2: 0
+    weight: 5
+  - cardId: card_beam_firerate_5per
+    nameKey: RewardCard_BeamFireRate_Name
+    descKey: RewardCard_BeamFireRate_Desc
+    iconName: sinusoidal-beam
+    rarity: 3
+    effectType: 1
+    isPersistent: 1
+    value1: 0.05
+    value2: 0
+    weight: 2
+  - cardId: card_missile_attack_1per
+    nameKey: RewardCard_MissileAttack_Name
+    descKey: RewardCard_MissileAttack_Desc
+    iconName: missile-pod
+    rarity: 1
+    effectType: 2
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+  - cardId: card_missile_attack_2per
+    nameKey: RewardCard_MissileAttack_Name
+    descKey: RewardCard_MissileAttack_Desc
+    iconName: missile-pod
+    rarity: 1
+    effectType: 2
+    isPersistent: 1
+    value1: 0.02
+    value2: 0
+    weight: 15
+  - cardId: card_missile_attack_3per
+    nameKey: RewardCard_MissileAttack_Name
+    descKey: RewardCard_MissileAttack_Desc
+    iconName: missile-pod
+    rarity: 2
+    effectType: 2
+    isPersistent: 1
+    value1: 0.03
+    value2: 0
+    weight: 10
+  - cardId: card_missile_attack_4per
+    nameKey: RewardCard_MissileAttack_Name
+    descKey: RewardCard_MissileAttack_Desc
+    iconName: missile-pod
+    rarity: 2
+    effectType: 2
+    isPersistent: 1
+    value1: 0.04
+    value2: 0
+    weight: 5
+  - cardId: card_missile_attack_5per
+    nameKey: RewardCard_MissileAttack_Name
+    descKey: RewardCard_MissileAttack_Desc
+    iconName: missile-pod
+    rarity: 3
+    effectType: 2
+    isPersistent: 1
+    value1: 0.05
+    value2: 0
+    weight: 2
+  - cardId: card_missile_firerate_1per
+    nameKey: RewardCard_MissileFireRate_Name
+    descKey: RewardCard_MissileFireRate_Desc
+    iconName: missile-swarm
+    rarity: 1
+    effectType: 3
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+  - cardId: card_missile_firerate_2per
+    nameKey: RewardCard_MissileFireRate_Name
+    descKey: RewardCard_MissileFireRate_Desc
+    iconName: missile-swarm
+    rarity: 1
+    effectType: 3
+    isPersistent: 1
+    value1: 0.02
+    value2: 0
+    weight: 15
+  - cardId: card_missile_firerate_3per
+    nameKey: RewardCard_MissileFireRate_Name
+    descKey: RewardCard_MissileFireRate_Desc
+    iconName: missile-swarm
+    rarity: 2
+    effectType: 3
+    isPersistent: 1
+    value1: 0.03
+    value2: 0
+    weight: 10
+  - cardId: card_missile_firerate_4per
+    nameKey: RewardCard_MissileFireRate_Name
+    descKey: RewardCard_MissileFireRate_Desc
+    iconName: missile-swarm
+    rarity: 2
+    effectType: 3
+    isPersistent: 1
+    value1: 0.04
+    value2: 0
+    weight: 5
+  - cardId: card_missile_firerate_5per
+    nameKey: RewardCard_MissileFireRate_Name
+    descKey: RewardCard_MissileFireRate_Desc
+    iconName: missile-swarm
+    rarity: 3
+    effectType: 3
+    isPersistent: 1
+    value1: 0.05
+    value2: 0
+    weight: 2
+  - cardId: card_missile_silence_1per
+    nameKey: RewardCard_MissileSilence_Name
+    descKey: RewardCard_MissileSilence_Desc
+    iconName: sight-disabled
+    rarity: 1
+    effectType: 4
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+  - cardId: card_missile_silence_2per
+    nameKey: RewardCard_MissileSilence_Name
+    descKey: RewardCard_MissileSilence_Desc
+    iconName: sight-disabled
+    rarity: 1
+    effectType: 4
+    isPersistent: 1
+    value1: 0.02
+    value2: 0
+    weight: 15
+  - cardId: card_missile_silence_3per
+    nameKey: RewardCard_MissileSilence_Name
+    descKey: RewardCard_MissileSilence_Desc
+    iconName: sight-disabled
+    rarity: 2
+    effectType: 4
+    isPersistent: 1
+    value1: 0.03
+    value2: 0
+    weight: 10
+  - cardId: card_missile_silence_4per
+    nameKey: RewardCard_MissileSilence_Name
+    descKey: RewardCard_MissileSilence_Desc
+    iconName: sight-disabled
+    rarity: 2
+    effectType: 4
+    isPersistent: 1
+    value1: 0.04
+    value2: 0
+    weight: 5
+  - cardId: card_missile_silence_5per
+    nameKey: RewardCard_MissileSilence_Name
+    descKey: RewardCard_MissileSilence_Desc
+    iconName: sight-disabled
+    rarity: 3
+    effectType: 4
+    isPersistent: 1
+    value1: 0.05
+    value2: 0
+    weight: 2
+  - cardId: card_hangar_ship_attack_1per
+    nameKey: RewardCard_HangarShipAttack_Name
+    descKey: RewardCard_HangarShipAttack_Desc
+    iconName: jet-fighter
+    rarity: 1
+    effectType: 5
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+  - cardId: card_hangar_ship_attack_2per
+    nameKey: RewardCard_HangarShipAttack_Name
+    descKey: RewardCard_HangarShipAttack_Desc
+    iconName: jet-fighter
+    rarity: 1
+    effectType: 5
+    isPersistent: 1
+    value1: 0.02
+    value2: 0
+    weight: 15
+  - cardId: card_hangar_ship_attack_3per
+    nameKey: RewardCard_HangarShipAttack_Name
+    descKey: RewardCard_HangarShipAttack_Desc
+    iconName: jet-fighter
+    rarity: 2
+    effectType: 5
+    isPersistent: 1
+    value1: 0.03
+    value2: 0
+    weight: 10
+  - cardId: card_hangar_ship_attack_4per
+    nameKey: RewardCard_HangarShipAttack_Name
+    descKey: RewardCard_HangarShipAttack_Desc
+    iconName: jet-fighter
+    rarity: 2
+    effectType: 5
+    isPersistent: 1
+    value1: 0.04
+    value2: 0
+    weight: 5
+  - cardId: card_hangar_ship_attack_5per
+    nameKey: RewardCard_HangarShipAttack_Name
+    descKey: RewardCard_HangarShipAttack_Desc
+    iconName: jet-fighter
+    rarity: 3
+    effectType: 5
+    isPersistent: 1
+    value1: 0.05
+    value2: 0
+    weight: 2
+  - cardId: card_hangar_fighter_attack_1per
+    nameKey: RewardCard_HangarFighterAttack_Name
+    descKey: RewardCard_HangarFighterAttack_Desc
+    iconName: light-fighter
+    rarity: 1
+    effectType: 6
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+  - cardId: card_hangar_fighter_attack_2per
+    nameKey: RewardCard_HangarFighterAttack_Name
+    descKey: RewardCard_HangarFighterAttack_Desc
+    iconName: light-fighter
+    rarity: 1
+    effectType: 6
+    isPersistent: 1
+    value1: 0.02
+    value2: 0
+    weight: 15
+  - cardId: card_hangar_fighter_attack_3per
+    nameKey: RewardCard_HangarFighterAttack_Name
+    descKey: RewardCard_HangarFighterAttack_Desc
+    iconName: light-fighter
+    rarity: 2
+    effectType: 6
+    isPersistent: 1
+    value1: 0.03
+    value2: 0
+    weight: 10
+  - cardId: card_hangar_fighter_attack_4per
+    nameKey: RewardCard_HangarFighterAttack_Name
+    descKey: RewardCard_HangarFighterAttack_Desc
+    iconName: light-fighter
+    rarity: 2
+    effectType: 6
+    isPersistent: 1
+    value1: 0.04
+    value2: 0
+    weight: 5
+  - cardId: card_hangar_fighter_attack_5per
+    nameKey: RewardCard_HangarFighterAttack_Name
+    descKey: RewardCard_HangarFighterAttack_Desc
+    iconName: light-fighter
+    rarity: 3
+    effectType: 6
+    isPersistent: 1
+    value1: 0.05
+    value2: 0
+    weight: 2
+  - cardId: card_ship_health_1per
+    nameKey: RewardCard_ShipHealth_Name
+    descKey: RewardCard_ShipHealth_Desc
+    iconName: heart-wings
+    rarity: 1
+    effectType: 7
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+  - cardId: card_ship_health_2per
+    nameKey: RewardCard_ShipHealth_Name
+    descKey: RewardCard_ShipHealth_Desc
+    iconName: heart-wings
+    rarity: 1
+    effectType: 7
+    isPersistent: 1
+    value1: 0.02
+    value2: 0
+    weight: 15
+  - cardId: card_ship_health_3per
+    nameKey: RewardCard_ShipHealth_Name
+    descKey: RewardCard_ShipHealth_Desc
+    iconName: heart-wings
+    rarity: 2
+    effectType: 7
+    isPersistent: 1
+    value1: 0.03
+    value2: 0
+    weight: 10
+  - cardId: card_ship_health_4per
+    nameKey: RewardCard_ShipHealth_Name
+    descKey: RewardCard_ShipHealth_Desc
+    iconName: heart-wings
+    rarity: 2
+    effectType: 7
+    isPersistent: 1
+    value1: 0.04
+    value2: 0
+    weight: 5
+  - cardId: card_ship_health_5per
+    nameKey: RewardCard_ShipHealth_Name
+    descKey: RewardCard_ShipHealth_Desc
+    iconName: heart-wings
+    rarity: 3
+    effectType: 7
+    isPersistent: 1
+    value1: 0.05
+    value2: 0
+    weight: 2
+  - cardId: card_point_rate_1per
+    nameKey: RewardCard_PointRate_Name
+    descKey: RewardCard_PointRate_Desc
+    iconName: coins-pile
+    rarity: 1
+    effectType: 8
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+  - cardId: card_point_rate_2per
+    nameKey: RewardCard_PointRate_Name
+    descKey: RewardCard_PointRate_Desc
+    iconName: coins-pile
+    rarity: 1
+    effectType: 8
+    isPersistent: 1
+    value1: 0.02
+    value2: 0
+    weight: 15
+  - cardId: card_point_rate_3per
+    nameKey: RewardCard_PointRate_Name
+    descKey: RewardCard_PointRate_Desc
+    iconName: coins-pile
+    rarity: 2
+    effectType: 8
+    isPersistent: 1
+    value1: 0.03
+    value2: 0
+    weight: 10
+  - cardId: card_point_rate_4per
+    nameKey: RewardCard_PointRate_Name
+    descKey: RewardCard_PointRate_Desc
+    iconName: coins-pile
+    rarity: 2
+    effectType: 8
+    isPersistent: 1
+    value1: 0.04
+    value2: 0
+    weight: 5
+  - cardId: card_point_rate_5per
+    nameKey: RewardCard_PointRate_Name
+    descKey: RewardCard_PointRate_Desc
+    iconName: coins-pile
+    rarity: 3
+    effectType: 8
+    isPersistent: 1
+    value1: 0.05
+    value2: 0
+    weight: 2
+  - cardId: card_health_heal
+    nameKey: RewardCard_HealthHeal_Name
+    descKey: RewardCard_HealthHeal_Desc
+    iconName: auto-repair
+    rarity: 1
+    effectType: 9
+    isPersistent: 0
+    value1: 0.2
+    value2: 0
+    weight: 10
+  - cardId: card_shield_heal
+    nameKey: RewardCard_ShieldHeal_Name
+    descKey: RewardCard_ShieldHeal_Desc
+    iconName: bubble-field
+    rarity: 1
+    effectType: 10
+    isPersistent: 0
+    value1: 1
+    value2: 0
+    weight: 8
+  - cardId: card_interceptor_heal
+    nameKey: RewardCard_InterceptorHeal_Name
+    descKey: RewardCard_InterceptorHeal_Desc
+    iconName: spiky-field
+    rarity: 1
+    effectType: 11
+    isPersistent: 0
+    value1: 1
+    value2: 0
+    weight: 8
+  - cardId: card_point_flat
+    nameKey: RewardCard_PointFlat_Name
+    descKey: RewardCard_PointFlat_Desc
+    iconName: minerals
+    rarity: 1
+    effectType: 12
+    isPersistent: 0
+    value1: 50
+    value2: 0
+    weight: 10

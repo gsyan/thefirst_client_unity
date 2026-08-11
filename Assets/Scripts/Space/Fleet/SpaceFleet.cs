@@ -745,6 +745,24 @@ public class SpaceFleet : MonoBehaviour
         SoundManager.Instance.PlayFX(EFx.Fleet_Recovery);
     }
 
+    // 최대 체력 대비 healRatio만큼 가산 회복(즉시효과 보상카드용) — FullRepair/ApplyHealthRatio(절대 설정)와 달리 현재 체력에 더함
+    public void HealAllShipsByRatio(float healRatio)
+    {
+        if (healRatio <= 0f) return;
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleBody body in ship.m_moduleBodys)
+            {
+                if (body == null) continue;
+                body.m_health = Mathf.Min(body.m_healthMax, body.m_health + body.m_healthMax * healRatio);
+            }
+            ship.UpdateShipStatCur();
+        }
+        EventManager.Trigger_FleetUpdateHP();
+        EventManager.Trigger_ShipUpdateHP();
+    }
+
     public float GetMissingHealth()
     {
         float missing = 0f;

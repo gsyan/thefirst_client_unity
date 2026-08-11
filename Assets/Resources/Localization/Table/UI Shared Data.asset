@@ -367,6 +367,118 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_OwnedPoint
     m_Metadata:
       m_Items: []
+  - m_Id: 66827767299047424
+    m_Key: UIPopupRewardCardSelect_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66827767366156288
+    m_Key: UIPopupRewardCardSelect_RewardSummary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217589809152
+    m_Key: RewardCard_BeamAttack_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217635946496
+    m_Key: RewardCard_BeamAttack_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217635946497
+    m_Key: RewardCard_BeamFireRate_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140800
+    m_Key: RewardCard_BeamFireRate_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140801
+    m_Key: RewardCard_MissileAttack_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140802
+    m_Key: RewardCard_MissileAttack_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140803
+    m_Key: RewardCard_MissileFireRate_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140804
+    m_Key: RewardCard_MissileFireRate_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140805
+    m_Key: RewardCard_MissileSilence_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140806
+    m_Key: RewardCard_MissileSilence_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140807
+    m_Key: RewardCard_HangarShipAttack_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140808
+    m_Key: RewardCard_HangarShipAttack_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140809
+    m_Key: RewardCard_HangarFighterAttack_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140810
+    m_Key: RewardCard_HangarFighterAttack_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140811
+    m_Key: RewardCard_ShipHealth_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140812
+    m_Key: RewardCard_ShipHealth_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140813
+    m_Key: RewardCard_PointRate_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140814
+    m_Key: RewardCard_PointRate_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140815
+    m_Key: RewardCard_HealthHeal_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140816
+    m_Key: RewardCard_HealthHeal_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140817
+    m_Key: RewardCard_ShieldHeal_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140818
+    m_Key: RewardCard_ShieldHeal_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140819
+    m_Key: RewardCard_InterceptorHeal_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217644335104
+    m_Key: RewardCard_InterceptorHeal_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217644335105
+    m_Key: RewardCard_PointFlat_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217644335106
+    m_Key: RewardCard_PointFlat_Desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 61771964498182144
     m_Key: UIAvailablePresetRow_Name
     m_Metadata:

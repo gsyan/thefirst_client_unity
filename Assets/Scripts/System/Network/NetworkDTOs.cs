@@ -425,6 +425,23 @@ public class ClearExplorationCellResponse
 {
     public int explorationPointGained; // 존 고정값만큼 적립 (미확정 상태, 탈출 시 확정 정산) — 적 함대 성능과 무관
     public int expGained;              // 존 고정값만큼 적립된 지휘관 경험치 (미확정 상태, 탈출 시 확정 정산) — 빈 셀은 0
+    public List<string> rewardCardCandidates; // 서버가 추첨한 보상카드 후보 3개(cardId) — 탈출 셀이거나 보상이 없는 셀(빈 셀)은 null
+}
+
+[System.Serializable]
+public class ConfirmRewardCardRequest
+{
+    public int zoneNumber;
+    public int cellRow;
+    public int cellCol;
+    public string selectedCardId; // ClearExplorationCellResponse.rewardCardCandidates 중 하나여야 함(서버가 검증)
+}
+
+[System.Serializable]
+public class ConfirmRewardCardResponse
+{
+    public string selectedCardId;
+    public int explorationPointGained; // 즉시 가산형 카드(Instant_ExplorationPointFlat)일 때만 확정 지급량, 그 외 0
 }
 
 [System.Serializable]
@@ -438,6 +455,8 @@ public class GetActiveZoneRunProgressResponse
     public int explorationPointBanked; // 진행 중인 런의 적립(미확정) 탐험 포인트, 없으면 0
     public int commanderExpBanked;     // 진행 중인 런의 적립(미확정) 지휘관 경험치, 없으면 0
     public List<ShipHealthRatioInfo> shipHealthRatios; // 마지막 셀 클리어 시점에 저장된 내 함대 체력 스냅샷 — 없으면 null(만피로 스폰된 상태 그대로)
+    public List<string> selectedRewardCards; // 이번 런에서 선택 확정한 보상카드(cardId) 전체 목록 — 지속버프 여부는 클라가 DataTableRewardCard로 재판별
+    public List<string> pendingRewardCardCandidates; // 마지막 클리어 셀에 후보는 나왔지만 아직 선택 확정 전이면 그 후보 3개 — 카드 선택 팝업이 뜨기 전에 앱이 꺼진 경우 재접속 시 복구용, 없으면 null
 }
 
 [System.Serializable]

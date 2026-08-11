@@ -367,22 +367,34 @@ public class UIPanelExplorationGrid : UIPanelBase
         RefreshBankedPointText();
         RefreshAbandonRunButtonState();
         ApplyFleetHealthSnapshot(response.data.shipHealthRatios);
+        ApplyRewardCardSnapshot(response.data.selectedRewardCards);
 
         string[] clearedCells = response.data.clearedCells;
-        if (clearedCells == null) return;
-
-        for (int i = 0; i < clearedCells.Length; i++)
+        if (clearedCells != null)
         {
-            int dashIdx = clearedCells[i].IndexOf('-');
-            if (dashIdx <= 0) continue;
+            for (int i = 0; i < clearedCells.Length; i++)
+            {
+                int dashIdx = clearedCells[i].IndexOf('-');
+                if (dashIdx <= 0) continue;
 
-            bool rowParsed = int.TryParse(clearedCells[i].Substring(0, dashIdx), out int row);
-            bool colParsed = int.TryParse(clearedCells[i].Substring(dashIdx + 1), out int col);
-            if (rowParsed == true && colParsed == true && m_gridData.IsInBounds(row, col) == true)
-                m_gridData.SetCellCleared(row, col, true);
+                bool rowParsed = int.TryParse(clearedCells[i].Substring(0, dashIdx), out int row);
+                bool colParsed = int.TryParse(clearedCells[i].Substring(dashIdx + 1), out int col);
+                if (rowParsed == true && colParsed == true && m_gridData.IsInBounds(row, col) == true)
+                    m_gridData.SetCellCleared(row, col, true);
+            }
+
+            RefreshCellStates();
         }
 
-        RefreshCellStates();
+        // 마지막 클리어 셀에 아직 선택 확정 안 된 카드 후보가 있으면(팝업이 뜨기 전에 앱이 꺼진 경우) 재접속 시 다시 띄움
+        if (response.data.pendingRewardCardCandidates != null && response.data.pendingRewardCardCandidates.Count > 0)
+        {
+            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, selectedCardId =>
+            {
+                if (selectedCardId != null)
+                    OnRewardCardSelected(selectedCardId);
+            });
+        }
     }
 
     // 재접속으로 서버에 저장된 함대 체력 스냅샷을 받았을 때, 이미 만피로 스폰된 내 함선들에 슬롯 포지션 인덱스 기준으로 적용
@@ -398,6 +410,21 @@ public class UIPanelExplorationGrid : UIPanelBase
             SpaceShip ship = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == entry.positionIndex);
             if (ship != null)
                 ship.ApplyHealthRatio(entry.healthRatio);
+        }
+    }
+
+    // 재접속으로 서버에 저장된 선택 카드 목록을 받았을 때, 지속버프(isPersistent==true)만 세션 버프 상태에 다시 누적
+    // (즉시효과 카드는 선택 시점에 이미 소모돼 재적용하면 안 됨 — 서버는 지속/즉시 구분 없이 선택 이력 전체를 그대로 돌려줌)
+    private void ApplyRewardCardSnapshot(List<string> selectedCardIds)
+    {
+        if (selectedCardIds == null || selectedCardIds.Count == 0) return;
+
+        DataTableRewardCard table = DataManager.Instance.m_dataTableRewardCard;
+        foreach (string cardId in selectedCardIds)
+        {
+            RewardCardData card = table.GetCard(cardId);
+            if (card != null && card.isPersistent == true)
+                ObjectManager.Instance.m_rewardCardSessionState.ApplyCard(card);
         }
     }
 
@@ -726,12 +753,14 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         int pointGained = 0;
         int expGained = 0;
+        List<string> rewardCardCandidates = null;
         if (response.errorCode != 0)
             Debug.LogError($"[UIPanelExplorationGrid] ClearExplorationCell 실패: {response.errorCode}");
         else if (response.data != null)
         {
             pointGained = response.data.explorationPointGained;
             expGained = response.data.expGained;
+            rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 선택 단계를 건너뜀
             // 이 시점엔 패널이 비활성 상태(전투 화면에 가려짐) — 값은 버퍼에만 쌓아두고, 화면 반영은 OnShowUIPanel에서 처리
             m_pendingBankedPointGain += pointGained;
         }
@@ -739,19 +768,65 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true)
             m_gridData.SetCellCleared(m_currentRow, m_currentCol, true);
 
-        // 빈 셀(적 없음)은 획득 포인트가 0 — 팝업 없이 바로 기존 흐름 진행
-        if (pointGained <= 0)
+        // 빈 셀(적 없음)은 획득 포인트도 카드도 없음 — 팝업 없이 바로 기존 흐름 진행
+        if (pointGained <= 0 && rewardCardCandidates == null)
         {
             ContinueAfterCellClear();
             return;
         }
 
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        // 탐험 포인트/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀) 팝업이 카드 섹션만 숨기고 포인트 안내만 보여줌
+        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, selectedCardId =>
         {
-            message = "탐험 포인트를 획득했습니다!",
-            rewardAmounts = new List<int> { expGained, pointGained, 0 },
-            onConfirm = ContinueAfterCellClear,
+            if (selectedCardId == null)
+            {
+                ContinueAfterCellClear();
+                return;
+            }
+            OnRewardCardSelected(selectedCardId);
         });
+    }
+
+    private void OnRewardCardSelected(string selectedCardId)
+    {
+        ConfirmRewardCardRequest request = new ConfirmRewardCardRequest
+        {
+            zoneNumber = m_currentZoneNumber,
+            cellRow = m_currentRow,
+            cellCol = m_currentCol,
+            selectedCardId = selectedCardId,
+        };
+        NetworkManager.Instance.ConfirmRewardCard(request, response =>
+        {
+            if (response.errorCode != 0)
+                Debug.LogError($"[UIPanelExplorationGrid] ConfirmRewardCard 실패: {response.errorCode}");
+            else if (response.data != null)
+                ApplySelectedRewardCard(selectedCardId, response.data.explorationPointGained);
+
+            ContinueAfterCellClear();
+        });
+    }
+
+    // 지속버프면 세션 상태에 누적, 즉시효과면 그 자리에서 소모(체력 회복 등). 즉시 가산 포인트는 다음 SettleZoneEntry에 반영되도록 버퍼에 더함
+    private void ApplySelectedRewardCard(string selectedCardId, int explorationPointGainedFromCard)
+    {
+        RewardCardData card = DataManager.Instance.m_dataTableRewardCard.GetCard(selectedCardId);
+        if (card == null) return;
+
+        if (card.isPersistent == true)
+        {
+            ObjectManager.Instance.m_rewardCardSessionState.ApplyCard(card);
+        }
+        else if (card.effectType == ECardEffectType.Instant_HealthHeal)
+        {
+            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+            if (myFleet != null)
+                myFleet.HealAllShipsByRatio(card.value1);
+        }
+        // Instant_ShieldHeal / Instant_InterceptorHeal — 실드/요격체 시스템이 아직 없어 향후 연결 예정(TODO)
+
+        if (explorationPointGainedFromCard > 0)
+            m_pendingBankedPointGain += explorationPointGainedFromCard;
     }
 
     // 셀 클리어 후 그리드 흐름 계속 — 탈출 셀이든 아니든 먼저 그리드로 복귀시켜 최종 적립 포인트를 화면에 반영하고,
@@ -815,6 +890,9 @@ public class UIPanelExplorationGrid : UIPanelBase
             SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
             if (myFleet != null)
                 myFleet.FullRepair();
+
+            // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
+            ObjectManager.Instance.m_rewardCardSessionState.Reset();
 
             // 이미 갤럭시뷰(그리드) 중이라 EnterZone(EnterGalaxyView 기반)은 못 씀 — EnterGalaxyView는 "m_isGalaxyView==true면 no-op"라
             // 정착 이벤트가 영원히 안 옴. NavigateToZone(존 탭 브라우징)과 동일하게 FocusOnZoneAnchor로 즉시 리타겟 후 바로 재구성
@@ -934,6 +1012,9 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             ClearActiveRunZoneCache();
+
+            // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
+            ObjectManager.Instance.m_rewardCardSessionState.Reset();
 
             // 진행 중이던 런이 종료되었으므로 현재 존을 시작 셀 상태로 다시 진입 — m_gridData를 비워 SelectZoneTab의 좌표 보존 경로를 건너뜀
             m_gridData = null;

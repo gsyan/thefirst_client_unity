@@ -1178,6 +1178,118 @@ MonoBehaviour:
     m_Localized: Not Installed
     m_Metadata:
       m_Items: []
+  - m_Id: 66827767299047424
+    m_Localized: Choose a Reward Card
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66827767366156288
+    m_Localized: Exploration Point +{0}  Exp +{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217589809152
+    m_Localized: Beam Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217635946496
+    m_Localized: Beam attack +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217635946497
+    m_Localized: Beam Rate of Fire Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140800
+    m_Localized: Beam rate of fire +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140801
+    m_Localized: Missile Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140802
+    m_Localized: Missile attack +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140803
+    m_Localized: Missile Rate of Fire Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140804
+    m_Localized: Missile rate of fire +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140805
+    m_Localized: Missile Silence Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140806
+    m_Localized: Missile silence effect +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140807
+    m_Localized: Fighter Anti-Ship Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140808
+    m_Localized: Fighter anti-ship attack +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140809
+    m_Localized: Fighter Dogfight Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140810
+    m_Localized: Fighter dogfight attack +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140811
+    m_Localized: Hull Health Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140812
+    m_Localized: Ship health +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140813
+    m_Localized: Exploration Point Rate Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140814
+    m_Localized: Exploration point gain +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140815
+    m_Localized: Hull Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140816
+    m_Localized: Restore {0:P0} of hull health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140817
+    m_Localized: Shield Recharge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140818
+    m_Localized: Restore {0:P0} of shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217640140819
+    m_Localized: Interceptor Resupply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217644335104
+    m_Localized: Restore {0:P0} of interceptors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217644335105
+    m_Localized: Exploration Point Bonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66832217644335106
+    m_Localized: Exploration Point +{0:F0}
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

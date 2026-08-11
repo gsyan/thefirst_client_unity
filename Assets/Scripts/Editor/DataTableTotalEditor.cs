@@ -11,6 +11,7 @@ public class DataTableTotalEditor : EditorWindow
     private DataTableCommander dataTableCommander;
     private DataTableZone dataTableZone;
     private DataTableShipPreset dataTableShipPreset;
+    private DataTableRewardCard dataTableRewardCard;
     private DataTableForbiddenWords dataTableForbiddenWords;
     private DataTablePvpSeason dataTablePvpSeason;
     private DataTableDailyBonus dataTableDailyBonus;
@@ -47,6 +48,9 @@ public class DataTableTotalEditor : EditorWindow
 
         dataTableShipPreset = (DataTableShipPreset)EditorGUILayout.ObjectField(
             "DataTable ShipPreset", dataTableShipPreset, typeof(DataTableShipPreset), false);
+
+        dataTableRewardCard = (DataTableRewardCard)EditorGUILayout.ObjectField(
+            "DataTable RewardCard", dataTableRewardCard, typeof(DataTableRewardCard), false);
 
         dataTableForbiddenWords = (DataTableForbiddenWords)EditorGUILayout.ObjectField(
             "DataTable ForbiddenWords", dataTableForbiddenWords, typeof(DataTableForbiddenWords), false);
@@ -121,6 +125,7 @@ public class DataTableTotalEditor : EditorWindow
         TryLoad(ref dataTableCommander,"t:DataTableCommander");
         TryLoad(ref dataTableZone,          "t:DataTableZone");
         TryLoad(ref dataTableShipPreset,    "t:DataTableShipPreset");
+        TryLoad(ref dataTableRewardCard,    "t:DataTableRewardCard");
         TryLoad(ref dataTableForbiddenWords,"t:DataTableForbiddenWords");
         TryLoad(ref dataTablePvpSeason,     "t:DataTablePvpSeason");
         TryLoad(ref dataTableDailyBonus,    "t:DataTableDailyBonus");
@@ -144,6 +149,7 @@ public class DataTableTotalEditor : EditorWindow
         if (dataTableCommander != null) WriteJson(folderPath, "DataTableCommander.json", dataTableCommander.ExportToJson());
         if (dataTableZone != null) WriteJson(folderPath, "DataTableZone.json", dataTableZone.ExportToJson());
         if (dataTableShipPreset != null) WriteJson(folderPath, "DataTableShipPreset.json", dataTableShipPreset.ExportToJson());
+        if (dataTableRewardCard != null) WriteJson(folderPath, "DataTableRewardCard.json", dataTableRewardCard.ExportToServerJson());
         if (dataTableForbiddenWords != null) WriteJson(folderPath, "DataTableForbiddenWords.json", dataTableForbiddenWords.ExportToJson());
         if (dataTablePvpSeason != null) WriteJson(folderPath, "DataTablePvpSeason.json", dataTablePvpSeason.ExportToJson());
         if (dataTableDailyBonus != null) WriteJson(folderPath, "DataTableDailyBonus.json", dataTableDailyBonus.ExportToJson());
@@ -165,6 +171,7 @@ public class DataTableTotalEditor : EditorWindow
             if (dataTableCommander != null) WriteJson(serverDataPath, "DataTableCommander.json", dataTableCommander.ExportToJson());
             if (dataTableZone != null) WriteJson(serverDataPath, "DataTableZone.json", dataTableZone.ExportToJson());
             if (dataTableShipPreset != null) WriteJson(serverDataPath, "DataTableShipPreset.json", dataTableShipPreset.ExportToJson());
+            if (dataTableRewardCard != null) WriteJson(serverDataPath, "DataTableRewardCard.json", dataTableRewardCard.ExportToServerJson());
             if (dataTableForbiddenWords != null) WriteJson(serverDataPath, "DataTableForbiddenWords.json", dataTableForbiddenWords.ExportToJson());
             if (dataTablePvpSeason != null) WriteJson(serverDataPath, "DataTablePvpSeason.json", dataTablePvpSeason.ExportToJson());
             if (dataTableDailyBonus != null) WriteJson(serverDataPath, "DataTableDailyBonus.json", dataTableDailyBonus.ExportToJson());
