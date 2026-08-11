@@ -70,7 +70,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 0
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 0.1
+    enemyHealthMultiplier: 0.3
+    enemyAttackMultiplier: 0.1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 2
@@ -130,7 +136,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 0
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 0.2
+    enemyHealthMultiplier: 0.4
+    enemyAttackMultiplier: 0.2
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 3
@@ -190,7 +202,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 0
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 0.3
+    enemyHealthMultiplier: 0.5
+    enemyAttackMultiplier: 0.3
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 4
@@ -250,7 +268,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 0
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 0.4
+    enemyHealthMultiplier: 0.6
+    enemyAttackMultiplier: 0.4
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 5
@@ -318,7 +342,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 0.5
+    enemyHealthMultiplier: 0.7
+    enemyAttackMultiplier: 0.5
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 6
@@ -386,7 +416,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 0.6
+    enemyHealthMultiplier: 0.8
+    enemyAttackMultiplier: 0.6
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 7
@@ -454,7 +490,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 0.7
+    enemyHealthMultiplier: 0.9
+    enemyAttackMultiplier: 0.7
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 8
@@ -522,7 +564,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 0.8
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 0.8
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 9
@@ -590,7 +638,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 0.9
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 0.9
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 10
@@ -658,7 +712,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 120
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 11
@@ -726,7 +786,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 12
@@ -794,7 +860,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 13
@@ -862,7 +934,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 14
@@ -930,7 +1008,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 15
@@ -998,7 +1082,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 16
@@ -1066,7 +1156,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 17
@@ -1134,7 +1230,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 18
@@ -1202,7 +1304,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 19
@@ -1270,7 +1378,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 20
@@ -1338,7 +1452,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 21
@@ -1406,7 +1526,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 22
@@ -1474,7 +1600,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 23
@@ -1542,7 +1674,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 24
@@ -1610,7 +1748,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 25
@@ -1678,7 +1822,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 26
@@ -1746,7 +1896,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 27
@@ -1814,7 +1970,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 28
@@ -1882,7 +2044,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 29
@@ -1950,7 +2118,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 30
@@ -2018,7 +2192,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 100
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 31
@@ -2102,7 +2282,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 32
@@ -2186,7 +2372,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 33
@@ -2270,7 +2462,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 34
@@ -2354,7 +2552,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 35
@@ -2438,7 +2642,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 36
@@ -2522,7 +2732,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 37
@@ -2606,7 +2822,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 38
@@ -2690,7 +2912,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 39
@@ -2774,7 +3002,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 240
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 40
@@ -2858,7 +3092,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 41
@@ -2942,7 +3182,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 42
@@ -3026,7 +3272,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 43
@@ -3110,7 +3362,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 44
@@ -3194,7 +3452,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 45
@@ -3278,7 +3542,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 46
@@ -3362,7 +3632,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 47
@@ -3446,7 +3722,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 48
@@ -3530,7 +3812,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 49
@@ -3614,7 +3902,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 50
@@ -3698,7 +3992,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 360
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 51
@@ -3782,7 +4082,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 52
@@ -3866,7 +4172,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 53
@@ -3950,7 +4262,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 54
@@ -4034,7 +4352,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 55
@@ -4118,7 +4442,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 56
@@ -4202,7 +4532,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 57
@@ -4286,7 +4622,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 58
@@ -4370,7 +4712,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 59
@@ -4454,7 +4802,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 60
@@ -4538,7 +4892,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 480
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 61
@@ -4622,7 +4982,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 62
@@ -4706,7 +5072,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 63
@@ -4790,7 +5162,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 64
@@ -4874,7 +5252,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 65
@@ -4958,7 +5342,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 66
@@ -5042,7 +5432,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 67
@@ -5126,7 +5522,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 68
@@ -5210,7 +5612,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 69
@@ -5294,7 +5702,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 70
@@ -5378,7 +5792,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 71
@@ -5462,7 +5882,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 72
@@ -5546,7 +5972,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 73
@@ -5630,7 +6062,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 74
@@ -5714,7 +6152,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 75
@@ -5798,7 +6242,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 76
@@ -5882,7 +6332,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 77
@@ -5966,7 +6422,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 78
@@ -6050,7 +6512,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 79
@@ -6134,7 +6602,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 80
@@ -6218,7 +6692,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 600
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 81
@@ -6302,7 +6782,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 82
@@ -6386,7 +6872,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 83
@@ -6470,7 +6962,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 84
@@ -6554,7 +7052,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 85
@@ -6638,7 +7142,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 86
@@ -6722,7 +7232,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 87
@@ -6806,7 +7322,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 88
@@ -6890,7 +7412,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 89
@@ -6974,7 +7502,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 90
@@ -7058,7 +7592,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 720
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 91
@@ -7142,7 +7682,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 92
@@ -7226,7 +7772,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 93
@@ -7310,7 +7862,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 94
@@ -7394,7 +7952,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 95
@@ -7478,7 +8042,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 96
@@ -7562,7 +8132,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 97
@@ -7646,7 +8222,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 98
@@ -7730,7 +8312,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 99
@@ -7814,7 +8402,13 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
   - zoneIndex: 100
@@ -7898,6 +8492,12 @@ MonoBehaviour:
     enemyMaxCostOfOneShip: 840
     enemyDeviation: 200
     enemyMaxShipsPerFleet: 5
-    enemyStatMultiplier: 1
+    enemyHealthMultiplier: 1
+    enemyAttackMultiplier: 1
+    enemyBeamEquipSlots: 9
+    enemyMissileEquipSlots: 9
+    enemyHangerEquipSlots: 9
+    enemyShieldEquipSlots: 9
+    enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
