@@ -29,13 +29,13 @@ public static class DataTableZoneCSVUtility
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_grid.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("zone_index,grid_width,grid_height,enemy_fleets,enemy_budget,enemy_max_cost_of_one_ship,enemy_deviation,enemy_max_ships_per_fleet,enemy_health_multiplier,enemy_attack_multiplier,enemy_beam_equip_slots,enemy_missile_equip_slots,enemy_hanger_equip_slots,enemy_shield_equip_slots,enemy_interceptor_equip_slots,exploration_point_reward,commander_exp_reward");
+        sb.AppendLine("zone_index,grid_width,grid_height,enemy_fleets,enemy_budget,enemy_max_cost_of_one_ship,enemy_deviation,enemy_max_ships_per_fleet,enemy_health_multiplier,enemy_attack_multiplier,enemy_beam_equip_slots,enemy_missile_equip_slots,enemy_hangar_equip_slots,enemy_shield_equip_slots,enemy_interceptor_equip_slots,exploration_point_reward,commander_exp_reward");
         foreach (ZoneConfig z in table.zoneList)
         {
             sb.AppendLine(
                 $"{z.zoneIndex},{z.gridWidth},{z.gridHeight}," +
                 $"{z.enemyFleetsPerCell},{z.enemyBudget},{z.enemyMaxCostOfOneShip},{z.enemyDeviation},{z.enemyMaxShipsPerFleet},{z.enemyHealthMultiplier},{z.enemyAttackMultiplier}," +
-                $"{z.enemyBeamEquipSlots},{z.enemyMissileEquipSlots},{z.enemyHangerEquipSlots},{z.enemyShieldEquipSlots},{z.enemyInterceptorEquipSlots}," +
+                $"{z.enemyBeamEquipSlots},{z.enemyMissileEquipSlots},{z.enemyHangarEquipSlots},{z.enemyShieldEquipSlots},{z.enemyInterceptorEquipSlots}," +
                 $"{z.explorationPointReward},{z.commanderExpReward}");
         }
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);

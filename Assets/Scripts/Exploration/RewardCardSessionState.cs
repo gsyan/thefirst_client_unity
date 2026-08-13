@@ -1,15 +1,23 @@
 // 이번 존 런에서 선택 확정한 보상카드 지속버프 누적 상태 — 존 런 시작 시 초기화, 탈출/포기 시 폐기(세션 스코프)
-// Dictionary<ECardEffectType, float> 하나로 관리 — 카드(강도/종류)가 늘어나도 ApplyCard는 수정 불필요,
-// ApplyToShipStats도 ShipFinalStats에 새 필드가 생길 때만 매핑 한 줄 추가하면 됨(효과 enum 추가 자체는 매핑 불필요)
+// 같은 effectType 카드를 여러 장 선택하면 %는 합산(1%+2%=3%, 곱연산 아님) — UI에 "몇 단"을 그대로 보여주기 쉬운 단순한 계산 방식
 using System.Collections.Generic;
+
+// effectType 하나에 대한 누적 상태 — 배지 UI(아이콘+단수)가 그대로 쓸 수 있는 표시 단위
+public struct RewardCardBuffEntry
+{
+    public ECardEffectType effectType;
+    public string iconName;
+    public int stackCount;  // 이 effectType 카드를 선택한 횟수(1~5% 카드 몇 장을 뽑았는지와 무관하게 "장 수")
+    public float valueSum;  // value1 합산 — 최종 배율은 1+valueSum
+}
 
 public class RewardCardSessionState
 {
-    private readonly Dictionary<ECardEffectType, float> m_multipliers = new Dictionary<ECardEffectType, float>();
+    private readonly Dictionary<ECardEffectType, RewardCardBuffEntry> m_buffs = new Dictionary<ECardEffectType, RewardCardBuffEntry>();
 
     public void Reset()
     {
-        m_multipliers.Clear();
+        m_buffs.Clear();
     }
 
     // 즉시효과(isPersistent == false) 카드는 여기 누적하지 않음 — 선택 즉시 별도 처리(회복 등)로 소모됨
@@ -18,46 +26,37 @@ public class RewardCardSessionState
         if (card == null) return;
         if (card.isPersistent == false) return;
 
-        float current = GetMultiplier(card.effectType);
-        m_multipliers[card.effectType] = current * (1f + card.value1);
+        RewardCardBuffEntry entry;
+        bool found = m_buffs.TryGetValue(card.effectType, out entry);
+        if (found == false)
+        {
+            entry = new RewardCardBuffEntry
+            {
+                effectType = card.effectType,
+                iconName = card.iconName,
+                stackCount = 0,
+                valueSum = 0f,
+            };
+        }
+
+        entry.stackCount += 1;
+        entry.valueSum += card.value1;
+        m_buffs[card.effectType] = entry;
+
+        UnityEngine.Debug.Log($"[RewardCard] ApplyCard effectType={card.effectType} stackCount={entry.stackCount} valueSum={entry.valueSum}");
     }
 
     public float GetMultiplier(ECardEffectType effectType)
     {
-        float value;
-        bool found = m_multipliers.TryGetValue(effectType, out value);
-        return found ? value : 1f;
+        RewardCardBuffEntry entry;
+        bool found = m_buffs.TryGetValue(effectType, out entry);
+        return found ? 1f + entry.valueSum : 1f;
     }
 
-    // 함선 최종 스탯(ShipStatCalculator.Calculate 결과)에 지속버프 배율을 곱한다 — 값 타입(struct)이라 결과를 새로 만들어 반환
-    public ShipFinalStats ApplyToShipStats(ShipFinalStats stats)
+    // 현재 누적된 지속버프 전체 — UI(배지 나열)가 순회용으로 사용
+    public IEnumerable<RewardCardBuffEntry> GetActiveBuffs()
     {
-        stats.health *= GetMultiplier(ECardEffectType.Buff_ShipHealth);
-
-        ScaleArray(stats.beamAttacks, GetMultiplier(ECardEffectType.Buff_BeamAttack));
-        ScaleCoolArray(stats.beamAttackCools, GetMultiplier(ECardEffectType.Buff_BeamFireRate));
-        ScaleArray(stats.missileAttacks, GetMultiplier(ECardEffectType.Buff_MissileAttack));
-        ScaleCoolArray(stats.missileAttackCools, GetMultiplier(ECardEffectType.Buff_MissileFireRate));
-        ScaleArray(stats.missileSilenceTimes, GetMultiplier(ECardEffectType.Buff_MissileSilence));
-        ScaleArray(stats.hangarShipAttacks, GetMultiplier(ECardEffectType.Buff_HangarShipAttack));
-        ScaleArray(stats.hangarFighterAttacks, GetMultiplier(ECardEffectType.Buff_HangarFighterAttack));
-
-        return stats;
-    }
-
-    private void ScaleArray(float[] values, float multiplier)
-    {
-        if (values == null) return;
-        for (int i = 0; i < values.Length; i++)
-            values[i] *= multiplier;
-    }
-
-    // 쿨다운은 낮을수록 빠름 — 연사속도 배율(1+value1)만큼 나눠서 쿨다운을 줄임
-    private void ScaleCoolArray(float[] values, float multiplier)
-    {
-        if (values == null || multiplier <= 0f) return;
-        for (int i = 0; i < values.Length; i++)
-            values[i] /= multiplier;
+        return m_buffs.Values;
     }
 
     public float GetExplorationPointRateMultiplier() { return GetMultiplier(ECardEffectType.Buff_ExplorationPointRate); }

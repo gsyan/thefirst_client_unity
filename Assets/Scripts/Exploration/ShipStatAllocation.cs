@@ -135,7 +135,7 @@ public class ShipStatAllocation
         result.hangarFighterAttackPoints = new int[baseAllocation.hangarModuleSubType.Length];
         result.hangarAmmoPoints = new int[baseAllocation.hangarModuleSubType.Length];
         result.hangarHealthPoints = new int[baseAllocation.hangarModuleSubType.Length];
-        ApplyModulesToSlots(result.hangarModuleSubType, bodies.hangers);
+        ApplyModulesToSlots(result.hangarModuleSubType, bodies.hangars);
 
         return result;
     }

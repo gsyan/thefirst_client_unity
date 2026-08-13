@@ -13,6 +13,10 @@ public class ModuleBeam : ModuleBase
 
     [SerializeField] private float m_lastAttackTime;
 
+    // 보상카드 지속버프 미반영 원본값 — RefreshRewardCardBuff()가 이 값에 현재 버프 배율을 다시 곱해 m_attack/m_attackCool을 갱신
+    private float m_baseAttack;
+    private float m_baseAttackCool;
+
     // 발사대 관련
     [SerializeField] private List<LauncherBase> m_launchers = new List<LauncherBase>();
 
@@ -25,6 +29,13 @@ public class ModuleBeam : ModuleBase
     public void SetParentBody(ModuleBody parentBody)
     {
         m_parentBody = parentBody;
+    }
+
+    // 보상카드 지속버프 배율이 바뀔 때마다(카드 선택/런 종료 초기화) 호출 — m_baseAttack/m_baseAttackCool을 기준으로 다시 계산
+    public void RefreshRewardCardBuff()
+    {
+        m_attack = m_baseAttack * GetRewardCardBuffMultiplier(ECardEffectType.Buff_BeamAttack);
+        m_attackCool = m_baseAttackCool / GetRewardCardBuffMultiplier(ECardEffectType.Buff_BeamFireRate);
     }
 
 
@@ -72,13 +83,16 @@ public class ModuleBeam : ModuleBase
         // 복원된 데이터로 스탯 설정 — 발사수/쿨다운/체력은 테이블(티어) 기준, 공격력만 프리셋 계산값 있으면 그걸로 대체
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
-        m_attack = attackOverride ?? moduleData.attack;
-        m_attackCool = moduleData.attackCool;
+        m_baseAttack = attackOverride ?? moduleData.attack;
+        m_baseAttackCool = moduleData.attackCool;
 
         m_lastAttackTime = 0f;
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
+
+        // 보상카드 지속버프(내 함대만 배율 1 이상) 반영 — m_attack/m_attackCool을 여기서 처음 세팅
+        RefreshRewardCardBuff();
 
         // Zone 적 함선일 때 체력·공격력에 배율 적용
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)

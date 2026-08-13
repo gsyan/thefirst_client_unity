@@ -1,4 +1,5 @@
 // 인게임 개발자 콘솔 — 로그 캡처(색상 구분) + 개발 명령 실행
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -603,3 +604,4 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
         }
     }
 }
+#endif

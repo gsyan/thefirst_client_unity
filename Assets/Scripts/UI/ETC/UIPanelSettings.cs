@@ -75,7 +75,15 @@ public class UIPanelSettings : UIPanelBase
             m_licenseButton.onClick.AddListener(() => UIManager.Instance.ShowLicensePopup());
 
         if (m_devConsoleButton != null)
-            m_devConsoleButton.onClick.AddListener(() => DeveloperConsole.Instance?.ToggleConsole());
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            m_devConsoleButton.onClick.AddListener(() =>
+            {
+                if (DeveloperConsole.Instance != null)
+                    DeveloperConsole.Instance.ToggleConsole();
+            });
+#endif
+        }
 
         if (m_expPointButton != null)
             m_expPointButton.onClick.AddListener(OnExpPointButtonClicked);
@@ -219,7 +227,9 @@ public class UIPanelSettings : UIPanelBase
         string exploPoint  = (m_toggleExploPoint != null && m_toggleExploPoint.isOn == true) ? "100" : "0";
         string pvpPoint    = (m_togglePvpPoint   != null && m_togglePvpPoint.isOn   == true) ? "100" : "0";
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         DeveloperConsole.ExecuteCommandStatic($"adddevresources {levelUp} {exploPoint} {pvpPoint}");
+#endif
     }
 
     private void InitializeLanguageDropdown()
@@ -373,11 +383,10 @@ public class UIPanelSettings : UIPanelBase
         });
     }
 
-    // Google 연동: 토큰만 폐기, 서버 데이터 유지
+    // Google 연동: 서버 세션 폐기 + 토큰 정리, 서버 데이터 유지
     private void ExecuteGoogleLogout()
     {
-        NetworkManager.Instance.Logout();
-        DoLocalLogout();
+        NetworkManager.Instance.LogoutFromServer(DoLocalLogout);
     }
 
     private void DoLocalLogout()

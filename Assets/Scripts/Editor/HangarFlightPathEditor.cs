@@ -1,10 +1,10 @@
-// HangerFlightPath 커스텀 인스팩터 — Launch/Return 그룹별 곡선 WP 생성/제거 버튼 배치
+// HangarFlightPath 커스텀 인스팩터 — Launch/Return 그룹별 곡선 WP 생성/제거 버튼 배치
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(HangerFlightPath))]
-public class HangerFlightPathEditor : Editor
+[CustomEditor(typeof(HangarFlightPath))]
+public class HangarFlightPathEditor : Editor
 {
     // Launch 그룹 버튼 → m_launchPath 위
     // Return 그룹 버튼 → m_returnPath 아래
@@ -12,7 +12,7 @@ public class HangerFlightPathEditor : Editor
     {
         serializedObject.Update();
 
-        var path = (HangerFlightPath)target;
+        var path = (HangarFlightPath)target;
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("m_launchPath"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("m_launchWps"), true);
@@ -29,7 +29,7 @@ public class HangerFlightPathEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
-    private static void DrawCurveToolbar(HangerFlightPath path, string label, string generateMethod, string clearMethod)
+    private static void DrawCurveToolbar(HangarFlightPath path, string label, string generateMethod, string clearMethod)
     {
         EditorGUILayout.Space(6f);
         EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
@@ -43,9 +43,9 @@ public class HangerFlightPathEditor : Editor
         GUI.backgroundColor = Color.white;
     }
 
-    private static void Invoke(HangerFlightPath target, string methodName)
+    private static void Invoke(HangarFlightPath target, string methodName)
     {
-        typeof(HangerFlightPath)
+        typeof(HangarFlightPath)
             .GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance)
             ?.Invoke(target, null);
     }

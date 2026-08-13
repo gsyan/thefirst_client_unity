@@ -263,9 +263,9 @@ MonoBehaviour:
     value1: 0.05
     value2: 0
     weight: 2
-  - cardId: card_hangar_ship_attack_1per
-    nameKey: RewardCard_HangarShipAttack_Name
-    descKey: RewardCard_HangarShipAttack_Desc
+  - cardId: card_hangar_attack_to_ship_1per
+    nameKey: RewardCard_HangarAttackToShip_Name
+    descKey: RewardCard_HangarAttackToShip_Desc
     iconName: jet-fighter
     rarity: 1
     effectType: 5
@@ -273,9 +273,9 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_hangar_ship_attack_2per
-    nameKey: RewardCard_HangarShipAttack_Name
-    descKey: RewardCard_HangarShipAttack_Desc
+  - cardId: card_hangar_attack_to_ship_2per
+    nameKey: RewardCard_HangarAttackToShip_Name
+    descKey: RewardCard_HangarAttackToShip_Desc
     iconName: jet-fighter
     rarity: 1
     effectType: 5
@@ -283,9 +283,9 @@ MonoBehaviour:
     value1: 0.02
     value2: 0
     weight: 15
-  - cardId: card_hangar_ship_attack_3per
-    nameKey: RewardCard_HangarShipAttack_Name
-    descKey: RewardCard_HangarShipAttack_Desc
+  - cardId: card_hangar_attack_to_ship_3per
+    nameKey: RewardCard_HangarAttackToShip_Name
+    descKey: RewardCard_HangarAttackToShip_Desc
     iconName: jet-fighter
     rarity: 2
     effectType: 5
@@ -293,9 +293,9 @@ MonoBehaviour:
     value1: 0.03
     value2: 0
     weight: 10
-  - cardId: card_hangar_ship_attack_4per
-    nameKey: RewardCard_HangarShipAttack_Name
-    descKey: RewardCard_HangarShipAttack_Desc
+  - cardId: card_hangar_attack_to_ship_4per
+    nameKey: RewardCard_HangarAttackToShip_Name
+    descKey: RewardCard_HangarAttackToShip_Desc
     iconName: jet-fighter
     rarity: 2
     effectType: 5
@@ -303,9 +303,9 @@ MonoBehaviour:
     value1: 0.04
     value2: 0
     weight: 5
-  - cardId: card_hangar_ship_attack_5per
-    nameKey: RewardCard_HangarShipAttack_Name
-    descKey: RewardCard_HangarShipAttack_Desc
+  - cardId: card_hangar_attack_to_ship_5per
+    nameKey: RewardCard_HangarAttackToShip_Name
+    descKey: RewardCard_HangarAttackToShip_Desc
     iconName: jet-fighter
     rarity: 3
     effectType: 5
@@ -313,50 +313,50 @@ MonoBehaviour:
     value1: 0.05
     value2: 0
     weight: 2
-  - cardId: card_hangar_fighter_attack_1per
-    nameKey: RewardCard_HangarFighterAttack_Name
-    descKey: RewardCard_HangarFighterAttack_Desc
-    iconName: light-fighter
+  - cardId: card_hangar_attack_to_fighter_1per
+    nameKey: RewardCard_HangarAttackToFighter_Name
+    descKey: RewardCard_HangarAttackToFighter_Desc
+    iconName: strafe
     rarity: 1
     effectType: 6
     isPersistent: 1
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_hangar_fighter_attack_2per
-    nameKey: RewardCard_HangarFighterAttack_Name
-    descKey: RewardCard_HangarFighterAttack_Desc
-    iconName: light-fighter
+  - cardId: card_hangar_attack_to_fighter_2per
+    nameKey: RewardCard_HangarAttackToFighter_Name
+    descKey: RewardCard_HangarAttackToFighter_Desc
+    iconName: strafe
     rarity: 1
     effectType: 6
     isPersistent: 1
     value1: 0.02
     value2: 0
     weight: 15
-  - cardId: card_hangar_fighter_attack_3per
-    nameKey: RewardCard_HangarFighterAttack_Name
-    descKey: RewardCard_HangarFighterAttack_Desc
-    iconName: light-fighter
+  - cardId: card_hangar_attack_to_fighter_3per
+    nameKey: RewardCard_HangarAttackToFighter_Name
+    descKey: RewardCard_HangarAttackToFighter_Desc
+    iconName: strafe
     rarity: 2
     effectType: 6
     isPersistent: 1
     value1: 0.03
     value2: 0
     weight: 10
-  - cardId: card_hangar_fighter_attack_4per
-    nameKey: RewardCard_HangarFighterAttack_Name
-    descKey: RewardCard_HangarFighterAttack_Desc
-    iconName: light-fighter
+  - cardId: card_hangar_attack_to_fighter_4per
+    nameKey: RewardCard_HangarAttackToFighter_Name
+    descKey: RewardCard_HangarAttackToFighter_Desc
+    iconName: strafe
     rarity: 2
     effectType: 6
     isPersistent: 1
     value1: 0.04
     value2: 0
     weight: 5
-  - cardId: card_hangar_fighter_attack_5per
-    nameKey: RewardCard_HangarFighterAttack_Name
-    descKey: RewardCard_HangarFighterAttack_Desc
-    iconName: light-fighter
+  - cardId: card_hangar_attack_to_fighter_5per
+    nameKey: RewardCard_HangarAttackToFighter_Name
+    descKey: RewardCard_HangarAttackToFighter_Desc
+    iconName: strafe
     rarity: 3
     effectType: 6
     isPersistent: 1

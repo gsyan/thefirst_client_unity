@@ -22,7 +22,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         DataManager.Instance.ApplyGameSettings();
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         var console = DeveloperConsole.Instance;
+#endif
 
         InitializePools();
     }
@@ -151,6 +153,19 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 return fleets[i];
         }
         return null;
+    }
+
+    // 보상카드 지속버프가 바뀔 때(카드 선택/런 종료 초기화) 호출 — 이미 스폰된 내 함대의 모든 함선에 최신 배율을 다시 반영
+    // (UIPanelExplorationGrid에서 m_rewardCardSessionState.ApplyCard()/Reset() 직후 호출)
+    public void RefreshRewardCardBuffsOnMyFleet()
+    {
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null) return;
+
+        foreach (SpaceShip ship in myFleet.m_ships)
+            if (ship != null) ship.RefreshRewardCardBuffs();
+
+        Debug.Log($"[RewardCard] RefreshRewardCardBuffsOnMyFleet ships={myFleet.m_ships.Count}");
     }
 
     // 내 팀 기준 적 팀 함대 목록(=기존 m_enemyFleets) — UI/카메라 등 "플레이어 관점" 참조용
@@ -740,9 +755,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 ModuleBodyInfo actualModules = shipSlot.bodies != null && shipSlot.bodies.Count > 0 ? shipSlot.bodies[0] : null;
                 ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(preset.statAllocation, actualModules);
 
+                // 보상카드 지속버프는 여기서 미리 곱해두지 않음 — 스폰되는 모듈들이 자기 자신의 RefreshRewardCardBuff()에서
+                // 그 시점의 최신 배율을 직접 읽어 반영함(내 함대가 아니면 배율은 항상 1). 이러면 스폰 이후 카드를 더 골라도
+                // ObjectManager.RefreshRewardCardBuffsOnMyFleet()가 같은 모듈들을 다시 갱신해주기만 하면 됨
                 ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
-                if (team == m_myTeam && source == EFleetSource.fleet_source_player)
-                    finalStats = m_rewardCardSessionState.ApplyToShipStats(finalStats);
                 ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats, shipIndex, shipSlot.isFront, shipSlot.healthMultiplier, shipSlot.attackMultiplier);
             }
         }

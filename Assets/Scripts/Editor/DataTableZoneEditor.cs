@@ -138,7 +138,7 @@ public class DataTableZoneEditor : Editor
                 enemyAttackMultiplier = oldZone != null ? oldZone.enemyAttackMultiplier : 1f,
                 enemyBeamEquipSlots        = oldZone != null ? oldZone.enemyBeamEquipSlots        : 9,
                 enemyMissileEquipSlots     = oldZone != null ? oldZone.enemyMissileEquipSlots     : 9,
-                enemyHangerEquipSlots      = oldZone != null ? oldZone.enemyHangerEquipSlots      : 9,
+                enemyHangarEquipSlots      = oldZone != null ? oldZone.enemyHangarEquipSlots      : 9,
                 enemyShieldEquipSlots      = oldZone != null ? oldZone.enemyShieldEquipSlots      : 9,
                 enemyInterceptorEquipSlots = oldZone != null ? oldZone.enemyInterceptorEquipSlots : 9,
                 explorationPointReward = oldZone != null ? oldZone.explorationPointReward : 0,
@@ -221,7 +221,7 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col[9], out zc.enemyAttackMultiplier);
             int.TryParse(col[10], out zc.enemyBeamEquipSlots);
             int.TryParse(col[11], out zc.enemyMissileEquipSlots);
-            int.TryParse(col[12], out zc.enemyHangerEquipSlots);
+            int.TryParse(col[12], out zc.enemyHangarEquipSlots);
             int.TryParse(col[13], out zc.enemyShieldEquipSlots);
             int.TryParse(col[14], out zc.enemyInterceptorEquipSlots);
             int.TryParse(col[15], out zc.explorationPointReward);
@@ -819,7 +819,7 @@ public class DataTableZoneEditor : Editor
         zoneConfig.enemyAttackMultiplier = EditorGUILayout.FloatField(new GUIContent("Enemy Attack Multiplier", "이 존 적함대 공격력 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyAttackMultiplier);
         zoneConfig.enemyBeamEquipSlots        = EditorGUILayout.IntField(new GUIContent("Enemy Beam Equip Slots", "빔 슬롯 총 장착 목표 개수(기본 로드아웃 포함)"), zoneConfig.enemyBeamEquipSlots);
         zoneConfig.enemyMissileEquipSlots     = EditorGUILayout.IntField(new GUIContent("Enemy Missile Equip Slots", "미사일 슬롯 총 장착 목표 개수"), zoneConfig.enemyMissileEquipSlots);
-        zoneConfig.enemyHangerEquipSlots      = EditorGUILayout.IntField(new GUIContent("Enemy Hanger Equip Slots", "함재기 슬롯 총 장착 목표 개수"), zoneConfig.enemyHangerEquipSlots);
+        zoneConfig.enemyHangarEquipSlots      = EditorGUILayout.IntField(new GUIContent("Enemy Hangar Equip Slots", "함재기 슬롯 총 장착 목표 개수"), zoneConfig.enemyHangarEquipSlots);
         zoneConfig.enemyShieldEquipSlots      = EditorGUILayout.IntField(new GUIContent("Enemy Shield Equip Slots", "실드 장착 여부 (0=미장착, 1 이상=장착)"), zoneConfig.enemyShieldEquipSlots);
         zoneConfig.enemyInterceptorEquipSlots = EditorGUILayout.IntField(new GUIContent("Enemy Interceptor Equip Slots", "요격체 장착 여부 (0=미장착, 1 이상=장착)"), zoneConfig.enemyInterceptorEquipSlots);
 
@@ -1010,7 +1010,7 @@ public class DataTableZoneEditor : Editor
                 ModuleBodyInfo modules = ship.bodies != null && ship.bodies.Count > 0 ? ship.bodies[0] : null;
                 int beamCount = modules != null && modules.beams != null ? modules.beams.Count : 0;
                 int missileCount = modules != null && modules.missiles != null ? modules.missiles.Count : 0;
-                int hangerCount = modules != null && modules.hangers != null ? modules.hangers.Count : 0;
+                int hangarCount = modules != null && modules.hangars != null ? modules.hangars.Count : 0;
 
                 ShipPresetData preset = presetTable.GetShipPreset(ship.shipPresetId);
                 int bodyCost = 0;
@@ -1022,11 +1022,11 @@ public class DataTableZoneEditor : Editor
 
                 int modulesCost = SumModuleCost(moduleTable, modules != null ? modules.beams : null)
                     + SumModuleCost(moduleTable, modules != null ? modules.missiles : null)
-                    + SumModuleCost(moduleTable, modules != null ? modules.hangers : null);
+                    + SumModuleCost(moduleTable, modules != null ? modules.hangars : null);
                 int shipCost = bodyCost + modulesCost;
                 totalSpent += shipCost;
 
-                EditorGUILayout.LabelField($"  {ship.shipPresetId} (body={bodyCost}, {(ship.isFront ? "전방" : "후방")}, 빔={beamCount}, 미사일={missileCount}, 격납고={hangerCount}, 지출={shipCost})");
+                EditorGUILayout.LabelField($"  {ship.shipPresetId} (body={bodyCost}, {(ship.isFront ? "전방" : "후방")}, 빔={beamCount}, 미사일={missileCount}, 격납고={hangarCount}, 지출={shipCost})");
             }
 
             EditorGUILayout.LabelField($"  웨이브 총 지출: {totalSpent} / enemyBudget: {zoneConfig.enemyBudget}", EditorStyles.miniLabel);

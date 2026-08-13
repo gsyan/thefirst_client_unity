@@ -54,7 +54,7 @@ public class AircraftInfo
     }
 }
 
-public class ModuleHanger : ModuleBase
+public class ModuleHangar : ModuleBase
 {
     [SerializeField] private ModuleBody m_parentBody;
     public ModuleInfo m_moduleInfo; 
@@ -79,7 +79,7 @@ public class ModuleHanger : ModuleBase
         m_parentBody = parentBody;
     }
 
-    public void InitializeModuleHanger(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
+    public void InitializeModuleHangar(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
     {
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
@@ -88,7 +88,7 @@ public class ModuleHanger : ModuleBase
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
         if (moduleData == null)
         {
-            Debug.LogError("Failed to restore module data for ModuleHanger");
+            Debug.LogError("Failed to restore module data for ModuleHangar");
             return;
         }
 
@@ -134,7 +134,7 @@ public class ModuleHanger : ModuleBase
         }
 
         if (m_parentBody != null)
-            m_parentBody.AddHanger(this);
+            m_parentBody.AddHangar(this);
     }
 
     public override void Start()
@@ -168,8 +168,8 @@ public class ModuleHanger : ModuleBase
 
             if (IsSilenced() == false && m_currentTarget != null && m_currentTarget.m_health > 0)
             {
-                float hangerHarassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
-                if (Time.time >= m_lastLaunchTime + m_launchCool + hangerHarassDelay)
+                float hangarHarassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
+                if (Time.time >= m_lastLaunchTime + m_launchCool + hangarHarassDelay)
                 {
                     ExecuteLaunchOnTarget(m_currentTarget);
                     m_lastLaunchTime = Time.time;
@@ -331,6 +331,6 @@ public class ModuleHanger : ModuleBase
     private void OnDestroy()
     {
         if (m_parentBody != null)
-            m_parentBody.RemoveHanger(this);
+            m_parentBody.RemoveHangar(this);
     }
 }

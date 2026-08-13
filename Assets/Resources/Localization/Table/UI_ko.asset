@@ -38,10 +38,6 @@ MonoBehaviour:
     m_Localized: "\uBBF8\uC0AC\uC77C(\uC7A0\uAE40)"
     m_Metadata:
       m_Items: []
-  - m_Id: 767916349718529
-    m_Localized: "\uACA9\uB0A9\uACE0(\uC7A0\uAE40)"
-    m_Metadata:
-      m_Items: []
   - m_Id: 767916349718530
     m_Localized: "\uD568\uCCB4"
     m_Metadata:
@@ -1247,30 +1243,12 @@ MonoBehaviour:
     m_Localized: "\uBBF8\uC0AC\uC77C \uCE68\uBB35\uD6A8\uACFC {0:P0} \uC99D\uAC00"
     m_Metadata:
       m_Items: []
-  - m_Id: 66832217640140807
-    m_Localized: "\uD568\uC7AC\uAE30 \uB300\uD568 \uACF5\uACA9\uB825 \uAC15\uD654"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 66832217640140808
-    m_Localized: "\uD568\uC7AC\uAE30 \uB300\uD568 \uACF5\uACA9\uB825 {0:P0} \uC99D\uAC00"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 66832217640140809
-    m_Localized: "\uD568\uC7AC\uAE30 \uB300\uD568\uC7AC\uAE30 \uACF5\uACA9\uB825
-      \uAC15\uD654"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 66832217640140810
-    m_Localized: "\uD568\uC7AC\uAE30 \uB300\uD568\uC7AC\uAE30 \uACF5\uACA9\uB825
-      {0:P0} \uC99D\uAC00"
-    m_Metadata:
-      m_Items: []
   - m_Id: 66832217640140811
-    m_Localized: "\uD568\uC120 \uCCB4\uB825 \uAC15\uD654"
+    m_Localized: "\uCD5C\uB300 \uCCB4\uB825 \uAC15\uD654"
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140812
-    m_Localized: "\uD568\uC120 \uCCB4\uB825 {0:P0} \uC99D\uAC00"
+    m_Localized: "\uCD5C\uB300 \uD568\uC120 \uCCB4\uB825 {0:P0} \uC99D\uAC00"
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140813
@@ -1311,6 +1289,24 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 66832217644335106
     m_Localized: "\uD0D0\uD5D8 \uD3EC\uC778\uD2B8 +{0:F0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67415317726232576
+    m_Localized: "\uD568\uC7AC\uAE30 \uB300\uD568 \uACF5\uACA9\uB825 \uAC15\uD654"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67415317789147136
+    m_Localized: "\uD568\uC7AC\uAE30 \uB300\uD568 \uACF5\uACA9\uB825 {0:P0} \uC99D\uAC00"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67415317789147137
+    m_Localized: "\uD568\uC7AC\uAE30 \uB300\uD568\uC7AC\uAE30 \uACF5\uACA9\uB825
+      \uAC15\uD654"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67415317789147138
+    m_Localized: "\uD568\uC7AC\uAE30 \uB300\uD568\uC7AC\uAE30 \uACF5\uACA9\uB825
+      {0:P0} \uC99D\uAC00"
     m_Metadata:
       m_Items: []
   references:

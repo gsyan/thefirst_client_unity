@@ -15,7 +15,7 @@ public class DataTableModuleEditor : Editor
     private Dictionary<EModuleSubType, bool> bodySubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> beamSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> missileSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
-    private Dictionary<EModuleSubType, bool> hangerSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<EModuleSubType, bool> hangarSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> shieldSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<EModuleSubType, bool> interceptorSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
     private Dictionary<ModuleData, bool> moduleSlotFoldouts = new Dictionary<ModuleData, bool>();
@@ -23,7 +23,7 @@ public class DataTableModuleEditor : Editor
     private bool showBodyModules = false;
     private bool showBeamModules = false;
     private bool showMissileModules = false;
-    private bool showHangerModules = false;
+    private bool showHangarModules = false;
     private bool showShieldModules = false;
     private bool showInterceptorModules = false;
     private bool showUtilityTools = true;
@@ -31,7 +31,7 @@ public class DataTableModuleEditor : Editor
     private readonly Color bodyColor = new Color(0.7f, 0.9f, 0.7f);
     private readonly Color beamColor = new Color(0.9f, 0.7f, 0.7f);
     private readonly Color missileColor = new Color(0.9f, 0.7f, 0.7f);
-    private readonly Color hangerColor = new Color(0.9f, 0.9f, 0.7f);
+    private readonly Color hangarColor = new Color(0.9f, 0.9f, 0.7f);
     private readonly Color shieldColor = new Color(0.7f, 0.9f, 0.9f);
     private readonly Color interceptorColor = new Color(0.9f, 0.7f, 0.9f);
 
@@ -62,7 +62,7 @@ public class DataTableModuleEditor : Editor
         DrawBodyModuleSection();
         DrawBeamModuleSection();
         DrawMissileModuleSection();
-        DrawHangerModuleSection();
+        DrawHangarModuleSection();
         DrawShieldModuleSection();
         DrawInterceptorModuleSection();
 
@@ -82,7 +82,7 @@ public class DataTableModuleEditor : Editor
         GUILayout.FlexibleSpace();
 
         int totalModules = dataTableModule.BodyModules.Count + dataTableModule.BeamModules.Count
-            + dataTableModule.MissileModules.Count + dataTableModule.HangerModules.Count
+            + dataTableModule.MissileModules.Count + dataTableModule.HangarModules.Count
             + dataTableModule.ShieldModules.Count + dataTableModule.InterceptorModules.Count;
         GUILayout.Label($"Total: {totalModules}", EditorStyles.miniLabel);
 
@@ -207,28 +207,28 @@ public class DataTableModuleEditor : Editor
     }
     #endregion
 
-    #region Hanger Modules
-    private void DrawHangerModuleSection()
+    #region Hangar Modules
+    private void DrawHangarModuleSection()
     {
         EditorGUILayout.BeginVertical("box");
 
         var originalColor = GUI.backgroundColor;
-        GUI.backgroundColor = hangerColor;
-        showHangerModules = EditorGUILayout.Foldout(showHangerModules, $"Hanger Modules ({dataTableModule.HangerModules.Count})", true, EditorStyles.foldoutHeader);
+        GUI.backgroundColor = hangarColor;
+        showHangarModules = EditorGUILayout.Foldout(showHangarModules, $"Hangar Modules ({dataTableModule.HangarModules.Count})", true, EditorStyles.foldoutHeader);
         GUI.backgroundColor = originalColor;
 
-        if (showHangerModules)
+        if (showHangarModules)
         {
-            foreach (var group in dataTableModule.HangerGroups)
+            foreach (var group in dataTableModule.HangarGroups)
             {
-                DrawSubTypeGroup(group, hangerSubTypeFoldouts, DrawHangerModuleDetails);
+                DrawSubTypeGroup(group, hangarSubTypeFoldouts, DrawHangarModuleDetails);
             }
         }
 
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawHangerModuleDetails(ModuleData module)
+    private void DrawHangarModuleDetails(ModuleData module)
     {
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.airCount = EditorGUILayout.IntField("Aircraft Count", module.airCount);
@@ -398,7 +398,7 @@ public class DataTableModuleEditor : Editor
         allGroups.AddRange(dataTableModule.BodyGroups);
         allGroups.AddRange(dataTableModule.BeamGroups);
         allGroups.AddRange(dataTableModule.MissileGroups);
-        allGroups.AddRange(dataTableModule.HangerGroups);
+        allGroups.AddRange(dataTableModule.HangarGroups);
         allGroups.AddRange(dataTableModule.ShieldGroups);
         allGroups.AddRange(dataTableModule.InterceptorGroups);
 

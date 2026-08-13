@@ -336,6 +336,7 @@ public class SpaceFleet : MonoBehaviour
             if (ship == null) continue;
             result.Add(new ShipHealthRatioInfo
             {
+                shipId = ship.m_shipInfo.id,
                 positionIndex = ship.m_shipInfo.positionIndex,
                 healthRatio = ship.GetHealthRatio()
             });
@@ -904,12 +905,12 @@ public class SpaceFleet : MonoBehaviour
         if (m_fleetSource == EFleetSource.fleet_source_player)
         {
             if (fleetState.IsBattleState() == true && prevWasNotBattle == true)
-                ReadyAllHangerAircrafts();
+                ReadyAllHangarAircrafts();
             EventManager.TriggerMyFleetStateChanged(fleetState);
         }
     }
 
-    private void ReadyAllHangerAircrafts()
+    private void ReadyAllHangarAircrafts()
     {
         for (int s = 0; s < m_ships.Count; s++)
         {
@@ -917,9 +918,9 @@ public class SpaceFleet : MonoBehaviour
             if (ship == null || ship.IsAlive() == false) continue;
             for (int b = 0; b < ship.m_moduleBodys.Count; b++)
             {
-                List<ModuleHanger> hangers = ship.m_moduleBodys[b].m_hangers;
-                for (int h = 0; h < hangers.Count; h++)
-                    hangers[h].ReadyAllAircraft();
+                List<ModuleHangar> hangars = ship.m_moduleBodys[b].m_hangars;
+                for (int h = 0; h < hangars.Count; h++)
+                    hangars[h].ReadyAllAircraft();
             }
         }
     }

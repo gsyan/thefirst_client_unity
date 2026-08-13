@@ -12,14 +12,14 @@ public class UIShipPresetPickerView : MonoBehaviour
     [SerializeField] private UIButtonHasChildren m_confirmButton;
     [SerializeField] private Button m_cancelButton;
 
-    [SerializeField] private UIStatGaugeRow m_statsRowPrefab; // 선택된 프리셋의 스탯 — Column_Stats와 동일한 구조/프리팹 재사용
+    [SerializeField] private UIStatRow m_statsRowPrefab; // 선택된 프리셋의 스탯 — Column_Stats와 동일한 구조/프리팹 재사용
     [SerializeField] private RectTransform m_statsContainer;
 
     [SerializeField] private RowLabelValue m_commandPowerRow; // 선택 후보를 적용했을 때의 지휘력 미리보기 — UIPanelFleet 성능 컬럼의 지휘력 행과 동일한 구성
 
     private readonly List<ShipPresetData> m_presetsCache = new();
-    private readonly List<UIStatGaugeRow> m_statsRows = new();
-    private Dictionary<string, ShipStatGaugeEntry> m_currentEntriesByLabel; // 비교 기준(현재 장착 프리셋) — 라벨로 조회
+    private readonly List<UIStatRow> m_statsRows = new();
+    private Dictionary<string, ShipStatRowEntry> m_currentEntriesByLabel; // 비교 기준(현재 장착 프리셋) — 라벨로 조회
 
     private string m_selectedPresetId;
     private int m_baseUsedCommandPower; // 이 슬롯이 점유 중이던 지휘력을 미리 뺀 값 — 후보 프리셋 비용만 더하면 미리보기 완성
@@ -59,8 +59,8 @@ public class UIShipPresetPickerView : MonoBehaviour
         m_currentEntriesByLabel = null;
         if (currentPreset != null)
         {
-            m_currentEntriesByLabel = new Dictionary<string, ShipStatGaugeEntry>();
-            List<ShipStatGaugeEntry> currentEntries = ShipStatGaugeBuilder.Build(currentPreset, currentModules);
+            m_currentEntriesByLabel = new Dictionary<string, ShipStatRowEntry>();
+            List<ShipStatRowEntry> currentEntries = ShipStatGaugeBuilder.Build(currentPreset, currentModules);
             for (int i = 0; i < currentEntries.Count; i++)
                 m_currentEntriesByLabel[currentEntries[i].label] = currentEntries[i];
         }
@@ -132,7 +132,7 @@ public class UIShipPresetPickerView : MonoBehaviour
             return;
         }
 
-        List<ShipStatGaugeEntry> entries = ShipStatGaugeBuilder.Build(selectedPreset);
+        List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(selectedPreset);
         AppendRemovedStatEntries(entries);
         EnsureStatsRowCount(entries.Count);
 
@@ -144,21 +144,13 @@ public class UIShipPresetPickerView : MonoBehaviour
                 continue;
             }
 
-            ShipStatGaugeEntry entry = entries[i];
+            ShipStatRowEntry entry = entries[i];
             string diffText = BuildDiffText(entry);
 
-            switch (entry.mode)
-            {
-                case EGaugeMode.Normal:
-                    m_statsRows[i].SetGauge(entry.label, entry.value, entry.gaugeMax, diffText);
-                    break;
-                case EGaugeMode.Reverse:
-                    m_statsRows[i].SetReverseGauge(entry.label, entry.rawValueText, entry.reverseFillAmount, diffText);
-                    break;
-                default:
-                    m_statsRows[i].SetValueOnly(entry.label, entry.rawValueText, diffText);
-                    break;
-            }
+            if (entry.isNumericValue == true)
+                m_statsRows[i].SetStatRow(entry.label, entry.value, diffText);
+            else
+                m_statsRows[i].SetValueOnly(entry.label, entry.rawValueText, diffText);
         }
 
         if (m_statsContainer != null)
@@ -167,7 +159,7 @@ public class UIShipPresetPickerView : MonoBehaviour
 
     // 현재 장착 프리셋엔 있었지만 선택한 프리셋에는 없어진 스탯(예: 미사일 미장착으로 변경)도 0값 항목으로 추가해
     // 감소(-) diff를 보여준다 — Normal 모드(게이지형 DPS 등)만 대상. None/Reverse는 0으로 대체할 의미있는 표시값이 없어 제외
-    private void AppendRemovedStatEntries(List<ShipStatGaugeEntry> entries)
+    private void AppendRemovedStatEntries(List<ShipStatRowEntry> entries)
     {
         if (m_currentEntriesByLabel == null) return;
 
@@ -175,12 +167,12 @@ public class UIShipPresetPickerView : MonoBehaviour
         for (int i = 0; i < entries.Count; i++)
             selectedLabels.Add(entries[i].label);
 
-        foreach (KeyValuePair<string, ShipStatGaugeEntry> pair in m_currentEntriesByLabel)
+        foreach (KeyValuePair<string, ShipStatRowEntry> pair in m_currentEntriesByLabel)
         {
             if (selectedLabels.Contains(pair.Key) == true) continue;
-            if (pair.Value.mode != EGaugeMode.Normal) continue;
+            if (pair.Value.isNumericValue == false) continue;
 
-            ShipStatGaugeEntry removedEntry = pair.Value;
+            ShipStatRowEntry removedEntry = pair.Value;
             removedEntry.value = 0f;
             removedEntry.rawValueText = "0.0";
             removedEntry.compareValue = 0f;
@@ -190,13 +182,13 @@ public class UIShipPresetPickerView : MonoBehaviour
 
     // 라벨로 현재 장착 프리셋의 동일 스탯을 찾아 증감을 리치텍스트로 포맷.
     // 현재 프리셋에 아예 없던 스탯(예: 미사일 미장착 → 장착)은 기준값 0으로 취급해 신규 획득으로 표시
-    private string BuildDiffText(ShipStatGaugeEntry entry)
+    private string BuildDiffText(ShipStatRowEntry entry)
     {
         if (entry.hasCompareValue == false) return null;
         if (m_currentEntriesByLabel == null) return null; // 빈 슬롯 등 비교 기준 자체가 없음
 
         float currentValue = 0f;
-        if (m_currentEntriesByLabel.TryGetValue(entry.label, out ShipStatGaugeEntry currentEntry) == true)
+        if (m_currentEntriesByLabel.TryGetValue(entry.label, out ShipStatRowEntry currentEntry) == true)
         {
             if (currentEntry.hasCompareValue == false) return null;
             currentValue = currentEntry.compareValue;

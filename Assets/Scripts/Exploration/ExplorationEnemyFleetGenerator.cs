@@ -17,11 +17,11 @@ public static class ExplorationEnemyFleetGenerator
         public int defaultModuleCost; // 기본 로드아웃(빔1 등) 정가 합 — bodyCost와 별개로 예산에서 차감됨
         public List<ModuleInfo> beams = new List<ModuleInfo>();
         public List<ModuleInfo> missiles = new List<ModuleInfo>();
-        public List<ModuleInfo> hangers = new List<ModuleInfo>();
-        public int[] maxSlots; // [beam, missile, hanger, shield, interceptor]
+        public List<ModuleInfo> hangars = new List<ModuleInfo>();
+        public int[] maxSlots; // [beam, missile, hangar, shield, interceptor]
         public int beamTarget;
         public int missileTarget;
-        public int hangerTarget;
+        public int hangarTarget;
         public string shieldSubType = "";
         public string interceptorSubType = "";
     }
@@ -68,7 +68,7 @@ public static class ExplorationEnemyFleetGenerator
 
         AppendDefaultModules(result, EModuleType.beam, alloc.beamModuleSubType);
         AppendDefaultModules(result, EModuleType.missile, alloc.missileModuleSubType);
-        AppendDefaultModules(result, EModuleType.hanger, alloc.hangarModuleSubType);
+        AppendDefaultModules(result, EModuleType.hangar, alloc.hangarModuleSubType);
         return result;
     }
 
@@ -205,7 +205,7 @@ public static class ExplorationEnemyFleetGenerator
 
         ship.beamTarget    = System.Math.Min(zoneConfig.enemyBeamEquipSlots, ship.maxSlots[0]);
         ship.missileTarget = System.Math.Min(zoneConfig.enemyMissileEquipSlots, ship.maxSlots[1]);
-        ship.hangerTarget  = System.Math.Min(zoneConfig.enemyHangerEquipSlots, ship.maxSlots[2]);
+        ship.hangarTarget  = System.Math.Min(zoneConfig.enemyHangarEquipSlots, ship.maxSlots[2]);
 
         // 실드/인터셉터 — 슬롯 1개뿐이라 "장착 여부"만 존재. 클라이언트가 실제로 소비(스탯 반영/스폰)하는 로직은 아직 없음 — 후속 작업
         ship.shieldSubType = ship.maxSlots[3] > 0 && zoneConfig.enemyShieldEquipSlots > 0 ? EModuleSubType.shield_t1.ToString() : "";
@@ -223,7 +223,7 @@ public static class ExplorationEnemyFleetGenerator
             progressed = false;
             for (int c = 0; c < 3; c++)
             {
-                EModuleType category = c == 0 ? EModuleType.beam : c == 1 ? EModuleType.missile : EModuleType.hanger;
+                EModuleType category = c == 0 ? EModuleType.beam : c == 1 ? EModuleType.missile : EModuleType.hangar;
                 if (HasSlotRoom(ship, category) == false) continue;
                 int cost = TryEquipOneModule(ship, category, shipBudget - spent, moduleTable, random);
                 if (cost > 0)
@@ -248,7 +248,7 @@ public static class ExplorationEnemyFleetGenerator
                 BuildingShip ship = ships[s];
                 for (int c = 0; c < 3; c++)
                 {
-                    EModuleType category = c == 0 ? EModuleType.beam : c == 1 ? EModuleType.missile : EModuleType.hanger;
+                    EModuleType category = c == 0 ? EModuleType.beam : c == 1 ? EModuleType.missile : EModuleType.hangar;
                     if (HasSlotRoom(ship, category) == false) continue;
                     int cost = TryEquipOneModule(ship, category, remaining, moduleTable, random);
                     if (cost > 0)
@@ -268,7 +268,7 @@ public static class ExplorationEnemyFleetGenerator
         {
             case EModuleType.beam: return ship.beams.Count < ship.beamTarget;
             case EModuleType.missile: return ship.missiles.Count < ship.missileTarget;
-            case EModuleType.hanger: return ship.hangers.Count < ship.hangerTarget;
+            case EModuleType.hangar: return ship.hangars.Count < ship.hangarTarget;
             default: return false;
         }
     }
@@ -279,7 +279,7 @@ public static class ExplorationEnemyFleetGenerator
     {
         ModuleDataList categoryModules = category == EModuleType.beam ? moduleTable.BeamModules
             : category == EModuleType.missile ? moduleTable.MissileModules
-            : moduleTable.HangerModules;
+            : moduleTable.HangarModules;
 
         List<ModuleData> candidates = new List<ModuleData>();
         for (int i = 0; i < categoryModules.Count; i++)
@@ -323,7 +323,7 @@ public static class ExplorationEnemyFleetGenerator
         {
             case EModuleType.beam: return 0;
             case EModuleType.missile: return 1;
-            case EModuleType.hanger: return 2;
+            case EModuleType.hangar: return 2;
             default: return 0;
         }
     }
@@ -334,7 +334,7 @@ public static class ExplorationEnemyFleetGenerator
         {
             case EModuleType.beam: return ship.beams;
             case EModuleType.missile: return ship.missiles;
-            case EModuleType.hanger: return ship.hangers;
+            case EModuleType.hangar: return ship.hangars;
             default: return new List<ModuleInfo>();
         }
     }
@@ -345,7 +345,7 @@ public static class ExplorationEnemyFleetGenerator
         {
             case EModuleType.beam: ship.beams.Add(info); break;
             case EModuleType.missile: ship.missiles.Add(info); break;
-            case EModuleType.hanger: ship.hangers.Add(info); break;
+            case EModuleType.hangar: ship.hangars.Add(info); break;
         }
     }
 
@@ -366,7 +366,7 @@ public static class ExplorationEnemyFleetGenerator
             {
                 beams = ship.beams,
                 missiles = ship.missiles,
-                hangers = ship.hangers,
+                hangars = ship.hangars,
                 shieldModuleSubType = ship.shieldSubType,
                 interceptorModuleSubType = ship.interceptorSubType,
             };
@@ -384,6 +384,6 @@ public static class ExplorationEnemyFleetGenerator
 
     private static int EquippedCount(BuildingShip ship)
     {
-        return ship.beams.Count + ship.missiles.Count + ship.hangers.Count;
+        return ship.beams.Count + ship.missiles.Count + ship.hangars.Count;
     }
 }

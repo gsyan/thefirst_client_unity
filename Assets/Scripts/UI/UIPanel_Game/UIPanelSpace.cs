@@ -24,7 +24,6 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
         EventManager.Subscribe_OverlayPanelActiveChanged(OnOverlayPanelActiveChanged);
-        // CheckAndClaimPendingStageRewards(); // 서버 claimPendingStageRewards 주석처리(구 ZoneStageConfig 제거)로 임시 비활성화
         // CheckAndClaimPvpSeasonReward(); // PvP 주석처리로 임시 비활성화
         m_tabSystem.ForceActivateTab();
     }
@@ -60,66 +59,6 @@ public class UIPanelSpace : UIPanelBase
                 rewardAmounts = new System.Collections.Generic.List<int> { 0, 0, 0, response.data.pvpPointGained },
                 onConfirm = () => { }
             });
-        });
-    }
-    */
-
-    // 서버 claimPendingStageRewards 주석처리(구 ZoneStageConfig 제거)로 임시 비활성화
-    /*
-    private void CheckAndClaimPendingStageRewards()
-    {
-        NetworkManager.Instance.ClaimPendingStageRewards(response =>
-        {
-            if (response == null || response.errorCode != 0) return;
-            if (response.data.mineralGained == 0) return;
-
-            var commander = DataManager.Instance.m_currentCommander;
-            int newLevel  = 0;
-            int prevLevel = 0;
-            if (commander != null)
-            {
-                prevLevel = commander.GetCommanderLevel();
-                commander.UpdateExp(response.data.totalExp);
-                newLevel = response.data.commanderLevel;
-                commander.UpdateCommanderLevel(newLevel);
-            }
-
-            // 보상 획득 후 기술 레벨업 순서로 표시
-            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-            {
-                title   = LocalizationManager.Instance.Get("pending_reward_title"),
-                message = LocalizationManager.Instance.Get("pending_reward_message"),
-                rewardAmounts = new System.Collections.Generic.List<int>
-                {
-                    response.data.mineralGained,
-                    response.data.expGained,
-                    response.data.modulePointGained,
-                    0
-                },
-                onConfirm = () => { }
-            });
-
-            if (newLevel > prevLevel)
-                UIManager.Instance.ShowCommanderLevelupNotify(newLevel);
-
-            if (response.data.mineralSettingReset == true && response.data.updatedFleetInfo != null)
-            {
-                var loc = LocalizationManager.Instance;
-                var fleet = ObjectManager.Instance.GetMyFleet();
-                FleetInfo fleetInfoToApply = response.data.updatedFleetInfo;
-                UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-                {
-                    title        = loc.Get("UIPopupMessage_MineralResetTitle"),
-                    message      = loc.Get("UIPopupMessage_MineralResetMessage"),
-                    confirmText1 = loc.Get("Simple_Confirm"),
-                    autoCloseSec = 5f,
-                    onConfirm    = () =>
-                    {
-                        if (fleet != null)
-                            fleet.ApplyMineralReset(fleetInfoToApply);
-                    },
-                });
-            }
         });
     }
     */

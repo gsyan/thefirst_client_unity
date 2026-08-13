@@ -210,7 +210,12 @@ public class SpaceShip : MonoBehaviour
             body.ApplyShipStateToModule();
     }
 
-
+    // 보상카드 지속버프가 바뀔 때(카드 선택/런 종료 초기화) 호출 — 이미 스폰된 이 함선의 모든 바디/무기 모듈에 최신 배율을 다시 반영
+    public void RefreshRewardCardBuffs()
+    {
+        foreach (ModuleBody body in m_moduleBodys)
+            if (body != null) body.RefreshRewardCardBuff();
+    }
 
     public void StartFindingTargets()
     {
@@ -455,7 +460,7 @@ public class SpaceShip : MonoBehaviour
                 else
                     free.Add(m);
             }
-            foreach (ModuleHanger m in body.m_hangers)
+            foreach (ModuleHangar m in body.m_hangars)
             {
                 if (m == null) continue;
                 if (m.IsSilenced() == true)

@@ -71,7 +71,7 @@ public class ProjectileMissile : ProjectileBase
      ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed, float explosionMultiplier = 1f)
     {
         SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase);
-        m_missileSource = (sourceModuleBase is ModuleHanger) ? EMissileSource.Aircraft : EMissileSource.Ship;
+        m_missileSource = (sourceModuleBase is ModuleHangar) ? EMissileSource.Aircraft : EMissileSource.Ship;
 
         bool isEnemy = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_sourceShip.m_ownerFleet);
         ApplyEngineFlameColor(isEnemy);
@@ -81,7 +81,8 @@ public class ProjectileMissile : ProjectileBase
             ObjectManager.Instance.RegisterMissile(this, isEnemy);
 
         m_missileSpeed = moduleData.speed; // 발사체 이동속도는 speed 필드 재사용(미사일 행은 body 이동속도 개념이 없음)
-        m_silenceTime  = moduleData.silenceTime;
+        float silenceBuffMult = sourceModuleBase != null ? sourceModuleBase.GetRewardCardBuffMultiplier(ECardEffectType.Buff_MissileSilence) : 1f;
+        m_silenceTime  = moduleData.silenceTime * silenceBuffMult;
         m_splashRadius = moduleData.splashRadius * explosionMultiplier;
         m_ejectSpeed = ejectSpeed;
         m_lifeTime = 0.0f;

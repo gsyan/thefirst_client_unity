@@ -99,12 +99,12 @@ RewardCard_MissileFireRate_Name,,Missile Rate of Fire Up,미사일 연사속도 
 RewardCard_MissileFireRate_Desc,,Missile rate of fire +{0:P0},미사일 연사속도 {0:P0} 증가
 RewardCard_MissileSilence_Name,,Missile Silence Up,미사일 침묵효과 강화
 RewardCard_MissileSilence_Desc,,Missile silence effect +{0:P0},미사일 침묵효과 {0:P0} 증가
-RewardCard_HangarShipAttack_Name,,Fighter Anti-Ship Power Up,함재기 대함 공격력 강화
-RewardCard_HangarShipAttack_Desc,,Fighter anti-ship attack +{0:P0},함재기 대함 공격력 {0:P0} 증가
-RewardCard_HangarFighterAttack_Name,,Fighter Dogfight Power Up,함재기 대함재기 공격력 강화
-RewardCard_HangarFighterAttack_Desc,,Fighter dogfight attack +{0:P0},함재기 대함재기 공격력 {0:P0} 증가
-RewardCard_ShipHealth_Name,,Hull Health Up,함선 체력 강화
-RewardCard_ShipHealth_Desc,,Ship health +{0:P0},함선 체력 {0:P0} 증가
+RewardCard_HangarAttackToShip_Name,,Fighter Anti-Ship Power Up,함재기 대함 공격력 강화
+RewardCard_HangarAttackToShip_Desc,,Fighter anti-ship attack +{0:P0},함재기 대함 공격력 {0:P0} 증가
+RewardCard_HangarAttackToFighter_Name,,Fighter Dogfight Power Up,함재기 대함재기 공격력 강화
+RewardCard_HangarAttackToFighter_Desc,,Fighter dogfight attack +{0:P0},함재기 대함재기 공격력 {0:P0} 증가
+RewardCard_ShipHealth_Name,,Max Health Up,최대 체력 강화
+RewardCard_ShipHealth_Desc,,Max ship health +{0:P0},최대 함선 체력 {0:P0} 증가
 RewardCard_PointRate_Name,,Exploration Point Rate Up,탐험 포인트 획득량 증가
 RewardCard_PointRate_Desc,,Exploration point gain +{0:P0},탐험 포인트 획득량 {0:P0} 증가
 RewardCard_HealthHeal_Name,,Hull Repair,체력 회복
@@ -238,12 +238,11 @@ Simple_AirAmmo,,Aircraft Ammo,함재기 탄약
 Simple_AirDisrupt,,Disrupt,교란
 module_type_beam_placeholder,,Beam(Locked),빔(잠김)
 module_type_missile_placeholder,,Missile(Locked),미사일(잠김)
-module_type_hanger_placeholder,,Hanger(Locked),격납고(잠김)
 module_type_body,,Body,함체
 module_type_engine,,Engine,엔진
 module_type_beam,,Beam,빔
 module_type_missile,,Missile,미사일
-module_type_hanger,,Hanger,격납고
+module_type_hangar,,Hangar,격납고
 UIFleet_ModuleSlot_Installed,,Installed,장착
 UIFleet_ModuleSlot_NotInstalled,,Not Installed,해제
 UIButton_Reset,,RESET,초기화

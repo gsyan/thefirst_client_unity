@@ -45,8 +45,8 @@ public class ModuleData
     public float attackCool = 0f;       // 발사 쿨다운 빔, 미사일, 함재기
     public float silenceTime = 0f;      // 미사일 적중 시 무장 침묵 시간 (초)
 
-    // Hanger ------------------------------------------------------------------------------------------------
-    [Header("Hanger Stats")]
+    // Hangar ------------------------------------------------------------------------------------------------
+    [Header("Hangar Stats")]
     public int airCount = 5;                  // 총 함재기 수
     public float airMaintenanceTime = 10f;    // 돌아온 함재기 재출격 까지 정비 시간, 함재기당 재출격에 걸리는 시간
     [Header("Aircraft Stats")]
@@ -111,8 +111,8 @@ public class DataTableModule : ScriptableObject
     [Header("Missile Modules by SubType")]
     [SerializeField] private List<ModuleSubTypeGroup> missileGroups = new();
 
-    [Header("Hanger Modules by SubType")]
-    [SerializeField] private List<ModuleSubTypeGroup> hangerGroups = new();
+    [Header("Hangar Modules by SubType")]
+    [SerializeField] private List<ModuleSubTypeGroup> hangarGroups = new();
 
     [Header("Shield Modules by SubType")]
     [SerializeField] private List<ModuleSubTypeGroup> shieldGroups = new();
@@ -126,7 +126,7 @@ public class DataTableModule : ScriptableObject
     public List<ModuleSubTypeGroup> BodyGroups => bodyGroups;
     public List<ModuleSubTypeGroup> BeamGroups => beamGroups;
     public List<ModuleSubTypeGroup> MissileGroups => missileGroups;
-    public List<ModuleSubTypeGroup> HangerGroups => hangerGroups;
+    public List<ModuleSubTypeGroup> HangarGroups => hangarGroups;
     public List<ModuleSubTypeGroup> ShieldGroups => shieldGroups;
     public List<ModuleSubTypeGroup> InterceptorGroups => interceptorGroups;
 
@@ -166,12 +166,12 @@ public class DataTableModule : ScriptableObject
         }
     }
 
-    public ModuleDataList HangerModules
+    public ModuleDataList HangarModules
     {
         get
         {
             var list = new ModuleDataList();
-            foreach (var group in hangerGroups)
+            foreach (var group in hangarGroups)
                 foreach (var module in group.modules)
                     list.Add(module);
             return list;
@@ -212,7 +212,7 @@ public class DataTableModule : ScriptableObject
         if (moduleType == EModuleType.body)               group = bodyGroups.Find(g => g.subType == data.moduleSubType);
         else if (moduleType == EModuleType.beam)          group = beamGroups.Find(g => g.subType == data.moduleSubType);
         else if (moduleType == EModuleType.missile)       group = missileGroups.Find(g => g.subType == data.moduleSubType);
-        else if (moduleType == EModuleType.hanger)        group = hangerGroups.Find(g => g.subType == data.moduleSubType);
+        else if (moduleType == EModuleType.hangar)        group = hangarGroups.Find(g => g.subType == data.moduleSubType);
         else if (moduleType == EModuleType.shield)        group = shieldGroups.Find(g => g.subType == data.moduleSubType);
         else if (moduleType == EModuleType.interceptor)   group = interceptorGroups.Find(g => g.subType == data.moduleSubType);
 
@@ -222,7 +222,7 @@ public class DataTableModule : ScriptableObject
             if (moduleType == EModuleType.body)               bodyGroups.Add(group);
             else if (moduleType == EModuleType.beam)          beamGroups.Add(group);
             else if (moduleType == EModuleType.missile)       missileGroups.Add(group);
-            else if (moduleType == EModuleType.hanger)        hangerGroups.Add(group);
+            else if (moduleType == EModuleType.hangar)        hangarGroups.Add(group);
             else if (moduleType == EModuleType.shield)        shieldGroups.Add(group);
             else if (moduleType == EModuleType.interceptor)   interceptorGroups.Add(group);
         }
@@ -246,7 +246,7 @@ public class DataTableModule : ScriptableObject
         if (moduleType == EModuleType.body) return bodyGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.beam) return beamGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.missile) return missileGroups.Find(g => g.subType == subType);
-        if (moduleType == EModuleType.hanger) return hangerGroups.Find(g => g.subType == subType);
+        if (moduleType == EModuleType.hangar) return hangarGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.shield) return shieldGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.interceptor) return interceptorGroups.Find(g => g.subType == subType);
         return null;
@@ -264,8 +264,8 @@ public class DataTableModule : ScriptableObject
                 beamGroups.Add(new ModuleSubTypeGroup { subType = subType });
             else if (moduleType == EModuleType.missile)
                 missileGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.hanger)
-                hangerGroups.Add(new ModuleSubTypeGroup { subType = subType });
+            else if (moduleType == EModuleType.hangar)
+                hangarGroups.Add(new ModuleSubTypeGroup { subType = subType });
             else if (moduleType == EModuleType.shield)
                 shieldGroups.Add(new ModuleSubTypeGroup { subType = subType });
             else if (moduleType == EModuleType.interceptor)
@@ -289,7 +289,7 @@ public class DataTableModule : ScriptableObject
             { (int)EModuleType.body, BodyModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.beam, BeamModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.missile, MissileModules.modules.Cast<object>().ToList() },
-            { (int)EModuleType.hanger, HangerModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.hangar, HangarModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.shield, ShieldModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.interceptor, InterceptorModules.modules.Cast<object>().ToList() }
         };
@@ -323,7 +323,7 @@ public class DataTableModule : ScriptableObject
                 bodyGroups.Clear();
                 beamGroups.Clear();
                 missileGroups.Clear();
-                hangerGroups.Clear();
+                hangarGroups.Clear();
                 shieldGroups.Clear();
                 interceptorGroups.Clear();
                 InitializeSubTypeGroups();
@@ -352,11 +352,11 @@ public class DataTableModule : ScriptableObject
                         AddModuleDataToTable(module);
                 }
 
-                int hangerKey = (int)EModuleType.hanger;
-                if (modulesObj[hangerKey.ToString()] != null)
+                int hangarKey = (int)EModuleType.hangar;
+                if (modulesObj[hangarKey.ToString()] != null)
                 {
-                    var hangerList = modulesObj[hangerKey.ToString()].ToObject<List<ModuleData>>();
-                    foreach (var module in hangerList)
+                    var hangarList = modulesObj[hangarKey.ToString()].ToObject<List<ModuleData>>();
+                    foreach (var module in hangarList)
                         AddModuleDataToTable(module);
                 }
 
@@ -425,7 +425,7 @@ public class DataTableModule : ScriptableObject
         bodyGroups.Clear();
         beamGroups.Clear();
         missileGroups.Clear();
-        hangerGroups.Clear();
+        hangarGroups.Clear();
         shieldGroups.Clear();
         interceptorGroups.Clear();
         InitializeSubTypeGroups();
@@ -494,7 +494,7 @@ public class DataTableModule : ScriptableObject
             AddModuleDataToTable(module);
         }
 
-        int total = BodyModules.Count + BeamModules.Count + MissileModules.Count + HangerModules.Count
+        int total = BodyModules.Count + BeamModules.Count + MissileModules.Count + HangarModules.Count
                   + ShieldModules.Count + InterceptorModules.Count;
         Debug.Log($"[DataTableModule] CSV Import 완료: {total}개 모듈");
         EditorUtility.SetDirty(this);

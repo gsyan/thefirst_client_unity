@@ -38,10 +38,6 @@ MonoBehaviour:
     m_Localized: Missile(Locked)
     m_Metadata:
       m_Items: []
-  - m_Id: 767916349718529
-    m_Localized: Hanger(Locked)
-    m_Metadata:
-      m_Items: []
   - m_Id: 767916349718530
     m_Localized: Body
     m_Metadata:
@@ -59,7 +55,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 767916349718534
-    m_Localized: Hanger
+    m_Localized: Hangar
     m_Metadata:
       m_Items: []
   - m_Id: 1211027840434176
@@ -1226,28 +1222,12 @@ MonoBehaviour:
     m_Localized: Missile silence effect +{0:P0}
     m_Metadata:
       m_Items: []
-  - m_Id: 66832217640140807
-    m_Localized: Fighter Anti-Ship Power Up
-    m_Metadata:
-      m_Items: []
-  - m_Id: 66832217640140808
-    m_Localized: Fighter anti-ship attack +{0:P0}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 66832217640140809
-    m_Localized: Fighter Dogfight Power Up
-    m_Metadata:
-      m_Items: []
-  - m_Id: 66832217640140810
-    m_Localized: Fighter dogfight attack +{0:P0}
-    m_Metadata:
-      m_Items: []
   - m_Id: 66832217640140811
-    m_Localized: Hull Health Up
+    m_Localized: Max Health Up
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140812
-    m_Localized: Ship health +{0:P0}
+    m_Localized: Max ship health +{0:P0}
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140813
@@ -1288,6 +1268,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 66832217644335106
     m_Localized: Exploration Point +{0:F0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67415317726232576
+    m_Localized: Fighter Anti-Ship Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67415317789147136
+    m_Localized: Fighter anti-ship attack +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67415317789147137
+    m_Localized: Fighter Dogfight Power Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67415317789147138
+    m_Localized: Fighter dogfight attack +{0:P0}
     m_Metadata:
       m_Items: []
   references:

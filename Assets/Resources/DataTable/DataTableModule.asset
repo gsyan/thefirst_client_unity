@@ -667,10 +667,10 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  hangerGroups:
+  hangarGroups:
   - subType: 401000
     modules:
-    - moduleName: hanger_t1
+    - moduleName: hangar_t1
       moduleSubType: 401000
       statPoint: 20
       description: 
@@ -772,7 +772,7 @@ MonoBehaviour:
     [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n       
+    \"hangar\",\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n       
     \"health\": 100.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n       
     \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -789,7 +789,7 @@ MonoBehaviour:
     0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
     ],\r\n        \"health\": 200.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
@@ -808,7 +808,7 @@ MonoBehaviour:
     {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n         
     },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"hanger\",\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n       
+    \"hangar\",\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n       
     \"health\": 300.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n       
     \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -826,8 +826,8 @@ MonoBehaviour:
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
     \"moduleType\": \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
     1\r\n          }\r\n        ],\r\n        \"health\": 400.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
@@ -847,8 +847,8 @@ MonoBehaviour:
     2\r\n          },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n         
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n         
     }\r\n        ],\r\n        \"health\": 500.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
@@ -869,8 +869,8 @@ MonoBehaviour:
     \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
     \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
     1\r\n          }\r\n        ],\r\n        \"health\": 600.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
@@ -891,9 +891,9 @@ MonoBehaviour:
     \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
     \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
-    1\r\n          },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n           
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
+    1\r\n          },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n           
     \"slotIndex\": 2\r\n          }\r\n        ],\r\n        \"health\": 700.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
@@ -916,9 +916,9 @@ MonoBehaviour:
     },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
     2\r\n          }\r\n        ],\r\n        \"health\": 800.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
@@ -942,9 +942,9 @@ MonoBehaviour:
     {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n         
     },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 3\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"hanger\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 2\r\n         
+    \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 2\r\n         
     }\r\n        ],\r\n        \"health\": 900.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
@@ -968,10 +968,10 @@ MonoBehaviour:
     {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n         
     },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 3\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"hanger\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 2\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
+    \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 2\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
     3\r\n          }\r\n        ],\r\n        \"health\": 1000.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
@@ -996,10 +996,10 @@ MonoBehaviour:
     },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 2\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 3\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
-    2\r\n          },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n           
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
+    2\r\n          },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n           
     \"slotIndex\": 3\r\n          }\r\n        ],\r\n        \"health\": 1100.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
@@ -1026,10 +1026,10 @@ MonoBehaviour:
     {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 3\r\n         
     },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 4\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"hanger\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\": 2\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hanger\",\r\n            \"slotIndex\":
+    \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 2\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
     3\r\n          }\r\n        ],\r\n        \"health\": 1200.0,\r\n        \"repair\":
     0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
     0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
@@ -1065,33 +1065,21 @@ MonoBehaviour:
     0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
     \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
-    \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"4\": [\r\n      {\r\n       
-    \"moduleName\": \"hanger_t1\",\r\n        \"moduleSubType\": \"hanger_t1\",\r\n       
-    \"statPoint\": 20,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
-    0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
-    \"airCount\": 3,\r\n        \"airMaintenanceTime\": 15.0,\r\n        \"airHealth\":
-    50.0,\r\n        \"airAttack\": 10.0,\r\n        \"airAttackRange\": 4.0,\r\n       
-    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
-    10,\r\n        \"airDetectRadius\": 10.0,\r\n        \"airAvoidRadius\": 2.0,\r\n       
-    \"airDisrupt\": 0.1,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
-    0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
-    \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
-    }\r\n    ],\r\n    \"5\": [\r\n      {\r\n        \"moduleName\": \"shield_t1\",\r\n       
-    \"moduleSubType\": \"shield_t1\",\r\n        \"statPoint\": 20,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
-    \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
-    \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
-    0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
-    \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
-    0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
-    \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
-    \"shieldGauge\": 100.0,\r\n        \"shieldDelay\": 5.0,\r\n        \"shieldRegenRate\":
-    5.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
-    \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"6\": [\r\n      {\r\n       
-    \"moduleName\": \"interceptor_t1\",\r\n        \"moduleSubType\": \"interceptor_t1\",\r\n       
+    \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"4\": [],\r\n    \"5\":
+    [\r\n      {\r\n        \"moduleName\": \"shield_t1\",\r\n        \"moduleSubType\":
+    \"shield_t1\",\r\n        \"statPoint\": 20,\r\n        \"description\": \"\",\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
+    \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
+    0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\":
+    0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
+    \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
+    0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 100.0,\r\n       
+    \"shieldDelay\": 5.0,\r\n        \"shieldRegenRate\": 5.0,\r\n        \"interceptorCount\":
+    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
+    0.0\r\n      }\r\n    ],\r\n    \"6\": [\r\n      {\r\n        \"moduleName\":
+    \"interceptor_t1\",\r\n        \"moduleSubType\": \"interceptor_t1\",\r\n       
     \"statPoint\": 20,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
     [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":

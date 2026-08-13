@@ -415,20 +415,20 @@ MonoBehaviour:
     m_Key: RewardCard_MissileSilence_Desc
     m_Metadata:
       m_Items: []
-  - m_Id: 66832217640140807
-    m_Key: RewardCard_HangarShipAttack_Name
+  - m_Id: 67415317726232576
+    m_Key: RewardCard_HangarAttackToShip_Name
     m_Metadata:
       m_Items: []
-  - m_Id: 66832217640140808
-    m_Key: RewardCard_HangarShipAttack_Desc
+  - m_Id: 67415317789147136
+    m_Key: RewardCard_HangarAttackToShip_Desc
     m_Metadata:
       m_Items: []
-  - m_Id: 66832217640140809
-    m_Key: RewardCard_HangarFighterAttack_Name
+  - m_Id: 67415317789147137
+    m_Key: RewardCard_HangarAttackToFighter_Name
     m_Metadata:
       m_Items: []
-  - m_Id: 66832217640140810
-    m_Key: RewardCard_HangarFighterAttack_Desc
+  - m_Id: 67415317789147138
+    m_Key: RewardCard_HangarAttackToFighter_Desc
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140811
@@ -971,10 +971,6 @@ MonoBehaviour:
     m_Key: module_type_missile_placeholder
     m_Metadata:
       m_Items: []
-  - m_Id: 767916349718529
-    m_Key: module_type_hanger_placeholder
-    m_Metadata:
-      m_Items: []
   - m_Id: 767916349718530
     m_Key: module_type_body
     m_Metadata:
@@ -992,7 +988,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 767916349718534
-    m_Key: module_type_hanger
+    m_Key: module_type_hangar
     m_Metadata:
       m_Items: []
   - m_Id: 65472345728221184

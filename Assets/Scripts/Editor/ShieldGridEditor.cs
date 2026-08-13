@@ -85,11 +85,11 @@ public class ShieldGridEditor : Editor
             SceneView.RepaintAll();
         }
 
-        // HangerFlightPath
-        HangerFlightPath flightPath = grid.GetComponentInChildren<HangerFlightPath>(true);
+        // HangarFlightPath
+        HangarFlightPath flightPath = grid.GetComponentInChildren<HangarFlightPath>(true);
         if (flightPath != null)
         {
-            bool newShowPath = EditorGUILayout.Toggle("Hanger Flight Path", flightPath.bShowGizmos);
+            bool newShowPath = EditorGUILayout.Toggle("Hangar Flight Path", flightPath.bShowGizmos);
             if (newShowPath != flightPath.bShowGizmos)
             {
                 flightPath.bShowGizmos = newShowPath;

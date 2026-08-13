@@ -60,7 +60,7 @@ public class ModuleBodyInfo
     public int bodyIndex;
     public List<ModuleInfo> beams;
     public List<ModuleInfo> missiles;
-    public List<ModuleInfo> hangers;
+    public List<ModuleInfo> hangars;
     // 실드/요격체 장착 서브타입 — 빈 문자열이면 미장착. 적함대 존 데이터 배관용으로 서버가 채워 보냄(클라 소비 로직은 후속 작업)
     public string shieldModuleSubType = "";
     public string interceptorModuleSubType = "";
@@ -312,54 +312,11 @@ public class ProgressListResponse
 
 #region Zone Battle Data Classes ##############################################################################
 [System.Serializable]
-public class ClearZoneStageRequest
-{
-    public string zoneName;   // 존 이름 (예: "2-5")
-}
-
-[System.Serializable]
-public class ClearZoneStageResponse
-{
-    public bool isFirstClear;      // true = 최초 클리어
-    public string clearedZoneName; // isFirstClear == true 일 때만 유효
-}
-
-[System.Serializable]
-public class ClaimZoneRewardRequest
-{
-    public string zoneName;
-    public bool watchedAd;
-}
-
-[System.Serializable]
-public class ClaimZoneRewardResponse
-{
-    public string zoneName;
-    public bool watchedAd;
-    public int commanderLevel;
-    public int totalExp;
-}
-
-
-[System.Serializable]
-public class GetStageEnemiesRequest
-{
-    public string zoneName;
-}
-
-[System.Serializable]
 public class StageEnemyFleetSpawnConfig
 {
     public int fleetIndex;
     public int positionIndex; // DataTableZone.fleetPositionPresets 참조 — 등장 시각은 zoneStage.spawnTerm * fleetIndex
     public FleetInfo fleetInfo;
-}
-
-[System.Serializable]
-public class GetStageEnemiesResponse
-{
-    public string zoneName;
-    public List<StageEnemyFleetSpawnConfig> enemyFleets;
 }
 
 [System.Serializable]
@@ -369,17 +326,6 @@ public class PvpClaimSeasonRewardRequest { }
 public class PvpClaimSeasonRewardResponse
 {
     public int pvpPointGained;
-}
-
-[System.Serializable]
-public class PendingStageRewardRequest { }
-
-[System.Serializable]
-public class PendingStageRewardResponse
-{
-    public int expGained;
-    public int commanderLevel;
-    public int totalExp;
 }
 
 #endregion
@@ -401,12 +347,14 @@ public class EnterExplorationCellResponse
     public int cellRow;
     public int cellCol;
     public List<StageEnemyFleetSpawnConfig> enemyFleets;
+    public string challengeToken; // 이 셀에 대해 발급된 1회용 클리어 챌린지 토큰 — ClearExplorationCellRequest에 그대로 실어 보내야 함
 }
 
 [System.Serializable]
 public class ShipHealthRatioInfo
 {
     // 슬롯 포지션 인덱스별 함선 체력 비율(0~1) — 존 런 진행 상황(ZoneRun) 스냅샷으로 서버에 저장, 앱 재시작 후 복구용
+    public long shipId; // 서버가 실제 함대 편성과 대조(함선 구성 일치 검증)하는 데 사용
     public int positionIndex;
     public float healthRatio;
 }
@@ -418,6 +366,7 @@ public class ClearExplorationCellRequest
     public int cellRow;
     public int cellCol;
     public List<ShipHealthRatioInfo> shipHealthRatios; // 셀 클리어 시점의 내 함대 체력 스냅샷 — ZoneRun에 저장돼 재접속 시 복구됨
+    public string challengeToken; // EnterExplorationCellResponse.challengeToken을 그대로 반환 — enter-cell 없이 clear-cell만 반복 호출하는 것을 막음
 }
 
 [System.Serializable]
@@ -701,13 +650,13 @@ public class SetFleetPresetSlotModulesRequest
     // 낱개 토글을 순서대로 여러 번 보내면 중간 상태에서 "공격모듈 0개"/"예산 초과" 검증에 걸릴 수 있어(예: 빔→미사일 교체 시 순서에 따라 항상 실패),
     // 반드시 최종 상태 하나로 모아 보내고 서버는 그 결과 상태만 검증한다
     public int slotIndex; // CommanderFleetPresetSlot의 slotIndex(함대편성 슬롯)
-    public ModuleBodyInfo modules; // 이 슬롯에 최종적으로 장착되어 있어야 할 모듈 전체(beams/missiles/hangers, 각 slotIndex만 유효)
+    public ModuleBodyInfo modules; // 이 슬롯에 최종적으로 장착되어 있어야 할 모듈 전체(beams/missiles/hangars, 각 slotIndex만 유효)
 }
 
 [System.Serializable]
 public class SetFleetPresetSlotModulesResponse
 {
-    public ModuleBodyInfo body;       // 갱신된 함선의 현재 로드아웃 전체(beams/missiles/hangers)
+    public ModuleBodyInfo body;       // 갱신된 함선의 현재 로드아웃 전체(beams/missiles/hangars)
     public int commandCost;           // 갱신된 함선의 지휘력 코스트
     public int remainingCommandPower; // 커맨더의 남은 지휘력
 }

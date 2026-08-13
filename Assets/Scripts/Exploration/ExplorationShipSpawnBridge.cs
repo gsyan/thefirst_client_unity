@@ -33,7 +33,7 @@ public static class ExplorationShipSpawnBridge
             bodyIndex     = 0,
             beams         = new List<ModuleInfo>(),
             missiles      = new List<ModuleInfo>(),
-            hangers       = new List<ModuleInfo>(),
+            hangars       = new List<ModuleInfo>(),
         };
 
         int beamCount = finalStats.beamModuleSubType != null ? finalStats.beamModuleSubType.Length : 0;
@@ -45,9 +45,9 @@ public static class ExplorationShipSpawnBridge
             bodyInfo.missiles.Add(BuildModuleInfo(EModuleType.missile, finalStats.missileModuleSubType[i], i));
 
         // 함재기 세부 스탯(함선/함재기 대상 공격력 분리, 실드, 요격체) 반영은 후속 작업 — 지금은 구조만 채워 슬롯이 비어보이지 않게 함
-        int hangerCount = finalStats.hangarModuleSubType != null ? finalStats.hangarModuleSubType.Length : 0;
-        for (int i = 0; i < hangerCount; i++)
-            bodyInfo.hangers.Add(BuildModuleInfo(EModuleType.hanger, finalStats.hangarModuleSubType[i], i));
+        int hangarCount = finalStats.hangarModuleSubType != null ? finalStats.hangarModuleSubType.Length : 0;
+        for (int i = 0; i < hangarCount; i++)
+            bodyInfo.hangars.Add(BuildModuleInfo(EModuleType.hangar, finalStats.hangarModuleSubType[i], i));
 
         return new ShipInfo
         {

@@ -45,7 +45,7 @@ public class UIModuleSlotToggleRow : MonoBehaviour
     {
         if (moduleType == EModuleType.beam) return "module_type_beam";
         if (moduleType == EModuleType.missile) return "module_type_missile";
-        if (moduleType == EModuleType.hanger) return "module_type_hanger";
+        if (moduleType == EModuleType.hangar) return "module_type_hangar";
         return "";
     }
 }

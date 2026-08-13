@@ -342,7 +342,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         if (m_currentTutorial != null)
         {
-            SaveTutorialToServer(m_currentTutorial.tutorialId);
+            _ = SaveTutorialToServerAsync(m_currentTutorial.tutorialId);
             m_completedTutorials.Add(m_currentTutorial.tutorialId);
         }
 
@@ -370,14 +370,14 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         if (m_completedTutorials.Contains(tutorialId) == true) return;
 
         m_completedTutorials.Add(tutorialId);
-        SaveTutorialToServer(tutorialId);
+        _ = SaveTutorialToServerAsync(tutorialId);
 
         // 정상 완료가 아니어도 OnTutorialCompleted 구독자(UITabShip 등)는 동일하게 통지받아야 함
         OnTutorialCompleted?.Invoke(tutorialId);
     }
 
     // 서버에 튜토리얼 완료 저장 (fire and forget)
-    private async void SaveTutorialToServer(string tutorialId)
+    private async Task SaveTutorialToServerAsync(string tutorialId)
     {
         try
         {

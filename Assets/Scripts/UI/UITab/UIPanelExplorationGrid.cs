@@ -26,6 +26,9 @@ public class UIPanelExplorationGrid : UIPanelBase
     [SerializeField] private GameObject m_inputBlockOverlay;
     // 락/클리어 표시 등 실제 진행도 연동은 후속 작업(clearedZones가 아직 구식 스테이지 포맷)
 
+    [Header("보상카드 지속버프 표시")]
+    [SerializeField] private UIRewardCardBuffDisplay m_rewardCardBuffDisplay; // 확보한 지속버프 아이콘 상시 표시(좌측 상단 등)
+
     private const float k_enemyEncounterDistance = 50f; // 셀 안 전투 조우 거리 — datatable_zone_enemy_fleet_position.csv grade1과 동일 스케일(국소 전술 거리, 갤럭시뷰 좌표와는 별개)
 
     private int m_zoneGroupCount;
@@ -43,6 +46,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     private int m_pendingCellCol;
     private Vector3 m_pendingCellWorldPos;
     private Vector3 m_pendingEnemyRequestMyFleetPos; // EnterExplorationCellRequest 전송 시점의 내 함대 위치 — 응답 도착 후 적 함대 조우 위치 계산에 씀(재시도 시에도 재사용)
+    private string m_activeChallengeToken; // EnterExplorationCellResponse가 발급한 1회용 토큰 — ClearExplorationCellRequest에 그대로 실어 보냄(enter-cell 생략한 clear 반복 호출 차단용)
 
     // 대치 상태(UIPanelPrepareBattle) 중 퇴각 시 되돌아갈 이전 위치 — 로컬뷰 카메라 전환 이후엔 그리드 좌표→월드좌표 역산이 불가능(카메라 자세가 이미 바뀜)하므로 이동 직전 좌표를 스냅샷
     private int m_previousRow;
@@ -95,6 +99,14 @@ public class UIPanelExplorationGrid : UIPanelBase
         EventManager.Subscribe_ExplorationGridCellClicked(OnGridCellClicked);
 
         EnterZone(ObjectManager.Instance.GetInitialZoneIndex());
+        RefreshRewardCardBuffDisplay();
+    }
+
+    // 보상카드 지속버프 상태(ObjectManager.m_rewardCardSessionState)가 바뀔 때마다(선택/재접속복구/런종료) 호출해 아이콘 나열을 다시 그림
+    private void RefreshRewardCardBuffDisplay()
+    {
+        if (m_rewardCardBuffDisplay != null)
+            m_rewardCardBuffDisplay.Refresh(ObjectManager.Instance.m_rewardCardSessionState);
     }
 
     // 존 진입(카메라 갤럭시뷰 전환 → 정착 시 SettleZoneEntry) — OnShowUIPanel(패널이 새로 열릴 때) 전용이 아니라,
@@ -426,6 +438,9 @@ public class UIPanelExplorationGrid : UIPanelBase
             if (card != null && card.isPersistent == true)
                 ObjectManager.Instance.m_rewardCardSessionState.ApplyCard(card);
         }
+
+        ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
+        RefreshRewardCardBuffDisplay();
     }
 
     // 통행 가능한 셀마다 적함대 웨이브 구성을 즉석 계산해 캐싱 — (zoneConfig, seed, x, y) 결정론적이라 재계산해도 항상 동일
@@ -615,7 +630,10 @@ public class UIPanelExplorationGrid : UIPanelBase
         myFleet.StartFleetWarpIn();
 
         if (m_gridData.GetCell(row, col).isCleared == true)
+        {
+            SyncRevisitedCellPosition(row, col, myFleet);
             return; // 이번 런에서 이미 클리어한 셀 — 전투 없이 바로 이동
+        }
 
         List<FleetInfo> previewWaves = GetCellEnemyWaves(row, col);
         FleetInfo previewFleetInfo = previewWaves != null && previewWaves.Count > 0 ? previewWaves[0] : null;
@@ -624,6 +642,26 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         m_pendingEnemyRequestMyFleetPos = myFleetPos;
         RequestEnemyFleetForCurrentCell();
+    }
+
+    // 재방문(이미 클리어한 셀)은 전투 없이 패스하지만, 서버의 run.currentCell은 갱신해야 다음 이동의 인접성 검사가 어긋나지 않음
+    // ClearExplorationCellRequest를 그대로 재사용 — 서버가 재방문으로 판단하면 포인트/경험치/카드 지급 없이 위치만 갱신함
+    private void SyncRevisitedCellPosition(int row, int col, SpaceFleet myFleet)
+    {
+        ClearExplorationCellRequest request = new ClearExplorationCellRequest
+        {
+            zoneNumber = m_currentZoneNumber,
+            cellRow = row,
+            cellCol = col,
+            shipHealthRatios = myFleet != null ? myFleet.BuildHealthRatioSnapshot() : null,
+        };
+        NetworkManager.Instance.ClearExplorationCell(request, response =>
+        {
+            if (response.errorCode != 0)
+                Debug.LogError($"[UIPanelExplorationGrid] SyncRevisitedCellPosition 실패: {response.errorCode}");
+
+            UIManager.Instance.ShowPanel(panelName);
+        });
     }
 
     // OnConfirmAbandonAnotherRunAndRetry(다른 존 런 포기 후 재시도)에서도 재사용 — m_currentRow/Col과 m_pendingEnemyRequestMyFleetPos는
@@ -675,6 +713,8 @@ public class UIPanelExplorationGrid : UIPanelBase
             Debug.LogError($"[UIPanelExplorationGrid] EnterExplorationCell 실패: {response.errorCode}");
             return;
         }
+
+        m_activeChallengeToken = response.data.challengeToken;
 
         // 이 존에 런이 확정 시작됨 — 로컬 캐시도 즉시 갱신해야 이번 세션 안에서 "다른 존 진행중" 판정이 정확함
         CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
@@ -745,6 +785,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             cellRow = m_currentRow,
             cellCol = m_currentCol,
             shipHealthRatios = myFleet != null ? myFleet.BuildHealthRatioSnapshot() : null,
+            challengeToken = m_activeChallengeToken,
         };
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
     }
@@ -816,6 +857,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (card.isPersistent == true)
         {
             ObjectManager.Instance.m_rewardCardSessionState.ApplyCard(card);
+            ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
+            RefreshRewardCardBuffDisplay();
         }
         else if (card.effectType == ECardEffectType.Instant_HealthHeal)
         {
@@ -893,6 +936,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
             ObjectManager.Instance.m_rewardCardSessionState.Reset();
+            ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
+            RefreshRewardCardBuffDisplay();
 
             // 이미 갤럭시뷰(그리드) 중이라 EnterZone(EnterGalaxyView 기반)은 못 씀 — EnterGalaxyView는 "m_isGalaxyView==true면 no-op"라
             // 정착 이벤트가 영원히 안 옴. NavigateToZone(존 탭 브라우징)과 동일하게 FocusOnZoneAnchor로 즉시 리타겟 후 바로 재구성
@@ -1015,6 +1060,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
             ObjectManager.Instance.m_rewardCardSessionState.Reset();
+            ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
+            RefreshRewardCardBuffDisplay();
 
             // 진행 중이던 런이 종료되었으므로 현재 존을 시작 셀 상태로 다시 진입 — m_gridData를 비워 SelectZoneTab의 좌표 보존 경로를 건너뜀
             m_gridData = null;

@@ -14,7 +14,7 @@ public class ConfirmPopupConfig
     public List<(string label, string value, Color? color)> resultRows;
     public bool resultRowsVertical; // 라벨+값 행은 항상 한 줄에 한 항목이라 현재는 무의미(시그니처 호환용으로만 유지)
     public string resultSectionTitle = "RESULT"; // resultRows 섹션 헤더 텍스트
-    public List<ShipStatGaugeEntry> statGaugeRows; // 함선 스탯 게이지 목록(함대편성 배치가능 프리셋 클릭 등) — UISection과 별개로 m_sectionsRoot에 먼저 쌓임
+    public List<ShipStatRowEntry> statGaugeRows; // 함선 스탯 게이지 목록(함대편성 배치가능 프리셋 클릭 등) — UISection과 별개로 m_sectionsRoot에 먼저 쌓임
     public List<(string label, string value)> pvpOpponentRows; // STATUS 섹션 (General.Bright1 색)
     public RequireStruct require;
     public CostStruct cost;
@@ -43,7 +43,7 @@ public class UIPopupConfirm : UIPopupBase
     [SerializeField] private RectTransform m_layoutRoot;
     
     [SerializeField] private RectTransform m_statsRoot;
-    [SerializeField] private UIStatGaugeRow m_statGaugeRowPrefab; // m_sectionsRoot는 VerticalLayoutGroup이라 UISection과 다른 프리팹을 섞어도 순서대로 쌓임
+    [SerializeField] private UIStatRow m_statGaugeRowPrefab; // m_sectionsRoot는 VerticalLayoutGroup이라 UISection과 다른 프리팹을 섞어도 순서대로 쌓임
 
     [SerializeField] private RectTransform m_sectionsRoot;
     [SerializeField] private UISection m_sectionPrefab;
@@ -67,7 +67,7 @@ public class UIPopupConfirm : UIPopupBase
     private Sprite m_defaultConfirmImage;
 
     private List<UISection> m_sectionCache = new List<UISection>();
-    private List<UIStatGaugeRow> m_statGaugeRowCache = new List<UIStatGaugeRow>();
+    private List<UIStatRow> m_statGaugeRowCache = new List<UIStatRow>();
 
     protected override void Awake()
     {
@@ -216,7 +216,7 @@ public class UIPopupConfirm : UIPopupBase
     }
 
     // 함선 스탯 게이지 목록 — UISection 풀과 별개 캐시로 관리, m_statsRoot에 별도로 쌓임(섹션들과 부모가 달라 순서 무관)
-    private void BuildStatGaugeRows(List<ShipStatGaugeEntry> entries)
+    private void BuildStatGaugeRows(List<ShipStatRowEntry> entries)
     {
         if (entries == null || entries.Count <= 0)
         {
@@ -231,33 +231,25 @@ public class UIPopupConfirm : UIPopupBase
 
         for (int i = 0; i < entries.Count; i++)
         {
-            UIStatGaugeRow row = GetOrCreateStatGaugeRow(i);
-            ShipStatGaugeEntry entry = entries[i];
-            switch (entry.mode)
-            {
-                case EGaugeMode.Normal:
-                    row.SetGauge(entry.label, entry.value, entry.gaugeMax);
-                    break;
-                case EGaugeMode.Reverse:
-                    row.SetReverseGauge(entry.label, entry.rawValueText, entry.reverseFillAmount);
-                    break;
-                default:
-                    row.SetValueOnly(entry.label, entry.rawValueText);
-                    break;
-            }
+            UIStatRow row = GetOrCreateStatGaugeRow(i);
+            ShipStatRowEntry entry = entries[i];
+            if (entry.isNumericValue == true)
+                row.SetStatRow(entry.label, entry.value);
+            else
+                row.SetValueOnly(entry.label, entry.rawValueText);
         }
 
         HideUnusedStatGaugeRows(entries.Count);
     }
 
-    private UIStatGaugeRow GetOrCreateStatGaugeRow(int idx)
+    private UIStatRow GetOrCreateStatGaugeRow(int idx)
     {
         if (idx < m_statGaugeRowCache.Count)
         {
             m_statGaugeRowCache[idx].gameObject.SetActive(true);
             return m_statGaugeRowCache[idx];
         }
-        UIStatGaugeRow row = Instantiate(m_statGaugeRowPrefab, m_statsRoot);
+        UIStatRow row = Instantiate(m_statGaugeRowPrefab, m_statsRoot);
         m_statGaugeRowCache.Add(row);
         return row;
     }

@@ -70,13 +70,13 @@ public class FleetComposition
     // presetData.statAllocation에서 비어있지 않은 슬롯(현재는 beam slot0=beam_t1)만 추출 — modules_in_preset.csv/서버 defaultModules와 동일 규칙
     private ModuleBodyInfo BuildDefaultModules(ShipPresetData presetData)
     {
-        var body = new ModuleBodyInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangers = new List<ModuleInfo>() };
+        var body = new ModuleBodyInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
         ShipStatAllocation alloc = presetData.statAllocation;
         if (alloc == null) return body;
 
         AppendDefaultModules(body.beams, EModuleType.beam, alloc.beamModuleSubType);
         AppendDefaultModules(body.missiles, EModuleType.missile, alloc.missileModuleSubType);
-        AppendDefaultModules(body.hangers, EModuleType.hanger, alloc.hangarModuleSubType);
+        AppendDefaultModules(body.hangars, EModuleType.hangar, alloc.hangarModuleSubType);
         return body;
     }
 
@@ -107,7 +107,7 @@ public class FleetComposition
         int modulesCost = 0;
         modulesCost += SumModuleCost(entry.modules != null ? entry.modules.beams : null);
         modulesCost += SumModuleCost(entry.modules != null ? entry.modules.missiles : null);
-        modulesCost += SumModuleCost(entry.modules != null ? entry.modules.hangers : null);
+        modulesCost += SumModuleCost(entry.modules != null ? entry.modules.hangars : null);
         return bodyCost + modulesCost;
     }
 
@@ -145,7 +145,7 @@ public class FleetComposition
         return ComputeSlotCommandCost(m_placedShips[index]);
     }
 
-    // presetId(예: "m11100") → [beam, missile, hanger, shield, interceptor] 카테고리별 최대 슬롯 수 — 서버 FleetService.parseMaxSlotsFromPresetId와 동일 규칙
+    // presetId(예: "m11100") → [beam, missile, hangar, shield, interceptor] 카테고리별 최대 슬롯 수 — 서버 FleetService.parseMaxSlotsFromPresetId와 동일 규칙
     public static int[] ParseMaxSlotsFromPresetId(string presetId)
     {
         int[] result = new int[5];

@@ -250,7 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_firePoint: {fileID: 0}
   m_targetModule: {fileID: 0}
-  m_moduleHanger: {fileID: 0}
+  m_moduleHangar: {fileID: 0}
   m_aircraftInfo:
     airLaunchDist: 0
     airHealth: 0
@@ -268,9 +268,9 @@ MonoBehaviour:
     isReady: 0
     airAttackMultiplier: 0
   m_carrierShip: {fileID: 0}
-  m_hangerModuleType: 0
-  m_hangerModuleSubType: 0
-  m_hangerSlotIndex: 0
+  m_hangarModuleType: 0
+  m_hangarModuleSubType: 0
+  m_hangarSlotIndex: 0
   m_isEnemyAircraft: 0
   m_repositionMinDistanceMultiplier: 1.5
   m_repositionMaxDistanceMultiplier: 2.5

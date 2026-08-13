@@ -695,11 +695,13 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     //     StartCoroutine(RunAsync(() => m_apiClient.GetFleetStatsAsync(request), onComplete));
     // }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
     public void ExecuteDevCommand(string command, string[] parameters, System.Action<ApiResponse<string>> onComplete = null)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.ExecuteDevCommandAsync(command, parameters), onComplete));
     }
+#endif
 
 
     public void AutoLogin(System.Action<ApiResponse<AuthResponse>> onComplete = null)
@@ -720,22 +722,27 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         PlayerPrefs.Save();
     }
 
+    // 서버 측 리프레시 토큰 세션을 먼저 폐기한 뒤 로컬 토큰을 정리. 서버 호출 실패해도 로컬 로그아웃은 항상 진행
+    public void LogoutFromServer(System.Action onComplete = null)
+    {
+        if (m_bConnected == false)
+        {
+            Logout();
+            onComplete?.Invoke();
+            return;
+        }
+
+        StartCoroutine(RunAsync(() => m_apiClient.LogoutAsync(), (response) =>
+        {
+            Logout();
+            onComplete?.Invoke();
+        }));
+    }
+
     public void DeleteAccount(System.Action<ApiResponse<string>> onComplete = null)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.DeleteAccountAsync(), onComplete));
-    }
-
-    public void ClearZoneStage(ClearZoneStageRequest request, System.Action<ApiResponse<ClearZoneStageResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ClearZoneStageAsync(request), onComplete));
-    }
-
-    public void ClaimZoneReward(ClaimZoneRewardRequest request, System.Action<ApiResponse<ClaimZoneRewardResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ClaimZoneRewardAsync(request), onComplete));
     }
 
     // PvP 주석처리로 임시 비활성화(삭제 아님)
@@ -746,18 +753,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.PvpClaimSeasonRewardAsync(), onComplete));
     }
     */
-
-    public void ClaimPendingStageRewards(System.Action<ApiResponse<PendingStageRewardResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ClaimPendingStageRewardsAsync(), onComplete));
-    }
-
-    public void GetStageEnemies(GetStageEnemiesRequest request, System.Action<ApiResponse<GetStageEnemiesResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.GetStageEnemiesAsync(request), onComplete));
-    }
 
     public void EnterExplorationCell(EnterExplorationCellRequest request, System.Action<ApiResponse<EnterExplorationCellResponse>> onComplete)
     {

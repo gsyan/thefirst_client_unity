@@ -3528,7 +3528,7 @@ GameObject:
   - component: {fileID: 7510020003698322842}
   - component: {fileID: 807662457122902079}
   m_Layer: 0
-  m_Name: HangerFlightPath
+  m_Name: HangarFlightPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3562,7 +3562,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bf5d5e20e5da524085e922b0d161a5d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HangerFlightPath
+  m_EditorClassIdentifier: Assembly-CSharp::HangarFlightPath
   m_launchPath: {fileID: 4692478363301675777}
   m_launchWps:
   - {fileID: 2932220412272053617}
@@ -4774,7 +4774,7 @@ GameObject:
   - component: {fileID: 1549239605468240439}
   - component: {fileID: 4653623630363959966}
   m_Layer: 0
-  m_Name: HangerSlot
+  m_Name: HangarSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5275,7 +5275,7 @@ GameObject:
   - component: {fileID: 5889180222652693799}
   - component: {fileID: 2756483536704493162}
   m_Layer: 0
-  m_Name: HangerSlot
+  m_Name: HangarSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5362,7 +5362,7 @@ GameObject:
   - component: {fileID: 3839309625015046238}
   - component: {fileID: 5812960820095461176}
   m_Layer: 0
-  m_Name: HangerFlightPath
+  m_Name: HangarFlightPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5396,7 +5396,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bf5d5e20e5da524085e922b0d161a5d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HangerFlightPath
+  m_EditorClassIdentifier: Assembly-CSharp::HangarFlightPath
   m_launchPath: {fileID: 8856958364474962102}
   m_launchWps:
   - {fileID: 798795996310488237}

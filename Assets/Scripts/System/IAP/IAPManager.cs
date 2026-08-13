@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using Unity.Services.Core;
@@ -17,10 +18,10 @@ public class IAPManager : MonoSingleton<IAPManager>
 
     protected override void OnInitialize()
     {
-        InitializePurchasing();
+        _ = InitializePurchasingAsync();
     }
 
-    private async void InitializePurchasing()
+    private async Task InitializePurchasingAsync()
     {
         try
         {

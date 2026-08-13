@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class UIPanelFleet : UIPanelBase
 {
     [SerializeField] private RowLabelValue m_fleetStatsRowPrefab; // 상단 FleetStats 전용(지휘력/배치 함선 수) — 항상 텍스트로 표시
-    [SerializeField] private UIStatGaugeRow m_statsRowPrefab;     // 성능 컬럼 전용 — 선택한 함선의 상세 스탯
+    [SerializeField] private UIStatRow m_statsRowPrefab;     // 성능 컬럼 전용 — 선택한 함선의 상세 스탯
     [SerializeField] private UIPlacedShipRow m_placedShipRowPrefab;
     [SerializeField] private InfiniteScrollView m_placedShipsScrollView; // 배치된 함선 목록 — 세로 가상 스크롤(PlacedShipsContainer 아래 배치된 스크롤뷰)
     [SerializeField] private UIShipPresetPickerView m_shipPresetPicker; // 함선 타입선택 버튼을 누르면 뜨는 프리셋 선택 팝업(UIPanelFleet 루트 아래 내장, PlacedShipsContainer와는 별개)
@@ -32,7 +32,7 @@ public class UIPanelFleet : UIPanelBase
 
     // 성능 컬럼(StatsScrollView) — InfiniteScrollView가 화면에 보이는 행만 OnStatsItemBind로 바인딩하므로,
     // 선택된 함선의 전체 스탯 항목은 여기 캐싱해두고 바인드 시점에 조회
-    private List<ShipStatGaugeEntry> m_statEntries = new();
+    private List<ShipStatRowEntry> m_statEntries = new();
 
     // 배치된 함선 목록 — InfiniteScrollView가 화면에 보이는 행만 OnPlacedShipItemBind로 바인딩하므로,
     // 전체 슬롯 데이터/개수는 여기 캐싱해두고 바인드 시점에 조회
@@ -616,7 +616,9 @@ public class UIPanelFleet : UIPanelBase
         RefreshEditLoadoutButtonInteractable();
 
         PlacedShipView selectedShip = placedShips[m_selectedSlotIndex];
-        m_statEntries = ShipStatGaugeBuilder.Build(selectedPreset, selectedShip.modules, selectedShip.healthMultiplier, selectedShip.attackMultiplier);
+        // 읽기전용(적 함대 열람)이 아닐 때만 보상카드 지속버프 반영 — ObjectManager.SpawnFleetFromPreset()의 team/source 판정과 동일한 기준
+        RewardCardSessionState applyBuffs = m_isReadOnlyMode == false ? ObjectManager.Instance.m_rewardCardSessionState : null;
+        m_statEntries = ShipStatGaugeBuilder.Build(selectedPreset, selectedShip.modules, selectedShip.healthMultiplier, selectedShip.attackMultiplier, applyBuffs);
         if (m_statsScrollView != null && m_statsRowPrefab != null)
             m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
     }
@@ -626,22 +628,14 @@ public class UIPanelFleet : UIPanelBase
     {
         if (dataIndex < 0 || dataIndex >= m_statEntries.Count) return;
 
-        UIStatGaugeRow row = rowObject.GetComponent<UIStatGaugeRow>();
+        UIStatRow row = rowObject.GetComponent<UIStatRow>();
         if (row == null) return;
 
-        ShipStatGaugeEntry entry = m_statEntries[dataIndex];
-        switch (entry.mode)
-        {
-            case EGaugeMode.Normal:
-                row.SetGauge(entry.label, entry.value, entry.gaugeMax);
-                break;
-            case EGaugeMode.Reverse:
-                row.SetReverseGauge(entry.label, entry.rawValueText, entry.reverseFillAmount);
-                break;
-            default:
-                row.SetValueOnly(entry.label, entry.rawValueText);
-                break;
-        }
+        ShipStatRowEntry entry = m_statEntries[dataIndex];
+        if (entry.isNumericValue == true)
+            row.SetStatRow(entry.label, entry.value, buffDiffText: entry.buffDiffText);
+        else
+            row.SetValueOnly(entry.label, entry.rawValueText);
     }
 
     // 선택된 함선이 없거나 읽기전용 모드(적 함대 열람)면 "함선 수정" 버튼 비활성화

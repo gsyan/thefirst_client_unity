@@ -1,9 +1,9 @@
-// 함체 프리팹 HangerSlot 자식에 배치 — 함재기 사출/귀환 경로 웨이포인트 정의
+// 함체 프리팹 HangarSlot 자식에 배치 — 함재기 사출/귀환 경로 웨이포인트 정의
 // LaunchPath/ReturnPath 각 자식 Transform 순서 = 웨이포인트 순서
 // m_launchWps / m_returnWps 기반 Catmull-Rom 보간으로 중간 WP 자동 생성 지원 (에디터 ContextMenu)
 using UnityEngine;
 
-public class HangerFlightPath : MonoBehaviour
+public class HangarFlightPath : MonoBehaviour
 {
     [SerializeField] private Transform m_launchPath;
     [SerializeField] private Transform[] m_launchWps;
@@ -68,12 +68,12 @@ public class HangerFlightPath : MonoBehaviour
     {
         if (m_launchWps == null || m_launchWps.Length < 3)
         {
-            Debug.LogError("[HangerFlightPath] m_launchWps 최소 3개 필요");
+            Debug.LogError("[HangarFlightPath] m_launchWps 최소 3개 필요");
             return;
         }
         if (m_launchTargetCount <= m_launchWps.Length)
         {
-            Debug.LogError($"[HangerFlightPath] m_launchTargetCount({m_launchTargetCount}) > m_launchWps.Length({m_launchWps.Length}) 이어야 합니다");
+            Debug.LogError($"[HangarFlightPath] m_launchTargetCount({m_launchTargetCount}) > m_launchWps.Length({m_launchWps.Length}) 이어야 합니다");
             return;
         }
 
@@ -93,12 +93,12 @@ public class HangerFlightPath : MonoBehaviour
     {
         if (m_returnWps == null || m_returnWps.Length < 3)
         {
-            Debug.LogError("[HangerFlightPath] m_returnWps 최소 3개 필요");
+            Debug.LogError("[HangarFlightPath] m_returnWps 최소 3개 필요");
             return;
         }
         if (m_returnTargetCount <= m_returnWps.Length)
         {
-            Debug.LogError($"[HangerFlightPath] m_returnTargetCount({m_returnTargetCount}) > m_returnWps.Length({m_returnWps.Length}) 이어야 합니다");
+            Debug.LogError($"[HangarFlightPath] m_returnTargetCount({m_returnTargetCount}) > m_returnWps.Length({m_returnWps.Length}) 이어야 합니다");
             return;
         }
 

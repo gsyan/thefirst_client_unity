@@ -6,7 +6,7 @@ public enum EModuleType
     body            = 1,
     beam            = 2,
     missile         = 3,
-    hanger          = 4,
+    hangar          = 4,
     shield          = 5,
     interceptor     = 6,
     max             = 7
@@ -35,8 +35,8 @@ public enum EModuleSubType
     beam_t1             = 201000,
     // Missile SubType
     missile_t1          = 301000,
-    // Hanger SubType
-    hanger_t1           = 401000,
+    // Hangar SubType
+    hangar_t1           = 401000,
     // Shield SubType
     shield_t1           = 501000,
     // Interceptor SubType
@@ -91,7 +91,7 @@ public static class EModuleTypeExtensions
                 return new UnityEngine.Color(0.9f, 0.7f, 0.7f);
             case EModuleType.missile:
                 return new UnityEngine.Color(0.9f, 0.7f, 0.7f);
-            case EModuleType.hanger:
+            case EModuleType.hangar:
                 return new UnityEngine.Color(0.9f, 0.9f, 0.7f);
             case EModuleType.shield:
                 return new UnityEngine.Color(0.7f, 0.85f, 0.95f);
@@ -170,8 +170,8 @@ public enum ECardEffectType
     Buff_MissileAttack,           // 지속버프: 미사일 공격력 x(1+value1)
     Buff_MissileFireRate,         // 지속버프: 미사일 연사속도(쿨다운 감소) x(1+value1)
     Buff_MissileSilence,          // 지속버프: 미사일 침묵효과(silenceTime) x(1+value1)
-    Buff_HangarShipAttack,        // 지속버프: 함재기 대함 공격력 x(1+value1)
-    Buff_HangarFighterAttack,     // 지속버프: 함재기 대함재기 공격력 x(1+value1)
+    Buff_HangarAttackToShip,      // 지속버프: 함재기 대함 공격력(Phase_AttackShip) x(1+value1)
+    Buff_HangarAttackToFighter,   // 지속버프: 함재기 대함재기 공격력(Dogfight) x(1+value1)
     Buff_ShipHealth,              // 지속버프: 체력 x(1+value1)
     Buff_ExplorationPointRate,    // 지속버프: 탐험 포인트 획득률 x(1+value1)
     Instant_HealthHeal,           // 즉시효과: 체력 value1(0~1) 비율만큼 회복

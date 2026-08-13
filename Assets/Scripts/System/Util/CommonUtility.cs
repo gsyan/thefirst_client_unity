@@ -137,7 +137,7 @@ public static class CommonUtility
             stats.attack = moduleData.attack;
             stats.totalWeapons = 1;
         }
-        else if (moduleInfo.moduleType == EModuleType.hanger)
+        else if (moduleInfo.moduleType == EModuleType.hangar)
         {
             stats.airAttack = moduleData.airAttack * moduleData.airCount; // 함재기 1기당 공격력 × 함재기 수 = 이 격납고의 총 화력
             stats.airCount = moduleData.airCount;              // 함재기 수
@@ -227,10 +227,10 @@ public static class CommonUtility
                 }
             }
 
-            // Hanger 모듈들 합산
-            if (bodyInfo.hangers != null)
+            // Hangar 모듈들 합산
+            if (bodyInfo.hangars != null)
             {
-                foreach (ModuleInfo moduleInfo in bodyInfo.hangers)
+                foreach (ModuleInfo moduleInfo in bodyInfo.hangars)
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
                     stats.airAttack += moduleStats.airAttack;

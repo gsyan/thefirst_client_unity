@@ -259,7 +259,7 @@ public class DataTableShipPresetEditor : Editor
             formula.missile.projectileSpeedPerPoint, formula.missile.silenceTimePerPoint);
 
         EditorGUILayout.LabelField("Hangar", EditorStyles.boldLabel);
-        DrawHangarSlots(alloc, GetSlotCount(slotCounts, EModuleType.hanger), formula.hangar);
+        DrawHangarSlots(alloc, GetSlotCount(slotCounts, EModuleType.hangar), formula.hangar);
 
         int shieldSlotCount = GetSlotCount(slotCounts, EModuleType.shield);
         if (shieldSlotCount > 0)
@@ -360,7 +360,7 @@ public class DataTableShipPresetEditor : Editor
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField($"Hangar {i + 1}", GUILayout.Width(60));
-            DrawSubTypePopup(subTypeProp, "hanger_", 120);
+            DrawSubTypePopup(subTypeProp, "hangar_", 120);
             EditorGUILayout.LabelField($"장착 {GetInstallCostForSubType(subTypeProp.stringValue)}", GUILayout.Width(70));
             EditorGUILayout.EndHorizontal();
 

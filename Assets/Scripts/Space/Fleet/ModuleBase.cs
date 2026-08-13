@@ -206,6 +206,14 @@ public class ModuleBase : MonoBehaviour
         // 기본 구현 없음 - 각 모듈에서 필요시 override
     }
 
+    // 보상카드 지속버프 배율 — 내 함대(fleet_source_player) 모듈에서만 1이 아님. 공격/쿨다운 등 "사용 시점에 즉시 반영되어야 하는" 값에 매번 곱해서 씀
+    // (스폰 시 1회성으로 구워넣지 않는 이유: 버프는 존 런 도중에도 계속 늘어나므로, 이미 스폰된 함선도 다음 공격부터 바로 반영되어야 함)
+    public float GetRewardCardBuffMultiplier(ECardEffectType effectType)
+    {
+        if (m_ownerFleet == null || m_ownerFleet.m_fleetSource != EFleetSource.fleet_source_player) return 1f;
+        return ObjectManager.Instance.m_rewardCardSessionState.GetMultiplier(effectType);
+    }
+
     public SpaceShip GetSpaceShip()
     {
         // SpaceShip targetShip = GetComponent<SpaceShip>();

@@ -6,7 +6,7 @@ public enum EGaugeBarMode
     Body,
     Weapon,
     Engine,
-    Hanger,
+    Hangar,
     All
 }
 
@@ -155,7 +155,7 @@ public class GaugeBars : MonoBehaviour
             return new Color(0.8f, 0.2f, 0.2f);
         else if (module is ModuleMissile)
             return new Color(0.8f, 0.3f, 0.2f);
-        else if (module is ModuleHanger)
+        else if (module is ModuleHangar)
             return new Color(0.2f, 0.5f, 0.8f);
         else
             return Color.white;
@@ -193,10 +193,10 @@ public class GaugeBars : MonoBehaviour
                 currentHealth = missile.m_health;
                 maxHealth = missile.m_healthMax;
             }
-            else if (module is ModuleHanger hanger)
+            else if (module is ModuleHangar hangar)
             {
-                currentHealth = hanger.m_health;
-                maxHealth = hanger.m_healthMax;
+                currentHealth = hangar.m_health;
+                maxHealth = hangar.m_healthMax;
             }
 
             gaugeBar.UpdateValue(currentHealth, maxHealth);
@@ -238,8 +238,8 @@ public class GaugeBars : MonoBehaviour
             return beam.m_health >= beam.m_healthMax;
         else if (module is ModuleMissile missile)
             return missile.m_health >= missile.m_healthMax;
-        else if (module is ModuleHanger hanger)
-            return hanger.m_health >= hanger.m_healthMax;
+        else if (module is ModuleHangar hangar)
+            return hangar.m_health >= hangar.m_healthMax;
         return true;
     }
 

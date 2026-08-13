@@ -4,9 +4,9 @@ using System.Collections;
 
 public class LauncherAircraft : LauncherBase
 {
-    private ModuleHanger m_moduleHanger;
+    private ModuleHangar m_moduleHangar;
 
-    public void InitializeLauncherAircraft(ModuleHanger moduleHanger, int firePointIndex = 0)
+    public void InitializeLauncherAircraft(ModuleHangar moduleHangar, int firePointIndex = 0)
     {
         if (m_isInitialized == true) return;
 
@@ -25,7 +25,7 @@ public class LauncherAircraft : LauncherBase
             }
         }
 
-        m_moduleHanger = moduleHanger;
+        m_moduleHangar = moduleHangar;
 
         m_isInitialized = true;
     }
@@ -40,17 +40,17 @@ public class LauncherAircraft : LauncherBase
     {
         if (target == null) yield break;
 
-        AircraftInfo aircraftInfo = m_moduleHanger.GetReadyAircraft();
+        AircraftInfo aircraftInfo = m_moduleHangar.GetReadyAircraft();
         if (aircraftInfo == null) yield break;
 
         // 출격 시 최신 격납고 스펙으로 세팅
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(
-            m_moduleHanger.m_moduleInfo.moduleSubType);
+            m_moduleHangar.m_moduleInfo.moduleSubType);
         if (moduleData != null)
             aircraftInfo.UpdateAircraftInfo(moduleData);
 
         // 출격 시 공격 배율 조립 — airAttack은 원본 유지, 배율만 airAttackMultiplier에 저장 (귀환 시 UpdateAircraftInfo로 1f 원복)
-        SpaceShip carrierShip = m_moduleHanger.GetSpaceShip();
+        SpaceShip carrierShip = m_moduleHangar.GetSpaceShip();
         SpaceFleet ownerFleet = carrierShip != null ? carrierShip.m_ownerFleet : null;
         float shipCountMultiplier = ownerFleet != null ? ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = ownerFleet != null ? ownerFleet.GetFormationAttackMultiplier() : 1f;
@@ -62,13 +62,13 @@ public class LauncherAircraft : LauncherBase
         if (aircraft == null)
         {
             Debug.LogError("[LauncherAircraft] AIRCRAFT_STANDARD 풀 고갈 — aircraftInfo 반환");
-            m_moduleHanger.ReturnAircraft(aircraftInfo);
+            m_moduleHangar.ReturnAircraft(aircraftInfo);
             yield break;
         }
         
         aircraft.transform.position = m_firePoint.position;
         aircraft.transform.rotation = m_firePoint.rotation;
-        aircraft.InitializeAirCraft(m_firePoint, target, aircraftInfo, m_moduleHanger, Color.black);
+        aircraft.InitializeAirCraft(m_firePoint, target, aircraftInfo, m_moduleHangar, Color.black);
     }
 
 }

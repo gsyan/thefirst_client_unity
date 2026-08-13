@@ -12,7 +12,7 @@ public class ModuleBody : ModuleBase
     [HideInInspector] public List<ModuleSlot> m_moduleSlots = new List<ModuleSlot>();
     [HideInInspector] public List<ModuleBeam> m_beams = new List<ModuleBeam>();
     [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
-    [HideInInspector] public List<ModuleHanger> m_hangers = new List<ModuleHanger>();
+    [HideInInspector] public List<ModuleHangar> m_hangars = new List<ModuleHangar>();
 
     private const float k_hitPenetrationRatio = 0.1f; // 충돌 지점에서 중심부로 파고드는 비율
     [SerializeField] private List<Vector3> m_hitPoints = new List<Vector3>(); // 에디터에서 베이킹, 로컬 좌표
@@ -24,7 +24,10 @@ public class ModuleBody : ModuleBase
     private float m_repair;
     private float m_speed;
 
-    
+    // 보상카드 지속버프(Buff_ShipHealth) 미반영 원본 최대체력 — RefreshRewardCardBuff()가 이 값 기준으로 m_healthMax를 다시 계산
+    private float m_baseHealthMax;
+
+
     public override void ApplyShipStateToModule()
     {
         base.ApplyShipStateToModule();
@@ -83,7 +86,8 @@ public class ModuleBody : ModuleBase
         if (moduleData == null) return;
 
         // 복원된 데이터로 초기화 — 체력/수리력은 프리셋 계산값 있으면 그걸로 대체, 없으면 기존처럼 테이블값
-        m_healthMax = statOverride?.health ?? moduleData.health;
+        m_baseHealthMax = statOverride?.health ?? moduleData.health;
+        m_healthMax = m_baseHealthMax;
         m_health = moduleBodyInfo.currentHealth > 0f ? Mathf.Min(moduleBodyInfo.currentHealth, m_healthMax) : m_healthMax;
 
         m_attack = 0.0f; // Body는 직접 공격하지 않음
@@ -94,6 +98,9 @@ public class ModuleBody : ModuleBase
 
         // 함대 정보 자동 설정
         AutoDetectFleetInfo();
+
+        // 보상카드 지속버프(내 함대만 배율 1 이상) 반영 — m_healthMax를 여기서 처음 세팅, m_health도 그만큼 같이 늘려줌
+        RefreshRewardCardBuff();
 
         // Zone 적 함선일 때 체력에 배율 적용 (프리셋 스폰은 배율 1.0 고정이라 실질적으로 no-op)
         if (m_ownerFleet != null && m_ownerFleet.IsZoneEnemy == true)
@@ -188,7 +195,7 @@ public class ModuleBody : ModuleBase
         return transform.TransformPoint(m_hitPoints[idx]);
     }
 
-    // 슬롯에 실제 모듈(Beam/Missile/Hanger)이 배치된 경우만 true
+    // 슬롯에 실제 모듈(Beam/Missile/Hangar)이 배치된 경우만 true
     private bool HasRealModule(ModuleSlot slot)
     {
         foreach (Transform child in slot.transform)
@@ -240,7 +247,7 @@ public class ModuleBody : ModuleBase
                     module.SetFleetInfo(myFleet, myShip);
 
                 // 새 body로 부모 참조 갱신 및 이 body의 무기/함재기 리스트에 재등록
-                // (RemoveMissile/RemoveHanger 등이 옛 body가 아닌 새 body를 대상으로 동작하도록)
+                // (RemoveMissile/RemoveHangar 등이 옛 body가 아닌 새 body를 대상으로 동작하도록)
                 if (module is ModuleBeam beam)
                 {
                     beam.SetParentBody(this);
@@ -251,10 +258,10 @@ public class ModuleBody : ModuleBase
                     missile.SetParentBody(this);
                     AddMissile(missile);
                 }
-                else if (module is ModuleHanger hanger)
+                else if (module is ModuleHangar hangar)
                 {
-                    hanger.SetParentBody(this);
-                    AddHanger(hanger);
+                    hangar.SetParentBody(this);
+                    AddHangar(hangar);
                 }
 
                 // 코루틴 재시작 (각 모듈에서 필요시 override)
@@ -304,15 +311,15 @@ public class ModuleBody : ModuleBase
         }
 
         // 행거 생성
-        if (bodyInfo.hangers != null)
+        if (bodyInfo.hangars != null)
         {
-            foreach (var hangerInfo in bodyInfo.hangers)
+            foreach (var hangarInfo in bodyInfo.hangars)
             {
-                ModuleSlot slot = FindModuleSlot(hangerInfo.moduleType, hangerInfo.slotIndex);
+                ModuleSlot slot = FindModuleSlot(hangarInfo.moduleType, hangarInfo.slotIndex);
                 if (slot != null && !HasRealModule(slot))
                 {
                     DisablePlaceholderIfExists(slot);
-                    InitializeHanger(hangerInfo);
+                    InitializeHangar(hangarInfo);
                 }
             }
         }
@@ -366,37 +373,37 @@ public class ModuleBody : ModuleBase
         moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot, attackOverride);
     }
 
-    private void InitializeHanger(ModuleInfo moduleInfo)
+    private void InitializeHangar(ModuleInfo moduleInfo)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString());
         if (modulePrefab == null)
         {
-            Debug.LogWarning($"InitializeHanger: Cannot find module prefab - Level: {moduleInfo.moduleLevel}");
+            Debug.LogWarning($"InitializeHangar: Cannot find module prefab - Level: {moduleInfo.moduleLevel}");
             return;
         }
 
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null)
         {
-            Debug.LogWarning($"InitializeHanger: Cannot find hanger slot {moduleInfo.slotIndex}");
+            Debug.LogWarning($"InitializeHangar: Cannot find hangar slot {moduleInfo.slotIndex}");
             return;
         }
 
         if (HasRealModule(targetSlot))
         {
-            Debug.LogWarning($"InitializeHanger: Hanger slot {moduleInfo.slotIndex} is already occupied");
+            Debug.LogWarning($"InitializeHangar: Hangar slot {moduleInfo.slotIndex} is already occupied");
             return;
         }
 
-        GameObject hangerObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
-        hangerObj.transform.SetParent(targetSlot.transform);
-        hangerObj.transform.localScale = Vector3.one;
+        GameObject hangarObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation);
+        hangarObj.transform.SetParent(targetSlot.transform);
+        hangarObj.transform.localScale = Vector3.one;
 
-        ModuleHanger moduleHanger = hangerObj.GetComponent<ModuleHanger>();
-        if (moduleHanger == null)
-            moduleHanger = hangerObj.AddComponent<ModuleHanger>();
+        ModuleHangar moduleHangar = hangarObj.GetComponent<ModuleHangar>();
+        if (moduleHangar == null)
+            moduleHangar = hangarObj.AddComponent<ModuleHangar>();
 
-        moduleHanger.InitializeModuleHanger(moduleInfo, this, targetSlot);
+        moduleHangar.InitializeModuleHangar(moduleInfo, this, targetSlot);
     }
 
     public void CollectAndSortModuleSlots()
@@ -459,13 +466,13 @@ public class ModuleBody : ModuleBase
     }
 
     // 행거 추가
-    public void AddHanger(ModuleHanger hanger)
+    public void AddHangar(ModuleHangar hangar)
     {
-        if (m_moduleBodyInfo.hangers.Contains(hanger.m_moduleInfo) == false)
-            m_moduleBodyInfo.hangers.Add(hanger.m_moduleInfo);
+        if (m_moduleBodyInfo.hangars.Contains(hangar.m_moduleInfo) == false)
+            m_moduleBodyInfo.hangars.Add(hangar.m_moduleInfo);
 
-        if (!m_hangers.Contains(hanger))
-            m_hangers.Add(hanger);
+        if (!m_hangars.Contains(hangar))
+            m_hangars.Add(hangar);
     }
 
     // 무기 제거
@@ -484,11 +491,11 @@ public class ModuleBody : ModuleBase
     }
 
     // 행거 제거
-    public void RemoveHanger(ModuleHanger hanger, bool bRemoveFromInfo = false)
+    public void RemoveHangar(ModuleHangar hangar, bool bRemoveFromInfo = false)
     {
         if( bRemoveFromInfo == true)
-            m_moduleBodyInfo.hangers.Remove(hanger.m_moduleInfo);
-        m_hangers.Remove(hanger);
+            m_moduleBodyInfo.hangars.Remove(hangar.m_moduleInfo);
+        m_hangars.Remove(hangar);
     }
 
     private List<ModuleInfo> CopyModuleInfoList(List<ModuleInfo> source)
@@ -551,10 +558,10 @@ public class ModuleBody : ModuleBase
                     continue;
                 }
 
-                ModuleHanger hanger = slot.GetComponentInChildren<ModuleHanger>();
-                if (hanger != null)
+                ModuleHangar hangar = slot.GetComponentInChildren<ModuleHangar>();
+                if (hangar != null)
                 {
-                    hanger.SetTarget(target);
+                    hangar.SetTarget(target);
                     continue;
                 }
             }
@@ -623,6 +630,22 @@ public class ModuleBody : ModuleBase
     public float GetHealthRatio()
     {
         return m_healthMax > 0 ? m_health / m_healthMax : 0f;
+    }
+
+    // 보상카드 지속버프 배율이 바뀔 때마다(카드 선택/런 종료 초기화) 호출 — 이 바디의 체력과 하위 무기 모듈들을 모두 갱신
+    public void RefreshRewardCardBuff()
+    {
+        float oldHealthMax = m_healthMax;
+        m_healthMax = m_baseHealthMax * GetRewardCardBuffMultiplier(ECardEffectType.Buff_ShipHealth);
+        // 최대체력이 늘어난 만큼 현재체력도 같이 늘려줌(그 자리에서 즉시 회복은 아님) — 줄어드는 경우는 없음(버프는 항상 증가)
+        float healthMaxDelta = m_healthMax - oldHealthMax;
+        if (healthMaxDelta != 0f)
+            m_health = Mathf.Clamp(m_health + healthMaxDelta, 0f, m_healthMax);
+
+        foreach (ModuleBeam beam in m_beams)
+            if (beam != null) beam.RefreshRewardCardBuff();
+        foreach (ModuleMissile missile in m_missiles)
+            if (missile != null) missile.RefreshRewardCardBuff();
     }
 
 }

@@ -200,80 +200,80 @@
     "weight": 2
   },
   {
-    "cardId": "card_hangar_ship_attack_1per",
-    "effectType": "Buff_HangarShipAttack",
+    "cardId": "card_hangar_attack_to_ship_1per",
+    "effectType": "Buff_HangarAttackToShip",
     "isPersistent": true,
     "value1": 0.01,
     "value2": 0.0,
     "weight": 20
   },
   {
-    "cardId": "card_hangar_ship_attack_2per",
-    "effectType": "Buff_HangarShipAttack",
+    "cardId": "card_hangar_attack_to_ship_2per",
+    "effectType": "Buff_HangarAttackToShip",
     "isPersistent": true,
     "value1": 0.02,
     "value2": 0.0,
     "weight": 15
   },
   {
-    "cardId": "card_hangar_ship_attack_3per",
-    "effectType": "Buff_HangarShipAttack",
+    "cardId": "card_hangar_attack_to_ship_3per",
+    "effectType": "Buff_HangarAttackToShip",
     "isPersistent": true,
     "value1": 0.03,
     "value2": 0.0,
     "weight": 10
   },
   {
-    "cardId": "card_hangar_ship_attack_4per",
-    "effectType": "Buff_HangarShipAttack",
+    "cardId": "card_hangar_attack_to_ship_4per",
+    "effectType": "Buff_HangarAttackToShip",
     "isPersistent": true,
     "value1": 0.04,
     "value2": 0.0,
     "weight": 5
   },
   {
-    "cardId": "card_hangar_ship_attack_5per",
-    "effectType": "Buff_HangarShipAttack",
+    "cardId": "card_hangar_attack_to_ship_5per",
+    "effectType": "Buff_HangarAttackToShip",
     "isPersistent": true,
     "value1": 0.05,
     "value2": 0.0,
     "weight": 2
   },
   {
-    "cardId": "card_hangar_fighter_attack_1per",
-    "effectType": "Buff_HangarFighterAttack",
+    "cardId": "card_hangar_attack_to_fighter_1per",
+    "effectType": "Buff_HangarAttackToFighter",
     "isPersistent": true,
     "value1": 0.01,
     "value2": 0.0,
     "weight": 20
   },
   {
-    "cardId": "card_hangar_fighter_attack_2per",
-    "effectType": "Buff_HangarFighterAttack",
+    "cardId": "card_hangar_attack_to_fighter_2per",
+    "effectType": "Buff_HangarAttackToFighter",
     "isPersistent": true,
     "value1": 0.02,
     "value2": 0.0,
     "weight": 15
   },
   {
-    "cardId": "card_hangar_fighter_attack_3per",
-    "effectType": "Buff_HangarFighterAttack",
+    "cardId": "card_hangar_attack_to_fighter_3per",
+    "effectType": "Buff_HangarAttackToFighter",
     "isPersistent": true,
     "value1": 0.03,
     "value2": 0.0,
     "weight": 10
   },
   {
-    "cardId": "card_hangar_fighter_attack_4per",
-    "effectType": "Buff_HangarFighterAttack",
+    "cardId": "card_hangar_attack_to_fighter_4per",
+    "effectType": "Buff_HangarAttackToFighter",
     "isPersistent": true,
     "value1": 0.04,
     "value2": 0.0,
     "weight": 5
   },
   {
-    "cardId": "card_hangar_fighter_attack_5per",
-    "effectType": "Buff_HangarFighterAttack",
+    "cardId": "card_hangar_attack_to_fighter_5per",
+    "effectType": "Buff_HangarAttackToFighter",
     "isPersistent": true,
     "value1": 0.05,
     "value2": 0.0,

@@ -86,7 +86,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         // 슬롯 잠금 없음 — 모든 슬롯이 자유롭게 토글 가능. 공격 모듈 0개 방지는 Confirm 버튼 비활성화(RefreshCommandPowerPreview)로 처리
         AppendCategorySlots(EModuleType.beam, maxSlots[0]);
         AppendCategorySlots(EModuleType.missile, maxSlots[1]);
-        AppendCategorySlots(EModuleType.hanger, maxSlots[2]);
+        AppendCategorySlots(EModuleType.hangar, maxSlots[2]);
 
         if (m_moduleScrollView != null && m_rowPrefab != null)
             m_moduleScrollView.Initialize(m_moduleSlotEntries.Count, m_rowPrefab.gameObject);
@@ -132,7 +132,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (modules == null) return null;
         if (moduleType == EModuleType.beam) return modules.beams;
         if (moduleType == EModuleType.missile) return modules.missiles;
-        if (moduleType == EModuleType.hanger) return modules.hangers;
+        if (moduleType == EModuleType.hangar) return modules.hangars;
         return null;
     }
 
@@ -210,7 +210,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         EModuleSubType subType;
         if (moduleType == EModuleType.beam) subType = EModuleSubType.beam_t1;
         else if (moduleType == EModuleType.missile) subType = EModuleSubType.missile_t1;
-        else if (moduleType == EModuleType.hanger) subType = EModuleSubType.hanger_t1;
+        else if (moduleType == EModuleType.hangar) subType = EModuleSubType.hangar_t1;
         else return 0;
 
         ModuleData data = moduleTable.GetModuleDataFromTable(subType);
@@ -221,7 +221,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     // (해제 먼저든 장착 먼저든) 중간 상태에서 예산/공격모듈 0개 검증에 걸릴 수 있어, 서버가 결과 상태만 검증하도록 배치 전송
     private void OnConfirmClicked()
     {
-        ModuleBodyInfo desired = new ModuleBodyInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangers = new List<ModuleInfo>() };
+        ModuleBodyInfo desired = new ModuleBodyInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
         for (int i = 0; i < m_moduleSlotEntries.Count; i++)
         {
             if (m_pendingInstalled[i] == false) continue;

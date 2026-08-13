@@ -8,7 +8,7 @@ public static class TutorialCinematicController
 {
     // T1~T14 함체 프리팹의 빔/미사일/격납고 슬롯 개수 상한 (datatable_module.csv 기준, moduleLevel=1 슬롯 구성)
     // DataTableZoneEditor.k_slotCap과 동일 데이터 — 그쪽은 에디터 전용 코드라 런타임에서 재사용 불가해 복제
-    private static readonly Dictionary<int, (int beam, int missile, int hanger)> k_slotCap = new Dictionary<int, (int, int, int)>
+    private static readonly Dictionary<int, (int beam, int missile, int hangar)> k_slotCap = new Dictionary<int, (int, int, int)>
     {
         { 1,  (1, 1, 1) }, { 2,  (2, 1, 1) }, { 3,  (2, 1, 1) }, { 4,  (2, 2, 1) },
         { 5,  (2, 2, 2) }, { 6,  (2, 2, 2) }, { 7,  (3, 2, 2) }, { 8,  (3, 3, 2) },
@@ -19,7 +19,7 @@ public static class TutorialCinematicController
     // gradeLevel 함체 등급(1~14) 함선 1척 정보 생성 — 빔/미사일/격납고 슬롯을 풀로 채움
     public static ShipInfo BuildCinematicShipInfo(int gradeLevel, int positionIndex)
     {
-        (int beam, int missile, int hanger) cap;
+        (int beam, int missile, int hangar) cap;
         if (k_slotCap.TryGetValue(gradeLevel, out cap) == false)
             cap = k_slotCap[14];
 
@@ -34,9 +34,9 @@ public static class TutorialCinematicController
         for (int m = 0; m < cap.missile; m++)
             missiles.Add(new ModuleInfo { moduleType = EModuleType.missile, moduleSubType = ParseSubType($"missile_t{gradeLevel}_m1"), moduleLevel = moduleLevel, bodyIndex = 0, slotIndex = m });
 
-        List<ModuleInfo> hangers = new List<ModuleInfo>();
-        for (int h = 0; h < cap.hanger; h++)
-            hangers.Add(new ModuleInfo { moduleType = EModuleType.hanger, moduleSubType = ParseSubType($"hanger_t{gradeLevel}_m1"), moduleLevel = moduleLevel, bodyIndex = 0, slotIndex = h });
+        List<ModuleInfo> hangars = new List<ModuleInfo>();
+        for (int h = 0; h < cap.hangar; h++)
+            hangars.Add(new ModuleInfo { moduleType = EModuleType.hangar, moduleSubType = ParseSubType($"hangar_t{gradeLevel}_m1"), moduleLevel = moduleLevel, bodyIndex = 0, slotIndex = h });
 
         ModuleBodyInfo body = new ModuleBodyInfo
         {
@@ -46,7 +46,7 @@ public static class TutorialCinematicController
             bodyIndex = 0,
             beams = beams,
             missiles = missiles,
-            hangers = hangers,
+            hangars = hangars,
         };
 
         return new ShipInfo

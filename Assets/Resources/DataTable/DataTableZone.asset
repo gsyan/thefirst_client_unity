@@ -74,7 +74,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 0.1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -140,7 +140,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 0.2
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -206,7 +206,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 0.3
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -272,7 +272,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 0.4
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -346,7 +346,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 0.5
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -420,7 +420,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 0.6
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -494,7 +494,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 0.7
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -568,7 +568,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 0.8
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -642,7 +642,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 0.9
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -716,7 +716,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -790,7 +790,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -864,7 +864,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -938,7 +938,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1012,7 +1012,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1086,7 +1086,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1160,7 +1160,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1234,7 +1234,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1308,7 +1308,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1382,7 +1382,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1456,7 +1456,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1530,7 +1530,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1604,7 +1604,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1678,7 +1678,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1752,7 +1752,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1826,7 +1826,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1900,7 +1900,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -1974,7 +1974,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2048,7 +2048,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2122,7 +2122,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2196,7 +2196,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2286,7 +2286,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2376,7 +2376,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2466,7 +2466,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2556,7 +2556,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2646,7 +2646,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2736,7 +2736,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2826,7 +2826,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -2916,7 +2916,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3006,7 +3006,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3096,7 +3096,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3186,7 +3186,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3276,7 +3276,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3366,7 +3366,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3456,7 +3456,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3546,7 +3546,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3636,7 +3636,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3726,7 +3726,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3816,7 +3816,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3906,7 +3906,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -3996,7 +3996,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4086,7 +4086,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4176,7 +4176,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4266,7 +4266,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4356,7 +4356,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4446,7 +4446,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4536,7 +4536,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4626,7 +4626,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4716,7 +4716,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4806,7 +4806,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4896,7 +4896,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -4986,7 +4986,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5076,7 +5076,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5166,7 +5166,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5256,7 +5256,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5346,7 +5346,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5436,7 +5436,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5526,7 +5526,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5616,7 +5616,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5706,7 +5706,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5796,7 +5796,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5886,7 +5886,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -5976,7 +5976,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6066,7 +6066,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6156,7 +6156,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6246,7 +6246,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6336,7 +6336,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6426,7 +6426,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6516,7 +6516,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6606,7 +6606,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6696,7 +6696,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6786,7 +6786,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6876,7 +6876,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -6966,7 +6966,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7056,7 +7056,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7146,7 +7146,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7236,7 +7236,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7326,7 +7326,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7416,7 +7416,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7506,7 +7506,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7596,7 +7596,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7686,7 +7686,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7776,7 +7776,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7866,7 +7866,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -7956,7 +7956,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -8046,7 +8046,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -8136,7 +8136,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -8226,7 +8226,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -8316,7 +8316,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -8406,7 +8406,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
@@ -8496,7 +8496,7 @@ MonoBehaviour:
     enemyAttackMultiplier: 1
     enemyBeamEquipSlots: 9
     enemyMissileEquipSlots: 9
-    enemyHangerEquipSlots: 9
+    enemyHangarEquipSlots: 9
     enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
