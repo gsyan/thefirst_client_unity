@@ -9,7 +9,7 @@ public class UIShipPresetPickerView : MonoBehaviour
 {
     [SerializeField] private InfiniteScrollView m_scrollView;
     [SerializeField] private UIAvailablePresetRow m_rowPrefab;
-    [SerializeField] private UIButtonHasChildren m_confirmButton;
+    [SerializeField] private Button m_confirmButton;
     [SerializeField] private Button m_cancelButton;
 
     [SerializeField] private UIStatRow m_statsRowPrefab; // 선택된 프리셋의 스탯 — Column_Stats와 동일한 구조/프리팹 재사용
@@ -30,11 +30,7 @@ public class UIShipPresetPickerView : MonoBehaviour
     private void Awake()
     {
         if (m_confirmButton != null)
-        {
-            m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
-            m_confirmButton.SetActiveColorKey("GeneralNeon");
-            m_confirmButton.SetInactiveColorKey("Button.Disabled");
-        }
+            m_confirmButton.onClick.AddListener(OnConfirmClicked);
         if (m_cancelButton != null)
             m_cancelButton.onClick.AddListener(OnCancelClicked);
         if (m_scrollView != null)
@@ -88,7 +84,7 @@ public class UIShipPresetPickerView : MonoBehaviour
 
         ShipPresetData preset = m_presetsCache[dataIndex];
         row.Setup(preset, OnPresetClicked);
-        row.SetSelected(preset.presetId == m_selectedPresetId);
+        row.SetSelectedAvailablePresetRow(preset.presetId == m_selectedPresetId);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(rowObject.transform as RectTransform);
     }
@@ -115,7 +111,7 @@ public class UIShipPresetPickerView : MonoBehaviour
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
 
         if (m_confirmButton != null)
-            m_confirmButton.SetInteractable(isOverCommandPower == false);
+            m_confirmButton.interactable = isOverCommandPower == false;
     }
 
     // 선택된 프리셋의 스탯을 현재 장착 프리셋과 비교해서 표시 — Column_Stats(UIPanelFleet)와 동일한 풀링 패턴

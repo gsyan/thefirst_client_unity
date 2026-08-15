@@ -17,6 +17,12 @@ public class UIPopupLicense : UIPopupBase
         "Authors: Lorc, Delapouite, and contributors\n" +
         "https://game-icons.net\n\n" +
 
+        "[ Cyber GUI ]\n" +
+        "License: Free for commercial/non-commercial use (credit required)\n" +
+        "Author: TainaS\n" +
+        "https://tainas.itch.io/cyber-gui\n" +
+        "https://tainas.itch.io/\n\n" +
+
         "[ Noto Sans (KR / JP / SC / TC) ]\n" +
         "License: SIL Open Font License 1.1 (OFL)\n" +
         "Copyright: Google LLC\n" +
@@ -38,7 +44,11 @@ public class UIPopupLicense : UIPopupBase
         "License: Pixabay Content License (No attribution required)\n" +
         "https://pixabay.com/sound-effects/\n\n" +
 
-        "\n\n";        
+
+
+
+
+        "\n\n";
 
     protected override void Awake()
     {

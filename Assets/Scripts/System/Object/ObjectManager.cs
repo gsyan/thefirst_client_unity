@@ -403,6 +403,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             SwitchFromSiegfriedFleetToRealFleet();
         else
             SpawnFleet();
+        RestoreActiveRunRewardCardBuffs();
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetDestroyed);// 플레이어 함대 전멸 이벤트 구독
         NetworkManager.Instance.StartHeartbeat();
         UIManager.Instance.ShowMainPanel();
@@ -414,6 +415,23 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             DailyBonusManager.Instance.CheckAndShowDailyRewardPopup(() => TutorialManager.Instance.StartTutorial("Tutorial_Exploration"));
         else
             TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
+    }
+
+    // 재접속 시 진행 중인 탐험 런이 있으면 그 런에서 이미 확정 선택한 보상카드(지속버프)를 로그인 시점에 미리 복원 —
+    // 탐사UI(UIPanelExplorationGrid)를 열어야만 반영되던 문제 방지. 탐사UI의 RequestActiveZoneRunProgress는
+    // 적립포인트/클리어셀 등 그리드 상태 복원용으로 별도 유지하되, 카드 재적용은 하지 않음(중복 적용 방지)
+    private void RestoreActiveRunRewardCardBuffs()
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        int activeZoneNumber = commander != null && commander.m_commanderInfo != null ? commander.m_commanderInfo.explorationZoneNumber : 0;
+        if (activeZoneNumber <= 0) return; // 진행 중인 런이 없으면 요청 자체를 안 함
+
+        NetworkManager.Instance.GetActiveZoneRunProgress(new GetActiveZoneRunProgressRequest(), response =>
+        {
+            if (response == null || response.errorCode != 0 || response.data == null) return;
+            m_rewardCardSessionState.ApplyPersistentCardIds(response.data.selectedRewardCards);
+            RefreshRewardCardBuffsOnMyFleet(); // 이미 스폰된 내 함선 모듈/체력에 즉시 반영
+        });
     }
 
     public int GetInitialZoneIndex()

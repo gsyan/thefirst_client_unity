@@ -23,11 +23,12 @@ public class UIPanelFleet : UIPanelBase
     [SerializeField] private RectTransform m_fleetStatsContainer; // 상단 요약 영역(FleetStats/Container)
     [SerializeField] private InfiniteScrollView m_statsScrollView; // 성능 컬럼 — 하단 "함선 수정" 버튼 자리 확보 위해 고정 높이+가상 스크롤로 변경(PlacedShipsScrollView와 동일 패턴)
     [SerializeField] private Button m_increaseCommandPowerButton; // 탐험 포인트 100 소모 -> 지휘력 최대치 10 증가(교환비는 ExplorationService 서버값과 항상 함께 수정)
-    [SerializeField] private RowLabelValue m_ownedExplorationPointRow; // 보유 탐험 포인트 — 지휘력 증가 버튼이 바로 이 값을 소모하므로 버튼 옆에 전용으로 배치
 
     [Header("카메라 Viewport 애니메이션")]
     [SerializeField] private float m_animDuration = 0.3f;
 
+    // 상단 요약 행 구성: 0=지휘력, 1=보유 탐험 포인트, 2=배치 함선 수
+    private const int k_summaryRowCount = 3;
     private readonly List<RowLabelValue> m_fleetStatsRows = new();
 
     // 성능 컬럼(StatsScrollView) — InfiniteScrollView가 화면에 보이는 행만 OnStatsItemBind로 바인딩하므로,
@@ -100,7 +101,7 @@ public class UIPanelFleet : UIPanelBase
         }
 
         m_openCameraWidth = ComputeOpenCameraWidth();
-        CreateCameraViewportBackground();
+        //CreateCameraViewportBackground();
         ApplyViewportImmediate(open: false);
     }
 
@@ -396,8 +397,6 @@ public class UIPanelFleet : UIPanelBase
             m_fleetStatsContainer.gameObject.SetActive(visible);
         if (m_increaseCommandPowerButton != null)
             m_increaseCommandPowerButton.gameObject.SetActive(visible);
-        if (m_ownedExplorationPointRow != null)
-            m_ownedExplorationPointRow.gameObject.SetActive(visible);
     }
 
     // "배치 함선 1건"의 데이터 소스를 편집 모드(FleetComposition)/읽기전용 모드(SpaceFleet.m_fleetInfo)에서 공통 형태로 정규화
@@ -454,9 +453,14 @@ public class UIPanelFleet : UIPanelBase
     }
 
     // 풀에 행이 부족하면 새로 Instantiate해서 채움 — 실제 활성/비활성은 호출부가 SetRow()/Hide()로 처리
+    // container/prefab은 인스펙터에 반드시 연결돼 있어야 하는 필수 참조라, 비어있으면 조용히 넘기지 않고 바로 에러로 드러냄
     private void EnsureRowCount<T>(List<T> pool, RectTransform container, T prefab, int neededCount) where T : Component
     {
-        if (container == null || prefab == null) return;
+        if (container == null || prefab == null)
+        {
+            Debug.LogError($"[UIPanelFleet] EnsureRowCount: container 또는 prefab이 인스펙터에 연결되지 않음 (container={container}, prefab={prefab})");
+            return;
+        }
 
         while (pool.Count < neededCount)
             pool.Add(Instantiate(prefab, container));
@@ -465,36 +469,30 @@ public class UIPanelFleet : UIPanelBase
     // 상단 — 항상 보이는 요약(지휘력 사용량/최대치, 배치 함선 수)
     private void RefreshFleetStatsSummary(FleetComposition composition)
     {
-        const int k_summaryRowCount = 2;
         EnsureRowCount(m_fleetStatsRows, m_fleetStatsContainer, m_fleetStatsRowPrefab, k_summaryRowCount);
 
         int usedCommandPower = composition.GetUsedCommandPower();
         int maxCommandPower = composition.GetMaxCommandPower();
         int placedShipCount = composition.GetPlacedShips().Count;
 
-        if (m_fleetStatsRows.Count > 0)
-            m_fleetStatsRows[0].SetRow("UITabCommander_CommandPower", $"{usedCommandPower} / {maxCommandPower}", rawValue: true);
-
-        if (m_fleetStatsRows.Count > 1)
-            m_fleetStatsRows[1].SetRow("UIFleet_PlacedShipCount", $"{placedShipCount}", rawValue: true);
+        m_fleetStatsRows[0].SetRow("UITabCommander_CommandPower", $"{usedCommandPower} / {maxCommandPower}", rawValue: true);
+        RefreshOwnedExplorationPointRow();
+        m_fleetStatsRows[2].SetRow("UIFleet_PlacedShipCount", $"{placedShipCount}", rawValue: true);
 
         for (int i = k_summaryRowCount; i < m_fleetStatsRows.Count; i++)
             m_fleetStatsRows[i].Hide();
-
-        RefreshOwnedExplorationPointRow();
     }
 
-    // 지휘력 증가 버튼이 소모하는 값 — m_fleetStatsRows 풀과 무관하게 전용 필드로 직접 관리
+    // 지휘력 증가 버튼이 소모하는 값 — m_fleetStatsRows[1](풀링된 요약 행)을 그대로 사용
     private void RefreshOwnedExplorationPointRow()
     {
-        if (m_ownedExplorationPointRow == null) return;
+        EnsureRowCount(m_fleetStatsRows, m_fleetStatsContainer, m_fleetStatsRowPrefab, k_summaryRowCount);
 
         CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
         int ownedExplorationPoint = commanderInfo != null ? commanderInfo.explorationPoint : 0;
 
-        m_ownedExplorationPointRow.SetLabel("UIPanelExplorationGrid_OwnedPoint");
-        m_ownedExplorationPointRow.SetValues(ownedExplorationPoint.ToString(), rawValue: true);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_ownedExplorationPointRow.transform as RectTransform);
+        m_fleetStatsRows[1].SetRow("UIPanelExplorationGrid_OwnedPoint", ownedExplorationPoint.ToString(), rawValue: true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_fleetStatsRows[1].transform as RectTransform);
 
     }
 

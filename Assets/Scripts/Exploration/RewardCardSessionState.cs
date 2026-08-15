@@ -60,4 +60,19 @@ public class RewardCardSessionState
     }
 
     public float GetExplorationPointRateMultiplier() { return GetMultiplier(ECardEffectType.Buff_ExplorationPointRate); }
+
+    // 서버가 돌려준 이번 런 선택 카드 이력(cardId 목록) 중 지속버프만 걸러 재적용 — 즉시효과 카드는 이미 소모되어 재적용하면 안 됨
+    // (재접속 시 로그인 시점에 진행 중인 런의 카드를 미리 복원할 때 사용)
+    public void ApplyPersistentCardIds(List<string> cardIds)
+    {
+        if (cardIds == null || cardIds.Count == 0) return;
+
+        DataTableRewardCard table = DataManager.Instance.m_dataTableRewardCard;
+        foreach (string cardId in cardIds)
+        {
+            RewardCardData card = table.GetCard(cardId);
+            if (card != null && card.isPersistent == true)
+                ApplyCard(card);
+        }
+    }
 }

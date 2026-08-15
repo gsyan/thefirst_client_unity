@@ -76,8 +76,11 @@ MonoBehaviour:
   - key: Blue900
     primitiveKey: 
     color: {r: 0.08, g: 0.18, b: 0.32, a: 1}
+  - key: Cyan
+    primitiveKey:
+    color: {r: 0, g: 1, b: 1, a: 1}
   - key: Cyan100
-    primitiveKey: 
+    primitiveKey:
     color: {r: 0.9175, g: 0.9716667, b: 0.9825, a: 1}
   - key: Cyan1000
     primitiveKey: 
@@ -106,8 +109,11 @@ MonoBehaviour:
   - key: Cyan900
     primitiveKey: 
     color: {r: 0.07, g: 0.2866667, b: 0.33, a: 1}
+  - key: Green
+    primitiveKey:
+    color: {r: 0, g: 1, b: 0, a: 1}
   - key: Green100
-    primitiveKey: 
+    primitiveKey:
     color: {r: 0.9225, g: 0.9775, b: 0.9408333, a: 1}
   - key: Green1000
     primitiveKey: 

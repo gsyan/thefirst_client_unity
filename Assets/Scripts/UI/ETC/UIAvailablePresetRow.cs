@@ -21,8 +21,8 @@ public class UIAvailablePresetRow : MonoBehaviour
         if (m_button != null)
             m_button.onClick.AddListener(OnButtonClicked);
 
-        m_buttonDefaultColor = CommonUtility.PaletteColor("General.Dark1");
-        m_buttonSelectedColor = CommonUtility.PaletteColor("Selected");
+        m_buttonDefaultColor = CommonUtility.PaletteColor("Cyan");
+        m_buttonSelectedColor = CommonUtility.PaletteColor("Green");
         if (m_button != null && m_button.targetGraphic != null)
             m_button.targetGraphic.color = m_buttonDefaultColor;
 
@@ -31,14 +31,14 @@ public class UIAvailablePresetRow : MonoBehaviour
     }
 
     // 이 프리셋이 현재 선택 상태임을 표시 — 버튼 이미지 색 + 라벨/값 텍스트 색을 함께 토글
-    public void SetSelected(bool selected)
+    public void SetSelectedAvailablePresetRow(bool selected)
     {
         if (m_button != null && m_button.targetGraphic != null)
             m_button.targetGraphic.color = selected == true ? m_buttonSelectedColor : m_buttonDefaultColor;
 
-        Color textColor = selected == true ? m_textSelectedColor : m_textDefaultColor;
-        if (m_nameRow != null) m_nameRow.SetTextColor(textColor);
-        if (m_costRow != null) m_costRow.SetTextColor(textColor);
+        // Color textColor = selected == true ? m_textSelectedColor : m_textDefaultColor;
+        // if (m_nameRow != null) m_nameRow.SetTextColor(textColor);
+        // if (m_costRow != null) m_costRow.SetTextColor(textColor);
     }
 
     public void Setup(ShipPresetData preset, System.Action<ShipPresetData> onClick)

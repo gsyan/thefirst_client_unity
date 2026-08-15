@@ -3,6 +3,7 @@
 // 함선 이름 텍스트 + 함선 타입 선택 버튼(누르면 UIShipPresetPickerView가 뜸) + 전방/후방 슬라이드 토글(UIToggleSlide) + 행 클릭(성능 컬럼에 이 함선 스탯 표시)
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 using TMPro;
 
 public class UIPlacedShipRow : MonoBehaviour
@@ -14,13 +15,13 @@ public class UIPlacedShipRow : MonoBehaviour
     [SerializeField] private UIToggleSlide m_frontToggleSlide; // on = 전방, off = 후방
     [SerializeField] private Button m_rowButton; // 행 클릭 — 토글과는 별개 영역
     [SerializeField] private Image m_backgroundImage; // 빈 슬롯 표시 + 드래그 호버 하이라이트용 배경
-    [SerializeField] private Image m_borderImage; // 성능 컬럼에 선택된 행임을 표시하는 외곽선 — 드래그 하이라이트(m_backgroundImage)와 별개
+    // 성능 컬럼에 선택된 행임을 표시 — 드래그 하이라이트(m_backgroundImage)와 별개, 색 변경이 아니라 오브젝트 자체를 켜고 끔
+    //[FormerlySerializedAs("m_borderImage")]
+    [SerializeField] private Image m_selectedImage;
 
     private Color m_defaultBackgroundColor;
     private Color m_highlightColor;
     private Color m_lockedColor;
-    private Color m_borderDefaultColor;
-    private Color m_borderSelectedColor;
     private bool m_hasShip;
     private bool m_isLocked;
 
@@ -34,8 +35,6 @@ public class UIPlacedShipRow : MonoBehaviour
     {
         m_highlightColor = CommonUtility.PaletteColor("Unlocked");
         m_lockedColor = CommonUtility.PaletteColor("Ship.Locked");
-        m_borderDefaultColor = CommonUtility.PaletteColor("General.Dark1");
-        m_borderSelectedColor = CommonUtility.PaletteColor("Selected");
 
         if (m_backgroundImage != null)
             m_defaultBackgroundColor = m_backgroundImage.color;
@@ -43,11 +42,8 @@ public class UIPlacedShipRow : MonoBehaviour
             m_rowButton.onClick.AddListener(OnRowClicked);
         if (m_shipTypeSelectButton != null)
             m_shipTypeSelectButton.onClick.AddListener(OnTypeSelectButtonClicked);
-        if (m_borderImage != null)
-        {
-            m_borderImage.gameObject.SetActive(true);
-            m_borderImage.color = m_borderDefaultColor;
-        }
+        if (m_selectedImage != null)
+            m_selectedImage.gameObject.SetActive(false);
     }
 
     // 빈 슬롯 — 배치된 함선 없음. 타입선택 버튼을 눌러 바로 배치 가능
@@ -171,11 +167,11 @@ public class UIPlacedShipRow : MonoBehaviour
             m_backgroundImage.color = highlighted ? m_highlightColor : m_defaultBackgroundColor;
     }
 
-    // 성능 컬럼에 이 행의 스탯이 표시 중임을 외곽선으로 표시 — 드래그 하이라이트(SetHighlighted)와 별개
+    // 성능 컬럼에 이 행의 스탯이 표시 중임을 표시 — 드래그 하이라이트(SetHighlighted)와 별개, 오브젝트 자체를 켜고 끔
     public void SetSelected(bool selected)
     {
-        if (m_borderImage == null) return;
-        m_borderImage.color = selected == true ? m_borderSelectedColor : m_borderDefaultColor;
+        if (m_selectedImage == null) return;
+        m_selectedImage.gameObject.SetActive(selected);
     }
 
     public void Hide()

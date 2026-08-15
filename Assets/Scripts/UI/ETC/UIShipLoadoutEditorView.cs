@@ -13,7 +13,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     [SerializeField] private UIModuleSlotToggleRow m_rowPrefab; // 카테고리 공용 — 슬롯 1칸당 행 1개
 
     [SerializeField] private RowLabelValue m_commandPowerRow; // 상단 지휘력 요약(UIPanelFleet 성능 컬럼과 동일 구성)
-    [SerializeField] private UIButtonHasChildren m_confirmButton; // 예산 초과 시 비활성화
+    [SerializeField] private Button m_confirmButton; // 예산 초과 시 비활성화
     [SerializeField] private Button m_cancelButton;
 
     // 빔 slot0(항상 장착 고정) 여부까지 포함해 미리 계산해둔 슬롯 목록 — dataIndex 순서 = 빔 전체 → 미사일 전체 → 격납고 전체
@@ -40,11 +40,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     private void Awake()
     {
         if (m_confirmButton != null)
-        {
-            m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
-            m_confirmButton.SetActiveColorKey("GeneralNeon");
-            m_confirmButton.SetInactiveColorKey("Button.Disabled");
-        }
+            m_confirmButton.onClick.AddListener(OnConfirmClicked);
         if (m_cancelButton != null)
             m_cancelButton.onClick.AddListener(OnCancelClicked);
         if (m_moduleScrollView != null)
@@ -163,7 +159,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         // 예산 초과거나 공격 모듈(빔/미사일/격납고)이 하나도 없으면 Confirm 불가 — 서버도 동일 조건을 별도로 검증함(방어선 이중화)
         bool hasAnyAttackModule = HasAnyPendingModuleInstalled();
         if (m_confirmButton != null)
-            m_confirmButton.SetInteractable(isOverCommandPower == false && hasAnyAttackModule == true);
+            m_confirmButton.interactable = isOverCommandPower == false && hasAnyAttackModule == true;
     }
 
     private bool HasAnyPendingModuleInstalled()

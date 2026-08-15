@@ -379,7 +379,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         RefreshBankedPointText();
         RefreshAbandonRunButtonState();
         ApplyFleetHealthSnapshot(response.data.shipHealthRatios);
-        ApplyRewardCardSnapshot(response.data.selectedRewardCards);
+        // 보상카드 지속버프 복원은 ObjectManager.StartNormalPlay()에서 로그인 시점에 이미 끝남(중복 적용 방지) — 여기서는 재적용하지 않음
 
         string[] clearedCells = response.data.clearedCells;
         if (clearedCells != null)
@@ -425,23 +425,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
     }
 
-    // 재접속으로 서버에 저장된 선택 카드 목록을 받았을 때, 지속버프(isPersistent==true)만 세션 버프 상태에 다시 누적
-    // (즉시효과 카드는 선택 시점에 이미 소모돼 재적용하면 안 됨 — 서버는 지속/즉시 구분 없이 선택 이력 전체를 그대로 돌려줌)
-    private void ApplyRewardCardSnapshot(List<string> selectedCardIds)
-    {
-        if (selectedCardIds == null || selectedCardIds.Count == 0) return;
-
-        DataTableRewardCard table = DataManager.Instance.m_dataTableRewardCard;
-        foreach (string cardId in selectedCardIds)
-        {
-            RewardCardData card = table.GetCard(cardId);
-            if (card != null && card.isPersistent == true)
-                ObjectManager.Instance.m_rewardCardSessionState.ApplyCard(card);
-        }
-
-        ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
-        RefreshRewardCardBuffDisplay();
-    }
 
     // 통행 가능한 셀마다 적함대 웨이브 구성을 즉석 계산해 캐싱 — (zoneConfig, seed, x, y) 결정론적이라 재계산해도 항상 동일
     private void BuildCellEnemyFleets(ZoneConfig zoneConfig)
