@@ -680,7 +680,7 @@ MonoBehaviour:
     colorRole: Text.Dark1
   - graphic: {fileID: 0}
     colorRole: Black
-  - graphic: {fileID: 4228415257714924033}
+  - graphic: {fileID: 0}
     colorRole: Button.Border
   - graphic: {fileID: 3410501530470152364}
     colorRole: Button
@@ -929,7 +929,7 @@ PrefabInstance:
     - target: {fileID: 2699426728158604833, guid: 9c773f91192289e49957213bcdbe696b, type: 3}
       propertyPath: m_TargetGraphic
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2989562390825709254}
     - target: {fileID: 3724260403229516976, guid: 9c773f91192289e49957213bcdbe696b, type: 3}
       propertyPath: m_Name
       value: UIToggleSlide
@@ -1030,17 +1030,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &4228415257714924033 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7766403516871526460, guid: 9c773f91192289e49957213bcdbe696b, type: 3}
-  m_PrefabInstance: {fileID: 5866386701525996093}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &7117565950249154189 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3724260403229516976, guid: 9c773f91192289e49957213bcdbe696b, type: 3}
@@ -1075,7 +1064,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 5
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &7756984184530563861 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4237834042710171944, guid: 9c773f91192289e49957213bcdbe696b, type: 3}

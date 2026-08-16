@@ -7,38 +7,24 @@ public class UIAvailablePresetRow : MonoBehaviour
     [SerializeField] private RowLabelValue m_nameRow;
     [SerializeField] private RowLabelValue m_costRow; // 라벨은 "비용"만, 단위(지휘력)는 값 쪽에 숫자와 함께 표시(레이아웃 균형용)
     [SerializeField] private Button m_button; // 클릭(선택) — 눌림 시각 피드백까지 기본 제공
+    [SerializeField] private Image m_selectedImage; // 이 프리셋이 현재 선택 상태임을 표시 — 색 변경이 아니라 오브젝트 자체를 켜고 끔
 
     private ShipPresetData m_preset;
     private System.Action<ShipPresetData> m_onClick;
-
-    private Color m_buttonDefaultColor;
-    private Color m_buttonSelectedColor;
-    private Color m_textDefaultColor;
-    private Color m_textSelectedColor;
 
     private void Awake()
     {
         if (m_button != null)
             m_button.onClick.AddListener(OnButtonClicked);
-
-        m_buttonDefaultColor = CommonUtility.PaletteColor("Cyan");
-        m_buttonSelectedColor = CommonUtility.PaletteColor("Green");
-        if (m_button != null && m_button.targetGraphic != null)
-            m_button.targetGraphic.color = m_buttonDefaultColor;
-
-        m_textDefaultColor = CommonUtility.PaletteColor("Text.Dark1");
-        m_textSelectedColor = Color.black;
+        if (m_selectedImage != null)
+            m_selectedImage.gameObject.SetActive(false);
     }
 
-    // 이 프리셋이 현재 선택 상태임을 표시 — 버튼 이미지 색 + 라벨/값 텍스트 색을 함께 토글
+    // 이 프리셋이 현재 선택 상태임을 표시 — 색 변경이 아니라 오브젝트 자체를 켜고 끔
     public void SetSelectedAvailablePresetRow(bool selected)
     {
-        if (m_button != null && m_button.targetGraphic != null)
-            m_button.targetGraphic.color = selected == true ? m_buttonSelectedColor : m_buttonDefaultColor;
-
-        // Color textColor = selected == true ? m_textSelectedColor : m_textDefaultColor;
-        // if (m_nameRow != null) m_nameRow.SetTextColor(textColor);
-        // if (m_costRow != null) m_costRow.SetTextColor(textColor);
+        if (m_selectedImage == null) return;
+        m_selectedImage.gameObject.SetActive(selected);
     }
 
     public void Setup(ShipPresetData preset, System.Action<ShipPresetData> onClick)
