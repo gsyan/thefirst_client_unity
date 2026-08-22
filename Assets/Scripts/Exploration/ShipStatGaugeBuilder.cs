@@ -4,6 +4,7 @@
 // - DPS로 흡수 가능한 스탯(공격력+쿨다운)은 슬롯 전체 합산 DPS 1줄로 압축
 // - DPS로 흡수 불가능한 스탯(탄약/체력/침묵시간/교란 등)은 슬롯 간 최소~최대 범위로 압축
 using System.Collections.Generic;
+using UnityEngine;
 
 public struct ShipStatRowEntry
 {
@@ -91,6 +92,31 @@ public static class ShipStatGaugeBuilder
         return entries;
     }
 
+    // entry를 baselineByLabel(라벨→기준 스탯)과 비교해 리치텍스트 diff 반환, 변화 없거나 비교 불가면 null.
+    // 화면엔 소수 1자리로 버림된 값이 보이므로(UIStatRow.SetStatRow), diff도 원본 float가 아니라 버림된 값 기준으로
+    // 계산해야 표시값과 어긋나지 않음(예: 3.3→6.7이면 +3.4가 나와야지 원본 float 차이인 +3.3이 나오면 안 됨)
+    public static string BuildDiffText(ShipStatRowEntry entry, Dictionary<string, ShipStatRowEntry> baselineByLabel)
+    {
+        if (entry.hasCompareValue == false) return null;
+        if (baselineByLabel == null) return null;
+
+        float baselineValue = 0f;
+        if (baselineByLabel.TryGetValue(entry.label, out ShipStatRowEntry baselineEntry) == true)
+        {
+            if (baselineEntry.hasCompareValue == false) return null;
+            baselineValue = baselineEntry.compareValue;
+        }
+
+        float entryFloored = CommonUtility.FloorToDecimals(entry.compareValue, 1);
+        float baselineFloored = CommonUtility.FloorToDecimals(baselineValue, 1);
+        float diff = entryFloored - baselineFloored;
+        if (diff == 0f) return null;
+
+        string sign = diff > 0f ? "+" : "";
+        string color = diff > 0f ? "red" : "blue";
+        return $"<color={color}>({sign}{diff:F1})</color>";
+    }
+
     // multiplier가 1이면 원본 배열을 그대로 재사용해 불필요한 GC Alloc 방지
     private static float[] ScaleArray(float[] values, float multiplier)
     {
@@ -125,13 +151,17 @@ public static class ShipStatGaugeBuilder
     private static ShipStatRowEntry MakeNumericStat(string label, float value, float buffMultiplier = 1f)
     {
         float finalValue = value * buffMultiplier;
-        string buffDiffText = buffMultiplier != 1f ? BuildBuffDiffText(finalValue - value) : null;
+        string buffDiffText = buffMultiplier != 1f ? BuildBuffDiffText(finalValue, value) : null;
         return new ShipStatRowEntry { label = label, value = finalValue, isNumericValue = true, compareValue = finalValue, hasCompareValue = true, buffDiffText = buffDiffText };
     }
 
-    // 보상카드 지속버프는 항상 증가(양수)이므로 부호 없이 녹색 "(+n.n)"으로 고정 표기
-    private static string BuildBuffDiffText(float diff)
+    // 화면에 보이는 값(UIStatRow.SetStatRow, 버림 처리됨)과 같은 버림 규칙으로 diff를 계산해야
+    // "원본값 + diff == 최종값"이 항상 성립함. 보상카드 지속버프는 항상 증가(양수)이므로 부호 없이 녹색 "(+n.n)"으로 고정 표기
+    private static string BuildBuffDiffText(float finalValue, float baseValue)
     {
+        float finalFloored = CommonUtility.FloorToDecimals(finalValue, 1);
+        float baseFloored = CommonUtility.FloorToDecimals(baseValue, 1);
+        float diff = finalFloored - baseFloored;
         return $"<color=#4CD97B>(+{diff:F1})</color>";
     }
 

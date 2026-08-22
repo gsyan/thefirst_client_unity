@@ -180,27 +180,7 @@ public class UIShipPresetPickerView : MonoBehaviour
     // 현재 프리셋에 아예 없던 스탯(예: 미사일 미장착 → 장착)은 기준값 0으로 취급해 신규 획득으로 표시
     private string BuildDiffText(ShipStatRowEntry entry)
     {
-        if (entry.hasCompareValue == false) return null;
-        if (m_currentEntriesByLabel == null) return null; // 빈 슬롯 등 비교 기준 자체가 없음
-
-        float currentValue = 0f;
-        if (m_currentEntriesByLabel.TryGetValue(entry.label, out ShipStatRowEntry currentEntry) == true)
-        {
-            if (currentEntry.hasCompareValue == false) return null;
-            currentValue = currentEntry.compareValue;
-        }
-
-        // 화면엔 소수 1자리로 반올림된 값이 보이므로, diff도 원본 float가 아니라 반올림된 값 기준으로 계산해야
-        // 표시값과 어긋나지 않음(예: 3.3→6.7이면 +3.4가 나와야지 원본 float 차이인 +3.3이 나오면 안 됨).
-        // 임계값 0.05f는 반올림 노이즈(부동소수점 오차)로 실제론 무변화인데 diff가 미세하게 남는 걸 걸러내기 위함
-        float selectedRounded = Mathf.Round(entry.compareValue * 10f) / 10f;
-        float currentRounded = Mathf.Round(currentValue * 10f) / 10f;
-        float diff = selectedRounded - currentRounded;
-        if (Mathf.Abs(diff) < 0.05f) return null;
-
-        string sign = diff > 0f ? "+" : "";
-        string color = diff > 0f ? "red" : "blue";
-        return $"<color={color}>({sign}{diff:F1})</color>";
+        return ShipStatGaugeBuilder.BuildDiffText(entry, m_currentEntriesByLabel);
     }
 
     private void EnsureStatsRowCount(int neededCount)

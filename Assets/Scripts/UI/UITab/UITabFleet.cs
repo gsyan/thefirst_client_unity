@@ -209,7 +209,7 @@ public class UITabFleet : UITabBase
         if (m_fleetSynergyStepText == null || m_playerFleet == null) return;
 
         float multiplier = m_playerFleet.GetShipCountAttackMultiplier();
-        string multiplierStr = multiplier.ToString("F2");
+        string multiplierStr = CommonUtility.FloorToDecimals(multiplier, 2).ToString("F2");
         m_fleetSynergyStepText.text = LocalizationManager.Instance.Get("UITabFleet_FleetSynergyMultiply", (object)multiplierStr);
 
         RectTransform parent = m_fleetSynergyStepText.transform.parent as RectTransform;

@@ -16,7 +16,7 @@ public class UIStatRow : MonoBehaviour
     {
         gameObject.SetActive(true);
         if (m_labelText != null) m_labelText.text = label;
-        if (m_valueText != null) m_valueText.text = $"{value:F1}";
+        if (m_valueText != null) m_valueText.text = $"{CommonUtility.FloorToDecimals(value, 1):F1}";
         SetDiffText(diffText, buffDiffText);
 
         RebuildSelf();

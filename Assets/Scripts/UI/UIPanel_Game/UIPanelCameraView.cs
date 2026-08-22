@@ -191,7 +191,7 @@ public class UIPanelCameraView : UIPanelBase
         if (m_speedButton != null)
             m_speedButton.SetInteractable(isVip);
         m_speedLabel.text = isVip == true
-            ? (speed == (int)speed ? $"x{(int)speed}" : $"x{speed:F1}")
+            ? (speed == (int)speed ? $"x{(int)speed}" : $"x{CommonUtility.FloorToDecimals(speed, 1):F1}")
             : LocalizationManager.Instance.Get("UICOMMON_AdmiralFeature");
     }
 

@@ -1965,6 +1965,8 @@ MonoBehaviour:
   m_commandPowerRow: {fileID: 2460726877595139114}
   m_confirmButton: {fileID: 846952506710865053}
   m_cancelButton: {fileID: 5405606209927750582}
+  m_statsRowPrefab: {fileID: 9111590323404070704, guid: 813e52443a9ab4f4487ed4676781e65c, type: 3}
+  m_statsContainer: {fileID: 557318897537757241}
 --- !u!1 &2012633885194894916
 GameObject:
   m_ObjectHideFlags: 0

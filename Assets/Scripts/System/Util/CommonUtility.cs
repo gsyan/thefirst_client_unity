@@ -302,6 +302,13 @@ public static class CommonUtility
         return value.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
     }
 
+    // UI에 표시되는 소수점 값은 항상 버림 — 반올림으로 실제 효과보다 부풀려 보이는 것을 방지, 모든 화면에서 동일 규칙 사용
+    public static float FloorToDecimals(float value, int decimals)
+    {
+        float scale = Mathf.Pow(10f, decimals);
+        return Mathf.Floor(value * scale + 0.0001f) / scale; // epsilon은 부동소수점 표현 오차로 인한 오버림 방지
+    }
+
     public static Color HexColor(string hex)
     {
         ColorUtility.TryParseHtmlString(hex, out Color c);

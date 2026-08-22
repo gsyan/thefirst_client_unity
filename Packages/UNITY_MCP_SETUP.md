@@ -23,9 +23,12 @@ Jenkins 같은 CI 워크스페이스도 이 패키지를 그대로 받아서 **�
    (더 최신 버전이 나왔는지는 `git ls-remote --tags https://github.com/IvanMurzak/Unity-MCP.git`로 확인. 위 버전은 이 프로젝트가 현재 맞춰둔 버전이므로, 다른 버전을 쓰면 asmdef/Tests 등에서 아래 "알려진 이슈"와 유사한 API 불일치가 날 수 있음)
 2. Unity가 자동으로 git에서 패키지를 받아오고, NuGet 의존 DLL(`ReflectorNet.dll`, `System.Text.Json.dll` 등)을
    `Assets/Plugins/NuGet/`에 다운로드한다. (이 폴더도 `.gitignore` 대상 — 각자 로컬에 알아서 받아짐)
-3. 설치/컴파일이 끝나면 **`Packages/manifest.json`의 해당 줄은 다시 지우고 커밋하지 말 것** —
-   로컬 테스트/사용 후 커밋 전에 원복하거나, `git checkout -- Packages/manifest.json`으로 되돌린다.
-   (실수로 커밋해도 당장 문제는 없지만, CI가 이 패키지를 다시 받으려고 시도하게 되므로 권장하지 않음)
+3. **[중요/정정] 이 줄은 로컬 개발 중엔 `manifest.json`에 계속 남아있어야 함 — 지우면 안 됨.**
+   (예전엔 "설치 끝나면 지워도 된다"고 적혀 있었는데 틀린 설명이었음: Unity는 `manifest.json`에서 빠진 패키지를
+   다음 리졸브 때 `Library/PackageCache`에 캐시가 있어도 그냥 제거해버려서, 지우는 즉시 MCP가 죽는 걸 확인함)
+   대신 **커밋 직전에만** `git`에서 이 줄만 제외하고 스테이징하거나(예: `git add -p`로 이 hunk만 스킵),
+   커밋 후 바로 이 줄을 다시 추가해서 로컬 작업을 이어갈 것. `git checkout -- Packages/manifest.json`으로
+   완전히 되돌리면 이 줄도 같이 사라지므로, 되돌린 직후엔 반드시 다시 추가해야 MCP가 계속 동작함.
 4. **커스텀 MCP 툴 스크립트 복사** — 이 저장소에서 직접 추가한 커스텀 AI 툴(`Tool_UISimulateClick.cs` 등)은
    원본 패키지 저장소엔 없으므로 git URL 설치만으로는 따라오지 않는다. `Packages/UnityMcpCustomTools/`(git 추적 대상)에
    `.cs.txt`로 보관해뒀으니, 패키지 설치가 끝난 뒤 아래처럼 확장자를 바꿔 실제 패키지 폴더에 복사해 넣을 것:
