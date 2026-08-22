@@ -1,6 +1,6 @@
 # Unity-MCP (AI 에디터 툴) 로컬 설치 가이드
 
-**현재 이 프로젝트에서 사용 중인 버전: `0.86.3`** (2026-07-30 업그레이드, 0.84.1 → 0.86.3). 아래 설치 절차의 `<원하는 버전 태그>` 자리에 이 버전을 넣으면 됨. 이후 다시 업그레이드하면 이 줄도 같이 갱신할 것.
+**현재 이 프로젝트에서 사용 중인 버전: `0.89.0`** (2026-08-22 업그레이드, 0.86.3 → 0.89.0). 아래 설치 절차의 `<원하는 버전 태그>` 자리에 이 버전을 넣으면 됨. 이후 다시 업그레이드하면 이 줄도 같이 갱신할 것.
 
 이 프로젝트는 AI 에이전트가 Unity 에디터를 직접 조작할 수 있게 해주는 `com.ivanmurzak.unity.mcp` 패키지를 사용합니다.
 **이 패키지는 개발자 개인 로컬 환경에서만 필요한 도구**이고 게임 자체(빌드 결과물)와는 아무 관련이 없어서,
@@ -18,7 +18,7 @@ Jenkins 같은 CI 워크스페이스도 이 패키지를 그대로 받아서 **�
 
 1. `Packages/manifest.json`의 `"dependencies"` 블록에 아래 줄 추가:
    ```json
-   "com.ivanmurzak.unity.mcp": "https://github.com/IvanMurzak/Unity-MCP.git?path=/Unity-MCP-Plugin/Packages/com.ivanmurzak.unity.mcp#0.86.3",
+   "com.ivanmurzak.unity.mcp": "https://github.com/IvanMurzak/Unity-MCP.git?path=/Unity-MCP-Plugin/Packages/com.ivanmurzak.unity.mcp#0.89.0",
    ```
    (더 최신 버전이 나왔는지는 `git ls-remote --tags https://github.com/IvanMurzak/Unity-MCP.git`로 확인. 위 버전은 이 프로젝트가 현재 맞춰둔 버전이므로, 다른 버전을 쓰면 asmdef/Tests 등에서 아래 "알려진 이슈"와 유사한 API 불일치가 날 수 있음)
 2. Unity가 자동으로 git에서 패키지를 받아오고, NuGet 의존 DLL(`ReflectorNet.dll`, `System.Text.Json.dll` 등)을

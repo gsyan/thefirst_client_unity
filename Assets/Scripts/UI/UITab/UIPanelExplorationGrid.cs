@@ -249,8 +249,19 @@ public class UIPanelExplorationGrid : UIPanelBase
         UIZoneTabNode node = obj.GetComponent<UIZoneTabNode>();
         if (node == null) return;
         node.SetData(dataIndex, OnZoneTabNodeClicked);
-        bool selected = dataIndex + 1 == m_currentZoneNumber;
-        node.SetState(selected, isCleared: false, isLocked: false); // TODO: 그리드 시스템용 클리어/락 진행도 연동
+        int zoneNumber = dataIndex + 1;
+        bool selected = zoneNumber == m_currentZoneNumber;
+        int highestClearedZoneNumber = GetHighestClearedZoneNumber();
+        bool isCleared = zoneNumber <= highestClearedZoneNumber;
+        bool isLocked = zoneNumber > highestClearedZoneNumber + 1;
+        node.SetState_UIZoneTabNode(selected, isCleared, isLocked);
+    }
+
+    // 입장 가능 판정(NavigateToZone)과 항상 같은 기준을 써야 함 — 표시와 실제 진입 가능 여부가 어긋나면 안 됨
+    private int GetHighestClearedZoneNumber()
+    {
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        return commanderInfo != null ? commanderInfo.highestClearedZoneNumber : 0;
     }
 
     private void OnZoneTabNodeClicked(int groupIndex)
@@ -274,6 +285,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void NavigateToZone(int zoneNumber, bool recenterScroll)
     {
         zoneNumber = Mathf.Clamp(zoneNumber, 1, m_zoneGroupCount > 0 ? m_zoneGroupCount : zoneNumber);
+        if (zoneNumber > GetHighestClearedZoneNumber() + 1) return; // 아직 클리어 못 한 다음 존을 넘어선 잠긴 존 — 진입 차단
         if (zoneNumber == m_currentZoneNumber && m_gridData != null) return;
 
         ObjectManager.Instance.ChangeZone(zoneNumber);

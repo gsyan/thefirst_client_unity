@@ -9,7 +9,6 @@
     }
   ],
   "dependencies": {
-    "com.ivanmurzak.unity.mcp": "https://github.com/IvanMurzak/Unity-MCP.git?path=/Unity-MCP-Plugin/Packages/com.ivanmurzak.unity.mcp#0.86.3",
     "extensions.unity.playerprefsex": "2.1.5",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.11",

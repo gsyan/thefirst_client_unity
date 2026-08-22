@@ -31,16 +31,16 @@ public class UIZoneTabNode : MonoBehaviour
 
     // cleared(클리어 완료) > locked(진입 불가) > 그 외(진행 중) 순으로 색 결정. selected(현재 보고 있는 존)는
     // 색이 아니라 m_selectedImage 오브젝트를 켜고 끔으로 별도 표시
-    public void SetState(bool selected, bool isCleared, bool isLocked)
+    public void SetState_UIZoneTabNode(bool selected, bool isCleared, bool isLocked)
     {
-        string colorKey = "General";
+        string colorKey = "Cyan";
         if (isCleared == true)
-            colorKey = "Unlocked";
+            colorKey = "Cyan";
         else if (isLocked == true)
             colorKey = "Zone.Locked";
 
         Color color = CommonUtility.PaletteColor(colorKey);
-        if (m_label != null)   m_label.color   = color;
+        //if (m_label != null)   m_label.color   = color;
         if (m_bgImage != null) m_bgImage.color = color;
 
         if (m_selectedImage != null)
