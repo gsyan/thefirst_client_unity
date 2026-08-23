@@ -570,8 +570,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     */
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
-    // 함선 시스템 대격변으로 PvP 로직 전체 주석처리 — 삭제 아님, UITabPvp.cs와 함께 비활성화
-    /*
+    // 함선 시스템 대격변으로 주석처리됐던 것을 UIPanelRank 2단계 구현에 맞춰 복원(의존 메서드 전부 현재 시그니처와 일치 확인함)
     public void StartPvpBattle(FleetInfo opponentFleetInfo)
     {
         SpaceFleet myFleet = GetMyFleet();
@@ -601,7 +600,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         GetTeamFleets(enemyTeam).Add(enemyFleet);
     }
-    */
 
     public void TryStartCombat(SpaceFleet enemyFleet, EUnitState battleState, float playerDelay = 0f, float enemyDelay = 0f)
     {

@@ -881,8 +881,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (hasFocus) HeartbeatOnResume();
     }
 
-    // PvP API — 주석처리로 임시 비활성화(삭제 아님)
-    /*
+    // PvP API — 함선 시스템 대격변으로 주석처리됐던 것을 UIPanelRank 1단계 구현에 맞춰 복원(ApiClient 쪽은 계속 활성 상태였음)
     public void PvpList(PvpListRequest request, System.Action<ApiResponse<PvpListResponse>> onComplete)
     {
         if (m_bConnected == false) return;
@@ -918,7 +917,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.PvpMyRankAsync(request), onComplete));
     }
-    */
 
     public void ZoneRanking(ZoneRankingRequest request, System.Action<ApiResponse<ZoneRankingResponse>> onComplete)
     {

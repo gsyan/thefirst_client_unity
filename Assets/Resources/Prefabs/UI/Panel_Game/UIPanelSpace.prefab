@@ -1772,8 +1772,9 @@ GameObject:
   - component: {fileID: 647955443567131882}
   - component: {fileID: 8176208616479030641}
   - component: {fileID: 3080120730075471597}
+  - component: {fileID: 1768348749364868892}
   m_Layer: 5
-  m_Name: PvpButton
+  m_Name: RankButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1895,6 +1896,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_tutorialTargetId: ExplorationButton
+--- !u!114 &1768348749364868892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2634220150928152249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f81755f95cca55843b201544bee6e4e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIPanelEntryButton
+  m_panelName: UIPanelRank
+  m_childGraphics: []
 --- !u!1 &2654517832400278416
 GameObject:
   m_ObjectHideFlags: 0
@@ -2540,7 +2555,6 @@ GameObject:
   - component: {fileID: 1900696506111165170}
   - component: {fileID: 1865977924422556244}
   - component: {fileID: 4883328260332575992}
-  - component: {fileID: 8294625144142245584}
   m_Layer: 5
   m_Name: UIPanelSpace
   m_TagString: Untagged
@@ -2594,112 +2608,8 @@ MonoBehaviour:
   bHideCurWhenActive: 1
   bCameraMove: 0
   bAffectsOverlayCount: 1
-  m_tabSystem: {fileID: 8294625144142245584}
+  m_tabSystem: {fileID: 0}
   m_tapButtons: {fileID: 9014777236800911226}
---- !u!114 &8294625144142245584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3510599058195240527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59d6a281537e11f4eb4a68113455b8cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tabs:
-  - tabButton: {fileID: 0}
-    tabPanel: {fileID: 0}
-    tabName: tab_commander
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-    childGraphics: []
-    deferReveal: 0
-  - tabButton: {fileID: 0}
-    tabPanel: {fileID: 0}
-    tabName: tab_fleet
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-    childGraphics: []
-    deferReveal: 0
-  - tabButton: {fileID: 0}
-    tabPanel: {fileID: 0}
-    tabName: tab_fleettactics
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-    childGraphics: []
-    deferReveal: 0
-  - tabButton: {fileID: 0}
-    tabPanel: {fileID: 0}
-    tabName: tab_ship
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-    childGraphics: []
-    deferReveal: 0
-  - tabButton: {fileID: 0}
-    tabPanel: {fileID: 0}
-    tabName: tab_exploration
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-    childGraphics: []
-    deferReveal: 0
-  - tabButton: {fileID: 8176208616479030641}
-    tabPanel: {fileID: 0}
-    tabName: tab_pvp
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-    childGraphics: []
-    deferReveal: 0
-  - tabButton: {fileID: 0}
-    tabPanel: {fileID: 0}
-    tabName: tab_settings
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-    childGraphics: []
-    deferReveal: 0
-  - tabButton: {fileID: 0}
-    tabPanel: {fileID: 4915720289435684623}
-    tabName: tab_vip
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-    childGraphics: []
-    deferReveal: 0
-  - tabButton: {fileID: 849489784690429496}
-    tabPanel: {fileID: 0}
-    tabName: tab_calandar
-    activeColor: {r: 0.19607843, g: 0.7254902, b: 0.23529412, a: 1}
-    inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-    childGraphics: []
-    deferReveal: 0
-  defaultActiveTab: -1
-  allowDeselect: 1
-  useAnimation: 1
-  animationDuration: 0.3
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &3560948174848336326
 GameObject:
   m_ObjectHideFlags: 0

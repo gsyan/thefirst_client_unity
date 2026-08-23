@@ -1,41 +1,30 @@
-// 우주 공간 UI 패널 — 잔존 TabSystem(tab_ship/tab_pvp/tab_calandar 등 미전환 레거시) 초기화, 3D 모듈 선택 자동 전환.
+// 우주 공간 UI 패널 — 3D 모듈 선택 자동 전환 등을 담당.
 // 진입 버튼(COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION)은 UIManager의 오버레이 패널 카운트가 0일 때(기본 상태)만
 // 노출됨(OnOverlayPanelActiveChanged). COMMANDER/SETTINGS/EXPLORATION/FLEET 등은 이제 전부 독립 UIPanelBase 프리팹이라
 // 이 스크립트가 그 참조를 들고 있지 않음 — 각자가 UIManager에 스스로 등록되고, 서로 UIManager를 통해서만 상호작용함
+// (구 TabSystem 컴포넌트는 실사용 항목이 전부 죽은 참조이거나 다른 전용 스크립트로 이미 대체돼 있어 제거함)
 using UnityEngine;
 
 public class UIPanelSpace : UIPanelBase
 {
-    [Header("Tab System")]
-    public TabSystem m_tabSystem;
-
     [Header("진입 버튼 그룹 (기본 상태에서만 노출)")]
     [SerializeField] private GameObject m_tapButtons; // COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION 진입 버튼 컨테이너 — 오버레이 패널이 하나라도 열리면 숨김
-
-    public override void InitializeUIPanel()
-    {
-        m_tabSystem.InitializeTabBases();
-    }
 
     public override void OnShowUIPanel()
     {
         EventManager.Subscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
-        EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
         EventManager.Subscribe_OverlayPanelActiveChanged(OnOverlayPanelActiveChanged);
         // CheckAndClaimPvpSeasonReward(); // PvP 주석처리로 임시 비활성화
-        m_tabSystem.ForceActivateTab();
     }
 
     public override void OnHideUIPanel()
     {
         EventManager.Unsubscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
-        EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
         EventManager.Unsubscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Unsubscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
         EventManager.Unsubscribe_OverlayPanelActiveChanged(OnOverlayPanelActiveChanged);
-        m_tabSystem.ForceDeactivateTab();
 
         CameraController.Instance.SetTargetOfCameraController(ObjectManager.Instance.GetMyFleet().transform);
     }
@@ -72,14 +61,6 @@ public class UIPanelSpace : UIPanelBase
         DailyBonusManager.Instance.CheckAndShowDailyRewardPopup();
     }
 
-    // 오버레이 패널을 닫는 로직은 UIManager 자신이 전역으로 처리(UIManager.OnEmptySpaceTapped) —
-    // UIPanelSpace는 여기 남아있는 레거시 TabSystem 탭(tab_ship/tab_pvp/tab_calandar)만 정리
-    private void OnEmptySpaceTapped()
-    {
-        if (m_tabSystem.GetCurrentActiveTab() >= 0)
-            m_tabSystem.SwitchToTab(-1);
-    }
-
     // 오버레이 패널(메인 패널이 아닌 UIPanelBase, VIP 팝오버 제외)이 하나라도 열리면 진입 버튼들을 숨기고, 전부 닫히면 다시 보임 —
     // "탭 버튼은 기본 상태(아무 화면도 안 열린 상태)에서만 보인다"는 규칙을 UIManager의 오버레이 카운트 하나로 통합 처리
     private void OnOverlayPanelActiveChanged(bool isActive)
@@ -106,8 +87,6 @@ public class UIPanelSpace : UIPanelBase
     // 튜토리얼 dim 없는 스텝에서 상단 진입 버튼(Commander/Fleet/Settings/Exploration 등) 클릭 차단 — 3D 카메라 조작은 별개라 영향 없음
     private void OnTutorialGeneralUIBlockedChanged(bool isBlocked)
     {
-        m_tabSystem.SetTabButtonsInteractable(!isBlocked);
-
         if (m_tapButtons == null) return;
         var entryButtons = m_tapButtons.GetComponentsInChildren<UIPanelEntryButton>(true);
         for (int i = 0; i < entryButtons.Length; i++)

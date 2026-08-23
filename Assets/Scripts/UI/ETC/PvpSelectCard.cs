@@ -1,4 +1,5 @@
 // PvP 상대 선택 카드 - 이름/랭크/점수/함대 스탯/공격 버튼 표시
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,21 +9,18 @@ public class PvpSelectCard : MonoBehaviour
     [SerializeField] private Button m_attackButton;
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private TMP_Text m_scoreRankText;
-    [SerializeField] private Transform m_statsContainer1;
-    [SerializeField] private Transform m_statsContainer2;
+    [SerializeField] private Transform m_statsContainer;
+    [SerializeField] private UIStatRow m_statRowPrefab; // 컨테이너에 미리 배치된 것보다 더 필요할 때 추가 생성용
 
-    private RowImageText[] m_rows1;
-    private RowImageText[] m_rows2;
+    private readonly List<UIStatRow> m_statRows = new();
 
     private PvpOpponentInfo m_opponentInfo;
     public PvpOpponentInfo OpponentInfo => m_opponentInfo;
 
     private void Awake()
     {
-        if (m_statsContainer1 != null)
-            m_rows1 = m_statsContainer1.GetComponentsInChildren<RowImageText>(true);
-        if (m_statsContainer2 != null)
-            m_rows2 = m_statsContainer2.GetComponentsInChildren<RowImageText>(true);
+        if (m_statsContainer != null)
+            m_statRows.AddRange(m_statsContainer.GetComponentsInChildren<UIStatRow>(true));
     }
 
     public void InitializePvpSelectCard(PvpOpponentInfo opponentInfo, UnityEngine.Events.UnityAction onAttack)
@@ -54,32 +52,37 @@ public class PvpSelectCard : MonoBehaviour
 
     private void PopulateStats(CapabilityProfile stats, int shipCount)
     {
-        HideAllStats();
-        if (m_rows1 == null || m_rows1.Length < 3) return;
+        var loc = LocalizationManager.Instance;
+        var rows = new List<(string label, string valueText)>
+        {
+            (loc.Get("fleet_ship_count"), shipCount.ToString()),
+            (loc.Get("UIFleet_Stats_Health"), CommonUtility.FormatBigNumber(stats.health)),
+            (loc.Get("Simple_Attack"), CommonUtility.FormatBigNumber(stats.attack)),
+        };
+        if (stats.airCount > 0)
+            rows.Add((loc.Get("Simple_AirCount"), stats.airCount.ToString()));
 
-        m_rows1[0].SetRow("icon_ship",     shipCount.ToString());
-        m_rows1[1].SetRow("techno-heart",  CommonUtility.FormatBigNumber(stats.health));
-        m_rows1[2].SetRow("bubbling-beam", CommonUtility.FormatBigNumber(stats.attack));
-        
-        if (stats.airCount > 0 && m_rows2 != null && m_rows2.Length > 0)
-            m_rows2[0].SetRow("jet-fighter", stats.airCount.ToString());
-        
+        EnsureStatRowCount(rows.Count);
+        for (int i = 0; i < m_statRows.Count; i++)
+        {
+            if (i < rows.Count) m_statRows[i].SetValueOnly(rows[i].label, rows[i].valueText);
+            else m_statRows[i].Hide();
+        }
+
         Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer1 as RectTransform);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer2 as RectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer as RectTransform);
+    }
+
+    private void EnsureStatRowCount(int neededCount)
+    {
+        if (m_statsContainer == null || m_statRowPrefab == null) return;
+        while (m_statRows.Count < neededCount)
+            m_statRows.Add(Instantiate(m_statRowPrefab, m_statsContainer));
     }
 
     private void HideAllStats()
     {
-        if (m_rows1 != null)
-        {
-            for (int i = 0; i < m_rows1.Length; i++)
-                m_rows1[i].Hide();
-        }
-        if (m_rows2 != null)
-        {
-            for (int i = 0; i < m_rows2.Length; i++)
-                m_rows2[i].Hide();
-        }
+        for (int i = 0; i < m_statRows.Count; i++)
+            m_statRows[i].Hide();
     }
 }
