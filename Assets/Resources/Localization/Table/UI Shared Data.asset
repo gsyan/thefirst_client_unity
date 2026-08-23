@@ -747,6 +747,10 @@ MonoBehaviour:
     m_Key: UITabSettings_Fx
     m_Metadata:
       m_Items: []
+  - m_Id: 70994983829504000
+    m_Key: UITabSettings_ETC
+    m_Metadata:
+      m_Items: []
   - m_Id: 31783074207236101
     m_Key: UITabSettings_License
     m_Metadata:
@@ -1157,6 +1161,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 59435713895989248
     m_Key: UIPopupMessage_ConfirmTryCell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71138710669623296
+    m_Key: UIPopupMessage_ZoneLocked
     m_Metadata:
       m_Items: []
   - m_Id: 46939500441370624

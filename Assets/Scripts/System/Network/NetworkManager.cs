@@ -139,9 +139,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             {
                 message      = "접속할 서버를 선택하세요.",
                 cancelText1  = "DEV",
-                cancelText2  = "localhost:8080",
                 confirmText1 = "TEST",
-                confirmText2 = "dev.fidforge.com",
                 onCancel = () =>
                 {
                     m_apiClient.SetBaseUrl(ApiServerUrl.Dev);

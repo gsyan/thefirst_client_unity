@@ -1286,6 +1286,14 @@ MonoBehaviour:
     m_Localized: Fighter dogfight attack +{0:P0}
     m_Metadata:
       m_Items: []
+  - m_Id: 70994983829504000
+    m_Localized: ECT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71138710669623296
+    m_Localized: This zone is still locked. Clear the previous zone first.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

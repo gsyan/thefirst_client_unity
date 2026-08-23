@@ -182,6 +182,7 @@ UITabSettings_General,,GENERAL,일반
 UITabSettings_Language,,LANGUAGE,언어
 UITabSettings_Bgm,,BGM,배경음
 UITabSettings_Fx,,FX,효과음
+UITabSettings_ETC,,ECT,기타
 UITabSettings_License,,THIRD-PARTY LICENSES,외부 라이센스
 UITabSettings_Info,,INFO,정보
 UITabRank_Score,,SCORE,점수
@@ -285,6 +286,7 @@ UIPopupMessage_GoogleLink,,Would you like to link your Google account?,구글 �
 UIPopupMessage_GoogleUnlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
 UIPopupMessage_CommanderLevelupMessage,,COMMANDER LEVEL UP,지휘 레벨업
 UIPopupMessage_ConfirmTryCell,,Are you sure you want to move to this cell?,선택한 셀로 이동 하시겠습니까?
+UIPopupMessage_ZoneLocked,,This zone is still locked. Clear the previous zone first.,아직 잠긴 존입니다. 이전 존을 먼저 클리어하세요.
 UIPopupMessage_MineralResetTitle,,MINERAL ENHANCEMENT RESET,미네랄 강화 초기화
 UIPopupMessage_MineralResetMessage,,Mineral enhancements have been reset after stage clear.,스테이지 클리어로 미네랄 강화가 초기화되었습니다.
 UIPopupMessage_ResetAllInvestedMineralTitle,,RESET ALL INVESTED MINERAL,전체 투자 미네랄 환급

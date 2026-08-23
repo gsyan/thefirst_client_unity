@@ -60,7 +60,7 @@ public class UIVipDetail : MonoBehaviour
             loc.Get("UIVipStatus_Benefit_Daily"),
             loc.Get("UIVipStatus_Benefit_InstantFleetRestore"),
         };
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < texts.Length; i++)
         {
             if (m_benefits[i] == null) continue;
             m_benefits[i].text = $"• {texts[i]}";

@@ -41,6 +41,13 @@ public class UIPanelExplorationGrid : UIPanelBase
     private int m_currentRow;
     private int m_currentCol;
 
+    // 브라우징(탭/스크롤)으로 진행중인 존을 벗어났다가 돌아올 때 재생성/서버 재조회 없이 그대로 복원하기 위한 스냅샷
+    private int m_activeZoneSnapshotZoneNumber;
+    private ExplorationGridData m_activeZoneSnapshotGridData;
+    private int m_activeZoneSnapshotRow;
+    private int m_activeZoneSnapshotCol;
+    private int m_activeZoneSnapshotBankedPoint;
+
     private bool m_pendingCellEntry;
     private int m_pendingCellRow;
     private int m_pendingCellCol;
@@ -285,8 +292,9 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void NavigateToZone(int zoneNumber, bool recenterScroll)
     {
         zoneNumber = Mathf.Clamp(zoneNumber, 1, m_zoneGroupCount > 0 ? m_zoneGroupCount : zoneNumber);
-        if (zoneNumber > GetHighestClearedZoneNumber() + 1) return; // 아직 클리어 못 한 다음 존을 넘어선 잠긴 존 — 진입 차단
         if (zoneNumber == m_currentZoneNumber && m_gridData != null) return;
+
+        SnapshotActiveZoneStateIfNeeded();
 
         ObjectManager.Instance.ChangeZone(zoneNumber);
 
@@ -311,6 +319,19 @@ public class UIPanelExplorationGrid : UIPanelBase
         return CommonUtility.ComputeExplorationZoneSeed(zoneNumber, seedBase);
     }
 
+    // 지금 보고 있는 존이 진행중인 런의 존이면, 떠나기 직전 상태를 스냅샷 — 참조타입인 m_gridData는 플레이 중 갱신되는 객체 그대로 저장되므로 별도 동기화 불필요
+    private void SnapshotActiveZoneStateIfNeeded()
+    {
+        if (m_gridData == null) return;
+        if (IsActiveExplorationZone(m_currentZoneNumber) == false) return;
+
+        m_activeZoneSnapshotZoneNumber = m_currentZoneNumber;
+        m_activeZoneSnapshotGridData = m_gridData;
+        m_activeZoneSnapshotRow = m_currentRow;
+        m_activeZoneSnapshotCol = m_currentCol;
+        m_activeZoneSnapshotBankedPoint = m_bankedExplorationPoint;
+    }
+
     public void SelectZoneTab(int zoneNumber, int seed)
     {
         ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
@@ -319,11 +340,33 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 직전에 있던 셀 좌표를 유지 — 존 자체가 바뀌면(최초 진입/존 이동) 시작 좌표로 초기화
         // 그리드 레이아웃은 이제 고정 데이터라 seed와 무관 — zoneNumber만 같으면 동일 그리드
         bool isSameZoneReentry = m_gridData != null && m_currentZoneNumber == zoneNumber;
+
+        // 브라우징으로 잠시 벗어났던 진행중인 존으로 돌아온 경우 — 재생성/서버 재조회 없이 떠나기 직전 스냅샷을 그대로 복원
+        bool hasActiveZoneSnapshot = isSameZoneReentry == false
+            && zoneNumber == m_activeZoneSnapshotZoneNumber
+            && m_activeZoneSnapshotGridData != null
+            && IsActiveExplorationZone(zoneNumber) == true;
+
         int preservedRow = m_currentRow;
         int preservedCol = m_currentCol;
 
         m_currentZoneNumber = zoneNumber;
         m_currentSeed = seed;
+
+        if (hasActiveZoneSnapshot == true)
+        {
+            m_gridData = m_activeZoneSnapshotGridData;
+            m_currentRow = m_activeZoneSnapshotRow;
+            m_currentCol = m_activeZoneSnapshotCol;
+            m_bankedExplorationPoint = m_activeZoneSnapshotBankedPoint;
+            RefreshBankedPointText();
+
+            BuildCellButtons();
+            BuildCellEnemyFleets(zoneConfig);
+            RefreshCellStates();
+            RefreshAbandonRunButtonState();
+            return;
+        }
 
         // 같은 존 재진입(isSameZoneReentry)이면 그리드를 다시 만들지 않고 기존 객체를 재사용 —
         // 새로 만들면 로컬에서 SetCellCleared로 켜둔 클리어 상태가 전부 초기화돼버림(레이아웃 자체는 zoneNumber만 같으면 항상 동일해서 다시 만들 이유도 없음)
@@ -490,6 +533,18 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void OnCellClicked(int row, int col)
     {
         Debug.Log($"[DEBUG-CELL] OnCellClicked row={row} col={col} (currentRow={m_currentRow} currentCol={m_currentCol})");
+
+        // 브라우징(스크롤/탭 이동)은 잠긴 존도 허용하되, 실제 입장(전투 진입)만 여기서 차단
+        if (m_currentZoneNumber > GetHighestClearedZoneNumber() + 1)
+        {
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                message = LocalizationManager.Instance.Get("UIPopupMessage_ZoneLocked"),
+                autoCloseSec = 5f,
+            });
+            return;
+        }
+
         bool isCurrentCell = row == m_currentRow && col == m_currentCol;
         bool isAdjacent = m_gridData.IsAdjacent(m_currentRow, m_currentCol, row, col);
 
@@ -1000,6 +1055,10 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         commanderInfo.explorationZoneNumber = 0;
         commanderInfo.explorationCell = "";
+
+        // 런이 끝났으니 브라우징 왕복용 스냅샷도 함께 비움 — 안 비우면 같은 존 번호로 재도전할 때 지난 런의 낡은 그리드가 재사용됨
+        m_activeZoneSnapshotZoneNumber = 0;
+        m_activeZoneSnapshotGridData = null;
     }
 
     // 탈출 성공 응답(권위값)을 즉시 반영해야, 이어지는 ShowPanel -> OnShowUIPanel의 GetInitialZoneIndex()가 다음 존을 정확히 계산함
